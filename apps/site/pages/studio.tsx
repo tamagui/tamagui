@@ -7,15 +7,14 @@ import { Features } from 'components/Features'
 import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { NextLink } from 'components/NextLink'
-// import { TamaCard } from 'components/TamaCard'
 import Head from 'next/head'
+import { memo } from 'react'
 import {
   Button,
   EnsureFlexed,
   H1,
   H2,
   HeadingProps,
-  Paragraph,
   Separator,
   SizableText,
   Spacer,
@@ -26,7 +25,15 @@ import {
 
 export default function StudioSplashPage() {
   const soonButton = (
-    <Button size="$2" theme="green" br="$9" pe="none" mr="$2" y={-1}>
+    <Button
+      size="$2"
+      theme="green"
+      br="$9"
+      pe="none"
+      mr="$1"
+      y={-2}
+      display="inline-flex"
+    >
       Soon
     </Button>
   )
@@ -34,10 +41,6 @@ export default function StudioSplashPage() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui Studio" description="Tamagui Studio" />
-
-      <Head>
-        <link href="/fonts/inter-takeout.css" rel="stylesheet" />
-      </Head>
 
       <YStack fullscreen className="bg-grid" />
 
@@ -55,10 +58,10 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `Intuitive views into your design system.`,
-                  `Realtime tamagui.config.ts load.`,
-                  `Visualize media queries, tokens, fonts and more.`,
-                  `View & edit color palettes with accessibility.`,
+                  `Intuitive views into your design system`,
+                  `Realtime tamagui.config.ts load`,
+                  `Visualize media queries, tokens, fonts and more`,
+                  `View & edit color palettes with accessibility`,
                 ]}
               />
             </YStack>
@@ -67,14 +70,10 @@ export default function StudioSplashPage() {
               <Features
                 size="$5"
                 items={[
-                  `View and edit animations across every driver.`,
-                  `See components + themes for every pseudo state.`,
-                  <Paragraph>
-                    {soonButton} Edit themes in your app in realtime.
-                  </Paragraph>,
-                  <Paragraph>
-                    {soonButton} Sync tokens & components with Figma.
-                  </Paragraph>,
+                  `View and edit animations across every driver`,
+                  `See components + themes for every pseudo state`,
+                  <span>{soonButton} Edit themes in your app in realtime</span>,
+                  <span>{soonButton} Sync tokens & components with Figma</span>,
                 ]}
               />
             </YStack>
@@ -265,7 +264,7 @@ const lettersConf: LetterConf[] = [
   },
 ]
 
-const Hero = () => {
+const Hero = memo(() => {
   const { resolvedTheme: themeName } = useThemeSetting()!
   const isLight = themeName === 'light'
 
@@ -429,7 +428,7 @@ const Hero = () => {
           <YStack>
             {glow.Component()}
             {glint.Component()}
-            <YStack ai="center" pos="relative">
+            <YStack ai="center" pos="relative" w="100%">
               <YStack w="100%" h={lettersContainerBounds.height}>
                 {letters.map(({ Component }) => {
                   return Component
@@ -460,12 +459,12 @@ const Hero = () => {
                 scale: 0.96,
               }}
             >
-              Sponsors get access April 30th
+              Early Access on April 30th
             </Button>
           </NextLink>
         </YStack>
 
-        <Spacer size="$6" />
+        <Spacer size="$8" />
 
         <XStack maw={790} space="$8" separator={<Separator vertical />}>
           <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
@@ -489,7 +488,7 @@ const Hero = () => {
       </Container>
     </ThemeTint>
   )
-}
+})
 
 const Ribbon = ({ id, color }: { id: string; color: string }) => {
   return (
