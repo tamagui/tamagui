@@ -1,34 +1,21 @@
 import { getAuthLayout } from '@components/layouts/AuthLayout'
-import { getDefaultLayout } from '@components/layouts/DefaultLayout'
-import { withSupabase } from '@lib/withSupabase'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { AuthError, Provider } from '@supabase/supabase-js'
+import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
-import React from 'react'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import {
-  Button,
-  EnsureFlexed,
-  Input,
-  Paragraph,
-  Separator,
-  Spinner,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
 
 import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
-import { getURL } from '../lib/helpers'
 
-const loginPageUrl = `${
+const loginPageUrl =
   process.env.NODE_ENV === 'production'
     ? 'https://tamagui.dev/login'
     : 'http://localhost:5005/login'
-}`
+
 export default function SignInPage() {
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
