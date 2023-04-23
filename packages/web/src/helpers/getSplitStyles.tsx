@@ -348,6 +348,10 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (keyInit === 'elevationAndroid') return
+    }
+
     if (!staticConfig.isHOC) {
       if (keyInit in skipProps) {
         return
