@@ -145,6 +145,14 @@ export async function bundleConfig(props: Props) {
   for (const component of components) {
     component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
 
+    if (!component.moduleName) {
+      console.warn(
+        `⚠️ no module name found: ${component.moduleName} ${JSON.stringify(
+          baseComponents
+        )} in ${JSON.stringify(componentOutPaths)}`
+      )
+    }
+
     // if (!component.moduleName) {
     //   throw new Error(`Tamagui internal err`)
     // }

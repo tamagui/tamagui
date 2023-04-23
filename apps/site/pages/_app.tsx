@@ -11,9 +11,10 @@ import '../public/fonts/fonts.css'
 // import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { startTransition, useMemo } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
 import config from '../tamagui.config'
 
@@ -52,6 +53,7 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+  const didMount = useDidFinishSSR()
 
   return (
     <>
@@ -63,6 +65,19 @@ export default function App(props: AppProps) {
           __html: `document.documentElement.classList.add('t_unmounted')`,
         }}
       />
+
+      {/* this will lazy load the font for /studio splash page */}
+      {didMount && (
+        <Head>
+          <link href="/fonts/inter-takeout.css" rel="stylesheet" />
+          <link
+            rel="preload"
+            href="/fonts/subset-Inter-Black.woff2"
+            as="font"
+            type="font/woff2"
+          />
+        </Head>
+      )}
 
       <NextThemeProvider
         onChangeTheme={(next) => {

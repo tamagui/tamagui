@@ -1,5 +1,3 @@
-import { access } from 'fs'
-
 import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
@@ -12,8 +10,8 @@ import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
-export const getStudioLayout: GetLayout = (page, pageProps) =>
-  withSupabase(
+export const getStudioLayout: GetLayout = (page, pageProps) => {
+  return withSupabase(
     <MyUserContextProvider>
       <StudioToastProvider>
         <StudioLayout>
@@ -27,6 +25,7 @@ export const getStudioLayout: GetLayout = (page, pageProps) =>
     </MyUserContextProvider>,
     pageProps
   )
+}
 
 const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser()

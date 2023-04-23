@@ -111,6 +111,24 @@ module.exports = function (name, { defaultConfig }) {
     typescript: {
       ignoreBuildErrors: true,
     },
+
+    rewrites() {
+      return {
+        beforeFiles: [
+          {
+            source: '/:path*',
+            has: [
+              {
+                type: 'host',
+                value: 'studio.tamagui.dev',
+              },
+            ],
+            destination: '/studio-app/:path*',
+          },
+        ],
+      }
+    },
+
     // Next.js config
     async redirects() {
       return [

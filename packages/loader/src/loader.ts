@@ -40,6 +40,11 @@ export const loader = async function loader(
       path: sourcePath,
     })
 
+    if (shouldPrintDebug === 'verbose') {
+      console.log(`\n\n --- Incoming source --- \n\n`)
+      console.log(source)
+    }
+
     if (shouldDisable) {
       if (shouldPrintDebug) {
         // eslint-disable-next-line no-console
