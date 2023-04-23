@@ -41,6 +41,22 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+// these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
+const costlyToAnimateStyleKey = {
+  backgroundColor: true,
+  color: true,
+  borderRadius: true,
+  borderWidth: true,
+  borderColor: true,
+  // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
+}
+
+const colorStyleKey = {
+  backgroundColor: true,
+  color: true,
+  borderColor: true,
+}
+
 export const AnimatedView = Animated.View
 export const AnimatedText = Animated.Text
 
@@ -147,13 +163,23 @@ export function createAnimations<A extends AnimationsConfig>(
       const sendExitComplete = presence?.[1]
       const mergedStyles = style
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
+      const colorAnimationState = useSafeRef(
+        new WeakMap<
+          Animated.Value,
+          {
+            color: string
+            edge: 1 | 0
+            interpolation: Animated.AnimatedInterpolation<any>
+          }
+        >()
+      )
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
       const animationsState = useSafeRef(
         new WeakMap<
           Animated.Value,
           {
             interopolation: Animated.AnimatedInterpolation<any>
-            current?: number | undefined
+            current?: number | string | undefined
           }
         >()
       )
@@ -172,7 +198,7 @@ export function createAnimations<A extends AnimationsConfig>(
         const nonAnimatedStyle = {}
         for (const key in mergedStyles) {
           const val = mergedStyles[key]
-          if (!animatedStyleKey[key]) {
+          if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -186,6 +212,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
+            // tkey: e.g: 'translateX'
             const tkey = Object.keys(transform)[0]
             const currentTransform = animatedTranforms.current[index]?.[tkey]
             animatedTranforms.current[index] = {
@@ -200,6 +227,13 @@ export function createAnimations<A extends AnimationsConfig>(
             Object.entries(animateStyles.current).map(([k, v]) => [
               k,
               animationsState.current!.get(v)?.interopolation || v,
+            ])
+          ),
+          // only for colors
+          ...Object.fromEntries(
+            Object.entries(colorAnimationState.current).map(([k, v]) => [
+              k,
+              colorAnimationState.current!.get(v)?.interpolation || v,
             ])
           ),
           transform: animatedTranforms.current.map((r) => {
@@ -220,21 +254,35 @@ export function createAnimations<A extends AnimationsConfig>(
           animated: Animated.Value | undefined,
           valIn: string | number
         ) {
-          const [val, type] = getValue(valIn)
+          const [val, type] = colorStyleKey[key] ? [0, 'rgb'] : getValue(valIn)
           const value = animated || new Animated.Value(val)
 
           let interpolateArgs: any
           if (type) {
-            const curInterpolation = animationsState.current.get(value)
-            interpolateArgs = getInterpolated(
-              curInterpolation?.current ?? value['_value'],
-              val,
-              type
-            )
-            animationsState.current!.set(value, {
-              interopolation: value.interpolate(interpolateArgs),
-              current: val,
-            })
+            if (type === 'rgb') {
+              const colorState = colorAnimationState.current.get(value)
+              interpolateArgs = getColorInterpolated(
+                colorState?.edge ?? value['_value'],
+                colorState?.color,
+                valIn as string
+              )
+              colorAnimationState.current!.set(value, {
+                color: valIn as string,
+                edge: colorState?.edge ? 0 : 1,
+                interpolation: value.interpolate(interpolateArgs),
+              })
+            } else {
+              const curInterpolation = animationsState.current.get(value)
+              interpolateArgs = getInterpolated(
+                curInterpolation?.current ?? value['_value'],
+                val,
+                type
+              )
+              animationsState.current!.set(value, {
+                interopolation: value.interpolate(interpolateArgs),
+                current: val,
+              })
+            }
           }
 
           if (value) {
@@ -311,6 +359,24 @@ export function createAnimations<A extends AnimationsConfig>(
   }
 }
 
+function getColorInterpolated(
+  current: number,
+  currentColor: string | undefined,
+  nextColor: string
+) {
+  const next = current ? 0 : 1
+  const inputRange = [current, next]
+  const outputRange = [currentColor ? currentColor : nextColor, nextColor]
+  if (next < current) {
+    inputRange.reverse()
+    outputRange.reverse()
+  }
+  return {
+    inputRange,
+    outputRange,
+  }
+}
+
 function getInterpolated(current: number, next: number, postfix = 'deg') {
   if (next === current) {
     current = next - 0.000000001
@@ -372,7 +438,7 @@ const transformShorthands = {
   translateY: 'y',
 }
 
-function getValue(input: number | string) {
+function getValue(input: number | string, isColor = false) {
   if (typeof input !== 'string') {
     return [input] as const
   }
