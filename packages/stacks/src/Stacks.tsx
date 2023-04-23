@@ -25,20 +25,17 @@ const variants = {
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
-  name: 'YStack',
   variants,
 })
 
 export const XStack = styled(Stack, {
   flexDirection: 'row',
-  name: 'XStack',
   variants,
 })
 
 export const ZStack = styled(
   YStack,
   {
-    name: 'ZStack',
     position: 'relative',
   },
   {
