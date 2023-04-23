@@ -1,5 +1,6 @@
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
+import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 
 const shouldExtract = process.env.EXTRACT === '1'
@@ -19,6 +20,18 @@ export default defineConfig({
   plugins: [
     react(),
     tamaguiPlugin(tamaguiConfig),
-    shouldExtract ? tamaguiExtractPlugin(tamaguiConfig) : null,
+    // shouldExtract ? tamaguiExtractPlugin(tamaguiConfig) : null,
   ].filter(Boolean),
+  resolve: {
+    alias: [{
+      find: /@tamagui\/tamagui-variables/,
+      replacement: fileURLToPath(new URL('./overrideDefaultVariables.ts', import.meta.url)),
+    }]
+  },
+  build:{
+
+    commonjsOptions: {
+      transformMixedEsModules: true
+    }
+  }
 })

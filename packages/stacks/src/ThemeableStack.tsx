@@ -12,6 +12,8 @@ import {
   radiused,
 } from './variants.js'
 
+import { defaultTamaguiComponentVariables  } from '@tamagui/core'
+
 const chromelessStyle = {
   backgroundColor: 'transparent',
   borderColor: 'transparent',
@@ -24,7 +26,7 @@ export const ThemeableStack = styled(YStack, {
   variants: {
     backgrounded: {
       true: {
-        backgroundColor: '$background',
+        backgroundColor: defaultTamaguiComponentVariables.background,
       },
     },
 

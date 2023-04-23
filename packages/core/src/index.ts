@@ -25,6 +25,8 @@ import { usePressability } from './vendor/Pressability'
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
 
+export * from '@tamagui/tamagui-variables';
+
 // adds extra types to Stack/Text:
 
 export const Stack = WebStack as TamaguiComponent<

@@ -4826,6 +4826,7 @@ __metadata:
     "@tamagui/build": 1.15.33
     "@tamagui/react-native-use-pressable": 1.15.33
     "@tamagui/react-native-use-responder-events": 1.15.33
+    "@tamagui/tamagui-variables": 1.15.33
     "@tamagui/use-event": 1.15.33
     "@tamagui/web": 1.15.33
     "@testing-library/react": ^13.4.0
@@ -6039,6 +6040,18 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/tamagui-variables@1.15.33, @tamagui/tamagui-variables@workspace:packages/tamagui-variables":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tamagui-variables@workspace:packages/tamagui-variables"
+  dependencies:
+    "@tamagui/build": 1.15.33
+    "@tamagui/web": 1.15.33
+    react: ^18.2.0
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 

@@ -48,6 +48,7 @@ module.exports = {
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
       'react-native-svg': '@tamagui/react-native-svg',
+      '@tamagui/tamagui-variables$': path.resolve(__dirname, './overrideDefaultVariables.ts')
     },
   },
   devServer: {
@@ -137,5 +138,5 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: `./public/index.html`,
     }),
-  ].filter(Boolean),
+  ].filter(Boolean)
 }
