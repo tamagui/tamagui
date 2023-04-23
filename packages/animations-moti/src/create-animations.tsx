@@ -3,6 +3,7 @@ import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
 import { useContext, useMemo } from 'react'
 import Animated, {
+  runOnJS,
   useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
@@ -14,6 +15,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
   return {
     View: Animated.View,
     Text: Animated.Text,
+    isReactNative: true,
     animations,
     usePresence,
 
@@ -42,18 +44,20 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       )
     },
 
-    useAnimatedNumberReaction(opts, onValue) {
+    useAnimatedNumberReaction({ value }, onValue) {
       return useAnimatedReaction(
         () => {
-          return opts.value.getValue()
+          return value.getValue()
         },
         (next, prev) => {
           if (prev !== next) {
-            onValue(next)
+            // @nate what is the point of this hook? is this necessary?
+            // without runOnJS, onValue would need to be a worklet
+            runOnJS(onValue)(next)
           }
         },
         // dependency array is very important here
-        [opts.value, onValue]
+        [value, onValue]
       )
     },
 
