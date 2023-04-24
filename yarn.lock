@@ -6240,10 +6240,8 @@ __metadata:
     "@tamagui/constants": 1.15.34
     "@types/react": ^18.0.15
     react: ^18.2.0
-    react-native: ^0.71.4
   peerDependencies:
     react: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
