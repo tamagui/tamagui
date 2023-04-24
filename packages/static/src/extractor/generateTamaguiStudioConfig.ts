@@ -17,33 +17,50 @@ export async function generateTamaguiStudioConfig(
   configIn?: BundledConfig | null,
   rebuild = false
 ) {
-  const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
-  await fs.writeJSON(
-    confFile,
-    {
-      ...config,
-      tamaguiConfig: transformConfig(config),
-    },
-    {
-      spaces: 2,
+  try {
+    const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
+
+    if (!config) return
+
+    await fs.writeJSON(
+      confFile,
+      {
+        ...config,
+        tamaguiConfig: transformConfig(config),
+      },
+      {
+        spaces: 2,
+      }
+    )
+  } catch (err) {
+    if (process.env.DEBUG?.includes('tamagui')) {
+      console.log('generateTamaguiStudioConfig error', err)
     }
-  )
+    // ignore for now
+  }
 }
 
 export function generateTamaguiStudioConfigSync(
   _tamaguiOptions: TamaguiOptions,
   config: BundledConfig
 ) {
-  fs.writeJSONSync(
-    confFile,
-    {
-      ...config,
-      tamaguiConfig: transformConfig(config),
-    },
-    {
-      spaces: 2,
+  try {
+    fs.writeJSONSync(
+      confFile,
+      {
+        ...config,
+        tamaguiConfig: transformConfig(config),
+      },
+      {
+        spaces: 2,
+      }
+    )
+  } catch (err) {
+    if (process.env.DEBUG?.includes('tamagui')) {
+      console.log('generateTamaguiStudioConfig error', err)
     }
-  )
+    // ignore for now
+  }
 }
 
 function transformConfig(config: BundledConfig) {
