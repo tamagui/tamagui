@@ -13,7 +13,6 @@ const ellipseStyle = {
 
 export const Text = createComponent<TextProps, React.Component<TextProps>, TextPropsBase>(
   {
-    componentName: 'Text',
     acceptsClassName: true,
     isText: true,
 
