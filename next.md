@@ -48,13 +48,11 @@ Ali todos:
     - [ ] all tabs (header):
       - [ ] add a search input box that filters down things as you type
 
+  - [ ] Select native on trigger + native on viewport + accent-color when native (web)
   - [ ] get new starter ready
-  - [ ] supabase local -> staging -> prod and migrations setup
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
   - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
   - [ ] low prio: toast viewport issue
-  - [ ] double render on new button - waiting for fernando's opinion
-  - [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
 
 --------
 
@@ -63,9 +61,16 @@ Ali todos:
 - @ali make animations SSR properly
   - disable them during SSR (make sure css variables are used), then on hydration turn it on
   - make sure enterStyle still works
+  - see t_will-mount
+   - hasEnterStyle && ((state.unmounted && needsMount) || !isClient
 
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
+
+- [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
+
+- [ ] double render on new button - waiting for fernando's opinion (fernando may do low prio)
+- [ ] supabase local -> staging -> prod and migrations setup
 
 - starter is warning "no TAMAGUI_TARGET"
 
