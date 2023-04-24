@@ -6,7 +6,7 @@
   "module": "dist/esm",
   "scripts": {
     "build": "true",
-    "test": "vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
+    "test": "TAMAGUI_TARGET=web vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {
     "@tamagui/text": "1.15.33",
