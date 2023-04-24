@@ -1,8 +1,9 @@
-import { TamaguiOptions } from '@tamagui/static'
+import { TamaguiOptions, watchTamaguiConfig } from '@tamagui/static'
 import type { Compiler, RuleSetRule } from 'webpack'
 
 type PluginOptions = TamaguiOptions & {
   isServer?: boolean
+  enableStudio?: boolean
   exclude?: RuleSetRule['exclude']
   test?: RuleSetRule['test']
   jsLoader?: any
@@ -21,6 +22,15 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
+    if (this.options.enableStudio && !this.options.disableWatchConfig) {
+      void watchTamaguiConfig(this.options).then((watcher) => {
+        // yes this is weirdly done promise...
+        compiler.hooks.afterDone.tap(this.pluginName, () => {
+          watcher.context.dispose()
+        })
+      })
+    }
+
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
       nmf.hooks.createModule.tap(
