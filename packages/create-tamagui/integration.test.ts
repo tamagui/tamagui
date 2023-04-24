@@ -82,7 +82,7 @@ test.afterAll(async () => {
     return
   }
 
-  if (isLocalDev) {
+  if (isLocalDev && !process.env.TAMAGUI_AVOID_TEST_CLEANUP) {
     // next complains if we delete too soon i think
     await sleep(1000)
     await Promise.race([

@@ -9,7 +9,33 @@ Also check out the [source for this site](https://github.com/tamagui/tamagui/tre
 
 ### next.config.js
 
-You'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options:
+For a minimal setup with just `@tamagui/core`, you can get away with this configuration:
+
+```tsx
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+
+  experimental: { fullySpecified: false },
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.m?js$/,
+      type: 'javascript/auto',
+      resolve: {
+        fullySpecified: false,
+      },
+    })
+    return config
+  },
+}
+
+module.exports = nextConfig
+```
+
+This simply sets `fullySpecified` to false, becuase currently there is a conflict between Metro and Webpack that doesn't allow us to support fully specifying every import we use (specifically, Metro doesn't support `.native.ts` or `.web.ts` path extensions alongside specifying the import path).
+
+For a more complete configuration, you you'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options:
 
 ```tsx
 module.exports = function (name, { defaultConfig }) {
