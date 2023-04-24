@@ -4414,7 +4414,7 @@ __metadata:
     "@tamagui/use-presence": 1.15.33
     "@tamagui/web": 1.15.33
     moti: ^0.25.1
-    react-native-reanimated: 2.14.4
+    react-native-reanimated: ^2.14.4
   languageName: unknown
   linkType: soft
 
@@ -4441,7 +4441,7 @@ __metadata:
     "@tamagui/build": 1.15.33
     "@tamagui/use-presence": 1.15.33
     "@tamagui/web": 1.15.33
-    react-native-reanimated: 2.14.4
+    react-native-reanimated: ^2.14.4
   languageName: unknown
   linkType: soft
 
@@ -5626,7 +5626,7 @@ __metadata:
     playwright: ^1.29.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-native-reanimated: 2.14.4
+    react-native-reanimated: ^2.14.4
     react-native-web: ^0.18.10
     react-refresh: ^0.14.0
     solito: ^2.3.0
