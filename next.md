@@ -11,9 +11,9 @@ Ali todos:
     - [ ] Config tab
       - [ ] settings:
         - [x] make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
-        - [ ] expanded pane shows a code area with JSON + copy button
+        - [x] expanded pane shows a code area with JSON + copy button
       - [ ] fonts:
-        - [ ] multiple "Ag" with each weight
+        - [x] multiple "Ag" with each weight
         - [ ] the initial view should show them as nice cards sort of like small view but bigger
         - [x] vertical scroll broke (see new SidePane something off there)
       - [ ] media query:
