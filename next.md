@@ -10,7 +10,7 @@ Ali todos:
 
     - [ ] Config tab
       - [ ] settings:
-        - [ ] make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
+        - [x] make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
         - [ ] expanded pane shows a code area with JSON + copy button
       - [ ] fonts:
         - [ ] multiple "Ag" with each weight
