@@ -25,7 +25,7 @@ Ali todos:
         - [ ] just link it to the tab (show an external icon thing to right of the title)
       - [ ] shorthands:
         - [x] scroll also broken
-        - [ ] make it two columns on expanded
+        - [x] make it two columns on expanded
 
     - [ ] Colors tab
       - [ ] fix dragging on the HSL lines is wonky
