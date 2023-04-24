@@ -7,7 +7,7 @@ export default function TestPopoverContentStyledPlusAnimations() {
         <Button>go</Button>
       </Popover.Trigger>
 
-      <PopoverStyledContent debug="verbose">
+      <PopoverStyledContent>
         <Popover.Arrow bw={1} boc="$borderColor" />
       </PopoverStyledContent>
     </Popover>

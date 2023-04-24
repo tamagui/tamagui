@@ -1,59 +1,58 @@
 Ali todos:
-  - site:
-    - github auth redirects to localhost in prod
-    - splash page loads slow on a fresh session because its running supabase before
-      - lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
-      - see next config rewrites()
-    - studio.tamagui.dev seems like its only SSR and not hydrating?
-  - studio
-    - make it remember dark/light choice (localStorage)
+  - [ ] site:
+    - [x] github auth redirects to localhost in prod
+    - [ ] splash page loads slow on a fresh session because its running supabase before
+      - [ ] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
+      - [ ] see next config rewrites()
+    - [ ] studio.tamagui.dev seems like its only SSR and not hydrating?
+  - [ ] studio
+    - [ ] make it remember dark/light choice (localStorage)
 
-    - Config tab
-      - settings:
-        - make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
-        - expanded pane shows a code area with JSON + copy button
-      - fonts:
-        - multiple "Ag" with each weight
-        - the initial view should show them as nice cards sort of like small view but bigger
-        - vertical scroll broke (see new SidePane something off there)
-      - media query:
-        - "xxs" and other keys should be bold, more v height spacing
-        - make the rulers always go to the furthest one but be faded out past their final point
-        - make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
-        - lets split out max and min into separate sections (just vertically with a header)
-      - animations:
-        - just link it to the tab (show an external icon thing to right of the title)
-      - shorthands:
-        - scroll also broken
-        - make it two columns on expanded
+    - [ ] Config tab
+      - [ ] settings:
+        - [ ] make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
+        - [ ] expanded pane shows a code area with JSON + copy button
+      - [ ] fonts:
+        - [ ] multiple "Ag" with each weight
+        - [ ] the initial view should show them as nice cards sort of like small view but bigger
+        - [x] vertical scroll broke (see new SidePane something off there)
+      - [ ] media query:
+        - [ ] "xxs" and other keys should be bold, more v height spacing
+        - [ ] make the rulers always go to the furthest one but be faded out past their final point
+        - [ ] make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
+        - [ ] lets split out max and min into separate sections (just vertically with a header)
+      - [ ] animations:
+        - [ ] just link it to the tab (show an external icon thing to right of the title)
+      - [ ] shorthands:
+        - [x] scroll also broken
+        - [ ] make it two columns on expanded
 
-    - Colors tab
-      - fix dragging on the HSL lines is wonky
+    - [ ] Colors tab
+      - [ ] fix dragging on the HSL lines is wonky
 
-    - Themes tab
-      - if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
+    - [ ] Themes tab
+      - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
 
-    - Tokens tab
-      - lets redo it to be the same structure as settings
-      - once thats done lets also add a new column thats first:
-        - its a wider column
-        - not clickable/openable
-        - lets you visualize the "matching" stuff:
-          - show two <Square /> vertically
-          - slider to move up/down your tokens
-          - square gets the border radius / size
-          - shows / highlights around the square for "space" tokens
-          - also can show a Button as an option too
+    - [ ] Tokens tab
+      - [ ] lets redo it to be the same structure as settings
+      - [ ] once thats done lets also add a new column thats first:
+        - [ ] its a wider column
+        - [ ] not clickable/openable
+        - [ ] lets you visualize the "matching" stuff:
+          - [ ] show two <Square /> vertically
+          - [ ] slider to move up/down your tokens
+          - [ ] square gets the border radius / size
+          - [ ] shows / highlights around the square for "space" tokens
+          - [ ] also can show a Button as an option too
 
-    - all tabs (header):
-      - add a search input box that filters down things as you type
+    - [ ] all tabs (header):
+      - [ ] add a search input box that filters down things as you type
 
-  - get new starter ready
-  - supabase local -> staging -> prod and migrations setup
-  - select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
-  - low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
-  - low prio: toast viewport issue
-  - double render on new button - waiting for fernando's opinion
+  - [ ] Select native on trigger + native on viewport + accent-color when native (web)
+  - [ ] get new starter ready
+  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
+  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
+  - [ ] low prio: toast viewport issue
 
 --------
 
@@ -62,9 +61,18 @@ Ali todos:
 - @ali make animations SSR properly
   - disable them during SSR (make sure css variables are used), then on hydration turn it on
   - make sure enterStyle still works
+  - see t_will-mount
+   - hasEnterStyle && ((state.unmounted && needsMount) || !isClient
 
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
+
+- [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
+
+- [ ] double render on new button - waiting for fernando's opinion (fernando may do low prio)
+- [ ] supabase local -> staging -> prod and migrations setup
+
+- starter is warning "no TAMAGUI_TARGET"
 
 - `tama doctor`
   - probably use @manypky internally

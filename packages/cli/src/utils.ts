@@ -63,6 +63,7 @@ let cached: TamaguiProjectInfo | null = null
 export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo> => {
+  console.log('load')
   return (cached ??= await loadTamaguiStatic({
     config: await getDefaultTamaguiConfigPath(),
     components: ['tamagui'],

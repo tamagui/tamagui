@@ -249,6 +249,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
+      'worklet'
       return {
         transform: [isHorizontalSwipe ? { translateX: val } : { translateY: val }],
       }

@@ -2,18 +2,9 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { ToggleGroupDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
-import { useState } from 'react'
-import {
-  Button,
-  Separator,
-  Square,
-  TamaguiProvider,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Suspense, lazy, useState } from 'react'
+import { Separator, Square, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -28,15 +19,18 @@ export const Sandbox = () => {
   const componentName = new URLSearchParams(window.location.search).get('test')
   const demoName = new URLSearchParams(window.location.search).get('demo')
   const Component = componentName
-    ? require(`./usecases/${componentName}`).default
+    ? // vite wants a .js ending here, but webpack doesn't :/
+      lazy(() => import(`./usecases/${componentName}`))
     : demoName
     ? Demos[`${demoName}Demo`]
     : SandboxInner
 
   return (
     <SandboxFrame>
-      {/* this comment keeps indent */}
-      <Component />
+      <Suspense fallback="Loading...">
+        {/* this comment keeps indent */}
+        <Component />
+      </Suspense>
     </SandboxFrame>
   )
 }

@@ -5,7 +5,8 @@ import { AppRegistry } from 'react-native'
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
-  static async getInitialProps({ renderPage }) {
+  static async getInitialProps(props) {
+    const { renderPage } = props
     AppRegistry.registerComponent('Main', () => Main)
     const page = await renderPage()
     // @ts-ignore
@@ -23,6 +24,33 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
+
+          <link
+            rel="preload"
+            href="/fonts/subset-Inter-ExtraBold.woff2"
+            as="font"
+            type="font/woff2"
+          />
+          <link
+            rel="preload"
+            href="/fonts/subset-Inter-Regular.woff2"
+            as="font"
+            type="font/woff2"
+          />
+
+          <link rel="preload" href="/fonts/slkscr.woff2" as="font" type="font/woff2" />
+
+          {this.props.dangerousAsPath === '/studio' && (
+            <>
+              <link href="/fonts/inter-takeout.css" rel="stylesheet" />
+              <link
+                rel="preload"
+                href="/fonts/subset-Inter-Black.woff2"
+                as="font"
+                type="font/woff2"
+              />
+            </>
+          )}
         </Head>
         <body>
           <Main />

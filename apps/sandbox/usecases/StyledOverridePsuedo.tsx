@@ -1,7 +1,6 @@
 import { Input, TamaguiProvider, YStack, styled } from 'tamagui'
 
 const TransparentInput = styled(Input, {
-  debug: 'verbose',
   borderColor: 'red',
   borderWidth: 2,
   outlineColor: 'transparent',
@@ -20,7 +19,7 @@ const TransparentInput = styled(Input, {
 export default function SandboxStyledOverridePseudo() {
   return (
     <YStack space="$4">
-      <TransparentInput placeholder="transparent border 0px" debug="verbose" />
+      <TransparentInput placeholder="transparent border 0px" />
       <Input placeholder="default input" />
     </YStack>
   )

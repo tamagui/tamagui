@@ -114,7 +114,7 @@ module.exports = function (name, { defaultConfig }) {
 
     rewrites() {
       return {
-        beforeFiles: [
+        afterFiles: [
           {
             source: '/:path*',
             has: [
@@ -123,7 +123,7 @@ module.exports = function (name, { defaultConfig }) {
                 value: 'studio.tamagui.dev',
               },
             ],
-            destination: '/studio',
+            destination: '/studio-app/:path*',
           },
         ],
       }

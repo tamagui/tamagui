@@ -384,8 +384,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
+        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
+
         webpackConfig.plugins.push(
           new TamaguiPlugin({
+            enableStudio,
             isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)

@@ -11,9 +11,8 @@ export const getNameToPaths = () => nameToPaths
 
 export function registerRequire() {
   if (Module.prototype.require !== globalThis['ogRequire']) {
-    // eslint-disable-next-line no-console
-    console.warn('didnt unregister before re-registering')
-    process.exit(1)
+    // already registered
+    return () => {}
   }
 
   const proxyWorm = require('@tamagui/proxy-worm')
@@ -95,9 +94,8 @@ export function registerRequire() {
     }
   }
 
-  return Module.prototype.require
-}
-
-export function unregisterRequire() {
-  Module.prototype.require = og
+  return () => {
+    // unregister
+    Module.prototype.require = og
+  }
 }

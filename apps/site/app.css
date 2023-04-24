@@ -6,9 +6,6 @@ body {
   overflow-y: auto;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-
-  /* supposedly prevent layout shifts but in our case we need more.. */
-  font-display: optional;
 }
 
 body {
@@ -647,4 +644,8 @@ input, textarea {
   position: absolute;
   inset: 0;
   backdrop-filter: blur(10px);
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(5px);
 }
