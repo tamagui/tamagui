@@ -9,21 +9,21 @@ Ali todos:
     - [ ] make it remember dark/light choice (localStorage)
 
     - [ ] Config tab
-      - [ ] settings:
+      - [x] settings:
         - [x] make the boolean ones a XStack with a <Switch /> on right (not clickable) but show "undefined" faintly next to it if so
         - [x] expanded pane shows a code area with JSON + copy button
-      - [ ] fonts:
+      - [x] fonts:
         - [x] multiple "Ag" with each weight
-        - [ ] the initial view should show them as nice cards sort of like small view but bigger
+        - [x] the initial view should show them as nice cards sort of like small view but bigger
         - [x] vertical scroll broke (see new SidePane something off there)
       - [ ] media query:
         - [ ] "xxs" and other keys should be bold, more v height spacing
         - [ ] make the rulers always go to the furthest one but be faded out past their final point
         - [ ] make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
         - [ ] lets split out max and min into separate sections (just vertically with a header)
-      - [ ] animations:
+      - [x] animations:
         - [x] just link it to the tab (show an external icon thing to right of the title)
-      - [ ] shorthands:
+      - [x] shorthands:
         - [x] scroll also broken
         - [x] make it two columns on expanded
 
