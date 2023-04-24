@@ -9,6 +9,7 @@ import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
+import { registerRequire } from '../require.js'
 import { TamaguiOptions } from '../types.js'
 import { babelParse } from './babelParse.js'
 import { bundle } from './bundle.js'
@@ -252,12 +253,19 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
-        return {
-          moduleName: name,
-          nameToInfo: getComponentStaticConfigByName(
+        const unregister = registerRequire()
+        try {
+          const nameToInfo = getComponentStaticConfigByName(
             name,
             interopDefaultExport(require(loadModule))
-          ),
+          )
+
+          return {
+            moduleName: name,
+            nameToInfo,
+          }
+        } finally {
+          unregister()
         }
       }
 
