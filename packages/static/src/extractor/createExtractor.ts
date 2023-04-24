@@ -1085,7 +1085,6 @@ export function createExtractor(
               const attributes = keys.map((key) => {
                 const val = out[key]
                 const isStyle = isValidStyleKey(key, staticConfig)
-                console.log('isStyle', isStyle)
                 if (isStyle) {
                   return {
                     type: 'style',
