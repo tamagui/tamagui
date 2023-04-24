@@ -54,6 +54,7 @@ Ali todos:
   - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
   - [ ] low prio: toast viewport issue
   - [ ] double render on new button - waiting for fernando's opinion
+  - [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
 
 --------
 

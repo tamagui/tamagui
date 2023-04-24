@@ -73,8 +73,12 @@ function transformConfig(config: BundledConfig) {
   // remove bulky stuff in components
   for (const component of components) {
     for (const _ in component.nameToInfo) {
-      delete component.nameToInfo[_].staticConfig['validStyles']
-      delete component.nameToInfo[_].staticConfig['parentStaticConfig']
+      // avoid mutating
+      const compDefinition = { ...component.nameToInfo[_] }
+      component.nameToInfo[_] = compDefinition
+
+      const { parentStaticConfig, ...rest } = compDefinition.staticConfig
+      compDefinition.staticConfig = rest
     }
   }
 

@@ -1,0 +1,196 @@
+// Vitest Snapshot v1
+
+exports[`basic conditional extraction 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"minWidth\\": 0,
+    \\"minHeight\\": 0,
+    \\"position\\": \\"relative\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"display\\": \\"flex\\",
+    \\"flexShrink\\": 0,
+    \\"alignItems\\": \\"stretch\\"
+  },
+  \\"1\\": {
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+  },
+  \\"2\\": {
+    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+  },
+  \\"3\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"minWidth\\": 0,
+    \\"minHeight\\": 0,
+    \\"position\\": \\"relative\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"display\\": \\"flex\\",
+    \\"flexShrink\\": 0,
+    \\"alignItems\\": \\"stretch\\"
+  },
+  \\"4\\": {
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+  },
+  \\"5\\": {}
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { YStack } from 'tamagui';
+export function Test() {
+  return <>
+          <__ReactNativeView style={[_sheet[\\"0\\"], x ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />
+          <__ReactNativeView style={[_sheet[\\"3\\"], x ? _sheet[\\"4\\"] : _sheet[\\"5\\"]]} />
+        </>;
+}"
+`;
+
+exports[`basic extraction 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\",
+    \\"flexDirection\\": \\"column\\",
+    \\"minWidth\\": 0,
+    \\"minHeight\\": 0,
+    \\"position\\": \\"relative\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"display\\": \\"flex\\",
+    \\"flexShrink\\": 0,
+    \\"alignItems\\": \\"stretch\\"
+  }
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { YStack } from 'tamagui';
+export function Test() {
+  return <__ReactNativeView style={[_sheet[\\"0\\"]]} />;
+}"
+`;
+
+exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
+"const _cn4 = \\" _bg-d0topktnq\\";
+const _cn3 = \\" _bg-d0t12svx2e\\";
+const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
+const _cn = \\"  is_Stack\\";
+// debug
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
+"._w-10{width:10;}
+._fd-column{flex-direction:column;}
+._miw-0{min-width:0;}
+._mih-0{min-height:0;}
+._pos-relative{position:relative;}
+._fb-auto{flex-basis:auto;}
+._dsp-flex{display:flex;}
+._fs-0{flex-shrink:0;}
+._ai-stretch{align-items:stretch;}
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
+"const _cn4 = \\" _bg-d0topktnq\\";
+const _cn3 = \\" _bg-d0t12svx2e\\";
+const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
+const _cn = \\"  is_Stack\\";
+// debug 
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(_cn + (_cn2 + (props.green ? _cn3 : _cn4)))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
+"._w-10{width:10;}
+._fd-column{flex-direction:column;}
+._miw-0{min-width:0;}
+._mih-0{min-height:0;}
+._pos-relative{position:relative;}
+._fb-auto{flex-basis:auto;}
+._dsp-flex{display:flex;}
+._fs-0{flex-shrink:0;}
+._ai-stretch{align-items:stretch;}
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+`;
+
+exports[`flat transform props 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"flexDirection\\": \\"column\\",
+    \\"minWidth\\": 0,
+    \\"minHeight\\": 0,
+    \\"position\\": \\"relative\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"display\\": \\"flex\\",
+    \\"flexShrink\\": 0,
+    \\"alignItems\\": \\"stretch\\"
+  },
+  \\"1\\": {
+    \\"transform\\": [{
+      \\"scale\\": 1
+    }]
+  },
+  \\"2\\": {
+    \\"transform\\": [{
+      \\"scale\\": 2
+    }]
+  },
+  \\"3\\": {
+    \\"transform\\": [{
+      \\"translateX\\": 10
+    }, {
+      \\"translateY\\": 20
+    }, {
+      \\"rotate\\": \\"10deg\\"
+    }]
+  }
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { YStack } from 'tamagui';
+export function Test(isLoading) {
+  return <__ReactNativeView style={[_sheet[\\"0\\"], isLoading ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]]} />;
+}"
+`;
+
+exports[`handles style order merge properly 1`] = `
+"import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { YStack } from 'tamagui';
+export function Test(props) {
+  return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate=\\"10deg\\" />;
+}"
+`;
+
+exports[`theme value extraction should NOT work when theme variables used 1`] = `
+"import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { Paragraph } from 'tamagui';
+export function Test() {
+  return <Paragraph>hello world</Paragraph>;
+}"
+`;
+
+exports[`theme value extraction should work when no theme variables used 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {
+    \\"color\\": \\"rgba(255,0,0,1.00)\\",
+    \\"fontFamily\\": \\"Inter\\",
+    \\"display\\": \\"flex\\",
+    \\"letterSpacing\\": 0,
+    \\"fontSize\\": 14,
+    \\"lineHeight\\": 23
+  }
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { Paragraph } from 'tamagui';
+export function Test() {
+  return <__ReactNativeText style={[_sheet[\\"0\\"]]}>hello world</__ReactNativeText>;
+}"
+`;

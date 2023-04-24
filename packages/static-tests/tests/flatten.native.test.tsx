@@ -33,6 +33,7 @@ describe('flatten-tests', () => {
       }
     `)
     const code = output?.code ?? ''
+
     expect(code).toMatchSnapshot()
 
     const startStr = `ReactNativeStyleSheet.create(`
