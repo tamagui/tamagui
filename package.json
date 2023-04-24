@@ -20,7 +20,7 @@
     "build": "turbo run build --filter=!next-app",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
-    "postinstall": "yarn check-deps && manypkg check && yarn git-crypt-unlock",
+    "postinstall": "manypkg check && yarn git-crypt-unlock",
     "build:types": "SKIP_JS=1 yarn build",
     "watch": "npm-run-all --parallel watch:ts watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
@@ -74,19 +74,19 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
-    "@floating-ui/react-dom": "^1.2.2",
-    "@floating-ui/react": "^0.19.1",
-    "@floating-ui/react-native": "^0.9.0",
+    "@floating-ui/react-dom": "1.2.2",
+    "@floating-ui/react": "0.19.1",
+    "@floating-ui/react-native": "0.9.0",
     "react-native-svg": "13.4.0",
-    "react-native-reanimated": "^2.14.4",
-    "@types/node": "^16.11.9",
-    "@types/react-native": "^0.71.3",
-    "react-native": "^0.71.4",
-    "webpack": "^5.74.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-refresh": "^0.14.0",
-    "react-native-web": "^0.18.10"
+    "react-native-reanimated": "2.14.4",
+    "@types/node": "16.11.9",
+    "@types/react-native": "0.71.3",
+    "react-native": "0.71.4",
+    "webpack": "5.74.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-refresh": "0.14.0",
+    "react-native-web": "0.18.10"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
