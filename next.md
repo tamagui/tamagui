@@ -58,6 +58,15 @@ Ali todos:
 
 # Backlog
 
+- @alt Sheet inside Popover breaks css animation:
+  - https://tamagui.dev/docs/components/popover
+
+- @ali https://discord.com/channels/909986013848412191/974145843919716412/1100115005451538503
+
+- https://discord.com/channels/909986013848412191/974145843919716412/1100099134935023668
+
+- https://discord.com/channels/909986013848412191/909986013848412194/1100077456448294942
+
 - @ali make animations SSR properly
   - disable them during SSR (make sure css variables are used), then on hydration turn it on
   - make sure enterStyle still works
