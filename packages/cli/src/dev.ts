@@ -111,7 +111,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   await server.listen()
 
   await ensureDir(options.paths.dotDir)
-  const res = await watchTamaguiConfig(options.tamaguiOptions, options.paths.conf)
+  const res = await watchTamaguiConfig(options.tamaguiOptions)
 
   const info = server.httpServer?.address() as AddressInfo
 
