@@ -5841,7 +5841,7 @@ __metadata:
     mdx-bundler: ^9.0.1
     next: ^13.3.0
     next-plugin-preact: ^3.0.7
-    next-remote-watch: ^1.0.0
+    next-remote-watch: ^2.0.0
     nextjs-progressbar: ^0.0.14
     parse-numeric-range: ^1.3.0
     preact: ^10.11.0
@@ -8827,7 +8827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:^1.19.0, body-parser@npm:^1.20.1":
+"body-parser@npm:^1.20.1":
   version: 1.20.2
   resolution: "body-parser@npm:1.20.2"
   dependencies:
@@ -17487,18 +17487,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-remote-watch@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "next-remote-watch@npm:1.0.0"
+"next-remote-watch@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "next-remote-watch@npm:2.0.0"
   dependencies:
-    body-parser: ^1.19.0
     chalk: ^4.0.0
     chokidar: ^3.4.0
     commander: ^5.0.0
     express: ^4.17.1
+  peerDependencies:
+    next: ">=10"
   bin:
     next-remote-watch: bin/next-remote-watch
-  checksum: a67b15c2556e380c7dfbe8651d8a89fe34f42f439fa910ece5585e988a7c23116f3e432eef93984bb3bba9683798f2f757642652883288550bf613357cc67ea3
+  checksum: df8136db8a711856911d919d1a28327039d7f4c1e51b122979e76b5e07e982ad97a44c1098ca8a296f914d9042f538e3c071a1e5fb5759fc39324bfb6f0b5b5c
   languageName: node
   linkType: hard
 

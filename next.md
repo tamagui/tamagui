@@ -66,6 +66,8 @@ Ali todos:
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
 
+- starter is warning "no TAMAGUI_TARGET"
+
 - `tama doctor`
   - probably use @manypky internally
     - https://github.com/Thinkmill/manypkg/blob/main/packages/cli/src/run.ts

@@ -17,4 +17,4 @@ export declare class TamaguiPlugin {
     apply(compiler: Compiler): void;
 }
 export {};
-//# sourceMappingURL=plugin.d.ts.map
+//# sourceMappingURL=TamaguiPlugin.d.ts.map

@@ -99,9 +99,8 @@ export const loader = async function loader(
       console.log(
         'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )
-      colorLog(Color.FgYellow, `"Tamagui built config and components"`)
     }
 
-    return this.callback(null, source)
+    callback(null, source)
   }
 }

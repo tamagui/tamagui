@@ -105,17 +105,11 @@ export function createExtractor(
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
 
   function loadSync(props: TamaguiOptions) {
-    return (projectInfo ||= loadTamaguiSync({
-      config: props.config || 'tamagui.config.ts',
-      components: props.components || ['tamagui'],
-    }))
+    return (projectInfo ||= loadTamaguiSync(props))
   }
 
   async function load(props: TamaguiOptions) {
-    return (projectInfo ||= await loadTamagui({
-      config: props.config || 'tamagui.config.ts',
-      components: props.components || ['tamagui'],
-    }))
+    return (projectInfo ||= await loadTamagui(props))
   }
 
   return {

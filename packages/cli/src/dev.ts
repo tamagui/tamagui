@@ -2,13 +2,13 @@ import { readFile } from 'fs/promises'
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
+import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
 import chalk from 'chalk'
-import fs from 'fs-extra'
+import fs, { ensureDir } from 'fs-extra'
 import { build, createServer } from 'vite'
 
 import { createDevServer } from './dev/createDevServer.js'
-import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
 import { registerDispose } from './utils.js'
 
 export const dev = async (options: CLIResolvedOptions) => {
@@ -109,7 +109,9 @@ export const dev = async (options: CLIResolvedOptions) => {
   })
 
   await server.listen()
-  await watchTamaguiConfig(options)
+
+  await ensureDir(options.paths.dotDir)
+  const res = await watchTamaguiConfig(options.tamaguiOptions, options.paths.conf)
 
   const info = server.httpServer?.address() as AddressInfo
 
@@ -181,6 +183,8 @@ export const dev = async (options: CLIResolvedOptions) => {
   })
 
   await new Promise((res) => server.httpServer?.on('close', res))
+
+  await res?.context.dispose()
 
   console.log('closed')
 }

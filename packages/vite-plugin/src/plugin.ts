@@ -12,9 +12,7 @@ export function tamaguiPlugin(
     disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
-  if (!options.disableWatchTamaguiConfig) {
-    watchTamaguiConfig(options)
-  }
+  const watcher = options.disableWatchTamaguiConfig ? null : watchTamaguiConfig(options)
 
   const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
   const noExternalSSR = new RegExp(
@@ -25,6 +23,12 @@ export function tamaguiPlugin(
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
+
+    async buildEnd() {
+      await watcher?.then((res) => {
+        res?.context.dispose()
+      })
+    },
 
     config(userConfig, env) {
       return {
