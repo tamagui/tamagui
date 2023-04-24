@@ -168,6 +168,22 @@ export default function App() {
 
 TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
 
+### Webpack
+
+For webpack, you'll want to be sure to turn off "fullySpecified" imports, as currently Metro can't support the platform-specific filenames (like `.native.tsx`) alongside fully specified imports.
+
+You can modify your `webpack.config.js` something like this:
+
+```tsx
+config.module.rules.push({
+  test: /\.m?js$/,
+  type: 'javascript/auto',
+  resolve: {
+    fullySpecified: false,
+  },
+})
+```
+
 ### Done!
 
 You're now ready to use Tamagui, import and use any components:
