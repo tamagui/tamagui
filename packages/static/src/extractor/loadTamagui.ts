@@ -8,7 +8,7 @@ import esbuild from 'esbuild'
 import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
-import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
+import { getNameToPaths, registerRequire } from '../require.js'
 import {
   TamaguiProjectInfo,
   esbuildOptions,
@@ -30,15 +30,15 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
 export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
   const props = getFilledOptions(propsIn)
 
+  const unregister = registerRequire()
   try {
-    registerRequire()
     const bundleInfo = await getBundledConfig(props)
     await generateTamaguiStudioConfig(props, bundleInfo)
     // init core-node
     createTamagui(bundleInfo.tamaguiConfig)
     return bundleInfo
   } finally {
-    unregisterRequire()
+    unregister()
   }
 }
 
@@ -60,9 +60,8 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
   const props = getFilledOptions(propsIn)
   const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
+  const unregisterRequire = registerRequire()
   try {
-    registerRequire()
-
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
     process.env.IS_STATIC = 'is_static'
