@@ -112,9 +112,9 @@ module.exports = function (name, { defaultConfig }) {
       ignoreBuildErrors: true,
     },
 
-    rewrites() {
+    async rewrites() {
       return {
-        afterFiles: [
+        fallback: [
           {
             source: '/:path*',
             has: [
