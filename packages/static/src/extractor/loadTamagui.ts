@@ -13,6 +13,7 @@ import {
   TamaguiProjectInfo,
   esbuildOptions,
   getBundledConfig,
+  hasBundledConfigChanged,
   loadComponents,
 } from './bundleConfig.js'
 import {
@@ -29,30 +30,14 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
 
 export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
   const props = getFilledOptions(propsIn)
-
-  const unregister = registerRequire()
-  try {
-    const bundleInfo = await getBundledConfig(props)
-    await generateTamaguiStudioConfig(props, bundleInfo)
-    // init core-node
-    createTamagui(bundleInfo.tamaguiConfig)
+  const bundleInfo = await getBundledConfig(props)
+  if (!hasBundledConfigChanged()) {
     return bundleInfo
-  } finally {
-    unregister()
   }
-}
-
-export function resolveWebOrNativeSpecificEntry(entry: string) {
-  const workspaceRoot = resolve()
-  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
-  const ext = extname(resolved)
-  const fileName = basename(resolved).replace(ext, '')
-  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
-  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
-  if (existsSync(specificFile)) {
-    return specificFile
-  }
-  return entry
+  await generateTamaguiStudioConfig(props, bundleInfo)
+  // init core-node
+  createTamagui(bundleInfo.tamaguiConfig)
+  return bundleInfo
 }
 
 // loads in-process using esbuild-register
@@ -168,6 +153,19 @@ export async function getOptions({
   }
 }
 
+export function resolveWebOrNativeSpecificEntry(entry: string) {
+  const workspaceRoot = resolve()
+  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
+  const ext = extname(resolved)
+  const fileName = basename(resolved).replace(ext, '')
+  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
+  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
+  if (existsSync(specificFile)) {
+    return specificFile
+  }
+  return entry
+}
+
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
 
@@ -192,6 +190,9 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     throw new Error(`No config`)
   }
 
+  // only after it ran once because it triggers immediately and we already build in `loadTamagui`
+  let hasRunOnce = false
+
   const context = await esbuild.context({
     entryPoints: [options.tamaguiOptions.config],
     sourcemap: false,
@@ -203,7 +204,12 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
         name: `on-rebuild`,
         setup({ onEnd }) {
           onEnd(() => {
-            generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+            if (!hasRunOnce) {
+              hasRunOnce = true
+              return
+            } else {
+              void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+            }
           })
         },
       },

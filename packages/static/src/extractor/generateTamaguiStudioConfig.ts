@@ -47,8 +47,11 @@ export function generateTamaguiStudioConfigSync(
 }
 
 function transformConfig(config: BundledConfig) {
-  const { components, nameToPaths } = config
-  const { themes, tokens } = config.tamaguiConfig
+  // ensure we don't mangle anything in the original
+  const next = JSON.parse(JSON.stringify(config))
+
+  const { components, nameToPaths } = next
+  const { themes, tokens } = next.tamaguiConfig
 
   // reduce down to usable, smaller json
 
@@ -64,7 +67,7 @@ function transformConfig(config: BundledConfig) {
 
   // flatten variables
   for (const key in tokens) {
-    const token = tokens[key]
+    const token = { ...tokens[key] }
     for (const tkey in token) {
       token[tkey] = getVariableValue(token[tkey])
     }
@@ -90,7 +93,7 @@ function transformConfig(config: BundledConfig) {
 
   // remove stuff we dont need to send
   const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
-    config.tamaguiConfig
+    next.tamaguiConfig
 
   return cleanedConfig
 }

@@ -60,6 +60,15 @@ let currentConfig: BundledConfig
 let isBundling = false
 const waitForBundle = new Set<Function>()
 
+let last: BundledConfig | undefined
+export async function hasBundledConfigChanged() {
+  if (last === currentConfig) {
+    return false
+  }
+  last = currentConfig
+  return true
+}
+
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   if (isBundling) {
     await new Promise((res) => {
