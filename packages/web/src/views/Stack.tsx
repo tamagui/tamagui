@@ -7,7 +7,6 @@ export const Stack = createComponent<
   React.Component<StackProps>,
   StackPropsBase
 >({
-  componentName: 'Stack',
   acceptsClassName: true,
   defaultProps: {
     ...stackDefaultStyles,
