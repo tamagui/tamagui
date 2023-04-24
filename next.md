@@ -22,7 +22,7 @@ Ali todos:
         - [ ] make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
         - [ ] lets split out max and min into separate sections (just vertically with a header)
       - [ ] animations:
-        - [ ] just link it to the tab (show an external icon thing to right of the title)
+        - [x] just link it to the tab (show an external icon thing to right of the title)
       - [ ] shorthands:
         - [x] scroll also broken
         - [x] make it two columns on expanded
