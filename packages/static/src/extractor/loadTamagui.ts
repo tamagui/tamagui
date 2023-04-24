@@ -142,7 +142,7 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       components: ['tamagui'],
-      config: await getDefaultTamaguiConfigPath(),
+      config: await getDefaultTamaguiConfigPath(tamaguiOptions?.config ? [tamaguiOptions?.config] : undefined),
       ...tamaguiOptions,
     },
     paths: {
@@ -169,9 +169,10 @@ export function resolveWebOrNativeSpecificEntry(entry: string) {
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
 
-async function getDefaultTamaguiConfigPath() {
+async function getDefaultTamaguiConfigPath(addedPaths?: string[]) {
+  const searchPaths = addedPaths ? defaultPaths.concat(addedPaths) : defaultPaths;
   if (cachedPath) return cachedPath
-  const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
+  const existingPaths = await Promise.all(searchPaths.map((path) => pathExists(path)))
   const existing = existingPaths.findIndex((x) => !!x)
   const found = defaultPaths[existing]
   if (!found) {
