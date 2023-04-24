@@ -20,6 +20,7 @@
     "build": "turbo run build --filter=!next-app",
     "build:force": "yarn clean:build && yarn build --force",
     "build:js": "./scripts/build-js.sh",
+    "postinstall": "yarn check-deps && manypkg check && yarn git-crypt-unlock",
     "build:types": "SKIP_JS=1 yarn build",
     "watch": "npm-run-all --parallel watch:ts watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
