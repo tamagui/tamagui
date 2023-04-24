@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledButtonVariantPseudo')
+  await page.goto('/?test=StyledButtonVariantPseudo', { waitUntil: 'networkidle' })
+  await new Promise((resolve) => setTimeout(() => resolve(true), 1000))
 })
 
 test(`hover HOC + variant + pseudos work`, async ({ page }) => {

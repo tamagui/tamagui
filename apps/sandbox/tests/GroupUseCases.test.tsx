@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/?test=GroupUseCases', { waitUntil: 'networkidle' })
+  await new Promise((resolve) => setTimeout(() => resolve(true), 1000))
 })
 
 test(`simple api passes border radius`, async ({ page }) => {
