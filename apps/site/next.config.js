@@ -114,7 +114,7 @@ module.exports = function (name, { defaultConfig }) {
 
     rewrites() {
       return {
-        beforeFiles: [
+        afterFiles: [
           {
             source: '/:path*',
             has: [
