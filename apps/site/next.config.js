@@ -120,7 +120,7 @@ module.exports = function (name, { defaultConfig }) {
             has: [
               {
                 type: 'host',
-                value: 'studio.tamagui.dev',
+                value: 'studio.tamagui.dev/:path*',
               },
             ],
             destination: '/studio-app/:path*',
