@@ -19,10 +19,7 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
   process.env.TAMAGUI_TARGET = 'web'
 
   await ensureDir(options.paths.dotDir)
-  const configWatchPromise = watchTamaguiConfig(
-    options.tamaguiOptions,
-    options.paths.conf
-  )
+  const configWatchPromise = watchTamaguiConfig(options.tamaguiOptions)
 
   let localServerPromise = new Promise(() => {})
   if (!isRemote) {
