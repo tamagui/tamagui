@@ -26,10 +26,12 @@ export function expandStyle(key: string, value: any) {
     }
   }
 
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    if (isAndroid && key === 'elevationAndroid') {
-      return [['elevation', value]]
-    }
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    isAndroid &&
+    key === 'elevationAndroid'
+  ) {
+    return [['elevation', value]]
   }
 
   const longKey = EXPANSIONS[key]

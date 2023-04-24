@@ -865,10 +865,12 @@ export const getSplitStyles: StyleSplitter = (
       if (key in validStyleProps) {
         mergeStyle(styleState, flatTransforms, key, val)
         continue
-      } else if (isAndroid && key === 'elevation') {
-        if (process.env.TAMAGUI_TARGET === 'native') {
-          mergeStyle(styleState, flatTransforms, key, val)
-        }
+      } else if (
+        process.env.TAMAGUI_TARGET === 'native' &&
+        isAndroid &&
+        key === 'elevation'
+      ) {
+        mergeStyle(styleState, flatTransforms, key, val)
         continue
       }
 
