@@ -113,20 +113,18 @@ module.exports = function (name, { defaultConfig }) {
     },
 
     async rewrites() {
-      return {
-        fallback: [
-          {
-            source: '/:path*',
-            has: [
-              {
-                type: 'host',
-                value: 'studio.tamagui.dev',
-              },
-            ],
-            destination: '/studio-app/:path*',
-          },
-        ],
-      }
+      return [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'studio.tamagui.dev',
+            },
+          ],
+          destination: '/studio-app/:path*',
+        }
+      ]
     },
 
     // Next.js config
