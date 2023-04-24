@@ -190,8 +190,8 @@ export function createExtractor(
         return false
       }
       return !!(
-        !!staticConfig.validStyles?.[name] ||
-        !!pseudoDescriptors[name] ||
+        staticConfig.validStyles?.[name] ||
+        pseudoDescriptors[name] ||
         // dont disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
         projectInfo?.tamaguiConfig.shorthands[name] ||
@@ -225,14 +225,12 @@ export function createExtractor(
         )
       }
       if (process.env.DEBUG?.startsWith('tamagui')) {
-        const next = [...propsWithFileInfo.allLoadedComponents].map((info) => {
-          const nameToInfo = { ...info.nameToInfo }
-          for (const key in nameToInfo) {
-            delete nameToInfo[key].staticConfig.validStyles
-          }
-          return { ...info, nameToInfo }
-        })
-        logger.info(['loaded:', JSON.stringify(next, null, 2)].join('\n'))
+        logger.info(
+          [
+            'loaded:',
+            JSON.stringify(propsWithFileInfo.allLoadedComponents, null, 2),
+          ].join('\n')
+        )
       }
     }
 
@@ -1087,6 +1085,7 @@ export function createExtractor(
               const attributes = keys.map((key) => {
                 const val = out[key]
                 const isStyle = isValidStyleKey(key, staticConfig)
+                console.log('isStyle', isStyle)
                 if (isStyle) {
                   return {
                     type: 'style',

@@ -5,7 +5,10 @@
   "scripts": {
     "build": "true",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
+    "test": "yarn test:native && yarn test:web",
+    "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
+    "test:web": "TAMAGUI_TARGET=web yarn test:run tests/*.web.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native yarn test:run tests/*.native.test.tsx"
   },
   "tests": {
     "parallel": true
