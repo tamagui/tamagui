@@ -28,11 +28,11 @@ test(`animation + pseudo + variant with pseudo should merge`, async ({ page }) =
   const button = page.locator('#animated')
 
   const promise = button.click({
-    delay: 2000,
+    delay: 3000,
     force: true,
   })
 
-  await new Promise((res) => setTimeout(res, 1200))
+  await new Promise((res) => setTimeout(res, 2000))
 
   const pressStyles = await button.evaluate((el) => {
     return window.getComputedStyle(el)
