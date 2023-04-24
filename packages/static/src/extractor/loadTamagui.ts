@@ -2,51 +2,41 @@ import { basename, dirname, extname, join, resolve } from 'path'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui } from '@tamagui/core-node'
-import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
+import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
-import { TamaguiOptions } from '../types.js'
 import {
-  Props,
   TamaguiProjectInfo,
-  bundleConfig,
   esbuildOptions,
+  getBundledConfig,
   loadComponents,
 } from './bundleConfig.js'
-import { generateTamaguiConfig } from './generateTamaguiConfig.js'
+import {
+  generateTamaguiStudioConfig,
+  generateTamaguiStudioConfigSync,
+} from './generateTamaguiStudioConfig.js'
 
-const cache = {}
+const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
+  // defaults
+  config: 'tamagui.config.ts',
+  components: ['tamagui'],
+  ...(propsIn as Partial<TamaguiOptions>),
+})
 
-export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
-  const key = JSON.stringify(props)
-  if (cache[key]) {
-    if (cache[key] instanceof Promise) {
-      return await cache[key]
-    }
-    return cache[key]
-  }
-
-  let resolver: Function = () => {}
-  cache[key] = new Promise((res) => {
-    resolver = res
-  })
+export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
+  const props = getFilledOptions(propsIn)
 
   try {
     registerRequire()
-    const bundleInfo = await bundleConfig(props)
-
-    cache[key] = bundleInfo
-
+    const bundleInfo = await getBundledConfig(props)
+    await generateTamaguiStudioConfig(props, bundleInfo)
     // init core-node
-    createTamagui(cache[key].tamaguiConfig)
-
-    resolver(cache[key])
-
-    return cache[key]
+    createTamagui(bundleInfo.tamaguiConfig)
+    return bundleInfo
   } finally {
     unregisterRequire()
   }
@@ -66,12 +56,8 @@ export function resolveWebOrNativeSpecificEntry(entry: string) {
 }
 
 // loads in-process using esbuild-register
-export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
-  const key = JSON.stringify(props)
-  if (cache[key]) {
-    return cache[key]
-  }
-
+export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
+  const props = getFilledOptions(propsIn)
   const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
   try {
@@ -116,11 +102,15 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         createTamagui(tamaguiConfig as any)
       }
 
-      cache[key] = {
+      const info = {
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
       }
+
+      generateTamaguiStudioConfigSync(props, info)
+
+      return info as any
     } catch (err) {
       if (err instanceof Error) {
         console.warn(
@@ -133,14 +123,13 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       } else {
         console.error(`Error loading tamagui.config.ts`, err)
       }
+
       return {
         components: [],
         tamaguiConfig: getDefaultTamaguiConfig(),
         nameToPaths: {},
       }
     }
-
-    return cache[key]
   } finally {
     unregister()
     unregisterRequire()
@@ -180,43 +169,6 @@ export async function getOptions({
   }
 }
 
-export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
-  if (process.env.TAMAGUI_ENABLE_STUDIO !== '1') {
-    return
-  }
-
-  try {
-    const options = await getOptions({ tamaguiOptions })
-
-    if (!options.tamaguiOptions.config) return
-
-    await generateTamaguiConfig(options)
-    const context = await esbuild.context({
-      entryPoints: [options.tamaguiOptions.config],
-      sourcemap: false,
-      // dont output just use esbuild as a watcher
-      write: false,
-
-      plugins: [
-        {
-          name: `on-rebuild`,
-          setup({ onEnd }) {
-            onEnd((res) => {
-              generateTamaguiConfig(options)
-            })
-          },
-        },
-      ],
-    })
-
-    await context.watch()
-  } catch (err) {
-    console.warn(
-      `Warning watching config error, you may need to restart on config changes: ${err}`
-    )
-  }
-}
-
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let cachedPath = ''
 
@@ -233,3 +185,36 @@ async function getDefaultTamaguiConfigPath() {
 }
 
 export { TamaguiProjectInfo }
+
+export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
+  const options = await getOptions({ tamaguiOptions })
+
+  if (!options.tamaguiOptions.config) {
+    throw new Error(`No config`)
+  }
+
+  const context = await esbuild.context({
+    entryPoints: [options.tamaguiOptions.config],
+    sourcemap: false,
+    // dont output just use esbuild as a watcher
+    write: false,
+
+    plugins: [
+      {
+        name: `on-rebuild`,
+        setup({ onEnd }) {
+          onEnd(() => {
+            generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+          })
+        },
+      },
+    ],
+  })
+
+  const promise = context.watch()
+
+  return {
+    context,
+    promise,
+  }
+}

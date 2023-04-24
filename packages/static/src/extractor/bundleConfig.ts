@@ -9,6 +9,7 @@ import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
+import { TamaguiOptions } from '../types.js'
 import { babelParse } from './babelParse.js'
 import { bundle } from './bundle.js'
 
@@ -34,12 +35,6 @@ export type TamaguiProjectInfo = {
   nameToPaths: NameToPaths
 }
 
-export type Props = {
-  components: string[]
-  config?: string
-  forceExports?: boolean
-}
-
 const external = [
   '@tamagui/core',
   '@tamagui/web',
@@ -57,131 +52,167 @@ export const esbuildOptions = {
   platform: 'node',
 } as const
 
-export async function bundleConfig(props: Props) {
-  const configEntry = props.config ? join(process.cwd(), props.config) : ''
-  const tmpDir = join(process.cwd(), '.tamagui')
-  const configOutPath = join(tmpDir, `tamagui.config.cjs`)
-  const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
-  const componentOutPaths = baseComponents.map((componentModule) =>
-    join(
-      tmpDir,
-      `${componentModule
-        .split(sep)
-        .join('-')
-        .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
-    )
-  )
+export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    process.env.DEBUG?.startsWith('tamagui')
-  ) {
-    console.log(`Building config entry`, configEntry)
+// will use cached one if watching
+let currentConfig: BundledConfig
+let isBundling = false
+const waitForBundle = new Set<Function>()
+
+export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
+  if (isBundling) {
+    await new Promise((res) => {
+      waitForBundle.add(res)
+    })
+  } else if (!currentConfig || rebuild) {
+    await bundleConfig(props)
   }
+  return currentConfig
+}
 
-  // build them to node-compat versions
+export async function bundleConfig(props: TamaguiOptions) {
   try {
-    await ensureDir(tmpDir)
-  } catch {
-    //
-  }
+    isBundling = true
 
-  if (!loggedOutputInfo) {
-    loggedOutputInfo = true
-    colorLog(
-      Color.FgYellow,
-      `
-      Tamagui built config and components:`
-    )
-    colorLog(
-      Color.Dim,
-      `
-        Config     .${sep}${relative(process.cwd(), configOutPath)}
-        Components ${[
-          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-        ].join('\n             ')}
-        `
-    )
-  }
+    const configEntry = props.config ? join(process.cwd(), props.config) : ''
+    const tmpDir = join(process.cwd(), '.tamagui')
 
-  await Promise.all([
-    props.config
-      ? bundle({
-          entryPoints: [configEntry],
+    const configOutPath = join(tmpDir, `tamagui.config.cjs`)
+
+    const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
+    const componentOutPaths = baseComponents.map((componentModule) =>
+      join(
+        tmpDir,
+        `${componentModule
+          .split(sep)
+          .join('-')
+          .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
+      )
+    )
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.DEBUG?.startsWith('tamagui')
+    ) {
+      console.log(`Building config entry`, configEntry)
+    }
+
+    // build them to node-compat versions
+    try {
+      await ensureDir(tmpDir)
+    } catch {
+      //
+    }
+
+    const start = Date.now()
+
+    await Promise.all([
+      props.config
+        ? bundle({
+            entryPoints: [configEntry],
+            external,
+            outfile: configOutPath,
+          })
+        : null,
+      ...baseComponents.map((componentModule, i) => {
+        return bundle({
+          entryPoints: [componentModule],
+          resolvePlatformSpecificEntries: true,
           external,
-          outfile: configOutPath,
+          outfile: componentOutPaths[i],
         })
-      : null,
-    ...baseComponents.map((componentModule, i) => {
-      return bundle({
-        entryPoints: [componentModule],
-        resolvePlatformSpecificEntries: true,
-        external,
-        outfile: componentOutPaths[i],
-      })
-    }),
-  ])
+      }),
+    ])
 
-  // get around node.js's module cache to get the new config...
-  delete require.cache[path.resolve(configOutPath)]
-
-  const out = require(configOutPath)
-
-  const config = out.default || out
-  if (!config) {
-    throw new Error(`No config: ${config}`)
-  }
-
-  let components = loadComponents({
-    ...props,
-    components: componentOutPaths,
-  })
-
-  if (!components) {
-    throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
-  }
-
-  // map from built back to original module names
-  for (const component of components) {
-    component.moduleName = baseComponents[componentOutPaths.indexOf(component.moduleName)]
-
-    if (!component.moduleName) {
-      console.warn(
-        `⚠️ no module name found: ${component.moduleName} ${JSON.stringify(
-          baseComponents
-        )} in ${JSON.stringify(componentOutPaths)}`
+    if (!loggedOutputInfo) {
+      loggedOutputInfo = true
+      colorLog(
+        Color.FgYellow,
+        `
+        Tamagui built config and components (${Date.now() - start}ms):`
+      )
+      colorLog(
+        Color.Dim,
+        `
+          Config     .${sep}${relative(process.cwd(), configOutPath)}
+          Components ${[
+            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+          ].join('\n             ')}
+          `
       )
     }
 
-    // if (!component.moduleName) {
-    //   throw new Error(`Tamagui internal err`)
-    // }
-  }
+    // get around node.js's module cache to get the new config...
+    delete require.cache[path.resolve(configOutPath)]
 
-  // always load core so we can optimize if directly importing
-  const coreComponents = loadComponents({
-    ...props,
-    components: ['@tamagui/core-node'],
-  })
-  if (coreComponents) {
-    coreComponents[0].moduleName = '@tamagui/core'
-    components = [...components, ...coreComponents]
-  }
+    const out = require(configOutPath)
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    process.env.DEBUG?.startsWith('tamagui')
-  ) {
-    console.log('Loaded components', components)
-  }
-  return {
-    components,
-    nameToPaths: {},
-    tamaguiConfig: config,
+    const config = out.default || out
+    if (!config) {
+      throw new Error(`No config: ${config}`)
+    }
+
+    let components = loadComponents({
+      ...props,
+      components: componentOutPaths,
+    })
+
+    if (!components) {
+      throw new Error(`No components found: ${componentOutPaths.join(', ')}`)
+    }
+
+    // map from built back to original module names
+    for (const component of components) {
+      component.moduleName =
+        baseComponents[componentOutPaths.indexOf(component.moduleName)]
+
+      if (!component.moduleName) {
+        console.warn(
+          `⚠️ no module name found: ${component.moduleName} ${JSON.stringify(
+            baseComponents
+          )} in ${JSON.stringify(componentOutPaths)}`
+        )
+      }
+
+      // if (!component.moduleName) {
+      //   throw new Error(`Tamagui internal err`)
+      // }
+    }
+
+    // always load core so we can optimize if directly importing
+    const coreComponents = loadComponents({
+      ...props,
+      components: ['@tamagui/core-node'],
+    })
+    if (coreComponents) {
+      coreComponents[0].moduleName = '@tamagui/core'
+      components = [...components, ...coreComponents]
+    }
+
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.DEBUG?.startsWith('tamagui')
+    ) {
+      console.log('Loaded components', components)
+    }
+
+    const res = {
+      components,
+      nameToPaths: {},
+      tamaguiConfig: config,
+    }
+
+    currentConfig = res
+
+    return res
+  } finally {
+    isBundling = false
+    waitForBundle.forEach((cb) => cb())
+    waitForBundle.clear()
   }
 }
 
-export function loadComponents(props: Props): null | LoadedComponents[] {
+export function loadComponents(props: TamaguiOptions): null | LoadedComponents[] {
   const componentsModules = props.components
   const key = componentsModules.join('')
   if (cacheComponents[key]) {

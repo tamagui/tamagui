@@ -2,16 +2,15 @@ import { createRequire } from 'module'
 import { AddressInfo } from 'net'
 import { dirname } from 'path'
 
+import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
 import proxy from 'express-http-proxy'
-import fs from 'fs-extra'
+import fs, { ensureDir } from 'fs-extra'
 import { createServer } from 'vite'
-
-import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
@@ -19,7 +18,12 @@ const resolve =
 export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
   process.env.TAMAGUI_TARGET = 'web'
 
-  const configWatchPromise = watchTamaguiConfig(options)
+  await ensureDir(options.paths.dotDir)
+  const configWatchPromise = watchTamaguiConfig(
+    options.tamaguiOptions,
+    options.paths.conf
+  )
+
   let localServerPromise = new Promise(() => {})
   if (!isRemote) {
     process.env.VITE_IS_LOCAL = '1'
