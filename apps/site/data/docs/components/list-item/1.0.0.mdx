@@ -55,43 +55,41 @@ You can pass icons as either elements or components. If passing components, Tama
 ListItem only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization:
 
 ```tsx
-import { forwardRef } from "react";
+import { forwardRef } from 'react'
 import {
+  ListItemFrame,
+  ListItemProps,
+  ListItemText,
   styled,
   themeable,
-  ListItemFrame,
-  ListItemText,
   useListItem,
-  ListItemProps,
-} from "tamagui";
+} from 'tamagui'
 
 const CustomListItemFrame = styled(ListItemFrame, {
-  backgroundColor: "orange", // or "$color", etc.
-});
+  backgroundColor: 'orange', // or "$color", etc.
+})
 
 const CustomListItemTitle = styled(ListItemTitle, {
-  color: "blue",
-});
+  color: 'blue',
+})
 
 const CustomListItemSubtitle = styled(ListItemSubtitle, {
-  color: "pink",
-});
+  color: 'pink',
+})
 
 const CustomListItemText = styled(ListItemText, {
-  color: "red",
-});
+  color: 'red',
+})
 
-export const ListItem = themeable(
-  forwardRef<TamaguiElement, ListItemProps>((propsIn, ref) => {
-    const { props } = useListItem(propsIn, {
-      Title: CustomListItemTitle,
-      Text: CustomListItemText,
-      Subtitle: CustomListItemSubtitle,
-    });
-
-    return <CustomListItemFrame {...props} ref={ref} />;
+export const ListItem = CustomListItemFrame.styleable((propsIn, ref) => {
+  const { props } = useListItem(propsIn, {
+    Title: CustomListItemTitle,
+    Text: CustomListItemText,
+    Subtitle: CustomListItemSubtitle,
   })
-);
+
+  return <CustomListItemFrame {...props} ref={ref} />
+})
 ```
 
 There are 3 different components you can customize: `ListItemText`, `ListItemSubtitle` and `ListItemTitle`.
@@ -108,11 +106,11 @@ export const ListItem = themeable(
       Title: CustomListItemTitle,
       Text: CustomListItemText,
       Subtitle: CustomListItemSubtitle,
-    });
-    
-    return <ListItemFrame {...props} ref={ref} />;
+    })
+
+    return <ListItemFrame {...props} ref={ref} />
   })
-);
+)
 ```
 
 ### ListItem props

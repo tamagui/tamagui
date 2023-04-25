@@ -58,12 +58,15 @@ Ali todos:
 
 # Backlog
 
+- CI not failing on type errors in some places
+
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats
   - auto generates CSS
   - bundles it into a package.json etc etc + zip file
 
 - export * from lucide icons in your ui package causes build error
+
 - styled(Button) hoverStyle https://discord.com/channels/909986013848412191/1100400812225736764
 
 - Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
@@ -233,7 +236,6 @@ Ali:
     - [x] maybe make all state go into one useState({ intentAt, activeAt, tab })
   - [x] Trigger => Tab (deprecate)
   - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
-- [ ] lets make Card.extractable into Card.stylable() and deprecate it
   - [ ] and document on styled() page
 - native component modes
   - [ ] `RadioGroup`, `Select` native (web)

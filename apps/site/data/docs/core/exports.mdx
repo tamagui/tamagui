@@ -38,16 +38,42 @@ If no name given, true if a Tamagui component, if name given ensures it's the sp
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
 
-### TamaguiComponent.extractable
+### TamaguiComponent.styleable
 
-Returned by the core components and any styled components, it's a higher order component that [hints to the compiler that the wrapped component returns a single element - itself](https://github.com/tamagui/tamagui/blob/296a71b74d3020a28e3bafd1abb748a67d535be4/packages/tamagui/src/views/Anchor.tsx#L22).
+Returned by any styled components, is necessary to use if you are going to use the following pattern (which would break pseudo styles and variants):
 
-This will ensure `isTamaguiElement` is true for the wrapped component elements, and the compiler will do partial optimizations with prop extraction.
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const MyComponent = (props) => {
+  return <Stack {...props} />
+}
+
+const MyStyledComponent = styled(MyComponent, {
+  // ...
+})
+```
+
+You _must_ wrap `MyComponent` with `Stack.extractable` instead:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const MyComponent = Stack.styleable((props, ref) => {
+  return <Stack ref={ref} {...props} />
+})
+
+const MyStyledComponent = styled(MyComponent, {
+  // ...
+})
+```
+
+Note that `ref` gets forwarded automatically and theme will automatically now happen above this MyComponent. You also must always return only `Stack` from this component (or null), as Tamagui will manage forwarding variants and other custom Tamagui style props forward through.
 
 ### getTokens
 
 ```tsx
-() => TokensParsed
+;() => TokensParsed
 ```
 
 Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens.
@@ -55,7 +81,7 @@ Returns the parsed Tamagui config object of all your tokens, can be used at runt
 ### getExpandedShorthands
 
 ```tsx
-(props: Object) => Object
+;(props: Object) => Object
 ```
 
 Take props, returns new object with all shorthand props expanded.
