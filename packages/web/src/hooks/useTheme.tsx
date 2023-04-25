@@ -208,10 +208,8 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        if (isNewTheme && themeManager) {
-          activeThemeManagers.add(themeManager)
-        }
+      if (isNewTheme && themeManager) {
+        activeThemeManagers.add(themeManager)
       }
 
       const nextState = getShouldUpdateTheme(themeManager)
@@ -243,10 +241,7 @@ export const useChangeThemeEffect = (
 
       return () => {
         disposeChangeListener?.()
-
-        if (process.env.NODE_ENV === 'development') {
-          activeThemeManagers.delete(themeManager)
-        }
+        activeThemeManagers.delete(themeManager)
       }
     }, [
       parentManager,

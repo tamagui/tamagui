@@ -1,4 +1,5 @@
 import { isServer, isWeb } from '@tamagui/constants'
+import { activeThemeManagers } from '@tamagui/web'
 import {
   ensureThemeVariable,
   getConfig,
@@ -53,7 +54,9 @@ export function _mutateTheme(props: {
 
   let cssRules: string[] = []
 
-  if (isWeb) {
+  updateConfig('themes', { ...config.themes, [themeName]: themeProxied })
+
+  if (process.env.TAMAGUI_TARGET === 'web') {
     if (insertCSS) {
       cssRules = getThemeCSSRules({
         // @ts-ignore this works but should be fixed types
@@ -74,7 +77,19 @@ export function _mutateTheme(props: {
     }
   }
 
-  updateConfig('themes', { ...config.themes, [themeName]: themeProxied })
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    activeThemeManagers.forEach((manager) => {
+      if (manager.state.name === props.name) {
+        manager.updateState(
+          {
+            name: props.name,
+            forceTheme: themeProxied,
+          },
+          true
+        )
+      }
+    })
+  }
 
   // trigger updates in components
   return {
