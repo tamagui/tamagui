@@ -34,9 +34,11 @@ export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProje
   if (!hasBundledConfigChanged()) {
     return bundleInfo
   }
-  await generateTamaguiStudioConfig(props, bundleInfo)
-  // init core-node
-  createTamagui(bundleInfo.tamaguiConfig)
+  if (bundleInfo) {
+    await generateTamaguiStudioConfig(props, bundleInfo)
+    // init core-node
+    createTamagui(bundleInfo.tamaguiConfig)
+  }
   return bundleInfo
 }
 
