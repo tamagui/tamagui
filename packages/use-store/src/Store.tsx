@@ -39,16 +39,9 @@ export class Store<Props extends Object = {}> {
 
   [TRIGGER_UPDATE]() {
     this._version = (this._version + 1) % Number.MAX_SAFE_INTEGER
-    // this can't be wholesale...
-    // startTransition(() => {
     for (const cb of this._listeners) {
-      if (typeof cb !== 'function') {
-        console.error('error', cb, this._listeners)
-        continue
-      }
       cb()
     }
-    // })
   }
 
   [ADD_TRACKER](tracker: StoreTracker) {

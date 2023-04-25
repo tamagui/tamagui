@@ -341,11 +341,16 @@ function useStoreFromInfo(
       snap = selectKeys(store, keys)
     }
     setDisableStoreTracking(store, false)
-    const isUnchanged =
-      typeof last !== 'undefined' &&
-      isEqualSubsetShallow(last, snap, {
-        keyComparators: info.keyComparators,
-      })
+
+    const isUnchanged = false
+
+    // this wasn't updating in AnimationsStore
+    // const isUnchanged =
+    //   typeof last !== 'undefined' &&
+    //   isEqualSubsetShallow(last, snap, {
+    //     keyComparators: info.keyComparators,
+    //   })
+
     if (shouldPrintDebug) {
       // prettier-ignore
       console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, snap, curInternal })
