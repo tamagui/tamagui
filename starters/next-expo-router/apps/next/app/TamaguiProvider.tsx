@@ -33,9 +33,7 @@ export const TamaguiProvider = ({ children }: { children: React.ReactNode }) => 
   const { getStyleElement } = AppRegistry.getApplication('Main')
 
   useServerInsertedHTML(() => getStyleElement())
-  useServerInsertedHTML(() => (
-    <style key="tamagui-css" dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />
-  ))
+  useServerInsertedHTML(() => <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />)
 
   return (
     <NextThemeProvider
