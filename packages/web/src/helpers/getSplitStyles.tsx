@@ -1,4 +1,5 @@
 import {
+  isAndroid,
   isClient,
   isRSC,
   isServer,
@@ -334,6 +335,10 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
+      if (!isAndroid) {
+        // only works in android
+        if (keyInit === 'elevationAndroid') return
+      }
       // map userSelect to native prop
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
@@ -341,6 +346,10 @@ export const getSplitStyles: StyleSplitter = (
       } else if (keyInit.startsWith('data-') || keyInit.startsWith('aria-')) {
         return
       }
+    }
+
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (keyInit === 'elevationAndroid') return
     }
 
     if (!staticConfig.isHOC) {
@@ -856,6 +865,13 @@ export const getSplitStyles: StyleSplitter = (
       if (key in validStyleProps) {
         mergeStyle(styleState, flatTransforms, key, val)
         continue
+      } else if (
+        process.env.TAMAGUI_TARGET === 'native' &&
+        isAndroid &&
+        key === 'elevation'
+      ) {
+        mergeStyle(styleState, flatTransforms, key, val)
+        continue
       }
 
       // pass to view props
@@ -904,6 +920,12 @@ export const getSplitStyles: StyleSplitter = (
         if (debug) {
           console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
         }
+      }
+    }
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      if ('elevationAndroid' in style) {
+        style['elevation'] = style.elevationAndroid
+        delete style.elevationAndroid
       }
     }
   }

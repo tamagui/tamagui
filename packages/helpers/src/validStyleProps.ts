@@ -1,4 +1,5 @@
 // flat transform props
+import { isAndroid } from '@tamagui/constants'
 export const stylePropsTransform = Object.freeze({
   x: true,
   y: true,
@@ -126,6 +127,7 @@ export const stylePropsView = Object.freeze({
     outlineOffset: true,
     outlineWidth: true,
   }),
+  ...(isAndroid ? { elevationAndroid: true } : {}),
 })
 
 export const stylePropsFont = Object.freeze({

@@ -17,6 +17,7 @@ export declare const validStylesOnBaseProps: Readonly<{
     placeholderTextColor: true;
 }>;
 export declare const stylePropsView: Readonly<{
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -189,6 +190,7 @@ export declare const stylePropsText: Readonly<{
     lineHeight: true;
     textTransform: true;
     color: true;
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -324,6 +326,7 @@ export declare const stylePropsAll: Readonly<{
     lineHeight: true;
     textTransform: true;
     color: true;
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -442,6 +445,7 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: true;
 }>;
 export declare const validStyles: Readonly<{
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
