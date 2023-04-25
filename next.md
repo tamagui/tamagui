@@ -58,6 +58,11 @@ Ali todos:
 
 # Backlog
 
+- Studio: drag and drop a font and you can configure the subset
+  - automatically converts to the right output formats
+  - auto generates CSS
+  - bundles it into a package.json etc etc + zip file
+
 - export * from lucide icons in your ui package causes build error
 - styled(Button) hoverStyle https://discord.com/channels/909986013848412191/1100400812225736764
 
