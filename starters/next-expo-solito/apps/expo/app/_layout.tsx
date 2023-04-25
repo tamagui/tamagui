@@ -1,7 +1,7 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Provider } from 'app/provider'
 import { useFonts } from 'expo-font'
-import { Stack, useRootNavigation } from 'expo-router'
+import { Stack } from 'expo-router'
 import { useColorScheme } from 'react-native'
 
 export default function HomeLayout() {
@@ -17,20 +17,7 @@ export default function HomeLayout() {
   return (
     <Provider>
       <ThemeProvider value={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              title: 'Home',
-            }}
-          />
-          <Stack.Screen
-            name="user/[id]"
-            options={{
-              title: 'User',
-            }}
-          />
-        </Stack>
+        <Stack />
       </ThemeProvider>
     </Provider>
   )

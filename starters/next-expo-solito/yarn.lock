@@ -3604,7 +3604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/core@npm:^6.2.2, @react-navigation/core@npm:^6.4.8":
+"@react-navigation/core@npm:^6.4.8":
   version: 6.4.8
   resolution: "@react-navigation/core@npm:6.4.8"
   dependencies:
@@ -3632,7 +3632,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^6.7.0, @react-navigation/native-stack@npm:~6.9.12":
+"@react-navigation/native-stack@npm:~6.9.12":
   version: 6.9.12
   resolution: "@react-navigation/native-stack@npm:6.9.12"
   dependencies:
@@ -3648,22 +3648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:6.0.11":
-  version: 6.0.11
-  resolution: "@react-navigation/native@npm:6.0.11"
-  dependencies:
-    "@react-navigation/core": ^6.2.2
-    escape-string-regexp: ^4.0.0
-    fast-deep-equal: ^3.1.3
-    nanoid: ^3.1.23
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 0dab07c8144d0b50cfbbd52f2a2da7dd9284d67ed1fd638691eed04fd035881f40233e88998d6337804af573c93bd484c641344b7fd19c4395d698463fb8972b
-  languageName: node
-  linkType: hard
-
-"@react-navigation/native@npm:~6.1.6":
+"@react-navigation/native@npm:^6.1.6, @react-navigation/native@npm:~6.1.6":
   version: 6.1.6
   resolution: "@react-navigation/native@npm:6.1.6"
   dependencies:
@@ -9638,8 +9623,7 @@ __metadata:
     "@babel/runtime": ^7.18.9
     "@expo/metro-config": ^0.3.21
     "@my/ui": "*"
-    "@react-navigation/native": 6.0.11
-    "@react-navigation/native-stack": ^6.7.0
+    "@react-navigation/native": ^6.1.6
     "@tamagui/babel-plugin": 1.15.39
     "@types/react-native": ^0.71.3
     app: "*"
