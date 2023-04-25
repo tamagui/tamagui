@@ -44,10 +44,18 @@ const animatedStyleKey = {
 // these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
 const costlyToAnimateStyleKey = {
   backgroundColor: true,
+  borderColor: true,
   color: true,
   borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
   borderWidth: true,
-  borderColor: true,
+  borderLeftWidth: true,
+  borderRightWidth: true,
+  borderTopWidth: true,
+  borderBottomWidth: true,
   // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
 }
 
@@ -55,6 +63,10 @@ const colorStyleKey = {
   backgroundColor: true,
   color: true,
   borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
 }
 
 export const AnimatedView = Animated.View
