@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/slider",
-  "version": "1.15.37",
+  "version": "1.15.38",
   "sideEffects": [
     "*.css"
   ],
@@ -31,21 +31,21 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.15.37",
-    "@tamagui/core": "1.15.37",
-    "@tamagui/create-context": "1.15.37",
-    "@tamagui/get-size": "1.15.37",
-    "@tamagui/helpers": "1.15.37",
-    "@tamagui/stacks": "1.15.37",
-    "@tamagui/use-controllable-state": "1.15.37",
-    "@tamagui/use-direction": "1.15.37"
+    "@tamagui/compose-refs": "1.15.38",
+    "@tamagui/core": "1.15.38",
+    "@tamagui/create-context": "1.15.38",
+    "@tamagui/get-size": "1.15.38",
+    "@tamagui/helpers": "1.15.38",
+    "@tamagui/stacks": "1.15.38",
+    "@tamagui/use-controllable-state": "1.15.38",
+    "@tamagui/use-direction": "1.15.38"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.37",
+    "@tamagui/build": "1.15.38",
     "react": "^18.2.0",
     "react-native": "^0.71.4"
   },
