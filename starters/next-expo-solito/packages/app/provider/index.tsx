@@ -1,9 +1,13 @@
-import { CustomToast } from '@my/ui'
-import { TamaguiProvider, TamaguiProviderProps, ToastProvider, ToastViewport } from '@my/ui'
+import {
+  TamaguiProvider,
+  TamaguiProviderProps,
+  ToastProvider,
+  ToastViewport,
+  CustomToast,
+} from '@my/ui'
 import { useColorScheme } from 'react-native'
 
 import config from '../tamagui.config'
-import { NavigationProvider } from './navigation'
 
 export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
   const scheme = useColorScheme()
@@ -24,7 +28,7 @@ export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'conf
           ]
         }
       >
-        <NavigationProvider>{children}</NavigationProvider>
+        {children}
 
         <CustomToast />
         <ToastViewport left={0} right={0} top={2} />
