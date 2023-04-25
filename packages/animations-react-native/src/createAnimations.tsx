@@ -259,16 +259,19 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (isColorStyleKey) {
             const colorState = animationsState.current.get(value)
-            interpolateArgs = getColorInterpolated(
-              colorState?.current as string,
-              // valIn is the new color
-              valIn as string
-            )
-            animateToVal = 1
-            animationsState.current!.set(value, {
-              current: valIn,
-              interopolation: value.interpolate(interpolateArgs),
-            })
+            if (colorState?.current !== valIn) {
+              interpolateArgs = getColorInterpolated(
+                colorState?.current as string,
+                // valIn is the new color
+                valIn as string,
+                value['_value']
+              )
+              animateToVal = value['_value'] === 1 ? 0 : 1
+              animationsState.current!.set(value, {
+                current: valIn,
+                interopolation: value.interpolate(interpolateArgs),
+              })
+            }
           }
 
           if (value) {
@@ -299,10 +302,6 @@ export function createAnimations<A extends AnimationsConfig>(
                 : getAnimation()
               animation.start(({ finished }) => {
                 if (finished) {
-                  if (isColorStyleKey) {
-                    // reset color animated value to 0
-                    value.setValue(0)
-                  }
                   resolve()
                 }
               })
@@ -348,13 +347,17 @@ export function createAnimations<A extends AnimationsConfig>(
   }
 }
 
-function getColorInterpolated(currentColor: string | undefined, nextColor: string) {
+function getColorInterpolated(
+  currentColor: string | undefined,
+  nextColor: string,
+  value: number
+) {
   const inputRange = [0, 1]
   const outputRange = [currentColor ? currentColor : nextColor, nextColor]
-  console.log({
-    inputRange,
-    outputRange,
-  })
+  if (value === 1) {
+    // because current value is 1, then we need to animate from 1 to 0, so we need to reverse the outputRange
+    outputRange.reverse()
+  }
   return {
     inputRange,
     outputRange,
