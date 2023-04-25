@@ -1,20 +1,15 @@
-import { isWeb } from '@tamagui/core'
+import { NativePlatform, NativeValue, isWeb } from '@tamagui/core'
 import React, { createContext, useContext, useMemo, useRef } from 'react'
 import { Platform } from 'react-native'
 
 import { createNativeToast } from './createNativeToast'
-import {
-  CreateNativeToastOptions,
-  NativeToastRef,
-  ToastNativePlatform,
-  ToastNativeValue,
-} from './types'
+import { CreateNativeToastOptions, NativeToastRef } from './types'
 
 interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message'> {
   /**
    * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
    */
-  native?: ToastNativeValue
+  native?: NativeValue
 }
 
 /**
@@ -52,7 +47,7 @@ type ShowOptions = CreateNativeToastOptions &
     /**
      * Overrides the native option on `ToastImperativeProvider`
      */
-    native?: ToastNativeValue
+    native?: NativeValue
     /**
      * Which viewport to send this toast to. This is only intended to be used with custom toasts and you should wire it up when creating the toast.
      */
@@ -186,4 +181,4 @@ export const ToastImperativeProvider = ({
   )
 }
 
-export type { ToastImperativeProviderProps, ToastNativePlatform, ToastNativeValue }
+export type { ToastImperativeProviderProps, NativePlatform, NativeValue }

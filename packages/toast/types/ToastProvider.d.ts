@@ -1,7 +1,6 @@
-import { TamaguiElement } from '@tamagui/core';
+import { NativeValue, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import * as React from 'react';
-import { ToastNativeValue } from './ToastImperative';
 import { BurntToastOptions } from './types';
 declare const Collection: {
     readonly Provider: React.FC<{
@@ -79,7 +78,7 @@ interface ToastProviderProps {
      * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
      * Only works with the imperative `useToast` hook.
      */
-    native?: ToastNativeValue;
+    native?: NativeValue;
     /**
      * Options for the burnt package if you're using native toasts on mobile
      */

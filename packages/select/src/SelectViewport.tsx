@@ -43,6 +43,10 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
+    if (context.shouldRenderWebNative) {
+      return <>{children}</>
+    }
+
     if (breakpointActive || !isWeb) {
       return (
         <PortalItem hostName={`${context.scopeKey}SheetContents`}>
