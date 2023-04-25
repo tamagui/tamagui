@@ -15,7 +15,7 @@
     "@tamagui/shorthands": "^1.15.40",
     "@tamagui/themes": "^1.15.40",
     "expo-constants": "^14.2.1",
-    "expo-linking": "^3.2.3",
+    "expo-linking": "^4.0.1",
     "solito": "^3.0.0"
   },
   "devDependencies": {

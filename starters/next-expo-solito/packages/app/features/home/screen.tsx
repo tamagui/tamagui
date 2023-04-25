@@ -1,5 +1,14 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToast } from '@my/ui'
-import { useToastController } from '@my/ui'
+import {
+  Anchor,
+  Button,
+  H1,
+  Paragraph,
+  Separator,
+  Sheet,
+  XStack,
+  YStack,
+  useToastController,
+} from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
