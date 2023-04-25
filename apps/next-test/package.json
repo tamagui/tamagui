@@ -28,6 +28,7 @@
     "@tamagui/menu": "1.15.39",
     "@tamagui/next-theme": "1.15.39",
     "@tamagui/remove-scroll": "1.15.39",
+    "@tamagui/sandbox-ui": "1.15.39",
     "@tamagui/shorthands": "1.15.39",
     "@tamagui/themes": "1.15.39",
     "next": "^13.3.0",

@@ -5359,6 +5359,7 @@ __metadata:
     "@tamagui/menu": 1.15.39
     "@tamagui/next-theme": 1.15.39
     "@tamagui/remove-scroll": 1.15.39
+    "@tamagui/sandbox-ui": 1.15.39
     "@tamagui/shorthands": 1.15.39
     "@tamagui/themes": 1.15.39
     next: ^13.3.0
@@ -5596,11 +5597,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox-ui@workspace:packages/sandbox-ui":
+"@tamagui/sandbox-ui@1.15.39, @tamagui/sandbox-ui@workspace:packages/sandbox-ui":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:packages/sandbox-ui"
   dependencies:
     "@tamagui/build": 1.15.39
+    "@tamagui/lucide-icons": 1.15.39
     "@tamagui/toast": 1.15.39
     tamagui: 1.15.39
   languageName: unknown
