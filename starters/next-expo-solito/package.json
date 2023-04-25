@@ -1,5 +1,5 @@
 {
-  "name": "myapp-monorepo",
+  "name": "next-expo-solito-monorepo",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -15,7 +15,7 @@
     "web:prod:serve": "yarn workspace next-app serve",
     "fix": "manypkg fix",
     "postinstall": "yarn build",
-    "build": "yarn workspaces foreach --exclude next-app run build",
+    "build": "yarn workspaces foreach --exclude next-app -pi run build",
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "resolutions": {

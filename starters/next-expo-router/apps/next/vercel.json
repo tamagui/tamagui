@@ -1,3 +1,0 @@
-{
-  "installCommand": "yarn set version stable && yarn install"
-}
