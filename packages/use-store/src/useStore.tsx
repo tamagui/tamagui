@@ -544,6 +544,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
                 logStack.clear()
               }
 
+              // rome-ignore lint/correctness/noUnsafeFinally: ok
               return res
             }
           },
