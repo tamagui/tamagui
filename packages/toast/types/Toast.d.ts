@@ -1,6 +1,6 @@
-import { GetProps, TamaguiElement } from '@tamagui/core';
+import { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import { CustomData, ToastNativePlatform, ToastNativeValue, useToast, useToastController, useToastState } from './ToastImperative.js';
+import { CustomData, useToast, useToastController, useToastState } from './ToastImperative.js';
 import { ToastProps } from './ToastImpl';
 import { ToastProvider, ToastProviderProps, createToastScope } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';
@@ -412,5 +412,5 @@ declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiEleme
     }>>, "ref">) & React.RefAttributes<TamaguiElement>>;
 };
 export { Toast, ToastProvider, ToastViewport, createToastScope, useToast, useToastController, useToastState, };
-export type { ToastActionProps, ToastCloseProps, ToastDescriptionProps, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, ToastNativeValue, ToastNativePlatform, CustomData, };
+export type { ToastActionProps, ToastCloseProps, ToastDescriptionProps, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, CustomData, NativeValue as ToastNativeValue, NativePlatform as ToastNativePlatform, };
 //# sourceMappingURL=Toast.d.ts.map

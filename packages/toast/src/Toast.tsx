@@ -1,5 +1,7 @@
 import {
   GetProps,
+  NativePlatform,
+  NativeValue,
   TamaguiElement,
   composeEventHandlers,
   styled,
@@ -16,8 +18,6 @@ import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
   CustomData,
-  ToastNativePlatform,
-  ToastNativeValue,
   useToast,
   useToastController,
   useToastState,
@@ -247,7 +247,8 @@ export type {
   ToastTitleProps,
   ToastViewportProps,
   // imperative
-  ToastNativeValue,
-  ToastNativePlatform,
   CustomData,
+  // backwards
+  NativeValue as ToastNativeValue,
+  NativePlatform as ToastNativePlatform,
 }

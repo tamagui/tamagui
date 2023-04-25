@@ -1,3 +1,4 @@
 /// <reference types="react" />
-export declare function SelectDemo(): JSX.Element;
+import { SelectProps } from 'tamagui';
+export declare function SelectDemo(props: SelectProps): JSX.Element;
 //# sourceMappingURL=SelectDemo.d.ts.map

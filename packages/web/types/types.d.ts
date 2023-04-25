@@ -786,4 +786,6 @@ type NarrowRaw<A> = (A extends [] ? [] : never) | (A extends Narrowable ? A : ne
     [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>;
 };
 export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>;
+export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
+export type NativeValue = boolean | NativePlatform | NativePlatform[];
 //# sourceMappingURL=types.d.ts.map
