@@ -163,7 +163,12 @@ export function styled<
   type ParentStaticProperties = {
     [Key in Exclude<
       keyof ParentComponent,
-      'defaultProps' | 'propTypes' | '$$typeof' | 'staticConfig' | 'extractable'
+      | 'defaultProps'
+      | 'propTypes'
+      | '$$typeof'
+      | 'staticConfig'
+      | 'extractable'
+      | 'styleable'
     >]: ParentComponent[Key]
   }
 

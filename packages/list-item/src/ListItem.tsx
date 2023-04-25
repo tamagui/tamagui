@@ -266,13 +266,7 @@ export const listItemStaticConfig = {
   ]),
 }
 
-export const ListItem = withStaticProperties(
-  ListItemFrame.extractable(
-    themeable(ListItemComponent, { componentName: NAME }),
-    listItemStaticConfig
-  ),
-  {
-    Text: ListItemText,
-    Subtitle: ListItemSubtitle,
-  }
-)
+export const ListItem = withStaticProperties(ListItemFrame.styleable(ListItemComponent), {
+  Text: ListItemText,
+  Subtitle: ListItemSubtitle,
+})

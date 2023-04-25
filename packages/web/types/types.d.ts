@@ -468,10 +468,12 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject & ParentStaticProperties;
-type StaticComponentObject = {
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties;
+type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfigParsed;
+    /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
+    styleable: <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Props, Ref>;
 };
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;

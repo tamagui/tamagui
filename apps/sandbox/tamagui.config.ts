@@ -20,6 +20,11 @@ const body_cn = createFont({
 
 const { shorthands, ...configRest } = config
 
+config.themes['light_green_Button'] = {
+  ...config.themes['light_green_Button'],
+  background: 'green',
+}
+
 const tamaConf = createTamagui({
   ...configRest,
   fonts: {

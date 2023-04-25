@@ -24,6 +24,7 @@ import type {
 import type { Variable } from './createVariable.js'
 import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
 import type { FontLanguageProps } from './views/FontLanguage.types.js'
+import { Stack } from './views/Stack.js'
 import type { ThemeProviderProps } from './views/ThemeProvider.js'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -890,16 +891,26 @@ export type TamaguiComponent<
   BaseProps = {},
   VariantProps = {},
   ParentStaticProperties = {}
-> = ReactComponentWithRef<Props, Ref> & StaticComponentObject & ParentStaticProperties
+> = ReactComponentWithRef<Props, Ref> &
+  StaticComponentObject<Props, Ref> &
+  ParentStaticProperties
 
-type StaticComponentObject = {
+type StaticComponentObject<Props, Ref> = {
   staticConfig: StaticConfigParsed
-  /*
-   * Only needed for more complex components
-   * If you create a styled frame component this is a HoC to extract
-   * styles from all parents.
-   */
+
+  /** @deprecated use `styleable` instead (same functionality, better name) */
   extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X
+  /*
+   * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
+   */
+  styleable: <
+    CustomProps extends Object,
+    X extends FunctionComponent<Props & CustomProps> = FunctionComponent<
+      Props & CustomProps
+    >
+  >(
+    a: X
+  ) => ReactComponentWithRef<CustomProps & Props, Ref>
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
