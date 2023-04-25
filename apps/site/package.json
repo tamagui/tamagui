@@ -45,6 +45,7 @@
     "@tamagui/site-shared": "1.15.37",
     "@tamagui/themes": "1.15.37",
     "@tamagui/toast": "1.15.37",
+    "@tamagui/use-store": "1.15.37",
     "@tauri-apps/api": "^1.2.0",
     "@types/d3-scale": "^4.0.2",
     "@types/lodash-es": "^4.17.6",
