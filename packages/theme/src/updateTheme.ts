@@ -10,18 +10,5 @@ export function updateTheme({
   name: string
   theme: Partial<Record<keyof ThemeDefinition, any>>
 }) {
-  const next = _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    activeThemeManagers.forEach((manager) => {
-      if (manager.state.name === name) {
-        manager.updateState({
-          name,
-          forceTheme: next?.theme,
-        })
-      }
-    })
-  }
-
-  return next
+  return _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })
 }
