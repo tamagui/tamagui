@@ -123,7 +123,7 @@ module.exports = function (name, { defaultConfig }) {
             },
           ],
           destination: '/studio-app/:path*',
-        }
+        },
       ]
     },
 
@@ -132,7 +132,7 @@ module.exports = function (name, { defaultConfig }) {
       return [
         {
           source: '/docs',
-          destination: '/docs/intro',
+          destination: '/docs/intro/introduction',
           permanent: true,
         },
       ]
