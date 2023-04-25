@@ -1,3 +1,4 @@
+import { Database } from '@lib/supabase-types'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
@@ -14,7 +15,7 @@ export const SupabaseProvider = ({
   children: React.ReactNode
 }) => {
   const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient({
+    createBrowserSupabaseClient<Database>({
       // cookieOptions: {
       //   domain: 'localhost',
       //   maxAge: '100000000',

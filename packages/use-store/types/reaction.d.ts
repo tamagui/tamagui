@@ -1,0 +1,4 @@
+import { Store } from './Store';
+export declare function useReaction<StoreInstance extends Store<any>, Selector extends (a: StoreInstance) => any>(store: StoreInstance, selector: Selector, receiver: Selector extends (a: StoreInstance) => infer Derived ? (a: Derived) => any : unknown, equalityFn?: (a: any, b: any) => boolean, memoArgs?: any[]): () => void;
+export declare function reaction<StoreInstance extends Store<any>, Selector extends (a: StoreInstance) => any>(store: StoreInstance, selector: Selector, receiver: Selector extends (a: StoreInstance) => infer Derived ? (a: Derived) => any : unknown, equalityFn?: (a: any, b: any) => boolean): () => void;
+//# sourceMappingURL=reaction.d.ts.map
