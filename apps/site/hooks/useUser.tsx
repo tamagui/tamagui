@@ -1,3 +1,5 @@
+import { Database } from '@lib/supabase-types'
+import { supabase } from '@lib/supabaseClient'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -36,7 +38,7 @@ const getAccessDetails = async () => {
 export const MyUserContextProvider = (props: Props) => {
   const forceUpdate = useReducer((x) => (x + 1) % Number.MAX_SAFE_INTEGER, 0)[1]
   const { isLoading: isLoadingUser, session } = useSessionContext()
-  const supabase = useSupabaseClient()
+  const supabase = useSupabaseClient<Database>()
 
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)

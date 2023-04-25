@@ -6,7 +6,7 @@
   Style React Native and Web with an optimizing compiler
 </h1>
 
-- `@tamagui/core` - Universal style system on top of React Native + Web.
+- `@tamagui/core` - Universal style system for both web and React Native.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
 - `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
 
