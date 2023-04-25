@@ -9,5 +9,5 @@ export declare const isChrome = false;
 export declare const isWebTouchable = false;
 export declare const isTouchable = true;
 export declare const isAndroid = false;
-export declare const isIos = false;
-//# sourceMappingURL=index.native.d.ts.map
+export declare const isIos = true;
+//# sourceMappingURL=index.ios.d.ts.map
