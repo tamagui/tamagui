@@ -90,9 +90,7 @@
     "ts-morph": "^15.1.0",
     "typescript": "^5.0.4",
     "unified": "^10.1.2",
-    "unist-util-visit": "^2.0.3",
-    "use-valtio": "^0.0.2",
-    "valtio": "^1.10.4"
+    "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
