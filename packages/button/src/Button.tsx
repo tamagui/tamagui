@@ -240,7 +240,7 @@ const buttonStaticConfig = {
   ]),
 }
 
-const Button = withStaticProperties(ButtonFrame.styleable(ButtonComponent), {
+const Button = withStaticProperties(ButtonFrame.styleable<ButtonProps>(ButtonComponent), {
   Text: ButtonTextComponent,
   Icon: ButtonIcon,
 })

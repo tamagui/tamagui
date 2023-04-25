@@ -34,6 +34,6 @@ export const Spinner: React.ForwardRefExoticComponent<
     }),
     {
       componentName: 'Spinner',
-    },
-  ),
+    }
+  )
 ) as any

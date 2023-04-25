@@ -473,7 +473,7 @@ type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfigParsed;
     /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
-    styleable: <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Props, Ref>;
+    styleable: <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref>;
 };
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
@@ -552,7 +552,7 @@ export type StaticConfigPublic = {
     acceptsClassName?: boolean;
 };
 type StaticConfigBase = StaticConfigPublic & {
-    Component?: FunctionComponent<any> & StaticComponentObject;
+    Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
     variants?: GenericVariantDefinitions;
     /**
      * Used for applying sub theme style

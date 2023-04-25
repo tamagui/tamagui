@@ -266,7 +266,10 @@ export const listItemStaticConfig = {
   ]),
 }
 
-export const ListItem = withStaticProperties(ListItemFrame.styleable(ListItemComponent), {
-  Text: ListItemText,
-  Subtitle: ListItemSubtitle,
-})
+export const ListItem = withStaticProperties(
+  ListItemFrame.styleable<ListItemProps>(ListItemComponent),
+  {
+    Text: ListItemText,
+    Subtitle: ListItemSubtitle,
+  }
+)
