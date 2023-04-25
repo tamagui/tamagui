@@ -5871,8 +5871,6 @@ __metadata:
     typescript: ^5.0.4
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
-    use-valtio: ^0.0.2
-    valtio: ^1.10.4
     webpack-stats-plugin: ^1.1.0
   languageName: unknown
   linkType: soft
@@ -19282,13 +19280,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-compare@npm:2.5.0":
-  version: 2.5.0
-  resolution: "proxy-compare@npm:2.5.0"
-  checksum: 81ef2a3990a999b9c3d27f5e10b18603b9236e37d7772c5dadb5726c9ec2a30df46fe3067a216ee1d14f53783703767db9c19ff26ab2a9ffb2ea31f09c87b14f
-  languageName: node
-  linkType: hard
-
 "ps-list@npm:^7.2.0":
   version: 7.2.0
   resolution: "ps-list@npm:7.2.0"
@@ -23261,16 +23252,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-valtio@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "use-valtio@npm:0.0.2"
-  peerDependencies:
-    react: "*"
-    valtio: ">=1.9.0"
-  checksum: 0d84dbcc4f373d1c332b34200b1f95ac9151156ade28f73cf322b3a1e32390daf652ea2cc302996479994232444a2cc575d049f0c50208a2a746addbefd6df31
-  languageName: node
-  linkType: hard
-
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -23373,21 +23354,6 @@ __metadata:
   dependencies:
     builtins: ^1.0.3
   checksum: ce4c68207abfb22c05eedb09ff97adbcedc80304a235a0844f5344f1fd5086aa80e4dbec5684d6094e26e35065277b765c1caef68bcea66b9056761eddb22967
-  languageName: node
-  linkType: hard
-
-"valtio@npm:^1.10.4":
-  version: 1.10.4
-  resolution: "valtio@npm:1.10.4"
-  dependencies:
-    proxy-compare: 2.5.0
-    use-sync-external-store: 1.2.0
-  peerDependencies:
-    react: ">=16.8"
-  peerDependenciesMeta:
-    react:
-      optional: true
-  checksum: 6d877e24cc065ef70b7d4fdfe0914398098c08505df885103bec3bc34ea4c0562d89a94e05c16ddc125ff800601564986eab4792e5ba9f1130013f932f224b1b
   languageName: node
   linkType: hard
 
