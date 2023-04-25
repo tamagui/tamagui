@@ -4,15 +4,16 @@ import { Price, Product } from 'types'
 
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
+import { Database } from './supabase-types'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
 const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
-  ? createClient(
+  ? createClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL || '',
       process.env.SUPABASE_SERVICE_ROLE_KEY || ''
     )
-  : ((() => {}) as any as SupabaseClient)
+  : ((() => {}) as any as SupabaseClient<Database>)
 
 const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
@@ -49,7 +50,13 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
   console.log(`Price inserted/updated: ${price.id}`)
 }
 
-const createOrRetrieveCustomer = async ({ email, uuid }: { email: string; uuid: string }) => {
+const createOrRetrieveCustomer = async ({
+  email,
+  uuid,
+}: {
+  email: string
+  uuid: string
+}) => {
   const { data, error } = await supabaseAdmin
     .from('customers')
     .select('stripe_customer_id')
@@ -78,7 +85,10 @@ const createOrRetrieveCustomer = async ({ email, uuid }: { email: string; uuid: 
 /**
  * Copies the billing details from the payment method to the customer object.
  */
-const copyBillingDetailsToCustomer = async (uuid: string, payment_method: Stripe.PaymentMethod) => {
+const copyBillingDetailsToCustomer = async (
+  uuid: string,
+  payment_method: Stripe.PaymentMethod
+) => {
   //Todo: check this assertion
   const customer = payment_method.customer as string
   const { name, phone, address } = payment_method.billing_details
@@ -88,8 +98,8 @@ const copyBillingDetailsToCustomer = async (uuid: string, payment_method: Stripe
   const { error } = await supabaseAdmin
     .from('users')
     .update({
-      billing_address: address,
-      payment_method: payment_method[payment_method.type],
+      // billing_address: address,
+      // payment_method: payment_method[payment_method.type],
     })
     .eq('id', uuid)
   if (error) throw error
@@ -148,9 +158,10 @@ const manageSubscriptionStatusChange = async (
     )
 }
 
-export {
-  upsertProductRecord,
-  upsertPriceRecord,
-  createOrRetrieveCustomer,
-  manageSubscriptionStatusChange,
-}
+// commented cause supabase code is outdated
+// export {
+//   upsertProductRecord,
+//   upsertPriceRecord,
+//   createOrRetrieveCustomer,
+//   manageSubscriptionStatusChange,
+// }
