@@ -1,4 +1,6 @@
-import { IsEqualOptions } from './fastCompare';
-export declare const isEqualSubsetShallow: (a: any, b: any, opts?: IsEqualOptions) => boolean;
-export declare const isEqualStrict: (a: any, b: any) => boolean;
+export declare const isEqualSubsetShallow: (a: any, b: any, opts?: {
+    keyComparators?: {
+        [key: string]: (a: any, b: any) => boolean;
+    } | undefined;
+} | undefined) => boolean;
 //# sourceMappingURL=comparators.d.ts.map

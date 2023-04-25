@@ -342,14 +342,14 @@ function useStoreFromInfo(
     }
     setDisableStoreTracking(store, false)
 
-    const isUnchanged = false
+    // const isUnchanged = false
 
     // this wasn't updating in AnimationsStore
-    // const isUnchanged =
-    //   typeof last !== 'undefined' &&
-    //   isEqualSubsetShallow(last, snap, {
-    //     keyComparators: info.keyComparators,
-    //   })
+    const isUnchanged =
+      typeof last !== 'undefined' &&
+      isEqualSubsetShallow(last, snap, {
+        keyComparators: info.keyComparators,
+      })
 
     if (shouldPrintDebug) {
       // prettier-ignore
