@@ -58,6 +58,8 @@ Ali todos:
 
 # Backlog
 
+- Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
+
 - @alt Sheet inside Popover breaks css animation:
   - https://tamagui.dev/docs/components/popover
 
