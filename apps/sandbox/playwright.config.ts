@@ -14,4 +14,6 @@ export default defineConfig({
     url: 'http://localhost:9000',
     reuseExistingServer: !process.env.CI,
   },
+
+  fullyParallel: true,
 })
