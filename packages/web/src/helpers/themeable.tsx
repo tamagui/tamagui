@@ -13,7 +13,7 @@ export interface ThemeableProps {
 
 export function themeable<Component extends (props: any) => any>(
   component: Component,
-  staticConfig?: StaticConfig
+  staticConfig?: Partial<StaticConfig>
 ) {
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props

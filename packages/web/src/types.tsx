@@ -910,7 +910,7 @@ type StaticComponentObject<Props, Ref> = {
     >
   >(
     a: X
-  ) => ReactComponentWithRef<CustomProps & Props, Ref>
+  ) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref>
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -1011,7 +1011,7 @@ export type StaticConfigPublic = {
 }
 
 type StaticConfigBase = StaticConfigPublic & {
-  Component?: FunctionComponent<any> & StaticComponentObject
+  Component?: FunctionComponent<any> & StaticComponentObject<any, any>
 
   variants?: GenericVariantDefinitions
 
