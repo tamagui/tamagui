@@ -610,7 +610,7 @@ const SkeletonVariants = composeVariantProviders(MySquare)
 
 ---
 
-# Psuedo Element Styles
+# Pseudo Element Styles
 
 - beforeStyles + afterStyles array
 - display: flex
