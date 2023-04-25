@@ -158,13 +158,17 @@ export const useChangeThemeEffect = (
     }
   }
 
-  const parentManager = getNonComponentParentManager(useContext(ThemeManagerContext))
-
   const {
     debug,
     // @ts-expect-error internal use only
     disable,
   } = props
+
+  let parentManager = useContext(ThemeManagerContext)
+
+  if (!disable) {
+    parentManager = getNonComponentParentManager(parentManager)
+  }
 
   if (disable) {
     if (!parentManager) throw `❌`
@@ -183,17 +187,19 @@ export const useChangeThemeEffect = (
   function getShouldUpdateTheme(
     manager = themeManager,
     nextState?: ThemeManagerState | null,
+    prevState: ThemeManagerState = state,
     forceShouldChange = false
   ) {
     const next = nextState || manager.getState(props, parentManager)
     if (!next) return
     if (disableUpdate?.() === true) return
-    if (!forceShouldChange && !manager.getStateShouldChange(next, state)) return
+    if (!forceShouldChange && !manager.getStateShouldChange(next, prevState)) return
     return next
   }
 
   if (!isServer) {
-    useEffect(() => {
+    // listen for parent change + notify children change
+    useLayoutEffect(() => {
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
@@ -202,18 +208,10 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (!isNewTheme) return
-      if (!themeManager) return
-
-      activeThemeManagers.add(themeManager)
-
-      return () => {
-        activeThemeManagers.delete(themeManager)
+      if (isNewTheme && themeManager) {
+        activeThemeManagers.add(themeManager)
       }
-    }, [isNewTheme, themeManager, state, debug])
 
-    // listen for parent change + notify children change
-    useLayoutEffect(() => {
       const nextState = getShouldUpdateTheme(themeManager)
 
       if (nextState) {
@@ -243,6 +241,7 @@ export const useChangeThemeEffect = (
 
       return () => {
         disposeChangeListener?.()
+        activeThemeManagers.delete(themeManager)
       }
     }, [
       parentManager,
@@ -303,9 +302,8 @@ export const useChangeThemeEffect = (
       // which is correct, potentially in the future we can avoid forceChange and just know to
       // update if keys.length is set + onChangeTheme called
       const forceChange = Boolean(keys?.length)
-
       const next = themeManager.getState(props, parentManager)
-      const nextState = getShouldUpdateTheme(themeManager, next, forceChange)
+      const nextState = getShouldUpdateTheme(themeManager, next, prev.state, forceChange)
 
       if (nextState) {
         state = nextState
@@ -334,6 +332,10 @@ export const useChangeThemeEffect = (
 
     if (!state) {
       state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+    }
+
+    if (state.name === prev?.state.name) {
+      return prev
     }
 
     const response = {

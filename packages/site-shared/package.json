@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site-shared",
-  "version": "1.15.3",
+  "version": "1.15.39",
   "source": "src/index.ts",
   "private": true,
   "types": "./types/index.d.ts",
@@ -26,11 +26,8 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.15.3",
+    "@tamagui/build": "1.15.39",
     "@types/babel-core": "^6.25.7",
-    "vite": "^4.2.1"
-  },
-  "publishConfig": {
-    "access": "public"
+    "vite": "^4.3.0"
   }
 }

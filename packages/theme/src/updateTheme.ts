@@ -1,7 +1,7 @@
 import { activeThemeManagers } from '@tamagui/web'
 import type { ThemeDefinition } from '@tamagui/web'
 
-import { addTheme } from './addTheme.js'
+import { _mutateTheme } from './_mutateTheme.js'
 
 export function updateTheme({
   name,
@@ -10,18 +10,5 @@ export function updateTheme({
   name: string
   theme: Partial<Record<keyof ThemeDefinition, any>>
 }) {
-  const next = addTheme({ name, theme, insertCSS: true, update: true })
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    activeThemeManagers.forEach((manager) => {
-      if (manager.state.name === name) {
-        manager.updateState({
-          name,
-          forceTheme: next.theme,
-        })
-      }
-    })
-  }
-
-  return next
+  return _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })
 }

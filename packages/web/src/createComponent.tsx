@@ -266,6 +266,43 @@ export function createComponent<
     const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
+    const shouldAvoidClasses =
+      !isWeb ||
+      !!(props.animation && avoidClassesWhileAnimating) ||
+      !staticConfig.acceptsClassName
+    const shouldForcePseudo = !!propsIn.forceStyle
+    const noClassNames = shouldAvoidClasses || shouldForcePseudo
+
+    // internal use only
+    const disableTheme =
+      (props['data-disable-theme'] && !isAnimated) || staticConfig.isHOC
+
+    const themeStateProps = {
+      name: props.theme,
+      componentName,
+      reset: props.reset,
+      inverse: props.themeInverse,
+      // @ts-ignore this is internal use only
+      disable: disableTheme,
+      debug:
+        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
+      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+    }
+    const themeState = useThemeWithState(themeStateProps)!
+
+    elementType = Component || elementType
+    const isStringElement = typeof elementType === 'string'
+
+    const isExiting = presence?.[0] === false
+    const mediaState = useMedia(
+      // @ts-ignore, we just pass a stable object so we can get it later with
+      // should match to the one used in `setMediaShouldUpdate` below
+      stateRef,
+      debugProp ? { props, staticConfig } : null
+    )
+
+    setDidGetVariableValue(false)
+
     if (process.env.NODE_ENV === 'development') {
       const id = useId()
 
@@ -275,45 +312,21 @@ export function createComponent<
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
-        console.group(`%c ${banner}`, 'background: yellow;')
+        const parentsLog = (conf: StaticConfig) =>
+          conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
+        console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
         if (!isServer) {
-          console.log('state', state)
+          console.log('info', {
+            props,
+            state,
+            staticConfig,
+            elementType,
+            themeStateProps,
+            themeState,
+          })
         }
       }
     }
-
-    const shouldAvoidClasses =
-      !isWeb ||
-      !!(props.animation && avoidClassesWhileAnimating) ||
-      !staticConfig.acceptsClassName
-    const shouldForcePseudo = !!propsIn.forceStyle
-    const noClassNames = shouldAvoidClasses || shouldForcePseudo
-
-    const themeState = useThemeWithState({
-      name: props.theme,
-      componentName,
-      reset: props.reset,
-      inverse: props.themeInverse,
-      // @ts-ignore this is internal use only
-      disable: props['data-themeable'],
-      debug:
-        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
-      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
-    })!
-
-    elementType = Component || elementType
-    const isStringElement = typeof elementType === 'string'
-
-    const isExiting = presence?.[0] === false
-
-    const mediaState = useMedia(
-      // @ts-ignore, we just pass a stable object so we can get it later with
-      // should match to the one used in `setMediaShouldUpdate` below
-      stateRef,
-      debugProp ? { props, staticConfig } : null
-    )
-
-    setDidGetVariableValue(false)
 
     const splitStyles = useSplitStyles(
       props,
@@ -438,6 +451,10 @@ export function createComponent<
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
+
+    if (staticConfig.isHOC && _themeProp) {
+      viewProps.theme = _themeProp
+    }
 
     // if react-native-web view just pass all props down
     if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
@@ -609,6 +626,8 @@ export function createComponent<
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
 
+    if (props['debug']) console.log('isHoverable', isHoverable)
+
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isRSC && !isDisabled && !asChild
         ? {
@@ -629,9 +648,7 @@ export function createComponent<
                     if (state.pressIn) {
                       next.press = true
                     }
-                    if (isHoverable || state.pressIn) {
-                      setStateShallow(next)
-                    }
+                    setStateShallow(next)
                     onHoverIn?.(e)
                     onMouseEnter?.(e)
                   }
@@ -647,9 +664,7 @@ export function createComponent<
                       next.press = false
                       next.pressIn = false
                     }
-                    if (Object.keys(next).length) {
-                      setStateShallow(next)
-                    }
+                    setStateShallow(next)
                     onHoverOut?.(e)
                     onMouseLeave?.(e)
                   }

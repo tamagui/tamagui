@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    
+    "composite": true
   },
   "references": [
     { "path": "../colors" },
@@ -11,6 +10,7 @@
     { "path": "../core" },
     { "path": "../font-inter" },
     { "path": "../font-silkscreen" },
-    { "path": "../core" }
+    { "path": "../core" },
+    { "path": "../animations-moti" }
   ]
 }

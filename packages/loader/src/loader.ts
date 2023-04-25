@@ -23,7 +23,8 @@ process.env.TAMAGUI_TARGET = 'web'
 
 export const loader = async function loader(
   this: LoaderContext<TamaguiOptions>,
-  sourceIn: Buffer | string
+  sourceIn: Buffer | string,
+  info
 ) {
   this.cacheable(true)
   const callback = this.async()
@@ -33,10 +34,16 @@ export const loader = async function loader(
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
+
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({
       source,
       path: sourcePath,
     })
+
+    if (shouldPrintDebug === 'verbose') {
+      console.log(`\n\n --- Incoming source --- \n\n`)
+      console.log(source)
+    }
 
     if (shouldDisable) {
       if (shouldPrintDebug) {
@@ -92,9 +99,8 @@ export const loader = async function loader(
       console.log(
         'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )
-      colorLog(Color.FgYellow, `"Tamagui built config and components"`)
     }
 
-    return this.callback(null, source)
+    callback(null, source)
   }
 }

@@ -15,6 +15,7 @@ import * as React from 'react'
 import { TOAST_NAME } from './constants'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import {
+  CustomData,
   ToastNativePlatform,
   ToastNativeValue,
   useToast,
@@ -50,7 +51,7 @@ const ToastTitleFrame = styled(SizableText, {
         size: '$4',
       },
     },
-  },
+  } as const,
   defaultVariants: {
     unstyled: false,
   },
@@ -84,7 +85,7 @@ const ToastDescriptionFrame = styled(SizableText, {
         size: '$1',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
@@ -248,4 +249,5 @@ export type {
   // imperative
   ToastNativeValue,
   ToastNativePlatform,
+  CustomData,
 }

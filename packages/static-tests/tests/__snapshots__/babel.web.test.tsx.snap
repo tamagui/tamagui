@@ -1,0 +1,55 @@
+// Vitest Snapshot v1
+
+exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
+"const _cn3 = \\" _bg-d0topktnq\\";
+const _cn2 = \\" _bg-d0t12svx2e\\";
+const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
+// debug
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
+"._w-10px{width:10px;}
+._fd-column{flex-direction:column;}
+._miw-0px{min-width:0px;}
+._mih-0px{min-height:0px;}
+._pos-relative{position:relative;}
+._bxs-border-box{box-sizing:border-box;}
+._fb-auto{flex-basis:auto;}
+._dsp-flex{display:flex;}
+._fs-0{flex-shrink:0;}
+._ai-stretch{align-items:stretch;}
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
+"const _cn3 = \\" _bg-d0topktnq\\";
+const _cn2 = \\" _bg-d0t12svx2e\\";
+const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
+// debug 
+import { Stack } from '@tamagui/core';
+export function Test(props) {
+  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3)))} />;
+}
+import { concatClassName } from \\"@tamagui/helpers\\";"
+`;
+
+exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
+"._w-10px{width:10px;}
+._fd-column{flex-direction:column;}
+._miw-0px{min-width:0px;}
+._mih-0px{min-height:0px;}
+._pos-relative{position:relative;}
+._bxs-border-box{box-sizing:border-box;}
+._fb-auto{flex-basis:auto;}
+._dsp-flex{display:flex;}
+._fs-0{flex-shrink:0;}
+._ai-stretch{align-items:stretch;}
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+`;

@@ -1,7 +1,8 @@
 import { TamaguiOptions } from '@tamagui/static';
 import type { Compiler, RuleSetRule } from 'webpack';
 type PluginOptions = TamaguiOptions & {
-    commonjs?: boolean;
+    isServer?: boolean;
+    enableStudio?: boolean;
     exclude?: RuleSetRule['exclude'];
     test?: RuleSetRule['test'];
     jsLoader?: any;

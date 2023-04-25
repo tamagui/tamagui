@@ -16,6 +16,11 @@ export function ThemeDebug({
   themeProps: ThemeProps
   children: any
 }) {
+  // disabled
+  if (themeProps['disable-child-theme']) {
+    return children
+  }
+
   if (process.env.NODE_ENV === 'development') {
     const [onChangeCount, setOnChangeCount] = useState(0)
     const rerender = useForceUpdate()
@@ -24,13 +29,15 @@ export function ThemeDebug({
     if (process.env.NODE_ENV === 'development' && typeof document !== 'undefined') {
       if (!node) {
         node = document.createElement('div')
-        node.style.width = '100%'
         node.style.height = '200px'
         node.style.overflowY = 'scroll'
         node.style.position = 'fixed'
-        node.style.top = '0px'
-        node.style.left = '0px'
+        node.style.zIndex = 10000000
+        node.style.top = '30px'
+        node.style.left = '30px'
+        node.style.right = '30px'
         node.style.display = 'flex'
+        node.style.border = '1px solid #888'
         node.style.flexDirection = 'row'
         node.style.background = 'var(--background)'
         document.body.appendChild(node)
@@ -82,7 +89,7 @@ export function ThemeDebug({
           node
         )}
 
-        <div>{id}</div>
+        <div style={{ color: 'red' }}>{id}</div>
 
         {children}
       </>

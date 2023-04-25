@@ -1,6 +1,9 @@
-import config from '../tamagui.config'
-import { TamaguiProvider, TamaguiProviderProps } from '@my/ui'
+import { CustomToast } from '@my/ui'
+import { TamaguiProvider, TamaguiProviderProps, ToastProvider, ToastViewport } from '@my/ui'
 import { useColorScheme } from 'react-native'
+
+import config from '../tamagui.config'
+import { NavigationProvider } from './navigation'
 
 export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
   const scheme = useColorScheme()
@@ -11,7 +14,21 @@ export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'conf
       defaultTheme={scheme === 'dark' ? 'dark' : 'light'}
       {...rest}
     >
-      {children}
+      <ToastProvider
+        swipeDirection="horizontal"
+        duration={6000}
+        native={
+          [
+            /* uncomment the next line to do native toasts on mobile. NOTE: it'll require you making a dev build and won't work with Expo Go */
+            // 'mobile'
+          ]
+        }
+      >
+        <NavigationProvider>{children}</NavigationProvider>
+
+        <CustomToast />
+        <ToastViewport left={0} right={0} top={2} />
+      </ToastProvider>
     </TamaguiProvider>
   )
 }

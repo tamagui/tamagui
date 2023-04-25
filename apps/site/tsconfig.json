@@ -5,34 +5,17 @@
     // for jumping to things properly in vscode
     "baseUrl": ".",
     "paths": {
-      "tamagui": [
-        "../tamagui"
-      ],
-      "@tamagui/*": [
-        "../../packages/*"
-      ],
-      "@takeout/*": [
-        "../../takeout/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@lib/*": [
-        "./lib/*"
-      ],
-      "@data/*": [
-        "./data/*"
-      ],
-      "react-native": [
-        "react-native-web"
-      ]
+      "tamagui": ["../tamagui"],
+      "@tamagui/*": ["../../packages/*"],
+      "@takeout/*": ["../../takeout/*"],
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@protected/*": ["./app/(protected)/*"],
+      "@data/*": ["./data/*"],
+      "react-native": ["react-native-web"]
     },
     "target": "es2021",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "strict": false,
     "allowJs": true,
     "noEmit": true,
@@ -40,21 +23,19 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "jsx": "preserve",
+    "noImplicitThis": true,
     "resolveJsonModule": true,
-    "incremental": true
+    "incremental": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     "tamagui.config.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".turbo",
-    "out"
-  ],
+  "exclude": ["node_modules", ".next", ".turbo", "out"],
   "references": [
     {
       "path": "../../packages/colors"

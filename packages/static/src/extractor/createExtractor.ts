@@ -105,17 +105,11 @@ export function createExtractor(
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
 
   function loadSync(props: TamaguiOptions) {
-    return (projectInfo ||= loadTamaguiSync({
-      config: props.config || 'tamagui.config.ts',
-      components: props.components || ['tamagui'],
-    }))
+    return (projectInfo ||= loadTamaguiSync(props))
   }
 
   async function load(props: TamaguiOptions) {
-    return (projectInfo ||= await loadTamagui({
-      config: props.config || 'tamagui.config.ts',
-      components: props.components || ['tamagui'],
-    }))
+    return (projectInfo ||= await loadTamagui(props))
   }
 
   return {
@@ -196,8 +190,8 @@ export function createExtractor(
         return false
       }
       return !!(
-        !!staticConfig.validStyles?.[name] ||
-        !!pseudoDescriptors[name] ||
+        staticConfig.validStyles?.[name] ||
+        pseudoDescriptors[name] ||
         // dont disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
         projectInfo?.tamaguiConfig.shorthands[name] ||
@@ -231,18 +225,24 @@ export function createExtractor(
         )
       }
       if (process.env.DEBUG?.startsWith('tamagui')) {
-        const next = [...propsWithFileInfo.allLoadedComponents].map((info) => {
-          const nameToInfo = { ...info.nameToInfo }
-          for (const key in nameToInfo) {
-            delete nameToInfo[key].staticConfig.validStyles
-          }
-          return { ...info, nameToInfo }
-        })
-        logger.info(['loaded:', JSON.stringify(next, null, 2)].join('\n'))
+        logger.info(
+          [
+            'loaded:',
+            JSON.stringify(propsWithFileInfo.allLoadedComponents, null, 2),
+          ].join('\n')
+        )
       }
     }
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
+
+    if (!tamaguiConfig.themes) {
+      console.error(
+        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
+      )
+      console.log(`  Got config:`, tamaguiConfig)
+      process.exit(0)
+    }
 
     const firstThemeName = Object.keys(tamaguiConfig.themes)[0]
     const firstTheme = tamaguiConfig.themes[firstThemeName]
@@ -320,9 +320,9 @@ export function createExtractor(
         )
         if (shouldPrintDebug === 'verbose') {
           logger.info(
-            `import ${names.join(
+            ` - import ${isValidComponent ? '✅' : '⇣'} - ${names.join(
               ', '
-            )} from ${moduleName} isValidComponent ${isValidComponent}`
+            )} from '${moduleName}'`
           )
         }
         if (isValidComponent) {
@@ -334,7 +334,7 @@ export function createExtractor(
 
     if (shouldPrintDebug) {
       logger.info(
-        `file: ${sourcePath} ${JSON.stringify({ doesUseValidImport, hasImportedTheme })}`
+        `${JSON.stringify({ doesUseValidImport, hasImportedTheme }, null, 2)}\n`
       )
     }
 

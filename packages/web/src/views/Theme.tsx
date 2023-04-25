@@ -17,9 +17,9 @@ export function Theme(props: ThemeProps) {
   const isRoot = !!props['_isRoot']
   const themeState = useChangeThemeEffect(props, isRoot)
 
-  let children = props['data-themeable']
+  let children = props['disable-child-theme']
     ? Children.map(props.children, (child) =>
-        cloneElement(child, { ['data-themeable']: true })
+        cloneElement(child, { ['data-disable-theme']: true })
       )
     : props.children
 
@@ -93,9 +93,11 @@ export function useThemedChildren(
     if (isWeb && !props.passPropsToChildren) {
       // in order to provide currentColor, set color by default
       const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
-      const colorStyle = {
-        color: themeColor,
-      }
+      const colorStyle = themeColor
+        ? {
+            color: themeColor,
+          }
+        : undefined
 
       return (
         <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>

@@ -8,7 +8,7 @@ import {
   skipMask,
 } from '@tamagui/create-theme'
 
-import { colorTokens, darkColors, lightColors } from './tokens'
+import { colorTokens, darkColors, lightColors, tokens } from './tokens'
 
 type ColorName = keyof typeof colorTokens.dark
 
@@ -76,7 +76,6 @@ const templateShadows = {
 // we can use subset of our template as a "override" so it doesn't get adjusted with masks
 // we want to skip over templateColor + templateShadows
 const toSkip = {
-  ...templateColors,
   ...templateShadows,
 }
 
@@ -95,6 +94,7 @@ const overrideWithColors = {
 // templates use the palette and specify index
 // negative goes backwards from end so -1 is the last item
 const template = {
+  ...templateColors,
   ...toSkip,
   // the background, color, etc keys here work like generics - they make it so you
   // can publish components for others to use without mandating a specific color scale
@@ -102,7 +102,7 @@ const template = {
   // dark_red_Button theme to have a stronger background than the dark_red theme.
   background: 2,
   backgroundHover: 3,
-  backgroundPress: 1,
+  backgroundPress: 4,
   backgroundFocus: 2,
   backgroundStrong: 1,
   backgroundTransparent: 0,
@@ -139,6 +139,11 @@ const darkShadows = {
 
 const lightTemplate = {
   ...template,
+
+  background: 2,
+  backgroundHover: 3,
+  backgroundPress: 4,
+
   // our light color palette is... a bit unique
   borderColor: 6,
   borderColorHover: 7,
@@ -239,10 +244,6 @@ const allThemes = addChildren(baseThemes, (name, theme) => {
         theme: colorTheme,
         inverse,
         isLight,
-        activeTheme: applyMask(colorTheme, masks.weaker, {
-          ...maskOptions,
-          strength: 3,
-        }),
       }),
       ...getComponentThemes(colorTheme, inverse, isLight),
     }
@@ -276,20 +277,20 @@ function getAltThemes({
   }
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
+
   const active =
     activeTheme ??
     (process.env.ACTIVE_THEME_INVERSE
       ? inverse
       : (() => {
-          const _ = applyMask(theme, masks.stronger, {
+          return applyMask(theme, masks.weaker, {
             ...maskOptions,
-            strength: 2,
+            strength: 3,
+            skip: {
+              ...maskOptions.skip,
+              color: 1,
+            },
           })
-          // no hoverStyle
-          _.borderColorHover = _.borderColor
-          _.backgroundHover = _.background
-          _.colorHover = _.color
-          return _
         })())
 
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {
@@ -302,6 +303,11 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
   const weaker2 = applyMask(weaker1, masks.weaker, {
     ...maskOptions,
     override: overrideWithColors,
+    skip: {
+      ...maskOptions.skip,
+      // skip colors too just for component sub themes
+      ...templateColors,
+    },
   })
   const stronger1 = applyMask(theme, masks.stronger, maskOptions)
   const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
@@ -323,6 +329,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
       }
 
   return {
+    ListItem: stronger1,
     Card: weaker1,
     Button: weaker2,
     Checkbox: weaker2,

@@ -20,6 +20,12 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
+      - name: Configure GPG Key
+        run: |
+          echo $GIT_CRYPT_KEY | base64 -d | git-crypt unlock -
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
       - name: Build Site
         shell: bash
         run: |

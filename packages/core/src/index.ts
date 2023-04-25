@@ -1,10 +1,12 @@
 import { useResponderEvents } from '@tamagui/react-native-use-responder-events'
-import {
+import type {
   StackProps,
   StackPropsBase,
   TamaguiComponent,
   TextProps,
   TextPropsBase,
+} from '@tamagui/web'
+import {
   Stack as WebStack,
   Text as WebText,
   composeEventHandlers,
@@ -12,9 +14,10 @@ import {
   mergeEvent,
   setupHooks,
 } from '@tamagui/web'
-import { RefObject } from 'react'
+import type { RefObject } from 'react'
 import type { Text as RNText, View as RNView } from 'react-native'
 
+import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
@@ -40,13 +43,7 @@ export const Text = WebText as TamaguiComponent<
 // setup internal hooks:
 
 setupHooks({
-  getBaseViews() {
-    const native = require('react-native')
-    return {
-      View: native.View || native.default.View,
-      Text: native.Text || native.default.Text,
-    }
-  },
+  getBaseViews,
 
   usePropsTransform(elementType, propsIn, hostRef) {
     // otherwise replicate react-native-web functionality

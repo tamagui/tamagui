@@ -1,6 +1,6 @@
-import { variableToString } from '@tamagui/core'
+import { styled, variableToString } from '@tamagui/core'
+import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
-import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -18,6 +18,20 @@ import {
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
+const BetaButton = styled(Button, {
+  debug: 'verbose',
+
+  variants: {
+    primary: {
+      true: {
+        pressStyle: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  },
+})
+
 export function HomeScreen() {
   return (
     <ScrollView>
@@ -25,6 +39,8 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <BetaButton primary>test</BetaButton>
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>

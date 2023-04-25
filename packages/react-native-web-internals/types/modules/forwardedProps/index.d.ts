@@ -13,6 +13,7 @@ export declare const defaultProps: {
     ref: boolean;
     suppressHydrationWarning: boolean;
     testID: boolean;
+    id: boolean;
 };
 export declare const accessibilityProps: {
     accessibilityActiveDescendant: boolean;
@@ -110,6 +111,7 @@ export declare const forwardedProps: {
         ref: boolean;
         suppressHydrationWarning: boolean;
         testID: boolean;
+        id: boolean;
     };
     accessibilityProps: {
         accessibilityActiveDescendant: boolean;
@@ -284,6 +286,7 @@ export declare const forwardPropsListText: {
     ref: boolean;
     suppressHydrationWarning: boolean;
     testID: boolean;
+    id: boolean;
 };
 export declare const forwardPropsListView: {
     onScroll: boolean;
@@ -371,5 +374,6 @@ export declare const forwardPropsListView: {
     ref: boolean;
     suppressHydrationWarning: boolean;
     testID: boolean;
+    id: boolean;
 };
 //# sourceMappingURL=index.d.ts.map

@@ -1,4 +1,5 @@
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web';
+import { TamaguiOptions } from '../types.js';
 type NameToPaths = {
     [key: string]: Set<string>;
 };
@@ -13,11 +14,6 @@ export type TamaguiProjectInfo = {
     tamaguiConfig: TamaguiInternalConfig;
     nameToPaths: NameToPaths;
 };
-export type Props = {
-    components: string[];
-    config?: string;
-    forceExports?: boolean;
-};
 export declare const esbuildOptions: {
     readonly loader: "tsx";
     readonly target: "es2018";
@@ -25,11 +21,18 @@ export declare const esbuildOptions: {
     readonly jsx: "transform";
     readonly platform: "node";
 };
-export declare function bundleConfig(props: Props): Promise<{
+export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>;
+export declare function hasBundledConfigChanged(): Promise<boolean>;
+export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<{
     components: LoadedComponents[];
     nameToPaths: {};
     tamaguiConfig: any;
 }>;
-export declare function loadComponents(props: Props): null | LoadedComponents[];
+export declare function bundleConfig(props: TamaguiOptions): Promise<{
+    components: LoadedComponents[];
+    nameToPaths: {};
+    tamaguiConfig: any;
+}>;
+export declare function loadComponents(props: TamaguiOptions): null | LoadedComponents[];
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

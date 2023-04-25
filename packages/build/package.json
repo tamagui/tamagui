@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.15.3",
+  "version": "1.15.39",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -14,10 +14,11 @@
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.17.16",
+    "esbuild": "^0.17.17",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.1.0",
+    "get-tsconfig": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "typescript": "^5.0.4"
   },

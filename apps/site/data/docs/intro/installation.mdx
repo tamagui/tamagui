@@ -39,7 +39,65 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 }
 ```
 
+### Native
+
+#### Babel
+
+For native you'd do something like this:
+
+```sh
+TAMAGUI_TARGET=native react-native start
+```
+
+```sh
+TAMAGUI_TARGET=native expo start
+```
+
+You'll also need to indicate to Metro and babel to inline TAMAGUI_TARGET like so:
+
+```bash
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+```
+
+Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+
+```js
+// just to ensure TAMAGUI_TARGET is set
+process.env.TAMAGUI_TARGET = 'native'
+
+module.exports = {
+  plugins: [
+    ['transform-inline-environment-variables', {
+      include: ['TAMAGUI_TARGET']
+    }]
+  ]
+}
+```
+
+#### Linear Gradients
+
 If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
+
+#### Media Queries
+
+This is also documented in Configuration, but worth noting twice.
+
+`@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
+
+```
+yarn add @tamagui/react-native-media-driver
+```
+
+```tsx
+import { createMedia } from '@tamagui/react-native-media-driver'
+
+export default createTamagui({
+  media: createMedia({
+    xs: { maxWidth: 660 },
+    // ...
+  }),
+})
+```
 
 ### Config file
 
@@ -110,17 +168,21 @@ export default function App() {
 
 TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
 
-### Native Dependencies
+### Webpack
 
-While `@tamagui/core` doesn't require any extra installation, if you are using `tamagui`, you may need to add a couple dependencies to your app and rebuild it to use certain components. This is because `tamagui` bundles many components together into one cohesive package.
+For webpack, you'll want to be sure to turn off "fullySpecified" imports, as currently Metro can't support the platform-specific filenames (like `.native.tsx`) alongside fully specified imports.
 
-Unfortunately Metro doesn't support dynamic import _or_ lazy evaluation of require, so you'll need to add this dependency if you are using `tamagui`:
+You can modify your `webpack.config.js` something like this:
 
-```sh
-yarn add burnt --dev
+```tsx
+config.module.rules.push({
+  test: /\.m?js$/,
+  type: 'javascript/auto',
+  resolve: {
+    fullySpecified: false,
+  },
+})
 ```
-
-If you want to use toast on native, add it without `--dev`.
 
 ### Done!
 

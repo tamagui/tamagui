@@ -1,15 +1,10 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TabsAdvancedDemo } from '@tamagui/demos'
-// import { SandboxCustomStyledAnimatedPopover } from './SandboxCustomStyledAnimatedPopover'
-// import { SandboxCustomStyledAnimatedTooltip } from './SandboxCustomStyledAnimatedTooltip'
-// import { SandboxStyledOverridePseudo } from './SandboxStyledOverridePsuedo'
-import { AnimationsDemo } from '@tamagui/demos'
+import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
-import { useState } from 'react'
-import { Button, ScrollView, TamaguiProvider, XStack, YStack } from 'tamagui'
-import { Theme } from 'tamagui'
+import { Suspense, lazy, useState } from 'react'
+import { Separator, Square, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
 
 import config from './tamagui.config'
 
@@ -20,38 +15,33 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
 }
 
-const SandboxAnimationThemeChange = () => {
-  const [x, setX] = useState('blue')
-
-  return (
-    <Theme name={x as any}>
-      <Button onPress={() => setX(x === 'blue' ? 'red' : 'blue')}>cahnge</Button>
-      <AnimationsDemo />
-    </Theme>
-  )
-}
-
 export const Sandbox = () => {
-  console.log(`render once`)
+  const componentName = new URLSearchParams(window.location.search).get('test')
+  const demoName = new URLSearchParams(window.location.search).get('demo')
+  const Component = componentName
+    ? // vite wants a .js ending here, but webpack doesn't :/
+      lazy(() => import(`./usecases/${componentName}`))
+    : demoName
+    ? Demos[`${demoName}Demo`]
+    : SandboxInner
 
   return (
     <SandboxFrame>
-      {/* this comment keeps indent */}
-
-      {/* <SwitchDemo /> */}
-
-      {/* TODO fix/convert into tests */}
-      {/* <SandboxAnimationThemeChange /> */}
-      {/* <SandboxThemeChange /> */}
-      {/* <SandboxStyledOverridePseudo /> */}
-      {/* <SandboxCustomStyledAnimatedTooltip /> */}
-      {/* <SandboxCustomStyledAnimatedPopover /> */}
+      <Suspense fallback="Loading...">
+        {/* this comment keeps indent */}
+        <Component />
+      </Suspense>
     </SandboxFrame>
   )
 }
 
+const SandboxInner = () => {
+  return <Square animation="bouncy" size={100} bc="red" />
+}
+
 const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState('light')
+  const splitView = new URLSearchParams(window.location.search).get('splitView')
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>
@@ -67,9 +57,24 @@ const SandboxFrame = (props: { children: any }) => {
           }}
         />
 
-        {props.children}
+        <XStack fullscreen>
+          <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+            {props.children}
+          </YStack>
 
-        <button
+          {splitView ? (
+            <>
+              <Separator vertical />
+              <Theme name="dark">
+                <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+                  {props.children}
+                </YStack>
+              </Theme>
+            </>
+          ) : null}
+        </XStack>
+
+        <div
           style={{
             position: 'fixed',
             bottom: 30,
@@ -79,39 +84,8 @@ const SandboxFrame = (props: { children: any }) => {
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
           🌗
-        </button>
+        </div>
       </ToastProvider>
     </TamaguiProvider>
-  )
-}
-
-function SandboxDefault() {
-  const demos = (
-    <>
-      <TabsAdvancedDemo />
-    </>
-  )
-
-  return (
-    <XStack bc="$backgroundStrong" fullscreen ai="center" jc="center">
-      <ScrollView fullscreen horizontal>
-        <ScrollView fullscreen>
-          <YStack>
-            <XStack gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack theme="alt1" gap={20} px="$4" flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-            <XStack px="$4" theme="blue_alt1" gap={20} flexWrap="wrap">
-              {demos}
-            </XStack>
-          </YStack>
-        </ScrollView>
-      </ScrollView>
-    </XStack>
   )
 }

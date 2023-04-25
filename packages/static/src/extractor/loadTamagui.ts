@@ -2,81 +2,51 @@ import { basename, dirname, extname, join, resolve } from 'path'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui } from '@tamagui/core-node'
-import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
+import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants.js'
-import { getNameToPaths, registerRequire, unregisterRequire } from '../require.js'
-import { TamaguiOptions } from '../types.js'
+import { getNameToPaths, registerRequire } from '../require.js'
 import {
-  Props,
   TamaguiProjectInfo,
-  bundleConfig,
   esbuildOptions,
+  getBundledConfig,
+  hasBundledConfigChanged,
   loadComponents,
 } from './bundleConfig.js'
-import { generateTamaguiConfig } from './generateTamaguiConfig.js'
+import {
+  generateTamaguiStudioConfig,
+  generateTamaguiStudioConfigSync,
+} from './generateTamaguiStudioConfig.js'
 
-const cache = {}
+const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
+  // defaults
+  config: 'tamagui.config.ts',
+  components: ['tamagui'],
+  ...(propsIn as Partial<TamaguiOptions>),
+})
 
-export async function loadTamagui(props: Props): Promise<TamaguiProjectInfo> {
-  const key = JSON.stringify(props)
-  if (cache[key]) {
-    if (cache[key] instanceof Promise) {
-      return await cache[key]
-    }
-    return cache[key]
+export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
+  const props = getFilledOptions(propsIn)
+  const bundleInfo = await getBundledConfig(props)
+  if (!hasBundledConfigChanged()) {
+    return bundleInfo
   }
-
-  let resolver: Function = () => {}
-  cache[key] = new Promise((res) => {
-    resolver = res
-  })
-
-  try {
-    registerRequire()
-    const bundleInfo = await bundleConfig(props)
-
-    cache[key] = bundleInfo
-
-    // init core-node
-    createTamagui(cache[key].tamaguiConfig)
-
-    resolver(cache[key])
-
-    return cache[key]
-  } finally {
-    unregisterRequire()
-  }
-}
-
-export function resolveWebOrNativeSpecificEntry(entry: string) {
-  const workspaceRoot = resolve()
-  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
-  const ext = extname(resolved)
-  const fileName = basename(resolved).replace(ext, '')
-  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
-  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
-  if (existsSync(specificFile)) {
-    return specificFile
-  }
-  return entry
+  await generateTamaguiStudioConfig(props, bundleInfo)
+  // init core-node
+  createTamagui(bundleInfo.tamaguiConfig)
+  return bundleInfo
 }
 
 // loads in-process using esbuild-register
-export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
-  const key = JSON.stringify(props)
-  if (cache[key]) {
-    return cache[key]
-  }
-
+export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
+  const props = getFilledOptions(propsIn)
   const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
+  const unregisterRequire = registerRequire()
   try {
-    registerRequire()
-
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
     process.env.IS_STATIC = 'is_static'
@@ -116,11 +86,15 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
         createTamagui(tamaguiConfig as any)
       }
 
-      cache[key] = {
+      const info = {
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
       }
+
+      generateTamaguiStudioConfigSync(props, info)
+
+      return info as any
     } catch (err) {
       if (err instanceof Error) {
         console.warn(
@@ -133,14 +107,13 @@ export function loadTamaguiSync(props: Props): TamaguiProjectInfo {
       } else {
         console.error(`Error loading tamagui.config.ts`, err)
       }
+
       return {
         components: [],
         tamaguiConfig: getDefaultTamaguiConfig(),
         nameToPaths: {},
       }
     }
-
-    return cache[key]
   } finally {
     unregister()
     unregisterRequire()
@@ -155,8 +128,11 @@ export async function getOptions({
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
-  if (!(await fs.pathExists(tsConfigFilePath)))
+
+  if (!(await fs.pathExists(tsConfigFilePath))) {
     throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
+  }
+
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 
@@ -169,8 +145,8 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       components: ['tamagui'],
-      config: await getDefaultTamaguiConfigPath(),
       ...tamaguiOptions,
+      config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
     },
     paths: {
       dotDir,
@@ -180,52 +156,82 @@ export async function getOptions({
   }
 }
 
-export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
-  try {
-    const options = await getOptions({ tamaguiOptions })
-
-    if (!options.tamaguiOptions.config) return
-
-    await generateTamaguiConfig(options)
-    const context = await esbuild.context({
-      entryPoints: [options.tamaguiOptions.config],
-      sourcemap: false,
-      // dont output just use esbuild as a watcher
-      write: false,
-
-      plugins: [
-        {
-          name: `on-rebuild`,
-          setup({ onEnd }) {
-            onEnd((res) => {
-              generateTamaguiConfig(options)
-            })
-          },
-        },
-      ],
-    })
-
-    await context.watch()
-  } catch (err) {
-    console.warn(
-      `Warning watching config error, you may need to restart on config changes: ${err}`
-    )
+export function resolveWebOrNativeSpecificEntry(entry: string) {
+  const workspaceRoot = resolve()
+  const resolved = require.resolve(entry, { paths: [workspaceRoot] })
+  const ext = extname(resolved)
+  const fileName = basename(resolved).replace(ext, '')
+  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
+  const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
+  if (existsSync(specificFile)) {
+    return specificFile
   }
+  return entry
 }
 
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
-let cachedPath = ''
+let hasWarnedOnce = false
 
-async function getDefaultTamaguiConfigPath() {
-  if (cachedPath) return cachedPath
-  const existingPaths = await Promise.all(defaultPaths.map((path) => pathExists(path)))
-  const existing = existingPaths.findIndex((x) => !!x)
-  const found = defaultPaths[existing]
-  if (!found) {
-    throw new Error(`No found tamagui.config.ts`)
+async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
+  const searchPaths = [
+    ...new Set(
+      [configPath, ...defaultPaths].filter(Boolean).map((p) => join(root, p as string))
+    ),
+  ]
+
+  for (const path of searchPaths) {
+    if (await pathExists(path)) {
+      return path
+    }
   }
-  cachedPath = found
-  return found
+
+  if (!hasWarnedOnce) {
+    hasWarnedOnce = true
+    console.warn(`Warning: couldn't find tamagui.config.ts in the following paths given configuration "${configPath}":
+    ${searchPaths.join(`\n  `)}
+  `)
+  }
 }
 
 export { TamaguiProjectInfo }
+
+export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
+  const options = await getOptions({ tamaguiOptions })
+
+  if (!options.tamaguiOptions.config) {
+    throw new Error(`No config`)
+  }
+
+  // only after it ran once because it triggers immediately and we already build in `loadTamagui`
+  let hasRunOnce = false
+
+  const context = await esbuild.context({
+    entryPoints: [options.tamaguiOptions.config],
+    sourcemap: false,
+    // dont output just use esbuild as a watcher
+    write: false,
+
+    plugins: [
+      {
+        name: `on-rebuild`,
+        setup({ onEnd }) {
+          onEnd(() => {
+            if (!hasRunOnce) {
+              hasRunOnce = true
+              return
+            } else {
+              void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+            }
+          })
+        },
+      },
+    ],
+  })
+
+  const promise = context.watch()
+
+  return {
+    context,
+    promise,
+  }
+}

@@ -73,7 +73,7 @@ You can nest styled components multiple times:
 ```tsx
 import { styled, Stack } from 'tamagui' // or '@tamagui/core'
 
-const const SizedHorizontal = styled(Stack, {
+export const SizedHorizontal = styled(Stack, {
   variants: {
     size: {
       sm: {
@@ -89,7 +89,7 @@ const const SizedHorizontal = styled(Stack, {
 })
 
 
-const const SizedButton = styled(SizedHorizontal, {
+export const SizedButton = styled(SizedHorizontal, {
   tag: 'button',
 
   variants: {

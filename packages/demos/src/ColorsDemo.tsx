@@ -31,7 +31,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
       <H2 size="$2">{title}</H2>
 
       <XStack space alignSelf="center">
-        <YStack space $sm={{ space: '$2' }} als="center">
+        <YStack space $sm={{ space: '$2' }} alignSelf="center">
           {colors.map((group, index) => {
             return (
               <XStack space="$2" key={index}>
@@ -69,7 +69,7 @@ function ColorsRow({ title, colors }: { title: string; colors: Variable[][] }) {
                     textAlign="center"
                     width="$4"
                     $sm={{
-                     width:'$2',
+                      width: '$2',
                     }}
                     $xs={{
                       width: '$1',

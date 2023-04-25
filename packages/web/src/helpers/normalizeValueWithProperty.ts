@@ -82,8 +82,16 @@ const rcache = {}
 export function reverseMapClassNameToValue(key: string, className: string) {
   const selectors = getAllSelectors()
   const cssRule = selectors[className]
-  if (rcache[cssRule]) return rcache[cssRule]
+  if (rcache[cssRule]) {
+    return rcache[cssRule]
+  }
+
   if (!cssRule) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `No CSS rule found for ${key} looking for selector ".${className}", you may not be injecting extracted CSS`
+      )
+    }
     return
   }
   const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '').trim()

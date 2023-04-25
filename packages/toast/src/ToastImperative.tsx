@@ -16,20 +16,52 @@ interface ToastImperativeOptions extends Omit<CreateNativeToastOptions, 'message
    */
   native?: ToastNativeValue
 }
-interface ShowOptions extends CreateNativeToastOptions {
-  /**
-   * Used when need custom data
-   */
-  additionalInfo?: Record<string, any>
-  /**
-   * Overrides the native option on `ToastImperativeProvider`
-   */
-  native?: ToastNativeValue
+
+/**
+ * Override this in your application to get custom toast fields.
+ *
+ * e.g.
+ * ```ts
+ * declare module '@tamagui/toast' {
+ *   interface CustomData {
+ *     preset: 'error' | 'success'
+ *     isUrgent: true
+ *   }
+ * }
+ *```
+ * You will get auto-completion:
+ * ```ts
+ * toast.show("Message", { preset: 'error', isUrgent: true })
+ * ```
+ */
+export interface CustomData {
+  [key: string]: any
 }
 
-type ToastData = { title: string; id: string } & CreateNativeToastOptions & {
-    isHandledNatively: boolean
+type ShowOptions = CreateNativeToastOptions &
+  CustomData & {
+    /**
+     * Used when need custom data
+     * @deprecated Use `customData` instead
+     */
+    additionalInfo?: CustomData
+    /**
+     * Used when need custom data
+     */
+    customData?: CustomData
+    /**
+     * Overrides the native option on `ToastImperativeProvider`
+     */
+    native?: ToastNativeValue
+    /**
+     * Which viewport to send this toast to. This is only intended to be used with custom toasts and you should wire it up when creating the toast.
+     */
+    viewportName?: string | 'default'
   }
+
+type ToastData = { title: string; id: string } & ShowOptions & {
+    isHandledNatively: boolean
+  } & CustomData
 
 interface ToastContextI {
   nativeToast: NativeToastRef | null
@@ -120,9 +152,11 @@ export const ToastImperativeProvider = ({
       }
       counterRef.current++
       setToast({
+        ...showOptions?.customData,
+        ...showOptions,
+        viewportName: showOptions?.viewportName ?? 'default',
         title,
         id: counterRef.current.toString(),
-        ...showOptions,
         isHandledNatively,
       })
       return true
@@ -142,8 +176,6 @@ export const ToastImperativeProvider = ({
       options,
     }
   }, [show, hide, lastNativeToastRef, JSON.stringify(options || null)])
-
-  const currentContextValue = useMemo(() => {}, [])
 
   return (
     <ToastContext.Provider value={contextValue}>

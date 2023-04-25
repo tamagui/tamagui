@@ -5,6 +5,7 @@ import {
   Button,
   Square,
   Theme,
+  XStack,
   YStack,
   getVariableValue,
   useForceUpdate,
@@ -24,6 +25,7 @@ export function UpdateThemeDemo() {
       insertCSS: true,
       theme: {
         color: 'red',
+        color2: 'blue',
       },
     })
     setTheme('custom')
@@ -31,9 +33,11 @@ export function UpdateThemeDemo() {
 
   return (
     <YStack alignItems="center" space>
-      <Theme name={theme ?? null}>
-        <Square borderRadius="$8" size={100} backgroundColor="$color" />
-      </Theme>
+      <XStack gap={'$5'}>
+        <Theme name={theme ?? null}>
+          <Square borderRadius="$8" size={100} backgroundColor="$color" />
+        </Theme>
+      </XStack>
 
       <Button
         onPress={() => {

@@ -3,7 +3,6 @@ export declare function addTheme(props: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;
     insertCSS?: boolean;
-    update?: boolean;
 }): {
     theme: {
         [x: string]: import("@tamagui/web").Variable<any>;
@@ -28,5 +27,5 @@ export declare function addTheme(props: {
 } | {
     theme: any;
     cssRules: string[];
-};
+} | undefined;
 //# sourceMappingURL=addTheme.d.ts.map

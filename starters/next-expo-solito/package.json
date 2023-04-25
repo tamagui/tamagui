@@ -14,21 +14,23 @@
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "fix": "manypkg fix",
-    "postinstall": "yarn build",
-    "build": "yarn workspaces foreach --exclude next-app -pi run build",
-    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
+    "postinstall": "yarn check-deps && yarn build",
+    "build": "yarn workspaces foreach --exclude next-app run build",
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite",
+    "check-deps": "check-dependency-version-consistency ."
   },
   "resolutions": {
-    "@types/react-native": "0.70.8",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "@types/react-native": "^0.71.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-refresh": "^0.14.0",
-    "react-native-svg": "13.4.0",
-    "react-native-web": "0.18.9"
+    "react-native-svg": "^13.4.0",
+    "react-native-web": "^0.18.12"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
     "@manypkg/cli": "^0.19.1",
+    "check-dependency-version-consistency": "^3.0.3",
     "eslint": "^8.21.0",
     "prettier": "^2.7.1",
     "turbo": "^1.8.3",

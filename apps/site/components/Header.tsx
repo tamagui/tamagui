@@ -1,12 +1,11 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Menu } from '@tamagui/lucide-icons'
-import { useUser } from 'hooks/useUser'
+// import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
-  Avatar,
   Button,
   Paragraph,
   ParagraphProps,
@@ -19,10 +18,8 @@ import {
   XStack,
   YStack,
   isClient,
-  useMedia,
 } from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
@@ -91,7 +88,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const isInSubApp =
     router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
   const { setNextTint } = useTint()
-  const user = useUser()
+  // const user = useUser()
 
   return (
     <XStack
@@ -133,14 +130,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <YStack paddingStart={200}>
           <SponsorButton tiny />
         </YStack>
-
-        {!props.disableNew && <AlphaButton />}
-
-        {isInSubApp && (
-          <NextLink href="/">
-            <Button size="$2">Back to Tamagui</Button>
-          </NextLink>
-        )}
       </XStack>
 
       <XStack
@@ -176,7 +165,23 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         pointerEvents="auto"
         tag="nav"
       >
-        {isInSubApp ? (
+        <XStack ai="center" space="$3">
+          <HeaderLinks {...props} />
+
+          <SearchButton size="$2" br="$10" elevation="$4" />
+
+          <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+            <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+              <VisuallyHidden>
+                <Text>Github</Text>
+              </VisuallyHidden>
+              <GithubIcon width={23} />
+            </YStack>
+          </NextLink>
+
+          <SmallMenu />
+        </XStack>
+        {/* 
           <XStack ai="center" space="$2">
             {user.user ? (
               <Avatar circular size="$2">
@@ -206,25 +211,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 Purchase
               </Button>
             </NextLink>
-          </XStack>
-        ) : (
-          <XStack ai="center" space="$3">
-            <HeaderLinks {...props} />
-
-            <SearchButton size="$2" br="$10" elevation="$4" />
-
-            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </NextLink>
-
-            <SmallMenu />
-          </XStack>
-        )}
+          </XStack> */}
       </XStack>
     </XStack>
   )
@@ -243,25 +230,27 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/blog">
+      <NextLink prefetch={false} href="/studio">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
-          Blog
+          Studio
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/community">
-        <HeadAnchor
-          $md={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          More
-        </HeadAnchor>
-      </NextLink>
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/blog">
+          <HeadAnchor>Blog</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/community">
+          <HeadAnchor>Community</HeadAnchor>
+        </NextLink>
+      )}
 
       {showExtra && (
         <NextLink prefetch={false} href="/studio">
@@ -280,31 +269,19 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 
 const SmallMenu = React.memo(() => {
   const { router, open, setOpen } = useDocsMenu()
-  // const isDocs = router.pathname.startsWith('/docs')
-  const media = useMedia()
-
-  if (media.gtMd) {
-    return null
-  }
 
   return (
     <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
       <Popover.Trigger asChild>
-        <YStack
-          $gtMd={{
-            display: 'none',
-          }}
+        <Button
+          size="$3"
+          chromeless
+          noTextWrap
+          onPress={() => setOpen(!open)}
+          theme={open ? 'alt1' : undefined}
         >
-          <Button
-            size="$3"
-            chromeless
-            noTextWrap
-            onPress={() => setOpen(!open)}
-            theme={open ? 'alt1' : undefined}
-          >
-            <Menu size={16} color="var(--color)" />
-          </Button>
-        </YStack>
+          <Menu size={16} color="var(--color)" />
+        </Button>
       </Popover.Trigger>
 
       <Adapt platform="touch" when="sm">

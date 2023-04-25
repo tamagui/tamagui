@@ -1,8 +1,125 @@
+Ali todos:
+  - [ ] site:
+    - [x] github auth redirects to localhost in prod
+    - [ ] splash page loads slow on a fresh session because its running supabase before
+      - [ ] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
+      - [ ] see next config rewrites()
+    - [ ] studio.tamagui.dev seems like its only SSR and not hydrating?
+  - [ ] studio
+    - [ ] make it remember dark/light choice (localStorage)
+
+    - [x] Config tab
+      - [x] settings:
+        - [x] make the boolean ones a XStack with a `<Switch />` on right (not clickable) but show "undefined" faintly next to it if so
+        - [x] expanded pane shows a code area with JSON + copy button
+      - [x] fonts:
+        - [x] multiple "Ag" with each weight
+        - [x] the initial view should show them as nice cards sort of like small view but bigger
+        - [x] vertical scroll broke (see new SidePane something off there)
+      - [x] media query:
+        - [x] "xxs" and other keys should be bold, more v height spacing
+        - [x] make the rulers always go to the furthest one but be faded out past their final point
+        - [x] make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
+        - [x] lets split out max and min into separate sections (just vertically with a header)
+      - [x] animations:
+        - [x] just link it to the tab (show an external icon thing to right of the title)
+      - [x] shorthands:
+        - [x] scroll also broken
+        - [x] make it two columns on expanded
+
+    - [ ] Colors tab
+      - [ ] fix dragging on the HSL lines is wonky
+
+    - [ ] Themes tab
+      - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
+
+    - [ ] Tokens tab
+      - [ ] lets redo it to be the same structure as settings
+      - [ ] once thats done lets also add a new column thats first:
+        - [ ] its a wider column
+        - [ ] not clickable/openable
+        - [ ] lets you visualize the "matching" stuff:
+          - [ ] show two `<Square />` vertically
+          - [ ] slider to move up/down your tokens
+          - [ ] square gets the border radius / size
+          - [ ] shows / highlights around the square for "space" tokens
+          - [ ] also can show a Button as an option too
+
+    - [ ] all tabs (header):
+      - [ ] add a search input box that filters down things as you type
+
+  - [ ] Select native on trigger + native on viewport + accent-color when native (web)
+  - [ ] get new starter ready
+  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
+  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
+  - [ ] low prio: toast viewport issue
+
+--------
+
+# Backlog
+
+- styled(Button) hoverStyle https://discord.com/channels/909986013848412191/1100400812225736764
+
+- Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
+
+- @alt Sheet inside Popover breaks css animation:
+  - https://tamagui.dev/docs/components/popover
+
+- @ali https://discord.com/channels/909986013848412191/974145843919716412/1100115005451538503
+
+- https://discord.com/channels/909986013848412191/974145843919716412/1100099134935023668
+
+- https://discord.com/channels/909986013848412191/909986013848412194/1100077456448294942
+
+- @ali make animations SSR properly
+  - disable them during SSR (make sure css variables are used), then on hydration turn it on
+  - make sure enterStyle still works
+  - see t_will-mount
+   - hasEnterStyle && ((state.unmounted && needsMount) || !isClient
+
+- @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
+  - https://github.com/tamagui/tamagui/issues/985
+
+- [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
+
+- [ ] double render on new button - waiting for fernando's opinion (fernando may do low prio)
+- [ ] supabase local -> staging -> prod and migrations setup
+
+- starter is warning "no TAMAGUI_TARGET"
+
+- `tama doctor`
+  - probably use @manypky internally
+    - https://github.com/Thinkmill/manypkg/blob/main/packages/cli/src/run.ts
+  - scan all package.json in monorepo
+  - make sure all tamagui versions match
+  - watch for non @tamagui stuff like loader
+  - auto run this whenever compiler is run as well on startup
+  - output nice message
+
+- $web / $native make them work as media queries
+- $dark / $light to make adjustments based on mode
+
+- '> Child' descendent queries
+  - only with css driver it can extract to css
+  - without it uses context
+
+- <Select native />
+  - for web this should be pretty straightforward
+    - likely want the actual trigger to be styled but the viewport/items to be native
+
+- <Sheet native />
+  - https://github.com/dominicstop/react-native-ios-modal
+  - we'd want expo module + snap points
+
+- <ActionSheet />
+ - plus `native` prop https://reactnative.dev/docs/actionsheetios
+
+- we should check that things merge properly for regular styled() views the same as `StyledButtonVariantPseudoMerge`, basically try it with regular styled definition. Also try it with inherited styled(styled())
+
+- also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
+  - may need to detect somehow if inside Modal and use it?
+
 - add test that builds site for prod + checks for header text / no errors
-
-- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
-
-- XGroup + borderRadius doesn't set radius (see studio/header)
 
 - yarn release --canary
 
@@ -42,10 +159,7 @@
 
 - bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
 
-
 - document `unstyled` prop for components
-
-- `defaultUnstyled` option in createTamagui
 
 - docs for `@tamagui/font` and `@tamagui/theme`
 
@@ -55,13 +169,13 @@
 
 - slider track - light theme blends in with bg i think
 
+- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
+
 - createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
 
 - lets make forms use outline for 2px borders on focusStyle
   - on native it can just get a darker border but stay 1px
 
-- force fix version
-- move to use-roving-index
 - cli
   - `tamagui doctor` command to check for version mismatch
 
@@ -379,7 +493,6 @@ inbox
 - <Select.SearchInput />
 - <Text fontSize="parent" />
 - <UL /> <LI /> <OL />
-- Text numberOfLines / context fix
 - hoverStyle={{ [XStack]: {} }}
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - <GradientText /> can work native with 
@@ -499,7 +612,7 @@ const SkeletonVariants = composeVariantProviders(MySquare)
 
 ---
 
-# Psuedo Element Styles
+# Pseudo Element Styles
 
 - beforeStyles + afterStyles array
 - display: flex

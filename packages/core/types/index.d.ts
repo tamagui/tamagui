@@ -1,4 +1,4 @@
-import { TamaguiComponent } from '@tamagui/web';
+import type { TamaguiComponent } from '@tamagui/web';
 import type { Text as RNText, View as RNView } from 'react-native';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';
 export * from '@tamagui/web';

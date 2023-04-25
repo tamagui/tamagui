@@ -267,10 +267,11 @@ function getState(
 
   for (let i = max; i >= min; i--) {
     let prefix = base.slice(0, i).join(THEME_NAME_SEPARATOR)
+
     if (props.inverse) {
       prefix = inverseThemeName(prefix)
     }
-    const potentials: string[] = []
+    let potentials: string[] = []
     if (prefix && prefix !== parentBaseTheme) {
       potentials.push(prefix)
     }
@@ -291,7 +292,11 @@ function getState(
       }
       potentials.push(`${prefix}_${componentName}`)
       if (nextName) {
-        potentials.unshift(`${prefix}_${nextName}_${componentName}`)
+        // do this one and one level up
+        const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
+        const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+        const moreSpecific = `${prefix}_${nextName}_${componentName}`
+        potentials = [moreSpecific, lessSpecific, ...potentials]
       }
     }
 
@@ -342,5 +347,5 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
       break
     }
   }
-  return res
+  return res || null
 }

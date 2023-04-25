@@ -85,6 +85,7 @@ const plugins = [
 module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
+    // output: 'export',
     // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
@@ -97,6 +98,7 @@ module.exports = function (name, { defaultConfig }) {
       },
     },
     experimental: {
+      // appDir: true,
       // optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
@@ -109,6 +111,22 @@ module.exports = function (name, { defaultConfig }) {
     typescript: {
       ignoreBuildErrors: true,
     },
+
+    async rewrites() {
+      return [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'studio.tamagui.dev',
+            },
+          ],
+          destination: '/studio-app/:path*',
+        }
+      ]
+    },
+
     // Next.js config
     async redirects() {
       return [

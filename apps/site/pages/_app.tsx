@@ -2,22 +2,20 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
+import '../app/(protected)/studio/studio.css'
 import '../public/fonts/fonts.css'
 
-import { Footer } from '@components/Footer'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+// import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { useSharedAuth } from '@tamagui/site-shared'
+// import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { useSharedAuth } from '@tamagui/site-shared'
-import { ToastProvider, ToastViewport } from '@tamagui/toast'
-import { MyUserContextProvider } from 'hooks/useUser'
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Suspense, startTransition, useMemo, useState } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { startTransition, useMemo } from 'react'
+import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
-import { Header } from '../components/Header'
-import { SearchProvider } from '../components/Search'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -55,18 +53,8 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient({
-      cookieOptions: {
-        domain: 'localhost',
-        maxAge: '100000000',
-        path: '/',
-        sameSite: 'Lax',
-        secure: 'secure',
-      },
-    })
-  )
-  // useMemo below to avoid re-render on dark/light change
+  const didMount = useDidFinishSSR()
+
   return (
     <>
       <script
@@ -77,81 +65,45 @@ export default function App(props: AppProps) {
           __html: `document.documentElement.classList.add('t_unmounted')`,
         }}
       />
-      <SessionContextProvider
-        initialSession={(props as any).initialSession}
-        supabaseClient={supabaseClient}
-      >
-        <MyUserContextProvider>
-          <NextThemeProvider
-            onChangeTheme={(next) => {
-              startTransition(() => {
-                setTheme(next)
-              })
-            }}
-          >
-            <TamaguiProvider
-              config={config}
-              disableInjectCSS
-              disableRootThemeClass
-              defaultTheme={theme}
-            >
-              <SearchProvider>
-                <Suspense fallback={null}>
-                  {useMemo(() => {
-                    return (
-                      <ToastProvider swipeDirection="horizontal">
-                        <ContentInner {...props} />
 
-                        <ToastViewport
-                          flexDirection="column-reverse"
-                          top="$2"
-                          left={0}
-                          right={0}
-                        />
-                        <ToastViewport
-                          multipleToasts
-                          name="viewport-multiple"
-                          flexDirection="column-reverse"
-                          top="$2"
-                          left={0}
-                          right={0}
-                        />
-                      </ToastProvider>
-                    )
-                  }, [props])}
-                </Suspense>
-              </SearchProvider>
-            </TamaguiProvider>
-          </NextThemeProvider>
-        </MyUserContextProvider>
-      </SessionContextProvider>
+      {/* this will lazy load the font for /studio splash page */}
+      {didMount && (
+        <Head>
+          <link href="/fonts/inter-takeout.css" rel="stylesheet" />
+          <link
+            rel="preload"
+            href="/fonts/subset-Inter-Black.woff2"
+            as="font"
+            type="font/woff2"
+          />
+        </Head>
+      )}
+
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          startTransition(() => {
+            setTheme(next as any)
+          })
+        }}
+      >
+        <TamaguiProvider
+          config={config}
+          disableInjectCSS
+          disableRootThemeClass
+          defaultTheme={theme}
+        >
+          <ContentInner {...props} />
+        </TamaguiProvider>
+      </NextThemeProvider>
     </>
   )
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  const router = useRouter()
-  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
-  const isHome = router.pathname === '/'
-  const isDocs = router.pathname.startsWith('/docs')
-  const isBlog = router.pathname.startsWith('/blog')
-  const isStudio = router.pathname.startsWith('/studio')
-  const isDemo = router.pathname.startsWith('/responsive-demo')
-  const isTest = router.pathname.startsWith('/test')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
 
-  const disableNew = isHome || isBlog
-
-  const supabase = useSupabaseClient()
-  useSharedAuth(supabase)
-
-  return getLayout(
-    <>
-      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
-      <Component {...pageProps} />
-      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
-    </>,
-    pageProps
-  )
+  return useMemo(() => {
+    return getLayout(<Component {...pageProps} />, pageProps)
+  }, [pageProps])
 }

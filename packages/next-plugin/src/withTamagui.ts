@@ -24,7 +24,7 @@ export type WithTamaguiProps = TamaguiOptions & {
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    const isAppDir = nextConfig.experimental.appDir
+    const isAppDir = nextConfig.experimental?.appDir
     return {
       ...nextConfig,
       webpack: (webpackConfig: any, options: any) => {
@@ -384,16 +384,17 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           }
         }
 
+        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
+
         webpackConfig.plugins.push(
           new TamaguiPlugin({
-            commonjs: isServer,
+            enableStudio,
+            isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)
               // console.log(`shouldExclude`, res, path)
               return res
             },
-            disableEsbuildLoader: isAppDir,
-            disableModuleJSXEntry: isAppDir,
             ...tamaguiOptions,
           })
         )

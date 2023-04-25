@@ -31,13 +31,10 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',
   variants: {
-    backgrounded: {
-      true: {
-        backgroundColor: '$color6',
-      },
-    },
     unstyled: {
       false: {
+        focusable: true,
+        backgroundColor: '$color6',
         borderRadius: '$10',
         paddingHorizontal: '$5',
         paddingVertical: '$2',
@@ -45,9 +42,8 @@ const ToastImplFrame = styled(ThemeableStack, {
         marginVertical: '$1',
       },
     },
-  },
+  } as const,
   defaultVariants: {
-    backgrounded: true,
     unstyled: false,
   },
 })
@@ -132,7 +128,7 @@ type ToastImplProps = ToastImplPrivateProps &
      */
     viewportName?: string
     /**
-     * 
+     *
      */
     id?: string
   }
@@ -152,7 +148,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       onSwipeMove,
       onSwipeCancel,
       onSwipeEnd,
-      viewportName,
+      viewportName = 'default',
       ...toastProps
     } = props
     const isPresent = useIsPresent()
@@ -164,17 +160,22 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const closeTimerRemainingTimeRef = React.useRef(duration)
     const closeTimerRef = React.useRef(0)
     const { onToastAdd, onToastRemove } = context
+
+    const viewport = React.useMemo(() => {
+      return context.viewports[viewportName] as HTMLElement | null | undefined
+    }, [context.viewports, viewportName])
+
     const handleClose = useEvent(() => {
       if (!isPresent) {
-          // already removed from the react tree
-          return
-        }
-        // focus viewport if focus is within toast to read the remaining toast
-        // count to SR users and ensure focus isn't lost
-        if (isWeb) {
-          const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
-          if (isFocusInToast) context.viewport?.focus()
-        }
+        // already removed from the react tree
+        return
+      }
+      // focus viewport if focus is within toast to read the remaining toast
+      // count to SR users and ensure focus isn't lost
+      if (isWeb) {
+        const isFocusInToast = (node as HTMLDivElement)?.contains(document.activeElement)
+        if (isFocusInToast) viewport?.focus()
+      }
       onClose()
     })
 
@@ -201,7 +202,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     React.useEffect(() => {
       if (!isWeb) return
-      const viewport = context.viewport as HTMLElement
+
       if (viewport) {
         viewport.addEventListener(VIEWPORT_PAUSE, handlePause)
         viewport.addEventListener(VIEWPORT_RESUME, handleResume)
@@ -210,7 +211,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
           viewport.removeEventListener(VIEWPORT_RESUME, handleResume)
         }
       }
-    }, [context.viewport, duration, onPause, onResume, startTimer])
+    }, [viewport, duration, onPause, onResume, startTimer])
 
     // start timer when toast opens or duration changes.
     // we include `open` in deps because closed !== unmounted when animating
@@ -248,6 +249,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
 
     const animatedStyles = useAnimatedNumberStyle(animatedNumber, (val) => {
+      'worklet'
       return {
         transform: [isHorizontalSwipe ? { translateX: val } : { translateY: val }],
       }
@@ -345,7 +347,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
                       role="status"
                       aria-live="off"
                       aria-atomic
-                      tabIndex={0}
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"

@@ -108,7 +108,7 @@ function createGroup(verticalDefault: boolean) {
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
-      const isUsingItems = true // itemChildrenCount > 0
+      const isUsingItems = itemChildrenCount > 0
 
       // 1 off given border to adjust for border radius? This should be user controllable
       const radius =
@@ -118,7 +118,6 @@ function createGroup(verticalDefault: boolean) {
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
 
-      if (!isUsingItems) console.log('screw up!')
       const childrenArray = Children.toArray(childrenProp)
       const children = isUsingItems
         ? childrenProp

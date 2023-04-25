@@ -157,6 +157,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
     | 'light'
     | 'dark'
     | undefined
+
   const contextValue = useMemo(() => {
     const value: UseThemeProps = {
       theme,
