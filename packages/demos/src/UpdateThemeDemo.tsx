@@ -36,7 +36,6 @@ export function UpdateThemeDemo() {
       <XStack gap={'$5'}>
         <Theme name={theme ?? null}>
           <Square borderRadius="$8" size={100} backgroundColor="$color" />
-          <Square borderRadius="$8" size={100} backgroundColor="$color2" />
         </Theme>
       </XStack>
 

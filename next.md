@@ -59,6 +59,7 @@ Ali todos:
 # Backlog
 
 - export * from lucide icons in your ui package causes build error
+- styled(Button) hoverStyle https://discord.com/channels/909986013848412191/1100400812225736764
 
 - Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
 

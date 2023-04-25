@@ -173,9 +173,11 @@ const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
 let hasWarnedOnce = false
 
 async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
-  const searchPaths = [configPath, ...defaultPaths]
-    .filter(Boolean)
-    .map((p) => join(root, p)) as string[]
+  const searchPaths = [
+    ...new Set(
+      [configPath, ...defaultPaths].filter(Boolean).map((p) => join(root, p as string))
+    ),
+  ]
 
   for (const path of searchPaths) {
     if (await pathExists(path)) {
@@ -185,7 +187,7 @@ async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
 
   if (!hasWarnedOnce) {
     hasWarnedOnce = true
-    console.warn(`Warning: couldn't find tamagui.config.ts in the following paths:
+    console.warn(`Warning: couldn't find tamagui.config.ts in the following paths given configuration "${configPath}":
     ${searchPaths.join(`\n  `)}
   `)
   }
