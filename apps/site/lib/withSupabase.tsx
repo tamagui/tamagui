@@ -4,12 +4,6 @@ import { H1 } from 'tamagui'
 
 export function withSupabase(page, pageProps) {
   return (
-    <SupabaseProvider initialSession={pageProps.initialSession}>
-      <UserLayout>{page}</UserLayout>
-    </SupabaseProvider>
+    <SupabaseProvider initialSession={pageProps.initialSession}>{page}</SupabaseProvider>
   )
-}
-
-function UserLayout({ children }) {
-  return <MyUserContextProvider>{children}</MyUserContextProvider>
 }
