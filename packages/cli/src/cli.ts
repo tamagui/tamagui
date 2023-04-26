@@ -6,75 +6,90 @@ import { disposeAll, getOptions } from './utils.js'
 
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
-    process.stdout.write(`bye\n`)
     disposeAll()
     process.exit()
   })
 })
 
 const COMMAND_MAP = {
-  build: {
-    shorthands: ['b'],
-    description: `Use to pre-build a Tamagui component directory`,
-    flags: {
-      '--help': Boolean,
-      '--debug': Boolean,
-      '--verbose': Boolean,
-    },
-    async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { build } = await import('./build.js')
-      const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      })
-      await build(options)
-    },
-  },
+  // build: {
+  //   shorthands: ['b'],
+  //   description: `Use to pre-build a Tamagui component directory`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { build } = await import('./build.js')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await build(options)
+  //   },
+  // },
 
-  update: {
+  upgrade: {
     shorthands: [],
-    description: `Update all tamagui packages within a monorepo`,
-    flags: {},
+    description: `Upgrade all tamagui packages within a monorepo`,
+    flags: {
+      '--version': String,
+    },
     async run() {
-      const { update } = await import('./update.js')
-      await update()
+      const { _, ...flags } = arg(this.flags)
+      console.log('??')
+      const { upgrade } = await import('./upgrade.js')
+      await upgrade({
+        version: flags['--version'],
+      })
     },
   },
 
-  dev: {
+  // dev: {
+  //   shorthands: ['d'],
+  //   description: `Run tamagui vite`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { dev } = await import('./dev.js')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await dev(options)
+  //   },
+  // },
+
+  // studio: {
+  //   shorthands: ['s'],
+  //   description: `Studio`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //     '--local': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { studio } = await import('./studio.js')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await studio(options, !flags['--local'])
+  //   },
+  // },
+
+  doctor: {
     shorthands: ['d'],
-    description: `Run tamagui vite`,
-    flags: {
-      '--help': Boolean,
-      '--debug': Boolean,
-      '--verbose': Boolean,
-    },
+    description: `Checks your repo for problems`,
     async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { dev } = await import('./dev.js')
-      const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      })
-      await dev(options)
-    },
-  },
-
-  studio: {
-    shorthands: ['s'],
-    description: `Studio`,
-    flags: {
-      '--help': Boolean,
-      '--debug': Boolean,
-      '--verbose': Boolean,
-      '--local': Boolean,
-    },
-    async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { studio } = await import('./studio.js')
-      const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      })
-      await studio(options, !flags['--local'])
+      const { doctor } = await import('./doctor.js')
+      const options = await getOptions()
+      await doctor(options)
     },
   },
 }
@@ -140,17 +155,26 @@ main()
 async function main() {
   if (flags['--help']) {
     console.log(`\n$ tamagui ${command}: ${definition.description}\n`)
-    console.log(
-      `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
-    )
+    if ('flags' in definition) {
+      console.log(
+        `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
+      )
+    }
     process.exit(0)
   }
 
-  const { _, ...cmdFlags } = arg(definition.flags)
+  let cmdFlags = {}
+  let cmd: string[] = []
+
+  if ('flags' in definition) {
+    const { _, ...rest } = arg(definition.flags)
+    cmd = _
+    cmdFlags = rest
+  }
 
   // help for any command
   if (cmdFlags['--help']) {
-    console.log(`$ tamagui ${_}
+    console.log(`$ tamagui ${cmd.join(' ')}
 
     Flags: ${JSON.stringify(cmdFlags, null, 2)}
 
@@ -158,8 +182,12 @@ async function main() {
     process.exit(0)
   }
 
-  await definition.run()
-  console.log(`done`)
+  try {
+    await definition.run()
+  } catch (err) {
+    console.log('error running command', err)
+  }
+
   process.exit(0)
 }
 

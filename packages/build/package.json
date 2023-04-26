@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
-    "chokidar": "^3.5.2",
+    "chokidar": "^3.5.3",
     "esbuild": "^0.17.17",
-    "execa": "^5.0.0",
+    "execa": "^7.1.1",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.1.0",
     "get-tsconfig": "^4.5.0",

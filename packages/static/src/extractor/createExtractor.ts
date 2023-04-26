@@ -124,7 +124,9 @@ export function createExtractor(
     },
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
       const projectInfo = loadSync(props)
-      return parseWithConfig(projectInfo, f, props)
+      if (projectInfo) {
+        return parseWithConfig(projectInfo, f, props)
+      }
     },
     parse: async (f: FileOrPath, props: ExtractorParseProps) => {
       const projectInfo = await load(props)

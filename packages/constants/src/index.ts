@@ -33,7 +33,10 @@ export const isTouchable = !isWeb || isWebTouchable
 
 if (!process.env.TAMAGUI_TARGET) {
   // eslint-disable-next-line no-console
-  console.warn(`⚠️ Must set TAMAGUI_TARGET`)
+  console.warn(`⚠️ Must set TAMAGUI_TARGET (set DEBUG=tamagui for stack trace)`)
+  if (process.env.DEBUG?.includes('tamagui')) {
+    console.trace()
+  }
 }
 
 if (process.env.NODE_ENV === 'development') {

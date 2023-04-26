@@ -19,7 +19,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
         optimized: number;
         modified: number;
         found: number;
-    } | null;
+    } | null | undefined;
     parse: (f: FileOrPath, props: ExtractorParseProps) => Promise<{
         styled: number;
         flattened: number;
