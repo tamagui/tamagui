@@ -117,16 +117,6 @@ module.exports = function (name, { defaultConfig }) {
       return {
         beforeFiles: [
           {
-            source: '/:path*',
-            has: [
-              {
-                type: 'host',
-                value: 'studio.tamagui.dev',
-              },
-            ],
-            destination: '/studio-app/:path*',
-          },
-          {
             source: '/api/:path*',
             has: [
               {
@@ -135,6 +125,16 @@ module.exports = function (name, { defaultConfig }) {
               },
             ],
             destination: '/api/:path*',
+          },
+          {
+            source: '/:path*',
+            has: [
+              {
+                type: 'host',
+                value: 'studio.tamagui.dev',
+              },
+            ],
+            destination: '/studio-app/:path*',
           },
         ],
       }
