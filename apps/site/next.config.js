@@ -126,13 +126,11 @@ module.exports = function (name, { defaultConfig }) {
             ],
             destination: '/studio-app/:path*',
           },
-        ],
-        fallback: [
           {
             source: '/studio-app/api/:path*',
             destination: '/api/:path*',
           },
-        ]
+        ],
       }
     },
 
