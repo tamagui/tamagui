@@ -10,6 +10,7 @@ import { ThemeToggle } from '../../components/ThemeToggle'
 import Slide1 from './slide1'
 import Slide2 from './slide2'
 import Slide3 from './slide3'
+import Slide4 from './slide4'
 
 const slideDimensions = {
   width: 1280,
@@ -32,7 +33,7 @@ export default function TamaguiTalk() {
       <YStack fullscreen className="bg-grid" />
       <YStack {...slideDimensions}>
         <RibbonContainer />
-        <Slides slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />
+        <Slides slides={[<Slide1 />, <Slide2 />, <Slide3 />, <Slide4 />]} />
       </YStack>
     </>
   )
@@ -71,7 +72,7 @@ export function Slides(props: { slides: Slides }) {
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable
           key={page}
-          animation="quick"
+          animation="lazy"
           fullscreen
           x={0}
           opacity={1}

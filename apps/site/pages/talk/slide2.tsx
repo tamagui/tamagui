@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="What is Tamagui"
-      theme="blue"
+      theme="orange"
       steps={[
         [
           {

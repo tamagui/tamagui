@@ -2,19 +2,22 @@ import React from 'react'
 import {
   FontSizeTokens,
   H1,
+  H2,
   Paragraph,
   Theme,
   ThemeName,
+  XStack,
   YStack,
   useComposedRefs,
 } from 'tamagui'
 
 import { Code, CodeInline } from './Code'
 import { DocCodeBlock } from './DocsCodeBlock'
-import { useHoverGlow } from './HoverGlow'
+import { DivProps, useHoverGlow } from './HoverGlow'
 
 export type SlideProps = {
   title?: React.ReactNode
+  subTitle?: string
   steps: TextContent[]
   variant?: 1
   theme?: ThemeName
@@ -34,6 +37,10 @@ type TextItem =
       type: 'bullet-point'
       content: TextItem[]
     }
+  | {
+      type: 'split-horizontal'
+      content: TextItem[]
+    }
 
 type TextContent = TextItem[]
 
@@ -45,19 +52,27 @@ export function Slide(props: SlideProps) {
       <YStack fullscreen zi={-1}>
         {glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$10" w="100%" h="100%" p="$12">
-        {Boolean(props.title) && (
-          <H1
-            fontSize={90}
-            lh={120}
-            textShadowColor="$shadowColor"
-            textShadowRadius={10}
-            textShadowOffset={{ height: 10, width: 0 }}
-            als="center"
-          >
-            {props.title}
-          </H1>
-        )}
+      <YStack ref={glows.ref as any} space="$8" w="100%" h="100%" p="$12">
+        <YStack space="$4">
+          {Boolean(props.title) && (
+            <H1
+              fontSize={90}
+              lh={120}
+              textShadowColor="$shadowColor"
+              textShadowRadius={10}
+              textShadowOffset={{ height: 10, width: 0 }}
+              als="center"
+            >
+              {props.title}
+            </H1>
+          )}
+
+          {Boolean(props.subTitle) && (
+            <H2 size="$9" theme="alt2" als="center">
+              {props.subTitle}
+            </H2>
+          )}
+        </YStack>
 
         {props.steps.map((step, index) => {
           return (
@@ -116,11 +131,26 @@ function useGlows(variant: SlideProps['variant']) {
   }
 }
 
-function getTextContent(text: TextContent, { size }: { size?: FontSizeTokens } = {}) {
+function getTextContent(
+  text: TextContent,
+  options: { size?: FontSizeTokens; wrapperStyle?: DivProps['style'] } = {}
+) {
+  const { size, wrapperStyle } = options
   return (
-    <div style={{ display: 'inline-block' }}>
+    <div style={{ display: 'inline-block', ...wrapperStyle }}>
       {text.map((item) => {
         switch (item.type) {
+          case 'split-horizontal':
+            return (
+              <XStack gap="$6">
+                <YStack maw="50%" f={1} ov="hidden">
+                  {getTextContent([item.content[0]], options)}
+                </YStack>
+                <YStack maw="50%" f={1} ov="hidden">
+                  {getTextContent([item.content[1]], options)}
+                </YStack>
+              </XStack>
+            )
           case 'bullet-point':
             return (
               <>
