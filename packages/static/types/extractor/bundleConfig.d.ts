@@ -27,7 +27,7 @@ export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolea
     components: LoadedComponents[];
     nameToPaths: {};
     tamaguiConfig: any;
-} | undefined>;
+} | null | undefined>;
 export declare function bundleConfig(props: TamaguiOptions): Promise<{
     components: LoadedComponents[];
     nameToPaths: {};
