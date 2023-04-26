@@ -120,6 +120,7 @@ export async function bundleConfig(props: TamaguiOptions) {
             entryPoints: [configEntry],
             external,
             outfile: configOutPath,
+            target: 'node16',
           })
         : null,
       ...baseComponents.map((componentModule, i) => {
@@ -128,6 +129,7 @@ export async function bundleConfig(props: TamaguiOptions) {
           resolvePlatformSpecificEntries: true,
           external,
           outfile: componentOutPaths[i],
+          target: 'node16',
         })
       }),
     ])
@@ -153,9 +155,17 @@ export async function bundleConfig(props: TamaguiOptions) {
     // get around node.js's module cache to get the new config...
     delete require.cache[path.resolve(configOutPath)]
 
-    const out = require(configOutPath)
-
+    let out
+    const unregister = registerRequire()
+    try {
+      out = require(configOutPath)
+    } catch (err) {
+      throw err
+    } finally {
+      unregister()
+    }
     const config = out.default || out
+
     if (!config) {
       throw new Error(`No config: ${config}`)
     }
@@ -229,6 +239,9 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
   if (cacheComponents[key]) {
     return cacheComponents[key]
   }
+
+  const unregister = registerRequire()
+
   try {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {
       const extension = extname(name)
@@ -263,19 +276,14 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
-        const unregister = registerRequire()
-        try {
-          const nameToInfo = getComponentStaticConfigByName(
-            name,
-            interopDefaultExport(require(loadModule))
-          )
+        const nameToInfo = getComponentStaticConfigByName(
+          name,
+          interopDefaultExport(require(loadModule))
+        )
 
-          return {
-            moduleName: name,
-            nameToInfo,
-          }
-        } finally {
-          unregister()
+        return {
+          moduleName: name,
+          nameToInfo,
         }
       }
 
@@ -341,6 +349,8 @@ Quiet this warning with environment variable:
   } catch (err: any) {
     console.log(`Tamagui error bundling components`, err.message, err.stack)
     return null
+  } finally {
+    unregister()
   }
 }
 
