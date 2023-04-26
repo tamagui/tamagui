@@ -168,7 +168,6 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberStyle,
     usePresence,
     useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
-      debugger
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       const mergedStyles = style
@@ -184,6 +183,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         >()
       )
+      const animateOnly = props.animateOnly || []
 
       const args = [
         JSON.stringify(mergedStyles),
@@ -191,6 +191,18 @@ export function createAnimations<A extends AnimationsConfig>(
         isExiting,
         !!onDidAnimate,
       ]
+
+      const isThereNoNativeStyleKeys = useMemo(() => {
+        if (isWeb) return true
+
+        return Object.keys(mergedStyles).some((key) => {
+          if (props.animateOnly.length) {
+            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          } else {
+            return !animatedStyleKey[key]
+          }
+        })
+      }, args)
 
       const res = useMemo(() => {
         const runners: Function[] = []
@@ -200,6 +212,10 @@ export function createAnimations<A extends AnimationsConfig>(
         for (const key in mergedStyles) {
           const val = mergedStyles[key]
           if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+          if (animateOnly.length && animateOnly.indexOf(key) === -1) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -268,10 +284,10 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (isColorStyleKey) {
-            const colorState = animationsState.current.get(value)
-            if (colorState?.current !== valIn) {
+            const curInterpolation = animationsState.current.get(value)
+            if (curInterpolation?.current !== valIn) {
               interpolateArgs = getColorInterpolated(
-                colorState?.current as string,
+                curInterpolation?.current as string,
                 // valIn is the new color
                 valIn as string,
                 value['_value']
@@ -299,7 +315,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToVal,
-                  useNativeDriver: !isWeb,
+                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
                   ...animationConfig,
                 })
               }
