@@ -35,6 +35,7 @@ const plugins = [
   // withPreact,
   (config) => {
     return {
+
       ...config,
       webpack(webpackConfig, options) {
         // webpackConfig.optimization.minimize = false
@@ -111,7 +112,7 @@ module.exports = function (name, { defaultConfig }) {
     typescript: {
       ignoreBuildErrors: true,
     },
-
+    assetPrefix: process.env.NODE_ENV === "production" ? "https://tamagui.dev/" : undefined,
     async rewrites() {
       return {
         beforeFiles: [
