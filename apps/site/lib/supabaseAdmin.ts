@@ -45,6 +45,7 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
     metadata: price.metadata,
   }
 
+  // @ts-expect-error
   const { error } = await supabaseAdmin.from('prices').upsert([priceData])
   if (error) throw error
   console.log(`Price inserted/updated: ${price.id}`)
@@ -144,6 +145,7 @@ const manageSubscriptionStatusChange = async (
     trial_end: subscription.trial_end ? toDateTime(subscription.trial_end) : null,
   }
 
+  // @ts-expect-error
   const { error } = await supabaseAdmin.from('subscriptions').upsert([subscriptionData])
   if (error) throw error
   console.log(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
