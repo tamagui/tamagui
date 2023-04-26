@@ -41,11 +41,17 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+const colorStyleKey = {
+  backgroundColor: true,
+  color: true,
+  borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
+}
 // these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
 const costlyToAnimateStyleKey = {
-  backgroundColor: true,
-  borderColor: true,
-  color: true,
   borderRadius: true,
   borderTopLeftRadius: true,
   borderTopRightRadius: true,
@@ -56,17 +62,8 @@ const costlyToAnimateStyleKey = {
   borderRightWidth: true,
   borderTopWidth: true,
   borderBottomWidth: true,
+  ...colorStyleKey,
   // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
-}
-
-const colorStyleKey = {
-  backgroundColor: true,
-  color: true,
-  borderColor: true,
-  borderLeftColor: true,
-  borderRightColor: true,
-  borderTopColor: true,
-  borderBottomColor: true,
 }
 
 export const AnimatedView = Animated.View
@@ -171,6 +168,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberStyle,
     usePresence,
     useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
+      debugger
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       const mergedStyles = style
