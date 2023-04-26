@@ -5601,6 +5601,7 @@ __metadata:
   resolution: "@tamagui/sandbox-ui@workspace:packages/sandbox-ui"
   dependencies:
     "@tamagui/build": 1.16.4
+    "@tamagui/lucide-icons": 1.16.4
     "@tamagui/toast": 1.16.4
     tamagui: 1.16.4
   languageName: unknown

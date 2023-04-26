@@ -1,6 +1,9 @@
-// @ts-ignore
-export * from '@tamagui/lucide-icons'
-// @ts-ignore
+export * as lucideIcons from '@tamagui/lucide-icons'
+
+export { config } from './tamagui.config'
+
+import { config } from './tamagui.config'
+
 export * from 'tamagui'
 // @ts-ignore
 export * from '@tamagui/toast'

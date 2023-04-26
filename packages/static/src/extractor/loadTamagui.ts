@@ -39,14 +39,22 @@ export async function loadTamagui(
     )
     return null
   }
-  if (!hasBundledConfigChanged()) {
-    return bundleInfo
-  }
+
   if (bundleInfo) {
-    await generateTamaguiStudioConfig(props, bundleInfo)
     // init core-node
     createTamagui(bundleInfo.tamaguiConfig)
   }
+
+  if (!hasBundledConfigChanged()) {
+    return bundleInfo
+  }
+
+  try {
+    await generateTamaguiStudioConfig(props, bundleInfo)
+  } catch {
+    // ok for now
+  }
+
   return bundleInfo
 }
 

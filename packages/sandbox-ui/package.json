@@ -18,6 +18,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/lucide-icons": "1.16.4",
     "@tamagui/toast": "1.16.4",
     "tamagui": "1.16.4"
   },
