@@ -34,6 +34,9 @@ export async function loadTamagui(
   const props = getFilledOptions(propsIn)
   const bundleInfo = await getBundledConfig(props)
   if (!bundleInfo) {
+    console.warn(
+      `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
+    )
     return null
   }
   if (!hasBundledConfigChanged()) {
