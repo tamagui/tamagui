@@ -86,6 +86,7 @@
     "rehype-parse": "^8.0.4",
     "rehype-slug": "^5.0.1",
     "seamless-scroll-polyfill": "^1.2.3",
+    "sharp": "^0.32.0",
     "stripe": "^9.1.0",
     "tamagui": "1.16.4",
     "ts-morph": "^15.1.0",
