@@ -215,6 +215,13 @@ export async function bundleConfig(props: TamaguiOptions) {
     currentConfig = res
 
     return res
+  } catch (err: any) {
+    console.log(
+      `Error bundling tamagui config: ${err?.message} (run with DEBUG=tamagui to see stack)`
+    )
+    if (process.env.DEBUG?.includes('tamagui')) {
+      console.log(err.stack)
+    }
   } finally {
     isBundling = false
     waitForBundle.forEach((cb) => cb())

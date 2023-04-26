@@ -62,13 +62,16 @@ async function getDefaultTamaguiConfigPath() {
 let cached: TamaguiProjectInfo | null = null
 export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
-): Promise<TamaguiProjectInfo> => {
-  console.log('load')
-  return (cached ??= await loadTamaguiStatic({
+): Promise<TamaguiProjectInfo | null> => {
+  const loaded = await loadTamaguiStatic({
     config: await getDefaultTamaguiConfigPath(),
     components: ['tamagui'],
     ...opts,
-  }))
+  })
+  if (loaded) {
+    cached = loaded
+  }
+  return loaded
 }
 
 const disposers = new Set<Function>()
