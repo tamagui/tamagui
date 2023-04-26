@@ -2,7 +2,6 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
-import '../app/(protected)/studio/studio.css'
 import '../public/fonts/fonts.css'
 
 // import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -11,7 +10,6 @@ import '../public/fonts/fonts.css'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { startTransition, useMemo } from 'react'
 import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
