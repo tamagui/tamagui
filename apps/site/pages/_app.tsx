@@ -7,7 +7,6 @@ import '../public/fonts/fonts.css'
 
 // import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 // import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
-// import { useSharedAuth } from '@tamagui/site-shared'
 // import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'

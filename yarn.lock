@@ -5772,16 +5772,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/site-shared@1.16.5, @tamagui/site-shared@workspace:packages/site-shared":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/site-shared@workspace:packages/site-shared"
-  dependencies:
-    "@tamagui/build": 1.16.5
-    "@types/babel-core": ^6.25.7
-    vite: ^4.3.0
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
@@ -5814,7 +5804,6 @@ __metadata:
     "@tamagui/polyfill-dev": 1.16.5
     "@tamagui/remove-scroll": 1.16.5
     "@tamagui/shorthands": 1.16.5
-    "@tamagui/site-shared": 1.16.5
     "@tamagui/static": 1.16.5
     "@tamagui/themes": 1.16.5
     "@tamagui/toast": 1.16.5
@@ -6621,54 +6610,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel-core@npm:^6.25.7":
-  version: 6.25.7
-  resolution: "@types/babel-core@npm:6.25.7"
-  dependencies:
-    "@types/babel-generator": "*"
-    "@types/babel-template": "*"
-    "@types/babel-traverse": "*"
-    "@types/babel-types": "*"
-    "@types/babylon": "*"
-  checksum: cb3bd94abbe288bbc1419b8c0188c9d4853de34ff33b03b471f6c5bdccef72e53b672aa168a7028e3ef855501add4afa90f327e5f50b805d8f3e771342980d0d
-  languageName: node
-  linkType: hard
-
-"@types/babel-generator@npm:*":
-  version: 6.25.5
-  resolution: "@types/babel-generator@npm:6.25.5"
-  dependencies:
-    "@types/babel-types": "*"
-  checksum: 5f3985ecef0aae1f692b9554255ad27759389b366efebce6755978407388f5f9844358c20190ff9b79c485822f30676b4e09a04a451f516362651d2f5a5b8ecb
-  languageName: node
-  linkType: hard
-
-"@types/babel-template@npm:*":
-  version: 6.25.2
-  resolution: "@types/babel-template@npm:6.25.2"
-  dependencies:
-    "@types/babel-types": "*"
-    "@types/babylon": "*"
-  checksum: ad4ced1819fbaf7a9ea71a53c9f40cd921bd56d70d27f18ad3a32071dbc40453373a0c8943c1c07fd65ad7e255a5ca620dd827c911ce8f6c56b88ee57efcd823
-  languageName: node
-  linkType: hard
-
-"@types/babel-traverse@npm:*":
-  version: 6.25.7
-  resolution: "@types/babel-traverse@npm:6.25.7"
-  dependencies:
-    "@types/babel-types": "*"
-  checksum: 770f3cf4a4638fd36d82669c2994c8537f23727455f150fedf379df201880444081fea7162208b6019e4c30a68835c703d0446c11c780557ce9192cf27bc1174
-  languageName: node
-  linkType: hard
-
-"@types/babel-types@npm:*":
-  version: 7.0.11
-  resolution: "@types/babel-types@npm:7.0.11"
-  checksum: 9b02719c7cf5062c9ab656a3b4efe3dd79e7a4ab49b5a2ce18d4ec1cb326588a1b40fc03863c24c9dec962f56762c53ed06cdc2a1c241c84e76e54a37a6195fc
-  languageName: node
-  linkType: hard
-
 "@types/babel__generator@npm:^7.6.4":
   version: 7.6.4
   resolution: "@types/babel__generator@npm:7.6.4"
@@ -6684,15 +6625,6 @@ __metadata:
   dependencies:
     "@babel/types": ^7.3.0
   checksum: d20953338b2f012ab7750932ece0a78e7d1645b0a6ff42d49be90f55e9998085da1374a9786a7da252df89555c6586695ba4d1d4b4e88ab2b9f306bcd35e00d3
-  languageName: node
-  linkType: hard
-
-"@types/babylon@npm:*":
-  version: 6.16.6
-  resolution: "@types/babylon@npm:6.16.6"
-  dependencies:
-    "@types/babel-types": "*"
-  checksum: c011e028bc09457b9a488e5ad8bc081b43c0c7919419343eaef95aeda5e5bb825dc93c323af8e60d97373702d94ae006016e7c641a9be24fef0d9f5ecc2e54c0
   languageName: node
   linkType: hard
 
