@@ -116,8 +116,6 @@ module.exports = function (name, { defaultConfig }) {
     async rewrites() {
       return {
         beforeFiles: [
-          // if the host is `studio.tamagui.dev`,
-          // this rewrite will be applied
           {
             source: '/:path*',
             has: [
@@ -127,6 +125,16 @@ module.exports = function (name, { defaultConfig }) {
               },
             ],
             destination: '/studio-app/:path*',
+          },
+          {
+            source: '/api/:path*',
+            has: [
+              {
+                type: 'host',
+                value: 'studio.tamagui.dev',
+              },
+            ],
+            destination: '/api/:path*',
           },
         ],
       }
