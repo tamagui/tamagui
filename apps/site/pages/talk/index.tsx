@@ -9,6 +9,7 @@ import { Button, Spacer, XStack, YStack, styled } from 'tamagui'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import Slide1 from './slide1'
 import Slide2 from './slide2'
+import Slide3 from './slide3'
 
 const slideDimensions = {
   width: 1280,
@@ -31,7 +32,7 @@ export default function TamaguiTalk() {
       <YStack fullscreen className="bg-grid" />
       <YStack {...slideDimensions}>
         <RibbonContainer />
-        <Slides slides={[<Slide1 />, <Slide2 />]} />
+        <Slides slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />
       </YStack>
     </>
   )

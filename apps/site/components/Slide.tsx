@@ -36,18 +36,28 @@ export function Slide(props: SlideProps) {
 
   return (
     <Theme name={props.theme}>
-      <YStack ref={glows.ref as any} space="$8" w="100%" h="100%" p="$12">
-        <YStack fullscreen zi={-1}>
-          {glows.elements}
-        </YStack>
-
-        {Boolean(props.title) && <H1 className="rainbow clip-text">{props.title}</H1>}
+      <YStack fullscreen zi={-1}>
+        {glows.elements}
+      </YStack>
+      <YStack ref={glows.ref as any} space="$10" w="100%" h="100%" p="$12">
+        {Boolean(props.title) && (
+          <H1
+            fontSize={90}
+            lh={120}
+            textShadowColor="$shadowColor"
+            textShadowRadius={10}
+            textShadowOffset={{ height: 10, width: 0 }}
+            als="center"
+          >
+            {props.title}
+          </H1>
+        )}
 
         {props.steps.map((step, index) => {
           return (
             <React.Fragment key={index}>
               {step.bulletPoints && (
-                <YStack space="$4">
+                <YStack space="$10">
                   {step.bulletPoints?.map((point, index) => {
                     return (
                       <React.Fragment key={index}>
@@ -82,6 +92,7 @@ function useGlows(variant: SlideProps['variant']) {
     resist: 90,
     size: 200,
     strategy: 'blur',
+    color: 'var(--color2)',
     blurPct: 10,
     offset: {
       x: 200,

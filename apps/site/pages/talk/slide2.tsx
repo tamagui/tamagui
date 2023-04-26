@@ -20,6 +20,28 @@ export default memo(() => {
                 content: `Style library that unifies React Native and web`,
               },
             ],
+
+            [
+              {
+                type: 'code',
+                content: `@tamagui/static`,
+              },
+              {
+                type: 'text',
+                content: `Optimizing compiler that works with core`,
+              },
+            ],
+
+            [
+              {
+                type: 'code',
+                content: `tamagui`,
+              },
+              {
+                type: 'text',
+                content: `Complete universal component kit`,
+              },
+            ],
           ],
         },
       ]}
