@@ -28,9 +28,14 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
-export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
+export async function loadTamagui(
+  propsIn: TamaguiOptions
+): Promise<TamaguiProjectInfo | null> {
   const props = getFilledOptions(propsIn)
   const bundleInfo = await getBundledConfig(props)
+  if (!bundleInfo) {
+    return null
+  }
   if (!hasBundledConfigChanged()) {
     return bundleInfo
   }

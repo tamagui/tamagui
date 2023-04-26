@@ -10,7 +10,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
         logger: import("../types.js").Logger;
     };
     cleanupBeforeExit: typeof cleanupBeforeExit;
-    loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
+    loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo | null>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
     getTamagui(): import("@tamagui/web").TamaguiInternalConfig | undefined;
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
@@ -26,7 +26,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
         optimized: number;
         modified: number;
         found: number;
-    } | null>;
+    } | null | undefined>;
 };
 export {};
 //# sourceMappingURL=createExtractor.d.ts.map
