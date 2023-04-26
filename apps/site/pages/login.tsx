@@ -11,10 +11,6 @@ import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 
-const loginPageUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://tamagui.dev/login'
-    : 'http://localhost:5005/login'
 const emailAuthDisabledFlag = true
 
 export default function SignInPage() {
@@ -55,7 +51,7 @@ export default function SignInPage() {
         const { error } = await supabaseClient.auth.signInWithOtp({
           email,
           options: {
-            emailRedirectTo: loginPageUrl,
+            emailRedirectTo: `${window.location.origin}/login`,
           },
         })
         if (error) throw error
@@ -76,7 +72,8 @@ export default function SignInPage() {
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: loginPageUrl,
+        redirectTo: `${window.location.origin}/login`,
+        scopes: 'read:org',
       },
     })
     if (error) {
