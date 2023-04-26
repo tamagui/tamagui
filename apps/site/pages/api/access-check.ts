@@ -1,4 +1,5 @@
 import { checkForSponsorship } from '@protected/_utils/github'
+import { siteRootDir } from '@protected/studio/constants'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 import { UserAccessStatus } from 'types'
@@ -15,7 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (!session)
     return res.status(401).json({
       error: 'The user does not have an active session or is not authenticated',
-      action: '/login',
+      action: `${siteRootDir}/login`,
     })
 
   const githubLogin =

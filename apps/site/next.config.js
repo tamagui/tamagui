@@ -112,20 +112,10 @@ module.exports = function (name, { defaultConfig }) {
     typescript: {
       ignoreBuildErrors: true,
     },
-    assetPrefix: process.env.NODE_ENV === "production" ? "https://tamagui.dev/" : undefined,
+    assetPrefix: process.env.NODE_ENV === "production" ? "https://tamagui.dev" : undefined,
     async rewrites() {
       return {
         beforeFiles: [
-          {
-            source: '/api/:path*',
-            has: [
-              {
-                type: 'host',
-                value: 'studio.tamagui.dev',
-              },
-            ],
-            destination: '/api/:path*',
-          },
           {
             source: '/:path*',
             has: [
@@ -137,6 +127,16 @@ module.exports = function (name, { defaultConfig }) {
             destination: '/studio-app/:path*',
           },
         ],
+        fallback: [{
+          source: '/api:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'studio.tamagui.dev',
+            },
+          ],
+          destination: '/api/:path*',
+        },]
       }
     },
 

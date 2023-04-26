@@ -1,5 +1,6 @@
 import { Database } from '@lib/supabase-types'
 import { supabase } from '@lib/supabaseClient'
+import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -118,7 +119,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user && !isLoading && router.isReady) {
-      router.push('/login')
+      router.push(`${siteRootDir}/login`)
     }
   }, [user, isLoading, router])
 
