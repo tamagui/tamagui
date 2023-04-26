@@ -13,13 +13,13 @@ const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: fa
 export const getStudioLayout: GetLayout = (page, pageProps) => {
   return withSupabase(
     <StudioToastProvider>
-      <StudioLayout>
-        <UserGuard>
+      <UserGuard>
+        <StudioLayout>
           <GithubConnectionGuard>
             <SponsorshipGuard>{page}</SponsorshipGuard>
           </GithubConnectionGuard>
-        </UserGuard>
-      </StudioLayout>
+        </StudioLayout>
+      </UserGuard>
     </StudioToastProvider>,
     pageProps
   )
