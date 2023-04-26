@@ -317,7 +317,7 @@ export function createComponent<
           conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
         console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
         if (!isServer) {
-          console.log('info', {
+          console.log({
             props,
             state,
             staticConfig,
@@ -626,8 +626,6 @@ export function createComponent<
         (noClassNames && 'pressStyle' in props) ||
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
-
-    if (props['debug']) console.log('isHoverable', isHoverable)
 
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isRSC && !isDisabled && !asChild
