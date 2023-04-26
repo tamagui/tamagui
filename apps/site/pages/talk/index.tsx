@@ -1,12 +1,14 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { AnimatePresence } from '@tamagui/animate-presence'
+import { TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { ContainerXL } from 'components/Container'
 import { useState } from 'react'
-import { Button, XStack, YStack, styled } from 'tamagui'
+import { Button, Spacer, XStack, YStack, styled } from 'tamagui'
 
+import { ThemeToggle } from '../../components/ThemeToggle'
 import Slide1 from './slide1'
+import Slide2 from './slide2'
 
 const slideDimensions = {
   width: 1280,
@@ -17,10 +19,19 @@ export default function TamaguiTalk() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui App.js Talk" description="Tamagui App.js Talk" />
+      <XStack pos="absolute" t="$0" l="$0" r="$0" p="$4" zi={1000}>
+        <YStack>
+          <TamaguiLogo y={15} x={10} downscale={2} />
+        </YStack>
+
+        <Spacer flex />
+
+        <ThemeToggle borderWidth={0} chromeless />
+      </XStack>
       <YStack fullscreen className="bg-grid" />
       <YStack {...slideDimensions}>
         <RibbonContainer />
-        <Slides slides={[<Slide1 />]} />
+        <Slides slides={[<Slide1 />, <Slide2 />]} />
       </YStack>
     </>
   )
