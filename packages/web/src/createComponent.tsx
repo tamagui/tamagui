@@ -52,7 +52,7 @@ import { Slot } from './views/Slot.js'
 import { Stack } from './views/Stack.js'
 import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
-import { ThemeDebug } from './views/ThemeDebug.js'
+import { ThemeDebug } from './views/ThemeDebug'
 
 // let t
 // import { timer } from '@tamagui/timer'
