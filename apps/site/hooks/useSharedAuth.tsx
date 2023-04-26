@@ -1,19 +1,19 @@
-import { Session, SupabaseClient } from '@supabase/auth-helpers-react'
-import { useEffect, useState } from 'react'
+import { Session, SupabaseClient, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useEffect } from 'react'
 
 const ACCESS_TOKEN_COOKIE = 'tamagui-access-token'
 const REFRESH_TOKEN_COOKIE = 'tamagui-refresh-token'
 /**
- * used to share auth between tamagui.dev and other apps
+ * used to share auth between different subdomains
  */
 export const useSharedAuth = (
-  supabase: SupabaseClient,
   opts?: {
     onAuthenticated?: (session: Session) => void
     onUnauthenticated?: () => void
     onError?: () => void
   }
 ) => {
+    const supabase = useSupabaseClient()
   useEffect(() => {
     const updateAuthIfAvailable = async () => {
       const cookies = document.cookie.split(/\s*;\s*/).map((cookie) => cookie.split('='))

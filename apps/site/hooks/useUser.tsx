@@ -12,6 +12,9 @@ import {
 } from 'react'
 import { Spinner, YStack } from 'tamagui'
 import { UserAccessStatus } from 'types'
+
+import { useSharedAuth } from './useSharedAuth'
+
 type UserContextType = {
   accessToken: string | null
   user: User | null
@@ -53,6 +56,8 @@ export const MyUserContextProvider = (props: Props) => {
   //     .select('*, prices(*, products(*))')
   //     .in('status', ['trialing', 'active'])
   //     .single()
+
+  useSharedAuth()
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
