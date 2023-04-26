@@ -112,19 +112,23 @@ module.exports = function (name, { defaultConfig }) {
       ignoreBuildErrors: true,
     },
 
-    async rewrites() {
-      return [
-        {
-          source: '/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'studio.tamagui.dev',
-            },
-          ],
-          destination: '/studio-app/:path*',
-        },
-      ]
+    rewrites() {
+      return {
+        beforeFiles: [
+          // if the host is `studio.tamagui.dev`,
+          // this rewrite will be applied
+          {
+            source: '/:path*',
+            has: [
+              {
+                type: 'host',
+                value: 'studio.tamagui.dev',
+              },
+            ],
+            destination: '/studio-app/:path*',
+          },
+        ]
+      }
     },
 
     // Next.js config
