@@ -44,6 +44,7 @@ export const MyUserContextProvider = (props: Props) => {
   const { isLoading: isLoadingUser, session } = useSessionContext()
   const supabase = useSupabaseClient<Database>()
 
+  const [authSyncLoading, setAuthSyncLoading] = useState(false)
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)
   // const [subscription, setSubscription] = useState<any>(null)
@@ -58,7 +59,11 @@ export const MyUserContextProvider = (props: Props) => {
   //     .in('status', ['trialing', 'active'])
   //     .single()
 
-  useSharedAuth()
+  useSharedAuth({
+    onAuthenticated: () => {
+      setAuthSyncLoading(true)
+    },
+  })
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
@@ -93,7 +98,7 @@ export const MyUserContextProvider = (props: Props) => {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
     userDetails,
-    isLoading: isLoadingUser || isLoadingData,
+    isLoading: isLoadingUser || isLoadingData || authSyncLoading,
     accessStatus,
     // subscription,
     signout: useCallback(async () => {
