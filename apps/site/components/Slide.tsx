@@ -9,27 +9,33 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
-import { Code } from './Code'
+import { Code, CodeInline } from './Code'
+import { DocCodeBlock } from './DocsCodeBlock'
 import { useHoverGlow } from './HoverGlow'
 
 export type SlideProps = {
   title?: React.ReactNode
-  steps: SlideSteps[]
+  steps: TextContent[]
   variant?: 1
   theme?: ThemeName
 }
 
-type TextItem = {
-  type: 'code' | 'text'
-  content: React.ReactNode
-}
+type TextItem =
+  | {
+      type: 'text'
+      content: React.ReactNode
+    }
+  | {
+      type: 'code' | 'code-inline'
+      content: string
+      lang?: 'tsx'
+    }
+  | {
+      type: 'bullet-point'
+      content: TextItem[]
+    }
 
 type TextContent = TextItem[]
-
-type SlideSteps = {
-  text?: React.ReactNode
-  bulletPoints?: TextContent[]
-}
 
 export function Slide(props: SlideProps) {
   const glows = useGlows(props.variant)
@@ -56,19 +62,13 @@ export function Slide(props: SlideProps) {
         {props.steps.map((step, index) => {
           return (
             <React.Fragment key={index}>
-              {step.bulletPoints && (
-                <YStack space="$10">
-                  {step.bulletPoints?.map((point, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        {getTextContent([{ type: 'text', content: '· ' }, ...point], {
-                          size: '$9',
-                        })}
-                      </React.Fragment>
-                    )
-                  })}
-                </YStack>
-              )}
+              <YStack space="$10">
+                {step.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
+                  )
+                })}
+              </YStack>
             </React.Fragment>
           )
         })}
@@ -116,18 +116,29 @@ function useGlows(variant: SlideProps['variant']) {
   }
 }
 
-function getTextContent(
-  text: TextContent,
-  { size = '$6' }: { size?: FontSizeTokens } = {}
-) {
+function getTextContent(text: TextContent, { size }: { size?: FontSizeTokens } = {}) {
   return (
     <div style={{ display: 'inline-block' }}>
       {text.map((item) => {
         switch (item.type) {
+          case 'bullet-point':
+            return (
+              <>
+                {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
+                  size: size ?? '$9',
+                })}
+              </>
+            )
+          case 'code-inline':
+            return <Code size={size ?? '$9'}>{item.content}&nbsp;</Code>
           case 'code':
-            return <Code size={size}>{item.content}&nbsp;</Code>
+            return (
+              <DocCodeBlock isHighlightingLines size={size ?? '$6'}>
+                {item.content}&nbsp;
+              </DocCodeBlock>
+            )
           case 'text':
-            return <Paragraph size={size}>{item.content}&nbsp;</Paragraph>
+            return <Paragraph size={size ?? '$9'}>{item.content}&nbsp;</Paragraph>
         }
       })}
     </div>

@@ -8,11 +8,12 @@ export default memo(() => {
       title="What is Tamagui"
       theme="blue"
       steps={[
-        {
-          bulletPoints: [
-            [
+        [
+          {
+            type: 'bullet-point',
+            content: [
               {
-                type: 'code',
+                type: 'code-inline',
                 content: `@tamagui/core`,
               },
               {
@@ -20,10 +21,15 @@ export default memo(() => {
                 content: `Style library that unifies React Native and web`,
               },
             ],
+          },
+        ],
 
-            [
+        [
+          {
+            type: 'bullet-point',
+            content: [
               {
-                type: 'code',
+                type: 'code-inline',
                 content: `@tamagui/static`,
               },
               {
@@ -31,10 +37,15 @@ export default memo(() => {
                 content: `Optimizing compiler that works with core`,
               },
             ],
+          },
+        ],
 
-            [
+        [
+          {
+            type: 'bullet-point',
+            content: [
               {
-                type: 'code',
+                type: 'code-inline',
                 content: `tamagui`,
               },
               {
@@ -42,8 +53,8 @@ export default memo(() => {
                 content: `Complete universal component kit`,
               },
             ],
-          ],
-        },
+          },
+        ],
       ]}
     />
   )

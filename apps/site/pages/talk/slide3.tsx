@@ -9,16 +9,30 @@ export default memo(() => {
       title="@tamagui/core"
       theme="green"
       steps={[
-        {
-          bulletPoints: [
-            [
-              {
-                type: 'code',
-                content: `code`,
-              },
-            ],
-          ],
-        },
+        [
+          {
+            type: 'code',
+            content: `import { Text, styled } from '@tamagui/core'
+
+export const Heading = styled(Text, {
+  tag: 'h1',
+  color: '$color',
+  backgroundColor: '$background',
+
+  $small: {
+    fontSize: 18
+  },
+
+  variants: {
+    size: {
+      large: {
+        fontSize: 22,
+      },
+    },
+  },
+})`,
+          },
+        ],
       ]}
     />
   )
