@@ -47,7 +47,10 @@ export function ThemeDebug({
     useEffect(() => {
       themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
-        console.warn(`theme changed`, name)
+        console.warn(
+          `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id}`,
+          name
+        )
       })
     }, [themeState.themeManager])
 
