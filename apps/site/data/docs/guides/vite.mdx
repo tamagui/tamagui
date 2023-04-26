@@ -9,7 +9,9 @@ For a full-featured example, you can reference [the experimental tamagui.dev sit
 
 ### Installation
 
-Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
+1. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed beacause it was breaking metro, webpack or something).
+2. Add `@tamagui/vite-plugin` 
+3. And update your `vite.config.ts`:
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
