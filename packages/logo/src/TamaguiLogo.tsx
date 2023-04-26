@@ -1,6 +1,7 @@
 import { forwardRef, memo, useEffect, useState } from 'react'
 import { Circle, XStack, XStackProps, YStack } from 'tamagui'
 
+import { TamaguiIconSvg } from './TamaguiLogoSvg'
 import { useTint } from './useTint'
 
 type LogoProps = {
@@ -151,12 +152,10 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
         scaleX: -1,
       }}
     >
-      <img
+      <TamaguiIconSvg
         className="tamagui-icon"
         width={450 / 8 / downscale}
         height={420 / 8 / downscale}
-        src={`/tamagui-icon.svg`}
-        alt="Tamagui logo (pixelated duck)"
       />
     </YStack>
   )
