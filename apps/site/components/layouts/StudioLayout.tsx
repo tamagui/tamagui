@@ -1,3 +1,5 @@
+import '../app/(protected)/studio/studio.css'
+
 import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
