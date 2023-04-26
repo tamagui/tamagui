@@ -129,13 +129,7 @@ module.exports = function (name, { defaultConfig }) {
         ],
         fallback: [
           {
-            source: '/api/:path*',
-            has: [
-              {
-                type: 'host',
-                value: 'studio.tamagui.dev',
-              },
-            ],
+            source: '/studio-app/api/:path*',
             destination: '/api/:path*',
           },
         ]
