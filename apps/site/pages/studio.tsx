@@ -94,7 +94,7 @@ const RibbonContainer = () => {
 
   return (
     <YStack
-      o={isLight ? 0.185 : 0.2}
+      o={isLight ? 0.22 : 0.275}
       pos="absolute"
       fullscreen
       scaleX="200%"
