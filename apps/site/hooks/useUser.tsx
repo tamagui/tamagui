@@ -1,5 +1,4 @@
 import { Database } from '@lib/supabase-types'
-import { supabase } from '@lib/supabaseClient'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -82,7 +81,7 @@ export const MyUserContextProvider = (props: Props) => {
       // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
-console.log(session)
+
   const value = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
