@@ -25,7 +25,10 @@ export interface SelectProps {
     name?: string;
     autoComplete?: string;
     size?: SizeTokens;
-    native?: NativeValue;
+    /**
+     * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
+     */
+    native?: NativeValue<'web'>;
 }
 export interface SelectContextValue {
     dir?: Direction;
