@@ -497,7 +497,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
               style={{
                 color: 'var(--color)',
                 // @ts-ignore
-                // appearance: 'none',
+                appearance: 'none',
               }}
             >
               {props.children}
