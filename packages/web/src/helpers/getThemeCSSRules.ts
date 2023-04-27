@@ -1,8 +1,16 @@
 import { simpleHash } from '@tamagui/helpers'
 
 import { THEME_CLASSNAME_PREFIX } from '../constants/constants.js'
-import { Variable, variableToString } from '../createVariable.js'
+import {
+  Variable,
+  getVariable,
+  getVariableValue,
+  getVariableVariable,
+  variableToString,
+} from '../createVariable.js'
 import type { CreateTamaguiProps, ThemeParsed } from '../types.js'
+import { Stack } from '../views/Stack.js'
+import { getSplitStyles } from './getSplitStyles.js'
 import { tokensValueToVariable } from './registerCSSVariable.js'
 
 export function getThemeCSSRules({
@@ -41,11 +49,13 @@ export function getThemeCSSRules({
   }
 
   const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-  const selectorsSet = new Set(
+  const selectorsSetBase = new Set(
     names.map((name) => {
       return `${CNP}${name}`
     })
   )
+
+  const selectorsSet = new Set(selectorsSetBase)
 
   // since we dont specify dark/light in classnames we have to do an awkward specificity war
   // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
@@ -115,9 +125,9 @@ export function getThemeCSSRules({
       const rootSep = isBaseTheme(x) && config.themeClassNameOnRoot ? '' : ' '
       return `:root${rootSep}${x}`
     })
-    .join(', ')
+    .join(',')
 
-  const css = `${selectorsString} {${vars}}`
+  const css = `${selectorsString}{${vars}}`
   cssRuleSets.push(css)
 
   if (config.shouldAddPrefersColorThemes) {
@@ -139,6 +149,21 @@ export function getThemeCSSRules({
   ${themeRules}
 }`
     cssRuleSets.push(prefersMediaSelectors)
+  }
+
+  if (config.selectionStyles) {
+    const selectionSelectors = [...selectorsSetBase]
+      .map((s) => `${s} ::selection`)
+      .join(',')
+    const rules = config.selectionStyles(theme)
+    const styles = Object.entries(rules)
+      .map(
+        ([k, v]) =>
+          `${k === 'backgroundColor' ? 'background' : k}:${getVariableVariable(v as any)}`
+      )
+      .join(';')
+    const css = `${selectionSelectors}{${styles};}`
+    cssRuleSets.push(css)
   }
 
   return cssRuleSets
