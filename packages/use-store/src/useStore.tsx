@@ -661,7 +661,6 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       if (res && cur !== value) {
         // clear getters cache that rely on this
         if (typeof key === 'string') {
-          console.log('clearing getter cache')
           clearGetterCache(key)
         }
         if (process.env.LOG_LEVEL && configureOpts.logLevel !== 'error') {
