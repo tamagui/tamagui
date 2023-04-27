@@ -35,11 +35,16 @@ apps/kitchen-sink/ios
 
 .idea
 
+# just get rid of all env
+# only .env.example should be allowed
+
 .env
-[# local env files
 .env.local
+.env.development
+.env.production
+.env.test
 .env.development.local
-.env.test.localp
+.env.test.local
 .env.production.local
 
 apps/kitchen-sink/ios
