@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { useSyncExternalStore } from 'use-sync-external-store/shim'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useSyncExternalStore,
+} from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -583,7 +588,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       if (key in wrappedActions) {
         return wrappedActions[key]
       }
-      if (passThroughKeys[key]) {
+      if (key in passThroughKeys) {
         return Reflect.get(storeInstance, key)
       }
       if (key === UNWRAP_PROXY) {
@@ -592,8 +597,13 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       if (key === UNWRAP_STORE_INFO) {
         return storeInfo
       }
-      if (disableTracking.get(storeInstance)) {
-        return Reflect.get(storeInstance, key)
+      const trackingDisabled = disableTracking.get(storeInstance)
+      if (!trackingDisabled) {
+        if (storeAccessTrackers.size && !storeAccessTrackers.has(storeInstance)) {
+          for (const t of storeAccessTrackers) {
+            t(storeInstance)
+          }
+        }
       }
       if (typeof key !== 'string') {
         return Reflect.get(storeInstance, key)
@@ -601,19 +611,15 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
 
       // non-actions...
 
-      if (storeAccessTrackers.size && !storeAccessTrackers.has(storeInstance)) {
-        for (const t of storeAccessTrackers) {
-          t(storeInstance)
-        }
-      }
-
       const shouldPrintDebug =
         process.env.NODE_ENV === 'development' && DebugStores.has(constr)
 
-      if (gettersState.isGetting) {
-        gettersState.curGetKeys.add(key)
-      } else {
-        storeInstance[TRACK](key, shouldPrintDebug)
+      if (!trackingDisabled) {
+        if (gettersState.isGetting) {
+          gettersState.curGetKeys.add(key)
+        } else {
+          storeInstance[TRACK](key, shouldPrintDebug)
+        }
       }
 
       if (key in getters) {

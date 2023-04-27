@@ -247,6 +247,13 @@ export type CreateTamaguiProps = {
         };
     };
     /**
+     * Web-only: define text-selection CSS
+     */
+    selectionStyles?: (theme: ThemeParsed) => {
+        backgroundColor?: ColorStyleProp;
+        color?: ColorStyleProp;
+    };
+    /**
      * *Advanced use case* For all CSS extracted views, this has no effect.
      *
      * For SSR compatibility on the web, Tamagui will render once with the settings

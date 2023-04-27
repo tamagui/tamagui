@@ -126,10 +126,6 @@ span._display-1adg3ll > span._display-xoduu5 {
   display: inline;
 }
 
-::selection {
-  background-color: #843cc733;
-}
-
 .paragraph-parent .paragraph {
   margin: 0;
 }
@@ -649,3 +645,21 @@ input, textarea {
 .backdrop-blur {
   backdrop-filter: blur(5px);
 }
+
+
+/* studio */
+
+.anim {
+  transition: all ease 100ms;
+}
+
+.c-target-parent .target {
+  opacity: 0;
+  outline: none;
+}
+
+.c-target-parent[data-dragging=true] .target, 
+.c-target-parent:hover > .target {
+  opacity: 1;
+}
+

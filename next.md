@@ -71,6 +71,9 @@ Ali todos:
 - sorry to keep pulling on the same thread here haha, I've got it close now but I think I must still be doing something wrong, the theme works on the button text if I pass it down to CustomButtonText manually like theme={props.theme}  and use extractable, but when I update it to styleable, all the text goes white—second screenshot (probably inheriting from one of the parent themes I guess?)
   - https://discord.com/channels/909986013848412191/974145843919716412/1100788149501833236
 
+- eventually all of getThemeCSSRules could be done at build-time
+
+
 - CI not failing on type errors in apps/site
 a package.json etc etc + zip file
 

@@ -41,11 +41,8 @@ export function getThemeCSSRules({
   }
 
   const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-  const selectorsSet = new Set(
-    names.map((name) => {
-      return `${CNP}${name}`
-    })
-  )
+  const baseSelectors = names.map((name) => `${CNP}${name}`)
+  const selectorsSet = new Set(baseSelectors)
 
   // since we dont specify dark/light in classnames we have to do an awkward specificity war
   // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
@@ -139,6 +136,18 @@ export function getThemeCSSRules({
   ${themeRules}
 }`
     cssRuleSets.push(prefersMediaSelectors)
+  }
+
+  if (config.selectionStyles) {
+    const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
+    const rules = config.selectionStyles(theme)
+    const styles = Object.entries(rules)
+      .map(
+        ([k, v]) => `${k === 'backgroundColor' ? 'background' : k}:${variableToString(v)}`
+      )
+      .join(';')
+    const css = `${selectionSelectors} {${styles}}`
+    cssRuleSets.push(css)
   }
 
   return cssRuleSets
