@@ -43,7 +43,6 @@
     "@tamagui/polyfill-dev": "1.16.6",
     "@tamagui/remove-scroll": "1.16.6",
     "@tamagui/shorthands": "1.16.6",
-    "@tamagui/site-shared": "1.16.6",
     "@tamagui/themes": "1.16.6",
     "@tamagui/toast": "1.16.6",
     "@tamagui/use-store": "1.16.6",
