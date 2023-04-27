@@ -21,9 +21,6 @@ export default memo(() => {
               },
             ],
           },
-        ],
-
-        [
           {
             type: 'bullet-point',
             content: [
@@ -37,9 +34,6 @@ export default memo(() => {
               },
             ],
           },
-        ],
-
-        [
           {
             type: 'bullet-point',
             content: [

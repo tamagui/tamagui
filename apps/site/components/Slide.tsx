@@ -11,7 +11,7 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
-import { Code, CodeInline } from './Code'
+import { Code } from './Code'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { DivProps, useHoverGlow } from './HoverGlow'
 
@@ -26,7 +26,11 @@ export type SlideProps = {
 type SlideStepItem =
   | {
       type: 'image'
-      src: string
+      image: {
+        width: number
+        height: number
+        src: string
+      }
     }
   | {
       type: 'text'
@@ -81,7 +85,7 @@ export function Slide(props: SlideProps) {
         {props.steps.map((step, index) => {
           return (
             <React.Fragment key={index}>
-              <YStack space="$10">
+              <YStack f={1} space="$10">
                 {step.map((item, index) => {
                   return (
                     <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
@@ -141,20 +145,33 @@ function getTextContent(
 ) {
   const { size, wrapperStyle } = options
   return (
-    <div style={{ display: 'inline-block', ...wrapperStyle }}>
+    <div
+      style={{
+        display: 'inline-block',
+        ...wrapperStyle,
+      }}
+    >
       {text.map((item) => {
         switch (item.type) {
+          case 'image':
+            return (
+              <img
+                style={{ width: item.image.width * 0.5, height: item.image.height * 0.5 }}
+                src={item.image.src}
+              />
+            )
           case 'split-horizontal':
             return (
-              <XStack gap="$6">
-                <YStack maw="50%" f={1} ov="hidden">
+              <XStack h="100%" ai="center" f={1} gap="$6">
+                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[0]], options)}
                 </YStack>
-                <YStack maw="50%" f={1} ov="hidden">
+                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[1]], options)}
                 </YStack>
               </XStack>
             )
+
           case 'bullet-point':
             return (
               <>
