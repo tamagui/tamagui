@@ -12,6 +12,7 @@ import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
+import Slide6 from './slides/slide6'
 
 const slideDimensions = {
   width: 1280,
@@ -34,7 +35,16 @@ export default function TamaguiTalk() {
       <YStack fullscreen className="bg-grid" />
       <YStack {...slideDimensions}>
         <RibbonContainer />
-        <Slides slides={[<Slide1 />, <Slide2 />, <Slide3 />, <Slide4 />, <Slide5 />]} />
+        <Slides
+          slides={[
+            <Slide1 />,
+            <Slide2 />,
+            <Slide3 />,
+            <Slide4 />,
+            <Slide5 />,
+            <Slide6 />,
+          ]}
+        />
       </YStack>
     </>
   )

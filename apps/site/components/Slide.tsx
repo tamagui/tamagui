@@ -174,11 +174,11 @@ function getTextContent(
 
           case 'bullet-point':
             return (
-              <>
+              <YStack pl="$8" pt="$4" mb="$-4">
                 {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                   size: size ?? '$9',
                 })}
-              </>
+              </YStack>
             )
           case 'code-inline':
             return <Code size={size ?? '$9'}>{item.content}&nbsp;</Code>
