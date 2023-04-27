@@ -484,45 +484,25 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
     const content = (function () {
-      const extras = getVariantExtras(props)
       if (context.shouldRenderWebNative) {
-        const nativeIcon = (
-          <YStack
-            position="absolute"
-            right={0}
-            top={0}
-            bottom={0}
-            alignItems="center"
-            justifyContent="center"
-            width={getVariableValue(extras.tokens.space[size]) + 20}
-            pointerEvents="none"
-          >
-            <ChevronDown size={getFontSize(size)} />
-          </YStack>
-        )
         return (
-          <XStack>
-            <NativeSelectFrame asChild size={size} value={context.value}>
-              <NativeSelectTextFrame
-                // @ts-ignore it's ok since tag="select"
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                  context.onChange(event.currentTarget.value)
-                }}
-                size={size}
-                ref={nativeSelectRef}
-                style={{
-                  color: 'var(--color)',
-                  // @ts-ignore
-                  appearance: 'none',
-                  cursor: 'inherit',
-                }}
-              >
-                {props.children}
-              </NativeSelectTextFrame>
-            </NativeSelectFrame>
-
-            {nativeIcon}
-          </XStack>
+          <NativeSelectFrame asChild size={size} value={context.value}>
+            <NativeSelectTextFrame
+              // @ts-ignore it's ok since tag="select"
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                context.onChange(event.currentTarget.value)
+              }}
+              size={size}
+              ref={nativeSelectRef}
+              style={{
+                color: 'var(--color)',
+                // @ts-ignore
+                // appearance: 'none',
+              }}
+            >
+              {props.children}
+            </NativeSelectTextFrame>
+          </NativeSelectFrame>
         )
       }
       return (
