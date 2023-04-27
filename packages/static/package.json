@@ -52,6 +52,7 @@
     "fs-extra": "^11.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
+    "react-native-web": "^0.18.10",
     "react-native-web-internals": "1.16.5",
     "react-native-web-lite": "1.16.5"
   },
@@ -73,15 +74,11 @@
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
-    "react-native-web": "^0.18.10",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.1",
     "typescript": "^5.0.4",
     "vitest": "^0.26.3",
     "webpack": "^5.74.0"
-  },
-  "peerDependencies": {
-    "react-native-web": "*"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
