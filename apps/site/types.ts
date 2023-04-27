@@ -1,3 +1,4 @@
+import { GithubSponsorshipStatus } from '@protected/_utils/github'
 import Stripe from 'stripe'
 
 export interface PageMeta {
@@ -75,5 +76,20 @@ export type UserAccessStatus = {
   isSponsor: boolean
   access: {
     studio: boolean
+  }
+  githubStatus: {
+    orgs: {
+      isSponsoring: boolean
+      tierIncludesStudio: boolean
+
+      id: string
+      login: string
+      avatarUrl: string
+      name: string
+    }[]
+    personal?: {
+      isSponsoring: boolean
+      tierIncludesStudio: boolean
+    }
   }
 }

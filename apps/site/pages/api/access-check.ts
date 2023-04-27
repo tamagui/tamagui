@@ -13,6 +13,8 @@ const handler: NextApiHandler = async (req, res) => {
     data: { session },
   } = await supabase.auth.getSession()
 
+  const userGithubToken = session?.provider_token
+
   if (!session)
     return res.status(401).json({
       error: 'The user does not have an active session or is not authenticated',
@@ -20,26 +22,34 @@ const handler: NextApiHandler = async (req, res) => {
     })
 
   const githubLogin =
-    session.user.app_metadata.provider === 'github'
-      ? session.user.user_metadata.user_name
-      : session.user?.identities?.find((identity) => identity.provider === 'github')
-          ?.identity_data?.user_name
-
-  if (!githubLogin) {
+    session.user.user_metadata.user_name ??
+    session.user?.identities?.find((identity) => identity.provider === 'github')
+      ?.identity_data?.user_name
+  if (
+    session.user.app_metadata.provider !== 'github' ||
+    !githubLogin ||
+    !userGithubToken
+  ) {
     res.status(403).json({
       error: 'No GitHub connection found.',
       action: '/account',
     })
+    return
   }
-  const { isSponsoring, tierIncludesStudio } = await checkForSponsorship(githubLogin)
+
+  const { orgs, personal } = await checkForSponsorship(githubLogin, userGithubToken)
   const isWhitelisted = usernameWhitelist.includes(githubLogin)
+  const isSponsor = !!personal?.isSponsoring || orgs.some((org) => org.isSponsoring)
+  const accessStudio =
+    !!personal?.tierIncludesStudio || orgs.some((org) => org.tierIncludesStudio)
 
   res.json({
     access: {
-      studio: tierIncludesStudio,
+      studio: accessStudio,
     },
-    isSponsor: isSponsoring,
+    isSponsor,
     isWhitelisted,
+    githubStatus: { orgs, personal },
   } satisfies UserAccessStatus)
 }
 
