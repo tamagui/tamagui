@@ -131,14 +131,24 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   }
 
 export const DialogPortalFrame = styled(YStack, {
-  alignItems: 'center',
-  justifyContent: 'center',
-  fullscreen: true,
-  zIndex: 100,
-  ...(isWeb && {
-    maxHeight: '100vh',
-    position: 'fixed' as any,
-  }),
+  variants: {
+    unstyled: {
+      false: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        fullscreen: true,
+        zIndex: 100_000,
+        ...(isWeb && {
+          maxHeight: '100vh',
+          position: 'fixed' as any,
+        }),
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
@@ -310,11 +320,6 @@ const CONTENT_NAME = 'DialogContent'
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   tag: 'dialog',
-  position: 'relative',
-  backgrounded: true,
-  padded: true,
-  radiused: true,
-  elevate: true,
 
   variants: {
     size: {
@@ -322,10 +327,22 @@ const DialogContentFrame = styled(ThemeableStack, {
         return {}
       },
     },
+
+    unstyled: {
+      false: {
+        position: 'relative',
+        backgrounded: true,
+        padded: true,
+        radiused: true,
+        elevate: true,
+        zIndex: 100_000,
+      },
+    },
   } as const,
 
   defaultVariants: {
     size: '$true',
+    unstyled: false,
   },
 })
 
