@@ -2,28 +2,20 @@ import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
-  NativeValue,
   TamaguiElement,
-  getVariable,
   getVariableValue,
-  getVariableVariable,
-  getVariantExtras,
   isWeb,
   styled,
   useGet,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
-import { getFontSize } from '@tamagui/font-size'
-import { getFontSized } from '@tamagui/get-font-sized'
 import { getSpace } from '@tamagui/helpers-tamagui'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
-import { ChevronDown } from '@tamagui/lucide-icons'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { SizableStack, ThemeableStack, XStack, YStack } from '@tamagui/stacks'
-import * as stackVariants from '@tamagui/stacks/src/variants'
+import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
