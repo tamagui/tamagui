@@ -26,8 +26,6 @@ export const getConfig = () => {
   return conf
 }
 
-export const getConfigIfDefined = () => conf
-
 let cached: TokensMerged
 export const getTokens = ({
   prefixed,

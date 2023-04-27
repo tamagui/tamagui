@@ -5,7 +5,7 @@
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 
-import { getConfigIfDefined } from '../config.js'
+import { getConfig } from '../config.js'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types.js'
 import { defaultOffset } from './defaultOffset.js'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
@@ -57,7 +57,7 @@ const generateAtomicStyles = (
   styleIn: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
-  conf = conf || getConfigIfDefined()
+  conf = conf || getConfig()
 
   // were converting to css styles
   const style = styleIn as Record<string, string | null | undefined>
@@ -96,7 +96,7 @@ const generateAtomicStyles = (
     }
 
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-    const shortProp = conf?.inverseShorthands[key] || key
+    const shortProp = conf.inverseShorthands[key] || key
     const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
     const rules = createAtomicRules(identifier, key, value, pseudo)
     const styleObject: StyleObject = {

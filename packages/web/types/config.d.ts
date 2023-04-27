@@ -2,7 +2,6 @@ import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js'
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;
-export declare const getConfigIfDefined: () => TamaguiInternalConfig | null;
 export declare const getTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix
