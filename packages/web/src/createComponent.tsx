@@ -921,6 +921,7 @@ export function createComponent<
       },
       res
     )
+    Component.styleable = styleable
   }
 
   function extractable(Component, conf?: Partial<StaticConfig>) {

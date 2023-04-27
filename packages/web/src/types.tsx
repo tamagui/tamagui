@@ -893,6 +893,18 @@ export type TextProps = TextNonStyleProps & TextStyleProps
 // StaticComponent
 //
 
+type Styleable<Props, Ref> = <
+  CustomProps extends Object,
+  X extends FunctionComponent<Props & CustomProps> = FunctionComponent<
+    Props & CustomProps
+  >
+>(
+  a: X
+) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
+  staticConfig: StaticConfigParsed
+  styleable: Styleable<Props, Ref>
+}
+
 export type TamaguiComponent<
   Props = any,
   Ref = any,
@@ -911,14 +923,7 @@ type StaticComponentObject<Props, Ref> = {
   /*
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */
-  styleable: <
-    CustomProps extends Object,
-    X extends FunctionComponent<Props & CustomProps> = FunctionComponent<
-      Props & CustomProps
-    >
-  >(
-    a: X
-  ) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref>
+  styleable: Styleable<Props, Ref>
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
