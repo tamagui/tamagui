@@ -478,6 +478,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
     const content = (function () {
       if (context.shouldRenderWebNative) {
         return (
+          // @ts-expect-error until we support typing based on tag
           <NativeSelectFrame asChild size={size} value={context.value}>
             <NativeSelectTextFrame
               // @ts-ignore it's ok since tag="select"

@@ -99,7 +99,7 @@ export function MySelect(props: SelectProps) {
                 width={'$4'}
                 pointerEvents="none"
               >
-                <ChevronDown size={getFontSize(props.size ?? '$true')} />
+                <ChevronDown size={getFontSize((props.size ?? '$true') as any)} />
               </YStack>
             )}
           </XStack>
