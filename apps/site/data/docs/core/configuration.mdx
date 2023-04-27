@@ -555,5 +555,12 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       default: false,
       description: `Will remove the type for the long-form versions of any shorthands you define.`,
     },
+    {
+      name: 'selectionStyles',
+      required: false,
+      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+      default: false,
+      description: `On the web, will generate ::selection styles for text selection.`,
+    },
   ]}
 />
