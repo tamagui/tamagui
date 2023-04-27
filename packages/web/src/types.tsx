@@ -893,7 +893,7 @@ export type TextProps = TextNonStyleProps & TextStyleProps
 // StaticComponent
 //
 
-type Styleable<Props, Ref> = <
+export type Styleable<Props, Ref> = <
   CustomProps extends Object,
   X extends FunctionComponent<Props & CustomProps> = FunctionComponent<
     Props & CustomProps
