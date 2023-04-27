@@ -1,13 +1,12 @@
+import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
-
-import { Slide } from '../../components/Slide'
 
 export default memo(() => {
   return (
     <Slide
-      title="@tamagui/static"
-      subTitle="Optimizing compiler"
+      title="Tamagui"
+      subTitle="Universal UI kit"
       theme="green"
       steps={[
         [

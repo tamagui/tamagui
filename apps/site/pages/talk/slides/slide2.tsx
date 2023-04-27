@@ -1,6 +1,5 @@
+import { Slide } from 'components/Slide'
 import { memo } from 'react'
-
-import { Slide } from '../../components/Slide'
 
 export default memo(() => {
   return (
