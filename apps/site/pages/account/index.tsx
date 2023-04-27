@@ -22,8 +22,7 @@ import {
 } from 'tamagui'
 
 export default function Page() {
-  const { isLoading, userDetails, accessStatus } = useUser()
-  const supabaseClient = useSupabaseClient()
+  const { isLoading, userDetails, accessStatus, signout } = useUser()
 
   if (isLoading) {
     return <Spinner my="$10" />
@@ -47,7 +46,7 @@ export default function Page() {
 
       <Button
         onPress={() => {
-          supabaseClient.auth.signOut()
+          signout()
         }}
       >
         Logout
