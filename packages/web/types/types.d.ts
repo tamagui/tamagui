@@ -247,6 +247,13 @@ export type CreateTamaguiProps = {
         };
     };
     /**
+     * Web-only: define text-selection CSS
+     */
+    selectionStyles?: (theme: ThemeParsed) => {
+        backgroundColor?: ColorStyleProp;
+        color?: ColorStyleProp;
+    };
+    /**
      * *Advanced use case* For all CSS extracted views, this has no effect.
      *
      * For SSR compatibility on the web, Tamagui will render once with the settings
@@ -468,10 +475,12 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject & ParentStaticProperties;
-type StaticComponentObject = {
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties;
+type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfigParsed;
+    /** @deprecated use `styleable` instead (same functionality, better name) */
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
+    styleable: <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref>;
 };
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
@@ -550,7 +559,7 @@ export type StaticConfigPublic = {
     acceptsClassName?: boolean;
 };
 type StaticConfigBase = StaticConfigPublic & {
-    Component?: FunctionComponent<any> & StaticComponentObject;
+    Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
     variants?: GenericVariantDefinitions;
     /**
      * Used for applying sub theme style

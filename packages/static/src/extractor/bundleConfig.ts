@@ -56,16 +56,16 @@ export const esbuildOptions = {
 export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>
 
 // will use cached one if watching
-let currentConfig: BundledConfig
+let currentBundle: BundledConfig | null = null
 let isBundling = false
+let lastBundle: BundledConfig | null = null
 const waitForBundle = new Set<Function>()
 
-let last: BundledConfig | undefined
 export async function hasBundledConfigChanged() {
-  if (last === currentConfig) {
+  if (lastBundle === currentBundle) {
     return false
   }
-  last = currentConfig
+  lastBundle = currentBundle
   return true
 }
 
@@ -74,10 +74,10 @@ export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
     await new Promise((res) => {
       waitForBundle.add(res)
     })
-  } else if (!currentConfig || rebuild) {
-    await bundleConfig(props)
+  } else if (!currentBundle || rebuild) {
+    return await bundleConfig(props)
   }
-  return currentConfig
+  return currentBundle
 }
 
 export async function bundleConfig(props: TamaguiOptions) {
@@ -86,9 +86,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     const configEntry = props.config ? join(process.cwd(), props.config) : ''
     const tmpDir = join(process.cwd(), '.tamagui')
-
     const configOutPath = join(tmpDir, `tamagui.config.cjs`)
-
     const baseComponents = props.components.filter((x) => x !== '@tamagui/core')
     const componentOutPaths = baseComponents.map((componentModule) =>
       join(
@@ -122,6 +120,7 @@ export async function bundleConfig(props: TamaguiOptions) {
             entryPoints: [configEntry],
             external,
             outfile: configOutPath,
+            target: 'node16',
           })
         : null,
       ...baseComponents.map((componentModule, i) => {
@@ -130,6 +129,7 @@ export async function bundleConfig(props: TamaguiOptions) {
           resolvePlatformSpecificEntries: true,
           external,
           outfile: componentOutPaths[i],
+          target: 'node16',
         })
       }),
     ])
@@ -155,9 +155,17 @@ export async function bundleConfig(props: TamaguiOptions) {
     // get around node.js's module cache to get the new config...
     delete require.cache[path.resolve(configOutPath)]
 
-    const out = require(configOutPath)
-
+    let out
+    const unregister = registerRequire()
+    try {
+      out = require(configOutPath)
+    } catch (err) {
+      throw err
+    } finally {
+      unregister()
+    }
     const config = out.default || out
+
     if (!config) {
       throw new Error(`No config: ${config}`)
     }
@@ -183,10 +191,6 @@ export async function bundleConfig(props: TamaguiOptions) {
           )} in ${JSON.stringify(componentOutPaths)}`
         )
       }
-
-      // if (!component.moduleName) {
-      //   throw new Error(`Tamagui internal err`)
-      // }
     }
 
     // always load core so we can optimize if directly importing
@@ -212,9 +216,16 @@ export async function bundleConfig(props: TamaguiOptions) {
       tamaguiConfig: config,
     }
 
-    currentConfig = res
+    currentBundle = res
 
     return res
+  } catch (err: any) {
+    console.log(
+      `Error bundling tamagui config: ${err?.message} (run with DEBUG=tamagui to see stack)`
+    )
+    if (process.env.DEBUG?.includes('tamagui')) {
+      console.log(err.stack)
+    }
   } finally {
     isBundling = false
     waitForBundle.forEach((cb) => cb())
@@ -228,6 +239,9 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
   if (cacheComponents[key]) {
     return cacheComponents[key]
   }
+
+  const unregister = registerRequire()
+
   try {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {
       const extension = extname(name)
@@ -262,19 +276,14 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
-        const unregister = registerRequire()
-        try {
-          const nameToInfo = getComponentStaticConfigByName(
-            name,
-            interopDefaultExport(require(loadModule))
-          )
+        const nameToInfo = getComponentStaticConfigByName(
+          name,
+          interopDefaultExport(require(loadModule))
+        )
 
-          return {
-            moduleName: name,
-            nameToInfo,
-          }
-        } finally {
-          unregister()
+        return {
+          moduleName: name,
+          nameToInfo,
         }
       }
 
@@ -340,6 +349,8 @@ Quiet this warning with environment variable:
   } catch (err: any) {
     console.log(`Tamagui error bundling components`, err.message, err.stack)
     return null
+  } finally {
+    unregister()
   }
 }
 

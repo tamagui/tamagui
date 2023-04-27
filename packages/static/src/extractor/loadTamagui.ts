@@ -28,15 +28,33 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
-export async function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo> {
+export async function loadTamagui(
+  propsIn: TamaguiOptions
+): Promise<TamaguiProjectInfo | null> {
   const props = getFilledOptions(propsIn)
   const bundleInfo = await getBundledConfig(props)
+  if (!bundleInfo) {
+    console.warn(
+      `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
+    )
+    return null
+  }
+
+  if (bundleInfo) {
+    // init core-node
+    createTamagui(bundleInfo.tamaguiConfig)
+  }
+
   if (!hasBundledConfigChanged()) {
     return bundleInfo
   }
-  await generateTamaguiStudioConfig(props, bundleInfo)
-  // init core-node
-  createTamagui(bundleInfo.tamaguiConfig)
+
+  try {
+    await generateTamaguiStudioConfig(props, bundleInfo)
+  } catch {
+    // ok for now
+  }
+
   return bundleInfo
 }
 
@@ -128,8 +146,11 @@ export async function getOptions({
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
-  if (!(await fs.pathExists(tsConfigFilePath)))
+
+  if (!(await fs.pathExists(tsConfigFilePath))) {
     throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
+  }
+
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 
@@ -142,10 +163,8 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       components: ['tamagui'],
-      config: await getDefaultTamaguiConfigPath(
-        tamaguiOptions?.config ? [tamaguiOptions?.config] : undefined
-      ),
       ...tamaguiOptions,
+      config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),
     },
     paths: {
       dotDir,
@@ -169,19 +188,27 @@ export function resolveWebOrNativeSpecificEntry(entry: string) {
 }
 
 const defaultPaths = ['tamagui.config.ts', join('src', 'tamagui.config.ts')]
-let cachedPath = ''
+let hasWarnedOnce = false
 
-async function getDefaultTamaguiConfigPath(addedPaths?: string[]) {
-  const searchPaths = addedPaths ? defaultPaths.concat(addedPaths) : defaultPaths
-  if (cachedPath) return cachedPath
-  const existingPaths = await Promise.all(searchPaths.map((path) => pathExists(path)))
-  const existing = existingPaths.findIndex((x) => !!x)
-  const found = defaultPaths[existing]
-  if (!found) {
-    throw new Error(`No found tamagui.config.ts`)
+async function getDefaultTamaguiConfigPath(root: string, configPath?: string) {
+  const searchPaths = [
+    ...new Set(
+      [configPath, ...defaultPaths].filter(Boolean).map((p) => join(root, p as string))
+    ),
+  ]
+
+  for (const path of searchPaths) {
+    if (await pathExists(path)) {
+      return path
+    }
   }
-  cachedPath = found
-  return found
+
+  if (!hasWarnedOnce) {
+    hasWarnedOnce = true
+    console.warn(`Warning: couldn't find tamagui.config.ts in the following paths given configuration "${configPath}":
+    ${searchPaths.join(`\n  `)}
+  `)
+  }
 }
 
 export { TamaguiProjectInfo }

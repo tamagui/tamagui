@@ -710,8 +710,7 @@ const SheetImplementation = themeable(
     }
 
     return contents
-  }),
-  { componentName: 'Sheet' }
+  })
 )
 
 const SheetInsideSheetContext = createContext<((hasChild: boolean) => void) | null>(null)

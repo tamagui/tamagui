@@ -16,6 +16,10 @@ export async function generateTypes(options: CLIResolvedOptions) {
 export async function getTypes(options: CLIResolvedOptions) {
   const tamagui = await loadTamagui(options.tamaguiOptions)
 
+  if (!tamagui) {
+    throw new Error(`No tamagui config`)
+  }
+
   const uniqueViewExportingPaths = new Set(
     Object.keys(tamagui.nameToPaths).map((name) => {
       return `${[...tamagui.nameToPaths[name]][0]}.ts*`

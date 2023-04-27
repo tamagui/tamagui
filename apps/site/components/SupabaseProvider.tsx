@@ -1,3 +1,4 @@
+import { Database } from '@lib/supabase-types'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
@@ -14,14 +15,14 @@ export const SupabaseProvider = ({
   children: React.ReactNode
 }) => {
   const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient({
-      // cookieOptions: {
-      //   domain: 'localhost',
-      //   maxAge: '100000000',
-      //   path: '/',
-      //   sameSite: 'Lax',
-      //   secure: 'secure',
-      // },
+    createBrowserSupabaseClient<Database>({
+      cookieOptions: {
+        domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
+        maxAge: '100000000',
+        path: '/',
+        sameSite: 'Lax',
+        secure: 'secure',
+      },
     })
   )
   return (

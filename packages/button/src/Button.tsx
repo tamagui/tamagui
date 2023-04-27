@@ -240,16 +240,10 @@ const buttonStaticConfig = {
   ]),
 }
 
-const Button = withStaticProperties(
-  ButtonFrame.extractable(
-    themeable(ButtonComponent, ButtonFrame.staticConfig),
-    buttonStaticConfig
-  ),
-  {
-    Text: ButtonTextComponent,
-    Icon: ButtonIcon,
-  }
-)
+const Button = withStaticProperties(ButtonFrame.styleable<ButtonProps>(ButtonComponent), {
+  Text: ButtonTextComponent,
+  Icon: ButtonIcon,
+})
 
 function useButton(
   propsIn: ButtonProps,

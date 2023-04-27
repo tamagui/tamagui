@@ -2,6 +2,7 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
@@ -110,6 +111,12 @@ export const config = {
     silkscreen: silkscreenFont,
   },
 }
+
+// @ts-ignore
+config.selectionStyles = (theme) => ({
+  backgroundColor: theme.color5,
+  color: theme.color11,
+})
 
 // @ts-ignore bad types
 config.mediaQueryDefaultActive = mediaQueryDefaultActive

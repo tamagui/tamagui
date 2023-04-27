@@ -10,7 +10,7 @@ globalThis['ogRequire'] = og
 export const getNameToPaths = () => nameToPaths
 
 export function registerRequire() {
-  if (Module.prototype.require !== globalThis['ogRequire']) {
+  if (Module.prototype.require['isTamaguiRequire']) {
     // already registered
     return () => {}
   }
@@ -20,7 +20,7 @@ export function registerRequire() {
   const rnw = require('react-native-web')
   const core = require('@tamagui/core-node')
 
-  Module.prototype.require = function (path: string) {
+  function tamaguiRequire(this: any, path: string) {
     if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/.test(path)) {
       return {}
     }
@@ -33,13 +33,18 @@ export function registerRequire() {
       return proxyWorm
     }
     if (
-      path.startsWith('react-native') &&
-      // allow our rnw.tsx imports through
-      !path.startsWith('react-native-web/dist/cjs/exports'.replace(/\//g, sep))
+      path === 'react-native-web-lite' ||
+      (path.startsWith('react-native') &&
+        // allow our rnw.tsx imports through
+        !path.startsWith('react-native-web/dist/cjs/exports'.replace(/\//g, sep)))
     ) {
       return rnw
     }
-    if (path === '@tamagui/core' || path === '@tamagui/web') {
+    if (
+      path === '@tamagui/core' ||
+      path === '@tamagui/core-node' ||
+      path === '@tamagui/web'
+    ) {
       return core
     }
     try {
@@ -93,6 +98,10 @@ export function registerRequire() {
       return proxyWorm
     }
   }
+
+  tamaguiRequire['isTamaguiRequire'] = true
+
+  Module.prototype.require = tamaguiRequire
 
   return () => {
     // unregister

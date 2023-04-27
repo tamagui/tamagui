@@ -1,4 +1,14 @@
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToast } from '@my/ui'
+import {
+  Anchor,
+  Button,
+  H1,
+  Paragraph,
+  Separator,
+  Sheet,
+  XStack,
+  YStack,
+  useToastController,
+} from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
@@ -47,7 +57,8 @@ export function HomeScreen() {
 function SheetDemo() {
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState(0)
-  const toast = useToast()
+  const toast = useToastController()
+
   return (
     <>
       <Button

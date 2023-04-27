@@ -1,3 +1,13 @@
+high level:
+
+  - improve tests and docs
+  - make themes and sizing easier, simpler, better documented, more controllable
+  - headless
+  - studio
+  - takeout
+
+---
+
 Ali todos:
   - [ ] site:
     - [x] github auth redirects to localhost in prod
@@ -54,9 +64,18 @@ Ali todos:
   - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
   - [ ] low prio: toast viewport issue
 
---------
+---
 
 # Backlog
+
+- eventually all of getThemeCSSRules could be done at build-time
+
+- CI not failing on type errors in apps/site
+a package.json etc etc + zip file
+
+- export * from lucide icons in your ui package causes build error
+
+- Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
 
 - @alt Sheet inside Popover breaks css animation:
   - https://tamagui.dev/docs/components/popover
@@ -76,12 +95,16 @@ Ali todos:
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
 
+- Studio: drag and drop a font and you can configure the subset
+  - automatically converts to the right output formats
+  - auto generates CSS
+  - bundles it into 
+
 - [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
 
 - [ ] double render on new button - waiting for fernando's opinion (fernando may do low prio)
-- [ ] supabase local -> staging -> prod and migrations setup
 
-- starter is warning "no TAMAGUI_TARGET"
+- [ ] supabase local -> staging -> prod and migrations setup
 
 - `tama doctor`
   - probably use @manypky internally
@@ -223,7 +246,6 @@ Ali:
     - [x] maybe make all state go into one useState({ intentAt, activeAt, tab })
   - [x] Trigger => Tab (deprecate)
   - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
-- [ ] lets make Card.extractable into Card.stylable() and deprecate it
   - [ ] and document on styled() page
 - native component modes
   - [ ] `RadioGroup`, `Select` native (web)
@@ -239,12 +261,17 @@ Ali:
 
 Nate:
 
+PR
+
+  - release hoverglow
+  - release use-store
+  - tabs demo
+  - animated colors demo
+  - studio preview video
+  - plus studio landing page with invite system
+
 - refactor getSplitStyles to share getSubStyle / logic with main style logic
 
-- [x] check if bug:
-  - one shouldn't work `<YStack onPress><Pressable onPress /></YStack>` - ali: I confirm this works
-  - should work `<YStack><Pressable onPress /></YStack>` - ali: I confirm this works
-  - result: Pressable is not supported on web since we don't implement usePressability and Pressability - moving it to your section
 ---
 
 - site polish: 
@@ -608,7 +635,7 @@ const SkeletonVariants = composeVariantProviders(MySquare)
 
 ---
 
-# Psuedo Element Styles
+# Pseudo Element Styles
 
 - beforeStyles + afterStyles array
 - display: flex

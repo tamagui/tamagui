@@ -24,6 +24,7 @@ import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticCon
 import { useSplitStyles } from './helpers/getSplitStyles.js'
 import { mergeProps } from './helpers/mergeProps.js'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables.js'
+import { themeable } from './helpers/themeable.js'
 import { useShallowSetState } from './helpers/useShallowSetState.js'
 import { useAnimationDriver } from './hooks/useAnimationDriver.js'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia.js'
@@ -51,7 +52,7 @@ import { Slot } from './views/Slot.js'
 import { Stack } from './views/Stack.js'
 import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
-import { ThemeDebug } from './views/ThemeDebug.js'
+import { ThemeDebug } from './views/ThemeDebug'
 
 // let t
 // import { timer } from '@tamagui/timer'
@@ -316,7 +317,7 @@ export function createComponent<
           conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
         console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
         if (!isServer) {
-          console.log('info', {
+          console.log({
             props,
             state,
             staticConfig,
@@ -626,8 +627,6 @@ export function createComponent<
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
 
-    if (props['debug']) console.log('isHoverable', isHoverable)
-
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isRSC && !isDisabled && !asChild
         ? {
@@ -895,7 +894,9 @@ export function createComponent<
     }
   })
 
-  let res: TamaguiComponent<ComponentPropTypes, Ref, BaseProps> = component as any
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps>
+
+  let res: ComponentType = component as any
 
   if (configIn.memo) {
     res = memo(res) as any
@@ -906,23 +907,42 @@ export function createComponent<
     ...staticConfig,
   }
 
-  // res.extractable HoC
-  res.extractable = (Component: any, conf?: Partial<StaticConfig>) => {
+  function extendStyledConfig(Component: any, conf?: Partial<StaticConfig>) {
     Component.staticConfig = extendStaticConfig(
       {
-        Component,
+        Component: Component as any,
         ...conf,
         neverFlatten: true,
         isHOC: true,
         defaultProps: {
-          ...Component.defaultProps,
+          ...Component['defaultProps'],
           ...conf?.defaultProps,
         },
       },
       res
     )
+  }
+
+  function extractable(Component, conf?: Partial<StaticConfig>) {
+    extendStyledConfig(Component, conf)
     return Component
   }
+
+  function styleable(Component, conf?: Partial<StaticConfig>) {
+    const isForwardedRefAlready = Component.render?.length === 2
+    const ComponentForwardedRef = isForwardedRefAlready
+      ? (Component as any)
+      : forwardRef(Component as any)
+
+    const out = themeable(ComponentForwardedRef, staticConfig) as any
+
+    extendStyledConfig(out, conf)
+
+    return out
+  }
+
+  res.extractable = extractable
+  res.styleable = styleable
 
   return res
 }

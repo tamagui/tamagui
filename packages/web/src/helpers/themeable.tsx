@@ -1,6 +1,6 @@
-import React, { forwardRef, useId } from 'react'
+import React, { forwardRef } from 'react'
 
-import { DebugProp, ThemeName } from '../types.js'
+import { DebugProp, StaticConfig, ThemeName } from '../types.js'
 import { Theme } from '../views/Theme.js'
 
 export interface ThemeableProps {
@@ -13,7 +13,7 @@ export interface ThemeableProps {
 
 export function themeable<Component extends (props: any) => any>(
   component: Component,
-  opts?: { componentName?: string }
+  staticConfig?: Partial<StaticConfig>
 ) {
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
@@ -22,7 +22,7 @@ export function themeable<Component extends (props: any) => any>(
     return (
       <Theme
         inverse={themeInverse}
-        componentName={componentName || opts?.componentName}
+        componentName={componentName || staticConfig?.componentName}
         name={(theme as any) || null}
         disable-child-theme
         debug={props.debug}

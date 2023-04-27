@@ -91,6 +91,7 @@ type RNExtraProps = {
     rel?: string
     download?: boolean
   }
+  elevationAndroid?: number | string
 }
 
 export interface RNViewProps extends GestureResponderHandlers, RNExtraProps {

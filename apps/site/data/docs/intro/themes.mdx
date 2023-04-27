@@ -43,11 +43,6 @@ const dark = createTheme({
 
 Think of tokens as your base constants that share downwards.
 
-<Notice>
-  Tamagui make some assumptions about the themes `dark` and `light`. If you use them,
-  changing between the two will avoid re-rendering the whole tree.
-</Notice>
-
 ## Subset themes
 
 One of the real powers of Tamagui is theme nesting (we'll explain more on the importance and usage below). If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
@@ -380,7 +375,8 @@ Sometimes you want to defer loading themes, or change existing theme values at r
 
 ```
 
-### Note:
+### Notes
 
-- dynamic themes are only works on the client side and will be ignored on the server side.
-- difference between `updateTheme` ad `replaceTheme` as its name implies, `replaceTheme` will replace the entire theme, while `updateTheme` will only update the values that are passed in.
+- Dynamic themes only work on the client side and will be ignored on the server side.
+- The difference between `updateTheme` and `replaceTheme` is that `replaceTheme` will replace the entire theme, while `updateTheme` will only update the values that are passed in.
+- On the web if you are going to change between dark and light themes more than 3 times, you'll want to adjust the `maxDarkLightNesting` option, see [Configuration](/docs/core/configuration).

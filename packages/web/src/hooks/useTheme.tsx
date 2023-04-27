@@ -180,7 +180,8 @@ export const useChangeThemeEffect = (
   }
 
   const [themeState, setThemeState] = useState<State>(createState)
-  const { state, themeManager, mounted, isNewTheme } = themeState
+  const { state, mounted, isNewTheme, themeManager } = themeState
+
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
   const shouldReturnParentState = isInversingOnMount
 
@@ -191,6 +192,7 @@ export const useChangeThemeEffect = (
     forceShouldChange = false
   ) {
     const next = nextState || manager.getState(props, parentManager)
+    // if (props.inverse) return true
     if (!next) return
     if (disableUpdate?.() === true) return
     if (!forceShouldChange && !manager.getStateShouldChange(next, prevState)) return
@@ -208,10 +210,8 @@ export const useChangeThemeEffect = (
         return
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        if (isNewTheme && themeManager) {
-          activeThemeManagers.add(themeManager)
-        }
+      if (isNewTheme && themeManager) {
+        activeThemeManagers.add(themeManager)
       }
 
       const nextState = getShouldUpdateTheme(themeManager)
@@ -233,20 +233,18 @@ export const useChangeThemeEffect = (
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         const shouldUpdate = Boolean(keys?.length || isNewTheme)
+        if (process.env.NODE_ENV === 'development' && props.debug) {
+          const logs = { shouldUpdate, props, name, manager, keys }
+          console.log(` 🔸 onChange`, themeManager.id, logs)
+        }
         if (shouldUpdate) {
-          if (process.env.NODE_ENV === 'development' && props['debug']) {
-            console.log(`onChangeTheme`, shouldUpdate, { props, name, manager, keys })
-          }
           setThemeState(createState)
         }
       }, themeManager.id)
 
       return () => {
         disposeChangeListener?.()
-
-        if (process.env.NODE_ENV === 'development') {
-          activeThemeManagers.delete(themeManager)
-        }
+        activeThemeManagers.delete(themeManager)
       }
     }, [
       parentManager,
@@ -255,6 +253,7 @@ export const useChangeThemeEffect = (
       props.inverse,
       props.name,
       props.reset,
+      themeState.mounted,
     ])
 
     if (process.env.NODE_ENV === 'development') {

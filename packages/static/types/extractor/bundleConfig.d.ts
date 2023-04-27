@@ -27,12 +27,12 @@ export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolea
     components: LoadedComponents[];
     nameToPaths: {};
     tamaguiConfig: any;
-}>;
+} | null | undefined>;
 export declare function bundleConfig(props: TamaguiOptions): Promise<{
     components: LoadedComponents[];
     nameToPaths: {};
     tamaguiConfig: any;
-}>;
+} | undefined>;
 export declare function loadComponents(props: TamaguiOptions): null | LoadedComponents[];
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

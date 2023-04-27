@@ -1,7 +1,7 @@
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
 import esbuild from 'esbuild';
 import { TamaguiProjectInfo } from './bundleConfig.js';
-export declare function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo>;
+export declare function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo | null>;
 export declare function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo;
 export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, }?: Partial<CLIUserOptions>): Promise<CLIResolvedOptions>;
 export declare function resolveWebOrNativeSpecificEntry(entry: string): string;

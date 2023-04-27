@@ -1,5 +1,5 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { ChangedThemeResponse } from '../hooks/useTheme.js'
@@ -47,7 +47,10 @@ export function ThemeDebug({
     useEffect(() => {
       themeState.themeManager?.parentManager?.onChangeTheme((name, manager) => {
         setOnChangeCount((p) => ++p)
-        console.warn(`theme changed`, name)
+        console.warn(
+          `theme changed for ${themeState.themeManager?.id} from parent ${themeState.themeManager?.parentManager?.id}`,
+          name
+        )
       })
     }, [themeState.themeManager])
 

@@ -2,7 +2,7 @@ import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
-import { MyUserContextProvider, UserGuard, useUser } from 'hooks/useUser'
+import { UserGuard, useUser } from 'hooks/useUser'
 import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
@@ -12,17 +12,15 @@ const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: fa
 
 export const getStudioLayout: GetLayout = (page, pageProps) => {
   return withSupabase(
-    <MyUserContextProvider>
-      <StudioToastProvider>
+    <StudioToastProvider>
+      <UserGuard>
         <StudioLayout>
-          <UserGuard>
-            <GithubConnectionGuard>
-              <SponsorshipGuard>{page}</SponsorshipGuard>
-            </GithubConnectionGuard>
-          </UserGuard>
+          <GithubConnectionGuard>
+            <SponsorshipGuard>{page}</SponsorshipGuard>
+          </GithubConnectionGuard>
         </StudioLayout>
-      </StudioToastProvider>
-    </MyUserContextProvider>,
+      </UserGuard>
+    </StudioToastProvider>,
     pageProps
   )
 }
