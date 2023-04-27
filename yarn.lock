@@ -5997,8 +5997,6 @@ __metadata:
     typescript: ^5.0.4
     vitest: ^0.26.3
     webpack: ^5.74.0
-  peerDependencies:
-    react-native-web: "*"
   languageName: unknown
   linkType: soft
 
