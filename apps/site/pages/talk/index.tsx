@@ -4,7 +4,8 @@ import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useState } from 'react'
-import { Button, Spacer, XStack, YStack, styled } from 'tamagui'
+import { useHotkeys } from 'react-hotkeys-hook'
+import { Button, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
 import { ThemeToggle } from '../../components/ThemeToggle'
 import Slide1 from './slides/slide1'
@@ -14,6 +15,7 @@ import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
 import Slide7 from './slides/slide7'
+import Slide8 from './slides/slide8'
 
 const slideDimensions = {
   width: 1280,
@@ -49,6 +51,7 @@ export default function TamaguiTalk() {
             <Slide5 />,
             <Slide6 />,
             <Slide7 />,
+            <Slide8 />,
           ]}
         />
       </YStack>
@@ -76,6 +79,15 @@ export function Slides(props: { slides: Slides }) {
 
   const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
+
+  useHotkeys(
+    'left',
+    useEvent(() => paginate(-1))
+  )
+  useHotkeys(
+    'right',
+    useEvent(() => paginate(1))
+  )
 
   return (
     <XStack

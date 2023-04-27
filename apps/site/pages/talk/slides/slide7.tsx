@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Why?"
+      title="How"
       subTitle="Smarter compilers = less code = better experiences"
       theme="pink"
       steps={[
