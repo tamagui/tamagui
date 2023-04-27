@@ -27,12 +27,12 @@ export function Demo({
   ...props
 }: PopoverProps & { Icon?: any; Name?: string }) {
   return (
-    <Popover size="$5" {...props}>
+    <Popover size="$5" allowFlip {...props}>
       <Popover.Trigger asChild>
         <Button icon={Icon} />
       </Popover.Trigger>
 
-      <Adapt when="sm" platform="web">
+      <Adapt when="sm" platform="touch">
         <Popover.Sheet modal dismissOnSnapToBottom>
           <Popover.Sheet.Frame padding="$4">
             <Adapt.Contents />
@@ -59,7 +59,7 @@ export function Demo({
         ]}
         elevate
       >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow debug="verbose" borderWidth={1} borderColor="$borderColor" />
 
         <YGroup space="$3">
           <YGroup.Item>

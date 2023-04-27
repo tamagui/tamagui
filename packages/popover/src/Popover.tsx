@@ -426,11 +426,10 @@ PopoverClose.displayName = CLOSE_NAME
 
 const ARROW_NAME = 'PopoverArrow'
 
-type PopoverArrowElement = HTMLElement | View
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = React.forwardRef<PopoverArrowElement, PopoverArrowProps>(
-  (props: ScopedProps<PopoverArrowProps>, forwardedRef) => {
+export const PopoverArrow = PopperArrow.styleable<ScopedProps<PopperArrowProps>>(
+  (props, forwardedRef) => {
     const { __scopePopover, ...arrowProps } = props
     const popperScope = usePopoverScope(__scopePopover)
     return <PopperArrow {...popperScope} {...arrowProps} ref={forwardedRef} />

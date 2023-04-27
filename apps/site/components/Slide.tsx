@@ -23,7 +23,11 @@ export type SlideProps = {
   theme?: ThemeName
 }
 
-type TextItem =
+type SlideStepItem =
+  | {
+      type: 'image'
+      src: string
+    }
   | {
       type: 'text'
       content: React.ReactNode
@@ -35,14 +39,14 @@ type TextItem =
     }
   | {
       type: 'bullet-point'
-      content: TextItem[]
+      content: SlideStepItem[]
     }
   | {
       type: 'split-horizontal'
-      content: TextItem[]
+      content: SlideStepItem[]
     }
 
-type TextContent = TextItem[]
+type TextContent = SlideStepItem[]
 
 export function Slide(props: SlideProps) {
   const glows = useGlows(props.variant)

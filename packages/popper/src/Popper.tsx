@@ -334,11 +334,8 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = PopperArrowFrame.extractable(
-  React.forwardRef<PopperArrowElement, PopperArrowProps>(function PopperArrow(
-    props: ScopedProps<PopperArrowProps>,
-    forwardedRef
-  ) {
+export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
+  function PopperArrow(props: ScopedProps<PopperArrowProps>, forwardedRef) {
     const {
       __scopePopper,
       offset,
@@ -395,25 +392,25 @@ export const PopperArrow = PopperArrowFrame.extractable(
           {...innerArrowStyle}
           rotate="45deg"
           {...(primaryPlacement === 'bottom' && {
-            borderBottomWidth: borderWidth,
-            borderRightWidth: borderWidth,
+            borderLeftWidth: borderWidth,
+            borderTopWidth: borderWidth,
           })}
           {...(primaryPlacement === 'top' && {
-            borderTopWidth: borderWidth,
-            borderLeftWidth: borderWidth,
-          })}
-          {...(primaryPlacement === 'right' && {
-            borderTopWidth: borderWidth,
+            borderBottomWidth: borderWidth,
             borderRightWidth: borderWidth,
           })}
-          {...(primaryPlacement === 'left' && {
-            borderBottomWidth: borderWidth,
+          {...(primaryPlacement === 'right' && {
             borderLeftWidth: borderWidth,
+            borderBottomWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'left' && {
+            borderTopWidth: borderWidth,
+            borderRightWidth: borderWidth,
           })}
         />
       </PopperArrowOuterFrame>
     )
-  })
+  }
 )
 
 /* -----------------------------------------------------------------------------------------------*/
