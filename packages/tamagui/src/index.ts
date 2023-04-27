@@ -112,6 +112,7 @@ export type {
   Tokens,
   TransformStyleProps,
   VariantSpreadExtras,
+  Styleable,
   VariantSpreadFunction,
   ZIndexTokens,
 } from '@tamagui/core'
@@ -172,6 +173,7 @@ export {
   useMedia,
   useTheme,
   useThemeName,
+  useProps,
   useSafeRef,
 } from '@tamagui/core'
 
