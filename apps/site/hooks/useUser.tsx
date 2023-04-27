@@ -83,7 +83,7 @@ export const MyUserContextProvider = (props: Props) => {
       // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
-
+console.log(session)
   const value = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
