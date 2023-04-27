@@ -2,6 +2,7 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
@@ -95,6 +96,10 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
+  selectionStyles: (theme) => ({
+    backgroundColor: theme.color5,
+    color: theme.color11,
+  }),
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,

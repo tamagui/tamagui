@@ -16,7 +16,7 @@ import {
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 
-import { getConfig, getFont } from '../config.js'
+import { getConfig, getConfigIfDefined, getFont } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
 import {
   getMediaImportanceIfMoreImportant,
@@ -217,8 +217,8 @@ export const getSplitStyles: StyleSplitter = (
     return cache.get(props)
   }
 
-  conf = conf || getConfig()
-  const { shorthands } = conf
+  conf = conf || getConfigIfDefined()
+  const { shorthands = {} } = conf || {}
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
     staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles

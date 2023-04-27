@@ -1,5 +1,9 @@
 export * from './animations';
 export declare const config: {
+    selectionStyles: (theme: any) => {
+        backgroundColor: any;
+        color: any;
+    };
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/web").AnimationDriver<{

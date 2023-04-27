@@ -1,5 +1,4 @@
 import { Database } from '@lib/supabase-types'
-import { supabase } from '@lib/supabaseClient'
 import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -13,8 +12,6 @@ import {
 } from 'react'
 import { Spinner, YStack } from 'tamagui'
 import { UserAccessStatus } from 'types'
-
-import { useSharedAuth } from './useSharedAuth'
 
 type UserContextType = {
   accessToken: string | null
@@ -57,8 +54,6 @@ export const MyUserContextProvider = (props: Props) => {
   //     .select('*, prices(*, products(*))')
   //     .in('status', ['trialing', 'active'])
   //     .single()
-
-
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
