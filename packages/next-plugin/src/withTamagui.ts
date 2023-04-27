@@ -360,7 +360,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           const cssLoader = getGlobalCssLoader(
             // @ts-ignore
             {
-              assetPrefix: options.config.assetPrefix || config.assetPrefix,
+              assetPrefix:
+                nextConfig.assetPrefix ||
+                options.config.assetPrefix ||
+                config.assetPrefix,
               future: nextConfig.future,
               experimental: nextConfig.experimental || {},
               isEdgeRuntime: true,
