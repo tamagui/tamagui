@@ -5,12 +5,10 @@ description: How to set up Tamagui with Vite
 
 Tamagui now has two plugins for Vite: one that sets up everything you need to get going, and a second that adds CSS compilation. Both are included in the `@tamagui/vite-plugin` package.
 
-For a full-featured example, you can reference [the experimental tamagui.dev site written using vite](https://github.com/tamagui/tamagui/tree/master/apps/sandbox-web).
-
 ### Installation
 
 1. Remove `"type": "module"` from your `package.json` if you have it. (The type module support was removed beacause it was breaking metro, webpack or something).
-2. Add `@tamagui/vite-plugin` 
+2. Add `@tamagui/vite-plugin`
 3. And update your `vite.config.ts`:
 
 ```tsx
