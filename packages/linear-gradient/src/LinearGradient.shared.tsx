@@ -3,7 +3,7 @@ import {
   ThemeTokens,
   getVariable,
   styled,
-  useMediaPropsActive,
+  useProps,
   useTheme,
 } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
@@ -21,7 +21,7 @@ export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
   }
 
 export const LinearGradient = YStack.styleable<LinearGradientProps>((propsIn, ref) => {
-  const props = useMediaPropsActive(propsIn)
+  const props = useProps(propsIn)
 
   const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
   const colors = useThemeColors(colorsProp || [])

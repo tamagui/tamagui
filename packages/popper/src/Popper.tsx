@@ -8,6 +8,7 @@ import {
   isWeb,
   styled,
   useIsomorphicLayoutEffect,
+  useProps,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import {
@@ -335,7 +336,8 @@ const opposites = {
 type Sides = keyof typeof opposites
 
 export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
-  function PopperArrow(props: ScopedProps<PopperArrowProps>, forwardedRef) {
+  function PopperArrow(propsIn: ScopedProps<PopperArrowProps>, forwardedRef) {
+    const props = useProps(propsIn)
     const {
       __scopePopper,
       offset,
@@ -343,6 +345,7 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
       borderWidth = 0,
       ...arrowProps
     } = props
+
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const sizeVal = sizeProp ?? context.size
     const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))

@@ -7,7 +7,7 @@ import {
   isWeb,
   setupReactNative,
   styled,
-  useMediaPropsActive,
+  useProps,
 } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 import { Image as RNImage } from 'react-native'
@@ -54,7 +54,7 @@ let hasWarned = false
 
 export const Image = StyledImage.extractable(
   forwardRef((inProps: ImageProps, ref) => {
-    const props = useMediaPropsActive(inProps)
+    const props = useProps(inProps)
     const { src, source, ...rest } = props
 
     if (process.env.NODE_ENV === 'development') {

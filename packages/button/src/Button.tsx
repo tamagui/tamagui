@@ -2,7 +2,7 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { ColorProp, useCurrentColor, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { ColorProp, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
@@ -15,14 +15,11 @@ import {
   isRSC,
   spacedChildren,
   styled,
-  themeable,
-  useMediaPropsActive,
-  useThemeName,
+  useProps,
   withStaticProperties,
 } from '@tamagui/web'
 import {
   FunctionComponent,
-  createContext,
   forwardRef,
   useCallback,
   useContext,
@@ -277,7 +274,7 @@ function useButton(
   } = propsIn
 
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
-  const propsActive = useMediaPropsActive(propsIn)
+  const propsActive = useProps(propsIn)
   const size = propsActive.size || '$true'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
@@ -350,5 +347,4 @@ export {
   ButtonFrame,
   ButtonTextFrame as ButtonText,
 }
-
 export type { ButtonProps }

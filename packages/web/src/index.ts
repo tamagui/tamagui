@@ -43,8 +43,6 @@ export * from './helpers/normalizeColor.js'
 
 export * from './contexts/ButtonNestingContext.js'
 
-export * from './hooks/useIsTouchDevice.js'
-
 export {
   configureMedia,
   getMedia,
@@ -59,6 +57,8 @@ export * from './hooks/useThemeName.js'
 export * from './hooks/useSafeRef.js'
 export * from './hooks/useStyle.js'
 export * from './hooks/useAnimationDriver.js'
+export * from './hooks/useIsTouchDevice.js'
+export * from './hooks/useProps.js'
 
 export * from './views/Slot.js'
 export * from './views/Stack.js'

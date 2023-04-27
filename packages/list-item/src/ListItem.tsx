@@ -7,8 +7,7 @@ import {
   getTokens,
   getVariableValue,
   styled,
-  themeable,
-  useMediaPropsActive,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
@@ -193,7 +192,7 @@ export const useListItem = (
     ...rest
   } = props
 
-  const mediaActiveProps = useMediaPropsActive(props)
+  const mediaActiveProps = useProps(props)
   const size = mediaActiveProps.size || '$true'
   const subtitleSize = `$${+String(size).replace('$', '') - 1}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon

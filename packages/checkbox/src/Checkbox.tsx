@@ -11,7 +11,7 @@ import {
   isWeb,
   styled,
   useComposedRefs,
-  useMediaPropsActive,
+  useProps,
   useTheme,
   withStaticProperties,
 } from '@tamagui/core'
@@ -269,7 +269,7 @@ export const Checkbox = withStaticProperties(
       const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
       const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node))
       const hasConsumerStoppedPropagationRef = React.useRef(false)
-      const propsActive = useMediaPropsActive(props)
+      const propsActive = useProps(props)
       // We set this to true by default so that events bubble to forms without JS (SSR)
       const isFormControl = isWeb
         ? button

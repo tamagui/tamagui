@@ -316,7 +316,7 @@ const SmallMenu = React.memo(() => {
         elevate
         zIndex={100000000}
       >
-        <Popover.Arrow bw={1} boc="$borderColor" />
+        <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
         <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           <YStack

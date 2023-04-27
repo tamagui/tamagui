@@ -122,20 +122,26 @@ SSR-friendly, returns true if SSR has completed on the client, false before hydr
 
 Returns the string name of the current theme.
 
-### useSafeRef
+### useProps
 
-A concurrent-mode safe ref, exactly the same [as written in this article](https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325). Works the same as `useRef`, but returns the "old" `current` while concurrent mode hasn't committed effects.
-
-### useMediaPropsActive
-
-Pass in props that include media styles, get back a flat object of styles with the current media styles merged. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
+Pass in props that include media styles and shorthands, get back a flat object of styles with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
 
 ```tsx
 // if props is:
 //   { size: '$2', $sm: { size: '$4' } }
 // and $sm is active, activeProps will be:
 //   { size: '$4' }
+
+// if shorthands like m => margin, then m always expands to margin
 function MyButton(props) {
-  const activeProps = useMediaPropsActive(props)
+  const activeProps = useProps(props)
+}
+```
+
+You can pass a second option to disable the shorthands expansion
+
+```tsx
+function MyButton(props) {
+  const activeProps = useProps(props, { disableExpandShorthands: true })
 }
 ```

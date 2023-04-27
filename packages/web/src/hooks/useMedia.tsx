@@ -209,6 +209,9 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
 }
 
 /**
+ *
+ * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
+ *
  * Useful for more complex components that need access to the currently active props,
  * accounting for the currently active media queries.
  *
@@ -216,20 +219,23 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
  *
  * */
 export function useMediaPropsActive<A extends Object>(
-  props: A
+  props: A,
+  opts?: { expandShorthands?: boolean }
 ): {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
+  const shouldExpandShorthands = opts?.expandShorthands
 
   return useMemo(() => {
+    const config = getConfig()
     const next = {} as A
     const importancesUsed = {}
     const propNames = Object.keys(props)
 
     for (let i = propNames.length - 1; i >= 0; i--) {
-      const key = propNames[i]
+      let key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
         const mediaKey = key.slice(1)
@@ -237,11 +243,17 @@ export function useMediaPropsActive<A extends Object>(
         if (val && typeof val === 'object') {
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
-            const subKey = subKeys[j]
+            let subKey = subKeys[j]
+            if (shouldExpandShorthands) {
+              subKey = config.shorthands[subKey] || subKey
+            }
             mergeMediaByImportance(next, mediaKey, subKey, val[subKey], importancesUsed)
           }
         }
       } else {
+        if (shouldExpandShorthands) {
+          key = config.shorthands[key] || key
+        }
         mergeMediaByImportance(next, '', key, val, importancesUsed)
       }
     }

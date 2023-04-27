@@ -11,7 +11,7 @@ import {
   mergeProps,
   spacedChildren,
   styled,
-  useMediaPropsActive,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
@@ -85,7 +85,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
     forwardRef<TamaguiElement, ScopedProps<GroupProps>>((props, ref) => {
-      const activeProps = useMediaPropsActive(props)
+      const activeProps = useProps(props)
 
       const {
         __scopeGroup,
