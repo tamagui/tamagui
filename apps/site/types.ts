@@ -1,4 +1,3 @@
-import { GithubSponsorshipStatus } from '@protected/_utils/github'
 import Stripe from 'stripe'
 
 export interface PageMeta {

@@ -1676,4 +1676,4 @@ type NarrowRaw<A> =
 export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>
 
 export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios'
-export type NativeValue<Platform extends NativePlatform> = boolean | Platform | Platform[]
+export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[]
