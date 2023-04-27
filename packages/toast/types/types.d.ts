@@ -57,7 +57,5 @@ export type CreateNativeToastsFn = (title: string, options: CreateNativeToastOpt
     nativeToastRef?: NativeToastRef;
 } | boolean;
 export type HideNativeToastsFn = (ref?: NativeToastRef) => void;
-export type ToastNativePlatform = 'web' | 'mobile' | 'android' | 'ios';
-export type ToastNativeValue = boolean | ToastNativePlatform | ToastNativePlatform[];
 export {};
 //# sourceMappingURL=types.d.ts.map

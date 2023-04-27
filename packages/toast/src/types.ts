@@ -70,5 +70,3 @@ export type CreateNativeToastsFn = (
 
 export type HideNativeToastsFn = (ref?: NativeToastRef) => void
 
-export type ToastNativePlatform = 'web' | 'mobile' | 'android' | 'ios'
-export type ToastNativeValue = boolean | ToastNativePlatform | ToastNativePlatform[]
