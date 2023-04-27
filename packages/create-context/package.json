@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-context",
-  "version": "1.16.6",
+  "version": "1.17.0",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -30,7 +30,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.16.6",
+    "@tamagui/build": "1.17.0",
     "react": "^18.2.0"
   },
   "publishConfig": {
