@@ -56,7 +56,12 @@ if (!skipVersion) {
 
 async function run() {
   // ensure we are up to date
-  await spawnify(`git pull --rebase origin head`)
+  // ensure we are on master
+  if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
+    throw new Error(`Not on master`)
+  }
+
+  await spawnify(`git pull --rebase origin master`)
 
   const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
   const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
