@@ -478,9 +478,10 @@ export type CreateTamaguiProps = {
   /**
    * Web-only: define text-selection CSS
    */
-  selectionStyles?: (
-    theme: ThemeParsed
-  ) => Pick<TextStyleProps, 'backgroundColor' | 'color'>
+  selectionStyles?: (theme: ThemeParsed) => {
+    backgroundColor?: ColorStyleProp
+    color?: ColorStyleProp
+  }
 
   /**
    * *Advanced use case* For all CSS extracted views, this has no effect.

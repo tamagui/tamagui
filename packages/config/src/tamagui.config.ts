@@ -96,10 +96,6 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
-  selectionStyles: (theme) => ({
-    backgroundColor: theme.color5,
-    color: theme.color11,
-  }),
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
@@ -115,6 +111,12 @@ export const config = {
     silkscreen: silkscreenFont,
   },
 }
+
+// @ts-ignore
+config.selectionStyles = (theme) => ({
+  backgroundColor: theme.color5,
+  color: theme.color11,
+})
 
 // @ts-ignore bad types
 config.mediaQueryDefaultActive = mediaQueryDefaultActive
