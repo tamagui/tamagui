@@ -329,7 +329,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
       }
 
   const overlayTheme = {
-    background: 'rgba(0,0,0,0.5)',
+    background: isLight ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.9)',
   } as SubTheme
 
   return {

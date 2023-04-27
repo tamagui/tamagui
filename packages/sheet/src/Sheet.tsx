@@ -113,7 +113,7 @@ export const SheetOverlayFrame = styled(ThemeableStack, {
   fullscreen: true,
   backgrounded: true,
   opacity: 0.5,
-  zIndex: 0,
+  zIndex: 100_000,
 
   variants: {
     closed: {
@@ -192,7 +192,7 @@ const sheetComponents = {
 }
 
 const ParentSheetContext = createContext({
-  zIndex: 40,
+  zIndex: 100_000,
 })
 
 const useSheetContoller = () => {
