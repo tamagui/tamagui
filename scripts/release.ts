@@ -55,6 +55,9 @@ if (!skipVersion) {
 }
 
 async function run() {
+  // ensure we are up to date
+  await spawnify(`git pull --rebase origin head`)
+
   const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
   const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
     name: string
