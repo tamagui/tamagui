@@ -155,10 +155,16 @@ function getTextContent(
         switch (item.type) {
           case 'image':
             return (
-              <img
-                style={{ width: item.image.width * 0.5, height: item.image.height * 0.5 }}
-                src={item.image.src}
-              />
+              <YStack f={1} ai="center">
+                <img
+                  style={{
+                    alignSelf: 'center',
+                    width: item.image.width * 0.5,
+                    height: item.image.height * 0.5,
+                  }}
+                  src={item.image.src}
+                />
+              </YStack>
             )
           case 'split-horizontal':
             return (

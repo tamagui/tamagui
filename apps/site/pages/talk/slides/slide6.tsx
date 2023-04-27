@@ -6,8 +6,8 @@ export default memo(() => {
   return (
     <Slide
       title="Why?"
-      subTitle="My app was slow & my code was verbose"
-      theme="green"
+      subTitle="My app felt slow & my code was verbose"
+      theme="purple"
       steps={[
         [
           {
@@ -22,8 +22,8 @@ export default memo(() => {
                 type: 'bullet-point',
                 content: [
                   {
-                    type: 'text',
-                    content: 'Media queries',
+                    type: 'code-inline',
+                    content: 'useScreenDimenisions + setState',
                   },
                 ],
               },
@@ -37,6 +37,16 @@ export default memo(() => {
                 type: 'text',
                 content: 'Pseudo styles (hover, focus, press)',
               },
+
+              {
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'code-inline',
+                    content: 'useState + Pressable + onPressIn + onPressOut...',
+                  },
+                ],
+              },
             ],
           },
 
@@ -46,6 +56,36 @@ export default memo(() => {
               {
                 type: 'text',
                 content: 'Themes (CSS Variables)',
+              },
+
+              {
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'code-inline',
+                    content: 'Whole-tree re-render and re-parse styles',
+                  },
+                ],
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: 'CSS',
+              },
+
+              {
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'code-inline',
+                    content: 'Parsing JS, inserting styles on mount',
+                  },
+                ],
               },
             ],
           },

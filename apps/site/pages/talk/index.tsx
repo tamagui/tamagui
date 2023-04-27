@@ -1,6 +1,6 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { TamaguiLogo } from '@tamagui/logo'
+import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useState } from 'react'
@@ -13,6 +13,7 @@ import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
+import Slide7 from './slides/slide7'
 
 const slideDimensions = {
   width: 1280,
@@ -26,6 +27,10 @@ export default function TamaguiTalk() {
       <XStack pos="absolute" t="$0" l="$0" r="$0" p="$4" zi={1000}>
         <YStack>
           <TamaguiLogo y={15} x={10} downscale={2} />
+        </YStack>
+
+        <YStack fullscreen ai="center" jc="center">
+          <LogoWords />
         </YStack>
 
         <Spacer flex />
@@ -43,6 +48,7 @@ export default function TamaguiTalk() {
             <Slide4 />,
             <Slide5 />,
             <Slide6 />,
+            <Slide7 />,
           ]}
         />
       </YStack>
