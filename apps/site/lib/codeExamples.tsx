@@ -81,7 +81,7 @@ import { Heading } from './Heading'
 
 const App = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum dolor.</Heading>
+    <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
   </Stack>
 )`,
         },
@@ -133,9 +133,9 @@ export const Heading = styled(Text, {
         {
           name: 'app.js',
           code: `import { SandboxHeading, Stack } from '@tamagui/core'
-export const CodeExamplesInput = props => <div className={_cn}>
+export const App = props => <div className={_cn}>
     <h1 className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn5))}>
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </h1>
   </div>
   
@@ -201,7 +201,7 @@ const App = (props) => (
     })}
   >
     <Paragraph size="$2">
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </Paragraph>
   </YStack>
 )
@@ -224,7 +224,7 @@ import { Paragraph, YStack } from 'tamagui'
 
 const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </span>
   </div>
 `,

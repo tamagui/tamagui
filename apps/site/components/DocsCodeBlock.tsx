@@ -34,6 +34,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     isHero = false,
     isCollapsible = false,
     isHighlightingLines,
+    size,
   } = props
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [code, setCode] = useState(undefined)
@@ -122,7 +123,14 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 showsHorizontalScrollIndicator={false}
               >
                 {/* @ts-ignore */}
-                <Code p="$4" backgroundColor="transparent" f={1} className={className}>
+                <Code
+                  p="$4"
+                  backgroundColor="transparent"
+                  f={1}
+                  className={className}
+                  size={size}
+                  lineHeight={size}
+                >
                   {children}
                 </Code>
               </ScrollView>
