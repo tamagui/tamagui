@@ -341,21 +341,21 @@ async function run() {
       console.log(`✅ Pushed and versioned\n`)
     }
 
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log(`All done, cleanup up in...`)
-    await sleep(2 * 1000)
-    // then remove old prepub tag
-    await pMap(
-      packageJsons,
-      async ({ name, cwd }) => {
-        await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
-          cwd,
-        }).catch((err) => console.error(err))
-      },
-      {
-        concurrency: 20,
-      }
-    )
+    // just leave it
+    // console.log(`All done, cleanup up in...`)
+    // await sleep(2 * 1000)
+    // // then remove old prepub tag
+    // await pMap(
+    //   packageJsons,
+    //   async ({ name, cwd }) => {
+    //     await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+    //       cwd,
+    //     }).catch((err) => console.error(err))
+    //   },
+    //   {
+    //     concurrency: 20,
+    //   }
+    // )
 
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log(`✅ Done\n`)

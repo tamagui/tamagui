@@ -49,7 +49,7 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
           opacity={0.65}
           theme={active ? null : 'alt1'}
           {...(active && {
-            fow: '900',
+            fow: '700',
             opacity: 1,
           })}
         >

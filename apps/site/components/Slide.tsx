@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -169,10 +170,10 @@ function getTextContent(
           case 'split-horizontal':
             return (
               <XStack h="100%" ai="center" f={1} gap="$6">
-                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[0]], options)}
                 </YStack>
-                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[1]], options)}
                 </YStack>
               </XStack>

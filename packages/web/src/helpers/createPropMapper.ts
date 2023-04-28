@@ -26,10 +26,6 @@ export type ResolveVariableTypes =
   | 'both'
   | 'non-color-value'
 
-export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>) => {
-  return !!props.animation || state.resolveVariablesAs === 'value' ? 'value' : 'auto'
-}
-
 export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   const variants = staticConfig.variants || {}
 
@@ -57,7 +53,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     }
 
     const props = state.fallbackProps || propsIn
-    const returnVariablesAs = getReturnVariablesAs(props, state)
+    const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily =
@@ -177,13 +173,9 @@ const resolveVariants: StyleResolver = (
   if (!variantValue) {
     // variant at key exists, but no matching variant value, return nothing
     if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.validStyles?.[key]) {
-        return null
-      }
-      if (typeof value === 'boolean') {
-        // don't warn on missing boolean values, common to only one of true/false
-        return null
-      }
+      if (staticConfig.validStyles?.[key]) return
+      // don't warn on missing boolean values, common to only one of true/false
+      if (typeof value === 'boolean') return
       const name = staticConfig.componentName || '[UnnamedComponent]'
       console.warn(
         `No variant found: ${name} has variant "${key}", but no matching value "${value}"`

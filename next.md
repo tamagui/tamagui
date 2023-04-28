@@ -68,8 +68,6 @@ Ali todos:
 
 # Backlog
 
-- we can avoid including getThemeCSSRules if we have some opt-in env flag people can set like TAMAGUI_IS_SSR=1
-
 - sorry to keep pulling on the same thread here haha, I've got it close now but I think I must still be doing something wrong, the theme works on the button text if I pass it down to CustomButtonText manually like theme={props.theme}  and use extractable, but when I update it to styleable, all the text goes white—second screenshot (probably inheriting from one of the parent themes I guess?)
   - https://discord.com/channels/909986013848412191/974145843919716412/1100788149501833236
 

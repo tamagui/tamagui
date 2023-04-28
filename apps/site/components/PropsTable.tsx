@@ -50,7 +50,7 @@ export function PropsTable({
               <XStack miw="30%" ai="center" space>
                 <H4
                   color="$color"
-                  fow="800"
+                  fow="700"
                   fontFamily="$mono"
                   textTransform="none"
                   size="$4"

@@ -605,6 +605,19 @@ export const getSplitStyles: StyleSplitter = (
           debug
         )
 
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      console.log({
+        expanded,
+        state,
+        isVariant,
+        shouldPassProp,
+        isHOCShouldPassThrough,
+        parentHasVariant,
+      })
+    }
+
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
     }

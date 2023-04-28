@@ -1,4 +1,4 @@
-import React, { startTransition, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
 import { DebugProp, TamaguiComponentState } from '../types.js'
 
@@ -9,32 +9,19 @@ export function useShallowSetState<State extends TamaguiComponentState>(
 ) {
   return useCallback(
     (next: Partial<State>) => {
-      const shouldTransition = Object.keys(next).every((k) =>
-        transitionKeys.has(k as any)
-      )
-      const run = shouldTransition ? startTransition : (_) => _()
-      run(() => {
-        setter((prev) => {
-          for (const key in next) {
-            if (prev[key] !== next[key]) {
-              if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-                // rome-ignore lint/nursery/noConsoleLog: ok
-                console.log(` ▲ setState ${debugName}`, next)
-              }
-              return { ...prev, ...next }
+      setter((prev) => {
+        for (const key in next) {
+          if (prev[key] !== next[key]) {
+            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+              // eslint-disable-next-line no-console
+              console.log(` ▲ setState ${debugName}`, next)
             }
+            return { ...prev, ...next }
           }
-          return prev
-        })
+        }
+        return prev
       })
     },
     [setter]
   )
 }
-
-const transitionKeys = new Set<keyof TamaguiComponentState>([
-  'press',
-  'pressIn',
-  'focus',
-  'unmounted',
-])
