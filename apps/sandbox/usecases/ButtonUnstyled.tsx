@@ -4,12 +4,28 @@ const Unstyled = styled(Button, {
   unstyled: true,
 })
 
+const UnstyledMerged = styled(Button, {
+  unstyled: true,
+
+  variants: {
+    // override one thing
+    unstyled: {
+      true: {
+        borderWidth: 2,
+        borderColor: 'green',
+      },
+    },
+  },
+})
+
 export default () => (
   <>
     <Button id="unstyled-inline" unstyled>
       hi
     </Button>
 
-    <Unstyled id="unstyled-styled">hi2</Unstyled>
+    <Unstyled id="unstyled-styled">hi</Unstyled>
+
+    <UnstyledMerged id="unstyled-merged">hi</UnstyledMerged>
   </>
 )

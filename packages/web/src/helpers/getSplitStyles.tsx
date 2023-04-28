@@ -559,8 +559,9 @@ export const getSplitStyles: StyleSplitter = (
 
     const parentHasVariant =
       staticConfig.parentStaticConfig?.variants &&
-      keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMediaOrPseudo || isVariant)
+      keyInit in staticConfig.parentStaticConfig.variants
+    const isHOCShouldPassThrough =
+      staticConfig.isHOC && (isMediaOrPseudo || parentHasVariant)
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
@@ -661,7 +662,10 @@ export const getSplitStyles: StyleSplitter = (
       const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
       if (isHOCShouldPassThrough) {
         passDownProp(key, val, true)
-        continue
+        // if its also a variant here, pass down but also keep it
+        if (!isVariant) {
+          continue
+        }
       }
 
       // pseudo
