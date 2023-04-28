@@ -231,19 +231,22 @@ export function createComponent<
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
+    // cheat code
     let hasHydrated = false
     numRenderedOfType[componentName] ??= 0
-    if (++numRenderedOfType[componentName] > 1000) {
+    if (++numRenderedOfType[componentName] > 10) {
       hasHydrated = true
     }
 
     let isAnimated = willBeAnimated
     // presence avoids ssr stuff
-    // if (!presence && isClient && hasHydrated) {
-    if (isAnimated && (isServer || state.unmounted === true)) {
-      isAnimated = false
+    if (presence && hasHydrated) {
+      // no
+    } else {
+      if (isAnimated && (isServer || state.unmounted === true)) {
+        isAnimated = false
+      }
     }
-    // }
 
     const componentClassName = props.asChild
       ? ''
