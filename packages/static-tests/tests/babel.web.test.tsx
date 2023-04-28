@@ -12,7 +12,7 @@ test('conditional styles get full base styles merged onto + shorthand', async ()
 
   // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug 
+    `
 import { Stack } from '@tamagui/core'
     export function Test(props) {
       return (
@@ -34,7 +34,7 @@ import { Stack } from '@tamagui/core'
 test('className + conditional styles get full base styles merged onto + shorthand', async () => {
   // one sanity check debug output test
   const output = await extractForWeb(
-    `// debug
+    `
     import { Stack } from '@tamagui/core'
     export function Test(props) {
       return (
