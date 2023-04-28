@@ -190,7 +190,7 @@ export function createAnimations<A extends AnimationsConfig>(
         if (isWeb) return true
 
         return Object.keys(style).some((key) => {
-          if (props.animateOnly?.length) {
+          if (animateOnly.length) {
             return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
           } else {
             return !animatedStyleKey[key]
