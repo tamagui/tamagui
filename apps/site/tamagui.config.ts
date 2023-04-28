@@ -1,4 +1,4 @@
-import { config } from '@tamagui/config'
+import { config } from '@tamagui/site-config'
 import { createTamagui } from 'tamagui'
 
 Object.assign(config.media, {

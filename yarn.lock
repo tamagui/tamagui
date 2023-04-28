@@ -5754,6 +5754,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/site-config@1.20.6, @tamagui/site-config@workspace:apps/site-config":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/site-config@workspace:apps/site-config"
+  dependencies:
+    "@tamagui/animations-css": 1.20.6
+    "@tamagui/animations-react-native": 1.20.6
+    "@tamagui/build": 1.20.6
+    "@tamagui/colors": 1.20.6
+    "@tamagui/font-inter": 1.20.6
+    "@tamagui/font-silkscreen": 1.20.6
+    "@tamagui/react-native-media-driver": 1.20.6
+    "@tamagui/shorthands": 1.20.6
+    "@tamagui/themes": 1.20.6
+    "@tamagui/web": 1.20.6
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:apps/site"
@@ -5772,7 +5789,6 @@ __metadata:
     "@tamagui/animations-reanimated": 1.20.6
     "@tamagui/build": 1.20.6
     "@tamagui/colors": 1.20.6
-    "@tamagui/config": 1.20.6
     "@tamagui/core": 1.20.6
     "@tamagui/demos": 1.20.6
     "@tamagui/font-fira-mono": 1.20.6
@@ -5786,6 +5802,7 @@ __metadata:
     "@tamagui/polyfill-dev": 1.20.6
     "@tamagui/remove-scroll": 1.20.6
     "@tamagui/shorthands": 1.20.6
+    "@tamagui/site-config": 1.20.6
     "@tamagui/static": 1.20.6
     "@tamagui/themes": 1.20.6
     "@tamagui/toast": 1.20.6
