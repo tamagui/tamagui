@@ -65,7 +65,7 @@ export default function App(props: AppProps) {
 
       {/* this will lazy load the font for /studio splash page */}
       {didMount && (
-        <Head>
+        <>
           <link href="/fonts/inter-takeout.css" rel="stylesheet" />
           <link
             rel="preload"
@@ -73,10 +73,11 @@ export default function App(props: AppProps) {
             as="font"
             type="font/woff2"
           />
-        </Head>
+        </>
       )}
 
       <NextThemeProvider
+        skipNextHead
         onChangeTheme={(next) => {
           startTransition(() => {
             setTheme(next as any)

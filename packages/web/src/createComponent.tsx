@@ -1,5 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
+import {
+  isClient,
+  isRSC,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
@@ -9,11 +15,8 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useId,
-  useLayoutEffect,
   useRef,
-  useState,
 } from 'react'
 
 import { onConfiguredOnce } from './config.js'
@@ -322,7 +325,10 @@ export function createComponent<
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         const parentsLog = (conf: StaticConfig) =>
           conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
-        console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
+        console.group(
+          `%c ${banner}${parentsLog(staticConfig)} (unmounted: ${state.unmounted})`,
+          'background: yellow;'
+        )
         if (!isServer) {
           console.log({
             props,
@@ -504,7 +510,7 @@ export function createComponent<
 
     // combinined two effects into one for performance so be careful with logic
     // because no need for mouseUp removal effect if its not even mounted yet
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!shouldSetMounted) {
         return () => {
           mouseUps.delete(unPress)
@@ -512,7 +518,6 @@ export function createComponent<
       }
 
       const unmounted = state.unmounted === true && hasEnterStyle ? 'should-enter' : false
-      console.warn('setting', unmounted)
       setStateShallow({
         unmounted,
       })
