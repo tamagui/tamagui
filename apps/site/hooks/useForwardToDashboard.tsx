@@ -1,15 +1,18 @@
 import { studioRootDir } from '@protected/studio/constants'
-import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
+import { useUser } from './useUser'
+
 export function useForwardToDashboard() {
-  const user = useUser()
+  const { user, isLoading } = useUser()
   const router = useRouter()
 
   useEffect(() => {
-    if (user) {
+    console.log(user, isLoading)
+    if (user && !isLoading) {
+      console.log(studioRootDir)
       router.replace(studioRootDir)
     }
-  }, [user])
+  }, [user, isLoading])
 }
