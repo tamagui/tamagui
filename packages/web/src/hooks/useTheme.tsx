@@ -4,13 +4,11 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react
 
 import { getConfig } from '../config.js'
 import { isDevTools } from '../constants/isDevTools.js'
-import { isVariable } from '../createVariable.js'
 import { createProxy } from '../helpers/createProxy.js'
 import {
   ThemeManager,
   ThemeManagerState,
   getNonComponentParentManager,
-  hasNoThemeUpdatingProps,
 } from '../helpers/ThemeManager.js'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
 import type { ThemeParsed, ThemeProps } from '../types.js'

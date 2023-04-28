@@ -13,6 +13,7 @@ export default () => (
       flex: 1,
     }}
   >
-    <LogoWords animated />
+    {/* <LogoWords animated /> */}
+    <AnimationsDemo />
   </div>
 )

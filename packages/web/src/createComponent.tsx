@@ -230,10 +230,8 @@ export function createComponent<
 
     let isAnimated = willBeAnimated
     // presence avoids ssr stuff
-    if (!presence) {
-      if (isAnimated && (isServer || state.unmounted === true)) {
-        isAnimated = false
-      }
+    if (isAnimated && (isServer || state.unmounted === true)) {
+      isAnimated = false
     }
 
     const componentClassName = props.asChild
@@ -343,6 +341,7 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
+          console.warn(themeState.name)
         }
       }
     }
