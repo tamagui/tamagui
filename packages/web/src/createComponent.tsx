@@ -217,7 +217,6 @@ export function createComponent<
 
     const usePresence = animationsConfig?.usePresence
     const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
-    if (props['debug']) console.log('presence', presence)
 
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)

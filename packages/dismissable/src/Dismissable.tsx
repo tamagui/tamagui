@@ -230,7 +230,6 @@ function usePointerDownOutside(
       if (event.target && !isPointerInsideReactTreeRef.current) {
         const eventDetail = { originalEvent: event }
 
-        // rome-ignore lint/nursery/noInnerDeclarations: <explanation>
         function handleAndDispatchPointerDownOutsideEvent() {
           handleAndDispatchCustomEvent(
             POINTER_DOWN_OUTSIDE,

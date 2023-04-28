@@ -13,8 +13,7 @@ export function useShallowSetState<State extends TamaguiComponentState>(
         for (const key in next) {
           if (prev[key] !== next[key]) {
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              // eslint-disable-next-line no-console
-              console.log(` ▲ setState ${debugName}`, next)
+              console.warn(` ▲ setState ${debugName}`, next)
             }
             return { ...prev, ...next }
           }
