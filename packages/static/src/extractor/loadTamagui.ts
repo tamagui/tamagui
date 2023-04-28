@@ -92,6 +92,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
         throw new Error(`No components loaded`)
       }
       if (process.env.DEBUG === 'tamagui') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`components`, components)
       }
 
@@ -118,9 +119,10 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
         console.warn(
           `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
         )
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`\n\n    ${err.message}\n\n`)
         if (SHOULD_DEBUG) {
-          console.log(err.stack)
+          console.error(err.stack)
         }
       } else {
         console.error(`Error loading tamagui.config.ts`, err)

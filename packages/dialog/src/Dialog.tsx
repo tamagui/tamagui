@@ -720,7 +720,6 @@ If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it wi
       if (titleId) {
         const hasTitle = document.getElementById(titleId)
         if (!hasTitle) {
-          // eslint-disable-next-line no-console
           console.warn(MESSAGE)
         }
       }
@@ -756,7 +755,6 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
       if (descriptionId && describedById) {
         const hasDescription = document.getElementById(descriptionId)
         if (!hasDescription) {
-          // eslint-disable-next-line no-console
           console.warn(MESSAGE)
         }
       }

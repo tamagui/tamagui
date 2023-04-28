@@ -7,7 +7,6 @@ const InputsMap = new Map<string, Focusable>()
 export const registerFocusable = (id: string, input: Focusable) => {
   if (process.env.NODE_ENV === 'development') {
     if (InputsMap.has(id)) {
-      // eslint-disable-next-line no-console
       console.warn(`Warning, duplicate ID for input: ${id}`)
     }
   }
@@ -25,7 +24,6 @@ export const focusFocusable = (id: string, select = false) => {
   const input = InputsMap.get(id)
   if (!input) {
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
       console.warn('No input found for id', id)
     }
     return

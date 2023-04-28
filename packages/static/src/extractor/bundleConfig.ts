@@ -102,6 +102,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`Building config entry`, configEntry)
     }
 
@@ -160,6 +161,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     try {
       out = require(configOutPath)
     } catch (err) {
+      // rome-ignore lint/nursery/noUselessCatch: <explanation>
       throw err
     } finally {
       unregister()
@@ -207,6 +209,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('Loaded components', components)
     }
 
@@ -220,11 +223,11 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     return res
   } catch (err: any) {
-    console.log(
+    console.error(
       `Error bundling tamagui config: ${err?.message} (run with DEBUG=tamagui to see stack)`
     )
     if (process.env.DEBUG?.includes('tamagui')) {
-      console.log(err.stack)
+      console.error(err.stack)
     }
   } finally {
     isBundling = false
@@ -273,6 +276,7 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
         }
 
         if (process.env.DEBUG === 'tamagui') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
@@ -298,10 +302,12 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
         didBabel = true
         return res
       } catch (err) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('babel err', err, writtenContents)
         // ok
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`Error parsing babel likely`, err)
         }
       } finally {
@@ -314,6 +320,7 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
         })
       } catch (err) {
         if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`
 
 Tamagui attempted but failed to dynamically load components in:
@@ -329,7 +336,9 @@ Quiet this warning with environment variable:
   TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1
 
 `)
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(err)
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(
             `At: ${loadModule}`,
             `\ndidBabel: ${didBabel}`,
@@ -347,6 +356,7 @@ Quiet this warning with environment variable:
     cacheComponents[key] = info
     return info
   } catch (err: any) {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log(`Tamagui error bundling components`, err.message, err.stack)
     return null
   } finally {

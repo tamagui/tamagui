@@ -56,6 +56,7 @@ export function reaction<
           console.groupCollapsed('trace >')
           console.trace()
           console.groupEnd()
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('  ARG', next)
           console.groupEnd()
         }

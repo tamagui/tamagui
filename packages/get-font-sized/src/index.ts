@@ -14,7 +14,6 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const font = fonts[family] || fonts['$body']
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
       console.warn('⚠️ no font found', {
         family,
         fontTokens: Object.keys(fonts),
@@ -45,11 +44,9 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log({ style, props, font })
-      // eslint-disable-next-line no-console
       console.groupEnd()
     }
   }

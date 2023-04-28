@@ -41,13 +41,13 @@ export const loader = async function loader(
     })
 
     if (shouldPrintDebug === 'verbose') {
-      console.log(`\n\n --- Incoming source --- \n\n`)
-      console.log(source)
+      console.warn(`\n\n --- Incoming source --- \n\n`)
+      console.warn(source)
     }
 
     if (shouldDisable) {
       if (shouldPrintDebug) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('Disabling on file via pragma')
       }
       return callback(null, source)
@@ -91,11 +91,10 @@ export const loader = async function loader(
   } catch (err) {
     const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
 
-    // eslint-disable-next-line no-console
     console.error('Tamagui Webpack Loader Error:\n', `  ${message}\n`)
 
     if (message.includes('Cannot create proxy')) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log(
         'This is usually due to components not loading at build-time. Check for logs just below the line above:'
       )

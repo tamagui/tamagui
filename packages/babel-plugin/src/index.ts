@@ -218,7 +218,6 @@ export default declare(function snackBabelPlugin(
               if (message.includes('Unexpected return value from visitor method')) {
                 message = 'Unexpected return value from visitor method'
               }
-              // eslint-disable-next-line no-console
               console.warn('Error in Tamagui parse, skipping', message, err.stack)
               return
             }
@@ -226,7 +225,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
-              // eslint-disable-next-line no-console
+              // rome-ignore lint/nursery/noConsoleLog: ok
               console.log('END no styles')
             }
             return
@@ -246,9 +245,9 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.log('\n -------- output code ------- \n')
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.log(
               generator(root.parent)
                 .code.split('\n')
@@ -267,7 +266,6 @@ function assertValidTag(node: t.JSXOpeningElement) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // eslint-disable-next-line no-console
       console.warn('⚠️ Cannot pass style attribute to extracted style')
     }
   }

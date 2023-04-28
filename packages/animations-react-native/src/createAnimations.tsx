@@ -328,7 +328,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (process.env.NODE_ENV === 'development') {
             if (props['debug']) {
-              // eslint-disable-next-line no-console
+              // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
               console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
             }
@@ -355,7 +355,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`Returning animated`, res)
         }
       }

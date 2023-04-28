@@ -32,7 +32,6 @@ export const isWebTouchable =
 export const isTouchable = !isWeb || isWebTouchable
 
 if (!process.env.TAMAGUI_TARGET) {
-  // eslint-disable-next-line no-console
   console.warn(`⚠️ Must set TAMAGUI_TARGET`)
 }
 
@@ -42,7 +41,6 @@ if (process.env.NODE_ENV === 'development') {
     process.env.TAMAGUI_TARGET !== 'web' &&
     process.env.TAMAGUI_IGNORE_TARGET !== '1'
   ) {
-    // eslint-disable-next-line no-console
     console.warn(
       `Must set TAMAGUI_TARGET to "web" for web apps - if you have window defined outside of the browser, set TAMAGUI_IGNORE_TARGET=1 to hide this`
     )

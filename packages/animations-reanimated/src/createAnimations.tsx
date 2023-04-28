@@ -25,7 +25,7 @@ import {
 // add nice warning for if mis-configured next config:
 if (process.env.NODE_ENV === 'development') {
   if (FlatList?.['_isProxyWorm']) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.warn(
       `Using reanimated with excludeReactNativeWebExports including FlatList, adjust your next.config.js, reanimated currently doesn't support tree-shaking and needs *List components around.`
     )
@@ -182,19 +182,19 @@ export function createAnimations<A extends AnimationsConfig>(
           const { delay = null } = animationDelay(key, animationConfig)
 
           if (!animation) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.warn('No animation for', key, 'in', style)
             continue
           }
           if (!config) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.warn('No animation config for', key, 'in', style)
             continue
           }
 
           if (key === 'transform') {
             if (!Array.isArray(value)) {
-              // eslint-disable-next-line no-console
+              // rome-ignore lint/nursery/noConsoleLog: ok
               console.error(`Invalid transform value. Needs to be an array.`)
               continue
             }

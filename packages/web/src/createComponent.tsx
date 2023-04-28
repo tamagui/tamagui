@@ -334,6 +334,7 @@ export function createComponent<
           'background: yellow;'
         )
         if (!isServer) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({
             props,
             state,
@@ -390,13 +391,16 @@ export function createComponent<
       if (debugProp) {
         console.groupCollapsed('props')
         // prettier-ignore
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('shouldListenForMedia', shouldListenForMedia)
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
@@ -801,12 +805,15 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`, viewProps)
         for (const key in viewProps) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(key, viewProps[key])
         }
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('children', content)
         console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo })
         }
         console.groupEnd()
@@ -830,6 +837,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log('Warning: Missing theme')
           }
         }
@@ -892,6 +900,7 @@ export function createComponent<
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
           tamaguiDefaultProps,
@@ -1123,6 +1132,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`  Spaced children`, final, props)
     }
   }

@@ -9,8 +9,11 @@ function worm(root = false) {
       }
     : function () {
         //  dev warning in debug mode
-        if (process.env.NODE_ENV === 'development' && process.env.DEBUG?.startsWith('tamagui')) {
-          // eslint-disable-next-line no-console
+        if (
+          process.env.NODE_ENV === 'development' &&
+          process.env.DEBUG?.startsWith('tamagui')
+        ) {
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.warn(`
 
 This has been excluded via Tamagui!

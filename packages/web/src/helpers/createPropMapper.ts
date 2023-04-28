@@ -177,7 +177,6 @@ const resolveVariants: StyleResolver = (
       // don't warn on missing boolean values, common to only one of true/false
       if (typeof value === 'boolean') return
       const name = staticConfig.componentName || '[UnnamedComponent]'
-      // eslint-disable-next-line no-console
       console.warn(
         `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
       )
@@ -257,7 +256,7 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
     } else {
       // this could be mapped back to
       if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('[tamagui] should map back', input)
       }
     }
@@ -383,7 +382,6 @@ const resolveTokensAndVariants: StyleResolver = (
     if (process.env.NODE_ENV === 'development') {
       if (debug) {
         if (res[fKey]?.[0] === '$') {
-          // eslint-disable-next-line no-console
           console.warn(`⚠️ Missing token in theme ${theme.name}:`, fKey, res[fKey], theme)
         }
       }
@@ -487,7 +485,7 @@ const getToken = (
   }
 
   if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log('   ﹒ propMapper getToken', { key, valOrVar, theme, hasSet })
   }
 
@@ -497,7 +495,6 @@ const getToken = (
 
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
-      // eslint-disable-next-line no-console
       console.warn(
         `⚠️ You passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
 
@@ -505,7 +502,7 @@ Set the debug prop to true to see more detailed debug information.`
       )
       if (debug) {
         if (isDevTools) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log('Looked in:', { theme, tokensParsed, fontsParsed })
         }
       }

@@ -53,7 +53,7 @@ export async function extractToClassNames({
   const tm = timer()
 
   if (shouldPrintDebug) {
-    console.log(`--- ${sourcePath} --- \n\n`)
+    console.warn(`--- ${sourcePath} --- \n\n`)
   }
 
   if (typeof source !== 'string') {
@@ -63,7 +63,7 @@ export async function extractToClassNames({
     throw new Error('`sourcePath` must be an absolute path to a .js file')
   }
   if (!/.[tj]sx?$/i.test(sourcePath || '')) {
-    console.log(`${sourcePath?.slice(0, 100)} - bad filename.`)
+    console.warn(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }
 
   // dont include loading in timing of parsing (one time cost)
@@ -79,7 +79,6 @@ export async function extractToClassNames({
   try {
     ast = babelParse(source)
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err
   }
@@ -100,7 +99,7 @@ export async function extractToClassNames({
     onStyleRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(`adding styled() rule: .${identifier} ${css}`)
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
@@ -126,7 +125,7 @@ export async function extractToClassNames({
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
         if (shouldPrintDebug) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`bail, acceptsClassName is false`)
         }
         return
@@ -250,7 +249,7 @@ export async function extractToClassNames({
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // eslint-disable-next-line no-console
+                // rome-ignore lint/nursery/noConsoleLog: ok
                 console.log(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
@@ -311,7 +310,7 @@ export async function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(
           '  finalClassNames\n',
           logLines(finalClassNames.map((x) => x['value']).join(' '))
@@ -402,7 +401,7 @@ export async function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('no res or none modified', res)
     }
     return null
@@ -428,7 +427,7 @@ export async function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log(
       '\n -------- output code ------- \n\n',
       result.code
@@ -436,7 +435,7 @@ export async function extractToClassNames({
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
@@ -460,7 +459,7 @@ export async function extractToClassNames({
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log(
       `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
     )

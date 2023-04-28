@@ -290,7 +290,7 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
         contentRef.current?.getAttribute('aria-describedby')!
       )
       if (!hasDescription) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.warn(`\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
   
         You can add a description to the \`${CONTENT_NAME}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.

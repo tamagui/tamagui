@@ -19,6 +19,7 @@ const logUpdate =
         console.groupCollapsed('trace >')
         console.trace()
         console.groupEnd()
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('  next', next)
         console.groupEnd()
       }

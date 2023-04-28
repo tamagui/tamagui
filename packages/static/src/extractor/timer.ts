@@ -6,10 +6,10 @@ export const timer = () => {
       if (print) {
         const took = Date.now() - last
         last = Date.now()
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(`Time ${name}: ${took}ms`)
         if (took > 10) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log('  long timer')
         }
       }
@@ -17,10 +17,10 @@ export const timer = () => {
     done: (print = false) => {
       if (print) {
         const total = Date.now() - start
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(`Total time: ${total}ms`)
         if (total > 50) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log('  long timer')
         }
       }
