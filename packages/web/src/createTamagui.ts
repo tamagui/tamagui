@@ -30,8 +30,6 @@ const createdConfigs = new WeakMap<any, boolean>()
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
-  console.trace('?????????')
-
   if (createdConfigs.has(configIn)) {
     return configIn as any
   }

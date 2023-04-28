@@ -16,8 +16,6 @@ export function getThemeCSSRules({
   theme: ThemeParsed
   names: string[]
 }) {
-  console.log('themeName', themeName)
-
   const cssRuleSets: string[] = []
 
   // special case for SSR
