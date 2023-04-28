@@ -564,18 +564,14 @@ export const getSplitStyles: StyleSplitter = (
       staticConfig.isHOC && (isMediaOrPseudo || parentHasVariant)
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
-    if (
-      process.env.NODE_ENV === 'development' &&
-      debug === 'verbose' &&
-      shouldPassThrough
-    ) {
-      console.groupCollapsed(`  🔹 pass through ${keyInit}`)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
-      console.groupEnd()
-    }
-
     if (shouldPassThrough) {
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
+        console.groupEnd()
+      }
+
       passDownProp(keyInit, valInit, isMediaOrPseudo)
 
       // if it's a variant here, we have a two layer variant...
@@ -590,7 +586,13 @@ export const getSplitStyles: StyleSplitter = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
+      console.log({
+        isVariant,
+        shouldPassProp,
+        isHOCShouldPassThrough,
+        parentHasVariant,
+        variants,
+      })
     }
 
     const expanded = isMediaOrPseudo

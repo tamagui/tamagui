@@ -55,12 +55,12 @@ export function extendStaticConfig(
       : parentStaticConfig.validStyles || stylePropsView,
     defaultProps: mergeProps(
       {
-        ...parentStaticConfig.defaultProps,
         ...parentStaticConfig.defaultVariants,
+        ...parentStaticConfig.defaultProps,
       },
       {
-        ...config.defaultProps,
         ...config.defaultVariants,
+        ...config.defaultProps,
       }
     )[0],
   })

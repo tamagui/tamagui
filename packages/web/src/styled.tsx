@@ -90,15 +90,19 @@ export function styled<
 
   const staticConfigProps = (() => {
     if (options) {
-      const {
+      let {
         variants,
         name,
         defaultVariants,
         acceptsClassName: acceptsClassNameProp,
         ...defaultProps
       } = options
+
       if (defaultVariants) {
-        Object.assign(defaultProps, defaultVariants)
+        defaultProps = {
+          ...defaultVariants,
+          ...defaultProps,
+        }
       }
 
       const nativeConf =
