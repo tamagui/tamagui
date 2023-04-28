@@ -16,6 +16,7 @@ import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
 import Slide7 from './slides/slide7'
 import Slide8 from './slides/slide8'
+import Slide9 from './slides/slide9'
 
 const slideDimensions = {
   width: 1280,
@@ -52,6 +53,7 @@ export default function TamaguiTalk() {
             <Slide6 />,
             <Slide7 />,
             <Slide8 />,
+            <Slide9 />,
           ]}
         />
       </YStack>

@@ -351,18 +351,20 @@ export const useChangeThemeEffect = (
 
     if (process.env.NODE_ENV === 'development' && props['debug']) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
-      const parentState = { ...parentManager?.state }
-      const parentId = parentManager?.id
-      const themeManagerState = { ...themeManager.state }
-      console.log({
-        props,
-        parentState,
-        parentId,
-        themeManager,
-        prev,
-        response,
-        themeManagerState,
-      })
+      if (!isServer) {
+        const parentState = { ...parentManager?.state }
+        const parentId = parentManager?.id
+        const themeManagerState = { ...themeManager.state }
+        console.log({
+          props,
+          parentState,
+          parentId,
+          themeManager,
+          prev,
+          response,
+          themeManagerState,
+        })
+      }
       console.groupEnd()
     }
 

@@ -49,8 +49,6 @@ import {
   UseAnimationProps,
 } from './types'
 import { Slot } from './views/Slot.js'
-import { Stack } from './views/Stack.js'
-import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
 import { ThemeDebug } from './views/ThemeDebug'
 
@@ -195,7 +193,10 @@ export function createComponent<
      */
     const animationsConfig = useAnimationDriver()
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
-    const isAnimated = (() => {
+
+    // after we get states mount we need to turn off isAnimated for server side
+    const willBeAnimated = (() => {
+      if (isServer) return false
       const next = !!(
         !staticConfig.isHOC &&
         useAnimations &&
@@ -206,6 +207,23 @@ export function createComponent<
       }
       return next || stateRef.current.hasAnimated
     })()
+
+    const hasEnterStyle = !!props.enterStyle
+    const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
+    const states = useServerState<TamaguiComponentState>(
+      needsMount ? defaultComponentState! : defaultComponentStateMounted!
+    )
+    const state = propsIn.forceStyle
+      ? { ...states[0], [propsIn.forceStyle]: true }
+      : states[0]
+    const setState = states[1]
+    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
+
+    let isAnimated = willBeAnimated
+    if (isAnimated && (isServer || state.unmounted)) {
+      isAnimated = false
+    }
+
     const componentClassName = props.asChild
       ? ''
       : props.componentName
@@ -214,6 +232,8 @@ export function createComponent<
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
+
+    console.log('willBeAnimated', staticConfig.componentName, willBeAnimated)
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -234,22 +254,9 @@ export function createComponent<
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     const avoidClassesWhileAnimating = animationsConfig?.isReactNative
-    const hasEnterStyle = !!props.enterStyle
-    const needsMount = Boolean(
-      (isWeb ? isClient : true) && (hasEnterStyle || props.animation)
-    )
-    const states = useServerState<TamaguiComponentState>(
-      needsMount ? defaultComponentState! : defaultComponentStateMounted!
-    )
-
-    const state = propsIn.forceStyle
-      ? { ...states[0], [propsIn.forceStyle]: true }
-      : states[0]
-    const setState = states[1]
-    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     const usePresence = animationsConfig?.usePresence
-    const presence = !isRSC && isAnimated && usePresence ? usePresence() : null
+    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -269,14 +276,14 @@ export function createComponent<
 
     const shouldAvoidClasses =
       !isWeb ||
-      !!(props.animation && avoidClassesWhileAnimating) ||
+      !!(isAnimated && avoidClassesWhileAnimating) ||
       !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
     const disableTheme =
-      (props['data-disable-theme'] && !isAnimated) || staticConfig.isHOC
+      (props['data-disable-theme'] && !willBeAnimated) || staticConfig.isHOC
 
     const themeStateProps = {
       name: props.theme,
@@ -337,9 +344,8 @@ export function createComponent<
         ...state,
         mediaState,
         noClassNames,
-        dynamicStylesInline: noClassNames,
         hasTextAncestor,
-        resolveVariablesAs: 'auto',
+        resolveVariablesAs: isAnimated ? 'value' : 'auto',
         isExiting,
       },
       null,
@@ -404,7 +410,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && isAnimated && useAnimations && !staticConfig.isHOC) {
+    if (!isRSC && willBeAnimated && useAnimations && !staticConfig.isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
@@ -415,8 +421,10 @@ export function createComponent<
         hostRef,
         staticConfig,
       })
-      if (animations) {
-        animationStyles = animations.style
+      if (isAnimated) {
+        if (animations) {
+          animationStyles = animations.style
+        }
       }
     }
 
@@ -458,7 +466,12 @@ export function createComponent<
     }
 
     // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
+    if (
+      process.env.TAMAGUI_TARGET === 'web' &&
+      !isReactNative &&
+      !willBeAnimated &&
+      !asChild
+    ) {
       viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
     } else {
       viewProps = nonTamaguiProps
@@ -486,17 +499,17 @@ export function createComponent<
       })
     }, [setStateShallow])
 
-    if (isWeb) {
-      useEffect(() => {
+    const shouldSetMounted = needsMount && state.unmounted
+
+    // combinined two effects into one for performance so be careful with logic
+    // because no need for mouseUp removal effect if its not even mounted yet
+    useEffect(() => {
+      if (!shouldSetMounted) {
         return () => {
           mouseUps.delete(unPress)
         }
-      }, [])
-    }
+      }
 
-    const shouldSetMounted = needsMount && state.unmounted
-    useEffect(() => {
-      if (!shouldSetMounted) return
       if (state.unmounted === true && needsMount) {
         setStateShallow({
           unmounted: false,

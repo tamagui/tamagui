@@ -1510,7 +1510,6 @@ export type TamaguiComponentState = {
 export type SplitStyleState = TamaguiComponentState & {
   mediaState?: Record<string, boolean>
   noClassNames?: boolean
-  dynamicStylesInline?: boolean
   resolveVariablesAs?: ResolveVariableTypes
   fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
@@ -1676,4 +1675,7 @@ type NarrowRaw<A> =
 export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>
 
 export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios'
-export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[]
+export type NativeValue<Platform extends NativePlatform = NativePlatform> =
+  | boolean
+  | Platform
+  | Platform[]

@@ -266,9 +266,13 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // eslint-disable-next-line no-console
     console.groupCollapsed('getSplitStyles (looping backwards)')
-    // prettier-ignore
-    // eslint-disable-next-line no-console
-    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
+    if (isServer) {
+      console.log({ props, IS_STATIC })
+    } else {
+      // prettier-ignore
+      // eslint-disable-next-line no-console
+      console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
+    }
     // eslint-disable-next-line no-console
     console.groupEnd()
   }
@@ -588,12 +592,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // eslint-disable-next-line no-console
-      console.groupCollapsed('  🔹 styles', keyInit, valInit)
-      console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
-    }
-
     const expanded = isMediaOrPseudo
       ? [[keyInit, valInit]]
       : propMapper(
@@ -606,6 +604,19 @@ export const getSplitStyles: StyleSplitter = (
           undefined,
           debug
         )
+
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // eslint-disable-next-line no-console
+      console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      console.log({
+        expanded,
+        state,
+        isVariant,
+        shouldPassProp,
+        isHOCShouldPassThrough,
+        parentHasVariant,
+      })
+    }
 
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
