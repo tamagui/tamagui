@@ -5754,9 +5754,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/site-config@1.20.6, @tamagui/site-config@workspace:apps/site-config":
+"@tamagui/site-config@1.20.6, @tamagui/site-config@workspace:packages/site-config":
   version: 0.0.0-use.local
-  resolution: "@tamagui/site-config@workspace:apps/site-config"
+  resolution: "@tamagui/site-config@workspace:packages/site-config"
   dependencies:
     "@tamagui/animations-css": 1.20.6
     "@tamagui/animations-react-native": 1.20.6
