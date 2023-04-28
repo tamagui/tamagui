@@ -6,7 +6,7 @@ import 'raf/polyfill'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { Provider } from 'app/provider'
 import Head from 'next/head'
-import React, { startTransition } from 'react'
+import React from 'react'
 import type { SolitoAppProps } from 'solito'
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
@@ -30,9 +30,7 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemeProvider
       onChangeTheme={(next) => {
-        startTransition(() => {
-          setTheme(next)
-        })
+        setTheme(next as any)
       }}
     >
       <Provider disableRootThemeClass defaultTheme={theme}>

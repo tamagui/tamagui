@@ -9,8 +9,7 @@ import '../public/fonts/fonts.css'
 // import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import Head from 'next/head'
-import { startTransition, useMemo } from 'react'
+import { useMemo } from 'react'
 import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
 import config from '../tamagui.config'
@@ -77,11 +76,8 @@ export default function App(props: AppProps) {
       )}
 
       <NextThemeProvider
-        skipNextHead
         onChangeTheme={(next) => {
-          startTransition(() => {
-            setTheme(next as any)
-          })
+          setTheme(next as any)
         }}
       >
         <TamaguiProvider
