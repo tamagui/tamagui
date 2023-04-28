@@ -133,8 +133,7 @@ export default function SignInPage() {
                   <Button
                     // @ts-expect-error
                     type="submit"
-                    loading={loading}
-                    disabled={!email.length || emailAuthDisabledFlag}
+                    disabled={!email.length || emailAuthDisabledFlag || loading}
                   >
                     Send magic link
                   </Button>

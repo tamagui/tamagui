@@ -32,7 +32,9 @@ export interface Props {
 const getAccessDetails = async () => {
   const res = await fetch('/api/access-check')
   const data = await res.json()
-  if (res.status !== 200) throw new Error(data.error)
+  if (res.status !== 200) {
+    throw data
+  }
   return data as UserAccessStatus
 }
 
@@ -41,6 +43,7 @@ export const MyUserContextProvider = (props: Props) => {
   const { isLoading: isLoadingUser, session } = useSessionContext()
   const supabase = useSupabaseClient<Database>()
 
+  const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)
   // const [subscription, setSubscription] = useState<any>(null)
@@ -72,6 +75,12 @@ export const MyUserContextProvider = (props: Props) => {
 
         if (accessDetailsPromise.status === 'fulfilled')
           setAccessStatus(accessDetailsPromise.value)
+        else {
+          if (accessDetailsPromise.reason.action) {
+            alert(accessDetailsPromise.reason.error)
+            router.push(accessDetailsPromise.reason.action)
+          }
+        }
 
         // if (subscriptionPromise.status === 'fulfilled')
         // setSubscription(subscriptionPromise.value.data)
@@ -83,7 +92,7 @@ export const MyUserContextProvider = (props: Props) => {
       // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
-console.log(session)
+
   const value = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
