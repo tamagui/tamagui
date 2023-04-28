@@ -170,7 +170,7 @@ a package.json etc etc + zip file
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
 
-- missing docs on useToastController().options
+- [x] missing docs on useToastController().options
 
 - bug android 
   - I've been working on integrating our component library to mobile and ran into a snag with the android build. IOS builds seamlessly and Android throws this error when trying to use Select component:
