@@ -123,6 +123,8 @@ let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
 
+const numRenderedOfType: Record<string, number> = {}
+
 export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = TamaguiElement,
@@ -215,6 +217,7 @@ export function createComponent<
 
     const usePresence = animationsConfig?.usePresence
     const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
+    if (props['debug']) console.log('presence', presence)
 
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
@@ -228,11 +231,19 @@ export function createComponent<
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
+    let hasHydrated = false
+    numRenderedOfType[componentName] ??= 0
+    if (++numRenderedOfType[componentName] > 1000) {
+      hasHydrated = true
+    }
+
     let isAnimated = willBeAnimated
     // presence avoids ssr stuff
+    // if (!presence && isClient && hasHydrated) {
     if (isAnimated && (isServer || state.unmounted === true)) {
       isAnimated = false
     }
+    // }
 
     const componentClassName = props.asChild
       ? ''

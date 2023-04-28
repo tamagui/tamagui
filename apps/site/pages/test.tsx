@@ -1,6 +1,6 @@
-import { AnimationsDemo } from '@tamagui/demos'
+import { AnimationsDemo, AnimationsPresenceDemo } from '@tamagui/demos'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
-import { Square } from 'tamagui'
+import { Square, YStack } from 'tamagui'
 
 // export default () => <Square size={100} animation="quick" bc="$background" />
 export default () => (
@@ -14,6 +14,9 @@ export default () => (
     }}
   >
     {/* <LogoWords animated /> */}
-    <AnimationsDemo />
+    <YStack w={1000}>
+      <AnimationsDemo />
+      <AnimationsPresenceDemo />
+    </YStack>
   </div>
 )

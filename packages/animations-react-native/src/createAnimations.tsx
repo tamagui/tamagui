@@ -327,7 +327,7 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) {
+            if (props['debug'] === 'verbose') {
               // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
               console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
