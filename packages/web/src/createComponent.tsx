@@ -820,7 +820,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && process.env.DEBUG !== 'tamagui') {
+    if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`, viewProps)
@@ -830,12 +830,12 @@ export function createComponent<
         }
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('children', content)
-        console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo })
         }
+        console.groupEnd()
         console.groupEnd()
       }
     }
@@ -906,7 +906,7 @@ export function createComponent<
     })
 
     // split - keep variables on props to be processed using theme values at runtime (native)
-    if (!isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'native') {
       for (const key in staticConfig.defaultProps) {
         const val = staticConfig.defaultProps[key]
         if (validPseudoKeys[key]) continue

@@ -134,8 +134,8 @@ export const SheetOverlayFrame = styled(ThemeableStack, {
     unstyled: {
       false: {
         fullscreen: true,
+        position: 'absolute',
         backgrounded: true,
-        opacity: 0.5,
         zIndex: 100_000,
       },
     },
