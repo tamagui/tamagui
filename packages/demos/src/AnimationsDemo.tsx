@@ -23,7 +23,6 @@ export function AnimationsDemo(props) {
         size={104}
         borderColor="$borderColor"
         borderWidth={1}
-        debug
         borderRadius="$9"
         backgroundColor="$color9"
         hoverStyle={{

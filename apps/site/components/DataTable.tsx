@@ -58,7 +58,7 @@ export function DataTable({
               {items.map((item) => (
                 <H4
                   color="$color"
-                  fow="800"
+                  fow="700"
                   key={item}
                   maw={100}
                   fontFamily="$mono"

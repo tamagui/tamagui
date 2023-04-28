@@ -32,7 +32,7 @@ export default function Blog({ frontmatters }) {
                       day: 'numeric',
                     }).format(new Date(frontmatter.publishedAt || ''))}
                   </Paragraph>
-                  <Paragraph cursor="inherit" fow="800" theme="alt2" size="$4">
+                  <Paragraph cursor="inherit" fow="700" theme="alt2" size="$4">
                     &nbsp;by {authors[frontmatter.by].name}
                   </Paragraph>
                   {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
