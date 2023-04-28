@@ -234,11 +234,19 @@ export function createComponent<
     // cheat code
     let hasHydrated = false
     numRenderedOfType[componentName] ??= 0
-    if (++numRenderedOfType[componentName] > 10) {
-      hasHydrated = true
+    if (willBeAnimated) {
+      if (
+        ++numRenderedOfType[componentName] >
+        (process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+          ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+          : 5)
+      ) {
+        hasHydrated = true
+      }
     }
 
     let isAnimated = willBeAnimated
+
     // presence avoids ssr stuff
     if (presence && hasHydrated) {
       // no
