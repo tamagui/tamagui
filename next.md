@@ -9,13 +9,13 @@ high level:
 ---
 
 Ali todos:
-  - [ ] site:
+  - [x] site:
     - [x] github auth redirects to localhost in prod
-    - [ ] splash page loads slow on a fresh session because its running supabase before
-      - [ ] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
-      - [ ] see next config rewrites()
-    - [ ] studio.tamagui.dev seems like its only SSR and not hydrating?
-  - [ ] studio
+    - [x] splash page loads slow on a fresh session because its running supabase before
+      - [x] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
+      - [x] see next config rewrites()
+    - [x] studio.tamagui.dev seems like its only SSR and not hydrating?
+  - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
 
     - [x] Config tab
@@ -37,31 +37,33 @@ Ali todos:
         - [x] scroll also broken
         - [x] make it two columns on expanded
 
-    - [ ] Colors tab
-      - [ ] fix dragging on the HSL lines is wonky
+    - [x] Colors tab
+      - [x] fix dragging on the HSL lines is wonky
+      - [ ] add code export
 
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
 
-    - [ ] Tokens tab
-      - [ ] lets redo it to be the same structure as settings
-      - [ ] once thats done lets also add a new column thats first:
-        - [ ] its a wider column
-        - [ ] not clickable/openable
-        - [ ] lets you visualize the "matching" stuff:
-          - [ ] show two `<Square />` vertically
-          - [ ] slider to move up/down your tokens
-          - [ ] square gets the border radius / size
-          - [ ] shows / highlights around the square for "space" tokens
+    - [x] Tokens tab
+      - [x] lets redo it to be the same structure as settings
+      - [x] once thats done lets also add a new column thats first:
+        - [x] its a wider column
+        - [x] not clickable/openable
+        - [x] lets you visualize the "matching" stuff:
+          - [x] show two `<Square />` vertically
+          - [x] slider to move up/down your tokens
+          - [x] square gets the border radius / size
+          - [x] shows / highlights around the square for "space" tokens
           - [ ] also can show a Button as an option too
 
     - [ ] all tabs (header):
       - [ ] add a search input box that filters down things as you type
 
-  - [ ] Select native on trigger + native on viewport + accent-color when native (web)
-  - [ ] get new starter ready
-  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
-  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
+  - [x] Select native on trigger + native on viewport + accent-color when native (web)
+  - [x] get new starter ready
+  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
+  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc. - props -> api, make headings consistent, document unstyled props, anatomy/usage consistency
+  - [ ] toast sooner style demo
   - [ ] low prio: toast viewport issue
 
 ---
