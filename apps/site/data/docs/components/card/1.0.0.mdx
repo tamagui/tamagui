@@ -55,17 +55,56 @@ Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themea
       required: false,
       description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
     },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
   ]}
 />
 
 #### Card.Header
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
 
 #### Card.Footer
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
 
 #### Card.Background
 
 Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below Header/Footer.
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
