@@ -24,7 +24,7 @@ export function AnimationsDemo(props) {
         borderColor="$borderColor"
         borderWidth={1}
         borderRadius="$9"
-        backgroundColor="$color9"
+        backgroundColor="$background"
         hoverStyle={{
           scale: 1.1,
         }}

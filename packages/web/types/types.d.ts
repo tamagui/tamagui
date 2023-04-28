@@ -677,7 +677,7 @@ export type TamaguiComponentState = {
     press: boolean;
     pressIn: boolean;
     focus: boolean;
-    unmounted: boolean;
+    unmounted: boolean | 'should-enter';
     animation?: null | {
         style?: any;
         avoidClasses?: boolean;
@@ -753,6 +753,7 @@ export type UseAnimationHook = (props: {
     hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
     state: SplitStyleState;
+    theme: ThemeParsed;
     pseudos: PseudoProps<ViewStyle> | null;
     onDidAnimate?: any;
     delay?: number;

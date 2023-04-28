@@ -79,6 +79,9 @@ export const LogoWords = memo(
             position="absolute"
             top={0}
             left={0}
+            // enterStyle={{
+            //   y: -30
+            // }}
             y={mounted === 'start' ? -30 : -3}
             // the last i is less wide
             x={x}

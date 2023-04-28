@@ -11,6 +11,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -210,6 +211,7 @@ export function createComponent<
 
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
+
     const states = useServerState<TamaguiComponentState>(
       needsMount ? defaultComponentState! : defaultComponentStateMounted!
     )
@@ -220,7 +222,7 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     let isAnimated = willBeAnimated
-    if (isAnimated && (isServer || state.unmounted)) {
+    if (isAnimated && (isServer || state.unmounted === true)) {
       isAnimated = false
     }
 
@@ -232,8 +234,6 @@ export function createComponent<
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = isRSC ? null : useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
-
-    console.log('willBeAnimated', staticConfig.componentName, willBeAnimated)
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -262,7 +262,7 @@ export function createComponent<
     if (isAnimated && presence) {
       const presenceState = presence[2]
       if (presenceState) {
-        if (state.unmounted && presenceState.enterVariant) {
+        if (state.unmounted === 'should-enter' && presenceState.enterVariant) {
           props[presenceState.enterVariant] = true
         }
         if (!presenceState.isPresent && presenceState.exitVariant) {
@@ -416,6 +416,7 @@ export function createComponent<
         style: splitStylesStyle,
         presence,
         state,
+        theme: themeState.theme,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
         hostRef,
@@ -510,15 +511,10 @@ export function createComponent<
         }
       }
 
-      if (state.unmounted === true && needsMount) {
-        setStateShallow({
-          unmounted: false,
-        })
-        return
-      }
-
+      const unmounted = state.unmounted === true && hasEnterStyle ? 'should-enter' : false
+      console.warn('setting', unmounted)
       setStateShallow({
-        unmounted: false,
+        unmounted,
       })
     }, [shouldSetMounted, state.unmounted])
 

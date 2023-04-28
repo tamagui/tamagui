@@ -28,7 +28,14 @@ export const Sandbox = () => {
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
-        {/* this comment keeps indent */}
+        {/* <Square
+          animation="quick"
+          debug="verbose"
+          size={100}
+          bc="red"
+          enterStyle={{ y: -10 }}
+          y={10}
+        /> */}
         <Component />
       </Suspense>
     </SandboxFrame>

@@ -170,7 +170,6 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const mergedStyles = style
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
@@ -185,32 +184,27 @@ export function createAnimations<A extends AnimationsConfig>(
       )
       const animateOnly = props.animateOnly || []
 
-      const args = [
-        JSON.stringify(mergedStyles),
-        JSON.stringify(state),
-        isExiting,
-        !!onDidAnimate,
-      ]
+      const args = [style, state, isExiting, !!onDidAnimate]
 
-      const isThereNoNativeStyleKeys = useMemo(() => {
+      const isThereNoNativeStyleKeys = () => {
         if (isWeb) return true
 
-        return Object.keys(mergedStyles).some((key) => {
+        return Object.keys(style).some((key) => {
           if (props.animateOnly?.length) {
             return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
           } else {
             return !animatedStyleKey[key]
           }
         })
-      }, args)
+      }
 
       const res = useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
 
         const nonAnimatedStyle = {}
-        for (const key in mergedStyles) {
-          const val = mergedStyles[key]
+        for (const key in style) {
+          const val = style[key]
           if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
             nonAnimatedStyle[key] = val
             continue
@@ -285,19 +279,17 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (isColorStyleKey) {
             const curInterpolation = animationsState.current.get(value)
-            if (curInterpolation?.current !== valIn) {
-              interpolateArgs = getColorInterpolated(
-                curInterpolation?.current as string,
-                // valIn is the new color
-                valIn as string,
-                value['_value']
-              )
-              animateToVal = value['_value'] === 1 ? 0 : 1
-              animationsState.current!.set(value, {
-                current: valIn,
-                interopolation: value.interpolate(interpolateArgs),
-              })
-            }
+            interpolateArgs = getColorInterpolated(
+              curInterpolation?.current as string,
+              // valIn is the new color
+              valIn as string,
+              value['_value']
+            )
+            animateToVal = value['_value'] === 1 ? 0 : 1
+            animationsState.current!.set(value, {
+              current: valIn,
+              interopolation: value.interpolate(interpolateArgs),
+            })
           }
 
           if (value) {
