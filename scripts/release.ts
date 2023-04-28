@@ -45,6 +45,7 @@ const minorVersion = curMinor + (!patch ? plusVersion : 0)
 const nextVersion = `1.${minorVersion}.${patchVersion}`
 
 const sleep = (ms) => {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`Sleeping ${ms}ms`)
   return new Promise((res) => setTimeout(res, ms))
 }
@@ -107,6 +108,7 @@ async function run() {
           return -1
         })
 
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
 
       async function checkDistDirs() {
@@ -140,6 +142,7 @@ async function run() {
 
       version = answer.version
 
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('install and build')
 
       if (!rePublish) {
@@ -151,6 +154,7 @@ async function run() {
         await checkDistDirs()
       }
 
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('run checks')
 
       if (!skipTest) {
@@ -195,6 +199,7 @@ async function run() {
       }
 
       if (dryRun) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`Dry run, exiting before publish`)
         return
       }
@@ -224,6 +229,7 @@ async function run() {
           packageJsons,
           async (pkg) => {
             const { cwd, name } = pkg
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(`Publish ${name}`)
 
             // check if already published first as its way faster for re-runs
@@ -270,12 +276,13 @@ async function run() {
           }
         )
 
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(
           `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
         )
       }
 
-      await sleep(5 * 1000)
+      await sleep(4 * 1000)
 
       if (rePublish) {
         // if all successful, re-tag as latest
@@ -288,7 +295,7 @@ async function run() {
             }).catch((err) => console.error(err))
           },
           {
-            concurrency: 5,
+            concurrency: 15,
           }
         )
       } else {
@@ -301,32 +308,13 @@ async function run() {
             }).catch((err) => console.error(err))
           },
           {
-            concurrency: 15,
-          }
-        )
-
-        await sleep(5000)
-
-        // then remove old prepub tag
-        await pMap(
-          packageJsons,
-          async ({ name, cwd }) => {
-            await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
-              cwd,
-            }).catch((err) => console.error(err))
-          },
-          {
-            concurrency: 5,
+            concurrency: 20,
           }
         )
       }
 
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`✅ Published\n`)
-    }
-
-    if (finish) {
-      console.log(`Finishing adding and pushing version ${version} in 5 seconds...`)
-      await sleep(5 * 1000)
     }
 
     // then git tag, commit, push
@@ -334,7 +322,7 @@ async function run() {
     await spawnify(`yarn install`)
 
     if (!finish) {
-      await sleep(5 * 1000)
+      await sleep(4 * 1000)
     }
 
     await spawnify(`yarn upgrade:starters`)
@@ -349,9 +337,30 @@ async function run() {
       await spawnify(`git tag v${version}`)
       await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`✅ Pushed and versioned\n`)
     }
+
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(`All done, cleanup up in...`)
+    await sleep(2 * 1000)
+    // then remove old prepub tag
+    await pMap(
+      packageJsons,
+      async ({ name, cwd }) => {
+        await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+          cwd,
+        }).catch((err) => console.error(err))
+      },
+      {
+        concurrency: 20,
+      }
+    )
+
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(`✅ Done\n`)
   } catch (err) {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log('\nError:\n', err)
     process.exit(1)
   }
