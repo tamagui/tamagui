@@ -15,6 +15,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useRef,
 } from 'react'
@@ -212,6 +213,9 @@ export function createComponent<
       return next || stateRef.current.hasAnimated
     })()
 
+    const usePresence = animationsConfig?.usePresence
+    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
+
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
 
@@ -225,8 +229,11 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     let isAnimated = willBeAnimated
-    if (isAnimated && (isServer || state.unmounted === true)) {
-      isAnimated = false
+    // presence avoids ssr stuff
+    if (!presence) {
+      if (isAnimated && (isServer || state.unmounted === true)) {
+        isAnimated = false
+      }
     }
 
     const componentClassName = props.asChild
@@ -258,14 +265,11 @@ export function createComponent<
 
     const avoidClassesWhileAnimating = animationsConfig?.isReactNative
 
-    const usePresence = animationsConfig?.usePresence
-    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
-
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
       const presenceState = presence[2]
       if (presenceState) {
-        if (state.unmounted === 'should-enter' && presenceState.enterVariant) {
+        if (state.unmounted && presenceState.enterVariant) {
           props[presenceState.enterVariant] = true
         }
         if (!presenceState.isPresent && presenceState.exitVariant) {
