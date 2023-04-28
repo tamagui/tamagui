@@ -33,7 +33,8 @@
         "useOptionalChain": "off"
       },
       "a11y": {
-        "noHeaderScope": "off"
+        "noHeaderScope": "off",
+        "useAltText": "off"
       },
       "nursery": {
         "noConsoleLog": "error",

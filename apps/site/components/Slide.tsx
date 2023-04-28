@@ -160,8 +160,8 @@ function getTextContent(
                 <img
                   style={{
                     alignSelf: 'center',
+                    maxWidth: '100%',
                     width: item.image.width * 0.5,
-                    height: item.image.height * 0.5,
                   }}
                   src={item.image.src}
                 />
