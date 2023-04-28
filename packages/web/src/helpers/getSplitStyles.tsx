@@ -264,10 +264,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.NODE_ENV === 'development' && debug) {
-    // pass debug down
-    // @ts-ignore
-    delete skipProps.debug
-
     console.groupCollapsed('getSplitStyles (looping backwards)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
@@ -356,7 +352,11 @@ export const getSplitStyles: StyleSplitter = (
 
     if (!staticConfig.isHOC) {
       if (keyInit in skipProps) {
-        return
+        if (process.env.NODE_ENV === 'development' && debug && keyInit === 'debug') {
+          // pass throuhg debug
+        } else {
+          return
+        }
       }
     }
 
