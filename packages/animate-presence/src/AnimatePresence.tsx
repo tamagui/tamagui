@@ -30,7 +30,6 @@ function updateChildLookup(
     const key = getChildKey(child)
 
     if (isDev && seenChildren && seenChildren.has(key)) {
-      // eslint-disable-next-line no-console
       console.warn(
         `Children of AnimatePresence require unique keys. "${key}" is a duplicate.`
       )
@@ -50,7 +49,6 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
     if (isValidElement(child)) {
       if (!child.key) {
         if (process.env.NODE_ENV === 'development') {
-          // eslint-disable-next-line no-console
           console.warn('No key given to AnimatePresence child, assigning index as key')
         }
         filtered.push(
@@ -267,7 +265,7 @@ export const AnimatePresence: React.FunctionComponent<
     const shouldWarn = exitBeforeEnter && childrenToRender.length > 1
     if (shouldWarn && hasWarned && !hasWarned.current) {
       hasWarned.current = true
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log(
         `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
       )

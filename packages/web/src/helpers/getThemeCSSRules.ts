@@ -126,10 +126,17 @@ export function getThemeCSSRules({
     const lessSpecificSelectors = selectors
       .map((x) => {
         if (x == darkSelector || x === lightSelector) return `:root`
+        if (
+          (isDark && x.startsWith(lightSelector)) ||
+          (!isDark && x.startsWith(darkSelector))
+        ) {
+          return
+        }
         return x.replace(/^\.t_(dark|light) /, '').trim()
       })
       .filter(Boolean)
       .join(', ')
+
     const themeRules = `${lessSpecificSelectors} {${vars}}`
     const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
   ${bodyRules}

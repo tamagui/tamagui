@@ -264,12 +264,10 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // eslint-disable-next-line no-console
     console.groupCollapsed('getSplitStyles (looping backwards)')
     // prettier-ignore
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
-    // eslint-disable-next-line no-console
     console.groupEnd()
   }
 
@@ -529,7 +527,7 @@ export const getSplitStyles: StyleSplitter = (
         if (isValidClassName || isMediaOrPseudo) {
           usedKeys[keyInit] = 1
           if (process.env.NODE_ENV === 'development' && debug) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.log('tamagui classname props', keyInit, valInit)
           }
           mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
@@ -562,7 +560,7 @@ export const getSplitStyles: StyleSplitter = (
     const parentHasVariant =
       staticConfig.parentStaticConfig?.variants &&
       keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
+    const isHOCShouldPassThrough = staticConfig.isHOC && (isMediaOrPseudo || isVariant)
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
 
     if (
@@ -570,8 +568,8 @@ export const getSplitStyles: StyleSplitter = (
       debug === 'verbose' &&
       shouldPassThrough
     ) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
       console.groupEnd()
     }
@@ -589,8 +587,8 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
     }
 
@@ -607,18 +605,30 @@ export const getSplitStyles: StyleSplitter = (
           debug
         )
 
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({
+        expanded,
+        state,
+        isVariant,
+        shouldPassProp,
+        isHOCShouldPassThrough,
+        parentHasVariant,
+      })
+    }
+
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       if (!isServer && isDevTools) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', {
           ...style,
         })
       }
-      // eslint-disable-next-line no-console
       console.groupEnd()
     }
     if (!expanded) return
@@ -636,6 +646,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (!isMediaOrPseudo && key in usedKeys) {
         if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`Used media/pseudo ${key}`)
         }
         continue
@@ -720,6 +731,7 @@ export const getSplitStyles: StyleSplitter = (
             } else {
               usedKeys[key] ||= 1
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                // rome-ignore lint/nursery/noConsoleLog: <explanation>
                 console.log(`Setting used ${key}`)
               }
             }
@@ -751,6 +763,7 @@ export const getSplitStyles: StyleSplitter = (
             }
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
               // prettier-ignore
+              // rome-ignore lint/nursery/noConsoleLog: <explanation>
               console.log('    merge pseudo?', keyInit, shouldMerge, { importance, curImportance, pkey, val })
             }
           }
@@ -779,7 +792,7 @@ export const getSplitStyles: StyleSplitter = (
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
         }
 
@@ -804,6 +817,7 @@ export const getSplitStyles: StyleSplitter = (
                 space = val
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+                  // rome-ignore lint/nursery/noConsoleLog: <explanation>
                   console.log(
                     `Found more important space for current media ${mediaKeyShort}: ${val} (importance: ${importance})`
                   )
@@ -918,13 +932,16 @@ export const getSplitStyles: StyleSplitter = (
       }
       if (process.env.NODE_ENV === 'development') {
         if (debug) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
         }
       }
     }
     if (process.env.TAMAGUI_TARGET === 'native') {
       if ('elevationAndroid' in style) {
+        // @ts-ignore
         style['elevation'] = style.elevationAndroid
+        // @ts-ignore
         delete style.elevationAndroid
       }
     }
@@ -981,7 +998,6 @@ export const getSplitStyles: StyleSplitter = (
       for (const namespace in transforms) {
         if (!transforms[namespace]) {
           if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
             console.warn('Error no transform', transforms, namespace)
           }
           continue
@@ -1027,15 +1043,13 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 =>')
       // prettier-ignore
       const logs = { ...result, state, etc: { transforms, viewProps, rulesToInsert, parentSplitStyles, flatTransforms } }
       for (const key in logs) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(key, logs[key])
       }
-      // eslint-disable-next-line no-console
       console.groupEnd()
     }
   }

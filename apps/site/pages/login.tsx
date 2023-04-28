@@ -92,7 +92,7 @@ export default function SignInPage() {
             </YStack>
           </Link>
 
-          {message.content && (
+          {Boolean(message.content) && (
             <Notice>
               <Paragraph>{message.content}</Paragraph>
             </Notice>
@@ -133,7 +133,8 @@ export default function SignInPage() {
                   <Button
                     // @ts-expect-error
                     type="submit"
-                    disabled={!email.length || emailAuthDisabledFlag || loading}
+                    icon={loading ? <Spinner /> : null}
+                    disabled={!email.length || emailAuthDisabledFlag}
                   >
                     Send magic link
                   </Button>

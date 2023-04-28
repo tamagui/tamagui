@@ -74,7 +74,9 @@ const plugins = [
   },
   (config) => {
     // for github pages
-    if (process.env.ON_GITHUB_PAGES) {
+    if (process.env.IS_TAMAGUI_PROD) {
+      config.assetPrefix = 'https://tamagui.dev'
+    } else if (process.env.ON_GITHUB_PAGES) {
       config.basePath = '/tamagui'
       config.assetPrefix = '/tamagui/'
     }

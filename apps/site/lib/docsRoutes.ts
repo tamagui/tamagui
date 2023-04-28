@@ -9,19 +9,6 @@ export const docsRoutes = [
 
   {
     type: 'hr',
-    title: 'Compiler',
-  },
-
-  {
-    pages: [
-      { title: 'About', route: '/docs/intro/why-a-compiler' },
-      { title: 'Install', route: '/docs/intro/compiler-install' },
-      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-    ],
-  },
-
-  {
-    type: 'hr',
     title: 'Core',
   },
 
@@ -39,6 +26,19 @@ export const docsRoutes = [
       { title: 'useTheme', route: '/docs/core/use-theme' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
       { title: 'Extras', route: '/docs/core/exports' },
+    ],
+  },
+
+  {
+    type: 'hr',
+    title: 'Compiler',
+  },
+
+  {
+    pages: [
+      { title: 'About', route: '/docs/intro/why-a-compiler' },
+      { title: 'Install', route: '/docs/intro/compiler-install' },
+      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
     ],
   },
 
@@ -86,7 +86,7 @@ export const docsRoutes = [
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
-      {title:'ToggleGroup', route:'/docs/components/toggle-group'}
+      { title: 'ToggleGroup', route: '/docs/components/toggle-group' },
     ],
   },
 

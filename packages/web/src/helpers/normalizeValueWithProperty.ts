@@ -109,7 +109,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
     if (typeof res === 'number' && isNaN(res)) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,

@@ -82,7 +82,7 @@ export const TamaCard = ({
                   </Paragraph>
                 )}
                 {!!subtitlePost && (
-                  <Paragraph cursor="default" fow="800" theme="alt2" size="$7">
+                  <Paragraph cursor="default" fow="700" theme="alt2" size="$7">
                     {subtitlePost}
                   </Paragraph>
                 )}

@@ -113,7 +113,7 @@ export const SheetOverlayFrame = styled(ThemeableStack, {
   fullscreen: true,
   backgrounded: true,
   opacity: 0.5,
-  zIndex: 0,
+  zIndex: 100_000,
 
   variants: {
     closed: {
@@ -192,7 +192,7 @@ const sheetComponents = {
 }
 
 const ParentSheetContext = createContext({
-  zIndex: 40,
+  zIndex: 100_000,
 })
 
 const useSheetContoller = () => {
@@ -251,7 +251,6 @@ const SheetImplementation = themeable(
 
     if (process.env.NODE_ENV === 'development') {
       if (snapPointsProp.some((p) => p < 0 || p > 100)) {
-        // eslint-disable-next-line no-console
         console.warn(
           '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame'
         )
@@ -560,7 +559,6 @@ const SheetImplementation = themeable(
             overlayComponent = child
             break
           default:
-            // eslint-disable-next-line no-console
             console.warn('Warning: passed invalid child to Sheet', child)
         }
       }
@@ -725,7 +723,6 @@ export const ControlledSheet = Sheet as FunctionComponent<
 function getPercentSize(point?: number, screenSize?: number) {
   if (!screenSize) return 0
   if (point === undefined) {
-    // eslint-disable-next-line no-console
     console.warn('No snapPoint')
     return 0
   }

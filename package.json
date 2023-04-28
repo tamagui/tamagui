@@ -24,7 +24,7 @@
     "build:types": "SKIP_JS=1 yarn build",
     "watch": "npm-run-all --parallel watch:ts watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
-    "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 200 watch",
+    "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:build",
     "clean:build": "turbo run clean:build",
     "clean:ts": "tsc -b --clean tsconfig.build.json",
@@ -106,7 +106,7 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "rome": "^12.0.0",
+    "rome": "12.0.0-nightly.19b60d4",
     "turbo": "^1.9.3",
     "typescript": "^5.0.4",
     "ultra-runner": "^3.10.5"

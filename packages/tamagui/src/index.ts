@@ -174,6 +174,7 @@ export {
   useTheme,
   useThemeName,
   useProps,
+  useMediaPropsActive,
   useSafeRef,
 } from '@tamagui/core'
 

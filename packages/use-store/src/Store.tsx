@@ -56,12 +56,14 @@ export class Store<Props extends Object = {}> {
       return
     }
     if (debug) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) CHECK TRACKERS FOR', key)
     }
     for (const tracker of this._trackers) {
       if (tracker.isTracking) {
         tracker.tracked.add(key)
         if (debug) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('(debug) TRACK', key, tracker)
         }
       }

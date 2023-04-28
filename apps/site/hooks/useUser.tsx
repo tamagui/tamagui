@@ -7,6 +7,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useReducer,
   useState,
 } from 'react'
@@ -60,14 +61,16 @@ export const MyUserContextProvider = (props: Props) => {
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
+      console.log('running', session)
+
       setIsloadingData(true)
       Promise.allSettled([
         getUserDetails(),
         getAccessDetails(),
         // getSubscription()
-      ]).then((results) => {
-        const userDetailsPromise = results[0]
-        const accessDetailsPromise = results[1]
+      ]).then(([userDetailsPromise, accessDetailsPromise]) => {
+        console.log('userDetailsPromise', userDetailsPromise)
+
         // const subscriptionPromise = results[2]
 
         if (userDetailsPromise.status === 'fulfilled')

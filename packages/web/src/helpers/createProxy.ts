@@ -1,7 +1,6 @@
 export function createProxy<A extends object>(target: A, handler: ProxyHandler<A>) {
   if (process.env.NODE_ENV === 'development') {
     if (typeof target !== 'object' || !target) {
-      // eslint-disable-next-line no-console
       console.warn(
         'Invalid object given for proxy:',
         target,

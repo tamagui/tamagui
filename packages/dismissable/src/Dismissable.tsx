@@ -286,7 +286,9 @@ function usePointerDownOutside(
 
   return {
     // ensures we check React component tree (not just DOM tree)
-    onPointerDownCapture: () => (isPointerInsideReactTreeRef.current = true),
+    onPointerDownCapture: () => {
+      isPointerInsideReactTreeRef.current = true
+    },
   }
 }
 
@@ -312,8 +314,12 @@ function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
   }, [handleFocusOutside])
 
   return {
-    onFocusCapture: () => (isFocusInsideReactTreeRef.current = true),
-    onBlurCapture: () => (isFocusInsideReactTreeRef.current = false),
+    onFocusCapture: () => {
+      isFocusInsideReactTreeRef.current = true
+    },
+    onBlurCapture: () => {
+      isFocusInsideReactTreeRef.current = false
+    },
   }
 }
 

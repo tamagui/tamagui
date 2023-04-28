@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -11,7 +12,7 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
-import { Code, CodeInline } from './Code'
+import { Code } from './Code'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { DivProps, useHoverGlow } from './HoverGlow'
 
@@ -26,7 +27,11 @@ export type SlideProps = {
 type SlideStepItem =
   | {
       type: 'image'
-      src: string
+      image: {
+        width: number
+        height: number
+        src: string
+      }
     }
   | {
       type: 'text'
@@ -81,7 +86,7 @@ export function Slide(props: SlideProps) {
         {props.steps.map((step, index) => {
           return (
             <React.Fragment key={index}>
-              <YStack space="$10">
+              <YStack f={1} space="$10">
                 {step.map((item, index) => {
                   return (
                     <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
@@ -141,27 +146,46 @@ function getTextContent(
 ) {
   const { size, wrapperStyle } = options
   return (
-    <div style={{ display: 'inline-block', ...wrapperStyle }}>
+    <div
+      style={{
+        display: 'inline-block',
+        ...wrapperStyle,
+      }}
+    >
       {text.map((item) => {
         switch (item.type) {
+          case 'image':
+            return (
+              <YStack f={1} ai="center">
+                <img
+                  style={{
+                    alignSelf: 'center',
+                    width: item.image.width * 0.5,
+                    height: item.image.height * 0.5,
+                  }}
+                  src={item.image.src}
+                />
+              </YStack>
+            )
           case 'split-horizontal':
             return (
-              <XStack gap="$6">
-                <YStack maw="50%" f={1} ov="hidden">
+              <XStack h="100%" ai="center" f={1} gap="$6">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[0]], options)}
                 </YStack>
-                <YStack maw="50%" f={1} ov="hidden">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[1]], options)}
                 </YStack>
               </XStack>
             )
+
           case 'bullet-point':
             return (
-              <>
+              <YStack pl="$8" pt="$4" mb="$-4">
                 {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                   size: size ?? '$9',
                 })}
-              </>
+              </YStack>
             )
           case 'code-inline':
             return <Code size={size ?? '$9'}>{item.content}&nbsp;</Code>

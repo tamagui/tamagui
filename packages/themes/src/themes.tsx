@@ -328,6 +328,10 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
         borderColorFocus: weaker1.borderColorFocus,
       }
 
+  const overlayTheme = {
+    background: isLight ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.9)',
+  } as SubTheme
+
   return {
     ListItem: stronger1,
     Card: weaker1,
@@ -346,6 +350,10 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
     Input: strongerBorderLighterBackground,
     TextArea: strongerBorderLighterBackground,
     Tooltip: inverse1,
+    // make overlays always dark
+    SheetOverlay: overlayTheme,
+    DialogOverlay: overlayTheme,
+    ModalOverlay: overlayTheme,
   }
 }
 

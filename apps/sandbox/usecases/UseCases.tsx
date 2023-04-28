@@ -26,7 +26,7 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-// eslint-disable-next-line no-console
+// rome-ignore lint/nursery/noConsoleLog: ok
 console.log('[Sandbox] getMedia().sm', getMedia().sm)
 
 // TODO: extract the use cases
@@ -101,8 +101,6 @@ export const Sandbox = () => {
   const [theme, setTheme] = useState('light')
 
   const [x, setX] = useState(0)
-
-  console.warn(`render`)
 
   return (
     <TamaguiProvider config={config} defaultTheme={theme}>

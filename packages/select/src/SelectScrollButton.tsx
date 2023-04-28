@@ -111,7 +111,6 @@ const SelectScrollButtonImpl = React.memo(
       }
 
       const onScroll = (amount: number) => {
-        console.log('on scroll?')
         if (fallback) {
           if (refs.floating.current) {
             refs.floating.current.scrollTop -= amount

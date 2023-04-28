@@ -255,7 +255,7 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
     )
   }
 
-  const zIndex = props.zIndex ?? 1000
+  const zIndex = props.zIndex ?? 150_000
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (

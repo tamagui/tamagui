@@ -41,6 +41,31 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+const colorStyleKey = {
+  backgroundColor: true,
+  color: true,
+  borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
+}
+// these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
+const costlyToAnimateStyleKey = {
+  borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
+  borderWidth: true,
+  borderLeftWidth: true,
+  borderRightWidth: true,
+  borderTopWidth: true,
+  borderBottomWidth: true,
+  ...colorStyleKey,
+  // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
+}
+
 export const AnimatedView = Animated.View
 export const AnimatedText = Animated.Text
 
@@ -145,7 +170,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const mergedStyles = style
+      /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
       const animationsState = useSafeRef(
@@ -153,26 +178,38 @@ export function createAnimations<A extends AnimationsConfig>(
           Animated.Value,
           {
             interopolation: Animated.AnimatedInterpolation<any>
-            current?: number | undefined
+            current?: number | string | undefined
           }
         >()
       )
+      const animateOnly = props.animateOnly || []
 
-      const args = [
-        JSON.stringify(mergedStyles),
-        JSON.stringify(state),
-        isExiting,
-        !!onDidAnimate,
-      ]
+      const args = [style, state, isExiting, !!onDidAnimate]
+
+      const isThereNoNativeStyleKeys = () => {
+        if (isWeb) return true
+
+        return Object.keys(style).some((key) => {
+          if (animateOnly.length) {
+            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          } else {
+            return !animatedStyleKey[key]
+          }
+        })
+      }
 
       const res = useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
 
         const nonAnimatedStyle = {}
-        for (const key in mergedStyles) {
-          const val = mergedStyles[key]
-          if (!animatedStyleKey[key]) {
+        for (const key in style) {
+          const val = style[key]
+          if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+          if (animateOnly.length && animateOnly.indexOf(key) === -1) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -186,6 +223,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
+            // tkey: e.g: 'translateX'
             const tkey = Object.keys(transform)[0]
             const currentTransform = animatedTranforms.current[index]?.[tkey]
             animatedTranforms.current[index] = {
@@ -220,7 +258,9 @@ export function createAnimations<A extends AnimationsConfig>(
           animated: Animated.Value | undefined,
           valIn: string | number
         ) {
-          const [val, type] = getValue(valIn)
+          const isColorStyleKey = colorStyleKey[key]
+          const [val, type] = isColorStyleKey ? [0, undefined] : getValue(valIn)
+          let animateToVal = val
           const value = animated || new Animated.Value(val)
 
           let interpolateArgs: any
@@ -234,6 +274,21 @@ export function createAnimations<A extends AnimationsConfig>(
             animationsState.current!.set(value, {
               interopolation: value.interpolate(interpolateArgs),
               current: val,
+            })
+          }
+
+          if (isColorStyleKey) {
+            const curInterpolation = animationsState.current.get(value)
+            interpolateArgs = getColorInterpolated(
+              curInterpolation?.current as string,
+              // valIn is the new color
+              valIn as string,
+              value['_value']
+            )
+            animateToVal = value['_value'] === 1 ? 0 : 1
+            animationsState.current!.set(value, {
+              current: valIn,
+              interopolation: value.interpolate(interpolateArgs),
             })
           }
 
@@ -251,8 +306,8 @@ export function createAnimations<A extends AnimationsConfig>(
 
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
-                  toValue: val,
-                  useNativeDriver: !isWeb,
+                  toValue: animateToVal,
+                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
                   ...animationConfig,
                 })
               }
@@ -263,7 +318,6 @@ export function createAnimations<A extends AnimationsConfig>(
                     getAnimation(),
                   ])
                 : getAnimation()
-
               animation.start(({ finished }) => {
                 if (finished) {
                   resolve()
@@ -273,8 +327,8 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) {
-              // eslint-disable-next-line no-console
+            if (props['debug'] === 'verbose') {
+              // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
               console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
             }
@@ -301,13 +355,30 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`Returning animated`, res)
         }
       }
 
       return res
     },
+  }
+}
+
+function getColorInterpolated(
+  currentColor: string | undefined,
+  nextColor: string,
+  value: number
+) {
+  const inputRange = [0, 1]
+  const outputRange = [currentColor ? currentColor : nextColor, nextColor]
+  if (value === 1) {
+    // because current value is 1, then we need to animate from 1 to 0, so we need to reverse the outputRange
+    outputRange.reverse()
+  }
+  return {
+    inputRange,
+    outputRange,
   }
 }
 
@@ -372,7 +443,7 @@ const transformShorthands = {
   translateY: 'y',
 }
 
-function getValue(input: number | string) {
+function getValue(input: number | string, isColor = false) {
   if (typeof input !== 'string') {
     return [input] as const
   }

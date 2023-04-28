@@ -244,10 +244,11 @@ export function useMediaPropsActive<A extends Object>(
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             let subKey = subKeys[j]
+            const value = val[subKey]
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
-            mergeMediaByImportance(next, mediaKey, subKey, val[subKey], importancesUsed)
+            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed)
           }
         }
       } else {

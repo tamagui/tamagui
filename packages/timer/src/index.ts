@@ -24,6 +24,7 @@ export function timer() {
           strings.forEach((str, i) => {
             result += `${str}${i === strings.length - 1 ? '' : vars[i]}`
           })
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
       }
@@ -51,6 +52,7 @@ export function timer() {
         `                                    total ${totalTime}ms`,
       ].join('\n')
 
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log(out)
       return out
     },

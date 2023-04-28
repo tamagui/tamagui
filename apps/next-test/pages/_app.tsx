@@ -24,9 +24,7 @@ export default function App(props: AppProps) {
 
       <NextThemeProvider
         onChangeTheme={(next) => {
-          startTransition(() => {
-            setTheme(next)
-          })
+          setTheme(next as any)
         }}
       >
         <TamaguiProvider

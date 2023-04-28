@@ -173,7 +173,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: defaultResponse,
   })
 
-  // eslint-disable-next-line no-console
+  // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 

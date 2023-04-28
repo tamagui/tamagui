@@ -6,7 +6,7 @@ export function invariant(condition: any, log: string, ...logVars: string[]) {
             .split('%s')
             .flatMap((chunk, i) => [chunk, logVars[i]])
             .join('')
-        : log,
+        : log
     )
   }
 }
@@ -16,7 +16,7 @@ export function warning(condition: any, log: string, ...logVars: string[]) {
     try {
       invariant(condition, log, ...logVars)
     } catch (err) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.warn(err)
       // allow to pass through
     }

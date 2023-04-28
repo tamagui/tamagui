@@ -11,8 +11,8 @@ import { Portal } from '@tamagui/portal'
 import { VisuallyHidden } from '@tamagui/visually-hidden'
 import * as React from 'react'
 
-import { ScopedProps, useToastProviderContext } from './ToastProvider'
 import { TOAST_NAME } from './constants'
+import { ScopedProps, useToastProviderContext } from './ToastProvider'
 
 const ToastAnnounceExcludeFrame = styled(Stack, {
   name: 'ToastAnnounceExclude',
@@ -80,14 +80,15 @@ function useNextFrame(callback = () => {}) {
   useIsomorphicLayoutEffect(() => {
     let raf1 = 0
     let raf2 = 0
-    raf1 = requestAnimationFrame(() => (raf2 = requestAnimationFrame(fn)))
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(fn)
+    })
     return () => {
       cancelAnimationFrame(raf1)
       cancelAnimationFrame(raf2)
     }
   }, [fn])
 }
-
 
 export {
   ToastAnnounce,

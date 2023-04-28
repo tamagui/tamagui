@@ -8,6 +8,7 @@ import {
   PopoverProps,
   XStack,
   YGroup,
+  YStack,
 } from 'tamagui'
 
 export function PopoverDemo() {
@@ -59,30 +60,26 @@ export function Demo({
         ]}
         elevate
       >
-        <Popover.Arrow debug="verbose" borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
-        <YGroup space="$3">
-          <YGroup.Item>
-            <XStack space="$3">
-              <Label size="$3" htmlFor={Name}>
-                Name
-              </Label>
-              <Input size="$3" id={Name} />
-            </XStack>
-          </YGroup.Item>
-          <YGroup.Item>
-            <Popover.Close asChild>
-              <Button
-                size="$3"
-                onPress={() => {
-                  /* Custom code goes here, does not interfere with popover closure */
-                }}
-              >
-                Submit
-              </Button>
-            </Popover.Close>
-          </YGroup.Item>
-        </YGroup>
+        <YStack space="$3">
+          <XStack space="$3">
+            <Label size="$3" htmlFor={Name}>
+              Name
+            </Label>
+            <Input size="$3" id={Name} />
+          </XStack>
+          <Popover.Close asChild>
+            <Button
+              size="$3"
+              onPress={() => {
+                /* Custom code goes here, does not interfere with popover closure */
+              }}
+            >
+              Submit
+            </Button>
+          </Popover.Close>
+        </YStack>
       </Popover.Content>
     </Popover>
   )

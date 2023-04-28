@@ -4,7 +4,6 @@ exports[`className + conditional styles get full base styles merged onto + short
 "const _cn3 = \\" _bg-d0topktnq\\";
 const _cn2 = \\" _bg-d0t12svx2e\\";
 const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
-// debug
 import { Stack } from '@tamagui/core';
 export function Test(props) {
   return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
@@ -31,7 +30,6 @@ exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
 "const _cn3 = \\" _bg-d0topktnq\\";
 const _cn2 = \\" _bg-d0t12svx2e\\";
 const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
-// debug 
 import { Stack } from '@tamagui/core';
 export function Test(props) {
   return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3)))} />;

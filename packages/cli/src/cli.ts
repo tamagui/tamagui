@@ -217,7 +217,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     default: {
 //       if (!command || flags['--help']) {
 //       }
-//       // eslint-disable-next-line no-console
+//       // rome-ignore lint/nursery/noConsoleLog: ok
 //       console.warn(chalk.yellow(`No command found ${command}`))
 //       process.exit(1)
 //     }

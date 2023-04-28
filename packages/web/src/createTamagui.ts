@@ -159,22 +159,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       existing.set(key, dedupedThemes[themeName])
     }
 
-    // then, generate CSS from de-duped
-    let themeRuleSets: string[] = []
-
-    if (isWeb || isRSC) {
-      for (const themeName in dedupedThemes) {
-        themeRuleSets = [
-          ...themeRuleSets,
-          ...getThemeCSSRules({
-            config: configIn,
-            themeName,
-            ...dedupedThemes[themeName],
-          }),
-        ]
-      }
-    }
-
     // proxy upwards to get parent variables (themes are subset going down)
     for (const themeName in themes) {
       themes[themeName] = proxyThemeToParents(themeName, themes[themeName], themes)
@@ -185,7 +169,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return {
       themes,
       cssRuleSets,
-      themeRuleSets,
+      getThemeRulesSets() {
+        // then, generate CSS from de-duped
+        let themeRuleSets: string[] = []
+
+        if (isWeb || isRSC) {
+          for (const themeName in dedupedThemes) {
+            themeRuleSets = [
+              ...themeRuleSets,
+              ...getThemeCSSRules({
+                config: configIn,
+                themeName,
+                ...dedupedThemes[themeName],
+              }),
+            ]
+          }
+        }
+
+        return themeRuleSets
+      },
     }
   })()
 
@@ -225,7 +227,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 .is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
 ${themeConfig.cssRuleSets.join(separator)}
-${themeConfig.themeRuleSets.join(separator)}
+${themeConfig.getThemeRulesSets().join(separator)}
 ${getAllRules().join(separator)}`
     },
     // const tokens = [...getToken(tokens.size[0])]
@@ -244,7 +246,7 @@ ${getAllRules().join(separator)}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {

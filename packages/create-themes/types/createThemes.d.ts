@@ -2,7 +2,7 @@ import { Variable } from '@tamagui/core';
 type AltKeys = 1 | 2;
 type Colors = {
     [key: string]: {
-        [key: string]: string;
+        [subKey: string]: string;
     };
 };
 type GeneratedTheme<ExtraKeys extends string = string> = {

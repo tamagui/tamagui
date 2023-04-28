@@ -34,6 +34,16 @@
       },
       "a11y": {
         "noHeaderScope": "off"
+      },
+      "nursery": {
+        "noConsoleLog": "error",
+        "noAssignInExpressions": "off",
+        "useExhaustiveDependencies": "off",
+        "useLiteralKeys": "off",
+        "noBannedTypes": "off",
+        "noParameterAssign": "off",
+        "noInnerDeclarations": "off",
+        "noRedeclare": "off"
       }
     }
   },

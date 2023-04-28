@@ -7,10 +7,9 @@ import { config as configBase } from '@tamagui/config'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { Main } from 'next/document'
 import { useServerInsertedHTML } from 'next/navigation'
-import React, { startTransition } from 'react'
+import React from 'react'
 import { AppRegistry } from 'react-native'
-import { createTamagui } from 'tamagui'
-import { TamaguiProvider as TamaguiProviderOG } from 'tamagui'
+import { createTamagui, TamaguiProvider as TamaguiProviderOG } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
 
@@ -38,9 +37,7 @@ export const TamaguiProvider = ({ children }: { children: React.ReactNode }) => 
   return (
     <NextThemeProvider
       onChangeTheme={(next) => {
-        startTransition(() => {
-          setTheme(next)
-        })
+        setTheme(next as any)
       }}
     >
       <TamaguiProviderOG config={config} themeClassNameOnRoot defaultTheme={theme}>

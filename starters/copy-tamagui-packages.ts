@@ -9,11 +9,13 @@ export async function copyTamaguiPackages(dir: string) {
   const tamaguiModulesDir = join(modulesDir, '@tamagui')
   await fs.remove(tamaguiModulesDir)
 
-  // eslint-disable-next-line no-console
-  console.log(`Copying in tamagui local modules from ${PACKAGES_ROOT} to ${tamaguiModulesDir}`)
+  // rome-ignore lint/nursery/noConsoleLog: ok
+  console.log(
+    `Copying in tamagui local modules from ${PACKAGES_ROOT} to ${tamaguiModulesDir}`
+  )
   await fs.copy(PACKAGES_ROOT, tamaguiModulesDir)
 
-  // eslint-disable-next-line no-console
+  // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Copying extra "support" packages`)
   await fs.copy(modulesDir, tamaguiModulesDir, {
     errorOnExist: false,

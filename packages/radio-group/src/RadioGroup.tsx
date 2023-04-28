@@ -223,7 +223,9 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
               isArrowKeyPressedRef.current = true
             }
           }
-          const handleKeyUp = () => (isArrowKeyPressedRef.current = false)
+          const handleKeyUp = () => {
+            isArrowKeyPressedRef.current = false
+          }
           document.addEventListener('keydown', handleKeyDown)
           document.addEventListener('keyup', handleKeyUp)
           return () => {
