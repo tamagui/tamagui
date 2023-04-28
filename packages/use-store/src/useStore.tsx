@@ -330,6 +330,7 @@ function useStoreFromInfo(
     const nextKeys = `${store._version}${keys.join('')}${userSelector?.toString() || ''}`
     if (nextKeys === curInternal.lastKeys) {
       if (shouldPrintDebug) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('avoid update', nextKeys, curInternal.lastKeys)
       }
       return curInternal.last
@@ -358,6 +359,7 @@ function useStoreFromInfo(
 
     if (shouldPrintDebug) {
       // prettier-ignore
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, snap, curInternal })
     }
     if (isUnchanged) {
@@ -384,6 +386,7 @@ function useStoreFromInfo(
       curInternal.isTracking = false
       curInternal.firstRun = false
       if (shouldPrintDebug) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('🌑 finish render, tracking', [...curInternal.tracked])
       }
     })
@@ -440,6 +443,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
           return Reflect.apply(actionFn, proxiedStore, args)
         }
         if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('(debug) startAction', key, { isInAction })
         }
         // dumb for now
@@ -522,7 +526,9 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
                     if (head) {
                       console.groupCollapsed(...head)
                       console.groupCollapsed('...')
+                      // rome-ignore lint/nursery/noConsoleLog: <explanation>
                       console.log('args', args)
+                      // rome-ignore lint/nursery/noConsoleLog: <explanation>
                       console.log('response', res)
                       console.groupCollapsed('trace')
                       console.trace()
@@ -530,10 +536,12 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
                       console.groupEnd()
                       for (const [name, ...log] of rest) {
                         console.groupCollapsed(name)
+                        // rome-ignore lint/nursery/noConsoleLog: <explanation>
                         console.log(...log)
                         console.groupEnd()
                       }
                     } else {
+                      // rome-ignore lint/nursery/noConsoleLog: <explanation>
                       console.log('Weird log', head, ...rest)
                     }
                   }
@@ -572,6 +580,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
 
   const finishAction = () => {
     if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
     }
     isInAction = false
@@ -666,10 +675,12 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
         if (process.env.LOG_LEVEL && configureOpts.logLevel !== 'error') {
           setters.add({ key, value })
           if (storeInstance[SHOULD_DEBUG]()) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log('(debug) SET', res, key, value)
           }
         }
         if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('SET...', { key, value, isInAction })
         }
         if (isInAction) {

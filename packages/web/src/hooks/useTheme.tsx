@@ -67,6 +67,7 @@ export const useThemeWithState = (props: ThemeProps) => {
     console.groupCollapsed('  🔹 useTheme =>', name)
     const logs = { ...props, name, className, ...(isDevTools && { theme }) }
     for (const key in logs) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('  ', key, logs[key])
     }
     console.groupEnd()
@@ -235,6 +236,7 @@ export const useChangeThemeEffect = (
         const shouldUpdate = Boolean(keys?.length || isNewTheme)
         if (process.env.NODE_ENV === 'development' && props.debug) {
           const logs = { shouldUpdate, props, name, manager, keys }
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, logs)
         }
         if (shouldUpdate) {
@@ -354,6 +356,7 @@ export const useChangeThemeEffect = (
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log({
         props,
         parentState,

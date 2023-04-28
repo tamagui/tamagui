@@ -230,6 +230,7 @@ function usePointerDownOutside(
       if (event.target && !isPointerInsideReactTreeRef.current) {
         const eventDetail = { originalEvent: event }
 
+        // rome-ignore lint/nursery/noInnerDeclarations: <explanation>
         function handleAndDispatchPointerDownOutsideEvent() {
           handleAndDispatchCustomEvent(
             POINTER_DOWN_OUTSIDE,
@@ -286,7 +287,9 @@ function usePointerDownOutside(
 
   return {
     // ensures we check React component tree (not just DOM tree)
-    onPointerDownCapture: () => (isPointerInsideReactTreeRef.current = true),
+    onPointerDownCapture: () => {
+      isPointerInsideReactTreeRef.current = true
+    },
   }
 }
 
@@ -312,8 +315,12 @@ function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
   }, [handleFocusOutside])
 
   return {
-    onFocusCapture: () => (isFocusInsideReactTreeRef.current = true),
-    onBlurCapture: () => (isFocusInsideReactTreeRef.current = false),
+    onFocusCapture: () => {
+      isFocusInsideReactTreeRef.current = true
+    },
+    onBlurCapture: () => {
+      isFocusInsideReactTreeRef.current = false
+    },
   }
 }
 

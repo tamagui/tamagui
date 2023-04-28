@@ -34,7 +34,7 @@ export async function generateTamaguiStudioConfig(
     )
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui')) {
-      console.log('generateTamaguiStudioConfig error', err)
+      console.warn('generateTamaguiStudioConfig error', err)
     }
     // ignore for now
   }
@@ -57,7 +57,7 @@ export function generateTamaguiStudioConfigSync(
     )
   } catch (err) {
     if (process.env.DEBUG?.includes('tamagui')) {
-      console.log('generateTamaguiStudioConfig error', err)
+      console.warn('generateTamaguiStudioConfig error', err)
     }
     // ignore for now
   }

@@ -8,7 +8,7 @@ type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${
 
 type Colors = {
   [key: string]: {
-    [key: string]: string
+    [subKey: string]: string
   }
 }
 

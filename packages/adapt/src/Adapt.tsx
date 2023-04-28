@@ -34,7 +34,7 @@ export const AdaptContents = (props: any) => {
   return createElement(context.Contents, props)
 }
 
-AdaptContents['shouldForwardSpace'] = true
+AdaptContents.shouldForwardSpace = true
 
 export const useAdaptParent = ({
   Contents,

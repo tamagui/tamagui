@@ -31,7 +31,7 @@ async function setup() {
         await readlink(romeConfig)
       } catch (err) {
         if (`${err}`.includes(`no such file or directory`)) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`No rome.json found for ${name}, linking from monorepo root`)
           await spawnify(`ln -s ../../rome.json ./rome.json`, {
             cwd,

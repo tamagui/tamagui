@@ -64,7 +64,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // eslint-disable-next-line no-console
+                // rome-ignore lint/nursery/noConsoleLog: ok
                 console.log(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
@@ -160,7 +160,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log('Tamagui alias:', alias)
         }
 
@@ -195,7 +195,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               )
             )
           } catch (err) {
-            // eslint-disable-next-line no-console
             console.warn(
               `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(
                 ', '
@@ -206,7 +205,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.log(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {

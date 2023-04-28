@@ -130,12 +130,11 @@ export async function getStaticBindingsForScope(
         }
       } catch (err: any) {
         if (shouldPrintDebug) {
-          // eslint-disable-next-line no-console
           console.warn(
             `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`
           )
         } else if (process.env.DEBUG?.startsWith('tamagui')) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`Error in partial evaluation`, err.message, err.stack)
         }
       }
@@ -164,7 +163,7 @@ export async function getStaticBindingsForScope(
       if (isOnWhitelist) {
         const src = importModule(moduleName)
         if (!src) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(
             `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
           )
@@ -198,13 +197,11 @@ export async function getStaticBindingsForScope(
 
     // missing start/end will break caching
     if (typeof dec.id.start !== 'number' || typeof dec.id.end !== 'number') {
-      // eslint-disable-next-line no-console
       console.error('dec.id.start/end is not a number')
       continue
     }
 
     if (!t.isIdentifier(dec.id)) {
-      // eslint-disable-next-line no-console
       console.error('dec is not an identifier')
       continue
     }

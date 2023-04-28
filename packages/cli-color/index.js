@@ -31,7 +31,7 @@ function colorString(color, string) {
 }
 
 function colorLog(color, ...args) {
-  // eslint-disable-next-line no-console
+  // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it)))
 }
 

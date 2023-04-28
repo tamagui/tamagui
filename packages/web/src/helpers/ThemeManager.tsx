@@ -251,9 +251,9 @@ function getState(
       ? max // component name only don't search upwards
       : 0
 
-  // eslint-disable-next-line no-console
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log({
       props,
       parentName,
@@ -303,6 +303,7 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(' - ', { found, potentials, parentManager })
     }
 
@@ -317,7 +318,6 @@ function getState(
     }
   }
 
-  // eslint-disable-next-line no-console
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.warn('ThemeManager.getState():', {
       result,

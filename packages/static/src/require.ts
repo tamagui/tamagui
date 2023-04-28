@@ -80,7 +80,6 @@ export function registerRequire() {
        */
 
       if (process.env.DEBUG?.startsWith('tamagui')) {
-        // eslint-disable-next-line no-console
         console.error(
           `Tamagui failed loading the pre-built tamagui.config.ts
   
