@@ -2,7 +2,6 @@ import { AdaptParentContext } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
-  Slot,
   TamaguiElement,
   Theme,
   isClient,
@@ -52,6 +51,7 @@ import { SheetScrollView } from './SheetScrollView'
 import { ScrollBridge, SheetProps, SheetScopedProps } from './types'
 
 export { createSheetScope } from './SheetContext'
+export * from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SheetHandle
@@ -59,17 +59,6 @@ export { createSheetScope } from './SheetContext'
 
 export const SheetHandleFrame = styled(XStack, {
   name: SHEET_HANDLE_NAME,
-  height: 10,
-  borderRadius: 100,
-  backgroundColor: '$background',
-  zIndex: 10,
-  marginHorizontal: '35%',
-  marginBottom: '$2',
-  opacity: 0.5,
-
-  hoverStyle: {
-    opacity: 0.7,
-  },
 
   variants: {
     open: {
@@ -81,7 +70,27 @@ export const SheetHandleFrame = styled(XStack, {
         pointerEvents: 'none',
       },
     },
+
+    unstyled: {
+      false: {
+        height: 10,
+        borderRadius: 100,
+        backgroundColor: '$background',
+        zIndex: 10,
+        marginHorizontal: '35%',
+        marginBottom: '$2',
+        opacity: 0.5,
+
+        hoverStyle: {
+          opacity: 0.7,
+        },
+      },
+    },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const SheetHandle = SheetHandleFrame.extractable(
@@ -110,10 +119,6 @@ const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
 export const SheetOverlayFrame = styled(ThemeableStack, {
   name: SHEET_OVERLAY_NAME,
-  fullscreen: true,
-  backgrounded: true,
-  opacity: 0.5,
-  zIndex: 100_000,
 
   variants: {
     closed: {
@@ -125,7 +130,20 @@ export const SheetOverlayFrame = styled(ThemeableStack, {
         pointerEvents: 'auto',
       },
     },
+
+    unstyled: {
+      false: {
+        fullscreen: true,
+        backgrounded: true,
+        opacity: 0.5,
+        zIndex: 100_000,
+      },
+    },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>
@@ -161,14 +179,25 @@ if (selectionStyleSheet) {
 
 export const SheetFrameFrame = styled(YStack, {
   name: SHEET_NAME,
-  flex: 1,
-  backgroundColor: '$background',
-  borderTopLeftRadius: '$true',
-  borderTopRightRadius: '$true',
-  width: '100%',
-  maxHeight: '100%',
-  overflow: 'hidden',
-  pointerEvents: 'auto',
+
+  variants: {
+    unstyled: {
+      false: {
+        flex: 1,
+        backgroundColor: '$background',
+        borderTopLeftRadius: '$true',
+        borderTopRightRadius: '$true',
+        width: '100%',
+        maxHeight: '100%',
+        overflow: 'hidden',
+        pointerEvents: 'auto',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 export const SheetFrame = SheetFrameFrame.extractable(
