@@ -5,6 +5,7 @@ import {
   GetProps,
   SizeTokens,
   getVariableValue,
+  isClient,
   isWeb,
   styled,
   withStaticProperties,
@@ -130,6 +131,30 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       return value(pointerPosition)
     }
 
+    const measure = () => {
+      sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
+        setState({
+          size: height,
+          offset: pageY,
+        })
+      })
+    }
+
+    if (isClient) {
+      React.useEffect(() => {
+        let last
+        const onResize = () => {
+          clearTimeout(last)
+          last = setTimeout(() => {}, 100)
+        }
+        document.addEventListener('resize', onResize)
+        return () => {
+          clearTimeout(last)
+          document.removeEventListener('resize', onResize)
+        }
+      }, [])
+    }
+
     return (
       <SliderOrientationProvider
         scope={props.__scopeSlider}
@@ -143,14 +168,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
           ref={composeRefs(forwardedRef, sliderRef)}
           {...sliderProps}
           orientation="vertical"
-          onLayout={({ nativeEvent: { layout } }) => {
-            sliderRef.current?.measure((_x, _y, _width, height, _pageX, pageY) => {
-              setState({
-                size: height,
-                offset: pageY,
-              })
-            })
-          }}
+          onLayout={measure}
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
             if (value) {
@@ -184,12 +202,23 @@ type SliderTrackElement = HTMLElement | View
 
 export const SliderTrackFrame = styled(SliderFrame, {
   name: 'SliderTrack',
-  height: '100%',
-  width: '100%',
-  backgroundColor: '$background',
-  position: 'relative',
-  borderRadius: 100_000,
-  overflow: 'hidden',
+
+  variants: {
+    unstyled: {
+      false: {
+        height: '100%',
+        width: '100%',
+        backgroundColor: '$background',
+        position: 'relative',
+        borderRadius: 100_000,
+        overflow: 'hidden',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -286,19 +315,28 @@ const getThumbSize = (val?: SizeTokens | number) => {
 
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
-  position: 'absolute',
-  bordered: 2,
-  borderWidth: 2,
-  backgrounded: true,
-  pressTheme: isWeb,
-  focusTheme: isWeb,
-  hoverTheme: isWeb,
 
   variants: {
     size: {
       '...size': getThumbSize,
     },
+
+    unstyled: {
+      false: {
+        position: 'absolute',
+        bordered: 2,
+        borderWidth: 2,
+        backgrounded: true,
+        pressTheme: isWeb,
+        focusTheme: isWeb,
+        hoverTheme: isWeb,
+      },
+    },
   } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 interface SliderThumbProps extends SizableStackProps {
