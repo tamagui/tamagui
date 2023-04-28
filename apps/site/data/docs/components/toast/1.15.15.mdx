@@ -176,6 +176,12 @@ The portal for toasts to be directed to. Should be used inside [ToastProvider](#
       required: false,
       description: `Pass this when you want to have multiple/duplicated toasts.`,
     },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
   ]}
 />
 
@@ -270,16 +276,44 @@ Contains the Title, Description, Action and Close component. Should be used insi
       description: `The viewport's name to send the toast to. Used when using multiple viewports and want to forward toasts to different ones.`,
       default: 'default',
     },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
   ]}
 />
 
 #### Toast.Title
 
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
 
 #### Toast.Description
 
-Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext).
+Should be used inside [Toast](#toast). Extends [SizableText](/docs/components/text/1.0.0#sizabletext), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
+    },
+  ]}
+/>
 
 #### Toast.Close
 

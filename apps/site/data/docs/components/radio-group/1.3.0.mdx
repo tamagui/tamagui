@@ -127,4 +127,15 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
 
 ### RadioGroup.Indicator props
 
-RadioGroup.Indicator extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props). It appears only when the parent Item is checked.
+RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
