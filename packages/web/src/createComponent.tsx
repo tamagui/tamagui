@@ -85,6 +85,10 @@ const defaultComponentStateMounted: TamaguiComponentState = {
   unmounted: false,
 }
 
+const HYDRATION_CUTOFF = process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+  ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+  : 5
+
 /**
  * All things that need one-time setup after createTamagui is called
  */
@@ -234,12 +238,7 @@ export function createComponent<
     let hasHydrated = false
     numRenderedOfType[componentName] ??= 0
     if (willBeAnimated) {
-      if (
-        ++numRenderedOfType[componentName] >
-        (process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
-          ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
-          : 5)
-      ) {
+      if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
         hasHydrated = true
       }
     }
