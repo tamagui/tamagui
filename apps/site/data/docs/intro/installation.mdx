@@ -184,9 +184,21 @@ config.module.rules.push({
 })
 ```
 
+### Other bundlers and frameowrks
+
+Remember, Tamagui runs fully at runtime, so you don't need to set up the compiler to start. But because Tamagui imports `react-native` directly, for web platforms you need to configure an alias. And for CSS extraction, on some frameworks like Next.js require extra configuration.
+
+We have a few guides for the compiler that also include setup of any extras for the web:
+
+- [Webpack](/docs/compiler/install#webpack)
+- [Next.js](/docs/compiler/install#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](#vite) ([guide](/docs/guides/vite))
+- [Metro](/docs/compiler/install#babel--metro)
+- [Expo](/docs/guides/expo)
+
 ### Done!
 
-You're now ready to use Tamagui, import and use any components:
+You're ready to use Tamagui:
 
 <Preview>
   <DemoButton />

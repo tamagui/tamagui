@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -34,7 +33,15 @@ type SlideStepItem =
       }
     }
   | {
+      type: 'vertical'
+      content: SlideStepItem[]
+    }
+  | {
       type: 'text'
+      content: React.ReactNode
+    }
+  | {
+      type: 'text-bold'
       content: React.ReactNode
     }
   | {
@@ -44,6 +51,8 @@ type SlideStepItem =
     }
   | {
       type: 'bullet-point'
+      size?: FontSizeTokens
+      slim?: boolean
       content: SlideStepItem[]
     }
   | {
@@ -167,6 +176,10 @@ function getTextContent(
                 />
               </YStack>
             )
+
+          case 'vertical':
+            return <YStack>{getTextContent(item.content)}</YStack>
+
           case 'split-horizontal':
             return (
               <XStack h="100%" ai="center" f={1} gap="$6">
@@ -181,9 +194,19 @@ function getTextContent(
 
           case 'bullet-point':
             return (
-              <YStack pl="$8" pt="$4" mb="$-4">
+              <YStack
+                pl="$10"
+                pt="$4"
+                mb="$-4"
+                pr="$10"
+                {...(item.slim && {
+                  pl: '$2',
+                  pr: '$2',
+                  mb: '$0',
+                })}
+              >
                 {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
-                  size: size ?? '$9',
+                  size: item.size ?? size ?? '$9',
                 })}
               </YStack>
             )
@@ -196,7 +219,17 @@ function getTextContent(
               </DocCodeBlock>
             )
           case 'text':
-            return <Paragraph size={size ?? '$9'}>{item.content}&nbsp;</Paragraph>
+            return (
+              <Paragraph size={size ?? '$9'} fow="400" lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
+          case 'text-bold':
+            return (
+              <Paragraph fow="800" size={size ?? '$9'} lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
         }
       })}
     </div>

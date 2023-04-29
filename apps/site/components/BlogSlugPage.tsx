@@ -71,7 +71,7 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
 
             <Paragraph o={0.4} tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
               {Intl.DateTimeFormat('en-US', {
-                weekday: 'short',
+                month: 'short',
                 year: 'numeric',
                 day: 'numeric',
               }).format(new Date(frontmatter.publishedAt || ''))}

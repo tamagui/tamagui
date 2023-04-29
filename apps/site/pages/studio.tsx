@@ -119,7 +119,7 @@ const lettersConf: LetterConf[] = [
   {
     letter: 'S',
     props: {
-      rotate: '-20deg',
+      rotate: '-12deg',
       fontSize: 380,
       theme: 'red',
     },
@@ -127,7 +127,7 @@ const lettersConf: LetterConf[] = [
       resist: 96,
       inverse: true,
       offset: {
-        x: -100,
+        x: -120,
         y: 0,
       },
       style: {
@@ -144,7 +144,7 @@ const lettersConf: LetterConf[] = [
   {
     letter: 't',
     props: {
-      rotate: '20deg',
+      rotate: '10deg',
       zIndex: 20,
       fontSize: 320,
       theme: 'yellow',
@@ -152,7 +152,7 @@ const lettersConf: LetterConf[] = [
     glow: {
       resist: 92,
       offset: {
-        x: 130,
+        x: 120,
         y: 0,
       },
       style: {
@@ -247,7 +247,7 @@ const lettersConf: LetterConf[] = [
       theme: 'pink',
     },
     glow: {
-      resist: 92,
+      resist: 97,
       offset: {
         x: 600,
         y: -30,
@@ -269,17 +269,21 @@ const Hero = memo(() => {
   const isLight = themeName === 'light'
 
   const glow = useHoverGlow({
-    resist: 65,
-    size: 700,
+    resist: 85,
+    size: 900,
+    offset: {
+      x: -50,
+      y: -50,
+    },
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color10)',
-    opacity: isLight ? 0.22 : 0.3,
+    opacity: isLight ? 0.32 : 0.15,
     background: 'transparent',
   })
 
   const glint = useHoverGlow({
-    resist: 90,
+    resist: 95,
     size: isLight ? 100 : 200,
     strategy: 'blur',
     blurPct: isLight ? 10 : 10,

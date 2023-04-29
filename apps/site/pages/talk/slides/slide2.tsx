@@ -16,8 +16,18 @@ export default memo(() => {
                 content: `@tamagui/core`,
               },
               {
-                type: 'text',
-                content: `Style library that unifies React Native and web`,
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'text',
+                    content: (
+                      <>
+                        Universal style library{' '}
+                        <span style={{ opacity: 0.5 }}>(Native + Web)</span>
+                      </>
+                    ),
+                  },
+                ],
               },
             ],
           },
@@ -29,8 +39,13 @@ export default memo(() => {
                 content: `@tamagui/static`,
               },
               {
-                type: 'text',
-                content: `Optimizing compiler that works with core`,
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'text',
+                    content: `Optimizing compiler that works with core`,
+                  },
+                ],
               },
             ],
           },
@@ -42,8 +57,13 @@ export default memo(() => {
                 content: `tamagui`,
               },
               {
-                type: 'text',
-                content: `Complete universal component kit`,
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'text',
+                    content: `Complete universal component kit`,
+                  },
+                ],
               },
             ],
           },

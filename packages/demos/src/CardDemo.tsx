@@ -17,7 +17,7 @@ export function CardDemo() {
   )
 }
 
-function DemoCard(props: CardProps) {
+export function DemoCard(props: CardProps) {
   return (
     <Card elevate size="$4" bordered {...props}>
       <Card.Header padded>

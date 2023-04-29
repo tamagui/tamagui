@@ -1,7 +1,6 @@
-import { styled, variableToString } from '@tamagui/core'
+import { getVariable } from '@tamagui/core'
 import { SheetDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
-import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
 // import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -78,7 +77,7 @@ const LinkListItem = ({
     <ListItem
       {...linkProps}
       {...props}
-      iconAfter={<ChevronRight color={variableToString(theme.color11)} />}
+      iconAfter={<ChevronRight color={getVariable(theme.color11)} />}
     >
       {children}
     </ListItem>
