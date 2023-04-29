@@ -3,7 +3,7 @@ import { SheetDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
-import { ModalView } from 'react-native-ios-modal'
+// import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -21,7 +21,7 @@ import {
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
-setupNativeSheet('ios', ModalView)
+// setupNativeSheet('ios', ModalView)
 
 export function HomeScreen() {
   return (
