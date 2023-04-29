@@ -1,6 +1,7 @@
 import AnimationsPage from '@protected/studio/(loaded)/(sponsor-protected)/animations/page'
 import ColorsPage from '@protected/studio/(loaded)/(sponsor-protected)/colors/page'
 import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/page'
+import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
@@ -20,6 +21,9 @@ export default function Page() {
 
   return (
     <>
+      <StudioTab isHome at="view">
+        <PreviewPage />
+      </StudioTab>
       <StudioTab at="config">
         <ConfigPage />
       </StudioTab>
@@ -41,10 +45,14 @@ export default function Page() {
 
 Page.getLayout = getStudioLayout
 
-const StudioTab = (props: { at: string; children: React.ReactNode }) => {
+const StudioTab = (props: {
+  at: string
+  children: React.ReactNode
+  isHome?: boolean
+}) => {
   const router = useRouter()
-  const isActive = router.query.tab === props.at
-  const [idle, setIdle] = useState(false)
+  const tab = router.query.tab
+  const isActive = tab === props.at || (!tab && props.isHome)
 
   return (
     <div
