@@ -7,9 +7,8 @@ import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/pa
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
-import React, { startTransition, useEffect, useState } from 'react'
-import { Freeze } from 'react-freeze'
-import { useDidFinishSSR } from 'tamagui'
+import React from 'react'
+import { YStack, useDidFinishSSR } from 'tamagui'
 
 export default function Page() {
   useRequiresLoading()
@@ -55,7 +54,7 @@ const StudioTab = (props: {
   const isActive = tab === props.at || (!tab && props.isHome)
 
   return (
-    <div
+    <YStack
       style={{
         position: 'absolute',
         width: '100%',
@@ -69,6 +68,6 @@ const StudioTab = (props: {
       }}
     >
       {props.children}
-    </div>
+    </YStack>
   )
 }
