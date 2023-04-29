@@ -16,6 +16,7 @@ import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
 import Slide6a from './slides/slide6a'
 import Slide6b from './slides/slide6b'
+import Slide6c from './slides/slide6c'
 import Slide7 from './slides/slide7'
 import Slide8 from './slides/slide8'
 import Slide9 from './slides/slide9'
@@ -55,6 +56,7 @@ export default function TamaguiTalk() {
             <Slide6 />,
             <Slide6a />,
             <Slide6b />,
+            <Slide6c />,
             <Slide7 />,
             <Slide8 />,
             <Slide9 />,

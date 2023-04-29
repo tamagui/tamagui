@@ -5,15 +5,12 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Compilers will free us all"
-      subTitle="Less code + better performance = better experiences"
+      title="Tamagui UI"
+      subTitle="Less API surface = ship faster"
       theme="pink"
       steps={[
         [
-          {
-            type: 'image',
-            image: require('../images/trilemma.svg').default,
-          },
+          // todo: intro to why its different bullets
         ],
       ]}
     />

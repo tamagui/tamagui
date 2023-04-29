@@ -38,6 +38,10 @@ type SlideStepItem =
       content: React.ReactNode
     }
   | {
+      type: 'text-bold'
+      content: React.ReactNode
+    }
+  | {
       type: 'code' | 'code-inline'
       content: string
       lang?: 'tsx'
@@ -181,7 +185,7 @@ function getTextContent(
 
           case 'bullet-point':
             return (
-              <YStack pl="$8" pt="$4" mb="$-4">
+              <YStack pl="$10" pt="$4" mb="$-4" pr="$10">
                 {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                   size: size ?? '$9',
                 })}
@@ -196,7 +200,17 @@ function getTextContent(
               </DocCodeBlock>
             )
           case 'text':
-            return <Paragraph size={size ?? '$9'}>{item.content}&nbsp;</Paragraph>
+            return (
+              <Paragraph size={size ?? '$9'} fow="400" lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
+          case 'text-bold':
+            return (
+              <Paragraph fow="800" size={size ?? '$9'} lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
         }
       })}
     </div>

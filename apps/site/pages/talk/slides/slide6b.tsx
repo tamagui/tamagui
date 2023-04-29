@@ -5,8 +5,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Flatten your trees"
-      subTitle="For much bigger performance gains"
+      title="Get rid of half your tree"
+      subTitle="Flatten trees for great performance"
       theme="purple"
       steps={[
         [
