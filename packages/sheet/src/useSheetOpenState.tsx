@@ -1,10 +1,10 @@
 import { useControllableState } from '@tamagui/use-controllable-state'
 
 import { SheetProps } from './types'
-import { useSheetContoller } from './useSheetContoller'
+import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
-  const { isHidden, controller } = useSheetContoller()
+  const { isHidden, controller } = useSheetController()
 
   const onOpenChangeInternal = (val: boolean) => {
     controller?.onOpenChange?.(val)

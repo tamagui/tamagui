@@ -48,7 +48,7 @@ import { SheetProvider, useSheetContext } from './SheetContext'
 import { SheetScrollView } from './SheetScrollView'
 import { SheetProps, SheetScopedProps } from './types'
 import { useSheetChildren } from './useSheetChildren'
-import { useSheetContoller } from './useSheetContoller'
+import { useSheetController } from './useSheetController'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -229,7 +229,7 @@ const ParentSheetContext = createContext({
 export const Sheet = withStaticProperties(
   forwardRef<View, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
-    const { isShowingNonSheet } = useSheetContoller()
+    const { isShowingNonSheet } = useSheetController()
 
     let SheetImplementation = SheetImplementationCustom
 

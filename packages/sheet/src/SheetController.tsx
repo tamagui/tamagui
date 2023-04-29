@@ -1,7 +1,7 @@
 import { useEvent } from '@tamagui/core'
 import React, { useMemo } from 'react'
 
-import { SheetControllerContext, SheetControllerContextValue } from './useSheetContoller'
+import { SheetControllerContext, SheetControllerContextValue } from './useSheetController'
 
 export const SheetController = ({
   children,

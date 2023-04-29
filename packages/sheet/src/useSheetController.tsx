@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-export const useSheetContoller = () => {
+export const useSheetController = () => {
   const controller = useContext(SheetControllerContext)
   const isHidden = controller?.hidden
   const isShowingNonSheet = isHidden && controller?.open
