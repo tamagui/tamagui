@@ -578,7 +578,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
     return `hsl(${hashCode(str) % 360}, 90%, 40%)`
   }
 
-  const finishAction = () => {
+  const finishAction = (val: any) => {
     if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
@@ -588,6 +588,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       storeInstance[TRIGGER_UPDATE]?.()
       didSet = false
     }
+    return val
   }
 
   const proxiedStore = new Proxy(storeInstance, {
