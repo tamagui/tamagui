@@ -51,16 +51,6 @@ export default function Page() {
                 {userDetails?.full_name}
               </H3>
             </YStack>
-            <Button
-              f={1}
-              onPress={() => {
-                signout()
-              }}
-              icon={<LogOut />}
-              size="$2"
-              accessibilityLabel="Logout"
-              circular
-            />
           </XStack>
           <XStack space="$2">
             {accessStatus?.githubStatus.personal?.isSponsoring && <SponsorBadge />}
@@ -108,6 +98,8 @@ const TeamBadge = ({
 }
 
 const UserSettings = () => {
+  const { signout } = useUser()
+
   return (
     <YStack space="$8" separator={<Separator />}>
       <YStack space="$6" id="profile">
@@ -124,6 +116,18 @@ const UserSettings = () => {
         <SizableText size="$8">Connections</SizableText>
         <ConnectionsContent />
       </YStack>
+
+      <Button
+        f={1}
+        onPress={() => {
+          signout()
+        }}
+        icon={<LogOut />}
+        size="$2"
+        accessibilityLabel="Logout"
+      >
+        Logout
+      </Button>
     </YStack>
   )
 }

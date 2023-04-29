@@ -5841,6 +5841,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-draggable: ^4.4.5
+    react-freeze: ^1.0.3
     react-hotkeys-hook: ^3.4.6
     react-native: ^0.71.4
     react-native-web-lite: 1.20.7
@@ -19538,7 +19539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-freeze@npm:^1.0.0":
+"react-freeze@npm:^1.0.0, react-freeze@npm:^1.0.3":
   version: 1.0.3
   resolution: "react-freeze@npm:1.0.3"
   peerDependencies:

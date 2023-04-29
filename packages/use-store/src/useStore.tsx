@@ -369,7 +369,8 @@ function useStoreFromInfo(
     return snap
   }, [])
 
-  const state = useSyncExternalStore(store.subscribe, getSnapshot)
+  // TODO third arg is getServerSnapshot
+  const state = useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
   // dispose tracker on unmount
   useEffect(() => {

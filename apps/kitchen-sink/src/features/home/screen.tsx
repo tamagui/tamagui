@@ -1,4 +1,4 @@
-import { styled, variableToString } from '@tamagui/core'
+import { getVariable, styled } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -87,7 +87,7 @@ const LinkListItem = ({
     <ListItem
       {...linkProps}
       {...props}
-      iconAfter={<ChevronRight color={variableToString(theme.color11)} />}
+      iconAfter={<ChevronRight color={getVariable(theme.color11)} />}
     >
       {children}
     </ListItem>
