@@ -2,6 +2,7 @@ import { FunctionComponent, useEffect, useRef } from 'react'
 
 import { SheetProvider } from './SheetContext'
 import { SheetProps } from './types'
+import { useSheetChildren } from './useSheetChildren'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -20,6 +21,8 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
     nativeSheets[platform] = (props: SheetProps) => {
       const state = useSheetOpenState(props)
       const providerProps = useSheetProviderProps(props, state)
+      const { frameComponent } = useSheetChildren(props.children)
+
       const { open, setOpen } = state
       const ref = useRef<{
         setVisibility: Function
@@ -29,11 +32,9 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
         ref.current?.setVisibility(open)
       }, [open])
 
-      console.log('Implementation', Implementation)
-
       return (
         <Implementation ref={ref} onModalDismiss={() => setOpen(false)}>
-          <SheetProvider {...providerProps}>{props.children}</SheetProvider>
+          <SheetProvider {...providerProps}>{frameComponent}</SheetProvider>
         </Implementation>
       )
     }

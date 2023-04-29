@@ -48,11 +48,7 @@ import { SheetProvider, useSheetContext } from './SheetContext'
 import { SheetScrollView } from './SheetScrollView'
 import { SheetProps, SheetScopedProps } from './types'
 import { useSheetChildren } from './useSheetChildren'
-import {
-  SheetControllerContext,
-  SheetControllerContextValue,
-  useSheetContoller,
-} from './useSheetContoller'
+import { useSheetContoller } from './useSheetContoller'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -693,28 +689,4 @@ function resisted(y: number, minY: number, maxOverflow = 25) {
     return minY + extra
   }
   return y
-}
-
-export const SheetController = ({
-  children,
-  onOpenChange: onOpenChangeProp,
-  ...value
-}: Partial<SheetControllerContextValue> & { children?: React.ReactNode }) => {
-  const onOpenChange = useEvent(onOpenChangeProp)
-
-  const memoValue = useMemo(
-    () => ({
-      open: value.open,
-      hidden: value.hidden,
-      disableDrag: value.disableDrag,
-      onOpenChange,
-    }),
-    [onOpenChange, value.open, value.hidden, value.disableDrag]
-  )
-
-  return (
-    <SheetControllerContext.Provider value={memoValue}>
-      {children}
-    </SheetControllerContext.Provider>
-  )
 }

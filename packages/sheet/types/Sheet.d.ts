@@ -3,37 +3,28 @@ import { XStackProps } from '@tamagui/stacks';
 import React from 'react';
 import { View } from 'react-native';
 import { SheetProps, SheetScopedProps } from './types';
-import { SheetControllerContextValue } from './useSheetContoller';
 export { createSheetScope } from './SheetContext';
 export * from './types';
 export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-    readonly fullscreen?: boolean | undefined; /**
-     * Performance is sensitive here so avoid all the hooks below with this
-     */
+    readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "open" | "unstyled"> & {
     readonly open?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-    readonly fullscreen?: boolean | undefined; /**
-     * Performance is sensitive here so avoid all the hooks below with this
-     */
+    readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "open" | "unstyled"> & {
     readonly open?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-    readonly fullscreen?: boolean | undefined; /**
-     * Performance is sensitive here so avoid all the hooks below with this
-     */
+    readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "open" | "unstyled"> & {
     readonly open?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
 }>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
-    readonly fullscreen?: boolean | undefined; /**
-     * Performance is sensitive here so avoid all the hooks below with this
-     */
+    readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     readonly open?: boolean | undefined;
@@ -223,7 +214,4 @@ export declare const ControlledSheet: React.FunctionComponent<Omit<SheetProps, "
         readonly fullscreen?: boolean | undefined;
     }>> & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
 };
-export declare const SheetController: ({ children, onOpenChange: onOpenChangeProp, ...value }: Partial<SheetControllerContextValue> & {
-    children?: React.ReactNode;
-}) => JSX.Element;
 //# sourceMappingURL=Sheet.d.ts.map
