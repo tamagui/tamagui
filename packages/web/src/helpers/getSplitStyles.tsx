@@ -560,14 +560,22 @@ export const getSplitStyles: StyleSplitter = (
       keyInit in shorthands
     )
 
-    const isHOCShouldPassThrough = staticConfig.isHOC && (isMediaOrPseudo || isVariant)
+    const isHOCShouldPassThrough =
+      staticConfig.isHOC &&
+      (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (shouldPassThrough) {
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupCollapsed(`  🔹 pass through ${keyInit}`)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ valInit, variants, isVariant, shouldPassProp })
+        console.log({
+          valInit,
+          variants,
+          isVariant,
+          shouldPassProp,
+          isHOCShouldPassThrough,
+        })
         console.groupEnd()
       }
 
@@ -896,11 +904,9 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       // pass to view props
-      if (!variants || !(key in variants)) {
-        if (!(key in skipProps)) {
-          viewProps[key] = val
-          usedKeys[key] = 1
-        }
+      if (!isVariant && !(key in skipProps)) {
+        viewProps[key] = val
+        usedKeys[key] = 1
       }
     }
   }
