@@ -1,6 +1,9 @@
-import { getVariable, styled } from '@tamagui/core'
+import { getVariable } from '@tamagui/core'
+import { SheetDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
+import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
+import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -18,19 +21,7 @@ import {
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
-const BetaButton = styled(Button, {
-  debug: 'verbose',
-
-  variants: {
-    primary: {
-      true: {
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
-})
+setupNativeSheet('ios', ModalView)
 
 export function HomeScreen() {
   return (
@@ -40,7 +31,7 @@ export function HomeScreen() {
           Demos
         </H1>
 
-        <BetaButton primary>test</BetaButton>
+        <SheetDemo />
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>

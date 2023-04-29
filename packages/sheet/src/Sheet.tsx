@@ -2,7 +2,6 @@ import { AdaptParentContext } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
-  TamaguiElement,
   Theme,
   isClient,
   isTouchable,
@@ -20,15 +19,12 @@ import {
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ThemeableStack, XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
-import { useConstant } from '@tamagui/use-constant'
-import { useControllableState } from '@tamagui/use-controllable-state'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
 import React, {
   FunctionComponent,
   RefAttributes,
   createContext,
   forwardRef,
-  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -42,13 +38,19 @@ import {
   Keyboard,
   PanResponder,
   PanResponderGestureState,
+  Platform,
   View,
 } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME } from './constants'
+import { getNativeSheet } from './nativeSheet'
 import { SheetProvider, useSheetContext } from './SheetContext'
 import { SheetScrollView } from './SheetScrollView'
-import { ScrollBridge, SheetProps, SheetScopedProps } from './types'
+import { SheetProps, SheetScopedProps } from './types'
+import { useSheetChildren } from './useSheetChildren'
+import { useSheetController } from './useSheetController'
+import { useSheetOpenState } from './useSheetOpenState'
+import { useSheetProviderProps } from './useSheetProviderProps'
 
 export { createSheetScope } from './SheetContext'
 export * from './types'
@@ -224,21 +226,21 @@ const ParentSheetContext = createContext({
   zIndex: 100_000,
 })
 
-const useSheetContoller = () => {
-  const controller = useContext(SheetControllerContext)
-  const isHidden = controller?.hidden
-  const isShowingNonSheet = isHidden && controller?.open
-  return {
-    controller,
-    isHidden,
-    isShowingNonSheet,
-  }
-}
-
 export const Sheet = withStaticProperties(
   forwardRef<View, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
-    const { isShowingNonSheet } = useSheetContoller()
+    const { isShowingNonSheet } = useSheetController()
+
+    let SheetImplementation = SheetImplementationCustom
+
+    if (props.native && Platform.OS === 'ios') {
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        const impl = getNativeSheet('ios')
+        if (impl) {
+          SheetImplementation = impl
+        }
+      }
+    }
 
     /**
      * Performance is sensitive here so avoid all the hooks below with this
@@ -252,22 +254,11 @@ export const Sheet = withStaticProperties(
   sheetComponents
 )
 
-const SheetImplementation = themeable(
-  forwardRef<View, SheetProps>(function SheetImplementation(props, forwardedRef) {
+const SheetImplementationCustom = themeable(
+  forwardRef<View, SheetProps>(function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = useContext(ParentSheetContext)
-    const { isHidden, controller } = useSheetContoller()
 
     const {
-      __scopeSheet,
-      snapPoints: snapPointsProp = [80],
-      open: openProp,
-      defaultOpen,
-      children: childrenProp,
-      position: positionProp,
-      onPositionChange,
-      onOpenChange,
-      defaultPosition,
-      dismissOnOverlayPress = true,
       animationConfig,
       dismissOnSnapToBottom = false,
       forceRemoveScrollEnabled = null,
@@ -278,8 +269,28 @@ const SheetImplementation = themeable(
       portalProps,
     } = props
 
+    const state = useSheetOpenState(props)
+    const providerProps = useSheetProviderProps(props, state)
+
+    const {
+      snapPoints,
+      position,
+      contentRef,
+      setPosition,
+      setPositionImmediate,
+      scrollBridge,
+      frameSize,
+      setFrameSize,
+    } = providerProps
+
+    const { open, isHidden, controller } = state
+
+    const { frameComponent, handleComponent, overlayComponent } = useSheetChildren(
+      props.children
+    )
+
     if (process.env.NODE_ENV === 'development') {
-      if (snapPointsProp.some((p) => p < 0 || p > 100)) {
+      if (snapPoints.some((p) => p < 0 || p > 100)) {
         console.warn(
           '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame'
         )
@@ -297,65 +308,11 @@ const SheetImplementation = themeable(
     const disableDrag = disableDragProp ?? controller?.disableDrag
     const keyboardIsVisible = useKeyboardVisible()
     const themeName = useThemeName()
-    const contentRef = React.useRef<TamaguiElement>(null)
-    const scrollBridge = useConstant<ScrollBridge>(() => ({
-      enabled: false,
-      y: 0,
-      paneY: 0,
-      paneMinY: 0,
-      scrollStartY: -1,
-      drag: () => {},
-      release: () => {},
-      scrollLock: false,
-    }))
-
-    const onOpenChangeInternal = (val: boolean) => {
-      controller?.onOpenChange?.(val)
-      onOpenChange?.(val)
-    }
-
-    const [open, setOpen] = useControllableState({
-      prop: controller?.open ?? openProp,
-      defaultProp: true,
-      onChange: onOpenChangeInternal,
-      strategy: 'most-recent-wins',
-      transition: true,
-    })
-
-    const [frameSize, setFrameSize] = useState<number>(0)
-
-    const snapPoints = useMemo(
-      () => (dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [JSON.stringify(snapPointsProp), dismissOnSnapToBottom]
-    )
-
-    // lets set -1 to be always the "open = false" position
-    const [position_, setPosition_] = useControllableState({
-      prop: positionProp,
-      defaultProp: defaultPosition || (open ? 0 : -1),
-      onChange: onPositionChange,
-      strategy: 'most-recent-wins',
-      transition: true,
-    })
-    const position = open === false ? -1 : position_
 
     // reset position to fully open on re-open after dismissOnSnapToBottom
     if (open && dismissOnSnapToBottom && position === snapPoints.length - 1) {
-      setPosition_(0)
+      setPositionImmediate(0)
     }
-
-    const setPosition = useCallback(
-      (next: number) => {
-        // close on dismissOnSnapToBottom (and set position so it animates)
-        if (dismissOnSnapToBottom && next === snapPoints.length - 1) {
-          setOpen(false)
-        } else {
-          setPosition_(next)
-        }
-      },
-      [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
-    )
 
     const { useAnimatedNumber, useAnimatedNumberReaction, useAnimatedNumberStyle } =
       driver
@@ -569,30 +526,6 @@ const SheetImplementation = themeable(
       [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition]
     )
 
-    let handleComponent: React.ReactElement | null = null
-    let overlayComponent: React.ReactElement | null = null
-    let frameComponent: React.ReactElement | null = null
-
-    // TODO do more radix-like and don't require direct children descendents
-    React.Children.forEach(childrenProp, (child) => {
-      if (isValidElement(child)) {
-        const name = child.type?.['staticConfig']?.componentName
-        switch (name) {
-          case 'SheetHandle':
-            handleComponent = child
-            break
-          case 'Sheet':
-            frameComponent = child
-            break
-          case 'SheetOverlay':
-            overlayComponent = child
-            break
-          default:
-            console.warn('Warning: passed invalid child to Sheet', child)
-        }
-      }
-    })
-
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? HIDDEN_SIZE : val
@@ -658,21 +591,7 @@ const SheetImplementation = themeable(
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
-        <SheetProvider
-          modal={modal}
-          contentRef={contentRef}
-          frameSize={frameSize}
-          dismissOnOverlayPress={dismissOnOverlayPress}
-          dismissOnSnapToBottom={dismissOnSnapToBottom}
-          open={open}
-          hidden={!!isHidden}
-          scope={__scopeSheet}
-          position={position}
-          snapPoints={snapPoints}
-          setPosition={setPosition}
-          setOpen={setOpen}
-          scrollBridge={scrollBridge}
-        >
+        <SheetProvider {...providerProps}>
           {shouldHideParentSheet ? null : overlayComponent}
 
           <AnimatedView
@@ -770,38 +689,4 @@ function resisted(y: number, minY: number, maxOverflow = 25) {
     return minY + extra
   }
   return y
-}
-
-type SheetControllerContextValue = {
-  disableDrag?: boolean
-  open?: boolean
-  // hide without "closing" to prevent re-animation when shown again
-  hidden?: boolean
-  onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
-}
-
-const SheetControllerContext = createContext<SheetControllerContextValue | null>(null)
-
-export const SheetController = ({
-  children,
-  onOpenChange: onOpenChangeProp,
-  ...value
-}: Partial<SheetControllerContextValue> & { children?: React.ReactNode }) => {
-  const onOpenChange = useEvent(onOpenChangeProp)
-
-  const memoValue = useMemo(
-    () => ({
-      open: value.open,
-      hidden: value.hidden,
-      disableDrag: value.disableDrag,
-      onOpenChange,
-    }),
-    [onOpenChange, value.open, value.hidden, value.disableDrag]
-  )
-
-  return (
-    <SheetControllerContext.Provider value={memoValue}>
-      {children}
-    </SheetControllerContext.Provider>
-  )
 }
