@@ -27,6 +27,7 @@ import {
   disableTracking,
   setDisableStoreTracking,
 } from './Store'
+import { useAsyncExternalStore } from './useAsyncExternalStore'
 import {
   DebugStores,
   shouldDebug,
@@ -48,6 +49,8 @@ import {
 // const abcSel = useGlobalStoreSelector(storeTest, (x) => x.props.id)
 
 const idFn = (_) => _
+const shouldUseSync =
+  typeof window !== 'undefined' && window.location.hash.includes(`sync-store`)
 
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(
@@ -369,8 +372,9 @@ function useStoreFromInfo(
     return snap
   }, [])
 
-  // TODO third arg is getServerSnapshot
-  const state = useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+  const state = shouldUseSync
+    ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+    : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
   // dispose tracker on unmount
   useEffect(() => {
