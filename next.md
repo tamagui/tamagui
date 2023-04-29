@@ -70,6 +70,10 @@ Ali todos:
 
 # Backlog
 
+- sheet native ios snapPoints
+  - pre release 2.0 version of library
+  - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
+
 - sheet native android - https://github.com/intergalacticspacehighway/react-native-android-bottomsheet
 
 - sorry to keep pulling on the same thread here haha, I've got it close now but I think I must still be doing something wrong, the theme works on the button text if I pass it down to CustomButtonText manually like theme={props.theme}  and use extractable, but when I update it to styleable, all the text goes white—second screenshot (probably inheriting from one of the parent themes I guess?)
