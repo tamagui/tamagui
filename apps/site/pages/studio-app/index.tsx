@@ -6,19 +6,13 @@ import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/pa
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { startTransition, useEffect, useState } from 'react'
 import { Freeze } from 'react-freeze'
 import { useDidFinishSSR } from 'tamagui'
 
 export default function Page() {
   useRequiresLoading()
   const hydrated = useDidFinishSSR()
-  const [page, setPage] = useState()
-  const router = useRouter()
-
-  console.log('router.query', router.query)
-
-  useEffect(() => {}, [])
 
   if (!hydrated) {
     return null
@@ -26,29 +20,47 @@ export default function Page() {
 
   return (
     <>
-      <StudioPage at="config">
+      <StudioTab at="config">
         <ConfigPage />
-      </StudioPage>
-      <StudioPage at="colors">
+      </StudioTab>
+      <StudioTab at="colors">
         <ColorsPage />
-      </StudioPage>
-      <StudioPage at="animations">
+      </StudioTab>
+      <StudioTab at="animations">
         <AnimationsPage />
-      </StudioPage>
-      <ThemesPage />
-      <StudioPage at="tokens">
+      </StudioTab>
+      <StudioTab at="themes">
+        <ThemesPage />
+      </StudioTab>
+      <StudioTab at="tokens">
         <TokensPage />
-      </StudioPage>
+      </StudioTab>
     </>
   )
 }
 
 Page.getLayout = getStudioLayout
 
-const StudioPage = (props: { at: string; children: React.ReactNode }) => {
+const StudioTab = (props: { at: string; children: React.ReactNode }) => {
   const router = useRouter()
-  const isActive = router.query?.page === props.at
-  console.log('isActive', isActive)
+  const isActive = router.query.tab === props.at
+  const [idle, setIdle] = useState(false)
 
-  return <Freeze freeze={!isActive}>{props.children}</Freeze>
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0,
+        pointerEvents: 'none',
+        ...(isActive && {
+          opacity: 1,
+          pointerEvents: 'auto',
+        }),
+      }}
+    >
+      {props.children}
+    </div>
+  )
 }
