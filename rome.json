@@ -19,7 +19,8 @@
         "useDefaultParameterLast": "off",
         "useConst": "off",
         "useEnumInitializers": "off",
-        "useTemplate": "off"
+        "useTemplate": "off",
+        "useSelfClosingElements": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -44,7 +45,7 @@
         "noBannedTypes": "off",
         "noParameterAssign": "off",
         "noInnerDeclarations": "off",
-        "noRedeclare": "off"
+        "noRedeclare": "off",
         "noSvgWithoutTitle": "off"
       }
     }
