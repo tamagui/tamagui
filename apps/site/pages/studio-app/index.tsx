@@ -4,9 +4,11 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
+import { isLocal } from '@protected/studio/constants'
+import LoadPage from '@protected/studio/load/page'
 import { Tab } from '@protected/studio/state/types'
-import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
+import { useSelector } from '@tamagui/use-store'
 import { useRouter } from 'next/router'
 import React, {
   Suspense,
@@ -22,9 +24,9 @@ import { rootStore } from '../../app/(protected)/studio/state/RootStore'
 import { themesStore } from '../../app/(protected)/studio/state/ThemesStore'
 
 export default function Page() {
-  useRequiresLoading()
-
   const hydrated = useDidFinishSSR()
+
+  const fsReadSucceeded = useSelector(() => rootStore.fsReadSucceeded)
 
   if (!hydrated) {
     return null
@@ -32,7 +34,7 @@ export default function Page() {
 
   return (
     <React.StrictMode>
-      <StudioContents />
+      {!fsReadSucceeded && !isLocal ? <LoadPage /> : <StudioContents />}
     </React.StrictMode>
   )
 }
