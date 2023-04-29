@@ -22,10 +22,20 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Helpers
 
+### getVariable
+
+```tsx
+type getVariable = (value: Variable) => string
+```
+
+If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
+
+Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
+
 ### isTamaguiComponent
 
 ```tsx
-(component: any; name?: string) => boolean
+type isTamaguiComponent (component: any; name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui component, if name given ensures it's the specific named Tamagui component.
@@ -33,7 +43,7 @@ If no name given, true if a Tamagui component, if name given ensures it's the sp
 ### isTamaguiElement
 
 ```tsx
-(child: any; name?: string) => boolean
+type isTamaguiElement (child: any; name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
