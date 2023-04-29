@@ -23,6 +23,7 @@ export const spawn = proc.spawn
 const rePublish = process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
 
+const canary = process.argv.includes('--canary')
 const skipVersion = rePublish || process.argv.includes('--skip-version')
 const patch = process.argv.includes('--patch')
 const dirty = process.argv.includes('--dirty')
@@ -37,12 +38,21 @@ const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = process.argv.includes('--ci')
 
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const plusVersion = skipVersion ? 0 : 1
-const curPatch = +curVersion.split('.')[2] || 0
-const patchVersion = patch ? curPatch + plusVersion : 0
-const curMinor = +curVersion.split('.')[1] || 0
-const minorVersion = curMinor + (!patch ? plusVersion : 0)
-const nextVersion = `1.${minorVersion}.${patchVersion}`
+
+const nextVersion = (() => {
+  const plusVersion = skipVersion ? 0 : 1
+  const curPatch = +curVersion.split('.')[2] || 0
+  const patchVersion = patch ? curPatch + plusVersion : 0
+  const curMinor = +curVersion.split('.')[1] || 0
+  const minorVersion = curMinor + (!patch ? plusVersion : 0)
+  const next = `1.${minorVersion}.${patchVersion}`
+
+  if (canary) {
+    return `${next}-${Date.now()}`
+  }
+
+  return next
+})()
 
 const sleep = (ms) => {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -289,8 +299,11 @@ async function run() {
         await pMap(
           packageJsons,
           async ({ name, cwd }) => {
-            console.log(`Publishing ${name}`)
-            await spawnify(`npm publish`, {
+            const tag = canary ? ` --tag canary` : ''
+
+            console.log(`Publishing ${name}${tag}`)
+
+            await spawnify(`npm publish${tag}`, {
               cwd,
             }).catch((err) => console.error(err))
           },
@@ -299,11 +312,13 @@ async function run() {
           }
         )
       } else {
+        const distTag = canary ? 'canary' : 'latest'
+
         // if all successful, re-tag as latest (try and be fast)
         await pMap(
           packageJsons,
           async ({ name, cwd }) => {
-            await spawnify(`npm dist-tag add ${name}@${version} latest`, {
+            await spawnify(`npm dist-tag add ${name}@${version} ${distTag}`, {
               cwd,
             }).catch((err) => console.error(err))
           },
@@ -331,12 +346,15 @@ async function run() {
       cwd: join(process.cwd(), 'starters/next-expo-solito'),
     })
 
+    const tagPrefix = canary ? 'canary' : 'v'
+    const gitTag = `${tagPrefix}${version}`
+
     if (!rePublish) {
       await spawnify(`git add -A`)
-      await spawnify(`git commit -m v${version}`)
-      await spawnify(`git tag v${version}`)
+      await spawnify(`git commit -m ${gitTag}`)
+      await spawnify(`git tag ${gitTag}`)
       await spawnify(`git push origin head`)
-      await spawnify(`git push origin v${version}`)
+      await spawnify(`git push origin ${gitTag}`)
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`✅ Pushed and versioned\n`)
     }

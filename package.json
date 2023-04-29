@@ -37,6 +37,7 @@
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",
     "release": "node -r esbuild-register ./scripts/release.ts",
+    "release:canary": "yarn release --canary --ci",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
     "docs-bump-version": "node -r esbuild-register ./scripts/docs-bump-version.ts",
     "upgrade:starters": "yarn upgrade:starters:next",
