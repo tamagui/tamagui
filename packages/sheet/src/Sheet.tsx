@@ -42,10 +42,12 @@ import {
   Keyboard,
   PanResponder,
   PanResponderGestureState,
+  Platform,
   View,
 } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME } from './constants'
+import { getNativeSheet } from './nativeSheet'
 import { SheetProvider, useSheetContext } from './SheetContext'
 import { SheetScrollView } from './SheetScrollView'
 import { ScrollBridge, SheetProps, SheetScopedProps } from './types'
@@ -240,6 +242,14 @@ export const Sheet = withStaticProperties(
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetContoller()
 
+    if (props.native && Platform.OS === 'ios') {
+      if (process.env.TAMAGUI_TARGET === 'native') {
+        const NativeImplementation = getNativeSheet('ios')
+        console.log('NativeImplementation', NativeImplementation)
+        return null
+      }
+    }
+
     /**
      * Performance is sensitive here so avoid all the hooks below with this
      */
@@ -276,6 +286,7 @@ const SheetImplementation = themeable(
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
       portalProps,
+      native,
     } = props
 
     if (process.env.NODE_ENV === 'development') {
