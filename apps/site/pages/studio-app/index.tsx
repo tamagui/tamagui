@@ -4,10 +4,11 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
+import { Tab } from '@protected/studio/state/types'
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { startTransition, useEffect, useState } from 'react'
 import { YStack, useDidFinishSSR } from 'tamagui'
 
 import { rootStore } from '../../app/(protected)/studio/state/RootStore'
@@ -51,7 +52,7 @@ function useSyncTabToCurrentPaneState() {
   const tab = router.query.tab
 
   useEffect(() => {
-    rootStore.currentPane = `${tab || ''}` || 'view'
+    rootStore.currentPane = (`${tab || ''}` as Tab) || 'view'
   }, [tab])
 }
 
