@@ -10,8 +10,12 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { YStack, useDidFinishSSR } from 'tamagui'
 
+import { rootStore } from '../../app/(protected)/studio/state/RootStore'
+
 export default function Page() {
   useRequiresLoading()
+  useSyncTabToCurrentPaneState()
+
   const hydrated = useDidFinishSSR()
 
   if (!hydrated) {
@@ -42,6 +46,15 @@ export default function Page() {
   )
 }
 
+function useSyncTabToCurrentPaneState() {
+  const router = useRouter()
+  const tab = router.query.tab
+
+  useEffect(() => {
+    rootStore.currentPane = `${tab || ''}` || 'view'
+  }, [tab])
+}
+
 Page.getLayout = getStudioLayout
 
 const StudioTab = (props: {
@@ -52,6 +65,17 @@ const StudioTab = (props: {
   const router = useRouter()
   const tab = router.query.tab
   const isActive = tab === props.at || (!tab && props.isHome)
+  const [isMounted, setIsMounted] = useState(isActive)
+
+  useEffect(() => {
+    startTransition(() => {
+      setIsMounted(isActive)
+    })
+  }, [isActive])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <YStack

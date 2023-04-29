@@ -89,7 +89,7 @@ export default function Community({ frontmatters }) {
                           fow="300"
                         >
                           {Intl.DateTimeFormat('en-US', {
-                            weekday: 'short',
+                            month: 'short',
                             year: 'numeric',
                             day: 'numeric',
                           }).format(new Date(frontmatter.publishedAt || ''))}
