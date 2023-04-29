@@ -19,6 +19,7 @@ import { useDidFinishSSR, useThemeName } from 'tamagui'
 
 import { rootStore } from '../../app/(protected)/studio/state/RootStore'
 import { themesStore } from '../../app/(protected)/studio/state/ThemesStore'
+import { Tab } from '../../app/(protected)/studio/state/types'
 
 export default function Page() {
   useRequiresLoading()
@@ -82,7 +83,7 @@ function useSyncTabToCurrentPaneState() {
   const tab = router.query.tab
 
   useEffect(() => {
-    rootStore.currentPane = `${tab || ''}` || 'view'
+    rootStore.currentPane = (`${tab || ''}` || 'view') as Tab
   }, [tab])
 }
 
