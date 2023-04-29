@@ -8,14 +8,20 @@ import { Tab } from '@protected/studio/state/types'
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
-import React, { startTransition, useEffect, useState } from 'react'
-import { YStack, useDidFinishSSR } from 'tamagui'
+import React, {
+  startTransition,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
+import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
 
 import { rootStore } from '../../app/(protected)/studio/state/RootStore'
+import { themesStore } from '../../app/(protected)/studio/state/ThemesStore'
 
 export default function Page() {
   useRequiresLoading()
-  useSyncTabToCurrentPaneState()
 
   const hydrated = useDidFinishSSR()
 
@@ -23,28 +29,52 @@ export default function Page() {
     return null
   }
 
-  return (
-    <>
-      <StudioTab isHome at="view">
-        <PreviewPage />
-      </StudioTab>
-      <StudioTab at="config">
-        <ConfigPage />
-      </StudioTab>
-      <StudioTab at="colors">
-        <ColorsPage />
-      </StudioTab>
-      <StudioTab at="animations">
-        <AnimationsPage />
-      </StudioTab>
-      <StudioTab at="themes">
-        <ThemesPage />
-      </StudioTab>
-      <StudioTab at="tokens">
-        <TokensPage />
-      </StudioTab>
-    </>
-  )
+  return <StudioContents />
+}
+
+function StudioContents() {
+  // init state
+  useStudioInitialize()
+
+  return useMemo(() => {
+    return (
+      <>
+        <StudioTab isHome at="view">
+          <PreviewPage />
+        </StudioTab>
+        <StudioTab at="config">
+          <ConfigPage />
+        </StudioTab>
+        <StudioTab at="colors">
+          <ColorsPage />
+        </StudioTab>
+        <StudioTab at="animations">
+          <AnimationsPage />
+        </StudioTab>
+        <StudioTab at="themes">
+          <ThemesPage />
+        </StudioTab>
+        <StudioTab at="tokens">
+          <TokensPage />
+        </StudioTab>
+      </>
+    )
+  }, [])
+}
+
+function useStudioInitialize() {
+  useSyncTabToCurrentPaneState()
+  useSyncThemeToThemeState()
+}
+
+function useSyncThemeToThemeState() {
+  const themeName = useThemeName()
+
+  useLayoutEffect(() => {
+    themesStore.toggleFocusedThemeItem({
+      id: themeName,
+    })
+  }, [themeName])
 }
 
 function useSyncTabToCurrentPaneState() {
@@ -52,7 +82,7 @@ function useSyncTabToCurrentPaneState() {
   const tab = router.query.tab
 
   useEffect(() => {
-    rootStore.currentPane = (`${tab || ''}` as Tab) || 'view'
+    rootStore.currentPane = (`${tab || ''}` || 'view') as Tab
   }, [tab])
 }
 
