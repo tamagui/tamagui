@@ -1,4 +1,4 @@
-import { getVar, getVariableiable, styled } from '@tamagui/core'
+import { getVariable, styled } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
