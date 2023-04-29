@@ -25,6 +25,10 @@ export type SlideProps = {
 
 type SlideStepItem =
   | {
+      type: 'content'
+      content: any
+    }
+  | {
       type: 'image'
       image: {
         width: number
@@ -163,6 +167,9 @@ function getTextContent(
     >
       {text.map((item) => {
         switch (item.type) {
+          case 'content':
+            return item.content
+
           case 'image':
             return (
               <YStack f={1} ai="center">
@@ -197,7 +204,6 @@ function getTextContent(
               <YStack
                 pl="$10"
                 pt="$4"
-                mb="$-4"
                 pr="$10"
                 {...(item.slim && {
                   pl: '$2',
@@ -211,7 +217,11 @@ function getTextContent(
               </YStack>
             )
           case 'code-inline':
-            return <Code size={size ?? '$9'}>{item.content}&nbsp;</Code>
+            return (
+              <Code bc="$color8" color="$color11" size={size ?? '$9'} px="$3" py="$2">
+                {item.content}&nbsp;
+              </Code>
+            )
           case 'code':
             return (
               <DocCodeBlock isHighlightingLines size={size ?? '$6'}>

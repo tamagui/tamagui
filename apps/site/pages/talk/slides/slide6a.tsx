@@ -5,8 +5,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Get rid of JS"
-      subTitle="On the web, use the platform"
+      title="How?"
+      subTitle="Expand style properties, optimize to CSS"
       theme="purple"
       steps={[
         [
@@ -15,17 +15,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Media queries',
+                content: 'Media queries - ',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: '@media (max-width) ...',
-                  },
-                ],
+                type: 'code-inline',
+                content: '@media (max-width) ...',
               },
             ],
           },
@@ -35,17 +30,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Pseudo styles',
+                content: 'Pseudo styles - ',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: ':hover, :focus, :active',
-                  },
-                ],
+                type: 'code-inline',
+                content: ':hover, :focus, :active',
               },
             ],
           },
@@ -55,17 +45,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Themes',
+                content: 'Themes - ',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: '--background: #000',
-                  },
-                ],
+                type: 'code-inline',
+                content: '--background: #000',
               },
             ],
           },
@@ -75,17 +60,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'CSS',
+                content: 'CSS - ',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: '{ backgroundColor: "#000" } => CSS + { bg: "bg0" }',
-                  },
-                ],
+                type: 'code-inline',
+                content: '{ backgroundColor: "#000" } => CSS + { bg: "bg0" }',
               },
             ],
           },

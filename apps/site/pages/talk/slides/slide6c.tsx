@@ -6,8 +6,8 @@ export default memo(() => {
   return (
     <Slide
       title="... on the web"
-      subTitle="Native flattens far less"
-      theme="purple"
+      subTitle="Native needs..."
+      theme="green"
       steps={[
         [
           {
@@ -72,7 +72,9 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: <>Luckily, native is a bit less sensitive to performance.</>,
+                content: (
+                  <>Let's get CSS variables, pseudo + responsive styles first-class 🗳️</>
+                ),
               },
             ],
           },
