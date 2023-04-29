@@ -9,6 +9,7 @@ import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
 import React, {
+  Suspense,
   startTransition,
   useEffect,
   useLayoutEffect,
@@ -29,7 +30,11 @@ export default function Page() {
     return null
   }
 
-  return <StudioContents />
+  return (
+    <React.StrictMode>
+      <StudioContents />
+    </React.StrictMode>
+  )
 }
 
 function StudioContents() {
@@ -104,25 +109,28 @@ const StudioTab = (props: {
     })
   }, [isActive])
 
+  const childrenMemo = useMemo(() => props.children, [props.children])
+
   if (!isMounted) {
     return null
   }
 
   return (
-    <YStack
-      style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        opacity: 0,
-        pointerEvents: 'none',
-        ...(isActive && {
-          opacity: 1,
-          pointerEvents: 'auto',
-        }),
-      }}
-    >
-      {props.children}
-    </YStack>
+    <Suspense>
+      <YStack
+        style={{
+          width: '100%',
+          height: '100%',
+          opacity: 0,
+          pointerEvents: 'none',
+          ...(isActive && {
+            opacity: 1,
+            pointerEvents: 'auto',
+          }),
+        }}
+      >
+        {childrenMemo}
+      </YStack>
+    </Suspense>
   )
 }
