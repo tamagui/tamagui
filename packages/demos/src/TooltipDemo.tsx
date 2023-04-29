@@ -41,7 +41,7 @@ export function TooltipDemo() {
   )
 }
 
-export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
+function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
       <Tooltip.Trigger>
