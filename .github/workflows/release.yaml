@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - test-release
-    tags:
-      - "release-*"
 
 jobs:
   release:
