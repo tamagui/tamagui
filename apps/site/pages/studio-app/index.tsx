@@ -4,6 +4,7 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
+import { Tab } from '@protected/studio/state/types'
 import { useRequiresLoading } from '@protected/studio/state/useGlobalState'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useRouter } from 'next/router'
@@ -14,12 +15,10 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { Freeze } from 'react-freeze'
-import { useDidFinishSSR, useThemeName } from 'tamagui'
+import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
 
 import { rootStore } from '../../app/(protected)/studio/state/RootStore'
 import { themesStore } from '../../app/(protected)/studio/state/ThemesStore'
-import { Tab } from '../../app/(protected)/studio/state/types'
 
 export default function Page() {
   useRequiresLoading()
@@ -110,7 +109,7 @@ const StudioTab = (props: {
   }
 
   return (
-    <div
+    <YStack
       style={{
         position: 'absolute',
         width: '100%',
@@ -124,6 +123,6 @@ const StudioTab = (props: {
       }}
     >
       {props.children}
-    </div>
+    </YStack>
   )
 }
