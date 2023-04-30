@@ -21,20 +21,20 @@ export function SelectDemo() {
         <Label f={1} fb={0}>
           Custom
         </Label>
-        <MySelect value={val} onValueChange={setVal} />
+        <SelectDemoItem value={val} onValueChange={setVal} />
       </XStack>
 
       <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
-        <MySelect value={val} onValueChange={setVal} native />
+        <SelectDemoItem value={val} onValueChange={setVal} native />
       </XStack>
     </YStack>
   )
 }
 
-export function MySelect(props: SelectProps) {
+export function SelectDemoItem(props: SelectProps) {
   return (
     <Select id="food" {...props}>
       <Select.Trigger width={180} iconAfter={ChevronDown}>
