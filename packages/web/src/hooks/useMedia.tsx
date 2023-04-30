@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useMemo, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config.js'
 import { createProxy } from '../helpers/createProxy.js'
@@ -129,9 +129,7 @@ function updateCurrentState() {
   flushing = true
   Promise.resolve().then(() => {
     flushing = false
-    startTransition(() => {
-      listeners.forEach((cb) => cb(mediaState))
-    })
+    listeners.forEach((cb) => cb(mediaState))
   })
 }
 
