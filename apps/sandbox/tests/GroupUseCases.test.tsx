@@ -8,7 +8,6 @@ test(`simple api passes border radius`, async ({ page }) => {
   const buttons = await page.getByTestId('simple-api-group').locator('button').all()
 
   console.log('buttons?', buttons)
-  console.log('wtf', await page.content())
 
   const buttonFirstStyles = await buttons[0].evaluate((el) => {
     return window.getComputedStyle(el)
