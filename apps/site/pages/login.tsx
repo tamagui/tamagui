@@ -1,4 +1,5 @@
 import { getAuthLayout } from '@components/layouts/AuthLayout'
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -14,6 +15,15 @@ import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 const emailAuthDisabledFlag = true
 
 export default function SignInPage() {
+  return (
+    <>
+      <TitleAndMetaTags title="Login — Tamagui" />
+      <SignIn />
+    </>
+  )
+}
+
+function SignIn() {
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
