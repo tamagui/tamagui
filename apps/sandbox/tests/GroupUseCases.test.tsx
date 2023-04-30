@@ -6,6 +6,7 @@ test.beforeEach(async ({ page }) => {
 
 test(`simple api passes border radius`, async ({ page }) => {
   const buttons = await page.getByTestId('simple-api-group').locator('button').all()
+
   const buttonFirstStyles = await buttons[0].evaluate((el) => {
     return window.getComputedStyle(el)
   })
