@@ -29,8 +29,7 @@ export const Sandbox = () => {
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
-        <SliderDemo />
-        {/* <Component /> */}
+        <Component />
       </Suspense>
     </SandboxFrame>
   )
