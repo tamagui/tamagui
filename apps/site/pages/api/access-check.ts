@@ -12,10 +12,10 @@ const handler: NextApiHandler = async (req, res) => {
   const {
     data: { session },
   } = await supabase.auth.getSession()
+  const user = session?.user
+  const userGithubToken = user?.user_metadata.github_token ?? session?.provider_token
 
-  const userGithubToken = session?.provider_token
-
-  if (!session)
+  if (!user)
     return res.status(401).json({
       error: 'The user does not have an active session or is not authenticated',
       action: `${siteRootDir}/login`,
@@ -30,8 +30,9 @@ const handler: NextApiHandler = async (req, res) => {
     !githubLogin ||
     !userGithubToken
   ) {
+    console.error(`Failed to get github data for ${user.email}.`, { session })
     res.status(403).json({
-      error: 'No GitHub connection found. Please try logging out and logging in again.',
+      error: 'No GitHub connection found. Try logging out and logging in again.',
       action: `${siteRootDir}/account`,
     })
     return
