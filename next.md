@@ -9,13 +9,13 @@ high level:
 ---
 
 Ali todos:
-  - [ ] site:
+  - [x] site:
     - [x] github auth redirects to localhost in prod
-    - [ ] splash page loads slow on a fresh session because its running supabase before
-      - [ ] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
-      - [ ] see next config rewrites()
-    - [ ] studio.tamagui.dev seems like its only SSR and not hydrating?
-  - [ ] studio
+    - [x] splash page loads slow on a fresh session because its running supabase before
+      - [x] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
+      - [x] see next config rewrites()
+    - [x] studio.tamagui.dev seems like its only SSR and not hydrating?
+  - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
 
     - [x] Config tab
@@ -37,38 +37,44 @@ Ali todos:
         - [x] scroll also broken
         - [x] make it two columns on expanded
 
-    - [ ] Colors tab
-      - [ ] fix dragging on the HSL lines is wonky
+    - [x] Colors tab
+      - [x] fix dragging on the HSL lines is wonky
+      - [ ] add code export
 
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
 
-    - [ ] Tokens tab
-      - [ ] lets redo it to be the same structure as settings
-      - [ ] once thats done lets also add a new column thats first:
-        - [ ] its a wider column
-        - [ ] not clickable/openable
-        - [ ] lets you visualize the "matching" stuff:
-          - [ ] show two `<Square />` vertically
-          - [ ] slider to move up/down your tokens
-          - [ ] square gets the border radius / size
-          - [ ] shows / highlights around the square for "space" tokens
+    - [x] Tokens tab
+      - [x] lets redo it to be the same structure as settings
+      - [x] once thats done lets also add a new column thats first:
+        - [x] its a wider column
+        - [x] not clickable/openable
+        - [x] lets you visualize the "matching" stuff:
+          - [x] show two `<Square />` vertically
+          - [x] slider to move up/down your tokens
+          - [x] square gets the border radius / size
+          - [x] shows / highlights around the square for "space" tokens
           - [ ] also can show a Button as an option too
 
     - [ ] all tabs (header):
       - [ ] add a search input box that filters down things as you type
 
-  - [ ] Select native on trigger + native on viewport + accent-color when native (web)
-  - [ ] get new starter ready
-  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646
-  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc.
+  - [x] Select native on trigger + native on viewport + accent-color when native (web)
+  - [x] get new starter ready
+  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
+  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc. - props -> api, make headings consistent, document unstyled props, anatomy/usage consistency
+  - [ ] toast sooner style demo
   - [ ] low prio: toast viewport issue
 
 ---
 
 # Backlog
 
-- we can avoid including getThemeCSSRules if we have some opt-in env flag people can set like TAMAGUI_IS_SSR=1
+- sheet native ios snapPoints
+  - pre release 2.0 version of library
+  - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
+
+- sheet native android - https://github.com/intergalacticspacehighway/react-native-android-bottomsheet
 
 - sorry to keep pulling on the same thread here haha, I've got it close now but I think I must still be doing something wrong, the theme works on the button text if I pass it down to CustomButtonText manually like theme={props.theme}  and use extractable, but when I update it to styleable, all the text goes white—second screenshot (probably inheriting from one of the parent themes I guess?)
   - https://discord.com/channels/909986013848412191/974145843919716412/1100788149501833236
@@ -172,7 +178,7 @@ a package.json etc etc + zip file
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
 
-- missing docs on useToastController().options
+- [x] missing docs on useToastController().options
 
 - bug android 
   - I've been working on integrating our component library to mobile and ran into a snag with the android build. IOS builds seamlessly and Android throws this error when trying to use Select component:

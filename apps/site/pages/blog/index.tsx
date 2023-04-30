@@ -25,7 +25,7 @@ export default function Blog({ frontmatters }) {
                 subTitle={
                   <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
                     {Intl.DateTimeFormat('en-US', {
-                      weekday: 'short',
+                      month: 'short',
                       year: 'numeric',
                       day: 'numeric',
                     }).format(new Date(frontmatter.publishedAt || ''))}{' '}

@@ -17,6 +17,10 @@ export type SheetProps = ScopedProps<{
     forceRemoveScrollEnabled?: boolean;
     animationConfig?: AnimatedNumberStrategy;
     /**
+     * Adapts the sheet to use native sheet on the given platform (if available)
+     */
+    native?: 'ios'[] | boolean;
+    /**
      * Pass if you're using the CSS animation driver
      */
     animation?: AnimationProp;

@@ -19,7 +19,8 @@
         "useDefaultParameterLast": "off",
         "useConst": "off",
         "useEnumInitializers": "off",
-        "useTemplate": "off"
+        "useTemplate": "off",
+        "useSelfClosingElements": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -33,7 +34,8 @@
         "useOptionalChain": "off"
       },
       "a11y": {
-        "noHeaderScope": "off"
+        "noHeaderScope": "off",
+        "useAltText": "off"
       },
       "nursery": {
         "noConsoleLog": "error",
@@ -43,7 +45,8 @@
         "noBannedTypes": "off",
         "noParameterAssign": "off",
         "noInnerDeclarations": "off",
-        "noRedeclare": "off"
+        "noRedeclare": "off",
+        "noSvgWithoutTitle": "off"
       }
     }
   },

@@ -25,6 +25,14 @@ export type SlideProps = {
 
 type SlideStepItem =
   | {
+      type: 'callout'
+      content: any
+    }
+  | {
+      type: 'content'
+      content: any
+    }
+  | {
       type: 'image'
       image: {
         width: number
@@ -33,7 +41,15 @@ type SlideStepItem =
       }
     }
   | {
+      type: 'vertical'
+      content: SlideStepItem[]
+    }
+  | {
       type: 'text'
+      content: React.ReactNode
+    }
+  | {
+      type: 'text-bold'
       content: React.ReactNode
     }
   | {
@@ -43,6 +59,8 @@ type SlideStepItem =
     }
   | {
       type: 'bullet-point'
+      size?: FontSizeTokens
+      slim?: boolean
       content: SlideStepItem[]
     }
   | {
@@ -153,26 +171,33 @@ function getTextContent(
     >
       {text.map((item) => {
         switch (item.type) {
+          case 'content':
+            return item.content
+
           case 'image':
             return (
               <YStack f={1} ai="center">
                 <img
                   style={{
                     alignSelf: 'center',
+                    maxWidth: '100%',
                     width: item.image.width * 0.5,
-                    height: item.image.height * 0.5,
                   }}
                   src={item.image.src}
                 />
               </YStack>
             )
+
+          case 'vertical':
+            return <YStack>{getTextContent(item.content)}</YStack>
+
           case 'split-horizontal':
             return (
               <XStack h="100%" ai="center" f={1} gap="$6">
-                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[0]], options)}
                 </YStack>
-                <YStack ai="center" jc="center" maw="50%" f={1} ov="hidden">
+                <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[1]], options)}
                 </YStack>
               </XStack>
@@ -180,22 +205,64 @@ function getTextContent(
 
           case 'bullet-point':
             return (
-              <YStack pl="$8" pt="$4" mb="$-4">
+              <YStack
+                pl="$10"
+                pt="$4"
+                pr="$10"
+                {...(item.slim && {
+                  pl: '$2',
+                  pr: '$2',
+                  mb: '$0',
+                })}
+              >
                 {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
-                  size: size ?? '$9',
+                  size: item.size ?? size ?? '$9',
                 })}
               </YStack>
             )
           case 'code-inline':
-            return <Code size={size ?? '$9'}>{item.content}&nbsp;</Code>
+            return (
+              <Code bc="$color8" color="$color11" size={size ?? '$9'} px="$3" py="$2">
+                {item.content}&nbsp;
+              </Code>
+            )
+
           case 'code':
             return (
               <DocCodeBlock isHighlightingLines size={size ?? '$6'}>
                 {item.content}&nbsp;
               </DocCodeBlock>
             )
+
+          case 'callout':
+            return (
+              <YStack f={1} ai="center" jc="center" h="60vh">
+                <Paragraph
+                  theme="yellow"
+                  color="$color10"
+                  als="center"
+                  ta="center"
+                  p="$10"
+                  size="$13"
+                >
+                  {item.content}&nbsp;
+                </Paragraph>
+              </YStack>
+            )
+
           case 'text':
-            return <Paragraph size={size ?? '$9'}>{item.content}&nbsp;</Paragraph>
+            return (
+              <Paragraph size={size ?? '$9'} fow="400" lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
+
+          case 'text-bold':
+            return (
+              <Paragraph fow="800" size={size ?? '$9'} lh="$10">
+                {item.content}&nbsp;
+              </Paragraph>
+            )
         }
       })}
     </div>

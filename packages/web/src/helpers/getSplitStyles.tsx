@@ -263,7 +263,7 @@ export const getSplitStyles: StyleSplitter = (
     languageContext,
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+  if (process.env.NODE_ENV === 'development' && debug) {
     console.groupCollapsed('getSplitStyles (looping backwards)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
@@ -352,7 +352,11 @@ export const getSplitStyles: StyleSplitter = (
 
     if (!staticConfig.isHOC) {
       if (keyInit in skipProps) {
-        return
+        if (process.env.NODE_ENV === 'development' && debug && keyInit === 'debug') {
+          // pass throuhg debug
+        } else {
+          return
+        }
       }
     }
 
@@ -550,31 +554,48 @@ export const getSplitStyles: StyleSplitter = (
     const isVariant = variants && keyInit in variants
 
     const shouldPassProp = !(
-      isMedia ||
-      isPseudo ||
+      isMediaOrPseudo ||
       isVariant ||
       keyInit in validStyleProps ||
       keyInit in shorthands
     )
 
-    const parentHasVariant =
-      staticConfig.parentStaticConfig?.variants &&
-      keyInit in staticConfig.parentStaticConfig
-    const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
-    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough || parentHasVariant
-
-    if (
-      process.env.NODE_ENV === 'development' &&
-      debug === 'verbose' &&
-      shouldPassThrough
-    ) {
-      console.groupCollapsed(`  🔹 pass through ${keyInit}`)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ valInit, variants, parentHasVariant, isVariant, shouldPassProp })
-      console.groupEnd()
-    }
+    const isHOCShouldPassThrough =
+      staticConfig.isHOC &&
+      (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+    const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (shouldPassThrough) {
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log({
+          valInit,
+          variants,
+          isVariant,
+          shouldPassProp,
+          isHOCShouldPassThrough,
+        })
+        console.groupEnd()
+      }
+
+      if (isPseudo) {
+        // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
+        // like our own variants that aren't in parent
+        const pseudoStyleObject = getSubStyle(
+          styleState,
+          keyInit,
+          valInit,
+          true,
+          state.noClassNames
+        )
+        const descriptor = pseudoDescriptors[keyInit]
+        for (const key in pseudoStyleObject) {
+          const fullKey = `${key}${PROP_SPLIT}${descriptor.name}`
+          usedKeys[fullKey] = 1
+        }
+      }
+
       passDownProp(keyInit, valInit, isMediaOrPseudo)
 
       // if it's a variant here, we have a two layer variant...
@@ -584,12 +605,6 @@ export const getSplitStyles: StyleSplitter = (
       if (!isVariant) {
         return
       }
-    }
-
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed('  🔹 styles', keyInit, valInit)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ isVariant, shouldPassProp, isHOCShouldPassThrough, parentHasVariant })
     }
 
     const expanded = isMediaOrPseudo
@@ -610,14 +625,24 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({
+        expanded,
+        state,
+        isVariant,
+        shouldPassProp,
+        isHOCShouldPassThrough,
+      })
       if (!isServer && isDevTools) {
         // rome-ignore lint/nursery/noConsoleLog: ok
-        console.log('expanded', expanded, '\nusedKeys', usedKeys, '\ncurrent', {
+        console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
           ...style,
         })
       }
       console.groupEnd()
     }
+
     if (!expanded) return
 
     for (const [key, val] of expanded) {
@@ -648,7 +673,10 @@ export const getSplitStyles: StyleSplitter = (
       const isHOCShouldPassThrough = staticConfig.isHOC && isMediaOrPseudo
       if (isHOCShouldPassThrough) {
         passDownProp(key, val, true)
-        continue
+        // if its also a variant here, pass down but also keep it
+        if (!isVariant) {
+          continue
+        }
       }
 
       // pseudo
@@ -876,11 +904,9 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       // pass to view props
-      if (!variants || !(key in variants)) {
-        if (!(key in skipProps)) {
-          viewProps[key] = val
-          usedKeys[key] = 1
-        }
+      if (!isVariant && !(key in skipProps)) {
+        viewProps[key] = val
+        usedKeys[key] = 1
       }
     }
   }

@@ -5,15 +5,23 @@ import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { Button, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
+import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
 import { ThemeToggle } from '../../components/ThemeToggle'
+import SlideFlatten from './slides/slide-flatten'
+import SlideLessons1 from './slides/slide-lessons-1'
+import SlideLessons2 from './slides/slide-lessons-2'
+import SlideThemes from './slides/slide-themes'
 import Slide1 from './slides/slide1'
 import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
+import Slide3a from './slides/slide3a'
 import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
+import Slide6a from './slides/slide6a'
+import Slide6c from './slides/slide6c'
+import Slide6d from './slides/slide6d'
 import Slide7 from './slides/slide7'
 import Slide8 from './slides/slide8'
 
@@ -24,7 +32,7 @@ const slideDimensions = {
 
 export default function TamaguiTalk() {
   return (
-    <>
+    <YStack {...slideDimensions}>
       <TitleAndMetaTags title="Tamagui App.js Talk" description="Tamagui App.js Talk" />
       <XStack pos="absolute" t="$0" l="$0" r="$0" p="$4" zi={1000}>
         <YStack>
@@ -40,22 +48,28 @@ export default function TamaguiTalk() {
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>
       <YStack fullscreen className="bg-grid" />
-      <YStack {...slideDimensions}>
-        <RibbonContainer />
-        <Slides
-          slides={[
-            <Slide1 />,
-            <Slide2 />,
-            <Slide3 />,
-            <Slide4 />,
-            <Slide5 />,
-            <Slide6 />,
-            <Slide7 />,
-            <Slide8 />,
-          ]}
-        />
-      </YStack>
-    </>
+      <RibbonContainer />
+      <Slides
+        slides={[
+          <Slide1 />,
+          <Slide2 />,
+          <Slide6 />,
+          <Slide6a />,
+          <Slide3 />,
+          <Slide3a />,
+          <SlideThemes />,
+          <Slide4 />,
+          <SlideFlatten />,
+          <Slide6c />,
+          <Slide6d />,
+          <Slide7 />,
+          <Slide8 />,
+          <Slide5 />,
+          <SlideLessons1 />,
+          <SlideLessons2 />,
+        ]}
+      />
+    </YStack>
   )
 }
 
@@ -71,7 +85,8 @@ type Slides = any[]
 export function Slides(props: { slides: Slides }) {
   const [[page, direction], setPage] = useState([0, 0])
 
-  const index = wrap(0, props.slides.length, page)
+  const total = props.slides.length
+  const index = wrap(0, total, page)
 
   const paginate = (newDirection: number) => {
     setPage([page + newDirection, newDirection])
@@ -132,6 +147,10 @@ export function Slides(props: { slides: Slides }) {
         elevate
         onPress={() => paginate(1)}
       />
+
+      <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
+        {index} / {total}
+      </Paragraph>
     </XStack>
   )
 }

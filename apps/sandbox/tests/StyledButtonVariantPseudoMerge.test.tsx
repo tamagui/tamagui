@@ -1,45 +1,21 @@
 import { expect, test } from '@playwright/test'
 
+import { getPressStyle } from './utils'
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/?test=StyledButtonVariantPseudoMerge')
 })
 
 test(`pseudo + variant with pseudo should merge`, async ({ page }) => {
   const button = page.locator('button#test')
-
-  const promise = button.click({
-    delay: 1000,
-    force: true,
-  })
-
-  await new Promise((res) => setTimeout(res, 300))
-
-  const pressStyles = await button.evaluate((el) => {
-    return window.getComputedStyle(el)
-  })
-
+  const pressStyles = await getPressStyle(button, { delay: 3000 })
   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)
   expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
-
-  await promise
 })
 
 test(`animation + pseudo + variant with pseudo should merge`, async ({ page }) => {
   const button = page.locator('#animated')
-
-  const promise = button.click({
-    delay: 3000,
-    force: true,
-  })
-
-  await new Promise((res) => setTimeout(res, 2000))
-
-  const pressStyles = await button.evaluate((el) => {
-    return window.getComputedStyle(el)
-  })
-
+  const pressStyles = await getPressStyle(button, { delay: 3000 })
   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)
   expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
-
-  await promise
 })

@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="Why?"
-      subTitle="My app felt slow & my code was verbose"
+      subTitle="Slow app + verbose code = 😭"
       theme="purple"
       steps={[
         [
@@ -15,17 +15,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Media queries',
+                content: 'Media queries - ',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: 'useScreenDimenisions + setState',
-                  },
-                ],
+                type: 'code-inline',
+                content: 'useWindowDimensions + setState',
               },
             ],
           },
@@ -35,17 +30,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Pseudo styles (hover, focus, press)',
+                content: 'Pseudo styles -',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: 'useState + Pressable + onPressIn + onPressOut...',
-                  },
-                ],
+                type: 'code-inline',
+                content: 'useState + Pressable + onPressIn + onPressOut',
               },
             ],
           },
@@ -55,17 +45,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Themes (CSS Variables)',
+                content: 'Themes -',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: 'Whole-tree re-render and re-parse styles',
-                  },
-                ],
+                type: 'code-inline',
+                content: 'Whole-tree re-render and re-parse styles',
               },
             ],
           },
@@ -75,17 +60,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'CSS',
+                content: 'CSS > JS -',
               },
 
               {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: 'Parsing JS, inserting styles on mount',
-                  },
-                ],
+                type: 'code-inline',
+                content: 'Bundle size and parsing time',
               },
             ],
           },

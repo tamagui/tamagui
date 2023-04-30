@@ -1,5 +1,11 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
+import {
+  isClient,
+  isRSC,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
@@ -12,7 +18,6 @@ import React, {
   useEffect,
   useId,
   useRef,
-  useState,
 } from 'react'
 
 import { onConfiguredOnce } from './config.js'
@@ -49,8 +54,6 @@ import {
   UseAnimationProps,
 } from './types'
 import { Slot } from './views/Slot.js'
-import { Stack } from './views/Stack.js'
-import { Text } from './views/Text.js'
 import { useThemedChildren } from './views/Theme.js'
 import { ThemeDebug } from './views/ThemeDebug'
 
@@ -81,6 +84,10 @@ const defaultComponentStateMounted: TamaguiComponentState = {
   ...defaultComponentState,
   unmounted: false,
 }
+
+const HYDRATION_CUTOFF = process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+  ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
+  : 5
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -119,6 +126,8 @@ function mergeShorthands(
 let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
+
+const numRenderedOfType: Record<string, number> = {}
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -195,7 +204,10 @@ export function createComponent<
      */
     const animationsConfig = useAnimationDriver()
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
-    const isAnimated = (() => {
+
+    // after we get states mount we need to turn off isAnimated for server side
+    const willBeAnimated = (() => {
+      if (isServer) return false
       const next = !!(
         !staticConfig.isHOC &&
         useAnimations &&
@@ -206,6 +218,42 @@ export function createComponent<
       }
       return next || stateRef.current.hasAnimated
     })()
+
+    const usePresence = animationsConfig?.usePresence
+    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
+
+    const hasEnterStyle = !!props.enterStyle
+    const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
+
+    const states = useServerState<TamaguiComponentState>(
+      needsMount ? defaultComponentState! : defaultComponentStateMounted!
+    )
+    const state = propsIn.forceStyle
+      ? { ...states[0], [propsIn.forceStyle]: true }
+      : states[0]
+    const setState = states[1]
+    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
+
+    // cheat code
+    let hasHydrated = false
+    numRenderedOfType[componentName] ??= 0
+    if (willBeAnimated) {
+      if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
+        hasHydrated = true
+      }
+    }
+
+    let isAnimated = willBeAnimated
+
+    // presence avoids ssr stuff
+    if (presence && hasHydrated) {
+      // no
+    } else {
+      if (isAnimated && (isServer || state.unmounted === true)) {
+        isAnimated = false
+      }
+    }
+
     const componentClassName = props.asChild
       ? ''
       : props.componentName
@@ -234,22 +282,6 @@ export function createComponent<
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     const avoidClassesWhileAnimating = animationsConfig?.isReactNative
-    const hasEnterStyle = !!props.enterStyle
-    const needsMount = Boolean(
-      (isWeb ? isClient : true) && (hasEnterStyle || props.animation)
-    )
-    const states = useServerState<TamaguiComponentState>(
-      needsMount ? defaultComponentState! : defaultComponentStateMounted!
-    )
-
-    const state = propsIn.forceStyle
-      ? { ...states[0], [propsIn.forceStyle]: true }
-      : states[0]
-    const setState = states[1]
-    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
-
-    const usePresence = animationsConfig?.usePresence
-    const presence = !isRSC && isAnimated && usePresence ? usePresence() : null
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -269,14 +301,14 @@ export function createComponent<
 
     const shouldAvoidClasses =
       !isWeb ||
-      !!(props.animation && avoidClassesWhileAnimating) ||
+      !!(isAnimated && avoidClassesWhileAnimating) ||
       !staticConfig.acceptsClassName
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
     const disableTheme =
-      (props['data-disable-theme'] && !isAnimated) || staticConfig.isHOC
+      (props['data-disable-theme'] && !willBeAnimated) || staticConfig.isHOC
 
     const themeStateProps = {
       name: props.theme,
@@ -315,7 +347,10 @@ export function createComponent<
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         const parentsLog = (conf: StaticConfig) =>
           conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
-        console.group(`%c ${banner}${parentsLog(staticConfig)}`, 'background: yellow;')
+        console.group(
+          `%c ${banner}${parentsLog(staticConfig)} (unmounted: ${state.unmounted})`,
+          'background: yellow;'
+        )
         if (!isServer) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({
@@ -326,6 +361,7 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
+          console.warn(themeState.name)
         }
       }
     }
@@ -338,9 +374,8 @@ export function createComponent<
         ...state,
         mediaState,
         noClassNames,
-        dynamicStylesInline: noClassNames,
         hasTextAncestor,
-        resolveVariablesAs: 'auto',
+        resolveVariablesAs: isAnimated ? 'value' : 'auto',
         isExiting,
       },
       null,
@@ -408,19 +443,22 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && isAnimated && useAnimations && !staticConfig.isHOC) {
+    if (!isRSC && willBeAnimated && useAnimations && !staticConfig.isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
         presence,
         state,
+        theme: themeState.theme,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
       })
-      if (animations) {
-        animationStyles = animations.style
+      if (isAnimated) {
+        if (animations) {
+          animationStyles = animations.style
+        }
       }
     }
 
@@ -462,7 +500,12 @@ export function createComponent<
     }
 
     // if react-native-web view just pass all props down
-    if (process.env.TAMAGUI_TARGET === 'web' && !isReactNative && !asChild) {
+    if (
+      process.env.TAMAGUI_TARGET === 'web' &&
+      !isReactNative &&
+      !willBeAnimated &&
+      !asChild
+    ) {
       viewProps = hooks.usePropsTransform?.(elementType, nonTamaguiProps, hostRef)
     } else {
       viewProps = nonTamaguiProps
@@ -490,26 +533,20 @@ export function createComponent<
       })
     }, [setStateShallow])
 
-    if (isWeb) {
-      useEffect(() => {
+    const shouldSetMounted = needsMount && state.unmounted
+
+    // combinined two effects into one for performance so be careful with logic
+    // because no need for mouseUp removal effect if its not even mounted yet
+    useIsomorphicLayoutEffect(() => {
+      if (!shouldSetMounted) {
         return () => {
           mouseUps.delete(unPress)
         }
-      }, [])
-    }
-
-    const shouldSetMounted = needsMount && state.unmounted
-    useEffect(() => {
-      if (!shouldSetMounted) return
-      if (state.unmounted === true && needsMount) {
-        setStateShallow({
-          unmounted: false,
-        })
-        return
       }
 
+      const unmounted = state.unmounted === true && hasEnterStyle ? 'should-enter' : false
       setStateShallow({
-        unmounted: false,
+        unmounted,
       })
     }, [shouldSetMounted, state.unmounted])
 
@@ -782,7 +819,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && process.env.DEBUG !== 'tamagui') {
+    if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`, viewProps)
@@ -792,12 +829,12 @@ export function createComponent<
         }
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('children', content)
-        console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo })
         }
+        console.groupEnd()
         console.groupEnd()
       }
     }
@@ -868,7 +905,7 @@ export function createComponent<
     })
 
     // split - keep variables on props to be processed using theme values at runtime (native)
-    if (!isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'native') {
       for (const key in staticConfig.defaultProps) {
         const val = staticConfig.defaultProps[key]
         if (validPseudoKeys[key]) continue

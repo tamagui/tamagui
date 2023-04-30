@@ -9,8 +9,7 @@ import '../public/fonts/fonts.css'
 // import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import Head from 'next/head'
-import { startTransition, useMemo } from 'react'
+import { useMemo } from 'react'
 import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
 import config from '../tamagui.config'
@@ -65,7 +64,7 @@ export default function App(props: AppProps) {
 
       {/* this will lazy load the font for /studio splash page */}
       {didMount && (
-        <Head>
+        <>
           <link href="/fonts/inter-takeout.css" rel="stylesheet" />
           <link
             rel="preload"
@@ -73,14 +72,12 @@ export default function App(props: AppProps) {
             as="font"
             type="font/woff2"
           />
-        </Head>
+        </>
       )}
 
       <NextThemeProvider
         onChangeTheme={(next) => {
-          startTransition(() => {
-            setTheme(next as any)
-          })
+          setTheme(next as any)
         }}
       >
         <TamaguiProvider

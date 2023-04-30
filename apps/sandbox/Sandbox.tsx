@@ -28,7 +28,6 @@ export const Sandbox = () => {
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
-        {/* this comment keeps indent */}
         <Component />
       </Suspense>
     </SandboxFrame>

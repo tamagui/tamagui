@@ -5,69 +5,59 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="How"
-      subTitle="Less API surface = ship faster"
-      theme="pink"
+      title="Tamagui"
+      subTitle="Features"
+      theme="blue"
       steps={[
         [
           {
-            type: 'code',
-            content: `
-<Popover size="$5" allowFlip {...props}>
-  <Popover.Trigger asChild>
-    <Button icon={Icon} />
-  </Popover.Trigger>
+            type: 'vertical',
+            content: [
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'text',
+                    content: `Themeable`,
+                  },
+                ],
+              },
 
-  <Adapt when="sm" platform="touch">
-    <Popover.Sheet modal dismissOnSnapToBottom>
-      <Popover.Sheet.Frame padding="$4">
-        <Adapt.Contents />
-      </Popover.Sheet.Frame>
-      <Popover.Sheet.Overlay />
-    </Popover.Sheet>
-  </Adapt>
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'text',
+                    content: `Sizeable`,
+                  },
+                ],
+              },
 
-  <Popover.Content
-    enterStyle={{ x: 0, y: -10, opacity: 0 }}
-    exitStyle={{ x: 0, y: -10, opacity: 0 }}
-    x={0}
-    y={0}
-    opacity={1}
-    animation="quick"
-    >
-    <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'text',
+                    content: `Radix-y composable components`,
+                  },
+                ],
+              },
 
-    <YStack space="$3">
-      <XStack space="$3">
-        <Label size="$3" htmlFor={Name}>
-          Name
-        </Label>
-        <Input size="$3" id={Name} />
-      </XStack>
-      <Popover.Close asChild>
-        <Button
-          size="$3"
-          onPress={() => {
-            /* Custom code goes here, does not interfere with popover closure */
-          }}
-        >
-          Submit
-        </Button>
-      </Popover.Close>
-    </YStack>
-  </Popover.Content>
-</Popover>
-`,
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'code-inline',
+                    content: `<Adapt />`,
+                  },
+                ],
+              },
+            ],
           },
-          // {
-          //   type: 'split-horizontal',
-          //   content: [
-          //     {
-          //       type: 'image',
-          //       image: require('../images/popover.jpg').default,
-          //     },
-          //   ],
-          // },
         ],
       ]}
     />

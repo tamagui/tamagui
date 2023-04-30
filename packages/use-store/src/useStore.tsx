@@ -27,6 +27,7 @@ import {
   disableTracking,
   setDisableStoreTracking,
 } from './Store'
+import { useAsyncExternalStore } from './useAsyncExternalStore'
 import {
   DebugStores,
   shouldDebug,
@@ -48,6 +49,8 @@ import {
 // const abcSel = useGlobalStoreSelector(storeTest, (x) => x.props.id)
 
 const idFn = (_) => _
+const shouldUseSync =
+  typeof window !== 'undefined' && window.location.hash.includes(`sync-store`)
 
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(
@@ -369,7 +372,9 @@ function useStoreFromInfo(
     return snap
   }, [])
 
-  const state = useSyncExternalStore(store.subscribe, getSnapshot)
+  const state = shouldUseSync
+    ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+    : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
   // dispose tracker on unmount
   useEffect(() => {
@@ -578,7 +583,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
     return `hsl(${hashCode(str) % 360}, 90%, 40%)`
   }
 
-  const finishAction = () => {
+  const finishAction = (val?: any) => {
     if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
@@ -588,6 +593,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       storeInstance[TRIGGER_UPDATE]?.()
       didSet = false
     }
+    return val
   }
 
   const proxiedStore = new Proxy(storeInstance, {

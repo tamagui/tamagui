@@ -40,6 +40,14 @@ export function extendStaticConfig(
   const deoptProps = config.deoptProps || new Set<string>()
   // deoptProps.add('style')
 
+  const defaultProps = mergeProps(
+    { ...parentStaticConfig.defaultProps },
+    {
+      ...config.defaultVariants,
+      ...config.defaultProps,
+    }
+  )[0]
+
   return parseStaticConfig({
     ...parentStaticConfig,
     ...config,
@@ -53,16 +61,7 @@ export function extendStaticConfig(
           ...config.validStyles,
         }
       : parentStaticConfig.validStyles || stylePropsView,
-    defaultProps: mergeProps(
-      {
-        ...parentStaticConfig.defaultProps,
-        ...parentStaticConfig.defaultVariants,
-      },
-      {
-        ...config.defaultProps,
-        ...config.defaultVariants,
-      }
-    )[0],
+    defaultProps,
   })
 }
 

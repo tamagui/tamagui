@@ -52,12 +52,10 @@ export default memo(() => {
   }
 
   const letters = lettersConf.map(
-    ({
-      underlayStyle,
-      glow,
-      letter,
-      props: { scale, rotate, zIndex, ...headingProps },
-    }) => {
+    (
+      { underlayStyle, glow, letter, props: { scale, rotate, zIndex, ...headingProps } },
+      index
+    ) => {
       const colorVar = `var(--${headingProps.theme}8)`
 
       const Glow = useHoverGlow({
@@ -100,7 +98,7 @@ export default memo(() => {
       })
 
       const Component = (
-        <YStack key={letter} pos="relative" scale={scale} zIndex={zIndex}>
+        <YStack key={index} pos="relative" scale={scale} zIndex={zIndex}>
           <Glow.Component>
             <YStack pos="relative" w={320} h={320}>
               <H1

@@ -31,7 +31,7 @@ const handler: NextApiHandler = async (req, res) => {
     !userGithubToken
   ) {
     res.status(403).json({
-      error: 'No GitHub connection found.',
+      error: 'No GitHub connection found. Please try logging out and logging in again.',
       action: '/account',
     })
     return
