@@ -30,7 +30,6 @@ const tamaConf = createTamagui({
   fonts: {
     ...configRest.fonts,
     body_cn,
-    alternative: body_cn,
   },
   themeClassNameOnRoot: false,
 

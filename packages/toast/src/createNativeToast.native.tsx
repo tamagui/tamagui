@@ -1,4 +1,4 @@
-import { BurntToastOptions, CreateNativeToastsFn, HideNativeToastsFn } from './types'
+import { CreateNativeToastsFn, HideNativeToastsFn } from './types'
 
 export const createNativeToast: CreateNativeToastsFn = (
   title,

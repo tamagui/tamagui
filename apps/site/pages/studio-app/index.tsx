@@ -46,24 +46,12 @@ function StudioContents() {
   return useMemo(() => {
     return (
       <>
-        <StudioTab isHome at="view">
-          <PreviewPage />
-        </StudioTab>
-        <StudioTab at="config">
-          <ConfigPage />
-        </StudioTab>
-        <StudioTab at="colors">
-          <ColorsPage />
-        </StudioTab>
-        <StudioTab at="animations">
-          <AnimationsPage />
-        </StudioTab>
-        <StudioTab at="themes">
-          <ThemesPage />
-        </StudioTab>
-        <StudioTab at="tokens">
-          <TokensPage />
-        </StudioTab>
+        <StudioTab isHome at="view" Page={PreviewPage} />
+        <StudioTab at="config" Page={ConfigPage} />
+        <StudioTab at="colors" Page={ColorsPage} />
+        <StudioTab at="animations" Page={AnimationsPage} />
+        <StudioTab at="themes" Page={ThemesPage} />
+        <StudioTab at="tokens" Page={TokensPage} />
       </>
     )
   }, [])
@@ -95,14 +83,18 @@ function useSyncTabToCurrentPaneState() {
 
 Page.getLayout = getStudioLayout
 
-const StudioTab = (props: {
+const StudioTab = ({
+  at,
+  Page,
+  isHome,
+}: {
   at: string
-  children: React.ReactNode
+  Page: React.FunctionComponent
   isHome?: boolean
 }) => {
   const router = useRouter()
   const tab = router.query.tab
-  const isActive = tab === props.at || (!tab && props.isHome)
+  const isActive = tab === at || (!tab && isHome)
   const [isMounted, setIsMounted] = useState(isActive)
 
   useEffect(() => {
@@ -111,14 +103,14 @@ const StudioTab = (props: {
     })
   }, [isActive])
 
-  const childrenMemo = useMemo(() => props.children, [props.children])
+  const childrenMemo = useMemo(() => <Page />, [Page])
 
   if (!isMounted) {
     return null
   }
 
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <YStack
         style={{
           width: '100%',
