@@ -137,6 +137,7 @@ const UserSettings = () => {
         }}
         icon={<LogOut />}
         size="$2"
+        alignSelf="flex-end"
         accessibilityLabel="Logout"
       >
         Logout
