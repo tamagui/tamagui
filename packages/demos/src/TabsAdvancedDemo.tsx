@@ -6,6 +6,7 @@ import {
   H5,
   SizableText,
   Stack,
+  StackProps,
   TabLayout,
   Tabs,
   TabsTabProps,
@@ -310,26 +311,27 @@ const TabsAdvancedUnderline = () => {
   )
 }
 
-const TabsRovingIndicator = styled(Stack, {
-  position: 'absolute',
-  backgroundColor: '$color5',
-  opacity: 0.7,
-  animation: '100ms',
-  enterStyle: {
-    opacity: 0,
-  },
-  exitStyle: {
-    opacity: 0,
-  },
-  variants: {
-    active: {
-      true: {
+const TabsRovingIndicator = ({ active, ...props }: { active?: boolean } & StackProps) => {
+  return (
+    <Stack
+      position="absolute"
+      backgroundColor="$color5"
+      opacity={0.7}
+      animation="100ms"
+      enterStyle={{
+        opacity: 0,
+      }}
+      exitStyle={{
+        opacity: 0,
+      }}
+      {...(active && {
         backgroundColor: '$color8',
         opacity: 0.6,
-      },
-    },
-  },
-})
+      })}
+      {...props}
+    />
+  )
+}
 
 const AnimatedYStack = styled(YStack, {
   variants: {

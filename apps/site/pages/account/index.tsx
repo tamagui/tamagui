@@ -2,6 +2,7 @@ import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { Check, CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
@@ -26,6 +27,18 @@ import {
 import { UserAccessStatus } from 'types'
 
 export default function Page() {
+  return (
+    <>
+      <TitleAndMetaTags
+        title="Account — Tamagui"
+        description="A better universal UI system."
+      />
+
+      <Account />
+    </>
+  )
+}
+const Account = () => {
   const { isLoading, userDetails, accessStatus, signout } = useUser()
 
   if (isLoading) {
@@ -124,6 +137,7 @@ const UserSettings = () => {
         }}
         icon={<LogOut />}
         size="$2"
+        alignSelf="flex-end"
         accessibilityLabel="Logout"
       >
         Logout

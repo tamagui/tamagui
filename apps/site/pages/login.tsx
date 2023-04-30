@@ -1,4 +1,5 @@
 import { getAuthLayout } from '@components/layouts/AuthLayout'
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -14,6 +15,15 @@ import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 const emailAuthDisabledFlag = true
 
 export default function SignInPage() {
+  return (
+    <>
+      <TitleAndMetaTags title="Login — Tamagui" />
+      <SignIn />
+    </>
+  )
+}
+
+function SignIn() {
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -86,11 +96,9 @@ export default function SignInPage() {
     return (
       <YStack mih="100vh" miw="100vw" ai="center" jc="center" p="$2">
         <YStack miw={300} maw={320} jc="space-between" p="$2" space="$4">
-          <Link href="/takeout/purchase" passHref legacyBehavior>
-            <YStack tag="a" mb="$4">
-              <LogoIcon />
-            </YStack>
-          </Link>
+          <YStack mb="$4">
+            <LogoIcon />
+          </YStack>
 
           {Boolean(message.content) && (
             <Notice>
@@ -109,91 +117,100 @@ export default function SignInPage() {
             Continue with GitHub
           </Button>
 
-          <XStack mx="$4" jc="center" space ai="center">
-            <Separator />
-            <Paragraph size="$2">Or</Paragraph>
-            <Separator />
-          </XStack>
+          <Paragraph ta="center" color="$color8">
+            Note: If you're a part of a sponsoring organization, you'll need to grant
+            access to your organization when logging in to access sponsor benefits.
+          </Paragraph>
+          {!emailAuthDisabledFlag && (
+            <>
+              <XStack mx="$4" jc="center" space ai="center">
+                <Separator />
+                <Paragraph size="$2">Or</Paragraph>
+                <Separator />
+              </XStack>
+              <YStack>
+                {!showPasswordInput && (
+                  <form onSubmit={handleSignin}>
+                    <YStack space="$2">
+                      <Input
+                        autoComplete="email"
+                        inputMode="email"
+                        placeholder="Email"
+                        // @ts-ignore
+                        onSubmitEditing={handleSignin}
+                        value={email}
+                        onChange={(e) => setEmail(e.nativeEvent.text)}
+                        ref={emailRef}
+                        disabled={emailAuthDisabledFlag}
+                      />
+                      <Button
+                        // @ts-expect-error
+                        type="submit"
+                        icon={loading ? <Spinner /> : null}
+                        disabled={!email.length || emailAuthDisabledFlag}
+                      >
+                        Send magic link
+                      </Button>
+                    </YStack>
+                  </form>
+                )}
 
-          <YStack>
-            {!showPasswordInput && (
-              <form onSubmit={handleSignin}>
-                <YStack space="$2">
-                  <Input
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder="Email"
-                    // @ts-ignore
-                    onSubmitEditing={handleSignin}
-                    value={email}
-                    onChange={(e) => setEmail(e.nativeEvent.text)}
-                    ref={emailRef}
-                    disabled={emailAuthDisabledFlag}
-                  />
-                  <Button
-                    // @ts-expect-error
-                    type="submit"
-                    icon={loading ? <Spinner /> : null}
-                    disabled={!email.length || emailAuthDisabledFlag}
+                {showPasswordInput && (
+                  <form onSubmit={handleSignin}>
+                    <YStack space="$2">
+                      <Input
+                        autoComplete="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.nativeEvent.text)}
+                        // @ts-ignore
+                        required
+                        disabled={emailAuthDisabledFlag}
+                      />
+                      <Input
+                        autoComplete="password"
+                        secureTextEntry
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.nativeEvent.text)}
+                        // @ts-ignore
+                        required
+                        disabled={emailAuthDisabledFlag}
+                      />
+                      <Button
+                        // @ts-ignore
+                        type="submit"
+                        loading={loading}
+                        disabled={
+                          !password.length || !email.length || emailAuthDisabledFlag
+                        }
+                      >
+                        Sign in
+                      </Button>
+                    </YStack>
+                  </form>
+                )}
+
+                {emailAuthDisabledFlag && (
+                  <YStack
+                    pos="absolute"
+                    left={-5}
+                    right={-5}
+                    top={-5}
+                    bottom={-5}
+                    ai="center"
+                    jc="center"
+                    br="$4"
+                    className="backdrop-blur"
                   >
-                    Send magic link
-                  </Button>
-                </YStack>
-              </form>
-            )}
-
-            {showPasswordInput && (
-              <form onSubmit={handleSignin}>
-                <YStack space="$2">
-                  <Input
-                    autoComplete="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.nativeEvent.text)}
-                    // @ts-ignore
-                    required
-                    disabled={emailAuthDisabledFlag}
-                  />
-                  <Input
-                    autoComplete="password"
-                    secureTextEntry
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.nativeEvent.text)}
-                    // @ts-ignore
-                    required
-                    disabled={emailAuthDisabledFlag}
-                  />
-                  <Button
-                    // @ts-ignore
-                    type="submit"
-                    loading={loading}
-                    disabled={!password.length || !email.length || emailAuthDisabledFlag}
-                  >
-                    Sign in
-                  </Button>
-                </YStack>
-              </form>
-            )}
-
-            {emailAuthDisabledFlag && (
-              <YStack
-                pos="absolute"
-                left={-5}
-                right={-5}
-                top={-5}
-                bottom={-5}
-                ai="center"
-                jc="center"
-                br="$4"
-                className="backdrop-blur"
-              >
-                <Paragraph ta="center" mt="$2" col="$color9">
-                  Email auth is disabled at the moment.
-                </Paragraph>
+                    <Paragraph ta="center" mt="$2" col="$color9">
+                      Email auth is disabled at the moment.
+                    </Paragraph>
+                  </YStack>
+                )}
               </YStack>
-            )}
-          </YStack>
+            </>
+          )}
           {/* <YStack space="$2" >
             <Paragraph
               tag="button"

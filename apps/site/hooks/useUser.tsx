@@ -44,6 +44,25 @@ export const MyUserContextProvider = (props: Props) => {
   const { isLoading: isLoadingUser, session } = useSessionContext()
   const supabase = useSupabaseClient<Database>()
 
+  useEffect(() => {
+    // need to do this cause session loses provider_token
+    const listener = supabase.auth.onAuthStateChange((_, session) => {
+      if (
+        session?.user.app_metadata.provider === 'github' &&
+        session.provider_token &&
+        session.user.user_metadata.github_token !== session.provider_token
+      ) {
+        supabase.auth.updateUser({
+          data: {
+            github_token: session.provider_token,
+            github_refresh_token: session.refresh_token,
+          },
+        })
+      }
+    })
+    return () => listener.data.subscription.unsubscribe()
+  }, [])
+
   const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<any>(null)
@@ -69,8 +88,6 @@ export const MyUserContextProvider = (props: Props) => {
         getAccessDetails(),
         // getSubscription()
       ]).then(([userDetailsPromise, accessDetailsPromise]) => {
-        console.log('userDetailsPromise', userDetailsPromise)
-
         // const subscriptionPromise = results[2]
 
         if (userDetailsPromise.status === 'fulfilled')

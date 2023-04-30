@@ -1,3 +1,4 @@
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
 import { Lock } from '@tamagui/lucide-icons'
@@ -13,6 +14,8 @@ const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: fa
 export const getStudioLayout: GetLayout = (page, pageProps) => {
   return withSupabase(
     <StudioToastProvider>
+      <TitleAndMetaTags title="Studio — Tamagui" />
+
       <UserGuard>
         <StudioLayout>
           <GithubConnectionGuard>

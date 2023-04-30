@@ -1,5 +1,6 @@
 import { Footer } from '@components/Footer'
 import { Header } from '@components/Header'
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import React, { Suspense } from 'react'
 
@@ -8,6 +9,7 @@ import { SearchProvider } from '../Search'
 export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SearchProvider>
+      <TitleAndMetaTags title="Tamagui" description="A better universal UI system." />
       <Suspense fallback={null}>
         <ToastProvider swipeDirection="horizontal">
           {children}
