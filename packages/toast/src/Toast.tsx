@@ -21,7 +21,7 @@ import {
   useToast,
   useToastController,
   useToastState,
-} from './ToastImperative.js'
+} from './ToastImperative'
 import {
   ToastImpl,
   ToastImplFrame,
