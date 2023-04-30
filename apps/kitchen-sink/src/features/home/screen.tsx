@@ -1,5 +1,4 @@
 import { getVariable } from '@tamagui/core'
-import { SheetDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
@@ -30,8 +29,6 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
-
-        <SheetDemo />
 
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>

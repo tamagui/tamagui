@@ -507,7 +507,7 @@ export function createExtractor(
         ])
 
         // for now dont parse variants, spreads, etc
-        const skipped: (t.ObjectProperty | t.SpreadElement | t.ObjectMethod)[] = []
+        const skipped = new Set<t.ObjectProperty | t.SpreadElement | t.ObjectMethod>()
         const styles = {}
 
         // Generate scope object at this level
@@ -534,17 +534,20 @@ export function createExtractor(
             !t.isObjectProperty(property) ||
             !t.isIdentifier(property.key) ||
             !isValidStyleKey(property.key.name, Component.staticConfig) ||
+            // TODO make pseudos and variants work
+            // skip pseudos
+            pseudoDescriptors[property.key.name] ||
             // skip variants
             Component.staticConfig.variants?.[property.key.name] ||
             componentSkipProps.has(property.key.name)
           ) {
-            skipped.push(property)
+            skipped.add(property)
             continue
           }
           // attempt eval
           const out = attemptEvalSafe(property.value)
           if (out === FAILED_EVAL) {
-            skipped.push(property)
+            skipped.add(property)
           } else {
             styles[property.key.name] = out
           }
@@ -582,23 +585,35 @@ export function createExtractor(
         // }
 
         if (shouldPrintDebug) {
-          // prettier-ignore
-          logger.info([`Extracted styled(${variableName})\n`, JSON.stringify(styles, null, 2), '\n  rulesToInsert:', out.rulesToInsert.flatMap((rule) => rule.rules).join('\n')].join(' '))
+          logger.info(
+            [
+              `Extracted styled(${variableName})\n`,
+              JSON.stringify(styles, null, 2),
+              '\n classNames:',
+              JSON.stringify(classNames, null, 2),
+              '\n  rulesToInsert:',
+              out.rulesToInsert.flatMap((rule) => rule.rules).join('\n'),
+            ].join(' ')
+          )
         }
 
         // leave only un-parsed props...
-        definition.properties = skipped
-
-        // ... + key: className
-        for (const cn in classNames) {
-          if (componentSkipProps.has(cn)) {
-            continue
+        // preserve original order
+        definition.properties = definition.properties.map((prop) => {
+          if (
+            skipped.has(prop) ||
+            !t.isObjectProperty(prop) ||
+            !t.isIdentifier(prop.key)
+          ) {
+            return prop
           }
-          const val = classNames[cn]
-          definition.properties.push(
-            t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val))
-          )
-        }
+          const key = prop.key.name
+          const value = classNames[key]
+          if (value) {
+            return t.objectProperty(t.stringLiteral(key), t.stringLiteral(value))
+          }
+          return prop
+        })
 
         if (out.rulesToInsert) {
           for (const { identifier, rules } of out.rulesToInsert) {
