@@ -23,7 +23,7 @@ const pseudosOrdered = [
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   // performance optimization
   if (!(stylesIn.hoverStyle || stylesIn.pressStyle || stylesIn.focusStyle)) {
-    return getAtomicStyle(stylesIn)
+    return generateAtomicStyles(stylesIn)
   }
 
   // only for pseudos
@@ -33,37 +33,26 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
     if (!style) continue
     const pseudo = pseudosOrdered[index]
-    res = [...res, ...getAtomicStyle(style, pseudo)]
+    res = [...res, ...generateAtomicStyles(style, pseudo)]
   }
   return res
 }
 
-export function getAtomicStyle(
-  style: ViewStyleWithPseudos,
-  pseudo?: PseudoDescriptor
-): StyleObject[] {
-  if (!style) return []
-  if (process.env.NODE_ENV === 'development') {
-    if (!style || typeof style !== 'object') {
-      throw new Error(`Wrong style type: "${typeof style}": ${style}`)
-    }
-  }
-  return generateAtomicStyles(style, pseudo)
-}
-
 let conf: TamaguiInternalConfig
 
-const generateAtomicStyles = (
+export const generateAtomicStyles = (
   styleIn: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
+  if (!styleIn) return []
+
   conf = conf || getConfig()
 
   // were converting to css styles
   const style = styleIn as Record<string, string | null | undefined>
 
   // transform
-  if (style.transform && Array.isArray(style.transform)) {
+  if ('transform' in style && Array.isArray(style.transform)) {
     style.transform = style.transform
       .map(
         // { scale: 2 } => 'scale(2)'
@@ -88,13 +77,7 @@ const generateAtomicStyles = (
     const value = normalizeValueWithProperty(style[key], key)
     if (value == null || value == undefined) continue
 
-    let hash: string
-    if (presetHashes[value]) {
-      hash = value as string
-    } else {
-      hash = simpleHash(`${value}`)
-    }
-
+    const hash = value < 10000 ? value : simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
     const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
@@ -102,21 +85,10 @@ const generateAtomicStyles = (
     const styleObject: StyleObject = {
       property: key,
       pseudo: pseudo?.name as any,
-      value,
       identifier,
       rules,
     }
     out.push(styleObject)
-  }
-
-  if (process.env.NODE_ENV === 'development' && process.env.TAMAGUI_DEBUG) {
-    // when Animated.Value gets passed into Tamagui problems are caused this helps debug
-    if (
-      out.find((x) => x.property === 'transform' && x.value.includes(`[object Object]`))
-    ) {
-      // rome-ignore lint/suspicious/noDebugger: only dev
-      debugger
-    }
   }
 
   return out
@@ -128,8 +100,8 @@ const presetHashes = {
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius !== undefined) {
+  if ('shadowRadius' in style) {
+    const { shadowOffset, shadowRadius, shadowColor } = style
     const offset = shadowOffset || defaultOffset
     const shadow = `${normalizeValueWithProperty(
       offset.width
@@ -143,8 +115,12 @@ export function styleToCSS(style: Record<string, any>) {
   }
 
   // text-shadow
-  const { textShadowColor, textShadowOffset, textShadowRadius } = style
-  if (textShadowColor || textShadowOffset || textShadowRadius) {
+  if (
+    'textShadowColor' in style ||
+    'textShadowOffset' in style ||
+    'textShadowRadius' in style
+  ) {
+    const { textShadowColor, textShadowOffset, textShadowRadius } = style
     const { height, width } = textShadowOffset || defaultOffset
     const radius = textShadowRadius || 0
     const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
@@ -160,11 +136,10 @@ export function styleToCSS(style: Record<string, any>) {
   }
 }
 
-function createDeclarationBlock(style: Record<string, any>, important = false) {
+function createDeclarationBlock(style: [string, any][], important = false) {
   let next = ''
-  for (const key in style) {
+  for (const [key, value] of style) {
     const prop = hyphenateStyleName(key)
-    const value = style[key]
     next += `${prop}:${value}${important ? ' !important' : ''};`
   }
   return `{${next}}`
@@ -173,9 +148,9 @@ function createDeclarationBlock(style: Record<string, any>, important = false) {
 const hcache = {}
 const toHyphenLower = (match: string) => `-${match.toLowerCase()}`
 const hyphenateStyleName = (key: string) => {
-  let val = hcache[key]
-  if (val) return val
-  hcache[key] = val = key.replace(/[A-Z]/g, toHyphenLower)
+  if (key in hcache) return hcache[key]
+  const val = key.replace(/[A-Z]/g, toHyphenLower)
+  hcache[key] = val
   return val
 }
 
@@ -206,7 +181,13 @@ function createAtomicRules(
   switch (property) {
     // Equivalent to using '::placeholder'
     case 'placeholderTextColor': {
-      const block = createDeclarationBlock({ color: value, opacity: 1 }, important)
+      const block = createDeclarationBlock(
+        [
+          ['color', value],
+          ['opacity', 1],
+        ],
+        important
+      )
       rules.push(`${selector}::placeholder${block}`)
       break
     }
@@ -217,7 +198,10 @@ function createAtomicRules(
       const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`
       const webkitProperty = `Webkit${propertyCapitalized}`
       const block = createDeclarationBlock(
-        { [property]: value, [webkitProperty]: value },
+        [
+          [property, value],
+          [webkitProperty, value],
+        ],
         important
       )
       rules.push(`${selector}${block}`)
@@ -238,13 +222,13 @@ function createAtomicRules(
           rules.push(`${selector}>*${boxNone}`)
         }
       }
-      const block = createDeclarationBlock({ pointerEvents: finalValue }, true)
+      const block = createDeclarationBlock([['pointerEvents', finalValue]], true)
       rules.push(`${selector}${block}`)
       break
     }
 
     default: {
-      const block = createDeclarationBlock({ [property]: value }, important)
+      const block = createDeclarationBlock([[property, value]], important)
       rules.push(`${selector}${block}`)
       break
     }
@@ -262,5 +246,5 @@ function createAtomicRules(
   return rules
 }
 
-const boxNone = createDeclarationBlock({ pointerEvents: 'auto' }, true)
-const boxOnly = createDeclarationBlock({ pointerEvents: 'none' }, true)
+const boxNone = createDeclarationBlock([['pointerEvents', 'auto']], true)
+const boxOnly = createDeclarationBlock([['pointerEvents', 'none']], true)

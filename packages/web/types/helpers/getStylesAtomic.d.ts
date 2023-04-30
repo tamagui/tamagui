@@ -6,6 +6,6 @@ import { StyleObject } from '@tamagui/helpers';
 import type { ViewStyleWithPseudos } from '../types.js';
 import { PseudoDescriptor } from './pseudoDescriptors.js';
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos): StyleObject[];
-export declare function getAtomicStyle(style: ViewStyleWithPseudos, pseudo?: PseudoDescriptor): StyleObject[];
+export declare const generateAtomicStyles: (styleIn: ViewStyleWithPseudos, pseudo?: PseudoDescriptor) => StyleObject[];
 export declare function styleToCSS(style: Record<string, any>): void;
 //# sourceMappingURL=getStylesAtomic.d.ts.map

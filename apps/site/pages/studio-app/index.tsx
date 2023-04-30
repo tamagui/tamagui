@@ -12,11 +12,12 @@ import { useSelector } from '@tamagui/use-store'
 import { useRouter } from 'next/router'
 import React, {
   Suspense,
-  startTransition,
+  memo,
   useEffect,
   useLayoutEffect,
   useMemo,
   useState,
+  useTransition,
 } from 'react'
 import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
 
@@ -83,48 +84,54 @@ function useSyncTabToCurrentPaneState() {
 
 Page.getLayout = getStudioLayout
 
-const StudioTab = ({
-  at,
-  Page,
-  isHome,
-}: {
-  at: string
-  Page: React.FunctionComponent
-  isHome?: boolean
-}) => {
-  const router = useRouter()
-  const tab = router.query.tab
-  const isActive = tab === at || (!tab && isHome)
-  const [isMounted, setIsMounted] = useState(isActive)
+const StudioTab = memo(
+  ({
+    at,
+    Page,
+    isHome,
+  }: {
+    at: string
+    Page: React.FunctionComponent
+    isHome?: boolean
+  }) => {
+    const router = useRouter()
+    const tab = router.query.tab
+    const isActive = tab === at || (!tab && isHome)
+    const [isPending, startTransition] = useTransition()
+    console.log('tab', tab, isPending)
+    const [isMounted, setIsMounted] = useState(isActive)
 
-  useEffect(() => {
-    startTransition(() => {
-      setIsMounted(isActive)
-    })
-  }, [isActive])
+    useEffect(() => {
+      startTransition(() => {
+        console.warn('start transition')
+        setIsMounted(isActive)
+      })
+    }, [isActive])
 
-  const childrenMemo = useMemo(() => <Page />, [Page])
+    const childrenMemo = useMemo(() => <Page />, [Page])
 
-  if (!isMounted) {
-    return null
+    if (!isMounted) {
+      return null
+    }
+
+    return (
+      <Suspense fallback={null}>
+        <YStack
+          style={{
+            position: 'absolute',
+            // @ts-ignore
+            inset: 0,
+            opacity: 0,
+            pointerEvents: 'none',
+            ...(isActive && {
+              opacity: 1,
+              pointerEvents: 'auto',
+            }),
+          }}
+        >
+          {childrenMemo}
+        </YStack>
+      </Suspense>
+    )
   }
-
-  return (
-    <Suspense fallback={null}>
-      <YStack
-        style={{
-          width: '100%',
-          height: '100%',
-          opacity: 0,
-          pointerEvents: 'none',
-          ...(isActive && {
-            opacity: 1,
-            pointerEvents: 'auto',
-          }),
-        }}
-      >
-        {childrenMemo}
-      </YStack>
-    </Suspense>
-  )
-}
+)

@@ -11,6 +11,7 @@ import {
   getSplitStyles,
   styled,
 } from '../core/src'
+import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -150,28 +151,3 @@ describe('getSplitStyles', () => {
   //   ).toEqual('-1')
   // })
 })
-
-function simplifiedGetSplitStyles(
-  component: TamaguiComponent,
-  props: Record<string, any>,
-  tag?: string,
-  mediaState?: Record<string, any>
-) {
-  return getSplitStyles(
-    props,
-    component.staticConfig,
-    {} as any,
-    {
-      hover: false,
-      press: false,
-      pressIn: false,
-      focus: false,
-      unmounted: true,
-      mediaState,
-    },
-    undefined,
-    undefined,
-    tag,
-    true
-  )
-}
