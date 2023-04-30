@@ -86,7 +86,6 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
-  backgroundColor: '$background',
   focusable: true,
 
   variants: {
