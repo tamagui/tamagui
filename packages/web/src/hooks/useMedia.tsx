@@ -182,7 +182,9 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
         componentState?.keys ??
         ((!componentState || componentState.enabled) && touched ? [...touched] : null)
 
-      const hasntUpdated = testKeys?.every((key) => mediaState[key] === prev[key])
+      const hasntUpdated =
+        !testKeys || testKeys?.every((key) => mediaState[key] === prev[key])
+
       if (hasntUpdated) {
         return prev
       }
