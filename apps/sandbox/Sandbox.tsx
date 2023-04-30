@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
+import { SliderDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, lazy, useState } from 'react'
 import { Separator, Square, TamaguiProvider, Theme, XStack, YStack } from 'tamagui'
