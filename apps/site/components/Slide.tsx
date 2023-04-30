@@ -1,5 +1,5 @@
 import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
-import React from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   FontSizeTokens,
   H1,
@@ -12,6 +12,7 @@ import {
   XStack,
   YStack,
   useComposedRefs,
+  usePresence,
   useThemeName,
 } from 'tamagui'
 
@@ -78,8 +79,29 @@ type SlideStepItem =
 
 type TextContent = SlideStepItem[]
 
+export const SlideContext = createContext({
+  registerSlide(next: (inc: number) => boolean) {},
+})
+
 export function Slide(props: SlideProps) {
+  const [isPresent] = usePresence()
   const glows = useGlows(props.variant)
+  const [step, setStep] = useState(1)
+  const context = useContext(SlideContext)
+
+  const max = props.steps.length
+
+  useEffect(() => {
+    if (!isPresent) return
+    return context.registerSlide((inc) => {
+      const next = step + inc
+      if (next >= 1 && next <= max) {
+        setStep(next)
+        return false
+      }
+      return true
+    })
+  }, [step, isPresent])
 
   return (
     <Theme name={props.theme}>
@@ -108,19 +130,11 @@ export function Slide(props: SlideProps) {
           )}
         </YStack>
 
-        {props.steps.map((step, index) => {
-          return (
-            <React.Fragment key={index}>
-              <YStack f={1} space="$10">
-                {step.map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
-                  )
-                })}
-              </YStack>
-            </React.Fragment>
-          )
-        })}
+        <YStack f={1} space="$10">
+          {props.steps[step - 1]?.map((item, index) => {
+            return <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
+          })}
+        </YStack>
       </YStack>
     </Theme>
   )

@@ -15,6 +15,8 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
+import { Slide } from '../../../components/Slide'
+
 export default memo(() => {
   const { resolvedTheme: themeName } = useThemeSetting()!
   const isLight = themeName === 'light'
@@ -153,56 +155,67 @@ export default memo(() => {
   )
 
   return (
-    <ThemeTint>
-      <YStack
-        als="center"
-        pt={100}
-        pos="relative"
-        {...lettersContainerBounds}
-        minWidth={lettersContainerBounds.width}
-        minHeight={lettersContainerBounds.height}
-      >
-        <YStack
-          ai="center"
-          pos="relative"
-          ref={parentRef as any}
-          {...lettersContainerBounds}
-          minWidth={lettersContainerBounds.width}
-          minHeight={lettersContainerBounds.height}
-          scale={0.9}
-        >
-          <YStack>
-            {glow.Component()}
-            {glint.Component()}
-            <YStack ai="center" pos="relative" w="100%">
-              <YStack w="100%" h={lettersContainerBounds.height}>
-                {letters.map(({ Component }) => {
-                  return Component
-                })}
-              </YStack>
-            </YStack>
-          </YStack>
-        </YStack>
-      </YStack>
+    <Slide
+      steps={[
+        [
+          {
+            type: 'content',
+            content: (
+              <ThemeTint>
+                <YStack
+                  als="center"
+                  pt={100}
+                  pos="relative"
+                  {...lettersContainerBounds}
+                  minWidth={lettersContainerBounds.width}
+                  minHeight={lettersContainerBounds.height}
+                >
+                  <YStack
+                    ai="center"
+                    pos="relative"
+                    ref={parentRef as any}
+                    {...lettersContainerBounds}
+                    minWidth={lettersContainerBounds.width}
+                    minHeight={lettersContainerBounds.height}
+                    scale={0.9}
+                  >
+                    <YStack>
+                      {glow.Component()}
+                      {glint.Component()}
+                      <YStack ai="center" pos="relative" w="100%">
+                        <YStack w="100%" h={lettersContainerBounds.height}>
+                          {letters.map(({ Component }) => {
+                            return Component
+                          })}
+                        </YStack>
+                      </YStack>
+                    </YStack>
+                  </YStack>
+                </YStack>
 
-      <Container ai="center">
-        <Spacer size="$8" />
+                <Container ai="center">
+                  <Spacer size="$8" />
 
-        <XStack maw={790} space="$8" separator={<Separator vertical />}>
-          <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
-            Better apps with less code
-          </H2>
-        </XStack>
+                  <XStack maw={790} space="$8" separator={<Separator vertical />}>
+                    <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
+                      Better apps with less code
+                    </H2>
+                  </XStack>
 
-        <Spacer />
+                  <Spacer />
 
-        <XStack space ai="center">
-          <SizableText o={0.5} size="$3">
-            By Nate Wienert
-          </SizableText>
-        </XStack>
-      </Container>
-    </ThemeTint>
+                  <XStack space ai="center">
+                    <SizableText o={0.5} size="$3">
+                      By Nate Wienert
+                    </SizableText>
+                  </XStack>
+                </Container>
+              </ThemeTint>
+            ),
+          },
+        ],
+      ]}
+    />
   )
 })
 

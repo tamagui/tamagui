@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="Why?"
-      subTitle="Slow app + verbose code = 😭"
+      subTitle="Writing a universal app degrades both code quality and performance 😭"
       theme="purple"
       steps={[
         [

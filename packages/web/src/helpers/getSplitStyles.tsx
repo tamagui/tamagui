@@ -49,7 +49,7 @@ import type {
 import { createMediaStyle } from './createMediaStyle.js'
 import { getPropMappedFontFamily } from './createPropMapper.js'
 import { fixStyles } from './expandStyles.js'
-import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
+import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
   insertedTransforms,
@@ -708,7 +708,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (shouldDoClasses && !isEnter && !isExit) {
-          const pseudoStyles = getAtomicStyle(pseudoStyleObject, descriptor)
+          const pseudoStyles = generateAtomicStyles(pseudoStyleObject, descriptor)
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
 
@@ -995,7 +995,7 @@ export const getSplitStyles: StyleSplitter = (
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
           if (props.animateOnly && props.animateOnly.includes(key)) {
-            retainedStyles[key] = atomicStyle.value
+            retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
             mergeClassName(transforms, classNames, key, atomicStyle.identifier)

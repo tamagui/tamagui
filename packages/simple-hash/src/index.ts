@@ -1,4 +1,9 @@
+const cache = new Map()
+
 export const simpleHash = (str: string, hashMin = 10) => {
+  if (cache.has(str)) {
+    return cache.get(str)
+  }
   let hash = 0
   let valids = ''
   const len = str.length
@@ -16,7 +21,12 @@ export const simpleHash = (str: string, hashMin = 10) => {
       hash &= hash // Convert to 32bit integer
     }
   }
-  return valids + (hash ? new Uint32Array([hash])[0].toString(36) : '')
+  const res = valids + (hash ? new Uint32Array([hash])[0].toString(36) : '')
+  if (cache.size > 10_000) {
+    cache.clear()
+  }
+  cache.set(str, res)
+  return res
 }
 
 export function isValidCSSCharCode(code: number) {
