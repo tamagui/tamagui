@@ -9,10 +9,12 @@ export default memo(() => {
       subTitle="Adapt + Native"
       theme="blue"
       steps={[
-        {
-          type: 'image',
-          image: require('../images/select.png').default,
-        },
+        [
+          {
+            type: 'image',
+            image: require('../images/select.png').default,
+          },
+        ],
       ]}
     />
   )
