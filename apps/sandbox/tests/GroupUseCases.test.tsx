@@ -2,12 +2,11 @@ import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/?test=GroupUseCases', { waitUntil: 'networkidle' })
+  await new Promise((res) => setTimeout(res, 3000))
 })
 
 test(`simple api passes border radius`, async ({ page }) => {
   const buttons = await page.getByTestId('simple-api-group').locator('button').all()
-
-  console.log('buttons?', buttons)
 
   const buttonFirstStyles = await buttons[0].evaluate((el) => {
     return window.getComputedStyle(el)
