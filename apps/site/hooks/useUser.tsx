@@ -47,14 +47,18 @@ export const MyUserContextProvider = (props: Props) => {
   useEffect(() => {
     // need to do this cause session loses provider_token
     const listener = supabase.auth.onAuthStateChange((_, session) => {
-      console.log(session?.provider_token, session?.user.app_metadata.provider)
-      if (session?.provider_token && session.user.app_metadata.provider === 'github')
+      if (
+        session?.user.app_metadata.provider === 'github' &&
+        session.provider_token &&
+        session.user.user_metadata.github_token !== session.provider_token
+      ) {
         supabase.auth.updateUser({
           data: {
             github_token: session.provider_token,
             github_refresh_token: session.refresh_token,
           },
         })
+      }
     })
     return () => listener.data.subscription.unsubscribe()
   }, [])
