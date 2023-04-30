@@ -77,7 +77,7 @@ export const generateAtomicStyles = (
     const value = normalizeValueWithProperty(style[key], key)
     if (value == null || value == undefined) continue
 
-    const hash = value < 10000 ? value : simpleHash(`${value}`)
+    const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
     const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
