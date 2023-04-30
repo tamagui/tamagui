@@ -65,7 +65,7 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
-                        content: `Unlimited nesting`,
+                        content: `Invert or reset to parent`,
                       },
                     ],
                   },
