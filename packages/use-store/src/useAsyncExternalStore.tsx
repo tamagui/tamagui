@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useState } from 'react'
+import { startTransition, useLayoutEffect, useState } from 'react'
 
 export function useAsyncExternalStore(
   subscribe: (cb: Function) => () => void,
@@ -7,7 +7,7 @@ export function useAsyncExternalStore(
 ) {
   const [storeState, setStoreState] = useState(getServerSnapshot)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     return subscribe((next: any) => {
       startTransition(() => {
         setStoreState(getSnapshot(next))
