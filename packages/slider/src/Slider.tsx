@@ -69,6 +69,19 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
       return value(pointerPosition)
     }
 
+    const measure = () => {
+      sliderRef.current?.measure((_x, _y, width, _height, pageX, _pageY) => {
+        setState({
+          size: width,
+          offset: pageX,
+        })
+      })
+    }
+
+    if (isClient) {
+      useOnDebouncedWindowResize(measure)
+    }
+
     return (
       <SliderOrientationProvider
         scope={props.__scopeSlider}
@@ -83,14 +96,7 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
           dir={direction}
           {...sliderProps}
           orientation="horizontal"
-          onLayout={() => {
-            sliderRef.current?.measure((_x, _y, width, _height, pageX, _pageY) => {
-              setState({
-                size: width,
-                offset: pageX,
-              })
-            })
-          }}
+          onLayout={measure}
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
@@ -113,6 +119,21 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
     )
   }
 )
+
+function useOnDebouncedWindowResize(callback: Function, amt = 200) {
+  React.useEffect(() => {
+    let last
+    const onResize = () => {
+      clearTimeout(last)
+      last = setTimeout(callback, amt)
+    }
+    window.addEventListener('resize', onResize)
+    return () => {
+      clearTimeout(last)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
+}
 
 /* -------------------------------------------------------------------------------------------------
  * SliderVertical
@@ -141,18 +162,7 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
     }
 
     if (isClient) {
-      React.useEffect(() => {
-        let last
-        const onResize = () => {
-          clearTimeout(last)
-          last = setTimeout(() => {}, 100)
-        }
-        document.addEventListener('resize', onResize)
-        return () => {
-          clearTimeout(last)
-          document.removeEventListener('resize', onResize)
-        }
-      }, [])
+      useOnDebouncedWindowResize(measure)
     }
 
     return (
