@@ -78,7 +78,6 @@ function useSyncThemeToThemeState() {
   const themeName = useThemeName()
 
   useLayoutEffect(() => {
-    console.log('set to', themeName)
     themesStore.toggleFocusedThemeItem({
       id: themeName,
     })
