@@ -186,7 +186,8 @@ export function createAnimations<A extends AnimationsConfig>(
 
       const args = [style, state, isExiting, !!onDidAnimate]
 
-      const isThereNoNativeStyleKeys = () => {
+      // check if there is any style that is not supported by native driver
+      const isThereNoNativeStyleKeys = useMemo(() => {
         if (isWeb) return true
 
         return Object.keys(style).some((key) => {
@@ -196,7 +197,7 @@ export function createAnimations<A extends AnimationsConfig>(
             return !animatedStyleKey[key]
           }
         })
-      }
+      }, args)
 
       const res = useMemo(() => {
         const runners: Function[] = []

@@ -12,6 +12,7 @@ import SlideFlatten from './slides/slide-flatten'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
 import SlideThemes from './slides/slide-themes'
+import SlideThemes2 from './slides/slide-themes2'
 import Slide1 from './slides/slide1'
 import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
@@ -58,6 +59,7 @@ export default function TamaguiTalk() {
           <Slide3 />,
           <Slide3a />,
           <SlideThemes />,
+          <SlideThemes2 />,
           <Slide4 />,
           <SlideFlatten />,
           <Slide6c />,

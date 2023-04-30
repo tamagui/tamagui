@@ -1,4 +1,3 @@
-// debug-verbose
 import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config'
 import { useOnIntersecting } from '@tamagui/demos'

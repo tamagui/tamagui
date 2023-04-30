@@ -49,7 +49,7 @@ import {
 // const abcSel = useGlobalStoreSelector(storeTest, (x) => x.props.id)
 
 const idFn = (_) => _
-const shouldUseSync =
+const shouldUseSyncDefault =
   typeof window !== 'undefined' && window.location.hash.includes(`sync-store`)
 
 // no singleton, just react
@@ -372,7 +372,7 @@ function useStoreFromInfo(
     return snap
   }, [])
 
-  const state = shouldUseSync
+  const state = shouldUseSyncDefault
     ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
     : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 

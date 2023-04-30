@@ -12,7 +12,7 @@ export function RadioGroupDemo() {
   )
 }
 
-function RadioGroupItemWithLabel(props: {
+export function RadioGroupItemWithLabel(props: {
   size: SizeTokens
   value: string
   label: string

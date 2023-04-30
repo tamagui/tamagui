@@ -295,6 +295,10 @@ pre {
   margin-right: -3px;
 }
 
+.clip-text::selection {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
 iframe {
   border-width: 0;
 }

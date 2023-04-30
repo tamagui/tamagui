@@ -70,6 +70,8 @@ Ali todos:
 
 # Backlog
 
+- cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
+
 - sheet native ios snapPoints
   - pre release 2.0 version of library
   - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx

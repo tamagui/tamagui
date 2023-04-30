@@ -1,14 +1,18 @@
+import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
 import React from 'react'
 import {
   FontSizeTokens,
   H1,
   H2,
   Paragraph,
+  SpaceTokens,
+  Spacer,
   Theme,
   ThemeName,
   XStack,
   YStack,
   useComposedRefs,
+  useThemeName,
 } from 'tamagui'
 
 import { Code } from './Code'
@@ -24,6 +28,10 @@ export type SlideProps = {
 }
 
 type SlideStepItem =
+  | {
+      type: 'space'
+      size?: SpaceTokens
+    }
   | {
       type: 'callout'
       content: any
@@ -119,6 +127,11 @@ export function Slide(props: SlideProps) {
 }
 
 function useGlows(variant: SlideProps['variant']) {
+  const themeName = useThemeName()
+  const next = RootStore.colors.indexOf(themeName) + 1
+  // todo use for glint
+  const altColorName = RootStore.colors[next % RootStore.colors.length]
+
   const glow = useHoverGlow({
     resist: 65,
     size: 700,
@@ -151,7 +164,7 @@ function useGlows(variant: SlideProps['variant']) {
     elements: (
       <>
         {glow.Component()}
-        {glint.Component()}
+        <Theme name={altColorName as any}>{glint.Component()}</Theme>
       </>
     ),
   }
@@ -223,14 +236,17 @@ function getTextContent(
           case 'code-inline':
             return (
               <Code bc="$color8" color="$color11" size={size ?? '$9'} px="$3" py="$2">
-                {item.content}&nbsp;
+                {item.content}
               </Code>
             )
+
+          case 'space':
+            return <Spacer />
 
           case 'code':
             return (
               <DocCodeBlock isHighlightingLines size={size ?? '$6'}>
-                {item.content}&nbsp;
+                {item.content}
               </DocCodeBlock>
             )
 

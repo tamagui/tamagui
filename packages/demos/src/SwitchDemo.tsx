@@ -11,7 +11,7 @@ export function SwitchDemo() {
   )
 }
 
-function SwitchWithLabel(props: { size: SizeTokens }) {
+export function SwitchWithLabel(props: { size: SizeTokens }) {
   const id = `switch-${props.size.toString().slice(1)}`
   return (
     <XStack width={200} alignItems="center" space="$4">
