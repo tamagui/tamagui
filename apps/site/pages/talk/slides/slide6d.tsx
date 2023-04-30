@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="No-cost inline styles"
-      subTitle="Less worry about perf === more creative expression"
+      subTitle="Stop worrying about performance"
       theme="green"
       steps={[
         [

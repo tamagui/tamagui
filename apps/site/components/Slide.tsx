@@ -25,6 +25,10 @@ export type SlideProps = {
 
 type SlideStepItem =
   | {
+      type: 'callout'
+      content: any
+    }
+  | {
       type: 'content'
       content: any
     }
@@ -222,18 +226,37 @@ function getTextContent(
                 {item.content}&nbsp;
               </Code>
             )
+
           case 'code':
             return (
               <DocCodeBlock isHighlightingLines size={size ?? '$6'}>
                 {item.content}&nbsp;
               </DocCodeBlock>
             )
+
+          case 'callout':
+            return (
+              <YStack f={1} ai="center" jc="center" h="60vh">
+                <Paragraph
+                  theme="yellow"
+                  color="$color10"
+                  als="center"
+                  ta="center"
+                  p="$10"
+                  size="$13"
+                >
+                  {item.content}&nbsp;
+                </Paragraph>
+              </YStack>
+            )
+
           case 'text':
             return (
               <Paragraph size={size ?? '$9'} fow="400" lh="$10">
                 {item.content}&nbsp;
               </Paragraph>
             )
+
           case 'text-bold':
             return (
               <Paragraph fow="800" size={size ?? '$9'} lh="$10">

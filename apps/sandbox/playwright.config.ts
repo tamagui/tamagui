@@ -12,9 +12,9 @@ export default defineConfig({
   webServer: {
     command: 'yarn dev:webpack',
     url: 'http://localhost:9000',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
   },
 
-  fullyParallel: true,
+  // fullyParallel: true,
   retries: 2,
 })

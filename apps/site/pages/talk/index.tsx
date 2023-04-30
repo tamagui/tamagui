@@ -8,6 +8,10 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
 import { ThemeToggle } from '../../components/ThemeToggle'
+import SlideFlatten from './slides/slide-flatten'
+import SlideLessons1 from './slides/slide-lessons-1'
+import SlideLessons2 from './slides/slide-lessons-2'
+import SlideThemes from './slides/slide-themes'
 import Slide1 from './slides/slide1'
 import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
@@ -16,12 +20,10 @@ import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
 import Slide6 from './slides/slide6'
 import Slide6a from './slides/slide6a'
-import Slide6b from './slides/slide6b'
 import Slide6c from './slides/slide6c'
 import Slide6d from './slides/slide6d'
 import Slide7 from './slides/slide7'
 import Slide8 from './slides/slide8'
-import Slide9 from './slides/slide9'
 
 const slideDimensions = {
   width: 1280,
@@ -55,14 +57,16 @@ export default function TamaguiTalk() {
           <Slide6a />,
           <Slide3 />,
           <Slide3a />,
+          <SlideThemes />,
           <Slide4 />,
-          <Slide6b />,
+          <SlideFlatten />,
           <Slide6c />,
           <Slide6d />,
-          <Slide5 />,
           <Slide7 />,
           <Slide8 />,
-          <Slide9 />,
+          <Slide5 />,
+          <SlideLessons1 />,
+          <SlideLessons2 />,
         ]}
       />
     </YStack>
