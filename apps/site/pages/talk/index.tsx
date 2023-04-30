@@ -3,16 +3,18 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
+import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import SlideFlatten from './slides/slide-flatten'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
 import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
+import SlideTrilemma from './slides/slide-trilemma'
 import Slide1 from './slides/slide1'
 import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
@@ -23,7 +25,6 @@ import Slide6 from './slides/slide6'
 import Slide6a from './slides/slide6a'
 import Slide6c from './slides/slide6c'
 import Slide6d from './slides/slide6d'
-import Slide7 from './slides/slide7'
 import Slide8 from './slides/slide8'
 
 const slideDimensions = {
@@ -52,23 +53,23 @@ export default function TamaguiTalk() {
       <RibbonContainer />
       <Slides
         slides={[
-          <Slide1 />,
-          <Slide2 />,
-          <Slide6 />,
-          <Slide6a />,
-          <Slide3 />,
-          <Slide3a />,
-          <SlideThemes />,
-          <SlideThemes2 />,
-          <Slide4 />,
-          <SlideFlatten />,
-          <Slide6c />,
-          <Slide6d />,
-          <Slide7 />,
-          <Slide8 />,
-          <Slide5 />,
-          <SlideLessons1 />,
-          <SlideLessons2 />,
+          Slide1,
+          Slide2,
+          Slide6,
+          SlideTrilemma,
+          Slide6a,
+          Slide3,
+          Slide3a,
+          SlideThemes,
+          SlideThemes2,
+          Slide4,
+          SlideFlatten,
+          Slide6c,
+          Slide6d,
+          Slide8,
+          Slide5,
+          SlideLessons1,
+          SlideLessons2,
         ]}
       />
     </YStack>
@@ -97,13 +98,37 @@ export function Slides(props: { slides: Slides }) {
   const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
+  const SlideComponent = props.slides[index]
+
+  const goToNextStep = useRef<(inc: number) => boolean>()
+
+  const slideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc: number) => boolean) => {
+        goToNextStep.current = nextStep
+      },
+    }),
+    []
+  )
+
   useHotkeys(
     'left',
-    useEvent(() => paginate(-1))
+    useEvent(() => {
+      const inc = -1
+      if (goToNextStep.current?.(inc)) {
+        paginate(inc)
+      }
+    })
   )
+
   useHotkeys(
     'right',
-    useEvent(() => paginate(1))
+    useEvent(() => {
+      const inc = 1
+      if (goToNextStep.current?.(inc)) {
+        paginate(inc)
+      }
+    })
   )
 
   return (
@@ -125,7 +150,9 @@ export function Slides(props: { slides: Slides }) {
           ai="center"
           jc="center"
         >
-          {props.slides[index]}
+          <SlideContext.Provider value={slideContext}>
+            <SlideComponent />
+          </SlideContext.Provider>
         </YStackEnterable>
       </AnimatePresence>
 
