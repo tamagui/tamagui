@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.22.0",
+  "version": "1.22.1",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -33,12 +33,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.22.0",
-    "@tamagui/create-theme": "1.22.0",
-    "@tamagui/web": "1.22.0"
+    "@tamagui/colors": "1.22.1",
+    "@tamagui/create-theme": "1.22.1",
+    "@tamagui/web": "1.22.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.0"
+    "@tamagui/build": "1.22.1"
   },
   "publishConfig": {
     "access": "public"
