@@ -17,17 +17,17 @@ export function SelectDemo() {
 
   return (
     <YStack space>
-      {/* <XStack ai="center" space>
+      <XStack ai="center" space>
         <Label f={1} fb={0}>
           Custom
         </Label>
         <SelectDemoItem value={val} onValueChange={setVal} />
-      </XStack> */}
+      </XStack>
 
       <XStack ai="center" space>
-        {/* <Label f={1} fb={0}>
+        <Label f={1} fb={0}>
           Native
-        </Label> */}
+        </Label>
         <SelectDemoItem value={val} onValueChange={setVal} native />
       </XStack>
     </YStack>
