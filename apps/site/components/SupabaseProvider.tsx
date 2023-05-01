@@ -17,11 +17,11 @@ export const SupabaseProvider = ({
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>({
       cookieOptions: {
-        domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
-        maxAge: '100000000',
+        domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
+        maxAge: 100000000,
         path: '/',
         sameSite: 'Lax',
-        secure: 'secure',
+        secure: true,
       },
     })
   )
