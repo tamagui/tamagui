@@ -15,7 +15,7 @@ declare const Collection: {
 }, useCollection: (scope: any) => () => {
     ref: React.RefObject<TamaguiElement>;
 }[];
-type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
+export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
 type ToastProviderContextValue = {
     id: string;
     label: string;

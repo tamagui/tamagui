@@ -15,7 +15,12 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
-import { Animated, GestureResponderEvent, PanResponder } from 'react-native'
+import {
+  Animated,
+  GestureResponderEvent,
+  PanResponder,
+  PanResponderGestureState,
+} from 'react-native'
 
 import { TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
@@ -30,10 +35,15 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(ThemeableStack, {
   name: 'ToastImpl',
+  focusable: true,
   variants: {
     unstyled: {
       false: {
-        focusable: true,
+        focusStyle: {
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorHover',
+        },
         backgroundColor: '$color6',
         borderRadius: '$10',
         paddingHorizontal: '$5',
@@ -257,32 +267,27 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
 
     const panResponder = React.useMemo(() => {
       return PanResponder.create({
-        onMoveShouldSetPanResponder: (e) => {
-          onSwipeStart?.(e)
-          return true
+        onMoveShouldSetPanResponder: (e, gesture) => {
+          const shouldMove = shouldGrantGestureMove(context.swipeDirection, gesture)
+          if (shouldMove) {
+            onSwipeStart?.(e)
+            return true
+          }
+          return false
         },
         onPanResponderGrant: (e) => {
           if (!isWeb) {
             handlePause?.()
           }
         },
-        onPanResponderMove: (e, { dy, dx }) => {
-          let y = 0
-          let x = 0
-          if (context.swipeDirection === 'horizontal') x = dx
-          else if (context.swipeDirection === 'left') x = Math.min(0, dx)
-          else if (context.swipeDirection === 'right') x = Math.max(0, dx)
-          else if (context.swipeDirection === 'vertical') y = dy
-          else if (context.swipeDirection === 'up') y = Math.min(0, dy)
-          else if (context.swipeDirection === 'down') y = Math.max(0, dy)
-
-          onSwipeMove?.(e)
-
+        onPanResponderMove: (e, gesture) => {
+          const { x, y } = getGestureDistance(context.swipeDirection, gesture)
           const delta = { x, y }
           animatedNumber.setValue(isHorizontalSwipe ? x : y, { type: 'direct' })
           if (isDeltaInDirection(delta, context.swipeDirection, context.swipeThreshold)) {
             onSwipeEnd?.(e)
           }
+          onSwipeMove?.(e)
         },
         onPanResponderEnd: (e, { dx, dy }) => {
           if (
@@ -437,6 +442,45 @@ function getAnnounceTextContent(container: HTMLElement) {
 
 function isHTMLElement(node: any): node is HTMLElement {
   return node.nodeType === node.ELEMENT_NODE
+}
+
+const GESTURE_GRANT_THRESHOLD = 10
+
+const shouldGrantGestureMove = (
+  dir: SwipeDirection,
+  { dx, dy }: PanResponderGestureState
+) => {
+  if ((dir === 'horizontal' || dir === 'left') && dx < -GESTURE_GRANT_THRESHOLD) {
+    return true
+  } else if ((dir === 'horizontal' || dir === 'right') && dx > GESTURE_GRANT_THRESHOLD) {
+    return true
+  } else if ((dir === 'vertical' || dir === 'up') && dy > -GESTURE_GRANT_THRESHOLD) {
+    return true
+  } else if ((dir === 'vertical' || dir === 'down') && dy < GESTURE_GRANT_THRESHOLD) {
+    return true
+  }
+
+  return false
+}
+
+const getGestureDistance = (
+  dir: SwipeDirection,
+  { dx, dy }: PanResponderGestureState
+) => {
+  let y = 0
+  let x = 0
+
+  if (dir === 'horizontal') x = dx
+  else if (dir === 'left') x = Math.min(0, dx)
+  else if (dir === 'right') x = Math.max(0, dx)
+  else if (dir === 'vertical') y = dy
+  else if (dir === 'up') y = Math.min(0, dy)
+  else if (dir === 'down') y = Math.max(0, dy)
+
+  return {
+    x,
+    y,
+  }
 }
 
 export { ToastImpl, ToastImplFrame, ToastImplProps, useToastInteractiveContext }
