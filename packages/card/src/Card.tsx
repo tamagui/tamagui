@@ -106,7 +106,7 @@ export type CardFooterProps = GetProps<typeof CardFooter>
 export type CardProps = GetProps<typeof CardFrame>
 
 export const Card = withStaticProperties(
-  CardFrame.extractable(
+  CardFrame.styleable<CardProps>(
     forwardRef<TamaguiElement, ScopedProps<CardProps, 'Card'>>(
       ({ __scopeCard, children, ...props }, ref) => {
         return (
