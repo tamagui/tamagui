@@ -1,6 +1,7 @@
 import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent.js'
+import { mergeVariants } from './helpers/extendStaticConfig.js'
 import { ReactNativeStaticConfigs } from './setupReactNative.js'
 import type {
   GetProps,
@@ -77,7 +78,7 @@ export function styled<
     !!parentStaticConfig &&
     !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
 
-  const Component: any = isPlainStyledComponent
+  let Component: any = isPlainStyledComponent
     ? ComponentIn
     : parentStaticConfig?.Component || ComponentIn
 
@@ -98,11 +99,22 @@ export function styled<
         ...defaultProps
       } = options
 
+      if (parentStaticConfig) {
+        defaultProps = {
+          ...parentStaticConfig.defaultProps,
+          ...defaultProps,
+        }
+      }
+
       if (defaultVariants) {
         defaultProps = {
           ...defaultVariants,
           ...defaultProps,
         }
+      }
+
+      if (parentStaticConfig?.isHOC) {
+        variants = mergeVariants(parentStaticConfig.variants, variants)
       }
 
       const nativeConf =

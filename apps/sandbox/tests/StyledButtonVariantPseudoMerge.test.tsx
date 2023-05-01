@@ -20,11 +20,9 @@ test(`animation + pseudo + variant with pseudo should merge`, async ({ page }) =
   expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
 })
 
-// test(`styled without variants + animation + pseudo + variant with pseudo should merge`, async ({
-//   page,
-// }) => {
-//   const button = page.locator('#double-styled')
-//   const pressStyles = await getPressStyle(button, { delay: 3000 })
-//   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)
-//   expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
-// })
+test(`styled without variants HOC of HOC + pseudo`, async ({ page }) => {
+  const button = page.locator('#double-styled')
+  const pressStyles = await getPressStyle(button, { delay: 3000 })
+  expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)
+  expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
+})
