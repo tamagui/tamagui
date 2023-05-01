@@ -29,5 +29,15 @@ export function useSheetChildren(childrenProp: any) {
     handleComponent,
     overlayComponent,
     frameComponent,
+    bottomCoverComponent: frameComponent
+      ? React.cloneElement(frameComponent, {
+          children: null,
+          position: 'absolute',
+          bottom: -100,
+          height: 110,
+          left: 0,
+          right: 0,
+        })
+      : null,
   }
 }
