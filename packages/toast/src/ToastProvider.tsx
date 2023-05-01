@@ -17,6 +17,7 @@ const [Collection, useCollection, createCollectionScope] =
   createCollection<TamaguiElement>('Toast')
 
 export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right'
+
 type ToastProviderContextValue = {
   id: string
   label: string
@@ -169,4 +170,4 @@ export {
   useCollection,
   useToastProviderContext,
 }
-export type { ScopedProps, SwipeDirection, ToastProviderProps }
+export type { ScopedProps, ToastProviderProps }
