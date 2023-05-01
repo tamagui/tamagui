@@ -1,5 +1,7 @@
 high level:
 
+  - private canary packages on github
+  - tiered line system for studio
   - improve tests and docs
   - make themes and sizing easier, simpler, better documented, more controllable
   - headless
