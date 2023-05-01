@@ -146,6 +146,8 @@ export function createComponent<
     }
   })()
 
+  const { isHOC } = staticConfig
+
   const defaultComponentClassName = `is_${staticConfig.componentName}`
   let tamaguiDefaultProps: any
   let defaultTag: string | undefined
@@ -206,13 +208,11 @@ export function createComponent<
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
 
     // after we get states mount we need to turn off isAnimated for server side
+    const hasAnimationProp =
+      props.animation || (props.style && hasAnimatedStyleValue(props.style))
     const willBeAnimated = (() => {
       if (isServer) return false
-      const next = !!(
-        !staticConfig.isHOC &&
-        useAnimations &&
-        (props.animation || (props.style && hasAnimatedStyleValue(props.style)))
-      )
+      const next = !!(hasAnimationProp && !isHOC && useAnimations)
       if (next && !stateRef.current.hasAnimated) {
         stateRef.current.hasAnimated = true
       }
@@ -307,8 +307,7 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableTheme =
-      (props['data-disable-theme'] && !willBeAnimated) || staticConfig.isHOC
+    const disableTheme = (props['data-disable-theme'] && !willBeAnimated) || isHOC
 
     const themeStateProps = {
       name: props.theme,
@@ -366,6 +365,12 @@ export function createComponent<
       }
     }
 
+    const resolveVariablesAs =
+      // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
+      isAnimated || (isHOC && state.unmounted == false && hasAnimationProp)
+        ? 'value'
+        : 'auto'
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -375,7 +380,7 @@ export function createComponent<
         mediaState,
         noClassNames,
         hasTextAncestor,
-        resolveVariablesAs: isAnimated ? 'value' : 'auto',
+        resolveVariablesAs,
         isExiting,
       },
       null,
@@ -443,7 +448,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && willBeAnimated && useAnimations && !staticConfig.isHOC) {
+    if (!isRSC && willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         style: splitStylesStyle,
@@ -495,7 +500,7 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    if (staticConfig.isHOC && _themeProp) {
+    if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
     }
 
@@ -514,7 +519,7 @@ export function createComponent<
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
 
     if (process.env.NODE_ENV === 'development') {
-      if (!isText && isWeb && !staticConfig.isHOC) {
+      if (!isText && isWeb && !isHOC) {
         Children.toArray(props.children).forEach((item) => {
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {

@@ -31,6 +31,8 @@ export function extendStaticConfig(
     }
   }
 
+  // console.log('variants', variants)
+
   // include our own
   const parentNames = [...(parentStaticConfig.parentNames || [])]
   if (parentStaticConfig.componentName) {

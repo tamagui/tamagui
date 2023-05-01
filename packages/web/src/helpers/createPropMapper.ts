@@ -486,7 +486,12 @@ const getToken = (
 
   if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log('   ﹒ propMapper getToken', { key, valOrVar, theme, hasSet })
+    console.log(
+      '   ﹒ propMapper getToken',
+      key,
+      resolveVariableValue(key, valOrVar, resolveAs),
+      { valOrVar, theme, hasSet, resolveAs }
+    )
   }
 
   if (hasSet) {
