@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.22.3",
+  "version": "1.22.4",
   "sideEffects": [
     "*.css"
   ],
@@ -32,21 +32,21 @@
   },
   "dependencies": {
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/compose-refs": "1.22.3",
-    "@tamagui/core": "1.22.3",
-    "@tamagui/create-context": "1.22.3",
-    "@tamagui/focusable": "1.22.3",
-    "@tamagui/get-size": "1.22.3",
-    "@tamagui/label": "1.22.3",
-    "@tamagui/stacks": "1.22.3",
-    "@tamagui/use-controllable-state": "1.22.3"
+    "@tamagui/compose-refs": "1.22.4",
+    "@tamagui/core": "1.22.4",
+    "@tamagui/create-context": "1.22.4",
+    "@tamagui/focusable": "1.22.4",
+    "@tamagui/get-size": "1.22.4",
+    "@tamagui/label": "1.22.4",
+    "@tamagui/stacks": "1.22.4",
+    "@tamagui/use-controllable-state": "1.22.4"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.3",
+    "@tamagui/build": "1.22.4",
     "react": "^18.2.0",
     "react-native": "^0.71.7"
   },
