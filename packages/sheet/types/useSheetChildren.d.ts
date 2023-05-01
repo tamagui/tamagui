@@ -6,6 +6,7 @@ export declare function useSheetChildren(childrenProp: any): {
     bottomCoverComponent: React.DetailedReactHTMLElement<{
         children: null;
         position: string;
+        className: any;
         bottom: number;
         height: number;
         left: number;
