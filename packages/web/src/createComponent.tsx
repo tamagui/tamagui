@@ -305,9 +305,11 @@ export function createComponent<
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
-      debug:
-        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+    }
+    if (process.env.NODE_ENV === 'development') {
+      // @ts-expect-error
+      themeStateProps.debug = props.debug
     }
     const themeState = useThemeWithState(themeStateProps)!
 
@@ -349,7 +351,6 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
-          console.warn(themeState.name)
         }
       }
     }
@@ -944,7 +945,7 @@ export function createComponent<
   }
 
   function extendStyledConfig(Component: any, conf?: Partial<StaticConfig>) {
-    Component.staticConfig = extendStaticConfig(
+    return extendStaticConfig(
       {
         Component: Component as any,
         ...conf,
@@ -954,22 +955,25 @@ export function createComponent<
       },
       res
     )
-    Component.styleable = styleable
   }
 
   function extractable(Component, conf?: Partial<StaticConfig>) {
-    extendStyledConfig(Component, conf)
+    const extendedConfig = extendStyledConfig(Component, conf)
+    Component.staticConfig = extendedConfig
+    Component.styleable = styleable
     return Component
   }
 
-  function styleable(Component, conf?: Partial<StaticConfig>) {
+  function styleable(Component: any, conf?: Partial<StaticConfig>) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
       : forwardRef(Component as any)
 
-    const out = themeable(ComponentForwardedRef, staticConfig) as any
-    extendStyledConfig(out, conf)
+    const extendedConfig = extendStyledConfig(Component, conf)
+    const out = themeable(ComponentForwardedRef, extendedConfig) as any
+    out.staticConfig = extendedConfig
+    out.styleable = styleable
     return out
   }
 

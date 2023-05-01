@@ -484,18 +484,17 @@ const getToken = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log(
-      '   ﹒ propMapper getToken',
-      key,
-      resolveVariableValue(key, valOrVar, resolveAs),
-      { valOrVar, theme, hasSet, resolveAs }
-    )
-  }
-
   if (hasSet) {
-    return resolveVariableValue(key, valOrVar, resolveAs)
+    const out = resolveVariableValue(key, valOrVar, resolveAs)
+
+    if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+      console.groupCollapsed('  ﹒ propMap', key, out)
+      // rome-ignore lint/nursery/noConsoleLog: ok
+      console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
+      console.groupEnd()
+    }
+
+    return out
   }
 
   if (process.env.NODE_ENV === 'development') {

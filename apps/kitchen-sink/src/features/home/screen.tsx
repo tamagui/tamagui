@@ -1,4 +1,4 @@
-import { Theme, getVariable } from '@tamagui/core'
+import { Theme, getVariable, styled } from '@tamagui/core'
 import { SelectDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
@@ -28,7 +28,7 @@ export function HomeScreen() {
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
-          Select
+          Kitchen Sink
         </H1>
 
         <YGroup size="$4">
