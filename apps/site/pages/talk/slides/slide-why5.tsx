@@ -5,9 +5,9 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="How?"
-      subTitle="Convert nice code into performant code"
-      theme="purple"
+      title="Why did it feel terrible?"
+      subTitle="JavaScript"
+      theme="orange"
       steps={[
         [
           {
@@ -20,67 +20,73 @@ export default memo(() => {
 
               {
                 type: 'code-inline',
-                content: '@media (max-width) ...',
+                content: 'useWindowDimensions + setState',
               },
             ],
           },
+        ],
 
+        [
           {
             type: 'bullet-point',
             content: [
               {
                 type: 'text',
-                content: 'Pseudo styles - ',
+                content: 'Pseudo styles -',
               },
 
               {
                 type: 'code-inline',
-                content: ':hover, :focus, :active',
+                content: 'useState + Pressable + onPressIn + onPressOut',
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
               {
                 type: 'text',
-                content: 'Themes - ',
+                content: 'Themes -',
               },
 
               {
                 type: 'code-inline',
-                content: '--background: #000',
+                content: 'Whole-tree re-render and re-parse styles',
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
               {
                 type: 'text',
-                content: 'CSS - ',
+                content: 'All styles in JS -',
               },
 
               {
                 type: 'code-inline',
-                content: '{ backgroundColor: "#000" } => CSS + { bg: "bg0" }',
+                content: 'Bundle size and parsing time',
               },
             ],
           },
+        ],
 
+        [
           {
             type: 'bullet-point',
             content: [
               {
                 type: 'text',
-                content: 'Flattening - ',
+                content: `Tree depth -`,
               },
 
               {
                 type: 'code-inline',
-                content: '<Stack /> becomes <div /> or <View />',
+                content: 'Every <Stack /> costs $',
               },
             ],
           },

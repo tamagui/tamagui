@@ -278,7 +278,7 @@ function getTextContent(
 
           case 'split-horizontal':
             return (
-              <XStack h="100%" ai="center" f={1} gap="$6">
+              <XStack maw="100%" ov="hidden" h="100%" ai="center" f={1} gap="$6">
                 <YStack jc="center" maw="50%" f={1} ov="hidden">
                   {getTextContent([item.content[0]], options)}
                 </YStack>

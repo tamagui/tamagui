@@ -27,6 +27,7 @@ import Slide2 from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
+import slideWhy4 from './slides/slide-why5'
 import Slide1 from './slides/slide1'
 import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
@@ -64,6 +65,7 @@ export default function TamaguiTalk() {
           SlideWhy,
           slideWhy2,
           slideWhy3,
+          slideWhy4,
           SlideTrilemma,
           SlideHow,
           slideCssInJs,

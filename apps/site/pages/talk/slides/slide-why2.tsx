@@ -111,7 +111,19 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `😮‍💨`,
+                content: `50 * 3 * 4 * 2 * 2 * 2 * 2 * 3`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `= 28,800 😮‍💨`,
               },
             ],
           },

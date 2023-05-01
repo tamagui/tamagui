@@ -6,83 +6,20 @@ export default memo(() => {
   return (
     <Slide
       title="Why?"
-      subTitle="My universal app felt terrible 😭"
       theme="orange"
+      stepsStrategy="replace"
       steps={[
         [
           {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: 'Media queries - ',
-              },
-
-              {
-                type: 'code-inline',
-                content: 'useWindowDimensions + setState',
-              },
-            ],
+            type: 'callout',
+            content: `I can't afford to write two apps.`,
           },
+        ],
 
+        [
           {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: 'Pseudo styles -',
-              },
-
-              {
-                type: 'code-inline',
-                content: 'useState + Pressable + onPressIn + onPressOut',
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: 'Themes -',
-              },
-
-              {
-                type: 'code-inline',
-                content: 'Whole-tree re-render and re-parse styles',
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: 'All styles in JS -',
-              },
-
-              {
-                type: 'code-inline',
-                content: 'Bundle size and parsing time',
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `No divs allowed -`,
-              },
-
-              {
-                type: 'code-inline',
-                content: '<Stack /> costs $',
-              },
-            ],
+            type: 'callout',
+            content: `My universal app felt terrible 😭`,
           },
         ],
       ]}
