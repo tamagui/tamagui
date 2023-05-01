@@ -12,6 +12,6 @@
  *   - shorthands can be expanded before merging
  */
 type AnyRecord = Record<string, any>;
-export declare const mergeProps: (a: Object, b: Object, leaveOutClassNames?: boolean, inverseShorthands?: AnyRecord) => readonly [AnyRecord, AnyRecord];
+export declare const mergeProps: (a: Object, b?: Object, leaveOutClassNames?: boolean, inverseShorthands?: AnyRecord) => readonly [AnyRecord, AnyRecord];
 export {};
 //# sourceMappingURL=mergeProps.d.ts.map
