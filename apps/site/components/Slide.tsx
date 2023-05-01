@@ -23,7 +23,7 @@ import { DivProps, useHoverGlow } from './HoverGlow'
 
 export type SlideProps = {
   title?: React.ReactNode
-  subTitle?: string
+  subTitle?: any
   steps: TextContent[]
   variant?: 1
   theme?: ThemeName
@@ -48,6 +48,7 @@ type SlideStepItem =
     }
   | {
       type: 'image'
+      variant?: 'circled'
       image: {
         width: number
         height: number
@@ -211,12 +212,29 @@ function getTextContent(
 
           case 'image':
             return (
-              <YStack f={1} ai="center">
+              <YStack
+                f={1}
+                ai="center"
+                {...(item.variant === 'circled' && {
+                  bg: '$backgroundStrong',
+                  width: 500,
+                  height: 500,
+                  ai: 'center',
+                  jc: 'center',
+                  borderRadius: 10000,
+                  als: 'center',
+                  mx: 'auto',
+                  elevation: '$6',
+                  ov: 'hidden',
+                  bw: 5,
+                  boc: '$borderColor',
+                })}
+              >
                 <img
                   style={{
                     alignSelf: 'center',
                     maxWidth: '100%',
-                    width: item.image.width * 0.5,
+                    width: item.image.width * (item.variant === 'circled' ? 1 : 0.5),
                   }}
                   src={item.image.src}
                 />
@@ -290,7 +308,7 @@ function getTextContent(
             }
 
             return (
-              <YStack f={1} ai="center" jc="center" h="60vh">
+              <YStack f={1} ai="center" jc="center" h="55vh">
                 <Paragraph
                   theme="yellow"
                   color="$color10"
