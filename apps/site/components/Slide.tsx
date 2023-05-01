@@ -1,6 +1,7 @@
 import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
+  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -25,6 +26,7 @@ export type SlideProps = {
   title?: React.ReactNode
   subTitle?: any
   steps: TextContent[]
+  stepsStrategy?: 'replace' | 'additive'
   variant?: 1
   theme?: ThemeName
 }
@@ -112,6 +114,29 @@ export function Slide(props: SlideProps) {
     })
   }, [step, isPresent])
 
+  const getStep = (step: TextContent) =>
+    step?.map((item, index) => {
+      return (
+        <React.Fragment key={index}>
+          {getTextContent([item], {
+            wrapperStyle:
+              props.stepsStrategy === 'replace'
+                ? {}
+                : {
+                    display: 'contents',
+                  },
+          })}
+        </React.Fragment>
+      )
+    })
+
+  const stepsContent =
+    props.stepsStrategy === 'replace'
+      ? getStep(props.steps[step - 1])
+      : props.steps
+          .slice(0, step)
+          .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
+
   return (
     <Theme name={props.theme}>
       <YStack fullscreen zi={-1}>
@@ -139,10 +164,8 @@ export function Slide(props: SlideProps) {
           )}
         </YStack>
 
-        <YStack f={1} space="$10">
-          {props.steps[step - 1]?.map((item, index) => {
-            return <React.Fragment key={index}>{getTextContent([item])}</React.Fragment>
-          })}
+        <YStack f={1} gap="$10" maxHeight="100%" flexWrap="wrap" w="100%">
+          {stepsContent}
         </YStack>
       </YStack>
     </Theme>
@@ -235,13 +258,15 @@ function getTextContent(
                   ai: 'center',
                   jc: 'center',
                   h: '100%',
+                  maw: '100%',
                 })}
               >
                 <img
                   style={{
                     alignSelf: 'center',
                     maxWidth: '100%',
-                    width: item.image.width * (item.variant === 'circled' ? 1 : 0.5),
+                    maxHeight: '100%',
+                    width: 'auto',
                   }}
                   src={item.image.src}
                 />
@@ -299,12 +324,8 @@ function getTextContent(
 
           case 'code':
             return (
-              <DocCodeBlock
-                isHighlightingLines
-                size={size ?? '$8'}
-              >
-                
-                <div dangerouslySetInnerHTML={{ __html: item.content }}  />
+              <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                <div dangerouslySetInnerHTML={{ __html: item.content }} />
               </DocCodeBlock>
             )
 
@@ -320,7 +341,7 @@ function getTextContent(
             }
 
             return (
-              <YStack f={1} ai="center" jc="center">
+              <YStack h="100%" f={1} ai="center" jc="center">
                 <Paragraph
                   theme="yellow"
                   color="$color10"
