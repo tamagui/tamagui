@@ -1,7 +1,7 @@
 import { ToastProvider, ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
-import { useMemo, useState } from 'react'
-import { Appearance } from 'react-native'
+import { useEffect, useMemo, useState } from 'react'
+import { Appearance, useColorScheme } from 'react-native'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Navigation } from './Navigation'
@@ -14,6 +14,12 @@ export default function App() {
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   })
+
+  const colorScheme = useColorScheme()
+
+  useEffect(() => {
+    setTheme(colorScheme)
+  }, [colorScheme])
 
   const children = useMemo(() => {
     return <Navigation />

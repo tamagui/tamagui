@@ -69,3 +69,5 @@ export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) 
     scrollBridge,
   }
 }
+
+export type SheetContextValue = ReturnType<typeof useSheetProviderProps>

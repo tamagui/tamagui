@@ -20,7 +20,7 @@ import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ThemeableStack, XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
-import React, {
+import {
   FunctionComponent,
   RefAttributes,
   createContext,
@@ -51,6 +51,7 @@ import { useSheetChildren } from './useSheetChildren'
 import { useSheetController } from './useSheetController'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
+import { useSheetSnapPoints } from './useSheetSnapPoints'
 
 export { createSheetScope } from './SheetContext'
 export * from './types'
@@ -260,7 +261,6 @@ const SheetImplementationCustom = themeable(
 
     const {
       animationConfig,
-      dismissOnSnapToBottom = false,
       forceRemoveScrollEnabled = null,
       disableDrag: disableDragProp,
       modal = false,
@@ -271,30 +271,15 @@ const SheetImplementationCustom = themeable(
 
     const state = useSheetOpenState(props)
     const providerProps = useSheetProviderProps(props, state)
+    const { positions, maxSnapPoint, screenSize } = useSheetSnapPoints(providerProps)
 
-    const {
-      snapPoints,
-      position,
-      contentRef,
-      setPosition,
-      setPositionImmediate,
-      scrollBridge,
-      frameSize,
-      setFrameSize,
-    } = providerProps
+    const { position, contentRef, setPosition, scrollBridge, frameSize, setFrameSize } =
+      providerProps
 
     const { open, isHidden, controller } = state
 
     const { frameComponent, handleComponent, bottomCoverComponent, overlayComponent } =
       useSheetChildren(props.children)
-
-    if (process.env.NODE_ENV === 'development') {
-      if (snapPoints.some((p) => p < 0 || p > 100)) {
-        console.warn(
-          '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame'
-        )
-      }
-    }
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
@@ -307,11 +292,6 @@ const SheetImplementationCustom = themeable(
     const disableDrag = disableDragProp ?? controller?.disableDrag
     const keyboardIsVisible = useKeyboardVisible()
     const themeName = useThemeName()
-
-    // reset position to fully open on re-open after dismissOnSnapToBottom
-    if (open && dismissOnSnapToBottom && position === snapPoints.length - 1) {
-      setPositionImmediate(0)
-    }
 
     const { useAnimatedNumber, useAnimatedNumberReaction, useAnimatedNumberStyle } =
       driver
@@ -340,22 +320,6 @@ const SheetImplementationCustom = themeable(
         scrollBridge.onFinishAnimate = undefined
       }
     }
-
-    // open must set position
-    const shouldSetPositionOpen = open && position < 0
-    useEffect(() => {
-      if (shouldSetPositionOpen) {
-        setPosition(0)
-      }
-    }, [setPosition, shouldSetPositionOpen])
-
-    const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
-    const screenSize = frameSize / (maxSnapPoint / 100)
-
-    const positions = useMemo(
-      () => snapPoints.map((point) => getPercentSize(point, screenSize)),
-      [frameSize, snapPoints]
-    )
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
@@ -667,18 +631,6 @@ export const ControlledSheet = Sheet as FunctionComponent<
   typeof sheetComponents
 
 /* -------------------------------------------------------------------------------------------------*/
-
-function getPercentSize(point?: number, screenSize?: number) {
-  if (!screenSize) return 0
-  if (point === undefined) {
-    console.warn('No snapPoint')
-    return 0
-  }
-  const pct = point / 100
-  const next = Math.round(screenSize - pct * screenSize)
-
-  return next
-}
 
 function resisted(y: number, minY: number, maxOverflow = 25) {
   if (y < minY) {

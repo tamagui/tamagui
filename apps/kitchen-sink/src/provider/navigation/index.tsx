@@ -64,8 +64,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         storage.setItem(JSON.stringify(state))
       }}
       linking={linking}
-      // theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
-      theme={DarkTheme}
+      theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
     >
       {children}
     </NavigationContainer>
