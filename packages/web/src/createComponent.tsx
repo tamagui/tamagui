@@ -972,6 +972,7 @@ export function createComponent<
 
     const extendedConfig = extendStyledConfig(Component, conf)
     const out = themeable(ComponentForwardedRef, extendedConfig) as any
+    extendedConfig.Component = out
     out.staticConfig = extendedConfig
     out.styleable = styleable
     return out
