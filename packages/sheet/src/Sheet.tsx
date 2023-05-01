@@ -285,9 +285,8 @@ const SheetImplementationCustom = themeable(
 
     const { open, isHidden, controller } = state
 
-    const { frameComponent, handleComponent, overlayComponent } = useSheetChildren(
-      props.children
-    )
+    const { frameComponent, handleComponent, bottomCoverComponent, overlayComponent } =
+      useSheetChildren(props.children)
 
     if (process.env.NODE_ENV === 'development') {
       if (snapPoints.some((p) => p < 0 || p > 100)) {
@@ -614,6 +613,7 @@ const SheetImplementationCustom = themeable(
           >
             {handleComponent}
 
+            {bottomCoverComponent}
             {/* @ts-ignore */}
             <RemoveScroll
               forwardProps
