@@ -31,18 +31,11 @@ export function HomeScreen() {
           Select
         </H1>
 
-        <Theme name="blue">
-          <SelectDemo />
-        </Theme>
-        {/* 
         <YGroup size="$4">
           <YGroup.Item>
             <ColorSchemeListItem />
           </YGroup.Item>
-        </YGroup> */}
-
-        <Spacer size={1000} />
-
+        </YGroup>
         <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
           <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
         </YStack>
