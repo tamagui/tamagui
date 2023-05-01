@@ -1,16 +1,7 @@
-import React from 'react';
 export declare function useSheetChildren(childrenProp: any): {
     handleComponent: null;
     overlayComponent: null;
     frameComponent: null;
-    bottomCoverComponent: React.DetailedReactHTMLElement<{
-        children: null;
-        position: string;
-        className: any;
-        bottom: number;
-        height: number;
-        left: number;
-        right: number;
-    }, HTMLElement> | null;
+    bottomCoverComponent: any;
 };
 //# sourceMappingURL=useSheetChildren.d.ts.map

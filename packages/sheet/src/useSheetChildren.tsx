@@ -25,20 +25,23 @@ export function useSheetChildren(childrenProp: any) {
     }
   })
 
+  let bottomCoverComponent: any = null
+
+  if (frameComponent) {
+    bottomCoverComponent = React.cloneElement(frameComponent, {
+      children: null,
+      position: 'absolute',
+      bottom: -100,
+      height: 110,
+      left: 0,
+      right: 0,
+    })
+  }
+
   return {
     handleComponent,
     overlayComponent,
     frameComponent,
-    bottomCoverComponent: frameComponent
-      ? React.cloneElement(frameComponent, {
-          children: null,
-          position: 'absolute',
-          class: (frameComponent as any).props?.class.replace(`is_Sheet`, ''),
-          bottom: -100,
-          height: 110,
-          left: 0,
-          right: 0,
-        })
-      : null,
+    bottomCoverComponent,
   }
 }

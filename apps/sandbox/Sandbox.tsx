@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { SelectDemo, SliderDemo, TooltipDemo } from '@tamagui/demos'
+import { SelectDemo, SheetDemo, SliderDemo, TooltipDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, lazy, useState } from 'react'
 import {
@@ -45,7 +45,8 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <TooltipDemo />
+  return <SheetDemo />
+  // return <TooltipDemo />
   // return <TestPerf />
   // return <Square animation="bouncy" size={100} bc="red" />
 }
