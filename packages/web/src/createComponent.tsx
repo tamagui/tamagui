@@ -108,17 +108,6 @@ if (typeof document !== 'undefined') {
   addEventListener('touchcancel', cancelTouches)
 }
 
-// mutates
-function mergeShorthands(
-  { defaultProps }: StaticConfigParsed,
-  { shorthands }: TamaguiConfig
-) {
-  // they are defined in correct order already { ...parent, ...child }
-  for (const key of Object.keys(defaultProps)) {
-    defaultProps[shorthands[key] || key] = defaultProps[key]
-  }
-}
-
 /**
  * Only on native do we need the actual underlying View/Text
  * On the web we avoid react-native dep altogether.
@@ -867,10 +856,6 @@ export function createComponent<
       }
     }
 
-    // per-component setup
-    // do this to make sure shorthands don't duplicate with.. longhands
-    mergeShorthands(staticConfig, tamaguiConfig)
-
     let defaultPropsIn = staticConfig.defaultProps || {}
 
     // because we run createTamagui after styled() defs, have to do some work here
@@ -891,7 +876,7 @@ export function createComponent<
     const debug = defaultPropsIn['debug']
 
     // remove all classNames
-    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {})
+    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn)
 
     if (ourProps.tag) {
       defaultTag = ourProps.tag
@@ -903,10 +888,10 @@ export function createComponent<
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props
-    const [defaults, defaultsClassnames] = mergeProps(component.defaultProps as any, {
-      ...defaultVariants,
-      ...restProps,
-    })
+    const [defaults, defaultsClassnames] = mergeProps(
+      component.defaultProps as any,
+      restProps
+    )
 
     // split - keep variables on props to be processed using theme values at runtime (native)
     if (process.env.TAMAGUI_TARGET === 'native') {
@@ -964,10 +949,7 @@ export function createComponent<
         ...conf,
         neverFlatten: true,
         isHOC: true,
-        defaultProps: {
-          ...Component['defaultProps'],
-          ...conf?.defaultProps,
-        },
+        defaultProps: mergeProps(Component['defaultProps'], conf?.defaultProps)[0],
       },
       res
     )

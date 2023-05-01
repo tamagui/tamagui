@@ -29,15 +29,11 @@ export function extendStaticConfig(
   }
 
   const deoptProps = config.deoptProps || new Set<string>()
-  // deoptProps.add('style')
 
-  const defaultProps = mergeProps(
-    { ...parentStaticConfig.defaultProps },
-    {
-      ...config.defaultVariants,
-      ...config.defaultProps,
-    }
-  )[0]
+  const defaultProps = mergeProps(parentStaticConfig.defaultProps, {
+    ...config.defaultProps,
+    ...config.defaultVariants,
+  })[0]
 
   return parseStaticConfig({
     ...parentStaticConfig,
