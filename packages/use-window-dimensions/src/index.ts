@@ -17,7 +17,7 @@ export function configureInitialWindowDimensions(next: Partial<ScaledSize>) {
   Object.assign(initialValue, next)
 }
 
-export function useWindowDimensions({ initial }: { initial?: Partial<ScaledSize> }) {
+export function useWindowDimensions({ initial }: { initial?: Partial<ScaledSize> } = {}) {
   const current = useWindowDimensionsRN()
 
   if (process.env.TAMAGUI_TARGET != 'web') {
