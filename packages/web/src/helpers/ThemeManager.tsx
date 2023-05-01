@@ -1,7 +1,7 @@
-import { getThemes, getTokens } from '../config.js'
-import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants.js'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped.js'
-import { ThemeParsed, ThemeProps } from '../types.js'
+import { getThemes, getTokens } from '../config'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
+import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
+import { ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 

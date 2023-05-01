@@ -1,6 +1,6 @@
 import { isClient } from '@tamagui/constants'
 
-import type { RulesToInsert, StyleObject } from '../types.js'
+import type { RulesToInsert, StyleObject } from '../types'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}

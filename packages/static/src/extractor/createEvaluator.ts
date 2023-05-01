@@ -6,10 +6,10 @@ import * as t from '@babel/types'
 import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 
-import { FAILED_EVAL } from '../constants.js'
-import { TamaguiOptionsWithFileInfo } from '../types.js'
-import { evaluateAstNode } from './evaluateAstNode.js'
-import { isValidThemeHook } from './extractHelpers.js'
+import { FAILED_EVAL } from '../constants'
+import { TamaguiOptionsWithFileInfo } from '../types'
+import { evaluateAstNode } from './evaluateAstNode'
+import { isValidThemeHook } from './extractHelpers'
 
 export function createEvaluator({
   props,

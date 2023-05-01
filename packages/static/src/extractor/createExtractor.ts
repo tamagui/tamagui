@@ -14,7 +14,7 @@ import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
-import { FAILED_EVAL } from '../constants.js'
+import { FAILED_EVAL } from '../constants'
 import type {
   ExtractedAttr,
   ExtractedAttrAttr,
@@ -24,10 +24,10 @@ import type {
   TamaguiOptions,
   TamaguiOptionsWithFileInfo,
   Ternary,
-} from '../types.js'
-import { TamaguiProjectInfo } from './bundleConfig.js'
-import { createEvaluator, createSafeEvaluator } from './createEvaluator.js'
-import { evaluateAstNode } from './evaluateAstNode.js'
+} from '../types'
+import { TamaguiProjectInfo } from './bundleConfig'
+import { createEvaluator, createSafeEvaluator } from './createEvaluator'
+import { evaluateAstNode } from './evaluateAstNode'
 import {
   attrStr,
   findComponentName,
@@ -36,19 +36,19 @@ import {
   isPresent,
   isValidImport,
   objToStr,
-} from './extractHelpers.js'
-import { findTopmostFunction } from './findTopmostFunction.js'
+} from './extractHelpers'
+import { findTopmostFunction } from './findTopmostFunction'
 import {
   cleanupBeforeExit,
   getStaticBindingsForScope,
-} from './getStaticBindingsForScope.js'
-import { literalToAst } from './literalToAst.js'
-import { loadTamagui, loadTamaguiSync } from './loadTamagui.js'
-import { logLines } from './logLines.js'
-import { normalizeTernaries } from './normalizeTernaries.js'
-import { removeUnusedHooks } from './removeUnusedHooks.js'
-import { timer } from './timer.js'
-import { validHTMLAttributes } from './validHTMLAttributes.js'
+} from './getStaticBindingsForScope'
+import { literalToAst } from './literalToAst'
+import { loadTamagui, loadTamaguiSync } from './loadTamagui'
+import { logLines } from './logLines'
+import { normalizeTernaries } from './normalizeTernaries'
+import { removeUnusedHooks } from './removeUnusedHooks'
+import { timer } from './timer'
+import { validHTMLAttributes } from './validHTMLAttributes'
 
 const UNTOUCHED_PROPS = {
   key: true,

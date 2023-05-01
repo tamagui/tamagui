@@ -1,10 +1,10 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config.js'
-import { expandStyle } from './expandStyle.js'
+import { getConfig } from '../config'
+import { expandStyle } from './expandStyle'
 import { normalizeShadow } from './normalizeShadow'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors.js'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { pseudoDescriptors } from './pseudoDescriptors'
 
 let shorthands: Record<string, string> | null = null
 

@@ -1,4 +1,4 @@
-import { createProxy } from './createProxy.js'
+import { createProxy } from './createProxy'
 
 export function proxyThemeVariables<A extends Object>(obj: A): A {
   return createProxy<A>(obj || {}, {

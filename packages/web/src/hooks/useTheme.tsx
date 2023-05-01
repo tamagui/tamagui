@@ -2,18 +2,18 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
-import { getConfig } from '../config.js'
-import { isDevTools } from '../constants/isDevTools.js'
-import { createProxy } from '../helpers/createProxy.js'
+import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
+import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
   ThemeManagerState,
   getNonComponentParentManager,
-} from '../helpers/ThemeManager.js'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
-import type { ThemeParsed, ThemeProps } from '../types.js'
-import { GetThemeUnwrapped } from './getThemeUnwrapped.js'
-import { useServerRef } from './useServerHooks.js'
+} from '../helpers/ThemeManager'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import type { ThemeParsed, ThemeProps } from '../types'
+import { GetThemeUnwrapped } from './getThemeUnwrapped'
+import { useServerRef } from './useServerHooks'
 
 export type ChangedThemeResponse = {
   isNewTheme: boolean

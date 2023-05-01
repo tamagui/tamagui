@@ -2,7 +2,7 @@
 import arg, { flag } from 'arg'
 import chalk from 'chalk'
 
-import { disposeAll, getOptions } from './utils.js'
+import { disposeAll, getOptions } from './utils'
 
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
@@ -23,7 +23,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { build } = await import('./build.js')
+      const { build } = await import('./build')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -36,7 +36,7 @@ const COMMAND_MAP = {
     description: `Update all tamagui packages within a monorepo`,
     flags: {},
     async run() {
-      const { update } = await import('./update.js')
+      const { update } = await import('./update')
       await update()
     },
   },
@@ -51,7 +51,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { dev } = await import('./dev.js')
+      const { dev } = await import('./dev')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -70,7 +70,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { studio } = await import('./studio.js')
+      const { studio } = await import('./studio')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -178,7 +178,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     // build
 //     case 'b':
 //     case 'build': {
-//       const { build } = await import('./build.js')
+//       const { build } = await import('./build')
 //       break
 //     }
 
@@ -188,7 +188,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //       const { generateTamaguiConfig: generateTamgauiConfig } = await import(
 //         './tamaguiConfigUtils.js'
 //       )
-//       const { generateTypes } = await import('./generate.js')
+//       const { generateTypes } = await import('./generate')
 
 //       if (props[0] === 'types') {
 //         await generateTypes(options)
@@ -209,7 +209,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 
 //     // for now, dev === serve, eventually serve can be just prod mode
 //     case 'dev': {
-//       const { dev } = await import('./dev.js')
+//       const { dev } = await import('./dev')
 //       await dev(options)
 //       break
 //     }

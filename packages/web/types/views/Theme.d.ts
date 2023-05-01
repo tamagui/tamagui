@@ -1,5 +1,5 @@
-import { ChangedThemeResponse } from '../hooks/useTheme.js';
-import type { DebugProp, ThemeProps } from '../types.js';
+import { ChangedThemeResponse } from '../hooks/useTheme';
+import type { DebugProp, ThemeProps } from '../types';
 export declare function Theme(props: ThemeProps): any;
 export declare function useThemedChildren(themeState: ChangedThemeResponse, children: any, props: {
     forceClassName?: boolean;

@@ -1,5 +1,5 @@
-import { ChangedThemeResponse } from '../hooks/useTheme.js';
-import { ThemeProps } from '../types.js';
+import { ChangedThemeResponse } from '../hooks/useTheme';
+import { ThemeProps } from '../types';
 export declare function ThemeDebug({ themeState, themeProps, children, }: {
     themeState: ChangedThemeResponse;
     themeProps: ThemeProps;

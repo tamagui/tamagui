@@ -1,8 +1,8 @@
 import { stylePropsView } from '@tamagui/helpers'
 
-import type { StaticConfig, StaticConfigParsed, StylableComponent } from '../types.js'
-import { createPropMapper } from './createPropMapper.js'
-import { mergeProps } from './mergeProps.js'
+import type { StaticConfig, StaticConfigParsed, StylableComponent } from '../types'
+import { createPropMapper } from './createPropMapper'
+import { mergeProps } from './mergeProps'
 
 export function extendStaticConfig(
   config: Partial<StaticConfig>,

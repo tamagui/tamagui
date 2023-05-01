@@ -1,5 +1,5 @@
-import { ThemeManager } from '../helpers/ThemeManager.js';
-import type { ThemeParsed, ThemeProps } from '../types.js';
+import { ThemeManager } from '../helpers/ThemeManager';
+import type { ThemeParsed, ThemeProps } from '../types';
 export type ChangedThemeResponse = {
     isNewTheme: boolean;
     themeManager: ThemeManager | null;

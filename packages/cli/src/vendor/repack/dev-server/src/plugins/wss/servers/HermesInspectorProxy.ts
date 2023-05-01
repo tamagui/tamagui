@@ -4,7 +4,7 @@ import { URL } from 'url'
 import type { FastifyInstance, FastifyReply, FastifyRequest, LogLevel } from 'fastify'
 import WebSocket from 'ws'
 
-import Device from '../../../../vendor/metro-inspector-proxy/src/Device.js'
+import Device from '../../../../vendor/metro-inspector-proxy/src/Device'
 import { Server } from '../../../types'
 import { WebSocketServer } from '../WebSocketServer'
 

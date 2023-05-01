@@ -1,4 +1,4 @@
-import { Variable } from './createVariable.js';
+import { Variable } from './createVariable';
 type DeepTokenObject<Val extends string | number = any> = {
     [key: string]: Val | DeepTokenObject<Val>;
 };

@@ -20,22 +20,22 @@ import React, {
   useRef,
 } from 'react'
 
-import { onConfiguredOnce } from './config.js'
-import { stackDefaultStyles } from './constants/constants.js'
-import { FontLanguageContext } from './contexts/FontLanguageContext.js'
-import { TextAncestorContext } from './contexts/TextAncestorContext.js'
-import { didGetVariableValue, setDidGetVariableValue } from './createVariable.js'
-import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig.js'
-import { useSplitStyles } from './helpers/getSplitStyles.js'
-import { mergeProps } from './helpers/mergeProps.js'
-import { proxyThemeVariables } from './helpers/proxyThemeVariables.js'
-import { themeable } from './helpers/themeable.js'
-import { useShallowSetState } from './helpers/useShallowSetState.js'
-import { useAnimationDriver } from './hooks/useAnimationDriver.js'
-import { setMediaShouldUpdate, useMedia } from './hooks/useMedia.js'
-import { useServerRef, useServerState } from './hooks/useServerHooks.js'
-import { useThemeWithState } from './hooks/useTheme.js'
-import { hooks } from './setupHooks.js'
+import { onConfiguredOnce } from './config'
+import { stackDefaultStyles } from './constants/constants'
+import { FontLanguageContext } from './contexts/FontLanguageContext'
+import { TextAncestorContext } from './contexts/TextAncestorContext'
+import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
+import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
+import { useSplitStyles } from './helpers/getSplitStyles'
+import { mergeProps } from './helpers/mergeProps'
+import { proxyThemeVariables } from './helpers/proxyThemeVariables'
+import { themeable } from './helpers/themeable'
+import { useShallowSetState } from './helpers/useShallowSetState'
+import { useAnimationDriver } from './hooks/useAnimationDriver'
+import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import { useServerRef, useServerState } from './hooks/useServerHooks'
+import { useThemeWithState } from './hooks/useTheme'
+import { hooks } from './setupHooks'
 import {
   DebugProp,
   SpaceDirection,
@@ -53,8 +53,8 @@ import {
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
-import { Slot } from './views/Slot.js'
-import { useThemedChildren } from './views/Theme.js'
+import { Slot } from './views/Slot'
+import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
 // let t

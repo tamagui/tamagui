@@ -5,11 +5,11 @@
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 
-import { getConfig } from '../config.js'
-import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types.js'
-import { defaultOffset } from './defaultOffset.js'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
+import { getConfig } from '../config'
+import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import { defaultOffset } from './defaultOffset'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...
 

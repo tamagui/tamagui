@@ -1,5 +1,5 @@
-import { mediaObjectToString } from '../hooks/useMedia.js'
-import type { MediaQueries, MediaStyleObject, StyleObject } from '../types.js'
+import { mediaObjectToString } from '../hooks/useMedia'
+import type { MediaQueries, MediaStyleObject, StyleObject } from '../types'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now

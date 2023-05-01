@@ -1,6 +1,6 @@
 import { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
-import { CustomData, useToast, useToastController, useToastState } from './ToastImperative.js';
+import { CustomData, useToast, useToastController, useToastState } from './ToastImperative';
 import { ToastProps } from './ToastImpl';
 import { ToastProvider, ToastProviderProps, createToastScope } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';

@@ -7,19 +7,19 @@ import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
 
-import { SHOULD_DEBUG } from '../constants.js'
-import { getNameToPaths, registerRequire } from '../require.js'
+import { SHOULD_DEBUG } from '../constants'
+import { getNameToPaths, registerRequire } from '../require'
 import {
   TamaguiProjectInfo,
   esbuildOptions,
   getBundledConfig,
   hasBundledConfigChanged,
   loadComponents,
-} from './bundleConfig.js'
+} from './bundleConfig'
 import {
   generateTamaguiStudioConfig,
   generateTamaguiStudioConfigSync,
-} from './generateTamaguiStudioConfig.js'
+} from './generateTamaguiStudioConfig'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults

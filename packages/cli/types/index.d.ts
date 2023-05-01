@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-import './cli.js';
+import './cli';
 //# sourceMappingURL=index.d.ts.map

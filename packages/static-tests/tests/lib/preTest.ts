@@ -2,8 +2,8 @@ import path from 'path'
 
 import webpack from 'webpack'
 
-import { externalizeModules } from './externalizeModules.js'
-import { outDir, specDir } from './test-constants.js'
+import { externalizeModules } from './externalizeModules'
+import { outDir, specDir } from './test-constants'
 
 const outFileWebpack = 'out-webpack.js'
 

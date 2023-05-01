@@ -1,12 +1,12 @@
 import * as Helpers from '@tamagui/helpers'
 
-import { getConfig } from './config.js'
+import { getConfig } from './config'
 import {
   getAllRules,
   getAllSelectors,
   getAllTransforms,
-} from './helpers/insertStyleRule.js'
-import { mediaState } from './hooks/useMedia.js'
+} from './helpers/insertStyleRule'
+import { mediaState } from './hooks/useMedia'
 
 // easy introspection
 // only included in dev mode

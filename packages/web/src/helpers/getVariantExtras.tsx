@@ -1,7 +1,7 @@
-import { getConfig } from '../config.js'
-import { GenericFonts } from '../types.js'
-import { LanguageContextType } from '../views/FontLanguage.types.js'
-import { createProxy } from './createProxy.js'
+import { getConfig } from '../config'
+import { GenericFonts } from '../types'
+import { LanguageContextType } from '../views/FontLanguage.types'
+import { createProxy } from './createProxy'
 
 const extrasCache = new WeakMap()
 
