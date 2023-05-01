@@ -10,7 +10,7 @@ import rehypeHighlightWord from './rehype-highlight-word'
 let highlighter: (
   source: string,
   language: 'tsx' | 'css' | string,
-  line: string
+  line?: string
 ) => string
 
 export function createCodeHighlighter() {

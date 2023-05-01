@@ -299,8 +299,12 @@ function getTextContent(
 
           case 'code':
             return (
-              <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
-                {item.content}
+              <DocCodeBlock
+                isHighlightingLines
+                size={size ?? '$8'}
+              >
+                
+                <div dangerouslySetInnerHTML={{ __html: item.content }}  />
               </DocCodeBlock>
             )
 

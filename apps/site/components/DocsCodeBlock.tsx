@@ -130,8 +130,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   className={className}
                   size={size ?? '$4'}
                   lineHeight={size ?? '$4'}
-                  dangerouslySetInnerHTML={{ __html: children }}
-                />
+                >
+                  {children}
+                </Code>
               </ScrollView>
             </Pre>
             <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
