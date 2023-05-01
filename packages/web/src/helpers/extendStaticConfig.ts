@@ -62,7 +62,7 @@ export const mergeVariants = (
 
   if (ourVariants) {
     for (const key in ourVariants) {
-      if (variants[key]) {
+      if (key in variants) {
         variants[key] = {
           ...variants[key],
           ...ourVariants[key],
