@@ -5,12 +5,13 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      theme="orange"
+      theme="purple"
       steps={[
         [
           {
-            type: 'callout',
-            content: `Why?`,
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/twitter-poll.png').default,
           },
         ],
       ]}

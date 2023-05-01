@@ -48,7 +48,7 @@ type SlideStepItem =
     }
   | {
       type: 'image'
-      variant?: 'circled'
+      variant?: 'circled' | 'centered'
       image: {
         width: number
         height: number
@@ -202,6 +202,7 @@ function getTextContent(
     <div
       style={{
         display: 'inline-block',
+        height: '100%',
         ...wrapperStyle,
       }}
     >
@@ -228,6 +229,12 @@ function getTextContent(
                   ov: 'hidden',
                   bw: 5,
                   boc: '$borderColor',
+                })}
+                {...(item.variant === 'centered' && {
+                  als: 'center',
+                  ai: 'center',
+                  jc: 'center',
+                  h: '100%',
                 })}
               >
                 <img
@@ -301,18 +308,21 @@ function getTextContent(
             let size = '$12' as any
 
             if (typeof item.content === 'string') {
-              size = `$${Math.max(
-                Math.min(8, Math.round(item.content.length / 1.25)),
+              const sizeNum = Math.min(
+                Math.max(8, Math.round(1_300 / item.content.length)),
                 16
-              )}`
+              )
+              size = `$${sizeNum}`
             }
 
             return (
-              <YStack f={1} ai="center" jc="center" h="55vh">
+              <YStack f={1} ai="center" jc="center">
                 <Paragraph
                   theme="yellow"
                   color="$color10"
                   als="center"
+                  textShadowColor="$shadowColor"
+                  textShadowRadius={20}
                   ta="center"
                   p="$10"
                   size={size}
@@ -327,7 +337,11 @@ function getTextContent(
             let size = '$10' as any
 
             if (typeof item.content === 'string') {
-              size = `$${Math.max(Math.min(8, Math.round(item.content.length / 5)), 12)}`
+              const sizeNum = Math.min(
+                Math.max(8, Math.round(700 / item.content.length)),
+                16
+              )
+              size = `$${sizeNum}`
             }
 
             return (

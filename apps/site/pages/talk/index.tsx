@@ -22,8 +22,11 @@ import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
+import slideTwitterPoll from './slides/slide-twitter-poll'
 import Slide2 from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
+import slideWhy2 from './slides/slide-why2'
+import slideWhy3 from './slides/slide-why3'
 import Slide1 from './slides/slide1'
 import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
@@ -56,8 +59,11 @@ export default function TamaguiTalk() {
       <Slides
         slides={[
           Slide1,
+          slideTwitterPoll,
           Slide2,
           SlideWhy,
+          slideWhy2,
+          slideWhy3,
           SlideTrilemma,
           SlideHow,
           slideCssInJs,
