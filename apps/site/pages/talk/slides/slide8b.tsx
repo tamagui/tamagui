@@ -1,19 +1,12 @@
+import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
 
-export default memo(() => {
-  return (
-    <Slide
-      title="Tamagui UI"
-      subTitle="Less API surface = ship faster"
-      theme="pink"
-      steps={[
-        [
-          {
-            type: 'code',
-            content: `
-<Popover size="$5" allowFlip {...props}>
+const highlightCode = createCodeHighlighter()
+
+const tamaguiUiSnippet = highlightCode(
+  `<Popover size="$5" allowFlip {...props}>
   <Popover.Trigger asChild>
     <Button icon={Icon} />
   </Popover.Trigger>
@@ -58,6 +51,20 @@ export default memo(() => {
   </Popover.Content>
 </Popover>
 `,
+  'tsx'
+)
+
+export default memo(() => {
+  return (
+    <Slide
+      title="Tamagui UI"
+      subTitle="Less API surface = ship faster"
+      theme="pink"
+      steps={[
+        [
+          {
+            type: 'code',
+            content: tamaguiUiSnippet,
           },
           // {
           //   type: 'split-horizontal',
