@@ -1,6 +1,39 @@
+import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
+
+const highlightCode = createCodeHighlighter()
+
+const inputSnippet = highlightCode(
+  `
+const themes = {
+  light: {
+    background: '#fff',
+    color: '#000',
+  },
+  dark: {
+    background: '#000',
+    color: '#fff'
+  }
+}
+`,
+  'tsx'
+)
+
+const outputSnippet = highlightCode(
+  `.t_light {
+  --background: #fff;
+  --color: #000;
+}
+
+.t_dark {
+  --background: #000;
+  --color: #fff;
+}
+`,
+  'tsx'
+)
 
 export default memo(() => {
   return (
@@ -15,32 +48,11 @@ export default memo(() => {
             content: [
               {
                 type: 'code',
-                content: `
-    const themes = {
-      light: {
-        background: '#fff',
-        color: '#000',
-      },
-      dark: {
-        background: '#000',
-        color: '#fff'
-      }
-    }
-    `,
+                content: inputSnippet,
               },
               {
                 type: 'code',
-                content: `
-.t_light {
-  --background: #fff;
-  --color: #000;
-}
-
-.t_dark {
-  --background: #000;
-  --color: #fff;
-}
-    `,
+                content: outputSnippet,
               },
             ],
           },
