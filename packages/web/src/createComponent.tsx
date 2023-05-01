@@ -360,7 +360,6 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
-          console.warn(themeState.name)
         }
       }
     }
@@ -987,9 +986,7 @@ export function createComponent<
       : forwardRef(Component as any)
 
     const out = themeable(ComponentForwardedRef, staticConfig) as any
-
     extendStyledConfig(out, conf)
-
     return out
   }
 

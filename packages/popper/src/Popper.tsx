@@ -307,6 +307,7 @@ const PopperArrowFrame = styled(YStack, {
 
 const PopperArrowOuterFrame = styled(YStack, {
   name: 'PopperArrowOuter',
+  debug: 'verbose',
 
   variants: {
     unstyled: {
