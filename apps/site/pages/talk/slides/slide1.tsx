@@ -255,7 +255,7 @@ const lettersConf: LetterConf[] = [
     props: {
       rotate: '-20deg',
       fontSize: 380,
-      theme: 'red',
+      theme: 'yellow',
     },
     glow: {
       resist: 96,
@@ -279,7 +279,7 @@ const lettersConf: LetterConf[] = [
       rotate: '5deg',
       zIndex: 20,
       fontSize: 320,
-      theme: 'yellow',
+      theme: 'green',
     },
     glow: {
       resist: 92,
@@ -303,7 +303,7 @@ const lettersConf: LetterConf[] = [
     props: {
       rotate: '-5deg',
       fontSize: 400,
-      theme: 'green',
+      theme: 'blue',
     },
     glow: {
       resist: 99,
@@ -328,7 +328,7 @@ const lettersConf: LetterConf[] = [
     props: {
       rotate: '3deg',
       fontSize: 310,
-      theme: 'blue',
+      theme: 'purple',
     },
     glow: {
       resist: 95,
@@ -351,7 +351,7 @@ const lettersConf: LetterConf[] = [
     props: {
       rotate: '-8deg',
       fontSize: 380,
-      theme: 'purple',
+      theme: 'pink',
     },
     glow: {
       resist: 97,
@@ -374,7 +374,7 @@ const lettersConf: LetterConf[] = [
     props: {
       rotate: '10deg',
       fontSize: 300,
-      theme: 'pink',
+      theme: 'red',
     },
     glow: {
       resist: 92,
