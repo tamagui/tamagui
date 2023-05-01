@@ -50,7 +50,7 @@ const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (pr
 
           {
             type: 'centered',
-            content: `Write code how you want.`,
+            content: `Write code without worry.`,
           },
         ],
       ]}

@@ -17,17 +17,17 @@ export function SelectDemo() {
 
   return (
     <YStack space>
-      <XStack ai="center" space>
+      {/* <XStack ai="center" space>
         <Label f={1} fb={0}>
           Custom
         </Label>
         <SelectDemoItem value={val} onValueChange={setVal} />
-      </XStack>
+      </XStack> */}
 
       <XStack ai="center" space>
-        <Label f={1} fb={0}>
+        {/* <Label f={1} fb={0}>
           Native
-        </Label>
+        </Label> */}
         <SelectDemoItem value={val} onValueChange={setVal} native />
       </XStack>
     </YStack>
@@ -42,7 +42,7 @@ export function SelectDemoItem(props: SelectProps) {
       </Select.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet modal dismissOnSnapToBottom>
+        <Sheet native modal dismissOnSnapToBottom>
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
@@ -79,7 +79,7 @@ export function SelectDemoItem(props: SelectProps) {
               {items.map((item, i) => {
                 return (
                   <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
-                    <Select.ItemText>{item.name}</Select.ItemText>
+                    <Select.ItemText color="#fff">{item.name}</Select.ItemText>
                     <Select.ItemIndicator marginLeft="auto">
                       <Check size={16} />
                     </Select.ItemIndicator>

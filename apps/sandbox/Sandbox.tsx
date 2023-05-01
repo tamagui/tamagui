@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { SliderDemo } from '@tamagui/demos'
+import { SelectDemo, SliderDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, lazy, useState } from 'react'
 import {
@@ -45,7 +45,12 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <TestPerf />
+  return (
+    <Theme name="blue">
+      <SelectDemo />
+    </Theme>
+  )
+  // return <TestPerf />
   // return <Square animation="bouncy" size={100} bc="red" />
 }
 

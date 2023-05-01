@@ -1,4 +1,5 @@
-import { getVariable } from '@tamagui/core'
+import { Theme, getVariable } from '@tamagui/core'
+import { SelectDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
@@ -27,18 +28,24 @@ export function HomeScreen() {
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
-          Demos
+          Select
         </H1>
 
-        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
-          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
-        </YStack>
-
+        <Theme name="blue">
+          <SelectDemo />
+        </Theme>
+        {/* 
         <YGroup size="$4">
           <YGroup.Item>
             <ColorSchemeListItem />
           </YGroup.Item>
-        </YGroup>
+        </YGroup> */}
+
+        <Spacer size={1000} />
+
+        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
+          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
+        </YStack>
 
         <YStack space="$4" maw={600}>
           {demos.map((group, i) => {

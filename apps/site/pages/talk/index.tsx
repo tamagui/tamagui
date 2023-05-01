@@ -16,6 +16,9 @@ import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
+import SlideTamagui from './slides/slide-tamagui'
+import slideTamaguiCode from './slides/slide-tamagui-code'
+import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
@@ -24,9 +27,7 @@ import SlideWhy from './slides/slide-why'
 import Slide1 from './slides/slide1'
 import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
-import Slide5 from './slides/slide5'
 import Slide6c from './slides/slide6c'
-import Slide8 from './slides/slide8'
 
 const slideDimensions = {
   width: 1280,
@@ -68,7 +69,8 @@ export default function TamaguiTalk() {
           SlideFlatten,
           Slide6c,
           SlideExpressYourself,
-          Slide8,
+          SlideTamagui,
+          slideTamaguiCode,
           Slide5,
           SlideLessons1,
           SlideLessons2,

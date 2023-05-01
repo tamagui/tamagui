@@ -274,7 +274,7 @@ function getTextContent(
 
           case 'code':
             return (
-              <DocCodeBlock isHighlightingLines size={size ?? '$6'}>
+              <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
                 {item.content}
               </DocCodeBlock>
             )

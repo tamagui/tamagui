@@ -19,6 +19,27 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
+                    props: {
+                      size: '$10',
+                      display: 'inline-flex',
+                      my: '$4',
+                    },
+                    content: `Radix-like composable component APIs`,
+                  },
+                ],
+              },
+
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'text',
+                    props: {
+                      size: '$10',
+                      display: 'inline-flex',
+                      my: '$4',
+                    },
                     content: `Themeable`,
                   },
                 ],
@@ -30,18 +51,12 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
+                    props: {
+                      size: '$10',
+                      display: 'inline-flex',
+                      my: '$4',
+                    },
                     content: `Sizeable`,
-                  },
-                ],
-              },
-
-              {
-                type: 'bullet-point',
-                slim: true,
-                content: [
-                  {
-                    type: 'text',
-                    content: `Radix-y composable components`,
                   },
                 ],
               },
@@ -53,6 +68,26 @@ export default memo(() => {
                   {
                     type: 'code-inline',
                     content: `<Adapt />`,
+                  },
+                ],
+              },
+
+              {
+                type: 'bullet-point',
+                slim: true,
+                content: [
+                  {
+                    type: 'text',
+                    props: {
+                      size: '$10',
+                      display: 'inline-flex',
+                      my: '$4',
+                    },
+                    content: `Prop:`,
+                  },
+                  {
+                    type: 'code-inline',
+                    content: `native`,
                   },
                 ],
               },

@@ -1,0 +1,48 @@
+import { Slide } from 'components/Slide'
+import React from 'react'
+import { memo } from 'react'
+
+export default memo(() => {
+  return (
+    <Slide
+      title="Tamagui"
+      subTitle="Adapt based on platform or capability"
+      theme="blue"
+      steps={[
+        [
+          {
+            type: 'code',
+            content: `
+<Popover>
+  <Popover.Trigger asChild>
+    <Button />
+  </Popover.Trigger>
+
+  <Adapt when="sm" platform="touch">
+    <Popover.Sheet>
+      <Popover.Sheet.Frame>
+        <Adapt.Contents />
+      </Popover.Sheet.Frame>
+    </Popover.Sheet>
+  </Adapt>
+
+  <Popover.Content animation="quick">
+     {/* ... */}
+  </Popover.Content>
+</Popover>
+`,
+          },
+          // {
+          //   type: 'split-horizontal',
+          //   content: [
+          //     {
+          //       type: 'image',
+          //       image: require('../images/popover.jpg').default,
+          //     },
+          //   ],
+          // },
+        ],
+      ]}
+    />
+  )
+})
