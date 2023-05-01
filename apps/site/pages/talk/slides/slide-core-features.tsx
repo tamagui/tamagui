@@ -22,6 +22,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Responsive styles`,
                       },
                     ],
@@ -32,6 +37,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Psuedo styles`,
                       },
                     ],
@@ -42,6 +52,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Tokens`,
                       },
                     ],
@@ -52,6 +67,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Themes`,
                       },
                     ],
@@ -62,6 +82,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Nesting`,
                       },
                     ],
@@ -78,6 +103,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Typed variants`,
                       },
                     ],
@@ -88,6 +118,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `className, tag, etc`,
                       },
                     ],
@@ -98,6 +133,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Functional variants`,
                       },
                     ],
@@ -108,6 +148,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Shorthands`,
                       },
                     ],
@@ -118,6 +163,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'text',
+                        props: {
+                          size: '$10',
+                          marginBottom: 40,
+                          display: 'inline-flex',
+                        },
                         content: `Unified RN API's`,
                       },
                     ],

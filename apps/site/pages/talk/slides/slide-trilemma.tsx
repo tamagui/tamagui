@@ -5,8 +5,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Choose two"
-      subTitle="Can we solve the write-once trillemma?"
+      title="Can we solve it?"
+      subTitle="You typically have to choose two:"
       theme="purple"
       steps={[
         [

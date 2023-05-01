@@ -5,8 +5,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Why?"
-      subTitle="Writing a universal app degrades both code quality and performance 😭"
+      title="How?"
+      subTitle="Faster than 0-runtime, with a runtime"
       theme="purple"
       steps={[
         [
@@ -20,7 +20,7 @@ export default memo(() => {
 
               {
                 type: 'code-inline',
-                content: 'useWindowDimensions + setState',
+                content: '@media (max-width) ...',
               },
             ],
           },
@@ -30,12 +30,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Pseudo styles -',
+                content: 'Pseudo styles - ',
               },
 
               {
                 type: 'code-inline',
-                content: 'useState + Pressable + onPressIn + onPressOut',
+                content: ':hover, :focus, :active',
               },
             ],
           },
@@ -45,12 +45,12 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'Themes -',
+                content: 'Themes - ',
               },
 
               {
                 type: 'code-inline',
-                content: 'Whole-tree re-render and re-parse styles',
+                content: '--background: #000',
               },
             ],
           },
@@ -60,12 +60,27 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'CSS > JS -',
+                content: 'CSS - ',
               },
 
               {
                 type: 'code-inline',
-                content: 'Bundle size and parsing time',
+                content: '{ backgroundColor: "#000" } => CSS + { bg: "bg0" }',
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: 'Flattening - ',
+              },
+
+              {
+                type: 'code-inline',
+                content: '<Stack /> becomes <div /> or <View />',
               },
             ],
           },

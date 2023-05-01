@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="Express yourself"
-      subTitle="No-cost inline styles ftw"
+      subTitle="No-cost inline styles make better products"
       theme="green"
       steps={[
         [
@@ -46,6 +46,11 @@ const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (pr
   </div>`,
               },
             ],
+          },
+
+          {
+            type: 'centered',
+            content: `Write code how you want.`,
           },
         ],
       ]}

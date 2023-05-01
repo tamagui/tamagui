@@ -13,6 +13,9 @@ export default memo(() => {
             content: [
               {
                 type: 'code-inline',
+                props: {
+                  size: '$10',
+                },
                 content: `@tamagui/core`,
               },
               {
@@ -36,6 +39,9 @@ export default memo(() => {
             content: [
               {
                 type: 'code-inline',
+                props: {
+                  size: '$10',
+                },
                 content: `@tamagui/static`,
               },
               {
@@ -54,6 +60,9 @@ export default memo(() => {
             content: [
               {
                 type: 'code-inline',
+                props: {
+                  size: '$10',
+                },
                 content: `tamagui`,
               },
               {

@@ -5,6 +5,7 @@ import {
   H1,
   H2,
   Paragraph,
+  SizableTextProps,
   SpaceTokens,
   Spacer,
   Theme,
@@ -42,6 +43,10 @@ type SlideStepItem =
       content: any
     }
   | {
+      type: 'centered'
+      content: any
+    }
+  | {
       type: 'image'
       image: {
         width: number
@@ -55,14 +60,17 @@ type SlideStepItem =
     }
   | {
       type: 'text'
+      props?: SizableTextProps
       content: React.ReactNode
     }
   | {
       type: 'text-bold'
+      props?: SizableTextProps
       content: React.ReactNode
     }
   | {
       type: 'code' | 'code-inline'
+      props?: SizableTextProps
       content: string
       lang?: 'tsx'
     }
@@ -234,7 +242,7 @@ function getTextContent(
             return (
               <YStack
                 pl="$10"
-                pt="$4"
+                pt="$2"
                 pr="$10"
                 {...(item.slim && {
                   pl: '$2',
@@ -249,7 +257,14 @@ function getTextContent(
             )
           case 'code-inline':
             return (
-              <Code bc="$color8" color="$color11" size={size ?? '$9'} px="$3" py="$2">
+              <Code
+                bc="$color8"
+                color="$color11"
+                size={size ?? '$9'}
+                px="$3"
+                py="$2"
+                {...item.props}
+              >
                 {item.content}
               </Code>
             )
@@ -264,7 +279,16 @@ function getTextContent(
               </DocCodeBlock>
             )
 
-          case 'callout':
+          case 'callout': {
+            let size = '$12' as any
+
+            if (typeof item.content === 'string') {
+              size = `$${Math.max(
+                Math.min(8, Math.round(item.content.length / 1.25)),
+                16
+              )}`
+            }
+
             return (
               <YStack f={1} ai="center" jc="center" h="60vh">
                 <Paragraph
@@ -273,23 +297,40 @@ function getTextContent(
                   als="center"
                   ta="center"
                   p="$10"
-                  size="$13"
+                  size={size}
                 >
                   {item.content}&nbsp;
                 </Paragraph>
               </YStack>
             )
+          }
+
+          case 'centered': {
+            let size = '$10' as any
+
+            if (typeof item.content === 'string') {
+              size = `$${Math.max(Math.min(8, Math.round(item.content.length / 5)), 12)}`
+            }
+
+            return (
+              <YStack f={1} ai="center" jc="center" px="$6">
+                <Paragraph als="center" ta="center" size={size}>
+                  {item.content}&nbsp;
+                </Paragraph>
+              </YStack>
+            )
+          }
 
           case 'text':
             return (
-              <Paragraph size={size ?? '$9'} fow="400" lh="$10">
+              <Paragraph size={size ?? '$9'} fow="400" lh="$10" {...item.props}>
                 {item.content}&nbsp;
               </Paragraph>
             )
 
           case 'text-bold':
             return (
-              <Paragraph fow="800" size={size ?? '$9'} lh="$10">
+              <Paragraph fow="800" size={size ?? '$9'} lh="$10" {...item.props}>
                 {item.content}&nbsp;
               </Paragraph>
             )

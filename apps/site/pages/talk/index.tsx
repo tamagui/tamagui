@@ -9,22 +9,23 @@ import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tam
 
 import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
+import Slide3a from './slides/slide-core-features'
+import slideCssInJs from './slides/slide-css-in-js'
+import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
+import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
 import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
+import Slide2 from './slides/slide-what'
+import SlideWhy from './slides/slide-why'
 import Slide1 from './slides/slide1'
-import Slide2 from './slides/slide2'
 import Slide3 from './slides/slide3'
-import Slide3a from './slides/slide3a'
 import Slide4 from './slides/slide4'
 import Slide5 from './slides/slide5'
-import Slide6 from './slides/slide6'
-import Slide6a from './slides/slide6a'
 import Slide6c from './slides/slide6c'
-import Slide6d from './slides/slide6d'
 import Slide8 from './slides/slide8'
 
 const slideDimensions = {
@@ -55,9 +56,10 @@ export default function TamaguiTalk() {
         slides={[
           Slide1,
           Slide2,
-          Slide6,
+          SlideWhy,
           SlideTrilemma,
-          Slide6a,
+          SlideHow,
+          slideCssInJs,
           Slide3,
           Slide3a,
           SlideThemes,
@@ -65,7 +67,7 @@ export default function TamaguiTalk() {
           Slide4,
           SlideFlatten,
           Slide6c,
-          Slide6d,
+          SlideExpressYourself,
           Slide8,
           Slide5,
           SlideLessons1,
