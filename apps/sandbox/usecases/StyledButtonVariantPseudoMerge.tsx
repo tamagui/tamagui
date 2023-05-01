@@ -16,7 +16,7 @@ const StyledButton = styled(Button, {
   },
 })
 
-const DoubleStyledButtonNoVariants = styled(StyledButton, {})
+const DoubleStyledButtonNoVariants = styled(Button, {})
 
 export default () => (
   <>
@@ -26,8 +26,6 @@ export default () => (
     <StyledButton id="animated" reddish animation="quick">
       test
     </StyledButton>
-    <DoubleStyledButtonNoVariants reddish id="double-styled">
-      test
-    </DoubleStyledButtonNoVariants>
+    <DoubleStyledButtonNoVariants id="double-styled">test</DoubleStyledButtonNoVariants>
   </>
 )

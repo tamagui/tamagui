@@ -987,7 +987,9 @@ export function createComponent<
       : forwardRef(Component as any)
 
     const out = themeable(ComponentForwardedRef, staticConfig) as any
+
     extendStyledConfig(out, conf)
+
     return out
   }
 
