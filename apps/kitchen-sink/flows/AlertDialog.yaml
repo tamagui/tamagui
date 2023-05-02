@@ -1,0 +1,16 @@
+appId: com.tamagui.kitchensink
+tags:
+  - component
+
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'AlertDialog'
+- tapOn: 'AlertDialog'
+- assertNotVisible: 'Accept'
+- tapOn: 'Show Alert'
+- assertVisible: 'Accept'
+- assertVisible: 'Cancel'
+- tapOn: 'Cancel'
+- assertNotVisible: 'Accept'
+- tapOn: 'Home'

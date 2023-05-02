@@ -1,0 +1,14 @@
+appId: com.tamagui.kitchensink
+tags:
+  - component
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'Toast'
+- tapOn: 'Toast'
+- tapOn: 'Show'
+- assertVisible: 'Successfully saved!'
+- tapOn: 'Native'
+- tapOn: 'Show'
+- assertVisible: 'Successfully saved!'
+- tapOn: 'Home'

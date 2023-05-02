@@ -12,7 +12,8 @@
     "android": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
     "web": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=web yarn expo start --web",
-    "eject": "EXPO_NO_TELEMETRY=true expo eject"
+    "eject": "EXPO_NO_TELEMETRY=true expo eject",
+    "test:native": "maestro test ./flows --exclude-tags=util"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.17.11",
