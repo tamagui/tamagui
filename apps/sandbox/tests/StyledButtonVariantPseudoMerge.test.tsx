@@ -20,8 +20,7 @@ test(`animation + pseudo + variant with pseudo should merge`, async ({ page }) =
   expect(pressStyles.transform).toBe(`matrix(0.5, 0, 0, 0.5, 0, 0)`)
 })
 
-// TODO bring back, see TODO why is this breaking native but fixing web
-test.skip(`styled without variants HOC of HOC + pseudo`, async ({ page }) => {
+test(`styled without variants HOC of HOC + pseudo`, async ({ page }) => {
   const button = page.locator('#double-styled')
   const pressStyles = await getPressStyle(button, { delay: 3000 })
   expect(pressStyles.backgroundColor).toBe(`rgb(255, 0, 0)`)

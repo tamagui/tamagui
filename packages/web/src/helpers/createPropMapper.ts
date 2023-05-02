@@ -516,7 +516,7 @@ Set the debug prop to true to see more detailed debug information.`
       if (debug) {
         if (isDevTools) {
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log('Looked in:', { theme, tokensParsed, fontsParsed })
+          console.log('Looked in:', { theme, tokensParsed })
         }
       }
       return null

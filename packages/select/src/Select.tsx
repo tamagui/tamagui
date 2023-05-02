@@ -42,21 +42,17 @@ export type SelectTriggerProps = ListItemProps
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
-    const {
-      __scopeSelect,
-      disabled = false,
-      // @ts-ignore
-      'aria-labelledby': ariaLabelledby,
-      ...triggerProps
-    } = props
+    const { __scopeSelect, disabled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
     // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
-    const labelledBy = ariaLabelledby // || labelId
+    // const labelledBy = ariaLabelledby || labelId
 
-    if (context.shouldRenderWebNative) return null
+    if (context.shouldRenderWebNative) {
+      return null
+    }
 
     return (
       <ListItem
@@ -72,7 +68,6 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
-        aria-labelledby={labelledBy}
         dir={context.dir}
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
