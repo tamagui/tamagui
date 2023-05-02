@@ -1,4 +1,4 @@
-import { StaticConfig, StaticConfigParsed } from '../types.js'
+import { StaticConfig, StaticConfigParsed } from '../types'
 
 export function isTamaguiComponent<A>(
   comp: A,

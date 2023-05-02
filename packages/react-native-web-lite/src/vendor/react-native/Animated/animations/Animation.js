@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
 var startNativeAnimationNextId = 1 // Important note: start() and stop() will only be called at most once.
 // Once an animation has been stopped or finished its course, it will
 // not be reused.

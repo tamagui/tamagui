@@ -1,3 +1,3 @@
-export * from './Stacks.js'
-export * from './SizableStack.js'
-export * from './ThemeableStack.js'
+export * from './Stacks'
+export * from './SizableStack'
+export * from './ThemeableStack'

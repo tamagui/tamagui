@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 
-import { DebugProp, StaticConfig, ThemeName } from '../types.js'
-import { Theme } from '../views/Theme.js'
+import { DebugProp, StaticConfig, ThemeName } from '../types'
+import { Theme } from '../views/Theme'
 
 export interface ThemeableProps {
   theme?: ThemeName | null

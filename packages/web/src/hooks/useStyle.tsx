@@ -1,9 +1,9 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 import { useContext } from 'react'
 
-import { FontLanguageContext } from '../contexts/FontLanguageContext.js'
-import { TextAncestorContext } from '../contexts/TextAncestorContext.js'
-import { useSplitStyles } from '../helpers/getSplitStyles.js'
+import { FontLanguageContext } from '../contexts/FontLanguageContext'
+import { TextAncestorContext } from '../contexts/TextAncestorContext'
+import { useSplitStyles } from '../helpers/getSplitStyles'
 import {
   DebugProp,
   GetProps,
@@ -11,8 +11,8 @@ import {
   TamaguiComponent,
   TextNonStyleProps,
 } from '../types'
-import { useMedia } from './useMedia.js'
-import { useTheme } from './useTheme.js'
+import { useMedia } from './useMedia'
+import { useTheme } from './useTheme'
 
 export function useStyle<
   Component extends TamaguiComponent,

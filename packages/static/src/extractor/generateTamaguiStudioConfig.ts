@@ -4,7 +4,7 @@ import { getVariableValue } from '@tamagui/core-node'
 import { TamaguiOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 
-import { BundledConfig, getBundledConfig } from './bundleConfig.js'
+import { BundledConfig, getBundledConfig } from './bundleConfig'
 
 const confFile = join(process.cwd(), '.tamagui', 'tamagui.config.json')
 

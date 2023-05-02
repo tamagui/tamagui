@@ -9,9 +9,9 @@
  */
 'use strict'
 
-import Easing from '../Easing.js'
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import Animation from './Animation.js'
+import Easing from '../Easing'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import Animation from './Animation'
 
 var _easeInOut
 

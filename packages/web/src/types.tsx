@@ -21,11 +21,11 @@ import type {
   ViewStyle,
 } from 'react-native'
 
-import type { Variable } from './createVariable.js'
-import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
-import type { FontLanguageProps } from './views/FontLanguage.types.js'
-import { Stack } from './views/Stack.js'
-import type { ThemeProviderProps } from './views/ThemeProvider.js'
+import type { Variable } from './createVariable'
+import type { ResolveVariableTypes } from './helpers/createPropMapper'
+import type { FontLanguageProps } from './views/FontLanguage.types'
+import { Stack } from './views/Stack'
+import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 

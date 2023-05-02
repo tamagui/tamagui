@@ -1,9 +1,9 @@
-import { setConfigFont } from './config.js'
-import { createFont } from './createFont.js'
-import { Variable } from './createVariable.js'
-import { DeepVariableObject, createVariables } from './createVariables.js'
-import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable.js'
-import { GenericFont } from './types.js'
+import { setConfigFont } from './config'
+import { createFont } from './createFont'
+import { Variable } from './createVariable'
+import { DeepVariableObject, createVariables } from './createVariables'
+import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
+import { GenericFont } from './types'
 
 /**
  * Runtime dynamic insert font

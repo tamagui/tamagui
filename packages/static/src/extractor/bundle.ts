@@ -3,7 +3,7 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
-import { resolveWebOrNativeSpecificEntry } from './loadTamagui.js'
+import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 
 /**
  * For internal loading of new files

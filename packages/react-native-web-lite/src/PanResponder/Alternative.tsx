@@ -53,7 +53,7 @@
 
 import { InteractionManager } from 'react-native-web-internals'
 
-import TouchHistoryMath from '../vendor/react-native/TouchHistoryMath/index.js'
+import TouchHistoryMath from '../vendor/react-native/TouchHistoryMath/index'
 
 type PressEvent = any
 

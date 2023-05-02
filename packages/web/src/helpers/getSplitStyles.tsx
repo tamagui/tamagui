@@ -16,15 +16,15 @@ import {
 } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 
-import { getConfig, getFont } from '../config.js'
-import { isDevTools } from '../constants/isDevTools.js'
+import { getConfig, getFont } from '../config'
+import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
   mediaKeysWithAndWithout$,
   mediaQueryConfig,
   mergeMediaByImportance,
-} from '../hooks/useMedia.js'
+} from '../hooks/useMedia'
 import type {
   ClassNamesObject,
   DebugProp,
@@ -41,14 +41,14 @@ import type {
   TextStyleProps,
   ThemeParsed,
   ViewStyleWithPseudos,
-} from '../types.js'
+} from '../types'
 import type {
   FontLanguageProps,
   LanguageContextType,
-} from '../views/FontLanguage.types.js'
-import { createMediaStyle } from './createMediaStyle.js'
-import { getPropMappedFontFamily } from './createPropMapper.js'
-import { fixStyles } from './expandStyles.js'
+} from '../views/FontLanguage.types'
+import { createMediaStyle } from './createMediaStyle'
+import { getPropMappedFontFamily } from './createPropMapper'
+import { fixStyles } from './expandStyles'
 import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
@@ -56,12 +56,12 @@ import {
   scanAllSheets,
   shouldInsertStyleRules,
   updateRules,
-} from './insertStyleRule.js'
+} from './insertStyleRule'
 import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
-} from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors.js'
+} from './normalizeValueWithProperty'
+import { pseudoDescriptors } from './pseudoDescriptors'
 
 type GetStyleState = {
   style: TextStyleProps

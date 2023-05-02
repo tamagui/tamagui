@@ -7,9 +7,9 @@ import {
 } from '@tamagui/core-node'
 import type { ViewStyle } from 'react-native'
 
-import { MEDIA_SEP } from '../constants.js'
-import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
-import { isPresent, isValidImport } from './extractHelpers.js'
+import { MEDIA_SEP } from '../constants'
+import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types'
+import { isPresent, isValidImport } from './extractHelpers'
 
 export function extractMediaStyle(
   props: TamaguiOptionsWithFileInfo,

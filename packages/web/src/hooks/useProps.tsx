@@ -1,4 +1,4 @@
-import { useMediaPropsActive } from './useMedia.js'
+import { useMediaPropsActive } from './useMedia'
 
 /**
  * Will flatten any media styles down + expand all shorthands.

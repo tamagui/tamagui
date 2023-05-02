@@ -4,7 +4,7 @@ import { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 import { Project } from 'ts-morph'
 
-import { loadTamagui } from './utils.js'
+import { loadTamagui } from './utils'
 
 export async function generateTypes(options: CLIResolvedOptions) {
   const types = await getTypes(options)

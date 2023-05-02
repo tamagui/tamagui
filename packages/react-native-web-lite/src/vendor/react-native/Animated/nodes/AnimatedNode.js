@@ -11,7 +11,7 @@
 
 import { invariant } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 var _uniqueId = 1 // Note(vjeux): this would be better as an interface but flow doesn't
 // support them yet

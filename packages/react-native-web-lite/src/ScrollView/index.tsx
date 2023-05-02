@@ -21,9 +21,9 @@ import {
   warning,
 } from 'react-native-web-internals'
 
-import Dimensions from '../Dimensions/index.js'
-import View from '../View/index.js'
-import ScrollViewBase from './ScrollViewBase.js'
+import Dimensions from '../Dimensions/index'
+import View from '../View/index'
+import ScrollViewBase from './ScrollViewBase'
 
 const emptyObject = {} as any
 const IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16

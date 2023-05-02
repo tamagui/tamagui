@@ -5,7 +5,7 @@ import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
-import { extensions } from './extensions.js'
+import { extensions } from './extensions'
 
 export function nativePlugin(): Plugin {
   return {

@@ -11,9 +11,9 @@
 
 import { invariant } from 'react-native-web-internals'
 
-import { shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import SpringConfig from '../SpringConfig.js'
-import Animation from './Animation.js'
+import { shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import SpringConfig from '../SpringConfig'
+import Animation from './Animation'
 
 class SpringAnimation extends Animation {
   constructor(config) {

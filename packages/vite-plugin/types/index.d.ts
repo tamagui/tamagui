@@ -1,5 +1,5 @@
-export * from './plugin.js';
-export * from './extract.js';
-export * from './native.js';
-export * from './nativePrebuild.js';
+export * from './plugin';
+export * from './extract';
+export * from './native';
+export * from './nativePrebuild';
 //# sourceMappingURL=index.d.ts.map

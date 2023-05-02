@@ -1,2 +1,2 @@
-export * from './Toast.js';
+export * from './Toast';
 //# sourceMappingURL=index.d.ts.map

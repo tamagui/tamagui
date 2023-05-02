@@ -2,7 +2,7 @@ import { readFile } from 'fs/promises'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 
-import { DEFAULT_PORT } from '../utils/constants.js'
+import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
 
 export async function createDevServer(

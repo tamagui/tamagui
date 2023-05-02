@@ -5,7 +5,7 @@ import * as React from 'react'
 import TestRenderer from 'react-test-renderer'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { preTest } from './lib/preTest.js'
+import { preTest } from './lib/preTest'
 
 /**
  * disabled for now but we really need to bring this back

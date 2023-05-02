@@ -1,5 +1,5 @@
-import { getConfig } from '../config.js'
-import { Shorthands } from '../types.js'
+import { getConfig } from '../config'
+import { Shorthands } from '../types'
 
 export function getExpandedShorthands<A extends Object>(
   props: A

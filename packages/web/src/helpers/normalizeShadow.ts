@@ -1,5 +1,5 @@
-import { defaultOffset } from './defaultOffset.js'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
+import { defaultOffset } from './defaultOffset'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
 export function normalizeShadow({
   shadowColor,

@@ -1,8 +1,8 @@
 import { stylePropsAll } from '@tamagui/helpers'
 
-import { createComponent } from './createComponent.js'
-import { mergeVariants } from './helpers/extendStaticConfig.js'
-import { ReactNativeStaticConfigs } from './setupReactNative.js'
+import { createComponent } from './createComponent'
+import { mergeVariants } from './helpers/extendStaticConfig'
+import { ReactNativeStaticConfigs } from './setupReactNative'
 import type {
   GetProps,
   GetVariantValues,
@@ -14,7 +14,7 @@ import type {
   TamaguiElement,
   VariantDefinitions,
   VariantSpreadFunction,
-} from './types.js'
+} from './types'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
@@ -233,7 +233,7 @@ export function styled<
 // sanity check more complex types:
 
 // import { Paragraph } from '../../text/src/Paragraph'
-// import { Text } from './views/Text.js'
+// import { Text } from './views/Text'
 // import { getFontSized } from '../../get-font-sized/src'
 // import { SizableText } from '../../text/src/SizableText'
 // const Text1 = styled(Text, {

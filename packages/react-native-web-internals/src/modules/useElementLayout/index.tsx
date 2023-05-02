@@ -10,10 +10,10 @@
 
 import { ElementRef } from 'react'
 
-import type { LayoutEvent } from '../../types.js'
-import canUseDOM from '../canUseDOM.js'
-import UIManager from '../UIManager/index.js'
-import useLayoutEffect from '../useLayoutEffect/index.js'
+import type { LayoutEvent } from '../../types'
+import canUseDOM from '../canUseDOM'
+import UIManager from '../UIManager/index'
+import useLayoutEffect from '../useLayoutEffect/index'
 
 const DOM_LAYOUT_HANDLER_NAME = '__reactLayoutHandler'
 

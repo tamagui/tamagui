@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useSyncExternalStore } from 'react'
 
-import { getConfig } from '../config.js'
-import { createProxy } from '../helpers/createProxy.js'
+import { getConfig } from '../config'
+import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import type {
   MediaQueries,
@@ -9,8 +9,8 @@ import type {
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
-} from '../types.js'
-import { useSafeRef } from './useSafeRef.js'
+} from '../types'
+import { useSafeRef } from './useSafeRef'
 
 export let mediaState: MediaQueryState =
   // development only safeguard

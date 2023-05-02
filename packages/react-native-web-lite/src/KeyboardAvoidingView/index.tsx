@@ -10,9 +10,9 @@
 
 import * as React from 'react'
 
-import type { LayoutEvent, LayoutValue } from '../types.js'
-import type { ViewProps } from '../View/index.js'
-import View from '../View/index.js'
+import type { LayoutEvent, LayoutValue } from '../types'
+import type { ViewProps } from '../View/index'
+import View from '../View/index'
 
 type KeyboardAvoidingViewProps = ViewProps & {
   behavior?: 'height' | 'padding' | 'position'

@@ -11,9 +11,9 @@
 
 import { invariant } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from './NativeAnimatedHelper.js'
-import { shouldUseNativeDriver } from './NativeAnimatedHelper.js'
-import AnimatedValue from './nodes/AnimatedValue.js'
+import NativeAnimatedHelper from './NativeAnimatedHelper'
+import { shouldUseNativeDriver } from './NativeAnimatedHelper'
+import AnimatedValue from './nodes/AnimatedValue'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 

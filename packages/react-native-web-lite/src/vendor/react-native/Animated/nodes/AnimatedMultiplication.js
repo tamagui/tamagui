@@ -9,9 +9,9 @@
  */
 'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation.js'
-import AnimatedValue from './AnimatedValue.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import AnimatedInterpolation from './AnimatedInterpolation'
+import AnimatedValue from './AnimatedValue'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 class AnimatedMultiplication extends AnimatedWithChildren {
   constructor(a, b) {

@@ -1,9 +1,9 @@
 import { isRSC, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useContext, useState } from 'react'
 
-import { getConfig } from '../config.js'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
-import { ThemeName } from '../types.js'
+import { getConfig } from '../config'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { ThemeName } from '../types'
 
 export function useThemeName(opts?: { parent?: true }): ThemeName {
   if (isRSC) {

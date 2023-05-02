@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import { build } from 'esbuild'
 import flowRemoveTypes from 'flow-remove-types'
 
-import { extensions } from './extensions.js'
+import { extensions } from './extensions'
 
 export async function nativePrebuild() {
   console.log(`Prebuilding React Native (one time cost...)`)

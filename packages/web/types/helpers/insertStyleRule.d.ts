@@ -1,4 +1,4 @@
-import type { RulesToInsert } from '../types.js';
+import type { RulesToInsert } from '../types';
 export declare const insertedTransforms: {};
 export declare const getAllSelectors: () => Record<string, string>;
 export declare const getAllRules: () => string[];

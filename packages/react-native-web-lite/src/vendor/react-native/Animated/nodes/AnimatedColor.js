@@ -12,8 +12,8 @@
 import normalizeColor from '@tamagui/normalize-css-color'
 
 import NativeAnimatedHelper from '../NativeAnimatedHelper'
-import AnimatedValue from './AnimatedValue.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import AnimatedValue from './AnimatedValue'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 var NativeAnimatedAPI = NativeAnimatedHelper.API
 var defaultColor = {

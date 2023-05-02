@@ -1,6 +1,6 @@
-import { stackDefaultStyles } from '../constants/constants.js'
-import { createComponent } from '../createComponent.js'
-import type { StackProps, StackPropsBase } from '../types.js'
+import { stackDefaultStyles } from '../constants/constants'
+import { createComponent } from '../createComponent'
+import type { StackProps, StackPropsBase } from '../types'
 
 export const Stack = createComponent<
   StackProps,

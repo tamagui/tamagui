@@ -9,7 +9,7 @@
  */
 import * as React from 'react'
 
-import View from '../../../../View/index.js'
-import createAnimatedComponent from '../createAnimatedComponent.js'
+import View from '../../../../View/index'
+import createAnimatedComponent from '../createAnimatedComponent'
 
 export default createAnimatedComponent(View)

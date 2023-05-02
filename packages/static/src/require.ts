@@ -1,6 +1,6 @@
 import { relative, sep } from 'path'
 
-import { SHOULD_DEBUG } from './constants.js'
+import { SHOULD_DEBUG } from './constants'
 
 const nameToPaths = {}
 const Module = require('module')

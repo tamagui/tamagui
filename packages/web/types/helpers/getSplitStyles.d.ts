@@ -1,5 +1,5 @@
-import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, TextStyleProps, ThemeParsed } from '../types.js';
-import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types.js';
+import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, TextStyleProps, ThemeParsed } from '../types';
+import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 type GetStyleState = {
     style: TextStyleProps;
     usedKeys: Record<string, number>;
