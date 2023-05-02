@@ -3,7 +3,6 @@ import {
   GetProps,
   SizeTokens,
   Spacer,
-  TamaguiElement,
   ThemeableProps,
   getTokens,
   getVariableValue,
@@ -15,7 +14,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
-import React, { FunctionComponent, forwardRef } from 'react'
+import React, { FunctionComponent } from 'react'
 
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -251,7 +250,10 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = ListItemFrame.styleable(function ListItem(props, ref) {
+const ListItemComponent = ListItemFrame.styleable<ListItemProps>(function ListItem(
+  props,
+  ref
+) {
   const { props: listItemProps } = useListItem(props)
   return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
@@ -268,10 +270,7 @@ export const listItemStaticConfig = {
   ]),
 }
 
-export const ListItem = withStaticProperties(
-  ListItemFrame.styleable<ListItemProps>(ListItemComponent),
-  {
-    Text: ListItemText,
-    Subtitle: ListItemSubtitle,
-  }
-)
+export const ListItem = withStaticProperties(ListItemComponent, {
+  Text: ListItemText,
+  Subtitle: ListItemSubtitle,
+})
