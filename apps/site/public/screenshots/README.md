@@ -1,0 +1,1 @@
+These images are generated from the `sandbox` app by running `yarn screenshot`.

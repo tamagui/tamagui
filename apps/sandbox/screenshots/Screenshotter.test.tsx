@@ -12,14 +12,14 @@ for (const demo of demos) {
     await page.goto(`/?demo=${demo}&screenshot=true`)
     await new Promise((resolve) => setTimeout(() => resolve(true), 1000))
     await page.screenshot({
-      path: `./screenshots/images/${demo}-light.png`,
+      path: join(__dirname, `../../site/public/screenshots/light/${demo}.png`),
       omitBackground: true,
     })
 
     await page.goto(`/?demo=${demo}&screenshot=true&theme=dark`)
     await new Promise((resolve) => setTimeout(() => resolve(true), 1000))
     await page.screenshot({
-      path: `./screenshots/images/${demo}-dark.png`,
+      path: join(__dirname, `../../site/public/screenshots/dark/${demo}.png`),
       omitBackground: true,
     })
   })

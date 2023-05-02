@@ -5,6 +5,7 @@ import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getURL } from '@lib/helpers'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
@@ -56,7 +57,15 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
       <TitleAndMetaTags
         title={`${frontmatter.title} — Tamagui — React Native Universal UI`}
         description={frontmatter.description}
-        image={frontmatter.image}
+        image={
+          frontmatter.image ??
+          `${getURL()}/api/og?${(function () {
+            const q = new URLSearchParams()
+            q.append('name', frontmatter.title.split(' ').join(''))
+            q.append('description', frontmatter.description ?? '')
+            return q
+          })()}`
+        }
       />
       {/* {frontmatter.version !== frontmatter.versions?.[0] && (
         <OldVersionNote

@@ -3,10 +3,8 @@ import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
 import { SelectDemo } from '@tamagui/demos'
-import { ToggleGroupDemo } from '@tamagui/demos'
-import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
-import { Suspense, lazy, useState } from 'react'
+import { Suspense, useState } from 'react'
 import {
   Button,
   Separator,
