@@ -13,7 +13,6 @@ import { useMemo } from 'react'
 import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
 
 import config from '../tamagui.config'
-import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 
 Error.stackTraceLimit = Infinity
 
@@ -87,7 +86,7 @@ export default function App(props: AppProps) {
           disableRootThemeClass
           defaultTheme={theme}
         >
-          <LogoWords />
+          <ContentInner {...props} />
         </TamaguiProvider>
       </NextThemeProvider>
     </>
