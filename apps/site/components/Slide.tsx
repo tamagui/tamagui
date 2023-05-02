@@ -40,6 +40,11 @@ type SlideStepItem =
   | {
       type: 'callout'
       content: any
+      image?: {
+        width: number
+        height: number
+        src: string
+      }
     }
   | {
       type: 'content'
@@ -226,183 +231,209 @@ function getTextContent(
   return (
     <div
       style={{
-        display: 'inline-block',
+        display: 'inline',
+        flex: 1,
         maxHeight: '100%',
         ...wrapperStyle,
       }}
     >
-      {text.map((item) => {
-        switch (item.type) {
-          case 'content':
-            return item.content
+      {text.map((item, index) => {
+        return (
+          <React.Fragment key={index}>
+            {(() => {
+              switch (item.type) {
+                case 'content':
+                  return item.content
 
-          case 'image':
-            return (
-              <YStack
-                f={1}
-                ai="center"
-                {...(item.variant === 'circled' && {
-                  bg: '$backgroundStrong',
-                  width: 500,
-                  height: 500,
-                  ai: 'center',
-                  jc: 'center',
-                  borderRadius: 10000,
-                  als: 'center',
-                  mx: 'auto',
-                  elevation: '$6',
-                  ov: 'hidden',
-                  bw: 5,
-                  boc: '$borderColor',
-                })}
-                {...(item.variant === 'centered' && {
-                  als: 'center',
-                  ai: 'center',
-                  jc: 'center',
-                  h: '100%',
-                  maw: '100%',
-                })}
-              >
-                <img
-                  style={{
-                    alignSelf: 'center',
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    width: 'auto',
-                  }}
-                  src={item.image.src}
-                />
-              </YStack>
-            )
+                case 'image':
+                  return (
+                    <YStack
+                      f={1}
+                      ai="center"
+                      {...(item.variant === 'circled' && {
+                        bg: '$backgroundStrong',
+                        width: 500,
+                        height: 500,
+                        ai: 'center',
+                        jc: 'center',
+                        borderRadius: 10000,
+                        als: 'center',
+                        mx: 'auto',
+                        elevation: '$6',
+                        ov: 'hidden',
+                        bw: 5,
+                        boc: '$borderColor',
+                      })}
+                      {...(item.variant === 'centered' && {
+                        als: 'center',
+                        ai: 'center',
+                        jc: 'center',
+                        h: '100%',
+                        maw: '90%',
+                      })}
+                    >
+                      <img
+                        style={{
+                          alignSelf: 'center',
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                          width: 'auto',
+                        }}
+                        src={item.image.src}
+                      />
+                    </YStack>
+                  )
 
-          case 'vertical':
-            return (
-              <YStack>
-                {!!item.title && (
-                  <H4 size="$10" als="center" mb="$4" color="$color9">
-                    {item.title}
-                  </H4>
-                )}
-                {getTextContent(item.content)}
-              </YStack>
-            )
+                case 'vertical':
+                  return (
+                    <YStack h="100%">
+                      {!!item.title && (
+                        <H4 size="$10" als="center" mb="$4" color="$color9">
+                          {item.title}
+                        </H4>
+                      )}
+                      {getTextContent(item.content)}
+                    </YStack>
+                  )
 
-          case 'split-horizontal':
-            return (
-              <XStack maw="100%" ov="hidden" h="100%" ai="center" f={1} gap="$6">
-                <YStack jc="center" maw="50%" f={1} ov="hidden">
-                  {getTextContent([item.content[0]], options)}
-                </YStack>
-                <YStack jc="center" maw="50%" f={1} ov="hidden">
-                  {getTextContent([item.content[1]], options)}
-                </YStack>
-              </XStack>
-            )
+                case 'split-horizontal':
+                  return (
+                    <XStack maw="100%" ov="hidden" h="100%" ai="center" f={1} gap="$6">
+                      <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                        {getTextContent([item.content[0]], options)}
+                      </YStack>
+                      <YStack jc="center" als="stretch" maw="50%" f={1} ov="hidden">
+                        {getTextContent([item.content[1]], options)}
+                      </YStack>
+                    </XStack>
+                  )
 
-          case 'bullet-point':
-            return (
-              <YStack
-                pl="$10"
-                pt="$2"
-                pr="$10"
-                {...(item.slim && {
-                  pl: '$2',
-                  pr: '$2',
-                  mb: '$0',
-                })}
-              >
-                {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
-                  size: item.size ?? size ?? '$9',
-                })}
-              </YStack>
-            )
-          case 'code-inline':
-            return (
-              <Code
-                bc="$color8"
-                color="$color11"
-                size={size ?? '$9'}
-                px="$3"
-                py="$2"
-                {...item.props}
-              >
-                {item.content}
-              </Code>
-            )
+                case 'bullet-point':
+                  return (
+                    <YStack
+                      pl="$10"
+                      pt="$2"
+                      pr="$10"
+                      {...(item.slim && {
+                        pl: '$2',
+                        pr: '$2',
+                        mb: '$0',
+                      })}
+                    >
+                      {getTextContent(
+                        [{ type: 'text', content: '· ' }, ...item.content],
+                        {
+                          size: item.size ?? size ?? '$9',
+                        }
+                      )}
+                    </YStack>
+                  )
+                case 'code-inline':
+                  return (
+                    <Code
+                      bc="$color8"
+                      color="$color11"
+                      size={size ?? '$9'}
+                      px="$3"
+                      py="$2"
+                      lineHeight={44}
+                      {...item.props}
+                    >
+                      {item.content}
+                    </Code>
+                  )
 
-          case 'space':
-            return <Spacer />
+                case 'space':
+                  return <Spacer />
 
-          case 'code':
-            return (
-              <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
-                <div dangerouslySetInnerHTML={{ __html: item.content }} />
-              </DocCodeBlock>
-            )
+                case 'code':
+                  return (
+                    <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                      <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                    </DocCodeBlock>
+                  )
 
-          case 'callout': {
-            let size = '$12' as any
+                case 'callout': {
+                  let size = '$12' as any
 
-            if (typeof item.content === 'string') {
-              const sizeNum = Math.min(
-                Math.max(8, Math.round(1_300 / item.content.length)),
-                16
-              )
-              size = `$${sizeNum}`
-            }
+                  if (typeof item.content === 'string') {
+                    const sizeNum = Math.min(
+                      Math.max(8, Math.round(580 / item.content.length)),
+                      16
+                    )
+                    size = `$${sizeNum}`
+                  }
 
-            return (
-              <YStack h="100%" f={1} ai="center" jc="center">
-                <Paragraph
-                  theme="yellow"
-                  color="$color10"
-                  als="center"
-                  textShadowColor="$shadowColor"
-                  textShadowRadius={20}
-                  ta="center"
-                  p="$10"
-                  size={size}
-                >
-                  {item.content}&nbsp;
-                </Paragraph>
-              </YStack>
-            )
-          }
+                  return (
+                    <YStack h="100%" f={1} ai="center" jc="center">
+                      <Paragraph
+                        theme="yellow"
+                        color="$color10"
+                        als="center"
+                        textShadowColor="#000"
+                        textShadowRadius={20}
+                        textShadowOffset={{ height: 10, width: 0 }}
+                        ta="center"
+                        p="$10"
+                        size={size}
+                      >
+                        {item.content}&nbsp;
+                      </Paragraph>
 
-          case 'centered': {
-            let size = '$10' as any
+                      {item.image && (
+                        <img
+                          style={{
+                            alignSelf: 'center',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            width: 'auto',
+                            position: 'absolute',
+                            zIndex: -1,
+                          }}
+                          src={item.image.src}
+                        />
+                      )}
+                    </YStack>
+                  )
+                }
 
-            if (typeof item.content === 'string') {
-              const sizeNum = Math.min(
-                Math.max(8, Math.round(700 / item.content.length)),
-                16
-              )
-              size = `$${sizeNum}`
-            }
+                case 'centered': {
+                  let size = '$10' as any
 
-            return (
-              <YStack f={1} ai="center" jc="center" px="$6">
-                <Paragraph als="center" ta="center" size={size}>
-                  {item.content}&nbsp;
-                </Paragraph>
-              </YStack>
-            )
-          }
+                  if (typeof item.content === 'string') {
+                    const sizeNum = Math.min(
+                      Math.max(8, Math.round(700 / item.content.length)),
+                      16
+                    )
+                    size = `$${sizeNum}`
+                  }
 
-          case 'text':
-            return (
-              <Paragraph size={size ?? '$9'} fow="400" lh="$10" {...item.props}>
-                {item.content}&nbsp;
-              </Paragraph>
-            )
+                  return (
+                    <YStack f={1} ai="center" jc="center" px="$6">
+                      <Paragraph als="center" ta="center" size={size}>
+                        {item.content}&nbsp;
+                      </Paragraph>
+                    </YStack>
+                  )
+                }
 
-          case 'text-bold':
-            return (
-              <Paragraph fow="800" size={size ?? '$9'} lh="$10" {...item.props}>
-                {item.content}&nbsp;
-              </Paragraph>
-            )
-        }
+                case 'text':
+                  return (
+                    <Paragraph size={size ?? '$9'} fow="400" lh="$10" {...item.props}>
+                      {item.content}&nbsp;
+                    </Paragraph>
+                  )
+
+                case 'text-bold':
+                  return (
+                    <Paragraph fow="800" size={size ?? '$9'} lh="$10" {...item.props}>
+                      {item.content}&nbsp;
+                    </Paragraph>
+                  )
+              }
+            })()}
+          </React.Fragment>
+        )
       })}
     </div>
   )

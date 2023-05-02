@@ -5,8 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="vs Tailwind"
-      subTitle="🌶️"
+      title="vs Tailwind 🌶️"
       theme="yellow"
       steps={[
         [
@@ -15,7 +14,7 @@ export default memo(() => {
             content: [
               {
                 type: 'vertical',
-                title: `Does`,
+                title: `Similar`,
                 content: [
                   {
                     type: 'bullet-point',
@@ -97,7 +96,7 @@ export default memo(() => {
 
               {
                 type: 'vertical',
-                title: `Doesn't`,
+                title: `Improves`,
                 content: [
                   {
                     type: 'bullet-point',
@@ -125,7 +124,7 @@ export default memo(() => {
                           marginBottom: 40,
                           display: 'inline-flex',
                         },
-                        content: `Props merge properly`,
+                        content: `Properly merge props`,
                       },
                     ],
                   },

@@ -3,7 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
@@ -11,7 +11,7 @@ import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
-import SlideCoreFeatures from './slides/slide-core-features'
+import slideCoreSyntax from './slides/slide-core-syntax'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
@@ -31,7 +31,6 @@ import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
 import Slide1 from './slides/slide1'
-import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
 import Slide6c from './slides/slide6c'
 
@@ -74,15 +73,14 @@ export default function TamaguiTalk() {
           Slide1,
           slideTwitterPoll,
           Slide2,
-          slideCoreFeatures,
           SlideWhy,
           slideWhy2,
           slideWhy3,
           slideWhy4,
           SlideTrilemma,
           SlideHow,
-          slideCssInJs,
-          Slide3,
+          slideCoreSyntax,
+          slideCoreFeatures,
           SlideThemes,
           SlideThemes2,
           slideCoreComparison,
@@ -90,6 +88,7 @@ export default function TamaguiTalk() {
           SlideFlatten,
           Slide6c,
           SlideExpressYourself,
+          slideCssInJs,
           SlideTamagui,
           slideTamaguiCode,
           Slide5,

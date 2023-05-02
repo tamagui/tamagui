@@ -12,7 +12,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `I couldn't afford to write two apps...`,
+            content: `I wanted to save time building an app...`,
           },
         ],
 

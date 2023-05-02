@@ -164,7 +164,6 @@ export default memo(() => {
               <ThemeTint>
                 <YStack
                   als="center"
-                  pt={100}
                   pos="relative"
                   {...lettersContainerBounds}
                   minWidth={lettersContainerBounds.width}
@@ -193,7 +192,7 @@ export default memo(() => {
                   </YStack>
                 </YStack>
 
-                <Container ai="center">
+                <Container mt={-200} ai="center">
                   <Spacer size="$8" />
 
                   <XStack maw={790} space="$8" separator={<Separator vertical />}>

@@ -74,7 +74,7 @@ export default () => (
 export default memo(() => {
   return (
     <Slide
-      title="Themes"
+      title="Core: Themes"
       subTitle="Generics for styling"
       stepsStrategy="replace"
       theme="yellow"
