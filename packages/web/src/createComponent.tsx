@@ -15,7 +15,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
 } from 'react'
@@ -47,7 +46,6 @@ import {
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
-  TamaguiConfig,
   TamaguiElement,
   TamaguiInternalConfig,
   UseAnimationHook,
