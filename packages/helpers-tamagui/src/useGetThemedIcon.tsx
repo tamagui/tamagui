@@ -9,6 +9,7 @@ export const useGetThemedIcon = (props: { color: ColorProp; size: number }) => {
     if (isValidElement(el)) {
       return cloneElement(el, {
         ...props,
+        color,
         // @ts-expect-error
         ...el.props,
       })
