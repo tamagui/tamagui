@@ -5061,7 +5061,7 @@ __metadata:
     "@types/react-native": ^0.71.3
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.10.0
-    expo: ^48.0.11
+    expo: ~48.0.15
     expo-dev-client: ~2.2.1
     expo-font: ^11.0.1
     expo-linear-gradient: ^12.0.1
@@ -5070,10 +5070,10 @@ __metadata:
     expo-status-bar: ~1.4.2
     expo-updates: ~0.16.4
     metro-runtime: "*"
-    react: ^18.2.0
+    react: 18.2.0
     react-dom: ^18.2.0
-    react-native: ^0.71.7
-    react-native-gesture-handler: ^2.8.0
+    react-native: 0.71.7
+    react-native-gesture-handler: ^2.9.0
     react-native-ios-modal: ^0.1.8
     react-native-safe-area-context: 4.5.0
     react-native-screens: ^3.18.2
@@ -11949,7 +11949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^48.0.11":
+"expo@npm:~48.0.15":
   version: 48.0.15
   resolution: "expo@npm:48.0.15"
   dependencies:
@@ -19279,7 +19279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.8.0":
+"react-native-gesture-handler@npm:^2.9.0":
   version: 2.9.0
   resolution: "react-native-gesture-handler@npm:2.9.0"
   dependencies:

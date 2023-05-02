@@ -20,6 +20,7 @@ import {
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
+import { CustomButton } from '../../components/ButtonReproduction'
 
 setupNativeSheet('ios', ModalView)
 
@@ -27,6 +28,8 @@ export function HomeScreen() {
   return (
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
+        <CustomButton theme="blue">Should be blue (styled)</CustomButton>
+        <Button theme="blue">Should be blue (og)</Button>
         <H1 fontFamily="$heading" size="$9">
           Select
         </H1>
