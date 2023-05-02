@@ -299,19 +299,23 @@ function getAltThemes({
 }
 
 function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean) {
-  const weaker1 = applyMask(theme, masks.weaker, maskOptions)
-  const weaker2 = applyMask(weaker1, masks.weaker, {
+  const componentMaskOptions = {
     ...maskOptions,
-    override: overrideWithColors,
     skip: {
       ...maskOptions.skip,
       // skip colors too just for component sub themes
       ...templateColors,
     },
+  }
+  const weaker1 = applyMask(theme, masks.weaker, componentMaskOptions)
+  const base = applyMask(weaker1, masks.stronger, componentMaskOptions)
+  const weaker2 = applyMask(weaker1, masks.weaker, {
+    ...componentMaskOptions,
+    override: overrideWithColors,
   })
-  const stronger1 = applyMask(theme, masks.stronger, maskOptions)
-  const inverse1 = applyMask(inverse, masks.weaker, maskOptions)
-  const inverse2 = applyMask(inverse1, masks.weaker, maskOptions)
+  const stronger1 = applyMask(theme, masks.stronger, componentMaskOptions)
+  const inverse1 = applyMask(inverse, masks.weaker, componentMaskOptions)
+  const inverse2 = applyMask(inverse1, masks.weaker, componentMaskOptions)
   const strongerBorderLighterBackground: SubTheme = isLight
     ? {
         ...stronger1,
@@ -321,7 +325,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
         borderColorFocus: weaker1.borderColorFocus,
       }
     : {
-        ...applyMask(theme, masks.skip, maskOptions),
+        ...applyMask(theme, masks.skip, componentMaskOptions),
         borderColor: weaker1.borderColor,
         borderColorHover: weaker1.borderColorHover,
         borderColorPress: weaker1.borderColorPress,
@@ -333,7 +337,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
   } as SubTheme
 
   return {
-    ListItem: isLight ? stronger1 : theme,
+    ListItem: isLight ? stronger1 : base,
     Card: weaker1,
     Button: weaker2,
     Checkbox: weaker2,
