@@ -4,7 +4,7 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Style more consistently, easily, and flexibly while sharing consistent tokens, themes
+  Style more consistently, easily, and performantly while sharing typed tokens, themes,
   fonts and more across both React Native and Web.
 </IntroParagraph>
 
@@ -71,7 +71,7 @@ Variants can also take functions to catch either all values or specific types of
 You can nest styled components multiple times:
 
 ```tsx
-import { styled, Stack } from 'tamagui' // or '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const SizedHorizontal = styled(Stack, {
   variants: {
@@ -83,11 +83,10 @@ export const SizedHorizontal = styled(Stack, {
       lg: {
         minWidth: 68,
         height: 68,
-      }
-    }
-  }
+      },
+    },
+  },
 })
-
 
 export const SizedButton = styled(SizedHorizontal, {
   tag: 'button',
@@ -96,10 +95,10 @@ export const SizedButton = styled(SizedHorizontal, {
     disabled: {
       true: {
         backgroundColor: '#ccc',
-        pointerEvents: 'none'
-      }
+        pointerEvents: 'none',
+      },
     },
-  }
+  },
 })
 ```
 
