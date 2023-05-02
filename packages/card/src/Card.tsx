@@ -106,15 +106,15 @@ export type CardFooterProps = GetProps<typeof CardFooter>
 export type CardProps = GetProps<typeof CardFrame>
 
 export const Card = withStaticProperties(
-  CardFrame.extractable(
+  CardFrame.styleable<CardProps>(
     forwardRef<TamaguiElement, ScopedProps<CardProps, 'Card'>>(
-      ({ size, __scopeCard, children, ...props }, ref) => {
+      ({ __scopeCard, children, ...props }, ref) => {
         return (
           <CardFrame ref={ref} {...props}>
             {React.Children.map(children, (child) => {
               if (isTamaguiElement(child) && !child.props.size) {
                 return cloneElement(child, {
-                  size,
+                  size: props.size,
                 })
               }
               return child

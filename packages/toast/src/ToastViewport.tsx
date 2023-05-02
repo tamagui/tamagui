@@ -274,7 +274,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          * the list instead of the viewport so it announces number of items remaining.
          */}
         <Collection.Slot scope={__scopeToast}>
-          <ToastViewportFrame ref={composedRefs} {...viewportProps}>
+          <ToastViewportFrame focusable={context.toastCount > 0} ref={composedRefs} {...viewportProps}>
             <PortalHost
               render={(children) => (
                 <AnimatePresence exitBeforeEnter={!multipleToasts}>

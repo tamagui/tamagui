@@ -1,37 +1,28 @@
+import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
 
-export default memo(() => {
-  return (
-    <Slide
-      title="Themes"
-      subTitle="Generics for styling"
-      theme="yellow"
-      steps={[
-        [
-          {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'code',
-                content: `
-    const themes = {
-      light: {
-        background: '#fff',
-        color: '#000',
-      },
-      dark: {
-        background: '#000',
-        color: '#fff'
-      }
-    }
-    `,
-              },
-              {
-                type: 'code',
-                content: `
-.t_light {
+const highlightCode = createCodeHighlighter()
+
+const inputSnippet = highlightCode(
+  `
+const themes = {
+  light: {
+    background: '#fff',
+    color: '#000',
+  },
+  dark: {
+    background: '#000',
+    color: '#fff'
+  }
+}
+`,
+  'tsx'
+)
+
+const outputSnippet = highlightCode(
+  `.t_light {
   --background: #fff;
   --color: #000;
 }
@@ -40,11 +31,95 @@ export default memo(() => {
   --background: #000;
   --color: #fff;
 }
-    `,
+`,
+  'tsx'
+)
+
+const snippetUsage = highlightCode(
+  `
+import { Stack } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Stack background="$background">
+      Light Background
+    </Stack>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageComplex = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Stack background="$background">
+      Light Background
+    </Stack>
+
+    <Theme name="dark">
+      <Text color="$color">
+        Dark text
+      </Text>
+    </Theme>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+export default memo(() => {
+  return (
+    <Slide
+      title="Themes"
+      subTitle="Generics for styling"
+      stepsStrategy="replace"
+      theme="yellow"
+      steps={[
+        [
+          {
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: inputSnippet,
+              },
+              {
+                type: 'code',
+                content: outputSnippet,
               },
             ],
           },
+        ],
 
+        [
+          {
+            type: 'code',
+            content: snippetUsage,
+          },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: `No dark:color-300`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsageComplex,
+          },
+        ],
+
+        [
           {
             type: 'split-horizontal',
             content: [

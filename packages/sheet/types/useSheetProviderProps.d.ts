@@ -19,4 +19,5 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
     scrollBridge: ScrollBridge;
 };
+export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

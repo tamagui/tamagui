@@ -103,8 +103,8 @@ const presetHashes = {
 
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
-  if ('shadowRadius' in style) {
-    const { shadowOffset, shadowRadius, shadowColor } = style
+  const { shadowOffset, shadowRadius, shadowColor } = style
+  if (style.shadowRadius) {
     const offset = shadowOffset || defaultOffset
     const shadow = `${normalizeValueWithProperty(
       offset.width
@@ -118,12 +118,8 @@ export function styleToCSS(style: Record<string, any>) {
   }
 
   // text-shadow
-  if (
-    'textShadowColor' in style ||
-    'textShadowOffset' in style ||
-    'textShadowRadius' in style
-  ) {
-    const { textShadowColor, textShadowOffset, textShadowRadius } = style
+  const { textShadowColor, textShadowOffset, textShadowRadius } = style
+  if (textShadowColor || textShadowOffset || textShadowRadius) {
     const { height, width } = textShadowOffset || defaultOffset
     const radius = textShadowRadius || 0
     const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')

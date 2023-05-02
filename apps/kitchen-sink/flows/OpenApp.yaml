@@ -1,0 +1,16 @@
+appId: com.tamagui.kitchensink
+tag:
+  - util
+---
+- launchApp:
+    clearState: true
+# if on dev builds:
+# - tapOn:
+#     text: Fetch development servers
+#     optional: true
+- tapOn:
+    text: http://.*
+    optional: true
+
+# dismiss expo's first time bottom sheet
+- tapOn: 'Home'

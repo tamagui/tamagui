@@ -11,11 +11,126 @@ export default memo(() => {
       steps={[
         [
           {
-            type: 'callout',
-            content: `N features * 3 operating systems * 4 runtimes * server/client * optimized/static * touch/mouse * 3 animation drivers * ...`,
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `N features`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `3 operating systems`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `4 JavaScript runtimes`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `Server and client`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `Optimized or not`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `Web mobile vs desktop`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `Touch or mouse`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `3 animation drivers`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `50*3*4*2*2*2*2*3`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text-bold',
+                content: `= 28,800 😮‍💨`,
+              },
+            ],
           },
         ],
       ]}
     />
   )
 })
+
+// N features * 3 operating systems * 4 runtimes * server/client * optimized/static * touch/mouse * 3 animation drivers * ...`

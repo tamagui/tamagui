@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.natew.kitchensink"
+      "bundleIdentifier": "com.tamagui.kitchensink"
     },
     "android": {
       "package": "com.tamagui.kitchensink",

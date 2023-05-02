@@ -26,7 +26,7 @@ export function themeable<Component extends (props: any) => any>(
         name={(theme as any) || null}
         disable-child-theme
         debug={props.debug}
-        reset={props.themeReset}
+        reset={themeReset}
       >
         {element}
       </Theme>

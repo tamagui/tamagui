@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="How?"
-      subTitle="Faster than 0-runtime, with a runtime"
+      subTitle="Convert nice code into performant code"
       theme="purple"
       steps={[
         [

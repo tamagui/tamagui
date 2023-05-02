@@ -158,7 +158,6 @@ export const useChangeThemeEffect = (
   }
 
   const {
-    debug,
     // @ts-expect-error internal use only
     disable,
   } = props

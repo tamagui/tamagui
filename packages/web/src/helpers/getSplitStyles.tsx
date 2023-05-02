@@ -633,6 +633,7 @@ export const getSplitStyles: StyleSplitter = (
         isVariant,
         shouldPassProp,
         isHOCShouldPassThrough,
+        theme,
       })
       if (!isServer && isDevTools) {
         // rome-ignore lint/nursery/noConsoleLog: ok

@@ -56,7 +56,7 @@ export function ThemeDebug({
 
     useEffect(() => {
       // to refresh _listeningIds every so often
-      const tm = setInterval(rerender, 100)
+      const tm = setInterval(rerender, 1000)
       return () => clearTimeout(tm)
     }, [])
 

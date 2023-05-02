@@ -444,27 +444,36 @@ const getToken = (
   debug?: DebugProp
 ) => {
   const tokensParsed = conf.tokensParsed
-  const fontsParsed = languageContext
-    ? getFontsForLanguage(conf.fontsParsed, languageContext)
-    : conf.fontsParsed
   let valOrVar: any
   let hasSet = false
   if (value in theme) {
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(`Getting theme value for ${key} from ${value} = ${theme[value].val}`)
+    }
     valOrVar = theme[value]
     hasSet = true
   } else {
     switch (key) {
-      case 'fontFamily':
+      case 'fontFamily': {
+        const fontsParsed = languageContext
+          ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          : conf.fontsParsed
         valOrVar = fontsParsed[value]?.family || value
         hasSet = true
         break
+      }
       case 'fontSize':
       case 'lineHeight':
       case 'letterSpacing':
-      case 'fontWeight':
+      case 'fontWeight': {
+        const fontsParsed = languageContext
+          ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          : conf.fontsParsed
         valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
         hasSet = true
         break
+      }
     }
     for (const cat in tokenCategories) {
       if (key in tokenCategories[cat]) {
@@ -484,18 +493,17 @@ const getToken = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log(
-      '   ﹒ propMapper getToken',
-      key,
-      resolveVariableValue(key, valOrVar, resolveAs),
-      { valOrVar, theme, hasSet, resolveAs }
-    )
-  }
-
   if (hasSet) {
-    return resolveVariableValue(key, valOrVar, resolveAs)
+    const out = resolveVariableValue(key, valOrVar, resolveAs)
+
+    if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+      console.groupCollapsed('  ﹒ propMap', key, out)
+      // rome-ignore lint/nursery/noConsoleLog: ok
+      console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
+      console.groupEnd()
+    }
+
+    return out
   }
 
   if (process.env.NODE_ENV === 'development') {
@@ -508,7 +516,7 @@ Set the debug prop to true to see more detailed debug information.`
       if (debug) {
         if (isDevTools) {
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log('Looked in:', { theme, tokensParsed, fontsParsed })
+          console.log('Looked in:', { theme, tokensParsed })
         }
       }
       return null

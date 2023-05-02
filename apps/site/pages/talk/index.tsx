@@ -3,13 +3,15 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
 import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
-import Slide3a from './slides/slide-core-features'
+import slideCoreComparison from './slides/slide-core-comparison'
+import slideCoreFeatures from './slides/slide-core-features'
+import SlideCoreFeatures from './slides/slide-core-features'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
@@ -27,6 +29,7 @@ import Slide2 from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
+import slideWhy4 from './slides/slide-why5'
 import Slide1 from './slides/slide1'
 import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
@@ -38,6 +41,16 @@ const slideDimensions = {
 }
 
 export default function TamaguiTalk() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <YStack {...slideDimensions}>
       <TitleAndMetaTags title="Tamagui App.js Talk" description="Tamagui App.js Talk" />
@@ -61,16 +74,18 @@ export default function TamaguiTalk() {
           Slide1,
           slideTwitterPoll,
           Slide2,
+          slideCoreFeatures,
           SlideWhy,
           slideWhy2,
           slideWhy3,
+          slideWhy4,
           SlideTrilemma,
           SlideHow,
           slideCssInJs,
           Slide3,
-          Slide3a,
           SlideThemes,
           SlideThemes2,
+          slideCoreComparison,
           Slide4,
           SlideFlatten,
           Slide6c,
