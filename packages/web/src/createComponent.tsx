@@ -15,7 +15,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
 } from 'react'
@@ -47,7 +46,6 @@ import {
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
-  TamaguiConfig,
   TamaguiElement,
   TamaguiInternalConfig,
   UseAnimationHook,
@@ -106,17 +104,6 @@ if (typeof document !== 'undefined') {
   addEventListener('mouseup', cancelTouches)
   addEventListener('touchend', cancelTouches)
   addEventListener('touchcancel', cancelTouches)
-}
-
-// mutates
-function mergeShorthands(
-  { defaultProps }: StaticConfigParsed,
-  { shorthands }: TamaguiConfig
-) {
-  // they are defined in correct order already { ...parent, ...child }
-  for (const key of Object.keys(defaultProps)) {
-    defaultProps[shorthands[key] || key] = defaultProps[key]
-  }
 }
 
 /**
@@ -316,9 +303,11 @@ export function createComponent<
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
-      debug:
-        process.env.NODE_ENV === 'development' && props.debug ? { hostRef } : undefined,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+    }
+    if (process.env.NODE_ENV === 'development') {
+      // @ts-expect-error
+      themeStateProps.debug = props.debug
     }
     const themeState = useThemeWithState(themeStateProps)!
 
@@ -360,7 +349,6 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
-          console.warn(themeState.name)
         }
       }
     }
@@ -868,10 +856,6 @@ export function createComponent<
       }
     }
 
-    // per-component setup
-    // do this to make sure shorthands don't duplicate with.. longhands
-    mergeShorthands(staticConfig, tamaguiConfig)
-
     let defaultPropsIn = staticConfig.defaultProps || {}
 
     // because we run createTamagui after styled() defs, have to do some work here
@@ -892,7 +876,7 @@ export function createComponent<
     const debug = defaultPropsIn['debug']
 
     // remove all classNames
-    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn, {})
+    const [ourProps, ourClassNames] = mergeProps(defaultPropsIn)
 
     if (ourProps.tag) {
       defaultTag = ourProps.tag
@@ -904,10 +888,10 @@ export function createComponent<
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props
-    const [defaults, defaultsClassnames] = mergeProps(component.defaultProps as any, {
-      ...defaultVariants,
-      ...restProps,
-    })
+    const [defaults, defaultsClassnames] = mergeProps(
+      component.defaultProps as any,
+      restProps
+    )
 
     // split - keep variables on props to be processed using theme values at runtime (native)
     if (process.env.TAMAGUI_TARGET === 'native') {
@@ -958,38 +942,33 @@ export function createComponent<
     ...staticConfig,
   }
 
-  function extendStyledConfig(Component: any, conf?: Partial<StaticConfig>) {
-    Component.staticConfig = extendStaticConfig(
+  function extendStyledConfig() {
+    return extendStaticConfig(
       {
-        Component: Component as any,
-        ...conf,
+        ...staticConfig,
         neverFlatten: true,
         isHOC: true,
-        defaultProps: {
-          ...Component['defaultProps'],
-          ...conf?.defaultProps,
-        },
       },
       res
     )
-    Component.styleable = styleable
   }
 
-  function extractable(Component, conf?: Partial<StaticConfig>) {
-    extendStyledConfig(Component, conf)
+  function extractable(Component: any) {
+    Component.staticConfig = extendStyledConfig()
+    Component.styleable = styleable
     return Component
   }
 
-  function styleable(Component, conf?: Partial<StaticConfig>) {
+  function styleable(Component: any) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
       : forwardRef(Component as any)
 
-    const out = themeable(ComponentForwardedRef, staticConfig) as any
-
-    extendStyledConfig(out, conf)
-
+    const extendedConfig = extendStyledConfig()
+    const out = themeable(ComponentForwardedRef, extendedConfig) as any
+    out.staticConfig = extendedConfig
+    out.styleable = styleable
     return out
   }
 

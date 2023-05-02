@@ -18,7 +18,7 @@ type AnyRecord = Record<string, any>
 
 export const mergeProps = (
   a: Object,
-  b: Object,
+  b?: Object,
   leaveOutClassNames = false,
   inverseShorthands?: AnyRecord
 ) => {
@@ -27,8 +27,10 @@ export const mergeProps = (
   for (const key in a) {
     mergeProp(out, outCns, a, b, key, leaveOutClassNames, inverseShorthands)
   }
-  for (const key in b) {
-    mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
+  if (b) {
+    for (const key in b) {
+      mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
+    }
   }
   return [out, outCns] as const
 }

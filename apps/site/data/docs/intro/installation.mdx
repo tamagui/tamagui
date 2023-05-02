@@ -84,7 +84,7 @@ This is also documented in Configuration, but worth noting twice.
 
 `@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
 
-```
+```sh
 yarn add @tamagui/react-native-media-driver
 ```
 
@@ -184,7 +184,15 @@ config.module.rules.push({
 })
 ```
 
-### Other bundlers and frameowrks
+You'll also need to alias `react-native` to `react-native-web`:
+
+```tsx
+config.resolve.alias['react-native$'] = require.resolve('react-native-web')
+```
+
+Or alternatively, to `react-native-web-lite`, our more experimental but modern version of react-native-web.
+
+### Other bundlers and frameworks
 
 Remember, Tamagui runs fully at runtime, so you don't need to set up the compiler to start. But because Tamagui imports `react-native` directly, for web platforms you need to configure an alias. And for CSS extraction, on some frameworks like Next.js require extra configuration.
 
@@ -195,6 +203,10 @@ We have a few guides for the compiler that also include setup of any extras for 
 - [Vite](#vite) ([guide](/docs/guides/vite))
 - [Metro](/docs/compiler/install#babel--metro)
 - [Expo](/docs/guides/expo)
+
+Just note: you don't need to set up the compiler!
+
+For the web you usually just need to alias `react-native` to `react-native-web` if you are using `@tamagui/core` or `tamagui`. If you are using the lowest level `@tamagui/web` package, which is basically core but without the React Native unified event APIs, you don't need anything else as it doesn't rely on `react-native` at all.
 
 ### Done!
 

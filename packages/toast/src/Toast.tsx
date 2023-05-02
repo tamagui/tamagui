@@ -187,6 +187,7 @@ const ToastComponent = React.forwardRef<TamaguiElement, ToastProps>(
       prop: openProp,
       defaultProp: defaultOpen ?? true,
       onChange: onOpenChange,
+      strategy: 'most-recent-wins',
     })
 
     const id = React.useId()

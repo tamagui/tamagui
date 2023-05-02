@@ -1,19 +1,12 @@
+import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
 
-export default memo(() => {
-  return (
-    <Slide
-      title="Tamagui"
-      subTitle="Adapt based on platform or capability"
-      theme="blue"
-      steps={[
-        [
-          {
-            type: 'code',
-            content: `
-<Popover>
+const highlightCode = createCodeHighlighter()
+
+const adaptSnippet = highlightCode(
+  `<Popover>
   <Popover.Trigger asChild>
     <Button />
   </Popover.Trigger>
@@ -29,8 +22,21 @@ export default memo(() => {
   <Popover.Content animation="quick">
      {/* ... */}
   </Popover.Content>
-</Popover>
-`,
+</Popover>`,
+  'tsx'
+)
+
+export default memo(() => {
+  return (
+    <Slide
+      title="Tamagui"
+      subTitle="Adapt based on platform or capability"
+      theme="blue"
+      steps={[
+        [
+          {
+            type: 'code',
+            content: adaptSnippet,
           },
           // {
           //   type: 'split-horizontal',

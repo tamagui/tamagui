@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { SelectDemo } from '@tamagui/demos'
+import { DialogDemo, SheetDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
@@ -42,11 +42,9 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return (
-    <Theme name="blue">
-      <SelectDemo />
-    </Theme>
-  )
+  return <DialogDemo />
+  return <SheetDemo />
+  // return <TooltipDemo />
   // return <TestPerf />
   // return <Square animation="bouncy" size={100} bc="red" />
 }
@@ -69,7 +67,6 @@ function runTestPerf() {
   }
 
   const end0 = performance.now() - start0
-
   console.log('end0', end0)
 
   const start = performance.now()

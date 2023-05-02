@@ -15,7 +15,7 @@ declare const Collection: {
 }, useCollection: (scope: any) => () => {
     ref: React.RefObject<TamaguiElement>;
 }[];
-type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
+export type SwipeDirection = 'vertical' | 'up' | 'down' | 'horizontal' | 'left' | 'right';
 type ToastProviderContextValue = {
     id: string;
     label: string;
@@ -90,5 +90,5 @@ interface ToastProviderProps {
 }
 declare const ToastProvider: React.FC<ToastProviderProps>;
 export { Collection, ToastProvider, createToastContext, createToastScope, useCollection, useToastProviderContext, };
-export type { ScopedProps, SwipeDirection, ToastProviderProps };
+export type { ScopedProps, ToastProviderProps };
 //# sourceMappingURL=ToastProvider.d.ts.map

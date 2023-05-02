@@ -1,5 +1,7 @@
 high level:
 
+  - private canary packages on github
+  - tiered line system for studio
   - improve tests and docs
   - make themes and sizing easier, simpler, better documented, more controllable
   - headless
@@ -9,58 +11,20 @@ high level:
 ---
 
 Ali todos:
-  - [x] site:
-    - [x] github auth redirects to localhost in prod
-    - [x] splash page loads slow on a fresh session because its running supabase before
-      - [x] lets just make `/studio` the splash, and then `studio.tamagui.dev` the studio
-      - [x] see next config rewrites()
-    - [x] studio.tamagui.dev seems like its only SSR and not hydrating?
   - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
 
-    - [x] Config tab
-      - [x] settings:
-        - [x] make the boolean ones a XStack with a `<Switch />` on right (not clickable) but show "undefined" faintly next to it if so
-        - [x] expanded pane shows a code area with JSON + copy button
-      - [x] fonts:
-        - [x] multiple "Ag" with each weight
-        - [x] the initial view should show them as nice cards sort of like small view but bigger
-        - [x] vertical scroll broke (see new SidePane something off there)
-      - [x] media query:
-        - [x] "xxs" and other keys should be bold, more v height spacing
-        - [x] make the rulers always go to the furthest one but be faded out past their final point
-        - [x] make the left marker, add an end marker, and make it and the bottom marker all a bit brighter white
-        - [x] lets split out max and min into separate sections (just vertically with a header)
-      - [x] animations:
-        - [x] just link it to the tab (show an external icon thing to right of the title)
-      - [x] shorthands:
-        - [x] scroll also broken
-        - [x] make it two columns on expanded
-
-    - [x] Colors tab
-      - [x] fix dragging on the HSL lines is wonky
       - [ ] add code export
 
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
 
     - [x] Tokens tab
-      - [x] lets redo it to be the same structure as settings
-      - [x] once thats done lets also add a new column thats first:
-        - [x] its a wider column
-        - [x] not clickable/openable
-        - [x] lets you visualize the "matching" stuff:
-          - [x] show two `<Square />` vertically
-          - [x] slider to move up/down your tokens
-          - [x] square gets the border radius / size
-          - [x] shows / highlights around the square for "space" tokens
           - [ ] also can show a Button as an option too
 
     - [ ] all tabs (header):
       - [ ] add a search input box that filters down things as you type
 
-  - [x] Select native on trigger + native on viewport + accent-color when native (web)
-  - [x] get new starter ready
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
   - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc. - props -> api, make headings consistent, document unstyled props, anatomy/usage consistency
   - [ ] toast sooner style demo
@@ -100,12 +64,6 @@ a package.json etc etc + zip file
 
 - https://discord.com/channels/909986013848412191/909986013848412194/1100077456448294942
 
-- @ali make animations SSR properly
-  - disable them during SSR (make sure css variables are used), then on hydration turn it on
-  - make sure enterStyle still works
-  - see t_will-mount
-   - hasEnterStyle && ((state.unmounted && needsMount) || !isClient
-
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
 
@@ -136,10 +94,6 @@ a package.json etc etc + zip file
   - only with css driver it can extract to css
   - without it uses context
 
-- <Select native />
-  - for web this should be pretty straightforward
-    - likely want the actual trigger to be styled but the viewport/items to be native
-
 - <Sheet native />
   - https://github.com/dominicstop/react-native-ios-modal
   - we'd want expo module + snap points
@@ -147,21 +101,11 @@ a package.json etc etc + zip file
 - <ActionSheet />
  - plus `native` prop https://reactnative.dev/docs/actionsheetios
 
-- we should check that things merge properly for regular styled() views the same as `StyledButtonVariantPseudoMerge`, basically try it with regular styled definition. Also try it with inherited styled(styled())
-
-- also – I use the RNW Modal component often. However, I'm not able to use Popover, Tooltip, etc. inside of one. 
-  - may need to detect somehow if inside Modal and use it?
-
 - add test that builds site for prod + checks for header text / no errors
 
 - yarn release --canary
 
 - Popover trigger="hover"
-
-- automate adding sponsor label on discord when sponsored
-  - if possible we can automate adding a private chat room if they fill our something on their account
-
-- arrow on popover doesnt render border color
 
 - Switch unstyled - make it so it doesn't do any theme stuff
 
@@ -172,15 +116,9 @@ a package.json etc etc + zip file
   - all instances of $body can become getConfig().defaultFontFamily
   - remove the validation in createTamagui that enforces the keys
 
-- <Select /> light mode the hover style is barely visible
-  - todo in themes branch
-  - it should have pure white bg
-
 - relative sizing first class (and relative color)
   - add `defaultSize`, and `defaultColor`
   - add `relative()` helpers
-
-- [x] missing docs on useToastController().options
 
 - bug android 
   - I've been working on integrating our component library to mobile and ran into a snag with the android build. IOS builds seamlessly and Android throws this error when trying to use Select component:
@@ -206,9 +144,6 @@ a package.json etc etc + zip file
 
 - createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
 
-- lets make forms use outline for 2px borders on focusStyle
-  - on native it can just get a darker border but stay 1px
-
 - cli
   - `tamagui doctor` command to check for version mismatch
 
@@ -219,9 +154,6 @@ Ali:
 
 - [ ] moti driver
 - [ ] Studio
-  - [x] Bring back next saas stuff
-  - [x] Sponsor => Github auth Account
-  - [x] Web Filesystemapi to access to folder
   - [ ] Host on vercel
   - [ ] plugins automatically watch and build
     - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
@@ -233,43 +165,21 @@ Ali:
         - [ ] `tama studio --watch` watches
 - [ ] skipProps on getSplitStyle working with width={} but not styled()'s width:
 - [ ] https://discord.com/channels/909986013848412191/1095303038786342983/1095303038786342983
-- [x] https://github.com/chakra-ui/chakra-ui/issues/183#issuecomment-1503061828
 - [ ] document keyboard avoiding view in `Sheet.mdx`
 - [ ] input bug 
   - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
-- [x] Toasts starter
-- [x] Studio get running
-- [x] RadioGroup needs a press style color for the indicator
 - [ ] @tamagui/change-animation-driver document
-- [x] Switch for animation driver on website doesn't animate
-  - [x] lets keep it as a spring
 - [ ] Disable warning ENV + configuration.md docs
-- [x] lets make forms use outline for 2px borders on focusStyle
-  - [x] on native it can stay 1px
   - [ ] (nate) make focusStyle border darker
 - [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
-- [x] `<YStack space="$3" $gtSm={{ space: '$6'}}>` not working again (likely fixed)
 - [ ] bezier on css animations
-- [x] tabs 
-  - [x] advanced demo is weird it has a bg and a separator
-  - [x] prevSelectionIndicatorLayout should be state not ref to avoid concurrency issues
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
     - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
     alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
-  - [x] IntentIndicator lowercase
-    - [x] maybe make all state go into one useState({ intentAt, activeAt, tab })
-  - [x] Trigger => Tab (deprecate)
-  - [x] TabsTriggerFrame variant theme Button is weird does that do anythig?
   - [ ] and document on styled() page
 - native component modes
   - [ ] `RadioGroup`, `Select` native (web)
   - [ ] `Switch` native (mobile)
-- [x] unstyled for 
-  - [x] Select (was already done)
-  - [x] Tabs
-  - [x] Card (was already done)
-- [x] go through the docs and remove shorthands - use full forms
-- [x] go through the docs and change usage imports to tamagui instead of other packages (e.g. @tamagui/stack -> tamagui)
 
 ---
 
@@ -376,7 +286,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 1.X
 
-- // TODO could be native-only
 - Select id="" + Label focus
 - web forms events bubble
 - theme shouldn't change context ever on web, redo notify()
@@ -426,31 +335,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 ---
 
-inbox
-
-- remove defaultVariants in favor of just defaultProps
-
-- // TODO move to validStyleProps to merge
-- bundle size reductions:
-  - merge mergeSlotProps and mergeProps
-  - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
-  - getStylesAtomic "all webkit prefixed rules, pointer-events"
-  - color names hardcoded potentially
-  - // ??
-  - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
-  - remove mergeConfigDefaultProps
-  - ThemeManager move to functional not class
-  - may be able to remove proxyThemeVariables
-  - getVariantExtras looks easy to slim
-  - reverseMapClassNameToValue / unitlessNumbers
-  - normalizeColor etc
-  - createPropMapper
-
 - react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
 - https://github.com/tamagui/tamagui/issues/513
-- @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 
 - docs search build inline
   - add shorthands to docs
@@ -678,13 +566,4 @@ themes.dark_Button = {
 # Winamp Re-skinability
 
 Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
-
-
----
-
-quotes
-
-#stream Kezlar — Today at 3:09 PM
-yeah tamagui was definitely a rabbit hole, but once it clicked, it's incredible to use. Took me ~2weeks to migrate from native base but was 500% worth it
-
 

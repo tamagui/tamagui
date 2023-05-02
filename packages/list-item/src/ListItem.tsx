@@ -1,8 +1,8 @@
 import {
   FontSizeTokens,
   GetProps,
+  SizeTokens,
   Spacer,
-  TamaguiElement,
   ThemeableProps,
   getTokens,
   getVariableValue,
@@ -14,7 +14,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
-import React, { FunctionComponent, forwardRef } from 'react'
+import React, { FunctionComponent } from 'react'
 
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
@@ -61,51 +61,53 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
 
 const NAME = 'ListItem'
 
+export const listItemVariants = {
+  unstyled: {
+    false: {
+      size: '$true',
+      alignItems: 'center',
+      flexWrap: 'nowrap',
+      width: '100%',
+      borderColor: '$borderColor',
+      maxWidth: '100%',
+      overflow: 'hidden',
+      flexDirection: 'row',
+      backgroundColor: '$background',
+    },
+  },
+
+  size: {
+    '...size': (val: SizeTokens, { tokens }) => {
+      return {
+        minHeight: tokens.size[val],
+        paddingHorizontal: tokens.space[val],
+        paddingVertical: getSpace(val, -2),
+      }
+    },
+  },
+
+  active: {
+    true: {
+      hoverStyle: {
+        backgroundColor: '$background',
+      },
+    },
+  },
+
+  disabled: {
+    true: {
+      opacity: 0.5,
+      // TODO breaking types
+      pointerEvents: 'none' as any,
+    },
+  },
+} as const
+
 export const ListItemFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'li',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        width: '100%',
-        borderColor: '$borderColor',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        flexDirection: 'row',
-        backgroundColor: '$background',
-      },
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          minHeight: tokens.size[val],
-          paddingHorizontal: tokens.space[val],
-          paddingVertical: getSpace(val, -2),
-        }
-      },
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
-
-    disabled: {
-      true: {
-        opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
-      },
-    },
-  } as const,
+  variants: listItemVariants,
 
   defaultVariants: {
     unstyled: false,
@@ -248,7 +250,10 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
+const ListItemComponent = ListItemFrame.styleable<ListItemProps>(function ListItem(
+  props,
+  ref
+) {
   const { props: listItemProps } = useListItem(props)
   return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
@@ -265,10 +270,7 @@ export const listItemStaticConfig = {
   ]),
 }
 
-export const ListItem = withStaticProperties(
-  ListItemFrame.styleable<ListItemProps>(ListItemComponent),
-  {
-    Text: ListItemText,
-    Subtitle: ListItemSubtitle,
-  }
-)
+export const ListItem = withStaticProperties(ListItemComponent, {
+  Text: ListItemText,
+  Subtitle: ListItemSubtitle,
+})

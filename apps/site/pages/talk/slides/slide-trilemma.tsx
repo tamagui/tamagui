@@ -8,10 +8,12 @@ export default memo(() => {
       title="Can we solve it?"
       subTitle="You typically have to choose two:"
       theme="purple"
+      stepsStrategy="replace"
       steps={[
         [
           {
             type: 'image',
+            variant: 'centered',
             image: require('../images/trilemma.png').default,
           },
         ],
@@ -19,7 +21,48 @@ export default memo(() => {
         [
           {
             type: 'image',
-            image: require('../images/trilemma-solved.png').default,
+            variant: 'centered',
+            image: require('../images/trilemma-2.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/trilemma-3.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/trilemma-4.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/trilemma-5.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/trilemma-6.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/trilemma-7.png').default,
           },
         ],
       ]}
