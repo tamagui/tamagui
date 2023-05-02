@@ -9,7 +9,7 @@
  */
 'use strict'
 
-import _EventSubscription from './_EventSubscription.js'
+import _EventSubscription from './_EventSubscription'
 
 /**
  * EmitterSubscription represents a subscription with listener and context data.

@@ -13,7 +13,7 @@ import { ComponentType, ReactNode } from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { invariant } from 'react-native-web-internals'
 
-import renderApplication, { getApplication } from './renderApplication.js'
+import renderApplication, { getApplication } from './renderApplication'
 
 type AppParams = Object
 

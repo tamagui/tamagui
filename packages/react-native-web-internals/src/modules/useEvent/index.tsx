@@ -7,9 +7,9 @@
  * @flow
  */
 
-import createEventHandle from '../createEventHandle/index.js'
-import useLayoutEffect from '../useLayoutEffect/index.js'
-import useStable from '../useStable/index.js'
+import createEventHandle from '../createEventHandle/index'
+import useLayoutEffect from '../useLayoutEffect/index'
+import useStable from '../useStable/index'
 
 type Callback = null | ((arg0: any) => void)
 type AddListener = (

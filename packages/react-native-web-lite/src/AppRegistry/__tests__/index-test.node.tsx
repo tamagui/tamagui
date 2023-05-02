@@ -8,7 +8,7 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 
-import StyleSheet from '../../StyleSheet/index.js'
+import StyleSheet from '../../StyleSheet/index'
 import View from '../../View'
 import AppRegistry from '..'
 

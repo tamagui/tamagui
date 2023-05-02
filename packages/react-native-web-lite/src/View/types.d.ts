@@ -5,8 +5,8 @@ import type {
   LayoutStyles,
   ShadowStyles,
   TransformStyles,
-} from '../../styleTypes.js'
-import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types.js'
+} from '../../styleTypes'
+import type { ColorValue, GenericStyleProp, LayoutEvent } from '../../types'
 declare type NumberOrString = number | string
 declare type OverscrollBehaviorValue = 'auto' | 'contain' | 'none'
 declare type idRef = string

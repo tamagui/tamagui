@@ -7,5 +7,5 @@
  *
  * @format
  */
-import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry.js'
+import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry'
 export default TurboModuleRegistry.get('NativeAnimatedModule')

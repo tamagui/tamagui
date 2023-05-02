@@ -20,10 +20,10 @@ import {
   useRef,
 } from 'react'
 
-import useRefEffect from '../useRefEffect.js'
-import { AnimatedEvent } from './AnimatedEvent.js'
-import NativeAnimatedHelper from './NativeAnimatedHelper.js'
-import AnimatedProps from './nodes/AnimatedProps.js'
+import useRefEffect from '../useRefEffect'
+import { AnimatedEvent } from './AnimatedEvent'
+import NativeAnimatedHelper from './NativeAnimatedHelper'
+import AnimatedProps from './nodes/AnimatedProps'
 
 const useLayoutEffect = typeof window === 'undefined' ? useEffect : _
 

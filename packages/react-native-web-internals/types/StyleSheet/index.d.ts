@@ -48,7 +48,7 @@ declare namespace StyleSheet {
     };
     var create: (styles: any) => any;
     var compose: (style1: any, style2: any) => any;
-    var flatten: typeof import("./index.js").flatten;
+    var flatten: typeof import(".").flatten;
     var getSheet: () => {
         id: string;
         textContent: string;

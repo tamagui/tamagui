@@ -10,7 +10,7 @@ import { useMergeRefs } from 'react-native-web-internals'
  *
  * @format
  */
-import useAnimatedProps from './useAnimatedProps.js'
+import useAnimatedProps from './useAnimatedProps'
 
 /**
  * Experimental implementation of `createAnimatedComponent` that is intended to

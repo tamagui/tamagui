@@ -14,8 +14,8 @@
 import normalizeColor from '@tamagui/normalize-css-color'
 import { invariant } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 var __DEV__ = process.env.NODE_ENV !== 'production'
 

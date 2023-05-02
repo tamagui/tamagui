@@ -9,8 +9,8 @@
  */
 'use strict'
 
-import AnimatedInterpolation from './AnimatedInterpolation.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import AnimatedInterpolation from './AnimatedInterpolation'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 class AnimatedDiffClamp extends AnimatedWithChildren {
   constructor(a, min, max) {

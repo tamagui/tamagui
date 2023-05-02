@@ -7,9 +7,9 @@
  * @flow
  */
 
-import { ColorValue, GenericStyleProp } from '../../types.js'
-import { TextStyle } from '../Text/types.js'
-import { ViewProps } from '../View/types.js'
+import { ColorValue, GenericStyleProp } from '../../types'
+import { TextStyle } from '../Text/types'
+import { ViewProps } from '../View/types'
 
 export type TextInputStyle = {
   caretColor?: ColorValue

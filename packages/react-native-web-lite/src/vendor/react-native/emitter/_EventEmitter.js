@@ -10,8 +10,8 @@
  */
 import { invariant } from 'react-native-web-internals'
 
-import EmitterSubscription from './_EmitterSubscription.js'
-import EventSubscriptionVendor from './_EventSubscriptionVendor.js'
+import EmitterSubscription from './_EmitterSubscription'
+import EventSubscriptionVendor from './_EventSubscriptionVendor'
 
 var sparseFilterPredicate = () => true
 

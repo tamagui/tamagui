@@ -22,9 +22,9 @@ import {
   useResponderEvents,
 } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import type { PlatformMethods } from '../types.js'
-import type { TextInputProps } from './types.js'
+import createElement from '../createElement/index'
+import type { PlatformMethods } from '../types'
+import type { TextInputProps } from './types'
 
 /**
  * Determines whether a 'selection' prop differs from a node's existing
