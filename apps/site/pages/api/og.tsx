@@ -53,7 +53,7 @@ export default async function handler(request: NextRequest) {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            marginLeft: 24,
+            marginLeft: 44,
             width: '50%',
           }}
         >
@@ -61,7 +61,7 @@ export default async function handler(request: NextRequest) {
             width="217"
             height="23"
             style={{ marginBottom: 110, marginTop: -140 }}
-            src={logoData}
+            src={logoData as any}
           />
 
           <h1
