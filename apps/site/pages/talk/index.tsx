@@ -9,7 +9,8 @@ import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tam
 
 import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
-import Slide3a from './slides/slide-core-features'
+import slideCoreComparison from './slides/slide-core-comparison'
+import SlideCoreFeatures from './slides/slide-core-features'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
@@ -70,9 +71,10 @@ export default function TamaguiTalk() {
           SlideHow,
           slideCssInJs,
           Slide3,
-          Slide3a,
+          SlideCoreFeatures,
           SlideThemes,
           SlideThemes2,
+          slideCoreComparison,
           Slide4,
           SlideFlatten,
           Slide6c,

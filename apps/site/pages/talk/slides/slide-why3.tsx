@@ -12,14 +12,14 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `I can't afford to write two apps.`,
+            content: `I couldn't afford to write two apps...`,
           },
         ],
 
         [
           {
             type: 'callout',
-            content: `My universal app felt terrible 😭`,
+            content: `... but my universal app felt terrible 😭`,
           },
         ],
       ]}

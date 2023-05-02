@@ -35,11 +35,48 @@ const outputSnippet = highlightCode(
   'tsx'
 )
 
+const snippetUsage = highlightCode(
+  `
+import { Stack } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Stack background="$background">
+      Light Background
+    </Stack>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageComplex = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Stack background="$background">
+      Light Background
+    </Stack>
+
+    <Theme name="dark">
+      <Text color="$color">
+        Dark text
+      </Text>
+    </Theme>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
 export default memo(() => {
   return (
     <Slide
       title="Themes"
       subTitle="Generics for styling"
+      stepsStrategy="replace"
       theme="yellow"
       steps={[
         [
@@ -56,7 +93,33 @@ export default memo(() => {
               },
             ],
           },
+        ],
 
+        [
+          {
+            type: 'code',
+            content: snippetUsage,
+          },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: `No dark:color-300`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsageComplex,
+          },
+        ],
+
+        [
           {
             type: 'split-horizontal',
             content: [

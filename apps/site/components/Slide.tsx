@@ -5,6 +5,7 @@ import {
   FontSizeTokens,
   H1,
   H2,
+  H4,
   Paragraph,
   SizableTextProps,
   SpaceTokens,
@@ -59,6 +60,7 @@ type SlideStepItem =
     }
   | {
       type: 'vertical'
+      title?: any
       content: SlideStepItem[]
     }
   | {
@@ -225,7 +227,7 @@ function getTextContent(
     <div
       style={{
         display: 'inline-block',
-        height: '100%',
+        maxHeight: '100%',
         ...wrapperStyle,
       }}
     >
@@ -274,7 +276,16 @@ function getTextContent(
             )
 
           case 'vertical':
-            return <YStack>{getTextContent(item.content)}</YStack>
+            return (
+              <YStack>
+                {!!item.title && (
+                  <H4 size="$10" als="center" mb="$4" color="$color9">
+                    {item.title}
+                  </H4>
+                )}
+                {getTextContent(item.content)}
+              </YStack>
+            )
 
           case 'split-horizontal':
             return (
