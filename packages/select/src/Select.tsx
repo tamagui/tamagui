@@ -321,7 +321,19 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 export const SelectItemTextFrame = styled(SizableText, {
   name: ITEM_TEXT_NAME,
-  userSelect: 'none',
+
+  variants: {
+    unstyled: {
+      false: {
+        userSelect: 'none',
+        color: '$color',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>

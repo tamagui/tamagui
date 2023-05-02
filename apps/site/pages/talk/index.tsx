@@ -10,6 +10,7 @@ import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tam
 import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import slideCoreComparison from './slides/slide-core-comparison'
+import slideCoreFeatures from './slides/slide-core-features'
 import SlideCoreFeatures from './slides/slide-core-features'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
@@ -63,6 +64,7 @@ export default function TamaguiTalk() {
           Slide1,
           slideTwitterPoll,
           Slide2,
+          slideCoreFeatures,
           SlideWhy,
           slideWhy2,
           slideWhy3,
@@ -71,7 +73,6 @@ export default function TamaguiTalk() {
           SlideHow,
           slideCssInJs,
           Slide3,
-          SlideCoreFeatures,
           SlideThemes,
           SlideThemes2,
           slideCoreComparison,

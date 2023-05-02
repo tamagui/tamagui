@@ -138,7 +138,7 @@ export default memo(() => {
                           marginBottom: 40,
                           display: 'inline-flex',
                         },
-                        content: `Functional variants`,
+                        content: `Animation drivers`,
                       },
                     ],
                   },

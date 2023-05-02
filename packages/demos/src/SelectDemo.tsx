@@ -13,30 +13,30 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 export function SelectDemo() {
-  const [val, setVal] = useState('apple')
-
   return (
     <YStack space>
       <XStack ai="center" space>
         <Label f={1} fb={0}>
           Custom
         </Label>
-        <SelectDemoItem value={val} onValueChange={setVal} />
+        <SelectDemoItem />
       </XStack>
 
       <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
-        <SelectDemoItem value={val} onValueChange={setVal} native />
+        <SelectDemoItem native />
       </XStack>
     </YStack>
   )
 }
 
 export function SelectDemoItem(props: SelectProps) {
+  const [val, setVal] = useState('apple')
+
   return (
-    <Select id="food" {...props}>
+    <Select id="food" value={val} onValueChange={setVal} {...props}>
       <Select.Trigger width={180} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
@@ -79,7 +79,7 @@ export function SelectDemoItem(props: SelectProps) {
               {items.map((item, i) => {
                 return (
                   <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
-                    <Select.ItemText color="#fff">{item.name}</Select.ItemText>
+                    <Select.ItemText>{item.name}</Select.ItemText>
                     <Select.ItemIndicator marginLeft="auto">
                       <Check size={16} />
                     </Select.ItemIndicator>
