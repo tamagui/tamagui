@@ -8,6 +8,7 @@ import {
   TabsContentProps,
   XStack,
   YStack,
+  isWeb,
 } from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
@@ -22,7 +23,12 @@ export function TabsDemo() {
 
   return (
     // web only fix for position relative
-    <YStack paddingHorizontal="$4" position={'unset' as any}>
+    <YStack
+      paddingHorizontal="$4"
+      {...(isWeb && {
+        position: 'unset' as any,
+      })}
+    >
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
       <XStack
