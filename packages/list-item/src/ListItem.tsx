@@ -1,6 +1,7 @@
 import {
   FontSizeTokens,
   GetProps,
+  SizeTokens,
   Spacer,
   TamaguiElement,
   ThemeableProps,
@@ -61,51 +62,53 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent' | 'noTextWrap
 
 const NAME = 'ListItem'
 
+export const listItemVariants = {
+  unstyled: {
+    false: {
+      size: '$true',
+      alignItems: 'center',
+      flexWrap: 'nowrap',
+      width: '100%',
+      borderColor: '$borderColor',
+      maxWidth: '100%',
+      overflow: 'hidden',
+      flexDirection: 'row',
+      backgroundColor: '$background',
+    },
+  },
+
+  size: {
+    '...size': (val: SizeTokens, { tokens }) => {
+      return {
+        minHeight: tokens.size[val],
+        paddingHorizontal: tokens.space[val],
+        paddingVertical: getSpace(val, -2),
+      }
+    },
+  },
+
+  active: {
+    true: {
+      hoverStyle: {
+        backgroundColor: '$background',
+      },
+    },
+  },
+
+  disabled: {
+    true: {
+      opacity: 0.5,
+      // TODO breaking types
+      pointerEvents: 'none' as any,
+    },
+  },
+} as const
+
 export const ListItemFrame = styled(ThemeableStack, {
   name: NAME,
   tag: 'li',
 
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        width: '100%',
-        borderColor: '$borderColor',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        flexDirection: 'row',
-        backgroundColor: '$background',
-      },
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          minHeight: tokens.size[val],
-          paddingHorizontal: tokens.space[val],
-          paddingVertical: getSpace(val, -2),
-        }
-      },
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
-
-    disabled: {
-      true: {
-        opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
-      },
-    },
-  } as const,
+  variants: listItemVariants,
 
   defaultVariants: {
     unstyled: false,
@@ -248,7 +251,7 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = forwardRef<TamaguiElement, ListItemProps>((props, ref) => {
+const ListItemComponent = ListItemFrame.styleable((props, ref) => {
   const { props: listItemProps } = useListItem(props)
   return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })
