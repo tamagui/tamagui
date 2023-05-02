@@ -111,7 +111,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `50 * 3 * 4 * 2 * 2 * 2 * 2 * 3`,
+                content: `50*3*4*2*2*2*2*3`,
               },
             ],
           },

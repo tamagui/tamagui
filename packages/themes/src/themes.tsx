@@ -333,7 +333,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
   } as SubTheme
 
   return {
-    ListItem: stronger1,
+    ListItem: isLight ? stronger1 : theme,
     Card: weaker1,
     Button: weaker2,
     Checkbox: weaker2,

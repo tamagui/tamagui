@@ -444,27 +444,36 @@ const getToken = (
   debug?: DebugProp
 ) => {
   const tokensParsed = conf.tokensParsed
-  const fontsParsed = languageContext
-    ? getFontsForLanguage(conf.fontsParsed, languageContext)
-    : conf.fontsParsed
   let valOrVar: any
   let hasSet = false
   if (value in theme) {
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(`Getting theme value for ${key} from ${value} = ${theme[value].val}`)
+    }
     valOrVar = theme[value]
     hasSet = true
   } else {
     switch (key) {
-      case 'fontFamily':
+      case 'fontFamily': {
+        const fontsParsed = languageContext
+          ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          : conf.fontsParsed
         valOrVar = fontsParsed[value]?.family || value
         hasSet = true
         break
+      }
       case 'fontSize':
       case 'lineHeight':
       case 'letterSpacing':
-      case 'fontWeight':
+      case 'fontWeight': {
+        const fontsParsed = languageContext
+          ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          : conf.fontsParsed
         valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
         hasSet = true
         break
+      }
     }
     for (const cat in tokenCategories) {
       if (key in tokenCategories[cat]) {
