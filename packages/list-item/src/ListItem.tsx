@@ -251,7 +251,7 @@ export const useListItem = (
   }
 }
 
-const ListItemComponent = ListItemFrame.styleable((props, ref) => {
+const ListItemComponent = ListItemFrame.styleable(function ListItem(props, ref) {
   const { props: listItemProps } = useListItem(props)
   return <ListItemFrame ref={ref} justifyContent="space-between" {...listItemProps} />
 })

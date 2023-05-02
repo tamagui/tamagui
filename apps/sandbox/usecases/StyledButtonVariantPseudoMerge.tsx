@@ -1,4 +1,4 @@
-import { Button, styled } from 'tamagui'
+import { Button, Theme, YStack, styled } from 'tamagui'
 
 const StyledButton = styled(Button, {
   pressStyle: {
@@ -18,6 +18,20 @@ const StyledButton = styled(Button, {
 
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
 
+const StyledButtonVariantTheme = styled(Button, {
+  pressStyle: {
+    scale: 0.5,
+  },
+
+  variants: {
+    testVariant: {
+      true: {
+        backgroundColor: '$background',
+      },
+    },
+  },
+})
+
 export default () => (
   <>
     <StyledButton id="test" reddish>
@@ -29,5 +43,13 @@ export default () => (
     <DoubleStyledButtonNoVariants reddish id="double-styled">
       test
     </DoubleStyledButtonNoVariants>
+
+    <Theme name="light">
+      <YStack theme="green">
+        <StyledButtonVariantTheme id="variant-theme" testVariant>
+          test
+        </StyledButtonVariantTheme>
+      </YStack>
+    </Theme>
   </>
 )

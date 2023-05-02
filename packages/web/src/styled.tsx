@@ -99,21 +99,18 @@ export function styled<
         ...defaultProps
       } = options
 
-      // TODO why is this breaking native but fixing web
-      // if (process.env.TAMAGUI_TARGET === 'web') {
-      //   if (parentStaticConfig) {
-      //     defaultProps = {
-      //       ...parentStaticConfig.defaultProps,
-      //       ...defaultProps,
-      //       ...defaultVariants,
-      //     }
-      //   }
-      // }
+      if (parentStaticConfig) {
+        defaultProps = {
+          ...parentStaticConfig.defaultProps,
+          ...defaultProps,
+          ...defaultVariants,
+        }
+      }
 
       if (defaultVariants) {
         defaultProps = {
-          ...defaultVariants,
           ...defaultProps,
+          ...defaultVariants,
         }
       }
 
