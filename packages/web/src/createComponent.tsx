@@ -944,35 +944,31 @@ export function createComponent<
     ...staticConfig,
   }
 
-  function extendStyledConfig(Component: any, conf?: Partial<StaticConfig>) {
+  function extendStyledConfig() {
     return extendStaticConfig(
       {
-        Component: Component as any,
-        ...conf,
+        ...staticConfig,
         neverFlatten: true,
         isHOC: true,
-        defaultProps: mergeProps(Component['defaultProps'], conf?.defaultProps)[0],
       },
       res
     )
   }
 
-  function extractable(Component, conf?: Partial<StaticConfig>) {
-    const extendedConfig = extendStyledConfig(Component, conf)
-    Component.staticConfig = extendedConfig
+  function extractable(Component: any) {
+    Component.staticConfig = extendStyledConfig()
     Component.styleable = styleable
     return Component
   }
 
-  function styleable(Component: any, conf?: Partial<StaticConfig>) {
+  function styleable(Component: any) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
       : forwardRef(Component as any)
 
-    const extendedConfig = extendStyledConfig(Component, conf)
+    const extendedConfig = extendStyledConfig()
     const out = themeable(ComponentForwardedRef, extendedConfig) as any
-    extendedConfig.Component = out
     out.staticConfig = extendedConfig
     out.styleable = styleable
     return out
