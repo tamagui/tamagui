@@ -10,6 +10,10 @@ high level:
 
 ---
 
+- make `getButtonSized` somehow configurable by users
+- document `tokenCategories` in createPropMapper in configuration
+- document how `size` + `font` + `space` should work together to help create a cohesive design system that works with tamagui
+
 Ali todos:
   - [x] studio
     - [ ] make it remember dark/light choice (localStorage)

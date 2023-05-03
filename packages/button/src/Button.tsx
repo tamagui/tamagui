@@ -267,12 +267,12 @@ function useButton(
     fontFamily,
     fontStyle,
     textAlign,
-    unstyled = false,
     textProps,
 
     ...rest
   } = propsIn
 
+  const hasUnstyled = typeof propsIn.unstyled !== 'undefined'
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn)
   const size = propsActive.size || '$true'
@@ -283,9 +283,9 @@ function useButton(
   const contents = wrapChildrenInText(
     Text,
     propsActive,
-    Text === ButtonTextFrame
+    Text === ButtonTextFrame && hasUnstyled
       ? {
-          unstyled,
+          unstyled: propsIn.unstyled,
         }
       : undefined
   )
@@ -320,7 +320,6 @@ function useButton(
         borderColor: '$background',
       },
     }),
-    unstyled,
     tag,
     ...rest,
     children: isRSC ? (
