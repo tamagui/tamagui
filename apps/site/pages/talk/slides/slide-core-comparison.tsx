@@ -24,7 +24,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 40,
+                          marginBottom: 60,
                           display: 'inline-flex',
                         },
                         content: `Inline styles`,
@@ -39,7 +39,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 40,
+                          marginBottom: 60,
                           display: 'inline-flex',
                         },
                         content: `Shorthands`,
@@ -54,10 +54,10 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 40,
+                          marginBottom: 60,
                           display: 'inline-flex',
                         },
-                        content: `Build-time optimized`,
+                        content: `Minimal CSS`,
                       },
                     ],
                   },
@@ -69,25 +69,10 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 40,
+                          marginBottom: 60,
                           display: 'inline-flex',
                         },
-                        content: `RN + Web`,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'bullet-point',
-                    slim: true,
-                    content: [
-                      {
-                        type: 'text',
-                        props: {
-                          size: '$10',
-                          marginBottom: 40,
-                          display: 'inline-flex',
-                        },
-                        content: `Performance`,
+                        content: `Native + Web`,
                       },
                     ],
                   },
@@ -105,8 +90,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `Everything is typed`,
@@ -120,8 +105,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `Properly merge props`,
@@ -135,8 +120,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `De/re-structure styles`,
@@ -150,14 +135,15 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `No dark:red-300`,
                       },
                     ],
                   },
+
                   {
                     type: 'bullet-point',
                     slim: true,
@@ -165,8 +151,40 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          size: '$9',
+                          marginBottom: 20,
+                          display: 'inline-flex',
+                        },
+                        content: `Compiler optimization++`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$9',
+                          marginBottom: 20,
+                          display: 'inline-flex',
+                        },
+                        content: `Themes++`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `No editor plugin`,

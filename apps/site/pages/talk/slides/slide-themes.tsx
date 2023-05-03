@@ -242,55 +242,52 @@ export default memo(() => {
 
         [
           {
-            type: 'split-horizontal',
+            type: 'bullet-point',
+            size: '$10',
             content: [
               {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Avoids re-rendering`,
-                      },
-                    ],
-                  },
+                type: 'text',
+                content: `Avoids re-renders on web`,
+              },
+            ],
+          },
 
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Invert or reset to parent`,
-                      },
-                    ],
-                  },
-                ],
+          {
+            type: 'bullet-point',
+            size: '$10',
+            content: [
+              {
+                type: 'text',
+                content: `Invertable`,
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            size: '$10',
+            content: [
+              {
+                type: 'text',
+                content: `Nested as many times as you want`,
+              },
+            ],
+          },
+          {
+            type: 'bullet-point',
+            size: '$10',
+            content: [
+              {
+                type: 'text',
+                content: `Target individual components`,
               },
 
               {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `No dark:color-300`,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Improves code re-use`,
-                      },
-                    ],
-                  },
-                ],
+                type: 'code-inline',
+                props: {
+                  color: '$color2',
+                },
+                content: `light_Button`,
               },
             ],
           },
