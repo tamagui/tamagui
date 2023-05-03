@@ -450,7 +450,7 @@ describe('ThemeManager', () => {
     expect(child.state.name).toBe('dark_red_Button')
   })
 
-  test('Drops componentName if only regular name found at stronger level', () => {
+  test('Uses componentName over more generic theme name', () => {
     const parent = new ThemeManager(
       {
         name: 'dark_red',
@@ -464,7 +464,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.name).toBe('dark_red_alt1')
+    expect(child.state.name).toBe('dark_red_Button')
   })
 
   test('Component name + theme change when nested already', () => {

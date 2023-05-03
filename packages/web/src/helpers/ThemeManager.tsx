@@ -277,33 +277,38 @@ function getState(
     }
     let potentials: string[] = []
 
+    if (prefix && prefix !== parentBaseTheme) {
+      potentials.push(prefix)
+    }
+    if (nextName) {
+      potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
+    }
+    if (i === 1) {
+      const lastSegment = potentials.findIndex((x) => !x.includes('_'))
+      if (lastSegment > 0) {
+        potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
+      }
+    }
+
     if (componentName) {
+      let componentPotentials: string[] = []
       // components only look for component themes
       if (nextName) {
         const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
-        potentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
+        componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
-      potentials.push(`${prefix}_${componentName}`)
+      componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
         const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
-        const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
-        const moreSpecific = `${prefix}_${nextName}_${componentName}`
-        potentials = [moreSpecific, lessSpecific, ...potentials]
-      }
-    } else {
-      if (prefix && prefix !== parentBaseTheme) {
-        potentials.push(prefix)
-      }
-      if (nextName) {
-        potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
-      }
-      if (i === 1) {
-        const lastSegment = potentials.findIndex((x) => !x.includes('_'))
-        if (lastSegment > 0) {
-          potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
+        if (prefixLessOne) {
+          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+          componentPotentials.unshift(lessSpecific)
         }
+        const moreSpecific = `${prefix}_${nextName}_${componentName}`
+        componentPotentials.unshift(moreSpecific)
       }
+      potentials = [...componentPotentials, ...potentials]
     }
 
     const found = potentials.find((t) => t in themes)
