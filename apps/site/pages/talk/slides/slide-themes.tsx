@@ -35,6 +35,36 @@ const outputSnippet = highlightCode(
   'tsx'
 )
 
+const inputSnippetSub = highlightCode(
+  `
+const themes = {
+  light_red: {
+    background: 'lightred',
+    color: 'darkred',
+  },
+  dark_red: {
+    background: 'darkred',
+    color: 'lightred'
+  }
+}
+`,
+  'tsx'
+)
+
+const outputSnippetSub = highlightCode(
+  `.t_light_red {
+  --background: lightred;
+  --color: darkred;
+}
+
+.t_dark_red {
+  --background: darkred;
+  --color: lightred;
+}
+`,
+  'tsx'
+)
+
 const snippetUsage = highlightCode(
   `
 import { Stack } from '@tamagui/core'
@@ -64,6 +94,50 @@ export default () => (
       <Text color="$color">
         Dark text
       </Text>
+    </Theme>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageInverse = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Stack background="$background">
+      Light Background
+    </Stack>
+
+    <Theme inverse>
+      <Text color="$color">
+        Dark text
+      </Text>
+    </Theme>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageInverseSub = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Theme name="red">
+      <Stack background="$background">
+        Light Red Background
+      </Stack>
+
+      <Theme inverse>
+        <Text color="$color">
+          Dark red text
+        </Text>
+      </Theme>
     </Theme>
   </Theme>
 )
@@ -106,7 +180,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: `No dark:color-300`,
+                content: `Don't hardcode dark:color-300, instead change your theme`,
               },
             ],
           },
@@ -116,6 +190,53 @@ export default memo(() => {
           {
             type: 'code',
             content: snippetUsageComplex,
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsageInverse,
+          },
+        ],
+
+        [
+          {
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: inputSnippetSub,
+              },
+              {
+                type: 'code',
+                content: outputSnippetSub,
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: `Nest as many sub-themes as you want, eg`,
+              },
+              {
+                type: 'code-inline',
+                props: {
+                  color: '$color2',
+                },
+                content: `dark_red_subtle`,
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsageInverseSub,
           },
         ],
 
@@ -135,6 +256,7 @@ export default memo(() => {
                       },
                     ],
                   },
+
                   {
                     type: 'bullet-point',
                     content: [

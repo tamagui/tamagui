@@ -195,12 +195,16 @@ function getNextThemeClassName(name: string, props: ThemeProps) {
     name === 'light' ||
     name === 'dark'
   ) {
-    return (
-      next +
-      // ensure you invert to base dark as well as specific dark
-      // ... logic should likely be elsewhere
-      (next.includes('dark_') ? ` t_dark` : next.includes('light_') ? ` t_light` : '')
-    )
+    // ensure you invert to base dark as well as specific dark
+    // ... logic should likely be elsewhere
+    const lessSpecificCN = props.componentName
+      ? ''
+      : next.includes('dark_')
+      ? ` t_dark`
+      : next.includes('light_')
+      ? ` t_light`
+      : ''
+    return next + lessSpecificCN
   }
   return next.replace('light_', '').replace('dark_', '')
 }
@@ -272,18 +276,7 @@ function getState(
       prefix = inverseThemeName(prefix)
     }
     let potentials: string[] = []
-    if (prefix && prefix !== parentBaseTheme) {
-      potentials.push(prefix)
-    }
-    if (nextName) {
-      potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
-    }
-    if (i === 1) {
-      const lastSegment = potentials.findIndex((x) => !x.includes('_'))
-      if (lastSegment > 0) {
-        potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
-      }
-    }
+
     if (componentName) {
       // components only look for component themes
       if (nextName) {
@@ -297,6 +290,19 @@ function getState(
         const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         potentials = [moreSpecific, lessSpecific, ...potentials]
+      }
+    } else {
+      if (prefix && prefix !== parentBaseTheme) {
+        potentials.push(prefix)
+      }
+      if (nextName) {
+        potentials.unshift(prefix ? `${prefix}_${nextName}` : nextName)
+      }
+      if (i === 1) {
+        const lastSegment = potentials.findIndex((x) => !x.includes('_'))
+        if (lastSegment > 0) {
+          potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
+        }
       }
     }
 
