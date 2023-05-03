@@ -887,15 +887,6 @@ export function createComponent<
     const noClassNames = !staticConfig.acceptsClassName
     const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
 
-    // split - keep variables on props to be processed using theme values at runtime (native)
-    // if (process.env.TAMAGUI_TARGET === 'native') {
-    //   for (const key in staticConfig.defaultProps) {
-    //     const val = staticConfig.defaultProps[key]
-    //     if (validPseudoKeys[key]) continue
-    //     defaults[key] = val
-    //   }
-    // }
-
     defaultProps = restProps
 
     // add debug logs
