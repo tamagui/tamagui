@@ -38,6 +38,7 @@
         "useAltText": "off"
       },
       "nursery": {
+        "useMediaCaption": "off",
         "noConsoleLog": "error",
         "noAssignInExpressions": "off",
         "useExhaustiveDependencies": "off",

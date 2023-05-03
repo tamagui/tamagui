@@ -252,8 +252,10 @@ function getTextContent(
                       ai="center"
                       {...(item.variant === 'circled' && {
                         bg: '$backgroundStrong',
-                        width: 500,
-                        height: 500,
+                        minWidth: 500,
+                        minHeight: 500,
+                        maxWidth: 500,
+                        maxHeight: 500,
                         ai: 'center',
                         jc: 'center',
                         borderRadius: 10000,
@@ -270,16 +272,22 @@ function getTextContent(
                         jc: 'center',
                         h: '100%',
                         maw: '90%',
+                        minWidth: '100%',
                       })}
                     >
-                      <img
+                      <div
                         style={{
                           alignSelf: 'center',
-                          maxWidth: '100%',
+                          minWidth: '100%',
+                          minHeight: '100%',
                           maxHeight: '100%',
-                          width: 'auto',
+                          maxWidth: '100%',
+                          backgroundImage: `url(${item.image.src})`,
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                          flex: 1,
+                          backgroundSize: 'contain',
                         }}
-                        src={item.image.src}
                       />
                     </YStack>
                   )

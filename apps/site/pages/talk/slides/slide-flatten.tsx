@@ -8,6 +8,7 @@ export default memo(() => {
       title="Flatten trees"
       subTitle="for smoking fast rendering times 💨"
       theme="green"
+      stepsStrategy="replace"
       steps={[
         [
           {
@@ -15,15 +16,19 @@ export default memo(() => {
             content: [
               {
                 type: 'image',
+                variant: 'circled',
                 image: require('../images/flattened-pre.png').default,
               },
               {
                 type: 'image',
+                variant: 'circled',
                 image: require('../images/flattened-post.png').default,
               },
             ],
           },
+        ],
 
+        [
           {
             type: 'split-horizontal',
             content: [

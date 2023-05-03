@@ -2,6 +2,7 @@ import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
+import { YStack } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -71,7 +72,7 @@ import { Stack } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack background="$background">
+    <Stack backgroundColor="$background">
       Light Background
     </Stack>
   </Theme>
@@ -86,7 +87,7 @@ import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack background="$background">
+    <Stack backgroundColor="$background">
       Light Background
     </Stack>
 
@@ -107,7 +108,7 @@ import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack background="$background">
+    <Stack backgroundColor="$background">
       Light Background
     </Stack>
 
@@ -129,7 +130,7 @@ import { Stack, Text } from '@tamagui/core'
 export default () => (
   <Theme name="light">
     <Theme name="red">
-      <Stack background="$background">
+      <Stack backgroundColor="$background">
         Light Red Background
       </Stack>
 
@@ -237,6 +238,27 @@ export default memo(() => {
           {
             type: 'code',
             content: snippetUsageInverseSub,
+          },
+        ],
+
+        [
+          {
+            type: 'content',
+            content: (
+              <YStack
+                my={-100}
+                als="center"
+                mx="auto"
+                ai="center"
+                br="$4"
+                ov="hidden"
+                elevation="$5"
+              >
+                <video autoPlay loop style={{ width: 800, height: 800 }}>
+                  <source src="/talk/themes-demo.mp4" />
+                </video>
+              </YStack>
+            ),
           },
         ],
 
