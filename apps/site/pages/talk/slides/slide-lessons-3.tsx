@@ -13,6 +13,16 @@ export default memo(() => {
             type: 'callout',
             content: <>We need testing to work seamlessly across native and web.</>,
           },
+
+          {
+            type: 'callout',
+            content: (
+              <>
+                Javascript is a great language a compiler - it lets you actually ship,
+                with more advanced features.
+              </>
+            ),
+          },
           // {
           //   type: 'split-horizontal',
           //   content: [
