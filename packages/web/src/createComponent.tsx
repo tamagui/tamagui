@@ -124,8 +124,6 @@ export function createComponent<
   configIn: Partial<StaticConfig> | StaticConfigParsed,
   ParentComponent?: StylableComponent
 ) {
-  let id = Math.random()
-
   const staticConfig = (() => {
     const next = extendStaticConfig(configIn, ParentComponent)
 
@@ -841,8 +839,6 @@ export function createComponent<
   if (staticConfig.componentName) {
     component.displayName = staticConfig.componentName
   }
-
-  component.id = id
 
   onConfiguredOnce((conf) => {
     // one time only setup
