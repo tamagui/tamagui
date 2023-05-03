@@ -295,7 +295,8 @@ export function createComponent<
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
     // internal use only
-    const disableTheme = (props['data-disable-theme'] && !willBeAnimated) || isHOC
+    const disableThemeProp = props['data-disable-theme']
+    const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
     const themeStateProps = {
       name: props.theme,
@@ -777,10 +778,13 @@ export function createComponent<
 
     content = createElement(elementType, viewProps, content)
 
-    content = useThemedChildren(themeState, content, {
-      shallow: stateRef.current.themeShallow,
-      // passPropsToChildren: true,
-    })
+    // disable theme prop is deterministic so conditional hook ok here
+    content = disableThemeProp
+      ? content
+      : useThemedChildren(themeState, content, {
+          shallow: stateRef.current.themeShallow,
+          // passPropsToChildren: true,
+        })
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug'] === 'visualize') {
