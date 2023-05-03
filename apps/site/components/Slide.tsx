@@ -370,7 +370,7 @@ function getTextContent(
                         theme="yellow"
                         color="$color10"
                         als="center"
-                        textShadowColor="#000"
+                        textShadowColor="rgba(0,0,0,0.5)"
                         textShadowRadius={20}
                         textShadowOffset={{ height: 10, width: 0 }}
                         ta="center"

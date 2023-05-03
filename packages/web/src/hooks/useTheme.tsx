@@ -181,7 +181,6 @@ export const useChangeThemeEffect = (
   const { state, mounted, isNewTheme, themeManager } = themeState
 
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
-  const shouldReturnParentState = isInversingOnMount
 
   function getShouldUpdateTheme(
     manager = themeManager,
@@ -266,12 +265,12 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (shouldReturnParentState) {
-    if (!parentManager) throw 'impossible'
+  if (isInversingOnMount) {
+    if (!parentManager) throw '❌'
     return {
       isNewTheme: false,
       ...parentManager.state,
-      className: isInversingOnMount ? '' : parentManager.state.className,
+      className: '',
       themeManager: parentManager,
     }
   }

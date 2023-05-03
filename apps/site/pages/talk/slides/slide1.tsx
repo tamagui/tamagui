@@ -87,8 +87,8 @@ export default memo(() => {
         opacity: 1,
         ...glow,
         offset: {
-          x: glow.offset!.x! - 200,
-          y: glow.offset!.y! - 120,
+          x: glow.offset!.x! - 250,
+          y: glow.offset!.y! - 50,
         },
         style: {
           ...glow.style,
