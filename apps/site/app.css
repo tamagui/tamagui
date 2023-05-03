@@ -678,3 +678,24 @@ input, textarea {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.glowing > * {
+  position: relative;
+}
+
+.glowing > *::before {
+  display: flex;
+  content: ' ';
+  inset: 0;
+  z-index: 10000;
+  position: absolute;
+  border-radius: 1000px;
+  box-shadow: 0 0 40px var(--color10);
+  opacity: 0.35;
+  transition: all ease-out 500ms;
+}
+
+.glowing:hover > *::before {
+  box-shadow: 0 0 60px var(--color10);
+  opacity: 0.6;
+}

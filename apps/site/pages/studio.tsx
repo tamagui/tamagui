@@ -428,7 +428,8 @@ const Hero = memo(() => {
           $gtSm={{ scale: 0.7 }}
           $gtMd={{ scale: 0.9 }}
           $gtLg={{ scale: 1 }}
-          $sm={{ y: -100, scale: 0.4 }}
+          $sm={{ scale: 0.55 }}
+          $xs={{ scale: 0.4 }}
           pos="relative"
           ref={parentRef as any}
           {...lettersContainerBounds}
@@ -459,6 +460,7 @@ const Hero = memo(() => {
               size="$6"
               borderRadius="$10"
               elevation="$2"
+              className="glowing"
               hoverStyle={{
                 bg: '$color9',
                 elevation: '$10',
@@ -469,7 +471,7 @@ const Hero = memo(() => {
                 scale: 0.96,
               }}
             >
-              Early Access on April 30th
+              Sponsor for early access
             </Button>
           </NextLink>
         </YStack>
