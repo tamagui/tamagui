@@ -94,7 +94,7 @@ const RibbonContainer = () => {
 
   return (
     <YStack
-      o={isLight ? 0.22 : 0.275}
+      o={isLight ? 0.26 : 0.3}
       pos="absolute"
       fullscreen
       scaleX="200%"
@@ -131,7 +131,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -156,7 +156,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -180,7 +180,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -206,7 +206,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -231,7 +231,7 @@ const lettersConf: LetterConf[] = [
         y: 0,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -253,7 +253,7 @@ const lettersConf: LetterConf[] = [
         y: -30,
       },
       style: {
-        transition: `all ease-out 100ms`,
+        transition: `all ease-out 300ms`,
       },
     },
     underlayStyle: {
@@ -278,8 +278,11 @@ const Hero = memo(() => {
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color10)',
-    opacity: isLight ? 0.32 : 0.15,
+    opacity: isLight ? 0.4 : 0.175,
     background: 'transparent',
+    style: {
+      transition: `all ease-out 500ms`,
+    },
   })
 
   const glint = useHoverGlow({
@@ -295,6 +298,9 @@ const Hero = memo(() => {
     opacity: isLight ? 1 : 0.4,
     background: 'transparent',
     inverse: true,
+    style: {
+      transition: `all ease-out 500ms`,
+    },
   })
 
   const lettersContainerBounds = {
