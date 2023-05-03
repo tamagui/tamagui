@@ -154,10 +154,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -255,10 +252,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -356,10 +350,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
@@ -457,10 +448,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    readonly padded?: boolean | undefined; /**
-     * The value of the item that is pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
