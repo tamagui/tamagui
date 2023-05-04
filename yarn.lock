@@ -4735,7 +4735,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/cubic-bezier-animator@workspace:packages/cubic-bezier-animator"
   dependencies:
-    "@tamagui/build": 1.22.10
+    "@tamagui/build": 1.22.12
   languageName: unknown
   linkType: soft
 
