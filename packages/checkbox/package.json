@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.22.11",
+  "version": "1.22.12",
   "sideEffects": [
     "*.css"
   ],
@@ -20,15 +20,15 @@
   },
   "dependencies": {
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/core": "1.22.11",
-    "@tamagui/create-context": "1.22.11",
-    "@tamagui/focusable": "1.22.11",
-    "@tamagui/font-size": "1.22.11",
-    "@tamagui/get-size": "1.22.11",
-    "@tamagui/helpers-tamagui": "1.22.11",
-    "@tamagui/label": "1.22.11",
-    "@tamagui/stacks": "1.22.11",
-    "@tamagui/use-controllable-state": "1.22.11"
+    "@tamagui/core": "1.22.12",
+    "@tamagui/create-context": "1.22.12",
+    "@tamagui/focusable": "1.22.12",
+    "@tamagui/font-size": "1.22.12",
+    "@tamagui/get-size": "1.22.12",
+    "@tamagui/helpers-tamagui": "1.22.12",
+    "@tamagui/label": "1.22.12",
+    "@tamagui/stacks": "1.22.12",
+    "@tamagui/use-controllable-state": "1.22.12"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -42,7 +42,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.11",
+    "@tamagui/build": "1.22.12",
     "react": "^18.2.0"
   },
   "publishConfig": {
