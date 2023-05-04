@@ -5069,7 +5069,7 @@ __metadata:
     "@types/react-native": ^0.71.3
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.10.0
-    expo: ^48.0.11
+    expo: ~48.0.15
     expo-dev-client: ~2.2.1
     expo-font: ^11.0.1
     expo-linear-gradient: ^12.0.1
@@ -5078,9 +5078,9 @@ __metadata:
     expo-status-bar: ~1.4.2
     expo-updates: ~0.16.4
     metro-runtime: "*"
-    react: ^18.2.0
+    react: 18.2.0
     react-dom: ^18.2.0
-    react-native: ^0.71.7
+    react-native: 0.71.7
     react-native-gesture-handler: ^2.8.0
     react-native-ios-modal: ^0.1.8
     react-native-safe-area-context: 4.5.0
@@ -11889,13 +11889,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-modules-core@npm:1.2.6":
-  version: 1.2.6
-  resolution: "expo-modules-core@npm:1.2.6"
+"expo-modules-core@npm:1.2.7":
+  version: 1.2.7
+  resolution: "expo-modules-core@npm:1.2.7"
   dependencies:
     compare-versions: ^3.4.0
     invariant: ^2.2.4
-  checksum: 78e82167f73b77f0ae6224027601b4aa3c4cec46e6a2f01eebfd19ac94e63f19e7d03da8e06f67caa0c9323a6df7bb87d4de848349d29a6004741e5b401a00fe
+  checksum: e3f69a62ef3c8dd357e7e3c90d0009d0dd0cfeae93d86c5043580bd78d35c0be5fcd345bd9dfa7b6e58d0a945b823cb6cb8666ad00c86a06bb31fe409eaed7d5
   languageName: node
   linkType: hard
 
@@ -11957,9 +11957,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^48.0.11":
-  version: 48.0.15
-  resolution: "expo@npm:48.0.15"
+"expo@npm:~48.0.15":
+  version: 48.0.16
+  resolution: "expo@npm:48.0.16"
   dependencies:
     "@babel/runtime": ^7.20.0
     "@expo/cli": 0.7.1
@@ -11975,7 +11975,7 @@ __metadata:
     expo-font: ~11.1.1
     expo-keep-awake: ~12.0.1
     expo-modules-autolinking: 1.2.0
-    expo-modules-core: 1.2.6
+    expo-modules-core: 1.2.7
     fbemitter: ^3.0.0
     getenv: ^1.0.0
     invariant: ^2.2.4
@@ -11985,7 +11985,7 @@ __metadata:
     uuid: ^3.4.0
   bin:
     expo: bin/cli.js
-  checksum: afd0b5b13af37608bba0746ade8868cbd924bca7c8a017fe266ae466059938baa9c556ab3917d15e9f2cbe65e80b0517058bf78524311c4b9aea8dc51b0aa85e
+  checksum: e1d2f68501c8870449fd9c993859d32f37ed1695f6c18a4ad43785805e25fd600d5d1e267a851c961a7f83dea7c140bf62333b34832eed433131e50aaa00149b
   languageName: node
   linkType: hard
 
