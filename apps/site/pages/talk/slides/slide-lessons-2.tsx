@@ -18,15 +18,6 @@ export default memo(() => {
               </>
             ),
           },
-          // {
-          //   type: 'split-horizontal',
-          //   content: [
-          //     {
-          //       type: 'image',
-          //       image: require('../images/popover.jpg').default,
-          //     },
-          //   ],
-          // },
         ],
       ]}
     />

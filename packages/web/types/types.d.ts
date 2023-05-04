@@ -287,12 +287,18 @@ export type CreateTamaguiProps = {
      */
     onlyAllowShorthands?: OnlyAllowShorthandsSetting;
 };
+export type GetCSS = (opts?: {
+    separator?: string;
+    excludeThemes?: boolean;
+    sinceLastCall?: boolean;
+}) => string;
 export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
     fontsParsed: GenericFonts;
-    getCSS: () => string;
+    getCSS: GetCSS;
+    getNewCSS: GetCSS;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     reactNative?: any;
@@ -763,7 +769,7 @@ export type UseAnimationHook = (props: {
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
-    pseudos?: PseudoStyles;
+    pseudos?: PseudoStyles | null;
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;

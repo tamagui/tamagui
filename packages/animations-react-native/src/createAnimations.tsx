@@ -177,8 +177,10 @@ export function createAnimations<A extends AnimationsConfig>(
         new WeakMap<
           Animated.Value,
           {
-            interopolation: Animated.AnimatedInterpolation<any>
+            interpolation: Animated.AnimatedInterpolation<any>
             current?: number | string | undefined
+            // only for colors
+            animateToValue?: number
           }
         >()
       )
@@ -238,12 +240,12 @@ export function createAnimations<A extends AnimationsConfig>(
           ...Object.fromEntries(
             Object.entries(animateStyles.current).map(([k, v]) => [
               k,
-              animationsState.current!.get(v)?.interopolation || v,
+              animationsState.current!.get(v)?.interpolation || v,
             ])
           ),
           transform: animatedTranforms.current.map((r) => {
             const key = Object.keys(r)[0]
-            const val = animationsState.current!.get(r[key])?.interopolation || r[key]
+            const val = animationsState.current!.get(r[key])?.interpolation || r[key]
             return { [key]: val }
           }),
         }
@@ -261,35 +263,35 @@ export function createAnimations<A extends AnimationsConfig>(
         ) {
           const isColorStyleKey = colorStyleKey[key]
           const [val, type] = isColorStyleKey ? [0, undefined] : getValue(valIn)
-          let animateToVal = val
+          let animateToValue = val
           const value = animated || new Animated.Value(val)
 
+          const curInterpolation = animationsState.current.get(value)
           let interpolateArgs: any
           if (type) {
-            const curInterpolation = animationsState.current.get(value)
             interpolateArgs = getInterpolated(
               curInterpolation?.current ?? value['_value'],
               val,
               type
             )
             animationsState.current!.set(value, {
-              interopolation: value.interpolate(interpolateArgs),
+              interpolation: value.interpolate(interpolateArgs),
               current: val,
             })
           }
 
           if (isColorStyleKey) {
-            const curInterpolation = animationsState.current.get(value)
+            animateToValue = curInterpolation?.animateToValue ? 0 : 1
             interpolateArgs = getColorInterpolated(
               curInterpolation?.current as string,
-              // valIn is the new color
+              // valIn is the next color
               valIn as string,
-              value['_value']
+              animateToValue
             )
-            animateToVal = value['_value'] === 1 ? 0 : 1
             animationsState.current!.set(value, {
               current: valIn,
-              interopolation: value.interpolate(interpolateArgs),
+              interpolation: value.interpolate(interpolateArgs),
+              animateToValue: curInterpolation?.animateToValue ? 0 : 1,
             })
           }
 
@@ -307,7 +309,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
-                  toValue: animateToVal,
+                  toValue: animateToValue,
                   useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
                   ...animationConfig,
                 })
@@ -369,12 +371,12 @@ export function createAnimations<A extends AnimationsConfig>(
 function getColorInterpolated(
   currentColor: string | undefined,
   nextColor: string,
-  value: number
+  animateToValue: number
 ) {
   const inputRange = [0, 1]
   const outputRange = [currentColor ? currentColor : nextColor, nextColor]
-  if (value === 1) {
-    // because current value is 1, then we need to animate from 1 to 0, so we need to reverse the outputRange
+  if (animateToValue === 0) {
+    // because we are animating from value 1 to 0, we need to put target color at the beginning
     outputRange.reverse()
   }
   return {

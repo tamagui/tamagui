@@ -18,6 +18,7 @@ import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
+import slideLessons3 from './slides/slide-lessons-3'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
@@ -82,7 +83,7 @@ export default function TamaguiTalk() {
           slideCoreSyntax,
           slideCoreFeatures,
           SlideThemes,
-          SlideThemes2,
+          // SlideThemes2,
           slideCoreComparison,
           Slide4,
           SlideFlatten,
@@ -94,6 +95,7 @@ export default function TamaguiTalk() {
           Slide5,
           SlideLessons1,
           SlideLessons2,
+          slideLessons3,
         ]}
       />
     </YStack>

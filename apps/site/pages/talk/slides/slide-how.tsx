@@ -80,7 +80,7 @@ export default memo(() => {
 
               {
                 type: 'code-inline',
-                content: '<Stack /> becomes <div /> or <View />',
+                content: '<StyledView /> becomes <div /> or <View />',
               },
             ],
           },
