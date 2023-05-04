@@ -44,7 +44,6 @@ import type {
   ViewStyleWithPseudos,
 } from '../types'
 import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
-import { createChainedWeakCache } from './createChainedWeakCache'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
@@ -109,7 +108,7 @@ export const PROP_SPLIT = '-'
 const isMediaKey = (key: string) =>
   Boolean(key[0] === '$' && mediaKeysWithAndWithout$.has(key))
 
-export const getSplitStylesWithoutMemo: StyleSplitter = (
+export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
   theme,
@@ -977,39 +976,39 @@ export const getSplitStylesWithoutMemo: StyleSplitter = (
   return result
 }
 
-const cache = createChainedWeakCache()
+// not ever hitting cache?
+// const cache = createChainedWeakCache()
+// export const getSplitStyles: StyleSplitter = (
+//   props,
+//   staticConfig,
+//   theme,
+//   state,
+//   parentSplitStyles,
+//   languageContext,
+//   elementType,
+//   debug
+// ) => {
+//   const cacheProps = [props, theme, state]
+//   const cached = cache.get(cacheProps)
+//   if (cached) {
+//     return cached as any
+//   }
 
-export const getSplitStyles: StyleSplitter = (
-  props,
-  staticConfig,
-  theme,
-  state,
-  parentSplitStyles,
-  languageContext,
-  elementType,
-  debug
-) => {
-  const cacheProps = [props, theme, state, languageContext]
-  const cached = cache.get(cacheProps)
-  if (cached) {
-    return cached as any
-  }
+//   const res = getSplitStylesWithoutMemo(
+//     props,
+//     staticConfig,
+//     theme,
+//     state,
+//     parentSplitStyles,
+//     languageContext,
+//     elementType,
+//     debug
+//   )
 
-  const res = getSplitStylesWithoutMemo(
-    props,
-    staticConfig,
-    theme,
-    state,
-    parentSplitStyles,
-    languageContext,
-    elementType,
-    debug
-  )
+//   cache.set(cacheProps, res)
 
-  cache.set(cacheProps, res)
-
-  return res
-}
+//   return res
+// }
 
 function mergeClassName(
   transforms: Record<string, any[]>,
