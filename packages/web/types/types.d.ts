@@ -763,7 +763,7 @@ export type UseAnimationHook = (props: {
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
-    pseudos?: PseudoStyles;
+    pseudos?: PseudoStyles | null;
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;

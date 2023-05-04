@@ -24,7 +24,9 @@ describe('getSplitStyles', () => {
       {
         accessibilityRequired: false,
       },
-      'input'
+      {
+        tag: 'input',
+      }
     )
 
     expect(viewProps['aria-required']).toEqual(false)
@@ -38,7 +40,9 @@ describe('getSplitStyles', () => {
       {
         paddingStart: 10,
       },
-      'input'
+      {
+        tag: 'input',
+      }
     )
     expect(out.rulesToInsert[0]?.value).toEqual('10px')
   })
@@ -97,6 +101,90 @@ describe('getSplitStyles', () => {
     })
     expect(styles.rulesToInsert[0].property === 'zIndex').toBeTruthy()
     expect(styles.rulesToInsert[0].value).toEqual('var(--zIndex-2)')
+  })
+
+  const timed = async (fn: Function, opts?: { runs?: number }) => {
+    const start = performance.now()
+    const runs = opts?.runs ?? 1
+
+    for (let i = 0; i < runs; i++) {
+      let response = fn()
+      if (response instanceof Promise) {
+        response = await response
+      }
+    }
+
+    const took = (performance.now() - start) / runs
+    return {
+      took,
+    }
+  }
+
+  function runBaselineSpeedTest() {
+    const start = performance.now()
+    let y: any[] = []
+    for (let i = 0; i < 50; i++) {
+      y.push(new Array(50).fill({}))
+    }
+    globalThis['__ensureRuns'] = y[0]
+    return performance.now() - start
+  }
+
+  test(`it memoizes`, async () => {
+    const baseline = runBaselineSpeedTest()
+
+    const props = {
+      zIndex: '$1',
+      backgroundColor: 'red',
+      margin: 20,
+      scale: 2,
+    }
+
+    const runWithoutMemo = () =>
+      timed(
+        () => {
+          simplifiedGetSplitStyles(Text, props, {
+            skipMemo: true,
+          })
+        },
+        {
+          runs: 200,
+        }
+      )
+
+    const runWithMemo = () =>
+      timed(
+        () => {
+          simplifiedGetSplitStyles(Text, props, {
+            skipMemo: false,
+          })
+        },
+        {
+          runs: 200,
+        }
+      )
+
+    let timings = {
+      memoized: 0,
+      raw: 0,
+    }
+
+    // need to run them back and forth to get accurate results
+    for (let i = 0; i < 10; i++) {
+      const runs = [
+        { run: runWithMemo, type: 'memoized' },
+        { run: runWithoutMemo, type: 'raw' },
+      ]
+      if (i % 2 === 0) {
+        runs.reverse()
+      }
+      for (const { run, type } of runs) {
+        const out = await run()
+        timings[type] += out.took
+      }
+    }
+
+    expect(timings.memoized).toBeLessThan(timings.raw / 50)
   })
 
   // this test is failing:
