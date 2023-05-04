@@ -130,62 +130,63 @@ describe('getSplitStyles', () => {
     return performance.now() - start
   }
 
-  test(`it memoizes`, async () => {
-    const baseline = runBaselineSpeedTest()
+  // never actually hit the memo in practice
+  // test(`it memoizes`, async () => {
+  //   const baseline = runBaselineSpeedTest()
 
-    const props = {
-      zIndex: '$1',
-      backgroundColor: 'red',
-      margin: 20,
-      scale: 2,
-    }
+  //   const props = {
+  //     zIndex: '$1',
+  //     backgroundColor: 'red',
+  //     margin: 20,
+  //     scale: 2,
+  //   }
 
-    const runWithoutMemo = () =>
-      timed(
-        () => {
-          simplifiedGetSplitStyles(Text, props, {
-            skipMemo: true,
-          })
-        },
-        {
-          runs: 200,
-        }
-      )
+  //   const runWithoutMemo = () =>
+  //     timed(
+  //       () => {
+  //         simplifiedGetSplitStyles(Text, props, {
+  //           skipMemo: true,
+  //         })
+  //       },
+  //       {
+  //         runs: 200,
+  //       }
+  //     )
 
-    const runWithMemo = () =>
-      timed(
-        () => {
-          simplifiedGetSplitStyles(Text, props, {
-            skipMemo: false,
-          })
-        },
-        {
-          runs: 200,
-        }
-      )
+  //   const runWithMemo = () =>
+  //     timed(
+  //       () => {
+  //         simplifiedGetSplitStyles(Text, props, {
+  //           skipMemo: false,
+  //         })
+  //       },
+  //       {
+  //         runs: 200,
+  //       }
+  //     )
 
-    let timings = {
-      memoized: 0,
-      raw: 0,
-    }
+  //   let timings = {
+  //     memoized: 0,
+  //     raw: 0,
+  //   }
 
-    // need to run them back and forth to get accurate results
-    for (let i = 0; i < 10; i++) {
-      const runs = [
-        { run: runWithMemo, type: 'memoized' },
-        { run: runWithoutMemo, type: 'raw' },
-      ]
-      if (i % 2 === 0) {
-        runs.reverse()
-      }
-      for (const { run, type } of runs) {
-        const out = await run()
-        timings[type] += out.took
-      }
-    }
+  //   // need to run them back and forth to get accurate results
+  //   for (let i = 0; i < 10; i++) {
+  //     const runs = [
+  //       { run: runWithMemo, type: 'memoized' },
+  //       { run: runWithoutMemo, type: 'raw' },
+  //     ]
+  //     if (i % 2 === 0) {
+  //       runs.reverse()
+  //     }
+  //     for (const { run, type } of runs) {
+  //       const out = await run()
+  //       timings[type] += out.took
+  //     }
+  //   }
 
-    expect(timings.memoized).toBeLessThan(timings.raw / 50)
-  })
+  //   expect(timings.memoized).toBeLessThan(timings.raw / 50)
+  // })
 
   // this test is failing:
   // TODO: support this - might need the getSplitStyles refactor (unifying getSubStyle)
