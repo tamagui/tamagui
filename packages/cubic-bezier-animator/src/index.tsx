@@ -13,27 +13,37 @@ interface AnimateProps {
   to: TransformType
   duration: number
   onUpdate: (param: TransformType) => void
-  cubicBuzier: CubicBuzier
+  cubicBezier?: CubicBuzier
 }
 export function animate(param: AnimateProps) {
-  const start = performance.now()
-  const easing = param.cubicBuzier ? bezier(...param.cubicBuzier) : (v: number) => v
+  let start = null
+  const easing = param.cubicBezier ? bezier(...param.cubicBezier) : (v: number) => v
 
   const { x: fromX, y: fromY, scaleX: fromScaleX, scaleY: fromScaleY } = param.from
   const { x: toX, y: toY, scaleX: toScaleX, scaleY: toScaleY } = param.to
 
-  function frame(currentTime) {
-    const elapsed = currentTime - start
-    const progress = elapsed / param.duration
-    const x = toX !== undefined ? easing(progress) * fromX! + toX : undefined // apply the easing function to the progress
-    const y = toY !== undefined ? easing(progress) * fromY! + toY : undefined
+  function frame(timestamp) {
+    if (!start) start = timestamp
+    const progress = timestamp - start!
+    const x =
+      toX !== undefined
+        ? fromX! + (toX - fromX!) * easing(progress / param.duration)
+        : undefined // apply the easing function to the progress
+    const y =
+      toY !== undefined
+        ? fromY! + (toY - fromY!) * easing(progress / param.duration)
+        : undefined
     const scaleX =
-      toScaleX !== undefined ? easing(progress) * fromScaleX! + toScaleX : undefined
+      toScaleX !== undefined
+        ? fromScaleX! + (toScaleX - fromScaleX!) * easing(progress / param.duration)
+        : undefined
     const scaleY =
-      toScaleY !== undefined ? easing(progress) * fromScaleY! + toScaleY : undefined
+      toScaleY !== undefined
+        ? fromScaleY! + (toScaleY - fromScaleY!) * easing(progress / param.duration)
+        : undefined
     param.onUpdate({ x, y, scaleX, scaleY })
 
-    if (progress < 1) {
+    if (progress < param.duration) {
       requestAnimationFrame(frame) // continue animating
     }
   }

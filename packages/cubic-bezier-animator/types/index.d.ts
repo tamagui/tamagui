@@ -10,7 +10,7 @@ interface AnimateProps {
     to: TransformType;
     duration: number;
     onUpdate: (param: TransformType) => void;
-    cubicBuzier: CubicBuzier;
+    cubicBezier?: CubicBuzier;
 }
 export declare function animate(param: AnimateProps): void;
 export {};
