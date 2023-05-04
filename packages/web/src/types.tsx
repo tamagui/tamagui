@@ -538,6 +538,12 @@ export type CreateTamaguiProps = {
   onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
+export type GetCSS = (opts?: {
+  separator?: string
+  excludeThemes?: boolean
+  sinceLastCall?: boolean
+}) => string
+
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
   A extends GenericTokens = GenericTokens,
@@ -556,7 +562,8 @@ export type TamaguiInternalConfig<
     tokensParsed: Tokenify<A>
     themeConfig: any
     fontsParsed: GenericFonts
-    getCSS: () => string
+    getCSS: GetCSS
+    getNewCSS: GetCSS
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
