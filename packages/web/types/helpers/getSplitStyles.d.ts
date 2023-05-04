@@ -20,6 +20,7 @@ type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: GetStyleResult | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => GetStyleResult;
 export declare const PROP_SPLIT = "-";
+export declare const getSplitStylesWithoutMemo: StyleSplitter;
 export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, avoidDefaultProps?: boolean, avoidMergeTransform?: boolean) => TextStyleProps;
 export declare const useSplitStyles: StyleSplitter;

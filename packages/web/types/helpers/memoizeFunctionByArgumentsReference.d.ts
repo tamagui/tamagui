@@ -7,5 +7,5 @@ declare class FunctionArgumentCache {
     weakmap: WeakMap<object, any>;
     get(args: any[]): any;
 }
-declare function memoize<Fn extends Function>(fn: Fn): Fn;
+declare function memoizeArgumentsWeak<Fn extends Function>(fn: Fn): Fn;
 //# sourceMappingURL=memoizeFunctionByArgumentsReference.d.ts.map

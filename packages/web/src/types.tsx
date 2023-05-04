@@ -1619,7 +1619,7 @@ export type GestureReponderEvent = Exclude<
 export type RulesToInsert = StyleObject[]
 
 export type GetStyleResult = {
-  pseudos?: PseudoStyles
+  pseudos?: PseudoStyles | null
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert

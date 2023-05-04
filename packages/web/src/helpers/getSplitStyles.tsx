@@ -17,6 +17,7 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
+import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -43,6 +44,7 @@ import type {
   ViewStyleWithPseudos,
 } from '../types'
 import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
+import { createChainedWeakCache } from './createChainedWeakCache'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
@@ -79,90 +81,6 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
-const skipProps = {
-  animation: true,
-  space: true,
-  animateOnly: true,
-  debug: true,
-  componentName: true,
-  tag: true,
-}
-
-if (process.env.NODE_ENV === 'test') {
-  skipProps['data-test-renders'] = true
-}
-
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
-
-// native only skips
-if (process.env.TAMAGUI_TARGET === 'native') {
-  Object.assign(skipProps, {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    contain: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-    outlineColor: true,
-  })
-}
-
-// web only maps accessibility to aria props
-const accessibilityDirectMap: Record<string, string> = {}
-if (process.env.TAMAGUI_TARGET === 'web') {
-  // bundle size shave
-  const items = {
-    Hidden: true,
-    ActiveDescendant: true,
-    Atomic: true,
-    AutoComplete: true,
-    Busy: true,
-    Checked: true,
-    ColumnCount: 'colcount',
-    ColumnIndex: 'colindex',
-    ColumnSpan: 'colspan',
-    Current: true,
-    Details: true,
-    ErrorMessage: true,
-    Expanded: true,
-    HasPopup: true,
-    Invalid: true,
-    Label: true,
-    Level: true,
-    Modal: true,
-    Multiline: true,
-    MultiSelectable: true,
-    Orientation: true,
-    Owns: true,
-    Placeholder: true,
-    PosInSet: true,
-    Pressed: true,
-    RoleDescription: true,
-    RowCount: true,
-    RowIndex: true,
-    RowSpan: true,
-    Selected: true,
-    SetSize: true,
-    Sort: true,
-    ValueMax: true,
-    ValueMin: true,
-    ValueNow: true,
-    ValueText: true,
-  }
-  for (const key in items) {
-    let val = items[key]
-    if (val === true) {
-      val = key.toLowerCase()
-    }
-    accessibilityDirectMap[`accessibility${key}`] = `aria-${val}`
-  }
-}
-
 type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
@@ -181,15 +99,6 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-const accessibilityRoleToWebRole = {
-  adjustable: 'slider',
-  header: 'heading',
-  image: 'img',
-  link: 'link',
-  none: 'presentation',
-  summary: 'region',
-}
-
 // loop props backwards
 //   track used keys:
 //     const keys = new Set<string>()
@@ -200,7 +109,7 @@ const accessibilityRoleToWebRole = {
 const isMediaKey = (key: string) =>
   Boolean(key[0] === '$' && mediaKeysWithAndWithout$.has(key))
 
-export const getSplitStyles: StyleSplitter = (
+export const getSplitStylesWithoutMemo: StyleSplitter = (
   props,
   staticConfig,
   theme,
@@ -1036,11 +945,12 @@ export const getSplitStyles: StyleSplitter = (
     nextViewProps[ks[i]] = viewProps[ks[i]]
   }
 
-  const result = {
+  const result: GetStyleResult = {
     space,
     hasMedia,
     fontFamily,
     viewProps: nextViewProps,
+    // @ts-expect-error
     style,
     pseudos,
     classNames,
@@ -1065,6 +975,40 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   return result
+}
+
+const cache = createChainedWeakCache()
+
+export const getSplitStyles: StyleSplitter = (
+  props,
+  staticConfig,
+  theme,
+  state,
+  parentSplitStyles,
+  languageContext,
+  elementType,
+  debug
+) => {
+  const cacheProps = [props, theme, state, languageContext]
+  const cached = cache.get(cacheProps)
+  if (cached) {
+    return cached as any
+  }
+
+  const res = getSplitStylesWithoutMemo(
+    props,
+    staticConfig,
+    theme,
+    state,
+    parentSplitStyles,
+    languageContext,
+    elementType,
+    debug
+  )
+
+  cache.set(cacheProps, res)
+
+  return res
 }
 
 function mergeClassName(
@@ -1261,4 +1205,46 @@ const mergeTransforms = (
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
+}
+
+const skipProps = {
+  animation: true,
+  space: true,
+  animateOnly: true,
+  debug: true,
+  componentName: true,
+  tag: true,
+}
+
+if (process.env.NODE_ENV === 'test') {
+  skipProps['data-test-renders'] = true
+}
+
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
+
+// native only skips
+if (process.env.TAMAGUI_TARGET === 'native') {
+  Object.assign(skipProps, {
+    whiteSpace: true,
+    wordWrap: true,
+    textOverflow: true,
+    textDecorationDistance: true,
+    cursor: true,
+    contain: true,
+    boxSizing: true,
+    boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
+  })
+}
+
+const accessibilityRoleToWebRole = {
+  adjustable: 'slider',
+  header: 'heading',
+  image: 'img',
+  link: 'link',
+  none: 'presentation',
+  summary: 'region',
 }
