@@ -19,6 +19,7 @@ import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import {
   CreateTamaguiProps,
+  GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
   ThemeParsed,
@@ -202,6 +203,31 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const shorthands = configIn.shorthands || {}
 
+  let lastCSSInsertedRulesIndex = -1
+
+  const getCSS: GetCSS = ({ separator = '\n', sinceLastCall, excludeThemes } = {}) => {
+    if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
+      // after first run with sinceLastCall
+      const rules = getAllRules()
+      lastCSSInsertedRulesIndex = rules.length
+      return rules.slice(lastCSSInsertedRulesIndex).join(separator)
+    }
+
+    // set so next time getNewCSS will trigger only new rules
+    lastCSSInsertedRulesIndex = 0
+
+    // first run
+    return `._ovs-contain {overscroll-behavior:contain;}
+.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
+.is_Text .is_Text {display:inline-flex;}
+._dsp_contents {display:contents;}
+${themeConfig.cssRuleSets.join(separator)}
+${excludeThemes ? '' : themeConfig.getThemeRulesSets().join(separator)}
+${getAllRules().join(separator)}`
+  }
+
+  const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
+
   const config: TamaguiInternalConfig = {
     onlyAllowShorthands: false,
     fontLanguages: [],
@@ -220,16 +246,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeConfig,
     tokensParsed,
     parsed: true,
-    getCSS: (separator = '\n') => {
-      return `
-._ovs-contain {overscroll-behavior:contain;}
-.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
-.is_Text .is_Text {display:inline-flex;}
-._dsp_contents {display:contents;}
-${themeConfig.cssRuleSets.join(separator)}
-${themeConfig.getThemeRulesSets().join(separator)}
-${getAllRules().join(separator)}`
-    },
+    getNewCSS,
+    getCSS,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }

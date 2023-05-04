@@ -252,7 +252,7 @@ TamaguiProvider takes a few optional properties:
       name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
+      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
 />
@@ -266,7 +266,7 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
-If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js).
+If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js), there are also docs for app directory and RSC support.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
