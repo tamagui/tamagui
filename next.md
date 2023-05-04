@@ -40,6 +40,8 @@ Ali todos:
 
 # Backlog
 
+- if you change webpack config to alias RN to RNW (not lite) one animation test fails
+
 - cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
 
 - sheet native ios snapPoints
