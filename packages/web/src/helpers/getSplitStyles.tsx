@@ -42,10 +42,7 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type {
-  FontLanguageProps,
-  LanguageContextType,
-} from '../views/FontLanguage.types'
+import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
@@ -213,10 +210,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  if (cache.has(props)) {
-    return cache.get(props)
-  }
-
   conf = conf || getConfig()
   const { shorthands } = conf
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
@@ -1071,8 +1064,6 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  cache.set(props, result)
-
   return result
 }
 
@@ -1121,22 +1112,17 @@ function mergeClassName(
  *
  * and to avoid re-creating it over and over, use a WeakMap
  */
-const cache = new WeakMap()
+
 function getSubStyleProps(
   defaultProps: Object,
   baseProps: Object,
   specificProps: Object
 ) {
-  const key = specificProps || baseProps
-  // can cache based only on specific it's always referentially consistent with base
-  if (!cache.has(key)) {
-    cache.set(key, {
-      ...defaultProps,
-      ...baseProps,
-      ...specificProps,
-    })
+  return {
+    ...defaultProps,
+    ...baseProps,
+    ...specificProps,
   }
-  return cache.get(key)!
 }
 
 function mergeStyle(
