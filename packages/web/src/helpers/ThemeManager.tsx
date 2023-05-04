@@ -3,7 +3,11 @@ import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/const
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeParsed, ThemeProps } from '../types'
 
-type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
+type ThemeListener = (
+  name: string | null,
+  themeManager: ThemeManager,
+  forced: boolean
+) => void
 
 export type SetActiveThemeProps = {
   className?: string
@@ -101,7 +105,7 @@ export class ThemeManager {
       }
 
       if (shouldNotify) {
-        this.notify()
+        this.notify(!!props.forceTheme)
       }
 
       return this.state
@@ -167,8 +171,8 @@ export class ThemeManager {
     }
   }
 
-  notify() {
-    this.themeListeners.forEach((cb) => cb(this.state.name, this))
+  notify(forced = false) {
+    this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {

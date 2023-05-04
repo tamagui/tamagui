@@ -2,6 +2,7 @@ import { Theme, getVariable, styled } from '@tamagui/core'
 import { SelectDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
+import { memo } from 'react'
 import { ScrollView } from 'react-native'
 import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -16,12 +17,17 @@ import {
   Switch,
   YGroup,
   YStack,
+  updateTheme,
   useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 setupNativeSheet('ios', ModalView)
+
+const SubComponent = memo(() => {
+  return <Button debug="verbose">test me</Button>
+})
 
 export function HomeScreen() {
   return (
@@ -30,6 +36,21 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
+
+        <Button
+          onPress={() => {
+            updateTheme({
+              name: 'light_Button',
+              theme: {
+                background: 'red',
+              },
+            })
+          }}
+        >
+          test
+        </Button>
+
+        <SubComponent />
 
         <YGroup size="$4">
           <YGroup.Item>
