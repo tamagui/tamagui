@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Flatten trees"
+      title="Flatten more trees"
       subTitle="for smoking fast rendering times 💨"
       theme="green"
       stepsStrategy="replace"
@@ -30,35 +30,57 @@ export default memo(() => {
 
         [
           {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'text',
-                    content: `Lighthouse score`,
-                  },
-                  {
-                    type: 'code-inline',
-                    content: `+20%`,
-                  },
-                ],
-              },
-              {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'text',
-                    content: `Initial parsing time`,
-                  },
-                  {
-                    type: 'code-inline',
-                    content: `-15%`,
-                  },
-                ],
-              },
-            ],
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/profile-without.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'bad',
+            content: `Without: ~660ms`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/profile-with.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `600ms, ~10% faster`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/lighthouse-without.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'bad',
+            content: `Without: ~82`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/lighthouse-with.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `11% improvement`,
           },
         ],
       ]}

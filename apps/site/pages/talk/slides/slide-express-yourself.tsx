@@ -60,11 +60,6 @@ export default memo(() => {
               },
             ],
           },
-
-          {
-            type: 'centered',
-            content: `Write code without worry.`,
-          },
         ],
       ]}
     />

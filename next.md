@@ -73,6 +73,8 @@ a package.json etc etc + zip file
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
 
+- sheet overlay variant https://discord.com/channels/909986013848412191/1103391377615749211/1103391377615749211
+
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats
   - auto generates CSS
