@@ -6,7 +6,7 @@ export function updateTheme({
   name,
   theme,
 }: {
-  name: ThemeName
+  name: ThemeName | (string & {})
   theme: Partial<Record<keyof ThemeDefinition, any>>
 }) {
   return _mutateTheme({ name, theme, insertCSS: true, mutationType: 'update' })

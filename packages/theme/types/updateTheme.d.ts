@@ -1,6 +1,6 @@
 import type { ThemeDefinition, ThemeName } from '@tamagui/web';
 export declare function updateTheme({ name, theme, }: {
-    name: ThemeName;
+    name: ThemeName | (string & {});
     theme: Partial<Record<keyof ThemeDefinition, any>>;
 }): {
     theme: {
