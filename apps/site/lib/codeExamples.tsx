@@ -132,8 +132,7 @@ export const Heading = styled(Text, {
       examples: [
         {
           name: 'app.js',
-          code: `import { SandboxHeading, Stack } from '@tamagui/core'
-export const App = props => <div className={_cn}>
+          code: `export const App = props => <div className={_cn}>
     <h1 className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn5))}>
       Lorem ipsum.
     </h1>
