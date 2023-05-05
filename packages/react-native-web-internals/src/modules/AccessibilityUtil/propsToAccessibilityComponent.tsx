@@ -8,7 +8,7 @@
  * @flow
  */
 
-import propsToAriaRole from './propsToAriaRole.js'
+import propsToAriaRole from './propsToAriaRole'
 
 const roleComponents = {
   article: 'article',

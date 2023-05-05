@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "1.22.7",
+  "version": "1.23.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,18 +27,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.22.7",
-    "@tamagui/animations-react-native": "1.22.7",
-    "@tamagui/colors": "1.22.7",
-    "@tamagui/core": "1.22.7",
-    "@tamagui/font-inter": "1.22.7",
-    "@tamagui/font-silkscreen": "1.22.7",
-    "@tamagui/react-native-media-driver": "1.22.7",
-    "@tamagui/shorthands": "1.22.7",
-    "@tamagui/theme-base": "1.22.7"
+    "@tamagui/animations-css": "1.23.0",
+    "@tamagui/animations-react-native": "1.23.0",
+    "@tamagui/colors": "1.23.0",
+    "@tamagui/core": "1.23.0",
+    "@tamagui/font-inter": "1.23.0",
+    "@tamagui/font-silkscreen": "1.23.0",
+    "@tamagui/react-native-media-driver": "1.23.0",
+    "@tamagui/shorthands": "1.23.0",
+    "@tamagui/theme-base": "1.23.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.7"
+    "@tamagui/build": "1.23.0"
   },
   "publishConfig": {
     "access": "public"

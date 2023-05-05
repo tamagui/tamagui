@@ -2,18 +2,18 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
-import { getConfig } from '../config.js'
-import { isDevTools } from '../constants/isDevTools.js'
-import { createProxy } from '../helpers/createProxy.js'
+import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
+import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
   ThemeManagerState,
   getNonComponentParentManager,
-} from '../helpers/ThemeManager.js'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
-import type { ThemeParsed, ThemeProps } from '../types.js'
-import { GetThemeUnwrapped } from './getThemeUnwrapped.js'
-import { useServerRef } from './useServerHooks.js'
+} from '../helpers/ThemeManager'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import type { ThemeParsed, ThemeProps } from '../types'
+import { GetThemeUnwrapped } from './getThemeUnwrapped'
+import { useServerRef } from './useServerHooks'
 
 export type ChangedThemeResponse = {
   isNewTheme: boolean
@@ -181,7 +181,6 @@ export const useChangeThemeEffect = (
   const { state, mounted, isNewTheme, themeManager } = themeState
 
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
-  const shouldReturnParentState = isInversingOnMount
 
   function getShouldUpdateTheme(
     manager = themeManager,
@@ -229,6 +228,13 @@ export const useChangeThemeEffect = (
         }
       }
 
+      // for updateTheme/replaceTheme
+      const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
+        if (forced) {
+          setThemeState((prev) => createState(prev, true))
+        }
+      })
+
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         const shouldUpdate = Boolean(keys?.length || isNewTheme)
         if (process.env.NODE_ENV === 'development' && props.debug) {
@@ -242,6 +248,7 @@ export const useChangeThemeEffect = (
       }, themeManager.id)
 
       return () => {
+        selfListenerDispose()
         disposeChangeListener?.()
         activeThemeManagers.delete(themeManager)
       }
@@ -266,12 +273,12 @@ export const useChangeThemeEffect = (
     }
   }
 
-  if (shouldReturnParentState) {
-    if (!parentManager) throw 'impossible'
+  if (isInversingOnMount) {
+    if (!parentManager) throw '❌'
     return {
       isNewTheme: false,
       ...parentManager.state,
-      className: isInversingOnMount ? '' : parentManager.state.className,
+      className: '',
       themeManager: parentManager,
     }
   }
@@ -282,7 +289,7 @@ export const useChangeThemeEffect = (
     themeManager,
   }
 
-  function createState(prev?: State): State {
+  function createState(prev?: State, force = false): State {
     if (prev && disableUpdate?.()) {
       return prev
     }
@@ -337,7 +344,7 @@ export const useChangeThemeEffect = (
       state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
     }
 
-    if (state.name === prev?.state.name) {
+    if (!force && state.name === prev?.state.name) {
       return prev
     }
 

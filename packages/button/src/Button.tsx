@@ -196,31 +196,32 @@ const ButtonIcon = (
   return getThemedIcon(children)
 }
 
-const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
-  function Button(props, ref) {
-    const { props: buttonProps } = useButton(props)
-    const [buttonTextCount, setButtonTextCount] = useState(0)
+const ButtonComponent = ButtonFrame.styleable<ScopedProps<ButtonProps>>(function Button(
+  props,
+  ref
+) {
+  const { props: buttonProps } = useButton(props)
+  const [buttonTextCount, setButtonTextCount] = useState(0)
 
-    const registerButtonText = useCallback(() => {
-      setButtonTextCount((prev) => prev + 1)
-      return () => setButtonTextCount((prev) => prev - 1)
-    }, [setButtonTextCount])
+  const registerButtonText = useCallback(() => {
+    setButtonTextCount((prev) => prev + 1)
+    return () => setButtonTextCount((prev) => prev - 1)
+  }, [setButtonTextCount])
 
-    const hasTextComponent = buttonTextCount > 0
+  const hasTextComponent = buttonTextCount > 0
 
-    return (
-      <ButtonProvider
-        scope={props.__scopeButton}
-        color={props.color}
-        hasTextComponent={hasTextComponent}
-        size={props.size ?? '$true'}
-        registerButtonText={registerButtonText}
-      >
-        <ButtonFrame {...(hasTextComponent ? props : buttonProps)} ref={ref} />
-      </ButtonProvider>
-    )
-  }
-)
+  return (
+    <ButtonProvider
+      scope={props.__scopeButton}
+      color={props.color}
+      hasTextComponent={hasTextComponent}
+      size={props.size ?? '$true'}
+      registerButtonText={registerButtonText}
+    >
+      <ButtonFrame {...(hasTextComponent ? props : buttonProps)} ref={ref} />
+    </ButtonProvider>
+  )
+})
 
 const buttonStaticConfig = {
   inlineProps: new Set([
@@ -237,7 +238,7 @@ const buttonStaticConfig = {
   ]),
 }
 
-const Button = withStaticProperties(ButtonFrame.styleable<ButtonProps>(ButtonComponent), {
+const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonTextComponent,
   Icon: ButtonIcon,
 })
@@ -267,12 +268,12 @@ function useButton(
     fontFamily,
     fontStyle,
     textAlign,
-    unstyled = false,
     textProps,
 
     ...rest
   } = propsIn
 
+  const hasUnstyled = typeof propsIn.unstyled !== 'undefined'
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn)
   const size = propsActive.size || '$true'
@@ -283,9 +284,9 @@ function useButton(
   const contents = wrapChildrenInText(
     Text,
     propsActive,
-    Text === ButtonTextFrame
+    Text === ButtonTextFrame && hasUnstyled
       ? {
-          unstyled,
+          unstyled: propsIn.unstyled,
         }
       : undefined
   )
@@ -320,7 +321,6 @@ function useButton(
         borderColor: '$background',
       },
     }),
-    unstyled,
     tag,
     ...rest,
     children: isRSC ? (
@@ -347,4 +347,5 @@ export {
   ButtonFrame,
   ButtonTextFrame as ButtonText,
 }
+
 export type { ButtonProps }

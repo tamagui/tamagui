@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 
-import { DebugProp, StaticConfig, ThemeName } from '../types.js'
-import { Theme } from '../views/Theme.js'
+import { DebugProp, StaticConfig, ThemeName } from '../types'
+import { Theme } from '../views/Theme'
 
 export interface ThemeableProps {
   theme?: ThemeName | null
@@ -17,6 +17,7 @@ export function themeable<Component extends (props: any) => any>(
 ) {
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
+
     const element = React.createElement(component, { ...rest, ref } as any)
 
     return (

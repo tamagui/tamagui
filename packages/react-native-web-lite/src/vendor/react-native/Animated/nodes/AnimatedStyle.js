@@ -11,10 +11,10 @@
 
 import { StyleSheet } from 'react-native-web-internals'
 
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedNode from './AnimatedNode.js'
-import AnimatedTransform from './AnimatedTransform.js'
-import AnimatedWithChildren from './AnimatedWithChildren.js'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
+import AnimatedTransform from './AnimatedTransform'
+import AnimatedWithChildren from './AnimatedWithChildren'
 
 var flattenStyle = StyleSheet.flatten
 

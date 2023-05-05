@@ -78,6 +78,21 @@ export default memo(() => {
               },
             ],
           },
+
+          {
+            type: 'bullet-point',
+            content: [
+              {
+                type: 'text',
+                content: (
+                  <>
+                    Luckily less sensitive due to less elements on screen, no DOM
+                    overhead, more than one thread.
+                  </>
+                ),
+              },
+            ],
+          },
         ],
       ]}
     />

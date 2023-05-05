@@ -1,5 +1,5 @@
-import { ThemeParsed, ThemeProps } from '../types.js';
-type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
+import { ThemeParsed, ThemeProps } from '../types';
+type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean) => void;
 export type SetActiveThemeProps = {
     className?: string;
     parentManager?: ThemeManager | null;
@@ -30,8 +30,8 @@ export declare class ThemeManager {
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): string | number | import("../createVariable.js").Variable<any> | undefined;
-    notify(): void;
+    getValue(key: string, state?: ThemeManagerState): string | number | import("..").Variable<any> | undefined;
+    notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
 export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): ThemeManager | null;

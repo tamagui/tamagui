@@ -10,7 +10,7 @@
 
 'use strict'
 
-import canUseDOM from '../canUseDOM.js'
+import canUseDOM from '../canUseDOM'
 
 type Listener = (e: any) => void
 type EventHandle = (target: EventTarget, callback: Listener | null) => () => void

@@ -9,11 +9,11 @@
  */
 import { Platform, invariant } from 'react-native-web-internals'
 
-import { ReactNativeFeatureFlags } from '../FeatureFlags.js'
-import NativeEventEmitter from '../NativeEventEmitter/index.js'
-import RCTDeviceEventEmitter from '../NativeEventEmitter/RCTDeviceEventEmitter.js'
-import NativeAnimatedNonTurboModule from './NativeAnimatedModule.js'
-import NativeAnimatedTurboModule from './NativeAnimatedTurboModule.js'
+import { ReactNativeFeatureFlags } from '../FeatureFlags'
+import NativeEventEmitter from '../NativeEventEmitter/index'
+import RCTDeviceEventEmitter from '../NativeEventEmitter/RCTDeviceEventEmitter'
+import NativeAnimatedNonTurboModule from './NativeAnimatedModule'
+import NativeAnimatedTurboModule from './NativeAnimatedTurboModule'
 
 // TODO T69437152 @petetheheat - Delete this fork when Fabric ships to 100%.
 var NativeAnimatedModule =

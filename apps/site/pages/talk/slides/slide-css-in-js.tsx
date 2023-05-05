@@ -12,6 +12,7 @@ export default memo(() => {
           {
             type: 'callout',
             content: `CSS-in-JS is back, baby`,
+            image: require('../images/austin-powers.jpg').default,
           },
           // {
           //   type: 'split-horizontal',

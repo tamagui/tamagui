@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      theme="purple"
+      theme="yellow"
       steps={[
         [
           {

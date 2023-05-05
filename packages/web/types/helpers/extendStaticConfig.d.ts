@@ -1,4 +1,4 @@
-import type { GenericVariantDefinitions, StaticConfig, StaticConfigParsed, StylableComponent } from '../types.js';
+import type { GenericVariantDefinitions, StaticConfig, StaticConfigParsed, StylableComponent } from '../types';
 export declare function extendStaticConfig(config: Partial<StaticConfig>, parent?: StylableComponent): StaticConfigParsed;
 export declare const mergeVariants: (parentVariants?: GenericVariantDefinitions, ourVariants?: GenericVariantDefinitions) => {
     [x: string]: {

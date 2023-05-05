@@ -3,7 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
@@ -11,13 +11,14 @@ import { SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
-import SlideCoreFeatures from './slides/slide-core-features'
+import slideCoreSyntax from './slides/slide-core-syntax'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
+import slideLessons3 from './slides/slide-lessons-3'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
@@ -25,13 +26,12 @@ import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
-import Slide2 from './slides/slide-what'
+import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
 import Slide1 from './slides/slide1'
-import Slide3 from './slides/slide3'
 import Slide4 from './slides/slide4'
 import Slide6c from './slides/slide6c'
 
@@ -73,28 +73,29 @@ export default function TamaguiTalk() {
         slides={[
           Slide1,
           slideTwitterPoll,
-          Slide2,
-          slideCoreFeatures,
+          SlideWhat,
           SlideWhy,
           slideWhy2,
           slideWhy3,
           slideWhy4,
           SlideTrilemma,
           SlideHow,
-          slideCssInJs,
-          Slide3,
+          slideCoreSyntax,
+          slideCoreFeatures,
           SlideThemes,
-          SlideThemes2,
+          // SlideThemes2,
           slideCoreComparison,
           Slide4,
           SlideFlatten,
           Slide6c,
           SlideExpressYourself,
+          slideCssInJs,
           SlideTamagui,
           slideTamaguiCode,
           Slide5,
           SlideLessons1,
           SlideLessons2,
+          slideLessons3,
         ]}
       />
     </YStack>

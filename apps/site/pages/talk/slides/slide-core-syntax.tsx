@@ -10,16 +10,19 @@ const styledSnippet = highlightCode(
 export const Heading = styled(Text, {
   tag: 'h1',
   color: '$color',
-  backgroundColor: '$background',
+  fontSize: 16,
+  
+  hoverStyle: { color: '$colorHover' },
 
   $small: {
-    fontSize: 18
+    fontSize: 12,
   },
 
   variants: {
     size: {
-      large: {
+      bigger: {
         fontSize: 22,
+        $small: { fontSize: 20 }
       },
     },
   },
@@ -32,7 +35,7 @@ export default memo(() => {
     <Slide
       title="@tamagui/core"
       subTitle="Style library"
-      theme="yellow"
+      theme="pink"
       steps={[
         [
           {

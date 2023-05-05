@@ -4,7 +4,8 @@ import React from 'react'
 import { memo } from 'react'
 const highlightCode = createCodeHighlighter()
 
-const inputSnippet = highlightCode(`import { Stack } from '@tamagui/core'
+const inputSnippet = highlightCode(
+  `import { Stack } from '@tamagui/core'
 import { Heading } from './Heading'
 
 const App = (props) => (
@@ -13,7 +14,9 @@ const App = (props) => (
       Lorem ipsum.
     </Heading>
   </Stack>
-)`, 'tsx')
+)`,
+  'tsx'
+)
 
 const outputSnippet = highlightCode(
   `import { Stack } from '@tamagui/core'
@@ -36,6 +39,7 @@ export default memo(() => {
     <Slide
       title="@tamagui/static"
       subTitle="Optimizing compiler"
+      stepsStrategy="replace"
       theme="green"
       steps={[
         [
@@ -52,9 +56,12 @@ export default memo(() => {
               },
             ],
           },
+        ],
 
+        [
           {
             type: 'split-horizontal',
+            variant: 'centered',
             content: [
               {
                 type: 'vertical',
@@ -64,16 +71,27 @@ export default memo(() => {
                     content: [
                       {
                         type: 'code-inline',
-                        content: `Partial evaluation`,
+                        props: {
+                          size: '$10',
+                          marginBottom: 60,
+                          display: 'inline-flex',
+                        },
+                        content: `Extracting CSS`,
                       },
                     ],
                   },
+
                   {
                     type: 'bullet-point',
                     content: [
                       {
                         type: 'code-inline',
-                        content: `Extract CSS`,
+                        props: {
+                          size: '$10',
+                          marginBottom: 60,
+                          display: 'inline-flex',
+                        },
+                        content: `Partial evaluation`,
                       },
                     ],
                   },
@@ -88,6 +106,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'code-inline',
+                        props: {
+                          size: '$10',
+                          marginBottom: 60,
+                          display: 'inline-flex',
+                        },
                         content: `Tree-flattening`,
                       },
                     ],
@@ -97,6 +120,11 @@ export default memo(() => {
                     content: [
                       {
                         type: 'code-inline',
+                        props: {
+                          size: '$10',
+                          marginBottom: 60,
+                          display: 'inline-flex',
+                        },
                         content: `Hook removal`,
                       },
                     ],

@@ -1,4 +1,4 @@
-import type { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, TamaguiElement, VariantDefinitions, VariantSpreadFunction } from './types.js';
+import type { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, TamaguiElement, VariantDefinitions, VariantSpreadFunction } from './types';
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer P> ? P : GetProps<A>;
 type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, any, infer V> ? V : {};
 type GetVariantAcceptedValues<V> = V extends Object ? {

@@ -1,9 +1,9 @@
 import { simpleHash } from '@tamagui/helpers'
 
-import { THEME_CLASSNAME_PREFIX } from '../constants/constants.js'
-import { Variable, variableToString } from '../createVariable.js'
-import type { CreateTamaguiProps, ThemeParsed } from '../types.js'
-import { tokensValueToVariable } from './registerCSSVariable.js'
+import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import { Variable, variableToString } from '../createVariable'
+import type { CreateTamaguiProps, ThemeParsed } from '../types'
+import { tokensValueToVariable } from './registerCSSVariable'
 
 export function getThemeCSSRules({
   config,

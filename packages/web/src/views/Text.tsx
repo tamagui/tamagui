@@ -1,8 +1,8 @@
 import { isWeb } from '@tamagui/constants'
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
-import { createComponent } from '../createComponent.js'
-import { TextProps, TextPropsBase } from '../types.js'
+import { createComponent } from '../createComponent'
+import { TextProps, TextPropsBase } from '../types'
 
 const ellipseStyle = {
   maxWidth: '100%',

@@ -1,8 +1,8 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config.js'
-import { isDevTools } from '../constants/isDevTools.js'
-import { Variable, getVariableValue, isVariable } from '../createVariable.js'
+import { getConfig } from '../config'
+import { isDevTools } from '../constants/isDevTools'
+import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
   DebugProp,
   GenericVariantDefinitions,
@@ -11,13 +11,13 @@ import type {
   StaticConfigParsed,
   TamaguiInternalConfig,
   VariantSpreadFunction,
-} from '../types.js'
-import type { LanguageContextType } from '../views/FontLanguage.types.js'
-import { expandStyle } from './expandStyle.js'
-import { expandStyles } from './expandStyles.js'
-import { getFontsForLanguage, getVariantExtras } from './getVariantExtras.js'
-import { isObj } from './isObj.js'
-import { mergeProps } from './mergeProps.js'
+} from '../types'
+import type { LanguageContextType } from '../views/FontLanguage.types'
+import { expandStyle } from './expandStyle'
+import { expandStyles } from './expandStyles'
+import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
+import { isObj } from './isObj'
+import { mergeProps } from './mergeProps'
 
 export type ResolveVariableTypes =
   | 'auto'

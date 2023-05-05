@@ -11,10 +11,10 @@
 
 import { invariant } from 'react-native-web-internals'
 
-import { AnimatedEvent } from '../AnimatedEvent.js'
-import NativeAnimatedHelper from '../NativeAnimatedHelper.js'
-import AnimatedNode from './AnimatedNode.js'
-import AnimatedStyle from './AnimatedStyle.js'
+import { AnimatedEvent } from '../AnimatedEvent'
+import NativeAnimatedHelper from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
+import AnimatedStyle from './AnimatedStyle'
 
 class AnimatedProps extends AnimatedNode {
   constructor(props, callback) {

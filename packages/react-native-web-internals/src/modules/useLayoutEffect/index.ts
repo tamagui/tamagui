@@ -12,7 +12,7 @@
 
 import { useEffect, useLayoutEffect } from 'react'
 
-import canUseDOM from '../canUseDOM.js'
+import canUseDOM from '../canUseDOM'
 
 const useLayoutEffectImpl = canUseDOM ? useLayoutEffect : useEffect
 

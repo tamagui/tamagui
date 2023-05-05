@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
-import { getConfig } from './config.js'
+import { getConfig } from './config'
 
 /**
  * Should rename this to Token

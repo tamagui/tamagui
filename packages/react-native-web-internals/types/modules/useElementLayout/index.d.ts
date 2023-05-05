@@ -7,6 +7,6 @@
  * @flow
  */
 import { ElementRef } from 'react';
-import type { LayoutEvent } from '../../types.js';
+import type { LayoutEvent } from '../../types';
 export default function useElementLayout(ref: ElementRef<any>, onLayout?: ((e: LayoutEvent) => void) | null): void;
 //# sourceMappingURL=index.d.ts.map

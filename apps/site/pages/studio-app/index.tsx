@@ -98,12 +98,10 @@ const StudioTab = memo(
     const tab = router.query.tab
     const isActive = tab === at || (!tab && isHome)
     const [isPending, startTransition] = useTransition()
-    console.log('tab', tab, isPending)
     const [isMounted, setIsMounted] = useState(isActive)
 
     useEffect(() => {
       startTransition(() => {
-        console.warn('start transition')
         setIsMounted(isActive)
       })
     }, [isActive])

@@ -41,6 +41,9 @@ export function DemoScreen() {
       return segment[0].toUpperCase() + segment.slice(1)
     })
     .join('')
+
+  console.log(`Showing demo ${name}`)
+
   const demoName = `${nameMap[name] || name}Demo`
   const DemoComponent = NativeDemos[demoName] ?? NotFound
 

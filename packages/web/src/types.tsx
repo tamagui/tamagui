@@ -21,11 +21,11 @@ import type {
   ViewStyle,
 } from 'react-native'
 
-import type { Variable } from './createVariable.js'
-import type { ResolveVariableTypes } from './helpers/createPropMapper.js'
-import type { FontLanguageProps } from './views/FontLanguage.types.js'
-import { Stack } from './views/Stack.js'
-import type { ThemeProviderProps } from './views/ThemeProvider.js'
+import type { Variable } from './createVariable'
+import type { ResolveVariableTypes } from './helpers/createPropMapper'
+import type { FontLanguageProps } from './views/FontLanguage.types'
+import { Stack } from './views/Stack'
+import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
@@ -538,6 +538,12 @@ export type CreateTamaguiProps = {
   onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
+export type GetCSS = (opts?: {
+  separator?: string
+  excludeThemes?: boolean
+  sinceLastCall?: boolean
+}) => string
+
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
   A extends GenericTokens = GenericTokens,
@@ -556,7 +562,8 @@ export type TamaguiInternalConfig<
     tokensParsed: Tokenify<A>
     themeConfig: any
     fontsParsed: GenericFonts
-    getCSS: () => string
+    getCSS: GetCSS
+    getNewCSS: GetCSS
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
@@ -1619,7 +1626,7 @@ export type GestureReponderEvent = Exclude<
 export type RulesToInsert = StyleObject[]
 
 export type GetStyleResult = {
-  pseudos?: PseudoStyles
+  pseudos?: PseudoStyles | null
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert

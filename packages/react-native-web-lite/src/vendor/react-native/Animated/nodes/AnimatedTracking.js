@@ -9,8 +9,8 @@
  */
 'use strict'
 
-import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper.js'
-import AnimatedNode from './AnimatedNode.js'
+import { generateNewAnimationId, shouldUseNativeDriver } from '../NativeAnimatedHelper'
+import AnimatedNode from './AnimatedNode'
 
 class AnimatedTracking extends AnimatedNode {
   constructor(value, parent, animationClass, animationConfig, callback) {

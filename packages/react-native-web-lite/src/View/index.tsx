@@ -21,9 +21,9 @@ import {
   useResponderEvents,
 } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import type { PlatformMethods } from '../types.js'
-import type { ViewProps } from './types.js'
+import createElement from '../createElement/index'
+import type { PlatformMethods } from '../types'
+import type { ViewProps } from './types'
 
 const pickProps = (props) => pick(props, forwardPropsListView)
 

@@ -8,8 +8,8 @@
  * @flow
  */
 
-import type { ColorValue, GenericStyleProp } from '../types.js'
-import type { ViewProps, ViewStyle } from '../View/types.js'
+import type { ColorValue, GenericStyleProp } from '../types'
+import type { ViewProps, ViewStyle } from '../View/types'
 
 type FontWeightValue =
   | 'normal'

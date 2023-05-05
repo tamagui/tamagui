@@ -1,9 +1,13 @@
-import { getThemes, getTokens } from '../config.js'
-import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants.js'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped.js'
-import { ThemeParsed, ThemeProps } from '../types.js'
+import { getThemes, getTokens } from '../config'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
+import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
+import { ThemeParsed, ThemeProps } from '../types'
 
-type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
+type ThemeListener = (
+  name: string | null,
+  themeManager: ThemeManager,
+  forced: boolean
+) => void
 
 export type SetActiveThemeProps = {
   className?: string
@@ -101,7 +105,7 @@ export class ThemeManager {
       }
 
       if (shouldNotify) {
-        this.notify()
+        this.notify(!!props.forceTheme)
       }
 
       return this.state
@@ -167,8 +171,8 @@ export class ThemeManager {
     }
   }
 
-  notify() {
-    this.themeListeners.forEach((cb) => cb(this.state.name, this))
+  notify(forced = false) {
+    this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
 
   onChangeTheme(cb: ThemeListener, debugId?: number) {
@@ -195,12 +199,16 @@ function getNextThemeClassName(name: string, props: ThemeProps) {
     name === 'light' ||
     name === 'dark'
   ) {
-    return (
-      next +
-      // ensure you invert to base dark as well as specific dark
-      // ... logic should likely be elsewhere
-      (next.includes('dark_') ? ` t_dark` : next.includes('light_') ? ` t_light` : '')
-    )
+    // ensure you invert to base dark as well as specific dark
+    // ... logic should likely be elsewhere
+    const lessSpecificCN = props.componentName
+      ? ''
+      : next.includes('dark_')
+      ? ` t_dark`
+      : next.includes('light_')
+      ? ` t_light`
+      : ''
+    return next + lessSpecificCN
   }
   return next.replace('light_', '').replace('dark_', '')
 }
@@ -272,6 +280,7 @@ function getState(
       prefix = inverseThemeName(prefix)
     }
     let potentials: string[] = []
+
     if (prefix && prefix !== parentBaseTheme) {
       potentials.push(prefix)
     }
@@ -284,20 +293,26 @@ function getState(
         potentials.splice(lastSegment, 0, nextName) // last try prefer our new name to parent
       }
     }
+
     if (componentName) {
+      let componentPotentials: string[] = []
       // components only look for component themes
       if (nextName) {
         const beforeSeparator = prefix.slice(0, prefix.indexOf(THEME_NAME_SEPARATOR))
-        potentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
+        componentPotentials.push(`${beforeSeparator}_${nextName}_${componentName}`)
       }
-      potentials.push(`${prefix}_${componentName}`)
+      componentPotentials.push(`${prefix}_${componentName}`)
       if (nextName) {
         // do this one and one level up
         const prefixLessOne = base.slice(0, i - 1).join(THEME_NAME_SEPARATOR)
-        const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+        if (prefixLessOne) {
+          const lessSpecific = `${prefixLessOne}_${nextName}_${componentName}`
+          componentPotentials.unshift(lessSpecific)
+        }
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
-        potentials = [moreSpecific, lessSpecific, ...potentials]
+        componentPotentials.unshift(moreSpecific)
       }
+      potentials = [...componentPotentials, ...potentials]
     }
 
     const found = potentials.find((t) => t in themes)

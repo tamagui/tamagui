@@ -1,4 +1,4 @@
-import { MatchMedia, MediaQueryList } from '../types.js'
+import { MatchMedia, MediaQueryList } from '../types'
 
 export const matchMedia =
   (typeof window !== 'undefined' && window.matchMedia) || matchMediaFallback

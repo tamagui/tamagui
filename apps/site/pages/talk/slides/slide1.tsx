@@ -10,6 +10,7 @@ import {
   Separator,
   SizableText,
   Spacer,
+  Theme,
   XStack,
   YStack,
   useComposedRefs,
@@ -87,8 +88,8 @@ export default memo(() => {
         opacity: 1,
         ...glow,
         offset: {
-          x: glow.offset!.x! - 200,
-          y: glow.offset!.y! - 120,
+          x: glow.offset!.x! - 250,
+          y: glow.offset!.y! - 50,
         },
         style: {
           ...glow.style,
@@ -161,10 +162,9 @@ export default memo(() => {
           {
             type: 'content',
             content: (
-              <ThemeTint>
+              <Theme name="blue">
                 <YStack
                   als="center"
-                  pt={100}
                   pos="relative"
                   {...lettersContainerBounds}
                   minWidth={lettersContainerBounds.width}
@@ -193,7 +193,7 @@ export default memo(() => {
                   </YStack>
                 </YStack>
 
-                <Container ai="center">
+                <Container mt={-200} ai="center">
                   <Spacer size="$8" />
 
                   <XStack maw={790} space="$8" separator={<Separator vertical />}>
@@ -210,7 +210,7 @@ export default memo(() => {
                     </SizableText>
                   </XStack>
                 </Container>
-              </ThemeTint>
+              </Theme>
             ),
           },
         ],

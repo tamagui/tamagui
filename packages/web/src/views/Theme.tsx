@@ -1,11 +1,11 @@
 import { isWeb } from '@tamagui/constants'
 import { Children, cloneElement, isValidElement, useEffect, useId, useMemo } from 'react'
 
-import { variableToString } from '../createVariable.js'
-import { ThemeManagerContext } from '../helpers/ThemeManagerContext.js'
-import { useServerRef } from '../hooks/useServerHooks.js'
-import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme.js'
-import type { DebugProp, ThemeProps } from '../types.js'
+import { variableToString } from '../createVariable'
+import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { useServerRef } from '../hooks/useServerHooks'
+import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
+import type { DebugProp, ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
 export function Theme(props: ThemeProps) {

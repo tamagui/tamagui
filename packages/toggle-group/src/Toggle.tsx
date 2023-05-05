@@ -26,8 +26,8 @@ const ToggleFrame = styled(ThemeableStack, {
         justifyContent: 'center',
         display: 'flex',
         borderColor: '$borderColor',
-        borderWidth: '1px',
-        margin: '-1px',
+        borderWidth: 1,
+        margin: -1,
         hoverStyle: {
           backgroundColor: '$backgroundHover',
         },
@@ -42,6 +42,7 @@ const ToggleFrame = styled(ThemeableStack, {
         },
       },
     },
+
     active: {
       true: {
         zIndex: 1,
@@ -54,6 +55,7 @@ const ToggleFrame = styled(ThemeableStack, {
         },
       },
     },
+
     orientation: {
       horizontal: {
         flexDirection: 'row',

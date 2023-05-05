@@ -8,8 +8,8 @@ import chalk from 'chalk'
 import fs, { ensureDir } from 'fs-extra'
 import { build, createServer } from 'vite'
 
-import { createDevServer } from './dev/createDevServer.js'
-import { registerDispose } from './utils.js'
+import { createDevServer } from './dev/createDevServer'
+import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options

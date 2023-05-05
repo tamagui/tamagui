@@ -16,10 +16,10 @@ import {
 } from 'react-native-web-internals'
 import { ImageLoader, getAssetByID } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import PixelRatio from '../PixelRatio/index.js'
-import View from '../View/index.js'
-import type { ImageProps } from './types.js'
+import createElement from '../createElement/index'
+import PixelRatio from '../PixelRatio/index'
+import View from '../View/index'
+import type { ImageProps } from './types'
 
 export type { ImageProps }
 

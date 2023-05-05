@@ -1,8 +1,8 @@
 import { isClient } from '@tamagui/constants'
 import { createContext, useLayoutEffect, useMemo } from 'react'
 
-import { THEME_CLASSNAME_PREFIX } from '../constants/constants.js'
-import { Theme } from './Theme.js'
+import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import { Theme } from './Theme'
 
 export type ThemeProviderProps = {
   className?: string

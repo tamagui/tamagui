@@ -7,9 +7,9 @@
  * @flow
  */
 
-import type { GenericStyleProp } from '../../types.js'
-import UIManager from '../UIManager/index.js'
-import useStable from '../useStable/index.js'
+import type { GenericStyleProp } from '../../types'
+import UIManager from '../UIManager/index'
+import useStable from '../useStable/index'
 
 /**
  * Adds non-standard methods to the hode element. This is temporarily until an

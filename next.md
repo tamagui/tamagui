@@ -10,6 +10,12 @@ high level:
 
 ---
 
+- size/space/button docs
+- slow press on buttons
+- make `getButtonSized` somehow configurable by users
+- document `tokenCategories` in createPropMapper in configuration
+- document how `size` + `font` + `space` should work together to help create a cohesive design system that works with tamagui
+
 Ali todos:
   - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
@@ -33,6 +39,8 @@ Ali todos:
 ---
 
 # Backlog
+
+- if you change webpack config to alias RN to RNW (not lite) one animation test fails
 
 - cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
 
@@ -66,6 +74,8 @@ a package.json etc etc + zip file
 
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
+
+- sheet overlay variant https://discord.com/channels/909986013848412191/1103391377615749211/1103391377615749211
 
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats

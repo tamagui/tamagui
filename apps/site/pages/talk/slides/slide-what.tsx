@@ -4,8 +4,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="What is Tamagui"
-      theme="orange"
+      title="Tamagui is..."
+      theme="green"
       steps={[
         [
           {

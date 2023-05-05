@@ -75,9 +75,12 @@ const ToggleGroupItem = ToggleFrame.extractable(
         height: undefined,
         padding: getVariableValue(size) * 0.6,
       }
-      if (props.orientation === 'horizontal')
+
+      if (props.orientation === 'horizontal') {
         sizeProps.height = getVariableValue(size) * 2.4
-      else sizeProps.width = getVariableValue(size) * 2.4
+      } else {
+        sizeProps.width = getVariableValue(size) * 2.4
+      }
 
       const iconSize = (typeof size === 'number' ? size * 0.7 : getFontSize(size)) * 1.2
 

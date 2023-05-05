@@ -1,6 +1,6 @@
-import { createVariable, isVariable } from '../createVariable.js'
-import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped.js'
-import { CreateTamaguiProps } from '../types.js'
+import { createVariable, isVariable } from '../createVariable'
+import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
+import { CreateTamaguiProps } from '../types'
 
 // mutates, freeze after
 // shared by createTamagui so extracted here

@@ -22,7 +22,7 @@ const themeSnippet = highlightCode(
 export default memo(() => {
   return (
     <Slide
-      title="Themes"
+      title="Core: Themes"
       subTitle="Powerful, but misunderstood"
       theme="yellow"
       steps={[

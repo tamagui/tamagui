@@ -5,8 +5,8 @@ import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import findRoot from 'find-root'
 
-import { memoize } from '../helpers/memoize.js'
-import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
+import { memoize } from '../helpers/memoize'
+import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types'
 
 // import { astToLiteral } from './literalToAst'
 

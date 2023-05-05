@@ -299,8 +299,9 @@ function getAltThemes({
 }
 
 function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean) {
-  const componentMaskOptions = {
+  const componentMaskOptions: MaskOptions = {
     ...maskOptions,
+    override: overrideWithColors,
     skip: {
       ...maskOptions.skip,
       // skip colors too just for component sub themes

@@ -11,7 +11,7 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native-web-internals'
 
-import View from '../View/index.js'
+import View from '../View/index'
 
 type Props = {
   WrapperComponent?: React.FunctionComponent<any> | null

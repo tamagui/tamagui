@@ -1,5 +1,5 @@
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web';
-import { TamaguiOptions } from '../types.js';
+import { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;
 };

@@ -1,6 +1,6 @@
 import { GetProps, Stack, styled } from '@tamagui/core'
 
-import { getElevation } from './getElevation.js'
+import { getElevation } from './getElevation'
 
 export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = YStackProps

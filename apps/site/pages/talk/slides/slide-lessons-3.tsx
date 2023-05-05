@@ -11,7 +11,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: <>We need testing to work seamlessly across native and web.</>,
+            content: <>I couldn't have done this in Rust 🌶️ - thank you Babel.</>,
           },
           // {
           //   type: 'split-horizontal',

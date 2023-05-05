@@ -4,7 +4,6 @@ import {
   Button,
   Dialog,
   Fieldset,
-  H2,
   Input,
   Label,
   Paragraph,
@@ -14,7 +13,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import { SelectDemo, SelectDemoItem } from './SelectDemo'
+import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
   return (
