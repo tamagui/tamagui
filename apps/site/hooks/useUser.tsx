@@ -80,8 +80,6 @@ export const MyUserContextProvider = (props: Props) => {
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
-      console.log('running', session)
-
       setIsloadingData(true)
       Promise.allSettled([
         getUserDetails(),
