@@ -143,7 +143,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user && !isLoading && router.isReady) {
-      router.push(`${siteRootDir}/login`)
+      // router.push(`${siteRootDir}/login`)
     }
   }, [user, isLoading, router])
 

@@ -16,8 +16,9 @@ export const SupabaseProvider = ({
 }) => {
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>({
+      // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       cookieOptions: {
-        domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
+        domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
         maxAge: 100000000,
         path: '/',
         sameSite: 'Lax',
