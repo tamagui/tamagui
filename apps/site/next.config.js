@@ -129,8 +129,8 @@ module.exports = function (name, { defaultConfig }) {
             destination: '/studio-app/:path*',
           },
           {
-            source: '/studio-app/api/:path*',
-            destination: '/api/:path*',
+            source: '/studio-app/:path*',
+            destination: '/:path*',
           },
         ],
       }
