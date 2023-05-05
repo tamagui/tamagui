@@ -7,7 +7,7 @@ export const getOgUrl = (
 ) => {
   const q = new URLSearchParams()
   q.append('type', type)
-  q.append('title', title.split(' ').join(''))
+  q.append('title', title)
   q.append('description', description ?? '')
 
   return `${getURL()}/api/og?${q.toString()}`

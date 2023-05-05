@@ -11,7 +11,7 @@ import { getCompilationExamples } from '../../lib/getCompilationExamples'
 
 export default function BlogSlug(props: BlogPost) {
   const Component = React.useMemo(() => getMDXComponent(props.code), [props.code])
-
+console.log(props.frontmatter.title)
   return (
     <TamaguiExamples.Provider value={props['examples']}>
       <TitleAndMetaTags

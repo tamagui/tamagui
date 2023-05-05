@@ -103,7 +103,7 @@ const ComponentOg = ({
           style={{
             color: colors.whiteA.whiteA12,
             fontWeight: 900,
-            fontSize: 100,
+            fontSize: 96,
             marginBottom: -10,
             fontFamily: 'Inter',
           }}
@@ -163,8 +163,6 @@ const DefaultOg = ({
         style={{
           display: 'flex',
           flexDirection: 'column',
-          marginLeft: 44,
-          width: '50%',
           alignItems: 'center',
         }}
       >
@@ -172,7 +170,7 @@ const DefaultOg = ({
           style={{
             color: colors.whiteA.whiteA12,
             fontWeight: 900,
-            fontSize: 100,
+            fontSize: 96,
             marginBottom: -10,
             fontFamily: 'Inter',
             textAlign: 'center',
