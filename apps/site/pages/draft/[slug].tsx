@@ -1,5 +1,6 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 
@@ -15,6 +16,11 @@ export default function BlogSlug(props: BlogPost) {
       <TitleAndMetaTags
         {...props.frontmatter}
         title={`${props.frontmatter.title} — Tamagui`}
+        image={getOgUrl(
+          'default',
+          props.frontmatter.title,
+          props.frontmatter.description ?? ''
+        )}
       />
       <BlogSlugPage Component={Component} {...props} />
     </TamaguiExamples.Provider>

@@ -7,6 +7,7 @@ import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getURL } from '@lib/helpers'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useRouter } from 'next/router'
@@ -59,12 +60,11 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         description={frontmatter.description}
         image={
           frontmatter.image ??
-          `${getURL()}/api/og?${(function () {
-            const q = new URLSearchParams()
-            q.append('name', frontmatter.title.split(' ').join(''))
-            q.append('description', frontmatter.description ?? '')
-            return q
-          })()}`
+          getOgUrl(
+            'component',
+            frontmatter.title,
+            frontmatter.description ?? ''
+          )
         }
       />
       {/* {frontmatter.version !== frontmatter.versions?.[0] && (

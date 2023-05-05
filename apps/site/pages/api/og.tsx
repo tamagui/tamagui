@@ -2,6 +2,7 @@ import { getURL } from '@lib/helpers'
 import * as colors from '@tamagui/colors'
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
+import { ReactElement } from 'react'
 
 export const config = {
   runtime: 'edge',
@@ -26,78 +27,14 @@ export default async function handler(request: NextRequest) {
   ])
 
   const { searchParams } = new URL(request.url)
-  const componentName = searchParams.has('name') ? searchParams.get('name')! : 'Component'
+  const type = searchParams.has('type') ? searchParams.get('type')?.slice(0, 100) : 'unknown'
+  const title = searchParams.has('title') ? searchParams.get('title')! : 'Component'
   const description = searchParams.has('description')
     ? searchParams.get('description')!
     : ''
-
-  const imageData = `${getURL()}/screenshots/dark/${componentName}Demo.png`
   const logoData = await logo
-
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          padding: '20px',
-          // backgroundColor: '#050505',
-          background: `url(${getURL()}/bg-grid.png)`,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginLeft: 44,
-            width: '50%',
-          }}
-        >
-          <img
-            width="217"
-            height="23"
-            style={{ marginBottom: 110, marginTop: -140 }}
-            src={logoData as any}
-          />
-
-          <h1
-            style={{
-              color: colors.whiteA.whiteA12,
-              fontWeight: 900,
-              fontSize: 100,
-              marginBottom: -10,
-              fontFamily: 'Inter',
-            }}
-          >
-            {componentName}
-          </h1>
-          <p
-            style={{
-              color: colors.whiteA.whiteA10,
-              fontSize: 32,
-              // lineHeight: 1,
-              fontFamily: 'Inter',
-            }}
-          >
-            {description}
-          </p>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            width: '50%',
-          }}
-        >
-          <img width="512" height="512" src={imageData} />
-        </div>
-      </div>
-    ),
-    {
+  const getImageResponse = (jsx: ReactElement) =>
+    new ImageResponse(jsx, {
       width: 1200,
       height: 630,
       fonts: [
@@ -114,6 +51,168 @@ export default async function handler(request: NextRequest) {
           weight: 700,
         },
       ],
-    }
+    })
+
+  if (type === 'component') {
+    return getImageResponse(
+      <ComponentOg title={title} description={description} logo={logoData} />
+    )
+  }
+
+  return getImageResponse(
+    <DefaultOg title={title} description={description} logo={logoData} />
+  )
+}
+
+const ComponentOg = ({
+  title,
+  description,
+  logo,
+}: {
+  title: string
+  description?: string
+  logo: any
+}) => {
+  const imageData = `${getURL()}/screenshots/dark/${title}Demo.png`
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        padding: '20px',
+        // backgroundColor: '#050505',
+        background: `url(${getURL()}/bg-grid.png)`,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Logo pos="left" source={logo} />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginLeft: 44,
+          width: '50%',
+        }}
+      >
+        <h1
+          style={{
+            color: colors.whiteA.whiteA12,
+            fontWeight: 900,
+            fontSize: 100,
+            marginBottom: -10,
+            fontFamily: 'Inter',
+          }}
+        >
+          {title}
+        </h1>
+        <p
+          style={{
+            color: colors.whiteA.whiteA10,
+            fontSize: 32,
+            // lineHeight: 1,
+            fontFamily: 'Inter',
+          }}
+        >
+          {description}
+        </p>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          width: '50%',
+        }}
+      >
+        <img width="512" height="512" src={imageData} />
+      </div>
+    </div>
+  )
+}
+
+const DefaultOg = ({
+  title,
+  description,
+  logo,
+}: {
+  title: string
+  description?: string
+  logo: any
+}) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        padding: '20px',
+        // backgroundColor: '#050505',
+        background: `url(${getURL()}/bg-grid.png)`,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Logo pos="center" source={logo} />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginLeft: 44,
+          width: '50%',
+          alignItems: 'center',
+        }}
+      >
+        <h1
+          style={{
+            color: colors.whiteA.whiteA12,
+            fontWeight: 900,
+            fontSize: 100,
+            marginBottom: -10,
+            fontFamily: 'Inter',
+            textAlign: 'center',
+          }}
+        >
+          {title}
+        </h1>
+        <p
+          style={{
+            color: colors.whiteA.whiteA10,
+            fontSize: 32,
+            // lineHeight: 1,
+            fontFamily: 'Inter',
+            textAlign: 'center',
+          }}
+        >
+          {description}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+const Logo = ({ source, pos }: { source: any; pos: 'left' | 'center' }) => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 96,
+        right: 96,
+        top: 64,
+        display: 'flex',
+        ...(pos === 'center'
+          ? {
+              justifyContent: 'center',
+            }
+          : {}),
+      }}
+    >
+      <img width="217" height="23" src={source} />
+    </div>
   )
 }

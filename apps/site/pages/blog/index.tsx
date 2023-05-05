@@ -2,6 +2,7 @@ import { getBlogLayout } from '@components/layouts/BlogLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { NextLink } from 'components/NextLink'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 

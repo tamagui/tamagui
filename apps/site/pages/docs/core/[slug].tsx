@@ -3,6 +3,7 @@ import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
@@ -24,7 +25,14 @@ export default function DocsCorePage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
     <>
-      <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Core`} />
+      <TitleAndMetaTags
+        title={`${frontmatter.title} — Tamagui Core`}
+        image={getOgUrl(
+          'default',
+          frontmatter.title,
+          frontmatter.description ?? ''
+        )}
+      />
       <HomeH1>{frontmatter.title}</HomeH1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
