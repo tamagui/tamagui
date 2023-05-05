@@ -117,6 +117,7 @@ export function Slide(props: SlideProps) {
 }
 
 const SlideInner = (props: SlideProps) => {
+  const showAllSteps = useContext(ShowAllStepsContext)
   const glows = useGlows(props.variant)
   const [isPresent] = usePresence()
   const [step, setStep] = useState(1)
@@ -156,13 +157,13 @@ const SlideInner = (props: SlideProps) => {
     props.stepsStrategy === 'replace'
       ? getStep(props.steps[step - 1])
       : props.steps
-          .slice(0, step)
+          .slice(0, showAllSteps ? Infinity : step)
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
   return (
     <>
       <YStack fullscreen zi={-1}>
-        {glows.elements}
+        {showAllSteps ? null : glows.elements}
       </YStack>
       <YStack ref={glows.ref as any} space="$7" w="100%" h="100%" p="$12">
         <YStack space="$4">
@@ -193,6 +194,8 @@ const SlideInner = (props: SlideProps) => {
     </>
   )
 }
+
+export const ShowAllStepsContext = createContext(false)
 
 function useGlows(variant: SlideProps['variant']) {
   const colorThemeName = useThemeName().replace('dark_', '').replace('light_', '')
@@ -298,7 +301,7 @@ function getTextContent(
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
                       flex: 1,
-                      backgroundSize: 'contain',
+                      backgroundSize: item.variant === 'circled' ? 'cover' : 'contain',
                     }}
                   />
                 </YStack>

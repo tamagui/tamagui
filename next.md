@@ -1,3 +1,10 @@
+talk:
+
+- record actual theme video
+- theme > prop needs intro text + example:
+  - theme combines all the well design colors into one so if you add a border it will match the subtle look automatically
+  - it also means you can extract this component out and then re-theme the entire thing later wihtout having to change a bunch of properties
+
 high level:
 
   - private canary packages on github

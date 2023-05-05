@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="vs Tailwind"
+      title="Tailwind?"
       subTitle="🌶️"
       theme="yellow"
       steps={[
@@ -82,7 +82,7 @@ export default memo(() => {
 
               {
                 type: 'vertical',
-                title: `Improves`,
+                title: `Different`,
                 content: [
                   {
                     type: 'bullet-point',
@@ -91,8 +91,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `Everything is typed`,
@@ -106,8 +106,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `Properly merge props`,
@@ -121,8 +121,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `De/re-structure styles`,
@@ -136,8 +136,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `No dark:red-300`,
@@ -152,8 +152,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `Compiler optimization++`,
@@ -168,11 +168,11 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
-                        content: `Themes++`,
+                        content: `Powerful themes`,
                       },
                     ],
                   },
@@ -184,11 +184,27 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$9',
-                          marginBottom: 20,
+                          size: '$8',
+                          marginBottom: 0,
                           display: 'inline-flex',
                         },
                         content: `No editor plugin`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$8',
+                          marginBottom: 0,
+                          display: 'inline-flex',
+                        },
+                        content: `Has extra bundle size`,
                       },
                     ],
                   },

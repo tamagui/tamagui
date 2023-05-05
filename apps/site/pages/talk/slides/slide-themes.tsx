@@ -68,7 +68,7 @@ const outputSnippetSub = highlightCode(
 
 const snippetUsage = highlightCode(
   `
-import { Stack } from '@tamagui/core'
+import { Stack, Theme } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
@@ -259,6 +259,17 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                content: `Works with animation drivers`,
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            size: '$10',
+            content: [
+              {
+                type: 'text',
                 content: `Avoids re-renders on web`,
               },
             ],
@@ -270,7 +281,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: `Invertable`,
+                content: `useTheme() hook escape hatch`,
               },
             ],
           },
@@ -281,7 +292,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: `Nested as many times as you want`,
+                content: `Nest as many times as you want`,
               },
             ],
           },

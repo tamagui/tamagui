@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
-import { SlideContext } from '../../components/Slide'
+import { ShowAllStepsContext, SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
@@ -21,6 +21,7 @@ import SlideLessons2 from './slides/slide-lessons-2'
 import slideLessons3 from './slides/slide-lessons-3'
 import slidePartialEval from './slides/slide-partial-eval'
 import slidePartialEval2 from './slides/slide-partial-eval2'
+import Slide4 from './slides/slide-static'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
@@ -30,11 +31,12 @@ import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
 import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
+import slideWhyBobRoss from './slides/slide-why-bob-ross'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
+import slideWhy6 from './slides/slide-why6'
 import Slide1 from './slides/slide1'
-import Slide4 from './slides/slide4'
 import Slide6c from './slides/slide6c'
 
 const slideDimensions = {
@@ -80,6 +82,8 @@ export default function TamaguiTalk() {
           slideWhy2,
           slideWhy3,
           slideWhy4,
+          slideWhy6,
+          slideWhyBobRoss,
           SlideTrilemma,
           SlideHow,
           slideCoreSyntax,
@@ -129,6 +133,7 @@ export function Slides(props: { slides: Slides }) {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   const SlideComponent = props.slides[index]
+  const NextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
 
@@ -162,55 +167,72 @@ export function Slides(props: { slides: Slides }) {
   )
 
   return (
-    <XStack
-      overflow="hidden"
-      position="relative"
-      {...slideDimensions}
-      bw={1}
-      boc="$borderColor"
-      alignItems="center"
-    >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable
-          key={page}
-          animation="lazy"
-          fullscreen
-          x={0}
-          opacity={1}
-          ai="center"
-          jc="center"
-        >
-          <SlideContext.Provider value={slideContext}>
-            <SlideComponent />
-          </SlideContext.Provider>
-        </YStackEnterable>
-      </AnimatePresence>
+    <>
+      <XStack
+        overflow="hidden"
+        position="relative"
+        {...slideDimensions}
+        bw={1}
+        boc="$borderColor"
+        alignItems="center"
+      >
+        <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
+          <YStackEnterable
+            key={page}
+            animation="lazy"
+            fullscreen
+            x={0}
+            opacity={1}
+            ai="center"
+            jc="center"
+          >
+            <SlideContext.Provider value={slideContext}>
+              <SlideComponent />
+            </SlideContext.Provider>
+          </YStackEnterable>
+        </AnimatePresence>
 
-      <Button
-        accessibilityLabel="Carousel left"
-        icon={ArrowLeft}
-        size="$5"
-        position="absolute"
-        left="$4"
-        circular
-        elevate
-        onPress={() => paginate(-1)}
-      />
-      <Button
-        accessibilityLabel="Carousel right"
-        icon={ArrowRight}
-        size="$5"
-        position="absolute"
-        right="$4"
-        circular
-        elevate
-        onPress={() => paginate(1)}
-      />
+        <Button
+          accessibilityLabel="Carousel left"
+          icon={ArrowLeft}
+          size="$5"
+          position="absolute"
+          left="$4"
+          circular
+          elevate
+          onPress={() => paginate(-1)}
+        />
+        <Button
+          accessibilityLabel="Carousel right"
+          icon={ArrowRight}
+          size="$5"
+          position="absolute"
+          right="$4"
+          circular
+          elevate
+          onPress={() => paginate(1)}
+        />
 
-      <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
-        {index} / {total}
-      </Paragraph>
-    </XStack>
+        <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
+          {index} / {total}
+        </Paragraph>
+      </XStack>
+
+      <YStack
+        ov="hidden"
+        pos="absolute"
+        b={0}
+        r="-75%"
+        scale={0.4}
+        zi={1000}
+        bg="$color3"
+        {...slideDimensions}
+      >
+        <ShowAllStepsContext.Provider value={true}>
+          <NextSlideComponent />
+        </ShowAllStepsContext.Provider>
+      </YStack>
+    </>
   )
 }
 
