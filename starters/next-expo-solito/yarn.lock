@@ -2982,6 +2982,7 @@ __metadata:
   dependencies:
     "@tamagui/animations-react-native": ^1.23.0
     "@tamagui/build": ^1.23.0
+    "@tamagui/cubic-bezier-animator": ^1.23.0
     "@tamagui/font-inter": ^1.23.0
     "@tamagui/react-native-media-driver": ^1.23.0
     "@tamagui/shorthands": ^1.23.0
@@ -3981,6 +3982,13 @@ __metadata:
   dependencies:
     "@tamagui/web": 1.23.0
   checksum: 5437002cb28d8c348304e6d91e256e5e51b1cd87f7edf8b3dc162bdd5c0981b9dc9a13e5442fc2f27df79b637988a4b1785db4504babc953e60bcc8e489599b2
+  languageName: node
+  linkType: hard
+
+"@tamagui/cubic-bezier-animator@npm:^1.23.0":
+  version: 1.23.0
+  resolution: "@tamagui/cubic-bezier-animator@npm:1.23.0"
+  checksum: 054f002a6a7358e0eac05509b7615fbce4994b137b94657cad3ccfe9f9e6bd6ecf245eeff09750a0b580232d9434d68a7cd5c59dcb87bf9e285c8d1b2cde7f4c
   languageName: node
   linkType: hard
 
@@ -5876,6 +5884,7 @@ __metadata:
     "@my/ui": "*"
     "@tamagui/animations-react-native": ^1.23.0
     "@tamagui/colors": ^1.23.0
+    "@tamagui/cubic-bezier-animator": ^1.23.0
     "@tamagui/font-inter": ^1.23.0
     "@tamagui/lucide-icons": ^1.23.0
     "@tamagui/shorthands": ^1.23.0

@@ -10,6 +10,7 @@
     "@my/ui": "*",
     "@tamagui/animations-react-native": "^1.23.0",
     "@tamagui/colors": "^1.23.0",
+    "@tamagui/cubic-bezier-animator": "^1.23.0",
     "@tamagui/font-inter": "^1.23.0",
     "@tamagui/lucide-icons": "^1.23.0",
     "@tamagui/shorthands": "^1.23.0",
