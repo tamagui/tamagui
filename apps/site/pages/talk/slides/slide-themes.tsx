@@ -152,7 +152,7 @@ export default memo(() => {
       title="Core: Themes"
       subTitle="Generics for styling"
       stepsStrategy="replace"
-      theme="yellow"
+      theme="pink"
       steps={[
         [
           {
@@ -215,23 +215,6 @@ export default memo(() => {
               },
             ],
           },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `Nest as many sub-themes as you want, eg`,
-              },
-              {
-                type: 'code-inline',
-                props: {
-                  color: '$color2',
-                },
-                content: `dark_red_subtle`,
-              },
-            ],
-          },
         ],
 
         [
@@ -259,6 +242,13 @@ export default memo(() => {
                 </video>
               </YStack>
             ),
+          },
+        ],
+
+        [
+          {
+            type: 'callout',
+            content: `Instead of color="$alt", theme="alt"`,
           },
         ],
 

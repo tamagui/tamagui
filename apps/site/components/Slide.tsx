@@ -156,7 +156,7 @@ export function Slide(props: SlideProps) {
       <YStack fullscreen zi={-1}>
         {glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$8" w="100%" h="100%" p="$12">
+      <YStack ref={glows.ref as any} space="$4" w="100%" h="100%" p="$12">
         <YStack space="$4">
           {Boolean(props.title) && (
             <H1
@@ -380,16 +380,17 @@ function getTextContent(
               }
 
               return (
-                <YStack h="100%" f={1} ai="center" jc="center">
+                <YStack mah="100%" f={1} ai="center" jc="center">
                   <Paragraph
                     theme="yellow"
                     color="$color10"
                     als="center"
-                    textShadowColor="rgba(0,0,0,0.5)"
+                    textShadowColor="rgba(0,0,0,0.35)"
                     textShadowRadius={20}
                     textShadowOffset={{ height: 10, width: 0 }}
                     ta="center"
                     p="$10"
+                    mt={-100}
                     size={size}
                   >
                     {item.content}&nbsp;

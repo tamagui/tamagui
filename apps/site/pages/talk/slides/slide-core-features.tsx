@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="@tamagui/core"
       subTitle="Features"
-      theme="yellow"
+      theme="pink"
       steps={[
         [
           {

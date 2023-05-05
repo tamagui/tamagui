@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="Why did it feel terrible?"
       subTitle="JavaScript"
-      theme="orange"
+      theme="blue"
       steps={[
         [
           {

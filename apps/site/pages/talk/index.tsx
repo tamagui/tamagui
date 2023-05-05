@@ -26,7 +26,7 @@ import SlideThemes from './slides/slide-themes'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
-import Slide2 from './slides/slide-what'
+import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
@@ -73,7 +73,7 @@ export default function TamaguiTalk() {
         slides={[
           Slide1,
           slideTwitterPoll,
-          Slide2,
+          SlideWhat,
           SlideWhy,
           slideWhy2,
           slideWhy3,

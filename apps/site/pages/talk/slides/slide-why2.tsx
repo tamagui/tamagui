@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="Why?"
       subTitle="Because I don't think ahead"
-      theme="orange"
+      theme="blue"
       steps={[
         [
           {

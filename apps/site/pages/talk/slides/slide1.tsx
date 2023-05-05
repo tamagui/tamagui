@@ -10,6 +10,7 @@ import {
   Separator,
   SizableText,
   Spacer,
+  Theme,
   XStack,
   YStack,
   useComposedRefs,
@@ -161,7 +162,7 @@ export default memo(() => {
           {
             type: 'content',
             content: (
-              <ThemeTint>
+              <Theme name="blue">
                 <YStack
                   als="center"
                   pos="relative"
@@ -209,7 +210,7 @@ export default memo(() => {
                     </SizableText>
                   </XStack>
                 </Container>
-              </ThemeTint>
+              </Theme>
             ),
           },
         ],
