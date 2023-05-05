@@ -1,6 +1,7 @@
 import { getBlogLayout } from '@components/layouts/BlogLayout'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 
@@ -10,12 +11,16 @@ import { getCompilationExamples } from '../../lib/getCompilationExamples'
 
 export default function BlogSlug(props: BlogPost) {
   const Component = React.useMemo(() => getMDXComponent(props.code), [props.code])
-
+  console.log(props.frontmatter.title)
   return (
     <TamaguiExamples.Provider value={props['examples']}>
       <TitleAndMetaTags
         {...props.frontmatter}
         title={`${props.frontmatter.title} — Tamagui`}
+        image={getOgUrl('default', {
+          title: props.frontmatter.title,
+          description: props.frontmatter.description ?? '',
+        })}
       />
       <BlogSlugPage Component={Component} {...props} />
     </TamaguiExamples.Provider>

@@ -11,7 +11,7 @@ import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
   useReactNativeWebLite: boolean
-  disableFontSupport?: boolean
+  enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
@@ -332,7 +332,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
          * Font Support
          */
         if (cssRules) {
-          if (!tamaguiOptions.disableFontSupport) {
+          if (tamaguiOptions.enableLegacyFontSupport) {
             // fonts support
             cssRules.unshift({
               test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
@@ -376,7 +376,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
             []
           )
-
           if (!isAppDir) {
             cssRules.unshift({
               test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,

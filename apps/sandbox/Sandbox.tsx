@@ -2,19 +2,12 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import {
-  DialogDemo,
-  SelectDemo,
-  SheetDemo,
-  SliderDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
+import { DialogDemo, SheetDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
-import { Suspense, lazy, useState } from 'react'
+import { Suspense, useState } from 'react'
 import {
   Button,
   Separator,
-  Square,
   TamaguiProvider,
   Theme,
   XStack,
@@ -32,15 +25,13 @@ if (typeof require !== 'undefined') {
 }
 
 export const Sandbox = () => {
-  const componentName = new URLSearchParams(window.location.search).get('test')
-  const demoName = new URLSearchParams(window.location.search).get('demo')
-  const Component = componentName
-    ? // vite wants a .js ending here, but webpack doesn't :/
-      lazy(() => import(`./usecases/${componentName}`))
-    : demoName
-    ? Demos[`${demoName}Demo`]
+  const demoComponentName = new URLSearchParams(window.location.search).get('demo')
+  const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
+  const Component = demoComponentName
+    ? Demos[demoComponentName]
+    : useCaseComponentName
+    ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
-
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
@@ -106,7 +97,13 @@ function runTestPerf() {
 }
 
 const SandboxFrame = (props: { children: any }) => {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState(
+    new URLSearchParams(window.location.search).get('theme') === 'dark' ? 'dark' : 'light'
+  )
+  const [screenshot, setScreenshot] = useState(
+    new URLSearchParams(window.location.search).has('screenshot')
+  )
+  const showThemeSwitch = !screenshot
   const splitView = new URLSearchParams(window.location.search).get('splitView')
 
   return (
@@ -124,7 +121,7 @@ const SandboxFrame = (props: { children: any }) => {
         />
 
         <XStack fullscreen>
-          <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+          <YStack ai="center" jc="center" f={1} h="100%">
             {props.children}
           </YStack>
 
@@ -132,7 +129,13 @@ const SandboxFrame = (props: { children: any }) => {
             <>
               <Separator vertical />
               <Theme name="dark">
-                <YStack ai="center" jc="center" f={1} h="100%" bg="$background">
+                <YStack
+                  ai="center"
+                  jc="center"
+                  f={1}
+                  h="100%"
+                  bg={screenshot ? 'transparent' : '$background'}
+                >
                   {props.children}
                 </YStack>
               </Theme>
@@ -140,17 +143,19 @@ const SandboxFrame = (props: { children: any }) => {
           ) : null}
         </XStack>
 
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 30,
-            left: 20,
-            fontSize: 30,
-          }}
-          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-        >
-          🌗
-        </div>
+        {showThemeSwitch && (
+          <div
+            style={{
+              position: 'fixed',
+              bottom: 30,
+              left: 20,
+              fontSize: 30,
+            }}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            🌗
+          </div>
+        )}
       </ToastProvider>
     </TamaguiProvider>
   )
