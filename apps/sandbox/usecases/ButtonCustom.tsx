@@ -1,14 +1,22 @@
-import { ButtonFrame, ButtonText, styled, useButton } from 'tamagui'
+import { ButtonFrame, ButtonText, GetProps, styled, useButton } from 'tamagui'
 
 const Frame = styled(ButtonFrame, {
   backgroundColor: 'red',
 })
 
 const Text = styled(ButtonText, {
-  color: 'green',
+  fontSize: '$2',
+  lineHeight: '$3',
+  textTransform: 'uppercase',
+  marginTop: 0,
+  marginBottom: 0,
 })
 
-export const Button = Frame.styleable((props, ref) => {
+type CustomButtonFrameProps = GetProps<typeof Frame>
+type CustomButtonTextProps = GetProps<typeof Text>
+type ButtonProps = CustomButtonFrameProps & CustomButtonTextProps
+
+export const Button = Frame.styleable<ButtonProps>((props, ref) => {
   const { props: buttonProps } = useButton(props, { Text })
   return <Frame ref={ref} {...buttonProps} />
 })

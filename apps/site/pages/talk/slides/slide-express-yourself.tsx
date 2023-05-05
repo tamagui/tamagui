@@ -42,23 +42,14 @@ const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (pr
 export default memo(() => {
   return (
     <Slide
-      title="Express yourself"
-      subTitle="No-cost inline styles make better products"
+      title="No-cost inline styles"
+      subTitle="Even with dynamic logic"
       theme="green"
       steps={[
         [
           {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'code',
-                content: inputSnippet,
-              },
-              {
-                type: 'code',
-                content: outputSnippet,
-              },
-            ],
+            type: 'callout',
+            content: `It's not about performance, it's about creativity`,
           },
         ],
       ]}

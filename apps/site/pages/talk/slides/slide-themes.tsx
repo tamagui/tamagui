@@ -248,7 +248,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `Instead of color="$alt", theme="alt"`,
+            content: `Theme > Prop`,
           },
         ],
 

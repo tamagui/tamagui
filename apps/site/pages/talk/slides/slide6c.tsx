@@ -6,7 +6,6 @@ export default memo(() => {
   return (
     <Slide
       title="... on the web"
-      subTitle="Native needs..."
       theme="green"
       steps={[
         [
@@ -29,7 +28,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>CSS Variables</strong> - falls back to useTheme()
+                        <strong>CSS Variables</strong> - instead useTheme()
                       </>
                     ),
                   },
@@ -43,7 +42,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Media queries</strong> - falls back to useMedia()
+                        <strong>Media queries</strong> - instead useMedia()
                       </>
                     ),
                   },
@@ -57,8 +56,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> - falls back to onPress, onFocus,
-                        etc
+                        <strong>Psuedo styles</strong> - instead onPress, onFocus, etc
                       </>
                     ),
                   },
@@ -72,9 +70,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: (
-                  <>Let's get CSS variables, pseudo + responsive styles first-class 🗳️</>
-                ),
+                content: <>Let's make those first-class 🗳️</>,
               },
             ],
           },
@@ -86,8 +82,8 @@ export default memo(() => {
                 type: 'text',
                 content: (
                   <>
-                    Luckily less sensitive due to less elements on screen, no DOM
-                    overhead, more than one thread.
+                    Overall less sensitive due to less elements on screen, less resizing,
+                    less DOM overhead, multi-thread.
                   </>
                 ),
               },

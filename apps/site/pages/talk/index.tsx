@@ -19,6 +19,8 @@ import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
 import slideLessons3 from './slides/slide-lessons-3'
+import slidePartialEval from './slides/slide-partial-eval'
+import slidePartialEval2 from './slides/slide-partial-eval2'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
@@ -86,6 +88,8 @@ export default function TamaguiTalk() {
           // SlideThemes2,
           slideCoreComparison,
           Slide4,
+          slidePartialEval,
+          slidePartialEval2,
           SlideFlatten,
           Slide6c,
           SlideExpressYourself,

@@ -109,8 +109,16 @@ export const SlideContext = createContext({
 })
 
 export function Slide(props: SlideProps) {
-  const [isPresent] = usePresence()
+  return (
+    <Theme name={props.theme}>
+      <SlideInner {...props} />
+    </Theme>
+  )
+}
+
+const SlideInner = (props: SlideProps) => {
   const glows = useGlows(props.variant)
+  const [isPresent] = usePresence()
   const [step, setStep] = useState(1)
   const context = useContext(SlideContext)
 
@@ -152,11 +160,11 @@ export function Slide(props: SlideProps) {
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
   return (
-    <Theme name={props.theme}>
+    <>
       <YStack fullscreen zi={-1}>
         {glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$4" w="100%" h="100%" p="$12">
+      <YStack ref={glows.ref as any} space="$7" w="100%" h="100%" p="$12">
         <YStack space="$4">
           {Boolean(props.title) && (
             <H1
@@ -182,37 +190,41 @@ export function Slide(props: SlideProps) {
           {stepsContent}
         </YStack>
       </YStack>
-    </Theme>
+    </>
   )
 }
 
 function useGlows(variant: SlideProps['variant']) {
-  const themeName = useThemeName()
-  const next = RootStore.colors.indexOf(themeName) + 1
-  // todo use for glint
-  const altColorName = RootStore.colors[next % RootStore.colors.length]
+  const colorThemeName = useThemeName().replace('dark_', '').replace('light_', '')
+  const next = RootStore.colors.indexOf(colorThemeName) + 1
+  const nextIndex = next % RootStore.colors.length
+  const altColorName = RootStore.colors[nextIndex]
 
   const glow = useHoverGlow({
     resist: 65,
-    size: 700,
+    size: 1000,
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color10)',
-    opacity: 0.4,
+    opacity: 0.3,
     background: 'transparent',
+    offset: {
+      x: -200,
+      y: 200,
+    },
   })
 
   const glint = useHoverGlow({
     resist: 90,
-    size: 200,
+    size: 800,
     strategy: 'blur',
-    color: 'var(--color2)',
-    blurPct: 10,
+    color: `var(--${altColorName}10)`,
+    blurPct: 100,
     offset: {
-      x: 200,
-      y: -200,
+      x: 350,
+      y: -340,
     },
-    opacity: 0.5,
+    opacity: 0.2,
     background: 'transparent',
     inverse: true,
   })
@@ -223,8 +235,8 @@ function useGlows(variant: SlideProps['variant']) {
     ref,
     elements: (
       <>
-        {glow.Component()}
-        <Theme name={altColorName as any}>{glint.Component()}</Theme>
+        <glow.Component />
+        <glint.Component />
       </>
     ),
   }
@@ -272,7 +284,7 @@ function getTextContent(
                     jc: 'center',
                     h: '100%',
                     maw: '90%',
-                    minWidth: '100%',
+                    minWidth: '90%',
                   })}
                 >
                   <div
