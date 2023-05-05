@@ -41,14 +41,14 @@ export function _mutateTheme(props: {
     }
   }
 
-  for (const key in themeIn) {
-    ensureThemeVariable(themeIn, key)
-  }
-
   const theme = {
     ...(mutationType === 'update' ? config.themes[themeName] ?? {} : {}),
     ...themeIn,
   } as ThemeParsed
+
+  for (const key in theme) {
+    ensureThemeVariable(theme, key)
+  }
 
   const themeProxied = proxyThemeToParents(themeName, theme, config.themes)
   config.themes[themeName] = themeProxied
