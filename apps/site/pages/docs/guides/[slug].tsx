@@ -27,11 +27,10 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
     <>
       <TitleAndMetaTags
         title={`${frontmatter.title} — Tamagui Guides`}
-        image={getOgUrl(
-          'default',
-          frontmatter.title,
-          frontmatter.description ?? ''
-        )}
+        image={getOgUrl('default', {
+          title: frontmatter.title,
+          description: frontmatter.description ?? '',
+        })}
       />
       <HomeH1>{frontmatter.title}</HomeH1>
       <Spacer size="$1" />

@@ -1,11 +1,8 @@
-import { get } from 'http'
-
 import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { getURL } from '@lib/helpers'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
@@ -13,7 +10,6 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
 
@@ -60,11 +56,11 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         description={frontmatter.description}
         image={
           frontmatter.image ??
-          getOgUrl(
-            'component',
-            frontmatter.title,
-            frontmatter.description ?? ''
-          )
+          getOgUrl('component', {
+            title: frontmatter.title,
+            demoName: frontmatter.demoName ?? undefined,
+            description: frontmatter.description ?? '',
+          })
         }
       />
       {/* {frontmatter.version !== frontmatter.versions?.[0] && (

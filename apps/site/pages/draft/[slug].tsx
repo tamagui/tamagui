@@ -16,11 +16,10 @@ export default function BlogSlug(props: BlogPost) {
       <TitleAndMetaTags
         {...props.frontmatter}
         title={`${props.frontmatter.title} — Tamagui`}
-        image={getOgUrl(
-          'default',
-          props.frontmatter.title,
-          props.frontmatter.description ?? ''
-        )}
+        image={getOgUrl('default', {
+          title: props.frontmatter.title,
+          description: props.frontmatter.description ?? '',
+        })}
       />
       <BlogSlugPage Component={Component} {...props} />
     </TamaguiExamples.Provider>

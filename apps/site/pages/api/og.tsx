@@ -27,11 +27,10 @@ export default async function handler(request: NextRequest) {
   ])
 
   const { searchParams } = new URL(request.url)
-  const type = searchParams.has('type') ? searchParams.get('type')?.slice(0, 100) : 'unknown'
-  const title = searchParams.has('title') ? searchParams.get('title')! : 'Component'
-  const description = searchParams.has('description')
-    ? searchParams.get('description')!
-    : ''
+
+  const type = searchParams.has('type')
+    ? searchParams.get('type')?.slice(0, 100)
+    : 'unknown'
   const logoData = await logo
   const getImageResponse = (jsx: ReactElement) =>
     new ImageResponse(jsx, {
@@ -54,26 +53,29 @@ export default async function handler(request: NextRequest) {
     })
 
   if (type === 'component') {
-    return getImageResponse(
-      <ComponentOg title={title} description={description} logo={logoData} />
-    )
+    return getImageResponse(<ComponentOg searchParams={searchParams} logo={logoData} />)
   }
 
-  return getImageResponse(
-    <DefaultOg title={title} description={description} logo={logoData} />
-  )
+  return getImageResponse(<DefaultOg searchParams={searchParams} logo={logoData} />)
 }
 
 const ComponentOg = ({
-  title,
-  description,
+  searchParams,
   logo,
 }: {
-  title: string
-  description?: string
+  searchParams: URLSearchParams
   logo: any
 }) => {
-  const imageData = `${getURL()}/screenshots/dark/${title}Demo.png`
+  const hasDemo = searchParams.has('demoName')
+  // demoName name. e.g. "Input"
+  const demoName = hasDemo ? searchParams.get('demoName') : null
+  // title. e.g. Input And TextArea
+  const title = searchParams.has('title') ? searchParams.get('title')! : demoName
+  const description = searchParams.has('description')
+    ? searchParams.get('description')!
+    : ''
+
+  const imageData = `${getURL()}/screenshots/dark/${demoName}Demo.png`
 
   return (
     <div
@@ -96,7 +98,7 @@ const ComponentOg = ({
           display: 'flex',
           flexDirection: 'column',
           marginLeft: 44,
-          width: '50%',
+          ...(!!hasDemo ? { flex: 1 } : {}),
         }}
       >
         <h1
@@ -121,28 +123,35 @@ const ComponentOg = ({
           {description}
         </p>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          width: '50%',
-        }}
-      >
-        <img width="512" height="512" src={imageData} />
-      </div>
+
+      {!!hasDemo && (
+        <img
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flex: 1,
+          }}
+          width="512"
+          height="512"
+          src={imageData}
+        />
+      )}
     </div>
   )
 }
 
 const DefaultOg = ({
-  title,
-  description,
+  searchParams,
   logo,
 }: {
-  title: string
-  description?: string
+  searchParams: URLSearchParams
   logo: any
 }) => {
+  const title = searchParams.has('title') ? searchParams.get('title')! : ''
+  const description = searchParams.has('description')
+    ? searchParams.get('description')!
+    : ''
+
   return (
     <div
       style={{

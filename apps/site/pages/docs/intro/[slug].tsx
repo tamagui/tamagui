@@ -31,11 +31,10 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
     <TamaguiExamples.Provider value={examples}>
       <TitleAndMetaTags
         title={`${frontmatter.title} — Tamagui`}
-        image={getOgUrl(
-          'default',
-          frontmatter.title,
-          frontmatter.description ?? ''
-        )}
+        image={getOgUrl('default', {
+          title: frontmatter.title,
+          description: frontmatter.description ?? '',
+        })}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <Spacer size="$1" />
