@@ -7,7 +7,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/esm/vite.config.mjs",
+      "import": "./dist/esm/vite.config.js",
       "require": "./dist/cjs/vite.config.js"
     }
   },

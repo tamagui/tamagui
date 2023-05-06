@@ -51,12 +51,12 @@
     "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
-      "import": "./dist/esm/inject-styles.mjs",
+      "import": "./dist/esm/inject-styles.js",
       "require": "./dist/cjs/inject-styles.js"
     }
   },
