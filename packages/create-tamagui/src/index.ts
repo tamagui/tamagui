@@ -262,6 +262,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
         await prompts({
           name: 'template',
           type: 'select',
+          message: `Pick a template:`,
           choices: [
             {
               title: `Next + Expo + Solito (recommended for production) - Production-ready universal app with a monorepo.`,
