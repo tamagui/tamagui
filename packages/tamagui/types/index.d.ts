@@ -1,4 +1,4 @@
-export * from './setup';
+import './setup.js';
 export * from '@tamagui/adapt';
 export * from '@tamagui/alert-dialog';
 export * from '@tamagui/animate-presence';
