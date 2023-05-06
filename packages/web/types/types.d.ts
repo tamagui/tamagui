@@ -310,16 +310,16 @@ export type GenericFont<Key extends number | string = number | string> = {
     size: {
         [key in Key]: number | Variable;
     };
-    lineHeight: Partial<{
+    lineHeight?: Partial<{
         [key in Key]: number | Variable;
     }>;
-    letterSpacing: Partial<{
+    letterSpacing?: Partial<{
         [key in Key]: number | Variable;
     }>;
-    weight: Partial<{
+    weight?: Partial<{
         [key in Key]: number | string | Variable;
     }>;
-    family: string | Variable;
+    family?: string | Variable;
     style?: Partial<{
         [key in Key]: TextStyle['fontStyle'] | Variable;
     }>;
