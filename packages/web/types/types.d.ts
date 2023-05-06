@@ -241,6 +241,12 @@ export type CreateTamaguiProps = {
     animations?: AnimationDriver<any>;
     fonts: GenericTamaguiConfig['fonts'];
     tokens: GenericTamaguiConfig['tokens'];
+    /**
+     * classic: the old Button API. just use the Button like so: `<Button>Some Text</Button>
+     * modern: new composite button API. need to wrap text inside `Button.Text`: `<Button><Button.Text>Some Text</Button.Text></Button>`
+     * mixed: supports both classic and modern, but needs to double render to figure out which version is being used.
+     */
+    buttonApi?: 'modern' | 'mixed' | 'classic';
     themes: {
         [key: string]: {
             [key: string]: string | number | Variable;

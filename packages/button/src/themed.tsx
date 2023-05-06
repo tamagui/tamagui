@@ -6,10 +6,12 @@ import { ColorProp, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
   ButtonNestingContext,
+  CreateTamaguiProps,
   GetProps,
   SizeTokens,
   TamaguiElement,
   ThemeableProps,
+  getConfig,
   getVariableValue,
   isRSC,
   spacedChildren,
@@ -96,35 +98,47 @@ const ButtonFrame = styled(HeadlessButton, {
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
-  GetProps<typeof ButtonFrame> &
-  ThemeableProps & {
+type ClassicButtonProps = {
+  /**
+   * add icon before, passes color and size automatically if Component
+   *
+   * NOTE: Only supported on the classic API.
+   */
+  icon?: IconProp
+  /**
+   * add icon after, passes color and size automatically if Component
+   *
+   * NOTE: Only supported on the classic API.
+   */
+  iconAfter?: IconProp
+  /**
+   * adjust icon relative to size
+   *
+   * NOTE: Only supported on the classic API.
+   * @default 1
+   */
+  scaleIcon?: number
+  /**
+   * make the spacing elements flex
+   *
+   * NOTE: Only supported on the classic API.
+   */
+  spaceFlex?: number | boolean
+  /**
+   * adjust internal space relative to icon size
+   *
+   * NOTE: Only supported on the classic API.
+   */
+  scaleSpace?: number
+} & Omit<TextParentStyles, 'TextComponent'>
+
+type ButtonProps = GetProps<typeof ButtonFrame> &
+  ThemeableProps &
+  ClassicButtonProps & {
     /**
-     * add icon before, passes color and size automatically if Component
-     * @deprecated Use the new Button API
+     * Used to override config's button API mode
      */
-    icon?: IconProp
-    /**
-     * add icon after, passes color and size automatically if Component
-     * @deprecated Use the new Button API
-     */
-    iconAfter?: IconProp
-    /**
-     * adjust icon relative to size
-     * @deprecated Use the new Button API
-     * @default 1
-     */
-    scaleIcon?: number
-    /**
-     * make the spacing elements flex
-     * @deprecated Use the new Button API
-     */
-    spaceFlex?: number | boolean
-    /**
-     * adjust internal space relative to icon size
-     * @deprecated Use the new Button API
-     */
-    scaleSpace?: number
+    forceButtonApi?: CreateTamaguiProps['buttonApi']
   }
 
 const [createButtonContext, createButtonScope] = createContextScope(BUTTON_NAME)
@@ -132,8 +146,10 @@ const [createButtonContext, createButtonScope] = createContextScope(BUTTON_NAME)
 type ButtonContextValue = {
   color: ColorProp
   size: SizeTokens
-  // used to keep backward compat with with the old api
-  hasTextComponent: boolean
+  /**
+   * If true, means the button's using the modern composite API (whether via buttonApi: 'mixed' or buttonApi: 'modern')
+   */
+  usesModernApi: boolean
   registerButtonText: () => () => void
 }
 
@@ -162,7 +178,7 @@ const ButtonTextFrame = styled(HeadlessButton.Text, {
   },
 })
 
-const ButtonText = ButtonTextFrame.extractable(
+const ButtonText = ButtonTextFrame.styleable(
   forwardRef<TamaguiElement, ScopedProps<GetProps<typeof ButtonTextFrame>>>(
     (props, ref) => {
       const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
@@ -200,32 +216,44 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
 
 const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
   (props, ref) => {
-    const { props: buttonProps } = useButton(props)
+    const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'classic'
+    const { props: buttonProps } =
+      buttonApi === 'modern' ? { props: {} } : useButton(props)
     const [buttonTextCount, setButtonTextCount] = useState(0)
 
     const registerButtonText = useCallback(() => {
+      if (buttonApi === 'classic') {
+        console.warn(
+          'You are using Button.Text with classic button API. Either remove Button.Text or use either `buttonApi: modern` or `mixed` in your tamagui config.'
+        )
+      }
+      // if using modern, no need to register anything. it's the default.
+      if (buttonApi === 'modern') return () => {}
+
+      // using `mixed` at this point
       setButtonTextCount((prev) => prev + 1)
       return () => setButtonTextCount((prev) => prev - 1)
     }, [setButtonTextCount])
 
-    const hasTextComponent = buttonTextCount > 0
+    const usesModernApi =
+      buttonApi === 'modern' || (buttonApi === 'mixed' && buttonTextCount > 0)
 
     return (
       <ButtonProvider
         scope={props.__scopeButton}
         size={props.size ?? '$true'}
         color={props.color}
-        hasTextComponent={hasTextComponent}
+        usesModernApi={usesModernApi}
         registerButtonText={registerButtonText}
       >
-        <ButtonFrame ref={ref} {...(hasTextComponent ? props : buttonProps)} />
+        <ButtonFrame ref={ref} {...(usesModernApi ? props : buttonProps)} />
       </ButtonProvider>
     )
   }
 )
 
 const Button = withStaticProperties(
-  ButtonFrame.extractable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
+  ButtonFrame.styleable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
   {
     Text: ButtonText,
     Icon: ButtonIcon,
@@ -233,7 +261,7 @@ const Button = withStaticProperties(
 )
 
 /**
- * @deprecated this API is deprecated. please migrate to the new button API. https://tamagui.dev/docs/components/button
+ * Hook only used with the classic button API.
  *
  */
 function useButton(
@@ -349,7 +377,10 @@ export {
   Button,
   // old api
   ButtonFrame,
-  ButtonTextFrame as ButtonText, buttonStaticConfig, createButtonScope, useButton
+  ButtonTextFrame as ButtonText,
+  buttonStaticConfig,
+  createButtonScope,
+  useButton,
 }
 
 export type { ButtonProps }

@@ -26,6 +26,7 @@ config.themes['light_green_Button'] = {
 }
 
 const tamaConf = createTamagui({
+  buttonApi: 'mixed',
   ...configRest,
   fonts: {
     ...configRest.fonts,

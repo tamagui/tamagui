@@ -6,7 +6,7 @@ export * from './AnimationsTimingDemo';
 export * from './AnimationsPresenceDemo';
 export * from './AvatarDemo';
 export * from './ButtonDemo';
-export * from './ButtonNewDemo';
+export * from './ButtonClassicDemo';
 export * from './ButtonHeadlessDemo';
 export * from './CardDemo';
 export * from './DialogDemo';
