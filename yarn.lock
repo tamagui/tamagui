@@ -4897,6 +4897,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/font-munro@workspace:packages/font-munro":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-munro@workspace:packages/font-munro"
+  dependencies:
+    "@tamagui/build": 1.23.4
+    "@tamagui/core": 1.23.4
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/font-silkscreen@1.23.4, @tamagui/font-silkscreen@workspace:packages/font-silkscreen":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@workspace:packages/font-silkscreen"
