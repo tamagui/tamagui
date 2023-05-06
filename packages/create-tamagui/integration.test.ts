@@ -44,7 +44,7 @@ test.beforeAll(async () => {
 
     cd(dir)
 
-    await $`node ${tamaguiBin} test-app`
+    await $`node ${tamaguiBin} test-app --template next-expo-solito`
 
     cd(`test-app`)
 
