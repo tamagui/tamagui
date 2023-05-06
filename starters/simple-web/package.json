@@ -12,19 +12,19 @@
     "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.23.0",
-    "@tamagui/core": "1.23.0",
-    "@tamagui/create-theme": "^1.23.0",
-    "@tamagui/react-native-svg": "^1.23.0",
+    "@tamagui/animations-css": "1.23.3",
+    "@tamagui/core": "1.23.3",
+    "@tamagui/create-theme": "^1.23.3",
+    "@tamagui/react-native-svg": "^1.23.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.18.10",
-    "tamagui": "1.23.0"
+    "tamagui": "1.23.3"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.19.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
-    "@tamagui/vite-plugin": "1.23.0",
+    "@tamagui/vite-plugin": "1.23.3",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "async-retry": "1.3.1",
     "babel-polyfill": "^6.26.0",
@@ -36,7 +36,7 @@
     "mini-css-extract-plugin": "^2.7.2",
     "react-refresh": "^0.14.0",
     "style-loader": "^3.3.1",
-    "tamagui-loader": "1.23.0",
+    "tamagui-loader": "1.23.3",
     "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1",
     "vite": "^4.3.0",
