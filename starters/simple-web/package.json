@@ -7,7 +7,8 @@
     "dev": "yarn dev:webpack",
     "dev:webpack": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "dev:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
-    "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
+    "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
+    "upgrade:tamagui": "manypkg upgrade tamagui && manypkg upgrade @tamagui && manypkg upgrade tamagui-loader && manypkg upgrade react-native-web-lite"
   },
   "dependencies": {
     "@tamagui/animations-css": "1.23.0",
@@ -20,6 +21,7 @@
     "tamagui": "1.23.0"
   },
   "devDependencies": {
+    "@manypkg/cli": "^0.19.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/vite-plugin": "1.23.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
