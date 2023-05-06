@@ -50,7 +50,6 @@ const SandboxInner = () => {
     </YStack>
   )
   return <DialogDemo />
-  return <SheetDemo />
   // return <TooltipDemo />
   // return <TestPerf />
   // return <Square animation="bouncy" size={100} bc="red" />

@@ -47,7 +47,6 @@ const ButtonFrame = styled(HeadlessButton, {
         flexWrap: 'nowrap',
         flexDirection: 'row',
         cursor: 'pointer',
-        focusable: true,
         hoverTheme: true,
         pressTheme: true,
         backgrounded: true,

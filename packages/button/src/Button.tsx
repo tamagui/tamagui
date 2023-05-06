@@ -17,6 +17,7 @@ const BUTTON_NAME = 'Button'
 const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
+  focusable: true,
 })
 
 const BUTTON_TEXT_NAME = 'ButtonText'

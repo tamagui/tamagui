@@ -27,6 +27,7 @@ let projectPath = ''
 
 const IS_TEST = process.env.NODE_ENV === 'test'
 if (IS_TEST) {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
@@ -38,8 +39,8 @@ const program = new Commander.Command(packageJson.name)
   })
   .option(
     `--template <template>, -t <template>`,
-    'Currently, the only option is `next-expo-solito`, which is set by default.',
-    'next-expo-solito'
+    'Choose between next-expo-solito, a more full featured template with Expo and Next.js, or a simple client-only web starter that includes a nice simple example configuration to understand the basics more easily.',
+    ''
   )
   .allowUnknownOption()
   .usage(
@@ -119,6 +120,9 @@ async function run() {
     process.exit(1)
   }
 
+  // space
+  console.log()
+
   const shouldGitInit =
     IS_TEST ||
     Boolean(
@@ -131,6 +135,32 @@ async function run() {
         })
       ).gitInit
     )
+
+  // space
+  console.log()
+
+  let template = program.template
+
+  if (!template) {
+    template = (
+      await prompts({
+        name: 'template',
+        type: 'select',
+        message: `Pick a template:`,
+        choices: [
+          {
+            title: `Next + Expo + Solito (recommended for production) - Production-ready universal app with a monorepo.`,
+            value: 'next-expo-solito',
+          },
+
+          {
+            title: `Simple Web (recommended for learning) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
+            value: 'simple-web',
+          },
+        ],
+      })
+    ).template
+  }
 
   const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
   const projectName = path.basename(resolvedProjectPath)
@@ -254,9 +284,9 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     await setupTamaguiDotDir()
 
-    const starterDir = join(targetGitDir, 'starters', program.template)
+    const starterDir = join(targetGitDir, 'starters', template)
     if (!(await pathExists(starterDir))) {
-      console.error(`Missing template for ${program.template} in ${starterDir}`)
+      console.error(`Missing template for ${template} in ${starterDir}`)
       process.exit(1)
     }
 

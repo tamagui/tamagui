@@ -583,10 +583,10 @@ export type UnionableNumber = number & {}
 
 export type GenericFont<Key extends number | string = number | string> = {
   size: { [key in Key]: number | Variable }
-  lineHeight: Partial<{ [key in Key]: number | Variable }>
-  letterSpacing: Partial<{ [key in Key]: number | Variable }>
-  weight: Partial<{ [key in Key]: number | string | Variable }>
-  family: string | Variable
+  lineHeight?: Partial<{ [key in Key]: number | Variable }>
+  letterSpacing?: Partial<{ [key in Key]: number | Variable }>
+  weight?: Partial<{ [key in Key]: number | string | Variable }>
+  family?: string | Variable
   style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
