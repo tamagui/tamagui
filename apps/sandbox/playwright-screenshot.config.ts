@@ -8,8 +8,8 @@ export default defineConfig({
     // Base URL to use in actions like `await page.goto('/')`.
     baseURL: 'http://localhost:9000',
     viewport: {
-      height: 512,
-      width: 512,
+      height: 650,
+      width: 650,
     },
   },
   // Run your local dev server before starting the tests.
