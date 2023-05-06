@@ -658,11 +658,28 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-type DialogCloseProps = YStackProps & {
+const DialogCloseFrame = styled(YStack, {
+  name: CLOSE_NAME,
+  tag: 'button',
+
+  variants: {
+    unstyled: {
+      false: {
+        zIndex: 100,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
+})
+
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
+const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
@@ -676,8 +693,7 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     }
 
     return (
-      <YStack
-        tag="button"
+      <DialogCloseFrame
         accessibilityLabel="Dialog Close"
         {...closeProps}
         ref={forwardedRef}
@@ -688,8 +704,6 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     )
   }
 )
-
-DialogClose.displayName = CLOSE_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
