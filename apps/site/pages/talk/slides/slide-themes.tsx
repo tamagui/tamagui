@@ -219,6 +219,13 @@ export default memo(() => {
 
         [
           {
+            type: 'code',
+            content: snippetUsageInverseSub,
+          },
+        ],
+
+        [
+          {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
@@ -249,13 +256,6 @@ export default memo(() => {
             type: 'callout',
             content: `Winamp for React`,
             image: require('../images/winamp.jpg').default,
-          },
-        ],
-
-        [
-          {
-            type: 'code',
-            content: snippetUsageInverseSub,
           },
         ],
 

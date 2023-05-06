@@ -95,6 +95,22 @@ export default memo(() => {
                           marginBottom: 0,
                           display: 'inline-flex',
                         },
+                        content: `Has extra bundle size`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$8',
+                          marginBottom: 0,
+                          display: 'inline-flex',
+                        },
                         content: `Everything is typed`,
                       },
                     ],
@@ -189,22 +205,6 @@ export default memo(() => {
                           display: 'inline-flex',
                         },
                         content: `No editor plugin`,
-                      },
-                    ],
-                  },
-
-                  {
-                    type: 'bullet-point',
-                    slim: true,
-                    content: [
-                      {
-                        type: 'text',
-                        props: {
-                          size: '$8',
-                          marginBottom: 0,
-                          display: 'inline-flex',
-                        },
-                        content: `Has extra bundle size`,
                       },
                     ],
                   },
