@@ -19,9 +19,9 @@ export const SupabaseProvider = ({
       // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       cookieOptions: {
         domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
-        maxAge: 100000000,
+        maxAge: 1000 * 60 * 60 * 24 * 365,
         path: '/',
-        sameSite: 'Lax',
+        sameSite: 'lax',
         secure: true,
       },
     })
