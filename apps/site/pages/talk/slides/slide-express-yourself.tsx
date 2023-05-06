@@ -49,7 +49,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `It's not about performance, it's about creativity`,
+            content: `It's not just performance, it's creativity`,
           },
         ],
       ]}

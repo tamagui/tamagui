@@ -5,8 +5,8 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Flatten more trees"
-      subTitle="for smoking fast rendering times 💨"
+      title="Flatten trees"
+      subTitle=<>for smoking fast renders &nbsp; 💨</>
       theme="green"
       stepsStrategy="replace"
       steps={[

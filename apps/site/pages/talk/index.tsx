@@ -133,7 +133,8 @@ export function Slides(props: { slides: Slides }) {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   const SlideComponent = props.slides[index]
-  const NextSlideComponent = props.slides[index + 1]
+  const PreviewCurrentSlideComponent = props.slides[index]
+  const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
 
@@ -218,23 +219,31 @@ export function Slides(props: { slides: Slides }) {
         </Paragraph>
       </XStack>
 
-      <YStack
-        ov="hidden"
-        pos="absolute"
-        b={0}
-        r="-75%"
-        scale={0.4}
-        zi={1000}
-        bg="$color3"
-        {...slideDimensions}
-      >
-        <ShowAllStepsContext.Provider value={true}>
-          <NextSlideComponent />
-        </ShowAllStepsContext.Provider>
-      </YStack>
+      <ShowAllStepsContext.Provider value={true}>
+        <SlidePreview b={250}>
+          <PreviewCurrentSlideComponent />
+        </SlidePreview>
+
+        <SlidePreview b={-250}>
+          <PreviewNextSlideComponent />
+        </SlidePreview>
+      </ShowAllStepsContext.Provider>
     </>
   )
 }
+
+const SlidePreview = (props) => (
+  <YStack
+    ov="hidden"
+    pos="absolute"
+    r="-75%"
+    scale={0.4}
+    zi={1000}
+    bg="$color3"
+    {...slideDimensions}
+    {...props}
+  />
+)
 
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min

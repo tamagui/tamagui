@@ -224,23 +224,40 @@ export default memo(() => {
           },
         ],
 
+        // [
+        //   {
+        //     type: 'content',
+        //     content: (
+        //       <YStack
+        //         my={-100}
+        //         als="center"
+        //         mx="auto"
+        //         ai="center"
+        //         br="$4"
+        //         ov="hidden"
+        //         elevation="$5"
+        //       >
+        //         <video autoPlay loop style={{ width: 800, height: 800 }}>
+        //           <source src="/talk/themes-demo.mp4" />
+        //         </video>
+        //       </YStack>
+        //     ),
+        //   },
+        // ],
+
         [
           {
-            type: 'content',
+            type: 'fullscreen',
             content: (
-              <YStack
-                my={-100}
-                als="center"
-                mx="auto"
-                ai="center"
-                br="$4"
-                ov="hidden"
-                elevation="$5"
-              >
-                <video autoPlay loop style={{ width: 800, height: 800 }}>
-                  <source src="/talk/themes-demo.mp4" />
-                </video>
-              </YStack>
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/FqFLwud5l7g"
+                title="beatgig-demo"
+                frameBorder={0}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
             ),
           },
         ],

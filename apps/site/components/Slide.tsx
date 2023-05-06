@@ -34,6 +34,10 @@ export type SlideProps = {
 
 type SlideStepItem =
   | {
+      type: 'fullscreen'
+      content: any
+    }
+  | {
       type: 'space'
       size?: SpaceTokens
     }
@@ -447,6 +451,9 @@ function getTextContent(
                 </YStack>
               )
             }
+
+            case 'fullscreen':
+              return <YStack fullscreen>{item.content}</YStack>
 
             case 'text':
               return (
