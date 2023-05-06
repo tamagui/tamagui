@@ -158,7 +158,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper size={size as SizeTokens} {...popperScope} {...restProps}>
+      <Popper size={size as SizeTokens} allowFlip {...popperScope} {...restProps}>
         <__PopoverProviderInternal
           scope={__scopePopover}
           popperScope={popperScope.__scopePopper}
