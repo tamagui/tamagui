@@ -2,6 +2,7 @@
   "name": "simple-web-starter",
   "private": true,
   "scripts": {
+    "web": "yarn dev",
     "dev:vite": "NODE_ENV=development TAMAGUI_TARGET=web vite --host --clearScreen false",
     "dev:vite:extract": "EXTRACT=1 yarn dev",
     "dev": "yarn dev:webpack",
