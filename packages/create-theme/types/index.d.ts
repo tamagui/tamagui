@@ -1,6 +1,6 @@
 import type { Variable } from '@tamagui/web';
 export type ThemeMask = Record<string, string | number>;
-export type Palette = string[];
+export type Palette = (string | Variable)[];
 export type MaskOptions = {
     palette?: Palette;
     override?: Partial<ThemeMask>;
