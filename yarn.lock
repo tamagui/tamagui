@@ -1353,7 +1353,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.0.0, @babel/plugin-transform-react-jsx-self@npm:^7.18.6":
+"@babel/plugin-transform-react-jsx-self@npm:^7.0.0":
   version: 7.21.0
   resolution: "@babel/plugin-transform-react-jsx-self@npm:7.21.0"
   dependencies:
@@ -1364,7 +1364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-source@npm:^7.0.0, @babel/plugin-transform-react-jsx-source@npm:^7.19.6":
+"@babel/plugin-transform-react-jsx-source@npm:^7.0.0":
   version: 7.19.6
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.19.6"
   dependencies:
@@ -4485,7 +4485,7 @@ __metadata:
     "@tamagui/vite-plugin": 1.23.0
     "@types/compression": ^1.7.2
     "@types/morgan": ^1.9.3
-    "@vitejs/plugin-react-swc": ^3.2.0
+    "@vitejs/plugin-react-swc": ^3.3.0
     arg: ^5.0.2
     chalk: ^4.1.2
     chokidar: ^3.5.2
@@ -5518,16 +5518,11 @@ __metadata:
     "@tamagui/toast": 1.23.0
     "@tamagui/vite-plugin": 1.23.0
     "@tamagui/vite-plugin-reanimated": 1.14.9
-    "@vitejs/plugin-react": ^2.2.0
-    async-retry: 1.3.1
-    babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
     esbuild-loader: ^3.0.1
-    esbuild-register: ^3.4.2
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.7.2
-    playwright: ^1.29.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-reanimated: ^2.14.4
@@ -5540,7 +5535,6 @@ __metadata:
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
     vite: ^4.3.0
-    vite-plugin-environment: ^1.1.3
     wait-port: ^0.3.0
     webpack: ^5.74.0
     webpack-bundle-analyzer: ^4.5.0
@@ -6246,8 +6240,7 @@ __metadata:
     "@tamagui/build": 1.23.0
     "@tamagui/config-default-node": 1.23.0
     "@tamagui/vite-plugin": 1.23.0
-    "@vitejs/plugin-react": ^2.2.0
-    "@vitejs/plugin-react-swc": ^3.2.0
+    "@vitejs/plugin-react-swc": ^3.3.0
     happy-dom: ^8.1.3
     vitest: ^0.26.3
     vitest-axe: ^0.1.0
@@ -6283,7 +6276,6 @@ __metadata:
     micromatch: ">=4.0.0"
     outdent: ^0.8.0
     rollup: ">=3.7.0"
-    vite-plugin-environment: ^1.1.3
   languageName: unknown
   linkType: soft
 
@@ -7380,7 +7372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react-swc@npm:^3.2.0":
+"@vitejs/plugin-react-swc@npm:^3.3.0":
   version: 3.3.0
   resolution: "@vitejs/plugin-react-swc@npm:3.3.0"
   dependencies:
@@ -7388,23 +7380,6 @@ __metadata:
   peerDependencies:
     vite: ^4
   checksum: f2a5f4ef47d9200d0bbfd64637b347eaa3acfae7b2294e84afd469941c015fb1bfe8569e1cb9aa9151c7636fd43edbafb177f7903242f5240235b403b3e4a62e
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@vitejs/plugin-react@npm:2.2.0"
-  dependencies:
-    "@babel/core": ^7.19.6
-    "@babel/plugin-transform-react-jsx": ^7.19.0
-    "@babel/plugin-transform-react-jsx-development": ^7.18.6
-    "@babel/plugin-transform-react-jsx-self": ^7.18.6
-    "@babel/plugin-transform-react-jsx-source": ^7.19.6
-    magic-string: ^0.26.7
-    react-refresh: ^0.14.0
-  peerDependencies:
-    vite: ^3.0.0
-  checksum: cc85ab31b4689ab137c4b1e65383dccce494371523eb164c579096e513a2abbaa7efb49ba08655fae9f6692f5b7b2602ad339bdce4ae5982fc08fe444fb8a4e5
   languageName: node
   linkType: hard
 
@@ -15817,15 +15792,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.26.7":
-  version: 0.26.7
-  resolution: "magic-string@npm:0.26.7"
-  dependencies:
-    sourcemap-codec: ^1.4.8
-  checksum: 89b0d60cbb32bbf3d1e23c46ea93db082d18a8230b972027aecb10a40bba51be519ecce0674f995571e3affe917b76b09f59d8dbc9a1b2c9c4102a2b6e8a2b01
-  languageName: node
-  linkType: hard
-
 "magic-string@npm:^0.27.0":
   version: 0.27.0
   resolution: "magic-string@npm:0.27.0"
@@ -21252,13 +21218,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sourcemap-codec@npm:^1.4.8":
-  version: 1.4.8
-  resolution: "sourcemap-codec@npm:1.4.8"
-  checksum: b57981c05611afef31605732b598ccf65124a9fcb03b833532659ac4d29ac0f7bfacbc0d6c5a28a03e84c7510e7e556d758d0bb57786e214660016fb94279316
-  languageName: node
-  linkType: hard
-
 "space-separated-tokens@npm:^2.0.0":
   version: 2.0.2
   resolution: "space-separated-tokens@npm:2.0.2"
@@ -23388,15 +23347,6 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: ae290288cbd5e79580365a5128f7ba4cbe088c27dbb014bd1dab3e1c0955c04a6add13bed5db923ddb8fd4eb1d75394fdf0e72ebf270f1a1007dd3e9b7049387
-  languageName: node
-  linkType: hard
-
-"vite-plugin-environment@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "vite-plugin-environment@npm:1.1.3"
-  peerDependencies:
-    vite: ">= 2.7"
-  checksum: 1f3a7ed516dfed7c44804f1bf0ced1d55c2dbc4e2dc6e61f79cd30f9f2e19b7b02937d063130d5b8c9707c730f98ea587cc1586ee487954d7a25ff3af4f8875a
   languageName: node
   linkType: hard
 

@@ -43,7 +43,6 @@ export const Sandbox = () => {
 
 const SandboxInner = () => {
   return <DialogDemo />
-  return <SheetDemo />
   // return <TooltipDemo />
   // return <TestPerf />
   // return <Square animation="bouncy" size={100} bc="red" />
