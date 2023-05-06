@@ -61,6 +61,7 @@ type SlideStepItem =
   | {
       type: 'image'
       variant?: 'circled' | 'centered'
+      fullscreen?: boolean
       image: {
         width: number
         height: number
@@ -293,6 +294,10 @@ function getTextContent(
                     maw: '90%',
                     minWidth: '90%',
                   })}
+                  {...(item.fullscreen && {
+                    scale: 2.25,
+                    zi: 10000,
+                  })}
                 >
                   <div
                     style={{
@@ -401,15 +406,13 @@ function getTextContent(
               return (
                 <YStack mah="100%" f={1} ai="center" jc="center">
                   <Paragraph
-                    theme="yellow"
-                    color="$color10"
+                    color="$color11"
                     als="center"
-                    textShadowColor="rgba(0,0,0,0.35)"
-                    textShadowRadius={20}
-                    textShadowOffset={{ height: 10, width: 0 }}
+                    className="callout"
                     ta="center"
                     p="$10"
                     mt={-100}
+                    scale={1.2}
                     size={size}
                   >
                     {item.content}&nbsp;
@@ -424,6 +427,7 @@ function getTextContent(
                         width: 'auto',
                         position: 'absolute',
                         zIndex: -1,
+                        transform: `scale(2)`,
                       }}
                       src={item.image.src}
                     />

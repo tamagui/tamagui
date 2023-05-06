@@ -699,3 +699,9 @@ input, textarea {
   box-shadow: 0 0 60px var(--color10);
   opacity: 0.6;
 }
+
+.callout {
+  text-shadow: 8px 8px 0 var(--blue10),
+  16px 16px 0 var(--red10),
+  24px 24px 0 var(--orange10);
+}

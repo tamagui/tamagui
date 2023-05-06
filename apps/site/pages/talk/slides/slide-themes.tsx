@@ -154,66 +154,101 @@ export default memo(() => {
       stepsStrategy="replace"
       theme="pink"
       steps={[
-        [
-          {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'code',
-                content: inputSnippet,
-              },
-              {
-                type: 'code',
-                content: outputSnippet,
-              },
-            ],
-          },
-        ],
+        // [
+        //   {
+        //     type: 'split-horizontal',
+        //     content: [
+        //       {
+        //         type: 'code',
+        //         content: inputSnippet,
+        //       },
+        //       {
+        //         type: 'code',
+        //         content: outputSnippet,
+        //       },
+        //     ],
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'code',
+        //     content: snippetUsage,
+        //   },
+
+        //   {
+        //     type: 'bullet-point',
+        //     content: [
+        //       {
+        //         type: 'text',
+        //         content: `Don't hardcode dark:color-300, instead change your theme`,
+        //       },
+        //     ],
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'code',
+        //     content: snippetUsageComplex,
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'code',
+        //     content: snippetUsageInverse,
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'split-horizontal',
+        //     content: [
+        //       {
+        //         type: 'code',
+        //         content: inputSnippetSub,
+        //       },
+        //       {
+        //         type: 'code',
+        //         content: outputSnippetSub,
+        //       },
+        //     ],
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/theme-pink.png').default,
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/theme-pink-alt.png').default,
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/theme-green.png').default,
+        //   },
+        // ],
 
         [
           {
-            type: 'code',
-            content: snippetUsage,
-          },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `Don't hardcode dark:color-300, instead change your theme`,
-              },
-            ],
-          },
-        ],
-
-        [
-          {
-            type: 'code',
-            content: snippetUsageComplex,
-          },
-        ],
-
-        [
-          {
-            type: 'code',
-            content: snippetUsageInverse,
-          },
-        ],
-
-        [
-          {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'code',
-                content: inputSnippetSub,
-              },
-              {
-                type: 'code',
-                content: outputSnippetSub,
-              },
-            ],
+            type: 'callout',
+            content: `Winamp for React`,
+            image: require('../images/winamp.jpg').default,
           },
         ],
 

@@ -147,25 +147,23 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
-  useHotkeys(
-    'left',
-    useEvent(() => {
-      const inc = -1
-      if (goToNextStep.current?.(inc)) {
-        paginate(inc)
-      }
-    })
-  )
+  const nextStep = useEvent(() => {
+    const inc = -1
+    if (goToNextStep.current?.(inc)) {
+      paginate(inc)
+    }
+  })
 
-  useHotkeys(
-    'right',
-    useEvent(() => {
-      const inc = 1
-      if (goToNextStep.current?.(inc)) {
-        paginate(inc)
-      }
-    })
-  )
+  const prevStep = useEvent(() => {
+    const inc = 1
+    if (goToNextStep.current?.(inc)) {
+      paginate(inc)
+    }
+  })
+
+  useHotkeys('left', nextStep)
+
+  useHotkeys('right', prevStep)
 
   return (
     <>
@@ -201,7 +199,7 @@ export function Slides(props: { slides: Slides }) {
           left="$4"
           circular
           elevate
-          onPress={() => paginate(-1)}
+          onPress={prevStep}
         />
         <Button
           accessibilityLabel="Carousel right"
@@ -211,7 +209,7 @@ export function Slides(props: { slides: Slides }) {
           right="$4"
           circular
           elevate
-          onPress={() => paginate(1)}
+          onPress={nextStep}
         />
 
         <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
