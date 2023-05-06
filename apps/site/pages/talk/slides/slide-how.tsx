@@ -60,7 +60,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: 'CSS - ',
+                content: 'Remove JS - ',
               },
 
               {
