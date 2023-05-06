@@ -120,6 +120,9 @@ async function run() {
     process.exit(1)
   }
 
+  // space
+  console.log()
+
   const shouldGitInit =
     IS_TEST ||
     Boolean(
@@ -132,6 +135,32 @@ async function run() {
         })
       ).gitInit
     )
+
+  // space
+  console.log()
+
+  let template = program.template
+
+  if (!template) {
+    template = (
+      await prompts({
+        name: 'template',
+        type: 'select',
+        message: `Pick a template:`,
+        choices: [
+          {
+            title: `Next + Expo + Solito (recommended for production) - Production-ready universal app with a monorepo.`,
+            value: 'next-expo-solito',
+          },
+
+          {
+            title: `Simple Web (recommended for learning) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
+            value: 'simple-web',
+          },
+        ],
+      })
+    ).template
+  }
 
   const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
   const projectName = path.basename(resolvedProjectPath)
@@ -254,29 +283,6 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     }
 
     await setupTamaguiDotDir()
-
-    let template = program.template
-
-    if (!template) {
-      template = (
-        await prompts({
-          name: 'template',
-          type: 'select',
-          message: `Pick a template:`,
-          choices: [
-            {
-              title: `Next + Expo + Solito (recommended for production) - Production-ready universal app with a monorepo.`,
-              value: 'next-expo-solito',
-            },
-
-            {
-              title: `Simple Web (recommended for learning) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
-              value: 'simple-web',
-            },
-          ],
-        })
-      ).template
-    }
 
     const starterDir = join(targetGitDir, 'starters', template)
     if (!(await pathExists(starterDir))) {
