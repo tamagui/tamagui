@@ -470,11 +470,11 @@ export type CreateTamaguiProps = {
   fonts: GenericTamaguiConfig['fonts']
   tokens: GenericTamaguiConfig['tokens']
   /**
-   * classic: the old Button API. just use the Button like so: `<Button>Some Text</Button>
-   * modern: new composite button API. need to wrap text inside `Button.Text`: `<Button><Button.Text>Some Text</Button.Text></Button>`
-   * mixed: supports both classic and modern, but needs to double render to figure out which version is being used.
+   * simple: just use the Button like so: `<Button>Some Text</Button>
+   * composable: need to wrap text inside `Button.Text`: `<Button><Button.Text>Some Text</Button.Text></Button>`
+   * mixed: supports both simple and composable, but might double render in order to figure out which version is being used.
    */
-  buttonApi?: 'modern' | 'mixed' | 'classic'
+  buttonApi?: 'mixed' | 'composable' | 'simple'
   themes: {
     [key: string]: {
       [key: string]: string | number | Variable

@@ -27,40 +27,18 @@ demoName: Button
   ]}
 />
 
-## Configuration
-
-The button component comes with two APIs:
-
-- The classic API:
-  - The default button API
-  - Very simple to use
-- The modern API:
-  - Composite components
-  - More control and clarity over customization
-  - suggested API if you're starting with Tamagui
-
-The classic API is the default. To use modern buttons, you should opt-in to the modern API when calling `createTamagui`:
-
-```ts
-
-createTamagui({
-  // your config
-  buttonApi: "modern",
-})
-```
-
 ## Anatomy
 
 ```tsx
 import { Button } from 'tamagui'
 import { ArrowLeft } from '@tamagui/lucide-icons'
 
-// Classic API
+// Simple API
 export default () => (
   <Button icon={<ArrowLeft />}>Lorem ipsum</Button>
 )
 
-// Modern API
+// Composable API
 export default () => (
   <Button>
     <Button.Text>Lorem ipsum</Button.Text>
@@ -71,9 +49,26 @@ export default () => (
 )
 ```
 
+## Configuration
+
+The button component comes with two APIs:
+
+The simple API is very easy to use but may be harder to customize.
+
+The composable API gives you more control over customization, since you can customize each composite component with the price of verbosity.
+
+By default, both APIs are enabled, but Tamagui might do double-rendering to figure out which one you're using. To prevent that, you should set `buttonApi` when calling `createTamagui`. Like so:
+
+```ts
+createTamagui({
+  // ...the rest of your config
+  buttonApi: "comopsable", // or "simple"
+})
+```
+
 ## Headless
 
-Tamagui offers a headless version of this component with no styling. Simply import button from `@tamagui/button/headless`. The headless import only supports the modern API.
+Tamagui offers a headless version of this component with no styling. Simply import button from `@tamagui/button/headless`. The headless import only supports the comopsable API.
 
 ```tsx
 import { Button } from '@tamagui/button/headless'
@@ -89,7 +84,7 @@ export default () => (
 )
 ```
 
-## API Reference (Classic)
+## API Reference (Simple)
 
 ### Button
 
@@ -190,13 +185,11 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
   ]}
 />
 
-### useButton
-
-## API Reference (Modern)
+## API Reference (Composable)
 
 ### Button
 
-Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props) and uses [`themeable()`](/docs/core/theme#themeable).
+Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props) and use [`themeable()`](/docs/core/theme#themeable).
 
 ### Button.Text
 
@@ -215,6 +208,12 @@ Sizing buttons provides a unique challenge especially for a compiler, because yo
 ```tsx
 import { Button } from 'tamagui'
 
+// Simple API
+export default () => (
+  <Button size="$6">Lorem ipsum</Button>
+)
+
+// Composable API
 export default () => (
   <Button size="$6">
     <Button.Text>Lorem ipsum</Button.Text>
@@ -224,13 +223,12 @@ export default () => (
 
 Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
 
-### Advanced Customization
+### Advanced Customization With Simple API
 
-#### Modern API
-
-Since this API uses composite components, you have full control over customization of each component.
-
-#### Classic API
+<Notice>
+  Generally, if you need advanced customization on your buttons. You should go with either
+  [Headless](#headless) or [Composable](#api-reference-composable) buttons.
+</Notice>
 
 Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization using some exported helpers.
 

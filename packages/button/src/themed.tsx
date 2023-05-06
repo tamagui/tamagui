@@ -146,9 +146,9 @@ type ButtonContextValue = {
   color: ColorProp
   size: SizeTokens
   /**
-   * If true, means the button's using the modern composite API (whether via buttonApi: 'mixed' or buttonApi: 'modern')
+   * If true, means the button's using the composable composite API (whether via buttonApi: 'mixed' or buttonApi: 'composable')
    */
-  usesModernApi: boolean
+  usesComposableApi: boolean
   registerButtonText: () => () => void
 }
 
@@ -177,7 +177,7 @@ const ButtonTextFrame = styled(HeadlessButton.Text, {
   },
 })
 
-const ButtonText = ButtonTextFrame.styleable(
+const ButtonText = ButtonTextFrame.extractable(
   forwardRef<TamaguiElement, ScopedProps<GetProps<typeof ButtonTextFrame>>>(
     (props, ref) => {
       const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
@@ -216,43 +216,43 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
 const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
   (props, ref) => {
     const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'classic'
-    const { props: buttonProps } =
-      buttonApi === 'modern' ? { props: {} } : useButton(props)
+    const { props: buttonProps } = useButton(props)
     const [buttonTextCount, setButtonTextCount] = useState(0)
 
     const registerButtonText = useCallback(() => {
       if (buttonApi === 'classic') {
         console.warn(
-          'You are using Button.Text with classic button API. Either remove Button.Text or use either `buttonApi: modern` or `mixed` in your tamagui config.'
+          'You are using Button.Text with classic button API. Either remove Button.Text or use either `buttonApi: composable` or `mixed` in your tamagui config.'
         )
       }
-      // if using modern, no need to register anything. it's the default.
-      if (buttonApi === 'modern') return () => {}
+      // if using composable, no need to register anything. it's the default.
+      if (buttonApi === 'composable') return () => {}
 
       // using `mixed` at this point
       setButtonTextCount((prev) => prev + 1)
       return () => setButtonTextCount((prev) => prev - 1)
     }, [setButtonTextCount])
 
-    const usesModernApi =
-      buttonApi === 'modern' || (buttonApi === 'mixed' && buttonTextCount > 0)
+    const usesComposableApi =
+      buttonApi === 'composable' || (buttonApi === 'mixed' && buttonTextCount > 0)
 
+      console.log('render', buttonApi)
     return (
       <ButtonProvider
         scope={props.__scopeButton}
         size={props.size ?? '$true'}
         color={props.color}
-        usesModernApi={usesModernApi}
+        usesComposableApi={usesComposableApi}
         registerButtonText={registerButtonText}
       >
-        <ButtonFrame ref={ref} {...(usesModernApi ? props : buttonProps)} />
+        <ButtonFrame ref={ref} {...buttonProps} />
       </ButtonProvider>
     )
   }
 )
 
 const Button = withStaticProperties(
-  ButtonFrame.styleable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
+  ButtonFrame.extractable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
   {
     Text: ButtonText,
     Icon: ButtonIcon,

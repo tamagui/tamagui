@@ -49,10 +49,6 @@ const SandboxInner = () => {
       <Demos.ButtonHeadlessDemo />
     </YStack>
   )
-  return <DialogDemo />
-  // return <TooltipDemo />
-  // return <TestPerf />
-  // return <Square animation="bouncy" size={100} bc="red" />
 }
 
 function TestPerf() {
@@ -126,14 +122,43 @@ const SandboxFrame = (props: { children: any }) => {
           }}
         />
 
-        <ButtonDemoThing />
+        <XStack fullscreen>
+          <YStack ai="center" jc="center" f={1} h="100%">
+            {props.children}
+          </YStack>
+
+          {splitView ? (
+            <>
+              <Separator vertical />
+              <Theme name="dark">
+                <YStack
+                  ai="center"
+                  jc="center"
+                  f={1}
+                  h="100%"
+                  bg={screenshot ? 'transparent' : '$background'}
+                >
+                  {props.children}
+                </YStack>
+              </Theme>
+            </>
+          ) : null}
+        </XStack>
+
+        {showThemeSwitch && (
+          <div
+            style={{
+              position: 'fixed',
+              bottom: 30,
+              left: 20,
+              fontSize: 30,
+            }}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            🌗
+          </div>
+        )}
       </ToastProvider>
     </TamaguiProvider>
   )
 }
-
-const ButtonDemoThing = () => (
-  <Button>
-    <Button.Text>Button </Button.Text>
-  </Button>
-)
