@@ -221,11 +221,11 @@ export function Slides(props: { slides: Slides }) {
 
       <ShowAllStepsContext.Provider value={true}>
         <SlidePreview b={250}>
-          <PreviewCurrentSlideComponent />
+          {PreviewCurrentSlideComponent && <PreviewCurrentSlideComponent />}
         </SlidePreview>
 
         <SlidePreview b={-250}>
-          <PreviewNextSlideComponent />
+          {PreviewNextSlideComponent && <PreviewNextSlideComponent />}
         </SlidePreview>
       </ShowAllStepsContext.Provider>
     </>
