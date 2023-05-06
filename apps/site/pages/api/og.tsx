@@ -125,16 +125,15 @@ const ComponentOg = ({
       </div>
 
       {!!hasDemo && (
-        <img
+        <div
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
             flex: 1,
           }}
-          width="512"
-          height="512"
-          src={imageData}
-        />
+        >
+          <img width="512" height="512" src={imageData} />
+        </div>
       )}
     </div>
   )
