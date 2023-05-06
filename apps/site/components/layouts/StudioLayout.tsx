@@ -24,7 +24,8 @@ export const getStudioLayout: GetLayout = (page, pageProps) => {
         </StudioLayout>
       </UserGuard>
     </StudioToastProvider>,
-    pageProps
+    pageProps,
+    true
   )
 }
 
