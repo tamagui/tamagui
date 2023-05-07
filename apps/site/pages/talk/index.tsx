@@ -9,9 +9,12 @@ import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tam
 
 import { ShowAllStepsContext, SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
+import slideCoreAnimations from './slides/slide-core-animations'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
+import slideCorePrinciples from './slides/slide-core-principles'
 import slideCoreSyntax from './slides/slide-core-syntax'
+import slideCoreThemesAndAnimations from './slides/slide-core-themes-and-animations'
 import slideCssInJs from './slides/slide-css-in-js'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
@@ -88,7 +91,10 @@ export default function TamaguiTalk() {
           SlideHow,
           slideCoreSyntax,
           slideCoreFeatures,
+          slideCorePrinciples,
+          slideCoreAnimations,
           SlideThemes,
+          slideCoreThemesAndAnimations,
           // SlideThemes2,
           slideCoreComparison,
           Slide4,
@@ -148,22 +154,21 @@ export function Slides(props: { slides: Slides }) {
   )
 
   const nextStep = useEvent(() => {
-    const inc = -1
-    if (goToNextStep.current?.(inc)) {
-      paginate(inc)
-    }
-  })
-
-  const prevStep = useEvent(() => {
     const inc = 1
     if (goToNextStep.current?.(inc)) {
       paginate(inc)
     }
   })
 
-  useHotkeys('left', nextStep)
+  const prevStep = useEvent(() => {
+    const inc = -1
+    if (goToNextStep.current?.(inc)) {
+      paginate(inc)
+    }
+  })
 
-  useHotkeys('right', prevStep)
+  useHotkeys('left', prevStep)
+  useHotkeys('right', nextStep)
 
   return (
     <>

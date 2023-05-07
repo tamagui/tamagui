@@ -6,6 +6,7 @@ import {
   H1,
   H2,
   H4,
+  H5,
   Paragraph,
   SizableTextProps,
   SpaceTokens,
@@ -71,6 +72,7 @@ type SlideStepItem =
   | {
       type: 'vertical'
       title?: any
+      variant?: 'center-vertically'
       content: SlideStepItem[]
     }
   | {
@@ -94,6 +96,7 @@ type SlideStepItem =
       props?: SizableTextProps
       content: string
       lang?: 'tsx'
+      title?: any
     }
   | {
       type: 'bullet-point'
@@ -125,7 +128,7 @@ const SlideInner = (props: SlideProps) => {
   const showAllSteps = useContext(ShowAllStepsContext)
   const glows = useGlows(props.variant)
   const [isPresent] = usePresence()
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(props.stepsStrategy === 'replace' ? 0 : 1)
   const context = useContext(SlideContext)
 
   const max = props.steps.length
@@ -318,7 +321,13 @@ function getTextContent(
 
             case 'vertical':
               return (
-                <YStack h="100%">
+                <YStack
+                  h="100%"
+                  {...(item.variant === 'center-vertically' && {
+                    ai: 'center',
+                    jc: 'center',
+                  })}
+                >
                   {!!item.title && (
                     <H4 size="$10" als="center" mb="$4" color="$color9">
                       {item.title}
@@ -385,12 +394,26 @@ function getTextContent(
             case 'space':
               return <Spacer />
 
-            case 'code':
-              return (
-                <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
-                  <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                </DocCodeBlock>
+            case 'code': {
+              const content = (
+                <>
+                  <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                    <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                  </DocCodeBlock>
+                </>
               )
+
+              if (item.title) {
+                return (
+                  <YStack ai="center" space>
+                    <H4>{item.title}</H4>
+                    {content}
+                  </YStack>
+                )
+              }
+
+              return content
+            }
 
             case 'callout': {
               let size = '$12' as any
