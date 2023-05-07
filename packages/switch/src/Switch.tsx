@@ -52,6 +52,8 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
       false: {
         size: '$true',
         backgroundColor: '$background',
+        borderWidth: '$borderWidth',
+        borderColor: '$borderColor',
         borderRadius: 1000,
       },
     },
@@ -121,8 +123,8 @@ export const SwitchFrame = styled(XStack, {
       false: {
         size: '$true',
         borderRadius: 1000,
-        borderWidth: 2,
-        borderColor: 'transparent',
+        borderWidth: '$borderWidth',
+        borderColor: '$borderColor',
         backgroundColor: '$background',
 
         focusStyle: {
@@ -135,9 +137,11 @@ export const SwitchFrame = styled(XStack, {
     },
 
     size: {
-      '...size': (val) => {
-        const height = getSwitchHeight(val) + 4
-        const width = getSwitchWidth(val) + 4
+      '...size': (val, { props, theme }) => {
+        const borderWidth = getVariableValue(props.borderWidth || theme.borderWidth || 1)
+        const borderPad = +borderWidth * 2 + 1
+        const height = getSwitchHeight(val) + borderPad
+        const width = getSwitchWidth(val) + borderPad
         return {
           height,
           minHeight: height,
