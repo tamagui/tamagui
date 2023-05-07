@@ -714,12 +714,12 @@ input, textarea {
 }
 
 .rotate-slow-right {
-  animation: rotate-right 25s ease-in infinite;
+  animation: rotate-right 25s ease-in 2s infinite;
   transform-origin: top left;
 }
 
 .rotate-slow-left {
-  animation: rotate-right 25s ease-out infinite backwards;
+  animation: rotate-right 25s ease-out 2s infinite backwards;
   transform-origin: top left;
 }
 

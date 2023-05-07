@@ -315,7 +315,7 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-pink.png').default,
+            image: require('../images/themes-1.png').default,
           },
         ],
 
@@ -324,7 +324,7 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-pink-alt.png').default,
+            image: require('../images/themes-1.5.png').default,
           },
         ],
 
@@ -333,15 +333,61 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-green.png').default,
+            image: require('../images/themes-2.png').default,
           },
         ],
 
         [
           {
-            type: 'callout',
-            content: `Winamp for React`,
-            image: require('../images/winamp.jpg').default,
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-3.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-4.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-5.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-6.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-7.png').default,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-8.png').default,
           },
         ],
 
@@ -366,27 +412,28 @@ export default memo(() => {
         //   },
         // ],
 
-        [
-          {
-            type: 'fullscreen',
-            content: (
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/FqFLwud5l7g"
-                title="beatgig-demo"
-                frameBorder={0}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ),
-          },
-        ],
+        // [
+        //   {
+        //     type: 'fullscreen',
+        //     content: (
+        //       <iframe
+        //         width="100%"
+        //         height="100%"
+        //         src="https://www.youtube.com/embed/FqFLwud5l7g"
+        //         title="beatgig-demo"
+        //         frameBorder={0}
+        //         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        //         allowFullScreen
+        //       />
+        //     ),
+        //   },
+        // ],
 
         [
           {
             type: 'bullet-point',
             size: '$10',
+            slim: true,
             content: [
               {
                 type: 'text',
@@ -398,6 +445,7 @@ export default memo(() => {
           {
             type: 'bullet-point',
             size: '$10',
+            slim: true,
             content: [
               {
                 type: 'text',
@@ -409,6 +457,7 @@ export default memo(() => {
           {
             type: 'bullet-point',
             size: '$10',
+            slim: true,
             content: [
               {
                 type: 'text',
@@ -420,6 +469,7 @@ export default memo(() => {
           {
             type: 'bullet-point',
             size: '$10',
+            slim: true,
             content: [
               {
                 type: 'text',
@@ -430,6 +480,7 @@ export default memo(() => {
           {
             type: 'bullet-point',
             size: '$10',
+            slim: true,
             content: [
               {
                 type: 'text',

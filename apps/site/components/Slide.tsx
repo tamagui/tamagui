@@ -167,6 +167,8 @@ const SlideInner = (props: SlideProps) => {
           .slice(0, showAllSteps ? Infinity : step)
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
+  const nextStepPreload = getStep(props.steps[step])
+
   return (
     <>
       <YStack fullscreen zi={-1}>
@@ -196,6 +198,10 @@ const SlideInner = (props: SlideProps) => {
 
         <YStack f={1} gap="$10" maxHeight="100%" flexWrap="wrap" w="100%">
           {stepsContent}
+        </YStack>
+
+        <YStack pos="absolute" o={0} zi={-1}>
+          {nextStepPreload}
         </YStack>
       </YStack>
     </>
@@ -371,7 +377,7 @@ function getTextContent(
                   {...(item.slim && {
                     pl: '$2',
                     pr: '$2',
-                    mb: '$0',
+                    pt: '$0',
                   })}
                 >
                   {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
