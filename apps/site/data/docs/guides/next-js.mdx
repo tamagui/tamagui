@@ -33,7 +33,10 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-This simply sets `fullySpecified` to false, becuase currently there is a conflict between Metro and Webpack that doesn't allow us to support fully specifying every import we use (specifically, Metro doesn't support `.native.ts` or `.web.ts` path extensions alongside specifying the import path).
+<Notice>
+  As of version `1.24.0` fullySpecified is no longer mandatory, but may still be useful
+  for general React Native dependency compatibility.
+</Notice>
 
 For a more complete configuration, you you'll want to add the `@tamagui/next-plugin` and set it up in your next config. See the [compiler install docs](/docs/intro/compiler-install) for more options:
 
