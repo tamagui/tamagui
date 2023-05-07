@@ -75,7 +75,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `2 input types`,
+                content: `Touch input or mouse`,
               },
             ],
           },
@@ -87,7 +87,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `Headless and styled`,
+                content: `Headless or styled`,
               },
             ],
           },

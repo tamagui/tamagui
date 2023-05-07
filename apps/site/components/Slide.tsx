@@ -128,10 +128,9 @@ const SlideInner = (props: SlideProps) => {
   const showAllSteps = useContext(ShowAllStepsContext)
   const glows = useGlows(props.variant)
   const [isPresent] = usePresence()
-  const [step, setStep] = useState(props.stepsStrategy === 'replace' ? 0 : 1)
-  const context = useContext(SlideContext)
-
   const max = props.steps.length
+  const [step, setStep] = useState(max > 1 ? 0 : 1)
+  const context = useContext(SlideContext)
 
   useEffect(() => {
     if (!isPresent) return
@@ -246,8 +245,12 @@ function useGlows(variant: SlideProps['variant']) {
     ref,
     elements: (
       <>
-        <glow.Component />
-        <glint.Component />
+        <YStack className="rotate-slow-right">
+          <glow.Component />
+        </YStack>
+        <YStack className="rotate-slow-left">
+          <glint.Component />
+        </YStack>
       </>
     ),
   }
@@ -420,14 +423,14 @@ function getTextContent(
 
               if (typeof item.content === 'string') {
                 const sizeNum = Math.min(
-                  Math.max(8, Math.round(580 / item.content.length)),
+                  Math.max(8, Math.round(550 / item.content.length)),
                   16
                 )
                 size = `$${sizeNum}`
               }
 
               return (
-                <YStack mah="100%" f={1} ai="center" jc="center">
+                <YStack mah="100%" f={1} ai="center" jc="center" px="$6">
                   <Paragraph
                     color="$color11"
                     als="center"

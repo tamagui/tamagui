@@ -81,20 +81,54 @@ export default () => (
   'tsx'
 )
 
+const snippetUsage2 = highlightCode(
+  `
+import { Stack, Theme } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Themed Background
+  </Stack>
+)
+`,
+  'tsx'
+)
+
+const snippetUsage3 = highlightCode(
+  `
+import { Stack, Theme } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="dark">
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Themed Background
+  </Stack>
+)
+`,
+  'tsx'
+)
+
 const snippetUsageComplex = highlightCode(
   `
 import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack backgroundColor="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
 
     <Theme name="dark">
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
     </Theme>
   </Theme>
 )
@@ -108,16 +142,33 @@ import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack backgroundColor="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
 
     <Theme inverse>
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
     </Theme>
   </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageSub = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Theme name="red">
+      <MyWidget />
+    </Theme>
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Light Red Background
+  </Stack>
 )
 `,
   'tsx'
@@ -126,21 +177,24 @@ export default () => (
 const snippetUsageInverseSub = highlightCode(
   `
 import { Stack, Text } from '@tamagui/core'
-  
+
 export default () => (
   <Theme name="light">
     <Theme name="red">
-      <Stack backgroundColor="$background">
-        Light Red Background
-      </Stack>
+      <MyWidget />
 
+      {/* Now make it dark_red */}
       <Theme inverse>
-        <Text color="$color">
-          Dark red text
-        </Text>
+        <MyWidget />
       </Theme>
     </Theme>
   </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Light Red Background
+  </Stack>
 )
 `,
   'tsx'
@@ -175,15 +229,33 @@ export default memo(() => {
             type: 'code',
             content: snippetUsage,
           },
+        ],
 
+        [
           {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `Don't hardcode dark:color-300, instead change your theme`,
-              },
-            ],
+            type: 'code',
+            content: snippetUsage2,
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsage3,
+          },
+        ],
+
+        [
+          {
+            type: 'callout',
+            content: `dark:color300 👎`,
+          },
+        ],
+
+        [
+          {
+            type: 'callout',
+            content: `theme="dark" 👍`,
           },
         ],
 
@@ -203,6 +275,13 @@ export default memo(() => {
 
         [
           {
+            type: 'callout',
+            content: `Sub-themes`,
+          },
+        ],
+
+        [
+          {
             type: 'split-horizontal',
             content: [
               {
@@ -214,6 +293,13 @@ export default memo(() => {
                 content: outputSnippetSub,
               },
             ],
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsageSub,
           },
         ],
 
@@ -294,13 +380,6 @@ export default memo(() => {
                 allowFullScreen
               />
             ),
-          },
-        ],
-
-        [
-          {
-            type: 'callout',
-            content: `Theme > Prop`,
           },
         ],
 

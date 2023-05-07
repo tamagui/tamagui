@@ -81,8 +81,25 @@ export default memo(() => {
                 content: snippet1,
               },
               {
+                type: 'text',
+                content: '',
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'split-horizontal',
+            content: [
+              {
                 type: 'code',
-                title: `animations.css.ts`,
+                title: `animations.native.ts`,
+                content: snippet1,
+              },
+              {
+                type: 'code',
+                title: `animations.web.ts`,
                 content: snippet2,
               },
             ],

@@ -8,15 +8,14 @@ const styledSnippet = highlightCode(
   `import { Text, styled } from '@tamagui/core'
 
 export const Heading = styled(Text, {
-  tag: 'h1',
   color: '$color',
-  fontSize: 16,
+  fontFamily: '$title',
+  fontSize: 18,
   
   hoverStyle: { color: '$colorHover' },
 
-  $small: {
-    fontSize: 12,
-  },
+  // media query
+  $small: { fontSize: 12 },
 
   variants: {
     size: {

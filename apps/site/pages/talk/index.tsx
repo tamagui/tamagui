@@ -199,7 +199,7 @@ export function Slides(props: { slides: Slides }) {
         <Button
           accessibilityLabel="Carousel left"
           icon={ArrowLeft}
-          size="$5"
+          size="$3"
           position="absolute"
           left="$4"
           circular
@@ -209,7 +209,7 @@ export function Slides(props: { slides: Slides }) {
         <Button
           accessibilityLabel="Carousel right"
           icon={ArrowRight}
-          size="$5"
+          size="$3"
           position="absolute"
           right="$4"
           circular
@@ -259,7 +259,7 @@ const RibbonContainer = () => {
 
   return (
     <YStack
-      o={isLight ? 0.2 : 0.25}
+      o={isLight ? 0.2 : 0.4}
       pos="absolute"
       fullscreen
       scaleX="200%"
