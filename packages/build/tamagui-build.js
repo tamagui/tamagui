@@ -16,6 +16,7 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 const shouldBundle = !!process.argv.includes('--bundle')
+const shouldIncludeMjs = !!process.argv.includes('--output-mjs')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
@@ -193,25 +194,25 @@ async function buildJs() {
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
-    // pkgModule
-    //   ? esbuildWriteIfChanged({
-    //       entryPoints: files,
-    //       outExtension: { '.js': '.mjs' },
-    //       outdir: flatOut ? 'dist' : 'dist/esm',
-    //       bundle: shouldBundle,
-    //       sourcemap: true,
-    //       sourcesContent: false,
-    //       target: 'node16',
-    //       keepNames: false,
-    //       jsx: 'automatic',
-    //       allowOverwrite: true,
-    //       format: 'esm',
-    //       color: true,
-    //       logLevel: 'error',
-    //       minify: process.env.MINIFY ? true : false,
-    //       platform: shouldBundle ? 'node' : 'neutral',
-    //     })
-    //   : null,
+    pkgModule && shouldIncludeMjs
+      ? esbuildWriteIfChanged({
+          entryPoints: files,
+          outExtension: { '.js': '.mjs' },
+          outdir: flatOut ? 'dist' : 'dist/esm',
+          bundle: shouldBundle,
+          sourcemap: true,
+          sourcesContent: false,
+          target: 'node16',
+          keepNames: false,
+          jsx: 'automatic',
+          allowOverwrite: true,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: process.env.MINIFY ? true : false,
+          platform: shouldBundle ? 'node' : 'neutral',
+        })
+      : null,
     pkgModuleJSX
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
