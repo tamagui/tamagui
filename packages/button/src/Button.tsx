@@ -5,12 +5,10 @@ import { SizableText } from '@tamagui/text'
 import {
   GetProps,
   SizeTokens,
-  TamaguiElement,
   styled,
   useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
-import { forwardRef } from 'react'
 
 const BUTTON_NAME = 'Button'
 
@@ -25,11 +23,9 @@ const ButtonTextFrame = styled(SizableText, {
   name: BUTTON_TEXT_NAME,
 })
 
-const ButtonTextComponent = ButtonTextFrame.styleable(
-  forwardRef<TamaguiElement, GetProps<typeof ButtonTextFrame>>((props, ref) => {
-    return <ButtonTextFrame {...props} ref={ref} />
-  })
-)
+const ButtonTextComponent = ButtonTextFrame.styleable((props, ref) => {
+  return <ButtonTextFrame {...props} ref={ref} />
+})
 
 const BUTTON_ICON_NAME = 'ButtonIcon'
 
@@ -45,15 +41,13 @@ const ButtonIcon = (props: {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = forwardRef<TamaguiElement, GetProps<typeof ButtonFrame>>(
-  function Button(propsIn, ref) {
-    const propsActive = useMediaPropsActive(propsIn)
+const ButtonComponent = ButtonFrame.styleable((propsIn, ref) => {
+  const propsActive = useMediaPropsActive(propsIn)
 
-    return <ButtonFrame {...propsActive} ref={ref} />
-  }
-)
+  return <ButtonFrame {...propsActive} ref={ref} />
+})
 
-const Button = withStaticProperties(ButtonFrame.extractable(ButtonComponent), {
+const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonTextComponent,
   Icon: ButtonIcon,
 })
@@ -66,7 +60,7 @@ export {
   BUTTON_TEXT_NAME,
   Button,
 
-  // old api
+  // simple api
   ButtonFrame,
   ButtonTextFrame as ButtonText,
   ButtonTextComponent,

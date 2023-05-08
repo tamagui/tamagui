@@ -2,12 +2,10 @@ import { Button as HeadlessTamaguiButton } from '@tamagui/button/headless'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { IconProps } from '@tamagui/lucide-icons/types/IconProps'
-import { forwardRef } from 'react'
 import {
   ColorTokens,
   FontSizeTokens,
   GetProps,
-  TamaguiElement,
   XGroup,
   XStack,
   YStack,
@@ -68,39 +66,40 @@ const ButtonFrame = styled(HeadlessTamaguiButton, {
   } as const,
 })
 
-const MyButton = withStaticProperties(themeable(ButtonFrame, ButtonFrame.staticConfig), {
+const MyButton = withStaticProperties(ButtonFrame, {
   Text: ButtonFrame.Text,
   Icon: ButtonFrame.Icon,
 })
 
-const Button = ButtonFrame.extractable(
-  forwardRef<
-    TamaguiElement,
-    GetProps<typeof MyButton> & {
-      color?: ColorTokens
-      icon?: React.NamedExoticComponent<IconProps>
-      iconAfter?: React.NamedExoticComponent<IconProps>
-    }
-  >((props, ref) => {
-    const { color, icon: Icon, iconAfter: IconAfter, size = '$3', ...buttonProps } = props
-    const iconSize = typeof size === 'number' ? size * 0.5 : getFontSize(size)
-    const getThemedIcon = useGetThemedIcon({ color, size: iconSize })
-    return (
-      <MyButton ref={ref} size={size} {...buttonProps}>
-        {Icon && <MyButton.Icon>{getThemedIcon(Icon)}</MyButton.Icon>}
-        <MyButton.Text color={color} size={props.size as FontSizeTokens}>
-          {props.children}
-        </MyButton.Text>
-        {IconAfter && <MyButton.Icon>{getThemedIcon(IconAfter)}</MyButton.Icon>}
-      </MyButton>
-    )
-  })
-)
+type MyCustomProps = {
+  color?: ColorTokens
+  icon?: React.NamedExoticComponent<IconProps>
+  iconAfter?: React.NamedExoticComponent<IconProps>
+}
+
+type ButtonProps = GetProps<typeof MyButton> & MyCustomProps
+
+const Button = MyButton.styleable<ButtonProps>((props, ref) => {
+  const { color, icon: Icon, iconAfter: IconAfter, size = '$3', ...buttonProps } = props
+  const iconSize =
+    typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)
+  const getThemedIcon = useGetThemedIcon({ color, size: iconSize })
+  return (
+    <MyButton ref={ref} size={size} {...buttonProps}>
+      {Icon && <MyButton.Icon>{getThemedIcon(Icon)}</MyButton.Icon>}
+      <MyButton.Text color={color} size={props.size as FontSizeTokens}>
+        {props.children}
+      </MyButton.Text>
+      {IconAfter && <MyButton.Icon>{getThemedIcon(IconAfter)}</MyButton.Icon>}
+    </MyButton>
+  )
+})
+
 export function ButtonHeadlessDemo(props) {
   return (
     <YStack padding="$3" space="$3" {...props}>
       <Button>Plain</Button>
-      <Button alignSelf="center" size="$6" space="$1" icon={Airplay}>
+      <Button alignSelf="center" size="$6" space="$3" icon={Airplay}>
         Large
       </Button>
       <XStack space="$2" justifyContent="center">

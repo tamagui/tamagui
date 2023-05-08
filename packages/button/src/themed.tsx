@@ -16,7 +16,6 @@ import {
   isRSC,
   spacedChildren,
   styled,
-  themeable,
   useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
@@ -177,23 +176,21 @@ const ButtonTextFrame = styled(HeadlessButton.Text, {
   },
 })
 
-const ButtonText = ButtonTextFrame.extractable(
-  forwardRef<TamaguiElement, ScopedProps<GetProps<typeof ButtonTextFrame>>>(
-    (props, ref) => {
-      const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
+const ButtonText = ButtonTextFrame.styleable(
+  (props: ScopedProps<GetProps<typeof ButtonTextFrame>>, ref) => {
+    const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
 
-      useEffect(() => {
-        const unregister = context.registerButtonText()
-        return () => unregister()
-      }, [context.registerButtonText])
+    useEffect(() => {
+      const unregister = context.registerButtonText()
+      return () => unregister()
+    }, [context.registerButtonText])
 
-      return (
-        <ButtonTextFrame ref={ref} color={context.color} size={context.size} {...props}>
-          {props.children}
-        </ButtonTextFrame>
-      )
-    }
-  )
+    return (
+      <ButtonTextFrame ref={ref} color={context.color} size={context.size} {...props}>
+        {props.children}
+      </ButtonTextFrame>
+    )
+  }
 )
 
 type ButtonIconComponentProps = { children: React.ReactNode } & Pick<
@@ -236,7 +233,7 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
     const usesComposableApi =
       buttonApi === 'composable' || (buttonApi === 'mixed' && buttonTextCount > 0)
 
-      console.log('render', buttonApi)
+    console.log('render', buttonApi)
     return (
       <ButtonProvider
         scope={props.__scopeButton}
@@ -251,13 +248,10 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
   }
 )
 
-const Button = withStaticProperties(
-  ButtonFrame.extractable(themeable(ButtonComponent, ButtonFrame.staticConfig)),
-  {
-    Text: ButtonText,
-    Icon: ButtonIcon,
-  }
-)
+const Button = withStaticProperties(ButtonFrame.styleable(ButtonComponent), {
+  Text: ButtonText,
+  Icon: ButtonIcon,
+})
 
 /**
  * Hook only used with the classic button API.
