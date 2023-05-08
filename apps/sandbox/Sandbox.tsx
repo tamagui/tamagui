@@ -45,7 +45,7 @@ const SandboxInner = () => {
   return (
     <YStack>
       <Demos.ButtonDemo />
-      <Demos.ButtonClassicDemo />
+      <Demos.ButtonSimpleDemo />
       <Demos.ButtonHeadlessDemo />
     </YStack>
   )

@@ -9,7 +9,7 @@ import {
   CreateTamaguiProps,
   GetProps,
   SizeTokens,
-  TamaguiElement,
+  ThemeableProps,
   getConfig,
   getVariableValue,
   isRSC,
@@ -18,14 +18,7 @@ import {
   useMediaPropsActive,
   withStaticProperties,
 } from '@tamagui/web'
-import {
-  FunctionComponent,
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { FunctionComponent, useCallback, useContext, useEffect, useState } from 'react'
 
 import {
   BUTTON_ICON_NAME,
@@ -126,6 +119,7 @@ type SimpleButtonProps = {
 } & Omit<TextParentStyles, 'TextComponent'>
 
 type ButtonProps = GetProps<typeof ButtonFrame> &
+  ThemeableProps &
   SimpleButtonProps & {
     /**
      * Used to override config's button API mode
@@ -204,8 +198,8 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
-  (props, ref) => {
+const ButtonComponent = ButtonFrame.styleable<ScopedProps<ButtonProps>>(
+  (props: ScopedProps<ButtonProps>, ref) => {
     const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'simple'
     const { props: buttonProps } = useButton(props)
     const [buttonTextCount, setButtonTextCount] = useState(0)
@@ -241,7 +235,7 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
   }
 )
 
-const Button = withStaticProperties(ButtonFrame.styleable(ButtonComponent), {
+const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonText,
   Icon: ButtonIcon,
 })
@@ -361,7 +355,7 @@ const buttonStaticConfig = {
 
 export {
   Button,
-  // old api
+  // simple api
   ButtonFrame,
   ButtonTextFrame as ButtonText,
   buttonStaticConfig,
