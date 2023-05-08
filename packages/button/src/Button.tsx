@@ -2,13 +2,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { ColorProp, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
-import {
-  GetProps,
-  SizeTokens,
-  styled,
-  useMediaPropsActive,
-  withStaticProperties,
-} from '@tamagui/web'
+import { GetProps, SizeTokens, styled, withStaticProperties } from '@tamagui/web'
 
 const BUTTON_NAME = 'Button'
 
@@ -21,10 +15,6 @@ const ButtonFrame = styled(ThemeableStack, {
 const BUTTON_TEXT_NAME = 'ButtonText'
 const ButtonTextFrame = styled(SizableText, {
   name: BUTTON_TEXT_NAME,
-})
-
-const ButtonTextComponent = ButtonTextFrame.styleable((props, ref) => {
-  return <ButtonTextFrame {...props} ref={ref} />
 })
 
 const BUTTON_ICON_NAME = 'ButtonIcon'
@@ -41,14 +31,8 @@ const ButtonIcon = (props: {
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable((propsIn, ref) => {
-  const propsActive = useMediaPropsActive(propsIn)
-
-  return <ButtonFrame {...propsActive} ref={ref} />
-})
-
-const Button = withStaticProperties(ButtonComponent, {
-  Text: ButtonTextComponent,
+const Button = withStaticProperties(ButtonFrame, {
+  Text: ButtonTextFrame,
   Icon: ButtonIcon,
 })
 
@@ -63,7 +47,6 @@ export {
   // simple api
   ButtonFrame,
   ButtonTextFrame as ButtonText,
-  ButtonTextComponent,
 }
 
 export type { ButtonProps }
