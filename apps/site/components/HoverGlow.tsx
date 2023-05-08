@@ -368,7 +368,6 @@ export const useRelativePositionedItem = (
       y = Math.round(y + (offset.y || 0))
 
       if (process.env.NODE_ENV === 'development' && debug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
         console.table({
           start: {
             x: position.x,
