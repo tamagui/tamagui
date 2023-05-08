@@ -95,7 +95,7 @@ export default memo(() => {
                           marginBottom: 20,
                           display: 'inline-flex',
                         },
-                        content: `Has extra bundle size`,
+                        content: <>Has extra bundle size ❌</>,
                       },
                     ],
                   },

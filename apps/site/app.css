@@ -730,3 +730,13 @@ input, textarea {
   60%{top:100px; right: -100px; transform: scale(1);}
   80%{top:0px; right: 0; transform: scale(1);}
 }
+
+.fade-image-in {
+  opacity: 0;
+  animation: fade-in 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s forwards;
+}
+
+@keyframes fade-in {
+  0% {opacity: 0; top: -20px;}
+  100% {opacity: 1; top: 0px;}
+}

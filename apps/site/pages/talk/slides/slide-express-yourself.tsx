@@ -9,7 +9,12 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `Not just speed, but creative expression`,
+            content: (
+              <>
+                Speed + simplicity
+                <br /> = creative expression
+              </>
+            ),
           },
         ],
       ]}

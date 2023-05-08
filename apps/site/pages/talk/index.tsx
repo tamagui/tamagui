@@ -35,6 +35,7 @@ import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
+import slideWebOnly from './slides/slide-web-only'
 import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhyBobRoss from './slides/slide-why-bob-ross'
@@ -44,7 +45,6 @@ import slideWhy4 from './slides/slide-why5'
 import slideWhy6 from './slides/slide-why6'
 import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
-import Slide6c from './slides/slide6c'
 
 const slideDimensions = {
   width: 1280,
@@ -114,8 +114,8 @@ export default function TamaguiTalk() {
           slidePartialEval,
           slidePartialEval2,
           SlideFlatten,
+          slideWebOnly,
           SlideExpressYourself,
-          Slide6c,
           slideCssInJs,
           // SlideTamagui,
           // slideTamaguiCode,

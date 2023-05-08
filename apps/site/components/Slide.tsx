@@ -301,6 +301,7 @@ function getTextContent(
                 <YStack
                   f={1}
                   ai="center"
+                  className="fade-image-in"
                   {...(item.variant === 'circled' && {
                     bg: '$backgroundStrong',
                     minWidth: 500,
@@ -457,19 +458,20 @@ function getTextContent(
 
               if (typeof item.content === 'string') {
                 const sizeNum = Math.min(
-                  Math.max(8, Math.round(550 / item.content.length)),
-                  16
+                  Math.max(10, Math.round(450 / item.content.length)),
+                  15
                 )
                 size = `$${sizeNum}`
               }
 
               return (
                 <YStack
+                  className="fade-image-in"
                   mah="100%"
                   f={1}
                   ai="center"
                   jc="center"
-                  px="$6"
+                  px="$8"
                   // animation={lessBouncyOpacityClamped}
                   // enterStyle={{
                   //   o: 0,
@@ -484,8 +486,7 @@ function getTextContent(
                     className="callout"
                     ta="center"
                     p="$10"
-                    mt={-100}
-                    scale={1.2}
+                    scale={1.3}
                     size={size}
                   >
                     {item.content}&nbsp;
@@ -493,6 +494,7 @@ function getTextContent(
 
                   {item.image && (
                     <img
+                      className="fade-image-in"
                       style={{
                         alignSelf: 'center',
                         maxWidth: '100%',
