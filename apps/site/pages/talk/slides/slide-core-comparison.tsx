@@ -18,6 +18,10 @@ export default memo(() => {
                 title: `Similar`,
                 content: [
                   {
+                    type: 'space',
+                  },
+
+                  {
                     type: 'bullet-point',
                     slim: true,
                     content: [
@@ -84,6 +88,10 @@ export default memo(() => {
                 type: 'vertical',
                 title: `Different`,
                 content: [
+                  {
+                    type: 'space',
+                  },
+
                   {
                     type: 'bullet-point',
                     slim: true,

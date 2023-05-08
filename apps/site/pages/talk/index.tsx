@@ -47,8 +47,8 @@ import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
 
 const slideDimensions = {
-  width: 1280,
-  height: 1000,
+  width: 1920,
+  height: 1080,
 }
 
 export default function TamaguiTalk() {
