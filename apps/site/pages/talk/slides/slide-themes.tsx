@@ -384,10 +384,9 @@ export default memo(() => {
 
         [
           {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-8.png').default,
+            type: 'callout',
+            content: `Winamp for React`,
+            image: require('../images/winamp.jpg').default,
           },
         ],
 
@@ -437,6 +436,18 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                content: `useTheme() hook escape hatch`,
+              },
+            ],
+          },
+
+          {
+            type: 'bullet-point',
+            size: '$10',
+            slim: true,
+            content: [
+              {
+                type: 'text',
                 content: `Works with animation drivers`,
               },
             ],
@@ -450,18 +461,6 @@ export default memo(() => {
               {
                 type: 'text',
                 content: `Avoids re-renders on web`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `useTheme() hook escape hatch`,
               },
             ],
           },

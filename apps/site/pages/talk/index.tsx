@@ -24,6 +24,7 @@ import SlideLessons2 from './slides/slide-lessons-2'
 import slideLessons3 from './slides/slide-lessons-3'
 import slidePartialEval from './slides/slide-partial-eval'
 import slidePartialEval2 from './slides/slide-partial-eval2'
+import slideSimplicity from './slides/slide-simplicity'
 import Slide4 from './slides/slide-static'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
@@ -88,6 +89,7 @@ export default function TamaguiTalk() {
           slideWhy6,
           slideWhyBobRoss,
           SlideTrilemma,
+          slideSimplicity,
           SlideHow,
           slideCoreSyntax,
           slideCoreFeatures,
@@ -95,6 +97,7 @@ export default function TamaguiTalk() {
           slideCoreAnimations,
           SlideThemes,
           slideCoreThemesAndAnimations,
+          SlideLessons1,
           // SlideThemes2,
           slideCoreComparison,
           Slide4,
@@ -107,7 +110,6 @@ export default function TamaguiTalk() {
           SlideTamagui,
           slideTamaguiCode,
           Slide5,
-          SlideLessons1,
           SlideLessons2,
           slideLessons3,
         ]}
