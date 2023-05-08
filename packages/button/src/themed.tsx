@@ -10,7 +10,6 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
-  ThemeableProps,
   getConfig,
   getVariableValue,
   isRSC,
@@ -32,10 +31,11 @@ import {
   BUTTON_ICON_NAME,
   BUTTON_NAME,
   BUTTON_TEXT_NAME,
-  Button as HeadlessButton,
+  ButtonFrame as HeadlessButtonFrame,
+  ButtonText as HeadlessButtonText,
 } from './Button'
 
-const ButtonFrame = styled(HeadlessButton, {
+const ButtonFrame = styled(HeadlessButtonFrame, {
   name: BUTTON_NAME,
   variants: {
     unstyled: {
@@ -91,7 +91,7 @@ const ButtonFrame = styled(HeadlessButton, {
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type simpleButtonProps = {
+type SimpleButtonProps = {
   /**
    * add icon before, passes color and size automatically if Component
    *
@@ -126,8 +126,7 @@ type simpleButtonProps = {
 } & Omit<TextParentStyles, 'TextComponent'>
 
 type ButtonProps = GetProps<typeof ButtonFrame> &
-  ThemeableProps &
-  simpleButtonProps & {
+  SimpleButtonProps & {
     /**
      * Used to override config's button API mode
      */
@@ -150,7 +149,7 @@ const [ButtonProvider, useButtonContext] =
   createButtonContext<ButtonContextValue>('Button')
 type ScopedProps<P> = P & { __scopeButton?: Scope }
 
-const ButtonTextFrame = styled(HeadlessButton.Text, {
+const ButtonTextFrame = styled(HeadlessButtonText, {
   name: BUTTON_TEXT_NAME,
   variants: {
     unstyled: {
@@ -369,5 +368,4 @@ export {
   createButtonScope,
   useButton,
 }
-
 export type { ButtonProps }
