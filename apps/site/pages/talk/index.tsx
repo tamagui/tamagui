@@ -81,7 +81,7 @@ export default function TamaguiTalk() {
 
       <YStack pos="absolute" {...slideDimensions} ov="hidden">
         <YStack fullscreen className="bg-grid" />
-        <RibbonContainer />
+        {/* <RibbonContainer /> */}
       </YStack>
 
       <Slides
