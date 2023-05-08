@@ -304,7 +304,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center" className="rainbow clip-text">
+          <H2 size="$9" ta="center" className="rainbow clip-text">
             Gold Sponsors
           </H2>
         </FlatBubbleCard>
@@ -322,7 +322,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center">
+          <H2 size="$9" ta="center">
             Bronze Sponsors
           </H2>
         </FlatBubbleCard>
@@ -340,7 +340,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center">
+          <H2 size="$9" ta="center">
             Indie Sponsors
           </H2>
         </FlatBubbleCard>
