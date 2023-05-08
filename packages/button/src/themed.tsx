@@ -91,43 +91,43 @@ const ButtonFrame = styled(HeadlessButton, {
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ClassicButtonProps = {
+type simpleButtonProps = {
   /**
    * add icon before, passes color and size automatically if Component
    *
-   * NOTE: Only supported on the classic API.
+   * NOTE: Only supported on the simple API.
    */
   icon?: IconProp
   /**
    * add icon after, passes color and size automatically if Component
    *
-   * NOTE: Only supported on the classic API.
+   * NOTE: Only supported on the simple API.
    */
   iconAfter?: IconProp
   /**
    * adjust icon relative to size
    *
-   * NOTE: Only supported on the classic API.
+   * NOTE: Only supported on the simple API.
    * @default 1
    */
   scaleIcon?: number
   /**
    * make the spacing elements flex
    *
-   * NOTE: Only supported on the classic API.
+   * NOTE: Only supported on the simple API.
    */
   spaceFlex?: number | boolean
   /**
    * adjust internal space relative to icon size
    *
-   * NOTE: Only supported on the classic API.
+   * NOTE: Only supported on the simple API.
    */
   scaleSpace?: number
 } & Omit<TextParentStyles, 'TextComponent'>
 
 type ButtonProps = GetProps<typeof ButtonFrame> &
   ThemeableProps &
-  ClassicButtonProps & {
+  simpleButtonProps & {
     /**
      * Used to override config's button API mode
      */
@@ -207,14 +207,14 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
 
 const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
   (props, ref) => {
-    const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'classic'
+    const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'simple'
     const { props: buttonProps } = useButton(props)
     const [buttonTextCount, setButtonTextCount] = useState(0)
 
     const registerButtonText = useCallback(() => {
-      if (buttonApi === 'classic') {
+      if (buttonApi === 'simple') {
         console.warn(
-          'You are using Button.Text with classic button API. Either remove Button.Text or use either `buttonApi: composable` or `mixed` in your tamagui config.'
+          'You are using Button.Text with simple button API. Either remove Button.Text or use either `buttonApi: composable` or `mixed` in your tamagui config.'
         )
       }
       // if using composable, no need to register anything. it's the default.
@@ -228,7 +228,6 @@ const ButtonComponent = forwardRef<TamaguiElement, ScopedProps<ButtonProps>>(
     const usesComposableApi =
       buttonApi === 'composable' || (buttonApi === 'mixed' && buttonTextCount > 0)
 
-    console.log('render', buttonApi)
     return (
       <ButtonProvider
         scope={props.__scopeButton}
@@ -249,7 +248,7 @@ const Button = withStaticProperties(ButtonFrame.styleable(ButtonComponent), {
 })
 
 /**
- * Hook only used with the classic button API.
+ * Hook only used with the simple button API.
  *
  */
 function useButton(
