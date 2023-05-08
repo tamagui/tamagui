@@ -153,150 +153,53 @@ export default function Community({ frontmatters }) {
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/srikanthkh/tamagui-cna"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-next-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by srikanthkh
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/srikanthkh/tamagui-cra"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-react-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by srikanthkh
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/criszz77/luna"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  🌘Luna template
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by criszz77
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/chen-rn/create-universal-app"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-universal-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by Chen
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/tamagui/tamagui/tree/master/apps/site"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  tamagui.dev
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by nate
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/ivopr/tamagui-expo"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Tamagui Expo
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by Ivo
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/dohomi/tamagui-kitchen-sink"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Kitchen Sink with Storybook
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by dohomi
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/ebg1223/t3-tamagui"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Tamagui t3
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by ebg1223
-                </Paragraph>
-              </Card>
+              <StarterRepoCard
+                url="https://github.com/srikanthkh/tamagui-cna"
+                name="create-next-app"
+                author="srikanthkh"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/srikanthkh/tamagui-cra"
+                name="create-react-app"
+                author="srikanthkh"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/criszz77/luna"
+                name="Luna template"
+                author="criszz77"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/chen-rn/create-universal-app"
+                name="create-universal-app"
+                author="Chen"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/tamagui/tamagui/tree/master/apps/site"
+                name="tamagui.dev"
+                author="nate"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/ivopr/tamagui-expo"
+                name="Tamagui Expo"
+                author="Ivo"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/dohomi/tamagui-kitchen-sink"
+                name="Kitchen Sink with Storybook"
+                author="dohomi"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/ebg1223/t3-tamagui"
+                name="Tamagui t3"
+                author="ebg1223"
+              />
             </XStack>
           </ScrollView>
         </FlatBubbleCard>
@@ -398,6 +301,40 @@ export default function Community({ frontmatters }) {
 
       <Spacer size="$10" />
     </CommunityLayout>
+  )
+}
+
+const StarterRepoCard = ({
+  author,
+  name,
+  url,
+}: {
+  url: string
+  name: string
+  author: string
+}) => {
+  return (
+    <Card
+      f={1}
+      fb={0}
+      maw={300}
+      space="$2"
+      tag="a"
+      href={url}
+      target="_blank"
+      p="$5"
+      jc="space-between"
+    >
+      <YStack space="$2">
+        <GithubIcon />
+        <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+          {name}
+        </H4>
+      </YStack>
+      <Paragraph cursor="pointer" theme="alt2">
+        by {author}
+      </Paragraph>
+    </Card>
   )
 }
 
