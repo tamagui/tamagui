@@ -29,7 +29,7 @@
     },
     "./headless": {
       "types": "./types/headless.d.ts",
-      "import": "./dist/esm/headless.mjs",
+      "import": "./dist/esm/headless.js",
       "require": "./dist/cjs/headless.js"
     }
   },
