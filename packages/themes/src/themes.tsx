@@ -196,8 +196,8 @@ const [lightColorThemes, darkColorThemes] = [colorTokens.light, colorTokens.dark
         const colorPalette = Object.values(colorSet[color]) as string[]
         // were re-ordering these
         const [head, tail] = [
-          colorPalette.slice(0, 4),
-          colorPalette.slice(colorPalette.length - 7),
+          colorPalette.slice(0, 6),
+          colorPalette.slice(colorPalette.length - 5),
         ]
         // add our transparent colors first/last
         // and make sure the last (foreground) color is white/black rather than colorful
