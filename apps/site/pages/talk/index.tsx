@@ -9,10 +9,14 @@ import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tam
 
 import { ShowAllStepsContext, SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
+import slideCoreAnimations from './slides/slide-core-animations'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
+import slideCorePrinciples from './slides/slide-core-principles'
 import slideCoreSyntax from './slides/slide-core-syntax'
+import slideCoreThemesAndAnimations from './slides/slide-core-themes-and-animations'
 import slideCssInJs from './slides/slide-css-in-js'
+import slideDesignSystems from './slides/slide-design-systems'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
@@ -21,11 +25,13 @@ import SlideLessons2 from './slides/slide-lessons-2'
 import slideLessons3 from './slides/slide-lessons-3'
 import slidePartialEval from './slides/slide-partial-eval'
 import slidePartialEval2 from './slides/slide-partial-eval2'
+import slideSimplicity from './slides/slide-simplicity'
 import Slide4 from './slides/slide-static'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
+import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
@@ -36,6 +42,7 @@ import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
 import slideWhy6 from './slides/slide-why6'
+import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
 import Slide6c from './slides/slide6c'
 
@@ -71,12 +78,17 @@ export default function TamaguiTalk() {
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>
-      <YStack fullscreen className="bg-grid" />
-      <RibbonContainer />
+
+      <YStack pos="absolute" {...slideDimensions} ov="hidden">
+        <YStack fullscreen className="bg-grid" />
+        <RibbonContainer />
+      </YStack>
+
       <Slides
         slides={[
           Slide1,
           slideTwitterPoll,
+          slideDesignSystems,
           SlideWhat,
           SlideWhy,
           slideWhy2,
@@ -85,23 +97,29 @@ export default function TamaguiTalk() {
           slideWhy6,
           slideWhyBobRoss,
           SlideTrilemma,
+          slideSimplicity,
           SlideHow,
           slideCoreSyntax,
           slideCoreFeatures,
+          slideCorePrinciples,
+          slideCoreAnimations,
           SlideThemes,
+          slideWinamp,
+          slideThemesOverview,
+          slideCoreThemesAndAnimations,
+          SlideLessons1,
           // SlideThemes2,
           slideCoreComparison,
           Slide4,
           slidePartialEval,
           slidePartialEval2,
           SlideFlatten,
-          Slide6c,
           SlideExpressYourself,
+          Slide6c,
           slideCssInJs,
-          SlideTamagui,
-          slideTamaguiCode,
-          Slide5,
-          SlideLessons1,
+          // SlideTamagui,
+          // slideTamaguiCode,
+          // Slide5,
           SlideLessons2,
           slideLessons3,
         ]}
@@ -137,7 +155,6 @@ export function Slides(props: { slides: Slides }) {
   const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
-
   const slideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -147,23 +164,35 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
+  const nextSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const nextSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc: number) => boolean) => {
+        nextSlideGoToNextStep.current = nextStep
+        nextSlideGoToNextStep.current(1)
+      },
+    }),
+    []
+  )
+
   const nextStep = useEvent(() => {
-    const inc = -1
+    const inc = 1
     if (goToNextStep.current?.(inc)) {
+      nextSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
 
   const prevStep = useEvent(() => {
-    const inc = 1
+    const inc = -1
     if (goToNextStep.current?.(inc)) {
+      nextSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
 
-  useHotkeys('left', nextStep)
-
-  useHotkeys('right', prevStep)
+  useHotkeys('left', prevStep)
+  useHotkeys('right', nextStep)
 
   return (
     <>
@@ -194,7 +223,7 @@ export function Slides(props: { slides: Slides }) {
         <Button
           accessibilityLabel="Carousel left"
           icon={ArrowLeft}
-          size="$5"
+          size="$3"
           position="absolute"
           left="$4"
           circular
@@ -204,7 +233,7 @@ export function Slides(props: { slides: Slides }) {
         <Button
           accessibilityLabel="Carousel right"
           icon={ArrowRight}
-          size="$5"
+          size="$3"
           position="absolute"
           right="$4"
           circular
@@ -219,11 +248,19 @@ export function Slides(props: { slides: Slides }) {
 
       <ShowAllStepsContext.Provider value={true}>
         <SlidePreview b={250}>
-          {PreviewCurrentSlideComponent && <PreviewCurrentSlideComponent />}
+          {PreviewCurrentSlideComponent && (
+            <SlideContext.Provider value={nextSlideContext}>
+              <PreviewCurrentSlideComponent />
+            </SlideContext.Provider>
+          )}
         </SlidePreview>
 
         <SlidePreview b={-250}>
-          {PreviewNextSlideComponent && <PreviewNextSlideComponent />}
+          {PreviewNextSlideComponent && (
+            <SlideContext.Provider value={nextSlideContext}>
+              <PreviewNextSlideComponent />
+            </SlideContext.Provider>
+          )}
         </SlidePreview>
       </ShowAllStepsContext.Provider>
     </>
@@ -254,7 +291,7 @@ const RibbonContainer = () => {
 
   return (
     <YStack
-      o={isLight ? 0.2 : 0.25}
+      o={isLight ? 0.2 : 0.4}
       pos="absolute"
       fullscreen
       scaleX="200%"

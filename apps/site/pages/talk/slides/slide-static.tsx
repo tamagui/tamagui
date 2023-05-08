@@ -12,7 +12,6 @@ import { myCustomColor } from './colors'
 const App = (props) => (
   <Stack
     backgroundColor={myCustomColor}
-    paddingHorizontal="$2"
     width={550}
     $gtSm={{
       paddingHorizontal: '$6'

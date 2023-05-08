@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shapes",
-  "version": "1.23.4",
+  "version": "1.26.0",
   "sideEffects": [
     "*.css"
   ],
@@ -26,19 +26,19 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/stacks": "1.23.4",
-    "@tamagui/web": "1.23.4"
+    "@tamagui/stacks": "1.26.0",
+    "@tamagui/web": "1.26.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.23.4",
+    "@tamagui/build": "1.26.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

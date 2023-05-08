@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="... on the web"
+      title="Web only?"
       theme="green"
       steps={[
         [
@@ -14,9 +14,14 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                props: {
+                  size: '$10',
+                  minHeight: 100,
+                  display: 'inline-flex',
+                },
                 content: (
                   <>
-                    Native <strong>flattens much less</strong> because no equivalent to:
+                    No, but native&nbsp;<strong>flattens less</strong>
                   </>
                 ),
               },
@@ -28,7 +33,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>CSS Variables</strong> - instead useTheme()
+                        <strong>CSS Variables</strong> - useTheme()
                       </>
                     ),
                   },
@@ -42,7 +47,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Media queries</strong> - instead useMedia()
+                        <strong>Media queries</strong> - useMedia()
                       </>
                     ),
                   },
@@ -56,7 +61,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> - instead onPress, onFocus, etc
+                        <strong>Psuedo styles</strong> - onPress, onFocus, etc
                       </>
                     ),
                   },
@@ -70,7 +75,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: <>Let's make those first-class 🗳️</>,
+                content: <>Let's make those happen 🗳️</>,
               },
             ],
           },
@@ -82,8 +87,8 @@ export default memo(() => {
                 type: 'text',
                 content: (
                   <>
-                    Overall less sensitive due to less elements on screen, less resizing,
-                    less DOM overhead, multi-thread.
+                    Native less sensitive - less elements on screen, less resizing, no DOM
+                    overhead, separate UI thread.
                   </>
                 ),
               },

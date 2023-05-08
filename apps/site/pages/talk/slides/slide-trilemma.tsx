@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="Can we solve it?"
       subTitle="You typically have to choose two:"
-      theme="purple"
+      theme="blue"
       stepsStrategy="replace"
       steps={[
         [

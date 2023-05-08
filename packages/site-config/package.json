@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site-config",
-  "version": "1.23.4",
+  "version": "1.26.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -22,23 +22,23 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.23.4",
-    "@tamagui/animations-react-native": "1.23.4",
-    "@tamagui/colors": "1.23.4",
-    "@tamagui/font-inter": "1.23.4",
-    "@tamagui/font-silkscreen": "1.23.4",
-    "@tamagui/react-native-media-driver": "1.23.4",
-    "@tamagui/shorthands": "1.23.4",
-    "@tamagui/themes": "1.23.4",
-    "@tamagui/web": "1.23.4"
+    "@tamagui/animations-css": "1.26.0",
+    "@tamagui/animations-react-native": "1.26.0",
+    "@tamagui/colors": "1.26.0",
+    "@tamagui/font-inter": "1.26.0",
+    "@tamagui/font-silkscreen": "1.26.0",
+    "@tamagui/react-native-media-driver": "1.26.0",
+    "@tamagui/shorthands": "1.26.0",
+    "@tamagui/themes": "1.26.0",
+    "@tamagui/web": "1.26.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.23.4"
+    "@tamagui/build": "1.26.0"
   },
   "publishConfig": {
     "access": "public"

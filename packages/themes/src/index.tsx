@@ -6,6 +6,7 @@
 //     ? runtimeThemes
 //     : (generatedThemes as typeof runtimeThemes)
 
+// export * from './themes.outlined'
 export * from './themes'
 export * from './tokens'
 export * from '@tamagui/colors'

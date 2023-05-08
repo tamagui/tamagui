@@ -23,23 +23,17 @@ const ButtonFrame = styled(HeadlessTamaguiButton, {
   flexWrap: 'nowrap',
   flexDirection: 'row',
   cursor: 'pointer',
-  focusable: true,
   hoverTheme: true,
   pressTheme: true,
   backgrounded: true,
   borderWidth: 1,
-  borderColor: 'transparent',
+  borderColor: '$borderColor',
 
   pressStyle: {
-    borderColor: 'transparent',
-  },
-
-  hoverStyle: {
-    borderColor: 'transparent',
+    borderColor: '$borderColorPress',
   },
 
   focusStyle: {
-    borderColor: '$borderColorFocus',
     outlineColor: '$borderColorFocus',
     outlineStyle: 'solid',
     outlineWidth: 2,

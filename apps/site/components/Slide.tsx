@@ -1,7 +1,6 @@
 import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
-  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
@@ -14,6 +13,7 @@ import {
   ThemeName,
   XStack,
   YStack,
+  YStackProps,
   useComposedRefs,
   usePresence,
   useThemeName,
@@ -31,6 +31,25 @@ export type SlideProps = {
   variant?: 1
   theme?: ThemeName
 }
+
+const superBouncyOpacityClamped = [
+  'superBouncy',
+  {
+    opacity: {
+      overshootClamping: true,
+    },
+  },
+] as any
+
+const lessBouncyOpacityClamped = [
+  'slow',
+  {
+    opacity: {
+      overshootClamping: true,
+    },
+    delay: 1000,
+  },
+] as any
 
 type SlideStepItem =
   | {
@@ -71,6 +90,7 @@ type SlideStepItem =
   | {
       type: 'vertical'
       title?: any
+      variant?: 'center-vertically'
       content: SlideStepItem[]
     }
   | {
@@ -94,11 +114,13 @@ type SlideStepItem =
       props?: SizableTextProps
       content: string
       lang?: 'tsx'
+      title?: any
     }
   | {
       type: 'bullet-point'
       size?: FontSizeTokens
       slim?: boolean
+      props?: YStackProps
       content: SlideStepItem[]
     }
   | {
@@ -125,10 +147,9 @@ const SlideInner = (props: SlideProps) => {
   const showAllSteps = useContext(ShowAllStepsContext)
   const glows = useGlows(props.variant)
   const [isPresent] = usePresence()
-  const [step, setStep] = useState(1)
-  const context = useContext(SlideContext)
-
   const max = props.steps.length
+  const [step, setStep] = useState(max > 1 ? 0 : 1)
+  const context = useContext(SlideContext)
 
   useEffect(() => {
     if (!isPresent) return
@@ -165,6 +186,8 @@ const SlideInner = (props: SlideProps) => {
           .slice(0, showAllSteps ? Infinity : step)
           .map((s, i) => <React.Fragment key={i}>{getStep(s)}</React.Fragment>)
 
+  const nextStepPreload = getStep(props.steps[step])
+
   return (
     <>
       <YStack fullscreen zi={-1}>
@@ -174,7 +197,7 @@ const SlideInner = (props: SlideProps) => {
         <YStack space="$4">
           {Boolean(props.title) && (
             <H1
-              fontSize={90}
+              fontSize={75}
               lh={120}
               textShadowColor="$shadowColor"
               textShadowRadius={10}
@@ -194,6 +217,10 @@ const SlideInner = (props: SlideProps) => {
 
         <YStack f={1} gap="$10" maxHeight="100%" flexWrap="wrap" w="100%">
           {stepsContent}
+        </YStack>
+
+        <YStack pos="absolute" o={0} zi={-1}>
+          {nextStepPreload}
         </YStack>
       </YStack>
     </>
@@ -243,8 +270,12 @@ function useGlows(variant: SlideProps['variant']) {
     ref,
     elements: (
       <>
-        <glow.Component />
-        <glint.Component />
+        <YStack className="rotate-slow-right">
+          <glow.Component />
+        </YStack>
+        <YStack className="rotate-slow-left">
+          <glint.Component />
+        </YStack>
       </>
     ),
   }
@@ -295,7 +326,7 @@ function getTextContent(
                     minWidth: '90%',
                   })}
                   {...(item.fullscreen && {
-                    scale: 2.25,
+                    scale: 2,
                     zi: 10000,
                   })}
                 >
@@ -318,7 +349,13 @@ function getTextContent(
 
             case 'vertical':
               return (
-                <YStack h="100%">
+                <YStack
+                  h="100%"
+                  {...(item.variant === 'center-vertically' && {
+                    ai: 'center',
+                    jc: 'center',
+                  })}
+                >
                   {!!item.title && (
                     <H4 size="$10" als="center" mb="$4" color="$color9">
                       {item.title}
@@ -353,14 +390,23 @@ function getTextContent(
             case 'bullet-point':
               return (
                 <YStack
-                  pl="$10"
+                  pl="$8"
                   pt="$2"
-                  pr="$10"
+                  pr="$8"
+                  mb="$-1.5"
                   {...(item.slim && {
                     pl: '$2',
                     pr: '$2',
-                    mb: '$0',
+                    pt: '$0',
                   })}
+                  animation={superBouncyOpacityClamped}
+                  enterStyle={{
+                    o: 0,
+                    y: -10,
+                  }}
+                  y={0}
+                  o={1}
+                  {...item.props}
                 >
                   {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                     size: item.size ?? size ?? '$9',
@@ -385,26 +431,53 @@ function getTextContent(
             case 'space':
               return <Spacer />
 
-            case 'code':
-              return (
-                <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
-                  <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                </DocCodeBlock>
+            case 'code': {
+              const content = (
+                <>
+                  <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                    <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                  </DocCodeBlock>
+                </>
               )
+
+              if (item.title) {
+                return (
+                  <YStack ai="center" space>
+                    <H4>{item.title}</H4>
+                    {content}
+                  </YStack>
+                )
+              }
+
+              return content
+            }
 
             case 'callout': {
               let size = '$12' as any
 
               if (typeof item.content === 'string') {
                 const sizeNum = Math.min(
-                  Math.max(8, Math.round(580 / item.content.length)),
+                  Math.max(8, Math.round(550 / item.content.length)),
                   16
                 )
                 size = `$${sizeNum}`
               }
 
               return (
-                <YStack mah="100%" f={1} ai="center" jc="center">
+                <YStack
+                  mah="100%"
+                  f={1}
+                  ai="center"
+                  jc="center"
+                  px="$6"
+                  // animation={lessBouncyOpacityClamped}
+                  // enterStyle={{
+                  //   o: 0,
+                  //   scale: 0.9,
+                  // }}
+                  // scale={1}
+                  // o={1}
+                >
                   <Paragraph
                     color="$color11"
                     als="center"
@@ -477,10 +550,11 @@ function getTextContent(
               return (
                 <Paragraph
                   pos="absolute"
-                  t="20%"
-                  r="10%"
+                  t="0%"
+                  r="0%"
                   shadowColor="$shadowColor"
                   shadowRadius="$5"
+                  zi={100000}
                   fow="800"
                   size={size ?? '$9'}
                   backgroundColor={
@@ -493,6 +567,7 @@ function getTextContent(
                   p="$2"
                   br="$6"
                   lh="$10"
+                  rotate="10deg"
                   {...item.props}
                 >
                   {item.content}&nbsp;

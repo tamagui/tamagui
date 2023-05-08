@@ -184,7 +184,12 @@ config.module.rules.push({
 })
 ```
 
-You'll also need to alias `react-native` to `react-native-web`:
+<Notice>
+  As of version `1.24.0` fullySpecified is no longer mandatory, but may still be useful
+  for general React Native dependency compatibility.
+</Notice>
+
+You'll also need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver):
 
 ```tsx
 config.resolve.alias['react-native$'] = require.resolve('react-native-web')
@@ -198,10 +203,10 @@ Remember, Tamagui runs fully at runtime, so you don't need to set up the compile
 
 We have a few guides for the compiler that also include setup of any extras for the web:
 
-- [Webpack](/docs/compiler/install#webpack)
-- [Next.js](/docs/compiler/install#nextjs) ([guide](/docs/guides/next-js))
-- [Vite](#vite) ([guide](/docs/guides/vite))
-- [Metro](/docs/compiler/install#babel--metro)
+- [Webpack](/docs/intro/compiler-install#webpack)
+- [Next.js](/docs/intro/compiler-install#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](/docs/intro/compiler-install#vite) ([guide](/docs/guides/vite))
+- [Metro](/docs/intro/compiler-install#babel--metro)
 - [Expo](/docs/guides/expo)
 
 Just note: you don't need to set up the compiler!

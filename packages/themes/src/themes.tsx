@@ -196,8 +196,8 @@ const [lightColorThemes, darkColorThemes] = [colorTokens.light, colorTokens.dark
         const colorPalette = Object.values(colorSet[color]) as string[]
         // were re-ordering these
         const [head, tail] = [
-          colorPalette.slice(0, 4),
-          colorPalette.slice(colorPalette.length - 7),
+          colorPalette.slice(0, 6),
+          colorPalette.slice(colorPalette.length - 5),
         ]
         // add our transparent colors first/last
         // and make sure the last (foreground) color is white/black rather than colorful
@@ -337,10 +337,16 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
     background: isLight ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.9)',
   } as SubTheme
 
+  const weaker2WithoutBorder = {
+    ...weaker2,
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+  }
+
   return {
     ListItem: isLight ? stronger1 : base,
     Card: weaker1,
-    Button: weaker2,
+    Button: weaker2WithoutBorder,
     Checkbox: weaker2,
     DrawerFrame: weaker1,
     SliderTrack: stronger1,

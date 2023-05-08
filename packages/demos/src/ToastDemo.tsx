@@ -1,8 +1,10 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { Text, View } from 'react-native'
-import { Button, Label, SizableText, Switch, XStack, YStack } from 'tamagui'
+import { Button, Label, Switch, XStack, YStack } from 'tamagui'
 
+/**
+ *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add the ToastProvider and ToastViewport as well.
+ */
 export const ToastDemo = () => {
   const [native, setNative] = React.useState(false)
 

@@ -508,20 +508,10 @@ const getToken = (
 
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
-      console.warn(
-        `⚠️ You passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
-
-Set the debug prop to true to see more detailed debug information.`
-      )
-      if (debug) {
-        if (isDevTools) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log('Looked in:', { theme, tokensParsed })
-        }
-      }
-      return null
+      return
     }
   }
+
   return value
 }
 

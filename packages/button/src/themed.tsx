@@ -50,18 +50,13 @@ const ButtonFrame = styled(HeadlessButton, {
         pressTheme: true,
         backgrounded: true,
         borderWidth: 1,
-        borderColor: 'transparent',
+        borderColor: '$borderColor',
 
         pressStyle: {
-          borderColor: 'transparent',
-        },
-
-        hoverStyle: {
-          borderColor: 'transparent',
+          borderColor: '$borderColorPress',
         },
 
         focusStyle: {
-          borderColor: '$borderColorFocus',
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
           outlineWidth: 2,

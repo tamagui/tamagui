@@ -11,7 +11,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `Verbosity is the death of creativity`,
+            content: `Verbosity, the death of creativity`,
           },
         ],
       ]}

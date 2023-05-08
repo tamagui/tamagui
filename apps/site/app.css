@@ -702,11 +702,31 @@ input, textarea {
 
 .callout {
   text-shadow:
-    2px 2px 0 var(--orange10),
-    4px 4px 0 var(--yellow10),
-    6px 6px 0 var(--green10),
-    8px 8px 0 var(--blue10),
-    12px 12px 0 var(--purple10),
-    14px 14px 0 var(--pink10),
-    16px 16px 0 var(--red10);
+    1px 1px 0 var(--orange10),
+    2px 2px 0 var(--yellow10),
+    3px 3px 0 var(--green10),
+    4px 4px 0 var(--blue10),
+    5px 5px 0 var(--purple10),
+    6px 6px 0 var(--pink10),
+    7px 7px 0 var(--red10),
+    0 0 50px rgba(0,0,0,1),
+    0 0 50px rgba(0,0,0,1);
+}
+
+.rotate-slow-right {
+  animation: rotate-right 25s ease-in 2s infinite;
+  transform-origin: top left;
+}
+
+.rotate-slow-left {
+  animation: rotate-right 25s ease-out 2s infinite backwards;
+  transform-origin: top left;
+}
+
+@keyframes rotate-right {
+  0% {top:0px; right: 0; transform: scale(1);}
+  20%{top:100px; right: 100px; transform: scale(1.4);}
+  40%{top:200px; right: 0px; transform: scale(1.4);}
+  60%{top:100px; right: -100px; transform: scale(1);}
+  80%{top:0px; right: 0; transform: scale(1);}
 }

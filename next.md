@@ -14,6 +14,13 @@ high level:
   - headless
   - studio
   - takeout
+  - income:
+    - font packages + font package builder ui
+    - merch
+    - outlined theme
+    - other theme drops (gumroad cheap)
+    - auth/account/profile drop
+    - better monorepo pro drop
 
 ---
 
@@ -24,24 +31,18 @@ high level:
 - document how `size` + `font` + `space` should work together to help create a cohesive design system that works with tamagui
 
 Ali todos:
+  - studio:
+    - colors:
+      - when you modify the popup in the bottom left should have a "save" option
+        - save will make it actually update the themes with the right values
+    - animations:
+      - profiling its super slow, because for some reason animation.start() taking forever: for now just make it debounce / not animation on drag
+
   - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
-
-      - [ ] add code export
-
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
-
-    - [x] Tokens tab
-          - [ ] also can show a Button as an option too
-
-    - [ ] all tabs (header):
-      - [ ] add a search input box that filters down things as you type
-
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
-  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc. - props -> api, make headings consistent, document unstyled props, anatomy/usage consistency
-  - [ ] toast sooner style demo
-  - [ ] low prio: toast viewport issue
 
 ---
 

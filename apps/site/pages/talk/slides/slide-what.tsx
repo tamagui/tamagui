@@ -10,11 +10,14 @@ export default memo(() => {
         [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `@tamagui/core`,
               },
@@ -34,13 +37,18 @@ export default memo(() => {
               },
             ],
           },
+        ],
+        [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `@tamagui/static`,
               },
@@ -55,13 +63,18 @@ export default memo(() => {
               },
             ],
           },
+        ],
+        [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `tamagui`,
               },

@@ -81,20 +81,54 @@ export default () => (
   'tsx'
 )
 
+const snippetUsage2 = highlightCode(
+  `
+import { Stack, Theme } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Themed Background
+  </Stack>
+)
+`,
+  'tsx'
+)
+
+const snippetUsage3 = highlightCode(
+  `
+import { Stack, Theme } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="dark">
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Themed Background
+  </Stack>
+)
+`,
+  'tsx'
+)
+
 const snippetUsageComplex = highlightCode(
   `
 import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack backgroundColor="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
 
     <Theme name="dark">
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
     </Theme>
   </Theme>
 )
@@ -108,16 +142,33 @@ import { Stack, Text } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
-    <Stack backgroundColor="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
 
     <Theme inverse>
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
     </Theme>
   </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageSub = highlightCode(
+  `
+import { Stack, Text } from '@tamagui/core'
+  
+export default () => (
+  <Theme name="light">
+    <Theme name="red">
+      <MyWidget />
+    </Theme>
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Light Red Background
+  </Stack>
 )
 `,
   'tsx'
@@ -126,21 +177,24 @@ export default () => (
 const snippetUsageInverseSub = highlightCode(
   `
 import { Stack, Text } from '@tamagui/core'
-  
+
 export default () => (
   <Theme name="light">
     <Theme name="red">
-      <Stack backgroundColor="$background">
-        Light Red Background
-      </Stack>
+      <MyWidget />
 
+      {/* Now make it dark_red */}
       <Theme inverse>
-        <Text color="$color">
-          Dark red text
-        </Text>
+        <MyWidget />
       </Theme>
     </Theme>
   </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    Light Red Background
+  </Stack>
 )
 `,
   'tsx'
@@ -149,8 +203,8 @@ export default () => (
 export default memo(() => {
   return (
     <Slide
-      title="Core: Themes"
-      subTitle="Generics for styling"
+      title="Themes"
+      subTitle="@tamagui/core"
       stepsStrategy="replace"
       theme="pink"
       steps={[
@@ -175,15 +229,19 @@ export default memo(() => {
             type: 'code',
             content: snippetUsage,
           },
+        ],
 
+        [
           {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `Don't hardcode dark:color-300, instead change your theme`,
-              },
-            ],
+            type: 'code',
+            content: snippetUsage2,
+          },
+        ],
+
+        [
+          {
+            type: 'code',
+            content: snippetUsage3,
           },
         ],
 
@@ -198,6 +256,13 @@ export default memo(() => {
           {
             type: 'code',
             content: snippetUsageInverse,
+          },
+        ],
+
+        [
+          {
+            type: 'callout',
+            content: `Sub-themes`,
           },
         ],
 
@@ -220,6 +285,13 @@ export default memo(() => {
         [
           {
             type: 'code',
+            content: snippetUsageSub,
+          },
+        ],
+
+        [
+          {
+            type: 'code',
             content: snippetUsageInverseSub,
           },
         ],
@@ -229,7 +301,13 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-pink.png').default,
+            image: require('../images/themes-1.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark`,
           },
         ],
 
@@ -238,7 +316,13 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-pink-alt.png').default,
+            image: require('../images/themes-1.5.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark + inverse`,
           },
         ],
 
@@ -247,15 +331,88 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/theme-green.png').default,
+            image: require('../images/themes-2.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `light`,
           },
         ],
 
         [
           {
-            type: 'callout',
-            content: `Winamp for React`,
-            image: require('../images/winamp.jpg').default,
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-3.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `light_outlined`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-4.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_outlined`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-5.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_green_outlined`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-6.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_purple`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-7.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_purple_alt`,
           },
         ],
 
@@ -280,93 +437,22 @@ export default memo(() => {
         //   },
         // ],
 
-        [
-          {
-            type: 'fullscreen',
-            content: (
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/FqFLwud5l7g"
-                title="beatgig-demo"
-                frameBorder={0}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ),
-          },
-        ],
-
-        [
-          {
-            type: 'callout',
-            content: `Theme > Prop`,
-          },
-        ],
-
-        [
-          {
-            type: 'bullet-point',
-            size: '$10',
-            content: [
-              {
-                type: 'text',
-                content: `Works with animation drivers`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            content: [
-              {
-                type: 'text',
-                content: `Avoids re-renders on web`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            content: [
-              {
-                type: 'text',
-                content: `useTheme() hook escape hatch`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            content: [
-              {
-                type: 'text',
-                content: `Nest as many times as you want`,
-              },
-            ],
-          },
-          {
-            type: 'bullet-point',
-            size: '$10',
-            content: [
-              {
-                type: 'text',
-                content: `Target individual components`,
-              },
-
-              {
-                type: 'code-inline',
-                props: {
-                  color: '$color2',
-                },
-                content: `light_Button`,
-              },
-            ],
-          },
-        ],
+        // [
+        //   {
+        //     type: 'fullscreen',
+        //     content: (
+        //       <iframe
+        //         width="100%"
+        //         height="100%"
+        //         src="https://www.youtube.com/embed/FqFLwud5l7g"
+        //         title="beatgig-demo"
+        //         frameBorder={0}
+        //         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        //         allowFullScreen
+        //       />
+        //     ),
+        //   },
+        // ],
       ]}
     />
   )

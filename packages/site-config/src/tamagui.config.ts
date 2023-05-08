@@ -2,7 +2,6 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
-import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'

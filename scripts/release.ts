@@ -44,7 +44,7 @@ const nextVersion = (() => {
   const curPatch = +curVersion.split('.')[2] || 0
   const patchVersion = patch ? curPatch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
-  const minorVersion = curMinor + (!patch ? plusVersion : 0)
+  const minorVersion = curMinor + (patch || canary ? 0 : plusVersion)
   const next = `1.${minorVersion}.${patchVersion}`
 
   if (canary) {
