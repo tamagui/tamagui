@@ -167,7 +167,6 @@ const ButtonTextFrame = styled(HeadlessButtonText, {
 const ButtonText = ButtonTextFrame.styleable(
   (props: ScopedProps<GetProps<typeof ButtonTextFrame>>, ref) => {
     const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
-
     useEffect(() => {
       const unregister = context.registerButtonText()
       return () => unregister()
@@ -200,7 +199,7 @@ const ButtonIcon = (props: ScopedProps<ButtonIconComponentProps>) => {
 
 const ButtonComponent = ButtonFrame.styleable<ScopedProps<ButtonProps>>(
   (props: ScopedProps<ButtonProps>, ref) => {
-    const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'simple'
+    const buttonApi = props.forceButtonApi ?? getConfig().buttonApi ?? 'mixed'
     const { props: buttonProps } = useButton(props)
     const [buttonTextCount, setButtonTextCount] = useState(0)
 
@@ -229,7 +228,7 @@ const ButtonComponent = ButtonFrame.styleable<ScopedProps<ButtonProps>>(
         usesComposableApi={usesComposableApi}
         registerButtonText={registerButtonText}
       >
-        <ButtonFrame ref={ref} {...buttonProps} />
+        <ButtonFrame unstyled={props.unstyled ?? false} ref={ref} {...buttonProps} />
       </ButtonProvider>
     )
   }
