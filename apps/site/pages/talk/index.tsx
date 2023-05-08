@@ -16,6 +16,7 @@ import slideCorePrinciples from './slides/slide-core-principles'
 import slideCoreSyntax from './slides/slide-core-syntax'
 import slideCoreThemesAndAnimations from './slides/slide-core-themes-and-animations'
 import slideCssInJs from './slides/slide-css-in-js'
+import slideDesignSystems from './slides/slide-design-systems'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
@@ -83,6 +84,7 @@ export default function TamaguiTalk() {
         slides={[
           Slide1,
           slideTwitterPoll,
+          slideDesignSystems,
           SlideWhat,
           SlideWhy,
           slideWhy2,

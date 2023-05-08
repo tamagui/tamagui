@@ -46,7 +46,7 @@ const lessBouncyOpacityClamped = [
     opacity: {
       overshootClamping: true,
     },
-    delay: 500,
+    delay: 1000,
   },
 ] as any
 
@@ -470,7 +470,7 @@ function getTextContent(
                   animation={lessBouncyOpacityClamped}
                   enterStyle={{
                     o: 0,
-                    scale: 0.75,
+                    scale: 0.9,
                   }}
                   scale={1}
                   o={1}

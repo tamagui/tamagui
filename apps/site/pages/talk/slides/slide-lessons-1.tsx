@@ -11,7 +11,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: <>I actually wrote Tamagui twice...</>,
+            content: <>I wrote Tamagui twice...</>,
           },
         ],
 
@@ -25,7 +25,7 @@ export default memo(() => {
                 make it right
                 <br /> make it fast ...
                 <br />
-                <br /> <em>...can be a trap</em>
+                <br /> <em>...was a trap</em>
               </>
             ),
           },
