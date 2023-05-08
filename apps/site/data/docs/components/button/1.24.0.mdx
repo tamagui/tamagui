@@ -51,24 +51,22 @@ export default () => (
 
 ## Configuration
 
-The button component comes with two APIs:
+The button component comes with two APIs, `composable` and `simple`. The simple API is very easy to use but harder to customize, while the composable API gives you more control over customization with the price of verbosity.
 
-The simple API is very easy to use but may be harder to customize.
+By default, both APIs are enabled at the cost of Tamagui double-rendering to figure out which one you're using.
 
-The composable API gives you more control over customization, since you can customize each composite component with the price of verbosity.
-
-By default, both APIs are enabled, but Tamagui might do double-rendering to figure out which one you're using. To prevent that, you should set `buttonApi` when calling `createTamagui`. Like so:
+To prevent that, you should set the `buttonApi` option when calling `createTamagui`, like so:
 
 ```ts
 createTamagui({
   // ...the rest of your config
-  buttonApi: "comopsable", // or "simple"
+  buttonApi: 'composable', // or 'simple'
 })
 ```
 
 ## Headless
 
-Tamagui offers a headless version of this component with no styling. Simply import button from `@tamagui/button/headless`. The headless import only supports the comopsable API.
+Tamagui also offers headless Button with no styles included. Import it from `@tamagui/button/headless`. The headless import only supports the comopsable API.
 
 ```tsx
 import { Button } from '@tamagui/button/headless'
