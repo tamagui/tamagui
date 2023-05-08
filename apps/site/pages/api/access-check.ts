@@ -38,19 +38,24 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
-  const { orgs, personal } = await checkForSponsorship(githubLogin, userGithubToken)
+  const { orgs, personalSponsorship } = await checkForSponsorship(
+    githubLogin,
+    userGithubToken
+  )
   const isWhitelisted = usernameWhitelist.includes(githubLogin)
-  const isSponsor = !!personal?.isSponsoring || orgs.some((org) => org.isSponsoring)
-  const accessStudio =
-    !!personal?.tierIncludesStudio || orgs.some((org) => org.tierIncludesStudio)
+  const isSponsor =
+    !!personalSponsorship?.sponsoring || orgs.some((org) => org.sponsorship.sponsoring)
+  const accessStudio: UserAccessStatus['access']['studio'] =
+    orgs.find((org) => org.sponsorship.sponsoring)?.sponsorship.studio ??
+    personalSponsorship.studio
 
   res.json({
     access: {
+      sponsoring: isSponsor,
       studio: accessStudio,
     },
-    isSponsor,
     isWhitelisted,
-    githubStatus: { orgs, personal },
+    githubStatus: { orgs, personalSponsorship },
   } satisfies UserAccessStatus)
 }
 

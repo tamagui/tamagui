@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
+import { siteRootDir } from '@protected/studio/constants'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
@@ -51,31 +52,22 @@ const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
     return <Spinner />
   }
 
-  if (accessStatus.isWhitelisted) {
-    return (
-      <>
-        <WhitelistNotice />
-        {children}
-      </>
-    )
-  }
+  // if (accessStatus.isWhitelisted) {
+  //   return (
+  //     <>
+  //       <WhitelistNotice />
+  //       {children}
+  //     </>
+  //   )
+  // }
 
-  if (!accessStatus.isSponsor) {
+
+  if (!accessStatus.access.studio.access) {
     return (
       <ErrorScreen
-        title="Studio is only accessible for sponsors."
-        message="You are not a tamagui sponsor. Sponsor the project to access Studio."
-        action={{ url: 'https://github.com/sponsors/natew', text: 'Sponsor Tamagui' }}
-      />
-    )
-  }
-
-  if (!accessStatus.access.studio) {
-    return (
-      <ErrorScreen
-        title="Studio is only accessible for sponsors."
-        message=" You are a sponsor, but your tier doesn't include Studio access. Please get a tier that includes Studio."
-        action={{ url: 'https://github.com/sponsors/natew', text: 'Sponsor Tamagui' }}
+        title="You don't have access to Studio"
+        message={accessStatus.access.studio.message}
+        action={{ url: `${siteRootDir}/account#studio-queue`, text: 'More Info' }}
       />
     )
   }

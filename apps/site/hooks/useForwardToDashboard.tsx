@@ -1,4 +1,3 @@
-import { studioRootDir } from '@protected/studio/constants'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
@@ -9,10 +8,8 @@ export function useForwardToDashboard() {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(user, isLoading)
     if (user && !isLoading) {
-      console.log(studioRootDir)
-      router.replace(studioRootDir)
+      router.replace('/account')
     }
   }, [user, isLoading])
 }

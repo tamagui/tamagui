@@ -1,5 +1,4 @@
 import { Database } from '@lib/supabase-types'
-import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -7,7 +6,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useReducer,
   useState,
 } from 'react'
