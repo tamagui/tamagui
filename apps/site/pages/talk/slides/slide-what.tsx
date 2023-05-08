@@ -10,6 +10,9 @@ export default memo(() => {
         [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
@@ -38,6 +41,9 @@ export default memo(() => {
         [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
@@ -61,6 +67,9 @@ export default memo(() => {
         [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',

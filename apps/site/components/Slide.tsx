@@ -13,6 +13,7 @@ import {
   ThemeName,
   XStack,
   YStack,
+  YStackProps,
   useComposedRefs,
   usePresence,
   useThemeName,
@@ -119,6 +120,7 @@ type SlideStepItem =
       type: 'bullet-point'
       size?: FontSizeTokens
       slim?: boolean
+      props?: YStackProps
       content: SlideStepItem[]
     }
   | {
@@ -404,6 +406,7 @@ function getTextContent(
                   }}
                   y={0}
                   o={1}
+                  {...item.props}
                 >
                   {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                     size: item.size ?? size ?? '$9',
@@ -467,13 +470,13 @@ function getTextContent(
                   ai="center"
                   jc="center"
                   px="$6"
-                  animation={lessBouncyOpacityClamped}
-                  enterStyle={{
-                    o: 0,
-                    scale: 0.9,
-                  }}
-                  scale={1}
-                  o={1}
+                  // animation={lessBouncyOpacityClamped}
+                  // enterStyle={{
+                  //   o: 0,
+                  //   scale: 0.9,
+                  // }}
+                  // scale={1}
+                  // o={1}
                 >
                   <Paragraph
                     color="$color11"

@@ -78,8 +78,12 @@ export default function TamaguiTalk() {
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>
-      <YStack fullscreen className="bg-grid" />
-      <RibbonContainer />
+
+      <YStack pos="absolute" {...slideDimensions} ov="hidden">
+        <YStack fullscreen className="bg-grid" />
+        <RibbonContainer />
+      </YStack>
+
       <Slides
         slides={[
           Slide1,
@@ -151,7 +155,6 @@ export function Slides(props: { slides: Slides }) {
   const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
-
   const slideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -161,9 +164,21 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
+  const nextSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const nextSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc: number) => boolean) => {
+        nextSlideGoToNextStep.current = nextStep
+        nextSlideGoToNextStep.current(1)
+      },
+    }),
+    []
+  )
+
   const nextStep = useEvent(() => {
     const inc = 1
     if (goToNextStep.current?.(inc)) {
+      nextSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -171,6 +186,7 @@ export function Slides(props: { slides: Slides }) {
   const prevStep = useEvent(() => {
     const inc = -1
     if (goToNextStep.current?.(inc)) {
+      nextSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -232,11 +248,19 @@ export function Slides(props: { slides: Slides }) {
 
       <ShowAllStepsContext.Provider value={true}>
         <SlidePreview b={250}>
-          {PreviewCurrentSlideComponent && <PreviewCurrentSlideComponent />}
+          {PreviewCurrentSlideComponent && (
+            <SlideContext.Provider value={nextSlideContext}>
+              <PreviewCurrentSlideComponent />
+            </SlideContext.Provider>
+          )}
         </SlidePreview>
 
         <SlidePreview b={-250}>
-          {PreviewNextSlideComponent && <PreviewNextSlideComponent />}
+          {PreviewNextSlideComponent && (
+            <SlideContext.Provider value={nextSlideContext}>
+              <PreviewNextSlideComponent />
+            </SlideContext.Provider>
+          )}
         </SlidePreview>
       </ShowAllStepsContext.Provider>
     </>
