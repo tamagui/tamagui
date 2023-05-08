@@ -12,7 +12,7 @@ export default (props) => (
   <Stack
     animation="fast"
 
-    enterStyle={{
+    hoverStyle={{
       opacity: 0,
     }}
 
@@ -31,7 +31,7 @@ export default (props) => (
   <Stack
     animation="fast"
 
-    enterStyle={{
+    hoverStyle={{
       opacity: 0,
       backgroundColor: '$color5',
     }}
@@ -103,7 +103,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `If using CSS driver, this never re-renders`,
+                    content: `On the web this doesn't trigger a render on theme change - or on animation if using the CSS driver`,
                   },
                 ],
               },

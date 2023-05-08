@@ -371,9 +371,10 @@ function getTextContent(
             case 'bullet-point':
               return (
                 <YStack
-                  pl="$10"
+                  pl="$8"
                   pt="$2"
-                  pr="$10"
+                  pr="$8"
+                  mb="$-"
                   {...(item.slim && {
                     pl: '$2',
                     pr: '$2',

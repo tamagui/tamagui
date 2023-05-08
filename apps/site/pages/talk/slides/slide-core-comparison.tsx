@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="Tailwind?"
-      subTitle="🌶️"
+      subTitle="Tamagui is great for just the web, too"
       theme="yellow"
       steps={[
         [
@@ -25,7 +25,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 60,
+                          marginBottom: 70,
                           display: 'inline-flex',
                         },
                         content: `Inline styles`,
@@ -40,7 +40,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 60,
+                          marginBottom: 70,
                           display: 'inline-flex',
                         },
                         content: `Shorthands`,
@@ -55,7 +55,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 60,
+                          marginBottom: 70,
                           display: 'inline-flex',
                         },
                         content: `Minimal CSS`,
@@ -70,7 +70,7 @@ export default memo(() => {
                         type: 'text',
                         props: {
                           size: '$10',
-                          marginBottom: 60,
+                          marginBottom: 70,
                           display: 'inline-flex',
                         },
                         content: `Native + Web`,
@@ -91,8 +91,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `Has extra bundle size`,
@@ -107,11 +107,11 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
-                        content: `Everything is typed`,
+                        content: `Everything is typed w/o plugin`,
                       },
                     ],
                   },
@@ -122,8 +122,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `Properly merge props`,
@@ -137,29 +137,14 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `De/re-structure styles`,
                       },
                     ],
                   },
-                  {
-                    type: 'bullet-point',
-                    slim: true,
-                    content: [
-                      {
-                        type: 'text',
-                        props: {
-                          size: '$8',
-                          marginBottom: 0,
-                          display: 'inline-flex',
-                        },
-                        content: `No dark:red-300`,
-                      },
-                    ],
-                  },
 
                   {
                     type: 'bullet-point',
@@ -168,24 +153,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
-                          display: 'inline-flex',
-                        },
-                        content: `Compiler optimization++`,
-                      },
-                    ],
-                  },
-
-                  {
-                    type: 'bullet-point',
-                    slim: true,
-                    content: [
-                      {
-                        type: 'text',
-                        props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
                         content: `Powerful themes`,
@@ -200,11 +169,11 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$8',
-                          marginBottom: 0,
+                          size: '$9',
+                          marginBottom: 20,
                           display: 'inline-flex',
                         },
-                        content: `No editor plugin`,
+                        content: `Compiler optimization++`,
                       },
                     ],
                   },

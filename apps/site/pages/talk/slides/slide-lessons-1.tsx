@@ -5,17 +5,27 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Takeaways"
       theme="pink"
+      stepsStrategy="replace"
       steps={[
+        [
+          {
+            type: 'callout',
+            content: <>I actually wrote Tamagui twice...</>,
+          },
+        ],
+
         [
           {
             type: 'callout',
             content: (
               <>
-                Make it work, make it right, make it fast ...
+                Make it work,
                 <br />
-                <br /> <em>is kind of wrong</em>
+                make it right
+                <br /> make it fast ...
+                <br />
+                <br /> <em>...can be a trap</em>
               </>
             ),
           },
