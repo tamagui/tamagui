@@ -70,25 +70,32 @@ export interface Subscription {
   prices?: Price
 }
 
+type StudioAccess =
+  | {
+      access: true
+    }
+  | {
+      access: false
+      message: string
+      accessDate: Date
+    }
+export type SponsorshipStatus = {
+  sponsoring: boolean
+  studio: StudioAccess
+}
+
 export type UserAccessStatus = {
   isWhitelisted: boolean
-  isSponsor: boolean
-  access: {
-    studio: boolean
-  }
+  access: SponsorshipStatus
   githubStatus: {
     orgs: {
-      isSponsoring: boolean
-      tierIncludesStudio: boolean
+      sponsorship: SponsorshipStatus
 
       id: string
       login: string
       avatarUrl: string
       name: string
     }[]
-    personal?: {
-      isSponsoring: boolean
-      tierIncludesStudio: boolean
-    }
+    personalSponsorship: SponsorshipStatus
   }
 }
