@@ -11,7 +11,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `Avoid re-rendering`,
+            content: `#1 rule: avoid re-rendering`,
           },
         ],
       ]}

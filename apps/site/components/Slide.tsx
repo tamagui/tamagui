@@ -31,6 +31,25 @@ export type SlideProps = {
   theme?: ThemeName
 }
 
+const superBouncyOpacityClamped = [
+  'superBouncy',
+  {
+    opacity: {
+      overshootClamping: true,
+    },
+  },
+] as any
+
+const lessBouncyOpacityClamped = [
+  'slow',
+  {
+    opacity: {
+      overshootClamping: true,
+    },
+    delay: 500,
+  },
+] as any
+
 type SlideStepItem =
   | {
       type: 'fullscreen'
@@ -378,6 +397,13 @@ function getTextContent(
                     pr: '$2',
                     pt: '$0',
                   })}
+                  animation={superBouncyOpacityClamped}
+                  enterStyle={{
+                    o: 0,
+                    y: -10,
+                  }}
+                  y={0}
+                  o={1}
                 >
                   {getTextContent([{ type: 'text', content: '· ' }, ...item.content], {
                     size: item.size ?? size ?? '$9',
@@ -435,7 +461,20 @@ function getTextContent(
               }
 
               return (
-                <YStack mah="100%" f={1} ai="center" jc="center" px="$6">
+                <YStack
+                  mah="100%"
+                  f={1}
+                  ai="center"
+                  jc="center"
+                  px="$6"
+                  animation={lessBouncyOpacityClamped}
+                  enterStyle={{
+                    o: 0,
+                    scale: 0.75,
+                  }}
+                  scale={1}
+                  o={1}
+                >
                   <Paragraph
                     color="$color11"
                     als="center"

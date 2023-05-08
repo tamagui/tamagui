@@ -203,8 +203,8 @@ const MyWidget = () => (
 export default memo(() => {
   return (
     <Slide
-      title="Core: Themes"
-      subTitle="Generics for styling"
+      title="Themes"
+      subTitle="@tamagui/core"
       stepsStrategy="replace"
       theme="pink"
       steps={[

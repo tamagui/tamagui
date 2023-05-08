@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="... on the web"
+      title="Web only?"
       theme="green"
       steps={[
         [
@@ -14,9 +14,14 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                props: {
+                  size: '$10',
+                  minHeight: 100,
+                  display: 'inline-flex',
+                },
                 content: (
                   <>
-                    Native <strong>flattens less</strong> because no
+                    No, but native&nbsp;<strong>flattens less</strong>
                   </>
                 ),
               },
@@ -82,8 +87,8 @@ export default memo(() => {
                 type: 'text',
                 content: (
                   <>
-                    Overall less sensitive due to less elements on screen, less resizing,
-                    less DOM overhead, multi-thread.
+                    Native less sensitive - less elements on screen, less resizing, no DOM
+                    overhead, separate UI thread.
                   </>
                 ),
               },

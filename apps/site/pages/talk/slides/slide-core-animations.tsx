@@ -66,8 +66,8 @@ export default (props) => (
 export default memo(() => {
   return (
     <Slide
-      title="Core: Animations"
-      subTitle="Swappable drivers"
+      title="Animations"
+      subTitle="@tamagui/core"
       stepsStrategy="replace"
       theme="pink"
       steps={[

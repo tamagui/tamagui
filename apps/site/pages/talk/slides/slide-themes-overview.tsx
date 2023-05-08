@@ -27,7 +27,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             size: '$10',
@@ -39,7 +40,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             size: '$10',
@@ -51,7 +53,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             size: '$10',
@@ -63,7 +66,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             size: '$10',

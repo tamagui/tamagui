@@ -1,6 +1,7 @@
 import { config } from '@tamagui/site-config'
 import { createTamagui } from 'tamagui'
 
+// for responsive demo
 Object.assign(config.media, {
   tiny: { maxWidth: 500 },
   gtTiny: { minWidth: 500 + 1 },

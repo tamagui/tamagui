@@ -5,6 +5,11 @@ export const animations = createAnimations({
     type: 'timing',
     duration: 100,
   },
+  superBouncy: {
+    damping: 5,
+    mass: 0.7,
+    stiffness: 200,
+  },
   bouncy: {
     damping: 9,
     mass: 0.9,

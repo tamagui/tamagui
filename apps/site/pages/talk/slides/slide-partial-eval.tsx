@@ -48,7 +48,7 @@ export default memo(() => {
   return (
     <Slide
       title="Partial Evaluation"
-      subTitle="Turns logic into nothing"
+      subTitle="Performance worries gone"
       theme="green"
       steps={[
         [
