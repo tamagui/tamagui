@@ -30,6 +30,7 @@ import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
+import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
@@ -40,6 +41,7 @@ import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
 import slideWhy6 from './slides/slide-why6'
+import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
 import Slide6c from './slides/slide6c'
 
@@ -96,6 +98,8 @@ export default function TamaguiTalk() {
           slideCorePrinciples,
           slideCoreAnimations,
           SlideThemes,
+          slideWinamp,
+          slideThemesOverview,
           slideCoreThemesAndAnimations,
           SlideLessons1,
           // SlideThemes2,
@@ -107,9 +111,9 @@ export default function TamaguiTalk() {
           Slide6c,
           SlideExpressYourself,
           slideCssInJs,
-          SlideTamagui,
-          slideTamaguiCode,
-          Slide5,
+          // SlideTamagui,
+          // slideTamaguiCode,
+          // Slide5,
           SlideLessons2,
           slideLessons3,
         ]}

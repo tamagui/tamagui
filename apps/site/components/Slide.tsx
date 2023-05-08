@@ -1,12 +1,10 @@
 import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
-  EnsureFlexed,
   FontSizeTokens,
   H1,
   H2,
   H4,
-  H5,
   Paragraph,
   SizableTextProps,
   SpaceTokens,
@@ -178,7 +176,7 @@ const SlideInner = (props: SlideProps) => {
         <YStack space="$4">
           {Boolean(props.title) && (
             <H1
-              fontSize={90}
+              fontSize={75}
               lh={120}
               textShadowColor="$shadowColor"
               textShadowRadius={10}
@@ -307,7 +305,7 @@ function getTextContent(
                     minWidth: '90%',
                   })}
                   {...(item.fullscreen && {
-                    scale: 2.25,
+                    scale: 2,
                     zi: 10000,
                   })}
                 >
@@ -374,7 +372,7 @@ function getTextContent(
                   pl="$8"
                   pt="$2"
                   pr="$8"
-                  mb="$-"
+                  mb="$-1.5"
                   {...(item.slim && {
                     pl: '$2',
                     pr: '$2',
@@ -510,10 +508,11 @@ function getTextContent(
               return (
                 <Paragraph
                   pos="absolute"
-                  t="20%"
-                  r="10%"
+                  t="0%"
+                  r="0%"
                   shadowColor="$shadowColor"
                   shadowRadius="$5"
+                  zi={100000}
                   fow="800"
                   size={size ?? '$9'}
                   backgroundColor={
@@ -526,6 +525,7 @@ function getTextContent(
                   p="$2"
                   br="$6"
                   lh="$10"
+                  rotate="10deg"
                   {...item.props}
                 >
                   {item.content}&nbsp;

@@ -16,7 +16,7 @@ export default memo(() => {
                 type: 'text',
                 content: (
                   <>
-                    Native <strong>flattens much less</strong> because no equivalent to:
+                    Native <strong>flattens less</strong> because no
                   </>
                 ),
               },
@@ -28,7 +28,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>CSS Variables</strong> - instead useTheme()
+                        <strong>CSS Variables</strong> - useTheme()
                       </>
                     ),
                   },
@@ -42,7 +42,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Media queries</strong> - instead useMedia()
+                        <strong>Media queries</strong> - useMedia()
                       </>
                     ),
                   },
@@ -56,7 +56,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> - instead onPress, onFocus, etc
+                        <strong>Psuedo styles</strong> - onPress, onFocus, etc
                       </>
                     ),
                   },
@@ -70,7 +70,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: <>Let's make those first-class 🗳️</>,
+                content: <>Let's make those happen 🗳️</>,
               },
             ],
           },

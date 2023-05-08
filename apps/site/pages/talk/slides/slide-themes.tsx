@@ -247,20 +247,6 @@ export default memo(() => {
 
         [
           {
-            type: 'callout',
-            content: `dark:color300 👎`,
-          },
-        ],
-
-        [
-          {
-            type: 'callout',
-            content: `theme="dark" 👍`,
-          },
-        ],
-
-        [
-          {
             type: 'code',
             content: snippetUsageComplex,
           },
@@ -317,6 +303,12 @@ export default memo(() => {
             fullscreen: true,
             image: require('../images/themes-1.png').default,
           },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark`,
+          },
         ],
 
         [
@@ -325,6 +317,12 @@ export default memo(() => {
             variant: 'centered',
             fullscreen: true,
             image: require('../images/themes-1.5.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark + inverse`,
           },
         ],
 
@@ -335,6 +333,12 @@ export default memo(() => {
             fullscreen: true,
             image: require('../images/themes-2.png').default,
           },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `light`,
+          },
         ],
 
         [
@@ -343,6 +347,12 @@ export default memo(() => {
             variant: 'centered',
             fullscreen: true,
             image: require('../images/themes-3.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `light_outlined`,
           },
         ],
 
@@ -353,6 +363,12 @@ export default memo(() => {
             fullscreen: true,
             image: require('../images/themes-4.png').default,
           },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_outlined`,
+          },
         ],
 
         [
@@ -361,6 +377,12 @@ export default memo(() => {
             variant: 'centered',
             fullscreen: true,
             image: require('../images/themes-5.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_green_outlined`,
           },
         ],
 
@@ -371,6 +393,12 @@ export default memo(() => {
             fullscreen: true,
             image: require('../images/themes-6.png').default,
           },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_purple`,
+          },
         ],
 
         [
@@ -380,13 +408,11 @@ export default memo(() => {
             fullscreen: true,
             image: require('../images/themes-7.png').default,
           },
-        ],
 
-        [
           {
-            type: 'callout',
-            content: `Winamp for React`,
-            image: require('../images/winamp.jpg').default,
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_purple_alt`,
           },
         ],
 
@@ -427,75 +453,6 @@ export default memo(() => {
         //     ),
         //   },
         // ],
-
-        [
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `useTheme() hook escape hatch`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `Works with animation drivers`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `Avoids re-renders on web`,
-              },
-            ],
-          },
-
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `Nest as many times as you want`,
-              },
-            ],
-          },
-          {
-            type: 'bullet-point',
-            size: '$10',
-            slim: true,
-            content: [
-              {
-                type: 'text',
-                content: `Target individual components`,
-              },
-
-              {
-                type: 'code-inline',
-                props: {
-                  color: '$color2',
-                },
-                content: `light_Button`,
-              },
-            ],
-          },
-        ],
       ]}
     />
   )
