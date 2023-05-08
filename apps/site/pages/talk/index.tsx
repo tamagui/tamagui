@@ -80,7 +80,9 @@ export default function TamaguiTalk() {
       </XStack>
 
       <YStack pos="absolute" {...slideDimensions} ov="hidden">
-        <YStack fullscreen className="bg-grid" />
+        <YStack o={0.6} fullscreen>
+          <YStack fullscreen className="bg-grid" />
+        </YStack>
         {/* <RibbonContainer /> */}
       </YStack>
 
@@ -116,12 +118,12 @@ export default function TamaguiTalk() {
           SlideFlatten,
           slideWebOnly,
           SlideExpressYourself,
+          slideLessons3,
           slideCssInJs,
           // SlideTamagui,
           // slideTamaguiCode,
           // Slide5,
-          SlideLessons2,
-          slideLessons3,
+          // SlideLessons2,
         ]}
       />
     </YStack>

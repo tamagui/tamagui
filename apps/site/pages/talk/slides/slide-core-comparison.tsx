@@ -123,6 +123,23 @@ export default memo(() => {
                       },
                     ],
                   },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$9',
+                          marginBottom: 20,
+                          display: 'inline-flex',
+                        },
+                        content: `Truly dynamic styles`,
+                      },
+                    ],
+                  },
+
                   {
                     type: 'bullet-point',
                     slim: true,
@@ -138,6 +155,7 @@ export default memo(() => {
                       },
                     ],
                   },
+
                   {
                     type: 'bullet-point',
                     slim: true,

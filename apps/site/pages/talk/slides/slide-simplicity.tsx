@@ -5,7 +5,7 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      theme="blue"
+      theme="purple"
       stepsStrategy="replace"
       steps={[
         [
@@ -18,7 +18,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `...our codebases should get simpler over time`,
+            content: <>...our codebases should get simpler&nbsp;over&nbsp;time</>,
           },
         ],
       ]}

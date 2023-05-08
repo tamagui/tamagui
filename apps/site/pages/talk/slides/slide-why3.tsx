@@ -13,7 +13,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: `I wanted to save time building an app...`,
+            content: <>I wanted to save time building&nbsp;an&nbsp;app...</>,
           },
 
           {
@@ -21,7 +21,9 @@ export default memo(() => {
 
             content: (
               <YStack marginTop={-100} ai="center">
-                <Paragraph theme="alt2">(Ironically)</Paragraph>
+                <Paragraph theme="alt2" size="$8">
+                  (Ironically)
+                </Paragraph>
               </YStack>
             ),
           },

@@ -244,8 +244,8 @@ function useGlows(variant: SlideProps['variant']) {
     opacity: 0.3,
     background: 'transparent',
     offset: {
-      x: -200,
-      y: 200,
+      x: -100,
+      y: 100,
     },
   })
 
@@ -458,7 +458,7 @@ function getTextContent(
 
               if (typeof item.content === 'string') {
                 const sizeNum = Math.min(
-                  Math.max(10, Math.round(450 / item.content.length)),
+                  Math.max(11, Math.round(430 / item.content.length)),
                   15
                 )
                 size = `$${sizeNum}`
