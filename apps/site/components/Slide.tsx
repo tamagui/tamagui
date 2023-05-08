@@ -472,6 +472,8 @@ function getTextContent(
                   ai="center"
                   jc="center"
                   px="$8"
+                  als="center"
+                  maw={1200}
                   // animation={lessBouncyOpacityClamped}
                   // enterStyle={{
                   //   o: 0,
