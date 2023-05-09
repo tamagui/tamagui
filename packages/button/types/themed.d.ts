@@ -144,98 +144,10 @@ declare const ButtonTextFrame: import("@tamagui/web").TamaguiComponent<Omit<impo
 type ButtonIconComponentProps = {
     children: React.ReactNode;
 } & Pick<ButtonProps, 'scaleIcon'>;
-declare const Button: import("@tamagui/web").ReactComponentWithRef<ThemeableProps & Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> & {
-    /**
-     * add icon before, passes color and size automatically if Component
-     *
-     * NOTE: Only supported on the simple API.
-     */
-    icon?: IconProp | undefined;
-    /**
-     * add icon after, passes color and size automatically if Component
-     *
-     * NOTE: Only supported on the simple API.
-     */
-    iconAfter?: IconProp | undefined;
-    /**
-     * adjust icon relative to size
-     *
-     * NOTE: Only supported on the simple API.
-     * @default 1
-     */
-    scaleIcon?: number | undefined;
-    /**
-     * make the spacing elements flex
-     *
-     * NOTE: Only supported on the simple API.
-     */
-    spaceFlex?: number | boolean | undefined;
-    /**
-     * adjust internal space relative to icon size
-     *
-     * NOTE: Only supported on the simple API.
-     */
-    scaleSpace?: number | undefined;
-} & Omit<TextParentStyles, "TextComponent"> & {
-    /**
-     * Used to override config's button API mode
-     */
-    forceButtonApi?: CreateTamaguiProps['buttonApi'];
-} & {
-    __scopeButton?: Scope;
-} & Omit<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>>, `$${string}` | `$${number}` | "disabled" | "size" | "unstyled" | "active" | keyof TextParentStyles | keyof import("@tamagui/web").PseudoProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: SizeTokens | undefined;
-    readonly active?: boolean | undefined;
-    readonly disabled?: boolean | undefined;
-}>> | "scaleIcon" | keyof ThemeableProps | "icon" | "iconAfter" | "spaceFlex" | "scaleSpace" | "forceButtonApi" | "__scopeButton">, import("@tamagui/web").TamaguiElement> & {
+declare const Button: import("@tamagui/web").ReactComponentWithRef<any, any> & {
     staticConfig: import("@tamagui/web").StaticConfigParsed;
-    styleable: import("@tamagui/web").Styleable<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: SizeTokens | undefined;
-        readonly active?: boolean | undefined;
-        readonly disabled?: boolean | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: SizeTokens | undefined;
-        readonly active?: boolean | undefined;
-        readonly disabled?: boolean | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<unknown, "disabled" | "size" | "unstyled" | "active"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: SizeTokens | undefined;
-        readonly active?: boolean | undefined;
-        readonly disabled?: boolean | undefined;
-    }>>, import("@tamagui/web").TamaguiElement>;
+    extractable: <X>(a: X, opts?: Partial<import("@tamagui/web").StaticConfig> | undefined) => X;
+    styleable: import("@tamagui/web").Styleable<any, any>;
 } & {
     Text: import("@tamagui/web").ReactComponentWithRef<ThemeableProps & Object & Omit<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;

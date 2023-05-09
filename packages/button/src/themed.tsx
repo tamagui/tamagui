@@ -27,7 +27,6 @@ import {
   Button as BaseButton,
 } from './Button'
 
-
 const ButtonFrame = styled(BaseButton, {
   name: BUTTON_NAME,
   variants: {

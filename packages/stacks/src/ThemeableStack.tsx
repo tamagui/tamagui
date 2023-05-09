@@ -18,41 +18,39 @@ const chromelessStyle = {
   shadowColor: 'transparent',
 }
 
-export const themeableVariants = {
-  backgrounded: {
-    true: {
-      backgroundColor: '$background',
-    },
-  },
-
-  radiused,
-  hoverTheme,
-  pressTheme,
-  focusTheme,
-  circular,
-  padded,
-  elevate,
-  bordered,
-
-  transparent: {
-    true: {
-      backgroundColor: 'transparent',
-    },
-  },
-
-  chromeless: {
-    true: chromelessStyle,
-    all: {
-      ...chromelessStyle,
-      hoverStyle: chromelessStyle,
-      pressStyle: chromelessStyle,
-      focusStyle: chromelessStyle,
-    },
-  },
-} as const
-
 export const ThemeableStack = styled(YStack, {
-  variants: themeableVariants,
+  variants: {
+    backgrounded: {
+      true: {
+        backgroundColor: '$background',
+      },
+    },
+
+    radiused,
+    hoverTheme,
+    pressTheme,
+    focusTheme,
+    circular,
+    padded,
+    elevate,
+    bordered,
+
+    transparent: {
+      true: {
+        backgroundColor: 'transparent',
+      },
+    },
+
+    chromeless: {
+      true: chromelessStyle,
+      all: {
+        ...chromelessStyle,
+        hoverStyle: chromelessStyle,
+        pressStyle: chromelessStyle,
+        focusStyle: chromelessStyle,
+      },
+    },
+  } as const,
 })
 
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>
