@@ -19,7 +19,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: <>Sometimes you've got to try to do everything at once.</>,
+            content: <>Make it work, make it right, make it fast?</>,
           },
         ],
 
