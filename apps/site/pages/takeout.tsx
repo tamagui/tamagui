@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useRef, useState } from 'react'
-import { H1, H2, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
+import { H1, H2, Paragraph, XStack, YStack, styled } from 'tamagui'
 
 import { CodeInline } from '../components/Code'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'

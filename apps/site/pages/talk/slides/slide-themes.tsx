@@ -2,7 +2,7 @@ import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
 import React from 'react'
 import { memo } from 'react'
-import { YStack } from 'tamagui'
+import { Paragraph, Square, Stack, Theme, XStack, YStack, styled } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -40,12 +40,12 @@ const inputSnippetSub = highlightCode(
   `
 const themes = {
   light_red: {
-    background: 'lightred',
-    color: 'darkred',
+    background: 'white',
+    color: 'red',
   },
   dark_red: {
-    background: 'darkred',
-    color: 'lightred'
+    background: 'red',
+    color: 'white'
   }
 }
 `,
@@ -54,13 +54,13 @@ const themes = {
 
 const outputSnippetSub = highlightCode(
   `.t_light_red {
-  --background: lightred;
-  --color: darkred;
+  --background: white;
+  --color: red;
 }
 
 .t_dark_red {
-  --background: darkred;
-  --color: lightred;
+  --background: red;
+  --color: white;
 }
 `,
   'tsx'
@@ -68,12 +68,14 @@ const outputSnippetSub = highlightCode(
 
 const snippetUsage = highlightCode(
   `
-import { Stack, Theme } from '@tamagui/core'
+import { Stack, Text, Theme } from '@tamagui/core'
   
 export default () => (
   <Theme name="light">
     <Stack backgroundColor="$background">
-      Light Background
+      <Text color="$color">
+        Hello world
+      </Text>
     </Stack>
   </Theme>
 )
@@ -93,7 +95,9 @@ export default () => (
 
 const MyWidget = () => (
   <Stack backgroundColor="$background">
-    Themed Background
+    <Text color="$color">
+      Hello world
+    </Text>
   </Stack>
 )
 `,
@@ -112,7 +116,9 @@ export default () => (
 
 const MyWidget = () => (
   <Stack backgroundColor="$background">
-    Themed Background
+    <Text color="$color">
+      Hello world
+    </Text>
   </Stack>
 )
 `,
@@ -164,12 +170,6 @@ export default () => (
     </Theme>
   </Theme>
 )
-
-const MyWidget = () => (
-  <Stack backgroundColor="$background">
-    Light Red Background
-  </Stack>
-)
 `,
   'tsx'
 )
@@ -190,15 +190,25 @@ export default () => (
     </Theme>
   </Theme>
 )
-
-const MyWidget = () => (
-  <Stack backgroundColor="$background">
-    Light Red Background
-  </Stack>
-)
 `,
   'tsx'
 )
+
+const MyWidget = ({ text, stack }: any = {}) => (
+  <Square size={250} bc={stack || '$background'} ai="center" jc="center">
+    <Paragraph size="$8" color={text || '$color'}>
+      Hello world
+    </Paragraph>
+  </Square>
+)
+
+const Container = styled(Stack, {
+  miw: 400,
+  mih: 400,
+  ai: 'center',
+  jc: 'center',
+  space: true,
+})
 
 export default memo(() => {
   return (
@@ -226,36 +236,119 @@ export default memo(() => {
 
         [
           {
-            type: 'code',
-            content: snippetUsage,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsage2,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage2,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsage3,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage3,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsageComplex,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageComplex,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsageInverse,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageInverse,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
@@ -284,15 +377,42 @@ export default memo(() => {
 
         [
           {
-            type: 'code',
-            content: snippetUsageSub,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageSub,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <MyWidget text="red" stack="white" />
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsageInverseSub,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageInverseSub,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <MyWidget text="red" stack="white" />
+                    <MyWidget text="white" stack="red" />
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
@@ -376,21 +496,6 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/themes-5.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_green_outlined`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
             image: require('../images/themes-6.png').default,
           },
 
@@ -413,6 +518,21 @@ export default memo(() => {
             type: 'text-overlay',
             variant: 'good',
             content: `dark_purple_alt`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-5.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `dark_green_outlined`,
           },
         ],
 

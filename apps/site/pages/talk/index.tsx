@@ -31,6 +31,7 @@ import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
+import slideThemesComponents from './slides/slide-themes-components'
 import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
@@ -104,14 +105,15 @@ export default function TamaguiTalk() {
           slideCoreSyntax,
           slideCoreFeatures,
           slideCorePrinciples,
+          slideCoreComparison,
           slideCoreAnimations,
           SlideThemes,
+          slideThemesComponents,
           slideWinamp,
-          slideThemesOverview,
+          // slideThemesOverview,
           slideCoreThemesAndAnimations,
           SlideLessons1,
           // SlideThemes2,
-          slideCoreComparison,
           Slide4,
           slidePartialEval,
           slidePartialEval2,

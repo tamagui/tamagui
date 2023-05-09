@@ -7,6 +7,7 @@ export default memo(() => {
     <Slide
       title="Partial Evaluation"
       theme="green"
+      subTitle="How it works"
       steps={[
         [
           {

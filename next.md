@@ -1,3 +1,7 @@
+- Popover.Close working inside Adapt Sheet
+- shadowOpacity not being applied
+
+
 ```tsx
 const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
 
