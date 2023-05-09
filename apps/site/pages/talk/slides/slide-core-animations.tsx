@@ -46,14 +46,12 @@ import { Stack } from '@tamagui/core'
 export default (props) => (
   <Stack
     animation="fast"
+    y={0}
+    scale={1}
 
     hoverStyle={{
       scale: 1.1
     }}
-
-    opacity={1}
-    y={0}
-    scale={1}
 
     {...props.highlight && {
       y: -10,

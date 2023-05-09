@@ -9,7 +9,7 @@ const inputSnippet = highlightCode(
   `import { Text, YStack } from 'tamagui'
 import { baseFontSize } from './constants'
 
-const height = 300
+const height = 300 + baseFontSize
 
 const App = (props) => (
   <YStack
@@ -29,22 +29,19 @@ const App = (props) => (
 
 const outputSnippet = highlightCode(
   `const App = props => <div
-  className={_cn + (
+  className={(
     props.big ? _cn2 : _cn3 +
-      (" " + (props.big ? _cn4 : _cn5))
-      (" " + (props.colorful ? _cn6 : " "))
+      (" " + (props.colorful ? _cn4 : " "))
   )}
 >
-    <span className={_cn5}>
+    <span className={_cn}>
       Lorem ipsum.
     </span>
   </div>
 
-const _cn6 = " _bc-1l6ykvy"
-const _cn5 = " _h-scmqyp"
-const _cn4 = "  _h-1542mo4"
-const _cn3 = " _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
-const _cn2 = " _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
+const _cn4 = "  _bc-1542mo4"
+const _cn3 = " _h-1vq430g _pb-12bic3x _pl-7ztw5e _pr-g6vdx7 _pt-1vq430g"
+const _cn2 = " _h-1medp4i _pb-z3qxl0 _pl-14km6ah _pr-1qpq1qc _pt-1medp4i"
 const _cn = "_fs-1q142lx "`,
   'tsx'
 )
