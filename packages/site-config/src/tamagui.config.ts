@@ -1,5 +1,6 @@
 import { createGluspFont } from '@tamagui/font-glusp'
 import { createInterFont } from '@tamagui/font-inter'
+import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
@@ -11,6 +12,7 @@ import { media, mediaQueryDefaultActive } from './media'
 export * from './animations'
 
 const gluspFont = createGluspFont()
+const munroFont = createMunroFont()
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
@@ -110,6 +112,7 @@ export const config = {
     mono: monoFont,
     silkscreen: silkscreenFont,
     glusp: gluspFont,
+    munro: munroFont,
   },
 }
 

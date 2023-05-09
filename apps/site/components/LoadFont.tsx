@@ -19,3 +19,7 @@ export const LoadInter900 = () => (
 export const LoadGlusp = () => (
   <LoadFont woff2File="/fonts/glusp.woff2" cssFile="/fonts/glusp.css" />
 )
+
+export const LoadMunro = () => (
+  <LoadFont woff2File="/fonts/munro.woff2" cssFile="/fonts/munro.css" />
+)
