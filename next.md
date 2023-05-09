@@ -311,7 +311,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - vertical slider native can be janky
 - react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
-- app dir support experimental
 - styled('div')
 - tooltip auto pass down accessibilityLabel
 - accessibility keyboard navigation (Menu component potentially)
@@ -324,7 +323,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
 - improve native integration test
 - kitchen-sink in Snack demo link
 - `tamagui` cli basic version
@@ -475,33 +473,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
----
-
-<ThemeOverride />
-<ThemeMutate />
-<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
-
-```tsx
-export default () => (
-  <Theme name="orange">
-    <ThemeOverride backgroundColor={-3}>
-      <MySquare />
-      <MyCircle />
-      <MyButton />
-    </ThemeOverride>
-
-    <ThemeMutate
-      getNextTheme={theme => {
-        theme.background = ''
-        return theme
-      }}>
-        <MySquare />
-        <MyCircle />
-        <MyButton />
-    </ThemeMutate>
-  </Theme>
-)
-```
 
 ---
 

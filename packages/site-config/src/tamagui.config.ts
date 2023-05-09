@@ -1,3 +1,4 @@
+import { createGluspFont } from '@tamagui/font-glusp'
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
@@ -9,6 +10,7 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
+const gluspFont = createGluspFont()
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
@@ -103,11 +105,11 @@ export const config = {
   shorthands,
   tokens,
   fonts: {
-    // noto: notoFont as any,
     heading: headingFont,
     body: bodyFont,
     mono: monoFont,
     silkscreen: silkscreenFont,
+    glusp: gluspFont,
   },
 }
 

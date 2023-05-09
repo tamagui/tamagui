@@ -9,9 +9,10 @@ import '../public/fonts/fonts.css'
 // import { MyUserContextProvider } from 'hooks/useUser'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import { useMemo } from 'react'
-import { TamaguiProvider, useDidFinishSSR } from 'tamagui'
+import { useEffect, useMemo, useState } from 'react'
+import { TamaguiProvider, useDidFinishSSR, useSafeRef } from 'tamagui'
 
+import { LoadFont, LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -49,7 +50,21 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
-  const didMount = useDidFinishSSR()
+  const [didInteract, setDidInteract] = useState(false)
+
+  useEffect(() => {
+    const onDown = () => {
+      setDidInteract(true)
+      unlisten()
+    }
+    const unlisten = () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onDown)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onDown)
+    return unlisten
+  }, [])
 
   return (
     <>
@@ -63,15 +78,9 @@ export default function App(props: AppProps) {
       />
 
       {/* this will lazy load the font for /studio splash page */}
-      {didMount && (
+      {didInteract && (
         <>
-          <link href="/fonts/inter-takeout.css" rel="stylesheet" />
-          <link
-            rel="preload"
-            href="/fonts/subset-Inter-Black.woff2"
-            as="font"
-            type="font/woff2"
-          />
+          <LoadInter900 />
         </>
       )}
 
