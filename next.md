@@ -58,6 +58,13 @@ high level:
 
 ---
 
+studio
+- templates working
+- Button.studio.tsx + run locally
+  - give it your app port and it launches electron or just gives you a new url?
+- figma export components
+- figma import tokens
+
 - we could somehow generate separate native and web potentially?
   - basically we generate esbuild two different versions: .native.js and .web.js
   - can flatten all TAMAGUI_TARGET then in each and maybe avoid that setup step
