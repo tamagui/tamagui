@@ -40,7 +40,7 @@ import {
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -543,7 +543,7 @@ export const Popover = withStaticProperties(
     Close: PopoverClose,
     Adapt,
     ScrollView: PopoverScrollView,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
   }
 )
 

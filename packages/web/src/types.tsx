@@ -933,6 +933,11 @@ type StaticComponentObject<Props, Ref> = {
   styleable: Styleable<Props, Ref>
 }
 
+export type TamaguiComponentExpectingVariants<
+  Props = {},
+  Variants = {}
+> = TamaguiComponent<Props, any, any, Variants>
+
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   config: TamaguiInternalConfig
   disableInjectCSS?: boolean
