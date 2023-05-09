@@ -2,7 +2,7 @@ import { ButtonBase } from '@tamagui/button'
 import { ReactComponentWithRef, TamaguiElement, ThemeableProps } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
-import { IconProps } from '@tamagui/lucide-icons/types/IconProps'
+import { IconProps } from '@tamagui/lucide-icons'
 import {
   ColorTokens,
   FontSizeTokens,
@@ -71,16 +71,10 @@ const TextFrame = styled(ButtonBase.Text, {
 /**
  * your own "composable" button
  */
-const Button = withStaticProperties(
-  ButtonFrame as ReactComponentWithRef<
-    GetProps<typeof ButtonFrame> & ThemeableProps,
-    TamaguiElement
-  >,
-  {
-    Text: TextFrame,
-    Icon: ButtonBase.Icon,
-  }
-)
+const Button = withStaticProperties(ButtonFrame, {
+  Text: TextFrame,
+  Icon: ButtonBase.Icon,
+})
 
 type SimpleButtonProps = GetProps<typeof ButtonFrame> &
   ThemeableProps & {
