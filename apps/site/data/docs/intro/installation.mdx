@@ -171,26 +171,7 @@ TamaguiProvider has optional props, [see the docs for them here](/docs/core/conf
 
 ### Webpack
 
-For webpack, you'll want to be sure to turn off "fullySpecified" imports, as currently Metro can't support the platform-specific filenames (like `.native.tsx`) alongside fully specified imports.
-
-You can modify your `webpack.config.js` something like this:
-
-```tsx
-config.module.rules.push({
-  test: /\.m?js$/,
-  type: 'javascript/auto',
-  resolve: {
-    fullySpecified: false,
-  },
-})
-```
-
-<Notice>
-  As of version `1.24.0` fullySpecified is no longer mandatory, but may still be useful
-  for general React Native dependency compatibility.
-</Notice>
-
-You'll also need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver):
+You'll need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver):
 
 ```tsx
 config.resolve.alias['react-native$'] = require.resolve('react-native-web')
