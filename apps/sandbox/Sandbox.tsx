@@ -6,8 +6,10 @@ import { DialogDemo, SheetDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
+  AnimatePresence,
   Button,
   Separator,
+  Square,
   TamaguiProvider,
   Theme,
   XStack,
@@ -41,7 +43,39 @@ export const Sandbox = () => {
   )
 }
 
+function TestAnimatePresence() {
+  const [show, setShow] = useState(true)
+
+  return (
+    <>
+      <Button onPress={() => setShow(!show)}>hide</Button>
+      <AnimatePresence>
+        {show && (
+          <Square
+            animation="quick"
+            size={100}
+            bc="red"
+            y={0}
+            o={1}
+            hoverStyle={{
+              y: -10,
+            }}
+            enterStyle={{
+              y: -100,
+            }}
+            exitStyle={{
+              y: 100,
+              o: 0,
+            }}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
 const SandboxInner = () => {
+  return <TestAnimatePresence />
   return <DialogDemo />
   // return <TooltipDemo />
   // return <TestPerf />
