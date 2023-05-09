@@ -169,9 +169,19 @@ export default function App() {
 
 TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
 
-### Webpack
+### Webpack, Vite and other web bundlers
 
-You'll need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver):
+Each bundler has a plugin that helps automate setup. See these docs for more:
+
+- [Webpack](/docs/intro/compiler-install#webpack)
+- [Next.js](/docs/intro/compiler-install#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](/docs/intro/compiler-install#vite) ([guide](/docs/guides/vite))
+- [Metro](/docs/intro/compiler-install#babel--metro)
+- [Expo](/docs/guides/expo)
+
+For a minimal install without any compiler setup, you'll just need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver).
+
+For Webpack:
 
 ```tsx
 config.resolve.alias['react-native$'] = require.resolve('react-native-web')
@@ -184,12 +194,6 @@ Or alternatively, to `react-native-web-lite`, our more experimental but modern v
 Remember, Tamagui runs fully at runtime, so you don't need to set up the compiler to start. But because Tamagui imports `react-native` directly, for web platforms you need to configure an alias. And for CSS extraction, on some frameworks like Next.js require extra configuration.
 
 We have a few guides for the compiler that also include setup of any extras for the web:
-
-- [Webpack](/docs/intro/compiler-install#webpack)
-- [Next.js](/docs/intro/compiler-install#nextjs) ([guide](/docs/guides/next-js))
-- [Vite](/docs/intro/compiler-install#vite) ([guide](/docs/guides/vite))
-- [Metro](/docs/intro/compiler-install#babel--metro)
-- [Expo](/docs/guides/expo)
 
 Just note: you don't need to set up the compiler!
 

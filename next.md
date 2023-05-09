@@ -1,10 +1,3 @@
-talk:
-
-- record actual theme video
-- theme > prop needs intro text + example:
-  - theme combines all the well design colors into one so if you add a border it will match the subtle look automatically
-  - it also means you can extract this component out and then re-theme the entire thing later wihtout having to change a bunch of properties
-
 high level:
 
   - private canary packages on github
@@ -23,6 +16,12 @@ high level:
     - better monorepo pro drop
 
 ---
+
+- we could somehow generate separate native and web potentially?
+  - basically we generate esbuild two different versions: .native.js and .web.js
+  - can flatten all TAMAGUI_TARGET then in each and maybe avoid that setup step
+  - can automatically map react-native to react-native-web (then only have to alias for -lite)
+  - should be 0-config setup
 
 - size/space/button docs
 - slow press on buttons
