@@ -7,4 +7,5 @@ export {
   useButton,
   buttonStaticConfig,
 } from './themed'
+export { Button as ButtonBase } from './Button'
 export type { ButtonProps } from './themed'

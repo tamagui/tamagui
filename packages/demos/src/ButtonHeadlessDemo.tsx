@@ -1,4 +1,4 @@
-import * as HeadlessButton from '@tamagui/button/headless'
+import { ButtonBase } from '@tamagui/button'
 import { ReactComponentWithRef, TamaguiElement, ThemeableProps } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
@@ -15,7 +15,7 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
-const ButtonFrame = styled(HeadlessButton.ButtonFrame, {
+const ButtonFrame = styled(ButtonBase, {
   tag: 'button',
   justifyContent: 'center',
   alignItems: 'center',
@@ -62,7 +62,7 @@ const ButtonFrame = styled(HeadlessButton.ButtonFrame, {
   },
 })
 
-const TextFrame = styled(HeadlessButton.ButtonTextFrame, {
+const TextFrame = styled(ButtonBase.Text, {
   // ... your styles
 })
 
@@ -76,7 +76,7 @@ const Button = withStaticProperties(
   >,
   {
     Text: TextFrame,
-    Icon: HeadlessButton.ButtonIcon,
+    Icon: ButtonBase.Icon,
   }
 )
 

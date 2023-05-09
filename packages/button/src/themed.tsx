@@ -24,11 +24,11 @@ import {
   BUTTON_ICON_NAME,
   BUTTON_NAME,
   BUTTON_TEXT_NAME,
-  ButtonFrame as BaseButtonFrame,
-  ButtonTextFrame as BaseButtonText,
+  Button as BaseButton,
 } from './Button'
 
-const ButtonFrame = styled(BaseButtonFrame, {
+
+const ButtonFrame = styled(BaseButton, {
   name: BUTTON_NAME,
   variants: {
     unstyled: {
@@ -143,7 +143,7 @@ const [ButtonProvider, useButtonContext] =
   createButtonContext<ButtonContextValue>('Button')
 type ScopedProps<P> = P & { __scopeButton?: Scope }
 
-const ButtonTextFrame = styled(BaseButtonText, {
+const ButtonTextFrame = styled(BaseButton.Text, {
   name: BUTTON_TEXT_NAME,
   variants: {
     unstyled: {

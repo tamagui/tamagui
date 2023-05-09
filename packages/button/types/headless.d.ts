@@ -1,2 +1,2 @@
-export { ButtonFrame, ButtonIcon, ButtonTextFrame } from './Button';
+export { Button } from './Button';
 //# sourceMappingURL=headless.d.ts.map
