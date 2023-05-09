@@ -2,17 +2,19 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { DialogDemo, SheetDemo } from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
   Button,
   Separator,
+  Stack,
   TamaguiProvider,
   Theme,
   XStack,
   YStack,
+  createVariantContext,
   getStylesAtomic,
+  styled,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -41,11 +43,19 @@ export const Sandbox = () => {
   )
 }
 
+const ButtonVariants = createVariantContext()
+
+const FaBut = styled(Stack, {
+  variantContext: ButtonVariants,
+  backgroundColor: 'red',
+})
+
 const SandboxInner = () => {
-  return <DialogDemo />
-  // return <TooltipDemo />
-  // return <TestPerf />
-  // return <Square animation="bouncy" size={100} bc="red" />
+  return (
+    <ButtonVariants backgroundColor="blue">
+      <FaBut>hi</FaBut>
+    </ButtonVariants>
+  )
 }
 
 function TestPerf() {

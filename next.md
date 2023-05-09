@@ -1,8 +1,8 @@
 ```tsx
-const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
+const ButtonVariant = createVariantContext<{ size: SizeTokens }>()
 
 const ButtonFrame = styled(Stack, {
-  variantProvider: ButtonVariant,
+  variantContext: ButtonVariant,
   variants: {
     
     size: {
@@ -14,7 +14,7 @@ const ButtonFrame = styled(Stack, {
 })
 
 const ButtonText = styled(Stack, 
-  variantProvider: ButtonVariant,
+  variantContext: ButtonVariant,
   variants: {
     
     size: {

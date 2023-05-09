@@ -6,7 +6,7 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import { stylePropsView, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -270,6 +270,13 @@ export function createComponent<
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     const avoidClassesWhileAnimating = animationsConfig?.isReactNative
+
+    // set variants through context
+    if (staticConfig.variantContext) {
+      const variantContext = useContext(staticConfig.variantContext.context)
+      console.log('variantContext', variantContext)
+      Object.assign(props, variantContext)
+    }
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {

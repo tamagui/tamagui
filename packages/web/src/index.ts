@@ -12,34 +12,29 @@ export * from './styled'
 export * from './types'
 export * from './setupReactNative'
 
-export {
-  getConfig,
-  getThemes,
-  getTokens,
-  onConfiguredOnce,
-  updateConfig,
-} from './config'
+export { getConfig, getThemes, getTokens, onConfiguredOnce, updateConfig } from './config'
 
 export * from './constants/constants'
 
-export * from './helpers/useShallowSetState'
-export * from './helpers/getVariantExtras'
+export * from './helpers/createVariantContext'
+export * from './helpers/expandStyles'
 export * from './helpers/getAnimationDriver'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSplitStyles'
 export * from './helpers/getStylesAtomic'
-export * from './helpers/pseudoDescriptors'
-export * from './helpers/mergeProps'
-export * from './helpers/expandStyles'
-export * from './helpers/isTamaguiElement'
-export * from './helpers/isTamaguiComponent'
-export * from './helpers/matchMedia'
-export * from './helpers/themes'
 export * from './helpers/getThemeCSSRules'
-export * from './helpers/proxyThemeVariables'
-export * from './helpers/themeable'
-export * from './helpers/withStaticProperties'
+export * from './helpers/getVariantExtras'
+export * from './helpers/isTamaguiComponent'
+export * from './helpers/isTamaguiElement'
+export * from './helpers/matchMedia'
+export * from './helpers/mergeProps'
 export * from './helpers/normalizeColor'
+export * from './helpers/proxyThemeVariables'
+export * from './helpers/pseudoDescriptors'
+export * from './helpers/themeable'
+export * from './helpers/themes'
+export * from './helpers/useShallowSetState'
+export * from './helpers/withStaticProperties'
 
 export * from './contexts/ButtonNestingContext'
 
