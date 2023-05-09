@@ -51,8 +51,6 @@ export interface SelectContextValue {
   onChange: (value: string) => void
   valueNode: Element | null
   onValueNodeChange(node: HTMLElement): void
-  valueNodeHasChildren: boolean
-  onValueNodeHasChildrenChange(hasChildren: boolean): void
   forceUpdate: DispatchWithoutAction
 
   // SheetImpl only:
