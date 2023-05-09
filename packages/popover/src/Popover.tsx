@@ -341,6 +341,15 @@ const PopoverContentImpl = React.forwardRef<
     )
   }
 
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+  if (context.open && isFullyHidden) {
+    setIsFullyHidden(false)
+  }
+
+  if (isFullyHidden) {
+    return null
+  }
+
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
   //   context.onOpenChange(false);
   // }, [])
@@ -354,7 +363,11 @@ const PopoverContentImpl = React.forwardRef<
   //   >
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        setIsFullyHidden(true)
+      }}
+    >
       {!!context.open && (
         <PopperContent
           key={context.contentId}
