@@ -37,6 +37,7 @@ const ButtonFrame = styled(ButtonBase, {
     outlineStyle: 'solid',
     outlineWidth: 2,
   },
+
   variants: {
     size: {
       '...size': getButtonSized,
@@ -57,10 +58,13 @@ const ButtonFrame = styled(ButtonBase, {
       },
     },
   } as const,
+
   defaultVariants: {
     size: '$true',
   },
 })
+
+const x = <ButtonFrame child />
 
 const TextFrame = styled(ButtonBase.Text, {
   // ... your styles
@@ -86,6 +90,7 @@ type SimpleButtonProps = GetProps<typeof ButtonFrame> &
     icon?: React.NamedExoticComponent<IconProps>
     iconAfter?: React.NamedExoticComponent<IconProps>
   }
+
 /**
  * your own "simple" button
  */

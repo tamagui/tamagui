@@ -13,6 +13,7 @@ const ButtonFrame = styled(ThemeableStack, {
 })
 
 const BUTTON_TEXT_NAME = 'ButtonText'
+
 const ButtonTextFrame = styled(SizableText, {
   name: BUTTON_TEXT_NAME,
 })
@@ -25,7 +26,6 @@ const ButtonIcon = (props: {
   color?: ColorProp
 }) => {
   const { children, color, size } = props
-
   const iconSize = typeof size === 'number' ? size * 0.5 : getFontSize(size)
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   return getThemedIcon(children)
