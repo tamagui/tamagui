@@ -1,3 +1,39 @@
+```tsx
+const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
+
+const ButtonFrame = styled(Stack, {
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, 
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+export const SomeExampleButton = (props: { size: SizeTokens }) => (
+  <ButtonVariant size={props.size}>
+    <ButtonFrame>
+      <ButtonText />
+    </ButtonFrame>
+  </ButtonVariant>
+)
+```
+
 high level:
 
   - private canary packages on github
