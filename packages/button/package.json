@@ -9,8 +9,7 @@
   "files": [
     "src",
     "types",
-    "dist",
-    "base"
+    "dist"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -26,11 +25,6 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    },
-    "./base": {
-      "types": "./types/base.d.ts",
-      "import": "./dist/esm/base.js",
-      "require": "./dist/cjs/base.js"
     }
   },
   "dependencies": {

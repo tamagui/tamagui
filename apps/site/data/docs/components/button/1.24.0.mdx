@@ -64,26 +64,6 @@ createTamagui({
 })
 ```
 
-## Headless
-
-Tamagui also offers headless Button with no styles included that follows the composable API. You can import it using one of the following ways.
-
-```tsx
-import { Button } from '@tamagui/button/base'
-import { ButtonBase } from 'tamagui'
-import { ButtonBase } from '@tamagui/button'
-```
-
-Take a look at the following demo to see how it's used:
-
-<HeroContainer demoMultiple>
-  <ButtonHeadlessDemo />
-</HeroContainer>
-
-```tsx hero template=ButtonHeadless
-
-```
-
 ## API Reference (Simple)
 
 ### Button
@@ -187,8 +167,6 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
 
 ## API Reference (Composable)
 
-Headless buttons have a similar API to this.
-
 ### Button
 
 Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props).
@@ -229,8 +207,7 @@ Given your theme defines a size `6`, the button will adjust all of the propertie
 
 <Notice>
   The simple API's advanced customization is deprecated. If you require advanced
-  customization, we recommend using [Headless](#headless) or
-  [Composable](#api-reference-composable) buttons.
+  customization, we recommend using [Composable](#api-reference-composable) buttons.
 </Notice>
 
 Button only supports a limited subset of text props directly, and doesn't accept `hoverStyle` text props. If you need more control, you can do a simple customization using some exported helpers.

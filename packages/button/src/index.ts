@@ -1,4 +1,3 @@
-// entry point for tamagui's default (styled) button
 export {
   Button,
   ButtonFrame,
@@ -6,6 +5,5 @@ export {
   createButtonScope,
   useButton,
   buttonStaticConfig,
-} from './themed'
-export { Button as ButtonBase } from './Button'
-export type { ButtonProps } from './themed'
+} from './Button'
+export type { ButtonProps } from './Button'
