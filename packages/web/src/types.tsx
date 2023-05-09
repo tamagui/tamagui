@@ -26,6 +26,7 @@ import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import type { FontLanguageProps } from './views/FontLanguage.types'
 import { Stack } from './views/Stack'
 import type { ThemeProviderProps } from './views/ThemeProvider'
+import { ThemeableProps } from './helpers/themeable'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 
@@ -913,7 +914,7 @@ export type Styleable<Props, Ref> = <
   >
 >(
   a: X
-) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
+) => ReactComponentWithRef<ThemeableProps & CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
   staticConfig: StaticConfigParsed
   styleable: Styleable<Props, Ref>
 }

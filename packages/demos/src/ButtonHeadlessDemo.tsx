@@ -1,4 +1,5 @@
-import { Button as HeadlessTamaguiButton } from '@tamagui/button/headless'
+import * as HeadlessButton from '@tamagui/button/headless'
+import { ReactComponentWithRef, TamaguiElement, ThemeableProps } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { Activity, Airplay } from '@tamagui/lucide-icons'
 import { IconProps } from '@tamagui/lucide-icons/types/IconProps'
@@ -11,12 +12,10 @@ import {
   YStack,
   getFontSize,
   styled,
-  themeable,
-  useGetThemedIcon,
   withStaticProperties,
 } from 'tamagui'
 
-const ButtonFrame = styled(HeadlessTamaguiButton, {
+const ButtonFrame = styled(HeadlessButton.ButtonFrame, {
   tag: 'button',
   justifyContent: 'center',
   alignItems: 'center',
@@ -58,71 +57,96 @@ const ButtonFrame = styled(HeadlessTamaguiButton, {
       },
     },
   } as const,
+  defaultVariants: {
+    size: '$true',
+  },
 })
 
-const MyButton = withStaticProperties(ButtonFrame, {
-  Text: ButtonFrame.Text,
-  Icon: ButtonFrame.Icon,
+const TextFrame = styled(HeadlessButton.ButtonTextFrame, {
+  // ... your styles
 })
 
-type MyCustomProps = {
-  color?: ColorTokens
-  icon?: React.NamedExoticComponent<IconProps>
-  iconAfter?: React.NamedExoticComponent<IconProps>
-}
+/**
+ * your own "composable" button
+ */
+const Button = withStaticProperties(
+  ButtonFrame as ReactComponentWithRef<
+    GetProps<typeof ButtonFrame> & ThemeableProps,
+    TamaguiElement
+  >,
+  {
+    Text: TextFrame,
+    Icon: HeadlessButton.ButtonIcon,
+  }
+)
 
-type ButtonProps = GetProps<typeof MyButton> & MyCustomProps
-
-const Button = MyButton.styleable<ButtonProps>((props, ref) => {
+type SimpleButtonProps = GetProps<typeof ButtonFrame> &
+  ThemeableProps & {
+    color?: ColorTokens
+    icon?: React.NamedExoticComponent<IconProps>
+    iconAfter?: React.NamedExoticComponent<IconProps>
+  }
+/**
+ * your own "simple" button
+ */
+const SimpleButton = ButtonFrame.styleable<SimpleButtonProps>((props, ref) => {
   const { color, icon: Icon, iconAfter: IconAfter, size = '$3', ...buttonProps } = props
-  const iconSize =
-    typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)
-  const getThemedIcon = useGetThemedIcon({ color, size: iconSize })
+  const fontSize = getFontSize(size as FontSizeTokens)
+  const iconSize = fontSize * 2
+
   return (
-    <MyButton ref={ref} size={size} {...buttonProps}>
-      {Icon && <MyButton.Icon>{getThemedIcon(Icon)}</MyButton.Icon>}
-      <MyButton.Text color={color} size={props.size as FontSizeTokens}>
+    <Button ref={ref} size={size} {...buttonProps}>
+      {Icon && (
+        <Button.Icon size={iconSize}>
+          <Icon />
+        </Button.Icon>
+      )}
+      <Button.Text color={color} size={props.size as FontSizeTokens}>
         {props.children}
-      </MyButton.Text>
-      {IconAfter && <MyButton.Icon>{getThemedIcon(IconAfter)}</MyButton.Icon>}
-    </MyButton>
+      </Button.Text>
+      {IconAfter && (
+        <Button.Icon size={iconSize}>
+          <IconAfter />
+        </Button.Icon>
+      )}
+    </Button>
   )
 })
 
 export function ButtonHeadlessDemo(props) {
   return (
     <YStack padding="$3" space="$3" {...props}>
-      <Button>Plain</Button>
-      <Button alignSelf="center" size="$6" space="$3" icon={Airplay}>
+      <SimpleButton>Plain</SimpleButton>
+      <SimpleButton alignSelf="center" size="$6" space="$3" icon={Airplay}>
         Large
-      </Button>
+      </SimpleButton>
       <XStack space="$2" justifyContent="center">
-        <Button size="$3" theme="alt2">
+        <SimpleButton size="$3" theme="alt2">
           Alt2
-        </Button>
-        <Button size="$3" theme="yellow">
+        </SimpleButton>
+        <SimpleButton size="$3" theme="yellow">
           Yellow
-        </Button>
+        </SimpleButton>
       </XStack>
       <XStack space="$2">
-        <Button themeInverse size="$3">
+        <SimpleButton themeInverse size="$3">
           Small Inverse
-        </Button>
-        <Button size="$3" space="$1.5" iconAfter={Activity}>
+        </SimpleButton>
+        <SimpleButton size="$3" space="$1.5" iconAfter={Activity}>
           After
-        </Button>
+        </SimpleButton>
       </XStack>
       <XGroup>
         <XGroup.Item>
-          <Button width="50%" size="$2" disabled>
+          <SimpleButton width="50%" size="$2" disabled>
             disabled
-          </Button>
+          </SimpleButton>
         </XGroup.Item>
 
         <XGroup.Item>
-          <Button width="50%" size="$2" chromeless>
+          <SimpleButton width="50%" size="$2" chromeless>
             chromeless
-          </Button>
+          </SimpleButton>
         </XGroup.Item>
       </XGroup>
     </YStack>

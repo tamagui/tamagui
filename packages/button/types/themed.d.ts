@@ -179,7 +179,7 @@ declare const ButtonTextFrame: import("@tamagui/web").TamaguiComponent<Omit<impo
 type ButtonIconComponentProps = {
     children: React.ReactNode;
 } & Pick<ButtonProps, 'scaleIcon'>;
-declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const Button: import("@tamagui/web").ReactComponentWithRef<ThemeableProps & Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -245,7 +245,7 @@ declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<import("
     readonly size?: SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-}>> & ThemeableProps & {
+}>> & {
     /**
      * add icon before, passes color and size automatically if Component
      *
@@ -420,7 +420,7 @@ declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<import("
         readonly disabled?: boolean | undefined;
     }>>, import("@tamagui/web").TamaguiElement>;
 } & {
-    Text: import("@tamagui/web").ReactComponentWithRef<Object & Omit<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
+    Text: import("@tamagui/web").ReactComponentWithRef<ThemeableProps & Object & Omit<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/web").ExtendsBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
     } | ({
         readonly size?: import("@tamagui/web").FontSizeTokens | undefined;

@@ -66,20 +66,14 @@ createTamagui({
 
 ## Headless
 
-Tamagui also offers headless Button with no styles included. Import it from `@tamagui/button/headless`. The headless import only supports the comopsable API.
+Tamagui also offers headless Button with no styles included. Import it from `@tamagui/button/headless`.
 
-```tsx
-import { Button } from '@tamagui/button/headless'
-import { ArrowLeft } from '@tamagui/lucide-icons'
+<HeroContainer demoMultiple>
+  <ButtonHeadlessDemo />
+</HeroContainer>
 
-export default () => (
-  <Button>
-    <Button.Text>Lorem ipsum</Button.Text>
-    <Button.Icon>
-        <ArrowLeft />
-    </Button.Icon>
-  </Button>
-)
+```tsx hero template=ButtonHeadless
+
 ```
 
 ## API Reference (Simple)
@@ -187,13 +181,27 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
 
 ### Button
 
-Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props) and use [`themeable()`](/docs/core/theme#themeable).
+Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props).
 
 ### Button.Text
 
 Button.Text extends [`SizableText`](/docs/components/text#sizabletext)
 
 ### Button.Icon
+
+You can pass an icon as this component's children and it'll automatically pass `size` and `color` to your icon based on the current theme.
+
+## API Reference (Headless)
+
+### ButtonFrame
+
+ButtonFrame extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props).
+
+### ButtonTextFrame
+
+ButtonTextFrame extends [`SizableText`](/docs/components/text#sizabletext)
+
+### ButtonIcon
 
 You can pass an icon as this component's children and it'll automatically pass `size` and `color` to your icon based on the current theme.
 

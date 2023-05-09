@@ -6,6 +6,7 @@ import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import type { FontLanguageProps } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
+import { ThemeableProps } from './helpers/themeable';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
@@ -487,7 +488,7 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<ThemeableProps & CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfigParsed;
     styleable: Styleable<Props, Ref>;
 };
