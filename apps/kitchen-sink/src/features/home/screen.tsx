@@ -26,7 +26,12 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 setupNativeSheet('ios', ModalView)
 
 const SubComponent = memo(() => {
-  return <Button debug="verbose">test me</Button>
+  return (
+    <>
+      <Button>test me</Button>
+      <YStack w={100} h={100} bc="$background" />
+    </>
+  )
 })
 
 export function HomeScreen() {
@@ -43,6 +48,13 @@ export function HomeScreen() {
               name: 'light_Button',
               theme: {
                 background: 'red',
+              },
+            })
+
+            updateTheme({
+              name: 'light',
+              theme: {
+                background: 'green',
               },
             })
           }}
