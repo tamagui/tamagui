@@ -18,6 +18,10 @@ export default memo(() => {
                 title: `Similar`,
                 content: [
                   {
+                    type: 'space',
+                  },
+
+                  {
                     type: 'bullet-point',
                     slim: true,
                     content: [
@@ -85,6 +89,10 @@ export default memo(() => {
                 title: `Different`,
                 content: [
                   {
+                    type: 'space',
+                  },
+
+                  {
                     type: 'bullet-point',
                     slim: true,
                     content: [
@@ -95,7 +103,7 @@ export default memo(() => {
                           marginBottom: 20,
                           display: 'inline-flex',
                         },
-                        content: `Has extra bundle size`,
+                        content: <>Has extra bundle size ❌</>,
                       },
                     ],
                   },
@@ -115,6 +123,23 @@ export default memo(() => {
                       },
                     ],
                   },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$9',
+                          marginBottom: 20,
+                          display: 'inline-flex',
+                        },
+                        content: `Truly dynamic styles`,
+                      },
+                    ],
+                  },
+
                   {
                     type: 'bullet-point',
                     slim: true,
@@ -130,6 +155,7 @@ export default memo(() => {
                       },
                     ],
                   },
+
                   {
                     type: 'bullet-point',
                     slim: true,

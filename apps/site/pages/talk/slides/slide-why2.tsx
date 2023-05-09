@@ -123,7 +123,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `= 28,800 😮‍💨`,
+                content: `= 43,200 😮‍💨`,
               },
             ],
           },

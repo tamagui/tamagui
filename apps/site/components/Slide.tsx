@@ -244,8 +244,8 @@ function useGlows(variant: SlideProps['variant']) {
     opacity: 0.3,
     background: 'transparent',
     offset: {
-      x: -200,
-      y: 200,
+      x: -100,
+      y: 100,
     },
   })
 
@@ -301,12 +301,13 @@ function getTextContent(
                 <YStack
                   f={1}
                   ai="center"
+                  className="fade-image-in"
                   {...(item.variant === 'circled' && {
                     bg: '$backgroundStrong',
-                    minWidth: 500,
-                    minHeight: 500,
-                    maxWidth: 500,
-                    maxHeight: 500,
+                    minWidth: 600,
+                    minHeight: 600,
+                    maxWidth: 600,
+                    maxHeight: 600,
                     ai: 'center',
                     jc: 'center',
                     borderRadius: 10000,
@@ -457,19 +458,22 @@ function getTextContent(
 
               if (typeof item.content === 'string') {
                 const sizeNum = Math.min(
-                  Math.max(8, Math.round(550 / item.content.length)),
-                  16
+                  Math.max(11, Math.round(430 / item.content.length)),
+                  15
                 )
                 size = `$${sizeNum}`
               }
 
               return (
                 <YStack
+                  className="fade-image-in"
                   mah="100%"
                   f={1}
                   ai="center"
                   jc="center"
-                  px="$6"
+                  px="$8"
+                  als="center"
+                  maw={1200}
                   // animation={lessBouncyOpacityClamped}
                   // enterStyle={{
                   //   o: 0,
@@ -484,8 +488,7 @@ function getTextContent(
                     className="callout"
                     ta="center"
                     p="$10"
-                    mt={-100}
-                    scale={1.2}
+                    scale={1.3}
                     size={size}
                   >
                     {item.content}&nbsp;
@@ -493,6 +496,7 @@ function getTextContent(
 
                   {item.image && (
                     <img
+                      className="fade-image-in"
                       style={{
                         alignSelf: 'center',
                         maxWidth: '100%',

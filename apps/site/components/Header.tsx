@@ -242,7 +242,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/takeout">
+      {/* <NextLink prefetch={false} href="/takeout">
         <TooltipSimple delay={0} restMs={25} label="Takeout">
           <HeadAnchor
             size="$8"
@@ -253,7 +253,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
             🥡
           </HeadAnchor>
         </TooltipSimple>
-      </NextLink>
+      </NextLink> */}
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">

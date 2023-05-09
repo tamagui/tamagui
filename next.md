@@ -1,9 +1,38 @@
-talk:
+```tsx
+const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
 
-- record actual theme video
-- theme > prop needs intro text + example:
-  - theme combines all the well design colors into one so if you add a border it will match the subtle look automatically
-  - it also means you can extract this component out and then re-theme the entire thing later wihtout having to change a bunch of properties
+const ButtonFrame = styled(Stack, {
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, 
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+export const SomeExampleButton = (props: { size: SizeTokens }) => (
+  <ButtonVariant size={props.size}>
+    <ButtonFrame>
+      <ButtonText />
+    </ButtonFrame>
+  </ButtonVariant>
+)
+```
 
 high level:
 
@@ -23,6 +52,12 @@ high level:
     - better monorepo pro drop
 
 ---
+
+- we could somehow generate separate native and web potentially?
+  - basically we generate esbuild two different versions: .native.js and .web.js
+  - can flatten all TAMAGUI_TARGET then in each and maybe avoid that setup step
+  - can automatically map react-native to react-native-web (then only have to alias for -lite)
+  - should be 0-config setup
 
 - size/space/button docs
 - slow press on buttons
@@ -312,7 +347,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - vertical slider native can be janky
 - react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
-- app dir support experimental
 - styled('div')
 - tooltip auto pass down accessibilityLabel
 - accessibility keyboard navigation (Menu component potentially)
@@ -325,7 +359,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
 - improve native integration test
 - kitchen-sink in Snack demo link
 - `tamagui` cli basic version
@@ -476,33 +509,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
----
-
-<ThemeOverride />
-<ThemeMutate />
-<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
-
-```tsx
-export default () => (
-  <Theme name="orange">
-    <ThemeOverride backgroundColor={-3}>
-      <MySquare />
-      <MyCircle />
-      <MyButton />
-    </ThemeOverride>
-
-    <ThemeMutate
-      getNextTheme={theme => {
-        theme.background = ''
-        return theme
-      }}>
-        <MySquare />
-        <MyCircle />
-        <MyButton />
-    </ThemeMutate>
-  </Theme>
-)
-```
 
 ---
 

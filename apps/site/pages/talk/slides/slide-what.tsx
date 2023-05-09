@@ -28,7 +28,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        Universal style library{' '}
+                        Universal styles and design systems{' '}
                         <span style={{ opacity: 0.5 }}>(Native + Web)</span>
                       </>
                     ),
@@ -83,7 +83,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `Complete universal component kit`,
+                    content: `Universal component kit`,
                   },
                 ],
               },

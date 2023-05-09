@@ -35,6 +35,7 @@ import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
+import slideWebOnly from './slides/slide-web-only'
 import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhyBobRoss from './slides/slide-why-bob-ross'
@@ -44,11 +45,10 @@ import slideWhy4 from './slides/slide-why5'
 import slideWhy6 from './slides/slide-why6'
 import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
-import Slide6c from './slides/slide6c'
 
 const slideDimensions = {
-  width: 1280,
-  height: 1000,
+  width: 1920,
+  height: 1080,
 }
 
 export default function TamaguiTalk() {
@@ -80,8 +80,10 @@ export default function TamaguiTalk() {
       </XStack>
 
       <YStack pos="absolute" {...slideDimensions} ov="hidden">
-        <YStack fullscreen className="bg-grid" />
-        <RibbonContainer />
+        <YStack o={0.6} fullscreen>
+          <YStack fullscreen className="bg-grid" />
+        </YStack>
+        {/* <RibbonContainer /> */}
       </YStack>
 
       <Slides
@@ -114,14 +116,14 @@ export default function TamaguiTalk() {
           slidePartialEval,
           slidePartialEval2,
           SlideFlatten,
+          slideWebOnly,
           SlideExpressYourself,
-          Slide6c,
+          slideLessons3,
           slideCssInJs,
           // SlideTamagui,
           // slideTamaguiCode,
           // Slide5,
-          SlideLessons2,
-          slideLessons3,
+          // SlideLessons2,
         ]}
       />
     </YStack>

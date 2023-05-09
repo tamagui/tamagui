@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="How?"
-      subTitle="Use the platform"
+      subTitle={`Simple syntax in, "use the platform" out`}
       theme="purple"
       steps={[
         [

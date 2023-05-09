@@ -12,17 +12,30 @@ export default memo(() => {
       steps={[
         [
           {
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/safari.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            content: `500px², 49 flattened components`,
+          },
+        ],
+
+        [
+          {
             type: 'split-horizontal',
             content: [
               {
                 type: 'image',
                 variant: 'circled',
-                image: require('../images/flattened-pre.png').default,
+                image: require('../images/flatten-in.png').default,
               },
               {
                 type: 'image',
                 variant: 'circled',
-                image: require('../images/flattened-post.png').default,
+                image: require('../images/flatten-out.png').default,
               },
             ],
           },

@@ -75,7 +75,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
-                content: <>Let's make those happen 🗳️</>,
+                content: <>Let's make it happen 🗳️</>,
               },
             ],
           },
@@ -87,8 +87,8 @@ export default memo(() => {
                 type: 'text',
                 content: (
                   <>
-                    Native less sensitive - less elements on screen, less resizing, no DOM
-                    overhead, separate UI thread.
+                    But... native is less sensitive - fewer elements on screen, less
+                    resizing, no DOM overhead, separate UI thread.
                   </>
                 ),
               },

@@ -316,21 +316,6 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/themes-1.5.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark + inverse`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
             image: require('../images/themes-2.png').default,
           },
 
@@ -346,13 +331,13 @@ export default memo(() => {
             type: 'image',
             variant: 'centered',
             fullscreen: true,
-            image: require('../images/themes-3.png').default,
+            image: require('../images/themes-1.5.png').default,
           },
 
           {
             type: 'text-overlay',
             variant: 'good',
-            content: `light_outlined`,
+            content: `dark + inverse`,
           },
         ],
 
@@ -368,6 +353,21 @@ export default memo(() => {
             type: 'text-overlay',
             variant: 'good',
             content: `dark_outlined`,
+          },
+        ],
+
+        [
+          {
+            type: 'image',
+            variant: 'centered',
+            fullscreen: true,
+            image: require('../images/themes-3.png').default,
+          },
+
+          {
+            type: 'text-overlay',
+            variant: 'good',
+            content: `light_outlined`,
           },
         ],
 

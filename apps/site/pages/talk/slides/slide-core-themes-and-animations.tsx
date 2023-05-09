@@ -30,14 +30,10 @@ import { Stack } from '@tamagui/core'
 export default (props) => (
   <Stack
     animation="fast"
-
+    backgroundColor="$color6"
     hoverStyle={{
-      opacity: 0,
       backgroundColor: '$color5',
     }}
-
-    opacity={1}
-    backgroundColor="$color6"
   />
 )
 `,
@@ -52,23 +48,6 @@ export default memo(() => {
       stepsStrategy="replace"
       theme="pink"
       steps={[
-        [
-          {
-            type: 'split-horizontal',
-            content: [
-              {
-                type: 'code',
-                content: snippetUsage1,
-              },
-
-              {
-                type: 'vertical',
-                content: [],
-              },
-            ],
-          },
-        ],
-
         [
           {
             type: 'split-horizontal',
@@ -103,7 +82,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `On the web this doesn't trigger a render on theme change - or on animation if using the CSS driver`,
+                    content: `On the web this doesn't trigger a render on theme change - or even on animation when using the CSS driver`,
                   },
                 ],
               },

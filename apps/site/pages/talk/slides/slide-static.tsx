@@ -14,7 +14,7 @@ const App = (props) => (
     backgroundColor={myCustomColor}
     width={550}
     $gtSm={{
-      paddingHorizontal: '$6'
+      paddingHorizontal: '$small'
     }}>
     <Heading size={
       props.big ? 'large' : 'small'

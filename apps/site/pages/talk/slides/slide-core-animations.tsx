@@ -1,6 +1,8 @@
 import { createCodeHighlighter } from '@lib/highlightCode'
+import { AnimationsDemo, AnimationsHoverDemo } from '@tamagui/demos'
 import { Slide } from 'components/Slide'
 import { memo } from 'react'
+import { YStack } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -44,18 +46,16 @@ import { Stack } from '@tamagui/core'
 export default (props) => (
   <Stack
     animation="fast"
-
-    enterStyle={{
-      opacity: 0,
-    }}
-
-    opacity={1}
     y={0}
     scale={1}
 
+    hoverStyle={{
+      scale: 1.1
+    }}
+
     {...props.highlight && {
       y: -10,
-      scale: 1.1,
+      backgroundColor: '$color5'
     }}
   />
 )
@@ -108,8 +108,22 @@ export default memo(() => {
 
         [
           {
-            type: 'code',
-            content: snippetUsage,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage,
+              },
+
+              {
+                type: 'content',
+                content: (
+                  <YStack ai="center">
+                    <AnimationsHoverDemo />
+                  </YStack>
+                ),
+              },
+            ],
           },
         ],
       ]}
