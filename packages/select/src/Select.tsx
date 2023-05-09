@@ -14,7 +14,7 @@ import { getSpace } from '@tamagui/helpers-tamagui'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -729,7 +729,7 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
   }
 )
 

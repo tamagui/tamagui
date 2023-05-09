@@ -20,7 +20,7 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController, SheetOverlayFrame } from '@tamagui/sheet'
+import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -257,7 +257,7 @@ const OVERLAY_NAME = 'DialogOverlay'
 /**
  * exported for internal use with extractable()
  */
-export const DialogOverlayFrame = styled(SheetOverlayFrame, {
+export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
 })
 
@@ -872,7 +872,7 @@ const Dialog = withStaticProperties(
     Title: DialogTitle,
     Description: DialogDescription,
     Close: DialogClose,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
     Adapt,
   }
 )
