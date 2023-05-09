@@ -10,7 +10,7 @@
     "src",
     "types",
     "dist",
-    "headless"
+    "base"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -27,10 +27,10 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./headless": {
-      "types": "./types/headless.d.ts",
-      "import": "./dist/esm/headless.js",
-      "require": "./dist/cjs/headless.js"
+    "./base": {
+      "types": "./types/base.d.ts",
+      "import": "./dist/esm/base.js",
+      "require": "./dist/cjs/base.js"
     }
   },
   "dependencies": {

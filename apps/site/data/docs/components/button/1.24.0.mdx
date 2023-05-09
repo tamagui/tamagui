@@ -66,7 +66,15 @@ createTamagui({
 
 ## Headless
 
-Tamagui also offers headless Button with no styles included. Import it from `@tamagui/button/headless`.
+Tamagui also offers headless Button with no styles included that follows the composable API. You can import it using one of the following ways.
+
+```tsx
+import { Button } from '@tamagui/button/base'
+import { ButtonBase } from 'tamagui'
+import { ButtonBase } from '@tamagui/button'
+```
+
+Take a look at the following demo to see how it's used:
 
 <HeroContainer demoMultiple>
   <ButtonHeadlessDemo />
