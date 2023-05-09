@@ -10,35 +10,43 @@ export default memo(() => {
       steps={[
         [
           {
-            type: 'callout',
-            content: <>I wrote Tamagui twice...</>,
+            type: 'image',
+            variant: 'centered',
+            image: require('../images/DesignSystems.svg').default,
           },
         ],
 
         [
           {
             type: 'callout',
-            content: (
-              <>
-                Make it work,
-                <br />
-                make it right
-                <br /> make it fast ...
-                <br />
-                <br /> <em>...was a trap</em>
-              </>
-            ),
+            content: <>Sometimes you've got to try to do everything at once.</>,
           },
-          // {
-          //   type: 'split-horizontal',
-          //   content: [
-          //     {
-          //       type: 'image',
-          //       image: require('../images/popover.jpg').default,
-          //     },
-          //   ],
-          // },
         ],
+
+        // [
+        //   {
+        //     type: 'callout',
+        //     content: (
+        //       <>
+        //         Make it work,
+        //         <br />
+        //         make it right
+        //         <br /> make it fast ...
+        //         <br />
+        //         <br /> <em>...was a trap</em>
+        //       </>
+        //     ),
+        //   },
+        //   // {
+        //   //   type: 'split-horizontal',
+        //   //   content: [
+        //   //     {
+        //   //       type: 'image',
+        //   //       image: require('../images/popover.jpg').default,
+        //   //     },
+        //   //   ],
+        //   // },
+        // ],
       ]}
     />
   )

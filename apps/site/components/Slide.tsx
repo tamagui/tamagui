@@ -434,11 +434,11 @@ function getTextContent(
 
             case 'code': {
               const content = (
-                <>
+                <YStack mx="$6">
                   <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                   </DocCodeBlock>
-                </>
+                </YStack>
               )
 
               if (item.title) {
