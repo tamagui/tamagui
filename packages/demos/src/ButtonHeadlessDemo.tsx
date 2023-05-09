@@ -64,8 +64,6 @@ const ButtonFrame = styled(ButtonBase, {
   },
 })
 
-const x = <ButtonFrame child />
-
 const TextFrame = styled(ButtonBase.Text, {
   // ... your styles
 })
