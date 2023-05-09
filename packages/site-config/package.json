@@ -30,6 +30,7 @@
     "@tamagui/animations-css": "1.26.1",
     "@tamagui/animations-react-native": "1.26.1",
     "@tamagui/colors": "1.26.1",
+    "@tamagui/font-glusp": "1.26.1",
     "@tamagui/font-inter": "1.26.1",
     "@tamagui/font-silkscreen": "1.26.1",
     "@tamagui/react-native-media-driver": "1.26.1",

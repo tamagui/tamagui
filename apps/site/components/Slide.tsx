@@ -304,10 +304,10 @@ function getTextContent(
                   className="fade-image-in"
                   {...(item.variant === 'circled' && {
                     bg: '$backgroundStrong',
-                    minWidth: 500,
-                    minHeight: 500,
-                    maxWidth: 500,
-                    maxHeight: 500,
+                    minWidth: 600,
+                    minHeight: 600,
+                    maxWidth: 600,
+                    maxHeight: 600,
                     ai: 'center',
                     jc: 'center',
                     borderRadius: 10000,

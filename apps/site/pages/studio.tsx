@@ -23,6 +23,8 @@ import {
   useComposedRefs,
 } from 'tamagui'
 
+import { LoadInter900 } from '../components/LoadFont'
+
 export default function StudioSplashPage() {
   const soonButton = (
     <Button
@@ -41,6 +43,10 @@ export default function StudioSplashPage() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui Studio" description="Tamagui Studio" />
+
+      <Head>
+        <LoadInter900 />
+      </Head>
 
       <YStack fullscreen className="bg-grid" />
 
@@ -278,7 +284,7 @@ const Hero = memo(() => {
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color10)',
-    opacity: isLight ? 0.4 : 0.175,
+    opacity: isLight ? 0.4 : 0.285,
     background: 'transparent',
     style: {
       transition: `all ease-out 500ms`,

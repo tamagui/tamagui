@@ -21,6 +21,7 @@
   "dependencies": {
     "@docsearch/react": "^3.0.0",
     "@github/mini-throttle": "^2.1.0",
+    "@react-three/fiber": "^8.13.0",
     "@stripe/stripe-js": "^1.29.0",
     "@supabase/auth-helpers-nextjs": "^0.6.0",
     "@supabase/auth-helpers-react": "^0.3.1",
@@ -89,6 +90,7 @@
     "sharp": "^0.32.0",
     "stripe": "^9.1.0",
     "tamagui": "1.26.1",
+    "three": "^0.152.2",
     "ts-morph": "^15.1.0",
     "typescript": "^5.0.4",
     "unified": "^10.1.2",
