@@ -36,10 +36,9 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <_Circle cx="12" cy="12" r="10" fill="none" stroke={`${color}`} />
+      <_Circle cx="12" cy="12" r="10" stroke={`${color}`} />
       <Polygon
         points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
-        fill="none"
         stroke={`${color}`}
       />
     </Svg>

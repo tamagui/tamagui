@@ -43,14 +43,9 @@ const Icon = (props) => {
         y="3"
         rx="2"
         ry="2"
-        fill="none"
         stroke={`${color}`}
       />
-      <Polyline
-        points="11 3 11 11 14 8 17 11 17 3"
-        fill="none"
-        stroke={`${color}`}
-      />
+      <Polyline points="11 3 11 11 14 8 17 11 17 3" stroke={`${color}`} />
     </Svg>
   )
 }

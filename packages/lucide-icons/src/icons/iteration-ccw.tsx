@@ -38,10 +38,9 @@ const Icon = (props) => {
     >
       <Path
         d="M20 10c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8h8"
-        fill="none"
         stroke={`${color}`}
       />
-      <Polyline points="16 14 20 18 16 22" fill="none" stroke={`${color}`} />
+      <Polyline points="16 14 20 18 16 22" stroke={`${color}`} />
     </Svg>
   )
 }

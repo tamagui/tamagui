@@ -43,11 +43,10 @@ const Icon = (props) => {
         y="3"
         rx="2"
         ry="2"
-        fill="none"
         stroke={`${color}`}
       />
-      <Line x1="12" x2="12" y1="8" y2="16" fill="none" stroke={`${color}`} />
-      <Line x1="8" x2="16" y1="12" y2="12" fill="none" stroke={`${color}`} />
+      <Line x1="12" x2="12" y1="8" y2="16" stroke={`${color}`} />
+      <Line x1="8" x2="16" y1="12" y2="12" stroke={`${color}`} />
     </Svg>
   )
 }

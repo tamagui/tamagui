@@ -38,10 +38,9 @@ const Icon = (props) => {
     >
       <Path
         d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-        fill="none"
         stroke={`${color}`}
       />
-      <_Circle cx="12" cy="12" r="3" fill="none" stroke={`${color}`} />
+      <_Circle cx="12" cy="12" r="3" stroke={`${color}`} />
     </Svg>
   )
 }

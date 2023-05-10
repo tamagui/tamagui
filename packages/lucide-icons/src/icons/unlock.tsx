@@ -43,10 +43,9 @@ const Icon = (props) => {
         y="11"
         rx="2"
         ry="2"
-        fill="none"
         stroke={`${color}`}
       />
-      <Path d="M7 11V7a5 5 0 0 1 9.9-1" fill="none" stroke={`${color}`} />
+      <Path d="M7 11V7a5 5 0 0 1 9.9-1" stroke={`${color}`} />
     </Svg>
   )
 }

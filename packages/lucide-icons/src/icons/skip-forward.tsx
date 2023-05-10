@@ -36,8 +36,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Polygon points="5 4 15 12 5 20 5 4" fill="none" stroke={`${color}`} />
-      <Line x1="19" x2="19" y1="5" y2="19" fill="none" stroke={`${color}`} />
+      <Polygon points="5 4 15 12 5 20 5 4" stroke={`${color}`} />
+      <Line x1="19" x2="19" y1="5" y2="19" stroke={`${color}`} />
     </Svg>
   )
 }
