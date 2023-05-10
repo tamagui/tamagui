@@ -29,10 +29,11 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     delete svgAttribs['xmlns']
     const attribsOfInterest = {}
     Object.keys(svgAttribs).forEach((key) => {
-      if (key !== 'height' && key !== 'width' && key !== 'viewBox') {
+      if (!['height', 'width', 'viewBox', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].includes(key)) {
         attribsOfInterest[key] = svgAttribs[key]
       }
     })
+
     $('*').each((index, el) => {
       Object.keys(el.attribs).forEach((x) => {
         if (x.includes('-')) {
