@@ -26,7 +26,8 @@ import slideLessons3 from './slides/slide-lessons-3'
 import slidePartialEval from './slides/slide-partial-eval'
 import slidePartialEval2 from './slides/slide-partial-eval2'
 import slideSimplicity from './slides/slide-simplicity'
-import Slide4 from './slides/slide-static'
+import slideStatic from './slides/slide-static'
+import slideStatic2 from './slides/slide-static2'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
@@ -105,16 +106,17 @@ export default function TamaguiTalk() {
           slideCoreSyntax,
           slideCoreFeatures,
           slideCorePrinciples,
-          slideCoreComparison,
           slideCoreAnimations,
           SlideThemes,
           slideThemesComponents,
           slideWinamp,
           // slideThemesOverview,
           slideCoreThemesAndAnimations,
+          slideCoreComparison,
           SlideLessons1,
           // SlideThemes2,
-          Slide4,
+          slideStatic,
+          slideStatic2,
           slidePartialEval,
           slidePartialEval2,
           SlideFlatten,

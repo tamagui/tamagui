@@ -59,6 +59,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
+
                     content: (
                       <>
                         <strong>Psuedo styles</strong> - onPress, onFocus, etc
@@ -75,6 +76,10 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                props: {
+                  size: '$10',
+                  lineHeight: 90,
+                },
                 content: <>Let's make it happen 🗳️</>,
               },
             ],
@@ -85,10 +90,14 @@ export default memo(() => {
             content: [
               {
                 type: 'text',
+                props: {
+                  size: '$10',
+                  lineHeight: 90,
+                },
                 content: (
                   <>
-                    But... native is less sensitive - fewer elements on screen, less
-                    resizing, no DOM overhead, separate UI thread.
+                    Native less sensitive - fewer elements on screen, less resizing, no
+                    DOM overhead, separate UI thread.
                   </>
                 ),
               },

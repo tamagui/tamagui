@@ -2,7 +2,7 @@ import { createCodeHighlighter } from '@lib/highlightCode'
 import { ButtonDemo } from '@tamagui/demos'
 import { Slide } from 'components/Slide'
 import { memo } from 'react'
-import { Square } from 'tamagui'
+import { Square, YStack } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -47,7 +47,11 @@ export default memo(() => {
               },
               {
                 type: 'content',
-                content: <Square size={300} bc="red" />,
+                content: (
+                  <YStack ai="center" jc="center">
+                    <Square size={300} bc="red" />
+                  </YStack>
+                ),
               },
             ],
           },
