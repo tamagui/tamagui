@@ -26,13 +26,15 @@ export function useSheetProviderProps(
   )
 
   // lets set -1 to be always the "open = false" position
-  const [position, setPositionImmediate] = useControllableState({
+  const [position_, setPositionImmediate] = useControllableState({
     prop: props.position,
     defaultProp: props.defaultPosition || (state.open ? 0 : -1),
     onChange: props.onPositionChange,
     strategy: 'most-recent-wins',
     transition: true,
   })
+
+  const position = state.open === false ? -1 : position_
 
   const { open } = state
 
@@ -63,7 +65,6 @@ export function useSheetProviderProps(
 
   // open must set position
   const shouldSetPositionOpen = open && position < 0
-  console.log('shouldSetPositionOpen', { shouldSetPositionOpen, open, position })
   useEffect(() => {
     if (shouldSetPositionOpen) {
       setPosition(0)

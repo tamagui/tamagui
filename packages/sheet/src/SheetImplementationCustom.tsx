@@ -143,7 +143,6 @@ export const SheetImplementationCustom = themeable(
     }
 
     const animateTo = useEvent((position: number) => {
-      console.warn('animate to', position)
       const current = animatedNumber.getValue()
       if (isHidden && open) return
       if (!current) return
@@ -169,7 +168,6 @@ export const SheetImplementationCustom = themeable(
       })
     })
 
-    console.log('position', position)
     useIsomorphicLayoutEffect(() => {
       animateTo(position)
     }, [isHidden, frameSize, position, animateTo])
