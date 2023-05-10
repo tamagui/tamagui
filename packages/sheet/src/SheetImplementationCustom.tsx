@@ -36,7 +36,6 @@ import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import { SheetProps } from './types'
-import { useSheetChildren } from './useSheetChildren'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -46,8 +45,6 @@ export const SheetImplementationCustom = themeable(
 
     const {
       animationConfig,
-      forceRemoveScrollEnabled = null,
-      disableDrag: disableDragProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -60,19 +57,9 @@ export const SheetImplementationCustom = themeable(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
-    const {
-      contentRef,
-      frameSize,
-      setFrameSize,
-      snapPoints,
-      position,
-      setPosition,
-      scrollBridge,
-    } = providerProps
+    const { frameSize, setFrameSize, snapPoints, position, setPosition, scrollBridge } =
+      providerProps
     const { open, controller, isHidden } = state
-
-    const { frameComponent, handleComponent, bottomCoverComponent, rest } =
-      useSheetChildren(props.children)
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)

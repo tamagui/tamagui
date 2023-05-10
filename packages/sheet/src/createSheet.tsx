@@ -41,6 +41,11 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
   const SheetHandle = Handle.extractable(
     ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+
+      if (context.onlyShowFrame) {
+        return null
+      }
+
       return (
         <Handle
           onPress={() => {
@@ -97,6 +102,10 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
         context.onOverlayComponent?.(element)
       }, [element])
 
+      if (context.onlyShowFrame) {
+        return null
+      }
+
       return null
     }
   )
@@ -108,23 +117,50 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
   const SheetFrame = Frame.extractable(
     forwardRef(
       (
-        { __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Frame>>,
+        {
+          __scopeSheet,
+          children,
+          ...props
+        }: SheetScopedProps<
+          GetProps<typeof Frame> & {
+            disableHideBottomOverflow?: boolean
+          }
+        >,
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
         const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
 
         return (
-          <RemoveScroll
-            forwardProps
-            enabled={context.removeScrollEnabled}
-            allowPinchZoom
-            shards={[context.contentRef]}
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-          >
-            <Frame ref={composedContentRef} {...props} />
-          </RemoveScroll>
+          <>
+            <RemoveScroll
+              forwardProps
+              enabled={context.removeScrollEnabled}
+              allowPinchZoom
+              shards={[context.contentRef]}
+              // causes lots of bugs on touch web on site
+              removeScrollBar={false}
+            >
+              <Frame ref={composedContentRef} {...props}>
+                {children}
+              </Frame>
+            </RemoveScroll>
+
+            {/* below frame hide when bouncing past 100% */}
+            {!props.disableHideBottomOverflow && (
+              <Frame
+                {...props}
+                children={null}
+                position="absolute"
+                bottom={0}
+                maxHeight={300}
+                left={0}
+                right={0}
+                borderRadius={0}
+                shadowOpacity={0}
+              />
+            )}
+          </>
         )
       }
     )

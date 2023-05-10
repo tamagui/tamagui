@@ -23,5 +23,6 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     snapPoints: number[];
     setPosition: (next: number) => void;
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
+    onlyShowFrame: boolean;
 };
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

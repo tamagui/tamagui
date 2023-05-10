@@ -17,5 +17,6 @@ export declare const useSheet: () => {
     snapPoints: number[];
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+    onlyShowFrame: boolean;
 };
 //# sourceMappingURL=useSheet.d.ts.map

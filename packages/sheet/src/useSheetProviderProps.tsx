@@ -107,6 +107,7 @@ export function useSheetProviderProps(
     snapPoints,
     setPosition,
     setPositionImmediate,
+    onlyShowFrame: false,
   }
 
   return providerProps

@@ -224,6 +224,16 @@ Displays behind Frame. Extends [YStack](/docs/components/stacks).
 
 Contains the content. Extends [YStack](/docs/components/stacks).
 
+<PropsTable
+  data={[
+    {
+      name: 'disableHideBottomOverflow',
+      type: 'boolean',
+      description: `Disables Sheet cloning the Frame and positioning it below the frame, which helps to hide content that may appear underneath when spring animations bounce past 100%.`,
+    },
+  ]}
+/>
+
 #### &lt;Handle /&gt;
 
 Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overridden with `onPress`.
