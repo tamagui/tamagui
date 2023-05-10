@@ -28,6 +28,7 @@ export declare const SheetProvider: {
         snapPoints: number[];
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+        onlyShowFrame: boolean;
     } & {
         scope: import("@tamagui/create-context").Scope<{
             removeScrollEnabled: boolean | undefined;
@@ -47,6 +48,7 @@ export declare const SheetProvider: {
             snapPoints: number[];
             setPosition: (next: number) => void;
             setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+            onlyShowFrame: boolean;
         }>;
         children: import("react").ReactNode;
     }): JSX.Element;
@@ -69,6 +71,7 @@ export declare const SheetProvider: {
     snapPoints: number[];
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+    onlyShowFrame: boolean;
 } | undefined>, options?: {
     warn?: boolean | undefined;
     fallback?: Partial<{
@@ -89,6 +92,7 @@ export declare const SheetProvider: {
         snapPoints: number[];
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+        onlyShowFrame: boolean;
     }> | undefined;
 } | undefined) => {
     removeScrollEnabled: boolean | undefined;
@@ -108,5 +112,6 @@ export declare const SheetProvider: {
     snapPoints: number[];
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
+    onlyShowFrame: boolean;
 };
 //# sourceMappingURL=SheetContext.d.ts.map
