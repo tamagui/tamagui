@@ -11,7 +11,7 @@ export default memo(() => {
         [
           {
             type: 'callout',
-            content: <>I couldn't have done this in Rust 🌶️ - thank you Babel.</>,
+            content: <>Rust is cool, but JS ships - thank you Babel 🙏</>,
           },
           // {
           //   type: 'split-horizontal',

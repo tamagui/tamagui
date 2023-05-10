@@ -1,5 +1,5 @@
 - `defaultFont` property helps w types too
-
+- add just early return hooks eslint check
 - Popover.Close working inside Adapt Sheet
 - shadowOpacity not being applied
 
