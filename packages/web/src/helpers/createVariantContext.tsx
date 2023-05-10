@@ -5,7 +5,7 @@ export type VariantContextProvider<Props extends Object = any> = React.FunctionC
     children?: React.ReactNode
   }
 > & {
-  context: React.Context<any>
+  Context: React.Context<any>
 }
 
 export function createVariantContext<
@@ -24,7 +24,7 @@ export function createVariantContext<
     )
   }
 
-  Provider.context = Context
+  Provider.Context = Context
 
   return Provider
 }

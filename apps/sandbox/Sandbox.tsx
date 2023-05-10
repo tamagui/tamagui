@@ -15,7 +15,7 @@ import {
   getStylesAtomic,
 } from 'tamagui'
 
-import { CustomButtonDemo } from './MyButtonVariants'
+import { CustomButtonDemo } from './CustomButton'
 import config from './tamagui.config'
 
 // useful for debugging why things render:

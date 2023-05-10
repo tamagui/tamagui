@@ -273,7 +273,7 @@ export function createComponent<
 
     // set variants through context
     if (staticConfig.variantContext) {
-      const variantContext = useContext(staticConfig.variantContext.context)
+      const variantContext = useContext(staticConfig.variantContext.Context)
       Object.assign(props, variantContext)
     }
 
