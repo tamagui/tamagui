@@ -204,8 +204,13 @@ const SheetImplementationCustom = themeable(
 
     const { open, isHidden, controller } = state
 
-    const { frameComponent, handleComponent, bottomCoverComponent, overlayComponent } =
-      useSheetChildren(props.children)
+    const {
+      frameComponent,
+      handleComponent,
+      bottomCoverComponent,
+      overlayComponent,
+      rest,
+    } = useSheetChildren(props.children)
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
@@ -502,8 +507,11 @@ const SheetImplementationCustom = themeable(
             ]}
           >
             {handleComponent}
-
             {bottomCoverComponent}
+
+            {/* somewhat temporary we need to move to properly support children */}
+            {rest}
+
             {/* @ts-ignore */}
             <RemoveScroll
               forwardProps

@@ -4,6 +4,7 @@ export function useSheetChildren(childrenProp: any) {
   let handleComponent: React.ReactElement | null = null
   let overlayComponent: React.ReactElement | null = null
   let frameComponent: React.ReactElement | null = null
+  let rest: any[] = []
 
   // TODO do more radix-like and don't require direct children descendents
   React.Children.forEach(childrenProp, (child) => {
@@ -20,7 +21,7 @@ export function useSheetChildren(childrenProp: any) {
           overlayComponent = child
           break
         default:
-          console.warn('Warning: passed invalid child to Sheet', child)
+          rest.push(child)
       }
     }
   })
@@ -43,5 +44,6 @@ export function useSheetChildren(childrenProp: any) {
     overlayComponent,
     frameComponent,
     bottomCoverComponent,
+    rest,
   }
 }

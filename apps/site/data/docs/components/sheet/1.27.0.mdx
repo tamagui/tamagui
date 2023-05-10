@@ -234,6 +234,28 @@ Extends [XStack](/docs/components/stacks).
 
 Allows scrolling within Sheet. Extends [Scrollview](/docs/components/scroll-view).
 
+#### useSheet
+
+Use this to control the sheet programatically.
+
+<PropsTable
+  data={[
+    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+    {
+      name: 'setOpen',
+      type: 'Function',
+      description: `Control the open state of the sheet.`,
+    },
+    {
+      name: 'setPosition',
+      type: '(index: number) => void',
+      description: `Control the position of the sheet.`,
+    },
+  ]}
+/>
+
 ### Notes
+
+For now Sheet is the only component that requires you to put the children (Overlay, Frame, Handle) directly inside Sheet itself. We are working towards building a better setup so that you can abstract these into their own components if you wish.
 
 For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet.

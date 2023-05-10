@@ -3,6 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
 import { DialogDemo, SheetDemo } from '@tamagui/demos'
+import { Moon } from '@tamagui/lucide-icons'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
@@ -75,7 +76,8 @@ function TestAnimatePresence() {
 }
 
 const SandboxInner = () => {
-  return <TestAnimatePresence />
+  return <SheetDemo />
+  // return <TestAnimatePresence />
   return <DialogDemo />
   // return <TooltipDemo />
   // return <TestPerf />
