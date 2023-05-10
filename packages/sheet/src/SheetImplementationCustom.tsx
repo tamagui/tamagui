@@ -11,7 +11,6 @@ import {
   useThemeName,
 } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
-import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useKeyboardVisible } from '@tamagui/use-keyboard-visible'
 import {
   forwardRef,
@@ -31,8 +30,7 @@ import {
   View,
 } from 'react-native'
 
-import { HIDDEN_SIZE } from './constants'
-import { SHEET_HIDDEN_STYLESHEET } from './constants'
+import { HIDDEN_SIZE, SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
@@ -40,7 +38,6 @@ import { SheetProps } from './types'
 import { useSheetChildren } from './useSheetChildren'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
-import { useSheetSnapPoints } from './useSheetSnapPoints'
 
 export const SheetImplementationCustom = themeable(
   forwardRef<View, SheetProps>(function SheetImplementationCustom(props, forwardedRef) {
@@ -56,25 +53,91 @@ export const SheetImplementationCustom = themeable(
       portalProps,
     } = props
 
+    const keyboardIsVisible = useKeyboardVisible()
     const state = useSheetOpenState(props)
     const providerProps = useSheetProviderProps(props, state)
-    const { positions, maxSnapPoint, screenSize } = useSheetSnapPoints(providerProps)
-
-    const { position, contentRef, setPosition, scrollBridge, frameSize, setFrameSize } =
-      providerProps
-
-    const { open, isHidden, controller } = state
-
     const {
-      frameComponent,
-      handleComponent,
-      bottomCoverComponent,
+      contentRef,
+      frameSize,
+      setFrameSize,
+      snapPoints,
+      position,
+      setPosition,
       overlayComponent,
-      rest,
-    } = useSheetChildren(props.children)
+      scrollBridge,
+    } = providerProps
+    const { open, controller, isHidden } = state
+
+    const { frameComponent, handleComponent, bottomCoverComponent, rest } =
+      useSheetChildren(props.children)
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
+
+    /**
+     * This is a hacky workaround for native:
+     */
+    const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
+    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
+    const parentSheetContext = useContext(SheetInsideSheetContext)
+    const onInnerSheet = useCallback((hasChild: boolean) => {
+      setIsShowingInnerSheet(hasChild)
+    }, [])
+
+    const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
+    const screenSize = frameSize / (maxSnapPoint / 100)
+
+    const positions = useMemo(
+      () => snapPoints.map((point) => getPercentSize(point, screenSize)),
+      [frameSize, snapPoints]
+    )
+
+    const driver = useAnimationDriver()
+    const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
+      driver
+
+    // temp until reanimated useAnimatedNumber fix
+    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
+
+    useIsomorphicLayoutEffect(() => {
+      if (!(parentSheetContext && open)) return
+      parentSheetContext(true)
+      return () => {
+        parentSheetContext(false)
+      }
+    }, [parentSheetContext, open])
+
+    const nextParentContext = useMemo(
+      () => ({
+        zIndex,
+      }),
+      [zIndex]
+    )
+
+    const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
+
+    // native only fix
+    const at = useRef(0)
+
+    useAnimatedNumberReaction(
+      {
+        value: animatedNumber,
+        hostRef: sheetRef,
+      },
+      (value) => {
+        if (!driver.isReactNative) return
+        at.current = value
+        scrollBridge.paneY = value
+      }
+    )
+
+    function stopSpring() {
+      animatedNumber.stop()
+      if (scrollBridge.onFinishAnimate) {
+        scrollBridge.onFinishAnimate()
+        scrollBridge.onFinishAnimate = undefined
+      }
+    }
 
     const animateTo = useEvent((position: number) => {
       const current = animatedNumber.getValue()
@@ -106,15 +169,131 @@ export const SheetImplementationCustom = themeable(
       animateTo(position)
     }, [isHidden, frameSize, position, animateTo])
 
-    /**
-     * This is a hacky workaround for native:
-     */
-    const [isShowingInnerSheet, setIsShowingInnerSheet] = useState(false)
-    const shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet
-    const parentSheetContext = useContext(SheetInsideSheetContext)
-    const onInnerSheet = useCallback((hasChild: boolean) => {
-      setIsShowingInnerSheet(hasChild)
-    }, [])
+    const disableDrag = props.disableDrag ?? controller?.disableDrag
+    const themeName = useThemeName()
+
+    const panResponder = useMemo(
+      () => {
+        if (disableDrag) return
+        if (!frameSize) return
+        if (isShowingInnerSheet) return
+
+        const minY = positions[0]
+        scrollBridge.paneMinY = minY
+        let startY = at.current
+
+        function makeUnselectable(val: boolean) {
+          if (!SHEET_HIDDEN_STYLESHEET) return
+          if (!val) {
+            SHEET_HIDDEN_STYLESHEET.innerText = ''
+          } else {
+            SHEET_HIDDEN_STYLESHEET.innerText =
+              ':root * { user-select: none !important; -webkit-user-select: none !important; }'
+          }
+        }
+
+        const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+          isExternalDrag = false
+          previouslyScrolling = false
+          makeUnselectable(false)
+          const at = dragAt + startY
+          // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
+          // lets base our multiplier on the total layout height
+          const end = at + frameSize * vy * 0.2
+          let closestPoint = 0
+          let dist = Infinity
+          for (let i = 0; i < positions.length; i++) {
+            const position = positions[i]
+            const curDist = end > position ? end - position : position - end
+            if (curDist < dist) {
+              dist = curDist
+              closestPoint = i
+            }
+          }
+          // have to call both because state may not change but need to snap back
+          setPosition(closestPoint)
+          animateTo(closestPoint)
+        }
+
+        const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+          release({
+            vy: state.vy,
+            dragAt: state.dy,
+          })
+        }
+
+        let previouslyScrolling = false
+
+        const onMoveShouldSet = (
+          _e: GestureResponderEvent,
+          { dy }: PanResponderGestureState
+        ) => {
+          const isScrolled = scrollBridge.y !== 0
+          const isDraggingUp = dy < 0
+          // we can treat near top instead of exactly to avoid trouble with springs
+          const isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY
+          if (isScrolled) {
+            previouslyScrolling = true
+            return false
+          }
+          // prevent drag once at top and pulling up
+          if (isNearTop) {
+            if (!isScrolled && isDraggingUp) {
+              return false
+            }
+          }
+          // we could do some detection of other touchables and cancel here..
+          return Math.abs(dy) > 5
+        }
+
+        const grant = () => {
+          makeUnselectable(true)
+          stopSpring()
+          startY = at.current
+        }
+
+        let isExternalDrag = false
+
+        scrollBridge.drag = (dy) => {
+          if (!isExternalDrag) {
+            isExternalDrag = true
+            grant()
+          }
+          const to = dy + startY
+          animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
+        }
+
+        scrollBridge.release = release
+
+        return PanResponder.create({
+          onMoveShouldSetPanResponder: onMoveShouldSet,
+          onPanResponderGrant: grant,
+          onPanResponderMove: (_e, { dy }) => {
+            const toFull = dy + startY
+            const to = resisted(toFull, minY)
+            animatedNumber.setValue(to, { type: 'direct' })
+          },
+          onPanResponderEnd: finish,
+          onPanResponderTerminate: finish,
+          onPanResponderRelease: finish,
+        })
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition]
+    )
+
+    const handleAnimationViewLayout = useCallback(
+      (e) => {
+        let next = e.nativeEvent?.layout.height
+        if (isWeb && isTouchable && !open) {
+          // temp fix ios bug where it doesn't go below dynamic bottom...
+          next += 100
+        }
+        if (!next) return
+        setFrameSize(() => next)
+      },
+      [keyboardIsVisible]
+    )
 
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
@@ -144,27 +323,25 @@ export const SheetImplementationCustom = themeable(
         keyboardDidHideListener.remove()
         keyboardDidShowListener.remove()
       }
-    }, [])
+    }, [moveOnKeyboardChange])
 
-    // temp until reanimated useAnimatedNumber fix
-    const AnimatedView = (driver['NumberView'] ?? driver.View) as typeof Animated.View
-
-    useIsomorphicLayoutEffect(() => {
-      if (!(parentSheetContext && open)) return
-      parentSheetContext(true)
-      return () => {
-        parentSheetContext(false)
+    // we need to set this *after* fully closed to 0, to avoid it overlapping
+    // the page when resizing quickly on web for example
+    const [opacity, setOpacity] = useState(open ? 1 : 0)
+    if (open && opacity === 0) {
+      setOpacity(1)
+    }
+    useEffect(() => {
+      if (!open) {
+        // need to wait for animation complete, for now lets just do it naively
+        const tm = setTimeout(() => {
+          setOpacity(0)
+        }, 400)
+        return () => {
+          clearTimeout(tm)
+        }
       }
-    }, [parentSheetContext, open])
-
-    const nextParentContext = useMemo(
-      () => ({
-        zIndex,
-      }),
-      [zIndex]
-    )
-
-    const removeScrollEnabled = forceRemoveScrollEnabled ?? (open && modal)
+    }, [open])
 
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
@@ -189,23 +366,7 @@ export const SheetImplementationCustom = themeable(
               animatedStyle,
             ]}
           >
-            {handleComponent}
-            {bottomCoverComponent}
-
-            {/* somewhat temporary we need to move to properly support children */}
-            {rest}
-
-            {/* @ts-ignore */}
-            <RemoveScroll
-              forwardProps
-              enabled={removeScrollEnabled}
-              allowPinchZoom
-              shards={[contentRef]}
-              // causes lots of bugs on touch web on site
-              removeScrollBar={false}
-            >
-              {frameComponent}
-            </RemoveScroll>
+            {props.children}
           </AnimatedView>
         </SheetProvider>
       </ParentSheetContext.Provider>
@@ -239,3 +400,15 @@ export const SheetImplementationCustom = themeable(
     return contents
   })
 )
+
+function getPercentSize(point?: number, screenSize?: number) {
+  if (!screenSize) return 0
+  if (point === undefined) {
+    console.warn('No snapPoint')
+    return 0
+  }
+  const pct = point / 100
+  const next = Math.round(screenSize - pct * screenSize)
+
+  return next
+}

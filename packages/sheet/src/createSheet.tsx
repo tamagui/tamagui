@@ -7,7 +7,14 @@ import {
   useDidFinishSSR,
   withStaticProperties,
 } from '@tamagui/core'
-import { FunctionComponent, RefAttributes, forwardRef } from 'react'
+import { RemoveScroll } from '@tamagui/remove-scroll'
+import {
+  FunctionComponent,
+  RefAttributes,
+  forwardRef,
+  useLayoutEffect,
+  useMemo,
+} from 'react'
 import { Platform, View } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -55,22 +62,42 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
    * -----------------------------------------------------------------------------------------------*/
 
   const SheetOverlay = Overlay.extractable(
-    ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Overlay>>) => {
+    (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
+      const { __scopeSheet, ...props } = propsIn
       const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
-      return (
-        <Overlay
-          open={context.open && !context.hidden}
-          {...props}
-          onPress={mergeEvent(
-            props.onPress as any,
-            context.dismissOnOverlayPress
-              ? () => {
-                  context.setOpen(false)
-                }
-              : undefined
-          )}
-        />
+
+      // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
+      // so we just pass it up to context
+
+      const element = useMemo(
+        () => (
+          <Overlay
+            open={context.open && !context.hidden}
+            {...props}
+            onPress={mergeEvent(
+              props.onPress as any,
+              context.dismissOnOverlayPress
+                ? () => {
+                    context.setOpen(false)
+                  }
+                : undefined
+            )}
+          />
+        ),
+        [
+          context.open,
+          props,
+          context.hidden,
+          props.onPress,
+          context.dismissOnOverlayPress,
+        ]
       )
+
+      useLayoutEffect(() => {
+        context.onOverlayComponent(element)
+      }, [element])
+
+      return null
     }
   )
 
@@ -86,7 +113,19 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
         const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
-        return <Frame ref={composedContentRef} {...props} />
+
+        return (
+          <RemoveScroll
+            forwardProps
+            enabled={context.removeScrollEnabled}
+            allowPinchZoom
+            shards={[context.contentRef]}
+            // causes lots of bugs on touch web on site
+            removeScrollBar={false}
+          >
+            <Frame ref={composedContentRef} {...props} />
+          </RemoveScroll>
+        )
       }
     )
   )
