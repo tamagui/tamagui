@@ -16,6 +16,7 @@ type SheetContextValue = Required<
   scrollBridge: ScrollBridge
   frameSize: number
   modal: boolean
+  handleAnimationViewLayout: ((event: LayoutChangeEvent) => void) | undefined
 }
 
 export const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
