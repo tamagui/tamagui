@@ -321,6 +321,7 @@ const PopoverContentImpl = React.forwardRef<
   } = props
   const popperScope = usePopoverScope(__scopePopover)
   const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
@@ -341,7 +342,6 @@ const PopoverContentImpl = React.forwardRef<
     )
   }
 
-  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
   if (context.open && isFullyHidden) {
     setIsFullyHidden(false)
   }
