@@ -1,8 +1,6 @@
 import { GenericFont, createFont, isWeb } from '@tamagui/core'
 
-export const createMunroFont = <A extends GenericFont<keyof typeof size>>(
-  font: Partial<A> = {}
-): A => {
+export const createMunroFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
   return createFont({
     family: isWeb
       ? 'Munro, Fira Code, Monaco, Consolas, Ubuntu Mono, monospace'

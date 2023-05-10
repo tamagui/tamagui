@@ -283,6 +283,7 @@ export interface TamaguiConfig
     TamaguiCustomConfig {}
 
 type OnlyAllowShorthandsSetting = boolean | undefined
+type DefaultFontSetting = string | void
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -291,7 +292,8 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -308,6 +310,7 @@ export type CreateTamaguiConfig<
   media: D
   animations: AnimationDriver<E>
   onlyAllowShorthands: G
+  defaultFont: H
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -341,7 +344,8 @@ type ConfProps<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = {
   tokens: A
   themes: B
@@ -350,6 +354,7 @@ type ConfProps<
   animations?: AnimationDriver<E>
   fonts: F
   onlyAllowShorthands?: G
+  defaultFont?: H
 }
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
@@ -359,9 +364,10 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G
+  infer G,
+  infer H
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F, G>
+  ? TamaguiInternalConfig<A, B, C, D, E, F, G, H>
   : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -371,7 +377,8 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericShorthands,
   GenericMedia,
   GenericAnimations,
-  GenericFonts
+  GenericFonts,
+  void
 >
 
 // try and find the top level types as they can be supersets:
@@ -477,6 +484,11 @@ export type CreateTamaguiProps = {
   }
 
   /**
+   * Define a default font, for better types and default font on Text
+   */
+  defaultFont?: string
+
+  /**
    * Web-only: define text-selection CSS
    */
   selectionStyles?: (theme: ThemeParsed) => {
@@ -553,7 +565,8 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
   Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
@@ -568,6 +581,7 @@ export type TamaguiInternalConfig<
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
+    defaultFont?: H
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
@@ -576,7 +590,7 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
-export type GenericFont<Key extends string = string> = {
+export type GenericFont<Key extends string | number = string | number> = {
   size: { [key in Key]: number | Variable }
   lineHeight?: Partial<{ [key in Key]: number | Variable }>
   letterSpacing?: Partial<{ [key in Key]: number | Variable }>
@@ -684,7 +698,12 @@ export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 
 // fonts
-export type Font = ParseFont<TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']]>
+type DefaultFont = TamaguiConfig['defaultFont']
+
+export type Fonts = DefaultFont extends string
+  ? TamaguiConfig['fonts'][DefaultFont]
+  : never
+export type Font = ParseFont<Fonts>
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number

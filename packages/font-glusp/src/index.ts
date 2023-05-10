@@ -1,8 +1,6 @@
 import { GenericFont, createFont } from '@tamagui/web'
 
-export const createGluspFont = <A extends GenericFont<keyof typeof size>>(
-  font: Partial<A> = {}
-): A => {
+export const createGluspFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
   return createFont({
     family: 'Glusp',
     size,

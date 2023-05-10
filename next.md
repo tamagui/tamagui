@@ -1,3 +1,5 @@
+- `defaultFont` property helps w types too
+
 - Popover.Close working inside Adapt Sheet
 - shadowOpacity not being applied
 

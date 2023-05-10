@@ -52,9 +52,9 @@ const FaBut = styled(Stack, {
   backgroundColor: 'red',
 })
 
-type a = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']]['size']
-type x = TokenPrefixed<>
-type y = x['size']['13']
+// type a = keyof [keyof TamaguiConfig['fonts']]['size']
+// type x = TokenPrefixed<>
+// type y = x['size']['13']
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
   [key in Ensure$Prefix<keyof A>]: A[keyof A]
