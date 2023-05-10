@@ -36,70 +36,14 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M12 22v-6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M12 8V2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M4 12H2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M10 12H8"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M16 12h-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M22 12h-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m15 19-3-3-3 3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m15 5-3 3-3-3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M12 22v-6" fill="none" stroke={`${color}`} />
+      <Path d="M12 8V2" fill="none" stroke={`${color}`} />
+      <Path d="M4 12H2" fill="none" stroke={`${color}`} />
+      <Path d="M10 12H8" fill="none" stroke={`${color}`} />
+      <Path d="M16 12h-2" fill="none" stroke={`${color}`} />
+      <Path d="M22 12h-2" fill="none" stroke={`${color}`} />
+      <Path d="m15 19-3-3-3 3" fill="none" stroke={`${color}`} />
+      <Path d="m15 5-3 3-3-3" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

@@ -45,9 +45,6 @@ const Icon = (props) => {
         ry="2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Line
         x1="12"
@@ -56,9 +53,6 @@ const Icon = (props) => {
         y2="18"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

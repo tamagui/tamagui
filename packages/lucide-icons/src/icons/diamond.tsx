@@ -45,9 +45,6 @@ const Icon = (props) => {
         transform="rotate(45 12 1)"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

@@ -44,9 +44,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Rect
         width="7"
@@ -56,9 +53,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Rect
         width="7"
@@ -68,9 +62,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Rect
         width="7"
@@ -80,9 +71,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

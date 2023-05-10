@@ -40,9 +40,6 @@ const Icon = (props) => {
         points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

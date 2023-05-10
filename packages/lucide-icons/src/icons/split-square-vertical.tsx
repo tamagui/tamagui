@@ -40,29 +40,13 @@ const Icon = (props) => {
         d="M5 8V5c0-1 1-2 2-2h10c1 0 2 1 2 2v3"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Path
         d="M19 16v3c0 1-1 2-2 2H7c-1 0-2-1-2-2v-3"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Line
-        x1="4"
-        x2="20"
-        y1="12"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="4" x2="20" y1="12" y2="12" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

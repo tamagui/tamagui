@@ -40,20 +40,8 @@ const Icon = (props) => {
         d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <_Circle
-        cx="12"
-        cy="7"
-        r="4"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <_Circle cx="12" cy="7" r="4" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

@@ -36,70 +36,14 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M3 6V5c0-1.1.9-2 2-2h2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M11 3h3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M18 3h1c1.1 0 2 .9 2 2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M21 9v2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M21 15c0 1.1-.9 2-2 2h-1"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M14 17h-3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m7 17-4 4v-5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M3 12v-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M3 6V5c0-1.1.9-2 2-2h2" fill="none" stroke={`${color}`} />
+      <Path d="M11 3h3" fill="none" stroke={`${color}`} />
+      <Path d="M18 3h1c1.1 0 2 .9 2 2" fill="none" stroke={`${color}`} />
+      <Path d="M21 9v2" fill="none" stroke={`${color}`} />
+      <Path d="M21 15c0 1.1-.9 2-2 2h-1" fill="none" stroke={`${color}`} />
+      <Path d="M14 17h-3" fill="none" stroke={`${color}`} />
+      <Path d="m7 17-4 4v-5" fill="none" stroke={`${color}`} />
+      <Path d="M3 12v-2" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

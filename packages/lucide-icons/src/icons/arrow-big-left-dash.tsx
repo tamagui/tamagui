@@ -36,22 +36,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M19 15V9"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M15 15h-3v4l-7-7 7-7v4h3v6z"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M19 15V9" fill="none" stroke={`${color}`} />
+      <Path d="M15 15h-3v4l-7-7 7-7v4h3v6z" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

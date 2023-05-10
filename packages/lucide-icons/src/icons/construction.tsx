@@ -44,66 +44,14 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Path
-        d="M17 14v7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M7 14v7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M17 3v3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M7 3v3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M10 14 2.3 6.3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m14 6 7.7 7.7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m8 6 8 8"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M17 14v7" fill="none" stroke={`${color}`} />
+      <Path d="M7 14v7" fill="none" stroke={`${color}`} />
+      <Path d="M17 3v3" fill="none" stroke={`${color}`} />
+      <Path d="M7 3v3" fill="none" stroke={`${color}`} />
+      <Path d="M10 14 2.3 6.3" fill="none" stroke={`${color}`} />
+      <Path d="m14 6 7.7 7.7" fill="none" stroke={`${color}`} />
+      <Path d="m8 6 8 8" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

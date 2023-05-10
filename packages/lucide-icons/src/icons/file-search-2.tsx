@@ -40,36 +40,10 @@ const Icon = (props) => {
         d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Polyline
-        points="14 2 14 8 20 8"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <_Circle
-        cx="11.5"
-        cy="14.5"
-        r="2.5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M13.25 16.25 15 18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Polyline points="14 2 14 8 20 8" fill="none" stroke={`${color}`} />
+      <_Circle cx="11.5" cy="14.5" r="2.5" fill="none" stroke={`${color}`} />
+      <Path d="M13.25 16.25 15 18" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

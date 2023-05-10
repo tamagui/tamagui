@@ -40,42 +40,11 @@ const Icon = (props) => {
         d="M3.6 3.6A2 2 0 0 1 5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-.59 1.41"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Path
-        d="M3 8.7V19a2 2 0 0 0 2 2h10.3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m2 2 20 20"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M13 13a3 3 0 1 0 0-6H9v2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M9 17v-2.3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M3 8.7V19a2 2 0 0 0 2 2h10.3" fill="none" stroke={`${color}`} />
+      <Path d="m2 2 20 20" fill="none" stroke={`${color}`} />
+      <Path d="M13 13a3 3 0 1 0 0-6H9v2" fill="none" stroke={`${color}`} />
+      <Path d="M9 17v-2.3" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

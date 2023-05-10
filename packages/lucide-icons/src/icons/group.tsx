@@ -36,38 +36,10 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M3 7V5c0-1.1.9-2 2-2h2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M17 3h2c1.1 0 2 .9 2 2v2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M21 17v2c0 1.1-.9 2-2 2h-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M7 21H5c-1.1 0-2-.9-2-2v-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M3 7V5c0-1.1.9-2 2-2h2" fill="none" stroke={`${color}`} />
+      <Path d="M17 3h2c1.1 0 2 .9 2 2v2" fill="none" stroke={`${color}`} />
+      <Path d="M21 17v2c0 1.1-.9 2-2 2h-2" fill="none" stroke={`${color}`} />
+      <Path d="M7 21H5c-1.1 0-2-.9-2-2v-2" fill="none" stroke={`${color}`} />
       <Rect
         width="7"
         height="5"
@@ -76,9 +48,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Rect
         width="7"
@@ -88,9 +57,6 @@ const Icon = (props) => {
         rx="1"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

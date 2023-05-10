@@ -45,87 +45,14 @@ const Icon = (props) => {
         ry="2.18"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Line
-        x1="7"
-        x2="7"
-        y1="2"
-        y2="22"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="17"
-        x2="17"
-        y1="2"
-        y2="22"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="2"
-        x2="22"
-        y1="12"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="2"
-        x2="7"
-        y1="7"
-        y2="7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="2"
-        x2="7"
-        y1="17"
-        y2="17"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="17"
-        x2="22"
-        y1="17"
-        y2="17"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="17"
-        x2="22"
-        y1="7"
-        y2="7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="7" x2="7" y1="2" y2="22" fill="none" stroke={`${color}`} />
+      <Line x1="17" x2="17" y1="2" y2="22" fill="none" stroke={`${color}`} />
+      <Line x1="2" x2="22" y1="12" y2="12" fill="none" stroke={`${color}`} />
+      <Line x1="2" x2="7" y1="7" y2="7" fill="none" stroke={`${color}`} />
+      <Line x1="2" x2="7" y1="17" y2="17" fill="none" stroke={`${color}`} />
+      <Line x1="17" x2="22" y1="17" y2="17" fill="none" stroke={`${color}`} />
+      <Line x1="17" x2="22" y1="7" y2="7" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

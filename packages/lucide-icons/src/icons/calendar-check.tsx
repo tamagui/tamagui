@@ -45,51 +45,11 @@ const Icon = (props) => {
         ry="2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Line
-        x1="16"
-        x2="16"
-        y1="2"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="8"
-        x2="8"
-        y1="2"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="3"
-        x2="21"
-        y1="10"
-        y2="10"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m9 16 2 2 4-4"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="16" x2="16" y1="2" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="8" x2="8" y1="2" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="3" x2="21" y1="10" y2="10" fill="none" stroke={`${color}`} />
+      <Path d="m9 16 2 2 4-4" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

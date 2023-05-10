@@ -36,60 +36,11 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <_Circle
-        cx="12"
-        cy="12"
-        r="8"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="3"
-        x2="6"
-        y1="3"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="21"
-        x2="18"
-        y1="3"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="3"
-        x2="6"
-        y1="21"
-        y2="18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="21"
-        x2="18"
-        y1="21"
-        y2="18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <_Circle cx="12" cy="12" r="8" fill="none" stroke={`${color}`} />
+      <Line x1="3" x2="6" y1="3" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="21" x2="18" y1="3" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="3" x2="6" y1="21" y2="18" fill="none" stroke={`${color}`} />
+      <Line x1="21" x2="18" y1="21" y2="18" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

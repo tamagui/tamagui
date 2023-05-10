@@ -36,54 +36,12 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M14 4c0-1.1.9-2 2-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M20 2c1.1 0 2 .9 2 2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M22 8c0 1.1-.9 2-2 2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M16 10c-1.1 0-2-.9-2-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="m3 7 3 3 3-3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M6 10V5c0-1.7 1.3-3 3-3h1"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M14 4c0-1.1.9-2 2-2" fill="none" stroke={`${color}`} />
+      <Path d="M20 2c1.1 0 2 .9 2 2" fill="none" stroke={`${color}`} />
+      <Path d="M22 8c0 1.1-.9 2-2 2" fill="none" stroke={`${color}`} />
+      <Path d="M16 10c-1.1 0-2-.9-2-2" fill="none" stroke={`${color}`} />
+      <Path d="m3 7 3 3 3-3" fill="none" stroke={`${color}`} />
+      <Path d="M6 10V5c0-1.7 1.3-3 3-3h1" fill="none" stroke={`${color}`} />
       <Rect
         width="8"
         height="8"
@@ -92,25 +50,16 @@ const Icon = (props) => {
         rx="2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Path
         d="M14 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
       <Path
         d="M20 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </Svg>
   )

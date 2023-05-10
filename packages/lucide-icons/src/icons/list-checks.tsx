@@ -36,63 +36,12 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Line
-        x1="10"
-        x2="21"
-        y1="6"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="10"
-        x2="21"
-        y1="12"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="10"
-        x2="21"
-        y1="18"
-        y2="18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="3 6 4 7 6 5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="3 12 4 13 6 11"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="3 18 4 19 6 17"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="10" x2="21" y1="6" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="10" x2="21" y1="12" y2="12" fill="none" stroke={`${color}`} />
+      <Line x1="10" x2="21" y1="18" y2="18" fill="none" stroke={`${color}`} />
+      <Polyline points="3 6 4 7 6 5" fill="none" stroke={`${color}`} />
+      <Polyline points="3 12 4 13 6 11" fill="none" stroke={`${color}`} />
+      <Polyline points="3 18 4 19 6 17" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

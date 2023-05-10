@@ -36,39 +36,9 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Line
-        x1="21"
-        x2="3"
-        y1="6"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="17"
-        x2="7"
-        y1="12"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="19"
-        x2="5"
-        y1="18"
-        y2="18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="21" x2="3" y1="6" y2="6" fill="none" stroke={`${color}`} />
+      <Line x1="17" x2="7" y1="12" y2="12" fill="none" stroke={`${color}`} />
+      <Line x1="19" x2="5" y1="18" y2="18" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

@@ -44,18 +44,8 @@ const Icon = (props) => {
         rx="6"
         fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Path
-        d="M12 7v4"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M12 7v4" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }

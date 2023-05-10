@@ -36,22 +36,8 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Polyline
-        points="16 18 22 12 16 6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="8 6 2 12 8 18"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Polyline points="16 18 22 12 16 6" fill="none" stroke={`${color}`} />
+      <Polyline points="8 6 2 12 8 18" fill="none" stroke={`${color}`} />
     </Svg>
   )
 }
