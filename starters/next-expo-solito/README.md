@@ -16,7 +16,7 @@ Many thanks to [@FernandoTheRojo](https://twitter.com/fernandotherojo) for the S
 - [solito](https://solito.dev) for cross-platform navigation
 - Expo SDK
 - Next.js
-- React Navigation
+- Expo Router
 
 ## 🗂 Folder layout
 
