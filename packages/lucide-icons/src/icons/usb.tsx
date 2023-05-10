@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -37,16 +37,6 @@ const Icon = (props) => {
       {...otherProps}
     >
       <_Circle
-        cx="4"
-        cy="20"
-        r="1"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <_Circle
         cx="10"
         cy="7"
         r="1"
@@ -56,8 +46,10 @@ const Icon = (props) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <Path
-        d="M4 20 19 5"
+      <_Circle
+        cx="4"
+        cy="20"
+        r="1"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -65,7 +57,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="m21 3-3 1 2 2 1-3Z"
+        d="M4.7 19.3 19 5"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -73,7 +65,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="m10 7-5 5 2 5"
+        d="m21 3-3 1 2 2Z"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -81,7 +73,7 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="m10 14 5 2 4-4"
+        d="M9.26 7.68 5 12l2 5"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
@@ -89,7 +81,15 @@ const Icon = (props) => {
         strokeLinejoin="round"
       />
       <Path
-        d="m18 12 1-1 1 1-1 1-1-1Z"
+        d="m10 14 5 2 3.5-3.5"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="m18 12 1-1 1 1-1 1Z"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

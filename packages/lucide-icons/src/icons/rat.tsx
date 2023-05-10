@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -29,7 +29,6 @@ const Icon = (props) => {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      version="1.1"
       fill="none"
       stroke={`${color}`}
       strokeWidth="2"

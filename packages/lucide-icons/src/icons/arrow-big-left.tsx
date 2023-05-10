@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -37,7 +37,7 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Path
-        d="m3 12 7-7v4h11v6H10v4z"
+        d="M18 15h-6v4l-7-7 7-7v4h6v6z"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"

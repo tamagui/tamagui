@@ -1,0 +1,93 @@
+import PropTypes from 'prop-types'
+import React, { memo } from 'react'
+import {
+  Defs,
+  Ellipse,
+  G,
+  Line,
+  LinearGradient,
+  Path,
+  Polygon,
+  Polyline,
+  RadialGradient,
+  Rect,
+  Stop,
+  Svg,
+  Symbol,
+  Use,
+  Circle as _Circle,
+  Text as _Text,
+} from 'react-native-svg'
+
+import { IconProps } from '../IconProps'
+import { themed } from '../themed'
+
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Path
+        d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M2 14h12"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M22 14h-2"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M12 20v-6"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="m2 2 20 20"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M22 16V6a2 2 0 0 0-2-2H10"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'TouchpadOff'
+
+export const TouchpadOff = memo<IconProps>(themed(Icon))
