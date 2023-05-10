@@ -1,12 +1,21 @@
 /// <reference types="react" />
-export declare const useSheet: () => Required<Pick<import("./types").SheetProps, "position" | "open" | "snapPoints" | "dismissOnOverlayPress">> & {
-    hidden: boolean;
-    setPosition: import("./types").PositionChangeHandler;
-    setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
-    contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
-    dismissOnSnapToBottom: boolean;
+export declare const useSheet: () => {
+    removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
-    frameSize: number;
     modal: boolean;
+    open: boolean;
+    setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    hidden: boolean;
+    contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
+    frameSize: number;
+    setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
+    dismissOnOverlayPress: boolean;
+    dismissOnSnapToBottom: boolean;
+    onOverlayComponent: ((comp: any) => void) | undefined;
+    scope: import("@tamagui/create-context").Scope<any>;
+    position: number;
+    snapPoints: number[];
+    setPosition: (next: number) => void;
+    setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
 };
 //# sourceMappingURL=useSheet.d.ts.map

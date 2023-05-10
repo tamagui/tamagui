@@ -25,6 +25,7 @@ import {
   Animated,
   GestureResponderEvent,
   Keyboard,
+  LayoutChangeEvent,
   PanResponder,
   PanResponderGestureState,
   View,
@@ -55,7 +56,10 @@ export const SheetImplementationCustom = themeable(
 
     const keyboardIsVisible = useKeyboardVisible()
     const state = useSheetOpenState(props)
-    const providerProps = useSheetProviderProps(props, state)
+    const [overlayComponent, setOverlayComponent] = useState<any>(null)
+    const providerProps = useSheetProviderProps(props, state, {
+      onOverlayComponent: setOverlayComponent,
+    })
     const {
       contentRef,
       frameSize,
@@ -63,7 +67,6 @@ export const SheetImplementationCustom = themeable(
       snapPoints,
       position,
       setPosition,
-      overlayComponent,
       scrollBridge,
     } = providerProps
     const { open, controller, isHidden } = state
@@ -140,6 +143,7 @@ export const SheetImplementationCustom = themeable(
     }
 
     const animateTo = useEvent((position: number) => {
+      console.warn('animate to', position)
       const current = animatedNumber.getValue()
       if (isHidden && open) return
       if (!current) return
@@ -165,6 +169,7 @@ export const SheetImplementationCustom = themeable(
       })
     })
 
+    console.log('position', position)
     useIsomorphicLayoutEffect(() => {
       animateTo(position)
     }, [isHidden, frameSize, position, animateTo])
@@ -283,14 +288,14 @@ export const SheetImplementationCustom = themeable(
     )
 
     const handleAnimationViewLayout = useCallback(
-      (e) => {
+      (e: LayoutChangeEvent) => {
         let next = e.nativeEvent?.layout.height
         if (isWeb && isTouchable && !open) {
           // temp fix ios bug where it doesn't go below dynamic bottom...
           next += 100
         }
         if (!next) return
-        setFrameSize(() => next)
+        setFrameSize(next)
       },
       [keyboardIsVisible]
     )

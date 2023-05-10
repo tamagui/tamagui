@@ -8,7 +8,13 @@ import { SheetOpenState } from './useSheetOpenState'
 
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps>
 
-export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) {
+export function useSheetProviderProps(
+  props: SheetProps,
+  state: SheetOpenState,
+  options: {
+    onOverlayComponent?: (comp: any) => void
+  } = {}
+) {
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = useState<number>(0)
   const snapPointsProp = props.snapPoints || [80]
@@ -57,6 +63,7 @@ export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) 
 
   // open must set position
   const shouldSetPositionOpen = open && position < 0
+  console.log('shouldSetPositionOpen', { shouldSetPositionOpen, open, position })
   useEffect(() => {
     if (shouldSetPositionOpen) {
       setPosition(0)
@@ -67,8 +74,6 @@ export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) 
   if (!driver) {
     throw new Error('Must set animations in tamagui.config.ts')
   }
-
-  const [overlayComponent, setOverlayComponent] = useState<any>(null)
 
   const scrollBridge = useConstant<ScrollBridge>(() => ({
     enabled: false,
@@ -95,8 +100,7 @@ export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) 
     setFrameSize,
     dismissOnOverlayPress: props.dismissOnOverlayPress ?? true,
     dismissOnSnapToBottom: props.dismissOnSnapToBottom ?? false,
-    onOverlayComponent: setOverlayComponent,
-    overlayComponent,
+    onOverlayComponent: options.onOverlayComponent,
     scope: props.__scopeSheet,
     position,
     snapPoints,

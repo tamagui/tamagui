@@ -94,7 +94,7 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
       )
 
       useLayoutEffect(() => {
-        context.onOverlayComponent(element)
+        context.onOverlayComponent?.(element)
       }, [element])
 
       return null
