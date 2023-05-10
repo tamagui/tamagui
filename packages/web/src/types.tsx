@@ -576,7 +576,7 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
-export type GenericFont<Key extends number | string = number | string> = {
+export type GenericFont<Key extends string = string> = {
   size: { [key in Key]: number | Variable }
   lineHeight?: Partial<{ [key in Key]: number | Variable }>
   letterSpacing?: Partial<{ [key in Key]: number | Variable }>
@@ -683,8 +683,10 @@ export type ColorTokens =
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 
-// font tokens
+// fonts
+export type Font = ParseFont<TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']]>
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
+export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
 export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
@@ -695,6 +697,20 @@ export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fo
 export type FontTransformTokens =
   | `$${GetTokenFontKeysFor<'transform'>}`
   | TextStyle['textTransform']
+
+type ParseFont<A extends GenericFont> = {
+  size: TokenPrefixed<A['size']>
+  lineHeight: TokenPrefixedIfExists<A['lineHeight']>
+  letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>
+  weight: TokenPrefixedIfExists<A['weight']>
+  family: TokenPrefixedIfExists<A['family']>
+  style: TokenPrefixedIfExists<A['style']>
+  transform: TokenPrefixedIfExists<A['transform']>
+  color: TokenPrefixedIfExists<A['color']>
+  face: TokenPrefixedIfExists<A['face']>
+}
+
+type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {}
 
 //
 // adds theme short values to relevant props
@@ -933,6 +949,11 @@ type StaticComponentObject<Props, Ref> = {
    */
   styleable: Styleable<Props, Ref>
 }
+
+export type TamaguiComponentExpectingVariants<
+  Props = {},
+  Variants = {}
+> = TamaguiComponent<Props, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   config: TamaguiInternalConfig
@@ -1217,6 +1238,8 @@ export type VariantSpreadExtras<Props> = {
   tokens: TamaguiConfig['tokens']
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props
+  fontFamily: FontFamilyTokens
+  font: Font
 }
 
 type PropLike = { [key: string]: any }

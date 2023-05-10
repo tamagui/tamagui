@@ -307,7 +307,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};
 export type UnionableNumber = number & {};
-export type GenericFont<Key extends number | string = number | string> = {
+export type GenericFont<Key extends string = string> = {
     size: {
         [key in Key]: number | Variable;
     };
@@ -394,7 +394,9 @@ export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boole
 export type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
+export type Font = ParseFont<TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']]>;
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
+export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
 export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
@@ -403,6 +405,18 @@ export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | TextStyle['textTransform'];
+type ParseFont<A extends GenericFont> = {
+    size: TokenPrefixed<A['size']>;
+    lineHeight: TokenPrefixedIfExists<A['lineHeight']>;
+    letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>;
+    weight: TokenPrefixedIfExists<A['weight']>;
+    family: TokenPrefixedIfExists<A['family']>;
+    style: TokenPrefixedIfExists<A['style']>;
+    transform: TokenPrefixedIfExists<A['transform']>;
+    color: TokenPrefixedIfExists<A['color']>;
+    face: TokenPrefixedIfExists<A['face']>;
+};
+type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
 type FontKeys = 'fontFamily';
 type FontSizeKeys = 'fontSize';
@@ -493,6 +507,7 @@ type StaticComponentObject<Props, Ref> = {
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
     styleable: Styleable<Props, Ref>;
 };
+export type TamaguiComponentExpectingVariants<Props = {}, Variants = {}> = TamaguiComponent<Props, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
@@ -651,6 +666,8 @@ export type VariantSpreadExtras<Props> = {
         [key: string]: infer B;
     } ? B : unknown;
     props: Props;
+    fontFamily: FontFamilyTokens;
+    font: Font;
 };
 type PropLike = {
     [key: string]: any;

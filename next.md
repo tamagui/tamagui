@@ -1,3 +1,8 @@
+- Popover.Close working inside Adapt Sheet
+- shadowOpacity not being applied
+
+
+
 ```tsx
 const ButtonVariant = createVariantContext<{ size: SizeTokens }>()
 
@@ -52,6 +57,13 @@ high level:
     - better monorepo pro drop
 
 ---
+
+studio
+- templates working
+- Button.studio.tsx + run locally
+  - give it your app port and it launches electron or just gives you a new url?
+- figma export components
+- figma import tokens
 
 - we could somehow generate separate native and web potentially?
   - basically we generate esbuild two different versions: .native.js and .web.js

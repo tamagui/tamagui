@@ -1,14 +1,16 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { TamaguiConfig, TamaguiProvider } from '@tamagui/core'
 import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
+  AnimatePresence,
   Button,
   Separator,
   Stack,
-  TamaguiProvider,
+  Text,
   Theme,
   XStack,
   YStack,
@@ -50,13 +52,78 @@ const FaBut = styled(Stack, {
   backgroundColor: 'red',
 })
 
+type a = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']]['size']
+type x = TokenPrefixed<>
+type y = x['size']['13']
+
+type TokenPrefixed<A extends { [key: string]: any }> = {
+  [key in Ensure$Prefix<keyof A>]: A[keyof A]
+}
+
+type Ensure$Prefix<A extends string | number | symbol> = A extends string
+  ? A extends `$${string}`
+    ? A
+    : `$${A}`
+  : never
+
+const FaButText = styled(Text, {
+  variantContext: ButtonVariants,
+  color: 'white',
+  fontFamily: '$body',
+
+  variants: {
+    size: {
+      '...size': (val, { font, fontFamily }) => {
+        const x = font.size['']
+        console.log('font', fontFamily, font, val)
+        return {
+          fontSize: tokens,
+        }
+      },
+    },
+  },
+})
+
 const SandboxInner = () => {
   return (
-    <ButtonVariants backgroundColor="blue">
-      <FaBut>hi</FaBut>
+    <ButtonVariants size="$10">
+      <FaBut>
+        <FaButText>hi</FaButText>
+      </FaBut>
     </ButtonVariants>
   )
 }
+
+// function TestAnimatePresence() {
+//   const [show, setShow] = useState(true)
+
+//   return (
+//     <>
+//       <Button onPress={() => setShow(!show)}>hide</Button>
+//       <AnimatePresence>
+//         {show && (
+//           <Square
+//             animation="quick"
+//             size={100}
+//             bc="red"
+//             y={0}
+//             o={1}
+//             hoverStyle={{
+//               y: -10,
+//             }}
+//             enterStyle={{
+//               y: -100,
+//             }}
+//             exitStyle={{
+//               y: 100,
+//               o: 0,
+//             }}
+//           />
+//         )}
+//       </AnimatePresence>
+//     </>
+//   )
+// }
 
 function TestPerf() {
   return <Button onPress={runTestPerf}>run</Button>

@@ -1,4 +1,5 @@
 import { getConfig } from '../config'
+import { getVariableValue } from '../createVariable'
 import { GenericFonts } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 import { createProxy } from './createProxy'
@@ -27,6 +28,15 @@ export function getVariantExtras(
     fonts,
     tokens: conf.tokensParsed,
     theme,
+
+    get fontFamily() {
+      return getVariableValue(props.fontFamily)
+    },
+
+    get font() {
+      return fonts[this.fontFamily]
+    },
+
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: avoidDefaultProps

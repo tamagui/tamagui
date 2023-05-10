@@ -69,8 +69,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // Wait for scroll position to settle before showing arrows to prevent
   // interference with pointer events.
-  React.useEffect(() => {
-    const frame = requestAnimationFrame(() => {
+  useIsomorphicLayoutEffect(() => {
+    queueMicrotask(() => {
       if (!open) {
         setScrollTop(0)
         setFallback(false)
@@ -78,14 +78,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         setControlledScrolling(false)
       }
     })
-    return () => {
-      cancelAnimationFrame(frame)
-    }
   }, [open, setActiveIndex])
 
   // close when mouseup outside select
   if (isWeb && isClient) {
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!open) return
       const mouseUp = (e: MouseEvent) => {
         if (state.current.isMouseOutside) {

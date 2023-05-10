@@ -193,7 +193,7 @@ const SlideInner = (props: SlideProps) => {
       <YStack fullscreen zi={-1}>
         {showAllSteps ? null : glows.elements}
       </YStack>
-      <YStack ref={glows.ref as any} space="$7" w="100%" h="100%" p="$12">
+      <YStack ref={glows.ref as any} space="$7" w="90%" h="100%" p="$12">
         <YStack space="$4">
           {Boolean(props.title) && (
             <H1
@@ -434,11 +434,11 @@ function getTextContent(
 
             case 'code': {
               const content = (
-                <>
+                <YStack mx="$6">
                   <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                   </DocCodeBlock>
-                </>
+                </YStack>
               )
 
               if (item.title) {

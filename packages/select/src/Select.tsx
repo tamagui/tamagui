@@ -14,7 +14,7 @@ import { getSpace } from '@tamagui/helpers-tamagui'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -114,17 +114,11 @@ const SelectValue = SelectValueFrame.extractable(
     ) => {
       // We ignore `className` and `style` as this part shouldn't be styled.
       const context = useSelectContext(VALUE_NAME, __scopeSelect)
-      const { onValueNodeHasChildrenChange } = context
       const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
 
       const children = childrenProp ?? context.selectedItem
-      const hasChildren = !!children
       const isEmptyValue = context.value == null || context.value === ''
       const selectValueChildren = isEmptyValue ? placeholder ?? children : children
-
-      useIsomorphicLayoutEffect(() => {
-        onValueNodeHasChildrenChange(hasChildren)
-      }, [onValueNodeHasChildrenChange, hasChildren])
 
       return (
         <SelectValueFrame
@@ -214,7 +208,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       }
     })
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       setValueAtIndex(index, value)
     }, [index, setValueAtIndex, value])
 
@@ -651,7 +645,6 @@ export const Select = withStaticProperties(
     const listContentRef = React.useRef<string[]>([])
     const [selectedIndex, setSelectedIndex] = React.useState(0)
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
-    const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
 
     useIsomorphicLayoutEffect(() => {
       selectedIndexRef.current = selectedIndex
@@ -676,8 +669,6 @@ export const Select = withStaticProperties(
           forceUpdate={forceUpdate}
           valueNode={valueNode}
           onValueNodeChange={setValueNode}
-          onValueNodeHasChildrenChange={setValueNodeHasChildren}
-          valueNodeHasChildren={valueNodeHasChildren}
           scopeKey={scopeKey}
           sheetBreakpoint={sheetBreakpoint}
           scope={__scopeSelect}
@@ -729,7 +720,7 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
   }
 )
 

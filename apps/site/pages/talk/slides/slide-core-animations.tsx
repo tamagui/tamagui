@@ -118,7 +118,7 @@ export default memo(() => {
               {
                 type: 'content',
                 content: (
-                  <YStack ai="center">
+                  <YStack scale={2} ai="center">
                     <AnimationsHoverDemo />
                   </YStack>
                 ),

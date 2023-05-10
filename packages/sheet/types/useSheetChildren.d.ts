@@ -3,5 +3,6 @@ export declare function useSheetChildren(childrenProp: any): {
     overlayComponent: null;
     frameComponent: null;
     bottomCoverComponent: any;
+    rest: any[];
 };
 //# sourceMappingURL=useSheetChildren.d.ts.map
