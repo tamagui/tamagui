@@ -1,9 +1,12 @@
 import React, { createContext, useMemo } from 'react'
 
-export type VariantContextProvider<Props extends Object = any> =
-  React.FunctionComponent<Props> & {
-    context: React.Context<any>
+export type VariantContextProvider<Props extends Object = any> = React.FunctionComponent<
+  Props & {
+    children?: React.ReactNode
   }
+> & {
+  context: React.Context<any>
+}
 
 export function createVariantContext<
   Props extends Record<string, any>

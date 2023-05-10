@@ -9,16 +9,13 @@ import {
   AnimatePresence,
   Button,
   Separator,
-  Stack,
-  Text,
   Theme,
   XStack,
   YStack,
-  createVariantContext,
   getStylesAtomic,
-  styled,
 } from 'tamagui'
 
+import { CustomButtonDemo } from './MyButtonVariants'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -45,51 +42,8 @@ export const Sandbox = () => {
   )
 }
 
-const ButtonVariants = createVariantContext()
-
-const FaBut = styled(Stack, {
-  variantContext: ButtonVariants,
-  backgroundColor: 'red',
-})
-
-// type a = keyof [keyof TamaguiConfig['fonts']]['size']
-// type x = TokenPrefixed<>
-// type y = x['size']['13']
-
-type TokenPrefixed<A extends { [key: string]: any }> = {
-  [key in Ensure$Prefix<keyof A>]: A[keyof A]
-}
-
-type Ensure$Prefix<A extends string | number | symbol> = A extends string
-  ? A extends `$${string}`
-    ? A
-    : `$${A}`
-  : never
-
-const FaButText = styled(Text, {
-  variantContext: ButtonVariants,
-  color: 'white',
-  fontFamily: '$body',
-
-  variants: {
-    size: {
-      '...fontSize': (val, { font }) => {
-        return {
-          fontSize: font.size[val],
-        }
-      },
-    },
-  },
-})
-
 const SandboxInner = () => {
-  return (
-    <ButtonVariants size="$10">
-      <FaBut>
-        <FaButText>hi</FaButText>
-      </FaBut>
-    </ButtonVariants>
-  )
+  return <CustomButtonDemo />
 }
 
 // function TestAnimatePresence() {
