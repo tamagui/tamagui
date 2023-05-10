@@ -73,11 +73,9 @@ const FaButText = styled(Text, {
 
   variants: {
     size: {
-      '...size': (val, { font, fontFamily }) => {
-        const x = font.size['']
-        console.log('font', fontFamily, font, val)
+      '...fontSize': (val, { font }) => {
         return {
-          fontSize: tokens,
+          fontSize: font.size[val],
         }
       },
     },

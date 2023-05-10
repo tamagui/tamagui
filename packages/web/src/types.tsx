@@ -582,6 +582,7 @@ export type TamaguiInternalConfig<
     inverseShorthands: Record<string, string>
     reactNative?: any
     defaultFont?: H
+    fontSizeTokens: Set<string>
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']

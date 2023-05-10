@@ -173,7 +173,7 @@ const resolveVariants: StyleResolver = (
   if (!variantValue) {
     // variant at key exists, but no matching variant value, return nothing
     if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.validStyles?.[key]) return
+      if (staticConfig.validStyles && key in staticConfig.validStyles) return
       // don't warn on missing boolean values, common to only one of true/false
       if (typeof value === 'boolean') return
       const name = staticConfig.componentName || '[UnnamedComponent]'
@@ -411,21 +411,16 @@ function getVariantDefinition(
   }
   const { tokensParsed } = conf
   for (const { name, spreadName } of tokenCats) {
-    if (variant[spreadName] && value in tokensParsed[name]) {
+    if (spreadName in variant && value in tokensParsed[name]) {
       return variant[spreadName]
     }
   }
-  let fn: any
-  const type = typeof value
-  if (type === 'number') {
-    fn = variant[':number']
-  } else if (type === 'string') {
-    fn = variant[':string']
-  } else if (value === true || value === false) {
-    fn = variant[':boolean']
+  const fontSizeVariant = variant['...fontSize']
+  if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
+    return fontSizeVariant
   }
-  // fallback to catch all or size
-  return fn || variant['...'] || variant['...size']
+  // fallback to catch all | size
+  return variant[`:${typeof value}`] || variant['...'] || variant['...size']
 }
 
 const fontShorthand = {

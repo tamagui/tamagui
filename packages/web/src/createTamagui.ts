@@ -56,10 +56,19 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })
   )
 
+  let fontSizeTokens: Set<string> | null = null
+
+  console.log('fontTokens', fontTokens)
+
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
-      res[`$${familyName}`] = parseFont(fontTokens[familyName])
+      const font = fontTokens[familyName]
+      const fontParsed = parseFont(font)
+      res[`$${familyName}`] = fontParsed
+      if (!fontSizeTokens && fontParsed.size) {
+        fontSizeTokens = new Set(Object.keys(fontParsed.size))
+      }
     }
     return res!
   })()
@@ -248,6 +257,8 @@ ${getAllRules().join(separator)}`
     parsed: true,
     getNewCSS,
     getCSS,
+    defaultFont: configIn.defaultFont,
+    fontSizeTokens: fontSizeTokens || new Set(),
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
