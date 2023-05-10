@@ -377,8 +377,7 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericShorthands,
   GenericMedia,
   GenericAnimations,
-  GenericFonts,
-  void
+  GenericFonts
 >
 
 // try and find the top level types as they can be supersets:
@@ -1258,8 +1257,8 @@ export type VariantSpreadExtras<Props> = {
   tokens: TamaguiConfig['tokens']
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props
-  fontFamily: FontFamilyTokens
-  font: Font
+  fontFamily?: FontFamilyTokens
+  font?: Font
 }
 
 type PropLike = { [key: string]: any }

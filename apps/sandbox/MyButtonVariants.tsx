@@ -19,13 +19,12 @@ export const ButtonFrame = styled(Stack, {
 export const ButtonText = styled(Text, {
   variantContext: ButtonVariant,
   color: 'white',
-  fontFamily: '$body',
 
   variants: {
     size: {
       '...fontSize': (val, { font }) => {
         return {
-          fontSize: font.size[val],
+          fontSize: font?.size[val],
         }
       },
     },

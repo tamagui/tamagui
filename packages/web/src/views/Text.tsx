@@ -16,21 +16,17 @@ export const Text = createComponent<TextProps, React.Component<TextProps>, TextP
     acceptsClassName: true,
     isText: true,
 
-    defaultProps: {
-      // @ts-ignore
-      display: 'flex',
-      fontFamily: 'System',
-      ...(isWeb
-        ? {
-            display: 'inline',
-            boxSizing: 'border-box',
-            wordWrap: 'break-word',
-            margin: 0,
-          }
-        : {
-            suppressHighlighting: true,
-          }),
-    },
+    defaultProps: isWeb
+      ? {
+          display: 'inline',
+          boxSizing: 'border-box',
+          wordWrap: 'break-word',
+          margin: 0,
+        }
+      : {
+          display: 'flex',
+          suppressHighlighting: true,
+        },
 
     inlineWhenUnflattened: new Set(['fontFamily']),
 

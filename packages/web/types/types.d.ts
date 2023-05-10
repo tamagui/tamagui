@@ -181,7 +181,7 @@ type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends Gener
     defaultFont?: H;
 };
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H> ? TamaguiInternalConfig<A, B, C, D, E, F, G, H> : unknown;
-export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts, void>;
+export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
 type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
@@ -677,8 +677,8 @@ export type VariantSpreadExtras<Props> = {
         [key: string]: infer B;
     } ? B : unknown;
     props: Props;
-    fontFamily: FontFamilyTokens;
-    font: Font;
+    fontFamily?: FontFamilyTokens;
+    font?: Font;
 };
 type PropLike = {
     [key: string]: any;

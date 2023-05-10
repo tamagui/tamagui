@@ -58,8 +58,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   let fontSizeTokens: Set<string> | null = null
 
-  console.log('fontTokens', fontTokens)
-
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {

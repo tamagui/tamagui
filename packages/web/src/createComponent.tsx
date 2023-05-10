@@ -274,7 +274,6 @@ export function createComponent<
     // set variants through context
     if (staticConfig.variantContext) {
       const variantContext = useContext(staticConfig.variantContext.context)
-      console.log('variantContext', variantContext)
       Object.assign(props, variantContext)
     }
 
@@ -901,6 +900,10 @@ export function createComponent<
     const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
 
     defaultProps = restProps
+
+    if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
+      defaultProps.fontFamily = conf.defaultFont
+    }
 
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
