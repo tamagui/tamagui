@@ -18,6 +18,7 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply src"
   },
