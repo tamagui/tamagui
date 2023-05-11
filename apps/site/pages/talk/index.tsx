@@ -92,7 +92,7 @@ export default function TamaguiTalk() {
       <Slides
         slides={[
           Slide1,
-          slideTwitterPoll,
+          // slideTwitterPoll,
           // slideDesignSystems,
           SlideWhat,
           SlideWhy,
