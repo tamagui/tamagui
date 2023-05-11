@@ -6,7 +6,6 @@ export default memo(() => {
   return (
     <Slide
       title="Tailwind?"
-      subTitle="Tamagui is great for just the web, too"
       theme="yellow"
       steps={[
         [
@@ -119,6 +118,22 @@ export default memo(() => {
                           marginBottom: 20,
                           display: 'inline-flex',
                         },
+                        content: `... but compiler makes up`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$9',
+                          marginBottom: 20,
+                          display: 'inline-flex',
+                        },
                         content: `Everything is typed w/o plugin`,
                       },
                     ],
@@ -184,22 +199,6 @@ export default memo(() => {
                           display: 'inline-flex',
                         },
                         content: `Powerful themes`,
-                      },
-                    ],
-                  },
-
-                  {
-                    type: 'bullet-point',
-                    slim: true,
-                    content: [
-                      {
-                        type: 'text',
-                        props: {
-                          size: '$9',
-                          marginBottom: 20,
-                          display: 'inline-flex',
-                        },
-                        content: `Compiler optimization++`,
                       },
                     ],
                   },
