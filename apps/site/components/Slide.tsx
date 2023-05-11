@@ -132,7 +132,7 @@ type SlideStepItem =
 type TextContent = SlideStepItem[]
 
 export const SlideContext = createContext({
-  registerSlide(next: (inc: number) => boolean) {},
+  registerSlide(next: (inc: number, fixStep?: number) => boolean) {},
 })
 
 export function Slide(props: SlideProps) {
@@ -153,8 +153,8 @@ const SlideInner = (props: SlideProps) => {
 
   useEffect(() => {
     if (!isPresent) return
-    return context.registerSlide((inc) => {
-      const next = step + inc
+    return context.registerSlide((inc, setAt) => {
+      const next = setAt ?? step + inc
       if (next >= 1 && next <= max) {
         setStep(next)
         return false
@@ -435,7 +435,13 @@ function getTextContent(
             case 'code': {
               const content = (
                 <YStack mx="$6">
-                  <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                  <DocCodeBlock
+                    disableCopy
+                    isHighlightingLines
+                    size={size ?? '$8'}
+                    fontSize={25}
+                    lineHeight={33}
+                  >
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                   </DocCodeBlock>
                 </YStack>
@@ -538,7 +544,7 @@ function getTextContent(
 
             case 'text':
               return (
-                <Paragraph size={size ?? '$9'} fow="400" lh="$10" {...item.props}>
+                <Paragraph fos={36} fow="400" lh="$10" {...item.props}>
                   {item.content}&nbsp;
                 </Paragraph>
               )

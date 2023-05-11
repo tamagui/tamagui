@@ -521,20 +521,20 @@ export default memo(() => {
           },
         ],
 
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-5.png').default,
-          },
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/themes-5.png').default,
+        //   },
 
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_green_outlined`,
-          },
-        ],
+        //   {
+        //     type: 'text-overlay',
+        //     variant: 'good',
+        //     content: `dark_green_outlined`,
+        //   },
+        // ],
 
         // [
         //   {

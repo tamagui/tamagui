@@ -33,7 +33,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>CSS Variables</strong> - useTheme()
+                        <strong>CSS Variables</strong> for now, useTheme()
                       </>
                     ),
                   },
@@ -47,7 +47,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Media queries</strong> - useMedia()
+                        <strong>Media queries</strong> for now, useMedia()
                       </>
                     ),
                   },
@@ -62,7 +62,7 @@ export default memo(() => {
 
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> - onPress, onFocus, etc
+                        <strong>Psuedo styles</strong> for now, onPress, onFocus, etc
                       </>
                     ),
                   },
@@ -80,26 +80,17 @@ export default memo(() => {
                   size: '$10',
                   lineHeight: 90,
                 },
-                content: <>Let's make it happen 🗳️</>,
+                content: <>Upside - Native less sensitive</>,
               },
-            ],
-          },
 
-          {
-            type: 'bullet-point',
-            content: [
               {
-                type: 'text',
-                props: {
-                  size: '$10',
-                  lineHeight: 90,
-                },
-                content: (
-                  <>
-                    Native less sensitive - fewer elements on screen, less resizing, no
-                    DOM overhead, separate UI thread.
-                  </>
-                ),
+                type: 'bullet-point',
+                content: [
+                  {
+                    type: 'text',
+                    content: `Fewer elements on screen, less resizing, DOM overhead, separate UI thread.`,
+                  },
+                ],
               },
             ],
           },

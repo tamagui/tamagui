@@ -113,7 +113,6 @@ export default function TamaguiTalk() {
           // slideThemesOverview,
           slideCoreThemesAndAnimations,
           slideCoreComparison,
-          SlideLessons1,
           // SlideThemes2,
           slideStatic,
           slideStatic2,
@@ -121,6 +120,7 @@ export default function TamaguiTalk() {
           slidePartialEval2,
           SlideFlatten,
           slideWebOnly,
+          SlideLessons1,
           SlideExpressYourself,
           slideLessons3,
           slideCssInJs,
@@ -170,12 +170,21 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
-  const nextSlideGoToNextStep = useRef<(inc: number) => boolean>()
-  const nextSlideContext = useMemo(
+  const previewSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const previewSlideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
-        nextSlideGoToNextStep.current = nextStep
-        nextSlideGoToNextStep.current(1)
+        previewSlideGoToNextStep.current = nextStep
+        previewSlideGoToNextStep.current(1)
+      },
+    }),
+    []
+  )
+
+  const nextSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc, fix) => boolean) => {
+        nextStep(0, 1)
       },
     }),
     []
@@ -184,7 +193,7 @@ export function Slides(props: { slides: Slides }) {
   const nextStep = useEvent(() => {
     const inc = 1
     if (goToNextStep.current?.(inc)) {
-      nextSlideGoToNextStep.current?.(inc)
+      previewSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -192,7 +201,7 @@ export function Slides(props: { slides: Slides }) {
   const prevStep = useEvent(() => {
     const inc = -1
     if (goToNextStep.current?.(inc)) {
-      nextSlideGoToNextStep.current?.(inc)
+      previewSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -255,7 +264,7 @@ export function Slides(props: { slides: Slides }) {
       <ShowAllStepsContext.Provider value={true}>
         <SlidePreview b={250}>
           {PreviewCurrentSlideComponent && (
-            <SlideContext.Provider value={nextSlideContext}>
+            <SlideContext.Provider value={previewSlideContext}>
               <PreviewCurrentSlideComponent />
             </SlideContext.Provider>
           )}

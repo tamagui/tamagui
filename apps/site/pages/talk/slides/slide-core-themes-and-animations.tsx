@@ -44,7 +44,7 @@ export default memo(() => {
   return (
     <Slide
       title="Themes + Animations"
-      subTitle="Fast + flexible"
+      subTitle="Avoid renders - when it makes sense"
       stepsStrategy="replace"
       theme="pink"
       steps={[

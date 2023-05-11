@@ -6,6 +6,7 @@ export default memo(() => {
   return (
     <Slide
       theme="blue"
+      stepsStrategy="replace"
       steps={[
         [
           {
@@ -13,6 +14,18 @@ export default memo(() => {
             content: <>Verbosity, the death&nbsp;of&nbsp;creativity</>,
           },
         ],
+
+        // [
+        //   {
+        //     type: 'callout',
+        //     content: (
+        //       <>
+        //         Do a favor and check out out GQty.dev - the greatest lib you've never
+        //         heard of
+        //       </>
+        //     ),
+        //   },
+        // ],
       ]}
     />
   )
