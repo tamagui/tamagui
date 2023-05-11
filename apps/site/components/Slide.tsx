@@ -453,7 +453,7 @@ function getTextContent(
               if (item.title) {
                 return (
                   <YStack ai="center" space>
-                    <H4>{item.title}</H4>
+                    <H4 size="$9">{item.title}</H4>
                     {content}
                   </YStack>
                 )
