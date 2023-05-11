@@ -23,7 +23,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -38,7 +38,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -53,7 +53,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -68,7 +68,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -83,7 +83,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -104,7 +104,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -119,7 +119,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -134,7 +134,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -149,7 +149,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },
@@ -164,7 +164,7 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
+                          fontSize: 50,
                           marginTop: 60,
                           display: 'inline-flex',
                         },

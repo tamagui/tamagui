@@ -7,8 +7,7 @@ import { YStack } from 'tamagui'
 const highlightCode = createCodeHighlighter()
 
 const snippet1 = highlightCode(
-  `
-import { createAnimations }
+  `import { createAnimations }
   from '@tamagui/animations-reanimated'
 
 const animations = createAnimations({
@@ -27,8 +26,7 @@ const animations = createAnimations({
 )
 
 const snippet2 = highlightCode(
-  `
-import { createAnimations }
+  `import { createAnimations }
   from '@tamagui/animations-css'
 
 const animations = createAnimations({
@@ -40,10 +38,7 @@ const animations = createAnimations({
 )
 
 const snippetUsage = highlightCode(
-  `
-import { Stack } from '@tamagui/core'
-  
-export default (props) => (
+  `export default (props) => (
   <Stack
     animation="fast"
     y={0}

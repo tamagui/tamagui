@@ -5,14 +5,11 @@ import { memo } from 'react'
 const highlightCode = createCodeHighlighter()
 
 const styledSnippet = highlightCode(
-  `import { Text, styled } from '@tamagui/core'
-
-export const Heading = styled(Text, {
+  `export const Heading = styled(Text, {
   color: '$color',
-  fontFamily: '$title',
   fontSize: 18,
   
-  hoverStyle: { color: '$colorHover' },
+  hoverStyle: { color: '$color3' },
 
   // media query
   $small: { fontSize: 12 },

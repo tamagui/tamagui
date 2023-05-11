@@ -209,7 +209,7 @@ const SlideInner = (props: SlideProps) => {
           )}
 
           {Boolean(props.subTitle) && (
-            <H2 size="$9" theme="alt2" als="center">
+            <H2 size="$10" theme="alt2" als="center">
               {props.subTitle}
             </H2>
           )}
@@ -419,10 +419,13 @@ function getTextContent(
                 <Code
                   bc="$color8"
                   color="$color11"
-                  size={size ?? '$9'}
                   px="$3"
                   py="$2"
                   lineHeight={44}
+                  fontSize={32}
+                  {...(size && {
+                    size,
+                  })}
                   {...item.props}
                 >
                   {item.content}
@@ -439,8 +442,8 @@ function getTextContent(
                     disableCopy
                     isHighlightingLines
                     size={size ?? '$8'}
-                    fontSize={25}
-                    lineHeight={33}
+                    fontSize={26}
+                    lineHeight={36}
                   >
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                   </DocCodeBlock>
@@ -551,7 +554,13 @@ function getTextContent(
 
             case 'text-bold':
               return (
-                <Paragraph fow="800" size={size ?? '$9'} lh="$10" {...item.props}>
+                <Paragraph
+                  fow="800"
+                  fontSize={44}
+                  {...(size && { size })}
+                  lh="$10"
+                  {...item.props}
+                >
                   {item.content}&nbsp;
                 </Paragraph>
               )

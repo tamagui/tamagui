@@ -67,10 +67,7 @@ const outputSnippetSub = highlightCode(
 )
 
 const snippetUsage = highlightCode(
-  `
-import { Stack, Text, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Stack backgroundColor="$background">
       <Text color="$color">
@@ -84,10 +81,7 @@ export default () => (
 )
 
 const snippetUsage2 = highlightCode(
-  `
-import { Stack, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
   </Theme>
@@ -105,10 +99,7 @@ const MyWidget = () => (
 )
 
 const snippetUsage3 = highlightCode(
-  `
-import { Stack, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="dark">
     <MyWidget />
   </Theme>
@@ -126,10 +117,7 @@ const MyWidget = () => (
 )
 
 const snippetUsageComplex = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
 
@@ -143,10 +131,7 @@ export default () => (
 )
 
 const snippetUsageInverse = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
 
@@ -160,10 +145,7 @@ export default () => (
 )
 
 const snippetUsageSub = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Theme name="red">
       <MyWidget />
@@ -175,10 +157,7 @@ export default () => (
 )
 
 const snippetUsageInverseSub = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Theme name="red">
       <MyWidget />

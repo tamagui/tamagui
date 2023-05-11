@@ -29,7 +29,7 @@ export default memo(() => {
                       {
                         type: 'code-inline',
                         props: {
-                          size: '$11',
+                          fontSize: 50,
                           paddingVertical: 20,
                           display: 'inline-flex',
                         },
@@ -47,7 +47,7 @@ export default memo(() => {
                       {
                         type: 'code-inline',
                         props: {
-                          size: '$11',
+                          fontSize: 50,
                           paddingVertical: 20,
                           display: 'inline-flex',
                         },
@@ -70,7 +70,7 @@ export default memo(() => {
                       {
                         type: 'code-inline',
                         props: {
-                          size: '$11',
+                          fontSize: 50,
                           paddingVertical: 20,
                           display: 'inline-flex',
                         },
@@ -87,7 +87,7 @@ export default memo(() => {
                       {
                         type: 'code-inline',
                         props: {
-                          size: '$11',
+                          fontSize: 50,
                           paddingVertical: 20,
                           display: 'inline-flex',
                         },

@@ -116,7 +116,7 @@ export default function TamaguiTalk() {
           // SlideThemes2,
           slideStatic,
           slideStatic2,
-          slidePartialEval,
+          // slidePartialEval,
           slidePartialEval2,
           SlideFlatten,
           slideWebOnly,

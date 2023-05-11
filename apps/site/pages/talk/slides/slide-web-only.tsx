@@ -15,8 +15,9 @@ export default memo(() => {
               {
                 type: 'text',
                 props: {
-                  size: '$10',
                   minHeight: 100,
+                  fontSize: 60,
+                  marginVertical: 50,
                   display: 'inline-flex',
                 },
                 content: (
@@ -28,6 +29,9 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
@@ -42,6 +46,9 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
@@ -56,6 +63,9 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
@@ -71,29 +81,28 @@ export default memo(() => {
             ],
           },
 
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                props: {
-                  size: '$10',
-                  lineHeight: 90,
-                },
-                content: <>Upside - Native less sensitive</>,
-              },
+          // {
+          //   type: 'bullet-point',
+          //   content: [
+          //     {
+          //       type: 'text',
+          //       props: {
+          //         lineHeight: 90,
+          //       },
+          //       content: <>Upside - Native less sensitive</>,
+          //     },
 
-              {
-                type: 'bullet-point',
-                content: [
-                  {
-                    type: 'text',
-                    content: `Fewer elements on screen, less resizing, DOM overhead, separate UI thread.`,
-                  },
-                ],
-              },
-            ],
-          },
+          //     {
+          //       type: 'bullet-point',
+          //       content: [
+          //         {
+          //           type: 'text',
+          //           content: `Fewer elements on screen, less resizing, DOM overhead, separate UI thread.`,
+          //         },
+          //       ],
+          //     },
+          //   ],
+          // },
         ],
       ]}
     />
