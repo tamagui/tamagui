@@ -1,8 +1,7 @@
 import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
-import React from 'react'
 import { memo } from 'react'
-import { Paragraph, Square, Stack, Theme, XStack, YStack, styled } from 'tamagui'
+import { Paragraph, Square, Stack, Theme, styled } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -392,111 +391,6 @@ export default memo(() => {
                 ),
               },
             ],
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-1.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-2.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `light`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-1.5.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark + inverse`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-4.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_outlined`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-3.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `light_outlined`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-6.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_purple`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-7.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_purple_alt`,
           },
         ],
 
