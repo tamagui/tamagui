@@ -10,13 +10,13 @@ export default memo(() => {
       theme="purple"
       stepsStrategy="replace"
       steps={[
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            image: require('../images/trilemma.png').default,
-          },
-        ],
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     image: require('../images/trilemma.png').default,
+        //   },
+        // ],
 
         [
           {

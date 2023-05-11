@@ -122,7 +122,7 @@ export default function TamaguiTalk() {
           slideWebOnly,
           // SlideLessons1,
           SlideExpressYourself,
-          slideLessons3,
+          // slideLessons3,
           slideCssInJs,
           // SlideTamagui,
           // slideTamaguiCode,
@@ -144,6 +144,7 @@ const YStackEnterable = styled(YStack, {
 type Slides = any[]
 
 export function Slides(props: { slides: Slides }) {
+  const disablePreview = window.location.search.includes(`preview-off`)
   const [[page, direction], setPage] = useState([0, 0])
 
   const total = props.slides.length
@@ -261,23 +262,25 @@ export function Slides(props: { slides: Slides }) {
         </Paragraph>
       </XStack>
 
-      <ShowAllStepsContext.Provider value={true}>
-        <SlidePreview b={250}>
-          {PreviewCurrentSlideComponent && (
-            <SlideContext.Provider value={previewSlideContext}>
-              <PreviewCurrentSlideComponent />
-            </SlideContext.Provider>
-          )}
-        </SlidePreview>
+      {!disablePreview && (
+        <ShowAllStepsContext.Provider value={true}>
+          <SlidePreview b={250}>
+            {PreviewCurrentSlideComponent && (
+              <SlideContext.Provider value={previewSlideContext}>
+                <PreviewCurrentSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
 
-        <SlidePreview b={-250}>
-          {PreviewNextSlideComponent && (
-            <SlideContext.Provider value={nextSlideContext}>
-              <PreviewNextSlideComponent />
-            </SlideContext.Provider>
-          )}
-        </SlidePreview>
-      </ShowAllStepsContext.Provider>
+          <SlidePreview b={-250}>
+            {PreviewNextSlideComponent && (
+              <SlideContext.Provider value={nextSlideContext}>
+                <PreviewNextSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
+        </ShowAllStepsContext.Provider>
+      )}
     </>
   )
 }
