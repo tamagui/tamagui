@@ -3,23 +3,14 @@ title: Create Tamagui App
 description: Get started with helpful templates
 ---
 
-Set up a starter repo with expo, expo-router, Next.js, and Tamagui configured and ready to go:
-
-### Usage
-
-```bash
-npm create tamagui
-```
-
-### Note
-
-By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy the power and simplicity of creating universal apps.
+Set up a starter repo to help learn about and/or bootstrap your tamagui app:
 
 ### Templates
 
-Currently, we have one template available:
+Currently, we have two template available:
 
 - `next-expo-solito` Expo, Expo Router, Solito and Next.js (with both `/pages` and `/app` dir)
+- `simple-web` (recommended for learning) Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.
 
 ### Usage
 
@@ -38,17 +29,19 @@ To run the app:
 ```bash
 cd myapp
 yarn
-yarn web # Next.js local dev
-yarn native # Expo local dev
+yarn web # Web local dev
+yarn native # Expo local dev (only for `next-expo-solito`)
 ```
 
-## 📦 Included packages
+## 📦 Included packages (`next-expo-solito`)
 
 - `tamagui` for cross-platform views, themes and animations
 - `solito` for cross-platform navigation
 - `expo-router` for having same routing concepts between web and native
 - Expo SDK 48
 - Next.js 13
+
+By integrating `Tamagui`, `expo-router`, `Solito`, and, `Next.js` you can enjoy the power and simplicity of creating universal apps.
 
 ## 🗂 Folder layout
 
