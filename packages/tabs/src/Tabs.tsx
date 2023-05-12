@@ -226,6 +226,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
               id={triggerId}
               // @ts-ignore
               size={context.size}
+              {...groupItemProps}
               {...triggerProps}
               ref={composeRefs(forwardedRef, triggerRef)}
               onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
@@ -269,7 +270,6 @@ const TabsTrigger = TabsTriggerFrame.extractable(
                   onInteraction?.('focus', null)
                 }),
               })}
-              {...groupItemProps}
             />
           </RovingFocusGroup.Item>
         </Theme>
