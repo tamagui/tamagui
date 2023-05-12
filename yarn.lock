@@ -3287,17 +3287,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-previous@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@radix-ui/react-use-previous@npm:0.1.1"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-  peerDependencies:
-    react: ^16.8 || ^17.0
-  checksum: ca6d7fc397bb19a59fb06529c376fc0b4501fde29c390e9448dd381d05d25d7d2dbfde4c15a491851930cb62fec3cc15ecc413ff77e789a3139d8083db06bf21
-  languageName: node
-  linkType: hard
-
 "@radix-ui/react-use-previous@npm:^1.0.0":
   version: 1.0.0
   resolution: "@radix-ui/react-use-previous@npm:1.0.0"
@@ -4504,7 +4493,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/checkbox@workspace:packages/checkbox"
   dependencies:
-    "@radix-ui/react-use-previous": ^0.1.1
+    "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/build": 1.27.3
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
