@@ -34,7 +34,7 @@
     "@floating-ui/react": "^0.19.1",
     "@floating-ui/react-dom": "^1.2.2",
     "@floating-ui/react-native": "^0.9.0",
-    "@radix-ui/react-use-previous": "^0.1.1",
+    "@radix-ui/react-use-previous": "^1.0.0",
     "@tamagui/adapt": "1.27.3",
     "@tamagui/compose-refs": "1.27.3",
     "@tamagui/core": "1.27.3",

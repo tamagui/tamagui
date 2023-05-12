@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "@radix-ui/react-use-escape-keydown": "^0.1.0",
+    "@radix-ui/react-use-escape-keydown": "^1.0.2",
     "@tamagui/compose-refs": "1.27.3",
     "@tamagui/core": "1.27.3",
     "@tamagui/use-event": "1.27.3"

@@ -3264,26 +3264,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-callback-ref@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@radix-ui/react-use-callback-ref@npm:0.1.0"
+"@radix-ui/react-use-callback-ref@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@radix-ui/react-use-callback-ref@npm:1.0.0"
   dependencies:
     "@babel/runtime": ^7.13.10
   peerDependencies:
-    react: ^16.8 || ^17.0
-  checksum: 5356971123d7bbc66a208eca4709483190d0927a6817089f885d4538cd701a174d76830ba36cfaa6336b340415aaefaddc606a575246b0cbcb4b1f2897075203
+    react: ^16.8 || ^17.0 || ^18.0
+  checksum: a8dda76ba0a26e23dc6ab5003831ad7439f59ba9d696a517643b9ee6a7fb06b18ae7a8f5a3c00c530d5c8104745a466a077b7475b99b4c0f5c15f5fc29474471
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-escape-keydown@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@radix-ui/react-use-escape-keydown@npm:0.1.0"
+"@radix-ui/react-use-escape-keydown@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@radix-ui/react-use-escape-keydown@npm:1.0.2"
   dependencies:
     "@babel/runtime": ^7.13.10
-    "@radix-ui/react-use-callback-ref": 0.1.0
+    "@radix-ui/react-use-callback-ref": 1.0.0
   peerDependencies:
-    react: ^16.8 || ^17.0
-  checksum: b92769ecf49eac072c95898e230f9066385b6623d5af8d8f6a322a84bac4bcfab149eb3321fc363dad1d8b1b9706dcdde461a5423bc77f4afffba346b2f11ea3
+    react: ^16.8 || ^17.0 || ^18.0
+  checksum: 5bec1b73ed6c38139bf1db3c626c0474ca6221ae55f154ef83f1c6429ea866280b2a0ba9436b807334d0215bb4389f0b492c65471cf565635957a8ee77cce98a
   languageName: node
   linkType: hard
 
@@ -3295,6 +3295,17 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0
   checksum: ca6d7fc397bb19a59fb06529c376fc0b4501fde29c390e9448dd381d05d25d7d2dbfde4c15a491851930cb62fec3cc15ecc413ff77e789a3139d8083db06bf21
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-use-previous@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@radix-ui/react-use-previous@npm:1.0.0"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+  checksum: b45bbc8a7e7dbe29f4c11922e807666ec98979ec7a2696618ceb2c60ade44f695892216a90e1f5d7a457b458b3c95f0a4ce971d5143a6a80646b6b00fda16fb5
   languageName: node
   linkType: hard
 
@@ -4865,7 +4876,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dismissable@workspace:packages/dismissable"
   dependencies:
-    "@radix-ui/react-use-escape-keydown": ^0.1.0
+    "@radix-ui/react-use-escape-keydown": ^1.0.2
     "@tamagui/build": 1.27.3
     "@tamagui/compose-refs": 1.27.3
     "@tamagui/core": 1.27.3
@@ -5448,7 +5459,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/radio-group@workspace:packages/radio-group"
   dependencies:
-    "@radix-ui/react-use-previous": ^0.1.1
+    "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/build": 1.27.3
     "@tamagui/compose-refs": 1.27.3
     "@tamagui/core": 1.27.3
@@ -5627,7 +5638,7 @@ __metadata:
     "@floating-ui/react": ^0.19.1
     "@floating-ui/react-dom": ^1.2.2
     "@floating-ui/react-native": ^0.9.0
-    "@radix-ui/react-use-previous": ^0.1.1
+    "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/adapt": 1.27.3
     "@tamagui/build": 1.27.3
     "@tamagui/compose-refs": 1.27.3
@@ -5960,7 +5971,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/switch@workspace:packages/switch"
   dependencies:
-    "@radix-ui/react-use-previous": ^0.1.1
+    "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/build": 1.27.3
     "@tamagui/compose-refs": 1.27.3
     "@tamagui/core": 1.27.3
