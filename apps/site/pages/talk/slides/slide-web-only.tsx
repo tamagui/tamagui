@@ -15,8 +15,9 @@ export default memo(() => {
               {
                 type: 'text',
                 props: {
-                  size: '$10',
                   minHeight: 100,
+                  fontSize: 60,
+                  marginVertical: 50,
                   display: 'inline-flex',
                 },
                 content: (
@@ -28,12 +29,15 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
                     content: (
                       <>
-                        <strong>CSS Variables</strong> - useTheme()
+                        <strong>CSS Variables</strong> for now, useTheme()
                       </>
                     ),
                   },
@@ -42,12 +46,15 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
                     content: (
                       <>
-                        <strong>Media queries</strong> - useMedia()
+                        <strong>Media queries</strong> for now, useMedia()
                       </>
                     ),
                   },
@@ -56,13 +63,16 @@ export default memo(() => {
 
               {
                 type: 'bullet-point',
+                props: {
+                  marginVertical: 50,
+                },
                 content: [
                   {
                     type: 'text',
 
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> - onPress, onFocus, etc
+                        <strong>Psuedo styles</strong> for now, onPress, onFocus, etc
                       </>
                     ),
                   },
@@ -71,38 +81,28 @@ export default memo(() => {
             ],
           },
 
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                props: {
-                  size: '$10',
-                  lineHeight: 90,
-                },
-                content: <>Let's make it happen 🗳️</>,
-              },
-            ],
-          },
+          // {
+          //   type: 'bullet-point',
+          //   content: [
+          //     {
+          //       type: 'text',
+          //       props: {
+          //         lineHeight: 90,
+          //       },
+          //       content: <>Upside - Native less sensitive</>,
+          //     },
 
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                props: {
-                  size: '$10',
-                  lineHeight: 90,
-                },
-                content: (
-                  <>
-                    Native less sensitive - fewer elements on screen, less resizing, no
-                    DOM overhead, separate UI thread.
-                  </>
-                ),
-              },
-            ],
-          },
+          //     {
+          //       type: 'bullet-point',
+          //       content: [
+          //         {
+          //           type: 'text',
+          //           content: `Fewer elements on screen, less resizing, DOM overhead, separate UI thread.`,
+          //         },
+          //       ],
+          //     },
+          //   ],
+          // },
         ],
       ]}
     />

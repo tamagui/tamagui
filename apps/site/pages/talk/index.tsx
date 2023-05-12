@@ -33,6 +33,7 @@ import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
 import slideThemesComponents from './slides/slide-themes-components'
+import slideThemesExamples from './slides/slide-themes-examples'
 import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
@@ -91,8 +92,8 @@ export default function TamaguiTalk() {
       <Slides
         slides={[
           Slide1,
-          slideTwitterPoll,
-          slideDesignSystems,
+          // slideTwitterPoll,
+          // slideDesignSystems,
           SlideWhat,
           SlideWhy,
           slideWhy2,
@@ -101,28 +102,29 @@ export default function TamaguiTalk() {
           slideWhy6,
           slideWhyBobRoss,
           SlideTrilemma,
-          slideSimplicity,
           SlideHow,
           slideCoreSyntax,
           slideCoreFeatures,
+          slideCoreComparison,
           slideCorePrinciples,
           slideCoreAnimations,
           SlideThemes,
           slideThemesComponents,
+          slideThemesExamples,
           slideWinamp,
           // slideThemesOverview,
           slideCoreThemesAndAnimations,
-          slideCoreComparison,
-          SlideLessons1,
+          // slideCoreComparison,
           // SlideThemes2,
-          slideStatic,
           slideStatic2,
-          slidePartialEval,
+          slideStatic,
+          // slidePartialEval,
           slidePartialEval2,
           SlideFlatten,
-          slideWebOnly,
+          // slideWebOnly,
+          // SlideLessons1,
           SlideExpressYourself,
-          slideLessons3,
+          // slideLessons3,
           slideCssInJs,
           // SlideTamagui,
           // slideTamaguiCode,
@@ -144,6 +146,7 @@ const YStackEnterable = styled(YStack, {
 type Slides = any[]
 
 export function Slides(props: { slides: Slides }) {
+  const disablePreview = window.location.search.includes(`preview-off`)
   const [[page, direction], setPage] = useState([0, 0])
 
   const total = props.slides.length
@@ -170,12 +173,21 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
-  const nextSlideGoToNextStep = useRef<(inc: number) => boolean>()
-  const nextSlideContext = useMemo(
+  const previewSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const previewSlideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
-        nextSlideGoToNextStep.current = nextStep
-        nextSlideGoToNextStep.current(1)
+        previewSlideGoToNextStep.current = nextStep
+        previewSlideGoToNextStep.current(1)
+      },
+    }),
+    []
+  )
+
+  const nextSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc, fix) => boolean) => {
+        nextStep(0, 1)
       },
     }),
     []
@@ -184,7 +196,7 @@ export function Slides(props: { slides: Slides }) {
   const nextStep = useEvent(() => {
     const inc = 1
     if (goToNextStep.current?.(inc)) {
-      nextSlideGoToNextStep.current?.(inc)
+      previewSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -192,7 +204,7 @@ export function Slides(props: { slides: Slides }) {
   const prevStep = useEvent(() => {
     const inc = -1
     if (goToNextStep.current?.(inc)) {
-      nextSlideGoToNextStep.current?.(inc)
+      previewSlideGoToNextStep.current?.(inc)
       paginate(inc)
     }
   })
@@ -252,23 +264,25 @@ export function Slides(props: { slides: Slides }) {
         </Paragraph>
       </XStack>
 
-      <ShowAllStepsContext.Provider value={true}>
-        <SlidePreview b={250}>
-          {PreviewCurrentSlideComponent && (
-            <SlideContext.Provider value={nextSlideContext}>
-              <PreviewCurrentSlideComponent />
-            </SlideContext.Provider>
-          )}
-        </SlidePreview>
+      {!disablePreview && (
+        <ShowAllStepsContext.Provider value={true}>
+          <SlidePreview b={250}>
+            {PreviewCurrentSlideComponent && (
+              <SlideContext.Provider value={previewSlideContext}>
+                <PreviewCurrentSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
 
-        <SlidePreview b={-250}>
-          {PreviewNextSlideComponent && (
-            <SlideContext.Provider value={nextSlideContext}>
-              <PreviewNextSlideComponent />
-            </SlideContext.Provider>
-          )}
-        </SlidePreview>
-      </ShowAllStepsContext.Provider>
+          <SlidePreview b={-250}>
+            {PreviewNextSlideComponent && (
+              <SlideContext.Provider value={nextSlideContext}>
+                <PreviewNextSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
+        </ShowAllStepsContext.Provider>
+      )}
     </>
   )
 }

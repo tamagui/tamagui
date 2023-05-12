@@ -132,7 +132,7 @@ type SlideStepItem =
 type TextContent = SlideStepItem[]
 
 export const SlideContext = createContext({
-  registerSlide(next: (inc: number) => boolean) {},
+  registerSlide(next: (inc: number, fixStep?: number) => boolean) {},
 })
 
 export function Slide(props: SlideProps) {
@@ -153,8 +153,8 @@ const SlideInner = (props: SlideProps) => {
 
   useEffect(() => {
     if (!isPresent) return
-    return context.registerSlide((inc) => {
-      const next = step + inc
+    return context.registerSlide((inc, setAt) => {
+      const next = setAt ?? step + inc
       if (next >= 1 && next <= max) {
         setStep(next)
         return false
@@ -209,7 +209,7 @@ const SlideInner = (props: SlideProps) => {
           )}
 
           {Boolean(props.subTitle) && (
-            <H2 size="$9" theme="alt2" als="center">
+            <H2 size="$10" theme="alt2" als="center">
               {props.subTitle}
             </H2>
           )}
@@ -419,10 +419,13 @@ function getTextContent(
                 <Code
                   bc="$color8"
                   color="$color11"
-                  size={size ?? '$9'}
                   px="$3"
                   py="$2"
                   lineHeight={44}
+                  fontSize={32}
+                  {...(size && {
+                    size,
+                  })}
                   {...item.props}
                 >
                   {item.content}
@@ -435,7 +438,13 @@ function getTextContent(
             case 'code': {
               const content = (
                 <YStack mx="$6">
-                  <DocCodeBlock isHighlightingLines size={size ?? '$8'}>
+                  <DocCodeBlock
+                    disableCopy
+                    isHighlightingLines
+                    size={size ?? '$8'}
+                    fontSize={26}
+                    lineHeight={36}
+                  >
                     <div dangerouslySetInnerHTML={{ __html: item.content }} />
                   </DocCodeBlock>
                 </YStack>
@@ -444,7 +453,7 @@ function getTextContent(
               if (item.title) {
                 return (
                   <YStack ai="center" space>
-                    <H4>{item.title}</H4>
+                    <H4 size="$9">{item.title}</H4>
                     {content}
                   </YStack>
                 )
@@ -538,14 +547,20 @@ function getTextContent(
 
             case 'text':
               return (
-                <Paragraph size={size ?? '$9'} fow="400" lh="$10" {...item.props}>
+                <Paragraph fos={36} fow="400" lh="$10" {...item.props}>
                   {item.content}&nbsp;
                 </Paragraph>
               )
 
             case 'text-bold':
               return (
-                <Paragraph fow="800" size={size ?? '$9'} lh="$10" {...item.props}>
+                <Paragraph
+                  fow="800"
+                  fontSize={44}
+                  {...(size && { size })}
+                  lh="$10"
+                  {...item.props}
+                >
                   {item.content}&nbsp;
                 </Paragraph>
               )

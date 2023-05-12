@@ -95,6 +95,13 @@ Ali todos:
 
 ---
 
+2.0
+
+- deprecate `:number` other type variants
+- Text shouldn't have `selectable` / `ellipse` custom stuff?
+
+---
+
 # Backlog
 
 - if you change webpack config to alias RN to RNW (not lite) one animation test fails

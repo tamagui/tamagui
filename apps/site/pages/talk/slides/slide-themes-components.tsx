@@ -1,5 +1,4 @@
 import { createCodeHighlighter } from '@lib/highlightCode'
-import { ButtonDemo } from '@tamagui/demos'
 import { Slide } from 'components/Slide'
 import { memo } from 'react'
 import { Square, YStack } from 'tamagui'
@@ -7,10 +6,7 @@ import { Square, YStack } from 'tamagui'
 const highlightCode = createCodeHighlighter()
 
 const snippet1 = highlightCode(
-  `
-import { Stack } from '@tamagui/core'
-  
-const Square = styled(Stack, {
+  `const Square = styled(Stack, {
   name: 'Square',
   width: 300,
   height: 300,

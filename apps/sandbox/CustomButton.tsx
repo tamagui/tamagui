@@ -6,6 +6,7 @@ import {
   styled,
   withStaticProperties,
 } from '@tamagui/core'
+import { stepTokenUpOrDown } from '@tamagui/get-size'
 
 export const ButtonVariant = createVariantContext<{
   size: FontSizeTokens
@@ -13,7 +14,17 @@ export const ButtonVariant = createVariantContext<{
 
 export const ButtonFrame = styled(Stack, {
   variantContext: ButtonVariant,
-  backgroundColor: 'red',
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          width: tokens.size[name],
+          paddingHorizontal: stepTokenUpOrDown('size', name, -2),
+        }
+      },
+    },
+  } as const,
 })
 
 export const ButtonText = styled(Text, {
@@ -22,14 +33,16 @@ export const ButtonText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (val, { font }) => {
+      '...fontSize': (name, { font }) => {
         return {
-          fontSize: font?.size[val],
+          fontSize: font?.size[name],
         }
       },
     },
-  },
+  } as const,
 })
+
+// const ButtonVariant = combineVariantContexts(ButtonFrame.Variant, ButtonText.Variant)
 
 export const Button = withStaticProperties(ButtonFrame, {
   Variant: ButtonVariant,
