@@ -23,7 +23,7 @@ import type {
 
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
-import { VariantContextProvider } from './helpers/createVariantContext'
+import { providerProvider } from './helpers/createVariantProvider'
 import type { FontLanguageProps } from './views/FontLanguage.types'
 import { Stack } from './views/Stack'
 import type { ThemeProviderProps } from './views/ThemeProvider'
@@ -1076,7 +1076,7 @@ type StaticConfigBase = StaticConfigPublic & {
 
   variants?: GenericVariantDefinitions
 
-  variantContext?: VariantContextProvider
+  provider?: providerProvider
 
   /**
    * Used for applying sub theme style

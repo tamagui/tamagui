@@ -1,19 +1,11 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { TamaguiConfig, TamaguiProvider } from '@tamagui/core'
+import { TamaguiProvider } from '@tamagui/core'
 import * as Demos from '@tamagui/demos'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
-import {
-  AnimatePresence,
-  Button,
-  Separator,
-  Theme,
-  XStack,
-  YStack,
-  getStylesAtomic,
-} from 'tamagui'
+import { Button, Separator, Theme, XStack, YStack, getStylesAtomic } from 'tamagui'
 
 import { CustomButtonDemo } from './CustomButton'
 import config from './tamagui.config'

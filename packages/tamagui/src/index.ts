@@ -142,7 +142,7 @@ export {
   createTheme,
   createTokens,
   createVariable,
-  createVariantContext,
+  createVariantProvider,
   getConfig,
   getAnimationDriver,
   getMedia,

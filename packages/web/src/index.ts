@@ -16,7 +16,7 @@ export { getConfig, getThemes, getTokens, onConfiguredOnce, updateConfig } from 
 
 export * from './constants/constants'
 
-export * from './helpers/createVariantContext'
+export * from './helpers/createVariantProvider'
 export * from './helpers/expandStyles'
 export * from './helpers/getAnimationDriver'
 export * from './helpers/getExpandedShorthands'

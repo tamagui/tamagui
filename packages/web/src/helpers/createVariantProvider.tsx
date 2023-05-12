@@ -1,22 +1,23 @@
 import React, { createContext, useMemo } from 'react'
 
-export type VariantContextProvider<Props extends Object = any> = React.FunctionComponent<
+export type VariantProvider<Props extends Object = any> = React.FunctionComponent<
   Props & {
     children?: React.ReactNode
   }
 > & {
   Context: React.Context<any>
+  variants: Object
 }
 
-export function createVariantContext<
-  Props extends Record<string, any>
->(): VariantContextProvider<Props> {
+export function createVariantProvider<Variants extends Record<string, any>>(
+  variants: Variants
+): VariantProvider<Variants> {
   const Context = createContext<any>(null)
 
-  const Provider: VariantContextProvider = ({
+  const Provider: VariantProvider = ({
     children,
     ...values
-  }: Props & { children?: React.ReactNode }) => {
+  }: Variants & { children?: React.ReactNode }) => {
     return (
       <Context.Provider value={useMemo(() => values, [JSON.stringify(values)])}>
         {children}
@@ -25,6 +26,7 @@ export function createVariantContext<
   }
 
   Provider.Context = Context
+  Provider.variants = variants
 
   return Provider
 }

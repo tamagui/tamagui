@@ -1,8 +1,9 @@
 import React from 'react';
-export type VariantContextProvider<Props extends Object = any> = React.FunctionComponent<Props & {
+export type providerProvider<Props extends Object = any> = React.FunctionComponent<Props & {
     children?: React.ReactNode;
 }> & {
     Context: React.Context<any>;
+    variants: Object;
 };
-export declare function createVariantContext<Props extends Record<string, any>>(): VariantContextProvider<Props>;
+export declare function createVariantProvider<Variants extends Record<string, any>>(variants: Variants): providerProvider<Variants>;
 //# sourceMappingURL=createVariantContext.d.ts.map

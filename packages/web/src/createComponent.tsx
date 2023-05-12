@@ -172,6 +172,22 @@ export function createComponent<
       props = propsIn
     }
 
+    // set variants through context
+    let provided: Object | undefined
+    if (staticConfig.provider) {
+      const providerContext = useContext(staticConfig.provider.Context)
+      for (const key in staticConfig.provider.variants) {
+        if (!(key in props)) {
+          if (providerContext) {
+            props[key] = providerContext[key]
+          }
+        } else {
+          provided ||= {}
+          provided[key] = props[key]
+        }
+      }
+    }
+
     const debugProp = props['debug'] as DebugProp
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
@@ -270,12 +286,6 @@ export function createComponent<
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
     const avoidClassesWhileAnimating = animationsConfig?.isReactNative
-
-    // set variants through context
-    if (staticConfig.variantContext) {
-      const variantContext = useContext(staticConfig.variantContext.Context)
-      Object.assign(props, variantContext)
-    }
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -827,6 +837,11 @@ export function createComponent<
           </span>
         )
       }
+    }
+
+    if (provided) {
+      const Provider = staticConfig.provider!
+      content = <Provider {...provided}>{content}</Provider>
     }
 
     if (process.env.NODE_ENV === 'development') {
