@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -36,78 +36,15 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M6,10V5c0-1.7,1.3-3,3-3h1"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="3,7 6,10 9,7"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M22,8c0,1.1-0.9,2-2,2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M20,2c1.1,0,2,0.9,2,2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M14,4c0-1.1,0.9-2,2-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M16,10c-1.1,0-2-0.9-2-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M8,22H4c-1.1,0-2-0.9-2-2v-4c0-1.1,0.9-2,2-2h4c1.1,0,2,0.9,2,2v4C10,21.1,9.1,22,8,22z"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M14,14c1.1,0,2,0.9,2,2v4c0,1.1-0.9,2-2,2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M20,14c1.1,0,2,0.9,2,2v4c0,1.1-0.9,2-2,2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M14 4c0-1.1.9-2 2-2" stroke={`${color}`} />
+      <Path d="M20 2c1.1 0 2 .9 2 2" stroke={`${color}`} />
+      <Path d="M22 8c0 1.1-.9 2-2 2" stroke={`${color}`} />
+      <Path d="M16 10c-1.1 0-2-.9-2-2" stroke={`${color}`} />
+      <Path d="m3 7 3 3 3-3" stroke={`${color}`} />
+      <Path d="M6 10V5c0-1.7 1.3-3 3-3h1" stroke={`${color}`} />
+      <Rect width="8" height="8" x="2" y="14" rx="2" stroke={`${color}`} />
+      <Path d="M14 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" stroke={`${color}`} />
+      <Path d="M20 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" stroke={`${color}`} />
     </Svg>
   )
 }
