@@ -1,11 +1,4 @@
-import {
-  FontSizeTokens,
-  Stack,
-  Text,
-  createVariantProvider,
-  styled,
-  withStaticProperties,
-} from '@tamagui/core'
+import { FontSizeTokens, Stack, Text, createVariantProvider, styled, withStaticProperties, } from '@tamagui/core'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 
 export const ButtonProvider = createVariantProvider({
