@@ -58,7 +58,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, state, hostRef }) => {
+    useAnimations: ({ props, presence, style, state, hostRef, childrenRefs, layout }) => {
       const isEntering = !!state.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -88,7 +88,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       }, [sendExitComplete, isExiting])
 
       useIsomorphicLayoutEffect(() => {
-        if (!hostRef.current || !props.layout) {
+        if (!hostRef.current || !layout) {
           return
         }
         // @ts-ignore
@@ -107,10 +107,14 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               // @ts-ignore
               hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
-              // TODO: handle childRef inverse scale
-              //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
-              //     1 / scaleY
-              //   })`
+              childrenRefs?.current?.forEach((childRef) => {
+                if (childRef && scaleX !== undefined && scaleY !== undefined) {
+                  // @ts-ignore
+                  childRef.style.transform = `scaleX(${1 / scaleX}) scaleY(${
+                    1 / scaleY
+                  }) translateX(${x}px) translateY(${y}px)`
+                }
+              })
             },
             // TODO: extract ease-in from string and convert/map it to a cubicBezier array
             cubicBezier: [0, 1.38, 1, -0.41],

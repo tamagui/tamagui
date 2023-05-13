@@ -1,6 +1,6 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, MutableRefObject, ReactNode, RefAttributes, RefObject } from 'react';
 import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
@@ -757,6 +757,8 @@ export type UseAnimationHook = (props: {
     pseudos: PseudoProps<ViewStyle> | null;
     onDidAnimate?: any;
     delay?: number;
+    childrenRefs?: MutableRefObject<(HTMLElement | View)[]>;
+    layout?: boolean;
 }) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };

@@ -18,6 +18,7 @@ import React, {
   useId,
   useRef,
 } from 'react'
+import type { View } from 'react-native'
 
 import { onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -188,6 +189,8 @@ export function createComponent<
     stateRef.current ||= {}
 
     const hostRef = useServerRef<TamaguiElement>(null)
+
+    const childrenRefs = useServerRef<(HTMLElement | View)[]>([])
 
     /**
      * Component state for tracking animations, pseudos
@@ -449,6 +452,8 @@ export function createComponent<
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
+        childrenRefs,
+        layout: viewPropsIn.layout,
       })
       if (isAnimated) {
         if (animations) {
@@ -480,6 +485,7 @@ export function createComponent<
       theme: _themeProp,
       // @ts-ignore
       defaultVariants,
+      layout,
 
       ...nonTamaguiProps
     } = viewPropsIn
@@ -776,7 +782,24 @@ export function createComponent<
       }
     }
 
-    content = createElement(elementType, viewProps, content)
+    content = createElement(
+      elementType,
+      viewProps,
+      children && layout
+        ? React.Children.map(content, (child, index) => {
+            if (child) {
+              if (typeof child === 'string') {
+                return child
+              }
+              return React.cloneElement(child, {
+                ref: (el) => (childrenRefs.current[index] = el),
+              })
+            } else {
+              return null
+            }
+          })
+        : content
+    )
 
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp

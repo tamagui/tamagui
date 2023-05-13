@@ -7,6 +7,7 @@ import type {
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
+  MutableRefObject,
   ReactNode,
   RefAttributes,
   RefObject,
@@ -1605,6 +1606,8 @@ export type UseAnimationHook = (props: {
   pseudos: PseudoProps<ViewStyle> | null
   onDidAnimate?: any
   delay?: number
+  childrenRefs?: MutableRefObject<(HTMLElement | View)[]>
+  layout?: boolean
 }) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }
