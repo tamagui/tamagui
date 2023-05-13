@@ -7,36 +7,51 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
 
-import { SlideContext } from '../../components/Slide'
+import { ShowAllStepsContext, SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
+import slideCoreAnimations from './slides/slide-core-animations'
 import slideCoreComparison from './slides/slide-core-comparison'
 import slideCoreFeatures from './slides/slide-core-features'
+import slideCorePrinciples from './slides/slide-core-principles'
 import slideCoreSyntax from './slides/slide-core-syntax'
+import slideCoreThemesAndAnimations from './slides/slide-core-themes-and-animations'
 import slideCssInJs from './slides/slide-css-in-js'
+import slideDesignSystems from './slides/slide-design-systems'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
 import SlideLessons1 from './slides/slide-lessons-1'
 import SlideLessons2 from './slides/slide-lessons-2'
+import slideLessons3 from './slides/slide-lessons-3'
+import slidePartialEval from './slides/slide-partial-eval'
+import slidePartialEval2 from './slides/slide-partial-eval2'
+import slideSimplicity from './slides/slide-simplicity'
+import slideStatic from './slides/slide-static'
+import slideStatic2 from './slides/slide-static2'
 import SlideTamagui from './slides/slide-tamagui'
 import slideTamaguiCode from './slides/slide-tamagui-code'
 import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
+import slideThemesComponents from './slides/slide-themes-components'
+import slideThemesExamples from './slides/slide-themes-examples'
+import slideThemesOverview from './slides/slide-themes-overview'
 import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
 import slideTwitterPoll from './slides/slide-twitter-poll'
-import Slide2 from './slides/slide-what'
+import slideWebOnly from './slides/slide-web-only'
+import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
+import slideWhyBobRoss from './slides/slide-why-bob-ross'
 import slideWhy2 from './slides/slide-why2'
 import slideWhy3 from './slides/slide-why3'
 import slideWhy4 from './slides/slide-why5'
+import slideWhy6 from './slides/slide-why6'
+import slideWinamp from './slides/slide-winamp'
 import Slide1 from './slides/slide1'
-import Slide4 from './slides/slide4'
-import Slide6c from './slides/slide6c'
 
 const slideDimensions = {
-  width: 1280,
-  height: 1000,
+  width: 1920,
+  height: 1080,
 }
 
 export default function TamaguiTalk() {
@@ -66,34 +81,55 @@ export default function TamaguiTalk() {
 
         <ThemeToggle borderWidth={0} chromeless />
       </XStack>
-      <YStack fullscreen className="bg-grid" />
-      <RibbonContainer />
+
+      <YStack pos="absolute" {...slideDimensions} ov="hidden">
+        <YStack o={0.6} fullscreen>
+          <YStack fullscreen className="bg-grid" />
+        </YStack>
+        {/* <RibbonContainer /> */}
+      </YStack>
+
       <Slides
         slides={[
           Slide1,
-          slideTwitterPoll,
-          Slide2,
+          // slideTwitterPoll,
+          // slideDesignSystems,
+          SlideWhat,
           SlideWhy,
           slideWhy2,
           slideWhy3,
           slideWhy4,
+          slideWhy6,
+          slideWhyBobRoss,
           SlideTrilemma,
           SlideHow,
           slideCoreSyntax,
           slideCoreFeatures,
-          SlideThemes,
-          SlideThemes2,
           slideCoreComparison,
-          Slide4,
+          slideCorePrinciples,
+          slideCoreAnimations,
+          SlideThemes,
+          slideThemesComponents,
+          slideThemesExamples,
+          slideWinamp,
+          // slideThemesOverview,
+          slideCoreThemesAndAnimations,
+          // slideCoreComparison,
+          // SlideThemes2,
+          slideStatic2,
+          slideStatic,
+          // slidePartialEval,
+          slidePartialEval2,
           SlideFlatten,
-          Slide6c,
+          // slideWebOnly,
+          // SlideLessons1,
           SlideExpressYourself,
+          // slideLessons3,
           slideCssInJs,
-          SlideTamagui,
-          slideTamaguiCode,
-          Slide5,
-          SlideLessons1,
-          SlideLessons2,
+          // SlideTamagui,
+          // slideTamaguiCode,
+          // Slide5,
+          // SlideLessons2,
         ]}
       />
     </YStack>
@@ -110,6 +146,7 @@ const YStackEnterable = styled(YStack, {
 type Slides = any[]
 
 export function Slides(props: { slides: Slides }) {
+  const disablePreview = window.location.search.includes(`preview-off`)
   const [[page, direction], setPage] = useState([0, 0])
 
   const total = props.slides.length
@@ -123,9 +160,10 @@ export function Slides(props: { slides: Slides }) {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   const SlideComponent = props.slides[index]
+  const PreviewCurrentSlideComponent = props.slides[index]
+  const PreviewNextSlideComponent = props.slides[index + 1]
 
   const goToNextStep = useRef<(inc: number) => boolean>()
-
   const slideContext = useMemo(
     () => ({
       registerSlide: (nextStep: (inc: number) => boolean) => {
@@ -135,78 +173,132 @@ export function Slides(props: { slides: Slides }) {
     []
   )
 
-  useHotkeys(
-    'left',
-    useEvent(() => {
-      const inc = -1
-      if (goToNextStep.current?.(inc)) {
-        paginate(inc)
-      }
-    })
+  const previewSlideGoToNextStep = useRef<(inc: number) => boolean>()
+  const previewSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc: number) => boolean) => {
+        previewSlideGoToNextStep.current = nextStep
+        previewSlideGoToNextStep.current(1)
+      },
+    }),
+    []
   )
 
-  useHotkeys(
-    'right',
-    useEvent(() => {
-      const inc = 1
-      if (goToNextStep.current?.(inc)) {
-        paginate(inc)
-      }
-    })
+  const nextSlideContext = useMemo(
+    () => ({
+      registerSlide: (nextStep: (inc, fix) => boolean) => {
+        nextStep(0, 1)
+      },
+    }),
+    []
   )
+
+  const nextStep = useEvent(() => {
+    const inc = 1
+    if (goToNextStep.current?.(inc)) {
+      previewSlideGoToNextStep.current?.(inc)
+      paginate(inc)
+    }
+  })
+
+  const prevStep = useEvent(() => {
+    const inc = -1
+    if (goToNextStep.current?.(inc)) {
+      previewSlideGoToNextStep.current?.(inc)
+      paginate(inc)
+    }
+  })
+
+  useHotkeys('left', prevStep)
+  useHotkeys('right', nextStep)
 
   return (
-    <XStack
-      overflow="hidden"
-      position="relative"
-      {...slideDimensions}
-      bw={1}
-      boc="$borderColor"
-      alignItems="center"
-    >
-      <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable
-          key={page}
-          animation="lazy"
-          fullscreen
-          x={0}
-          opacity={1}
-          ai="center"
-          jc="center"
-        >
-          <SlideContext.Provider value={slideContext}>
-            <SlideComponent />
-          </SlideContext.Provider>
-        </YStackEnterable>
-      </AnimatePresence>
+    <>
+      <XStack
+        overflow="hidden"
+        position="relative"
+        {...slideDimensions}
+        bw={1}
+        boc="$borderColor"
+        alignItems="center"
+      >
+        <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
+          <YStackEnterable
+            key={page}
+            animation="lazy"
+            fullscreen
+            x={0}
+            opacity={1}
+            ai="center"
+            jc="center"
+          >
+            <SlideContext.Provider value={slideContext}>
+              <SlideComponent />
+            </SlideContext.Provider>
+          </YStackEnterable>
+        </AnimatePresence>
 
-      <Button
-        accessibilityLabel="Carousel left"
-        icon={ArrowLeft}
-        size="$5"
-        position="absolute"
-        left="$4"
-        circular
-        elevate
-        onPress={() => paginate(-1)}
-      />
-      <Button
-        accessibilityLabel="Carousel right"
-        icon={ArrowRight}
-        size="$5"
-        position="absolute"
-        right="$4"
-        circular
-        elevate
-        onPress={() => paginate(1)}
-      />
+        <Button
+          accessibilityLabel="Carousel left"
+          icon={ArrowLeft}
+          size="$3"
+          position="absolute"
+          left="$4"
+          circular
+          elevate
+          onPress={prevStep}
+        />
+        <Button
+          accessibilityLabel="Carousel right"
+          icon={ArrowRight}
+          size="$3"
+          position="absolute"
+          right="$4"
+          circular
+          elevate
+          onPress={nextStep}
+        />
 
-      <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
-        {index} / {total}
-      </Paragraph>
-    </XStack>
+        <Paragraph pos="absolute" b="$4" size="$2" theme="alt2" l={0} r={0} ta="center">
+          {index} / {total}
+        </Paragraph>
+      </XStack>
+
+      {!disablePreview && (
+        <ShowAllStepsContext.Provider value={true}>
+          <SlidePreview b={250}>
+            {PreviewCurrentSlideComponent && (
+              <SlideContext.Provider value={previewSlideContext}>
+                <PreviewCurrentSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
+
+          <SlidePreview b={-250}>
+            {PreviewNextSlideComponent && (
+              <SlideContext.Provider value={nextSlideContext}>
+                <PreviewNextSlideComponent />
+              </SlideContext.Provider>
+            )}
+          </SlidePreview>
+        </ShowAllStepsContext.Provider>
+      )}
+    </>
   )
 }
+
+const SlidePreview = (props) => (
+  <YStack
+    ov="hidden"
+    pos="absolute"
+    r="-75%"
+    scale={0.4}
+    zi={1000}
+    bg="$color3"
+    {...slideDimensions}
+    {...props}
+  />
+)
 
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min
@@ -219,7 +311,7 @@ const RibbonContainer = () => {
 
   return (
     <YStack
-      o={isLight ? 0.2 : 0.25}
+      o={isLight ? 0.2 : 0.4}
       pos="absolute"
       fullscreen
       scaleX="200%"

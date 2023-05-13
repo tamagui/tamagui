@@ -539,6 +539,12 @@ export type CreateTamaguiProps = {
   onlyAllowShorthands?: OnlyAllowShorthandsSetting
 }
 
+export type GetCSS = (opts?: {
+  separator?: string
+  excludeThemes?: boolean
+  sinceLastCall?: boolean
+}) => string
+
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
   A extends GenericTokens = GenericTokens,
@@ -557,7 +563,8 @@ export type TamaguiInternalConfig<
     tokensParsed: Tokenify<A>
     themeConfig: any
     fontsParsed: GenericFonts
-    getCSS: () => string
+    getCSS: GetCSS
+    getNewCSS: GetCSS
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
@@ -571,10 +578,10 @@ export type UnionableNumber = number & {}
 
 export type GenericFont<Key extends number | string = number | string> = {
   size: { [key in Key]: number | Variable }
-  lineHeight: Partial<{ [key in Key]: number | Variable }>
-  letterSpacing: Partial<{ [key in Key]: number | Variable }>
-  weight: Partial<{ [key in Key]: number | string | Variable }>
-  family: string | Variable
+  lineHeight?: Partial<{ [key in Key]: number | Variable }>
+  letterSpacing?: Partial<{ [key in Key]: number | Variable }>
+  weight?: Partial<{ [key in Key]: number | string | Variable }>
+  family?: string | Variable
   style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
   color?: Partial<{ [key in Key]: string | Variable }>
@@ -926,6 +933,11 @@ type StaticComponentObject<Props, Ref> = {
    */
   styleable: Styleable<Props, Ref>
 }
+
+export type TamaguiComponentExpectingVariants<
+  Props = {},
+  Variants = {}
+> = TamaguiComponent<Props, any, any, Variants>
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   config: TamaguiInternalConfig
@@ -1622,7 +1634,7 @@ export type GestureReponderEvent = Exclude<
 export type RulesToInsert = StyleObject[]
 
 export type GetStyleResult = {
-  pseudos?: PseudoStyles
+  pseudos?: PseudoStyles | null
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert

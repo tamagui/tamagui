@@ -607,20 +607,6 @@ input, textarea {
 }
 
 .text-3d {
-  text-shadow: 1px 1px 1px var(--color10),
-        1px 2px 1px var(--color10),
-        1px 3px 1px var(--color10),
-        1px 4px 1px var(--color10),
-        1px 5px 1px var(--color10),
-        1px 6px 1px var(--color10),
-        1px 7px 1px var(--color10),
-        1px 8px 1px var(--color10),
-        1px 9px 1px var(--color10),
-        1px 10px 1px var(--color10),
-    1px 28px 6px var(--shadowColor);
-}
-
-.t_dark .text-3d {
   text-shadow: 1px 1px 1px var(--color8),
         1px 2px 1px var(--color8),
         1px 3px 1px var(--color8),
@@ -698,4 +684,52 @@ input, textarea {
 .glowing:hover > *::before {
   box-shadow: 0 0 60px var(--color10);
   opacity: 0.6;
+}
+
+.callout {
+  text-shadow:
+    1px 1px 0 var(--orange10),
+    2px 2px 0 var(--yellow10),
+    3px 3px 0 var(--green10),
+    4px 4px 0 var(--blue10),
+    5px 5px 0 var(--purple10),
+    6px 6px 0 var(--pink10),
+    7px 7px 0 var(--red10),
+    0 0 50px rgba(0,0,0,1),
+    0 0 50px rgba(0,0,0,1);
+}
+
+.rotate-slow-right {
+  animation: rotate-right 25s ease-in 2s infinite;
+  transform-origin: top left;
+}
+
+.rotate-slow-left {
+  animation: rotate-right 25s ease-out 2s infinite backwards;
+  transform-origin: top left;
+}
+
+@keyframes rotate-right {
+  0% {top:0px; right: 0; transform: scale(1);}
+  20%{top:100px; right: 100px; transform: scale(1.4);}
+  40%{top:200px; right: 0px; transform: scale(1.4);}
+  60%{top:100px; right: -100px; transform: scale(1);}
+  80%{top:0px; right: 0; transform: scale(1);}
+}
+
+.fade-image-in {
+  opacity: 0;
+  animation: fade-in 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s forwards;
+}
+
+@keyframes fade-in {
+  0% {opacity: 0; top: -20px;}
+  100% {opacity: 1; top: 0px;}
+}
+
+.font-outlined {
+  text-shadow: 1px 1px var(--color),
+    -1px -1px var(--color),
+    1px -1px var(--color),
+    -1px 1px var(--color);
 }

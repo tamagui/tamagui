@@ -20,7 +20,7 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController, SheetOverlayFrame } from '@tamagui/sheet'
+import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -257,7 +257,7 @@ const OVERLAY_NAME = 'DialogOverlay'
 /**
  * exported for internal use with extractable()
  */
-export const DialogOverlayFrame = styled(SheetOverlayFrame, {
+export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
 })
 
@@ -658,11 +658,28 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-type DialogCloseProps = YStackProps & {
+const DialogCloseFrame = styled(YStack, {
+  name: CLOSE_NAME,
+  tag: 'button',
+
+  variants: {
+    unstyled: {
+      false: {
+        zIndex: 100,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
+})
+
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
+const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
@@ -676,8 +693,7 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     }
 
     return (
-      <YStack
-        tag="button"
+      <DialogCloseFrame
         accessibilityLabel="Dialog Close"
         {...closeProps}
         ref={forwardedRef}
@@ -688,8 +704,6 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     )
   }
 )
-
-DialogClose.displayName = CLOSE_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -858,7 +872,7 @@ const Dialog = withStaticProperties(
     Title: DialogTitle,
     Description: DialogDescription,
     Close: DialogClose,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
     Adapt,
   }
 )

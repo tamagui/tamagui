@@ -1,26 +1,33 @@
-import { TamaguiComponent, getSplitStyles } from '../core/src'
+import { TamaguiComponent, getSplitStyles, getSplitStylesWithoutMemo } from '../core/src'
+
+const emptyObj = {} as any
+const state = {
+  hover: false,
+  press: false,
+  pressIn: false,
+  focus: false,
+  unmounted: true,
+  mediaState: undefined,
+}
 
 export function simplifiedGetSplitStyles(
   component: TamaguiComponent,
   props: Record<string, any>,
-  tag?: string,
-  mediaState?: Record<string, any>
+  options: {
+    tag?: string
+    mediaState?: Record<string, any>
+    skipMemo?: boolean
+  } = {}
 ) {
-  return getSplitStyles(
+  const fn = options.skipMemo ? getSplitStylesWithoutMemo : getSplitStyles
+  return fn(
     props,
     component.staticConfig,
-    {} as any,
-    {
-      hover: false,
-      press: false,
-      pressIn: false,
-      focus: false,
-      unmounted: true,
-      mediaState,
-    },
-    undefined,
-    undefined,
-    tag,
+    emptyObj,
+    state,
+    emptyObj,
+    emptyObj,
+    options.tag,
     true
   )
 }

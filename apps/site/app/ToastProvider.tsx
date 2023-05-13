@@ -37,7 +37,7 @@ const ToastHandler = () => {
     <Toast
       key={toast.id}
       duration={toast.duration}
-      animation="quick"
+      animation="100ms"
       enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
       exitStyle={{ opacity: 0, scale: 1, y: -20 }}
       y={0}

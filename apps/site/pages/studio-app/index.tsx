@@ -4,11 +4,13 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
-import { isLocal } from '@protected/studio/constants'
+import { isLocal, siteRootDir } from '@protected/studio/constants'
 import LoadPage from '@protected/studio/load/page'
 import { Tab } from '@protected/studio/state/types'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useSelector } from '@tamagui/use-store'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import React, {
   Suspense,
@@ -98,12 +100,10 @@ const StudioTab = memo(
     const tab = router.query.tab
     const isActive = tab === at || (!tab && isHome)
     const [isPending, startTransition] = useTransition()
-    console.log('tab', tab, isPending)
     const [isMounted, setIsMounted] = useState(isActive)
 
     useEffect(() => {
       startTransition(() => {
-        console.warn('start transition')
         setIsMounted(isActive)
       })
     }, [isActive])
@@ -135,3 +135,27 @@ const StudioTab = memo(
     )
   }
 )
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // Create authenticated Supabase Client
+  const supabase = createServerSupabaseClient(ctx)
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session)
+    return {
+      redirect: {
+        destination: `${siteRootDir}/login`,
+        permanent: false,
+      },
+    }
+
+  return {
+    props: {
+      initialSession: session,
+      user: session.user,
+    },
+  }
+}

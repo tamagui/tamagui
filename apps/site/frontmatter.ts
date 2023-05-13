@@ -14,4 +14,5 @@ export type Frontmatter = {
   image?: string
   component?: string
   package?: string
+  demoName?: string
 }

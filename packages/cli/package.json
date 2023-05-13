@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.22.10",
+  "version": "1.27.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "module": "dist/esm",
@@ -21,7 +21,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
@@ -36,13 +36,13 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
-    "@tamagui/build": "1.22.10",
-    "@tamagui/static": "1.22.10",
-    "@tamagui/types": "1.22.10",
-    "@tamagui/vite-plugin": "1.22.10",
+    "@tamagui/build": "1.27.3",
+    "@tamagui/static": "1.27.3",
+    "@tamagui/types": "1.27.3",
+    "@tamagui/vite-plugin": "1.27.3",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
-    "@vitejs/plugin-react-swc": "^3.2.0",
+    "@vitejs/plugin-react-swc": "^3.3.0",
     "arg": "^5.0.2",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.2",

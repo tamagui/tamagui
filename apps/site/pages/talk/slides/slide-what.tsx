@@ -4,17 +4,20 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="What is Tamagui"
-      theme="orange"
+      title="Tamagui is..."
+      theme="green"
       steps={[
         [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `@tamagui/core`,
               },
@@ -25,7 +28,7 @@ export default memo(() => {
                     type: 'text',
                     content: (
                       <>
-                        Universal style library{' '}
+                        Universal styles and design systems{' '}
                         <span style={{ opacity: 0.5 }}>(Native + Web)</span>
                       </>
                     ),
@@ -34,13 +37,18 @@ export default memo(() => {
               },
             ],
           },
+        ],
+        [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `@tamagui/static`,
               },
@@ -55,13 +63,18 @@ export default memo(() => {
               },
             ],
           },
+        ],
+        [
           {
             type: 'bullet-point',
+            props: {
+              mt: '$6',
+            },
             content: [
               {
                 type: 'code-inline',
                 props: {
-                  size: '$10',
+                  size: '$11',
                 },
                 content: `tamagui`,
               },
@@ -70,7 +83,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `Complete universal component kit`,
+                    content: `Universal component kit`,
                   },
                 ],
               },

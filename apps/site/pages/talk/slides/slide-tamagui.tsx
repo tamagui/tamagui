@@ -5,89 +5,84 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Tamagui"
-      subTitle="Features"
+      title="Tamagui UI"
+      subTitle="The interesting parts"
       theme="blue"
       steps={[
         [
           {
-            type: 'vertical',
+            type: 'split-horizontal',
             content: [
               {
-                type: 'bullet-point',
-                slim: true,
+                type: 'vertical',
                 content: [
                   {
-                    type: 'text',
-                    props: {
-                      size: '$10',
-                      display: 'inline-flex',
-                      my: '$4',
-                    },
-                    content: `Radix-like composable component APIs`,
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$10',
+                          display: 'inline-flex',
+                          my: '$4',
+                        },
+                        content: `Multi-component APIs`,
+                      },
+                    ],
+                  },
+
+                  {
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$10',
+                          display: 'inline-flex',
+                          my: '$4',
+                        },
+                        content: `Themeable, sizeable`,
+                      },
+                    ],
                   },
                 ],
               },
 
               {
-                type: 'bullet-point',
-                slim: true,
+                type: 'vertical',
                 content: [
                   {
-                    type: 'text',
-                    props: {
-                      size: '$10',
-                      display: 'inline-flex',
-                      my: '$4',
-                    },
-                    content: `Themeable`,
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$10',
+                          display: 'inline-flex',
+                          my: '$4',
+                        },
+                        content: `<Adapt />`,
+                      },
+                    ],
                   },
-                ],
-              },
 
-              {
-                type: 'bullet-point',
-                slim: true,
-                content: [
                   {
-                    type: 'text',
-                    props: {
-                      size: '$10',
-                      display: 'inline-flex',
-                      my: '$4',
-                    },
-                    content: `Sizeable`,
-                  },
-                ],
-              },
-
-              {
-                type: 'bullet-point',
-                slim: true,
-                content: [
-                  {
-                    type: 'code-inline',
-                    content: `<Adapt />`,
-                  },
-                ],
-              },
-
-              {
-                type: 'bullet-point',
-                slim: true,
-                content: [
-                  {
-                    type: 'text',
-                    props: {
-                      size: '$10',
-                      display: 'inline-flex',
-                      my: '$4',
-                    },
-                    content: `Prop:`,
-                  },
-                  {
-                    type: 'code-inline',
-                    content: `native`,
+                    type: 'bullet-point',
+                    slim: true,
+                    content: [
+                      {
+                        type: 'text',
+                        props: {
+                          size: '$10',
+                          display: 'inline-flex',
+                          my: '$4',
+                        },
+                        content: `The native prop`,
+                      },
+                    ],
                   },
                 ],
               },

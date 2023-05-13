@@ -7,6 +7,11 @@ export declare const config: {
             type: "timing";
             duration: number;
         };
+        superBouncy: {
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
         bouncy: {
             damping: number;
             mass: number;
@@ -52055,10 +52060,34 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        mono: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        heading: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        mono: {
+            weight: {
+                1: string;
+            };
+            size: {
+                1: number;
+                2: number;
+                3: number;
+                4: number;
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                11: number;
+                12: number;
+                13: number;
+                14: number;
+                15: number;
+                16: number;
+            };
+        };
+        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        glusp: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        munro: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

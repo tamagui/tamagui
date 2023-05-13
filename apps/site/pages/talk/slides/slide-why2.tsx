@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="Why?"
       subTitle="Because I don't think ahead"
-      theme="orange"
+      theme="blue"
       steps={[
         [
           {
@@ -27,7 +27,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `3 operating systems`,
+                content: `3-4 operating systems`,
               },
             ],
           },
@@ -75,7 +75,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `Web mobile vs desktop`,
+                content: `Touch input or mouse input`,
               },
             ],
           },
@@ -87,7 +87,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `Touch or mouse`,
+                content: `Headless, styled, native`,
               },
             ],
           },
@@ -123,7 +123,7 @@ export default memo(() => {
             content: [
               {
                 type: 'text-bold',
-                content: `= 28,800 😮‍💨`,
+                content: `= 43,200 😮‍💨`,
               },
             ],
           },

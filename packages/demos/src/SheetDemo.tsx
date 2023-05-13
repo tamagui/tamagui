@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { Sheet, SheetProps } from '@tamagui/sheet'
+import { Sheet, SheetProps, useSheet } from '@tamagui/sheet'
 import { useState } from 'react'
 import { Button, H1, H2, Input, Paragraph, XStack } from 'tamagui'
 

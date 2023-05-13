@@ -132,6 +132,10 @@ module.exports = function (name, { defaultConfig }) {
             source: '/studio-app/api/:path*',
             destination: '/api/:path*',
           },
+          {
+            source: '/studio-app/_next/:path*',
+            destination: '/_next/:path*',
+          },
         ],
       }
     },

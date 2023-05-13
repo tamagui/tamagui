@@ -14,6 +14,7 @@ export default memo(() => {
         </>
       }
       theme="blue"
+      stepsStrategy="replace"
       steps={[
         [
           {

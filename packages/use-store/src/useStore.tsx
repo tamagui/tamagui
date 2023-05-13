@@ -443,26 +443,21 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
     // wrap actions for tracking
     wrappedActions[key] = function useStoreAction(...args: any[]) {
       let res: any
-      try {
-        if (isGetFn || gettersState.isGetting) {
-          return Reflect.apply(actionFn, proxiedStore, args)
-        }
-        if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log('(debug) startAction', key, { isInAction })
-        }
-        // dumb for now
-        isInAction = true
-        res = Reflect.apply(actionFn, proxiedStore, args)
-        if (res instanceof Promise) {
-          return res.then(finishAction)
-        }
-        finishAction()
-        return res
-      } catch (err: any) {
-        console.error(err.message, err.stack)
-        return res
+      if (isGetFn || gettersState.isGetting) {
+        return Reflect.apply(actionFn, proxiedStore, args)
       }
+      if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('(debug) startAction', key, { isInAction })
+      }
+      // dumb for now
+      isInAction = true
+      res = Reflect.apply(actionFn, proxiedStore, args)
+      if (res instanceof Promise) {
+        return res.then(finishAction)
+      }
+      finishAction()
+      return res
     }
 
     // dev mode do nice logging
@@ -490,6 +485,9 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
             try {
               // 🏃‍♀️ run action here now
               res = Reflect.apply(target, thisArg, args)
+            } catch (err) {
+              console.error('Error', err)
+              throw err
             } finally {
               logStack.add('end')
 

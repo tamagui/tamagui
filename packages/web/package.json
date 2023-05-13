@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.22.10",
+  "version": "1.27.3",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,19 +27,19 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.22.10",
-    "@tamagui/constants": "1.22.10",
-    "@tamagui/helpers": "1.22.10",
-    "@tamagui/normalize-css-color": "1.22.10",
-    "@tamagui/use-did-finish-ssr": "1.22.10",
-    "@tamagui/use-event": "1.22.10",
-    "@tamagui/use-force-update": "1.22.10"
+    "@tamagui/compose-refs": "1.27.3",
+    "@tamagui/constants": "1.27.3",
+    "@tamagui/helpers": "1.27.3",
+    "@tamagui/normalize-css-color": "1.27.3",
+    "@tamagui/use-did-finish-ssr": "1.27.3",
+    "@tamagui/use-event": "1.27.3",
+    "@tamagui/use-force-update": "1.27.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.10",
+    "@tamagui/build": "1.27.3",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
@@ -51,12 +51,12 @@
     "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
-      "import": "./dist/esm/inject-styles.mjs",
+      "import": "./dist/esm/inject-styles.js",
       "require": "./dist/cjs/inject-styles.js"
     }
   },

@@ -34,8 +34,8 @@ test(`should handle decimal placement differently`, () => {
     right: 11.1,
   })
 
-  expect(out[0].identifier).toBe(`_l-1d0t11px1a`)
-  expect(out[1].identifier).toBe(`_r-11d0t1px1a`)
+  expect(out[0].identifier).toBe(`_l-1d0t11px46`)
+  expect(out[1].identifier).toBe(`_r-11d0t1px46`)
 })
 
 test(`should turn columnGap into gap-column`, () => {

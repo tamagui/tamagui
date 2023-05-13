@@ -147,6 +147,7 @@ Import and use the `TamaguiProvider` component as the top component in your app.
 
 ```tsx line=8-14
 // this provides some helpful reset styles to ensure a more consistent look
+// only import this from your web app, not native
 import '@tamagui/core/reset.css'
 
 import React, { Suspense } from 'react'
@@ -168,23 +169,19 @@ export default function App() {
 
 TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
 
-### Webpack
+### Webpack, Vite and other web bundlers
 
-For webpack, you'll want to be sure to turn off "fullySpecified" imports, as currently Metro can't support the platform-specific filenames (like `.native.tsx`) alongside fully specified imports.
+Each bundler has a plugin that helps automate setup. See these docs for more:
 
-You can modify your `webpack.config.js` something like this:
+- [Webpack](/docs/intro/compiler-install#webpack)
+- [Next.js](/docs/intro/compiler-install#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](/docs/intro/compiler-install#vite) ([guide](/docs/guides/vite))
+- [Metro](/docs/intro/compiler-install#babel--metro)
+- [Expo](/docs/guides/expo)
 
-```tsx
-config.module.rules.push({
-  test: /\.m?js$/,
-  type: 'javascript/auto',
-  resolve: {
-    fullySpecified: false,
-  },
-})
-```
+For a minimal install without any compiler setup, you'll just need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver).
 
-You'll also need to alias `react-native` to `react-native-web`:
+For Webpack:
 
 ```tsx
 config.resolve.alias['react-native$'] = require.resolve('react-native-web')
@@ -197,12 +194,6 @@ Or alternatively, to `react-native-web-lite`, our more experimental but modern v
 Remember, Tamagui runs fully at runtime, so you don't need to set up the compiler to start. But because Tamagui imports `react-native` directly, for web platforms you need to configure an alias. And for CSS extraction, on some frameworks like Next.js require extra configuration.
 
 We have a few guides for the compiler that also include setup of any extras for the web:
-
-- [Webpack](/docs/compiler/install#webpack)
-- [Next.js](/docs/compiler/install#nextjs) ([guide](/docs/guides/next-js))
-- [Vite](#vite) ([guide](/docs/guides/vite))
-- [Metro](/docs/compiler/install#babel--metro)
-- [Expo](/docs/guides/expo)
 
 Just note: you don't need to set up the compiler!
 

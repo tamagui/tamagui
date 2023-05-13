@@ -1,13 +1,8 @@
 'use client'
 
 import { Database } from '@lib/supabase-types'
-import {
-  Session,
-  SupabaseClient,
-  createBrowserSupabaseClient,
-} from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { Session, SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createContext, useContext } from 'react'
 
 type SupabaseContext = {
   supabase: SupabaseClient<Database>
@@ -17,30 +12,31 @@ const Context = createContext<SupabaseContext | undefined>(undefined)
 const SessionContext = createContext<Session | null>(null)
 
 export default function SupabaseProvider({ children }: { children: React.ReactNode }) {
-  const [supabase] = useState(() => createBrowserSupabaseClient<Database>())
-  const router = useRouter()
-  const [session, setSession] = useState<Session | null>(null)
+  return <>{children}</>
+  // const [supabase] = useState(() => createBrowserSupabaseClient<Database>())
+  // const router = useRouter()
+  // const [session, setSession] = useState<Session | null>(null)
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      router.refresh()
-      setSession(session)
-    })
+  // useEffect(() => {
+  //   const {
+  //     data: { subscription },
+  //   } = supabase.auth.onAuthStateChange((event, session) => {
+  //     router.refresh()
+  //     setSession(session)
+  //   })
 
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [router, supabase])
+  //   return () => {
+  //     subscription.unsubscribe()
+  //   }
+  // }, [router, supabase])
 
-  return (
-    <Context.Provider value={{ supabase }}>
-      <SessionContext.Provider value={session}>
-        <SharedAuthHandler>{children}</SharedAuthHandler>
-      </SessionContext.Provider>
-    </Context.Provider>
-  )
+  // return (
+  //   <Context.Provider value={{ supabase }}>
+  //     <SessionContext.Provider value={session}>
+  //       <SharedAuthHandler>{children}</SharedAuthHandler>
+  //     </SessionContext.Provider>
+  //   </Context.Provider>
+  // )
 }
 
 export const useSupabase = () => {

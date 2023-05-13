@@ -10,19 +10,24 @@ import { useState } from 'react'
 export const SupabaseProvider = ({
   initialSession,
   children,
+  isStudio = false,
 }: {
   initialSession: SessionContextProviderProps['initialSession']
   children: React.ReactNode
+  isStudio?: boolean
 }) => {
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>({
-      cookieOptions: {
-        domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
-        maxAge: 100000000,
-        path: '/',
-        sameSite: 'Lax',
-        secure: true,
-      },
+      // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      cookieOptions: isStudio
+        ? undefined
+        : {
+            domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
+            maxAge: 1000 * 60 * 60 * 24 * 365,
+            path: '/',
+            sameSite: 'lax',
+            secure: true,
+          },
     })
   )
   return (

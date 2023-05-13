@@ -66,6 +66,7 @@ const BUTTON_NAME = 'Button'
 const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -76,23 +77,17 @@ const ButtonFrame = styled(ThemeableStack, {
         flexWrap: 'nowrap',
         flexDirection: 'row',
         cursor: 'pointer',
-        focusable: true,
         hoverTheme: true,
         pressTheme: true,
         backgrounded: true,
         borderWidth: 1,
-        borderColor: 'transparent',
+        borderColor: '$borderColor',
 
         pressStyle: {
-          borderColor: 'transparent',
-        },
-
-        hoverStyle: {
-          borderColor: 'transparent',
+          borderColor: '$borderColorPress',
         },
 
         focusStyle: {
-          borderColor: '$borderColorFocus',
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
           outlineWidth: 2,

@@ -119,7 +119,7 @@ const HeroContents = memo(() => {
           >
             <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
             <br />
-            runs&nbsp;faster.
+            runs&nbsp;faster
           </H1>
 
           <YStack

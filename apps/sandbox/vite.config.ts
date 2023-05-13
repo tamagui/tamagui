@@ -4,10 +4,6 @@ import { defineConfig } from 'vite'
 
 const shouldExtract = process.env.EXTRACT === '1'
 
-if (shouldExtract) {
-  console.log(`Compiler enabled`)
-}
-
 const tamaguiConfig = {
   components: ['@tamagui/sandbox-ui', 'tamagui'],
   config: 'tamagui.config.ts',

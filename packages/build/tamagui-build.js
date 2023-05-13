@@ -16,6 +16,7 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 const shouldBundle = !!process.argv.includes('--bundle')
+const shouldIncludeMjs = !!process.argv.includes('--output-mjs')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
@@ -193,7 +194,7 @@ async function buildJs() {
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
-    pkgModule
+    pkgModule && shouldIncludeMjs
       ? esbuildWriteIfChanged({
           entryPoints: files,
           outExtension: { '.js': '.mjs' },

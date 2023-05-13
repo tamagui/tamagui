@@ -1,8 +1,8 @@
 // Vitest Snapshot v1
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = \\" _bg-d0topktnq\\";
-const _cn2 = \\" _bg-d0t12svx2e\\";
+"const _cn3 = \\" _bg-d0t1494150182\\";
+const _cn2 = \\" _bg-d0t1948734170\\";
 const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
@@ -22,13 +22,13 @@ exports[`className + conditional styles get full base styles merged onto + short
 ._dsp-flex{display:flex;}
 ._fs-0{flex-shrink:0;}
 ._ai-stretch{align-items:stretch;}
-._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
-._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
+._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = \\" _bg-d0topktnq\\";
-const _cn2 = \\" _bg-d0t12svx2e\\";
+"const _cn3 = \\" _bg-d0t1494150182\\";
+const _cn2 = \\" _bg-d0t1948734170\\";
 const _cn = \\" _w-10px _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-box _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 import { Stack } from '@tamagui/core';
 export function Test(props) {
@@ -48,6 +48,6 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 ._dsp-flex{display:flex;}
 ._fs-0{flex-shrink:0;}
 ._ai-stretch{align-items:stretch;}
-._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
-._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
+._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
+._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
 `;

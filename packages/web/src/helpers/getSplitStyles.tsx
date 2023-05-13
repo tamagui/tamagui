@@ -17,6 +17,7 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
+import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -42,10 +43,7 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type {
-  FontLanguageProps,
-  LanguageContextType,
-} from '../views/FontLanguage.types'
+import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
@@ -82,90 +80,6 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
-const skipProps = {
-  animation: true,
-  space: true,
-  animateOnly: true,
-  debug: true,
-  componentName: true,
-  tag: true,
-}
-
-if (process.env.NODE_ENV === 'test') {
-  skipProps['data-test-renders'] = true
-}
-
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
-
-// native only skips
-if (process.env.TAMAGUI_TARGET === 'native') {
-  Object.assign(skipProps, {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    contain: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-    outlineColor: true,
-  })
-}
-
-// web only maps accessibility to aria props
-const accessibilityDirectMap: Record<string, string> = {}
-if (process.env.TAMAGUI_TARGET === 'web') {
-  // bundle size shave
-  const items = {
-    Hidden: true,
-    ActiveDescendant: true,
-    Atomic: true,
-    AutoComplete: true,
-    Busy: true,
-    Checked: true,
-    ColumnCount: 'colcount',
-    ColumnIndex: 'colindex',
-    ColumnSpan: 'colspan',
-    Current: true,
-    Details: true,
-    ErrorMessage: true,
-    Expanded: true,
-    HasPopup: true,
-    Invalid: true,
-    Label: true,
-    Level: true,
-    Modal: true,
-    Multiline: true,
-    MultiSelectable: true,
-    Orientation: true,
-    Owns: true,
-    Placeholder: true,
-    PosInSet: true,
-    Pressed: true,
-    RoleDescription: true,
-    RowCount: true,
-    RowIndex: true,
-    RowSpan: true,
-    Selected: true,
-    SetSize: true,
-    Sort: true,
-    ValueMax: true,
-    ValueMin: true,
-    ValueNow: true,
-    ValueText: true,
-  }
-  for (const key in items) {
-    let val = items[key]
-    if (val === true) {
-      val = key.toLowerCase()
-    }
-    accessibilityDirectMap[`accessibility${key}`] = `aria-${val}`
-  }
-}
-
 type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
@@ -183,15 +97,6 @@ type StyleSplitter = (
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
-
-const accessibilityRoleToWebRole = {
-  adjustable: 'slider',
-  header: 'heading',
-  image: 'img',
-  link: 'link',
-  none: 'presentation',
-  summary: 'region',
-}
 
 // loop props backwards
 //   track used keys:
@@ -213,10 +118,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  if (cache.has(props)) {
-    return cache.get(props)
-  }
-
   conf = conf || getConfig()
   const { shorthands } = conf
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
@@ -1043,11 +944,12 @@ export const getSplitStyles: StyleSplitter = (
     nextViewProps[ks[i]] = viewProps[ks[i]]
   }
 
-  const result = {
+  const result: GetStyleResult = {
     space,
     hasMedia,
     fontFamily,
     viewProps: nextViewProps,
+    // @ts-expect-error
     style,
     pseudos,
     classNames,
@@ -1071,10 +973,42 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  cache.set(props, result)
-
   return result
 }
+
+// not ever hitting cache?
+// const cache = createChainedWeakCache()
+// export const getSplitStyles: StyleSplitter = (
+//   props,
+//   staticConfig,
+//   theme,
+//   state,
+//   parentSplitStyles,
+//   languageContext,
+//   elementType,
+//   debug
+// ) => {
+//   const cacheProps = [props, theme, state]
+//   const cached = cache.get(cacheProps)
+//   if (cached) {
+//     return cached as any
+//   }
+
+//   const res = getSplitStylesWithoutMemo(
+//     props,
+//     staticConfig,
+//     theme,
+//     state,
+//     parentSplitStyles,
+//     languageContext,
+//     elementType,
+//     debug
+//   )
+
+//   cache.set(cacheProps, res)
+
+//   return res
+// }
 
 function mergeClassName(
   transforms: Record<string, any[]>,
@@ -1121,22 +1055,17 @@ function mergeClassName(
  *
  * and to avoid re-creating it over and over, use a WeakMap
  */
-const cache = new WeakMap()
+
 function getSubStyleProps(
   defaultProps: Object,
   baseProps: Object,
   specificProps: Object
 ) {
-  const key = specificProps || baseProps
-  // can cache based only on specific it's always referentially consistent with base
-  if (!cache.has(key)) {
-    cache.set(key, {
-      ...defaultProps,
-      ...baseProps,
-      ...specificProps,
-    })
+  return {
+    ...defaultProps,
+    ...baseProps,
+    ...specificProps,
   }
-  return cache.get(key)!
 }
 
 function mergeStyle(
@@ -1275,4 +1204,46 @@ const mergeTransforms = (
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
+}
+
+const skipProps = {
+  animation: true,
+  space: true,
+  animateOnly: true,
+  debug: true,
+  componentName: true,
+  tag: true,
+}
+
+if (process.env.NODE_ENV === 'test') {
+  skipProps['data-test-renders'] = true
+}
+
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
+
+// native only skips
+if (process.env.TAMAGUI_TARGET === 'native') {
+  Object.assign(skipProps, {
+    whiteSpace: true,
+    wordWrap: true,
+    textOverflow: true,
+    textDecorationDistance: true,
+    cursor: true,
+    contain: true,
+    boxSizing: true,
+    boxShadow: true,
+    outlineStyle: true,
+    outlineOffset: true,
+    outlineWidth: true,
+    outlineColor: true,
+  })
+}
+
+const accessibilityRoleToWebRole = {
+  adjustable: 'slider',
+  header: 'heading',
+  image: 'img',
+  link: 'link',
+  none: 'presentation',
+  summary: 'region',
 }

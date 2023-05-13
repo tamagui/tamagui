@@ -1,5 +1,4 @@
 import { Database } from '@lib/supabase-types'
-import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -7,7 +6,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useReducer,
   useState,
 } from 'react'
@@ -80,8 +78,6 @@ export const MyUserContextProvider = (props: Props) => {
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
-      console.log('running', session)
-
       setIsloadingData(true)
       Promise.allSettled([
         getUserDetails(),
@@ -143,7 +139,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user && !isLoading && router.isReady) {
-      router.push(`${siteRootDir}/login`)
+      // router.push(`${siteRootDir}/login`)
     }
   }, [user, isLoading, router])
 

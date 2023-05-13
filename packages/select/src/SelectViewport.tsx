@@ -60,7 +60,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     }
 
     if (!context.open) {
-      return children
+      return <>{children}</>
     }
 
     const {

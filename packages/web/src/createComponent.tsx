@@ -345,6 +345,11 @@ export function createComponent<
           'background: yellow;'
         )
         if (!isServer) {
+          console.groupCollapsed(
+            `Info (collapsed): ${state.press || state.pressIn ? 'PRESSED ' : ''}${
+              state.hover ? 'HOVERED ' : ''
+            }${state.focus ? 'FOCUSED' : ' '}`
+          )
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log({
             props,
@@ -354,6 +359,7 @@ export function createComponent<
             themeStateProps,
             themeState,
           })
+          console.groupEnd()
         }
       }
     }

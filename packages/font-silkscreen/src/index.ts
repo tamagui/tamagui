@@ -1,7 +1,7 @@
 import { GenericFont, createFont, isWeb } from '@tamagui/core'
 
 export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
-  font: Partial<A> = {},
+  font: Partial<A> = {}
 ): A => {
   return createFont({
     family: isWeb
@@ -9,7 +9,10 @@ export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
       : 'Silkscreen',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, v * 1.2 + 6]),
+      Object.entries(font.size || size).map(([k, v]) => [
+        k,
+        typeof v === 'number' ? v * 1.2 + 6 : v,
+      ])
     ) as typeof size,
     weight: {
       4: '300',

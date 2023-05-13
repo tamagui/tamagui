@@ -5,13 +5,12 @@ import { memo } from 'react'
 export default memo(() => {
   return (
     <Slide
-      title="Takeaways"
       theme="pink"
       steps={[
         [
           {
             type: 'callout',
-            content: <>We need testing to work seamlessly across native and web.</>,
+            content: <>Rust is cool, but JS ships - thank you Babel 🙏</>,
           },
           // {
           //   type: 'split-horizontal',

@@ -1,13 +1,13 @@
-import { isServer, isWeb } from '@tamagui/constants'
-import { activeThemeManagers } from '@tamagui/web'
+import { isServer } from '@tamagui/constants'
+import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 import {
+  activeThemeManagers,
   ensureThemeVariable,
   getConfig,
   getThemeCSSRules,
   proxyThemeToParents,
   updateConfig,
 } from '@tamagui/web'
-import type { ThemeDefinition, ThemeParsed } from '@tamagui/web'
 
 export function _mutateTheme(props: {
   name: string
@@ -45,6 +45,7 @@ export function _mutateTheme(props: {
     ...(mutationType === 'update' ? config.themes[themeName] ?? {} : {}),
     ...themeIn,
   } as ThemeParsed
+
   for (const key in theme) {
     ensureThemeVariable(theme, key)
   }
@@ -77,19 +78,17 @@ export function _mutateTheme(props: {
     }
   }
 
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    activeThemeManagers.forEach((manager) => {
-      if (manager.state.name === props.name) {
-        manager.updateState(
-          {
-            name: props.name,
-            forceTheme: themeProxied,
-          },
-          true
-        )
-      }
-    })
-  }
+  activeThemeManagers.forEach((manager) => {
+    if (manager.state.name === props.name) {
+      manager.updateState(
+        {
+          name: props.name,
+          forceTheme: themeProxied,
+        },
+        true
+      )
+    }
+  })
 
   // trigger updates in components
   return {

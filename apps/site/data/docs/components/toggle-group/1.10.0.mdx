@@ -1,14 +1,15 @@
 ---
 title: ToggleGroup
-description: A set of two-state buttons that can be toggled on or off.
+description: Two-state buttons that can be toggled on or off.
 name: toggleGroup
 component: ToggleGroup
 package: toggle-group
+demoName: ToggleGroup
 ---
 
 # ToggleGroup <Beta />
 
-<Description>A set of two-state buttons that can be toggled on or off.</Description>
+<Description>Two-state buttons that can be toggled on or off.</Description>
 
 <HeroContainer>
   <ToggleGroupDemo />
@@ -30,17 +31,16 @@ package: toggle-group
 ### Usage
 
 ```tsx
-import {ToggleGroup } from 'tamagui'
+import { ToggleGroup } from 'tamagui'
 
 export default () => {
   return (
     <ToggleGroup type="single">
-        <ToggleGroup.Item value="dummy"></ToggleGroup.Item>
-        <ToggleGroup.Item value="other"></ToggleGroup.Item>
+      <ToggleGroup.Item value="dummy"></ToggleGroup.Item>
+      <ToggleGroup.Item value="other"></ToggleGroup.Item>
     </ToggleGroup>
   )
 }
-
 ```
 
 ### ToggleGroup props

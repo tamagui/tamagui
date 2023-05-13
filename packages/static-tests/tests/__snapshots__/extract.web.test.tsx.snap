@@ -1,10 +1,10 @@
 // Vitest Snapshot v1
 
-exports[`extract-tests > converts a style object to class names 1`] = `"._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}"`;
+exports[`extract-tests > converts a style object to class names 1`] = `"._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}"`;
 
-exports[`extract-tests > converts a style object to class names 2`] = `"._transform-1lcp8y4{transform:rotateY(10deg);}"`;
+exports[`extract-tests > converts a style object to class names 2`] = `"._transform-827061876{transform:rotateY(10deg);}"`;
 
-exports[`extract-tests > converts a style object to class names 3`] = `"._bxsh-z9fq5k{box-shadow:0px 0px 10px red;}"`;
+exports[`extract-tests > converts a style object to class names 3`] = `"._bxsh-2132166440{box-shadow:0px 0px 10px red;}"`;
 
 exports[`extract-tests > supports RTL properties 1`] = `
 [

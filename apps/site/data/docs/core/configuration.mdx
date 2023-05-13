@@ -83,7 +83,7 @@ const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
   // keys used for the objects you pass to `size`, `lineHeight`, `weight`
   // and `letterSpacing` should be consistent. The `createFont` function
-  // will fill-in any missing valus if `lineHeight`, `weight` or `letterSpacing`
+  // will fill-in any missing values if `lineHeight`, `weight` or `letterSpacing`
   // are subsets of `size`
   size: {
     1: 12,
@@ -203,7 +203,24 @@ The `createTamagui` function receives a configuration object:
 - `defaultProps`: For more advanced uses, you can override all named `styled()` components initial values. These merge downwards, so `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for `Text`.
 - `onlyAllowShorthands` when set to true will ensure that if you define shorthands, they override existing long-form style props.
 
-Note, for `tamagui`, it expects certain things on tokens. Space and size should both have 1-10 defined, as well as a value for `true` that maps to `4`.
+Note, for `tamagui` (not core), it expects you to define a `true` token that maps to your default size, this way it knows what token to use by default. So you'd do something like this:
+
+```tsx
+export const tokens = createTokens({
+  size: {
+    small: 20,
+    medium: 30,
+    true: 30, // note true = 30 just like medium, your default size token
+    large: 40,
+  },
+   space: {
+    small: 10,
+    medium: 20,
+    true: 20, // same goes for space and other token categories
+    large: 30,
+  },
+})
+```
 
 <Notice>
   The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
@@ -252,7 +269,7 @@ TamaguiProvider takes a few optional properties:
       name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
+      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
 />
@@ -266,7 +283,7 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
-If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js).
+If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js), there are also docs for app directory and RSC support.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any

@@ -8,6 +8,7 @@ export const useSheetController = () => {
     controller,
     isHidden,
     isShowingNonSheet,
+    disableDrag: controller?.disableDrag,
   }
 }
 

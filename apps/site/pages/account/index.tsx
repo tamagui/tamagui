@@ -1,11 +1,15 @@
+import { access } from 'fs'
+
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { studioRootDir } from '@protected/studio/constants'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
-import { Check, CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
+import { LogoIcon } from '@tamagui/logo'
+import { CheckCircle, LogOut, Space, Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
@@ -18,13 +22,16 @@ import {
   Paragraph,
   Separator,
   SizableText,
+  Spacer,
   Spinner,
-  Tabs,
   Theme,
   XStack,
   YStack,
+  composeRefs,
 } from 'tamagui'
 import { UserAccessStatus } from 'types'
+
+import { useHoverGlow } from '../../components/HoverGlow'
 
 export default function Page() {
   return (
@@ -47,7 +54,7 @@ const Account = () => {
 
   return (
     <Container f={1}>
-      <XStack my="$10" space>
+      <XStack mt="$10" space>
         <Avatar circular size="$10">
           <Avatar.Image source={userDetails?.avatar_url} />
         </Avatar>
@@ -66,10 +73,14 @@ const Account = () => {
             </YStack>
           </XStack>
           <XStack space="$2">
-            {accessStatus?.githubStatus.personal?.isSponsoring && <SponsorBadge />}
+            {accessStatus?.githubStatus.personalSponsorship.sponsoring && (
+              <SponsorBadge />
+            )}
             {accessStatus?.githubStatus.orgs.map((org) => (
               <TeamBadge key={org.id} org={org} />
             ))}
+
+            <ProfileContent />
           </XStack>
         </YStack>
       </XStack>
@@ -115,9 +126,10 @@ const UserSettings = () => {
 
   return (
     <YStack space="$8" separator={<Separator />}>
-      <YStack space="$6" id="profile">
-        <SizableText size="$8">Profile</SizableText>
-        <ProfileContent />
+      <YStack space="$6" id="profile"></YStack>
+
+      <YStack space="$6" id="studio-queue">
+        <QueueContent />
       </YStack>
 
       <YStack space="$6" id="sponsorship-status">
@@ -150,40 +162,183 @@ const ProfileContent = () => {
   const { user, userDetails } = useUser()
 
   return (
-    <Table
-      data={{
-        Name: userDetails?.full_name,
-        Email: user?.email,
-        'Auth Provider': user?.app_metadata.provider,
-      }}
-    />
+    <XStack space="$4" separator={<Separator vertical />}>
+      <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
+      <Paragraph theme="alt1">{user?.email}</Paragraph>
+    </XStack>
   )
+}
+
+const QueueCard = () => {
+  const glow = useHoverGlow({
+    resist: 65,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: -200,
+      y: 200,
+    },
+  })
+
+  const glow2 = useHoverGlow({
+    resist: 80,
+    inverse: true,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--blue10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: 200,
+      y: -200,
+    },
+  })
+
+  const glow3 = useHoverGlow({
+    resist: 80,
+    size: 500,
+    strategy: 'blur',
+    blurPct: 100,
+    color: 'var(--pink10)',
+    opacity: 0.3,
+    background: 'transparent',
+    offset: {
+      x: -200,
+      y: -200,
+    },
+  })
+
+  return (
+    <YStack
+      ref={composeRefs(
+        glow.parentRef as any,
+        glow2.parentRef as any,
+        glow3.parentRef as any
+      )}
+      p="$4"
+      br="$4"
+      bw={4}
+      boc="$color2"
+      w={480}
+      h={280}
+      als="center"
+      ov="hidden"
+      elevation="$4"
+    >
+      <YStack fullscreen br={7} bw={1} boc="$borderColor" />
+
+      <YStack className="rotate-slow-right">{glow.Component()}</YStack>
+      <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
+      <YStack className="rotate-slow-right">{glow3.Component()}</YStack>
+
+      {[
+        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
+      ].map((deg) => (
+        <YStack
+          key={deg}
+          pos="absolute"
+          rotate={`${deg}deg`}
+          t="$5"
+          l="$5"
+          r="$5"
+          b="$5"
+          br="$3"
+          boc="$color8"
+          o={0.2}
+          bw={1}
+          scale={1.3}
+        />
+      ))}
+
+      <YStack>
+        <Paragraph size="$8">Studio</Paragraph>
+        <Paragraph theme="alt2" size="$3">
+          In queue for access around June
+        </Paragraph>
+      </YStack>
+
+      <Spacer flex />
+
+      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
+        100
+      </Paragraph>
+
+      <XStack pb="$1" ai="flex-end">
+        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
+          #
+        </Paragraph>
+        <Paragraph my="$-3" size="$12" fow="900">
+          100
+        </Paragraph>
+
+        <Spacer flex />
+
+        <YStack pb="$2">
+          <LogoIcon />
+        </YStack>
+      </XStack>
+    </YStack>
+  )
+}
+
+const QueueContent = () => {
+  const { accessStatus } = useUser()
+
+  if (!accessStatus) {
+    return <Spinner />
+  }
+
+  if (accessStatus.access.studio.access) {
+    return (
+      <YStack space ai="flex-start">
+        <SizableText>You have access to studio!</SizableText>
+        <ButtonLink themeInverse href={studioRootDir}>
+          Enter Studio
+        </ButtonLink>
+      </YStack>
+    )
+  }
+
+  return <QueueCard />
+
+  // return (
+  //   <YStack ai="flex-start" space>
+  //     <SizableText>
+  //       {accessStatus.access.studio.message} - You will get access{' '}
+  //       {Intl.DateTimeFormat('en-US', {
+  //         month: 'short',
+  //         year: 'numeric',
+  //         day: 'numeric',
+  //       }).format(new Date(accessStatus.access.studio.accessDate))}
+  //     </SizableText>
+  //     <SponsorButton />
+  //   </YStack>
+  // )
 }
 
 const SponsorshipContent = () => {
   const { accessStatus } = useUser()
   // {/* TODO: get info of sponsorship here... tier, etc. */}
 
-  if (!accessStatus?.isSponsor) {
+  if (!accessStatus?.access.sponsoring) {
     return (
       <YStack space="$4" ai="flex-start">
-        <ButtonLink
-          href="https://github.com/sponsors/natew"
-          theme="pink_alt1"
-          icon={<Star />}
-          size="$3"
-        >
-          Sponsor Tamagui
-        </ButtonLink>
-        <YStack>
-          <Paragraph>
-            You are not an sponsor. Become an sponsor to access exclusive features!
+        <SponsorButton />
+        <YStack space>
+          <Paragraph size="$6">
+            You are not an sponsor. Become an sponsor to get early access to the studio
+            and other upcoming features.
           </Paragraph>
-          <Paragraph color="$color11">
+          <Paragraph size="$5" theme="alt1">
             If you're a member of an organization that is sponsoring Tamagui, make sure
             tamagui has access to that org{' '}
             <Link
-              style={{ color: 'var(--color)' }}
+              style={{ color: 'var(--color12)' }}
               href={`https://github.com/settings/connections/applications/${process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID}`}
             >
               here
@@ -197,7 +352,7 @@ const SponsorshipContent = () => {
 
   return (
     <YStack>
-      {accessStatus.githubStatus.personal?.isSponsoring && (
+      {accessStatus.githubStatus.personalSponsorship.sponsoring && (
         <Paragraph>You are a personal sponsor.</Paragraph>
       )}
       {accessStatus.githubStatus.orgs.map((org) => (
@@ -296,6 +451,19 @@ const Table = ({ data }: { data: Record<string, any> }) => {
         </XStack>
       ))}
     </YStack>
+  )
+}
+
+const SponsorButton = () => {
+  return (
+    <ButtonLink
+      href="https://github.com/sponsors/natew"
+      theme="pink_alt1"
+      icon={<Star />}
+      size="$3"
+    >
+      Sponsor Tamagui
+    </ButtonLink>
   )
 }
 

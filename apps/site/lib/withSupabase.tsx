@@ -1,9 +1,9 @@
 import { SupabaseProvider } from '@components/SupabaseProvider'
-import { MyUserContextProvider } from 'hooks/useUser'
-import { H1 } from 'tamagui'
 
-export function withSupabase(page, pageProps) {
+export function withSupabase(page, pageProps, isStudio = false) {
   return (
-    <SupabaseProvider initialSession={pageProps.initialSession}>{page}</SupabaseProvider>
+    <SupabaseProvider isStudio={isStudio} initialSession={pageProps.initialSession}>
+      {page}
+    </SupabaseProvider>
   )
 }

@@ -1,3 +1,45 @@
+- add just early return hooks eslint check
+- Popover.Close working inside Adapt Sheet
+- shadowOpacity not being applied
+
+
+
+```tsx
+const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
+
+const ButtonFrame = styled(Stack, {
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, 
+  variantProvider: ButtonVariant,
+  variants: {
+    
+    size: {
+      '...size': (val) => {
+        return // ... val will come automatically from context
+      }
+    }
+  }
+})
+
+export const SomeExampleButton = (props: { size: SizeTokens }) => (
+  <ButtonVariant size={props.size}>
+    <ButtonFrame>
+      <ButtonText />
+    </ButtonFrame>
+  </ButtonVariant>
+)
+```
+
 high level:
 
   - private canary packages on github
@@ -7,8 +49,28 @@ high level:
   - headless
   - studio
   - takeout
+  - income:
+    - font packages + font package builder ui
+    - merch
+    - outlined theme
+    - other theme drops (gumroad cheap)
+    - auth/account/profile drop
+    - better monorepo pro drop
 
 ---
+
+studio
+- templates working
+- Button.studio.tsx + run locally
+  - give it your app port and it launches electron or just gives you a new url?
+- figma export components
+- figma import tokens
+
+- we could somehow generate separate native and web potentially?
+  - basically we generate esbuild two different versions: .native.js and .web.js
+  - can flatten all TAMAGUI_TARGET then in each and maybe avoid that setup step
+  - can automatically map react-native to react-native-web (then only have to alias for -lite)
+  - should be 0-config setup
 
 - size/space/button docs
 - slow press on buttons
@@ -17,28 +79,31 @@ high level:
 - document how `size` + `font` + `space` should work together to help create a cohesive design system that works with tamagui
 
 Ali todos:
+  - studio:
+    - colors:
+      - when you modify the popup in the bottom left should have a "save" option
+        - save will make it actually update the themes with the right values
+    - animations:
+      - profiling its super slow, because for some reason animation.start() taking forever: for now just make it debounce / not animation on drag
+
   - [x] studio
     - [ ] make it remember dark/light choice (localStorage)
-
-      - [ ] add code export
-
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
-
-    - [x] Tokens tab
-          - [ ] also can show a Button as an option too
-
-    - [ ] all tabs (header):
-      - [ ] add a search input box that filters down things as you type
-
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
-  - [ ] low prio: better way to document the "faq" section -> update all docs to use same heading titles, etc. - props -> api, make headings consistent, document unstyled props, anatomy/usage consistency
-  - [ ] toast sooner style demo
-  - [ ] low prio: toast viewport issue
+
+---
+
+2.0
+
+- deprecate `:number` other type variants
+- Text shouldn't have `selectable` / `ellipse` custom stuff?
 
 ---
 
 # Backlog
+
+- if you change webpack config to alias RN to RNW (not lite) one animation test fails
 
 - cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
 
@@ -72,6 +137,8 @@ a package.json etc etc + zip file
 
 - @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
   - https://github.com/tamagui/tamagui/issues/985
+
+- sheet overlay variant https://discord.com/channels/909986013848412191/1103391377615749211/1103391377615749211
 
 - Studio: drag and drop a font and you can configure the subset
   - automatically converts to the right output formats
@@ -300,7 +367,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - vertical slider native can be janky
 - react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
-- app dir support experimental
 - styled('div')
 - tooltip auto pass down accessibilityLabel
 - accessibility keyboard navigation (Menu component potentially)
@@ -313,7 +379,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
 - improve native integration test
 - kitchen-sink in Snack demo link
 - `tamagui` cli basic version
@@ -464,33 +529,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
----
-
-<ThemeOverride />
-<ThemeMutate />
-<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
-
-```tsx
-export default () => (
-  <Theme name="orange">
-    <ThemeOverride backgroundColor={-3}>
-      <MySquare />
-      <MyCircle />
-      <MyButton />
-    </ThemeOverride>
-
-    <ThemeMutate
-      getNextTheme={theme => {
-        theme.background = ''
-        return theme
-      }}>
-        <MySquare />
-        <MyCircle />
-        <MyButton />
-    </ThemeMutate>
-  </Theme>
-)
-```
 
 ---
 

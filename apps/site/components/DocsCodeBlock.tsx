@@ -34,7 +34,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     isHero = false,
     isCollapsible = false,
     isHighlightingLines,
+    disableCopy,
     size,
+    ...rest
   } = props
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [code, setCode] = useState(undefined)
@@ -130,26 +132,29 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   className={className}
                   size={size ?? '$4'}
                   lineHeight={size ?? '$4'}
+                  {...rest}
                 >
                   {children}
                 </Code>
               </ScrollView>
             </Pre>
-            <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
-              <Button
-                aria-label="Copy code to clipboard"
-                position="absolute"
-                size="$2"
-                top="$3"
-                right="$3"
-                display="inline-flex"
-                icon={hasCopied ? CheckCircle : Clipboard}
-                onPress={onCopy}
-                $xs={{
-                  display: 'none',
-                }}
-              />
-            </TooltipSimple>
+            {!disableCopy && (
+              <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+                <Button
+                  aria-label="Copy code to clipboard"
+                  position="absolute"
+                  size="$2"
+                  top="$3"
+                  right="$3"
+                  display="inline-flex"
+                  icon={hasCopied ? CheckCircle : Clipboard}
+                  onPress={onCopy}
+                  $xs={{
+                    display: 'none',
+                  }}
+                />
+              </TooltipSimple>
+            )}
           </YStack>
         )}
       </ErrorBoundary>

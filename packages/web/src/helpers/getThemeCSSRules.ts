@@ -118,9 +118,12 @@ export function getThemeCSSRules({
   cssRuleSets.push(css)
 
   if (config.shouldAddPrefersColorThemes) {
-    const bgString = variableToString(theme.background)
-    const fgString = variableToString(theme.color)
-    const bodyRules = `body{background:${bgString};color:${fgString};}`
+    const bgString = theme.background
+      ? `background:${variableToString(theme.background)};`
+      : ''
+    const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
+
+    const bodyRules = `body{${bgString}${fgString}}`
     const isDark = themeName.startsWith('dark')
     const baseName = isDark ? 'dark' : 'light'
     const lessSpecificSelectors = selectors

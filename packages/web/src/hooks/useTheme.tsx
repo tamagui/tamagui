@@ -228,6 +228,13 @@ export const useChangeThemeEffect = (
         }
       }
 
+      // for updateTheme/replaceTheme
+      const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
+        if (forced) {
+          setThemeState((prev) => createState(prev, true))
+        }
+      })
+
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         const shouldUpdate = Boolean(keys?.length || isNewTheme)
         if (process.env.NODE_ENV === 'development' && props.debug) {
@@ -241,6 +248,7 @@ export const useChangeThemeEffect = (
       }, themeManager.id)
 
       return () => {
+        selfListenerDispose()
         disposeChangeListener?.()
         activeThemeManagers.delete(themeManager)
       }
@@ -281,7 +289,7 @@ export const useChangeThemeEffect = (
     themeManager,
   }
 
-  function createState(prev?: State): State {
+  function createState(prev?: State, force = false): State {
     if (prev && disableUpdate?.()) {
       return prev
     }
@@ -336,7 +344,7 @@ export const useChangeThemeEffect = (
       state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
     }
 
-    if (state.name === prev?.state.name) {
+    if (!force && state.name === prev?.state.name) {
       return prev
     }
 

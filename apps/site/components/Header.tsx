@@ -13,11 +13,13 @@ import {
   Separator,
   Text,
   TooltipGroup,
+  TooltipSimple,
   VisuallyHidden,
   XGroup,
   XStack,
   YStack,
   isClient,
+  styled,
 } from 'tamagui'
 
 import { ColorToggleButton } from './ColorToggleButton'
@@ -127,6 +129,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
+        <SearchButton size="$2" br="$10" elevation="$4" />
+
         <YStack paddingStart={200}>
           <SponsorButton tiny />
         </YStack>
@@ -167,8 +171,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       >
         <XStack ai="center" space="$3">
           <HeaderLinks {...props} />
-
-          <SearchButton size="$2" br="$10" elevation="$4" />
 
           <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
             <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
@@ -240,6 +242,19 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
+      {/* <NextLink prefetch={false} href="/takeout">
+        <TooltipSimple delay={0} restMs={25} label="Takeout">
+          <HeadAnchor
+            size="$8"
+            $sm={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            🥡
+          </HeadAnchor>
+        </TooltipSimple>
+      </NextLink> */}
+
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
           <HeadAnchor>Blog</HeadAnchor>
@@ -255,12 +270,6 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
       {showExtra && (
         <NextLink prefetch={false} href="/studio">
           <HeadAnchor>Studio</HeadAnchor>
-        </NextLink>
-      )}
-
-      {showExtra && (
-        <NextLink prefetch={false} href="/takeout">
-          <HeadAnchor>Takeout</HeadAnchor>
         </NextLink>
       )}
     </>
@@ -335,21 +344,15 @@ const SmallMenu = React.memo(() => {
   )
 })
 
-const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
-  <Paragraph
-    ref={ref as any}
-    fontFamily="$silkscreen"
-    px="$3"
-    py="$2"
-    cursor="pointer"
-    size="$3"
-    color="$color10"
-    hoverStyle={{ opacity: 1, color: '$color' }}
-    pressStyle={{ opacity: 0.25 }}
-    // @ts-ignore
-    tabIndex={-1}
-    w="100%"
-    // jc="flex-end"
-    {...props}
-  />
-))
+const HeadAnchor = styled(Paragraph, {
+  fontFamily: '$silkscreen',
+  px: '$3',
+  py: '$2',
+  cursor: 'pointer',
+  size: '$3',
+  color: '$color10',
+  hoverStyle: { opacity: 1, color: '$color' },
+  pressStyle: { opacity: 0.25 },
+  tabIndex: -1,
+  w: '100%',
+})

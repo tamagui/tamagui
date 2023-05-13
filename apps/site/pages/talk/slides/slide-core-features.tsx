@@ -7,7 +7,7 @@ export default memo(() => {
     <Slide
       title="@tamagui/core"
       subTitle="Features"
-      theme="yellow"
+      theme="pink"
       steps={[
         [
           {
@@ -23,8 +23,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Responsive styles`,
@@ -38,8 +38,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Psuedo styles`,
@@ -53,8 +53,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Tokens`,
@@ -68,8 +68,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Themes`,
@@ -83,8 +83,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Nesting`,
@@ -104,8 +104,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Typed variants`,
@@ -119,8 +119,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `className, tag, etc`,
@@ -134,8 +134,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Animation drivers`,
@@ -149,8 +149,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Shorthands`,
@@ -164,8 +164,8 @@ export default memo(() => {
                       {
                         type: 'text',
                         props: {
-                          size: '$10',
-                          marginBottom: 40,
+                          fontSize: 50,
+                          marginTop: 60,
                           display: 'inline-flex',
                         },
                         content: `Unified RN API's`,

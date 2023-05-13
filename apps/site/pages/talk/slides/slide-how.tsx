@@ -6,7 +6,7 @@ export default memo(() => {
   return (
     <Slide
       title="How?"
-      subTitle="Convert nice code into performant code"
+      subTitle={`Simple syntax in, "use the platform" out`}
       theme="purple"
       steps={[
         [
@@ -24,7 +24,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
@@ -39,7 +40,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
@@ -54,13 +56,14 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
               {
                 type: 'text',
-                content: 'CSS - ',
+                content: 'Remove JS - ',
               },
 
               {
@@ -69,7 +72,8 @@ export default memo(() => {
               },
             ],
           },
-
+        ],
+        [
           {
             type: 'bullet-point',
             content: [
@@ -80,7 +84,7 @@ export default memo(() => {
 
               {
                 type: 'code-inline',
-                content: '<Stack /> becomes <div /> or <View />',
+                content: '<StyledView /> becomes <div /> or <View />',
               },
             ],
           },

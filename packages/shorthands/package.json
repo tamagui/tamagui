@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.22.10",
+  "version": "1.27.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -23,12 +23,12 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.22.10"
+    "@tamagui/build": "1.27.3"
   },
   "publishConfig": {
     "access": "public"

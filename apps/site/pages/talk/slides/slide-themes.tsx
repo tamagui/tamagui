@@ -1,7 +1,7 @@
 import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
-import React from 'react'
 import { memo } from 'react'
+import { Paragraph, Square, Stack, Theme, styled } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -39,12 +39,12 @@ const inputSnippetSub = highlightCode(
   `
 const themes = {
   light_red: {
-    background: 'lightred',
-    color: 'darkred',
+    background: 'white',
+    color: 'red',
   },
   dark_red: {
-    background: 'darkred',
-    color: 'lightred'
+    background: 'red',
+    color: 'white'
   }
 }
 `,
@@ -53,26 +53,25 @@ const themes = {
 
 const outputSnippetSub = highlightCode(
   `.t_light_red {
-  --background: lightred;
-  --color: darkred;
+  --background: white;
+  --color: red;
 }
 
 .t_dark_red {
-  --background: darkred;
-  --color: lightred;
+  --background: red;
+  --color: white;
 }
 `,
   'tsx'
 )
 
 const snippetUsage = highlightCode(
-  `
-import { Stack } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
-    <Stack background="$background">
-      Light Background
+    <Stack backgroundColor="$background">
+      <Text color="$color">
+        Hello world
+      </Text>
     </Stack>
   </Theme>
 )
@@ -80,20 +79,49 @@ export default () => (
   'tsx'
 )
 
-const snippetUsageComplex = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+const snippetUsage2 = highlightCode(
+  `export default () => (
   <Theme name="light">
-    <Stack background="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    <Text color="$color">
+      Hello world
+    </Text>
+  </Stack>
+)
+`,
+  'tsx'
+)
+
+const snippetUsage3 = highlightCode(
+  `export default () => (
+  <Theme name="dark">
+    <MyWidget />
+  </Theme>
+)
+
+const MyWidget = () => (
+  <Stack backgroundColor="$background">
+    <Text color="$color">
+      Hello world
+    </Text>
+  </Stack>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageComplex = highlightCode(
+  `export default () => (
+  <Theme name="light">
+    <MyWidget />
 
     <Theme name="dark">
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
     </Theme>
   </Theme>
 )
@@ -102,19 +130,24 @@ export default () => (
 )
 
 const snippetUsageInverse = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
-    <Stack background="$background">
-      Light Background
-    </Stack>
+    <MyWidget />
 
     <Theme inverse>
-      <Text color="$color">
-        Dark text
-      </Text>
+      <MyWidget />
+    </Theme>
+  </Theme>
+)
+`,
+  'tsx'
+)
+
+const snippetUsageSub = highlightCode(
+  `export default () => (
+  <Theme name="light">
+    <Theme name="red">
+      <MyWidget />
     </Theme>
   </Theme>
 )
@@ -123,20 +156,14 @@ export default () => (
 )
 
 const snippetUsageInverseSub = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Theme name="red">
-      <Stack background="$background">
-        Light Red Background
-      </Stack>
+      <MyWidget />
 
+      {/* Now make it dark_red */}
       <Theme inverse>
-        <Text color="$color">
-          Dark red text
-        </Text>
+        <MyWidget />
       </Theme>
     </Theme>
   </Theme>
@@ -145,13 +172,29 @@ export default () => (
   'tsx'
 )
 
+const MyWidget = ({ text, stack }: any = {}) => (
+  <Square size={250} bc={stack || '$background'} ai="center" jc="center">
+    <Paragraph size="$8" color={text || '$color'}>
+      Hello world
+    </Paragraph>
+  </Square>
+)
+
+const Container = styled(Stack, {
+  miw: 400,
+  mih: 400,
+  ai: 'center',
+  jc: 'center',
+  space: true,
+})
+
 export default memo(() => {
   return (
     <Slide
-      title="Core: Themes"
-      subTitle="Generics for styling"
+      title="Themes"
+      subTitle="@tamagui/core"
       stepsStrategy="replace"
-      theme="yellow"
+      theme="pink"
       steps={[
         [
           {
@@ -171,16 +214,21 @@ export default memo(() => {
 
         [
           {
-            type: 'code',
-            content: snippetUsage,
-          },
-
-          {
-            type: 'bullet-point',
+            type: 'split-horizontal',
             content: [
               {
-                type: 'text',
-                content: `Don't hardcode dark:color-300, instead change your theme`,
+                type: 'code',
+                content: snippetUsage,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
               },
             ],
           },
@@ -188,15 +236,104 @@ export default memo(() => {
 
         [
           {
-            type: 'code',
-            content: snippetUsageComplex,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage2,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsageInverse,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsage3,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageComplex,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageInverse,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <Theme name="light">
+                      <MyWidget />
+                    </Theme>
+
+                    <Theme name="dark">
+                      <MyWidget />
+                    </Theme>
+                  </Container>
+                ),
+              },
+            ],
+          },
+        ],
+
+        [
+          {
+            type: 'callout',
+            content: `Sub-themes`,
           },
         ],
 
@@ -214,29 +351,25 @@ export default memo(() => {
               },
             ],
           },
-
-          {
-            type: 'bullet-point',
-            content: [
-              {
-                type: 'text',
-                content: `Nest as many sub-themes as you want, eg`,
-              },
-              {
-                type: 'code-inline',
-                props: {
-                  color: '$color2',
-                },
-                content: `dark_red_subtle`,
-              },
-            ],
-          },
         ],
 
         [
           {
-            type: 'code',
-            content: snippetUsageInverseSub,
+            type: 'split-horizontal',
+            content: [
+              {
+                type: 'code',
+                content: snippetUsageSub,
+              },
+              {
+                type: 'content',
+                content: (
+                  <Container>
+                    <MyWidget text="red" stack="white" />
+                  </Container>
+                ),
+              },
+            ],
           },
         ],
 
@@ -245,56 +378,74 @@ export default memo(() => {
             type: 'split-horizontal',
             content: [
               {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Avoids re-rendering`,
-                      },
-                    ],
-                  },
-
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Invert or reset to parent`,
-                      },
-                    ],
-                  },
-                ],
+                type: 'code',
+                content: snippetUsageInverseSub,
               },
-
               {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `No dark:color-300`,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'text',
-                        content: `Improves code re-use`,
-                      },
-                    ],
-                  },
-                ],
+                type: 'content',
+                content: (
+                  <Container>
+                    <MyWidget text="red" stack="white" />
+                    <MyWidget text="white" stack="red" />
+                  </Container>
+                ),
               },
             ],
           },
         ],
+
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/themes-5.png').default,
+        //   },
+
+        //   {
+        //     type: 'text-overlay',
+        //     variant: 'good',
+        //     content: `dark_green_outlined`,
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'content',
+        //     content: (
+        //       <YStack
+        //         my={-100}
+        //         als="center"
+        //         mx="auto"
+        //         ai="center"
+        //         br="$4"
+        //         ov="hidden"
+        //         elevation="$5"
+        //       >
+        //         <video autoPlay loop style={{ width: 800, height: 800 }}>
+        //           <source src="/talk/themes-demo.mp4" />
+        //         </video>
+        //       </YStack>
+        //     ),
+        //   },
+        // ],
+
+        // [
+        //   {
+        //     type: 'fullscreen',
+        //     content: (
+        //       <iframe
+        //         width="100%"
+        //         height="100%"
+        //         src="https://www.youtube.com/embed/FqFLwud5l7g"
+        //         title="beatgig-demo"
+        //         frameBorder={0}
+        //         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        //         allowFullScreen
+        //       />
+        //     ),
+        //   },
+        // ],
       ]}
     />
   )
