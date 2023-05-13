@@ -113,9 +113,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
               childrenRefs?.current?.forEach((childRef) => {
                 if (childRef && scaleX !== undefined && scaleY !== undefined) {
                   // @ts-ignore
-                  childRef.style.transform = `scaleX(${1 / scaleX}) scaleY(${
-                    1 / scaleY
-                  }) translateX(${x}px) translateY(${y}px)`
+                  childRef.style.transform = `scaleX(${1 / scaleX}) scaleY(${1 / scaleY})`
                 }
               })
             },
