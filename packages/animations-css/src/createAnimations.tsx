@@ -100,10 +100,13 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             initialPositionRef.current
           )
 
+          const [func, time] = animation.split(' ')
           animate({
             from: transform,
             to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
-            duration: 1000,
+            duration: time.includes('ms')
+              ? Number(time.replace('ms', ''))
+              : Number(time.replace('s', '')) * 1000,
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               // @ts-ignore
               hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
@@ -116,8 +119,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
                 }
               })
             },
-            // TODO: extract ease-in from string and convert/map it to a cubicBezier array
-            cubicBezier: [0, 1.38, 1, -0.41],
+            easingFunction: func,
           })
         }
         initialPositionRef.current = boundingBox
@@ -127,7 +129,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
       // for non layout transform properties either use animate function or find a workaround to do it with css
       style.transition = `${keys} ${animation}${
-        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
+        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform 0s' : ''
       }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {

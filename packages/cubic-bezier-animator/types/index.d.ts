@@ -4,13 +4,12 @@ type TransformType = {
     scaleX: number | undefined;
     scaleY: number | undefined;
 };
-type CubicBuzier = [number, number, number, number];
 interface AnimateProps {
     from: TransformType;
     to: TransformType;
     duration: number;
     onUpdate: (param: TransformType) => void;
-    cubicBezier?: CubicBuzier;
+    easingFunction?: string;
 }
 export declare function animate(param: AnimateProps): void;
 export {};

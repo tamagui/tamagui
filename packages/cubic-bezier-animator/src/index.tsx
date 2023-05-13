@@ -13,11 +13,13 @@ interface AnimateProps {
   to: TransformType
   duration: number
   onUpdate: (param: TransformType) => void
-  cubicBezier?: CubicBuzier
+  easingFunction?: string
 }
 export function animate(param: AnimateProps) {
   let start = null
-  const easing = param.cubicBezier ? bezier(...param.cubicBezier) : (v: number) => v
+  const easing = param.easingFunction
+    ? bezier(...getCubicBezierInput(param.easingFunction))
+    : (v: number) => v
 
   const { x: fromX, y: fromY, scaleX: fromScaleX, scaleY: fromScaleY } = param.from
   const { x: toX, y: toY, scaleX: toScaleX, scaleY: toScaleY } = param.to
@@ -48,4 +50,26 @@ export function animate(param: AnimateProps) {
     }
   }
   requestAnimationFrame(frame)
+}
+
+function getCubicBezierInput(str: string): [number, number, number, number] {
+  if (str === 'ease') {
+    return [0.25, 0.1, 0.25, 1]
+  } else if (str === 'ease-in') {
+    return [0.42, 0, 1, 1]
+  } else if (str === 'ease-out') {
+    return [0, 0, 0.58, 1]
+  } else if (str === 'ease-in-out') {
+    return [0.42, 0, 0.58, 1]
+  } else if (str === 'linear') {
+    return [0, 0, 1, 1]
+  } else if (str.includes('cubic-bezier')) {
+    return str
+      .replace('cubic-bezier(', '')
+      .replace(')', '')
+      .split(',')
+      .map((v) => Number(v)) as [number, number, number, number]
+  } else {
+    return [0, 0, 0, 0]
+  }
 }
