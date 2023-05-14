@@ -14,8 +14,6 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
     : never
 }
 
-export const tokensKeysOrdered = new WeakMap()
-
 export const createVariables = <A extends DeepTokenObject>(
   tokens: A,
   parentPath = '',
@@ -44,10 +42,6 @@ export const createVariables = <A extends DeepTokenObject>(
       continue
     }
     res[key] = isVariable(val) ? val : createVariable({ val, name, key: niceKey })
-  }
-
-  if (parentPath !== 'color') {
-    tokensKeysOrdered.set(res, Object.keys(tokens))
   }
 
   return res

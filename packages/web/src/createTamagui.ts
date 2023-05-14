@@ -1,7 +1,7 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { createVariables, tokensKeysOrdered } from './createVariables'
+import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -203,7 +203,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: any = Object.fromEntries(
     Object.entries(configIn.tokens).map(([k, v]) => {
       const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      tokensKeysOrdered.set(val, tokensKeysOrdered.get(v))
       return [k, val]
     })
   )
