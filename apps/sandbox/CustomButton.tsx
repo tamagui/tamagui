@@ -26,7 +26,9 @@ export const ButtonFrame = styled(Stack, {
       '...size': (name, { tokens }) => ({
         height: tokens.size[name],
         borderRadius: tokens.radius[name],
-        paddingHorizontal: getSpace(tokens.space[name], -1),
+        paddingHorizontal: getSpace(tokens.space[name], {
+          shift: -1,
+        }),
       }),
     },
   } as const,

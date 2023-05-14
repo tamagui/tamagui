@@ -348,7 +348,12 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
 
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(getSpace(sizeVal, -2, [2]))
+    const sizeValResolved = getVariableValue(
+      getSpace(sizeVal, {
+        shift: -2,
+        bounds: [2],
+      })
+    )
     const size = +sizeValResolved
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)

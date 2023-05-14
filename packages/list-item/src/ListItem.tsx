@@ -82,7 +82,9 @@ export const listItemVariants = {
       return {
         minHeight: tokens.size[val],
         paddingHorizontal: tokens.space[val],
-        paddingVertical: getSpace(val, -2),
+        paddingVertical: getSpace(tokens.space[val], {
+          shift: -2,
+        }),
       }
     },
   },

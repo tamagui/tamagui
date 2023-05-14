@@ -63,7 +63,7 @@ export declare const listItemVariants: {
         }) => {
             minHeight: any;
             paddingHorizontal: any;
-            paddingVertical: any;
+            paddingVertical: import("@tamagui/web").Variable<number>;
         };
     };
     readonly active: {

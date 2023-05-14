@@ -454,7 +454,9 @@ const NativeSelectFrame = styled(ThemeableStack, {
           minHeight: tokens.size[val],
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(val, -2),
+          paddingVertical: getSpace(val, {
+            shift: -2,
+          }),
         }
       },
     },
