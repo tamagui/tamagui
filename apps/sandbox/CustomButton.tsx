@@ -1,5 +1,5 @@
 import {
-  FontSizeTokens,
+  SizeTokens,
   Stack,
   Text,
   createStyledContext,
@@ -8,8 +8,10 @@ import {
 } from '@tamagui/core'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 
-export const ButtonContext = createStyledContext({
-  size: '$4' as FontSizeTokens,
+export const ButtonContext = createStyledContext<{
+  size: SizeTokens
+}>({
+  size: '$4',
 })
 
 export const ButtonFrame = styled(Stack, {

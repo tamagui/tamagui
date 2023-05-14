@@ -1,7 +1,7 @@
 import React from 'react';
 export type StyledContext<Props extends Object = any> = Omit<React.Context<Props>, 'Provider'> & {
     variants: Object;
-    Provider: React.FunctionComponent<Props & {
+    Provider: React.ProviderExoticComponent<Props & {
         children?: React.ReactNode;
     }>;
 };

@@ -1,11 +1,11 @@
-import React, { createContext, useMemo } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 
 export type StyledContext<Props extends Object = any> = Omit<
   React.Context<Props>,
   'Provider'
 > & {
   variants: Object
-  Provider: React.FunctionComponent<
+  Provider: React.ProviderExoticComponent<
     Props & {
       children?: React.ReactNode
     }
@@ -30,6 +30,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     )
   }
 
+  // @ts-ignore
   Context.Provider = Provider
   Context.variants = variants
 

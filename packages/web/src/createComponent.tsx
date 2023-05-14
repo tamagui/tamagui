@@ -176,7 +176,7 @@ export function createComponent<
     let provided: Object | undefined
     const { context } = staticConfig
     if (context) {
-      const contextValue = useContext(context as any)
+      const contextValue = useContext(context)
       for (const key in context.variants) {
         if (!(key in props)) {
           if (contextValue) {
