@@ -44,6 +44,7 @@
     "@tamagui/list-item": "1.27.3",
     "@tamagui/portal": "1.27.3",
     "@tamagui/separator": "1.27.3",
+    "@tamagui/get-token": "1.27.3",
     "@tamagui/sheet": "1.27.3",
     "@tamagui/stacks": "1.27.3",
     "@tamagui/text": "1.27.3",

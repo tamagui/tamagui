@@ -10,7 +10,7 @@ import {
   styled,
   withStaticProperties,
 } from '@tamagui/core'
-import { getSize } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

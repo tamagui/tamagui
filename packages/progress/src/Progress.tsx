@@ -3,7 +3,7 @@
 
 import { GetProps, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { getSize } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { ThemeableStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'

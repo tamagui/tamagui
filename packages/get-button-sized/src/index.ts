@@ -1,4 +1,4 @@
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-token'
 import type { SizeTokens, VariantSpreadExtras } from '@tamagui/web'
 
 export const getButtonSized = (

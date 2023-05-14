@@ -4499,7 +4499,7 @@ __metadata:
     "@tamagui/create-context": 1.27.3
     "@tamagui/focusable": 1.27.3
     "@tamagui/font-size": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/helpers-tamagui": 1.27.3
     "@tamagui/label": 1.27.3
     "@tamagui/stacks": 1.27.3
@@ -5016,7 +5016,7 @@ __metadata:
   resolution: "@tamagui/get-button-sized@workspace:packages/get-button-sized"
   dependencies:
     "@tamagui/build": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/web": 1.27.3
     "@types/react": ^18.0.15
     react: ^18.2.0
@@ -5038,9 +5038,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/get-size@1.27.3, @tamagui/get-size@workspace:packages/get-size":
+"@tamagui/get-token@1.27.3, @tamagui/get-token@workspace:packages/get-size":
   version: 0.0.0-use.local
-  resolution: "@tamagui/get-size@workspace:packages/get-size"
+  resolution: "@tamagui/get-token@workspace:packages/get-size"
   dependencies:
     "@tamagui/build": 1.27.3
     "@tamagui/core": 1.27.3
@@ -5214,7 +5214,7 @@ __metadata:
     "@tamagui/build": 1.27.3
     "@tamagui/core": 1.27.3
     "@tamagui/font-size": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/helpers-tamagui": 1.27.3
     "@tamagui/text": 1.27.3
     react: ^18.2.0
@@ -5391,7 +5391,7 @@ __metadata:
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
     "@tamagui/floating": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/stacks": 1.27.3
     "@tamagui/use-controllable-state": 1.27.3
     react: ^18.2.0
@@ -5428,7 +5428,7 @@ __metadata:
     "@tamagui/compose-refs": 1.27.3
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/stacks": 1.27.3
     react: ^18.2.0
     react-native: ^0.71.7
@@ -5454,7 +5454,7 @@ __metadata:
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
     "@tamagui/focusable": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/label": 1.27.3
     "@tamagui/stacks": 1.27.3
     "@tamagui/use-controllable-state": 1.27.3
@@ -5841,7 +5841,7 @@ __metadata:
     "@tamagui/compose-refs": 1.27.3
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/helpers": 1.27.3
     "@tamagui/stacks": 1.27.3
     "@tamagui/use-controllable-state": 1.27.3
@@ -5966,7 +5966,7 @@ __metadata:
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
     "@tamagui/focusable": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/label": 1.27.3
     "@tamagui/stacks": 1.27.3
     "@tamagui/use-controllable-state": 1.27.3
@@ -6108,7 +6108,7 @@ __metadata:
     "@tamagui/create-context": 1.27.3
     "@tamagui/focusable": 1.27.3
     "@tamagui/font-size": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/group": 1.27.3
     "@tamagui/helpers-tamagui": 1.27.3
     "@tamagui/roving-focus": 1.27.3
@@ -6132,7 +6132,7 @@ __metadata:
     "@tamagui/core": 1.27.3
     "@tamagui/create-context": 1.27.3
     "@tamagui/floating": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/polyfill-dev": 1.27.3
     "@tamagui/popover": 1.27.3
     "@tamagui/popper": 1.27.3
@@ -22071,7 +22071,7 @@ __metadata:
     "@tamagui/form": 1.27.3
     "@tamagui/get-button-sized": 1.27.3
     "@tamagui/get-font-sized": 1.27.3
-    "@tamagui/get-size": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/helpers": 1.27.3
     "@tamagui/helpers-tamagui": 1.27.3
     "@tamagui/image": 1.27.3

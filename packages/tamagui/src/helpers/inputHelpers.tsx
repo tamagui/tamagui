@@ -1,7 +1,7 @@
 import { SizeVariantSpreadFunction, getVariableValue, isWeb } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { stepTokenUpOrDown } from '@tamagui/get-token'
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',

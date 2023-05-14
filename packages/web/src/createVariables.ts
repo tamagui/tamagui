@@ -46,8 +46,7 @@ export const createVariables = <A extends DeepTokenObject>(
     res[key] = isVariable(val) ? val : createVariable({ val, name, key: niceKey })
   }
 
-  // ordering for relative sizing for now just size/space
-  if (parentPath === 'size' || parentPath === 'space') {
+  if (parentPath !== 'color') {
     tokensKeysOrdered.set(res, Object.keys(tokens))
   }
 

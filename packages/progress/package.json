@@ -34,7 +34,7 @@
     "@tamagui/compose-refs": "1.27.3",
     "@tamagui/core": "1.27.3",
     "@tamagui/create-context": "1.27.3",
-    "@tamagui/get-size": "1.27.3",
+    "@tamagui/get-token": "1.27.3",
     "@tamagui/stacks": "1.27.3"
   },
   "peerDependencies": {

@@ -1,3 +1,8 @@
+import { getFontSize } from '@tamagui/font-size'
+import { getSpace } from '@tamagui/get-token'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
   FontSizeTokens,
   GetProps,
@@ -9,11 +14,7 @@ import {
   styled,
   useProps,
   withStaticProperties,
-} from '@tamagui/core'
-import { getFontSize } from '@tamagui/font-size'
-import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
-import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
+} from '@tamagui/web'
 import React, { FunctionComponent } from 'react'
 
 type ListItemIconProps = { color?: string; size?: number }

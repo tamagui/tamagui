@@ -6,7 +6,7 @@ import {
   styled,
   withStaticProperties,
 } from '@tamagui/core'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSpace } from '@tamagui/get-token'
 
 export const ButtonContext = createStyledContext<{
   size: SizeTokens
@@ -26,7 +26,7 @@ export const ButtonFrame = styled(Stack, {
       '...size': (name, { tokens }) => ({
         height: tokens.size[name],
         borderRadius: tokens.radius[name],
-        paddingHorizontal: stepTokenUpOrDown('space', tokens.space[name], -1),
+        paddingHorizontal: getSpace(tokens.space[name], -1),
       }),
     },
   } as const,

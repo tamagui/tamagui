@@ -14,7 +14,7 @@ import {
 import { SizeTokens, useEvent, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { stepTokenUpOrDown } from '@tamagui/get-token'
 import {
   PopoverAnchor,
   PopoverArrow,

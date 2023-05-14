@@ -182,7 +182,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined; /**
+     * The callback that fires when the state of the toggle group changes.
+     */
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -280,7 +282,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined; /**
+     * The callback that fires when the state of the toggle group changes.
+     */
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -378,7 +382,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined; /**
+     * The callback that fires when the state of the toggle group changes.
+     */
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -476,7 +482,9 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly size?: any;
 }>> & {
     axis?: "horizontal" | "vertical" | undefined;
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "horizontal" | "vertical" | undefined; /**
+     * The callback that fires when the state of the toggle group changes.
+     */
     scrollable?: boolean | undefined;
     showScrollIndicator?: boolean | undefined;
     disabled?: boolean | undefined;

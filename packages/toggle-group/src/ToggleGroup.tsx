@@ -1,7 +1,7 @@
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { stepTokenUpOrDown } from '@tamagui/get-token'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'

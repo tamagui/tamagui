@@ -24,7 +24,7 @@
     "@tamagui/create-context": "1.27.3",
     "@tamagui/focusable": "1.27.3",
     "@tamagui/font-size": "1.27.3",
-    "@tamagui/get-size": "1.27.3",
+    "@tamagui/get-token": "1.27.3",
     "@tamagui/helpers-tamagui": "1.27.3",
     "@tamagui/label": "1.27.3",
     "@tamagui/stacks": "1.27.3",
