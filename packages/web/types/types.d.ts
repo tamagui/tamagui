@@ -4,7 +4,7 @@ import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLA
 import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
-import { providerProvider } from './helpers/createVariantProvider';
+import { StyledContext } from './helpers/createStyledContext';
 import type { FontLanguageProps } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
@@ -598,7 +598,7 @@ export type StaticConfigPublic = {
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
     variants?: GenericVariantDefinitions;
-    provider?: providerProvider;
+    context?: StyledContext;
     /**
      * Used for applying sub theme style
      */

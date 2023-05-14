@@ -1,13 +1,20 @@
-import { FontSizeTokens, Stack, Text, createVariantProvider, styled, withStaticProperties, } from '@tamagui/core'
+import {
+  FontSizeTokens,
+  Stack,
+  Text,
+  createStyledContext,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { stepTokenUpOrDown } from '@tamagui/get-size'
 
-export const ButtonProvider = createVariantProvider({
+export const ButtonContext = createStyledContext({
   size: '$4' as FontSizeTokens,
 })
 
 export const ButtonFrame = styled(Stack, {
   name: 'Button',
-  provider: ButtonProvider,
+  context: ButtonContext,
   backgroundColor: '$background',
   alignItems: 'center',
   flexDirection: 'row',
@@ -17,7 +24,7 @@ export const ButtonFrame = styled(Stack, {
       '...size': (name, { tokens }) => ({
         height: tokens.size[name],
         borderRadius: tokens.radius[name],
-        paddingHorizontal: stepTokenUpOrDown('space', name, -1),
+        paddingHorizontal: stepTokenUpOrDown('space', tokens.space[name], -1),
       }),
     },
   } as const,
@@ -25,7 +32,7 @@ export const ButtonFrame = styled(Stack, {
 
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
-  provider: ButtonProvider,
+  context: ButtonContext,
   color: '$color',
 
   variants: {
@@ -38,7 +45,7 @@ export const ButtonText = styled(Text, {
 })
 
 export const Button = withStaticProperties(ButtonFrame, {
-  Provider: ButtonProvider,
+  Provider: ButtonContext.Provider,
   Text: ButtonText,
 })
 
@@ -84,6 +91,8 @@ export const CustomButtonDemo = () => {
  *      .provide_Button-size-10 .is_Button { height: var(--size-10); border-radius: var(--space-8); }
  *      .provide_Button-size-9 .is_Button { height: var(--size-9); border-radius: var(--space-7); }
  *   4. this is ok to be non-atomic because its provided in context so anything set directly on button will override it
- *       - -h_1232131 is less specific would need :root -h_asdasd or something on all generated selectors
+ *       - to be less specific somehow may need either :root on every other selector
+ *       - or @layer
+ *       - or maybe :where() but then its the same specificity right
  *
  */

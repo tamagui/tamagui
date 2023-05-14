@@ -6,7 +6,7 @@
 
 
 ```tsx
-const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
+const ButtonVariant = createStyledContext<{ size: SizeTokens }>()
 
 const ButtonFrame = styled(Stack, {
   provider: ButtonVariant,
@@ -284,8 +284,8 @@ Ali:
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
   - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
     - we could have a generic ComponentContext internally in createComponent
-    - we can export a createVariantProvider()
-    - `const CardVariants = createVariantProvider<{ size: number }>()`
+    - we can export a createStyledContext()
+    - `const CardVariants = createStyledContext<{ size: number }>()`
     - then in Card or any parent you can do `<CardVariants size={} />`
     - finally, in `styled({ provider: CardVariants })`
 

@@ -23,9 +23,8 @@ import type {
 
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
-import { providerProvider } from './helpers/createVariantProvider'
+import { StyledContext } from './helpers/createStyledContext'
 import type { FontLanguageProps } from './views/FontLanguage.types'
-import { Stack } from './views/Stack'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -1076,7 +1075,7 @@ type StaticConfigBase = StaticConfigPublic & {
 
   variants?: GenericVariantDefinitions
 
-  provider?: providerProvider
+  context?: StyledContext
 
   /**
    * Used for applying sub theme style

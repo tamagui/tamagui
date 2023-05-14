@@ -1,7 +1,7 @@
 import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent'
-import { providerProvider } from './helpers/createVariantProvider'
+import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/extendStaticConfig'
 import { ReactNativeStaticConfigs } from './setupReactNative'
 import type {
@@ -52,7 +52,7 @@ export function styled<
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
-    provider?: providerProvider
+    context?: StyledContext
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>
@@ -98,7 +98,7 @@ export function styled<
         name,
         defaultVariants,
         acceptsClassName: acceptsClassNameProp,
-        provider,
+        context,
         ...defaultProps
       } = options
 
@@ -147,7 +147,7 @@ export function styled<
         isReactNative,
         isText,
         acceptsClassName,
-        provider,
+        context,
         ...nativeConf,
       }
 

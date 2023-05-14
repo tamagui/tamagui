@@ -174,12 +174,13 @@ export function createComponent<
 
     // set variants through context
     let provided: Object | undefined
-    if (staticConfig.provider) {
-      const providerContext = useContext(staticConfig.provider.Context)
-      for (const key in staticConfig.provider.variants) {
+    const { context } = staticConfig
+    if (context) {
+      const contextValue = useContext(context as any)
+      for (const key in context.variants) {
         if (!(key in props)) {
-          if (providerContext) {
-            props[key] = providerContext[key]
+          if (contextValue) {
+            props[key] = contextValue[key]
           }
         } else {
           provided ||= {}
@@ -840,7 +841,7 @@ export function createComponent<
     }
 
     if (provided) {
-      const Provider = staticConfig.provider!
+      const Provider = staticConfig.context!.Provider!
       content = <Provider {...provided}>{content}</Provider>
     }
 
