@@ -1,6 +1,6 @@
-import { GetProps, SizeTokens } from '@tamagui/core';
+import { GetProps, NativeValue, SizeTokens } from '@tamagui/core';
 import * as React from 'react';
-import { View } from 'react-native';
+import { SwitchProps as NativeSwitchProps, View } from 'react-native';
 export declare const createSwitchScope: import("@tamagui/create-context").CreateScope;
 export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
@@ -168,6 +168,8 @@ export type SwitchProps = SwitchButtonProps & {
     checked?: boolean;
     defaultChecked?: boolean;
     required?: boolean;
+    native?: NativeValue<'mobile' | 'ios' | 'android'>;
+    nativeProps?: NativeSwitchProps;
     onCheckedChange?(checked: boolean): void;
 };
 export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -195,6 +197,8 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
     checked?: boolean | undefined;
     defaultChecked?: boolean | undefined;
     required?: boolean | undefined;
+    native?: NativeValue<"mobile" | "ios" | "android"> | undefined;
+    nativeProps?: NativeSwitchProps | undefined;
     onCheckedChange?(checked: boolean): void;
 } & React.RefAttributes<View | HTMLButtonElement>> & {
     Thumb: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
