@@ -140,4 +140,55 @@ export default (props: ButtonProps) => (
 )
 ```
 
-While it may not seem like a lot, that's because Tamagui is doing a lot of amazing things for you behind the scenes.
+While it may not seem like much, Tamagui is doing a lot behind the scenes to make this possible. Let's break it down.
+
+If we had a design system set up with a series of `size` values from `$xs` to `$xxl`, we could build out a standard sized button like so:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  backgroundColor: '$background',
+  alignItems: 'center',
+  flexDirection: 'row',
+  height: '$md',
+  borderRadius: '$md',
+  paddingHorizontal: '$sm',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+})
+```
+
+This gets us a simple rounded rectangle that uses the `md` tokens from your design system and the `background` from your theme.
+
+We set the `name` property to `"Button"`, which tells Tamagui to check for a sub-theme `Button` that extends the current one. So, if we have a theme `light` and we have a sub-theme `light_Button`, Tamagui find the theme `light_Button` and apply it to this component, getting the `background` value from that theme.
+
+Finally we set the `hoverStyle` and `pressStyle` so our button frame looks nice when hovered or pressed.
+
+Next we'll want a Text component to go inside:
+
+```tsx
+import { Text, styled } from '@tamagui/core'
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  color: '$color',
+  fontFamily: '$body',
+  fontSize: '$md',
+  lineHeight: '$md',
+  userSelect: 'none',
+})
+```
+
+This is pretty similar to the frame, just with its own name and with a `color` set rather than a `background`. Button text usually isn't selectable so we set `userSelect` to none.
+
+The hard part comes when we want our button to be able to be sizable. Let's look at how we'd solve this without the new `createStyledContext` helper, so we can understand why it exists.
+
+Buttons
