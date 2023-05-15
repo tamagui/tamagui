@@ -37,7 +37,7 @@ export const ButtonFrame = styled(Stack, {
         return {
           height: tokens.size[name],
           borderRadius: tokens.radius[name],
-          gap: getSpace(name).val * 0.2,
+          gap: tokens.space[name].val * 0.2,
           paddingHorizontal: getSpace(name, {
             shift: -1,
           }),
