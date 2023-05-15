@@ -283,7 +283,9 @@ export const Checkbox = withStaticProperties(
       })
 
       const adjustedSize = getVariableValue(
-        stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
+        getSize(propsActive.size, {
+          shift: sizeAdjust,
+        })
       )
       const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
 
