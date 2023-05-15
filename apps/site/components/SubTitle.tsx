@@ -29,17 +29,17 @@ export const SubTitle = ({ children, ...props }) => {
   return (
     <H3
       pos="relative"
+      theme="alt2"
       width="max-content"
       fontFamily="$body"
       size="$8"
       lh="$7"
-      ls={-0.25}
-      color="$gray9"
+      ls={-0.5}
       fontWeight="300"
       tag="p"
       mb="$3"
       mt="$0"
-      maxWidth="80%"
+      maxWidth="95%"
       $sm={{
         maxWidth: '100%',
         size: '$6',

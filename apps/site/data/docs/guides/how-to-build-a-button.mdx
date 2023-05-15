@@ -4,11 +4,13 @@ description: Learn how to create a custom button, or any other type of component
 ---
 
 <IntroParagraph>
-  You'd be surprised how complex making a button is in any frontend framework if you
-  really want it to cover all the possibilities expected within a typical app.
+  Deceptive in its simplicity, making a robust and flexible button in any frontend
+  framework is an incredibly tricky task.
 </IntroParagraph>
 
-Themes, sizing, spacing, icons, and multiple icons can make it extraordinarily complex. Luckily, Tamagui makes it easy. Or at least it as of version `1.28`.
+Once you accoun for theming, sizing, spacing, icons (sometimes multiple), and of course allowing or limiting customization from the users of it, buttons get extraordinarily complex even in common cases.
+
+Luckily, Tamagui makes it easy. Or at least it as of version `1.28` it does.
 
 Before that, things were messy, but for good reason - buttons are surprisingly complicated when you get down to it (a few clueless backend developers will rage-quit here, thankfully).
 
@@ -110,11 +112,11 @@ export const Button = withStaticProperties(ButtonFrame, {
   Text: ButtonText,
   Icon: ButtonIcon,
 })
+```
 
-/**
- * Usage examples:
- */
+Now you may use your button like so:
 
+```tsx
 export default (props: ButtonProps) => (
   <Button {...props}>
     <Button.Icon>
@@ -130,9 +132,7 @@ export default (props: ButtonProps) => (
     <Button.Icon>
       <Moon />
     </Button.Icon>
-    <Button.Text>
-      hi
-    </Button.Text>
+    <Button.Text>hi</Button.Text>
     <Button.Icon>
       <Moon />
     </Button.Icon>
@@ -140,9 +140,19 @@ export default (props: ButtonProps) => (
 )
 ```
 
-While it may not seem like much, Tamagui is doing a lot behind the scenes to make this possible. Let's break it down.
+This may only be a hundred or so lines of code, but there's a lot to take in, and there's a lot going on behind the scenes to make this possible.
 
-If we had a design system set up with a series of `size` values from `$xs` to `$xxl`, we could build out a standard sized button like so:
+### From the beginning
+
+This guide will build up to this complete example from the start, which should help explain why each of the utilites is used, and how they work.
+
+We start with the assumption that we have a design system set up with a series of `size` values from `$xs` to `$xxl`, as well as a few themes with consistent keys, like so:
+
+```tsx
+
+```
+
+With that in mind, we can create the outer frame of the button fairly simply, like so:
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'

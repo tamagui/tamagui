@@ -5,7 +5,6 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  GetProps,
   H1,
   H2,
   H3,
@@ -97,7 +96,6 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        isCollapsible={hero !== undefined || collapsible !== undefined}
         isScrollable={scrollable !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
