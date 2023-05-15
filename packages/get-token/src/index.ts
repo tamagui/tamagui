@@ -19,16 +19,27 @@ export const getSpace = (space: Variable, options?: GetTokenOptions) => {
   return getTokenRelative('space', space, options)
 }
 
-const cache: Record<string, Variable[]> = {}
+const cacheVariables: Record<string, Variable[]> = {}
+const cacheKeys: Record<string, string[]> = {}
 
 /** @deprecated use getSize, getSpace, or getTokenRelative instead */
 export const stepTokenUpOrDown = (
   type: 'size' | 'space' | 'zIndex' | 'radius',
-  token: Variable,
+  token: Variable | string,
   options: GetTokenOptions = defaultOptions
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type]
-  const tokensOrdered = (cache[type] ??= Object.values(tokens) as any)
+
+  if (!(type in cacheVariables)) {
+    cacheKeys[type] = []
+    cacheVariables[type] = []
+    for (const key in tokens) {
+      cacheKeys[type].push(key[0] === '$' ? key : `$${key}`)
+      cacheVariables[type].push(tokens[key] as any)
+    }
+  }
+
+  const tokensOrdered = typeof token === 'string' ? cacheKeys[type] : cacheVariables[type]
 
   const min = options.bounds?.[0] ?? 0
   const max = options.bounds?.[1] ?? tokensOrdered.length - 1

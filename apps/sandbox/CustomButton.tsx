@@ -8,10 +8,8 @@ import {
 } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
 
-export const ButtonContext = createStyledContext<{
-  size: SizeTokens
-}>({
-  size: '$4',
+export const ButtonContext = createStyledContext({
+  size: '$4' as SizeTokens,
 })
 
 export const ButtonFrame = styled(Stack, {
