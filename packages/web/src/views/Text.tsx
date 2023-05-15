@@ -17,6 +17,7 @@ export const Text = createComponent<TextProps, React.Component<TextProps>, TextP
     isText: true,
 
     defaultProps: {
+      color: '$color',
       // @ts-ignore
       display: 'flex',
       fontFamily: 'System',
