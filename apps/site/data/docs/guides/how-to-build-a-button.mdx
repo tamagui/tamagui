@@ -1,0 +1,143 @@
+---
+title: How to Build a Button
+description: Learn how to create a custom button, or any other type of component that uses a composable component API.
+---
+
+<IntroParagraph>
+  You'd be surprised how complex making a button is in any frontend framework if you
+  really want it to cover all the possibilities expected within a typical app.
+</IntroParagraph>
+
+Themes, sizing, spacing, icons, and multiple icons can make it extraordinarily complex. Luckily, Tamagui makes it easy. Or at least it as of version `1.28`.
+
+Before that, things were messy, but for good reason - buttons are surprisingly complicated when you get down to it (a few clueless backend developers will rage-quit here, thankfully).
+
+Let's get right into it. You want some buttons that can do all of this:
+
+<HeroContainer>
+  <ButtonDemo />
+</HeroContainer>
+
+### Complete example
+
+Because we hate being forced to read a whole guide before getting to the point, here's your final `Button`, ready to copy and paste right into your app. It gives you a beautiful [Radix-like](https://www.radix-ui.com/) "Composable Component" API that gives you complete control over styling:
+
+```tsx
+import { getSize, getSpace } from '@tamagui/get-token'
+import { Moon } from '@tamagui/lucide-icons'
+import {
+  GetProps,
+  SizeTokens,
+  Stack,
+  Text,
+  createStyledContext,
+  styled,
+  useTheme,
+  withStaticProperties,
+} from '@tamagui/web'
+import { cloneElement, useContext } from 'react'
+
+export const ButtonContext = createStyledContext({
+  size: '$4' as SizeTokens,
+})
+
+export const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  context: ButtonContext,
+  backgroundColor: '$background',
+  alignItems: 'center',
+  flexDirection: 'row',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: tokens.space[name].val * 0.2,
+          paddingHorizontal: getSpace(name, {
+            shift: -1,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+type ButtonProps = GetProps<typeof ButtonFrame>
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  context: ButtonContext,
+  color: '$color',
+  userSelect: 'none',
+
+  variants: {
+    size: {
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+      }),
+    },
+  } as const,
+})
+
+const ButtonIcon = (props: { children: any }) => {
+  const { size } = useContext(ButtonContext)
+  const smaller = getSize(size, {
+    shift: -2,
+  })
+  const theme = useTheme()
+  return cloneElement(props.children, {
+    size: smaller.val * 0.5,
+    color: theme.color.get(),
+  })
+}
+
+export const Button = withStaticProperties(ButtonFrame, {
+  Props: ButtonContext.Provider,
+  Text: ButtonText,
+  Icon: ButtonIcon,
+})
+
+/**
+ * Usage examples:
+ */
+
+export default (props: ButtonProps) => (
+  <Button {...props}>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+    <Button.Text>hi</Button.Text>
+  </Button>
+)
+
+// multiple icons:
+export default (props: ButtonProps) => (
+  <Button {...props}>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+    <Button.Text>
+      hi
+    </Button.Text>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+  </Button>
+)
+```
+
+While it may not seem like a lot, that's because Tamagui is doing a lot of amazing things for you behind the scenes.

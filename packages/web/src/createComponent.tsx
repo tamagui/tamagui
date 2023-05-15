@@ -121,11 +121,11 @@ export function createComponent<
   Ref = TamaguiElement,
   BaseProps = never
 >(
-  configIn: Partial<StaticConfig> | StaticConfigParsed,
+  staticConfigIn: Partial<StaticConfig> | StaticConfigParsed,
   ParentComponent?: StylableComponent
 ) {
   const staticConfig = (() => {
-    const next = extendStaticConfig(configIn, ParentComponent)
+    const next = extendStaticConfig(staticConfigIn, ParentComponent)
 
     if ('parsed' in next) {
       return next
@@ -941,7 +941,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (configIn.memo) {
+  if (staticConfigIn.memo) {
     res = memo(res) as any
   }
 

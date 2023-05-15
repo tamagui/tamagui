@@ -30,12 +30,14 @@ export const SubTitle = ({ children, ...props }) => {
     <H3
       pos="relative"
       width="max-content"
-      size="$8"
-      color="$gray9"
       fontFamily="$body"
+      size="$8"
+      lh="$7"
+      ls={-0.25}
+      color="$gray9"
       fontWeight="300"
       tag="p"
-      mb="$2"
+      mb="$3"
       mt="$0"
       maxWidth="80%"
       $sm={{

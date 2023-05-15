@@ -1,11 +1,8 @@
 process.env.TAMAGUI_TARGET = 'web'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui } from '@tamagui/core'
-import { render } from '@testing-library/react'
+import { createTamagui } from '@tamagui/core'
 import { describe, expect, test } from 'vitest'
-
-import { Button } from '.'
 
 const conf = createTamagui(getDefaultTamaguiConfig())
 

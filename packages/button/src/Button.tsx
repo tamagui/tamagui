@@ -150,11 +150,14 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable(function Button(props, ref) {
+const ButtonComponent = ButtonFrame.styleable<ButtonProps>(function Button(props, ref) {
   const { props: buttonProps } = useButton(props)
   return <ButtonFrame {...buttonProps} ref={ref} />
 })
 
+/**
+ * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
+ */
 const buttonStaticConfig = {
   inlineProps: new Set([
     // text props go here (can't really optimize them, but we never fully extract button anyway)
@@ -175,6 +178,9 @@ const Button = withStaticProperties(ButtonComponent, {
   Icon: ButtonIcon,
 })
 
+/**
+ * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
+ */
 function useButton(
   propsIn: ButtonProps,
   { Text = ButtonText }: { Text: any } = { Text: ButtonText }

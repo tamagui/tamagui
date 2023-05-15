@@ -282,7 +282,7 @@ export interface TamaguiConfig
     TamaguiCustomConfig {}
 
 type OnlyAllowShorthandsSetting = boolean | undefined
-type DefaultFontSetting = string | void
+type DefaultFontSetting = string | undefined
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
