@@ -788,24 +788,11 @@ export function createComponent<
       }
     }
 
-    content = createElement(
-      elementType,
-      viewProps,
-      children && layout
-        ? React.Children.map(content, (child, index) => {
-            if (child) {
-              if (typeof child === 'string') {
-                return child
-              }
-              return React.cloneElement(child, {
-                ref: (el) => (childrenRefs.current[index] = el),
-              })
-            } else {
-              return null
-            }
-          })
-        : content
-    )
+    if (layout && children && animationsConfig.populateChildrenRefs) {
+      content = animationsConfig.populateChildrenRefs(content, childrenRefs)
+    }
+
+    content = createElement(elementType, viewProps, content)
 
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp

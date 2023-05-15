@@ -748,6 +748,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
         value: V;
         hostRef: RefObject<HTMLElement | View>;
     }, onValue: (current: number) => void) => void;
+    populateChildrenRefs: (children: any, refs: any) => any;
     animations: A;
     View?: any;
     Text?: any;

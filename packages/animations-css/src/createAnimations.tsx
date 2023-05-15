@@ -8,7 +8,7 @@ import {
   useIsomorphicLayoutEffect,
   useSafeRef,
 } from '@tamagui/web'
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -140,6 +140,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [JSON.stringify(style)])
     },
+    populateChildrenRefs: populateChildrenRefs,
   }
 }
 
@@ -165,4 +166,20 @@ const invert = (el, from, to) => {
   el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
 
   return transform
+}
+
+export function populateChildrenRefs(children: any, refs: any) {
+  if (!children) return children
+  return React.Children.map(children, (child, index) => {
+    if (child) {
+      if (typeof child === 'string') {
+        return child
+      }
+      return React.cloneElement(child, {
+        ref: (el) => (refs.current[index] = el),
+      })
+    } else {
+      return null
+    }
+  })
 }
