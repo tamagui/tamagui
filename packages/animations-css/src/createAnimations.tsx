@@ -1,4 +1,4 @@
-import { animate } from '@tamagui/cubic-bezier-animator'
+import { animate, easingStringToCubicBezier } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
 import {
   AnimationDriver,
@@ -117,7 +117,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
                 }
               })
             },
-            easingFunction: func,
+            cubicBezier: easingStringToCubicBezier(func),
           })
         }
         initialPositionRef.current = boundingBox
