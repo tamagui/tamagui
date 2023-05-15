@@ -6,7 +6,7 @@ export type StyledContext<Props extends Object = any> = Omit<
 > & {
   variants: Object
   Provider: React.ProviderExoticComponent<
-    Props & {
+    Partial<Props> & {
       children?: React.ReactNode
     }
   >

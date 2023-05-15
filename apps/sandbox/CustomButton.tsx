@@ -1,12 +1,16 @@
+import { getSize, getSpace } from '@tamagui/get-token'
+import { Moon } from '@tamagui/lucide-icons'
 import {
+  GetProps,
   SizeTokens,
   Stack,
   Text,
   createStyledContext,
   styled,
+  useTheme,
   withStaticProperties,
-} from '@tamagui/core'
-import { getSpace } from '@tamagui/get-token'
+} from '@tamagui/web'
+import { cloneElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
   size: '$4' as SizeTokens,
@@ -19,23 +23,41 @@ export const ButtonFrame = styled(Stack, {
   alignItems: 'center',
   flexDirection: 'row',
 
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+
   variants: {
     size: {
-      '...size': (name, { tokens }) => ({
-        height: tokens.size[name],
-        borderRadius: tokens.radius[name],
-        paddingHorizontal: getSpace(tokens.space[name], {
-          shift: -1,
-        }),
-      }),
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: getSpace(name).val * 0.2,
+          paddingHorizontal: getSpace(name, {
+            shift: -1,
+          }),
+        }
+      },
     },
   } as const,
+
+  defaultVariants: {
+    size: '$4',
+  },
 })
+
+type ButtonProps = GetProps<typeof ButtonFrame>
 
 export const ButtonText = styled(Text, {
   name: 'ButtonText',
   context: ButtonContext,
   color: '$color',
+  userSelect: 'none',
 
   variants: {
     size: {
@@ -46,17 +68,33 @@ export const ButtonText = styled(Text, {
   } as const,
 })
 
+const ButtonIcon = (props: { children: any }) => {
+  const { size } = useContext(ButtonContext)
+  const smaller = getSize(size, {
+    shift: -2,
+  })
+  const theme = useTheme()
+  return cloneElement(props.children, {
+    size: smaller.val * 0.5,
+    color: theme.color.get(),
+  })
+}
+
 export const Button = withStaticProperties(ButtonFrame, {
   Props: ButtonContext.Provider,
   Text: ButtonText,
+  Icon: ButtonIcon,
 })
 
 export const CustomButtonDemo = () => {
   return (
     <>
-      <Button size="$10">
-        <Button.Text>hi</Button.Text>
-      </Button>
+      <CustomButton size="$2" />
+      <CustomButton size="$3" />
+      <CustomButton />
+      <CustomButton size="$5" />
+      <CustomButton size="$6" />
+      <CustomButton size="$7" />
 
       <Button size="$5">
         <Button.Text>hi</Button.Text>
@@ -80,6 +118,15 @@ export const CustomButtonDemo = () => {
     </>
   )
 }
+
+const CustomButton = (props: ButtonProps) => (
+  <Button {...props}>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+    <Button.Text>hi</Button.Text>
+  </Button>
+)
 
 /**
  * Button.Provider + Flattening ?
