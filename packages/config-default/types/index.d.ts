@@ -277,5 +277,5 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
             1: number;
         };
     };
-}, boolean | undefined>;
+}, boolean | undefined, string | undefined>;
 //# sourceMappingURL=index.d.ts.map
