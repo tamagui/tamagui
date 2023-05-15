@@ -5,6 +5,7 @@ import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
   ButtonNestingContext,
+  ColorStyleProp,
   GetProps,
   SizeTokens,
   ThemeableProps,
@@ -20,7 +21,7 @@ import { FunctionComponent, useContext } from 'react'
 
 export const ButtonContext = createStyledContext<{
   size: SizeTokens
-  color?: any
+  color?: ColorStyleProp
 }>({
   size: '$true',
 })
