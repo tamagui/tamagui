@@ -5038,12 +5038,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/get-token@1.27.3, @tamagui/get-token@workspace:packages/get-size":
+"@tamagui/get-token@1.27.3, @tamagui/get-token@workspace:packages/get-token":
   version: 0.0.0-use.local
-  resolution: "@tamagui/get-token@workspace:packages/get-size"
+  resolution: "@tamagui/get-token@workspace:packages/get-token"
   dependencies:
     "@tamagui/build": 1.27.3
-    "@tamagui/core": 1.27.3
+    "@tamagui/web": 1.27.3
     react: ^18.2.0
     react-native: ^0.71.7
   peerDependencies:
@@ -5212,11 +5212,11 @@ __metadata:
   resolution: "@tamagui/list-item@workspace:packages/list-item"
   dependencies:
     "@tamagui/build": 1.27.3
-    "@tamagui/core": 1.27.3
     "@tamagui/font-size": 1.27.3
     "@tamagui/get-token": 1.27.3
     "@tamagui/helpers-tamagui": 1.27.3
     "@tamagui/text": 1.27.3
+    "@tamagui/web": 1.27.3
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -5635,6 +5635,7 @@ __metadata:
     "@tamagui/create-context": 1.27.3
     "@tamagui/dismissable": 1.27.3
     "@tamagui/focus-scope": 1.27.3
+    "@tamagui/get-token": 1.27.3
     "@tamagui/list-item": 1.27.3
     "@tamagui/portal": 1.27.3
     "@tamagui/separator": 1.27.3

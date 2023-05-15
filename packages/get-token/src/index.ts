@@ -1,5 +1,7 @@
-import type { Variable } from '@tamagui/web'
+import { Variable, isVariable } from '@tamagui/web'
 import { getTokens } from '@tamagui/web'
+
+type GetTokenBase = Variable | string
 
 type GetTokenOptions = {
   shift?: number
@@ -11,11 +13,11 @@ const defaultOptions: GetTokenOptions = {
   bounds: [0],
 }
 
-export const getSize = (size: Variable, options?: GetTokenOptions) => {
+export const getSize = (size: GetTokenBase, options?: GetTokenOptions) => {
   return getTokenRelative('size', size, options)
 }
 
-export const getSpace = (space: Variable, options?: GetTokenOptions) => {
+export const getSpace = (space: GetTokenBase, options?: GetTokenOptions) => {
   return getTokenRelative('space', space, options)
 }
 
@@ -25,7 +27,7 @@ const cacheKeys: Record<string, string[]> = {}
 /** @deprecated use getSize, getSpace, or getTokenRelative instead */
 export const stepTokenUpOrDown = (
   type: 'size' | 'space' | 'zIndex' | 'radius',
-  token: Variable | string,
+  current: GetTokenBase,
   options: GetTokenOptions = defaultOptions
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type]
@@ -39,15 +41,18 @@ export const stepTokenUpOrDown = (
     }
   }
 
-  const tokensOrdered = typeof token === 'string' ? cacheKeys[type] : cacheVariables[type]
+  const tokensOrdered =
+    typeof current === 'string' ? cacheKeys[type] : cacheVariables[type]
 
   const min = options.bounds?.[0] ?? 0
   const max = options.bounds?.[1] ?? tokensOrdered.length - 1
-  const currentIndex = tokensOrdered.indexOf(token)
+  const currentIndex = tokensOrdered.indexOf(current as any)
+
   let shift = options.shift || 0
-  if (token.name === '$true') {
+  if (current === '$true' || (isVariable(current) && current.name === 'true')) {
     shift = !shift ? 0 : shift > 0 ? 1 : -1
   }
+
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const key = tokensOrdered[index]
   // @ts-ignore
