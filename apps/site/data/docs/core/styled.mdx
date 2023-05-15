@@ -84,8 +84,8 @@ export const Circle = styled(Stack, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains the ability to infer
-  generics as const .
+  Please use `as const` for the variants definition until Typescript gains the ability to
+  infer generics as const .
 </Notice>
 
 We can use these like so:
@@ -96,7 +96,7 @@ We can use these like so:
 
 To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
 
-## Compatibility
+## Using on the web
 
 The `styled()` function supports Tamagui views, React Native views, and any other React component that accepts a `style` prop. If you wrap an external component that Tamagui doesn't recognize, Tamagui will assume it only supports the `style` prop and not optimize it.
 
@@ -110,3 +110,46 @@ export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
 })
 ```
+
+### styleable()
+
+<Notice>
+  This is an advanced pattern that is only needed if you are building a design system that
+  has complex components.
+</Notice>
+
+Any `styled()` component will have a helper function on it called `.styleable()`.
+
+This advanced usage is necessary if you are doing a pattern like the following:
+
+```tsx
+const StyledText = styled(Text)
+
+const HigherOrderStyledText = (props) => <StyledText />
+
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // variants will merge incorrectly
+  }
+})
+```
+
+So you must add a `.styleable()` around your `HigherOrderStyledText`. You'll also want to forward the ref, which happens automatically with styleable:
+
+```tsx
+const StyledText = styled(Text)
+
+const HigherOrderStyledText = StyledText.styleable((props, ref) =>
+  <StyledText ref={ref} />
+)
+
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // variants will merge incorrectly
+  }
+})
+```
+
+Note that theme will automatically now happen above this `HigherOrderStyledText` so it's available if you use `useTheme`.
+
+You also must always return only a single `StyledText` (or null) from this component.

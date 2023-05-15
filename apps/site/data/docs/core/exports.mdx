@@ -48,38 +48,6 @@ type isTamaguiElement (child: any; name?: string) => boolean
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
 
-### TamaguiComponent.styleable
-
-Returned by any styled components, is necessary to use if you are going to use the following pattern (which would break pseudo styles and variants):
-
-```tsx
-import { Stack, styled } from '@tamagui/core'
-
-const MyComponent = (props) => {
-  return <Stack {...props} />
-}
-
-const MyStyledComponent = styled(MyComponent, {
-  // ...
-})
-```
-
-You _must_ wrap `MyComponent` with `Stack.styleable` instead:
-
-```tsx
-import { Stack, styled } from '@tamagui/core'
-
-const MyComponent = Stack.styleable((props, ref) => {
-  return <Stack ref={ref} {...props} />
-})
-
-const MyStyledComponent = styled(MyComponent, {
-  // ...
-})
-```
-
-Note that `ref` gets forwarded automatically and theme will automatically now happen above this MyComponent. You also must always return only `Stack` from this component (or null), as Tamagui will manage forwarding variants and other custom Tamagui style props forward through.
-
 ### getTokens
 
 ```tsx

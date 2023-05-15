@@ -1,16 +1,14 @@
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { ColorProp, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import {
   ButtonNestingContext,
   GetProps,
   SizeTokens,
-  TamaguiElement,
   ThemeableProps,
+  createStyledContext,
   getVariableValue,
   isRSC,
   spacedChildren,
@@ -18,14 +16,14 @@ import {
   useProps,
   withStaticProperties,
 } from '@tamagui/web'
-import {
-  FunctionComponent,
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { FunctionComponent, useContext } from 'react'
+
+export const ButtonContext = createStyledContext<{
+  size: SizeTokens
+  color?: any
+}>({
+  size: '$true',
+})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -66,6 +64,7 @@ const BUTTON_NAME = 'Button'
 const ButtonFrame = styled(ThemeableStack, {
   name: BUTTON_NAME,
   tag: 'button',
+  context: ButtonContext,
   focusable: true,
 
   variants: {
@@ -119,9 +118,9 @@ const ButtonFrame = styled(ThemeableStack, {
   },
 })
 
-const BUTTON_TEXT_NAME = 'ButtonText'
-const ButtonTextFrame = styled(SizableText, {
-  name: BUTTON_TEXT_NAME,
+const ButtonText = styled(SizableText, {
+  name: 'ButtonText',
+  context: ButtonContext,
 
   variants: {
     unstyled: {
@@ -142,80 +141,17 @@ const ButtonTextFrame = styled(SizableText, {
   },
 })
 
-type ScopedProps<P> = P & { __scopeButton?: Scope }
-const [createButtonContext, createButtonScope] = createContextScope('Button')
-
-type ButtonContextValue = {
-  size: SizeTokens
-  color: ColorProp
-
-  // used to keep backward compat with the new Button.Text api
-  hasTextComponent: boolean
-  registerButtonText: () => () => void
-}
-
-const [ButtonProvider, useButtonContext] =
-  createButtonContext<ButtonContextValue>('Button')
-
-const ButtonTextComponent = ButtonTextFrame.extractable(
-  forwardRef<TamaguiElement, ScopedProps<GetProps<typeof ButtonTextFrame>>>(
-    (props, ref) => {
-      const context = useButtonContext(BUTTON_TEXT_NAME, props.__scopeButton)
-
-      useEffect(() => {
-        const unregister = context.registerButtonText()
-        return () => unregister()
-      }, [context.registerButtonText])
-
-      return <ButtonTextFrame size={props.size ?? context.size} {...props} ref={ref} />
-    }
-  )
-)
-
-const BUTTON_ICON_NAME = 'ButtonIcon'
-
-const ButtonIcon = (
-  props: ScopedProps<{
-    children: React.ReactNode
-    scaleIcon?: number
-  }>
-) => {
+const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
-  const context = useButtonContext(BUTTON_ICON_NAME, props.__scopeButton)
-
-  const size = context.size
-  const color = context.color
-
+  const { size, color } = useContext(ButtonContext)
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ScopedProps<ButtonProps>>(function Button(
-  props,
-  ref
-) {
+const ButtonComponent = ButtonFrame.styleable(function Button(props, ref) {
   const { props: buttonProps } = useButton(props)
-  const [buttonTextCount, setButtonTextCount] = useState(0)
-
-  const registerButtonText = useCallback(() => {
-    setButtonTextCount((prev) => prev + 1)
-    return () => setButtonTextCount((prev) => prev - 1)
-  }, [setButtonTextCount])
-
-  const hasTextComponent = buttonTextCount > 0
-
-  return (
-    <ButtonProvider
-      scope={props.__scopeButton}
-      color={props.color}
-      hasTextComponent={hasTextComponent}
-      size={props.size ?? '$true'}
-      registerButtonText={registerButtonText}
-    >
-      <ButtonFrame {...(hasTextComponent ? props : buttonProps)} ref={ref} />
-    </ButtonProvider>
-  )
+  return <ButtonFrame {...buttonProps} ref={ref} />
 })
 
 const buttonStaticConfig = {
@@ -234,13 +170,13 @@ const buttonStaticConfig = {
 }
 
 const Button = withStaticProperties(ButtonComponent, {
-  Text: ButtonTextComponent,
+  Text: ButtonText,
   Icon: ButtonIcon,
 })
 
 function useButton(
   propsIn: ButtonProps,
-  { Text = ButtonTextFrame }: { Text: any } = { Text: ButtonTextFrame }
+  { Text = ButtonText }: { Text: any } = { Text: ButtonText }
 ) {
   // careful not to desctructure and re-order props, order is important
   const {
@@ -279,12 +215,13 @@ function useButton(
   const contents = wrapChildrenInText(
     Text,
     propsActive,
-    Text === ButtonTextFrame && hasUnstyled
+    Text === ButtonText && hasUnstyled
       ? {
           unstyled: propsIn.unstyled,
         }
       : undefined
   )
+
   const inner = spacedChildren({
     // a bit arbitrary but scaling to font size is necessary so long as button does
     space: spaceSize,
@@ -333,14 +270,13 @@ function useButton(
 }
 
 export {
-  createButtonScope,
   Button,
+  ButtonFrame,
+  ButtonText,
+  ButtonIcon,
 
-  // legacy api
+  // legacy
   useButton,
   buttonStaticConfig,
-  ButtonFrame,
-  ButtonTextFrame as ButtonText,
 }
-
 export type { ButtonProps }
