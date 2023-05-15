@@ -213,7 +213,7 @@ export const tokens = createTokens({
     true: 30, // note true = 30 just like medium, your default size token
     large: 40,
   },
-   space: {
+  space: {
     small: 10,
     medium: 20,
     true: 20, // same goes for space and other token categories
@@ -532,6 +532,11 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
 
 <PropsTable
   data={[
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+    },
     {
       name: 'mediaQueryDefaultActive',
       required: false,
