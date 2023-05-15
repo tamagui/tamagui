@@ -22,6 +22,10 @@ export const getSpace = (space: GetTokenBase, options?: GetTokenOptions) => {
   return getTokenRelative('space', space, options)
 }
 
+export const getRadius = (radius: GetTokenBase, options?: GetTokenOptions) => {
+  return getTokenRelative('radius', radius, options)
+}
+
 const cacheVariables: Record<string, Variable[]> = {}
 const cacheKeys: Record<string, string[]> = {}
 
@@ -50,12 +54,17 @@ export const stepTokenUpOrDown = (
   const currentIndex = tokensOrdered.indexOf(current as any)
 
   let shift = options.shift || 0
-  if (current === '$true' || (isVariable(current) && current.name === 'true')) {
-    shift = !shift ? 0 : shift > 0 ? 1 : -1
+  if (shift) {
+    if (current === '$true' || (isVariable(current) && current.name === 'true')) {
+      shift += shift > 0 ? 1 : -1
+    }
   }
 
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const key = tokensOrdered[index]
+
+  console.log('wtf', shift, index, key, tokens[key])
+
   // @ts-ignore
   return tokens[key] || tokens['$true']
 }
