@@ -57,7 +57,13 @@ There are a few things to note here:
   - The Next.js plugin handles this for you automatically.
 - `sideEffects` field is important, otherwise webpack will remove the generated CSS in production.
 
-## Step 2: Define and export components
+## Step 2: Create your design system.
+
+Check the [/docs/core/configuration] for more detail on this step.
+
+You'll be creating a tamagui.config.ts at the the root of your app. It will contain a full suite fof tokens, themes, and fonts exported onto a single named `config` export.
+
+## Step 3: Define and export components
 
 Now, create and export the components. You can re-export components from `tamagui` or `@tamagui/core` as well. Let's create a ZCircle component
 
@@ -93,7 +99,7 @@ And then export from `index.tsx`:
 export * from './Circle'
 ```
 
-## Step 3: Set up your build
+## Step 4: Set up your build
 
 Now in your app, add `@ourapp/components` and `tamagui` (since we are extending it) to your package.json, and update your tamagui build configuration.
 
@@ -147,7 +153,7 @@ export default {
 
 You only need `tamagui` in your `components` array if you extend it, otherwise no need. You can also extend your own base level module so long as they export Tamagui `styled` components.
 
-## Step 4: Test it out
+## Step 5: Test it out
 
 In your app, you should now be able to import and use your Circle component. Using the debug pragma, you can also verify the extraction is working. Make sure the build settings `logTimings: true` and `disableExtraction: false` are set so you can see the compiler at work:
 
