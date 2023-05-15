@@ -47,7 +47,7 @@ export const ButtonText = styled(Text, {
 })
 
 export const Button = withStaticProperties(ButtonFrame, {
-  Provider: ButtonContext.Provider,
+  Props: ButtonContext.Provider,
   Text: ButtonText,
 })
 
@@ -62,11 +62,11 @@ export const CustomButtonDemo = () => {
         <Button.Text>hi</Button.Text>
       </Button>
 
-      <Button.Provider size="$10">
+      <Button.Props size="$10">
         <Button>
           <Button.Text>hi</Button.Text>
         </Button>
-      </Button.Provider>
+      </Button.Props>
 
       {/* ensure that we can scope them like radix */}
       <Button size="$10">

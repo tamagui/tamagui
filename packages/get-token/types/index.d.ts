@@ -1,5 +1,5 @@
 import { Variable } from '@tamagui/web';
-type GetTokenBase = Variable | string;
+type GetTokenBase = Variable | string | number | undefined;
 type GetTokenOptions = {
     shift?: number;
     bounds?: [number] | [number, number];

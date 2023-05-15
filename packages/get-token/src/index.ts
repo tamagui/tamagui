@@ -1,7 +1,8 @@
 import { Variable, isVariable } from '@tamagui/web'
 import { getTokens } from '@tamagui/web'
 
-type GetTokenBase = Variable | string
+// technically number | undefined just for compat with the generic VariableVal
+type GetTokenBase = Variable | string | number | undefined
 
 type GetTokenOptions = {
   shift?: number
