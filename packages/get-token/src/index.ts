@@ -63,8 +63,6 @@ export const stepTokenUpOrDown = (
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const key = tokensOrdered[index]
 
-  console.log('wtf', shift, index, key, tokens[key])
-
   // @ts-ignore
   return tokens[key] || tokens['$true']
 }
