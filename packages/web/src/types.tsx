@@ -131,7 +131,7 @@ export type Role =
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>
 
-export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
+export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
   type: TamaguiComponent
 }
 
