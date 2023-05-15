@@ -41,7 +41,13 @@ function getDefaultThemeProxied() {
   })
 }
 
-export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
+type UseThemeResult = {
+  [key in keyof ThemeParsed]: ThemeParsed[key] & {
+    get: () => string | ThemeParsed[key]['val']
+  }
+}
+
+export const useTheme = (props: ThemeProps = emptyProps): UseThemeResult => {
   return (isRSC ? null : useThemeWithState(props)?.theme) || getDefaultThemeProxied()
 }
 
@@ -96,7 +102,7 @@ export function getThemeProxied(
     theme: ThemeParsed
   },
   keys?: string[]
-) {
+): UseThemeResult {
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
@@ -127,6 +133,9 @@ export function getThemeProxied(
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
+            if (subkey === 'get') {
+              return () => val
+            }
             if (subkey === 'val' && !keys.includes(keyString)) {
               keys.push(keyString)
             }
@@ -137,7 +146,7 @@ export function getThemeProxied(
 
       return val
     },
-  })
+  }) as UseThemeResult
 }
 
 export const activeThemeManagers = new Set<ThemeManager>()
