@@ -114,6 +114,8 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
 
+  const SHEET_COVER_NAME = `${SHEET_NAME}Cover`
+
   const SheetFrame = Frame.extractable(
     forwardRef(
       (
@@ -146,13 +148,14 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
               </Frame>
             </RemoveScroll>
 
-            {/* below frame hide when bouncing past 100% */}
+            {/* below frame hide when bouncing past 100% */}  
             {!props.disableHideBottomOverflow && (
               <Frame
+                componentName={SHEET_COVER_NAME}
                 {...props}
                 children={null}
                 position="absolute"
-                bottom={0}
+                bottom={-20}
                 maxHeight={300}
                 left={0}
                 right={0}
