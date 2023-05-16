@@ -29,6 +29,8 @@ demoName: Button
 
 ### Usage
 
+When using the simple Button API, it's as simple as this:
+
 ```tsx
 import { Button } from 'tamagui'
 
@@ -58,6 +60,20 @@ You can [use the source of Button itself](https://github.com/tamagui/tamagui/blo
 Tamagui now has all the features necessary to make creating a custom Button easy enough that you don't really need to use our Button at all as a base.
 
 Learn how to do it with our dedicated guide, [How to Build a Button](/docs/guides/how-to-build-a-button).
+
+<Notice>
+  The previous `useButton` API is deprecated and will be removed in a future version. It's
+  brittle and is easily replaced with the new composable components API as described in
+  the guide.
+</Notice>
+
+#### A note
+
+We highly recommend "rolling your own" Button using the above guide rather than wrapping the built-in Tamagui Button with `styled()` and adding your own properties. While it will work for the most part, with recent improvements to the `@tamagui/core` style library, we've vastly improved the ability to build components.
+
+The current Button is not using these new techniques, so it has some downsides. For example, it accepts font properties directly on the Button itself, like `color`, which only works directly on the Button JSX usage. If you use it with `styled()`, it will not apply. This is a bug we can fix, but it's an example of the odd behavior we struggled against due to not having the right underlying features ready at the time it was implemented.
+
+Slowly, in future releases, we will first deprecate the font props being used directly on Button in favor of composable components (Button.Text), and then in a release a ways after that we will remove them altogether, which will allow us to bring the Tamagui Button in line with the recommended and improved way to building out a Button. We will keep an option to opt into the legacy behavior for a while after that.
 
 ### Button props
 
