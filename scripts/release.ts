@@ -76,12 +76,13 @@ async function run() {
     if (!finish) {
       // ensure we are up to date
       // ensure we are on master
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
-        throw new Error(`Not on master`)
-      }
-
-      if (!dirty) {
-        await spawnify(`git pull --rebase origin master`)
+      if (!canary) {
+        if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
+          throw new Error(`Not on master`)
+        }
+        if (!dirty) {
+          await spawnify(`git pull --rebase origin master`)
+        }
       }
 
       const workspaces = (await exec(`yarn workspaces list --json`)).stdout
