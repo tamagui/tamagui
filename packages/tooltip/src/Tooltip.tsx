@@ -14,7 +14,7 @@ import {
 import { SizeTokens, useEvent, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-token'
 import {
   PopoverAnchor,
   PopoverArrow,
@@ -41,7 +41,12 @@ const TooltipContent = PopperContentFrame.extractable(
     ) => {
       const popperScope = usePopoverScope(__scopePopover)
       const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
-      const padding = props.size || popper.size || stepTokenUpOrDown('size', '$true', -2)
+      const padding =
+        props.size ||
+        popper.size ||
+        getSize('$true', {
+          shift: -2,
+        })
       return (
         <PopoverContent
           componentName="Tooltip"
@@ -152,7 +157,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const twoSmallerKey = stepTokenUpOrDown('size', '$true', -2).key
+  const twoSmallerKey = getSize('$true', {
+    shift: -2,
+  }).key
   const size = `$${twoSmallerKey}`
 
   return (

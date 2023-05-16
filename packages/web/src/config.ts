@@ -35,31 +35,17 @@ export const getTokens = ({
    */
   prefixed?: boolean
 } = {}): TokensMerged => {
-  if (!conf) throw new Error(`never called createTamagui`)
-  if (prefixed === false) return conf.tokens
-  if (prefixed === true) return conf.tokensParsed
-  return (cached ??= Object.freeze({
-    size: {
-      ...conf.tokens['size'],
-      ...conf.tokensParsed['size'],
-    },
-    space: {
-      ...conf.tokens['space'],
-      ...conf.tokensParsed['space'],
-    },
-    radius: {
-      ...conf.tokens['radius'],
-      ...conf.tokensParsed['radius'],
-    },
-    zIndex: {
-      ...conf.tokens['zIndex'],
-      ...conf.tokensParsed['zIndex'],
-    },
-    color: {
-      ...conf.tokens['color'],
-      ...conf.tokensParsed['color'],
-    },
-  }) as any)
+  if (process.env.NODE_ENV === 'development') {
+    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+  }
+  const { tokens, tokensParsed } = conf!
+  if (prefixed === false) return tokens
+  if (prefixed === true) return tokensParsed
+  if (cached) return cached
+  cached = Object.fromEntries(
+    Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
+  ) as any
+  return cached
 }
 
 /**

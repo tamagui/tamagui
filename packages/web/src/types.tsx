@@ -23,8 +23,8 @@ import type {
 
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
+import { StyledContext } from './helpers/createStyledContext'
 import type { FontLanguageProps } from './views/FontLanguage.types'
-import { Stack } from './views/Stack'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -131,7 +131,7 @@ export type Role =
 
 type DivAttributes = HTMLAttributes<HTMLDivElement>
 
-export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
+export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
   type: TamaguiComponent
 }
 
@@ -282,6 +282,7 @@ export interface TamaguiConfig
     TamaguiCustomConfig {}
 
 type OnlyAllowShorthandsSetting = boolean | undefined
+type DefaultFontSetting = string | undefined
 
 export type CreateTamaguiConfig<
   A extends GenericTokens,
@@ -290,7 +291,8 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -307,6 +309,7 @@ export type CreateTamaguiConfig<
   media: D
   animations: AnimationDriver<E>
   onlyAllowShorthands: G
+  defaultFont: H
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -340,7 +343,8 @@ type ConfProps<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = {
   tokens: A
   themes: B
@@ -349,6 +353,7 @@ type ConfProps<
   animations?: AnimationDriver<E>
   fonts: F
   onlyAllowShorthands?: G
+  defaultFont?: H
 }
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
@@ -358,9 +363,10 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer D,
   infer E,
   infer F,
-  infer G
+  infer G,
+  infer H
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F, G>
+  ? TamaguiInternalConfig<A, B, C, D, E, F, G, H>
   : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -476,6 +482,11 @@ export type CreateTamaguiProps = {
   }
 
   /**
+   * Define a default font, for better types and default font on Text
+   */
+  defaultFont?: string
+
+  /**
    * Web-only: define text-selection CSS
    */
   selectionStyles?: (theme: ThemeParsed) => {
@@ -552,7 +563,8 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
-  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting
+  G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
+  H extends DefaultFontSetting = DefaultFontSetting
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
   Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
@@ -567,6 +579,8 @@ export type TamaguiInternalConfig<
     parsed: boolean
     inverseShorthands: Record<string, string>
     reactNative?: any
+    defaultFont?: H
+    fontSizeTokens: Set<string>
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
@@ -575,7 +589,7 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
-export type GenericFont<Key extends number | string = number | string> = {
+export type GenericFont<Key extends string | number = string | number> = {
   size: { [key in Key]: number | Variable }
   lineHeight?: Partial<{ [key in Key]: number | Variable }>
   letterSpacing?: Partial<{ [key in Key]: number | Variable }>
@@ -682,8 +696,15 @@ export type ColorTokens =
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 
-// font tokens
+// fonts
+type DefaultFont = TamaguiConfig['defaultFont']
+
+export type Fonts = DefaultFont extends string
+  ? TamaguiConfig['fonts'][DefaultFont]
+  : never
+export type Font = ParseFont<Fonts>
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
+export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
 export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
@@ -694,6 +715,20 @@ export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fo
 export type FontTransformTokens =
   | `$${GetTokenFontKeysFor<'transform'>}`
   | TextStyle['textTransform']
+
+type ParseFont<A extends GenericFont> = {
+  size: TokenPrefixed<A['size']>
+  lineHeight: TokenPrefixedIfExists<A['lineHeight']>
+  letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>
+  weight: TokenPrefixedIfExists<A['weight']>
+  family: TokenPrefixedIfExists<A['family']>
+  style: TokenPrefixedIfExists<A['style']>
+  transform: TokenPrefixedIfExists<A['transform']>
+  color: TokenPrefixedIfExists<A['color']>
+  face: TokenPrefixedIfExists<A['face']>
+}
+
+type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {}
 
 //
 // adds theme short values to relevant props
@@ -1040,6 +1075,8 @@ type StaticConfigBase = StaticConfigPublic & {
 
   variants?: GenericVariantDefinitions
 
+  context?: StyledContext
+
   /**
    * Used for applying sub theme style
    */
@@ -1219,6 +1256,8 @@ export type VariantSpreadExtras<Props> = {
   tokens: TamaguiConfig['tokens']
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props
+  fontFamily?: FontFamilyTokens
+  font?: Font
 }
 
 type PropLike = { [key: string]: any }

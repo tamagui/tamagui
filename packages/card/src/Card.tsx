@@ -112,6 +112,7 @@ export const Card = withStaticProperties(
         return (
           <CardFrame ref={ref} {...props}>
             {React.Children.map(children, (child) => {
+              // @ts-ignore
               if (isTamaguiElement(child) && !child.props.size) {
                 return cloneElement(child, {
                   size: props.size,

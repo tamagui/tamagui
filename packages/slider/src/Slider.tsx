@@ -4,13 +4,14 @@ import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
+  getTokens,
   getVariableValue,
   isClient,
   isWeb,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
-import { getSize } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -314,7 +315,13 @@ const THUMB_NAME = 'SliderThumb'
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
 const getThumbSize = (val?: SizeTokens | number) => {
-  const size = typeof val === 'number' ? val : getSize(val, -1)
+  const tokens = getTokens()
+  const size =
+    typeof val === 'number'
+      ? val
+      : getSize(tokens.size[val as any], {
+          shift: -1,
+        })
   return {
     width: size,
     height: size,

@@ -52,7 +52,7 @@ describe('getSplitStyles', () => {
       simplifiedGetSplitStyles(Text, {
         fontSize: '$1',
       }).rulesToInsert.find((rule) => rule.property === 'fontSize')?.value
-    ).toEqual('$1') // no family provided - this is expected
+    ).toEqual('var(--f-si-1)') // no family provided - this is expected
 
     expect(
       simplifiedGetSplitStyles(Text, {

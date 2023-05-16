@@ -23,7 +23,7 @@ import {
   shift,
   useFloating,
 } from '@tamagui/floating'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSpace } from '@tamagui/get-token'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { Keyboard, View, useWindowDimensions } from 'react-native'
@@ -348,7 +348,12 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
 
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))
+    const sizeValResolved = getVariableValue(
+      getSpace(sizeVal, {
+        shift: -2,
+        bounds: [2],
+      })
+    )
     const size = +sizeValResolved
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
