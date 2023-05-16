@@ -25,25 +25,6 @@ Usage:
 
 Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself and don't need the following.
 
-If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file:
-
-```tsx
-import { setupReactNative, styled } from 'tamagui' // or '@tamagui/core'
-import { Image } from 'react-native'
-
-// this allows tamagui to optimize for react-native components
-// it's not required. `tamagui` automatically sets this up, but core doesn't
-setupReactNative({ Image })
-
-const MyImage = styled(Image, {
-  backgroundColor: 'red'
-})
-```
-
-This requirement allows core to be light and not depend on react-native for web-only use cases.
-
-The `tamagui` package applies this polyfill automatically as it uses React Native.
-
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 
 ## Variants
@@ -96,6 +77,29 @@ We can use these like so:
 
 To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
 
+## Using with React Native
+
+If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file and give it the components you intend to decorate. This is necessary because React Native has some different behavior from a typical component that we must assume when merging events and styles.
+
+```tsx
+import { Image } from 'react-native'
+import { setupReactNative, styled } from 'tamagui' // or '@tamagui/core'
+
+// this allows tamagui to optimize for react-native components
+// it's not required. `tamagui` automatically sets this up, but core doesn't
+setupReactNative({ Image })
+
+const MyImage = styled(Image, {
+  backgroundColor: 'red',
+})
+```
+
+This requirement allows core to be light and not depend on react-native for web-only use cases. The `tamagui` package applies this polyfill automatically as it uses React Native.
+
+### Non-working React Native views
+
+You can assume all "utility" views in React Native are not supported: Pressable, TouchableOpacity, and others. They have specific logic for handling events that conflicts with Tamagui. We could support these in the future, but we don't plan on it - you can get all of Pressable functionality for the most part within Tamagui itself, and if you need something outside of it, you can use Pressable directly.
+
 ## Using on the web
 
 The `styled()` function supports Tamagui views, React Native views, and any other React component that accepts a `style` prop. If you wrap an external component that Tamagui doesn't recognize, Tamagui will assume it only supports the `style` prop and not optimize it.
@@ -103,8 +107,8 @@ The `styled()` function supports Tamagui views, React Native views, and any othe
 If it does accept `className`, you can opt-in to className, CSS media queries, and compile-time optimization by adding `acceptsClassName`:
 
 ```tsx
-import { styled } from 'tamagui' // or '@tamagui/core'
 import { SomeCustomComponent } from 'some-library'
+import { styled } from 'tamagui' // or '@tamagui/core'
 
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
@@ -130,7 +134,7 @@ const HigherOrderStyledText = (props) => <StyledText />
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
     // variants will merge incorrectly
-  }
+  },
 })
 ```
 
@@ -139,14 +143,14 @@ So you must add a `.styleable()` around your `HigherOrderStyledText`. You'll als
 ```tsx
 const StyledText = styled(Text)
 
-const HigherOrderStyledText = StyledText.styleable((props, ref) =>
+const HigherOrderStyledText = StyledText.styleable((props, ref) => (
   <StyledText ref={ref} />
-)
+))
 
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
     // variants will merge incorrectly
-  }
+  },
 })
 ```
 
