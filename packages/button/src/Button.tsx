@@ -183,7 +183,7 @@ const Button = withStaticProperties(ButtonComponent, {
  */
 function useButton(
   propsIn: ButtonProps,
-  { Text = ButtonText }: { Text: any } = { Text: ButtonText }
+  { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   // careful not to desctructure and re-order props, order is important
   const {
