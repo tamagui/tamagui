@@ -495,6 +495,36 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 ---
 
+## Descendent Styles
+
+```tsx
+const ButtonFrame = styled(Stack, {
+  ButtonText: {
+    color: 'red',
+  },
+
+  hoverStyle: {
+    ButtonText: {
+      color: 'green'
+    }
+  },
+
+  $small: {
+    hoverStyle: {
+      ButtonText: {
+        color: 'blue'
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+})
+```
+
+---
+
 <Skeleton />
 
 ```tsx
