@@ -84,7 +84,6 @@ export const listItemVariants = {
         paddingHorizontal: tokens.space[val],
         paddingVertical: getSpace(tokens.space[val], {
           shift: -2,
-          debug: true,
         }),
       }
     },
