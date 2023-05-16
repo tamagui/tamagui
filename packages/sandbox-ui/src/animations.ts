@@ -1,7 +1,5 @@
 import { createAnimations } from '@tamagui/animations-react-native'
 
-console.log('asdsadas')
-
 export const animations = createAnimations({
   bouncy: {
     type: 'spring',
