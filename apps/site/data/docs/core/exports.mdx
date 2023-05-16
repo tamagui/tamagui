@@ -48,38 +48,6 @@ type isTamaguiElement (child: any; name?: string) => boolean
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
 
-### TamaguiComponent.styleable
-
-Returned by any styled components, is necessary to use if you are going to use the following pattern (which would break pseudo styles and variants):
-
-```tsx
-import { Stack, styled } from '@tamagui/core'
-
-const MyComponent = (props) => {
-  return <Stack {...props} />
-}
-
-const MyStyledComponent = styled(MyComponent, {
-  // ...
-})
-```
-
-You _must_ wrap `MyComponent` with `Stack.styleable` instead:
-
-```tsx
-import { Stack, styled } from '@tamagui/core'
-
-const MyComponent = Stack.styleable((props, ref) => {
-  return <Stack ref={ref} {...props} />
-})
-
-const MyStyledComponent = styled(MyComponent, {
-  // ...
-})
-```
-
-Note that `ref` gets forwarded automatically and theme will automatically now happen above this MyComponent. You also must always return only `Stack` from this component (or null), as Tamagui will manage forwarding variants and other custom Tamagui style props forward through.
-
 ### getTokens
 
 ```tsx
@@ -108,30 +76,6 @@ themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 
 ## Hooks
 
-### useEvent
-
-A shim of [the upcoming React hook](https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md).
-
-### useGet
-
-```tsx
-useGet<A>(currentValue: A): () => A
-```
-
-Create a getter function that's always up to date with the given currentValue
-
-### useIsTouchDevice
-
-SSR-friendly, only true on if native touchable or web touchable device (client side, not server side).
-
-### useDidFinishSSR
-
-SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
-
-### useThemeName
-
-Returns the string name of the current theme.
-
 ### useProps
 
 Pass in props that include media styles and shorthands, get back a flat object of styles with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
@@ -155,3 +99,15 @@ function MyButton(props) {
   const activeProps = useProps(props, { disableExpandShorthands: true })
 }
 ```
+
+### useThemeName
+
+Returns the string name of the current theme.
+
+### useIsTouchDevice
+
+SSR-friendly, only true on if native touchable or web touchable device (client side, not server side).
+
+### useDidFinishSSR
+
+SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.

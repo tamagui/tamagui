@@ -19,7 +19,7 @@ import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSize, stepTokenUpOrDown } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -283,7 +283,9 @@ export const Checkbox = withStaticProperties(
       })
 
       const adjustedSize = getVariableValue(
-        stepTokenUpOrDown('size', propsActive.size, sizeAdjust)
+        getSize(propsActive.size, {
+          shift: sizeAdjust,
+        })
       )
       const size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
 

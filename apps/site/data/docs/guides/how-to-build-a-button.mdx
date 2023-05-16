@@ -1,0 +1,289 @@
+---
+title: How to Build a Button
+description: Learn how to create a custom button, or any other type of component that uses a composable component API.
+---
+
+<IntroParagraph>
+  Deceptive in its simplicity, making a robust and flexible button in any frontend
+  framework is an incredibly tricky task.
+</IntroParagraph>
+
+Once you account for theming, sizing, spacing, icons (sometimes multiple), and of course allowing or limiting customization from the users of it, buttons get extraordinarily complex even in common cases.
+
+Luckily, Tamagui makes it easy. Or at least it as of version `1.28` it does.
+
+Before that, things were messy, but for good reason - buttons are surprisingly complicated when you get down to it (a few clueless backend developers will rage-quit here, thankfully).
+
+Let's get right into it. You want some buttons that can do all of this:
+
+<HeroContainer>
+  <ButtonDemo />
+</HeroContainer>
+
+### Complete example
+
+Because we hate being forced to read a whole guide before getting to the point, here's your final `Button`, ready to copy and paste right into your app. It gives you a beautiful [Radix-like](https://www.radix-ui.com/) "Composable Component" API that gives you complete control over styling:
+
+```tsx
+import { getSize, getSpace } from '@tamagui/get-token'
+import { Moon } from '@tamagui/lucide-icons'
+import {
+  GetProps,
+  SizeTokens,
+  Stack,
+  Text,
+  createStyledContext,
+  styled,
+  useTheme,
+  withStaticProperties,
+} from '@tamagui/web'
+import { cloneElement, useContext } from 'react'
+
+export const ButtonContext = createStyledContext({
+  size: '$4' as SizeTokens,
+})
+
+export const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  context: ButtonContext,
+  backgroundColor: '$background',
+  alignItems: 'center',
+  flexDirection: 'row',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: tokens.space[name].val * 0.2,
+          paddingHorizontal: getSpace(name, {
+            shift: -1,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+type ButtonProps = GetProps<typeof ButtonFrame>
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  context: ButtonContext,
+  color: '$color',
+  userSelect: 'none',
+
+  variants: {
+    size: {
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+      }),
+    },
+  } as const,
+})
+
+const ButtonIcon = (props: { children: any }) => {
+  const { size } = useContext(ButtonContext)
+  const smaller = getSize(size, {
+    shift: -2,
+  })
+  const theme = useTheme()
+  return cloneElement(props.children, {
+    size: smaller.val * 0.5,
+    color: theme.color.get(),
+  })
+}
+
+export const Button = withStaticProperties(ButtonFrame, {
+  Props: ButtonContext.Provider,
+  Text: ButtonText,
+  Icon: ButtonIcon,
+})
+```
+
+Now you may use your button like so:
+
+```tsx
+export default (props: ButtonProps) => (
+  <Button {...props}>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+    <Button.Text>hi</Button.Text>
+  </Button>
+)
+
+// multiple icons:
+export default (props: ButtonProps) => (
+  <Button {...props}>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+    <Button.Text>hi</Button.Text>
+    <Button.Icon>
+      <Moon />
+    </Button.Icon>
+  </Button>
+)
+```
+
+This may only be a hundred or so lines of code, but there's a lot to take in, and there's a lot going on behind the scenes to make this possible.
+
+### From the beginning
+
+This guide will build up to this complete example from the start, which should help explain why each of the utilites is used, and how they work.
+
+We start with the assumption that we have a design system set up with a series of `size` values from `$xs` to `$xxl`, as well as a few themes with consistent keys, like so:
+
+```tsx
+
+```
+
+With that in mind, we can create the outer frame of the button fairly simply, like so:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  backgroundColor: '$background',
+  alignItems: 'center',
+  flexDirection: 'row',
+  height: '$md',
+  borderRadius: '$md',
+  paddingHorizontal: '$sm',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+  },
+})
+```
+
+This gets us a simple rounded rectangle that uses the `md` tokens from your design system and the `background` from your theme.
+
+We set the `name` property to `"Button"`, which tells Tamagui to check for a sub-theme `Button` that extends the current one. So, if we have a theme `light` and we have a sub-theme `light_Button`, Tamagui find the theme `light_Button` and apply it to this component, getting the `background` value from that theme.
+
+Finally we set the `hoverStyle` and `pressStyle` so our button frame looks nice when hovered or pressed.
+
+Next we'll want a Text component to go inside:
+
+```tsx
+import { Text, styled } from '@tamagui/core'
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  color: '$color',
+  fontFamily: '$body',
+  fontSize: '$md',
+  lineHeight: '$md',
+  userSelect: 'none',
+})
+```
+
+This is pretty similar to the frame, just with its own name and with a `color` set rather than a `background`. Button text usually isn't selectable so we set `userSelect` to none.
+
+The hard part comes when we want our button to be able to be sizable. Let's look at how we'd solve this without the new `createStyledContext` helper, so we can understand why it exists.
+
+First, we'd need to add some size variants to our ButtonFrame and ButtonText:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  backgroundColor: '$background',
+  alignItems: 'center',
+  flexDirection: 'row',
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: tokens.space[name].val * 0.2,
+        }
+      },
+    },
+  } as const,
+})
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  context: ButtonContext,
+  color: '$color',
+  userSelect: 'none',
+
+  variants: {
+    size: {
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+      }),
+    },
+  } as const,
+})
+```
+
+Using the handy [Spread Variants](/docs/core/variants#spread-variants), we're able to quickly allow `size` to be pased to both of them in a typed way.
+
+For the Frame, we set height, borderRadius, and gap. For Text, we are passed the current `font` object description and are able to directly get the `size` value from there.
+
+We'd now need to manually pass `size` to both components in order for them to "line up":
+
+```tsx
+<Button size="$md">
+  <ButtonText size="$md" />
+</Button>
+```
+
+Which would be bug-prone and confusing in practice.
+
+The typical alternative would be to abstract both of these components into our own React component:
+
+```tsx
+const Button = ({
+  size,
+  children,
+  textProps,
+  ...props
+}: StackProps & {
+  textProps?: TextProps
+}) => (
+  <ButtonFrame size={size} {...props}>
+    <ButtonText size={size} {...textProps}>
+      {children}
+    </ButtonText>
+  </ButtonFrame>
+)
+```
+
+But in doing so, we've now lost a lot. For one, we've lost the ability for anyone else to wrap out component in `styled()` and customize it. While it would work, things will break unless we use the `styleable` helper, and further, you can never customize the inner ButtonText without using the awkward `textProps` interface which isn't availble through our `styled()` helper naturally, as it's not a style property.
+
+Beyond this, the lack of composability hurts us in many ways. What if we want an `icon`? Or an `iconAfter`? We have to hard-code for those cases inside our newly created function, and that means we also need to thread down `size` to both of those.
+
+And of course `icon` and `iconAfter` would want `iconProps` and `iconAfterProps`. You can see how this starts to get messy fast.
+
+A final downside of this setup (beyond the fact that it takes a lot more code to put together) is that it can't be optimized very well at all.
+
+The optimizing compiler likes simple `styled` components that are used together. Once you start adding dynamic props like the `size={size}` it will de-opt and basically fully wokr at run-time rather than compile-time.
+
+### `createStyledContext` to the Rescue
+
+This is how the Tamagui Button has worked until recently! And it's caused us endless problems. But solving the problems above in a way that is sensible, works with the optimizing compiler, and keeps things fully typed, has taken a lot of effort to pull together.

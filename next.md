@@ -2,46 +2,9 @@
 - Popover.Close working inside Adapt Sheet
 - shadowOpacity not being applied
 
-
-
-```tsx
-const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
-
-const ButtonFrame = styled(Stack, {
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-const ButtonText = styled(Stack, 
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-export const SomeExampleButton = (props: { size: SizeTokens }) => (
-  <ButtonVariant size={props.size}>
-    <ButtonFrame>
-      <ButtonText />
-    </ButtonFrame>
-  </ButtonVariant>
-)
-```
-
 high level:
 
+  - automate sponsors a bit better (link discord on tamagui site)
   - private canary packages on github
   - tiered line system for studio
   - improve tests and docs
@@ -283,10 +246,10 @@ Ali:
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
   - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
     - we could have a generic ComponentContext internally in createComponent
-    - we can export a createVariantContext()
-    - `const CardVariants = createVariantContext<{ size: number }>()`
+    - we can export a createStyledContext()
+    - `const CardVariants = createStyledContext<{ size: number }>()`
     - then in Card or any parent you can do `<CardVariants size={} />`
-    - finally, in `styled({ variantContext: CardVariants })`
+    - finally, in `styled({ provider: CardVariants })`
 
     <CardVariants.Provider size="$10">
       <Card />

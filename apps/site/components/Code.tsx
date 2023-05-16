@@ -29,6 +29,6 @@ export const CodeInline = styled(Paragraph, {
   backgroundColor: '$background',
   cursor: 'inherit',
   br: '$3',
-  fontSize: 'inherit',
+  fontSize: '85%',
   p: '$1.5',
 })

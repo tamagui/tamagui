@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------------------------*/
 
 import { composeEventHandlers, getVariableValue, isWeb, styled } from '@tamagui/core'
-import { getSize } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'

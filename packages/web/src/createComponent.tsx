@@ -6,7 +6,7 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import { stylePropsView, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -121,11 +121,11 @@ export function createComponent<
   Ref = TamaguiElement,
   BaseProps = never
 >(
-  configIn: Partial<StaticConfig> | StaticConfigParsed,
+  staticConfigIn: Partial<StaticConfig> | StaticConfigParsed,
   ParentComponent?: StylableComponent
 ) {
   const staticConfig = (() => {
-    const next = extendStaticConfig(configIn, ParentComponent)
+    const next = extendStaticConfig(staticConfigIn, ParentComponent)
 
     if ('parsed' in next) {
       return next
@@ -170,6 +170,23 @@ export function createComponent<
       props = mergeProps(defaultProps, propsIn)[0]
     } else {
       props = propsIn
+    }
+
+    // set variants through context
+    let provided: Object | undefined
+    const { context } = staticConfig
+    if (context) {
+      const contextValue = useContext(context)
+      for (const key in context.variants) {
+        if (!(key in props)) {
+          if (contextValue) {
+            props[key] = contextValue[key]
+          }
+        } else {
+          provided ||= {}
+          provided[key] = props[key]
+        }
+      }
     }
 
     const debugProp = props['debug'] as DebugProp
@@ -823,6 +840,11 @@ export function createComponent<
       }
     }
 
+    if (provided) {
+      const Provider = staticConfig.context!.Provider!
+      content = <Provider {...provided}>{content}</Provider>
+    }
+
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
@@ -895,6 +917,10 @@ export function createComponent<
 
     defaultProps = restProps
 
+    if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
+      defaultProps.fontFamily = conf.defaultFont
+    }
+
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
@@ -915,7 +941,7 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (configIn.memo) {
+  if (staticConfigIn.memo) {
     res = memo(res) as any
   }
 

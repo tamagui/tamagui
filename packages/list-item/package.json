@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.27.3",
+  "version": "1.27.0-1684163004699",
   "sideEffects": [
     "*.css"
   ],
@@ -21,17 +21,17 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "1.27.3",
-    "@tamagui/font-size": "1.27.3",
-    "@tamagui/get-size": "1.27.3",
-    "@tamagui/helpers-tamagui": "1.27.3",
-    "@tamagui/text": "1.27.3"
+    "@tamagui/font-size": "1.27.0-1684163004699",
+    "@tamagui/get-token": "1.27.0-1684163004699",
+    "@tamagui/helpers-tamagui": "1.27.0-1684163004699",
+    "@tamagui/text": "1.27.0-1684163004699",
+    "@tamagui/web": "1.27.0-1684163004699"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.27.3",
+    "@tamagui/build": "1.27.0-1684163004699",
     "react": "^18.2.0"
   },
   "publishConfig": {

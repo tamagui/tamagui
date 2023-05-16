@@ -10,7 +10,7 @@ import {
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
-import { getSpace } from '@tamagui/helpers-tamagui'
+import { getSpace } from '@tamagui/get-token'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
@@ -454,7 +454,9 @@ const NativeSelectFrame = styled(ThemeableStack, {
           minHeight: tokens.size[val],
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(val, -2),
+          paddingVertical: getSpace(val, {
+            shift: -2,
+          }),
         }
       },
     },

@@ -447,5 +447,5 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
 }, {
     heading: import("@tamagui/core").GenericFont<16 | "true" | 10 | 11 | 12 | 13 | 14 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 15>;
     body: import("@tamagui/core").GenericFont<16 | "true" | 10 | 11 | 12 | 13 | 14 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 15>;
-}, boolean | undefined>;
+}, boolean | undefined, string | undefined>;
 //# sourceMappingURL=tamagui.config.d.ts.map
