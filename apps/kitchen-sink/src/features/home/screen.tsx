@@ -41,7 +41,7 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
-
+        {/* 
         <Button
           onPress={() => {
             updateTheme({
@@ -62,7 +62,7 @@ export function HomeScreen() {
           test
         </Button>
 
-        <SubComponent />
+        <SubComponent /> */}
 
         <YGroup size="$4">
           <YGroup.Item>

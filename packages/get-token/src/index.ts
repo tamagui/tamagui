@@ -61,10 +61,10 @@ export const stepTokenUpOrDown = (
   }
 
   const index = Math.min(max, Math.max(min, currentIndex + shift))
-  const key = tokensOrdered[index]
+  const found = tokensOrdered[index]
 
   // @ts-ignore
-  return tokens[key] || tokens['$true']
+  return (typeof found === 'string' ? tokens[found] : found) || tokens['$true']
 }
 
 export const getTokenRelative = stepTokenUpOrDown
