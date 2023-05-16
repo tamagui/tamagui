@@ -43,7 +43,11 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <SandboxHeading>hi</SandboxHeading>
+  return (
+    <SandboxHeading>
+      sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    </SandboxHeading>
+  )
   return <CustomButtonDemo />
 }
 
