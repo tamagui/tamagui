@@ -24,7 +24,7 @@
     "@tamagui/proxy-worm": "1.27.0-1684260142805",
     "@tamagui/react-native-svg": "1.27.0-1684260142805",
     "@tamagui/static": "1.27.0-1684260142805",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^9.1.2",
     "browserslist": "^4.21.1",
     "css-loader": "^5.2.4",
     "esbuild-loader": "^3.0.1",

@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.5",
     "@next/bundle-analyzer": "^12.2.0",
     "@tamagui/build": "1.27.0-1684260142805",
     "@tamagui/static": "1.27.0-1684260142805",
