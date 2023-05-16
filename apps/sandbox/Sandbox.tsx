@@ -3,6 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import { TamaguiProvider } from '@tamagui/core'
 import * as Demos from '@tamagui/demos'
+import { SandboxHeading } from '@tamagui/sandbox-ui'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import { Button, Separator, Theme, XStack, YStack, getStylesAtomic } from 'tamagui'
@@ -35,6 +36,7 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
+  return <SandboxHeading>hi</SandboxHeading>
   return <CustomButtonDemo />
 }
 

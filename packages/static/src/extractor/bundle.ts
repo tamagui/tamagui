@@ -39,6 +39,15 @@ function getESBuildConfig(
     jsxFactory: 'react',
     allowOverwrite: true,
     keepNames: true,
+    resolveExtensions: [
+      ...(process.env.TAMAGUI_TARGET === 'web'
+        ? ['.web.tsx', '.web.ts', '.web.jsx', '.web.js']
+        : ['.native.tsx', '.native.ts', '.native.jsx', '.native.js']),
+      '.tsx',
+      '.ts',
+      '.jsx',
+      '.js',
+    ],
     platform: 'node',
     tsconfig,
     loader: {
