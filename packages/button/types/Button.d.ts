@@ -1,9 +1,8 @@
-import { TextParentStyles } from '@tamagui/text';
-import { ColorStyleProp, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
+import { TextContextStyles, TextParentStyles } from '@tamagui/text';
+import { GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
 import { FunctionComponent } from 'react';
-export declare const ButtonContext: import("@tamagui/web").StyledContext<{
+export declare const ButtonContext: import("@tamagui/web").StyledContext<TextContextStyles & {
     size: SizeTokens;
-    color?: ColorStyleProp | undefined;
 }>;
 type ButtonIconProps = {
     color?: string;
@@ -297,7 +296,7 @@ declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<TextPare
     readonly size?: SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-}>>, "userSelect" | "cursor" | "pointerEvents" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "textAlign" | "alignContent" | "alignItems" | "alignSelf" | "bottom" | "backgroundColor" | "borderBottomColor" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomWidth" | "borderLeftColor" | "borderLeftWidth" | "borderColor" | "borderRadius" | "borderStyle" | "borderRightWidth" | "borderRightColor" | "borderTopColor" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopWidth" | "borderWidth" | "display" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "maxHeight" | "maxWidth" | "marginBottom" | "minHeight" | "minWidth" | "marginLeft" | "marginRight" | "marginTop" | "marginHorizontal" | "marginVertical" | "opacity" | "overflow" | "padding" | "paddingBottom" | "paddingLeft" | "position" | "paddingRight" | "paddingTop" | "paddingHorizontal" | "paddingVertical" | "right" | "shadowColor" | "shadowRadius" | "shadowOffset" | "shadowOpacity" | "top" | "width" | "zIndex" | "space" | "size" | "contain" | `$${string}` | `$${number}` | "textProps" | "noTextWrap" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "hitSlop" | "id" | "removeClippedSubviews" | "style" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | "gap" | "columnGap" | "rowGap" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderEndColor" | "borderStartColor" | "borderTopEndRadius" | "borderTopStartRadius" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "end" | "marginEnd" | "marginStart" | "paddingEnd" | "paddingStart" | "start" | "direction" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular" | "backgrounded" | "radiused" | "padded" | "chromeless" | "fullscreen" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "outlineColor" | "outlineStyle" | "outlineOffset" | "outlineWidth" | "theme" | "separator" | "onPress" | "onPressIn" | "onPressOut" | "disabled" | "target" | "asChild" | "spaceDirection" | "dangerouslySetInnerHTML" | "animation" | "animateOnly" | "debug" | "className" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "elevationAndroid" | "unstyled" | "active" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">, import("@tamagui/web").TamaguiElement> & {
+}>>, "userSelect" | "cursor" | "pointerEvents" | "color" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "textAlign" | "alignContent" | "alignItems" | "alignSelf" | "bottom" | "backgroundColor" | "borderBottomColor" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomWidth" | "borderLeftColor" | "borderLeftWidth" | "borderColor" | "borderRadius" | "borderStyle" | "borderRightWidth" | "borderRightColor" | "borderTopColor" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopWidth" | "borderWidth" | "display" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "maxHeight" | "maxWidth" | "marginBottom" | "minHeight" | "minWidth" | "marginLeft" | "marginRight" | "marginTop" | "marginHorizontal" | "marginVertical" | "opacity" | "overflow" | "padding" | "paddingBottom" | "paddingLeft" | "position" | "paddingRight" | "paddingTop" | "paddingHorizontal" | "paddingVertical" | "right" | "shadowColor" | "shadowRadius" | "shadowOffset" | "shadowOpacity" | "top" | "width" | "zIndex" | "space" | "size" | "contain" | `$${string}` | `$${number}` | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "style" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | "gap" | "columnGap" | "rowGap" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderEndColor" | "borderStartColor" | "borderTopEndRadius" | "borderTopStartRadius" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "end" | "marginEnd" | "marginStart" | "paddingEnd" | "paddingStart" | "start" | "direction" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "outlineColor" | "outlineStyle" | "outlineOffset" | "outlineWidth" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "separator" | "target" | "asChild" | "spaceDirection" | "dangerouslySetInnerHTML" | "animation" | "animateOnly" | "debug" | "className" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "textProps" | "noTextWrap" | "transparent" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "circular" | "backgrounded" | "radiused" | "padded" | "chromeless" | "fullscreen" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "elevationAndroid" | "unstyled" | "active" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">, import("@tamagui/web").TamaguiElement> & {
     staticConfig: import("@tamagui/web").StaticConfigParsed;
     styleable: import("@tamagui/web").Styleable<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
@@ -395,42 +394,11 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
     isNested: boolean;
     props: {
         children: string | number | boolean | JSX.Element | import("react").ReactFragment | null | undefined;
-        pointerEvents?: "none" | "box-none" | "box-only" | "auto" | undefined;
-        hitSlop?: import("react-native/types").Insets | (import("react-native/types").Insets & number) | undefined;
+        pointerEvents?: "none" | "auto" | "box-none" | "box-only" | undefined;
         id?: string | undefined;
-        removeClippedSubviews?: boolean | undefined;
         style?: import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
         testID?: string | undefined;
         nativeID?: string | undefined;
-        collapsable?: boolean | undefined;
-        needsOffscreenAlphaCompositing?: boolean | undefined;
-        renderToHardwareTextureAndroid?: boolean | undefined;
-        focusable?: boolean | undefined;
-        shouldRasterizeIOS?: boolean | undefined;
-        isTVSelectable?: boolean | undefined;
-        hasTVPreferredFocus?: boolean | undefined;
-        tvParallaxProperties?: import("react-native/types").TVParallaxProperties | undefined;
-        tvParallaxShiftDistanceX?: number | undefined;
-        tvParallaxShiftDistanceY?: number | undefined;
-        tvParallaxTiltAngle?: number | undefined;
-        tvParallaxMagnification?: number | undefined;
-        onTouchStart?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
-        onTouchMove?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
-        onTouchEnd?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
-        onTouchCancel?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
-        onTouchEndCapture?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
-        onPointerEnter?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerEnterCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerLeave?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerLeaveCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerMove?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerMoveCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerCancel?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerCancelCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerDown?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerDownCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerUp?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
-        onPointerUpCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
         accessible?: boolean | undefined;
         accessibilityActions?: readonly Readonly<{
             name: string;
@@ -467,6 +435,37 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
         accessibilityLanguage?: string | undefined;
+        hitSlop?: import("react-native/types").Insets | (import("react-native/types").Insets & number) | undefined;
+        removeClippedSubviews?: boolean | undefined;
+        collapsable?: boolean | undefined;
+        needsOffscreenAlphaCompositing?: boolean | undefined;
+        renderToHardwareTextureAndroid?: boolean | undefined;
+        focusable?: boolean | undefined;
+        shouldRasterizeIOS?: boolean | undefined;
+        isTVSelectable?: boolean | undefined;
+        hasTVPreferredFocus?: boolean | undefined;
+        tvParallaxProperties?: import("react-native/types").TVParallaxProperties | undefined;
+        tvParallaxShiftDistanceX?: number | undefined;
+        tvParallaxShiftDistanceY?: number | undefined;
+        tvParallaxTiltAngle?: number | undefined;
+        tvParallaxMagnification?: number | undefined;
+        onTouchStart?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
+        onTouchMove?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
+        onTouchEnd?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
+        onTouchCancel?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
+        onTouchEndCapture?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
+        onPointerEnter?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerEnterCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerLeave?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerLeaveCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerMove?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerMoveCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerCancel?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerCancelCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerDown?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerDownCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerUp?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
+        onPointerUpCapture?: ((event: import("react-native/types").PointerEvent) => void) | undefined;
         target?: string | undefined;
         asChild?: boolean | undefined;
         spaceDirection?: import("@tamagui/web").SpaceDirection | undefined;
@@ -498,19 +497,19 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         alignItems?: import("react-native/types").FlexAlignType | undefined;
         alignSelf?: "auto" | import("react-native/types").FlexAlignType | undefined;
         bottom?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
-        backgroundColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
-        borderBottomColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
+        backgroundColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
+        borderBottomColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderBottomLeftRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderBottomRightRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderBottomWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
-        borderLeftColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
+        borderLeftColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderLeftWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
-        borderColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
+        borderColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderStyle?: "solid" | "dashed" | "dotted" | undefined;
         borderRightWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
-        borderRightColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
-        borderTopColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
+        borderRightColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
+        borderTopColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderTopLeftRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderTopRightRadius?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderTopWidth?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
@@ -546,7 +545,7 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         paddingHorizontal?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         paddingVertical?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         right?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
-        shadowColor?: import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").ColorTokens | import("react-native/types").OpaqueColorValue | undefined;
+        shadowColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         shadowRadius?: SizeTokens | import("@tamagui/web").ThemeValueFallback | undefined;
         shadowOffset?: import("@tamagui/web").ThemeValueFallback | {
             width: import("@tamagui/web").SpaceTokens;

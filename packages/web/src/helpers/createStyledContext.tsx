@@ -4,7 +4,7 @@ export type StyledContext<Props extends Object = any> = Omit<
   React.Context<Props>,
   'Provider'
 > & {
-  variants: Object
+  props: Object
   Provider: React.ProviderExoticComponent<
     Partial<Props> & {
       children?: React.ReactNode
@@ -13,7 +13,7 @@ export type StyledContext<Props extends Object = any> = Omit<
 }
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
-  variants: VariantProps
+  props: VariantProps
 ): StyledContext<VariantProps> {
   const OGContext = createContext<any>(null)
   const OGProvider = OGContext.Provider
@@ -32,7 +32,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
 
   // @ts-ignore
   Context.Provider = Provider
-  Context.variants = variants
+  Context.props = props
 
   return Context
 }

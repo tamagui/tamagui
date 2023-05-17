@@ -22,10 +22,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     ...rest
   } = props
   const lines = Array.isArray(children) ? children.length : 0
+  const isCollapsible = isHero || props.isCollapsible
+  const [isCollapsed, setIsCollapsed] = useState(isCollapsible)
   const isLong = lines > 22
-  const isCollapsible = props.isCollapsible
-  const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
-  const [isCutoff, setIsCutoff] = useState(isLong)
+  const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value } = useClipboard(code)

@@ -29,7 +29,7 @@ export const SubTitle = ({ children, ...props }) => {
   return (
     <H3
       pos="relative"
-      theme="alt2"
+      color="$gray9"
       width="max-content"
       fontFamily="$body"
       size="$8"

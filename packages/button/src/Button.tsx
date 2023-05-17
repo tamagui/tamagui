@@ -2,7 +2,12 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
+import {
+  SizableText,
+  TextContextStyles,
+  TextParentStyles,
+  wrapChildrenInText,
+} from '@tamagui/text'
 import {
   ButtonNestingContext,
   ColorStyleProp,
@@ -19,11 +24,19 @@ import {
 } from '@tamagui/web'
 import { FunctionComponent, useContext } from 'react'
 
-export const ButtonContext = createStyledContext<{
-  size: SizeTokens
-  color?: ColorStyleProp
-}>({
+export const ButtonContext = createStyledContext<
+  TextContextStyles & {
+    size: SizeTokens
+  }
+>({
   size: '$true',
+  color: undefined,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontStyle: undefined,
+  fontWeight: undefined,
+  letterSpacing: undefined,
+  textAlign: undefined,
 })
 
 type ButtonIconProps = { color?: string; size?: number }

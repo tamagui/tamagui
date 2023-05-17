@@ -56,12 +56,12 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
-    const fontFamily =
+    let fontFamily =
       props[conf.inverseShorthands.fontFamily] ||
       props.fontFamily ||
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
-      '$body'
+      `$${conf.defaultFont}`
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -433,7 +433,7 @@ const getToken = (
   value: string,
   conf: TamaguiInternalConfig,
   theme: any,
-  fontFamily: string | undefined = '$body',
+  fontFamily: string | undefined,
   languageContext?: LanguageContextType,
   resolveAs?: ResolveVariableTypes,
   debug?: DebugProp
@@ -462,11 +462,14 @@ const getToken = (
       case 'lineHeight':
       case 'letterSpacing':
       case 'fontWeight': {
-        const fontsParsed = languageContext
-          ? getFontsForLanguage(conf.fontsParsed, languageContext)
-          : conf.fontsParsed
-        valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
-        hasSet = true
+        if (fontFamily) {
+          const fontsParsed = languageContext
+            ? getFontsForLanguage(conf.fontsParsed, languageContext)
+            : conf.fontsParsed
+          valOrVar =
+            fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+          hasSet = true
+        }
         break
       }
     }
