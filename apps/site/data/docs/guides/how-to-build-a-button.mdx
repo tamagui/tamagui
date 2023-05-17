@@ -4,7 +4,7 @@ description: Learn how to create a custom button, or any other type of component
 hero: HowToBuildAButton
 ---
 
-<HeroContainer>
+<HeroContainer noScroll>
   <BuildAButtonDemo />
 </HeroContainer>
 
@@ -45,7 +45,7 @@ import {
 import { cloneElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
-  size: '$4' as SizeTokens,
+  size: '$md' as SizeTokens,
 })
 
 export const ButtonFrame = styled(Stack, {
@@ -79,7 +79,7 @@ export const ButtonFrame = styled(Stack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$md',
   },
 })
 
@@ -565,7 +565,7 @@ Notice we also exported a new property on Button, `Button.Props`. Since `createS
 import { Button } from './OurButton'
 
 export default () => (
-  <Button.Props size="$4">
+  <Button.Props size="$md">
     <Button>
       <Button.Text>
         Hello world

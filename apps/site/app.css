@@ -554,7 +554,7 @@ input, textarea {
 }
 
 .t_dark .docs-paragraph {
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .custom-scroll ::-webkit-scrollbar{

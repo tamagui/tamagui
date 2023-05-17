@@ -377,7 +377,7 @@ export const components = {
 
   li: (props) => {
     return (
-      <LI size="$6" my="$2">
+      <LI size="$6" my="$1.5" className="docs-paragraph">
         {props.children}
       </LI>
     )

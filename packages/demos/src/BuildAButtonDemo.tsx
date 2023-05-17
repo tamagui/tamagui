@@ -6,19 +6,26 @@ const outlined = {
   borderWidth: 2,
   borderColor: '$background',
   borderRadius: '$10',
+
+  hoverStyle: {
+    backgroundColor: 'transparent',
+    borderColor: '$backgroundPress',
+  },
 }
 
 export function BuildAButtonDemo() {
   return (
-    <XStack mah={200} y={-100} x={-10} rotate="-10deg">
-      <ButtonCol y={-20} size="$2" {...outlined} subTheme="alt1" borderWidth={1} />
-      <ButtonCol y={-110} />
-      <ButtonCol y={-100} {...outlined} />
-      <ButtonCol {...outlined} icon={<Hand />} />
-      <ButtonCol size="$6" subTheme="alt2" />
-      <ButtonCol size="$6" subTheme="alt2" {...outlined} />
-      <ButtonCol size="$8" subTheme="alt2" iconAfter={<Drumstick />} {...outlined} />
-    </XStack>
+    <YStack fullscreen ov="hidden">
+      <XStack mah={200} y={-100} x={-40} rotate="-10deg">
+        <ButtonCol y={35} size="$2" {...outlined} subTheme="alt1" borderWidth={1} />
+        <ButtonCol y={30} />
+        <ButtonCol y={-50} {...outlined} />
+        <ButtonCol {...outlined} icon={<Hand />} />
+        <ButtonCol size="$6" subTheme="alt2" />
+        <ButtonCol size="$6" subTheme="alt2" {...outlined} />
+        <ButtonCol size="$8" subTheme="alt2" iconAfter={<Drumstick />} {...outlined} />
+      </XStack>
+    </YStack>
   )
 }
 
