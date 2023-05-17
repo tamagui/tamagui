@@ -2,7 +2,9 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import StickyBox from 'react-sticky-box'
 import { H1, H2, Paragraph, XStack, YStack, styled } from 'tamagui'
 
 import { CodeInline } from '../components/Code'
@@ -73,8 +75,8 @@ export default function TakeoutPage() {
 
             <Canvas
               style={{
-                width: '100%',
-                height: '100%',
+                width: '150%',
+                height: '150%',
                 position: 'absolute',
                 top: 0,
                 left: 0,
@@ -87,57 +89,71 @@ export default function TakeoutPage() {
             </Canvas>
           </YStack>
 
-          <XStack space="$10">
-            <YStack>
-              <H2 mt={20} ta="right" fontFamily="$munro">
-                Jan
-                <br />
-                01
-              </H2>
-            </YStack>
+          <YStack marginTop={-100}>
+            <XStack space="$10">
+              <XStack f={1} pt={100}>
+                <YStack px="$6">
+                  <H2 mt={20} ta="right" fontFamily="$munro">
+                    Jan
+                    <br />
+                    01
+                  </H2>
+                </YStack>
 
-            <YStack f={1} space="$8">
-              <MunroP size="$13">Tamagui takeout - the starter kit is reborn.</MunroP>
-              <MunroP size="$9">
-                What happens when you rethink boostraps from the ground up?
-              </MunroP>
-              <MunroP size="$10" color="$yellow10">
-                You design it to last.
-              </MunroP>
-              <MunroP size="$9">
-                The included&nbsp;
-                <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command keeps
-                your repo in sync with the starter repo with carefully designed separation
-                of engine and functionality, and a custom diff-merge tool. Avoid painful
-                long-term divergence and manually copy-pasting updates.
-                <br />
-                <br />
-                Besides, it sets you up with the ideal Tamagui stack, already the most
-                productive UI system in existence.
-              </MunroP>
-            </YStack>
+                <YStack f={1} space="$8">
+                  <MunroP size="$13">The starter kit, reborn</MunroP>
 
-            <YStack w={3} mih={500} h="100%" bc="$color" />
+                  <XStack>
+                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  </XStack>
 
-            <YStack>
-              <TakeoutCardFrame
-                maw={340}
-                als="center"
-                h={600}
-                space="$2"
-                shadowRadius={100}
-                shadowColor="#000"
-              >
-                <Paragraph fontFamily="$munro" size="$8" theme="alt2">
-                  Drop 0001
-                </Paragraph>
+                  <MunroP size="$10" color="$yellow10">
+                    A bootstrap made to last.
+                  </MunroP>
+                  <MunroP size="$9">
+                    The included&nbsp;
+                    <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command
+                    keeps your repo in sync with the starter repo with carefully designed
+                    separation of engine and functionality, and a custom diff-merge tool.
+                    Avoid painful long-term divergence and manually copy-pasting updates.
+                    <br />
+                    <br />
+                    Besides, it sets you up with the ideal Tamagui stack, already the most
+                    productive UI system in existence.
+                  </MunroP>
+                </YStack>
+              </XStack>
 
-                <Paragraph fontFamily="$munro" size="$10">
-                  Universal App Starter
-                </Paragraph>
-              </TakeoutCardFrame>
-            </YStack>
-          </XStack>
+              <YStack mt={200} w={3} mih={500} h="100%" bc="$color" />
+
+              <YStack>
+                <StickyBox>
+                  <TakeoutCardFrame
+                    zi={1000}
+                    maw={340}
+                    als="center"
+                    h={600}
+                    space="$2"
+                    shadowRadius={100}
+                    shadowColor="#000"
+                    x={-100}
+                  >
+                    <Paragraph fontFamily="$munro" size="$8" theme="alt2">
+                      Drop 0001
+                    </Paragraph>
+
+                    <Paragraph fontFamily="$munro" size="$10">
+                      Universal App Starter
+                    </Paragraph>
+                  </TakeoutCardFrame>
+                </StickyBox>
+              </YStack>
+            </XStack>
+          </YStack>
         </ContainerXL>
       </YStack>
     </>
@@ -157,7 +173,7 @@ const TAKEOUT = (props) => (
     color="$backgroundStrong"
     fontFamily="$glusp"
     fontSize={280}
-    lineHeight={205}
+    lineHeight={215}
     mt={40}
     ta="center"
     {...props}

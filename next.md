@@ -15,8 +15,7 @@ high level:
   - income:
     - font packages + font package builder ui
     - merch
-    - outlined theme
-    - other theme drops (gumroad cheap)
+    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
     - auth/account/profile drop
     - better monorepo pro drop
 
