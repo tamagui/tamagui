@@ -99,7 +99,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           <YStack
             position="relative"
             {...(isCutoff && {
-              maxHeight: 500,
+              maxHeight: 400,
               ov: 'hidden',
               br: '$4',
             })}
