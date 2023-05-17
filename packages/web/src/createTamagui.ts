@@ -234,6 +234,9 @@ ${getAllRules().join(separator)}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
+  // defaults to the first font to make life easier
+  const defaultFont = configIn.defaultFont || Object.keys(configIn.fonts)[0]
+
   const config: TamaguiInternalConfig = {
     onlyAllowShorthands: false,
     fontLanguages: [],
@@ -254,7 +257,7 @@ ${getAllRules().join(separator)}`
     parsed: true,
     getNewCSS,
     getCSS,
-    defaultFont: configIn.defaultFont,
+    defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }

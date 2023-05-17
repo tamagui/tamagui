@@ -96,7 +96,6 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        isScrollable={scrollable !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >

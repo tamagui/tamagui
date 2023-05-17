@@ -19,7 +19,7 @@ import React, {
   useRef,
 } from 'react'
 
-import { onConfiguredOnce } from './config'
+import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
@@ -177,14 +177,16 @@ export function createComponent<
     const { context } = staticConfig
     if (context) {
       const contextValue = useContext(context)
-      for (const key in context.variants) {
-        if (!(key in props)) {
+      const { inverseShorthands } = getConfig()
+      for (const key in context.props) {
+        const propVal = props[key] || props[inverseShorthands[key]]
+        if (propVal == null) {
           if (contextValue) {
             props[key] = contextValue[key]
           }
         } else {
           provided ||= {}
-          provided[key] = props[key]
+          provided[key] = propVal
         }
       }
     }
@@ -918,7 +920,7 @@ export function createComponent<
     defaultProps = restProps
 
     if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
-      defaultProps.fontFamily = conf.defaultFont
+      defaultProps.fontFamily = `$${conf.defaultFont}`
     }
 
     // add debug logs
