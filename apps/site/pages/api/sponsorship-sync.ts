@@ -60,11 +60,12 @@ const handler: NextApiHandler = async (req, res) => {
     // create a new personal team for the user if they are a personal sponsor and don't have a personal team
     const team = await supabaseAdmin
       .from('teams')
-      .insert({
+      .upsert({
         github_id: githubStatus.personal.sponsorMeta.id,
         name: `Personal Team of ${githubLogin}`,
         is_personal: true,
         tier: githubStatus.personal.tier.id,
+        is_active: true,
         // TODO: expires_at
       })
       .select('id')
@@ -72,7 +73,7 @@ const handler: NextApiHandler = async (req, res) => {
     if (team.error) {
       throw new Error(team.error.message)
     }
-    await supabaseAdmin.from('memberships').insert({
+    await supabaseAdmin.from('memberships').upsert({
       team_id: team.data.id,
       user_id: user.id,
     })
@@ -104,7 +105,8 @@ const handler: NextApiHandler = async (req, res) => {
       // if this user is the first member from the org to sync, create the org first
       const newTeam = await supabaseAdmin
         .from('teams')
-        .insert({
+        .upsert({
+          is_active: true,
           is_personal: false,
           name: org.sponsorMeta.name,
           github_id: org.sponsorMeta.id,
@@ -116,12 +118,12 @@ const handler: NextApiHandler = async (req, res) => {
         throw new Error(newTeam.error.message)
       }
       const teamId = newTeam.data.id
-      await supabaseAdmin.from('memberships').insert({
+      await supabaseAdmin.from('memberships').upsert({
         team_id: teamId,
         user_id: user.id,
       })
     } else {
-      // if the org is already created and the user is not a part of it, add the user
+      // the org is already created, if the user is not a part of it, add the user
       for (const toAdd of userTeams.filter(
         (team) =>
           !!team?.github_id &&
@@ -129,7 +131,7 @@ const handler: NextApiHandler = async (req, res) => {
           !teamsToAdd.data.some((dbTeam) => dbTeam.github_id === team.github_id)
       )) {
         if (!toAdd) continue
-        await supabaseAdmin.from('memberships').insert({
+        await supabaseAdmin.from('memberships').upsert({
           team_id: toAdd?.id,
           user_id: user.id,
         })

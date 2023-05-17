@@ -185,6 +185,7 @@ export interface Database {
           created_at: string | null
           github_id: string | null
           id: number
+          is_active: boolean
           is_personal: boolean
           name: string | null
           tier: string | null
@@ -193,6 +194,7 @@ export interface Database {
           created_at?: string | null
           github_id?: string | null
           id?: number
+          is_active: boolean
           is_personal: boolean
           name?: string | null
           tier?: string | null
@@ -201,6 +203,7 @@ export interface Database {
           created_at?: string | null
           github_id?: string | null
           id?: number
+          is_active?: boolean
           is_personal?: boolean
           name?: string | null
           tier?: string | null

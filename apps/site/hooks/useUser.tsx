@@ -62,7 +62,7 @@ export const MyUserContextProvider = (props: Props) => {
   }
 
   const getUserTeams = async () => {
-    const result = await supabase.from('teams').select('*')
+    const result = await supabase.from('teams').select('*').eq("is_active", true)
     if (result.error) throw new Error(result.error.message)
     return result.data
   }
