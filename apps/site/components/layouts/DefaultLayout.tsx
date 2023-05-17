@@ -9,7 +9,6 @@ import { SearchProvider } from '../Search'
 export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SearchProvider>
-      <TitleAndMetaTags title="Tamagui" description="A better universal UI system." />
       <Suspense fallback={null}>
         <ToastProvider swipeDirection="horizontal">
           {children}
