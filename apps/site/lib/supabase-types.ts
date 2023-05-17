@@ -23,6 +23,26 @@ export interface Database {
           stripe_customer_id?: string | null
         }
       }
+      memberships: {
+        Row: {
+          created_at: string | null
+          id: number
+          team_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          team_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          team_id?: number
+          user_id?: string
+        }
+      }
       prices: {
         Row: {
           active: boolean | null
@@ -90,6 +110,23 @@ export interface Database {
           name?: string | null
         }
       }
+      studio_enlist: {
+        Row: {
+          created_at: string | null
+          id: number
+          sponsor_id: number
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          sponsor_id: number
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          sponsor_id?: number
+        }
+      }
       subscriptions: {
         Row: {
           cancel_at: string | null
@@ -141,6 +178,32 @@ export interface Database {
           trial_end?: string | null
           trial_start?: string | null
           user_id?: string
+        }
+      }
+      teams: {
+        Row: {
+          created_at: string | null
+          github_id: string | null
+          id: number
+          is_personal: boolean
+          name: string | null
+          tier: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          github_id?: string | null
+          id?: number
+          is_personal: boolean
+          name?: string | null
+          tier?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          github_id?: string | null
+          id?: number
+          is_personal?: boolean
+          name?: string | null
+          tier?: string | null
         }
       }
       users: {

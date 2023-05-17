@@ -46,11 +46,12 @@ const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
 }
 
 const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
-  const { accessStatus } = useUser()
+  // TODO: bring this check back
+  // const { accessStatus } = useUser()
 
-  if (!accessStatus) {
-    return <Spinner />
-  }
+  // if (!accessStatus) {
+  //   return <Spinner />
+  // }
 
   // if (accessStatus.isWhitelisted) {
   //   return (
@@ -62,15 +63,15 @@ const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
   // }
 
 
-  if (!accessStatus.access.studio.access) {
-    return (
-      <ErrorScreen
-        title="You don't have access to Studio"
-        message={accessStatus.access.studio.message}
-        action={{ url: `${siteRootDir}/account#studio-queue`, text: 'More Info' }}
-      />
-    )
-  }
+  // if (!accessStatus.access.studio.access) {
+  //   return (
+  //     <ErrorScreen
+  //       title="You don't have access to Studio"
+  //       message={accessStatus.access.studio.message}
+  //       action={{ url: `${siteRootDir}/account#studio-queue`, text: 'More Info' }}
+  //     />
+  //   )
+  // }
 
   return <>{children}</>
 }

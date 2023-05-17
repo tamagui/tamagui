@@ -8,8 +8,12 @@ export function useForwardToDashboard() {
   const router = useRouter()
 
   useEffect(() => {
-    if (user && !isLoading) {
-      router.replace('/account')
+    const main = async () => {
+      if (user && !isLoading) {
+        await fetch('/api/sponsorship-sync', { method: 'POST' })
+        await router.replace('/account')
+      }
     }
+    main()
   }, [user, isLoading])
 }
