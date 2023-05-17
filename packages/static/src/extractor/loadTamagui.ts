@@ -147,12 +147,6 @@ export async function getOptions({
   host,
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
-  const tsConfigFilePath = join(root, tsconfigPath)
-
-  if (!(await fs.pathExists(tsConfigFilePath))) {
-    throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
-  }
-
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 

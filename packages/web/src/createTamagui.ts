@@ -1,7 +1,7 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { createVariables, tokensKeysOrdered } from './createVariables'
+import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
@@ -56,10 +56,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })
   )
 
+  let fontSizeTokens: Set<string> | null = null
+
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
-      res[`$${familyName}`] = parseFont(fontTokens[familyName])
+      const font = fontTokens[familyName]
+      const fontParsed = parseFont(font)
+      res[`$${familyName}`] = fontParsed
+      if (!fontSizeTokens && fontParsed.size) {
+        fontSizeTokens = new Set(Object.keys(fontParsed.size))
+      }
     }
     return res!
   })()
@@ -196,7 +203,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: any = Object.fromEntries(
     Object.entries(configIn.tokens).map(([k, v]) => {
       const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      tokensKeysOrdered.set(val, tokensKeysOrdered.get(v))
       return [k, val]
     })
   )
@@ -228,6 +234,9 @@ ${getAllRules().join(separator)}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
+  // defaults to the first font to make life easier
+  const defaultFont = configIn.defaultFont || Object.keys(configIn.fonts)[0]
+
   const config: TamaguiInternalConfig = {
     onlyAllowShorthands: false,
     fontLanguages: [],
@@ -248,6 +257,8 @@ ${getAllRules().join(separator)}`
     parsed: true,
     getNewCSS,
     getCSS,
+    defaultFont,
+    fontSizeTokens: fontSizeTokens || new Set(),
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }

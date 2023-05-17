@@ -50,7 +50,7 @@ export default memo(() => {
   return (
     <Slide
       title="Partial Evaluation"
-      subTitle="Performance worries gone"
+      subTitle="No need to name styles or worry about performance"
       theme="green"
       steps={[
         [

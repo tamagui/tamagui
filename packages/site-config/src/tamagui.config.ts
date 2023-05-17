@@ -39,11 +39,12 @@ const headingFont = createInterFont(
       6: 1,
       7: 0,
       8: 0,
-      9: -1,
-      10: -1.5,
-      12: -2,
-      14: -3,
-      15: -4,
+      9: -0.5,
+      10: -0.75,
+      11: -1,
+      12: -1.25,
+      14: -1.75,
+      15: -3,
     },
     // for native
     face: {
@@ -99,6 +100,7 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
+  defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,

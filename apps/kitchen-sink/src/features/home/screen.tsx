@@ -42,6 +42,7 @@ export function HomeScreen() {
           Kitchen Sink
         </H1>
 
+        {/* 
         <Button
           onPress={() => {
             updateTheme({
@@ -62,7 +63,7 @@ export function HomeScreen() {
           test
         </Button>
 
-        <SubComponent />
+        <SubComponent /> */}
 
         <YGroup size="$4">
           <YGroup.Item>
@@ -120,18 +121,17 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem
-      {...props}
-      pressTheme
-      paddingVertical={0}
-      onPress={() => {
-        theme.set(theme.value === 'dark' ? 'light' : 'dark')
-      }}
-    >
+    <ListItem {...props} pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
-      <Switch checked={checked}>
+      <Switch
+        native
+        checked={checked}
+        onCheckedChange={() => {
+          theme.set(theme.value === 'dark' ? 'light' : 'dark')
+        }}
+      >
         <Switch.Thumb
           animation={[
             'quick',

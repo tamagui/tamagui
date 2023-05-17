@@ -2,7 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { DialogDemo, SheetDemo } from '@tamagui/demos'
+import { SandboxHeading } from '@tamagui/sandbox-ui'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
@@ -12,9 +12,10 @@ import {
   Theme,
   XStack,
   YStack,
-  getStylesAtomic,
+  getStylesAtomic
 } from 'tamagui'
 
+import { CustomButtonDemo } from './CustomButton'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -42,11 +43,44 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <DialogDemo />
-  // return <TooltipDemo />
-  // return <TestPerf />
-  // return <Square animation="bouncy" size={100} bc="red" />
+  return (
+    <SandboxHeading>
+      sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    </SandboxHeading>
+  )
+  return <CustomButtonDemo />
 }
+
+// function TestAnimatePresence() {
+//   const [show, setShow] = useState(true)
+
+//   return (
+//     <>
+//       <Button onPress={() => setShow(!show)}>hide</Button>
+//       <AnimatePresence>
+//         {show && (
+//           <Square
+//             animation="quick"
+//             size={100}
+//             bc="red"
+//             y={0}
+//             o={1}
+//             hoverStyle={{
+//               y: -10,
+//             }}
+//             enterStyle={{
+//               y: -100,
+//             }}
+//             exitStyle={{
+//               y: 100,
+//               o: 0,
+//             }}
+//           />
+//         )}
+//       </AnimatePresence>
+//     </>
+//   )
+// }
 
 function TestPerf() {
   return <Button onPress={runTestPerf}>run</Button>

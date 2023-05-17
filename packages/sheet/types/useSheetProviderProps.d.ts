@@ -2,7 +2,12 @@ import { TamaguiElement } from '@tamagui/core';
 import React from 'react';
 import { ScrollBridge, SheetProps } from './types';
 import { SheetOpenState } from './useSheetOpenState';
-export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState): {
+export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;
+export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
+    onOverlayComponent?: (comp: any) => void;
+}): {
+    removeScrollEnabled: boolean | undefined;
+    scrollBridge: ScrollBridge;
     modal: boolean;
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,12 +17,12 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     setFrameSize: React.Dispatch<React.SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
     dismissOnSnapToBottom: boolean;
+    onOverlayComponent: ((comp: any) => void) | undefined;
     scope: import("@tamagui/create-context").Scope<any>;
     position: number;
     snapPoints: number[];
     setPosition: (next: number) => void;
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
-    scrollBridge: ScrollBridge;
+    onlyShowFrame: boolean;
 };
-export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

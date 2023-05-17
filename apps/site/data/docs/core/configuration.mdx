@@ -203,7 +203,24 @@ The `createTamagui` function receives a configuration object:
 - `defaultProps`: For more advanced uses, you can override all named `styled()` components initial values. These merge downwards, so `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for `Text`.
 - `onlyAllowShorthands` when set to true will ensure that if you define shorthands, they override existing long-form style props.
 
-Note, for `tamagui`, it expects certain things on tokens. Space and size should both have 1-10 defined, as well as a value for `true` that maps to `4`.
+Note, for `tamagui` (not core), it expects you to define a `true` token that maps to your default size, this way it knows what token to use by default. So you'd do something like this:
+
+```tsx
+export const tokens = createTokens({
+  size: {
+    small: 20,
+    medium: 30,
+    true: 30, // note true = 30 just like medium, your default size token
+    large: 40,
+  },
+  space: {
+    small: 10,
+    medium: 20,
+    true: 20, // same goes for space and other token categories
+    large: 30,
+  },
+})
+```
 
 <Notice>
   The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
@@ -515,6 +532,11 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
 
 <PropsTable
   data={[
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+    },
     {
       name: 'mediaQueryDefaultActive',
       required: false,

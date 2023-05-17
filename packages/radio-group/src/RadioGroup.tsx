@@ -13,7 +13,7 @@ import {
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'

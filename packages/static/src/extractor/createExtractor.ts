@@ -38,10 +38,7 @@ import {
   objToStr,
 } from './extractHelpers'
 import { findTopmostFunction } from './findTopmostFunction'
-import {
-  cleanupBeforeExit,
-  getStaticBindingsForScope,
-} from './getStaticBindingsForScope'
+import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
@@ -73,7 +70,6 @@ const validHooks = {
   useTheme: true,
 }
 
-const isAttr = (x: ExtractedAttr): x is ExtractedAttrAttr => x.type === 'attr'
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>

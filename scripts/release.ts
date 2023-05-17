@@ -20,6 +20,7 @@ const exec = promisify(proc.exec)
 export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
+const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
 const rePublish = process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
 
@@ -75,12 +76,13 @@ async function run() {
     if (!finish) {
       // ensure we are up to date
       // ensure we are on master
-      if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
-        throw new Error(`Not on master`)
-      }
-
-      if (!dirty) {
-        await spawnify(`git pull --rebase origin master`)
+      if (!canary) {
+        if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
+          throw new Error(`Not on master`)
+        }
+        if (!dirty) {
+          await spawnify(`git pull --rebase origin master`)
+        }
       }
 
       const workspaces = (await exec(`yarn workspaces list --json`)).stdout
@@ -290,6 +292,18 @@ async function run() {
         console.log(
           `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
         )
+      }
+
+      if (confirmFinalPublish) {
+        const { confirmed } = await prompts({
+          type: 'confirm',
+          name: 'confirmed',
+          message: 'Ready to publish?',
+        })
+        if (!confirmed) {
+          console.log(`Not confirmed, can re-run with --republish to try again`)
+          process.exit(0)
+        }
       }
 
       await sleep(4 * 1000)

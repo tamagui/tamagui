@@ -822,6 +822,10 @@ export const getSplitStyles: StyleSplitter = (
     const valInit = props[keyInit]
     processProp(keyInit, valInit)
   }
+
+  // default to default font
+  fontFamily ||= conf.defaultFont
+
   // loop the special props once again
   // this one doesn't need to be backwards since it was pushed in the backwards loop (is already reversed)
   for (let i = 0; i < specialProps.length; i++) {

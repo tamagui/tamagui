@@ -40,7 +40,7 @@ import {
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
 import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -321,6 +321,7 @@ const PopoverContentImpl = React.forwardRef<
   } = props
   const popperScope = usePopoverScope(__scopePopover)
   const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
@@ -341,6 +342,14 @@ const PopoverContentImpl = React.forwardRef<
     )
   }
 
+  if (context.open && isFullyHidden) {
+    setIsFullyHidden(false)
+  }
+
+  if (isFullyHidden) {
+    return null
+  }
+
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
   //   context.onOpenChange(false);
   // }, [])
@@ -354,7 +363,11 @@ const PopoverContentImpl = React.forwardRef<
   //   >
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        setIsFullyHidden(true)
+      }}
+    >
       {!!context.open && (
         <PopperContent
           key={context.contentId}
@@ -543,7 +556,7 @@ export const Popover = withStaticProperties(
     Close: PopoverClose,
     Adapt,
     ScrollView: PopoverScrollView,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
   }
 )
 

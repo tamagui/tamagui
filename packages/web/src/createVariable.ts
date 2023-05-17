@@ -50,7 +50,7 @@ export function isVariable(v: Variable | any): v is Variable {
   return v && typeof v === 'object' && IS_VAR in v
 }
 
-export function getVariable(nameOrVariable: Variable | string) {
+export function getVariable(nameOrVariable: Variable | string | any) {
   setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)

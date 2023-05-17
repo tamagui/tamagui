@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -43,93 +43,17 @@ const Icon = (props) => {
         y="4"
         rx="2"
         ry="2"
-        fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Line
-        x1="16"
-        x2="16"
-        y1="2"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="8"
-        x2="8"
-        y1="2"
-        y2="6"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="3"
-        x2="21"
-        y1="10"
-        y2="10"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M8 14h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M12 14h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M16 14h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M8 18h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M12 18h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M16 18h.01"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="16" x2="16" y1="2" y2="6" stroke={`${color}`} />
+      <Line x1="8" x2="8" y1="2" y2="6" stroke={`${color}`} />
+      <Line x1="3" x2="21" y1="10" y2="10" stroke={`${color}`} />
+      <Path d="M8 14h.01" stroke={`${color}`} />
+      <Path d="M12 14h.01" stroke={`${color}`} />
+      <Path d="M16 14h.01" stroke={`${color}`} />
+      <Path d="M8 18h.01" stroke={`${color}`} />
+      <Path d="M12 18h.01" stroke={`${color}`} />
+      <Path d="M16 18h.01" stroke={`${color}`} />
     </Svg>
   )
 }

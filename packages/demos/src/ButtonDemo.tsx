@@ -18,10 +18,10 @@ export function ButtonDemo(props) {
       </XStack>
       <XStack space="$2">
         <Button themeInverse size="$3">
-          Small Inverse
+          Inverse
         </Button>
         <Button iconAfter={Activity} size="$3">
-          After
+          iconAfter
         </Button>
       </XStack>
       <XGroup>

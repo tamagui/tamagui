@@ -39,6 +39,11 @@ export default memo(() => {
               },
             ],
           },
+
+          {
+            type: 'text-overlay',
+            content: `Stack => div`,
+          },
         ],
 
         [

@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -36,53 +36,11 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <_Circle
-        cx="18"
-        cy="18"
-        r="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <_Circle
-        cx="6"
-        cy="6"
-        r="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M18 6V5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M18 11v-1"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="6"
-        x2="6"
-        y1="9"
-        y2="21"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <_Circle cx="18" cy="18" r="3" stroke={`${color}`} />
+      <_Circle cx="6" cy="6" r="3" stroke={`${color}`} />
+      <Path d="M18 6V5" stroke={`${color}`} />
+      <Path d="M18 11v-1" stroke={`${color}`} />
+      <Line x1="6" x2="6" y1="9" y2="21" stroke={`${color}`} />
     </Svg>
   )
 }

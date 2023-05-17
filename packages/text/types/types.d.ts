@@ -1,5 +1,5 @@
 import { SizableTextProps } from './SizableText';
-export type TextParentStyles = {
+export type TextContextStyles = {
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
     fontSize?: SizableTextProps['fontSize'];
@@ -7,6 +7,8 @@ export type TextParentStyles = {
     fontStyle?: SizableTextProps['fontStyle'];
     letterSpacing?: SizableTextProps['letterSpacing'];
     textAlign?: SizableTextProps['textAlign'];
+};
+export type TextParentStyles = TextContextStyles & {
     textProps?: Partial<SizableTextProps>;
     noTextWrap?: boolean;
 };

@@ -1,8 +1,7 @@
 import { createCodeHighlighter } from '@lib/highlightCode'
 import { Slide } from 'components/Slide'
-import React from 'react'
 import { memo } from 'react'
-import { Paragraph, Square, Stack, Theme, XStack, YStack, styled } from 'tamagui'
+import { Paragraph, Square, Stack, Theme, styled } from 'tamagui'
 
 const highlightCode = createCodeHighlighter()
 
@@ -67,10 +66,7 @@ const outputSnippetSub = highlightCode(
 )
 
 const snippetUsage = highlightCode(
-  `
-import { Stack, Text, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Stack backgroundColor="$background">
       <Text color="$color">
@@ -84,10 +80,7 @@ export default () => (
 )
 
 const snippetUsage2 = highlightCode(
-  `
-import { Stack, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
   </Theme>
@@ -105,10 +98,7 @@ const MyWidget = () => (
 )
 
 const snippetUsage3 = highlightCode(
-  `
-import { Stack, Theme } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="dark">
     <MyWidget />
   </Theme>
@@ -126,10 +116,7 @@ const MyWidget = () => (
 )
 
 const snippetUsageComplex = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
 
@@ -143,10 +130,7 @@ export default () => (
 )
 
 const snippetUsageInverse = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <MyWidget />
 
@@ -160,10 +144,7 @@ export default () => (
 )
 
 const snippetUsageSub = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-  
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Theme name="red">
       <MyWidget />
@@ -175,10 +156,7 @@ export default () => (
 )
 
 const snippetUsageInverseSub = highlightCode(
-  `
-import { Stack, Text } from '@tamagui/core'
-
-export default () => (
+  `export default () => (
   <Theme name="light">
     <Theme name="red">
       <MyWidget />
@@ -416,125 +394,20 @@ export default memo(() => {
           },
         ],
 
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-1.png').default,
-          },
+        // [
+        //   {
+        //     type: 'image',
+        //     variant: 'centered',
+        //     fullscreen: true,
+        //     image: require('../images/themes-5.png').default,
+        //   },
 
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-2.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `light`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-1.5.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark + inverse`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-4.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_outlined`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-3.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `light_outlined`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-6.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_purple`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-7.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_purple_alt`,
-          },
-        ],
-
-        [
-          {
-            type: 'image',
-            variant: 'centered',
-            fullscreen: true,
-            image: require('../images/themes-5.png').default,
-          },
-
-          {
-            type: 'text-overlay',
-            variant: 'good',
-            content: `dark_green_outlined`,
-          },
-        ],
+        //   {
+        //     type: 'text-overlay',
+        //     variant: 'good',
+        //     content: `dark_green_outlined`,
+        //   },
+        // ],
 
         // [
         //   {

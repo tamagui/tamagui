@@ -127,7 +127,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             top: 0,
             left: 'calc(min(100vw, 1250px))px',
             bottom: 0,
-            width: 230,
+            width: 245,
           }}
         >
           <LinearGradient
@@ -146,7 +146,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 display="none"
                 $gtMd={{
                   display: 'block',
-                  pr: '$6',
+                  pr: '$3',
                   mt: 108,
                   pb: '$18',
                 }}

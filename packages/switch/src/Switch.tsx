@@ -5,6 +5,7 @@ import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  NativeValue,
   SizeTokens,
   getVariableValue,
   isWeb,
@@ -13,12 +14,17 @@ import {
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
-import { getSize } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { View } from 'react-native'
+import {
+  Switch as NativeSwitch,
+  SwitchProps as NativeSwitchProps,
+  Platform,
+  View,
+} from 'react-native'
 
 const SWITCH_NAME = 'Switch'
 
@@ -161,6 +167,8 @@ export type SwitchProps = SwitchButtonProps & {
   checked?: boolean
   defaultChecked?: boolean
   required?: boolean
+  native?: NativeValue<'mobile' | 'ios' | 'android'>
+  nativeProps?: NativeSwitchProps
   onCheckedChange?(checked: boolean): void
 }
 
@@ -180,8 +188,25 @@ export const Switch = withStaticProperties(
           onCheckedChange,
           size = '$true',
           unstyled = false,
+          native: nativeProp,
+          nativeProps,
           ...switchProps
         } = props
+        const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
+        const shouldRenderMobileNative =
+          (!isWeb && nativeProp === true) ||
+          native.includes('mobile') ||
+          (native.includes('android') && Platform.OS === 'android') ||
+          (native.includes('ios') && Platform.OS === 'ios')
+        if (shouldRenderMobileNative) {
+          return (
+            <NativeSwitch
+              value={checkedProp}
+              onValueChange={onCheckedChange}
+              {...nativeProps}
+            />
+          )
+        }
         const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
         const composedRefs = useComposedRefs(forwardedRef, (node) =>
           setButton(node as any)

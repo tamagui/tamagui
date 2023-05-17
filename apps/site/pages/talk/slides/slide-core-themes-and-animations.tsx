@@ -44,7 +44,7 @@ export default memo(() => {
   return (
     <Slide
       title="Themes + Animations"
-      subTitle="Bringing it all together"
+      subTitle="Avoid renders - when it makes sense"
       stepsStrategy="replace"
       theme="pink"
       steps={[
@@ -82,7 +82,12 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `On the web this doesn't trigger a render on theme change - or even on animation when using the CSS driver`,
+                    content: (
+                      <>
+                        On the web this doesn't trigger a render on theme change - or even
+                        on animation when using the CSS&nbsp;driver.
+                      </>
+                    ),
                   },
                 ],
               },
@@ -106,7 +111,7 @@ export default memo(() => {
                 content: [
                   {
                     type: 'text',
-                    content: `If using Reanimated driver, it re-renders to capture new value`,
+                    content: `With the Reanimated or React Native Animated driver, it will re-render to capture the new value.`,
                   },
                 ],
               },

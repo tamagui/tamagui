@@ -14,9 +14,9 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
@@ -38,31 +38,10 @@ const Icon = (props) => {
     >
       <Path
         d="M22 12a9.92 9.92 0 0 0-3.24-6.41 10.12 10.12 0 0 0-13.52 0A9.92 9.92 0 0 0 2 12Z"
-        fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Path
-        d="M12 12v8a2 2 0 0 0 4 0"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="12"
-        x2="12"
-        y1="2"
-        y2="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M12 12v8a2 2 0 0 0 4 0" stroke={`${color}`} />
+      <Line x1="12" x2="12" y1="2" y2="3" stroke={`${color}`} />
     </Svg>
   )
 }

@@ -33,14 +33,6 @@ export function wrapChildrenInText(
     return [children]
   }
 
-  // in the case of using variables, like so:
-  // <ListItem>Hello, {name}</ListItem>
-  // it gives us props.children as ['Hello, ', 'name']
-  // but we don't want to wrap multiple SizableText around each part
-  // so we group them
-  const allChildren = React.Children.toArray(children)
-  const nextChildren: any[] = []
-  let lastIsString = false
   const props = {
     ...extraProps,
   }
@@ -55,33 +47,14 @@ export function wrapChildrenInText(
   if (size) props.size = size
   if (fontStyle) props.fontStyle = fontStyle
 
-  function concatStringChildren() {
-    if (!lastIsString) return
-    const index = nextChildren.length - 1
-    const childrenStrings = nextChildren[index]
-    nextChildren[index] = (
-      <TextComponent key={index} {...props} {...textProps}>
-        {childrenStrings}
+  return React.Children.toArray(children).map((child, index) => {
+    return typeof child === 'string' ? (
+      // so "data-disable-theme" is a hack to fix themeInverse, don't ask me why
+      <TextComponent data-disable-theme key={index} {...props} {...textProps}>
+        {child}
       </TextComponent>
+    ) : (
+      child
     )
-  }
-
-  for (const child of allChildren) {
-    const last = nextChildren[nextChildren.length - 1]
-    const isString = typeof child === 'string'
-    if (isString) {
-      if (lastIsString) {
-        last.push(child)
-      } else {
-        nextChildren.push([child])
-      }
-    } else {
-      concatStringChildren()
-      nextChildren.push(child)
-    }
-    lastIsString = isString
-  }
-  concatStringChildren()
-
-  return nextChildren
+  })
 }

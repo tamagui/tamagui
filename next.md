@@ -1,45 +1,10 @@
+- add just early return hooks eslint check
 - Popover.Close working inside Adapt Sheet
 - shadowOpacity not being applied
 
-
-```tsx
-const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
-
-const ButtonFrame = styled(Stack, {
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-const ButtonText = styled(Stack, 
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-export const SomeExampleButton = (props: { size: SizeTokens }) => (
-  <ButtonVariant size={props.size}>
-    <ButtonFrame>
-      <ButtonText />
-    </ButtonFrame>
-  </ButtonVariant>
-)
-```
-
 high level:
 
+  - automate sponsors a bit better (link discord on tamagui site)
   - private canary packages on github
   - tiered line system for studio
   - improve tests and docs
@@ -56,6 +21,13 @@ high level:
     - better monorepo pro drop
 
 ---
+
+studio
+- templates working
+- Button.studio.tsx + run locally
+  - give it your app port and it launches electron or just gives you a new url?
+- figma export components
+- figma import tokens
 
 - we could somehow generate separate native and web potentially?
   - basically we generate esbuild two different versions: .native.js and .web.js
@@ -82,6 +54,13 @@ Ali todos:
     - [ ] Themes tab
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
+
+---
+
+2.0
+
+- deprecate `:number` other type variants
+- Text shouldn't have `selectable` / `ellipse` custom stuff?
 
 ---
 
@@ -267,10 +246,10 @@ Ali:
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
   - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
     - we could have a generic ComponentContext internally in createComponent
-    - we can export a createVariantContext()
-    - `const CardVariants = createVariantContext<{ size: number }>()`
+    - we can export a createStyledContext()
+    - `const CardVariants = createStyledContext<{ size: number }>()`
     - then in Card or any parent you can do `<CardVariants size={} />`
-    - finally, in `styled({ variantContext: CardVariants })`
+    - finally, in `styled({ provider: CardVariants })`
 
     <CardVariants.Provider size="$10">
       <Card />
@@ -513,6 +492,62 @@ const SheetOverlay = styled(Sheet.Overlay, {
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
+
+---
+
+## Descendent Styles
+
+### On the parent:
+
+```tsx
+const ButtonFrame = styled(Stack, {
+  ButtonText: {
+    color: 'red',
+  },
+
+  hoverStyle: {
+    ButtonText: {
+      color: 'green'
+    }
+  },
+
+  $small: {
+    hoverStyle: {
+      ButtonText: {
+        color: 'blue'
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+})
+```
+
+### On the child:
+
+```tsx
+const ButtonFrame = styled(Stack, {})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+
+  in_ButtonFrame: {
+    color: 'red',
+
+    hoverStyle: {
+      color: 'green',
+    },
+
+    $small: {
+      hoverStyle: {
+        color: 'blue'
+      }
+    }
+  },
+})
+```
 
 ---
 

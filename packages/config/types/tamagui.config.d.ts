@@ -1,5 +1,6 @@
 export * from './animations';
 export declare const config: {
+    defaultFont: string;
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/web").AnimationDriver<{

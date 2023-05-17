@@ -3,7 +3,6 @@ import { FunctionComponent, useEffect, useRef } from 'react'
 
 import { SheetProvider } from './SheetContext'
 import { SheetProps } from './types'
-import { useSheetChildren } from './useSheetChildren'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -26,7 +25,6 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
       const providerProps = useSheetProviderProps(props, state)
       // const { position } = providerProps
       // const { positions } = useSheetSnapPoints(providerProps)
-      const { frameComponent } = useSheetChildren(props.children)
 
       const { open, setOpen } = state
       const ref = useRef<{
@@ -45,9 +43,9 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
 
       return (
         <>
-          <SheetProvider {...providerProps}>
+          <SheetProvider {...providerProps} onlyShowFrame>
             <Implementation ref={ref} onModalDismiss={() => setOpen(false)}>
-              {frameComponent}
+              {props.children}
             </Implementation>
 
             {/* for some reason select triggers wont show on native if this isn't inside the actual tree not inside implementation... */}
@@ -59,7 +57,7 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
               width={0}
               height={0}
             >
-              {frameComponent}
+              {props.children}
             </YStack>
           </SheetProvider>
         </>

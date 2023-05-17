@@ -5,11 +5,7 @@ import { memo } from 'react'
 const highlightCode = createCodeHighlighter()
 
 const inputSnippet = highlightCode(
-  `import { Stack } from '@tamagui/core'
-import { Heading } from './Heading'
-import { myCustomColor } from './colors'
-
-const App = (props) => (
+  `export default (props) => (
   <Stack
     backgroundColor={myCustomColor}
     width={550}
@@ -27,7 +23,7 @@ const App = (props) => (
 )
 
 const outputSnippet = highlightCode(
-  `export const App = props =>
+  `export default props =>
   <div className={_cn}>
     <h1 className={_cn2 + (
       _cn3 + (props.big ? _cn4 : _cn5)
@@ -63,83 +59,6 @@ export default memo(() => {
               {
                 type: 'code',
                 content: outputSnippet,
-              },
-            ],
-          },
-        ],
-
-        [
-          {
-            type: 'split-horizontal',
-            variant: 'centered',
-            content: [
-              {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'code-inline',
-                        props: {
-                          size: '$10',
-                          marginBottom: 60,
-                          display: 'inline-flex',
-                        },
-                        content: `Extracting CSS`,
-                      },
-                    ],
-                  },
-
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'code-inline',
-                        props: {
-                          size: '$10',
-                          marginBottom: 60,
-                          display: 'inline-flex',
-                        },
-                        content: `Partial evaluation`,
-                      },
-                    ],
-                  },
-                ],
-              },
-
-              {
-                type: 'vertical',
-                content: [
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'code-inline',
-                        props: {
-                          size: '$10',
-                          marginBottom: 60,
-                          display: 'inline-flex',
-                        },
-                        content: `Tree-flattening`,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'bullet-point',
-                    content: [
-                      {
-                        type: 'code-inline',
-                        props: {
-                          size: '$10',
-                          marginBottom: 60,
-                          display: 'inline-flex',
-                        },
-                        content: `Hook removal`,
-                      },
-                    ],
-                  },
-                ],
               },
             ],
           },

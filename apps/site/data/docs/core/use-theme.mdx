@@ -46,21 +46,26 @@ The `useTheme` hook uses proxies to track if you access `variable` and avoid re-
 
 If you access `val` it will consider that theme value dynamic, and if the parent theme changes, it will re-render.
 
-You can use `getVariable` to get `variable` on the web, but `val` on other platforms.
+You can use `.get()` on any value which will automatically resolve to `variable` on the web, but `val` on native.
 
 ```tsx
-import { Stack, getVariable, useTheme } from '@tamagui/core'
+import { Stack, useTheme } from '@tamagui/core'
 import { SomeExternalComponent } from 'some-external-component'
 
-const App = ({ shouldRerender }) => {
+const App = () => {
   const theme = useTheme()
+
+  // on the web this is something like var(--background) and will avoid re-renders
+  // on native it will be something like #fff and will re-render
+  const background = theme.background.get()
+
+  // if you needed to access it in a way that always returns the raw value
+  const backgroundValue = theme.background.val
 
   return (
     <SomeExternalComponent
       style={{
-        backgroundColor: shouldRerender
-          ? theme.background.val
-          : getVariable(theme.background),
+        backgroundColor: background,
       }}
     />
   )
@@ -173,7 +178,7 @@ You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will
 
 ### getVariable
 
-So if you access only `theme.bg` in your render function, the component will only re-render when theme.bg changes.
+If you access `theme.bg.val` in your render function, the component will only re-render when theme.bg changes.
 
 ````tsx
 import { theme, Stack } from '@tamagui/core'
@@ -181,14 +186,14 @@ import { theme, Stack } from '@tamagui/core'
 export default () => {
   const theme = useTheme()
 
-  //
+  // access the value
   console.log(theme.bg.val)
 
   return (
     <Stack backgroundColor={theme.color1} />
   )
 }
-```getVariable
+```
 
 ## Changing the theme at the hook level
 
