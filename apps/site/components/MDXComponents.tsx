@@ -377,7 +377,11 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    return <LI my="$1">{props.children}</LI>
+    return (
+      <LI fontSize="$4" my="$2">
+        {props.children}
+      </LI>
+    )
   },
 
   strong: (props) => (
