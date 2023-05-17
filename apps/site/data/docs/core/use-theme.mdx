@@ -178,7 +178,7 @@ You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will
 
 ### getVariable
 
-So if you access only `theme.bg` in your render function, the component will only re-render when theme.bg changes.
+If you access `theme.bg.val` in your render function, the component will only re-render when theme.bg changes.
 
 ````tsx
 import { theme, Stack } from '@tamagui/core'
@@ -186,14 +186,14 @@ import { theme, Stack } from '@tamagui/core'
 export default () => {
   const theme = useTheme()
 
-  //
+  // access the value
   console.log(theme.bg.val)
 
   return (
     <Stack backgroundColor={theme.color1} />
   )
 }
-```getVariable
+```
 
 ## Changing the theme at the hook level
 
