@@ -1,9 +1,8 @@
 import { getBlogLayout } from '@components/layouts/BlogLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
-import { getOgUrl } from '@lib/og'
 import { NextLink } from 'components/NextLink'
+import { NextSeo } from 'next-seo'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
@@ -12,7 +11,7 @@ import { TamaguiCard } from '../../components/TamaguiCard'
 export default function Blog({ frontmatters }) {
   return (
     <>
-      <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
+      <NextSeo title="Blog — Tamagui" description="What's up with Tamagui." />
       <Spacer size="$7" />
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog

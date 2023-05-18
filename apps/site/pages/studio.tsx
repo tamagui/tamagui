@@ -1,4 +1,4 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { ThemeTint } from '@tamagui/logo'
 import { Lock } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
@@ -42,7 +42,7 @@ export default function StudioSplashPage() {
 
   return (
     <>
-      <TitleAndMetaTags title="Tamagui Studio" description="Tamagui Studio" />
+      <NextSeo title="Tamagui Studio" description="Tamagui Studio" />
 
       <Head>
         <LoadInter900 />

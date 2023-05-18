@@ -5985,6 +5985,7 @@ __metadata:
     mdx-bundler: ^9.0.1
     next: ^13.3.0
     next-remote-watch: ^2.0.0
+    next-seo: ^6.0.0
     nextjs-progressbar: ^0.0.14
     parse-numeric-range: ^1.3.0
     preact: ^10.11.0
@@ -17672,6 +17673,17 @@ __metadata:
   bin:
     next-remote-watch: bin/next-remote-watch
   checksum: df8136db8a711856911d919d1a28327039d7f4c1e51b122979e76b5e07e982ad97a44c1098ca8a296f914d9042f538e3c071a1e5fb5759fc39324bfb6f0b5b5c
+  languageName: node
+  linkType: hard
+
+"next-seo@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "next-seo@npm:6.0.0"
+  peerDependencies:
+    next: ^8.1.1-canary.54 || >=9.0.0
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: aa986b3731386bc91408df6bca09a9edc0cdd8a7730bcdc331f283ab50803a6d60047b685eeec4b11bde1660dbb792e3737e81ef05a65682323d0d07fa9edd85
   languageName: node
   linkType: hard
 

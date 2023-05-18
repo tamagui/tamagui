@@ -3,7 +3,6 @@ import { GithubIcon } from '@components/GithubIcon'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
@@ -11,6 +10,7 @@ import { Provider } from '@supabase/supabase-js'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -29,10 +29,7 @@ import {
 export default function Page() {
   return (
     <>
-      <TitleAndMetaTags
-        title="Account — Tamagui"
-        description="A better universal UI system."
-      />
+      <NextSeo title="Account — Tamagui" description="A better universal UI system." />
 
       <Account />
     </>
