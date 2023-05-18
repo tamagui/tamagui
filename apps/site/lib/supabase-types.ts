@@ -110,23 +110,6 @@ export interface Database {
           name?: string | null
         }
       }
-      studio_enlist: {
-        Row: {
-          created_at: string | null
-          id: number
-          sponsor_id: number
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          sponsor_id: number
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          sponsor_id?: number
-        }
-      }
       subscriptions: {
         Row: {
           cancel_at: string | null
@@ -188,6 +171,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name: string | null
+          studio_queued_at: string
           tier: string | null
         }
         Insert: {
@@ -197,6 +181,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name?: string | null
+          studio_queued_at?: string
           tier?: string | null
         }
         Update: {
@@ -206,6 +191,7 @@ export interface Database {
           is_active?: boolean
           is_personal?: boolean
           name?: string | null
+          studio_queued_at?: string
           tier?: string | null
         }
       }

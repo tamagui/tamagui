@@ -16,7 +16,7 @@ import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Avatar,
   Button,
@@ -173,7 +173,45 @@ const ProfileContent = () => {
   )
 }
 
-const QueueCard = () => {
+const QueueCard = ({ teamId }: { teamId: string }) => {
+  const [teamData, setTeamData] = useState(null)
+
+  useEffect(() => {
+    const main = async () => {
+      const res = await fetch(`/api/studio-queue?team_id=${teamId}`)
+      const data = await res.json()
+      setTeamData(data)
+    }
+
+    main()
+  }, [])
+
+  if (teamData) {
+    return (
+      <QueueCardImpl
+        teamName={teamData.name}
+        place={teamData.place}
+        estimatedDate={new Date(teamData.estimatedDate)}
+        tierName={teamData.tierName}
+        tierId={teamData.tierId}
+      />
+    )
+  }
+}
+
+const QueueCardImpl = ({
+  place,
+  estimatedDate,
+  tierName,
+  tierId,
+  teamName,
+}: {
+  teamName: string
+  place: number
+  estimatedDate: Date
+  tierName: string
+  tierId: string
+}) => {
   const glow = useHoverGlow({
     resist: 65,
     size: 500,
@@ -260,16 +298,18 @@ const QueueCard = () => {
       ))}
 
       <YStack>
-        <Paragraph size="$8">Studio</Paragraph>
+        <Paragraph size="$8">{teamName}</Paragraph>
+        <Paragraph size="$4">Studio Access</Paragraph>
+
         <Paragraph theme="alt2" size="$3">
-          In queue for access around June
+          In queue for access around {estimatedDate.toDateString()}
         </Paragraph>
       </YStack>
 
       <Spacer flex />
 
       <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
-        100
+        {place}
       </Paragraph>
 
       <XStack pb="$1" ai="flex-end">
@@ -277,7 +317,10 @@ const QueueCard = () => {
           #
         </Paragraph>
         <Paragraph my="$-3" size="$12" fow="900">
-          100
+          {place}
+        </Paragraph>
+        <Paragraph ml="$3" theme="alt2">
+          in the {tierName} tier
         </Paragraph>
 
         <Spacer flex />
@@ -291,7 +334,7 @@ const QueueCard = () => {
 }
 
 const QueueContent = () => {
-  const { userDetails } = useUser()
+  const { userDetails, teams } = useUser()
 
   if (!userDetails) {
     return <Spinner />
@@ -309,7 +352,13 @@ const QueueContent = () => {
   //   )
   // }
 
-  return <QueueCard />
+  return (
+    <YStack gap="$4">
+      {teams?.map((team) => (
+        <QueueCard key={team.id} teamId={team.id} />
+      ))}
+    </YStack>
+  )
 
   // return (
   //   <YStack ai="flex-start" space>
@@ -375,7 +424,9 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/sponsorship-sync', { method: 'POST' }).finally(() => setLoading(false))
+    await fetch('/api/sponsorship-sync', { method: 'POST' }).finally(() =>
+      setLoading(false)
+    )
   }
   return (
     <Button alignSelf="flex-start" disabled={loading} onPress={syncWithGithub}>

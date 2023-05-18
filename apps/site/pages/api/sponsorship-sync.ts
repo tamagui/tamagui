@@ -56,17 +56,16 @@ const handler: NextApiHandler = async (req, res) => {
 
   const userPersonalTeam = userTeams?.find((team) => team?.is_personal)
 
-  if (!userPersonalTeam && githubStatus.personal.isSponsoring) {
-    // create a new personal team for the user if they are a personal sponsor and don't have a personal team
+  if (!userPersonalTeam) {
+    // create a new personal team for the user if the user doesn't have one
     const team = await supabaseAdmin
       .from('teams')
       .upsert({
-        github_id: githubStatus.personal.sponsorMeta.id,
+        github_id: githubStatus.personal.meta.id,
         name: `Personal Team of ${githubLogin}`,
         is_personal: true,
-        tier: githubStatus.personal.tier.id,
-        is_active: true,
-        // TODO: expires_at
+        tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
+        is_active: githubStatus.personal.isSponsoring,
       })
       .select('id')
       .single()
@@ -89,7 +88,7 @@ const handler: NextApiHandler = async (req, res) => {
         .filter((r) => r.isSponsoring === true)
         .map((r) => {
           // no need for the if but ts is stupid
-          if (r.isSponsoring) return r.sponsorMeta.id
+          if (r.isSponsoring) return r.meta.id
         })
     )
 
@@ -99,7 +98,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   for (const org of githubStatus.orgs) {
     if (!org.isSponsoring) continue
-    const dbOrg = teamsToAdd.data.find((row) => row?.github_id === org.sponsorMeta.id)
+    const dbOrg = teamsToAdd.data.find((row) => row?.github_id === org.meta.id)
 
     if (!dbOrg) {
       // if this user is the first member from the org to sync, create the org first
@@ -108,8 +107,8 @@ const handler: NextApiHandler = async (req, res) => {
         .upsert({
           is_active: true,
           is_personal: false,
-          name: org.sponsorMeta.name,
-          github_id: org.sponsorMeta.id,
+          name: org.meta.name,
+          github_id: org.meta.id,
           tier: org.tier.id,
         })
         .select('id')
@@ -137,7 +136,7 @@ const handler: NextApiHandler = async (req, res) => {
         })
       }
 
-      // if (toAdd.find(team => org.sponsorMeta.id ))
+      // if (toAdd.find(team => org.meta.id ))
     }
   }
 
