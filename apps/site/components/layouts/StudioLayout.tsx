@@ -1,11 +1,10 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { withSupabase } from '@lib/withSupabase'
-import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
-import { isLocal, siteRootDir } from '@protected/studio/constants'
+import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
@@ -16,7 +15,7 @@ const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: fa
 export const getStudioLayout: GetLayout = (page, pageProps) => {
   return withSupabase(
     <StudioToastProvider>
-      <TitleAndMetaTags title="Studio — Tamagui" />
+      <NextSeo title="Studio — Tamagui" />
 
       <UserGuard>
         <StudioLayout>

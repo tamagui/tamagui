@@ -1,6 +1,6 @@
 // @ts-nocheck responsive props
 
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 // @ts-ignore
 import img1 from '@tamagui/demos/photo/photo1'
 // @ts-ignore
@@ -61,7 +61,7 @@ export default function ResponsiveDemo() {
 
   return (
     <>
-      <TitleAndMetaTags title="Tamagui — Responsive Demo" />
+      <NextSeo title="Tamagui — Responsive Demo" />
       <YStack
         mah="100vh"
         ov="hidden"

@@ -1,6 +1,6 @@
 import { Hero } from '@components/Hero'
 import { getDefaultLayout } from '@components/layouts/DefaultLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { YStack } from 'tamagui'
@@ -21,7 +21,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <TitleAndMetaTags
+      <NextSeo
         title="Tamagui — React Native + Web UI kit"
         description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
       />
