@@ -30,6 +30,8 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
         image={getOgUrl('default', {
           title: frontmatter.title,
           description: frontmatter.description ?? '',
+          category: "Guide",
+          demoName: frontmatter.demoName,
         })}
       />
       <HomeH1>{frontmatter.title}</HomeH1>
