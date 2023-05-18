@@ -232,15 +232,82 @@ export default function TakeoutPage() {
                     height={64}
                   />
                 </XStack>
+
+                <MunroP size="$13">The starter kit, reborn</MunroP>
+
+                <XStack>
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                </XStack>
+
+                <MunroP size="$10" color="$yellow10">
+                  A bootstrap made to last.
+                </MunroP>
+                <MunroP size="$8">
+                  The included&nbsp;
+                  <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command
+                  keeps your repo in sync with the starter repo with carefully designed
+                  separation of engine and functionality, and a custom diff-merge tool.
+                  Avoid painful long-term divergence and manually copy-pasting updates.
+                  <br />
+                  <br />
+                  Besides, it sets you up with the ideal Tamagui stack, already the most
+                  productive UI system in existence.
+                </MunroP>
+
+                <XStack gap="$4">
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-app-website-ui-62.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-database-60.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-bucket-brush-63.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-palette-sample-26.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+                </XStack>
               </YStack>
             </XStack>
 
-            <YStack mt={200} w={3} mih={500} h="100%" bc="$color" />
+            <YStack mt={200} w={3} mih={500} h="100%" />
 
-            <YStack>
+            <YStack mt={-120}>
               <StickyBox>
                 <TakeoutCardFrame
-                  // className="blur-medium"
+                  className="blur-medium"
                   zi={1000}
                   maw={340}
                   als="center"
@@ -249,6 +316,7 @@ export default function TakeoutPage() {
                   shadowRadius={100}
                   shadowColor="#000"
                   x={-100}
+                  y={100}
                 >
                   <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.85} />
 
