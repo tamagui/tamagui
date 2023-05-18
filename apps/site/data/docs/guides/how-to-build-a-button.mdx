@@ -14,15 +14,13 @@ demoName: BuildAButton
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-It's more than just some text in a box. Beyond varying colors and levels of importance to indicate, you often have sizing, icons (displayed before or after), a loading indicator and... well, a lot of delicate internal spacing and styling to balance across the base, focused, hovered, pressed and disabled states.
+More than just some text in a box, you often have icons and loading indicators, a variety of colors and sizes, and a delicate balancing act gettings both spacing and styling correct not just in the base state, but also the focused, hovered, pressed and disabled states.
 
-And all of this has to coordinate styling across the frame, text, and one or more icons, typically.
+You also want consumers of your button to have an elegant API - simple up front, without sacrificing the ability to customize the styles on each child component.
 
-Keeping all of that in mind, you'll also want to provide consumers of your button an elegant API that is simple to author without sacrificing the ability to customize and attach events to each individual part.
+Luckily, Tamagui makes this much easier as of version `1.28`, with the introduction of `createStyledContext`, which removes large amounts of brittle code in our codebase and should do the same for yours.
 
-Luckily, Tamagui makes this mostly possible, at least as of version `1.28`, with the introduction of `createStyledContext`.
-
-It's a new construct that's been sorely needed, replacing large amounts of brittle code within our codebase with a much simpler pattern that fits like a final piece of the puzzle in a long running quest to make Composable Components (ie, multiple components that work together to share styles) both easy to author, and powerful in practice.
+It makes our "composable components" (ie, components that are meant to work together to share styles) feel more natural both as an UI kit maintainer and user. So we've created this guide to show how you can use it, and why we've designed it the way we have.
 
 Let's get into it.
 
