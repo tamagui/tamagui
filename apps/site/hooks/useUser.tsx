@@ -1,5 +1,6 @@
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
+import { tiersPriority } from '@protected/_utils/sponsorship'
 import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -17,9 +18,13 @@ type UserContextType = {
   accessToken: string | null
   user: User | null
   userDetails?: Database['public']['Tables']['users']['Row'] | null
-  teams?: Database['public']['Tables']['teams']['Row'][] | null
-  orgTeams?: Database['public']['Tables']['teams']['Row'][] | null
-  personalTeam?: Database['public']['Tables']['teams']['Row'] | null
+  teams: {
+    all?: Database['public']['Tables']['teams']['Row'][] | null
+    orgs?: Database['public']['Tables']['teams']['Row'][] | null
+    personal?: Database['public']['Tables']['teams']['Row'] | null
+    main?: Database['public']['Tables']['teams']['Row'] | null
+  }
+
   isLoading: boolean
   // subscription: any | null
   signout: () => void
@@ -70,7 +75,7 @@ export const MyUserContextProvider = (props: Props) => {
   const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<UserContextType['userDetails']>()
-  const [userTeams, setUserTeams] = useState<UserContextType['teams']>()
+  const [userTeams, setUserTeams] = useState<UserContextType['teams']['all']>()
   // const [subscription, setSubscription] = useState<any>(null)
 
   useEffect(() => {
@@ -101,10 +106,12 @@ export const MyUserContextProvider = (props: Props) => {
     userDetails,
     isLoading: isLoadingUser || isLoadingData,
     // subscription,
-    teams: userTeams,
-    personalTeam: getPersonalTeam(userTeams),
-    orgTeams: getOrgTeams(userTeams),
-
+    teams: {
+      all: userTeams,
+      personal: getPersonalTeam(userTeams),
+      orgs: getOrgTeams(userTeams),
+      main: getMainTeam(userTeams),
+    },
     signout: useCallback(async () => {
       await supabase.auth.signOut()
       forceUpdate()
@@ -142,10 +149,17 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
-function getPersonalTeam(teams: ReturnType<typeof useUser>['teams']) {
+function getPersonalTeam(teams: ReturnType<typeof useUser>['teams']['all']) {
   return getSingle(teams?.filter((team) => team.is_personal))
 }
 
-function getOrgTeams(teams: ReturnType<typeof useUser>['teams']) {
+function getOrgTeams(teams: ReturnType<typeof useUser>['teams']['all']) {
   return getArray(teams?.filter((team) => !team.is_personal) ?? [])
+}
+
+function getMainTeam(teams: ReturnType<typeof useUser>['teams']['all']) {
+  const sortedTeams = teams?.sort(
+    (a, b) => tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
+  )
+  return sortedTeams?.[0]
 }

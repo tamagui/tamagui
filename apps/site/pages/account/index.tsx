@@ -1,39 +1,29 @@
-import { access } from 'fs'
-
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
+import { StudioQueueCard } from '@components/StudioQueueCard'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Database } from '@lib/supabase-types'
-import { getArray, getSingle } from '@lib/supabase-utils'
-import { studioRootDir } from '@protected/studio/constants'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
-import { LogoIcon } from '@tamagui/logo'
-import { CheckCircle, LogOut, Space, Star } from '@tamagui/lucide-icons'
+import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Avatar,
   Button,
-  ButtonText,
   H3,
   Paragraph,
   Separator,
   SizableText,
-  Spacer,
   Spinner,
-  Theme,
   XStack,
   YStack,
-  composeRefs,
 } from 'tamagui'
-
-import { useHoverGlow } from '../../components/HoverGlow'
 
 export default function Page() {
   return (
@@ -47,8 +37,14 @@ export default function Page() {
     </>
   )
 }
+
+const getUiAvatarImage = (name: string) => {
+  const params = new URLSearchParams()
+  params.append('name', name)
+  return `https://ui-avatars.com/api/?${params.toString()}`
+}
 const Account = () => {
-  const { isLoading, userDetails, signout, orgTeams, personalTeam } = useUser()
+  const { isLoading, userDetails, user, teams } = useUser()
 
   if (isLoading) {
     return <Spinner my="$10" />
@@ -60,7 +56,9 @@ const Account = () => {
         <Avatar circular size="$10">
           <Avatar.Image
             source={{
-              uri: userDetails?.avatar_url,
+              uri:
+                userDetails?.avatar_url ??
+                getUiAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
             }}
           />
         </Avatar>
@@ -78,14 +76,15 @@ const Account = () => {
               </H3>
             </YStack>
           </XStack>
-          <XStack space="$2">
-            {personalTeam?.is_active && <SponsorBadge />}
-            {orgTeams
+          <YStack space="$2">
+            {teams.personal?.is_active && <SponsorBadge />}
+            {teams.orgs
               ?.filter((team) => team.is_active)
               .map((org) => (
                 <TeamBadge key={org.id} org={org} />
               ))}
-
+          </YStack>
+          <XStack>
             <ProfileContent />
           </XStack>
         </YStack>
@@ -175,173 +174,8 @@ const ProfileContent = () => {
   )
 }
 
-const QueueCard = ({ teamId }: { teamId: number }) => {
-  const [teamData, setTeamData] = useState(null)
-
-  useEffect(() => {
-    const main = async () => {
-      const res = await fetch(`/api/studio-queue?team_id=${teamId}`)
-      const data = await res.json()
-      setTeamData(data)
-    }
-
-    main()
-  }, [])
-
-  if (!teamData) {
-    return <Spinner />
-  }
-
-  return (
-    <QueueCardImpl
-      teamName={teamData.name}
-      place={teamData.place}
-      date={new Date(teamData.date)}
-      estimatedDate={teamData.estimatedDate}
-      tierName={teamData.tierName}
-      tierId={teamData.tierId}
-    />
-  )
-}
-
-const QueueCardImpl = ({
-  place,
-  date,
-  tierName,
-  estimatedDate,
-  tierId,
-  teamName,
-}: {
-  teamName: string
-  place: number
-  date: Date
-  estimatedDate: string
-  tierName: string
-  tierId: string
-}) => {
-  const glow = useHoverGlow({
-    resist: 65,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--color10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: -200,
-      y: 200,
-    },
-  })
-
-  const glow2 = useHoverGlow({
-    resist: 80,
-    inverse: true,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--blue10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: 200,
-      y: -200,
-    },
-  })
-
-  const glow3 = useHoverGlow({
-    resist: 80,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--pink10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: -200,
-      y: -200,
-    },
-  })
-
-  return (
-    <YStack
-      ref={composeRefs(
-        glow.parentRef as any,
-        glow2.parentRef as any,
-        glow3.parentRef as any
-      )}
-      p="$4"
-      br="$4"
-      bw={4}
-      boc="$color2"
-      w={480}
-      h={280}
-      als="center"
-      ov="hidden"
-      elevation="$4"
-    >
-      <YStack fullscreen br={7} bw={1} boc="$borderColor" />
-
-      <YStack className="rotate-slow-right">{glow.Component()}</YStack>
-      <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
-      <YStack className="rotate-slow-right">{glow3.Component()}</YStack>
-
-      {[
-        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
-      ].map((deg) => (
-        <YStack
-          key={deg}
-          pos="absolute"
-          rotate={`${deg}deg`}
-          t="$5"
-          l="$5"
-          r="$5"
-          b="$5"
-          br="$3"
-          boc="$color8"
-          o={0.2}
-          bw={1}
-          scale={1.3}
-        />
-      ))}
-
-      <YStack>
-        <Paragraph size="$8">{teamName}</Paragraph>
-        <Paragraph size="$4">Studio Access</Paragraph>
-
-        <Paragraph theme="alt2" size="$3">
-          In queue for access {estimatedDate}
-        </Paragraph>
-      </YStack>
-
-      <Spacer flex />
-
-      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
-        {place}
-      </Paragraph>
-
-      <XStack pb="$1" ai="flex-end">
-        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
-          #
-        </Paragraph>
-        <Paragraph my="$-3" size="$12" fow="900">
-          {place}
-        </Paragraph>
-        <Paragraph ml="$3" theme="alt2">
-          in the {tierName ?? 'non-sponsor'} tier
-        </Paragraph>
-
-        <Spacer flex />
-
-        <YStack pb="$2">
-          <LogoIcon />
-        </YStack>
-      </XStack>
-    </YStack>
-  )
-}
-
 const QueueContent = () => {
-  const { userDetails, teams } = useUser()
+  const { teams } = useUser()
 
   // if (accessStatus.access.studio.access) {
   //   return (
@@ -354,11 +188,11 @@ const QueueContent = () => {
   //   )
   // }
 
+  if (!teams.main) return null
+
   return (
     <YStack gap="$4">
-      {teams?.map((team) => (
-        <QueueCard key={team.id} teamId={team.id} />
-      ))}
+      <StudioQueueCard key={teams.main.id} teamId={teams.main.id} />
     </YStack>
   )
 
@@ -378,10 +212,10 @@ const QueueContent = () => {
 }
 
 const SponsorshipContent = () => {
-  const { userDetails, personalTeam, orgTeams, teams } = useUser()
+  const { userDetails, teams } = useUser()
   // {/* TODO: get info of sponsorship here... tier, etc. */}
 
-  if (!teams?.some((t) => t.is_active)) {
+  if (!teams.main?.is_active) {
     return (
       <YStack space="$4" ai="flex-start">
         <SponsorButton />
@@ -409,8 +243,8 @@ const SponsorshipContent = () => {
   return (
     <YStack gap="$4">
       <YStack>
-        {personalTeam?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
-        {orgTeams?.map((org) => (
+        {teams.personal?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
+        {teams.orgs?.map((org) => (
           <Paragraph key={org.id}>
             You are a member of a sponsoring organization, {org.name}.
           </Paragraph>

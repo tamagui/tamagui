@@ -1,51 +1,10 @@
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { sponsorshipDateMap } from '@protected/_utils/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
-const sponsorshipDateMap = {
-  NOT_SPONSOR: {
-    tierName: null,
-    dateStr: 'late July 2023',
-    date: new Date(2023, 6, 30),
-  },
 
-  ST_kwDNL0TOAAMT2w: {
-    tierName: '$10 a month',
-    dateStr: 'late June 2023',
-    date: new Date(2023, 5, 30),
-  },
-
-  ST_kwDNL0TOAANQFA: {
-    tierName: '$100 a month',
-    dateStr: 'late May 2023',
-    date: new Date(2023, 4, 30),
-  },
-
-  ST_kwDNL0TOAAPNDw: {
-    tierName: '$200 a month',
-    dateStr: 'May 2023',
-    date: new Date(2023, 4, 1),
-  },
-
-  ST_kwDNL0TOAAPNEQ: {
-    tierName: '$500 a month',
-    dateStr: 'April 2023',
-    date: new Date(2023, 3, 1),
-  },
-
-  ST_kwDNL0TOAAPNEg: {
-    tierName: '$1,000 a month',
-    dateStr: 'April 2023',
-    date: new Date(2023, 3, 1),
-  },
-  /*
-  N/A:
-  $50 one time "ST_kwDNL0TOAAMTSA"
-  $100 one time "ST_kwDNL0TOAAMT2g"
-  $400 one time "ST_kwDNL0TOAAMTSg"
-  */
-}
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })
