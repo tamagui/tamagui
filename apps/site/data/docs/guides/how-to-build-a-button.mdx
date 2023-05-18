@@ -256,7 +256,7 @@ export const ButtonText = styled(Text, {
 
 This is pretty similar to the frame, just with its own name and with a `color` set rather than a `background`. Since we didn't define a `light_ButtonText` theme, this will fall back to the color defined on the light theme. Finally, button text usually isn't selectable so we set `userSelect` to none.
 
-Now we can use our simple button, which will adapt to use the current theme, but won't adjust to different sizes:
+We can use our simple button. It's nicely themed, but only renders at one size:
 
 ```tsx
 export default () => (
@@ -268,9 +268,9 @@ export default () => (
 )
 ```
 
-Now comes the harder part - making the button sizable. Let's look at how we'd solve this without the new `createStyledContext` helper, so we can understand why it exists.
+So we'll make it sizeable. First, let's look at how we'd solve this without the new `createStyledContext` helper, so we can understand why it exists.
 
-With variants we can solve this, but it gets fairly repetitive and avoids DRY principles:
+We can add some variants:
 
 ```tsx
 const ButtonFrame = styled(Stack, {
@@ -302,7 +302,7 @@ const ButtonFrame = styled(Stack, {
 
 ```
 
-To allow us to avoid duplication and accept new sizes in the future, we can use the handy Tamagui [Spread Variants](/docs/core/variants#spread-variants):
+Still, this is somewhat repetitive and prone to mistakes via typo. To allow us to avoid duplication while also always working even if we add a new sizes to our design system in the future, we can use the handy Tamagui [Spread Variants](/docs/core/variants#spread-variants):
 
 ```tsx
 import { Stack, styled } from '@tamagui/core'
