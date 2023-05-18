@@ -71,7 +71,10 @@ export async function extractToClassNames({
 
   const shouldLogTiming = options.logTimings ?? true
   const start = Date.now()
-  const mem = shouldLogTiming ? process.memoryUsage() : null
+  const mem =
+    process.env.TAMAGUI_SHOW_MEMORY_USAGE && shouldLogTiming
+      ? process.memoryUsage()
+      : null
 
   // Using a map for (officially supported) guaranteed insertion order
   let ast: t.File
