@@ -23,6 +23,26 @@ export interface Database {
           stripe_customer_id?: string | null
         }
       }
+      memberships: {
+        Row: {
+          created_at: string | null
+          id: number
+          team_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          team_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          team_id?: number
+          user_id?: string
+        }
+      }
       prices: {
         Row: {
           active: boolean | null
@@ -141,6 +161,38 @@ export interface Database {
           trial_end?: string | null
           trial_start?: string | null
           user_id?: string
+        }
+      }
+      teams: {
+        Row: {
+          created_at: string | null
+          github_id: string | null
+          id: number
+          is_active: boolean
+          is_personal: boolean
+          name: string | null
+          studio_queued_at: string
+          tier: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          github_id?: string | null
+          id?: number
+          is_active: boolean
+          is_personal: boolean
+          name?: string | null
+          studio_queued_at?: string
+          tier?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          github_id?: string | null
+          id?: number
+          is_active?: boolean
+          is_personal?: boolean
+          name?: string | null
+          studio_queued_at?: string
+          tier?: string | null
         }
       }
       users: {

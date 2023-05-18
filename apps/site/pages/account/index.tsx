@@ -1,15 +1,14 @@
-import { access } from 'fs'
-
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
+import { StudioQueueCard } from '@components/StudioQueueCard'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { studioRootDir } from '@protected/studio/constants'
+import { getDefaultAvatarImage } from '@lib/avatar'
+import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
-import { LogoIcon } from '@tamagui/logo'
-import { CheckCircle, LogOut, Space, Star } from '@tamagui/lucide-icons'
+import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import Link from 'next/link'
@@ -22,16 +21,10 @@ import {
   Paragraph,
   Separator,
   SizableText,
-  Spacer,
   Spinner,
-  Theme,
   XStack,
   YStack,
-  composeRefs,
 } from 'tamagui'
-import { UserAccessStatus } from 'types'
-
-import { useHoverGlow } from '../../components/HoverGlow'
 
 export default function Page() {
   return (
@@ -45,8 +38,9 @@ export default function Page() {
     </>
   )
 }
+
 const Account = () => {
-  const { isLoading, userDetails, accessStatus, signout } = useUser()
+  const { isLoading, userDetails, user, teams } = useUser()
 
   if (isLoading) {
     return <Spinner my="$10" />
@@ -56,7 +50,13 @@ const Account = () => {
     <Container f={1}>
       <XStack mt="$10" space>
         <Avatar circular size="$10">
-          <Avatar.Image source={userDetails?.avatar_url} />
+          <Avatar.Image
+            source={{
+              uri:
+                userDetails?.avatar_url ??
+                getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
+            }}
+          />
         </Avatar>
 
         <YStack space="$3" ai="flex-start" jc="center" f={1}>
@@ -72,14 +72,15 @@ const Account = () => {
               </H3>
             </YStack>
           </XStack>
-          <XStack space="$2">
-            {accessStatus?.githubStatus.personalSponsorship.sponsoring && (
-              <SponsorBadge />
-            )}
-            {accessStatus?.githubStatus.orgs.map((org) => (
-              <TeamBadge key={org.id} org={org} />
-            ))}
-
+          <YStack space="$2">
+            {teams.personal?.is_active && <SponsorBadge />}
+            {teams.orgs
+              ?.filter((team) => team.is_active)
+              .map((org) => (
+                <TeamBadge key={org.id} org={org} />
+              ))}
+          </YStack>
+          <XStack>
             <ProfileContent />
           </XStack>
         </YStack>
@@ -103,20 +104,20 @@ const SponsorBadge = () => {
 const TeamBadge = ({
   org,
 }: {
-  org: UserAccessStatus['githubStatus']['orgs'][number]
+  org: Pick<Database['public']['Tables']['teams']['Row'], 'name'>
 }) => {
   return (
     <Button
       theme="blue"
       disabled
-      icon={
-        <Avatar circular>
-          <Avatar.Image source={{ uri: org.avatarUrl }} />
-        </Avatar>
-      }
+      // icon={
+      //   <Avatar circular>
+      //     <Avatar.Image source={{ uri: org.avatarUrl }} />
+      //   </Avatar>
+      // }
       size="$2"
     >
-      {org.name} Team (Sponsor)
+      <Button.Text size="$2">{org.name} Team (Sponsor)</Button.Text>
     </Button>
   )
 }
@@ -169,142 +170,27 @@ const ProfileContent = () => {
   )
 }
 
-const QueueCard = () => {
-  const glow = useHoverGlow({
-    resist: 65,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--color10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: -200,
-      y: 200,
-    },
-  })
+const QueueContent = () => {
+  const { teams } = useUser()
 
-  const glow2 = useHoverGlow({
-    resist: 80,
-    inverse: true,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--blue10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: 200,
-      y: -200,
-    },
-  })
+  // if (accessStatus.access.studio.access) {
+  //   return (
+  //     <YStack space ai="flex-start">
+  //       <SizableText>You have access to studio!</SizableText>
+  //       <ButtonLink themeInverse href={studioRootDir}>
+  //         Enter Studio
+  //       </ButtonLink>
+  //     </YStack>
+  //   )
+  // }
 
-  const glow3 = useHoverGlow({
-    resist: 80,
-    size: 500,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--pink10)',
-    opacity: 0.3,
-    background: 'transparent',
-    offset: {
-      x: -200,
-      y: -200,
-    },
-  })
+  if (!teams.main) return null
 
   return (
-    <YStack
-      ref={composeRefs(
-        glow.parentRef as any,
-        glow2.parentRef as any,
-        glow3.parentRef as any
-      )}
-      p="$4"
-      br="$4"
-      bw={4}
-      boc="$color2"
-      w={480}
-      h={280}
-      als="center"
-      ov="hidden"
-      elevation="$4"
-    >
-      <YStack fullscreen br={7} bw={1} boc="$borderColor" />
-
-      <YStack className="rotate-slow-right">{glow.Component()}</YStack>
-      <YStack className="rotate-slow-left">{glow2.Component()}</YStack>
-      <YStack className="rotate-slow-right">{glow3.Component()}</YStack>
-
-      {[
-        5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
-      ].map((deg) => (
-        <YStack
-          key={deg}
-          pos="absolute"
-          rotate={`${deg}deg`}
-          t="$5"
-          l="$5"
-          r="$5"
-          b="$5"
-          br="$3"
-          boc="$color8"
-          o={0.2}
-          bw={1}
-          scale={1.3}
-        />
-      ))}
-
-      <YStack>
-        <Paragraph size="$8">Studio</Paragraph>
-        <Paragraph theme="alt2" size="$3">
-          In queue for access around June
-        </Paragraph>
-      </YStack>
-
-      <Spacer flex />
-
-      <Paragraph pos="absolute" size="$12" b="$6" l="$15" scale={4} o={0.015} fow="900">
-        100
-      </Paragraph>
-
-      <XStack pb="$1" ai="flex-end">
-        <Paragraph als="flex-start" mr="$1" size="$6" o={0.35} ml="$-1">
-          #
-        </Paragraph>
-        <Paragraph my="$-3" size="$12" fow="900">
-          100
-        </Paragraph>
-
-        <Spacer flex />
-
-        <YStack pb="$2">
-          <LogoIcon />
-        </YStack>
-      </XStack>
+    <YStack gap="$4">
+      <StudioQueueCard key={teams.main.id} teamId={teams.main.id} />
     </YStack>
   )
-}
-
-const QueueContent = () => {
-  const { accessStatus } = useUser()
-
-  if (!accessStatus) {
-    return <Spinner />
-  }
-
-  if (accessStatus.access.studio.access) {
-    return (
-      <YStack space ai="flex-start">
-        <SizableText>You have access to studio!</SizableText>
-        <ButtonLink themeInverse href={studioRootDir}>
-          Enter Studio
-        </ButtonLink>
-      </YStack>
-    )
-  }
-
-  return <QueueCard />
 
   // return (
   //   <YStack ai="flex-start" space>
@@ -322,10 +208,10 @@ const QueueContent = () => {
 }
 
 const SponsorshipContent = () => {
-  const { accessStatus } = useUser()
+  const { userDetails, teams } = useUser()
   // {/* TODO: get info of sponsorship here... tier, etc. */}
 
-  if (!accessStatus?.access.sponsoring) {
+  if (!teams.main?.is_active) {
     return (
       <YStack space="$4" ai="flex-start">
         <SponsorButton />
@@ -351,25 +237,41 @@ const SponsorshipContent = () => {
   }
 
   return (
-    <YStack>
-      {accessStatus.githubStatus.personalSponsorship.sponsoring && (
-        <Paragraph>You are a personal sponsor.</Paragraph>
-      )}
-      {accessStatus.githubStatus.orgs.map((org) => (
-        <Paragraph key={org.id}>
-          You are a member of a sponsoring organization,{' '}
-          <Link
-            href={`https://github.com/${org.login}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{ textDecoration: 'underline' }}
-          >
-            {org.name}
-          </Link>
-          .
-        </Paragraph>
-      ))}
+    <YStack gap="$4">
+      <YStack>
+        {teams.personal?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
+        {teams.orgs?.map((org) => (
+          <Paragraph key={org.id}>
+            You are a member of a sponsoring organization, {org.name}.
+          </Paragraph>
+        ))}
+      </YStack>
+      <SyncSponsorshipButton />
     </YStack>
+  )
+}
+
+const SyncSponsorshipButton = () => {
+  const [loading, setLoading] = useState(false)
+  const syncWithGithub = async () => {
+    setLoading(true)
+    await fetch('/api/sponsorship-sync', { method: 'POST' })
+      .then(() => {
+        location.reload()
+      })
+      .finally(() => setLoading(false))
+  }
+  return (
+    <Button
+      theme="dark"
+      size="$3"
+      disabled={loading}
+      onPress={syncWithGithub}
+      iconAfter={loading ? <Spinner /> : null}
+      {...(loading ? { opacity: 0.5 } : {})}
+    >
+      Sync With GitHub Sponsors
+    </Button>
   )
 }
 
@@ -413,8 +315,9 @@ const ConnectionsContent = () => {
       <Table
         data={{
           GitHub: (
-            <Theme name="dark">
+            <XStack gap="$2">
               <Button
+                theme="dark"
                 disabled={loading}
                 onPress={() => handleOAuthSignIn('github')}
                 size="$3"
@@ -425,7 +328,9 @@ const ConnectionsContent = () => {
                   ? 'Connected'
                   : 'Connect GitHub'}
               </Button>
-            </Theme>
+
+              <SyncSponsorshipButton />
+            </XStack>
           ),
         }}
       />

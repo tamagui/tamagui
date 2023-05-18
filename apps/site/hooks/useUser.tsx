@@ -1,4 +1,7 @@
 import { Database } from '@lib/supabase-types'
+import { getArray, getSingle } from '@lib/supabase-utils'
+import { tiersPriority } from '@protected/_utils/sponsorship'
+import { siteRootDir } from '@protected/studio/constants'
 import { User, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import {
@@ -10,15 +13,20 @@ import {
   useState,
 } from 'react'
 import { Spinner, YStack } from 'tamagui'
-import { UserAccessStatus } from 'types'
 
 type UserContextType = {
   accessToken: string | null
   user: User | null
-  userDetails: any | null
+  userDetails?: Database['public']['Tables']['users']['Row'] | null
+  teams: {
+    all?: Database['public']['Tables']['teams']['Row'][] | null
+    orgs?: Database['public']['Tables']['teams']['Row'][] | null
+    personal?: Database['public']['Tables']['teams']['Row'] | null
+    main?: Database['public']['Tables']['teams']['Row'] | null
+  }
+
   isLoading: boolean
   // subscription: any | null
-  accessStatus: UserAccessStatus | null
   signout: () => void
 }
 
@@ -26,15 +34,6 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export interface Props {
   [propName: string]: any
-}
-
-const getAccessDetails = async () => {
-  const res = await fetch('/api/access-check')
-  const data = await res.json()
-  if (res.status !== 200) {
-    throw data
-  }
-  return data as UserAccessStatus
 }
 
 export const MyUserContextProvider = (props: Props) => {
@@ -61,61 +60,58 @@ export const MyUserContextProvider = (props: Props) => {
     return () => listener.data.subscription.unsubscribe()
   }, [])
 
+  const getUserDetails = async () => {
+    const result = await supabase.from('users').select('*').single()
+    if (result.error) throw new Error(result.error.message)
+    return result.data
+  }
+
+  const getUserTeams = async () => {
+    const result = await supabase.from('teams').select('*')
+    if (result.error) throw new Error(result.error.message)
+    return result.data
+  }
+
   const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
-  const [userDetails, setUserDetails] = useState<any>(null)
+  const [userDetails, setUserDetails] = useState<UserContextType['userDetails']>()
+  const [userTeams, setUserTeams] = useState<UserContextType['teams']['all']>()
   // const [subscription, setSubscription] = useState<any>(null)
-  const [accessStatus, setAccessStatus] = useState<UserAccessStatus | null>(null)
-
-  const getUserDetails = () => supabase.from('users').select('*').single()
-
-  // const getSubscription = () =>
-  //   supabase
-  //     .from('subscriptions')
-  //     .select('*, prices(*, products(*))')
-  //     .in('status', ['trialing', 'active'])
-  //     .single()
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
       setIsloadingData(true)
-      Promise.allSettled([
-        getUserDetails(),
-        getAccessDetails(),
-        // getSubscription()
-      ]).then(([userDetailsPromise, accessDetailsPromise]) => {
-        // const subscriptionPromise = results[2]
+      Promise.allSettled([getUserDetails(), getUserTeams()]).then(
+        ([userDetailsPromise, userTeamsPromise]) => {
+          // const subscriptionPromise = results[2]
 
-        if (userDetailsPromise.status === 'fulfilled')
-          setUserDetails(userDetailsPromise.value.data)
-
-        if (accessDetailsPromise.status === 'fulfilled')
-          setAccessStatus(accessDetailsPromise.value)
-        else {
-          if (accessDetailsPromise.reason.action) {
-            alert(accessDetailsPromise.reason.error)
-            router.push(accessDetailsPromise.reason.action)
+          if (userDetailsPromise.status === 'fulfilled') {
+            setUserDetails(userDetailsPromise.value)
           }
+          if (userTeamsPromise.status === 'fulfilled') {
+            setUserTeams(userTeamsPromise.value)
+          }
+          setIsloadingData(false)
         }
-
-        // if (subscriptionPromise.status === 'fulfilled')
-        // setSubscription(subscriptionPromise.value.data)
-
-        setIsloadingData(false)
-      })
+      )
     } else if (!session?.user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
       // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
 
-  const value = {
+  const value: UserContextType = {
     accessToken: session?.access_token ?? null,
     user: session?.user ?? null,
     userDetails,
     isLoading: isLoadingUser || isLoadingData,
-    accessStatus,
     // subscription,
+    teams: {
+      all: userTeams,
+      personal: getPersonalTeam(userTeams),
+      orgs: getOrgTeams(userTeams),
+      main: getMainTeam(userTeams),
+    },
     signout: useCallback(async () => {
       await supabase.auth.signOut()
       forceUpdate()
@@ -139,7 +135,7 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user && !isLoading && router.isReady) {
-      // router.push(`${siteRootDir}/login`)
+      router.push(`${siteRootDir}/login`)
     }
   }, [user, isLoading, router])
 
@@ -151,4 +147,19 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
     )
 
   return <>{children}</>
+}
+
+function getPersonalTeam(teams: ReturnType<typeof useUser>['teams']['all']) {
+  return getSingle(teams?.filter((team) => team.is_personal))
+}
+
+function getOrgTeams(teams: ReturnType<typeof useUser>['teams']['all']) {
+  return getArray(teams?.filter((team) => !team.is_personal) ?? [])
+}
+
+function getMainTeam(teams: ReturnType<typeof useUser>['teams']['all']) {
+  const sortedTeams = teams?.sort(
+    (a, b) => tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
+  )
+  return sortedTeams?.[0]
 }
