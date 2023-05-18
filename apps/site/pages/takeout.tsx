@@ -87,6 +87,48 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
+              <XStack my="$8" gap="$12" f={1} jc="space-between" className="mix-blend">
+                <Image
+                  className="pixelate"
+                  src="/retro-icons/coding-app-website-ui-62.svg"
+                  alt="Icon"
+                  width={24}
+                  height={24}
+                />
+
+                <Image
+                  className="pixelate"
+                  src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
+                  alt="Icon"
+                  width={24}
+                  height={24}
+                />
+
+                <Image
+                  className="pixelate"
+                  src="/retro-icons/coding-apps-websites-database-60.svg"
+                  alt="Icon"
+                  width={24}
+                  height={24}
+                />
+
+                <Image
+                  className="pixelate"
+                  src="/retro-icons/design-color-bucket-brush-63.svg"
+                  alt="Icon"
+                  width={24}
+                  height={24}
+                />
+
+                <Image
+                  className="pixelate"
+                  src="/retro-icons/design-color-palette-sample-26.svg"
+                  alt="Icon"
+                  width={24}
+                  height={24}
+                />
+              </XStack>
+
               <YStack
                 pos="absolute"
                 fullscreen
@@ -370,6 +412,7 @@ const TakeoutCardFrame = styled(YStack, {
 const TAKEOUT = ({ fontSize = 290, lineHeight = 225, ...props }) => (
   <H1
     className="mix-blend font-outlined"
+    userSelect="none"
     color="$backgroundStrong"
     fontFamily="$glusp"
     fontSize={fontSize}
