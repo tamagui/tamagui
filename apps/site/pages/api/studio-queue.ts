@@ -83,8 +83,8 @@ const handler: NextApiHandler = async (req, res) => {
 
   res.json({
     place,
-    estimatedDate: info.date,
-    dateStr: info.dateStr,
+    date: info.date,
+    estimatedDate: info.dateStr,
     tierName: info.tierName,
     tierId: team.id,
     name: team.name,

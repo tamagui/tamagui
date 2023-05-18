@@ -79,10 +79,12 @@ const Account = () => {
             </YStack>
           </XStack>
           <XStack space="$2">
-            {personalTeam && <SponsorBadge />}
-            {orgTeams?.map((org) => (
-              <TeamBadge key={org.id} org={org} />
-            ))}
+            {personalTeam?.is_active && <SponsorBadge />}
+            {orgTeams
+              ?.filter((team) => team.is_active)
+              .map((org) => (
+                <TeamBadge key={org.id} org={org} />
+              ))}
 
             <ProfileContent />
           </XStack>
@@ -187,14 +189,15 @@ const QueueCard = ({ teamId }: { teamId: number }) => {
   }, [])
 
   if (!teamData) {
-    return null
+    return <Spinner />
   }
 
   return (
     <QueueCardImpl
       teamName={teamData.name}
       place={teamData.place}
-      estimatedDate={new Date(teamData.estimatedDate)}
+      date={new Date(teamData.date)}
+      estimatedDate={teamData.estimatedDate}
       tierName={teamData.tierName}
       tierId={teamData.tierId}
     />
@@ -203,14 +206,16 @@ const QueueCard = ({ teamId }: { teamId: number }) => {
 
 const QueueCardImpl = ({
   place,
-  estimatedDate,
+  date,
   tierName,
+  estimatedDate,
   tierId,
   teamName,
 }: {
   teamName: string
   place: number
-  estimatedDate: Date
+  date: Date
+  estimatedDate: string
   tierName: string
   tierId: string
 }) => {
@@ -304,7 +309,7 @@ const QueueCardImpl = ({
         <Paragraph size="$4">Studio Access</Paragraph>
 
         <Paragraph theme="alt2" size="$3">
-          In queue for access around {estimatedDate.toDateString()}
+          In queue for access {estimatedDate}
         </Paragraph>
       </YStack>
 
@@ -376,7 +381,7 @@ const SponsorshipContent = () => {
   const { userDetails, personalTeam, orgTeams, teams } = useUser()
   // {/* TODO: get info of sponsorship here... tier, etc. */}
 
-  if (!teams?.length) {
+  if (!teams?.some((t) => t.is_active)) {
     return (
       <YStack space="$4" ai="flex-start">
         <SponsorButton />
@@ -397,7 +402,6 @@ const SponsorshipContent = () => {
             .
           </Paragraph>
         </YStack>
-        <SyncSponsorshipButton />
       </YStack>
     )
   }
@@ -405,7 +409,7 @@ const SponsorshipContent = () => {
   return (
     <YStack gap="$4">
       <YStack>
-        {personalTeam && <Paragraph>You are a personal sponsor.</Paragraph>}
+        {personalTeam?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
         {orgTeams?.map((org) => (
           <Paragraph key={org.id}>
             You are a member of a sponsoring organization, {org.name}.
@@ -421,12 +425,21 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/sponsorship-sync', { method: 'POST' }).finally(() =>
-      setLoading(false)
-    )
+    await fetch('/api/sponsorship-sync', { method: 'POST' })
+      .then(() => {
+        location.reload()
+      })
+      .finally(() => setLoading(false))
   }
   return (
-    <Button alignSelf="flex-start" disabled={loading} onPress={syncWithGithub}>
+    <Button
+      theme="dark"
+      size="$3"
+      disabled={loading}
+      onPress={syncWithGithub}
+      iconAfter={loading ? <Spinner /> : null}
+      {...(loading ? { opacity: 0.5 } : {})}
+    >
       Sync With GitHub Sponsors
     </Button>
   )
@@ -472,8 +485,9 @@ const ConnectionsContent = () => {
       <Table
         data={{
           GitHub: (
-            <Theme name="dark">
+            <XStack gap="$2">
               <Button
+                theme="dark"
                 disabled={loading}
                 onPress={() => handleOAuthSignIn('github')}
                 size="$3"
@@ -484,7 +498,9 @@ const ConnectionsContent = () => {
                   ? 'Connected'
                   : 'Connect GitHub'}
               </Button>
-            </Theme>
+
+              <SyncSponsorshipButton />
+            </XStack>
           ),
         }}
       />
