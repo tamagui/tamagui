@@ -1,5 +1,5 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
-import { useGLTF } from '@react-three/drei'
+import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
@@ -399,9 +399,9 @@ function TakeoutBox3D() {
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
-    ref.current!.rotation.z += delta * 0.1
+    // ref.current!.rotation.z += delta * 0.1
     ref.current!.rotation.y += delta * 0.1
-    ref.current!.rotation.x += delta * 0.1
+    // ref.current!.rotation.x += delta * 0.1
   })
 
   return (
@@ -412,7 +412,7 @@ function TakeoutBox3D() {
         geometry={nodes.handle.geometry}
         material={materials.Material}
         position={[-0.26, 0.08, 0.06]}
-        scale={0.26}
+        scale={5}
       />
       <mesh
         castShadow
@@ -421,7 +421,7 @@ function TakeoutBox3D() {
         material={materials.Chinese_Takeout_Box_chinese}
         position={[0.13, 0.01, 0.23]}
         rotation={[-Math.PI, 0, -Math.PI]}
-        scale={0.26}
+        scale={5}
       />
     </group>
   )
