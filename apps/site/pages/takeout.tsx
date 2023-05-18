@@ -4,7 +4,17 @@ import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
-import { H1, H2, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
+import {
+  Button,
+  H1,
+  H2,
+  Paragraph,
+  Separator,
+  Spacer,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 import { CodeInline } from '../components/Code'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
@@ -128,8 +138,8 @@ export default function TakeoutPage() {
             </YStack>
           </YStack>
 
-          <XStack mt={670} space="$10">
-            <XStack f={1} p="$6" mt={100}>
+          <XStack mt={770} space="$10">
+            <XStack f={1} p="$6" mt={20}>
               <YStack fullscreen bw={1} boc="$background" o={0.4} />
 
               <YStack f={1} space="$8">
@@ -165,6 +175,7 @@ export default function TakeoutPage() {
             <YStack>
               <StickyBox>
                 <TakeoutCardFrame
+                  className="blur-medium"
                   zi={1000}
                   maw={340}
                   als="center"
@@ -174,6 +185,8 @@ export default function TakeoutPage() {
                   shadowColor="#000"
                   x={-100}
                 >
+                  <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.85} />
+
                   <Paragraph fontFamily="$munro" size="$8" theme="alt2">
                     Drop 0001
                   </Paragraph>
@@ -181,6 +194,12 @@ export default function TakeoutPage() {
                   <Paragraph fontFamily="$munro" size="$10">
                     Universal App Starter
                   </Paragraph>
+
+                  <Spacer f={1} />
+
+                  <Button ff="$munro" themeInverse>
+                    Buy now
+                  </Button>
                 </TakeoutCardFrame>
               </StickyBox>
             </YStack>
@@ -194,8 +213,9 @@ export default function TakeoutPage() {
 const TakeoutCardFrame = styled(YStack, {
   boc: '$color',
   bw: 1,
-  bc: '$backgroundStrong',
   p: '$4',
+  br: '$4',
+  ov: 'hidden',
 })
 
 const TAKEOUT = (props) => (
