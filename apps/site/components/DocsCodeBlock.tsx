@@ -144,8 +144,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   backgroundColor="transparent"
                   f={1}
                   className={className}
-                  size={size ?? '$4'}
-                  lineHeight={size ?? '$4'}
+                  size={size ?? '$5'}
+                  lineHeight={size ?? '$5'}
                   {...rest}
                 >
                   {children}
