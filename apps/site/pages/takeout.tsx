@@ -56,8 +56,30 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
-              <YStack pos="absolute" fullscreen zi={2} pe="none" ai="center" jc="center">
+              <YStack
+                pos="absolute"
+                fullscreen
+                zi={2}
+                pe="none"
+                ai="center"
+                jc="center"
+                scale={1.15}
+              >
                 <TAKEOUT className="bg-dot-grid clip-text" />
+              </YStack>
+
+              <YStack
+                pos="absolute"
+                fullscreen
+                zi={-1}
+                pe="none"
+                ai="center"
+                jc="center"
+                x={-10}
+                y={-10}
+                o={0.5}
+              >
+                <TAKEOUT color="$background" className="" />
               </YStack>
 
               {/* 
@@ -93,11 +115,11 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: '200%',
-                  height: '200%',
+                  width: 1000,
+                  height: 1000,
                   position: 'absolute',
                   top: 0,
-                  left: '-20%',
+                  right: '-25%',
                   zIndex: -1,
                 }}
               >
@@ -175,7 +197,7 @@ export default function TakeoutPage() {
             <YStack>
               <StickyBox>
                 <TakeoutCardFrame
-                  className="blur-medium"
+                  // className="blur-medium"
                   zi={1000}
                   maw={340}
                   als="center"
@@ -197,7 +219,7 @@ export default function TakeoutPage() {
 
                   <Spacer f={1} />
 
-                  <Button ff="$munro" themeInverse>
+                  <Button fontFamily="$munro" themeInverse>
                     Buy now
                   </Button>
                 </TakeoutCardFrame>
@@ -214,7 +236,7 @@ const TakeoutCardFrame = styled(YStack, {
   boc: '$color',
   bw: 1,
   p: '$4',
-  br: '$4',
+  // br: '$4',
   ov: 'hidden',
 })
 

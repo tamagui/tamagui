@@ -4,15 +4,18 @@ import '@tamagui/core/reset.css'
 import '../app.css'
 import '../public/fonts/fonts.css'
 
-// import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-// import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
-// import { MyUserContextProvider } from 'hooks/useUser'
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import {
+  ColorScheme,
+  NextThemeProvider,
+  useRootTheme,
+  useThemeSetting,
+} from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDidFinishSSR, useSafeRef } from 'tamagui'
+import { useRouter } from 'next/router'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
-import { LoadFont, LoadInter900 } from '../components/LoadFont'
+import { LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -22,19 +25,7 @@ Error.stackTraceLimit = Infinity
 // if (isClient) {
 //   const goXmas = setTimeout(() => {
 //     setTintFamily('xmas')
-//     window.removeEventListener('scroll', onScroll)
 //   }, 2500)
-
-//   // dont activate santa mode if they scroll down, a bit confusing right?
-//   const onScroll = (e: Event) => {
-//     if ((document.scrollingElement?.scrollTop || 0) > 100) {
-//       clearTimeout(goXmas)
-//       window.removeEventListener('scroll', onScroll)
-//     }
-//   }
-
-//   window.addEventListener('scroll', onScroll)
-// }
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -50,7 +41,39 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+
+  // set up NextThemeProvider above AppContents so it can useThemeSetting
+
+  return (
+    <>
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          setTheme(next as any)
+        }}
+      >
+        <AppContents {...props} theme={theme} setTheme={setTheme} />
+      </NextThemeProvider>
+    </>
+  )
+}
+
+function AppContents(
+  props: AppProps & {
+    theme: ColorScheme
+    setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
+  }
+) {
+  const [theme, setTheme] = useRootTheme()
   const [didInteract, setDidInteract] = useState(false)
+  const themeSetting = useThemeSetting()!
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.pathname === '/takeout' && theme !== 'dark') {
+      themeSetting.set('dark')
+      setTheme('dark')
+    }
+  }, [router.pathname, theme])
 
   useEffect(() => {
     const onDown = () => {

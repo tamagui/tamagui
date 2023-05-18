@@ -87,8 +87,7 @@ const tooltipDelay = { open: 3000, close: 100 }
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isInSubApp =
-    router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
+  const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
   // const user = useUser()
 
@@ -117,9 +116,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <TooltipGroup delay={tooltipDelay}>
           <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
-            </XGroup.Item>
+            {!isTakeout && (
+              <XGroup.Item>
+                <ThemeToggle borderWidth={0} chromeless />
+              </XGroup.Item>
+            )}
             <XGroup.Item>
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
@@ -173,12 +174,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <HeaderLinks {...props} />
 
           <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-            <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-              <VisuallyHidden>
-                <Text>Github</Text>
-              </VisuallyHidden>
-              <GithubIcon width={23} />
-            </YStack>
+            <TooltipSimple delay={0} restMs={25} label="Star on Github">
+              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                <VisuallyHidden>
+                  <Text>Github</Text>
+                </VisuallyHidden>
+                <GithubIcon width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
 
           <SmallMenu />
@@ -242,7 +245,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {/* <NextLink prefetch={false} href="/takeout">
+      <NextLink prefetch={false} href="/takeout">
         <TooltipSimple delay={0} restMs={25} label="Takeout">
           <HeadAnchor
             size="$8"
@@ -253,7 +256,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
             🥡
           </HeadAnchor>
         </TooltipSimple>
-      </NextLink> */}
+      </NextLink>
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
