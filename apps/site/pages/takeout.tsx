@@ -2,10 +2,9 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
-import { useLayoutEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
-import { H1, H2, Paragraph, XStack, YStack, styled } from 'tamagui'
+import { H1, H2, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
 
 import { CodeInline } from '../components/Code'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
@@ -20,37 +19,38 @@ export default function TakeoutPage() {
 
       <YStack>
         <ContainerXL>
-          <YStack mih={800} ai="center" jc="center">
-            <Paragraph
-              className="mix-blend"
-              color="$color"
-              size="$1"
-              fontSize={20}
-              ls={5}
-              fontFamily="$glusp"
-            >
-              Tamagui
-            </Paragraph>
+          <YStack h={0} mah={0}>
+            <YStack y={100} ai="center" jc="center">
+              <Paragraph
+                className="mix-blend"
+                color="$color"
+                size="$1"
+                fontSize={20}
+                ls={5}
+                fontFamily="$glusp"
+              >
+                Tamagui
+              </Paragraph>
 
-            <TAKEOUT />
+              <TAKEOUT />
 
-            <Paragraph
-              className="mix-blend"
-              color="$color"
-              size="$1"
-              fontSize={20}
-              mt={-10}
-              ls={5}
-              fontFamily="$glusp"
-            >
-              Presents
-            </Paragraph>
+              <Paragraph
+                className="mix-blend"
+                color="$color"
+                size="$1"
+                fontSize={20}
+                mt={-10}
+                ls={5}
+                fontFamily="$glusp"
+              >
+                Presents
+              </Paragraph>
 
-            <YStack pos="absolute" fullscreen zi={2} pe="none" ai="center" jc="center">
-              <TAKEOUT className="bg-dot-grid clip-text" />
-            </YStack>
+              <YStack pos="absolute" fullscreen zi={2} pe="none" ai="center" jc="center">
+                <TAKEOUT className="bg-dot-grid clip-text" />
+              </YStack>
 
-            {/* 
+              {/* 
             <YStack
               scale={2}
               pos="absolute"
@@ -63,97 +63,128 @@ export default function TakeoutPage() {
               <TAKEOUT className="" color="$background" />
             </YStack>
              */}
-            <YStack pos="absolute" fullscreen zi={-2} pe="none" ai="center" jc="center">
-              <TAKEOUT
-                className="font-outlined mix-blend"
-                fontSize={150 * 4}
-                lineHeight={110 * 4}
-                color="#000"
-                o={0.07}
-              />
-            </YStack>
+              <YStack
+                y={120}
+                pos="absolute"
+                fullscreen
+                zi={-2}
+                pe="none"
+                ai="center"
+                jc="center"
+              >
+                <TAKEOUT
+                  className="font-outlined mix-blend"
+                  fontSize={150 * 4}
+                  lineHeight={110 * 4}
+                  color="#000"
+                  o={0.07}
+                />
+              </YStack>
 
-            <Canvas
-              style={{
-                width: '150%',
-                height: '150%',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                zIndex: -1,
-              }}
-            >
-              <ambientLight />
-              <pointLight position={[10, 10, 10]} />
-              <Box position={[0, 0, 0]} />
-            </Canvas>
+              <Canvas
+                style={{
+                  width: '200%',
+                  height: '200%',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-20%',
+                  zIndex: -1,
+                }}
+              >
+                <ambientLight />
+                <pointLight position={[10, 10, 10]} />
+                <Box position={[0, 0, 0]} />
+              </Canvas>
+            </YStack>
           </YStack>
 
-          <YStack marginTop={-100}>
-            <XStack space="$10">
-              <XStack f={1} pt={100}>
-                <YStack px="$6">
-                  <H2 mt={20} ta="right" fontFamily="$munro">
-                    Jan
-                    <br />
-                    01
-                  </H2>
-                </YStack>
+          <YStack t={-100} l={-100} pos="absolute" b={0} zi={-1}>
+            <Separator o={0.5} vertical h={2000} pos="absolute" l={0.5} />
+            <Separator o={0.5} vertical h={2000} pos="absolute" r={0} />
 
-                <YStack f={1} space="$8">
-                  <MunroP size="$13">The starter kit, reborn</MunroP>
+            <YStack t={750} px="$6" bc="$background">
+              <Separator o={0.5} w={3000} pos="absolute" t={0.5} l={-1000} />
+              <Separator o={0.5} w={3000} pos="absolute" b={0} l={-1000} />
 
-                  <XStack>
-                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                    <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  </XStack>
+              <H2 my="$4" ta="right" fontFamily="$munro">
+                Jan
+                <br />
+                01
+              </H2>
 
-                  <MunroP size="$10" color="$yellow10">
-                    A bootstrap made to last.
-                  </MunroP>
-                  <MunroP size="$9">
-                    The included&nbsp;
-                    <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command
-                    keeps your repo in sync with the starter repo with carefully designed
-                    separation of engine and functionality, and a custom diff-merge tool.
-                    Avoid painful long-term divergence and manually copy-pasting updates.
-                    <br />
-                    <br />
-                    Besides, it sets you up with the ideal Tamagui stack, already the most
-                    productive UI system in existence.
-                  </MunroP>
-                </YStack>
-              </XStack>
+              <H2
+                t={-100}
+                pos="absolute"
+                fontFamily="$munro"
+                tt="uppercase"
+                x={-20}
+                scale={0.5}
+                rotate="-90deg"
+                o={0.5}
+                ls={10}
+              >
+                Release
+              </H2>
+            </YStack>
+          </YStack>
 
-              <YStack mt={200} w={3} mih={500} h="100%" bc="$color" />
+          <XStack mt={670} space="$10">
+            <XStack f={1} p="$6" mt={100}>
+              <YStack fullscreen bw={1} boc="$background" o={0.4} />
 
-              <YStack>
-                <StickyBox>
-                  <TakeoutCardFrame
-                    zi={1000}
-                    maw={340}
-                    als="center"
-                    h={600}
-                    space="$2"
-                    shadowRadius={100}
-                    shadowColor="#000"
-                    x={-100}
-                  >
-                    <Paragraph fontFamily="$munro" size="$8" theme="alt2">
-                      Drop 0001
-                    </Paragraph>
+              <YStack f={1} space="$8">
+                <MunroP size="$13">The starter kit, reborn</MunroP>
 
-                    <Paragraph fontFamily="$munro" size="$10">
-                      Universal App Starter
-                    </Paragraph>
-                  </TakeoutCardFrame>
-                </StickyBox>
+                <XStack>
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                </XStack>
+
+                <MunroP size="$10" color="$yellow10">
+                  A bootstrap made to last.
+                </MunroP>
+                <MunroP size="$9">
+                  The included&nbsp;
+                  <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command
+                  keeps your repo in sync with the starter repo with carefully designed
+                  separation of engine and functionality, and a custom diff-merge tool.
+                  Avoid painful long-term divergence and manually copy-pasting updates.
+                  <br />
+                  <br />
+                  Besides, it sets you up with the ideal Tamagui stack, already the most
+                  productive UI system in existence.
+                </MunroP>
               </YStack>
             </XStack>
-          </YStack>
+
+            <YStack mt={200} w={3} mih={500} h="100%" bc="$color" />
+
+            <YStack>
+              <StickyBox>
+                <TakeoutCardFrame
+                  zi={1000}
+                  maw={340}
+                  als="center"
+                  h={600}
+                  space="$2"
+                  shadowRadius={100}
+                  shadowColor="#000"
+                  x={-100}
+                >
+                  <Paragraph fontFamily="$munro" size="$8" theme="alt2">
+                    Drop 0001
+                  </Paragraph>
+
+                  <Paragraph fontFamily="$munro" size="$10">
+                    Universal App Starter
+                  </Paragraph>
+                </TakeoutCardFrame>
+              </StickyBox>
+            </YStack>
+          </XStack>
         </ContainerXL>
       </YStack>
     </>
