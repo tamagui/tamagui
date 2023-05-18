@@ -1,6 +1,8 @@
+import { StudioQueueCard } from '@components/StudioQueueCard'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { withSupabase } from '@lib/withSupabase'
 import { WhitelistNotice } from '@protected/studio/(loaded)/(sponsor-protected)/SponsorshipRequired'
+import { isLocal, siteRootDir } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'app/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
@@ -8,7 +10,6 @@ import dynamic from 'next/dynamic'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
-import { siteRootDir } from '@protected/studio/constants'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
@@ -46,12 +47,11 @@ const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
 }
 
 const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
-  const { accessStatus } = useUser()
+  const { teams } = useUser()
 
-  if (!accessStatus) {
+  if (!teams.main) {
     return <Spinner />
   }
-
   // if (accessStatus.isWhitelisted) {
   //   return (
   //     <>
@@ -61,15 +61,8 @@ const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
   //   )
   // }
 
-
-  if (!accessStatus.access.studio.access) {
-    return (
-      <ErrorScreen
-        title="You don't have access to Studio"
-        message={accessStatus.access.studio.message}
-        action={{ url: `${siteRootDir}/account#studio-queue`, text: 'More Info' }}
-      />
-    )
+  if (!isLocal) {
+    return <StudioQueueCard teamId={teams?.main?.id} />
   }
 
   return <>{children}</>
