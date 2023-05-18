@@ -8,7 +8,6 @@ import {
   Adapt,
   Button,
   Paragraph,
-  ParagraphProps,
   Popover,
   Separator,
   Text,
