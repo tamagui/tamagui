@@ -2,6 +2,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
+import Image from 'next/image'
 import { useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
 import {
@@ -178,7 +179,7 @@ export default function TakeoutPage() {
                 <MunroP size="$10" color="$yellow10">
                   A bootstrap made to last.
                 </MunroP>
-                <MunroP size="$9">
+                <MunroP size="$8">
                   The included&nbsp;
                   <CodeInline fontFamily="$munro">tamagui upgrade</CodeInline> command
                   keeps your repo in sync with the starter repo with carefully designed
@@ -189,6 +190,48 @@ export default function TakeoutPage() {
                   Besides, it sets you up with the ideal Tamagui stack, already the most
                   productive UI system in existence.
                 </MunroP>
+
+                <XStack gap="$4">
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-app-website-ui-62.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-database-60.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-bucket-brush-63.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-palette-sample-26.svg"
+                    alt="Icon"
+                    width={64}
+                    height={64}
+                  />
+                </XStack>
               </YStack>
             </XStack>
 

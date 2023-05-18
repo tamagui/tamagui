@@ -71,7 +71,10 @@ export async function extractToClassNames({
 
   const shouldLogTiming = options.logTimings ?? true
   const start = Date.now()
-  const mem = shouldLogTiming ? process.memoryUsage() : null
+  const mem =
+    process.env.TAMAGUI_SHOW_MEMORY_USAGE && shouldLogTiming
+      ? process.memoryUsage()
+      : null
 
   // Using a map for (officially supported) guaranteed insertion order
   let ast: t.File
@@ -119,6 +122,7 @@ export async function extractToClassNames({
       lineNumbers,
       programPath,
       isFlattened,
+      config,
       completeProps,
       staticConfig,
     }) => {
@@ -337,7 +341,7 @@ export async function extractToClassNames({
           }
 
           if (staticConfig.isText) {
-            let family = completeProps.fontFamily
+            let family = completeProps.fontFamily || config.defaultFont || 'body'
             if (family[0] === '$') {
               family = family.slice(1)
             }

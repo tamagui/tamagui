@@ -737,3 +737,11 @@ input, textarea {
     1px -1px var(--color),
     -1px 1px var(--color);
 }
+
+.invert {
+  filter: invert(100%);
+}
+
+.pixelate {
+  image-rendering: pixelated;
+}
