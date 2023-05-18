@@ -2115,6 +2115,7 @@ export function createExtractor(
             node,
             lineNumbers,
             filePath,
+            config: tamaguiConfig,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
@@ -2123,9 +2124,9 @@ export function createExtractor(
             completeProps,
             staticConfig,
           })
-        } catch (err) {
+        } catch (err: any) {
           node.attributes = ogAttributes
-          console.error(`err: ${err}`)
+          console.error(`@tamagui/static Error: ${err.message} ${err.stack}`)
         } finally {
           if (debugPropValue) {
             shouldPrintDebug = ogDebug

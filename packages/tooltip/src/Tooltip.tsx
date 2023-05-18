@@ -157,15 +157,20 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const twoSmallerKey = getSize('$true', {
+  const smallerSize = getSize('$true', {
     shift: -2,
-  }).key
-  const size = `$${twoSmallerKey}`
+    bounds: [0],
+  })
 
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper size={size as SizeTokens} allowFlip {...popperScope} {...restProps}>
+      <Popper
+        size={smallerSize.key as SizeTokens}
+        allowFlip
+        {...popperScope}
+        {...restProps}
+      >
         <__PopoverProviderInternal
           scope={__scopePopover}
           popperScope={popperScope.__scopePopper}

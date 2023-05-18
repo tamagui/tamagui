@@ -35,14 +35,18 @@ export const stepTokenUpOrDown = (
   current: GetTokenBase,
   options: GetTokenOptions = defaultOptions
 ): Variable<number> => {
-  const tokens = getTokens({ prefixed: true })[type]
+  const tokens = getTokens({ prefixed: true })[type] as Record<string, Variable>
 
   if (!(type in cacheVariables)) {
     cacheKeys[type] = []
     cacheVariables[type] = []
-    for (const key in tokens) {
-      cacheKeys[type].push(key[0] === '$' ? key : `$${key}`)
-      cacheVariables[type].push(tokens[key] as any)
+    const sorted = Object.keys(tokens)
+      .map((k) => tokens[k])
+      .sort((a, b) => a.val - b.val)
+
+    for (const token of sorted) {
+      cacheKeys[type].push(token.key)
+      cacheVariables[type].push(token)
     }
   }
 
@@ -63,8 +67,12 @@ export const stepTokenUpOrDown = (
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const found = tokensOrdered[index]
 
+  const result = (typeof found === 'string' ? tokens[found] : found) || tokens['$true']
+
+  // console.log('found', { current, shift, index, found, result })
+
   // @ts-ignore
-  return (typeof found === 'string' ? tokens[found] : found) || tokens['$true']
+  return result
 }
 
 export const getTokenRelative = stepTokenUpOrDown

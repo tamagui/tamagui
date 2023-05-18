@@ -146,7 +146,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 display="none"
                 $gtMd={{
                   display: 'block',
-                  pr: '$6',
+                  pr: '$3',
                   mt: 108,
                   pb: '$18',
                 }}

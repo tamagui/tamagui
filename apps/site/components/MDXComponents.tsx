@@ -249,7 +249,7 @@ export const components = {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$9' : '$7'}
+        size={large ? '$9' : '$8'}
         className={'intro-paragraph' + (large ? ' large' : '')}
         my="$3"
         fow={large ? '200' : '300'}
@@ -332,8 +332,7 @@ export const components = {
     <Paragraph
       className="docs-paragraph"
       display="block"
-      fontSize={15}
-      lineHeight={24}
+      size="$6"
       my="$2.5"
       {...props}
     />
@@ -378,7 +377,7 @@ export const components = {
 
   li: (props) => {
     return (
-      <LI fontSize="$4" my="$2">
+      <LI size="$6" my="$1.5" className="docs-paragraph">
         {props.children}
       </LI>
     )

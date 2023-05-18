@@ -1,28 +1,27 @@
 ---
 title: How to Build a Button
 description: Learn how to create a custom button, or any other type of component that uses a composable component API
+hero: HowToBuildAButton
 ---
+
+<HeroContainer noScroll>
+  <BuildAButtonDemo />
+</HeroContainer>
 
 <IntroParagraph>
   Deceptive in its simplicity, creating a robust yet flexible button in any UI framework
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-It's not just some text in a box. You often have many themes, sizes, and styles. You have internal spacing that may need to scale non-linearly across sizes. You'll have icons (sometimes multiple) that users will want to pass in, that should also size and pick up theme colors.
+It's not just some text in a box. Beyond varying colors and a few levels of importance to indicate, you'll often have multiple sizes, the ability to display icons (before or after text), a loading indicator, disabled state, and... well, some delicate internal spacing and styling that must work across base, focused, hovered and pressed states.
 
-And of course even with all of that - you need somehow maintain a simple API while still allowing developers to customize every sub-component.
+And of course even with all of that you need somehow balance provide both a simple API up front, while allowing consumers to re-style or attach events and accessibility attributes across every sub-component.
 
 Luckily, Tamagui makes it easy. Or at least it as of version `1.28` it does.
 
-We've landed a new construct that has been sorely needed - `createStyledContext` - which replaces large amounts of brittle code within our codebase with a much simpler pattern that fits like one of the final pieces of the puzzle in creating "Composable Components" (ie, separate components that work together to share styles) easy to author.
+We've landed a new construct that's been much needed, `createStyledContext`, which replaces large amounts of brittle code within our codebase with a much simpler pattern that fits like a final piece of the puzzle in our quest to make "composable components", ie, multiple components that work together to share styles, easier to author.
 
-Let's get right into it.
-
-We want themeable, sizeable buttons that can place icons and text flexibly:
-
-<HeroContainer>
-  <ButtonDemo />
-</HeroContainer>
+Let's get into it.
 
 ### The final code
 
@@ -46,7 +45,7 @@ import {
 import { cloneElement, useContext } from 'react'
 
 export const ButtonContext = createStyledContext({
-  size: '$4' as SizeTokens,
+  size: '$md' as SizeTokens,
 })
 
 export const ButtonFrame = styled(Stack, {
@@ -80,7 +79,7 @@ export const ButtonFrame = styled(Stack, {
   } as const,
 
   defaultVariants: {
-    size: '$4',
+    size: '$md',
   },
 })
 
@@ -566,7 +565,7 @@ Notice we also exported a new property on Button, `Button.Props`. Since `createS
 import { Button } from './OurButton'
 
 export default () => (
-  <Button.Props size="$4">
+  <Button.Props size="$md">
     <Button>
       <Button.Text>
         Hello world
