@@ -14,11 +14,13 @@ demoName: BuildAButton
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-More than just some text in a box, you often have icons and loading indicators, a variety of colors and sizes, and a delicate balancing act gettings both spacing and styling correct not just in the base state, but also the focused, hovered, pressed and disabled states.
+Much more than just some text in a box, a button involves icons, loading indicators, various colors, importances and sizes, and always a delicate balancing act involving internal spacing and sub-component styling, all ideally delivered in a simple API that still accounts for styles across many states: base, hovered, focused, pressed and disabled.
 
-You also want consumers of your button to have an elegant API - simple up front, without sacrificing the ability to customize the styles on each child component.
+Tamagui makes all of this possible, and even easy as of version `1.28`, with the introduction of `createStyledContext`, a helper which allowed us remove a large amounts of brittle code internally in favor of a much simpler, typed API that we've been iterating on for a while now. It should have the same effect for your own codebases.
 
-Luckily Tamagui makes this much easier as of version `1.28` with the introduction of `createStyledContext`, which removes large amounts of brittle code in our codebase and should do the same for yours. It makes our "composable components" - components that are meant to render together with shared styling - feel more natural, both as an UI kit developer and user. So we've created this guide to show how you can use it, and why we've designed it the way we have.
+We think it makes designing composable components APIs a lot better. What are composable components? It's a term of art coined by [Radix](https://www.radix-ui.com/) (as far as we know) for when you export an API that involves multiple React components that are meant to render together, sharing state and/or styling (eg, a `<Button />` that also has `<Button.Text />` and `<Button.Icon />`.
+
+We made this guide to show you why they make sense, how to design your own, and how `createStyledContext` helps us achieve much greater simplicity in implementing them.
 
 Let's get into it.
 
@@ -26,7 +28,7 @@ Let's get into it.
 
 Getting to the point, this is the final code we'll create for our Button, ready to copy and paste right into your app.
 
-It gives you a powerful yet flexible [Radix-like](https://www.radix-ui.com/) composable component API:
+It gives you a powerful yet flexible [Radix-like]() composable component API:
 
 ```tsx
 import { getSize, getSpace } from '@tamagui/get-token'
