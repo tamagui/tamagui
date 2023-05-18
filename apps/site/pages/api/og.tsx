@@ -197,14 +197,16 @@ const BackgroundedOg = ({
           left: 0,
           bottom: 0,
           right: 0,
-          height: 300,
-          background: `linear-gradient(180deg, transparent, black, black)`,
+          height: 500,
+          transform: `rotate(12deg) scale(1.5)`,
+          background: `linear-gradient(0deg, black, transparent)`,
         }}
       />
 
       <div
         style={{
           display: 'flex',
+          marginRight: 30,
           flexDirection: 'column',
           // alignItems: 'center',
         }}
@@ -212,16 +214,16 @@ const BackgroundedOg = ({
         {hasCategory && (
           <h6
             style={{
-              color: colors.blueA.blueA11,
-              fontWeight: 900,
-              fontSize: 32,
+              color: colors.whiteA.whiteA12,
+              fontWeight: 600,
+              opacity: 0.75,
+              fontSize: 24,
               marginBottom: -10,
               fontFamily: 'Inter',
               textAlign: 'center',
               textTransform: 'uppercase',
               letterSpacing: 10,
               marginLeft: 10,
-              textShadow: "1px 1px 4px black"
             }}
           >
             {category}
