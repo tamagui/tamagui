@@ -4,6 +4,7 @@ import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultAvatarImage } from '@lib/avatar'
 import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
@@ -38,11 +39,6 @@ export default function Page() {
   )
 }
 
-const getUiAvatarImage = (name: string) => {
-  const params = new URLSearchParams()
-  params.append('name', name)
-  return `https://ui-avatars.com/api/?${params.toString()}`
-}
 const Account = () => {
   const { isLoading, userDetails, user, teams } = useUser()
 
@@ -58,7 +54,7 @@ const Account = () => {
             source={{
               uri:
                 userDetails?.avatar_url ??
-                getUiAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
+                getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
             }}
           />
         </Avatar>
