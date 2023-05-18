@@ -5,6 +5,7 @@ import { NextApiHandler } from 'next'
 
 const sponsorshipDateMap = {
   NOT_SPONSOR: {
+    tierName: null,
     dateStr: 'late July 2023',
     date: new Date(2023, 6, 30),
   },
@@ -61,11 +62,17 @@ const handler: NextApiHandler = async (req, res) => {
   }
   const team = teamResult.data
 
-  const priorTeamsResult = await supabaseAdmin
-    .from('teams')
-    .select('id')
-    .eq('tier', team.tier)
-    .lte('studio_queued_at', team.studio_queued_at)
+  const priorTeamsResult = team.is_active
+    ? await supabaseAdmin
+        .from('teams')
+        .select('id')
+        .eq('tier', team.tier)
+        .lte('studio_queued_at', team.studio_queued_at)
+    : await supabaseAdmin
+        .from('teams')
+        .select('id')
+        .is('tier', null)
+        .lte('studio_queued_at', team.studio_queued_at)
 
   const place = priorTeamsResult.data?.length
 

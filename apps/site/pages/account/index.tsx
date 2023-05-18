@@ -173,7 +173,7 @@ const ProfileContent = () => {
   )
 }
 
-const QueueCard = ({ teamId }: { teamId: string }) => {
+const QueueCard = ({ teamId }: { teamId: number }) => {
   const [teamData, setTeamData] = useState(null)
 
   useEffect(() => {
@@ -186,17 +186,19 @@ const QueueCard = ({ teamId }: { teamId: string }) => {
     main()
   }, [])
 
-  if (teamData) {
-    return (
-      <QueueCardImpl
-        teamName={teamData.name}
-        place={teamData.place}
-        estimatedDate={new Date(teamData.estimatedDate)}
-        tierName={teamData.tierName}
-        tierId={teamData.tierId}
-      />
-    )
+  if (!teamData) {
+    return null
   }
+
+  return (
+    <QueueCardImpl
+      teamName={teamData.name}
+      place={teamData.place}
+      estimatedDate={new Date(teamData.estimatedDate)}
+      tierName={teamData.tierName}
+      tierId={teamData.tierId}
+    />
+  )
 }
 
 const QueueCardImpl = ({
@@ -320,7 +322,7 @@ const QueueCardImpl = ({
           {place}
         </Paragraph>
         <Paragraph ml="$3" theme="alt2">
-          in the {tierName} tier
+          in the {tierName ?? 'non-sponsor'} tier
         </Paragraph>
 
         <Spacer flex />
@@ -336,11 +338,6 @@ const QueueCardImpl = ({
 const QueueContent = () => {
   const { userDetails, teams } = useUser()
 
-  if (!userDetails) {
-    return <Spinner />
-  }
-
-  // TODO:
   // if (accessStatus.access.studio.access) {
   //   return (
   //     <YStack space ai="flex-start">

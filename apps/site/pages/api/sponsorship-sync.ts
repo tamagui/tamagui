@@ -62,7 +62,7 @@ const handler: NextApiHandler = async (req, res) => {
       .from('teams')
       .upsert({
         github_id: githubStatus.personal.meta.id,
-        name: `Personal Team of ${githubLogin}`,
+        name: githubLogin,
         is_personal: true,
         tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
         is_active: githubStatus.personal.isSponsoring,
