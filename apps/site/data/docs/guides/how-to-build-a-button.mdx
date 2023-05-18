@@ -13,13 +13,13 @@ hero: HowToBuildAButton
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-It's not just some text in a box. Beyond varying colors and a few levels of importance to indicate, you'll often have multiple sizes, the ability to display icons (before or after text), a loading indicator, disabled state, and... well, some delicate internal spacing and styling that must work across base, focused, hovered and pressed states.
+It's more than just some text in a box. Beyond varying colors and levels of importance to indicate, you often have sizing, icons (displayed before or after), a loading indicator and... well, a lot of delicate internal spacing and styling to balance across the base, focused, hovered, pressed and disabled states - all of which needs to coordinate across the aformentioned frame, text and icon.
 
-And of course even with all of that you need somehow balance provide both a simple API up front, while allowing consumers to re-style or attach events and accessibility attributes across every sub-component.
+Keeping all of that in mind, you'll also want to provide consumers of your button an elegant API that is simple to author without sacrificing the ability to customize and attach events to each individual part.
 
-Luckily, Tamagui makes it easy. Or at least it as of version `1.28` it does.
+Luckily, Tamagui makes this mostly possible, at least as of version `1.28`, with the introduction of `createStyledContext`.
 
-We've landed a new construct that's been much needed, `createStyledContext`, which replaces large amounts of brittle code within our codebase with a much simpler pattern that fits like a final piece of the puzzle in our quest to make "composable components", ie, multiple components that work together to share styles, easier to author.
+It's a new construct that's been sorely needed, replacing large amounts of brittle code within our codebase with a much simpler pattern that fits like a final piece of the puzzle in a long running quest to make Composable Components (ie, multiple components that work together to share styles) both easy to author, and powerful in practice.
 
 Let's get into it.
 
