@@ -1,10 +1,11 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
 import {
   Button,
@@ -18,7 +19,6 @@ import {
   styled,
 } from 'tamagui'
 
-import { CodeInline } from '../components/Code'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 
 export default function TakeoutPage() {
@@ -171,17 +171,22 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 1200,
-                  height: 1200,
+                  width: 1500,
+                  height: 1500,
                   position: 'absolute',
                   top: -100,
-                  right: '-20%',
+                  right: '-50%',
                   zIndex: -1,
                 }}
+                gl={{ preserveDrawingBuffer: true }}
+                shadows
+                dpr={[1, 1.5]}
+                camera={{ position: [0, 0, 150], fov: 50 }}
               >
-                <ambientLight />
-                <pointLight position={[10, 10, 10]} />
-                <Box position={[0, 0, 0]} />
+                <Suspense fallback={null}>
+                  <ambientLight intensity={1} />
+                  <TakeoutBox3D />
+                </Suspense>
               </Canvas>
             </YStack>
           </YStack>
@@ -386,6 +391,68 @@ export default function TakeoutPage() {
   )
 }
 
+const modelUrl = `http://localhost:5005/takeout.gltf`
+// useGLTF.preload(modelUrl)
+
+function TakeoutBox3D() {
+  const ref = useRef<any>()
+  const { nodes, materials } = useGLTF(modelUrl) as any
+
+  useFrame((state, delta) => {
+    ref.current!.rotation.z += delta * 0.1
+    ref.current!.rotation.y += delta * 0.1
+    ref.current!.rotation.x += delta * 0.1
+  })
+
+  return (
+    <group ref={ref} dispose={null}>
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.handle.geometry}
+        material={materials.Material}
+        position={[-0.26, 0.08, 0.06]}
+        scale={0.26}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.pack.geometry}
+        material={materials.Chinese_Takeout_Box_chinese}
+        position={[0.13, 0.01, 0.23]}
+        rotation={[-Math.PI, 0, -Math.PI]}
+        scale={0.26}
+      />
+    </group>
+  )
+}
+
+function Box(props) {
+  const ref = useRef<any>()
+  const [hovered, hover] = useState(false)
+  const [clicked, click] = useState(false)
+
+  useFrame((state, delta) => {
+    ref.current!.rotation.z += delta * 0.1
+    ref.current!.rotation.y += delta * 0.1
+    ref.current!.rotation.x += delta * 0.1
+  })
+
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={clicked ? 3.5 : 3}
+      onClick={(event) => click(!clicked)}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'white'} />
+    </mesh>
+  )
+}
+
 const Row = (props: { title: any; description: any; after: any }) => {
   return (
     <XStack bbw={1} boc="$borderColor">
@@ -426,32 +493,6 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 225, ...props }) => (
     out
   </H1>
 )
-
-function Box(props) {
-  const ref = useRef<any>()
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-
-  useFrame((state, delta) => {
-    ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * 0.1
-    ref.current!.rotation.x += delta * 0.1
-  })
-
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 3.5 : 3}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'white'} />
-    </mesh>
-  )
-}
 
 TakeoutPage.getLayout = getDefaultLayout
 
