@@ -431,13 +431,17 @@ export default () => (
 )
 ```
 
-The composable component API really shines for example if we wanted to allow an icon of some sort. With the all-in-one functional component, you'd have to add an `icon` property, and then `iconProps`, and then probably some way to configure `iconShouldAppearAfterText`, etc. Not to mention by leaving the `styled` API you've not de-optimized the compiler from ever doing it's magic.
+The composable component API really shines for example if we wanted to allow an icon of some sort. With the all-in-one functional component, you'd have to add an `icon` property, and then `iconProps`, and then probably some way to configure `iconShouldAppearAfterText`.
 
-So we want our composable component API, but we need to thread size down.
+This expansion of abitrary props starts to feel off for good reason. It takes your users away from being able to understand the actual tree structure that's output. Things like wrapping your inner contents to make them flow a different direction, or space a bit differently suddenly become impossible, else you keep adding more and more arbitrary props.
+
+Not to mention that by leaving the `styled` API, you'll now miss out on some of the nicest optimizations the Tamagui optimizing compiler can perform.
+
+So we want our composable component API both for ergonomics and performance, but we need some way to thread our `size` prop down between components.
 
 ### Passing down size
 
-In React, this is what context is for.
+In React, this is typically what context is for.
 
 Here's how we'd implement size through context using plain React, while keeping the composable API:
 
@@ -632,7 +636,7 @@ Of course you can make your `Button.Icon` work a bit differently if you'd like, 
 
 ### Conclusion
 
-We hope this has been helpful in explaining a variety of Tamagui features, and some of the benefits of and ideas behind composable components. There's certainly further you can go in building out your Button, but we think that in under 150 lines of code you're getting an ideal API, typed sizinng and themes, and a great balance of customization to performance.
+We hope this has been helpful in explaining a variety of Tamagui features, and some of the benefits of and ideas behind composable components. There's certainly further you can go in building out your Button, but we think that in under 150 lines of code you're getting an ideal API, fully typed sizes and themes, and a great balance of customization to performance.
 
 We'd recommend against the urge to go further and abstract this into a single `Button` as that would once again leave you with a limited API, but of course that decision is up to you and for many apps you may like the limitations and be able to accept a bit more abstraction cost.
 
