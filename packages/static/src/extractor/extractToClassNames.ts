@@ -122,6 +122,7 @@ export async function extractToClassNames({
       lineNumbers,
       programPath,
       isFlattened,
+      config,
       completeProps,
       staticConfig,
     }) => {
@@ -340,7 +341,7 @@ export async function extractToClassNames({
           }
 
           if (staticConfig.isText) {
-            let family = completeProps.fontFamily
+            let family = completeProps.fontFamily || config.defaultFont || 'body'
             if (family[0] === '$') {
               family = family.slice(1)
             }
