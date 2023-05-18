@@ -21,6 +21,8 @@ import {
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 
+const heroHeight = 850
+
 export default function TakeoutPage() {
   return (
     <>
@@ -52,7 +54,7 @@ export default function TakeoutPage() {
         <ContainerXL>
           <YStack h={0} mah={0}>
             <YStack
-              y={100}
+              y={heroHeight / 2 - 340}
               ai="center"
               jc="center"
               $sm={{
@@ -171,11 +173,12 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 1500,
-                  height: 1500,
+                  width: 1100,
+                  height: 2000,
+                  // backgroundColor: 'red',
                   position: 'absolute',
-                  top: -100,
-                  right: '-50%',
+                  top: -150,
+                  right: '-25%',
                   zIndex: -1,
                 }}
                 gl={{ preserveDrawingBuffer: true }}
@@ -184,14 +187,16 @@ export default function TakeoutPage() {
                 camera={{ position: [0, 0, 150], fov: 50 }}
               >
                 <Suspense fallback={null}>
-                  <ambientLight intensity={1} />
-                  <TakeoutBox3D />
+                  <ambientLight intensity={0.5} />
+                  <Stage shadows="accumulative">
+                    <TakeoutBox3D />
+                  </Stage>
                 </Suspense>
               </Canvas>
             </YStack>
           </YStack>
 
-          <YStack t={-100} l={-100} pos="absolute" b={0} zi={-1}>
+          <YStack t={heroHeight - 800} l={-100} pos="absolute" b={0} zi={-1}>
             <Separator o={0.75} vertical h={2000} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={2000} pos="absolute" r={0} />
 
@@ -221,7 +226,7 @@ export default function TakeoutPage() {
             </YStack>
           </YStack>
 
-          <XStack mt={770} space="$10">
+          <XStack mt={heroHeight + 70} space="$10">
             <XStack f={1} p="$8" mt={20}>
               <YStack
                 className="mix-blend"
@@ -385,6 +390,8 @@ export default function TakeoutPage() {
               </StickyBox>
             </YStack>
           </XStack>
+
+          <Spacer size="$10" />
         </ContainerXL>
       </YStack>
     </>
@@ -394,7 +401,7 @@ export default function TakeoutPage() {
 const modelUrl = `http://localhost:5005/takeout.gltf`
 // useGLTF.preload(modelUrl)
 
-function TakeoutBox3D() {
+function TakeoutBox3D(props) {
   const ref = useRef<any>()
   const { nodes, materials } = useGLTF(modelUrl) as any
 
@@ -405,26 +412,43 @@ function TakeoutBox3D() {
   })
 
   return (
-    <group ref={ref} dispose={null}>
+    <group ref={ref} dispose={null} {...props}>
       <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.handle.geometry}
-        material={materials.Material}
-        position={[-0.26, 0.08, 0.06]}
-        scale={5}
-      />
-      <mesh
-        castShadow
-        receiveShadow
         geometry={nodes.pack.geometry}
         material={materials.Chinese_Takeout_Box_chinese}
         position={[0.13, 0.01, 0.23]}
         rotation={[-Math.PI, 0, -Math.PI]}
-        scale={5}
+        scale={0.1}
+      />
+      <mesh
+        geometry={nodes.handle.geometry}
+        material={materials.Material}
+        position={[-0.26, 0.08, 0.06]}
+        scale={0.1}
       />
     </group>
   )
+  // return (
+  //   <group ref={ref} dispose={null}>
+  //     <mesh
+  //       castShadow
+  //       receiveShadow
+  //       geometry={nodes.handle.geometry}
+  //       material={materials.Material}
+  //       position={[-0.26, 0.08, 0.06]}
+  //       scale={5}
+  //     />
+  //     <mesh
+  //       castShadow
+  //       receiveShadow
+  //       geometry={nodes.pack.geometry}
+  //       material={materials.Chinese_Takeout_Box_chinese}
+  //       position={[0.13, 0.01, 0.23]}
+  //       rotation={[-Math.PI, 0, -Math.PI]}
+  //       scale={5}
+  //     />
+  //   </group>
+  // )
 }
 
 function Box(props) {
@@ -476,7 +500,7 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const TAKEOUT = ({ fontSize = 290, lineHeight = 225, ...props }) => (
+const TAKEOUT = ({ fontSize = 350, lineHeight = 275, ...props }) => (
   <H1
     className="mix-blend font-outlined"
     userSelect="none"
