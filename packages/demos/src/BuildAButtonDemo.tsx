@@ -24,6 +24,8 @@ export function BuildAButtonDemo() {
         <ButtonCol size="$6" subTheme="alt2" />
         <ButtonCol size="$6" subTheme="alt2" {...outlined} />
         <ButtonCol size="$8" subTheme="alt2" iconAfter={<Drumstick />} {...outlined} />
+        <ButtonCol size="$10" subTheme="alt1" />
+        <ButtonCol size="$8" subTheme="alt2" {...outlined} borderRadius={0} />
       </XStack>
     </YStack>
   )

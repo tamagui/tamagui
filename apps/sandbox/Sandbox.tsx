@@ -12,7 +12,7 @@ import {
   Theme,
   XStack,
   YStack,
-  getStylesAtomic
+  getStylesAtomic,
 } from 'tamagui'
 
 import { CustomButtonDemo } from './CustomButton'
@@ -153,29 +153,30 @@ const SandboxFrame = (props: { children: any }) => {
           }}
         />
 
-        <XStack fullscreen>
-          <YStack ai="center" jc="center" f={1} h="100%">
-            {props.children}
-          </YStack>
+        <Theme name={screenshot ? 'blue' : undefined}>
+          <XStack fullscreen>
+            <YStack ai="center" jc="center" f={1} h="100%">
+              {props.children}
+            </YStack>
 
-          {splitView ? (
-            <>
-              <Separator vertical />
-              <Theme name="dark">
-                <YStack
-                  ai="center"
-                  jc="center"
-                  f={1}
-                  h="100%"
-                  bg={screenshot ? 'transparent' : '$background'}
-                >
-                  {props.children}
-                </YStack>
-              </Theme>
-            </>
-          ) : null}
-        </XStack>
-
+            {splitView ? (
+              <>
+                <Separator vertical />
+                <Theme name="dark">
+                  <YStack
+                    ai="center"
+                    jc="center"
+                    f={1}
+                    h="100%"
+                    bg={screenshot ? 'transparent' : '$background'}
+                  >
+                    {props.children}
+                  </YStack>
+                </Theme>
+              </>
+            ) : null}
+          </XStack>
+        </Theme>
         {showThemeSwitch && (
           <div
             style={{
