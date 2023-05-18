@@ -23,7 +23,7 @@ export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
           ],
         }}
         twitter={{
-          handle: '@natew',
+          handle: '@natebirdman',
           site: '@tamagui_js',
           cardType: 'summary_large_image',
         }}
