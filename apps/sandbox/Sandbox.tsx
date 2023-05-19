@@ -29,7 +29,11 @@ export const Sandbox = () => {
   const demoComponentName = new URLSearchParams(window.location.search).get('demo')
   const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
   const Component = demoComponentName
-    ? Demos[demoComponentName]
+    ? Demos[
+        demoComponentName.endsWith('Demo')
+          ? demoComponentName
+          : `${demoComponentName}Demo`
+      ]
     : useCaseComponentName
     ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
