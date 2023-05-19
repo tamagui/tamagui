@@ -32,7 +32,7 @@ export default function Community({ frontmatters }) {
     <CommunityLayout>
       <NextSeo
         title="Community — Tamagui"
-        description="Tamagui latest news and discussion."
+        description="Tamagui's latest news and discussions."
         openGraph={{
           url: 'https://tamagiu.dev/community',
         }}

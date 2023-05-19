@@ -27,13 +27,14 @@ export default function DocsCorePage({ frontmatter, code }: Doc) {
     <>
       <NextSeo
         title={`${frontmatter.title} — Tamagui Core`}
+        description={frontmatter.description}
         openGraph={{
           images: [
             {
               url: getOgUrl('default', {
                 title: frontmatter.title,
                 description: frontmatter.description ?? '',
-                category: "Core",
+                category: 'Core',
               }),
               width: 1200,
               height: 630,

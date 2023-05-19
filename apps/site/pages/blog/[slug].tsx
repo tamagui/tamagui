@@ -17,6 +17,7 @@ export default function BlogSlug(props: BlogPost) {
       <NextSeo
         {...props.frontmatter}
         title={`${props.frontmatter.title} — Tamagui`}
+        description={props.frontmatter.description}
         openGraph={{
           images: [
             {
@@ -25,7 +26,7 @@ export default function BlogSlug(props: BlogPost) {
                 getOgUrl('default', {
                   title: props.frontmatter.title,
                   description: props.frontmatter.description ?? '',
-                  category: "Blog",
+                  category: 'Blog',
                 }),
               width: 1200,
               height: 630,

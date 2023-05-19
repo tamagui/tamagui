@@ -27,6 +27,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
     <>
       <NextSeo
         title={`${frontmatter.title} — Tamagui Guides`}
+        description={frontmatter.description}
         openGraph={{
           images: [
             {

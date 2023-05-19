@@ -31,6 +31,7 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
     <TamaguiExamples.Provider value={examples}>
       <NextSeo
         title={`${frontmatter.title} — Tamagui`}
+        description={frontmatter.description}
         openGraph={{
           images: [
             {

@@ -16,6 +16,7 @@ export default function BlogSlug(props: BlogPost) {
       <NextSeo
         {...props.frontmatter}
         title={`${props.frontmatter.title} — Tamagui`}
+        description={props.frontmatter.description}
         openGraph={{
           images: [
             {
