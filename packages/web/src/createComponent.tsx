@@ -174,7 +174,10 @@ export function createComponent<
         const val = propsIn[key] || propsIn[inverseShorthands[key]]
         // if not set, use context
         if (val == null) {
-          if (contextValue) {
+          if (
+            staticConfig.variants &&
+            typeof staticConfig.variants[key] !== 'undefined'
+          ) {
             contextProps ||= {}
             contextProps[key] = contextValue[key]
           }
