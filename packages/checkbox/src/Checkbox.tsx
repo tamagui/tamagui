@@ -263,7 +263,6 @@ const CheckboxComponent = CheckboxFrame.extractable(
       checked: checkedProp,
       defaultChecked,
       required,
-      scaleIcon = 1,
       scaleSize = 0.45,
       sizeAdjust = 0,
       disabled,
@@ -290,7 +289,6 @@ const CheckboxComponent = CheckboxFrame.extractable(
 
     // TODO: this could be null - fix the type
     const styledContext = React.useContext(CheckboxStyledContext)
-
     const adjustedSize = getVariableValue(
       getSize(propsActive.size ?? styledContext?.size ?? '$true', {
         shift: sizeAdjust,
@@ -315,76 +313,80 @@ const CheckboxComponent = CheckboxFrame.extractable(
     }
 
     return (
-      <CheckboxStyledContext.Provider {...styledContext}>
-        <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={disabled}>
-          {isWeb && native ? (
-            <BubbleInput
-              control={button}
-              bubbles={!hasConsumerStoppedPropagationRef.current}
-              name={name}
-              value={value}
-              checked={checked}
-              required={required}
+      <CheckboxProvider scope={__scopeCheckbox} state={checked} disabled={disabled}>
+        {isWeb && native ? (
+          <BubbleInput
+            control={button}
+            bubbles={!hasConsumerStoppedPropagationRef.current}
+            name={name}
+            value={value}
+            checked={checked}
+            required={required}
+            disabled={disabled}
+            id={props.id}
+          />
+        ) : (
+          <>
+            <CheckboxFrame
+              width={size}
+              height={size}
+              tag="button"
+              role="checkbox"
+              aria-labelledby={labelledBy}
+              aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+              aria-required={required}
+              data-state={getState(checked)}
+              data-disabled={disabled ? '' : undefined}
               disabled={disabled}
-              id={props.id}
-            />
-          ) : (
-            <>
-              <CheckboxFrame
-                width={size}
-                height={size}
-                tag="button"
-                role="checkbox"
-                aria-labelledby={labelledBy}
-                aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-                aria-required={required}
-                data-state={getState(checked)}
-                data-disabled={disabled ? '' : undefined}
-                disabled={disabled}
-                {...checkboxProps}
-                ref={composedRefs}
-                {...(isWeb && {
-                  type: 'button',
-                  value,
-                  onKeyDown: composeEventHandlers(
-                    (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
-                    (event) => {
-                      // According to WAI ARIA, Checkboxes don't activate on enter keypress
-                      if (event.key === 'Enter') event.preventDefault()
-                    }
-                  ),
-                })}
-                onPress={composeEventHandlers(props.onPress as any, (event) => {
-                  setChecked((prevChecked) =>
-                    isIndeterminate(prevChecked) ? true : !prevChecked
-                  )
-                  if (isFormControl) {
-                    hasConsumerStoppedPropagationRef.current =
-                      event.isPropagationStopped()
-                    // if checkbox is in a form, stop propagation from the button so that we only propagate
-                    // one click event (from the input). We propagate changes from an input so that native
-                    // form validation works and form events reflect checkbox updates.
-                    if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+              {...checkboxProps}
+              ref={composedRefs}
+              {...(isWeb && {
+                type: 'button',
+                value,
+                onKeyDown: composeEventHandlers(
+                  (props as React.HTMLProps<HTMLButtonElement>).onKeyDown,
+                  (event) => {
+                    // According to WAI ARIA, Checkboxes don't activate on enter keypress
+                    if (event.key === 'Enter') event.preventDefault()
                   }
-                })}
-              />
+                ),
+              })}
+              onPress={composeEventHandlers(props.onPress as any, (event) => {
+                setChecked((prevChecked) =>
+                  isIndeterminate(prevChecked) ? true : !prevChecked
+                )
+                if (isFormControl) {
+                  hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                  // if checkbox is in a form, stop propagation from the button so that we only propagate
+                  // one click event (from the input). We propagate changes from an input so that native
+                  // form validation works and form events reflect checkbox updates.
+                  if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+                }
+              })}
+            >
+              <CheckboxStyledContext.Provider
+                size={propsActive.size ?? styledContext?.size ?? '$true'}
+                scaleIcon={styledContext?.scaleIcon ?? props.scaleIcon ?? 1}
+              >
+                {propsActive.children}
+              </CheckboxStyledContext.Provider>
+            </CheckboxFrame>
 
-              {isWeb && isFormControl ? (
-                <BubbleInput
-                  isHidden
-                  control={button}
-                  bubbles={!hasConsumerStoppedPropagationRef.current}
-                  name={name}
-                  value={value}
-                  checked={checked}
-                  required={required}
-                  disabled={disabled}
-                />
-              ) : null}
-            </>
-          )}
-        </CheckboxProvider>
-      </CheckboxStyledContext.Provider>
+            {isWeb && isFormControl ? (
+              <BubbleInput
+                isHidden
+                control={button}
+                bubbles={!hasConsumerStoppedPropagationRef.current}
+                name={name}
+                value={value}
+                checked={checked}
+                required={required}
+                disabled={disabled}
+              />
+            ) : null}
+          </>
+        )}
+      </CheckboxProvider>
     )
   })
 )
