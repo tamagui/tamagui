@@ -244,18 +244,20 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/takeout">
-        <TooltipSimple delay={0} restMs={25} label="Takeout">
-          <HeadAnchor
-            size="$8"
-            $sm={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            🥡
-          </HeadAnchor>
-        </TooltipSimple>
-      </NextLink>
+      {process.env.NODE_ENV === 'development' && (
+        <NextLink prefetch={false} href="/takeout">
+          <TooltipSimple delay={0} restMs={25} label="Takeout">
+            <HeadAnchor
+              size="$8"
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              🥡
+            </HeadAnchor>
+          </TooltipSimple>
+        </NextLink>
+      )}
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
