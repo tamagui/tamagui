@@ -164,18 +164,26 @@ const resolveVariants: StyleResolver = (
   debug
 ) => {
   const variant = variants?.[key]
+
   if (!variant || value === undefined) {
     return
   }
 
   let variantValue = getVariantDefinition(variant, key, value, conf)
 
+  if (process.env.NODE_ENV === 'development') {
+    if (debug === 'verbose') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log('resolve variant', { key, value, variantValue })
+    }
+  }
+
   if (!variantValue) {
     // variant at key exists, but no matching variant value, return nothing
     if (process.env.NODE_ENV === 'development') {
       if (staticConfig.validStyles && key in staticConfig.validStyles) return
       // don't warn on missing boolean values, common to only one of true/false
-      if (typeof value === 'boolean') return
+      if (value === true || value === false) return
       const name = staticConfig.componentName || '[UnnamedComponent]'
       console.warn(
         `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
@@ -188,8 +196,25 @@ const resolveVariants: StyleResolver = (
     const fn = variantValue as VariantSpreadFunction<any>
     variantValue = fn(
       value,
-      getVariantExtras(props, languageContext, theme, defaultProps, avoidDefaultProps)
+      getVariantExtras(
+        props,
+        languageContext,
+        theme,
+        defaultProps,
+        avoidDefaultProps,
+        fontFamily
+      )
     )
+
+    if (process.env.NODE_ENV === 'development') {
+      if (debug === 'verbose') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('expanded functional variant', {
+          variant: fn,
+          response: variantValue,
+        })
+      }
+    }
   }
 
   let fontFamilyResult: any

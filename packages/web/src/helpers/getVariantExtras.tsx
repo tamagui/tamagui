@@ -11,7 +11,8 @@ export function getVariantExtras(
   languageContext?: LanguageContextType,
   theme?: any,
   defaultProps?: any,
-  avoidDefaultProps = false
+  avoidDefaultProps = false,
+  fontFamily?: string
 ) {
   const conf = getConfig()
 
@@ -30,7 +31,7 @@ export function getVariantExtras(
     theme,
 
     get fontFamily() {
-      return getVariableValue(props.fontFamily)
+      return getVariableValue(props.fontFamily || fontFamily)
     },
 
     get font() {

@@ -473,6 +473,7 @@ export const getSplitStyles: StyleSplitter = (
         console.log({
           valInit,
           variants,
+          variant: variants?.[keyInit],
           isVariant,
           shouldPassProp,
           isHOCShouldPassThrough,
@@ -532,6 +533,7 @@ export const getSplitStyles: StyleSplitter = (
         expanded,
         state,
         isVariant,
+        variant: variants?.[keyInit],
         shouldPassProp,
         isHOCShouldPassThrough,
         theme,
