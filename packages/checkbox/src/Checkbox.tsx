@@ -366,7 +366,7 @@ const CheckboxComponent = CheckboxFrame.extractable(
             >
               <CheckboxStyledContext.Provider
                 size={propsActive.size ?? styledContext?.size ?? '$true'}
-                scaleIcon={styledContext?.scaleIcon ?? props.scaleIcon ?? 1}
+                scaleIcon={props.scaleIcon ?? styledContext?.scaleIcon ?? 1}
               >
                 {propsActive.children}
               </CheckboxStyledContext.Provider>
