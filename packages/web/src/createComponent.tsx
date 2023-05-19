@@ -163,32 +163,43 @@ export function createComponent<
     }
     // const time = t.start({ quiet: true })
 
-    // React inserts default props after your props for some reason...
-    // order important so we do loops, you can't just spread because JS does weird things
-    let props: any
-    if (defaultProps && !propsIn.asChild) {
-      props = mergeProps(defaultProps, propsIn)[0]
-    } else {
-      props = propsIn
-    }
-
     // set variants through context
-    let provided: Object | undefined
+    let contextProps: Object | undefined
+    let overriddenContextProps: Object | undefined
     const { context } = staticConfig
     if (context) {
       const contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
-        const propVal = props[key] || props[inverseShorthands[key]]
-        if (propVal == null) {
+        const val = propsIn[key] || propsIn[inverseShorthands[key]]
+        // if not set, use context
+        if (val == null) {
           if (contextValue) {
-            props[key] = contextValue[key]
+            contextProps ||= {}
+            contextProps[key] = contextValue[key]
           }
-        } else {
-          provided ||= {}
-          provided[key] = propVal
+        }
+        // if set in props, update context
+        else {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = val
         }
       }
+    }
+
+    // context overrides defaults but not props
+    const curDefaultProps = contextProps
+      ? { ...defaultProps, ...contextProps }
+      : defaultProps
+
+    // React inserts default props after your props for some reason...
+    // order important so we do loops, you can't just spread because JS does weird things
+    let props: any
+
+    if (curDefaultProps && !propsIn.asChild) {
+      props = mergeProps(curDefaultProps, propsIn)[0]
+    } else {
+      props = propsIn
     }
 
     const debugProp = props['debug'] as DebugProp
@@ -374,6 +385,7 @@ export function createComponent<
             elementType,
             themeStateProps,
             themeState,
+            styledContext: { contextProps, overriddenContextProps },
           })
           console.groupEnd()
         }
@@ -842,9 +854,9 @@ export function createComponent<
       }
     }
 
-    if (provided) {
+    if (overriddenContextProps) {
       const Provider = staticConfig.context!.Provider!
-      content = <Provider {...provided}>{content}</Provider>
+      content = <Provider {...overriddenContextProps}>{content}</Provider>
     }
 
     if (process.env.NODE_ENV === 'development') {
