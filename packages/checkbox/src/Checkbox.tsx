@@ -269,6 +269,7 @@ const CheckboxComponent = CheckboxFrame.extractable(
       value = 'on',
       onCheckedChange,
       native,
+      scaleIcon,
       ...checkboxProps
     } = props
     const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
@@ -366,7 +367,7 @@ const CheckboxComponent = CheckboxFrame.extractable(
             >
               <CheckboxStyledContext.Provider
                 size={propsActive.size ?? styledContext?.size ?? '$true'}
-                scaleIcon={props.scaleIcon ?? styledContext?.scaleIcon ?? 1}
+                scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
               >
                 {propsActive.children}
               </CheckboxStyledContext.Provider>
