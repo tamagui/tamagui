@@ -378,6 +378,28 @@ iframe {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1.0));
 }
 
+.masked {
+  -webkit-mask-image: url(/gqty.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/gqty.svg);
+  mask-size: 100% 100%;
+  mask-clip: border-box;
+  animation: clip-fade 3s infinite alternate;
+}
+
+@keyframes clip-fade {
+  0% {
+    mask-position: left;
+    -webkit-mask-position: left;
+  }
+  
+  100% {
+    mask-position: right;
+    -webkit-mask-position: right;
+  }
+}
+
 /* code highlighting */
 
 .token.parameter {
@@ -688,6 +710,10 @@ input, textarea {
 .glowing:hover > *::before {
   box-shadow: 0 0 60px var(--color10);
   opacity: 0.6;
+}
+
+.yellow-shadow {
+  -webkit-text-stroke: 2px yellow;
 }
 
 .callout {

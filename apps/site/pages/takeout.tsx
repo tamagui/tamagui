@@ -58,76 +58,86 @@ export default function TakeoutPage() {
               ai="center"
               jc="center"
               $sm={{
-                scale: 0.5,
+                scale: 0.4,
               }}
               $md={{
-                scale: 0.75,
+                scale: 0.6,
+              }}
+              $lg={{
+                scale: 0.8,
               }}
             >
               <Paragraph
                 className="mix-blend"
                 color="$color"
                 size="$1"
-                fontSize={20}
-                ls={5}
+                fontSize={16}
+                ls={40}
                 fontFamily="$glusp"
               >
                 Tamagui
               </Paragraph>
 
               <TAKEOUT />
+              <TAKEOUT
+                pos="absolute"
+                t={52}
+                className="yellow-shadow mix-blend  masked"
+                zi={1}
+                color="transparent"
+              />
 
               <Paragraph
                 className="mix-blend"
                 color="$color"
                 size="$1"
-                fontSize={20}
+                fontSize={16}
                 mt={-10}
-                ls={5}
+                ls={40}
                 fontFamily="$glusp"
               >
                 Presents
               </Paragraph>
 
-              <XStack my="$8" gap="$12" f={1} jc="space-between" className="mix-blend">
+              <XStack my="$8" gap="$14" f={1} jc="space-between" className="mix-blend">
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-app-website-ui-62.svg"
                   alt="Icon"
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
                   alt="Icon"
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-database-60.svg"
                   alt="Icon"
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-bucket-brush-63.svg"
                   alt="Icon"
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-palette-sample-26.svg"
                   alt="Icon"
-                  width={24}
-                  height={24}
+                  width={48}
+                  height={48}
                 />
               </XStack>
 
@@ -173,12 +183,12 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 1100,
-                  height: 2000,
+                  width: 900,
+                  height: 1000,
                   // backgroundColor: 'red',
                   position: 'absolute',
-                  top: -150,
-                  right: '-25%',
+                  top: 100,
+                  right: '-22%',
                   zIndex: -1,
                 }}
                 gl={{ preserveDrawingBuffer: true }}
@@ -187,8 +197,13 @@ export default function TakeoutPage() {
                 camera={{ position: [0, 0, 150], fov: 50 }}
               >
                 <Suspense fallback={null}>
-                  <ambientLight intensity={0.5} />
-                  <Stage shadows="accumulative">
+                  {/* <ambientLight intensity={0.9} /> */}
+                  <Stage
+                    shadows="accumulative"
+                    scale={0.5}
+                    adjustCamera
+                    environment="city"
+                  >
                     <TakeoutBox3D />
                   </Stage>
                 </Suspense>
@@ -398,8 +413,8 @@ export default function TakeoutPage() {
   )
 }
 
-const modelUrl = `http://localhost:5005/takeout.gltf`
-// useGLTF.preload(modelUrl)
+const modelUrl = `${process.env.URL ?? `http://localhost:5005`}/takeout.gltf`
+useGLTF.preload(modelUrl)
 
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
@@ -500,7 +515,7 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const TAKEOUT = ({ fontSize = 350, lineHeight = 275, ...props }) => (
+const TAKEOUT = ({ fontSize = 320, lineHeight = 275, ...props }) => (
   <H1
     className="mix-blend font-outlined"
     userSelect="none"
