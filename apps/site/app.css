@@ -379,11 +379,21 @@ iframe {
 }
 
 .masked {
-  -webkit-mask-image: url(/gqty.svg);
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
   -webkit-mask-size: 100% 100%;
   -webkit-mask-clip: border-box;
-  mask-image: url(/gqty.svg);
-  mask-size: 100% 100%;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
+  mask-clip: border-box;
+  animation: clip-fade 50s infinite alternate;
+}
+
+.masked2 {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
   mask-clip: border-box;
   animation: clip-fade 3s infinite alternate;
 }
@@ -758,10 +768,10 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 1px 1px var(--color),
-    -1px -1px var(--color),
-    1px -1px var(--color),
-    -1px 1px var(--color);
+  text-shadow: 2px 2px var(--color),
+    -2px -2px var(--color),
+    2px -2px var(--color),
+    -2px 2px var(--color);
 }
 
 .invert {

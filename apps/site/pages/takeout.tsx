@@ -78,13 +78,22 @@ export default function TakeoutPage() {
                 Tamagui
               </Paragraph>
 
-              <TAKEOUT />
               <TAKEOUT
                 pos="absolute"
                 t={52}
-                className="yellow-shadow mix-blend  masked"
+                className="yellow-shadow   masked"
+                color="$color10"
+              />
+
+              <TAKEOUT />
+
+              <TAKEOUT
+                pos="absolute"
+                t={52}
+                className="yellow-shadow mix-blend  masked2"
                 zi={1}
                 color="transparent"
+                o={0.5}
               />
 
               <Paragraph
@@ -102,7 +111,7 @@ export default function TakeoutPage() {
               <XStack my="$8" gap="$14" f={1} jc="space-between" className="mix-blend">
                 <Image
                   className="pixelate"
-                  src="/retro-icons/coding-app-website-ui-62.svg"
+                  src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
                   alt="Icon"
                   width={48}
                   height={48}
@@ -144,6 +153,7 @@ export default function TakeoutPage() {
               <YStack
                 pos="absolute"
                 fullscreen
+                className="animated"
                 zi={2}
                 pe="none"
                 ai="center"
@@ -184,7 +194,7 @@ export default function TakeoutPage() {
               <Canvas
                 style={{
                   width: 900,
-                  height: 1000,
+                  height: 800,
                   // backgroundColor: 'red',
                   position: 'absolute',
                   top: 100,
@@ -193,7 +203,7 @@ export default function TakeoutPage() {
                 }}
                 gl={{ preserveDrawingBuffer: true }}
                 shadows
-                dpr={[1, 1.5]}
+                dpr={[1, 1]}
                 camera={{ position: [0, 0, 150], fov: 50 }}
               >
                 <Suspense fallback={null}>
@@ -201,7 +211,8 @@ export default function TakeoutPage() {
                   <Stage
                     shadows="accumulative"
                     scale={0.5}
-                    adjustCamera
+                    adjustCamera={1}
+                    intensity={1}
                     environment="city"
                   >
                     <TakeoutBox3D />
