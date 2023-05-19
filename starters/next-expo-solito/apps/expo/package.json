@@ -4,10 +4,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "TAMAGUI_TARGET=native expo start -c",
-    "android": "TAMAGUI_TARGET=native yarn expo run:android",
-    "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
-    "eject": "expo eject"
+    "start": "TAMAGUI_TARGET=native npx expo start -c",
+    "android": "TAMAGUI_TARGET=native npx expo run:android",
+    "ios": "TAMAGUI_TARGET=native npx expo run:ios",
+    "eject": "npx expo eject"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
