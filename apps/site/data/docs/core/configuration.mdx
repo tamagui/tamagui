@@ -283,12 +283,22 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
-If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js), there are also docs for app directory and RSC support.
+Note that you can optimize this a bit by generating your CSS at build-time and then avoiding generating it on the client. This is covered in the Next.js Guide as it gives a good example of how to put all the pieces together properly, but you can apply it to any other framework.
+
+If using Next.js, [see the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
   `react-native-web` style tags to ensure Tamagui can override the built-in styles.
 </Notice>
+
+### Including the reset css
+
+There is an optional CSS reset that helps normalize styling, you can import it into your app like so:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
 
 ### Setup media query driver
 

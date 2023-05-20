@@ -11,7 +11,7 @@ export interface TamaguiOptions {
   /**
    * Emit design system related CSS during build step for usage with frameworks
    */
-  outputCSS?: string
+  outputCSS?: string | null | false
 
   /**
    * Tamagui can follow imports and evaluate them when parsing styles, leading to
