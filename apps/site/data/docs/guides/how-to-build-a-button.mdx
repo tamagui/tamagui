@@ -14,13 +14,15 @@ demoName: BuildAButton
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-Much more than just some text in a box, a button involves icons, loading indicators, colors, importances and sizes, along with a delicate balancing act between sub-component spacing and styling, all ideally delivered in a simple API that still accounts for many states: default, hovered, focused, pressed and disabled.
+More than just text in a box, a button involves icons, themes, importances and sizes, loading indicators and several pseudo states, and a delicate balance between its sub-components' position, spacing and style. All of this ideally delivered in a simple API that still allows users customize every piece.
 
-Tamagui makes this possible, and maybe even easy (as of version `1.28`), with the introduction of `createStyledContext`, a helper which we've dogfooded internally to fix large swaths of brittle and verbose code.
+Tamagui helps make this possible (and maybe even easy as of version `1.28`). We've introduced `createStyledContext`, a helper which has been dogfooded internally to fix many brittle and verbose areas of our code.
 
-We think it makes designing composable components APIs a lot better. What are composable components? It's a term of art coined by [Radix](https://www.radix-ui.com/) (as far as we know) for when you export an API that involves multiple components that are meant to render together, sharing state and/or styling (eg, a `<Button />` that also has `<Button.Text />` and `<Button.Icon />`.
+We think it makes designing composable components APIs a joy and made this guide to show why they make sense, how to design them, and how `createStyledContext` helps achieve simplicity without sacrificing control.
 
-We made this guide to show why they make sense, how to design them, and how `createStyledContext` helps achieve simplicity without sacrificing control.
+What are composable components?
+
+It's a term of art coined by [Radix](https://www.radix-ui.com/) (as far as we know) for when you export an API that involves multiple components that are meant to render together and share state and/or style, eg, a `<Button />` that also has `<Button.Text />` and `<Button.Icon />`.
 
 Let's get into it.
 
