@@ -22,7 +22,7 @@ export declare const esbuildOptions: {
     readonly platform: "node";
 };
 export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>;
-export declare function hasBundledConfigChanged(): Promise<boolean>;
+export declare function hasBundledConfigChanged(): boolean;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<{
     components: LoadedComponents[];
     nameToPaths: {};

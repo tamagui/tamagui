@@ -32,6 +32,7 @@ export async function loadTamagui(
   propsIn: TamaguiOptions
 ): Promise<TamaguiProjectInfo | null> {
   const options = getFilledOptions(propsIn)
+
   const bundleInfo = await getBundledConfig(options)
   if (!bundleInfo) {
     console.warn(
@@ -40,18 +41,20 @@ export async function loadTamagui(
     return null
   }
 
+  if (!hasBundledConfigChanged()) {
+    return bundleInfo
+  }
+
   if (bundleInfo) {
     // init core-node
     const config = createTamagui(bundleInfo.tamaguiConfig)
 
     if (options.outputCSS) {
       // emit css
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(`  Output Tamagui CSS to ${options.outputCSS}`)
       await writeFile(options.outputCSS, config.getCSS())
     }
-  }
-
-  if (!hasBundledConfigChanged()) {
-    return bundleInfo
   }
 
   try {
