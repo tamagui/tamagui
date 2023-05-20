@@ -402,7 +402,11 @@ const Button = ({
 )
 ```
 
-For example with the composable component API our users could really flexibly use our component - re-wrapping it in `styled`, or even adding different contents inside the frame quite flexibly:
+But suddenly we have issues. What if a user wants to show an icon? We need to add `icon` and `iconProps`. And what if they want to change the order? You may reach for something like `direction="reverse"`. But then what if they want a loading indicator after, but an icon before. Or maybe they want to show big text above, and smaller text below.
+
+The problem with abstracting your Button into a single component is that the internals are surprisingly flexible, and ideally they want to each be styled independently.
+
+Abstracting the tree structure that's output is our problem. The composable component API gives us full control - we can customize every piece, even using the existing `styled` function to re-style each piece, before re-exporting it again:
 
 ```tsx
 import { withStaticProperties } from '@tamagui/core'
@@ -429,19 +433,15 @@ export default () => (
 )
 ```
 
-The composable component API really shines for example if we wanted to allow an icon of some sort. With the all-in-one functional component, you'd have to add an `icon` property, and then `iconProps`, and then probably some way to configure `iconShouldAppearAfterText`.
+Not to mention by staying with the `styled` world, the Tamagui optimizing compiler confidently flattens our Button components down to ridiculously fast DOM output on the web, and pulls out all styles from the render loop on native.
 
-This expansion of abitrary props starts to feel off for good reason. It takes your users away from being able to understand the actual tree structure that's output. Things like wrapping your inner contents to make them flow a different direction, or space a bit differently suddenly become impossible, else you keep adding more and more arbitrary props.
+So we want our composable component API both for ergonomics and for performance, but we need some way to thread our `size` property down from the parent frame to the inner sub-components.
 
-Not to mention that by leaving the `styled` API, you'll now miss out on some of the nicest optimizations the Tamagui optimizing compiler can perform.
+### Solving size
 
-So we want our composable component API both for ergonomics and performance, but we need some way to thread our `size` prop down between components.
+In React this is typically what context is used for.
 
-### Passing down size
-
-In React, this is typically what context is for.
-
-Here's how we'd implement size through context using plain React, while keeping the composable API:
+Here's how we'd solve for size using context in plain-old React, while still keeping the composable API:
 
 ```tsx
 import { createContext } from 'react'
@@ -472,17 +472,17 @@ export const NewButton = withStaticProperties(ButtonFrame, {
 })
 ```
 
-Wait a minute! What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
+What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
 
-Well, while it's explained further in [the styled docs](/docs/core/styled#styleable), the short answer is if you want a functional component that returns a styled component _to be able to be styled itself_, then, well, you need this. That's because merging things like themes, animations, variants, media queries, and psuedo queries is quite complex, and if Tamagui doesn't know that there are multiple layers of styled components, it can merge things in ways you wouldn't expect. It would still work technically without `styleable`, but the output would sometimes defy your expectations.
+Well, while it's explained in [the styled docs](/docs/core/styled#styleable) but the short of it is if you want a functional component that returns a styled component _to then be able to be styled again_, well, you need `styleable`.
 
-But more imporantly that that, even beyond `styleable`, once again we've ended up with somewhat verbose and brittle code.
+That's because merging things like themes, animations, variants, media queries, and psuedo queries is quite complex, and if Tamagui doesn't know that there is a functional component in between some styled components it can merge lead to unexpected behavior. It _still works, technically_, but you'd see some unexpected behavior.
 
-One example is that sharing more than just `size` across these components would require a pretty significant refactor. And once again, we've made things unable to be optimized due to leaving the `styled` world.
+But more importantly, the above code is once again verbose, duplicative, and brittle. For example sharing more than just `size` across these components would require a pretty significant refactor of the context with a lot of logic memoizing the context value properly. And, once again, by moving into functional components, your base level views now won't be as optimized by the compiler.
 
-### Introducing createStyledContext
+### The solution, createStyledContext
 
-Finally, we can use `createStyledContext`, first by changing from `createContext` to `createStyledContext`:
+Finally we get to use `createStyledContext`. We just change from `createContext` to:
 
 ```tsx
 import { createStyledContext } from '@tamagui/core'
@@ -492,11 +492,9 @@ export const ButtonContext = createStyledContext({
 })
 ```
 
-This is similar to `createContext`, in fact it returns a `React.Context` type, so you can use it with `useContext` later on, just as you'd expect.
+This in fact it returns a `React.Context` just like `createContext` does, so you can use it with `useContext` later on just as you'd expect.
 
-Now we'll back the entire styled component definition for the next step, just to show more clearly how everything works together.
-
-Only this time we pass our new styled context to the `context` property of styled:
+And now, bringing back the full example, we add an extra property to each `styled` component, `context`:
 
 ```tsx
 import { Stack, styled, createStyledContext } from '@tamagui/core'
@@ -560,9 +558,13 @@ export default () => (
 )
 ```
 
-This time since `Button` knows the `size` property is defined in the `context` it will automatically pass size down from Button to Text, just like our hand-rolled version did. But we don't have to write brittle boilerplate, and the optimizing compiler is happy.
+This time since `Button` knows the `size` property is defined in the `context` it will automatically pass size down from Button to Text, just like our hand-rolled version did.
 
-Notice we also exported a new property on Button, `Button.Props`. Since `createStyledContext` returns a regular `React.Context` value, this works the same as any other React provider, letting us control the variant from anywhere above in the React tree:
+But- we don't have to write terribly verbose and brittle code, we get nice types and memoization automatically, and the optimizing compiler is happy.
+
+Notice we also exported a new property on Button, `Button.Props`.
+
+Since `createStyledContext` returns a regular `React.Context` value, this works the same as any other React provider. We can now control the variant from anywhere above in the React tree:
 
 ```tsx
 import { Button } from './OurButton'
@@ -578,15 +580,17 @@ export default () => (
 )
 ```
 
-The only difference as you can see is that the `createStyledContext` Provider doesn't take a `value` prop, but instead a flat object, as it always deals with objects.
-
-This may seem a bit contrived of an example for a Button, but it can be an incredibly powerful pattern that we get now for free.
+The only difference from `createContext` is that the `createStyledContext` Provider just takes props directly rather than inside a `value` object (and of course the memoization comes for free).
 
 ### Adding an Icon
 
-Are we done? Not quite. One final piece of a Button that is common is having an icon that sizes nicely with the Text. But your Icon likely comes from some third-party library, or is an SVG or perhaps an Icon font. We'll add a new component, `Button.Icon`.
+Are we done?
 
-So, instead of going through `styled`, it will be just a plain functional component that still nicely works with the Tamagui theme system and size.
+Not quite. One final common piece of a Button is having an icon that sizes and colors properly as well. But an icon usually comes from some third-party library, an SVG or perhaps an icon font.
+
+Let's add a new component, `Button.Icon` and make this work.
+
+Instead of going through `styled`, this component will be just a plain functional component. It will still work nicely with the Tamagui theme system and size, and show how you can easily use Tamagui alongside an external React component.
 
 ```tsx
 import { getTokens, useTheme } from '@tamagui/core'
@@ -634,8 +638,12 @@ Of course you can make your `Button.Icon` work a bit differently if you'd like, 
 
 ### Conclusion
 
-We hope this has been helpful in explaining a variety of Tamagui features, and some of the benefits of and ideas behind composable components. There's certainly further you can go in building out your Button, but we think that in under 150 lines of code you're getting an ideal API, fully typed sizes and themes, and a great balance of customization to performance.
+We hope this has been helpful in explaining a variety of Tamagui features and some of the benefits of and ideas behind composable components.
 
-We'd recommend against the urge to go further and abstract this into a single `Button` as that would once again leave you with a limited API, but of course that decision is up to you and for many apps you may like the limitations and be able to accept a bit more abstraction cost.
+There's certainly further you can go in building out your Button, but we think that in under 150 lines of code you're getting a nearly ideal API, fully typed sizing and themes, and a great balance of customization to performance.
 
-And what about passing other props to `createStyledContext`? We've deliberately left the naming of this new context helper function somewhat generic. For now, we're only going to commit to supporting variants through it, but in the future we may look to expand it to support any style property. You are free to add other variants that work across both ButtonFrame and ButtonText though, and then pass them into `createStyledContext`.
+If you are working on a smaller app, one that shows only a few buttons at a time, and with a very small set of variations, then abstracting this into a single functional Button component to save some verbosity is totally fine.
+
+But we'd that encourage you to give the composable component API a try, and build your own button using the code from the beginning of this guide.
+
+We look forward to never having to carefully add a forwardRef, redo how we attach types, thread context manually down, and then still accidently break context value memoization again!
