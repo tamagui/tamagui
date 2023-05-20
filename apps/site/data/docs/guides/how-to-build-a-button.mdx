@@ -20,11 +20,9 @@ Tamagui allows for building a button with "composable components," a concept pop
 
 What are composable components? Put simply, it's when you have, say, a `<Button />` that accepts children `<Button.Text />` and `<Button.Icon />`. And why do they exist? We'll explain that and more in this guide.
 
-<Notice>
-  Note: you can just use the [Tamagui Button](/docs/components/button) out of the box.
-  This guide is for those who want extra customization, or a reference to how to design
-  composable components in general.
-</Notice>
+Keep in mind that this is an advanced use case. Usually you can just grab Tamagui components off the shelf and use them with inline styles. But sometimes you want to design a flexible API for your users, which this guide covers.
+
+<Notice>You can also just use the [Tamagui Button](/docs/components/button).</Notice>
 
 ### The Final Result
 
@@ -554,7 +552,7 @@ export const Button = withStaticProperties(ButtonFrame, {
 import { Button } from './OurButton'
 
 export default () => (
-  <Button size="$xxl">
+  <Button size="$md">
     <Button.Text>
       Hello world
     </Button.Text>
@@ -594,7 +592,7 @@ Not quite. One final common piece of a Button is having an icon that sizes and c
 
 Let's add a new component, `Button.Icon` and make this work.
 
-Instead of going through `styled`, this component will be just a plain functional component. It will still work nicely with the Tamagui theme system and size, and show how you can easily use Tamagui alongside an external React component.
+Instead of going through `styled`, this component will be just a plain functional component. It will still work nicely with the Tamagui themes and sizes, showing how you can use them together with external React components.
 
 ```tsx
 import { getTokens, useTheme } from '@tamagui/core'
