@@ -135,6 +135,7 @@ const ButtonFrame = styled(ThemeableStack, {
 const ButtonText = styled(SizableText, {
   name: 'ButtonText',
   context: ButtonContext,
+  debug: 'verbose',
 
   variants: {
     unstyled: {
@@ -154,6 +155,7 @@ const ButtonText = styled(SizableText, {
     unstyled: false,
   },
 })
+console.log('???????????????', ButtonText.staticConfig)
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props

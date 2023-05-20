@@ -57,64 +57,62 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
-  return useMemo(() => {
-    if (!shouldRenderChildrenWithTheme) {
-      return children
-    }
-
-    // be sure to memoize shouldReset to avoid reparenting
-    let next = Children.toArray(children)
-
-    // each children of these children wont get the theme
-    if (shallow && themeManager) {
-      next = next.map((child) => {
-        return isValidElement(child)
-          ? cloneElement(
-              child,
-              undefined,
-              <Theme name={themeManager.state.parentName}>
-                {(child as any).props.children}
-              </Theme>
-            )
-          : child
-      })
-    }
-
-    const wrapped = (
-      <ThemeManagerContext.Provider value={themeManager}>
-        {next}
-      </ThemeManagerContext.Provider>
+  if (props.debug) {
+    console.warn(
+      'wtf',
+      themeManager?.state.name,
+      shouldRenderChildrenWithTheme,
+      themeState
     )
+  }
 
-    if (forceClassName === false) {
-      return wrapped
-    }
+  if (!shouldRenderChildrenWithTheme) {
+    return children
+  }
 
-    if (isWeb && !props.passPropsToChildren) {
-      // in order to provide currentColor, set color by default
-      const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
-      const colorStyle = themeColor
-        ? {
-            color: themeColor,
-          }
-        : undefined
+  // be sure to memoize shouldReset to avoid reparenting
 
-      return (
-        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
-          {wrapped}
-        </span>
-      )
-    }
+  // each children of these children wont get the theme
+  if (shallow && themeManager) {
+    let next = Children.toArray(children)
+    next = next.map((child) => {
+      return isValidElement(child)
+        ? cloneElement(
+            child,
+            undefined,
+            <Theme name={themeManager.state.parentName}>
+              {(child as any).props.children}
+            </Theme>
+          )
+        : child
+    })
+  }
 
+  const wrapped = (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {children}
+    </ThemeManagerContext.Provider>
+  )
+
+  if (forceClassName === false) {
     return wrapped
-  }, [
-    forceClassName,
-    props.passPropsToChildren,
-    shouldRenderChildrenWithTheme,
-    themeManager,
-    children,
-    theme,
-    isNewTheme,
-    className,
-  ])
+  }
+
+  if (isWeb && !props.passPropsToChildren) {
+    // in order to provide currentColor, set color by default
+    const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
+    const colorStyle = themeColor
+      ? {
+          color: themeColor,
+        }
+      : undefined
+
+    return (
+      <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
+        {wrapped}
+      </span>
+    )
+  }
+
+  return wrapped
 }
