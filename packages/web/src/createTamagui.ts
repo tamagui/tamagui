@@ -211,7 +211,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   let lastCSSInsertedRulesIndex = -1
 
-  const getCSS: GetCSS = ({ separator = '\n', sinceLastCall, excludeThemes } = {}) => {
+  const getCSS: GetCSS = ({ separator = '\n', sinceLastCall, exclude } = {}) => {
     if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
       // after first run with sinceLastCall
       const rules = getAllRules()
@@ -222,14 +222,21 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // set so next time getNewCSS will trigger only new rules
     lastCSSInsertedRulesIndex = 0
 
-    // first run
-    return `._ovs-contain {overscroll-behavior:contain;}
+    const runtimeStyles = getAllRules().join(separator)
+
+    if (exclude === 'design-system') {
+      return runtimeStyles
+    }
+
+    const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
 .is_Text .is_Text {display:inline-flex;}
 ._dsp_contents {display:contents;}
-${themeConfig.cssRuleSets.join(separator)}
-${excludeThemes ? '' : themeConfig.getThemeRulesSets().join(separator)}
-${getAllRules().join(separator)}`
+${themeConfig.cssRuleSets.join(separator)}`
+
+    return `${designSystem}
+${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
+${runtimeStyles}`
   }
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
