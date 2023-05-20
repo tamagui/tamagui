@@ -13,8 +13,10 @@ import {
   H2,
   Paragraph,
   Separator,
-  Spacer, styled, XStack,
-  YStack
+  Spacer,
+  XStack,
+  YStack,
+  styled,
 } from 'tamagui'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
@@ -422,7 +424,7 @@ export default function TakeoutPage() {
   )
 }
 
-const modelUrl = `${process.env.URL ?? `http://localhost:5005`}/takeout.gltf`
+const modelUrl = `${process.env.VERCEL_URL ?? `http://localhost:5005`}/takeout.gltf`
 useGLTF.preload(modelUrl)
 
 function TakeoutBox3D(props) {
