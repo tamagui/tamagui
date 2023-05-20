@@ -433,7 +433,7 @@ export default function TakeoutPage() {
   )
 }
 
-const modelUrl = `${process.env.VERCEL_URL ?? `http://localhost:5005`}/takeout.gltf`
+const modelUrl = `${process.env.URL ?? `http://localhost:5005`}/takeout.gltf`
 useGLTF.preload(modelUrl)
 
 function TakeoutBox3D(props) {
