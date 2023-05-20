@@ -21,6 +21,9 @@ module.exports = function (name, { defaultConfig }) {
   const tamaguiPlugin = withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui'],
+    // build-time generate you CSS styles for better performance
+    // we recommend only using this for production so you get reloading during dev mode
+    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null
   })
 
   return {
@@ -30,7 +33,21 @@ module.exports = function (name, { defaultConfig }) {
 }
 ```
 
-### \_document.tsx
+### \pages/\_app.tsx
+
+Add the reset to get more consistent performance:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
+
+And then add this if you are using the `outputCSS` option for build-time CSS generation:
+
+```tsx
+import '../public/tamagui.css'
+```
+
+### \pages/\_document.tsx
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element.
 
@@ -56,7 +73,16 @@ export default class Document extends NextDocument {
     const { getStyleElement } = AppRegistry.getApplication('Main')
     const styles = [
       getStyleElement(),
-      <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />,
+
+      // if you are using "outputCSS" option, you should use this "exclude"
+      // if not, then you can leave the option out
+      <style
+        dangerouslySetInnerHTML={{
+          __html: Tamagui.getCSS({
+            exclude: 'design-system',
+          }),
+        }}
+      />,
     ]
     return { ...page, styles: Children.toArray(styles) }
   }
@@ -72,6 +98,7 @@ export default class Document extends NextDocument {
     )
   }
 }
+
 ```
 
 ### Themes
