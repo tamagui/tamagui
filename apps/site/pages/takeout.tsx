@@ -378,7 +378,6 @@ export default function TakeoutPage() {
                 alt="mandala"
                 width={1800}
                 height={1800}
-                zi={100000}
                 src="/takeout/noun-abstract-geometric-app-icon-947191.svg"
               />
             </YStack>
