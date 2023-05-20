@@ -17,6 +17,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     id,
     isHero = false,
     isHighlightingLines,
+    showLineNumbers: showLineNumbersIn,
     disableCopy,
     size,
     ...rest
@@ -29,7 +30,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value } = useClipboard(code)
-  const showLineNumbers = props.showLineNumbers ?? (lines > 10 ? true : false)
+  const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
 
   // const frontmatter = useContext(FrontmatterContext)
 
