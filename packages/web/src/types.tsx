@@ -551,7 +551,7 @@ export type CreateTamaguiProps = {
 
 export type GetCSS = (opts?: {
   separator?: string
-  exclude?: 'themes' | 'design-system'
+  exclude?: 'themes' | 'design-system' | null
   sinceLastCall?: boolean
 }) => string
 

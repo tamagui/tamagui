@@ -17,7 +17,7 @@ export default class Document extends NextDocument {
         key="tamagui-css"
         dangerouslySetInnerHTML={{
           __html: Tamagui.getCSS({
-            exclude: 'design-system',
+            exclude: process.env.NODE_ENV === 'development' ? null : 'design-system',
           }),
         }}
       />,

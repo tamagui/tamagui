@@ -1,6 +1,5 @@
 import '@tamagui/core/reset.css'
 
-import '../public/tamagui.css'
 // import '../lib/wdyr'
 import '../app.css'
 import '../public/fonts/fonts.css'
@@ -17,6 +16,10 @@ import { LoadFont, LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+if (process.env.NODE_ENV === 'production') {
+  require('./public/tamagui.css')
+}
 
 // for auto mode
 // // santa mode
