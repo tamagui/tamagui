@@ -231,7 +231,6 @@ export async function bundleConfig(props: TamaguiOptions) {
     }
   } finally {
     isBundling = false
-    console.log('FINISH')
     waitForBundle.forEach((cb) => cb())
     waitForBundle.clear()
   }

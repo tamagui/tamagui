@@ -10,9 +10,9 @@ import '../public/fonts/fonts.css'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDidFinishSSR, useSafeRef } from 'tamagui'
+import { TamaguiProvider } from 'tamagui'
 
-import { LoadFont, LoadInter900 } from '../components/LoadFont'
+import { LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
