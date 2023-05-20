@@ -25,6 +25,7 @@ export type WithTamaguiProps = TamaguiOptions & {
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
     const isAppDir = nextConfig.experimental?.appDir
+
     return {
       ...nextConfig,
       webpack: (webpackConfig: any, options: any) => {

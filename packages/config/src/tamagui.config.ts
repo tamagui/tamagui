@@ -113,10 +113,13 @@ export const config = {
 }
 
 // @ts-ignore
-config.selectionStyles = (theme) => ({
-  backgroundColor: theme.color5,
-  color: theme.color11,
-})
+config.selectionStyles = (theme) =>
+  theme.color5
+    ? {
+        backgroundColor: theme.color5,
+        color: theme.color11,
+      }
+    : null
 
 // @ts-ignore bad types
 config.mediaQueryDefaultActive = mediaQueryDefaultActive

@@ -27,6 +27,7 @@ const plugins = [
     useReactNativeWebLite: true,
     // enableCSSOptimizations: true,
     config: './tamagui.config.ts',
+    outputCSS: './public/tamagui.css',
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,

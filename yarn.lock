@@ -5465,14 +5465,14 @@ __metadata:
     "@tamagui/static": 1.28.3
     babel-loader: ^9.1.2
     browserslist: ^4.21.1
-    css-loader: ^5.2.4
+    css-loader: ^6.7.4
     esbuild-loader: ^3.0.1
     esm-resolve: ^1.0.8
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     next: ^13.3.0
     tamagui-loader: 1.28.3
-    thread-loader: ^3.0.4
+    thread-loader: ^4.0.1
     url-loader: ^4.1.1
   peerDependencies:
     next: ">=13"
@@ -5765,7 +5765,7 @@ __metadata:
     "@tamagui/toast": 1.28.3
     "@tamagui/vite-plugin": 1.28.3
     "@tamagui/vite-plugin-reanimated": 1.14.9
-    css-loader: ^5.2.4
+    css-loader: ^6.7.4
     esbuild-loader: ^3.0.1
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
@@ -5776,15 +5776,15 @@ __metadata:
     react-native-web: ^0.18.10
     react-refresh: ^0.14.0
     solito: ^2.3.0
-    style-loader: ^3.3.1
+    style-loader: ^3.3.3
     tamagui: 1.28.3
     tamagui-loader: 1.28.3
-    thread-loader: ^3.0.4
+    thread-loader: ^4.0.1
     url-loader: ^4.1.1
     vite: ^4.3.0
     wait-port: ^0.3.0
-    webpack: ^5.74.0
-    webpack-bundle-analyzer: ^4.5.0
+    webpack: ^5.83.1
+    webpack-bundle-analyzer: ^4.8.0
     webpack-cli: ^4.9.2
     webpack-dev-server: ^4.8.1
     zx: ^7.1.1
@@ -6068,7 +6068,7 @@ __metadata:
     "@types/node": ^16.11.9
     "@types/webpack": ^4.41.26
     babel-loader: ^9.1.2
-    css-loader: ^5.2.4
+    css-loader: ^6.7.4
     dedent: ^0.7.0
     esbuild-loader: ^3.0.1
     null-loader: ^4.0.1
@@ -6076,10 +6076,10 @@ __metadata:
     react-dom: ^18.2.0
     react-native-web: ^0.18.10
     react-test-renderer: ^18.2.0
-    style-loader: ^3.3.1
+    style-loader: ^3.3.3
     typescript: ^5.0.4
     vitest: ^0.26.3
-    webpack: ^5.74.0
+    webpack: ^5.83.1
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -6119,7 +6119,7 @@ __metadata:
     "@types/webpack": ^4.41.26
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^9.1.2
-    css-loader: ^5.2.4
+    css-loader: ^6.7.4
     dedent: ^0.7.0
     esbuild: ^0.17.17
     esbuild-loader: ^3.0.1
@@ -6135,10 +6135,10 @@ __metadata:
     react-native-web-internals: 1.28.3
     react-native-web-lite: 1.28.3
     react-test-renderer: ^18.2.0
-    style-loader: ^3.3.1
+    style-loader: ^3.3.3
     typescript: ^5.0.4
     vitest: ^0.26.3
-    webpack: ^5.74.0
+    webpack: ^5.83.1
   languageName: unknown
   linkType: soft
 
@@ -10262,23 +10262,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^5.2.4":
-  version: 5.2.7
-  resolution: "css-loader@npm:5.2.7"
+"css-loader@npm:^6.7.4":
+  version: 6.7.4
+  resolution: "css-loader@npm:6.7.4"
   dependencies:
     icss-utils: ^5.1.0
-    loader-utils: ^2.0.0
-    postcss: ^8.2.15
+    postcss: ^8.4.21
     postcss-modules-extract-imports: ^3.0.0
-    postcss-modules-local-by-default: ^4.0.0
+    postcss-modules-local-by-default: ^4.0.1
     postcss-modules-scope: ^3.0.0
     postcss-modules-values: ^4.0.0
-    postcss-value-parser: ^4.1.0
-    schema-utils: ^3.0.0
-    semver: ^7.3.5
+    postcss-value-parser: ^4.2.0
+    semver: ^7.3.8
   peerDependencies:
-    webpack: ^4.27.0 || ^5.0.0
-  checksum: fb0742b30ac0919f94b99a323bdefe6d48ae46d66c7d966aae59031350532f368f8bba5951fcd268f2e053c5e6e4655551076268e9073ccb58e453f98ae58f8e
+    webpack: ^5.0.0
+  checksum: 6021fa9e375d767b9675e295c1513f2ee4ae04f76d9de69a75b8446e05f6e02b2170407ea72939925b788dcd5aa308527f6b41be3870dc1f4b0bfff8d2532c6e
   languageName: node
   linkType: hard
 
@@ -19038,16 +19036,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-modules-local-by-default@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "postcss-modules-local-by-default@npm:4.0.0"
+"postcss-modules-local-by-default@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "postcss-modules-local-by-default@npm:4.0.1"
   dependencies:
     icss-utils: ^5.0.0
     postcss-selector-parser: ^6.0.2
     postcss-value-parser: ^4.1.0
   peerDependencies:
     postcss: ^8.1.0
-  checksum: 6cf570badc7bc26c265e073f3ff9596b69bb954bc6ac9c5c1b8cba2995b80834226b60e0a3cbb87d5f399dbb52e6466bba8aa1d244f6218f99d834aec431a69d
+  checksum: 1a95eb8bc54a363a77dbd77a0a88f500e7937ecbed5903becef9362eace28de406e6fdf62640126c22964678370e87eb10481eea2703702772935b4515603bfd
   languageName: node
   linkType: hard
 
@@ -19101,7 +19099,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15, postcss@npm:^8.4.21":
+"postcss@npm:^8.4.21":
   version: 8.4.23
   resolution: "postcss@npm:8.4.23"
   dependencies:
@@ -20911,7 +20909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^4.0.0":
+"schema-utils@npm:^4.0.0, schema-utils@npm:^4.0.1":
   version: 4.0.1
   resolution: "schema-utils@npm:4.0.1"
   dependencies:
@@ -21990,12 +21988,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-loader@npm:^3.3.1":
-  version: 3.3.2
-  resolution: "style-loader@npm:3.3.2"
+"style-loader@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "style-loader@npm:3.3.3"
   peerDependencies:
     webpack: ^5.0.0
-  checksum: 5ee5ce2dc885369eccb55d429376e83d02570d473ac5edeb69fd65ee894847f1e51429cf078351f617bd04516ece8a1dd967f9f40464bd8fa76d903c6b2a6f08
+  checksum: f59c953f56f6a935bd6a1dfa409f1128fed2b66b48ce4a7a75b85862a7156e5e90ab163878962762f528ec4d510903d828da645e143fbffd26f055dc1c094078
   languageName: node
   linkType: hard
 
@@ -22206,7 +22204,7 @@ __metadata:
     loader-utils: ^3.2.1
     lodash: ^4.17.21
     prettyjson: ^1.2.5
-    webpack: ^5.74.0
+    webpack: ^5.83.1
   languageName: unknown
   linkType: soft
 
@@ -22487,18 +22485,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"thread-loader@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "thread-loader@npm:3.0.4"
+"thread-loader@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "thread-loader@npm:4.0.1"
   dependencies:
     json-parse-better-errors: ^1.0.2
     loader-runner: ^4.1.0
-    loader-utils: ^2.0.0
     neo-async: ^2.6.2
-    schema-utils: ^3.0.0
+    schema-utils: ^4.0.1
   peerDependencies:
-    webpack: ^4.27.0 || ^5.0.0
-  checksum: 832edc6eac46df148465feb8d3e3e67a30ea82d1d29401ca1c6461d1a0386c6d1fed05739887fc9c69a7d189a68ca1686eaad214f283825e355de9b42663bcf0
+    webpack: ^5.0.0
+  checksum: b380d7fd7561b572ef1685a4c77ae2bd8da868c55b0b4908cd07abbb1e538a38453c715b9b5fcdab27f3dadf518ccbe88cae6fdc4dc46ea9d08b40247eec2c68
   languageName: node
   linkType: hard
 
@@ -23936,7 +23933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-bundle-analyzer@npm:^4.5.0":
+"webpack-bundle-analyzer@npm:^4.8.0":
   version: 4.8.0
   resolution: "webpack-bundle-analyzer@npm:4.8.0"
   dependencies:

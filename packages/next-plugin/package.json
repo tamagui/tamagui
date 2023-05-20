@@ -26,13 +26,13 @@
     "@tamagui/static": "1.28.3",
     "babel-loader": "^9.1.2",
     "browserslist": "^4.21.1",
-    "css-loader": "^5.2.4",
+    "css-loader": "^6.7.4",
     "esbuild-loader": "^3.0.1",
     "esm-resolve": "^1.0.8",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "tamagui-loader": "1.28.3",
-    "thread-loader": "^3.0.4",
+    "thread-loader": "^4.0.1",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
