@@ -83,6 +83,7 @@ export default function TakeoutPage() {
                 t={52}
                 className="yellow-shadow   masked"
                 color="$color10"
+                o={0.2}
               />
 
               <TAKEOUT />
@@ -93,7 +94,6 @@ export default function TakeoutPage() {
                 className="yellow-shadow mix-blend  masked2"
                 zi={1}
                 color="transparent"
-                o={0.5}
               />
 
               <Paragraph
