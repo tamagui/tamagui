@@ -57,64 +57,53 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
-  return useMemo(() => {
-    if (!shouldRenderChildrenWithTheme) {
-      return children
-    }
+  if (!shouldRenderChildrenWithTheme) {
+    return children
+  }
 
-    // be sure to memoize shouldReset to avoid reparenting
+  // be sure to memoize shouldReset to avoid reparenting
+
+  // each children of these children wont get the theme
+  if (shallow && themeManager) {
     let next = Children.toArray(children)
+    next = next.map((child) => {
+      return isValidElement(child)
+        ? cloneElement(
+            child,
+            undefined,
+            <Theme name={themeManager.state.parentName}>
+              {(child as any).props.children}
+            </Theme>
+          )
+        : child
+    })
+  }
 
-    // each children of these children wont get the theme
-    if (shallow && themeManager) {
-      next = next.map((child) => {
-        return isValidElement(child)
-          ? cloneElement(
-              child,
-              undefined,
-              <Theme name={themeManager.state.parentName}>
-                {(child as any).props.children}
-              </Theme>
-            )
-          : child
-      })
-    }
+  const wrapped = (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {children}
+    </ThemeManagerContext.Provider>
+  )
 
-    const wrapped = (
-      <ThemeManagerContext.Provider value={themeManager}>
-        {next}
-      </ThemeManagerContext.Provider>
-    )
-
-    if (forceClassName === false) {
-      return wrapped
-    }
-
-    if (isWeb && !props.passPropsToChildren) {
-      // in order to provide currentColor, set color by default
-      const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
-      const colorStyle = themeColor
-        ? {
-            color: themeColor,
-          }
-        : undefined
-
-      return (
-        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
-          {wrapped}
-        </span>
-      )
-    }
-
+  if (forceClassName === false) {
     return wrapped
-  }, [
-    forceClassName,
-    props.passPropsToChildren,
-    shouldRenderChildrenWithTheme,
-    themeManager,
-    children,
-    theme,
-    isNewTheme,
-    className,
-  ])
+  }
+
+  if (isWeb && !props.passPropsToChildren) {
+    // in order to provide currentColor, set color by default
+    const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
+    const colorStyle = themeColor
+      ? {
+          color: themeColor,
+        }
+      : undefined
+
+    return (
+      <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
+        {wrapped}
+      </span>
+    )
+  }
+
+  return wrapped
 }

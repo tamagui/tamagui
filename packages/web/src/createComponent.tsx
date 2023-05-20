@@ -171,10 +171,15 @@ export function createComponent<
       const contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
-        const val = propsIn[key] || propsIn[inverseShorthands[key]]
+        const propVal = propsIn[key] || propsIn[inverseShorthands[key]]
         // if not set, use context
-        if (val == null) {
-          if (contextValue) {
+        if (propVal == null) {
+          if (
+            contextValue &&
+            // is valid style or variant allow it
+            ((staticConfig.validStyles && key in staticConfig.validStyles) ||
+              (staticConfig.variants && key in staticConfig.variants))
+          ) {
             contextProps ||= {}
             contextProps[key] = contextValue[key]
           }
@@ -182,7 +187,7 @@ export function createComponent<
         // if set in props, update context
         else {
           overriddenContextProps ||= {}
-          overriddenContextProps[key] = val
+          overriddenContextProps[key] = propVal
         }
       }
     }
@@ -336,10 +341,7 @@ export function createComponent<
       // @ts-ignore this is internal use only
       disable: disableTheme,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
-    }
-    if (process.env.NODE_ENV === 'development') {
-      // @ts-expect-error
-      themeStateProps.debug = props.debug
+      debug: debugProp,
     }
     const themeState = useThemeWithState(themeStateProps)!
 

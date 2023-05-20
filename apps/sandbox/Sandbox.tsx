@@ -48,7 +48,10 @@ export const Sandbox = () => {
 
 const SandboxInner = () => {
   return (
-    <SandboxHeading>
+    <SandboxHeading
+    // $dark={{ backgroundColor: 'red' }}
+    // $light={{ backgroundColor: 'green' }}
+    >
       sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
     </SandboxHeading>
   )

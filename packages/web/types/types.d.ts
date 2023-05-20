@@ -257,7 +257,7 @@ export type CreateTamaguiProps = {
     /**
      * Web-only: define text-selection CSS
      */
-    selectionStyles?: (theme: ThemeParsed) => {
+    selectionStyles?: (theme: ThemeParsed) => null | {
         backgroundColor?: ColorStyleProp;
         color?: ColorStyleProp;
     };
@@ -297,7 +297,7 @@ export type CreateTamaguiProps = {
 };
 export type GetCSS = (opts?: {
     separator?: string;
-    excludeThemes?: boolean;
+    exclude?: 'themes' | 'design-system' | null;
     sinceLastCall?: boolean;
 }) => string;
 export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {

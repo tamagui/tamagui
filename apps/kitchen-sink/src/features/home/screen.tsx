@@ -1,4 +1,4 @@
-import { Theme, getVariable, styled } from '@tamagui/core'
+import { Theme, getConfig, getVariable, styled, useThemeName } from '@tamagui/core'
 import { SelectDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'

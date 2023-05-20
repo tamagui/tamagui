@@ -1,5 +1,9 @@
 import { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
+export declare const CheckboxStyledContext: import("@tamagui/core").StyledContext<{
+    size: SizeTokens;
+    scaleIcon: number;
+}>;
 export type CheckedState = boolean | 'indeterminate';
 export declare function isIndeterminate(checked?: CheckedState): checked is 'indeterminate';
 export declare function getState(checked: CheckedState): "indeterminate" | "checked" | "unchecked";
@@ -347,6 +351,12 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          */
         disablePassStyles?: boolean | undefined;
     }, "ref">) & React.RefAttributes<TamaguiElement>>;
+    Props: React.ProviderExoticComponent<Partial<{
+        size: SizeTokens;
+        scaleIcon: number;
+    }> & {
+        children?: React.ReactNode;
+    }>;
 };
 export { createCheckboxScope };
 //# sourceMappingURL=Checkbox.d.ts.map

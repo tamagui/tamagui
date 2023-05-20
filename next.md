@@ -1,6 +1,7 @@
+- doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
+
 - add just early return hooks eslint check
-- Popover.Close working inside Adapt Sheet
-- shadowOpacity not being applied
+- Sheet.Close, Sheet imperative close
 
 high level:
 
@@ -54,16 +55,12 @@ Ali todos:
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
 
----
-
-2.0
-
-- deprecate `:number` other type variants
-- Text shouldn't have `selectable` / `ellipse` custom stuff?
 
 ---
 
 # Backlog
+
+
 
 - if you change webpack config to alias RN to RNW (not lite) one animation test fails
 
@@ -123,7 +120,9 @@ a package.json etc etc + zip file
   - output nice message
 
 - $web / $native make them work as media queries
-- $dark / $light to make adjustments based on mode
+
+- theme based "media queries" automatically:
+  - $dark / $light but could be any theme?
 
 - '> Child' descendent queries
   - only with css driver it can extract to css

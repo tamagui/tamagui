@@ -1,9 +1,9 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
+import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import { Suspense, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
@@ -13,10 +13,8 @@ import {
   H2,
   Paragraph,
   Separator,
-  Spacer,
-  XStack,
-  YStack,
-  styled,
+  Spacer, styled, XStack,
+  YStack
 } from 'tamagui'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
@@ -26,7 +24,7 @@ const heroHeight = 850
 export default function TakeoutPage() {
   return (
     <>
-      <TitleAndMetaTags title="Tamagui Takeout" description="Tamagui Takeout" />
+      <NextSeo title="Tamagui Takeout" description="Tamagui Takeout" />
 
       <LoadGlusp />
       <LoadMunro />

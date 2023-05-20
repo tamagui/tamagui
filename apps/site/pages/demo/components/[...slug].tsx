@@ -1,5 +1,5 @@
 import * as Demos from '@components/demos'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { YStack } from 'tamagui'
 
@@ -17,7 +17,7 @@ export default function DemoComponentsPage(props) {
   }
   return (
     <>
-      <TitleAndMetaTags
+      <NextSeo
         title={`${name || ''} Component — Tamagui — React Native Universal UI`.trim()}
       />
       <YStack br="$2" m="$2" bc="$blue3" minHeight={500} ai="center" jc="center">

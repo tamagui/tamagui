@@ -22,7 +22,7 @@ import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
-  mediaKeysWithAndWithout$,
+  isMediaKey,
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
@@ -104,9 +104,6 @@ export const PROP_SPLIT = '-'
 //   keep classnames and styles separate:
 //     const styles = {}
 //     const classNames = {}
-
-const isMediaKey = (key: string) =>
-  Boolean(key[0] === '$' && mediaKeysWithAndWithout$.has(key))
 
 export const getSplitStyles: StyleSplitter = (
   props,

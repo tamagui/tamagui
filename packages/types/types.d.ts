@@ -7,6 +7,12 @@ export interface TamaguiOptions {
    * your tamagui.config.ts
    */
   config?: string
+
+  /**
+   * Emit design system related CSS during build step for usage with frameworks
+   */
+  outputCSS?: string | null | false
+
   /**
    * Tamagui can follow imports and evaluate them when parsing styles, leading to
    * higher percent of flattened / optimized views. We normalize this to be the

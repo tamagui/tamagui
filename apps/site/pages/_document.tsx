@@ -13,7 +13,14 @@ export default class Document extends NextDocument {
     const { getStyleElement } = AppRegistry.getApplication('Main')
     const styles = [
       getStyleElement(),
-      <style key="tamagui-css" dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />,
+      <style
+        key="tamagui-css"
+        dangerouslySetInnerHTML={{
+          __html: Tamagui.getCSS({
+            exclude: process.env.NODE_ENV === 'development' ? null : 'design-system',
+          }),
+        }}
+      />,
     ]
     return { ...page, styles: Children.toArray(styles) }
   }

@@ -8,17 +8,21 @@ import {
   ColorScheme,
   NextThemeProvider,
   useRootTheme,
-  useThemeSetting,
+  useThemeSetting
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
 import { LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+if (process.env.NODE_ENV === 'production') {
+  require('../public/tamagui.css')
+}
 
 // for auto mode
 // // santa mode

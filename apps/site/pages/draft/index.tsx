@@ -1,4 +1,4 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
@@ -9,7 +9,7 @@ import { ContainerLarge } from '../../components/Container'
 export default function Blog({ frontmatters }) {
   return (
     <>
-      <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
+      <NextSeo title="Blog — Tamagui" description="What's up with Tamagui." />
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <YStack space="$8">
           {frontmatters.map((frontmatter) => (

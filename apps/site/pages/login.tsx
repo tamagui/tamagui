@@ -1,5 +1,5 @@
 import { getAuthLayout } from '@components/layouts/AuthLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -16,7 +16,7 @@ const emailAuthDisabledFlag = true
 export default function SignInPage() {
   return (
     <>
-      <TitleAndMetaTags title="Login — Tamagui" />
+      <NextSeo title="Login — Tamagui" />
       <SignIn />
     </>
   )

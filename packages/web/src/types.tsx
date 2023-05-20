@@ -489,7 +489,7 @@ export type CreateTamaguiProps = {
   /**
    * Web-only: define text-selection CSS
    */
-  selectionStyles?: (theme: ThemeParsed) => {
+  selectionStyles?: (theme: ThemeParsed) => null | {
     backgroundColor?: ColorStyleProp
     color?: ColorStyleProp
   }
@@ -551,7 +551,7 @@ export type CreateTamaguiProps = {
 
 export type GetCSS = (opts?: {
   separator?: string
-  excludeThemes?: boolean
+  exclude?: 'themes' | 'design-system' | null
   sinceLastCall?: boolean
 }) => string
 

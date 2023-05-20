@@ -1,10 +1,10 @@
 import { getDefaultLayout } from '@components/layouts/DefaultLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
+import { NextSeo } from 'next-seo'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
@@ -30,10 +30,12 @@ import { SocialLinksRow } from '../components/SocialLinksRow'
 export default function Community({ frontmatters }) {
   return (
     <CommunityLayout>
-      <TitleAndMetaTags
+      <NextSeo
         title="Community — Tamagui"
-        description="Tamagui latest news and discussion."
-        pathname="/community"
+        description="Tamagui's latest news and discussions."
+        openGraph={{
+          url: 'https://tamagiu.dev/community',
+        }}
       />
 
       <Spacer size="$4" />
@@ -80,6 +82,7 @@ export default function Community({ frontmatters }) {
                       >
                         {frontmatter.title}
                       </H3>
+
                       <XStack ai="center" space="$2">
                         <Paragraph
                           cursor="inherit"

@@ -61,7 +61,7 @@ let isBundling = false
 let lastBundle: BundledConfig | null = null
 const waitForBundle = new Set<Function>()
 
-export async function hasBundledConfigChanged() {
+export function hasBundledConfigChanged() {
   if (lastBundle === currentBundle) {
     return false
   }

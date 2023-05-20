@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme",
-  "version": "1.28.1",
+  "version": "1.29.1",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,14 +17,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/constants": "1.28.1",
-    "@tamagui/web": "1.28.1"
+    "@tamagui/constants": "1.29.1",
+    "@tamagui/web": "1.29.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.28.1",
+    "@tamagui/build": "1.29.1",
     "react": "^18.2.0"
   },
   "publishConfig": {
