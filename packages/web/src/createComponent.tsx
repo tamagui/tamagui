@@ -341,10 +341,7 @@ export function createComponent<
       // @ts-ignore this is internal use only
       disable: disableTheme,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
-    }
-    if (process.env.NODE_ENV === 'development') {
-      // @ts-expect-error
-      themeStateProps.debug = props.debug
+      debug: debugProp,
     }
     const themeState = useThemeWithState(themeStateProps)!
 
