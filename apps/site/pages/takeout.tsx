@@ -108,45 +108,45 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
-              <XStack my="$8" gap="$14" f={1} jc="space-between" className="mix-blend">
+              <XStack my="$10" gap="$14" f={1} jc="space-between" className="mix-blend">
                 <Image
                   className="pixelate"
                   src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
                   alt="Icon"
-                  width={48}
-                  height={48}
+                  width={32}
+                  height={32}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
                   alt="Icon"
-                  width={48}
-                  height={48}
+                  width={32}
+                  height={32}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-database-60.svg"
                   alt="Icon"
-                  width={48}
-                  height={48}
+                  width={32}
+                  height={32}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-bucket-brush-63.svg"
                   alt="Icon"
-                  width={48}
-                  height={48}
+                  width={32}
+                  height={32}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-palette-sample-26.svg"
                   alt="Icon"
-                  width={48}
-                  height={48}
+                  width={32}
+                  height={32}
                 />
               </XStack>
 
@@ -193,18 +193,18 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 900,
+                  width: 800,
                   height: 800,
                   // backgroundColor: 'red',
                   position: 'absolute',
                   top: 100,
-                  right: '-22%',
+                  right: '-20%',
                   zIndex: -1,
                 }}
                 gl={{ preserveDrawingBuffer: true }}
                 shadows
                 dpr={[1, 1]}
-                camera={{ position: [0, 0, 150], fov: 50 }}
+                camera={{ position: [0, 0, 150], fov: 10 }}
               >
                 <Suspense fallback={null}>
                   {/* <ambientLight intensity={0.9} /> */}
@@ -264,9 +264,9 @@ export default function TakeoutPage() {
               />
 
               <YStack f={1} space="$8">
-                <MunroP size="$13">The starter kit, reborn.</MunroP>
+                <MunroP size="$12">The starter kit, reborn.</MunroP>
 
-                <XStack space="$4">
+                <XStack space="$4" my={-20}>
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
@@ -304,45 +304,45 @@ export default function TakeoutPage() {
                   without worrying about having to fork components or touch internals.
                 </Paragraph>
 
-                <XStack my="$8" gap="$4" f={1} jc="space-between">
+                <XStack my="$8" gap="$4" f={1} jc="space-around">
                   <Image
                     className="pixelate"
                     src="/retro-icons/coding-app-website-ui-62.svg"
                     alt="Icon"
-                    width={64}
-                    height={64}
+                    width={48}
+                    height={48}
                   />
 
                   <Image
                     className="pixelate"
                     src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
                     alt="Icon"
-                    width={64}
-                    height={64}
+                    width={48}
+                    height={48}
                   />
 
                   <Image
                     className="pixelate"
                     src="/retro-icons/coding-apps-websites-database-60.svg"
                     alt="Icon"
-                    width={64}
-                    height={64}
+                    width={48}
+                    height={48}
                   />
 
                   <Image
                     className="pixelate"
                     src="/retro-icons/design-color-bucket-brush-63.svg"
                     alt="Icon"
-                    width={64}
-                    height={64}
+                    width={48}
+                    height={48}
                   />
 
                   <Image
                     className="pixelate"
                     src="/retro-icons/design-color-palette-sample-26.svg"
                     alt="Icon"
-                    width={64}
-                    height={64}
+                    width={48}
+                    height={48}
                   />
                 </XStack>
 
@@ -390,7 +390,6 @@ export default function TakeoutPage() {
                   zi={1000}
                   maw={340}
                   als="center"
-                  h={600}
                   space="$2"
                   shadowRadius={300}
                   shadowColor="#000"
@@ -399,7 +398,7 @@ export default function TakeoutPage() {
                 >
                   <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.9} />
 
-                  <Paragraph fontFamily="$munro" size="$8" theme="alt1">
+                  <Paragraph fontFamily="$munro" size="$3" theme="alt2">
                     Drop 0001
                   </Paragraph>
 
@@ -516,9 +515,9 @@ function Box(props) {
 const Row = (props: { title: any; description: any; after: any }) => {
   return (
     <XStack bbw={1} boc="$borderColor">
-      <YStack f={1}>
-        <MunroP>{props.title}</MunroP>
-        <Paragraph size="$2" theme="alt2">
+      <YStack f={1} py="$2">
+        <MunroP size="$8">{props.title}</MunroP>
+        <Paragraph size="$4" theme="alt2">
           {props.description}
         </Paragraph>
       </YStack>
@@ -536,7 +535,7 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const TAKEOUT = ({ fontSize = 320, lineHeight = 275, ...props }) => (
+const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
   <H1
     className="mix-blend font-outlined"
     userSelect="none"
