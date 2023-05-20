@@ -1,5 +1,6 @@
 import '@tamagui/core/reset.css'
 
+import '../public/tamagui.css'
 // import '../lib/wdyr'
 import '../app.css'
 import '../public/fonts/fonts.css'
