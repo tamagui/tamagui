@@ -14,21 +14,19 @@ demoName: BuildAButton
   can be a surprisingly difficult task.
 </IntroParagraph>
 
-More than just text in a box, a button needs icons, themes, variants, sizes, loading indicators, several pseudo states, and a delicate balance between sub-components' positions, spacing and style. All of this delivered in a simple API that still allows complete customization.
+More than just text in a box, a button needs icons, themes, variants, sizes, loading indicators, several interactive states, and a delicate balance between sub-components' positions, spacing and style. All of this delivered in a simple API that still allows complete customization.
 
-Tamagui helps make this possible, and maybe even easy, as of version `1.28` with the introduction of `createStyledContext`.
+Tamagui makes building a button a breeze through "composable components" (a term of art coined by [Radix](https://www.radix-ui.com/)), especially with the introduction of `createStyledContext` as of version `1.28`.
 
-We think it makes designing composable components a joy, so we made this guide to show why they are useful, how to design them, and how `createStyledContext` helps make authoring them a breeze.
+So we wrote this guide to make sense of why and how they work.
 
-What are composable components?
-
-It's a term of art coined by [Radix](https://www.radix-ui.com/) (as far as we know) for when you export an API where you render multiple components that are meant to work together, eg, a `<Button />` that also has `<Button.Text />` and `<Button.Icon />`.
+What are composable components? Simply multiple components that work together, for example a `<Button />` that also has `<Button.Text />` and `<Button.Icon />`.
 
 Let's get into it.
 
-### The final code
+### The code
 
-Getting to the point, this is the final code we'll create for our Button, ready to copy and paste right into your app:
+To the point, here is the final code we'll end up with for our Button, ready to copy and paste right into your app:
 
 ```tsx
 import { getSize, getSpace } from '@tamagui/get-token'
