@@ -131,7 +131,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <SearchButton size="$2" br="$10" elevation="$4" />
 
-        <YStack paddingStart={200}>
+        <YStack $xs={{ display: 'none' }}>
           <SponsorButton tiny />
         </YStack>
       </XStack>
@@ -335,6 +335,8 @@ const SmallMenu = React.memo(() => {
             // display={open ? 'flex' : 'none'}
           >
             <HeaderLinks forceShowAllLinks />
+            <Separator my="$4" w="100%" />
+            <SponsorButton />
             <Separator my="$4" w="100%" />
             <DocsMenuContents />
           </YStack>
