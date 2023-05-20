@@ -44,7 +44,9 @@ import '@tamagui/core/reset.css'
 And then add this if you are using the `outputCSS` option for build-time CSS generation:
 
 ```tsx
-import '../public/tamagui.css'
+if (process.env.NODE_ENV === 'production') {
+  require('./public/tamagui.css')
+}
 ```
 
 ### \pages/\_document.tsx
