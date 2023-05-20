@@ -373,6 +373,16 @@ export default function TakeoutPage() {
 
             <YStack mt={200} w={3} mih={500} h="100%" />
 
+            <YStack pos="absolute" t={0} r={-500} zi={-1} rotate="120deg" o={0.1}>
+              <Image
+                alt="mandala"
+                width={1800}
+                height={1800}
+                zi={100000}
+                src="/takeout/noun-abstract-geometric-app-icon-947191.svg"
+              />
+            </YStack>
+
             <YStack mt={-160} mr={-90}>
               <StickyBox>
                 <TakeoutCardFrame
