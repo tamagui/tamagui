@@ -5,7 +5,7 @@ import { createTamagui } from '@tamagui/core-node'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
+import fs, { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire } from '../require'
@@ -31,8 +31,8 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
 export async function loadTamagui(
   propsIn: TamaguiOptions
 ): Promise<TamaguiProjectInfo | null> {
-  const props = getFilledOptions(propsIn)
-  const bundleInfo = await getBundledConfig(props)
+  const options = getFilledOptions(propsIn)
+  const bundleInfo = await getBundledConfig(options)
   if (!bundleInfo) {
     console.warn(
       `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
@@ -42,7 +42,12 @@ export async function loadTamagui(
 
   if (bundleInfo) {
     // init core-node
-    createTamagui(bundleInfo.tamaguiConfig)
+    const config = createTamagui(bundleInfo.tamaguiConfig)
+
+    if (options.outputCSS) {
+      // emit css
+      await writeFile(options.outputCSS, config.getCSS())
+    }
   }
 
   if (!hasBundledConfigChanged()) {
@@ -50,7 +55,7 @@ export async function loadTamagui(
   }
 
   try {
-    await generateTamaguiStudioConfig(props, bundleInfo)
+    await generateTamaguiStudioConfig(options, bundleInfo)
   } catch {
     // ok for now
   }
