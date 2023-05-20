@@ -433,7 +433,9 @@ export default function TakeoutPage() {
 }
 
 const modelUrl = `${
-  process.env.NEXT_PUBLIC_VERCEL_URL ?? `http://localhost:5005`
+  process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : `http://localhost:5005`
 }/takeout.gltf`
 useGLTF.preload(modelUrl)
 
