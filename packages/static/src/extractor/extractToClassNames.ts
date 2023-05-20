@@ -458,7 +458,7 @@ export async function extractToClassNames({
     const numOptimized = `${res.optimized}`.padStart(3)
     const numFound = `${res.found}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
-    const memory = ` ${memUsed}MB`
+    const memory = memUsed ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
