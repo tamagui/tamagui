@@ -401,7 +401,10 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
     const context = useSelectContext(ITEM_INDICATOR_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
 
-    if (context.shouldRenderWebNative) return null
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
     return itemContext.isSelected ? (
       <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
     ) : null
@@ -455,7 +458,7 @@ const NativeSelectFrame = styled(ThemeableStack, {
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
           paddingVertical: getSpace(val, {
-            shift: -2,
+            shift: -4,
           }),
         }
       },
