@@ -55,6 +55,40 @@ export default createTamagui({
 
 At runtime, the plugin does very little except to set the `transition` property in CSS. At compile-time, the compiler do the same, ensuring you get all the benefits of prop removal and view flattening even when using animations.
 
+### CSS driver Layout Animation
+
+Every thing that is affected by layout change (width, height, flex items positions, etc) will be animated using layout animation.
+
+It's a tiny, and performant addition on top of CSS driver that uses Javascript and CSS APIs to animate layout changes.
+
+For layout animation to work all you need to do is to add `layout` prop to the component that is affected by layout change. for example a flex item
+
+Here is a simple example
+
+```tsx
+export function LayoutAnimated() {
+  const [fd, setFd] = useState<'row' | 'column'>('row')
+  return (
+    <YStack flexDirection={fd} width={300} height={300}>
+      <Square layout animation="medium" size={20} backgroundColor="$red10"/>
+      <Square layout animation="medium" size={20} backgroundColor="$green10"/>
+      <Button onPress={() => {
+        setFd(fd === 'row' ? 'column' : 'row')
+      }}>
+        <Button.Text>Change Dir</Button.Text>
+      </Button>
+    </YStack>
+  )
+}
+
+```
+
+<HeroCSSLayoutAnimation showAnimationDriverControl />
+
+```tsx hero template=AnimationCSSDriverLayout
+
+```
+
 ### React Native Animated
 
 [React Native's Animated library](https://reactnative.dev/docs/animated) is the animation library that comes built into React Native and React Native Web.
