@@ -77,8 +77,6 @@ yarn
 
 ## Update new dependencies
 
-Upgrade packages based on repository
-
 ### Pure JS dependencies
 
 ```sh
