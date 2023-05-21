@@ -107,6 +107,15 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             duration: time.includes('ms')
               ? Number(time.replace('ms', ''))
               : Number(time.replace('s', '')) * 1000,
+            onStart: () => {
+              style.transition = `${keys} ${animation}, width, height, margin, padding, transform`
+              childrenRefs?.current?.forEach((childRef) => {
+                if (childRef) {
+                  // @ts-ignore
+                  childRef.style.transition = `${keys} ${animation}, width, height, margin, padding, transform`
+                }
+              })
+            },
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               // @ts-ignore
               hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
@@ -117,18 +126,20 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
                 }
               })
             },
+            onFinish: () => {
+              style.transition = `${keys} ${animation}`
+              childrenRefs?.current?.forEach((childRef) => {
+                if (childRef) {
+                  // @ts-ignore
+                  childRef.style.transition = `${keys} ${animation}`
+                }
+              })
+            },
             cubicBezier: easingStringToCubicBezier(func),
           })
         }
         initialPositionRef.current = boundingBox
       })
-
-      // add css transition
-      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
-      // for non layout transform properties either use animate function or find a workaround to do it with css
-      style.transition = `${keys} ${animation}${
-        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform 0s' : ''
-      }`
 
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         // rome-ignore lint/nursery/noConsoleLog: ok

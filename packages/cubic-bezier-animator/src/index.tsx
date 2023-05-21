@@ -50,7 +50,9 @@ export function animate(param: AnimateProps) {
       requestAnimationFrame(frame) // continue animating
     } else {
       param.onUpdate({ x: toX, y: toY, scaleX: toScaleX, scaleY: toScaleY })
-      param.onFinish?.()
+      requestAnimationFrame(() => {
+        param.onFinish?.()
+      })
     }
   }
   param.onStart?.()
