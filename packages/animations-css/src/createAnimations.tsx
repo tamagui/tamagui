@@ -109,9 +109,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
               : Number(time.replace('s', '')) * 1000,
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               // @ts-ignore
-              hostRef.current.style.translate = `${x}px ${y}px`
+              hostRef.current?.style.translate = `${x}px ${y}px`
               // @ts-ignore
-              hostRef.current.style.scale = `${scaleX} ${scaleY}`
+              hostRef.current?.style.scale = `${scaleX} ${scaleY}`
               childrenRefs?.current?.forEach((childRef) => {
                 if (childRef && scaleX !== undefined && scaleY !== undefined) {
                   // @ts-ignore
