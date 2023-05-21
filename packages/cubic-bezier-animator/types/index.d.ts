@@ -10,6 +10,8 @@ interface AnimateProps {
     to: TransformType;
     duration: number;
     onUpdate: (param: TransformType) => void;
+    onFinish?: () => void;
+    onStart?: () => void;
     easingFunction?: string;
     cubicBezier: CubicBuzier;
 }
