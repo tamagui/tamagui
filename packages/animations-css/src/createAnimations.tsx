@@ -107,31 +107,15 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             duration: time.includes('ms')
               ? Number(time.replace('ms', ''))
               : Number(time.replace('s', '')) * 1000,
-            onStart: () => {
-              style.transition = `${keys} ${animation}, width, height, margin, padding, transform`
-              childrenRefs?.current?.forEach((childRef) => {
-                if (childRef) {
-                  // @ts-ignore
-                  childRef.style.transition = `${keys} ${animation}, width, height, margin, padding, transform`
-                }
-              })
-            },
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               // @ts-ignore
-              hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
+              hostRef.current.style.translate = `${x}px ${y}px`
+              // @ts-ignore
+              hostRef.current.style.scale = `${scaleX} ${scaleY}`
               childrenRefs?.current?.forEach((childRef) => {
                 if (childRef && scaleX !== undefined && scaleY !== undefined) {
                   // @ts-ignore
-                  childRef.style.transform = `scaleX(${1 / scaleX}) scaleY(${1 / scaleY})`
-                }
-              })
-            },
-            onFinish: () => {
-              style.transition = `${keys} ${animation}`
-              childrenRefs?.current?.forEach((childRef) => {
-                if (childRef) {
-                  // @ts-ignore
-                  childRef.style.transition = `${keys} ${animation}`
+                  childRef.style.scale = `${1 / scaleX} ${1 / scaleY}`
                 }
               })
             },
@@ -141,6 +125,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         initialPositionRef.current = boundingBox
       })
 
+      style.transition = `${keys} ${animation} ${
+        layout ? ', width, height, translate, scale, padding, margin' : ''
+      }`
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('CSS animation', style, { isEntering, isExiting })
@@ -174,7 +161,8 @@ const invert = (el, from, to) => {
     scaleY: height / fromHeight,
   }
 
-  el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
+  el.style.translate = `${transform.x}px ${transform.y}px`
+  el.style.scale = `${transform.scaleX} ${transform.scaleY}`
 
   return transform
 }
