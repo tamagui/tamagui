@@ -6,12 +6,12 @@ type SharedSheetProps = {
     open?: boolean;
 };
 type BaseProps = StackProps & SharedSheetProps;
-export type CreateSheetProps<H, F, O> = {
+type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
+export declare function createSheet<H extends SheetStyledComponent, F extends SheetStyledComponent, O extends SheetStyledComponent>({ Handle, Frame, Overlay }: {
     Handle: H;
     Frame: F;
     Overlay: O;
-};
-export declare function createSheet<H extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>, F extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>, O extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>>({ Handle, Frame, Overlay }: CreateSheetProps<H, F, O>): import("react").ForwardRefExoticComponent<{
+}): import("react").ForwardRefExoticComponent<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
     onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;

@@ -31,17 +31,13 @@ type SharedSheetProps = {
 
 type BaseProps = StackProps & SharedSheetProps
 
-export type CreateSheetProps<H, F, O> = {
-  Handle: H
-  Frame: F
-  Overlay: O
-}
+type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
 export function createSheet<
-  H extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>,
-  F extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>,
-  O extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
->({ Handle, Frame, Overlay }: CreateSheetProps<H, F, O>) {
+  H extends SheetStyledComponent,
+  F extends SheetStyledComponent,
+  O extends SheetStyledComponent
+>({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
   const SheetHandle = Handle.extractable(
     ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
