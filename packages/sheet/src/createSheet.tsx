@@ -31,13 +31,17 @@ type SharedSheetProps = {
 
 type BaseProps = StackProps & SharedSheetProps
 
-export type CreateSheetProps = {
-  Frame: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
-  Handle: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
-  Overlay: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
+export type CreateSheetProps<H, F, O> = {
+  Handle: H
+  Frame: F
+  Overlay: O
 }
 
-export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
+export function createSheet<
+  H extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>,
+  F extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>,
+  O extends TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
+>({ Handle, Frame, Overlay }: CreateSheetProps<H, F, O>) {
   const SheetHandle = Handle.extractable(
     ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
@@ -47,6 +51,7 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
       }
 
       return (
+        // @ts-ignore
         <Handle
           onPress={() => {
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
@@ -76,6 +81,7 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
 
       const element = useMemo(
         () => (
+          // @ts-ignore
           <Overlay
             open={context.open && !context.hidden}
             {...props}
@@ -143,13 +149,15 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
+              {/* @ts-ignore */}
               <Frame ref={composedContentRef} {...props}>
                 {children}
               </Frame>
             </RemoveScroll>
 
-            {/* below frame hide when bouncing past 100% */}  
+            {/* below frame hide when bouncing past 100% */}
             {!props.disableHideBottomOverflow && (
+              // @ts-ignore
               <Frame
                 componentName={SHEET_COVER_NAME}
                 {...props}
