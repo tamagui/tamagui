@@ -23,6 +23,16 @@ high level:
 
 ---
 
+starter
+- feed
+- more work on profile
+- cropper on web, potentially
+
+takeout
+- checkout
+- page for showing all purchased products / subscriptions
+- discord integration
+
 studio
 - templates working
 - Button.studio.tsx + run locally
