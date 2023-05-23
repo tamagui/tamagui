@@ -33,7 +33,7 @@ yarn
 While developing, you'll want to run the build watcher in a dedicated terminal:
 
 ```
-yarn watch
+yarn watch:build
 ```
 
 It's easiest to use the `sandbox` project to test and develop things for web:
