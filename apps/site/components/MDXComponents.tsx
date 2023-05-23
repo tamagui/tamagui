@@ -249,9 +249,10 @@ export const components = {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$9' : '$8'}
+        size={large ? '$10' : '$9'}
+        fontSize={large ? 32 : 26}
         className={'intro-paragraph' + (large ? ' large' : '')}
-        my="$3"
+        my="$4"
         fow={large ? '200' : '300'}
         {...props}
       >

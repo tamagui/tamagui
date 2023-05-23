@@ -495,6 +495,47 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 ## Descendent Styles
 
+ideas:
+
+```tsx
+const Child = styled(Stack, {
+  $Parent: [
+    {
+      backgroundColor: 'green'
+    },
+    {
+      when: 'small',
+      backgroundColor: 'red',
+    },
+  ],
+})
+```
+
+```tsx
+styled(Stack, {
+  $sm$dark$Parent: { ... }
+})
+```
+
+```tsx
+const Child = styled(Stack, {
+  $sm: { ... },
+  $dark: { ... },
+  $Parent: { ... },
+  compounds: [
+    {
+       media: '$sm',
+       theme: 'dark',
+       parent: 'Parent',
+       styles: {
+          // ...
+       }
+    }
+  ]
+});
+```
+
+
 ### On the parent:
 
 ```tsx

@@ -317,6 +317,18 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     process.exit(1)
   }
 
+  if (shouldGitInit) {
+    try {
+      execSync('git checkout -b main', { stdio: 'ignore' })
+      execSync('git add -A', { stdio: 'ignore' })
+      execSync('git commit -m "Initial commit from create-tamagui"', {
+        stdio: 'ignore',
+      })
+    } catch (e: any) {
+      console.error('[tamagui] Failed to create initial commit.\n\n', e.message)
+    }
+  }
+
   console.log(`${chalk.green('Success!')} Created ${projectName} at ${projectPath}`)
   console.log('Inside that directory, you can run several commands:')
   console.log()
