@@ -241,14 +241,12 @@ ${runtimeStyles}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const fontKeys = Object.keys(configIn.fonts)
-
   const defaultFont =
     configIn.defaultFont ||
     // uses font named "body" if present for compat
     ('body' in configIn.fonts ? 'body' : false) ||
     // defaults to the first font to make life easier
-    fontKeys[0]
+    Object.keys(configIn.fonts)[0]
 
   const config: TamaguiInternalConfig = {
     onlyAllowShorthands: false,
