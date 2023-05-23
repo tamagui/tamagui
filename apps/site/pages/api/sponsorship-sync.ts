@@ -5,7 +5,7 @@ import { siteRootDir } from '@protected/studio/constants'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
-const usernameWhitelist = ['natew', 'alitnk']
+// const usernameWhitelist = ['natew', 'alitnk']
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res })

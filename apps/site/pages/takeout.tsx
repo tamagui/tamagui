@@ -1,8 +1,13 @@
+import { getStripeProductId } from '@lib/products'
+import { stripe } from '@lib/stripe'
+import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Moon, Star } from '@tamagui/lucide-icons'
+import { ButtonLink } from 'app/Link'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
+import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import { Suspense, useRef, useState } from 'react'
@@ -383,45 +388,7 @@ export default function TakeoutPage() {
             </YStack>
 
             <YStack mt={-160} mr={-90}>
-              <StickyBox>
-                <TakeoutCardFrame
-                  className="blur-medium"
-                  zi={1000}
-                  maw={340}
-                  als="center"
-                  space="$2"
-                  shadowRadius={300}
-                  shadowColor="#000"
-                  x={-100}
-                  y={100}
-                >
-                  <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.9} />
-
-                  <Paragraph fontFamily="$munro" size="$3" theme="alt2">
-                    Drop 0001
-                  </Paragraph>
-
-                  <Paragraph fontFamily="$munro" size="$10">
-                    Universal App Starter
-                  </Paragraph>
-
-                  <YStack>
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                  </YStack>
-
-                  <Spacer f={1} />
-
-                  <Button fontFamily="$munro" themeInverse fontSize="$8">
-                    Buy now
-                  </Button>
-                </TakeoutCardFrame>
-              </StickyBox>
+              <StarterCard />
             </YStack>
           </XStack>
 
@@ -429,6 +396,66 @@ export default function TakeoutPage() {
         </ContainerXL>
       </YStack>
     </>
+  )
+}
+
+const StarterCard = () => {
+  const { subscriptions } = useUser()
+  const productId = getStripeProductId('universal-starter')
+  const subscription = subscriptions?.find(
+    (sub) => sub.plan?.product === productId && sub.status === 'active'
+  )
+  return (
+    <StickyBox>
+      <TakeoutCardFrame
+        className="blur-medium"
+        zi={1000}
+        maw={340}
+        als="center"
+        space="$2"
+        shadowRadius={300}
+        shadowColor="#000"
+        x={-100}
+        y={100}
+      >
+        <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.9} />
+
+        <Paragraph fontFamily="$munro" size="$3" theme="alt2">
+          Drop 0001
+        </Paragraph>
+
+        <Paragraph fontFamily="$munro" size="$10">
+          Universal App Starter
+        </Paragraph>
+
+        <YStack>
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+          <Row title="Something" description="Description" after="XX" />
+        </YStack>
+
+        <Spacer f={1} />
+
+        <ButtonLink
+          href={
+            subscription
+              ? '/account/subscriptions'
+              : `api/checkout?${new URLSearchParams({
+                  product_id: productId,
+                }).toString()}`
+          }
+          fontFamily="$munro"
+          themeInverse
+          fontSize="$8"
+        >
+          {subscription ? 'View Subscription' : 'Buy now'}
+        </ButtonLink>
+      </TakeoutCardFrame>
+    </StickyBox>
   )
 }
 
@@ -556,7 +583,8 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
   </H1>
 )
 
-TakeoutPage.getLayout = getDefaultLayout
+TakeoutPage.getLayout = (page, pageProps) =>
+  withSupabase(getDefaultLayout(page, pageProps), pageProps)
 
 const MunroP = styled(Paragraph, {
   fontFamily: '$munro',

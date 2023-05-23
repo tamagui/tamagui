@@ -11,9 +11,14 @@ export function useForwardToDashboard() {
     const main = async () => {
       if (user && !isLoading) {
         await fetch('/api/sponsorship-sync', { method: 'POST' })
-        await router.replace('/account')
+
+        await router.replace(
+          typeof router.query.redirect_to === 'string'
+            ? router.query.redirect_to
+            : '/account'
+        )
       }
     }
     main()
-  }, [user, isLoading])
+  }, [user, isLoading, router.query.redirect_to])
 }

@@ -4283,10 +4283,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:^1.29.0":
-  version: 1.52.1
-  resolution: "@stripe/stripe-js@npm:1.52.1"
-  checksum: db1971b064d3c8c6f79da01e9f49d6bb8084bfa5282efc46570508059423ed148bfa71aa1f21d17a259fad2597a832840fdf59a64311b0703f045599cd6bb0f0
+"@stripe/react-stripe-js@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@stripe/react-stripe-js@npm:2.1.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@stripe/stripe-js": ^1.44.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: ae5a26e44bd43bcb36ea7d578a2fe0920e75eb46f6f942eae88c3758cb8328a70f891d3a492760d3e6021e7dd93b0d4e4e279ffe169cfa671049c690c210fba0
+  languageName: node
+  linkType: hard
+
+"@stripe/stripe-js@npm:^1.53.0":
+  version: 1.53.0
+  resolution: "@stripe/stripe-js@npm:1.53.0"
+  checksum: a554f71f605705662c30cbccebf41f2ed522ef68ddc31fca5822fec1105ccd62e987161dbcaecbe18e26f3e128b9facf3fc795848a34583a418d44c889069484
   languageName: node
   linkType: hard
 
@@ -6071,7 +6084,8 @@ __metadata:
     "@next/bundle-analyzer": ^12.2.0
     "@react-three/drei": ^9.68.3
     "@react-three/fiber": ^8.13.0
-    "@stripe/stripe-js": ^1.29.0
+    "@stripe/react-stripe-js": ^2.1.0
+    "@stripe/stripe-js": ^1.53.0
     "@supabase/auth-helpers-nextjs": ^0.6.0
     "@supabase/auth-helpers-react": ^0.3.1
     "@supabase/supabase-auth-helpers": ^1.4.2

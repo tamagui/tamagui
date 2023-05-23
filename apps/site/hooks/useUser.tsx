@@ -12,10 +12,12 @@ import {
   useReducer,
   useState,
 } from 'react'
+import Stripe from 'stripe'
 import { Spinner, YStack } from 'tamagui'
 
 type UserContextType = {
   accessToken: string | null
+  subscriptions?: (Stripe.Subscription & { plan?: Stripe.Plan })[]
   user: User | null
   userDetails?: Database['public']['Tables']['users']['Row'] | null
   teams: {
@@ -72,18 +74,26 @@ export const MyUserContextProvider = (props: Props) => {
     return result.data
   }
 
+  const getSubscriptions = async () => {
+    const res = await fetch('/api/subscriptions')
+    const data = (await res.json()) as Stripe.Subscription[]
+    return data
+  }
+
   const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<UserContextType['userDetails']>()
   const [userTeams, setUserTeams] = useState<UserContextType['teams']['all']>()
-  // const [subscription, setSubscription] = useState<any>(null)
+  const [subscriptions, setSubscriptions] = useState<Stripe.Subscription[]>()
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
       setIsloadingData(true)
-      Promise.allSettled([getUserDetails(), getUserTeams()]).then(
-        ([userDetailsPromise, userTeamsPromise]) => {
-          // const subscriptionPromise = results[2]
+      Promise.allSettled([getSubscriptions(), getUserDetails(), getUserTeams()]).then(
+        ([subscriptionsPromise, userDetailsPromise, userTeamsPromise]) => {
+          if (subscriptionsPromise.status === 'fulfilled') {
+            setSubscriptions(subscriptionsPromise.value)
+          }
 
           if (userDetailsPromise.status === 'fulfilled') {
             setUserDetails(userDetailsPromise.value)
@@ -105,7 +115,7 @@ export const MyUserContextProvider = (props: Props) => {
     user: session?.user ?? null,
     userDetails,
     isLoading: isLoadingUser || isLoadingData,
-    // subscription,
+    subscriptions,
     teams: {
       all: userTeams,
       personal: getPersonalTeam(userTeams),
