@@ -260,15 +260,15 @@ function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
     <Portal zIndex={zIndex}>
-      {!!context.open && !context.breakpointActive && (
-        <Theme forceClassName name={themeName}>
+      <Theme forceClassName name={themeName}>
+        {!!context.open && !context.breakpointActive && (
           <YStack
             fullscreen
             onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
           />
-          <Stack zIndex={(zIndex as number) + 1}>{contents}</Stack>
-        </Theme>
-      )}
+        )}
+        <Stack zIndex={(zIndex as number) + 1}>{contents}</Stack>
+      </Theme>
     </Portal>
   )
 }
