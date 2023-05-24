@@ -199,7 +199,7 @@ A few things to note here:
 - ButtonContext should only be typed and given properties that work across both components. Since they both define a `size` variant, this works.
 - But note that one defines `...size` while the other defines `...fontSize`. This works in this case only if your design system has consistent naming for token sizes across `size` and `fontSize` (and is why we highy recommend this pattern).
 - You can use `<Button.Props size="$large"><Button /></Button.Props>` now to set default props for a Button from above.
-- As of today, this pattern does not work with the optimizing compilers flattening functionality. We've mapped out how this can work without a ton of effort, but it means you should not use this pattern with your leaf components (things like Paragraph, View, Stack, Box, or any others that are extremely common).
+- As of today, using `context` pattern does not work with the optimizing compiler flattening functionality. So we recommend not using this for your most common components like Stacks or Text. But for Button or anything higher level it's totally fine - it will still extract CSS and remove some logic from the render function. We've mapped out how this can work with flattening eventually and it shouldn't be too much effort.
 
 ### styleable
 
