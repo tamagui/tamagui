@@ -22,10 +22,13 @@ import {
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
+import { Button2, TestBuildAButton } from './TestBuildAButton'
 
 setupNativeSheet('ios', ModalView)
 
 export function HomeScreen() {
+  // return <TestBuildAButton />
+
   return (
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
