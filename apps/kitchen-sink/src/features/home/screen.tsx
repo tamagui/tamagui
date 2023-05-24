@@ -25,15 +25,6 @@ import { useThemeControl } from '../../useKitchenSinkTheme'
 
 setupNativeSheet('ios', ModalView)
 
-const SubComponent = memo(() => {
-  return (
-    <>
-      <Button>test me</Button>
-      <YStack w={100} h={100} bc="$background" />
-    </>
-  )
-})
-
 export function HomeScreen() {
   return (
     <ScrollView>
