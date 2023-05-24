@@ -159,10 +159,12 @@ export function createSheet<
                 {...props}
                 children={null}
                 position="absolute"
-                bottom={-20}
-                maxHeight={300}
+                bottom={0}
+                zIndex={-1}
+                height={context.frameSize / 2}
                 left={0}
                 right={0}
+                borderWidth={0}
                 borderRadius={0}
                 shadowOpacity={0}
               />

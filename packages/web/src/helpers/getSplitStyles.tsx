@@ -792,7 +792,10 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (key === 'fontFamily' && !fontFamily && valInit && val) {
-        fontFamily = valInit[0] === '$' ? valInit : val
+        const fam = valInit[0] === '$' ? valInit : val
+        if (fam in conf.fontsParsed) {
+          fontFamily = fam
+        }
       }
 
       if (key in validStyleProps) {

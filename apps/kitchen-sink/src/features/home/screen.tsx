@@ -23,10 +23,12 @@ import {
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 import { Button2, TestBuildAButton } from './TestBuildAButton'
+import { TestModal100 } from './TestCrashAdaptSheet'
 
 setupNativeSheet('ios', ModalView)
 
 export function HomeScreen() {
+  return <TestModal100 />
   // return <TestBuildAButton />
 
   return (
