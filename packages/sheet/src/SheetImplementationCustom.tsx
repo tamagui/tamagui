@@ -367,11 +367,13 @@ export const SheetImplementationCustom = themeable(
     if (modal) {
       const modalContents = (
         <Portal zIndex={zIndex} {...portalProps}>
-          <Theme forceClassName name={themeName}>
-            <AdaptParentContext.Provider value={adaptContext}>
-              {contents}
-            </AdaptParentContext.Provider>
-          </Theme>
+          {!!opacity && (
+            <Theme forceClassName name={themeName}>
+              <AdaptParentContext.Provider value={adaptContext}>
+                {contents}
+              </AdaptParentContext.Provider>
+            </Theme>
+          )}
         </Portal>
       )
 
