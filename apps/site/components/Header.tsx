@@ -332,6 +332,7 @@ const SmallMenu = React.memo(() => {
             miw={230}
             p="$3"
             ai="flex-end"
+            contain="paint layout"
             // display={open ? 'flex' : 'none'}
           >
             <HeaderLinks forceShowAllLinks />
