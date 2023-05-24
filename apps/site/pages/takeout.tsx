@@ -4,6 +4,8 @@ import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { NextSeo } from 'next-seo'
+import localFont from 'next/font/local'
+import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
@@ -21,6 +23,14 @@ import {
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 
+const gluspFont = localFont({
+  src: './glusp.woff2',
+  display: 'swap',
+  variable: '--font-glusp',
+})
+
+console.log('gluspFont', gluspFont)
+
 const heroHeight = 850
 
 export default function TakeoutPage() {
@@ -28,8 +38,10 @@ export default function TakeoutPage() {
     <>
       <NextSeo title="Tamagui Takeout" description="Tamagui Takeout" />
 
-      <LoadGlusp />
-      <LoadMunro />
+      {/* <Head>
+        <LoadGlusp />
+        <LoadMunro />
+      </Head> */}
 
       <YStack
         pos="absolute"

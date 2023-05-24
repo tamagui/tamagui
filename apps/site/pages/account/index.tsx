@@ -8,12 +8,12 @@ import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ButtonLink } from 'studio/Link'
 import {
   Avatar,
   Button,

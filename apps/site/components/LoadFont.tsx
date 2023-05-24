@@ -1,9 +1,17 @@
 export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
   return (
     <>
-      {props.cssFile && <link href={props.cssFile} rel="stylesheet" />}
+      {props.cssFile && (
+        <link crossOrigin="anonymous" href={props.cssFile} rel="stylesheet" />
+      )}
       {props.woff2File && (
-        <link rel="preload" href={props.woff2File} as="font" type="font/woff2" />
+        <link
+          crossOrigin="anonymous"
+          rel="preload"
+          href={props.woff2File}
+          as="font"
+          type="font/woff2"
+        />
       )}
     </>
   )

@@ -8,15 +8,24 @@ import {
   ColorScheme,
   NextThemeProvider,
   useRootTheme,
-  useThemeSetting
+  useThemeSetting,
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
+import localFont from 'next/font/local'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import { LoadInter900 } from '../components/LoadFont'
+import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
+
+// const gluspFont = localFont({
+//   src: './glusp.woff2',
+//   display: 'swap',
+//   variable: '--font-glusp',
+// })
+
+// console.log('gluspFont', gluspFont)
 
 Error.stackTraceLimit = Infinity
 
@@ -104,10 +113,12 @@ function AppContents(
         }}
       />
 
-      {/* this will lazy load the font for /studio splash page */}
+      {/* this will lazy load the font for /studio and /takeout pages */}
       {didInteract && (
         <>
           <LoadInter900 />
+          <LoadGlusp />
+          <LoadMunro />
         </>
       )}
 

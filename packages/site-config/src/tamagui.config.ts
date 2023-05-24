@@ -11,7 +11,10 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
-const gluspFont = createGluspFont()
+const gluspFont = createGluspFont({
+  family: `'__gluspFont_3cec70', '__gluspFont_Fallback_3cec70'`,
+})
+
 const munroFont = createMunroFont()
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
