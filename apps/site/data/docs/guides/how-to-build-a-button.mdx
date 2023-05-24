@@ -10,22 +10,27 @@ demoName: BuildAButton
 </HeroContainer>
 
 <IntroParagraph>
-  Deceptively simple, designing a robust yet flexible button API in any UI framework can
-  be a surprisingly difficult task to pull off.
+  Deceptively innocuous, designing a robust yet flexible API even for a Button can be
+  filled with surprising challenges.
 </IntroParagraph>
 
-More than just text in a box, a button needs icons, themes, variants, sizes, loading indicators, several interactive states, and a delicate balance between sub-components' positions, spacing and style. All of this delivered in a simple package that still allows complete customization.
+More than just text in a box, buttons need icons, themes, variants, sizes, often loading indicators and several interactive states, and always a delicate balance between sub-components' positions, spacing and style.
 
-Tamagui allows for building a button with "composable components," a concept popularized by [Radix](https://www.radix-ui.com/). With the introduction of `createStyledContext` in version 1.28 it's become especially easy, so we wrote this guide to show off building more advanced composable component APIs.
+All of this ideally delivered in a simple API that still allows complete customization.
 
-What are composable components? Put simply, it's when you have, say, a `<Button />` that accepts children `<Button.Text />` and `<Button.Icon />`. And why do they exist? We'll explain that and more in this guide.
+Tamagui allows for building a button with "composable components," a concept popularized by [Radix](https://www.radix-ui.com/). With the introduction of `createStyledContext` in version 1.28 this pattern has become especially easy, so we wrote this guide to show off building more advanced composable component APIs. While this guide covers a button, this is applicable to many types of UI components.
 
-Keep in mind that this is an advanced use case. Usually you can just grab Tamagui components off the shelf and use them with inline styles. But sometimes you want to design a flexible API for your users, which this guide covers.
+So what are composable components? Simply, it's when you have, say, a `<Button />` that wants children `<Button.Text />` and `<Button.Icon />`.
+
+And why do they exist? Well, we'll explain that and more in this guide.
+
+Keep in mind that this is an advanced use case. Usually you can just grab Tamagui components off the shelf and use them with inline styles. But sometimes you need components that want for multiple related children.
 
 <Notice>
-  This guide is more of a primer on designing composable components teaching many advanced
-  concepts that aren't necessary within most apps. If you just a simple, ready to use
-  Button, you can use the [Tamagui Button](/docs/components/button) itself directly.
+  This guide is more of a primer on designing composable components, teaching advanced
+  concepts that aren't necessary if you just want to build your app. If you just a simple,
+  ready to use Button, you can use the [Tamagui Button](/docs/components/button) itself
+  directly.
 </Notice>
 
 ### The Final Result
