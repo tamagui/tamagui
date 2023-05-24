@@ -22,3 +22,8 @@ const productStripeIdMap: Record<ProductSlug, string> = isStripeProd
 export function getStripeProductId(product: ProductSlug) {
   return productStripeIdMap[product]
 }
+export function getProductSlug(id: string) {
+  return Object.keys(productStripeIdMap)[
+    Object.values(productStripeIdMap).findIndex((_id) => _id === id)
+  ] as ProductSlug
+}

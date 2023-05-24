@@ -79,8 +79,8 @@ const handler: NextApiHandler = async (req, res) => {
     ],
     customer: customerId,
     mode: 'subscription',
-    success_url: `${getURL()}/${priceId}/success`,
-    cancel_url: `${getURL()}/${priceId}/cancel`,
+    success_url: `${getURL()}/account/subscriptions`,
+    cancel_url: `${getURL()}/takeout`,
   })
 
   // await supabaseAdmin

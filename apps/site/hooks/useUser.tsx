@@ -17,7 +17,10 @@ import { Spinner, YStack } from 'tamagui'
 
 type UserContextType = {
   accessToken: string | null
-  subscriptions?: (Stripe.Subscription & { plan?: Stripe.Plan })[]
+  subscriptions?: (Stripe.Subscription & {
+    plan?: Stripe.Plan
+    product: Stripe.Product
+  })[]
   user: User | null
   userDetails?: Database['public']['Tables']['users']['Row'] | null
   teams: {
@@ -76,15 +79,14 @@ export const MyUserContextProvider = (props: Props) => {
 
   const getSubscriptions = async () => {
     const res = await fetch('/api/subscriptions')
-    const data = (await res.json()) as Stripe.Subscription[]
+    const data = (await res.json()) as UserContextType['subscriptions']
     return data
   }
 
-  const router = useRouter()
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<UserContextType['userDetails']>()
   const [userTeams, setUserTeams] = useState<UserContextType['teams']['all']>()
-  const [subscriptions, setSubscriptions] = useState<Stripe.Subscription[]>()
+  const [subscriptions, setSubscriptions] = useState<UserContextType['subscriptions']>()
 
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {

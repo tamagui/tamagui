@@ -443,7 +443,7 @@ const StarterCard = () => {
         <ButtonLink
           href={
             subscription
-              ? '/account/subscriptions'
+              ? `/account/subscriptions#${subscription.id}`
               : `api/checkout?${new URLSearchParams({
                   product_id: productId,
                 }).toString()}`

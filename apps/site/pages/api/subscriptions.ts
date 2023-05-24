@@ -41,7 +41,13 @@ const handler: NextApiHandler = async (req, res) => {
       customer: customer.stripe_customer_id,
     })
 
-    res.status(200).json(subscriptions.data)
+    const products = await Promise.all(
+      subscriptions.data.map((sub) => stripe.products.retrieve((sub as any).plan.product))
+    )
+
+    res
+      .status(200)
+      .json(subscriptions.data.map((sub, idx) => ({ ...sub, product: products[idx] })))
   } catch (error) {
     if (error instanceof Stripe.errors.StripeInvalidRequestError) {
       if (error.code === 'resource_missing') {
@@ -49,6 +55,7 @@ const handler: NextApiHandler = async (req, res) => {
         res.status(200).json([])
       }
     }
+    throw error
   }
 }
 
