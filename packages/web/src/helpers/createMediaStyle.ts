@@ -14,15 +14,24 @@ export const createMediaStyle = (
   mediaQueries: MediaQueries,
   negate?: boolean
 ): MediaStyleObject => {
+  const isThemeMedia = !(mediaKey in mediaQueries)
   if (!(prefixes && selectors)) {
     // TODO move this into useMedia calc once there and unify w getMediaImportance
     const mediaKeys = Object.keys(mediaQueries)
-    prefixes = Object.fromEntries(
-      mediaKeys.map((key, index) => [key, new Array(index + 1).fill(':root').join('')])
-    )
-    selectors = Object.fromEntries(
-      mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
-    )
+    if (!isThemeMedia) {
+      prefixes = Object.fromEntries(
+        mediaKeys.map((key, index) => [key, new Array(index + 1).fill(':root').join('')])
+      )
+      selectors = Object.fromEntries(
+        mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+      )
+      // for themes
+    } else {
+      prefixes = {
+        [mediaKey]: `.t_${mediaKey}`,
+      }
+      selectors = {}
+    }
   }
   const precendencePrefix = prefixes[mediaKey]
   const mediaSelector = selectors[mediaKey]
@@ -32,22 +41,34 @@ export const createMediaStyle = (
     ogPrefix,
     `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
   )}`
-  const screenStr = negate ? 'not all and' : ''
-  const mediaQuery = `${screenStr} ${mediaSelector}`
-  const styleInner = rules
-    .map((rule) => rule.replace(identifier, nextIdentifier))
-    .join(';')
-  // combines media queries if they already exist
-  let styleRule = ''
-  if (styleInner.includes('@media')) {
-    // combine
-    styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
+  if (!isThemeMedia) {
+    const screenStr = negate ? 'not all and' : ''
+    const mediaQuery = `${screenStr} ${mediaSelector}`
+    const styleInner = rules
+      .map((rule) => rule.replace(identifier, nextIdentifier))
+      .join(';')
+    // combines media queries if they already exist
+    let styleRule = ''
+    if (styleInner.includes('@media')) {
+      // combine
+      styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
+    } else {
+      styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+    }
+    return {
+      property,
+      rules: [styleRule],
+      identifier: nextIdentifier,
+    }
   } else {
-    styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
-  }
-  return {
-    property,
-    rules: [styleRule],
-    identifier: nextIdentifier,
+    const styleInner = rules
+      .map((rule) => rule.replace(identifier, nextIdentifier))
+      .join(';')
+    const styleRule = `${precendencePrefix} ${styleInner}`
+    return {
+      property,
+      rules: [styleRule],
+      identifier: nextIdentifier,
+    }
   }
 }

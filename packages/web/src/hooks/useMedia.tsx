@@ -36,7 +36,8 @@ export let mediaState: MediaQueryState =
 export const mediaQueryConfig: MediaQueries = {}
 export const getMedia = () => mediaState
 export const mediaKeys = new Set<string>() // with $ prefix
-export const isMediaKey = (key: string) => mediaKeys.has(key)
+export const isMediaKey = (key: string) =>
+  mediaKeys.has(key) || key.split('$')[1] in getConfig().themes
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState

@@ -8,6 +8,7 @@ import { Suspense, useState } from 'react'
 import {
   Button,
   Separator,
+  Square,
   TamaguiProvider,
   Theme,
   XStack,
@@ -48,14 +49,23 @@ export const Sandbox = () => {
 
 const SandboxInner = () => {
   return (
-    <SandboxHeading
-    // $dark={{ backgroundColor: 'red' }}
-    // $light={{ backgroundColor: 'green' }}
-    >
-      sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-    </SandboxHeading>
+    <Square
+      width={39}
+      height={50}
+      backgroundColor={'blue'}
+      $md={{
+        width: 50,
+      }}
+      hoverStyle={{
+        height: 100,
+      }}
+      $dark={{
+        width: 100,
+        height: 200,
+        backgroundColor: 'red',
+      }}
+    />
   )
-  return <CustomButtonDemo />
 }
 
 // function TestAnimatePresence() {
