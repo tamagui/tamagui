@@ -23,6 +23,8 @@ high level:
 
 ---
 
+- $web / $native / $ios / $android
+
 starter
 - feed
 - more work on profile
