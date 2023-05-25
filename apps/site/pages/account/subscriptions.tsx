@@ -2,7 +2,7 @@ import { Container } from '@components/Container'
 import { getUserLayout } from '@components/layouts/UserLayout'
 import { getProductSlug } from '@lib/products'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'app/Link'
+import { ButtonLink } from 'studio/Link'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import {
