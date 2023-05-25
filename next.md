@@ -31,6 +31,8 @@ starter
 - feed
 - more work on profile
 - cropper on web, potentially
+- add users to github repo
+- template github action
 
 takeout
 - checkout
