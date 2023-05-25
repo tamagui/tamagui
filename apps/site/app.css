@@ -385,7 +385,7 @@ iframe {
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
   mask-size: 400% 400%;
   mask-clip: border-box;
-  animation: clip-fade 50s infinite alternate;
+  animation: clip-fade 100s infinite alternate;
 }
 
 .masked2 {
@@ -395,7 +395,7 @@ iframe {
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
   mask-size: 400% 400%;
   mask-clip: border-box;
-  animation: clip-fade 3s infinite alternate;
+  animation: clip-fade 30s infinite alternate;
 }
 
 @keyframes clip-fade {
@@ -723,7 +723,7 @@ input, textarea {
 }
 
 .yellow-shadow {
-  -webkit-text-stroke: 2px yellow;
+  -webkit-text-stroke: 1px yellow;
 }
 
 .callout {
@@ -768,10 +768,10 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 2px 2px var(--color),
-    -2px -2px var(--color),
-    2px -2px var(--color),
-    -2px 2px var(--color);
+  text-shadow: 1px 1px var(--color9),
+    -1px -1px var(--color9),
+    1px -1px var(--color9),
+    -1px 1px var(--color9);
 }
 
 .invert {
@@ -780,4 +780,10 @@ input, textarea {
 
 .pixelate {
   image-rendering: pixelated;
+}
+
+.clip-slice {
+  mask-image: url(./public/slice-mask.svg);
+  mask-size: 110% 110%;
+  mask-clip: border-box;
 }

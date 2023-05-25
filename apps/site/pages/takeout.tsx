@@ -63,7 +63,7 @@ export default function TakeoutPage() {
           fontSize={150 * 5}
           lineHeight={110 * 5}
           color="#000"
-          o={0.07}
+          o={0.25}
         />
       </YStack>
 
@@ -98,17 +98,19 @@ export default function TakeoutPage() {
               <TAKEOUT
                 pos="absolute"
                 t={52}
-                className="yellow-shadow   masked"
+                className="yellow-shadow masked"
                 color="$color10"
                 o={0.2}
               />
 
               <TAKEOUT />
 
+              <TAKEOUT className="clip-slice mix-blend" pos="absolute" t={44} color="$yellow10" />
+
               <TAKEOUT
                 pos="absolute"
                 t={52}
-                className="yellow-shadow mix-blend  masked2"
+                className="yellow-shadow mix-blend masked2"
                 zi={1}
                 color="transparent"
               />
@@ -188,8 +190,8 @@ export default function TakeoutPage() {
                 ai="center"
                 jc="center"
                 x={-10}
-                y={-10}
-                o={0.5}
+                y={-40}
+                o={0.75}
               >
                 <TAKEOUT color="$background" className="" />
               </YStack>
@@ -210,12 +212,12 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 800,
-                  height: 800,
+                  width: 550,
+                  height: 550,
                   // backgroundColor: 'red',
                   position: 'absolute',
-                  top: 100,
-                  right: '-20%',
+                  top: 300,
+                  right: '-10%',
                   zIndex: -1,
                 }}
                 gl={{ preserveDrawingBuffer: true }}
@@ -230,7 +232,6 @@ export default function TakeoutPage() {
                     scale={0.5}
                     adjustCamera={1}
                     intensity={1}
-                    environment="city"
                   >
                     <TakeoutBox3D />
                   </Stage>
