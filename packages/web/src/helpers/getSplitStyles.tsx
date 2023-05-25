@@ -60,6 +60,7 @@ import {
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { ThemeManagerState } from './ThemeManager'
 
 type GetStyleState = {
   style: TextStyleProps
@@ -87,7 +88,7 @@ let conf: TamaguiInternalConfig
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeParsed,
+  theme: ThemeManagerState,
   state: SplitStyleState,
   parentSplitStyles?: GetStyleResult | null,
   languageContext?: LanguageContextType,
@@ -108,13 +109,15 @@ export const PROP_SPLIT = '-'
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
-  theme,
+  themeState,
   state,
   parentSplitStyles,
   languageContext,
   elementType,
   debug
 ) => {
+  debugger
+  const theme = themeState.theme!
   conf = conf || getConfig()
   const { shorthands } = conf
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
@@ -778,6 +781,15 @@ export const getSplitStyles: StyleSplitter = (
             if (key === 'fontFamily') {
               fontFamily = mediaStyle.fontFamily as string
             }
+          }
+        } else if (mediaKeyShort in conf.themes) {
+          if (
+            themeState.name === mediaKeyShort ||
+            // add types to the themeState
+            // @ts-ignore
+            themeState.parentName === mediaKeyShort
+          ) {
+            style = { ...style, ...mediaStyle }
           }
         }
         continue

@@ -403,7 +403,7 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      themeState.theme,
+      themeState,
       {
         ...state,
         mediaState,
