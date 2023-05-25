@@ -162,7 +162,7 @@ export function createSheet<
                 componentName="SheetCover"
                 children={null}
                 position="absolute"
-                bottom={-100}
+                bottom="-50%"
                 zIndex={-1}
                 height={context.frameSize}
                 left={0}

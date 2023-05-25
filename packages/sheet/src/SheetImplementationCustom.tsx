@@ -69,7 +69,6 @@ export const SheetImplementationCustom = themeable(
       maxSnapPoint,
     } = providerProps
     const { open, controller, isHidden } = state
-    console.log('wtf', { open, isHidden })
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
@@ -122,7 +121,6 @@ export const SheetImplementationCustom = themeable(
       },
       (value) => {
         if (!driver.isReactNative) return
-        console.log('huh', at.current)
         at.current = value
         scrollBridge.paneY = value
       }
@@ -145,43 +143,25 @@ export const SheetImplementationCustom = themeable(
 
       if (at.current === toValue) return
 
-      const id = Math.random()
-      currentId.current = id
-
-      // first run, we need to set to screen size before running
-      console.log('animateTo', toValue, at.current, HIDDEN_SIZE, isHidden)
-
       stopSpring()
 
       if (hasntMeasured || isHidden) {
-        animatedNumber.setValue(
-          screenSize,
-          {
-            type: 'timing',
-            duration: 0,
-          },
-          flush
-        )
+        // first run, we need to set to screen size before running
+        animatedNumber.setValue(screenSize, {
+          type: 'timing',
+          duration: 0,
+        })
         at.current = toValue
 
         if (isHidden) {
           return
         }
-      } else {
-        flush()
       }
 
-      function flush() {
-        if (id !== currentId.current) {
-          return
-        }
-        console.log('now animate')
-
-        animatedNumber.setValue(toValue, {
-          ...animationConfig,
-          type: 'spring',
-        })
-      }
+      animatedNumber.setValue(toValue, {
+        ...animationConfig,
+        type: 'spring',
+      })
     })
 
     useIsomorphicLayoutEffect(() => {
@@ -198,7 +178,7 @@ export const SheetImplementationCustom = themeable(
         return
       }
       animateTo(position)
-    }, [isHidden, frameSize, open])
+    }, [isHidden, frameSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -325,7 +305,6 @@ export const SheetImplementationCustom = themeable(
         })()
 
         if (!next) return
-        console.log('??', next)
         setFrameSize(next)
       },
       [keyboardIsVisible]
