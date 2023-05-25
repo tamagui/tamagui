@@ -48,6 +48,7 @@ export const SheetImplementationCustom = themeable(
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
+      mountWhileHidden = false,
       portalProps,
     } = props
 
@@ -57,8 +58,16 @@ export const SheetImplementationCustom = themeable(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
-    const { frameSize, setFrameSize, snapPoints, position, setPosition, scrollBridge } =
-      providerProps
+    const {
+      frameSize,
+      setFrameSize,
+      snapPoints,
+      position,
+      setPosition,
+      scrollBridge,
+      screenSize,
+      maxSnapPoint,
+    } = providerProps
     const { open, controller, isHidden } = state
 
     const sheetRef = useRef<View>(null)
@@ -73,9 +82,6 @@ export const SheetImplementationCustom = themeable(
     const onInnerSheet = useCallback((hasChild: boolean) => {
       setIsShowingInnerSheet(hasChild)
     }, [])
-
-    const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
-    const screenSize = frameSize / (maxSnapPoint / 100)
 
     const positions = useMemo(
       () => snapPoints.map((point) => getPercentSize(point, screenSize)),
@@ -105,9 +111,7 @@ export const SheetImplementationCustom = themeable(
     )
 
     const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
-
-    // native only fix
-    const at = useRef(0)
+    const at = useRef(HIDDEN_SIZE)
 
     useAnimatedNumberReaction(
       {
@@ -130,32 +134,34 @@ export const SheetImplementationCustom = themeable(
     }
 
     const animateTo = useEvent((position: number) => {
-      const current = animatedNumber.getValue()
-      if (isHidden && open) return
-      if (!current) return
       if (frameSize === 0) return
-      const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : screenSize
-      const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
+      const toValue = isHidden || position === -1 ? screenSize : positions[position]
       if (at.current === toValue) return
-      stopSpring()
-      if (isHidden) {
-        animatedNumber.setValue(toValue, {
+
+      // first run, we need to set to screen size before running
+      if (at.current === HIDDEN_SIZE || isHidden) {
+        animatedNumber.setValue(screenSize, {
           type: 'timing',
           duration: 0,
         })
         at.current = toValue
-        return
+        if (isHidden) {
+          return
+        }
       }
-      // dont bounce on initial measure to bottom
-      const overshootClamping = at.current === HIDDEN_SIZE
+
+      stopSpring()
+
       animatedNumber.setValue(toValue, {
         ...animationConfig,
         type: 'spring',
-        overshootClamping,
       })
     })
 
     useIsomorphicLayoutEffect(() => {
+      if (!frameSize) {
+        return
+      }
       animateTo(position)
     }, [isHidden, frameSize, position, animateTo])
 
@@ -367,7 +373,7 @@ export const SheetImplementationCustom = themeable(
     if (modal) {
       const modalContents = (
         <Portal zIndex={zIndex} {...portalProps}>
-          {!!opacity && (
+          {Boolean(mountWhileHidden || opacity) && (
             <Theme forceClassName name={themeName}>
               <AdaptParentContext.Provider value={adaptContext}>
                 {contents}
