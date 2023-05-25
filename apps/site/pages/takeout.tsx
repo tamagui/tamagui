@@ -400,60 +400,7 @@ export default function TakeoutPage() {
             </YStack>
 
             <YStack mt={-160} mr={-90}>
-<<<<<<< HEAD
-              <StickyBox>
-                <TakeoutCardFrame
-                  className="blur-medium"
-                  zi={1000}
-                  maw={340}
-                  als="center"
-                  space="$2"
-                  shadowRadius={300}
-                  shadowColor="#000"
-                  x={-100}
-                  y={100}
-                >
-                  <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.9} />
-
-                  <Paragraph fontFamily="$munro" size="$3" theme="alt2">
-                    Drop 0001
-                  </Paragraph>
-
-                  <Paragraph fontFamily="$munro" size="$10">
-                    Universal App Starter
-                  </Paragraph>
-
-                  <YStack>
-                    <Row
-                      title="Template"
-                      description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
-                      after="XX"
-                    />
-
-                    <Row
-                      title="Monorepo"
-                      description="More complete monorepo with Next.js deploy and Expo EAS configured."
-                      after="XX"
-                    />
-
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                    <Row title="Something" description="Description" after="XX" />
-                  </YStack>
-
-                  <Spacer f={1} />
-
-                  <Button fontFamily="$munro" themeInverse fontSize="$8">
-                    Buy now
-                  </Button>
-                </TakeoutCardFrame>
-              </StickyBox>
-=======
               <StarterCard />
->>>>>>> origin/takeout-landing
             </YStack>
           </XStack>
 
@@ -494,8 +441,17 @@ const StarterCard = () => {
         </Paragraph>
 
         <YStack>
-          <Row title="Something" description="Description" after="XX" />
-          <Row title="Something" description="Description" after="XX" />
+          <Row
+            title="Template"
+            description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
+            after="XX"
+          />
+
+          <Row
+            title="Monorepo"
+            description="More complete monorepo with Next.js deploy and Expo EAS configured."
+            after="XX"
+          />
           <Row title="Something" description="Description" after="XX" />
           <Row title="Something" description="Description" after="XX" />
           <Row title="Something" description="Description" after="XX" />
