@@ -24,6 +24,7 @@ export declare function createSheet<H extends SheetStyledComponent, F extends Sh
     dismissOnSnapToBottom?: boolean | undefined;
     forceRemoveScrollEnabled?: boolean | undefined;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
+    unmountChildrenWhenHidden?: boolean | undefined;
     native?: boolean | "ios"[] | undefined;
     animation?: import("@tamagui/core").AnimationProp | undefined;
     handleDisableScroll?: boolean | undefined;

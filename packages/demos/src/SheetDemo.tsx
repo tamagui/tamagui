@@ -29,7 +29,6 @@ export const SheetDemo = () => {
         onPositionChange={setPosition}
         zIndex={100_000}
         animation="bouncy" // for the css driver
-        native
       >
         <Sheet.Overlay />
         <Sheet.Handle />

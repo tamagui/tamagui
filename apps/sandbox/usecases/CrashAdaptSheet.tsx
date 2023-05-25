@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import { useWindowDimensions } from 'react-native'
-import { Button, Dialog as TDialog } from 'tamagui'
+import { Button, H1, Dialog as TDialog, YStack } from 'tamagui'
 
 /* Minimal test case for reproducing crashes */
-function TestModal() {
+export function TestModal() {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
   return (
@@ -14,26 +14,50 @@ function TestModal() {
       </TDialog.Trigger>
 
       <TDialog.Adapt when="md">
-        <TDialog.Sheet modal>
+        <TDialog.Sheet modal snapPoints={[20, 40, 80]}>
           <TDialog.Sheet.Handle
-            h="$0.5"
+            h={10}
             bc="$core8"
             o={1} // Uncommenting this causes a rare crash on native iOS Safari
             width="25%"
-            maxWidth="$5"
             m="$0"
             mb="$1"
             mt="$5"
             alignSelf="center"
+            pos="absolute"
+            t={-40}
           />
-          {/* Uncommenting this causes a rare crash on native iOS Safari */}
-          <TDialog.Sheet.Frame theme="red" minWidth="$40" />
-          <TDialog.Sheet.ScrollView>
-            <TDialog.Adapt.Contents />
-          </TDialog.Sheet.ScrollView>
+
           <TDialog.Sheet.Overlay h={windowHeight} w={windowWidth} bc="$background" />
+
+          {/* Uncommenting this causes a rare crash on native iOS Safari */}
+          <TDialog.Sheet.Frame theme="red">
+            <TDialog.Sheet.ScrollView>
+              <TDialog.Adapt.Contents />
+            </TDialog.Sheet.ScrollView>
+          </TDialog.Sheet.Frame>
         </TDialog.Sheet>
       </TDialog.Adapt>
+
+      <TDialog.Portal>
+        <TDialog.Content>
+          <YStack space p="$4">
+            <H1>
+              Esse nulla magna reprehenderit sunt ea elit. Voluptate amet elit
+              reprehenderit tempor duis duis. Nostrud adipisicing duis in sunt adipisicing
+              nulla culpa. Est cillum esse reprehenderit officia incididunt ea aliquip
+              aliqua quis ex cillum.
+            </H1>
+
+            <H1>
+              Esse nulla magna reprehenderit sunt ea elit. Voluptate amet elit
+              reprehenderit tempor duis duis. Nostrud adipisicing duis in sunt adipisicing
+              nulla culpa. Est cillum esse reprehenderit officia incididunt ea aliquip
+              aliqua quis ex cillum.
+            </H1>
+          </YStack>
+        </TDialog.Content>
+      </TDialog.Portal>
     </TDialog>
   )
 }
@@ -47,7 +71,6 @@ function TestModal10() {
       <TestModal />
       <TestModal />
       <TestModal />
-
       <TestModal />
       <TestModal />
       <TestModal />
@@ -58,7 +81,7 @@ function TestModal10() {
 }
 
 /* Minimal test case for reproducing crashes */
-export function TestModal100() {
+export default function TestModal100() {
   return (
     <>
       <TestModal10 />

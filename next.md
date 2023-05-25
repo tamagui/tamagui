@@ -1,3 +1,5 @@
+- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
+
 - doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
 
 - add just early return hooks eslint check

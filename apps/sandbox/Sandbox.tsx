@@ -17,6 +17,7 @@ import {
 
 import { CustomButtonDemo } from './CustomButton'
 import config from './tamagui.config'
+import { TestModal } from './usecases/CrashAdaptSheet'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -47,6 +48,8 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
+  return <TestModal />
+
   return (
     <SandboxHeading
     // $dark={{ backgroundColor: 'red' }}

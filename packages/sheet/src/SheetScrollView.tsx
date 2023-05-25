@@ -1,6 +1,6 @@
-import { Stack, TamaguiElement, composeRefs } from '@tamagui/core'
+import { TamaguiElement, composeRefs } from '@tamagui/core'
 import { ScrollView, ScrollViewProps } from '@tamagui/scroll-view'
-import { forwardRef, useMemo, useRef, useState } from 'react'
+import { forwardRef, useMemo, useRef } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
 
 import { useSheetContext } from './SheetContext'
@@ -16,20 +16,15 @@ const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
 export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
   ({ __scopeSheet, children, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
-    const { scrollBridge, position, snapPoints, frameSize, open } = useSheetContext(
-      SHEET_SCROLL_VIEW_NAME,
-      __scopeSheet
-    )
+    const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const { scrollBridge } = context
     // const [scrollEnabled, setScrollEnabled_] = useState(true)
     const scrollRef = useRef<RNScrollView | null>(null)
 
-    const percentOpened = snapPoints[position] ?? 0
-    const [percentToPadBottom, setPercentToPadBottom] = useState(0)
-
-    const next = 100 - percentOpened
-    if (open && next !== percentToPadBottom) {
-      setPercentToPadBottom(next)
-    }
+    // could make it so it has negative bottom margin and then pads the bottom content
+    // to avoid clipping effect when resizing smaller
+    // or more ideally could use context to register if it has a scrollview and change behavior
+    // const offscreenSize = useSheetOffscreenSize(context)
 
     // const setScrollEnabled = (next: boolean) => {
     //   scrollRef.current?.setNativeProps?.({
@@ -127,7 +122,6 @@ export const SheetScrollView = forwardRef<TamaguiElement, ScrollViewProps>(
         {...props}
       >
         {useMemo(() => children, [children])}
-        <Stack height={(percentToPadBottom / 100) * frameSize} width={0} />
       </ScrollView>
     )
   }
