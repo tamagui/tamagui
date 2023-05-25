@@ -252,7 +252,7 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/sponsorship-sync', { method: 'POST' })
+    await fetch('/api/github-sync', { method: 'POST' })
       .then(() => {
         location.reload()
       })

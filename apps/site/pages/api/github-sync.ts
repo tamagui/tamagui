@@ -2,10 +2,19 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { checkForSponsorship } from '@protected/_utils/github'
 import { siteRootDir } from '@protected/studio/constants'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { Session, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 // const usernameWhitelist = ['natew', 'alitnk']
+
+async function githubTokenSync(session: Session) {
+  const token = session?.provider_token ?? session?.user?.user_metadata.github_token
+  if (token) {
+    await supabaseAdmin.from('github_tokens').upsert({ id: session.user.id, token })
+  }
+
+  return token
+}
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res })
@@ -14,13 +23,15 @@ const handler: NextApiHandler = async (req, res) => {
     data: { session },
   } = await supabase.auth.getSession()
   const user = session?.user
-  const userGithubToken = user?.user_metadata.github_token ?? session?.provider_token
 
-  if (!user)
+  if (!user) {
     return res.status(401).json({
       error: 'The user does not have an active session or is not authenticated',
       action: `${siteRootDir}/login`,
     })
+  }
+
+  const userGithubToken = await githubTokenSync(session)
 
   const githubLogin =
     session.user.user_metadata.user_name ??
