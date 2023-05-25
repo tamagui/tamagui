@@ -1,6 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  Stack,
   StackProps,
   TamaguiComponentExpectingVariants,
   mergeEvent,
@@ -24,6 +25,7 @@ import { SheetImplementationCustom } from './SheetImplementationCustom'
 import { SheetScrollView } from './SheetScrollView'
 import { SheetProps, SheetScopedProps } from './types'
 import { useSheetController } from './useSheetController'
+import { useSheetOffscreenSize } from './useSheetOffscreenSize'
 
 type SharedSheetProps = {
   open?: boolean
@@ -116,8 +118,6 @@ export function createSheet<
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
 
-  const SHEET_COVER_NAME = `${SHEET_NAME}Cover`
-
   const SheetFrame = Frame.extractable(
     forwardRef(
       (
@@ -133,21 +133,24 @@ export function createSheet<
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
+        const { removeScrollEnabled, frameSize, contentRef } = context
+        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+        const offscreenSize = useSheetOffscreenSize(context)
 
         return (
           <>
             <RemoveScroll
               forwardProps
-              enabled={context.removeScrollEnabled}
+              enabled={removeScrollEnabled}
               allowPinchZoom
-              shards={[context.contentRef]}
+              shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
               {/* @ts-ignore */}
-              <Frame ref={composedContentRef} {...props}>
+              <Frame ref={composedContentRef} height={frameSize} {...props}>
                 {children}
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
               </Frame>
             </RemoveScroll>
 
@@ -155,13 +158,13 @@ export function createSheet<
             {!props.disableHideBottomOverflow && (
               // @ts-ignore
               <Frame
-                componentName={SHEET_COVER_NAME}
                 {...props}
+                componentName="SheetCover"
                 children={null}
                 position="absolute"
-                bottom={0}
+                bottom={-100}
                 zIndex={-1}
-                height={context.frameSize / 2}
+                height={context.frameSize}
                 left={0}
                 right={0}
                 borderWidth={0}
