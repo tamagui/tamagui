@@ -1,5 +1,5 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
-import React, { Children } from 'react'
+import { Children } from 'react'
 import { AppRegistry } from 'react-native'
 
 import Tamagui from '../tamagui.config'
@@ -29,6 +29,9 @@ export default class Document extends NextDocument {
     return (
       <Html lang="en">
         <Head>
+          <link rel="icon" href="/favicon.png" />
+          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
 

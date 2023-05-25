@@ -17,6 +17,10 @@ export type SheetProps = ScopedProps<{
     forceRemoveScrollEnabled?: boolean;
     animationConfig?: AnimatedNumberStrategy;
     /**
+     * (experimental) Remove the children while hidden (to save some performance, but can cause issues with animations)
+     */
+    unmountChildrenWhenHidden?: boolean;
+    /**
      * Adapts the sheet to use native sheet on the given platform (if available)
      */
     native?: 'ios'[] | boolean;

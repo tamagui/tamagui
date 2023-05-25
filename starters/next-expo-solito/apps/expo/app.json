@@ -30,9 +30,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    },
     "extra": {
       "eas": {
         "projectId": "[your_project_id]"

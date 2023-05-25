@@ -1,6 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  Stack,
   StackProps,
   TamaguiComponentExpectingVariants,
   mergeEvent,
@@ -24,6 +25,7 @@ import { SheetImplementationCustom } from './SheetImplementationCustom'
 import { SheetScrollView } from './SheetScrollView'
 import { SheetProps, SheetScopedProps } from './types'
 import { useSheetController } from './useSheetController'
+import { useSheetOffscreenSize } from './useSheetOffscreenSize'
 
 type SharedSheetProps = {
   open?: boolean
@@ -31,13 +33,13 @@ type SharedSheetProps = {
 
 type BaseProps = StackProps & SharedSheetProps
 
-export type CreateSheetProps = {
-  Frame: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
-  Handle: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
-  Overlay: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
-}
+type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>
 
-export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
+export function createSheet<
+  H extends SheetStyledComponent,
+  F extends SheetStyledComponent,
+  O extends SheetStyledComponent
+>({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
   const SheetHandle = Handle.extractable(
     ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => {
       const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
@@ -47,6 +49,7 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
       }
 
       return (
+        // @ts-ignore
         <Handle
           onPress={() => {
             // don't toggle to the bottom snap position when dismissOnSnapToBottom set
@@ -76,6 +79,7 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
 
       const element = useMemo(
         () => (
+          // @ts-ignore
           <Overlay
             open={context.open && !context.hidden}
             {...props}
@@ -114,8 +118,6 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
 
-  const SHEET_COVER_NAME = `${SHEET_NAME}Cover`
-
   const SheetFrame = Frame.extractable(
     forwardRef(
       (
@@ -131,34 +133,41 @@ export function createSheet({ Handle, Frame, Overlay }: CreateSheetProps) {
         forwardedRef
       ) => {
         const context = useSheetContext(SHEET_NAME, __scopeSheet)
-        const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
+        const { removeScrollEnabled, frameSize, contentRef } = context
+        const composedContentRef = useComposedRefs(forwardedRef, contentRef)
+        const offscreenSize = useSheetOffscreenSize(context)
 
         return (
           <>
             <RemoveScroll
               forwardProps
-              enabled={context.removeScrollEnabled}
+              enabled={removeScrollEnabled}
               allowPinchZoom
-              shards={[context.contentRef]}
+              shards={[contentRef]}
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              <Frame ref={composedContentRef} {...props}>
+              {/* @ts-ignore */}
+              <Frame ref={composedContentRef} height={frameSize} {...props}>
                 {children}
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
               </Frame>
             </RemoveScroll>
 
-            {/* below frame hide when bouncing past 100% */}  
+            {/* below frame hide when bouncing past 100% */}
             {!props.disableHideBottomOverflow && (
+              // @ts-ignore
               <Frame
-                componentName={SHEET_COVER_NAME}
                 {...props}
+                componentName="SheetCover"
                 children={null}
                 position="absolute"
-                bottom={-20}
-                maxHeight={300}
+                bottom="-50%"
+                zIndex={-1}
+                height={context.frameSize}
                 left={0}
                 right={0}
+                borderWidth={0}
                 borderRadius={0}
                 shadowOpacity={0}
               />
