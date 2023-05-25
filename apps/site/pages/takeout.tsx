@@ -418,7 +418,18 @@ export default function TakeoutPage() {
                   </Paragraph>
 
                   <YStack>
-                    <Row title="Something" description="Description" after="XX" />
+                    <Row
+                      title="Template"
+                      description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
+                      after="XX"
+                    />
+
+                    <Row
+                      title="Monorepo"
+                      description="More complete monorepo with Next.js deploy and Expo EAS configured."
+                      after="XX"
+                    />
+
                     <Row title="Something" description="Description" after="XX" />
                     <Row title="Something" description="Description" after="XX" />
                     <Row title="Something" description="Description" after="XX" />

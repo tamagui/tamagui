@@ -50,31 +50,50 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        className={`ease-out all ms200 ${
-          isScrolled ? 'blur-medium hover-highlights ' : ''
-        }`}
-        bbc="$borderColor"
-        zi={50000}
         // @ts-ignore
         pos="fixed"
         top={0}
-        my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? '$1' : 0}
-        py={isScrolled ? '$0' : '$2'}
+        ai="center"
+        jc="center"
+        zi={50000000}
+        $gtSm={{
+          px: '$4',
+        }}
       >
-        <YStack o={isScrolled ? 0.7 : 0} fullscreen bc="$background" />
-        <ContainerLarge>
-          <ThemeTint>
-            {React.useMemo(
-              () => (
-                <HeaderContents floating {...props} />
-              ),
-              [props]
-            )}
-          </ThemeTint>
-        </ContainerLarge>
+        <XStack
+          className={`ease-out all ms200 ${
+            isScrolled ? 'blur-medium hover-highlights ' : ''
+          }`}
+          bbc="$borderColor"
+          elevation="$0"
+          py="$2"
+          y={0}
+          ov="hidden"
+          width="100%"
+          maw={1120}
+          {...(isScrolled && {
+            $gtSm: {
+              py: '$1',
+              y: 5,
+              elevation: '$3',
+              br: '$10',
+            },
+          })}
+        >
+          <YStack o={isScrolled ? 0.7 : 0} fullscreen bc="$background" />
+          <ContainerLarge>
+            <ThemeTint>
+              {React.useMemo(
+                () => (
+                  <HeaderContents floating {...props} />
+                ),
+                [props]
+              )}
+            </ThemeTint>
+          </ContainerLarge>
+        </XStack>
       </XStack>
       <YStack height={54} w="100%" />
     </>
@@ -289,6 +308,10 @@ const SmallMenu = React.memo(() => {
         <Button
           size="$3"
           chromeless
+          circular
+          hoverStyle={{
+            bc: 'transparent',
+          }}
           noTextWrap
           onPress={() => setOpen(!open)}
           theme={open ? 'alt1' : undefined}
