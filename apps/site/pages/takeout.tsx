@@ -4,7 +4,6 @@ import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Moon, Star } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'studio/Link'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
@@ -14,6 +13,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
+import { ButtonLink } from 'studio/Link'
 import {
   Button,
   H1,
@@ -105,7 +105,12 @@ export default function TakeoutPage() {
 
               <TAKEOUT />
 
-              <TAKEOUT className="clip-slice mix-blend" pos="absolute" t={44} color="$yellow10" />
+              <TAKEOUT
+                className="clip-slice mix-blend"
+                pos="absolute"
+                t={44}
+                color="$yellow10"
+              />
 
               <TAKEOUT
                 pos="absolute"
@@ -127,45 +132,45 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
-              <XStack my="$10" gap="$14" f={1} jc="space-between" className="mix-blend">
+              <XStack my="$10" gap={200} f={1} jc="space-between" className="mix-blend">
                 <Image
                   className="pixelate"
                   src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
                   alt="Icon"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
                   alt="Icon"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/coding-apps-websites-database-60.svg"
                   alt="Icon"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-bucket-brush-63.svg"
                   alt="Icon"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                 />
 
                 <Image
                   className="pixelate"
                   src="/retro-icons/design-color-palette-sample-26.svg"
                   alt="Icon"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                 />
               </XStack>
 
@@ -272,17 +277,29 @@ export default function TakeoutPage() {
 
           <XStack mt={heroHeight + 70} space="$10">
             <XStack f={1} p="$8" mt={20}>
-              <YStack
+              {/* <YStack
                 className="mix-blend"
                 fullscreen
                 bw={1}
                 boc="$color"
                 bc="$background"
                 o={0.24}
-              />
+              /> */}
 
               <YStack f={1} space="$8">
-                <MunroP size="$12">The starter kit, reborn.</MunroP>
+                <MunroP
+                  mt={-100}
+                  mb={-40}
+                  ml={-20}
+                  fontFamily="$silkscreen"
+                  fontSize={150}
+                >
+                  Level&nbsp;up
+                </MunroP>
+
+                <MunroP size="$10" color="$yellow10">
+                  A better universal app stack, from the ground up.
+                </MunroP>
 
                 <XStack space="$4" my={-20}>
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
@@ -292,23 +309,21 @@ export default function TakeoutPage() {
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
                 </XStack>
 
-                <MunroP size="$10" color="$yellow10">
-                  We're rethinking bootstrapping from the ground up. Here's how.
-                </MunroP>
-
-                <Paragraph size="$8" fow="400">
-                  We're not going to promise the <Moon /> or the <Star />
-                  <Star />
-                  <Star />s just yet, but we can say we think you've found something
-                  special that will give your startup the best, and fastest, chance of
-                  success.
+                <Paragraph size="$10" fow="400">
+                  We're not going to promise the <Moon size={36} /> or the{' '}
+                  <Star size={36} />
+                  <Star size={36} />
+                  <Star size={36} />
+                  s, but we can say you've found the ticket to building the highest
+                  quality app as fast as possible.
                 </Paragraph>
 
                 <Paragraph size="$8" fow="400">
-                  Tamagui Takeout 🥡 is our take on a starter kit that Thinks Different.
-                  Yea, so it gives you everything you need to hit the ground running.
-                  Yawn. Yea, it's a a Universal app in a monorepo with Supabase and auth
-                  and fonts and splash screens and yada yada.
+                  Tamagui Takeout 🥡 is a template for building a universal app (one
+                  codebase that deploys to native and web) that Thinks Different. Yea, so
+                  it gives you everything you need to hit the ground running. Yawn. Yea,
+                  it's a a Universal app in a monorepo with Supabase and auth and fonts
+                  and splash screens and yada yada.
                 </Paragraph>
 
                 <Paragraph size="$8" fow="400">
@@ -609,5 +624,6 @@ TakeoutPage.getLayout = (page, pageProps) =>
   withSupabase(getDefaultLayout(page, pageProps), pageProps)
 
 const MunroP = styled(Paragraph, {
+  className: 'pixelate',
   fontFamily: '$munro',
 })

@@ -768,10 +768,10 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 1px 1px var(--color9),
-    -1px -1px var(--color9),
-    1px -1px var(--color9),
-    -1px 1px var(--color9);
+  text-shadow: 1px 1px var(--color),
+    -1px -1px var(--color),
+    1px -1px var(--color),
+    -1px 1px var(--color);
 }
 
 .invert {
@@ -780,6 +780,8 @@ input, textarea {
 
 .pixelate {
   image-rendering: pixelated;
+  font-smooth: none;
+  -webkit-font-smoothing: none;
 }
 
 .clip-slice {
