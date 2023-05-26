@@ -754,7 +754,7 @@ input, textarea {
 
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
-  mask-size: 350% 350%;
+  mask-size: 150% 150%;
   mask-clip: border-box;
   animation: clip-fade2 120s infinite alternate;
 }

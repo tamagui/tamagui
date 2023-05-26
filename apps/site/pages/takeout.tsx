@@ -22,6 +22,8 @@ import {
   Paragraph,
   Separator,
   Spacer,
+  Stack,
+  Theme,
   XStack,
   YStack,
   styled,
@@ -64,7 +66,7 @@ export default function TakeoutPage() {
           fontSize={150 * 5}
           lineHeight={110 * 5}
           color="#000"
-          o={0.25}
+          o={0.1}
         />
       </YStack>
 
@@ -112,6 +114,8 @@ export default function TakeoutPage() {
                   pos="absolute"
                   t={44}
                   color="$color4"
+                  scale={1.05}
+                  o={0.5}
                 />
 
                 <TAKEOUT
@@ -135,46 +139,56 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
-              <XStack my="$10" gap={200} f={1} jc="space-between" className="mix-blend">
-                <Image
-                  className="pixelate"
-                  src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
-                  alt="Icon"
-                  width={24}
-                  height={24}
-                />
+              <XStack my="$10" gap={110} f={1} jc="space-between" className="mix-blend">
+                <IconFrame>
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
+                    alt="Icon"
+                    width={24}
+                    height={24}
+                  />
+                </IconFrame>
 
-                <Image
-                  className="pixelate"
-                  src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
-                  alt="Icon"
-                  width={24}
-                  height={24}
-                />
+                <IconFrame>
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
+                    alt="Icon"
+                    width={24}
+                    height={24}
+                  />
+                </IconFrame>
 
-                <Image
-                  className="pixelate"
-                  src="/retro-icons/coding-apps-websites-database-60.svg"
-                  alt="Icon"
-                  width={24}
-                  height={24}
-                />
+                <IconFrame>
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/coding-apps-websites-database-60.svg"
+                    alt="Icon"
+                    width={24}
+                    height={24}
+                  />
+                </IconFrame>
 
-                <Image
-                  className="pixelate"
-                  src="/retro-icons/design-color-bucket-brush-63.svg"
-                  alt="Icon"
-                  width={24}
-                  height={24}
-                />
+                <IconFrame>
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-bucket-brush-63.svg"
+                    alt="Icon"
+                    width={24}
+                    height={24}
+                  />
+                </IconFrame>
 
-                <Image
-                  className="pixelate"
-                  src="/retro-icons/design-color-palette-sample-26.svg"
-                  alt="Icon"
-                  width={24}
-                  height={24}
-                />
+                <IconFrame>
+                  <Image
+                    className="pixelate"
+                    src="/retro-icons/design-color-palette-sample-26.svg"
+                    alt="Icon"
+                    width={24}
+                    height={24}
+                  />
+                </IconFrame>
               </XStack>
 
               <YStack
@@ -418,7 +432,7 @@ export default function TakeoutPage() {
               />
             </YStack>
 
-            <YStack mt={-160} mr={-90}>
+            <YStack mt={-220} mr={-90}>
               <StarterCard />
             </YStack>
           </XStack>
@@ -430,6 +444,12 @@ export default function TakeoutPage() {
   )
 }
 
+const IconFrame = styled(Stack, {
+  borderRadius: 1000,
+  p: '$6',
+  bc: 'rgba(255, 255, 255, 0.025)',
+})
+
 const StarterCard = () => {
   const { subscriptions } = useUser()
   const productId = getStripeProductId('universal-starter')
@@ -438,63 +458,66 @@ const StarterCard = () => {
   )
   return (
     <StickyBox>
-      <TakeoutCardFrame
-        className="blur-medium"
-        zi={1000}
-        maw={340}
-        als="center"
-        space="$2"
-        shadowRadius={300}
-        shadowColor="#000"
-        x={-100}
-        y={100}
-      >
-        <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.9} />
-
-        <Paragraph fontFamily="$munro" size="$3" theme="alt2">
-          Drop 0001
-        </Paragraph>
-
-        <Paragraph fontFamily="$munro" size="$10">
-          Universal App Starter
-        </Paragraph>
-
-        <YStack>
-          <Row
-            title="Template"
-            description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
-            after="XX"
-          />
-
-          <Row
-            title="Monorepo"
-            description="More complete monorepo with Next.js deploy and Expo EAS configured."
-            after="XX"
-          />
-          <Row title="Something" description="Description" after="XX" />
-          <Row title="Something" description="Description" after="XX" />
-          <Row title="Something" description="Description" after="XX" />
-          <Row title="Something" description="Description" after="XX" />
-          <Row title="Something" description="Description" after="XX" />
-        </YStack>
-
-        <Spacer f={1} />
-
-        <ButtonLink
-          href={
-            subscription
-              ? `/account/subscriptions#${subscription.id}`
-              : `api/checkout?${new URLSearchParams({
-                  product_id: productId,
-                }).toString()}`
-          }
-          fontFamily="$munro"
-          themeInverse
-          fontSize="$8"
+      <ThemeTint>
+        <TakeoutCardFrame
+          className="blur-medium"
+          zi={1000}
+          maw={340}
+          als="center"
+          space="$2"
+          shadowRadius={30}
+          shadowOffset={{ height: 20, width: 0 }}
+          shadowColor="#000"
+          x={-100}
+          y={100}
         >
-          {subscription ? 'View Subscription' : 'Buy now'}
-        </ButtonLink>
-      </TakeoutCardFrame>
+          <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
+
+          <Paragraph fontFamily="$munro" size="$3" theme="alt2">
+            Drop 0001
+          </Paragraph>
+
+          <Paragraph fontFamily="$munro" size="$10">
+            Universal App Starter
+          </Paragraph>
+
+          <YStack>
+            <Row
+              title="Template"
+              description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
+              after="XX"
+            />
+
+            <Row
+              title="Monorepo"
+              description="More complete monorepo with Next.js deploy and Expo EAS configured."
+              after="XX"
+            />
+            <Row title="Something" description="Description" after="XX" />
+            <Row title="Something" description="Description" after="XX" />
+            <Row title="Something" description="Description" after="XX" />
+            <Row title="Something" description="Description" after="XX" />
+            <Row title="Something" description="Description" after="XX" />
+          </YStack>
+
+          <Spacer f={1} />
+
+          <ButtonLink
+            href={
+              subscription
+                ? `/account/subscriptions#${subscription.id}`
+                : `api/checkout?${new URLSearchParams({
+                    product_id: productId,
+                  }).toString()}`
+            }
+            fontFamily="$munro"
+            themeInverse
+            fontSize="$8"
+          >
+            {subscription ? 'View Subscription' : 'Buy now'}
+          </ButtonLink>
+        </TakeoutCardFrame>
+      </ThemeTint>
     </StickyBox>
   )
 }
