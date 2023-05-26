@@ -548,6 +548,7 @@ export const getSplitStyles: StyleSplitter = (
 
     for (const [key, val] of expanded) {
       if (val === undefined) continue
+
       if (key in stylePropsFont && !special && key !== 'fontFamily') {
         specialProps.push([key, val])
         continue
