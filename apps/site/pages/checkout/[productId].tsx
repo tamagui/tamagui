@@ -1,4 +1,5 @@
 // we can bring this page back if we wanna do custom checkout
+export default () => null
 // import { getUserLayout } from '@components/layouts/UserLayout'
 // import { stripe } from '@lib/stripe'
 // import { getStripe } from '@lib/stripeClient'
