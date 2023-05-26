@@ -214,7 +214,7 @@ const SponsorshipContent = () => {
         <SponsorButton />
         <YStack space>
           <Paragraph size="$6">
-            You are not an sponsor. Become an sponsor to get early access to the studio
+            You are not a sponsor. Become a sponsor to get early access to the studio
             and other upcoming features.
           </Paragraph>
           <Paragraph size="$5" theme="alt1">
