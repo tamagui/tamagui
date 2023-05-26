@@ -28,10 +28,10 @@ demoName: Switch
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
-import { Switch } from 'tamagui'
+import { Switch } from 'tamagui' // or '@tamagui/switch'
 
 export default () => (
   <Switch size="$4">
@@ -40,7 +40,9 @@ export default () => (
 )
 ```
 
-### Switch props
+## API Reference
+
+### Switch
 
 Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
@@ -95,6 +97,21 @@ Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/int
       name: 'nativeProps',
       type: 'SwitchProps (from `react-native`)',
       description: `Props to pass to the native Switch;`,
+    },
+  ]}
+/>
+
+### Switch.Thumb
+
+`Switch.Thumb` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
     },
   ]}
 />
