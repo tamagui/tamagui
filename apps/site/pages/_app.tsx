@@ -19,14 +19,6 @@ import { TamaguiProvider } from 'tamagui'
 import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
-// const gluspFont = localFont({
-//   src: './glusp.woff2',
-//   display: 'swap',
-//   variable: '--font-glusp',
-// })
-
-// console.log('gluspFont', gluspFont)
-
 Error.stackTraceLimit = Infinity
 
 if (process.env.NODE_ENV === 'production') {

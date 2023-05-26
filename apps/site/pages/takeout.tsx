@@ -1,43 +1,53 @@
 import { getStripeProductId } from '@lib/products'
-import { stripe } from '@lib/stripe'
 import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Moon, Star } from '@tamagui/lucide-icons'
+import { config } from '@tamagui/site-config'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import localFont from 'next/font/local'
-import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, useRef, useState } from 'react'
 import StickyBox from 'react-sticky-box'
 import { ButtonLink } from 'studio/Link'
 import {
-  Button,
   H1,
   H2,
   Paragraph,
   Separator,
   Spacer,
   Stack,
-  Theme,
   XStack,
   YStack,
+  insertFont,
   styled,
 } from 'tamagui'
 
-import { LoadGlusp, LoadMunro } from '../components/LoadFont'
-
-const gluspFont = localFont({
+const glusp = localFont({
   src: './glusp.woff2',
   display: 'swap',
   variable: '--font-glusp',
 })
 
-console.log('gluspFont', gluspFont)
+const munro = localFont({
+  src: './munro.woff2',
+  display: 'swap',
+  variable: '--font-munro',
+})
+
+insertFont('glusp', {
+  ...config.fonts.glusp,
+  family: glusp.style.fontFamily,
+})
+
+insertFont('munro', {
+  ...config.fonts.munro,
+  family: munro.style.fontFamily,
+})
 
 const heroHeight = 850
 
