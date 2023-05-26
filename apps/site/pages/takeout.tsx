@@ -3,6 +3,7 @@ import { stripe } from '@lib/stripe'
 import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { ThemeTint } from '@tamagui/logo'
 import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
@@ -95,30 +96,32 @@ export default function TakeoutPage() {
                 Tamagui
               </Paragraph>
 
-              <TAKEOUT
-                pos="absolute"
-                t={52}
-                className="yellow-shadow masked"
-                color="$color10"
-                o={0.2}
-              />
-
               <TAKEOUT />
 
-              <TAKEOUT
-                className="clip-slice mix-blend"
-                pos="absolute"
-                t={44}
-                color="$yellow10"
-              />
+              <ThemeTint>
+                <TAKEOUT
+                  pos="absolute"
+                  t={52}
+                  className="theme-shadow masked"
+                  color="$color10"
+                  o={0.1}
+                />
 
-              <TAKEOUT
-                pos="absolute"
-                t={52}
-                className="yellow-shadow mix-blend masked2"
-                zi={1}
-                color="transparent"
-              />
+                <TAKEOUT
+                  className="clip-slice mix-blend"
+                  pos="absolute"
+                  t={44}
+                  color="$color4"
+                />
+
+                <TAKEOUT
+                  pos="absolute"
+                  t={52}
+                  className="theme-shadow mix-blend masked2"
+                  zi={1}
+                  color="transparent"
+                />
+              </ThemeTint>
 
               <Paragraph
                 className="mix-blend"

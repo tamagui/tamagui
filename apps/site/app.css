@@ -378,38 +378,6 @@ iframe {
   mask-image: linear-gradient(transparent 20%, rgba(0, 0, 0, 1.0));
 }
 
-.masked {
-  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  -webkit-mask-size: 100% 100%;
-  -webkit-mask-clip: border-box;
-  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 400% 400%;
-  mask-clip: border-box;
-  animation: clip-fade 100s infinite alternate;
-}
-
-.masked2 {
-  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  -webkit-mask-size: 100% 100%;
-  -webkit-mask-clip: border-box;
-  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 400% 400%;
-  mask-clip: border-box;
-  animation: clip-fade 30s infinite alternate;
-}
-
-@keyframes clip-fade {
-  0% {
-    mask-position: left;
-    -webkit-mask-position: left;
-  }
-  
-  100% {
-    mask-position: right;
-    -webkit-mask-position: right;
-  }
-}
-
 /* code highlighting */
 
 .token.parameter {
@@ -722,8 +690,8 @@ input, textarea {
   opacity: 0.6;
 }
 
-.yellow-shadow {
-  -webkit-text-stroke: 1px yellow;
+.theme-shadow {
+  -webkit-text-stroke: 1px var(--color10);
 }
 
 .callout {
@@ -786,6 +754,50 @@ input, textarea {
 
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
-  mask-size: 110% 110%;
+  mask-size: 350% 350%;
   mask-clip: border-box;
+  animation: clip-fade2 120s infinite alternate;
+}
+
+.masked {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
+  mask-clip: border-box;
+  animation: clip-fade 50s infinite alternate;
+}
+
+.masked2 {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
+  mask-clip: border-box;
+  animation: clip-fade 10s infinite;
+}
+
+@keyframes clip-fade {
+  0% {
+    mask-position: left;
+    -webkit-mask-position: left;
+  }
+  
+  100% {
+    mask-position: right;
+    -webkit-mask-position: right;
+  }
+}
+
+@keyframes clip-fade2 {
+  0% {
+    mask-position: 0%;
+  }
+  
+  100% {
+    mask-position: right;
+    -webkit-mask-position: 420%;
+  }
 }
