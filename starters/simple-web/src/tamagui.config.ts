@@ -75,7 +75,7 @@ const fonts = {
   }),
 }
 
-export default createTamagui({
+const config = createTamagui({
   animations,
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
@@ -100,3 +100,13 @@ export default createTamagui({
     pointerCoarse: { pointer: 'coarse' },
   },
 })
+
+type AppConfig = typeof config;
+
+declare module "tamagui" {
+  // overrides TamaguiCustomConfig so that custom types
+  // work everywhere `tamagui` is imported
+  interface TamaguiCustomConfig extends AppConfig {}
+}
+
+export default config;
