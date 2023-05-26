@@ -3,7 +3,7 @@ import { stripe } from '@lib/stripe'
 import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { ThemeTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Moon, Star } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
@@ -66,7 +66,7 @@ export default function TakeoutPage() {
           fontSize={150 * 5}
           lineHeight={110 * 5}
           color="#000"
-          o={0.1}
+          o={0.085}
         />
       </YStack>
 
@@ -91,7 +91,7 @@ export default function TakeoutPage() {
                 className="mix-blend"
                 color="$color"
                 size="$1"
-                fontSize={16}
+                fontSize={13}
                 ls={40}
                 fontFamily="$glusp"
               >
@@ -104,7 +104,7 @@ export default function TakeoutPage() {
                 <TAKEOUT
                   pos="absolute"
                   t={52}
-                  className="theme-shadow masked"
+                  className="theme-shadow masked mix-blend-dodge"
                   color="$color10"
                   o={0.1}
                 />
@@ -113,10 +113,21 @@ export default function TakeoutPage() {
                   className="clip-slice mix-blend"
                   pos="absolute"
                   t={44}
-                  color="$color4"
-                  scale={1.05}
+                  color="$color7"
+                  scale={1.04}
                   o={0.5}
                 />
+
+                <ThemeTintAlt>
+                  <TAKEOUT
+                    className="clip-slice mix-blend animate-fade2"
+                    pos="absolute"
+                    t={44}
+                    color="$color7"
+                    scale={1.04}
+                    o={0.5}
+                  />
+                </ThemeTintAlt>
 
                 <TAKEOUT
                   pos="absolute"
@@ -131,7 +142,7 @@ export default function TakeoutPage() {
                 className="mix-blend"
                 color="$color"
                 size="$1"
-                fontSize={16}
+                fontSize={13}
                 mt={-10}
                 ls={40}
                 fontFamily="$glusp"
@@ -212,8 +223,8 @@ export default function TakeoutPage() {
                 ai="center"
                 jc="center"
                 x={-10}
-                y={-40}
-                o={0.75}
+                y={-70}
+                o={0.65}
               >
                 <TAKEOUT color="$background" className="" />
               </YStack>
@@ -304,19 +315,13 @@ export default function TakeoutPage() {
               /> */}
 
               <YStack f={1} space="$8">
-                <MunroP
-                  mt={-100}
-                  mb={-40}
-                  ml={-20}
-                  fontFamily="$silkscreen"
-                  fontSize={150}
-                >
-                  Level&nbsp;up
+                <MunroP mt={-100} mb={-20} fontSize={30}>
+                  Your cheat code for apps.
                 </MunroP>
 
-                <MunroP size="$10" color="$yellow10">
-                  A better universal app stack, from the ground up.
-                </MunroP>
+                <H2 size="$12" color="$yellow10">
+                  From idea to shipped in less time than ever.
+                </H2>
 
                 <XStack space="$4" my={-20}>
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />

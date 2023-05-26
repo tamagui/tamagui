@@ -610,6 +610,10 @@ input, textarea {
   mix-blend-mode: screen;
 }
 
+.mix-blend-dodge {
+  mix-blend-mode: color-dodge;
+}
+
 .text-3d {
   text-shadow: 1px 1px 1px var(--color8),
         1px 2px 1px var(--color8),
@@ -754,9 +758,13 @@ input, textarea {
 
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
-  mask-size: 150% 150%;
+  mask-size: 50% 50%;
   mask-clip: border-box;
-  animation: clip-fade2 120s infinite alternate;
+  animation: clip-fade2 90s infinite alternate;
+}
+
+.animate-fade2 {
+  animation: clip-fade2 70s infinite alternate-reverse;
 }
 
 .masked {
