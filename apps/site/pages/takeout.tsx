@@ -3,27 +3,29 @@ import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, Moon, Star } from '@tamagui/lucide-icons'
+import { CheckCircle } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, useRef, useState } from 'react'
-import StickyBox from 'react-sticky-box'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { ButtonLink } from 'studio/Link'
 import {
   H1,
   H2,
   Paragraph,
+  ScrollView,
   Separator,
   Spacer,
   Stack,
   XStack,
   YStack,
+  isClient,
   styled,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 
@@ -272,7 +274,7 @@ export default function TakeoutPage() {
             </YStack>
           </YStack>
 
-          <YStack t={heroHeight - 800} l={-100} pos="absolute" b={0} zi={-1}>
+          <YStack t={heroHeight - 800} l={-100} pos="absolute" b={0} zi={-3}>
             <Separator o={0.75} vertical h={2000} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={2000} pos="absolute" r={0} />
 
@@ -524,69 +526,127 @@ const StarterCard = () => {
   const subscription = subscriptions?.find(
     (sub) => sub.plan?.product === productId && sub.status === 'active'
   )
+
+  useEffect(() => {
+    if (isClient) {
+      // @ts-ignore
+      import('../lib/sticksy').then(({ Sticksy }) => {
+        new Sticksy(document.getElementById('sticky-box') as any)
+      })
+    }
+  }, [])
+
   return (
-    <StickyBox>
+    <div id="sticky-box">
       <ThemeTint>
         <TakeoutCardFrame
           className="blur-medium"
           zi={1000}
           maw={340}
           als="center"
-          space="$2"
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
           shadowColor="#000"
           x={-100}
           y={100}
+          mah="calc(min(95vh, 800px))"
         >
           <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
 
-          <Paragraph fontFamily="$munro" size="$3" theme="alt2">
-            Drop 0001
-          </Paragraph>
+          <LinearGradient
+            pos="absolute"
+            b={0}
+            l={0}
+            r={0}
+            h={100}
+            colors={['$backgroundTransparent', 'rgba(0,0,0,1)']}
+            zi={100}
+          />
 
-          <Paragraph fontFamily="$munro" size="$10">
-            Universal App Starter
-          </Paragraph>
-
-          <YStack>
-            <Row
-              title="Template"
-              description="Uses an official Github Template with a built-in bot to send PRs whenever the template updates."
-              after="XX"
-            />
-
-            <Row
-              title="Monorepo"
-              description="More complete monorepo with Next.js deploy and Expo EAS configured."
-              after="XX"
-            />
-            <Row title="Something" description="Description" after="XX" />
-            <Row title="Something" description="Description" after="XX" />
-            <Row title="Something" description="Description" after="XX" />
-            <Row title="Something" description="Description" after="XX" />
-            <Row title="Something" description="Description" after="XX" />
+          <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
+            <ButtonLink
+              href={
+                subscription
+                  ? `/account/subscriptions#${subscription.id}`
+                  : `api/checkout?${new URLSearchParams({
+                      product_id: productId,
+                    }).toString()}`
+              }
+              fontFamily="$munro"
+              themeInverse
+              size="$6"
+              fontSize="$8"
+            >
+              {subscription ? 'View Subscription' : 'Buy now'}
+            </ButtonLink>
           </YStack>
 
-          <Spacer f={1} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <YStack space="$2" p="$6">
+              <Paragraph fontFamily="$munro" size="$3" theme="alt2">
+                Drop 0001
+              </Paragraph>
 
-          <ButtonLink
-            href={
-              subscription
-                ? `/account/subscriptions#${subscription.id}`
-                : `api/checkout?${new URLSearchParams({
-                    product_id: productId,
-                  }).toString()}`
-            }
-            fontFamily="$munro"
-            themeInverse
-            fontSize="$8"
-          >
-            {subscription ? 'View Subscription' : 'Buy now'}
-          </ButtonLink>
+              <Paragraph fontFamily="$munro" size="$10">
+                Universal App Starter
+              </Paragraph>
+
+              <YStack>
+                <Row
+                  title="Template"
+                  description="Complete Github Template with a built-in bot to send PRs with updates."
+                  after="01"
+                />
+
+                <Row
+                  title="Monorepo"
+                  description="Complete with Next.js, Vercel deploy, Expo Native and Web, and EAS."
+                  after="01"
+                />
+
+                <Row
+                  title="Screens"
+                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed and more."
+                  after="08"
+                />
+
+                <Row
+                  title="Icons"
+                  description="A whopping ~100k icons in total across 30 different packs, tree-shakeable, from icones.js.org."
+                  after="30"
+                />
+
+                <Row
+                  title="Fonts"
+                  description="Three new fonts join the party, with more being added each month."
+                  after="03"
+                />
+
+                <Row
+                  title="Themes"
+                  description="Two all new theme suites join Tamagui - Pastel and Neon - that bring a more muted or more bright feel to your app."
+                  after="03"
+                />
+
+                <Row
+                  title="CI / CD"
+                  description="Lint, fix, tests, and deploys - all set up from day 1."
+                  after="05"
+                />
+
+                <Row
+                  title="Native"
+                  description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
+                  after="03"
+                />
+              </YStack>
+
+              <Spacer f={1} minHeight={80} />
+            </YStack>
+          </ScrollView>
         </TakeoutCardFrame>
       </ThemeTint>
-    </StickyBox>
+    </div>
   )
 }
 
@@ -676,14 +736,14 @@ function Box(props) {
 const Row = (props: { title: any; description: any; after: any }) => {
   return (
     <XStack bbw={1} boc="$borderColor">
-      <YStack f={1} py="$2">
-        <MunroP size="$8">{props.title}</MunroP>
-        <Paragraph size="$4" theme="alt2">
+      <YStack f={1} py="$3" space="$1">
+        <MunroP size="$7">{props.title}</MunroP>
+        <Paragraph size="$3" lh={18} theme="alt2">
           {props.description}
         </Paragraph>
       </YStack>
 
-      <MunroP>{props.after}</MunroP>
+      <MunroP my="$4">{props.after}</MunroP>
     </XStack>
   )
 }
@@ -691,7 +751,6 @@ const Row = (props: { title: any; description: any; after: any }) => {
 const TakeoutCardFrame = styled(YStack, {
   boc: '$color3',
   bw: 0.25,
-  p: '$6',
   // br: '$4',
   ov: 'hidden',
 })
