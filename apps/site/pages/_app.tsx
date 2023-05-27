@@ -15,7 +15,14 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import { LoadInter400, LoadInter700, LoadSilkscreen } from '../components/LoadFont'
+import {
+  LoadGlusp,
+  LoadInter400,
+  LoadInter700,
+  LoadInter900,
+  LoadMunro,
+  LoadSilkscreen,
+} from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -85,11 +92,11 @@ function AppContents(
       unlisten()
     }
     const unlisten = () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown', onDown)
+      document.removeEventListener('mousedown', onDown, { capture: true })
+      document.removeEventListener('keydown', onDown, { capture: true })
     }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown', onDown)
+    document.addEventListener('mousedown', onDown, { capture: true })
+    document.addEventListener('keydown', onDown, { capture: true })
     return unlisten
   }, [])
 
@@ -103,6 +110,15 @@ function AppContents(
           __html: `document.documentElement.classList.add('t_unmounted')`,
         }}
       />
+
+      {/* this will lazy load the font for /studio and /takeout pages */}
+      {didInteract && (
+        <>
+          <LoadInter900 />
+          <LoadGlusp />
+          <LoadMunro />
+        </>
+      )}
 
       <Head>
         <LoadInter700 />
