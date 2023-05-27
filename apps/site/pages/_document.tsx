@@ -2,7 +2,14 @@ import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
 import { AppRegistry } from 'react-native'
 
-import { LoadInter400, LoadInter700, LoadSilkscreen } from '../components/LoadFont'
+import {
+  LoadGlusp,
+  LoadInter400,
+  LoadInter700,
+  LoadInter900,
+  LoadMunro,
+  LoadSilkscreen,
+} from '../components/LoadFont'
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
@@ -39,6 +46,19 @@ export default class Document extends NextDocument {
           <LoadInter700 />
           <LoadInter400 />
           <LoadSilkscreen />
+
+          {this.props.dangerousAsPath === '/studio' && (
+            <>
+              <LoadInter900 />
+            </>
+          )}
+
+          {this.props.dangerousAsPath === '/takeout' && (
+            <>
+              <LoadGlusp />
+              <LoadMunro />
+            </>
+          )}
         </Head>
         <body>
           <Main />

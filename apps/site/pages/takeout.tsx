@@ -384,7 +384,7 @@ export default function TakeoutPage() {
                   We've designed the repo to be well isolated to work alongside the Github
                   bot we install when you set it up that will send over a PR whenever we
                   make updates to the template.{' '}
-                  <Paragraph fontSize="inherit" color="$yellow10">
+                  <Paragraph tag="span" fontSize="inherit" color="$yellow10">
                     That means no more being left behind as we ship improvements
                     constantly to your codebase
                   </Paragraph>
@@ -703,6 +703,7 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
     userSelect="none"
     color="$backgroundStrong"
     fontFamily="$glusp"
+    debug="verbose"
     fontSize={fontSize}
     lineHeight={lineHeight}
     mt={40}
