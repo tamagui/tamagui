@@ -61,7 +61,6 @@ const bodyFont = createInterFont(
   {
     weight: {
       1: '400',
-      7: '600',
     },
   },
   {

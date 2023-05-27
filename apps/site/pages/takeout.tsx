@@ -3,7 +3,7 @@ import { withSupabase } from '@lib/withSupabase'
 import { Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle } from '@tamagui/lucide-icons'
+import { CheckCircle, Newspaper } from '@tamagui/lucide-icons'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
@@ -274,9 +274,9 @@ export default function TakeoutPage() {
             </YStack>
           </YStack>
 
-          <YStack t={heroHeight - 800} l={-100} pos="absolute" b={0} zi={-3}>
-            <Separator o={0.75} vertical h={2000} pos="absolute" l={0.5} />
-            <Separator o={0.75} vertical h={2000} pos="absolute" r={0} />
+          <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
+            <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
+            <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
 
             <YStack t={750} px="$6">
               <Separator o={0.75} w={3000} pos="absolute" t={0.5} l={-1000} />
@@ -356,16 +356,17 @@ export default function TakeoutPage() {
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <YStack tag="ul" space="$3" zi={2}>
+                <YStack tag="ul" space="$3" zi={2} mt="$8">
                   <Point>Complete typed design system</Point>
                   <Point>20 icon packs</Point>
-                  <Point>3 theme packs (2 all new: Pastel + Neon)</Point>
-                  <Point>6 new font packs</Point>
+                  <Point>2 all new theme suites: Pastel & Neon</Point>
+                  <Point>35 new fonts</Point>
                   <Point>Github template with PR bot for updates</Point>
-                  <Point>Github template with PR bot for updates</Point>
+                  <Point>e2e, integration, unit, web and native tests</Point>
+                  <Point>Deploys to web and builds to app stores</Point>
                 </YStack>
 
-                <YStack marginTop={-300} marginBottom={-500} x={400} zi={-1}>
+                <YStack marginTop={-450} marginBottom={-500} x={400} zi={-1}>
                   <Image
                     alt="iPhone screenshot of Tamagui"
                     src="/iphone.png"
@@ -404,17 +405,17 @@ export default function TakeoutPage() {
                 </Paragraph>
 
                 <Paragraph size="$8" fow="400">
-                  We have a Roadmap that we've set up to keep delivering value. And we'd
-                  love your feedback.
+                  We're working on bringing many nice new features that you can pick and
+                  choose from:
                 </Paragraph>
 
                 <YStack tag="ul" space="$3">
-                  <Point>Complete typed design system</Point>
-                  <Point>20 icon packs</Point>
-                  <Point>3 theme packs (2 all new: Pastel + Neon)</Point>
-                  <Point>6 new font packs</Point>
-                  <Point>Github template with PR bot for updates</Point>
-                  <Point>Github template with PR bot for updates</Point>
+                  <Point upcoming>Simple state management system</Point>
+                  <Point upcoming>Reanimated integration</Point>
+                  <Point upcoming>Layout animations</Point>
+                  <Point upcoming>Entire Google font library</Point>
+                  <Point upcoming>Maestro native integration testing</Point>
+                  <Point upcoming>Notifications</Point>
                 </YStack>
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
@@ -459,9 +460,11 @@ export default function TakeoutPage() {
                   />
                 </XStack>
 
-                <MunroP size="$11">It's all you need.</MunroP>
+                <MunroP size="$11">All you need -</MunroP>
 
-                <MunroP size="$11">A reference design for a high quality app.</MunroP>
+                <MunroP size="$11">
+                  A reference design for a building a truly high quality app.
+                </MunroP>
 
                 <XStack>
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
@@ -503,14 +506,20 @@ export default function TakeoutPage() {
   )
 }
 
-const Point = (props: { children: any }) => {
+const Point = (props: { children: any; upcoming?: boolean }) => {
   return (
-    <XStack tag="li" ai="center" space ml="$4">
-      <YStack mt={-5.5}>
-        <CheckCircle color="$green10" />
-      </YStack>
-      <Paragraph size="$8">{props.children}</Paragraph>
-    </XStack>
+    <ThemeTint>
+      <XStack tag="li" ai="center" space ml="$4">
+        <YStack>
+          {props.upcoming ? (
+            <Newspaper color="$color10" />
+          ) : (
+            <CheckCircle color="$color10" />
+          )}
+        </YStack>
+        <Paragraph size="$8">{props.children}</Paragraph>
+      </XStack>
+    </ThemeTint>
   )
 }
 
@@ -523,21 +532,23 @@ const IconFrame = styled(Stack, {
 const StarterCard = () => {
   const { subscriptions } = useUser()
   const productId = getStripeProductId('universal-starter')
+  const [ref, setRef] = useState<any>()
   const subscription = subscriptions?.find(
     (sub) => sub.plan?.product === productId && sub.status === 'active'
   )
 
   useEffect(() => {
+    if (!ref) return
     if (isClient) {
       // @ts-ignore
       import('../lib/sticksy').then(({ Sticksy }) => {
-        new Sticksy(document.getElementById('sticky-box') as any)
+        new Sticksy(ref as any)
       })
     }
-  }, [])
+  }, [ref])
 
   return (
-    <div id="sticky-box">
+    <div ref={setRef}>
       <ThemeTint>
         <TakeoutCardFrame
           className="blur-medium"
@@ -564,21 +575,29 @@ const StarterCard = () => {
           />
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
-            <ButtonLink
-              href={
-                subscription
-                  ? `/account/subscriptions#${subscription.id}`
-                  : `api/checkout?${new URLSearchParams({
-                      product_id: productId,
-                    }).toString()}`
-              }
-              fontFamily="$munro"
-              themeInverse
-              size="$6"
-              fontSize="$8"
-            >
-              {subscription ? 'View Subscription' : 'Buy now'}
-            </ButtonLink>
+            <ThemeTintAlt>
+              <ButtonLink
+                href={
+                  subscription
+                    ? `/account/subscriptions#${subscription.id}`
+                    : `api/checkout?${new URLSearchParams({
+                        product_id: productId,
+                      }).toString()}`
+                }
+                fontFamily="$munro"
+                size="$6"
+                fontSize="$8"
+                animation="quick"
+                hoverStyle={{
+                  scale: 1.025,
+                }}
+                pressStyle={{
+                  scale: 0.975,
+                }}
+              >
+                {subscription ? 'View Subscription' : 'Purchase - $499'}
+              </ButtonLink>
+            </ThemeTintAlt>
           </YStack>
 
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -750,7 +769,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
 
 const TakeoutCardFrame = styled(YStack, {
   boc: '$color3',
-  bw: 0.25,
+  bw: 0.5,
   // br: '$4',
   ov: 'hidden',
 })
