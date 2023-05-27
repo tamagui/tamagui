@@ -2,7 +2,6 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
-import '../public/fonts/fonts.css'
 
 import {
   ColorScheme,
@@ -11,12 +10,12 @@ import {
   useThemeSetting,
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import localFont from 'next/font/local'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
+import { LoadInter700, LoadInter900 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -105,14 +104,10 @@ function AppContents(
         }}
       />
 
-      {/* this will lazy load the font for /studio and /takeout pages */}
-      {didInteract && (
-        <>
-          <LoadInter900 />
-          <LoadGlusp />
-          <LoadMunro />
-        </>
-      )}
+      <Head>
+        <LoadInter700 />
+        <LoadInter900 />
+      </Head>
 
       <NextThemeProvider
         onChangeTheme={(next) => {

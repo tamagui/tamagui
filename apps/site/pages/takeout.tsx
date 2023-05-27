@@ -27,28 +27,6 @@ import {
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 
-// const glusp = localFont({
-//   src: './glusp.woff2',
-//   display: 'swap',
-//   variable: '--font-glusp',
-// })
-
-// const munro = localFont({
-//   src: './munro.woff2',
-//   display: 'swap',
-//   variable: '--font-munro',
-// })
-
-// insertFont('glusp', {
-//   ...config.fonts.glusp,
-//   family: glusp.style.fontFamily,
-// })
-
-// insertFont('munro', {
-//   ...config.fonts.munro,
-//   family: munro.style.fontFamily,
-// })
-
 const heroHeight = 850
 
 export default function TakeoutPage() {
