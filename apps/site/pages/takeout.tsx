@@ -481,7 +481,7 @@ export default function TakeoutPage() {
 
             <YStack mt={200} w={3} mih={500} h="100%" />
 
-            <YStack pos="absolute" t={0} r={-500} zi={-1} rotate="120deg" o={0.1} zi={-2}>
+            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.1} zi={-2}>
               <Image
                 alt="mandala"
                 width={1800}
