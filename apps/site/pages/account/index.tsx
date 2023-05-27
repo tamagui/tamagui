@@ -8,12 +8,12 @@ import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'app/Link'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ButtonLink } from 'studio/Link'
 import {
   Avatar,
   Button,
@@ -214,7 +214,7 @@ const SponsorshipContent = () => {
         <SponsorButton />
         <YStack space>
           <Paragraph size="$6">
-            You are not an sponsor. Become an sponsor to get early access to the studio
+            You are not a sponsor. Become a sponsor to get early access to the studio
             and other upcoming features.
           </Paragraph>
           <Paragraph size="$5" theme="alt1">
@@ -252,7 +252,7 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/sponsorship-sync', { method: 'POST' })
+    await fetch('/api/github-sync', { method: 'POST' })
       .then(() => {
         location.reload()
       })

@@ -2,13 +2,12 @@ import { StudioQueueCard } from '@components/StudioQueueCard'
 import { withSupabase } from '@lib/withSupabase'
 import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
-import { ButtonLink } from 'app/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
+import { ButtonLink } from 'studio/Link'
+import { ToastProvider as StudioToastProvider } from 'studio/ToastProvider'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
-
-import { ToastProvider as StudioToastProvider } from '../../app/ToastProvider'
 
 const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
 
