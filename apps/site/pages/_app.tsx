@@ -15,7 +15,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import { LoadInter700, LoadInter900 } from '../components/LoadFont'
+import { LoadInter400, LoadInter700 } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -106,7 +106,7 @@ function AppContents(
 
       <Head>
         <LoadInter700 />
-        <LoadInter900 />
+        <LoadInter400 />
       </Head>
 
       <NextThemeProvider
