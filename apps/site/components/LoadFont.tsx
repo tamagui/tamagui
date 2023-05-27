@@ -1,6 +1,7 @@
 export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
   return (
     <>
+      <next-bug />
       {props.cssFile && (
         <link crossOrigin="anonymous" href={props.cssFile} rel="stylesheet" />
       )}
@@ -16,6 +17,10 @@ export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
     </>
   )
 }
+
+export const LoadSilkscreen = () => (
+  <LoadFont woff2File="/fonts/slkscr.woff2" cssFile="/fonts/slkscr.css" />
+)
 
 export const LoadInter400 = () => (
   <LoadFont
