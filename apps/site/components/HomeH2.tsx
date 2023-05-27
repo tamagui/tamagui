@@ -34,16 +34,16 @@ export const HomeH3 = styled(H3, {
   ta: 'center',
   theme: 'alt1',
   als: 'center',
-  fow: '400',
   px: 20,
   size: '$8',
+  fow: '400',
   o: 0.9,
   ls: -0.15,
   maw: 690,
 
   $sm: {
-    fow: '400',
     size: '$6',
+    fow: '400',
     color: '$color',
     textTransform: 'none',
   },

@@ -797,6 +797,7 @@ export const getSplitStyles: StyleSplitter = (
         if (fam in conf.fontsParsed) {
           fontFamily = fam
         }
+        continue
       }
 
       if (key in validStyleProps) {
@@ -948,7 +949,8 @@ export const getSplitStyles: StyleSplitter = (
   const ks = Object.keys(viewProps)
   const l = ks.length
   for (let i = l - 1; i >= 0; i--) {
-    nextViewProps[ks[i]] = viewProps[ks[i]]
+    const key = ks[i]
+    nextViewProps[key] = viewProps[key]
   }
 
   const result: GetStyleResult = {

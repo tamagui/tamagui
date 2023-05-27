@@ -120,12 +120,6 @@ function AppContents(
         </>
       )}
 
-      <Head>
-        <LoadInter700 />
-        <LoadInter400 />
-        <LoadSilkscreen />
-      </Head>
-
       <NextThemeProvider
         onChangeTheme={(next) => {
           setTheme(next as any)

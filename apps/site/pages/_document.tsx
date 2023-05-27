@@ -2,6 +2,7 @@ import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
 import { AppRegistry } from 'react-native'
 
+import { LoadInter400, LoadInter700, LoadSilkscreen } from '../components/LoadFont'
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
@@ -35,32 +36,9 @@ export default class Document extends NextDocument {
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
 
-          <link
-            rel="preload"
-            href="/fonts/subset-Inter-ExtraBold.woff2"
-            as="font"
-            type="font/woff2"
-          />
-          <link
-            rel="preload"
-            href="/fonts/subset-Inter-Regular.woff2"
-            as="font"
-            type="font/woff2"
-          />
-
-          <link rel="preload" href="/fonts/slkscr.woff2" as="font" type="font/woff2" />
-
-          {this.props.dangerousAsPath === '/studio' && (
-            <>
-              <link href="/fonts/inter-takeout.css" rel="stylesheet" />
-              <link
-                rel="preload"
-                href="/fonts/subset-Inter-Black.woff2"
-                as="font"
-                type="font/woff2"
-              />
-            </>
-          )}
+          <LoadInter700 />
+          <LoadInter400 />
+          <LoadSilkscreen />
         </Head>
         <body>
           <Main />
