@@ -149,14 +149,14 @@ export default function TakeoutPage() {
                 Presents
               </Paragraph>
 
-              <XStack my="$10" gap={110} f={1} jc="space-between" className="mix-blend">
+              <XStack my="$5" gap={90} f={1} jc="space-between" className="mix-blend">
                 <IconFrame>
                   <Image
                     className="pixelate"
                     src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
                     alt="Icon"
-                    width={24}
-                    height={24}
+                    width={18}
+                    height={18}
                   />
                 </IconFrame>
 
@@ -165,8 +165,8 @@ export default function TakeoutPage() {
                     className="pixelate"
                     src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
                     alt="Icon"
-                    width={24}
-                    height={24}
+                    width={18}
+                    height={18}
                   />
                 </IconFrame>
 
@@ -175,8 +175,8 @@ export default function TakeoutPage() {
                     className="pixelate"
                     src="/retro-icons/coding-apps-websites-database-60.svg"
                     alt="Icon"
-                    width={24}
-                    height={24}
+                    width={18}
+                    height={18}
                   />
                 </IconFrame>
 
@@ -185,8 +185,8 @@ export default function TakeoutPage() {
                     className="pixelate"
                     src="/retro-icons/design-color-bucket-brush-63.svg"
                     alt="Icon"
-                    width={24}
-                    height={24}
+                    width={18}
+                    height={18}
                   />
                 </IconFrame>
 
@@ -195,8 +195,8 @@ export default function TakeoutPage() {
                     className="pixelate"
                     src="/retro-icons/design-color-palette-sample-26.svg"
                     alt="Icon"
-                    width={24}
-                    height={24}
+                    width={18}
+                    height={18}
                   />
                 </IconFrame>
               </XStack>
@@ -244,12 +244,12 @@ export default function TakeoutPage() {
 
               <Canvas
                 style={{
-                  width: 550,
-                  height: 550,
+                  width: 620,
+                  height: 620,
                   // backgroundColor: 'red',
                   position: 'absolute',
-                  top: 300,
-                  right: '-10%',
+                  top: 340,
+                  right: '-15%',
                   zIndex: -1,
                 }}
                 gl={{ preserveDrawingBuffer: true }}
@@ -291,7 +291,7 @@ export default function TakeoutPage() {
                 pos="absolute"
                 fontFamily="$munro"
                 tt="uppercase"
-                x={-20}
+                x={-40}
                 scale={0.5}
                 rotate="-90deg"
                 o={0.5}
@@ -304,6 +304,9 @@ export default function TakeoutPage() {
 
           <XStack mt={heroHeight + 70} space="$10">
             <XStack f={1} p="$8" mt={20}>
+              <YStack mt={-500} ml={20} mr={-20}>
+                <StarterCard />
+              </YStack>
               {/* <YStack
                 className="mix-blend"
                 fullscreen
@@ -314,12 +317,12 @@ export default function TakeoutPage() {
               /> */}
 
               <YStack f={1} space="$6">
-                <MunroP mt={-100} mb={-20} fontSize={30}>
+                <MunroP className="mix-blend" mt={-150} mb={-20} fontSize={30}>
                   Jumpstart your startup with an all-in-one web + mobile repo.
                 </MunroP>
 
                 <ThemeTint>
-                  <H2 size="$13" color="$color10">
+                  <H2 className="mix-blend" size="$13" color="$color10">
                     From idea to shipped in less time than ever.
                   </H2>
                 </ThemeTint>
@@ -489,10 +492,6 @@ export default function TakeoutPage() {
                 src="/takeout/noun-abstract-geometric-app-icon-947191.svg"
               />
             </YStack>
-
-            <YStack mt={-220} mr={-90}>
-              <StarterCard />
-            </YStack>
           </XStack>
 
           <Spacer size="$10" />
@@ -515,7 +514,7 @@ const Point = (props: { children: any }) => {
 
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
-  p: '$6',
+  p: '$4',
   bc: 'rgba(255, 255, 255, 0.025)',
 })
 
@@ -703,7 +702,6 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
     userSelect="none"
     color="$backgroundStrong"
     fontFamily="$glusp"
-    debug="verbose"
     fontSize={fontSize}
     lineHeight={lineHeight}
     mt={40}
