@@ -34,7 +34,10 @@ const heroHeight = 850
 export default function TakeoutPage() {
   return (
     <>
-      <NextSeo title="Tamagui Takeout" description="Tamagui Takeout" />
+      <NextSeo
+        title="🥡 Tamagui Takeout"
+        description="Tamagui Takeout React Native Bootstrap Starter Kit"
+      />
 
       <Head>
         <LoadGlusp />
