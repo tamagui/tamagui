@@ -2,8 +2,8 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* overflow-x: hidden;
+  overflow-y: auto; */
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
@@ -14,7 +14,7 @@ body {
 
 body {
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
 }
 
@@ -318,6 +318,10 @@ iframe {
   backdrop-filter: blur(400px);
 }
 
+.blur-medium {
+  backdrop-filter: blur(20px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
 }
@@ -606,6 +610,10 @@ input, textarea {
   mix-blend-mode: screen;
 }
 
+.mix-blend-dodge {
+  mix-blend-mode: color-dodge;
+}
+
 .text-3d {
   text-shadow: 1px 1px 1px var(--color8),
         1px 2px 1px var(--color8),
@@ -686,6 +694,10 @@ input, textarea {
   opacity: 0.6;
 }
 
+.theme-shadow {
+  -webkit-text-stroke: 1px var(--color10);
+}
+
 .callout {
   text-shadow:
     1px 1px 0 var(--orange10),
@@ -732,4 +744,78 @@ input, textarea {
     -1px -1px var(--color),
     1px -1px var(--color),
     -1px 1px var(--color);
+}
+
+.invert {
+  filter: invert(100%);
+}
+
+.pixelate {
+  image-rendering: pixelated;
+  font-smooth: none;
+  -webkit-font-smoothing: none;
+}
+
+.clip-slice {
+  mask-image: url(./public/slice-mask.svg);
+  mask-size: 50% 50%;
+  mask-clip: border-box;
+  animation: clip-fade2 90s infinite alternate;
+}
+
+.animate-fade2 {
+  animation: clip-fade2 70s infinite alternate-reverse;
+}
+
+.masked {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
+  mask-clip: border-box;
+  animation: clip-fade 50s infinite alternate;
+}
+
+.masked2 {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 400% 400%;
+  mask-clip: border-box;
+  animation: clip-fade 10s infinite;
+}
+
+.masked3 {
+  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-clip: border-box;
+  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
+  mask-size: 200% 200%;
+  mask-clip: border-box;
+  animation: clip-fade 50s infinite;
+}
+
+@keyframes clip-fade {
+  0% {
+    mask-position: left;
+    -webkit-mask-position: left;
+  }
+  
+  100% {
+    mask-position: right;
+    -webkit-mask-position: right;
+  }
+}
+
+@keyframes clip-fade2 {
+  0% {
+    mask-position: 0%;
+  }
+  
+  100% {
+    mask-position: right;
+    -webkit-mask-position: 420%;
+  }
 }

@@ -1,4 +1,6 @@
 export * from './animations';
+export declare const gluspFont: import("@tamagui/web").GenericFont;
+export declare const munroFont: import("@tamagui/web").GenericFont;
 export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: boolean;

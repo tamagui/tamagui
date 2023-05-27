@@ -1,4 +1,4 @@
-import { RootStore } from '@tamagui/site/app/(protected)/studio/state/RootStore'
+import { RootStore } from '@protected/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   FontSizeTokens,
