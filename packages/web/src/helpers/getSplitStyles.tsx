@@ -797,7 +797,6 @@ export const getSplitStyles: StyleSplitter = (
         if (fam in conf.fontsParsed) {
           fontFamily = fam
         }
-        continue
       }
 
       if (key in validStyleProps) {
