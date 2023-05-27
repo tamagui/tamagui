@@ -351,13 +351,22 @@ export default function TakeoutPage() {
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <YStack tag="ul" space="$3">
+                <YStack tag="ul" space="$3" zi={2}>
                   <Point>Complete typed design system</Point>
                   <Point>20 icon packs</Point>
                   <Point>3 theme packs (2 all new: Pastel + Neon)</Point>
                   <Point>6 new font packs</Point>
                   <Point>Github template with PR bot for updates</Point>
                   <Point>Github template with PR bot for updates</Point>
+                </YStack>
+
+                <YStack marginTop={-300} marginBottom={-500} x={400} zi={-1}>
+                  <Image
+                    alt="iPhone screenshot of Tamagui"
+                    src="/iphone.png"
+                    width={863}
+                    height={928}
+                  />
                 </YStack>
 
                 <Separator my="$8" mx="$8" />
@@ -472,7 +481,7 @@ export default function TakeoutPage() {
 
             <YStack mt={200} w={3} mih={500} h="100%" />
 
-            <YStack pos="absolute" t={0} r={-500} zi={-1} rotate="120deg" o={0.1}>
+            <YStack pos="absolute" t={0} r={-500} zi={-1} rotate="120deg" o={0.1} zi={-2}>
               <Image
                 alt="mandala"
                 width={1800}
