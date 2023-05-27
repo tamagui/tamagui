@@ -1,6 +1,7 @@
 export function LoadFont(props: { cssFile?: string; woff2File?: string }) {
   return (
     <>
+      {/* @ts-ignore this seems to make sure these dont get forgotten by next :/ */}
       <next-bug />
       {props.cssFile && (
         <link crossOrigin="anonymous" href={props.cssFile} rel="stylesheet" />
