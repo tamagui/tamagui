@@ -1,6 +1,6 @@
 import { getStripeProductId } from '@lib/products'
 import { withSupabase } from '@lib/withSupabase'
-import { Stage, useGLTF } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, Newspaper } from '@tamagui/lucide-icons'
@@ -28,6 +28,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
+import { Stage } from '../components/Stage'
 
 const heroHeight = 850
 
@@ -70,8 +71,15 @@ export default function TakeoutPage() {
               y={heroHeight / 2 - 340}
               ai="center"
               jc="center"
+              className="ease-in ms300 all"
+              $xxs={{
+                scale: 0.3,
+              }}
+              $xs={{
+                scale: 0.35,
+              }}
               $sm={{
-                scale: 0.4,
+                scale: 0.5,
               }}
               $md={{
                 scale: 0.6,
@@ -81,7 +89,6 @@ export default function TakeoutPage() {
               }}
             >
               <Paragraph
-                className="mix-blend"
                 color="$color"
                 size="$1"
                 fontSize={13}
@@ -94,14 +101,6 @@ export default function TakeoutPage() {
               <TAKEOUT />
 
               <ThemeTint>
-                <TAKEOUT
-                  pos="absolute"
-                  t={52}
-                  className="theme-shadow masked mix-blend-dodge"
-                  color="$color10"
-                  o={0.1}
-                />
-
                 <TAKEOUT
                   className="clip-slice mix-blend"
                   pos="absolute"
@@ -233,47 +232,38 @@ export default function TakeoutPage() {
                 <TAKEOUT color="$background" className="" />
               </YStack>
 
-              {/* 
-            <YStack
-              scale={2}
-              pos="absolute"
-              fullscreen
-              zi={-1}
-              pe="none"
-              ai="center"
-              jc="center"
-            >
-              <TAKEOUT className="" color="$background" />
-            </YStack>
-             */}
-
-              <Canvas
-                style={{
-                  width: 620,
-                  height: 620,
-                  // backgroundColor: 'red',
-                  position: 'absolute',
-                  top: 340,
-                  right: '-15%',
-                  zIndex: -1,
-                }}
-                gl={{ preserveDrawingBuffer: true }}
-                shadows
-                dpr={[1, 1]}
-                camera={{ position: [0, 0, 150], fov: 10 }}
+              <YStack
+                position="absolute"
+                top={360}
+                r="-10%"
+                $sm={{ r: '-40%' }}
+                $md={{ r: '-30%' }}
+                $lg={{ r: '-20%' }}
+                zIndex={-1}
               >
-                <Suspense fallback={null}>
-                  {/* <ambientLight intensity={0.9} /> */}
-                  <Stage
-                    shadows="accumulative"
-                    scale={0.5}
-                    adjustCamera={1}
-                    intensity={1}
-                  >
-                    <TakeoutBox3D />
-                  </Stage>
-                </Suspense>
-              </Canvas>
+                <Canvas
+                  style={{
+                    width: 620,
+                    height: 620,
+                  }}
+                  gl={{ preserveDrawingBuffer: true }}
+                  shadows
+                  dpr={[1, 1]}
+                  // camera={{ position: [0, 0, 150], fov: 10 }}
+                >
+                  <Suspense fallback={null}>
+                    {/* <ambientLight intensity={0.9} /> */}
+                    <Stage
+                      shadows="accumulative"
+                      scale={1}
+                      adjustCamera={1}
+                      intensity={1}
+                    >
+                      <TakeoutBox3D />
+                    </Stage>
+                  </Suspense>
+                </Canvas>
+              </YStack>
             </YStack>
           </YStack>
 
@@ -679,13 +669,24 @@ const modelUrl = `${
 }/takeout.gltf`
 useGLTF.preload(modelUrl)
 
+let frameCount = 0
+
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
   const { nodes, materials } = useGLTF(modelUrl) as any
 
+  useEffect(() => {}, [])
+
   useFrame((state, delta) => {
+    const isSlow = frameCount > 40
+
     // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * 0.1
+    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 2)
+
+    // effect to spin faster on first entering
+    if (frameCount <= 40) {
+      frameCount++
+    }
     // ref.current!.rotation.x += delta * 0.1
   })
 
