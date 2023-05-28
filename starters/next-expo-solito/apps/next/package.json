@@ -17,11 +17,14 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.71.4",
+    "react-native-reanimated": "~2.14.4",
     "react-native-web": "^0.18.12",
     "react-native-web-lite": "latest",
     "vercel": "latest"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@tamagui/next-plugin": "latest",
     "@types/node": "^18.6.4",
     "eslint-config-next": "^13.0.4"

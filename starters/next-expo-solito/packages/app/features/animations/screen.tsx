@@ -1,66 +1,64 @@
-import {
-  Anchor,
-  Button,
-  H1,
-  Paragraph,
-  Separator,
-  Sheet,
-  useToastController,
-  XStack,
-  YStack,
-} from '@my/ui'
+import { Button, Paragraph, Sheet, YStack, useToastController } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
+import { Button as RNButton, View } from 'react-native'
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
 import { useLink } from 'solito/link'
 
-export function HomeScreen() {
+export function AnimationScreen() {
   const linkProps = useLink({
     href: '/user/nate',
   })
 
-  const animationsLink = useLink({
-    href: '/animations',
-  })
-
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
-      <YStack space="$4" maw={600}>
-        <H1 ta="center">Welcome to Tamagui.</H1>
-        <Paragraph ta="center">
-          Here's a basic starter to show navigating from one screen to another. This screen uses the
-          same code on Next.js and React Native.
-        </Paragraph>
-
-        <Separator />
-        <Paragraph ta="center">
-          Made by{' '}
-          <Anchor color="$color12" href="https://twitter.com/natebirdman" target="_blank">
-            @natebirdman
-          </Anchor>
-          ,{' '}
-          <Anchor
-            color="$color12"
-            href="https://github.com/tamagui/tamagui"
-            target="_blank"
-            rel="noreferrer"
-          >
-            give it a ⭐️
-          </Anchor>
-        </Paragraph>
+      <YStack maw={600}>
+        <Paragraph ta="center">Heres an example reanimated (v2) animation.</Paragraph>
+        <AnimatedStyleUpdateExample />
       </YStack>
-
-      <XStack>
-        <Button {...linkProps}>Link to user</Button>
-      </XStack>
-
-      <XStack>
-        <Button {...animationsLink}>Animations</Button>
-      </XStack>
-      <SheetDemo />
     </YStack>
   )
 }
 
+export default function AnimatedStyleUpdateExample(props) {
+  const randomWidth = useSharedValue(10)
+
+  const config = {
+    duration: 500,
+    easing: Easing.bezier(0.5, 0.01, 0, 1),
+  }
+
+  const style = useAnimatedStyle(() => {
+    return {
+      width: withTiming(randomWidth.value, config),
+    }
+  })
+
+  return (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <Animated.View
+        style={[{ width: 100, height: 80, backgroundColor: 'black', margin: 30 }, style]}
+      />
+      <RNButton
+        title="toggle"
+        onPress={() => {
+          randomWidth.value = Math.random() * 350
+        }}
+      />
+    </View>
+  )
+}
 function SheetDemo() {
   const [open, setOpen] = useState(false)
   const [position, setPosition] = useState(0)

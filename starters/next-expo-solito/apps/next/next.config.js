@@ -50,7 +50,7 @@ const plugins = [
         return true
       }
     },
-    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox'],
   }),
 ]
 
@@ -72,6 +72,7 @@ module.exports = function () {
       'expo-linking',
       'expo-constants',
       'expo-modules-core',
+      'react-native-reanimated',
     ],
     experimental: {
       /*
