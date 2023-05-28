@@ -1,4 +1,4 @@
-import { RemoveScroll } from '@tamagui/remove-scroll'
+import { classNames } from '@tamagui/remove-scroll'
 import { NextLink } from 'components/NextLink'
 import { useEffect, useState } from 'react'
 import { Circle, H4, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
@@ -48,7 +48,7 @@ export function QuickNav() {
       // provided by that lib to deal with that for the QuickNav.
       // https://github.com/radix-ui/website/issues/64
       // https://github.com/theKashey/react-remove-scroll#positionfixed-elements
-      className={RemoveScroll.classNames.zeroRight}
+      className={classNames.zeroRight}
       display="none"
       $gtLg={{
         display: 'flex',

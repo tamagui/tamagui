@@ -741,10 +741,9 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 1px 1px var(--color),
-    -1px -1px var(--color),
-    1px -1px var(--color),
-    -1px 1px var(--color);
+  text-shadow: 2px 2px var(--color),
+    -2px -2px var(--color),
+    -2px 2px var(--color);
 }
 
 .invert {
@@ -761,21 +760,11 @@ input, textarea {
   mask-image: url(./public/slice-mask.svg);
   mask-size: 50% 50%;
   mask-clip: border-box;
-  animation: clip-fade2 90s infinite alternate;
+  animation: clip-fade2 120s infinite alternate;
 }
 
 .animate-fade2 {
-  animation: clip-fade2 70s infinite alternate-reverse;
-}
-
-.masked {
-  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  -webkit-mask-size: 100% 100%;
-  -webkit-mask-clip: border-box;
-  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 400% 400%;
-  mask-clip: border-box;
-  animation: clip-fade 50s infinite alternate;
+  animation: clip-fade2 90s infinite alternate-reverse;
 }
 
 .masked2 {
@@ -783,9 +772,9 @@ input, textarea {
   -webkit-mask-size: 100% 100%;
   -webkit-mask-clip: border-box;
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 400% 400%;
+  mask-size: 200% 200%;
   mask-clip: border-box;
-  animation: clip-fade 10s infinite;
+  animation: clip-fade 40s infinite;
 }
 
 .masked3 {
@@ -795,7 +784,7 @@ input, textarea {
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
   mask-size: 200% 200%;
   mask-clip: border-box;
-  animation: clip-fade 50s infinite;
+  animation: clip-fade 70s infinite;
 }
 
 @keyframes clip-fade {
