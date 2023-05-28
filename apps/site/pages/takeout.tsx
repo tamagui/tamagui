@@ -474,10 +474,9 @@ export default function TakeoutPage() {
                   />
                 </XStack>
 
-                <MunroP size="$11">All you need -</MunroP>
-
                 <MunroP size="$11">
-                  A reference design for a building a truly high quality app.
+                  A reference design for a building a truly high quality app. Always
+                  improving.
                 </MunroP>
 
                 <XStack>
@@ -503,12 +502,12 @@ export default function TakeoutPage() {
 
             <YStack mt={200} w={3} mih={500} h="100%" />
 
-            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.1} zi={-2}>
+            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.06} zi={-2}>
               <Image
                 alt="mandala"
                 width={1800}
                 height={1800}
-                src="/takeout/noun-abstract-geometric-app-icon-947191.svg"
+                src="/takeout/geometric.svg"
               />
             </YStack>
           </XStack>
