@@ -4,6 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { CheckCircle, Newspaper } from '@tamagui/lucide-icons'
+import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
@@ -33,6 +34,15 @@ import { Stage } from '../components/Stage'
 const heroHeight = 850
 
 export default function TakeoutPage() {
+  const enable3d = useClientValue(
+    isClient && !window.location.search?.includes('disable-3d')
+  )
+  const disableMotion = useClientValue(
+    isClient &&
+      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+        window.location.search?.includes('disable-motion'))
+  )
+
   return (
     <>
       <NextSeo
@@ -56,7 +66,7 @@ export default function TakeoutPage() {
         ov="hidden"
       >
         <TAKEOUT
-          className="font-outlined theme-shadow masked3"
+          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' masked3')}
           fontSize={150 * 5}
           lineHeight={110 * 5}
           color="#000"
@@ -92,36 +102,40 @@ export default function TakeoutPage() {
                 color="$color"
                 size="$1"
                 fontSize={13}
-                ls={40}
-                fontFamily="$glusp"
+                ls={35}
+                fontFamily="$silkscreen"
+                o={0.25}
+                pe="none"
+                h={40}
+                userSelect="none"
               >
                 Tamagui
               </Paragraph>
 
               <TAKEOUT />
 
-              <ThemeTint>
-                <TAKEOUT
-                  className="clip-slice mix-blend"
-                  pos="absolute"
-                  t={44}
-                  color="$color7"
-                  scale={1.04}
-                  o={0.45}
-                />
-
-                <ThemeTintAlt>
+              {!disableMotion && (
+                <ThemeTint>
                   <TAKEOUT
-                    className="clip-slice mix-blend animate-fade2"
+                    className="clip-slice mix-blend"
                     pos="absolute"
                     t={44}
                     color="$color7"
                     scale={1.04}
                     o={0.45}
                   />
-                </ThemeTintAlt>
 
-                <ThemeTint>
+                  <ThemeTintAlt>
+                    <TAKEOUT
+                      className="clip-slice mix-blend animate-fade2"
+                      pos="absolute"
+                      t={44}
+                      color="$color7"
+                      scale={1.04}
+                      o={0.45}
+                    />
+                  </ThemeTintAlt>
+
                   <TAKEOUT
                     className="clip-slice mix-blend-dodge animate-fade2"
                     pos="absolute"
@@ -130,25 +144,28 @@ export default function TakeoutPage() {
                     scale={1.04}
                     o={0.45}
                   />
-                </ThemeTint>
 
-                <TAKEOUT
-                  pos="absolute"
-                  t={52}
-                  className="theme-shadow mix-blend masked2"
-                  zi={1}
-                  color="transparent"
-                />
-              </ThemeTint>
+                  <TAKEOUT
+                    pos="absolute"
+                    t={45}
+                    className="theme-shadow mix-blend masked2"
+                    zi={1}
+                    color="transparent"
+                  />
+                </ThemeTint>
+              )}
 
               <Paragraph
-                className="mix-blend"
                 color="$color"
+                mt={-10}
                 size="$1"
                 fontSize={13}
-                mt={-10}
-                ls={40}
-                fontFamily="$glusp"
+                ls={35}
+                fontFamily="$silkscreen"
+                o={0.25}
+                pe="none"
+                h={40}
+                userSelect="none"
               >
                 Presents
               </Paragraph>
@@ -157,7 +174,7 @@ export default function TakeoutPage() {
                 <IconFrame>
                   <Image
                     className="pixelate"
-                    src="/retro-icons/computers-devices-electronics-keyboard-wireless-14.svg"
+                    src="/retro-icons/coding-apps-websites-module-21.svg"
                     alt="Icon"
                     width={18}
                     height={18}
@@ -241,28 +258,30 @@ export default function TakeoutPage() {
                 $lg={{ r: '-20%' }}
                 zIndex={-1}
               >
-                <Canvas
-                  style={{
-                    width: 620,
-                    height: 620,
-                  }}
-                  gl={{ preserveDrawingBuffer: true }}
-                  shadows
-                  dpr={[1, 1]}
-                  // camera={{ position: [0, 0, 150], fov: 10 }}
-                >
-                  <Suspense fallback={null}>
-                    {/* <ambientLight intensity={0.9} /> */}
-                    <Stage
-                      shadows="accumulative"
-                      scale={1}
-                      adjustCamera={1}
-                      intensity={1}
-                    >
-                      <TakeoutBox3D />
-                    </Stage>
-                  </Suspense>
-                </Canvas>
+                {enable3d && (
+                  <Canvas
+                    style={{
+                      width: 620,
+                      height: 620,
+                    }}
+                    gl={{ preserveDrawingBuffer: true }}
+                    shadows
+                    dpr={[1, 1]}
+                    // camera={{ position: [0, 0, 150], fov: 10 }}
+                  >
+                    <Suspense fallback={null}>
+                      {/* <ambientLight intensity={0.9} /> */}
+                      <Stage
+                        shadows="accumulative"
+                        scale={1}
+                        adjustCamera={1}
+                        intensity={1}
+                      >
+                        <TakeoutBox3D />
+                      </Stage>
+                    </Suspense>
+                  </Canvas>
+                )}
               </YStack>
             </YStack>
           </YStack>
@@ -368,47 +387,49 @@ export default function TakeoutPage() {
                   />
                 </YStack>
 
-                <Separator my="$8" mx="$8" />
+                <Separator className="mix-blend" boc="#fff" o={0.25} my="$8" mx="$8" />
 
-                <Paragraph size="$9" fow="400">
-                  Speedrun from 0-to-💯 with Tamagui Takeout 🥡
-                </Paragraph>
+                <YStack p="$6" className="blur-medium" space="$6" elevation="$4">
+                  <YStack zi={-1} fullscreen bc="$color" o={0.1} />
 
-                <Paragraph size="$8" fow="400">
-                  It's not just about getting your app shipped fast. We're thinking long
-                  term.
-                </Paragraph>
-
-                <Paragraph size="$8" fow="400">
-                  We've designed the repo to be well isolated to work alongside the Github
-                  bot we install when you set it up that will send over a PR whenever we
-                  make updates to the template.{' '}
-                  <Paragraph tag="span" fontSize="inherit" color="$yellow10">
-                    That means no more being left behind as we ship improvements
-                    constantly to your codebase
+                  <Paragraph size="$8" fow="800">
+                    Speedrun from 0-to-💯 with Tamagui Takeout 🥡
                   </Paragraph>
-                  .
-                </Paragraph>
 
-                <Paragraph size="$8" fow="400">
-                  It's why we've set up the pricing the way we have - lifetime rights to
-                  the code with a year of updates. One-time pricing wouldn't incentivize
-                  us to keep innovating. And we want to make the Takeout stack the best
-                  stack that's ever existed.
-                </Paragraph>
+                  <Paragraph size="$8" fow="400">
+                    It's not just about shipping fast. It's the long run.
+                  </Paragraph>
 
-                <Paragraph size="$8" fow="400">
-                  We're working on bringing many nice new features that you can pick and
-                  choose from:
-                </Paragraph>
+                  <Paragraph size="$8" fow="400">
+                    The template repo is designed with pluggable features that are
+                    well-isolated. Then we install a Github bot that sends a PR whenever
+                    we make an update.
+                  </Paragraph>
 
-                <YStack tag="ul" space="$3">
-                  <Point upcoming>Simple state management system</Point>
-                  <Point upcoming>Reanimated integration</Point>
-                  <Point upcoming>Layout animations</Point>
-                  <Point upcoming>Entire Google font library</Point>
-                  <Point upcoming>Maestro native integration testing</Point>
-                  <Point upcoming>Notifications</Point>
+                  <Paragraph size="$8" fow="400" color="$yellow10">
+                    That means you get constant improvements to your codebase.
+                  </Paragraph>
+
+                  <Paragraph size="$8" fow="400">
+                    It's why we've set up pricing the way we have: lifetime rights, one
+                    year of updates. Forever pricing wouldn't incentivize us to keep
+                    innovating, and we want to make the Takeout stack the best stack,
+                    period.
+                  </Paragraph>
+
+                  <Paragraph size="$8" fow="400">
+                    We're working on bringing many nice new features that you can pick and
+                    choose from:
+                  </Paragraph>
+
+                  <YStack tag="ul" space="$3">
+                    <Point upcoming>Simple state management system</Point>
+                    <Point upcoming>Reanimated integration</Point>
+                    <Point upcoming>Layout animations</Point>
+                    <Point upcoming>Entire Google font library</Point>
+                    <Point upcoming>Maestro native integration testing</Point>
+                    <Point upcoming>Notifications</Point>
+                  </YStack>
                 </YStack>
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
@@ -519,7 +540,7 @@ const Point = (props: { children: any; upcoming?: boolean }) => {
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
   p: '$4',
-  bc: 'rgba(255, 255, 255, 0.025)',
+  bc: 'rgba(255, 255, 255, 0.035)',
 })
 
 const StarterCard = () => {
