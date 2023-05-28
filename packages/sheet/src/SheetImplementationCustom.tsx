@@ -112,7 +112,6 @@ export const SheetImplementationCustom = themeable(
 
     const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
     const at = useRef(HIDDEN_SIZE)
-    const currentId = useRef(0)
 
     useAnimatedNumberReaction(
       {
@@ -121,6 +120,7 @@ export const SheetImplementationCustom = themeable(
       },
       (value) => {
         if (!driver.isReactNative) return
+        console.warn('setting it to', value)
         at.current = value
         scrollBridge.paneY = value
       }
@@ -138,10 +138,12 @@ export const SheetImplementationCustom = themeable(
 
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
-      const toValue =
+
+      let toValue =
         hasntMeasured || isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
+      at.current = toValue
 
       stopSpring()
 
@@ -151,11 +153,13 @@ export const SheetImplementationCustom = themeable(
           type: 'timing',
           duration: 0,
         })
-        at.current = toValue
 
         if (isHidden) {
           return
         }
+
+        toValue = positions[position]
+        at.current = toValue
       }
 
       animatedNumber.setValue(toValue, {

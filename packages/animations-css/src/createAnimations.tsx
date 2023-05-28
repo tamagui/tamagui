@@ -1,5 +1,3 @@
-import { animate } from '@tamagui/cubic-bezier-animator'
-import { usePresence } from '@tamagui/use-presence'
 import {
   AnimationDriver,
   Stack,
@@ -7,7 +5,9 @@ import {
   UniversalAnimatedNumber,
   useIsomorphicLayoutEffect,
   useSafeRef,
-} from '@tamagui/web'
+} from '@tamagui/core'
+import { animate } from '@tamagui/cubic-bezier-animator'
+import { usePresence } from '@tamagui/use-presence'
 import { useMemo, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
@@ -67,9 +67,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         ? props.animation[0]
         : props.animation
       const animation = animations[animationKey as any]
-      if (!animation) {
-        return null
-      }
 
       const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
@@ -87,6 +84,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         }
       }, [sendExitComplete, isExiting])
 
+      // layout animations
       useIsomorphicLayoutEffect(() => {
         if (!hostRef.current || !props.layout) {
           return
@@ -119,6 +117,10 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         initialPositionRef.current = boundingBox
       })
 
+      if (!animation) {
+        return null
+      }
+
       // add css transition
       // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
       // for non layout transform properties either use animate function or find a workaround to do it with css
@@ -131,10 +133,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         console.log('CSS animation', style, { isEntering, isExiting })
       }
 
-      return useMemo(() => {
-        return { style }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [JSON.stringify(style)])
+      return { style }
     },
   }
 }

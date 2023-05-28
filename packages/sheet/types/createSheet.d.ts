@@ -40,7 +40,7 @@ export declare function createSheet<H extends SheetStyledComponent, F extends Sh
         Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
             disableHideBottomOverflow?: boolean | undefined;
         }>> & RefAttributes<unknown>>;
-        Overlay: (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null;
+        Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
         ScrollView: import("react").ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
@@ -53,7 +53,7 @@ export declare function createSheet<H extends SheetStyledComponent, F extends Sh
     Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
         disableHideBottomOverflow?: boolean | undefined;
     }>> & RefAttributes<unknown>>;
-    Overlay: (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null;
+    Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
     ScrollView: import("react").ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;

@@ -6,7 +6,7 @@ import { Button, H1, H2, Input, Paragraph, XStack } from 'tamagui'
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(false)
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(true)
   const [innerOpen, setInnerOpen] = useState(false)
 
   return (
@@ -28,7 +28,7 @@ export const SheetDemo = () => {
         position={position}
         onPositionChange={setPosition}
         zIndex={100_000}
-        animation="bouncy" // for the css driver
+        animation="bouncy"
       >
         <Sheet.Overlay />
         <Sheet.Handle />

@@ -13,6 +13,7 @@ import {
   FunctionComponent,
   RefAttributes,
   forwardRef,
+  memo,
   useLayoutEffect,
   useMemo,
 } from 'react'
@@ -70,7 +71,7 @@ export function createSheet<
    * -----------------------------------------------------------------------------------------------*/
 
   const SheetOverlay = Overlay.extractable(
-    (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
+    memo((propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => {
       const { __scopeSheet, ...props } = propsIn
       const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
@@ -93,13 +94,7 @@ export function createSheet<
             )}
           />
         ),
-        [
-          context.open,
-          props,
-          context.hidden,
-          props.onPress,
-          context.dismissOnOverlayPress,
-        ]
+        [context.open, propsIn, context.hidden, context.dismissOnOverlayPress]
       )
 
       useLayoutEffect(() => {
@@ -111,7 +106,7 @@ export function createSheet<
       }
 
       return null
-    }
+    })
   )
 
   /* -------------------------------------------------------------------------------------------------
@@ -137,6 +132,16 @@ export function createSheet<
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
+        const sheetContents = useMemo(() => {
+          return (
+            // @ts-ignore
+            <Frame ref={composedContentRef} height={frameSize} {...props}>
+              {children}
+              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+            </Frame>
+          )
+        }, [props, frameSize, offscreenSize])
+
         return (
           <>
             <RemoveScroll
@@ -147,11 +152,7 @@ export function createSheet<
               // causes lots of bugs on touch web on site
               removeScrollBar={false}
             >
-              {/* @ts-ignore */}
-              <Frame ref={composedContentRef} height={frameSize} {...props}>
-                {children}
-                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
-              </Frame>
+              {sheetContents}
             </RemoveScroll>
 
             {/* below frame hide when bouncing past 100% */}
