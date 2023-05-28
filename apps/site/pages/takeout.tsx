@@ -3,8 +3,9 @@ import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, Newspaper } from '@tamagui/lucide-icons'
+import { CheckCircle, Newspaper, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
+import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
@@ -14,17 +15,30 @@ import Image from 'next/image'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { ButtonLink } from 'studio/Link'
 import {
+  Button,
+  Dialog,
   H1,
   H2,
   Paragraph,
   ScrollView,
   Separator,
+  Sheet,
   Spacer,
   Stack,
+  Theme,
+  Unspaced,
   XStack,
   YStack,
   isClient,
   styled,
+} from 'tamagui'
+import {
+  AnimatePresence,
+  Circle,
+  TabLayout,
+  Tabs,
+  TabsTabProps,
+  YStackProps,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -34,14 +48,16 @@ import { Stage } from '../components/Stage'
 const heroHeight = 850
 
 export default function TakeoutPage() {
+  const store = useTakeoutStore()
   const enable3d = useClientValue(
     isClient && !window.location.search?.includes('disable-3d')
   )
-  const disableMotion = useClientValue(
-    isClient &&
-      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-        window.location.search?.includes('disable-motion'))
-  )
+  const disableMotion =
+    useClientValue(
+      isClient &&
+        (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+          window.location.search?.includes('disable-motion'))
+    ) || store.showPurchase
 
   return (
     <>
@@ -54,6 +70,8 @@ export default function TakeoutPage() {
         <LoadGlusp />
         <LoadMunro />
       </Head>
+
+      <PurchaseModal />
 
       <YStack
         pos="absolute"
@@ -101,10 +119,9 @@ export default function TakeoutPage() {
               <Paragraph
                 color="$color"
                 size="$1"
-                fontSize={13}
-                ls={35}
-                fontFamily="$silkscreen"
-                o={0.25}
+                fontSize={14}
+                ls={105}
+                fontFamily="$glusp"
                 pe="none"
                 h={40}
                 userSelect="none"
@@ -155,22 +172,7 @@ export default function TakeoutPage() {
                 </ThemeTint>
               )}
 
-              <Paragraph
-                color="$color"
-                mt={-10}
-                size="$1"
-                fontSize={13}
-                ls={35}
-                fontFamily="$silkscreen"
-                o={0.25}
-                pe="none"
-                h={40}
-                userSelect="none"
-              >
-                Presents
-              </Paragraph>
-
-              <XStack my="$5" gap={90} f={1} jc="space-between" className="mix-blend">
+              <XStack my="$5" gap={125} f={1} jc="space-between" className="mix-blend">
                 <IconFrame>
                   <Image
                     className="pixelate"
@@ -336,7 +338,15 @@ export default function TakeoutPage() {
                 </MunroP>
 
                 <ThemeTint>
-                  <H2 className="mix-blend" size="$13" color="$color10">
+                  <H2
+                    className="clip-text mix-blend"
+                    size="$13"
+                    color="$color10"
+                    style={{
+                      // @ts-ignore
+                      backgroundImage: `-webkit-linear-gradient(var(--color9), var(--yellow9))`,
+                    }}
+                  >
                     From idea to shipped in less time than ever.
                   </H2>
                 </ThemeTint>
@@ -351,8 +361,8 @@ export default function TakeoutPage() {
 
                 <Paragraph size="$9" fow="400">
                   We can't promise the 🌕 or the ✨ - success is up to you - but if you
-                  want a cheat code to shipping a stunning web + mobile app fast, you've
-                  found it.
+                  want a cheat code to shipping a stunning web & native mobile app fast,
+                  you've found it.
                 </Paragraph>
 
                 <Paragraph size="$8" fow="400">
@@ -542,6 +552,103 @@ const IconFrame = styled(Stack, {
   bc: 'rgba(255, 255, 255, 0.035)',
 })
 
+class TakeoutStore extends Store {
+  showPurchase = false
+}
+
+const useTakeoutStore = createUseStore(TakeoutStore)
+
+const PurchaseModal = () => {
+  const productId = getStripeProductId('universal-starter')
+  const store = useTakeoutStore()
+
+  return (
+    <Dialog
+      modal
+      open={store.showPurchase}
+      disableRemoveScroll
+      onOpenChange={(val) => {
+        store.showPurchase = val
+      }}
+    >
+      <Dialog.Adapt when="sm" platform="touch">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Dialog.Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.75}
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ opacity: 0, scale: 0.975 }}
+          exitStyle={{ opacity: 0, scale: 0.975 }}
+          space
+          w="90%"
+          h="90%"
+        >
+          <YStack display="none">
+            <Dialog.Title>Purchase</Dialog.Title>
+            <Dialog.Description>Purchase Tamagui Takeout.</Dialog.Description>
+          </YStack>
+
+          <PurchaseSelectTeam />
+
+          <ButtonLink
+            href={`api/checkout?${new URLSearchParams({
+              product_id: productId,
+            }).toString()}`}
+          >
+            Purchase
+          </ButtonLink>
+
+          <YStack alignItems="flex-end" marginTop="$2">
+            <Dialog.Close displayWhenAdapted asChild>
+              <Button theme="alt1" aria-label="Close">
+                Save changes
+              </Button>
+            </Dialog.Close>
+          </YStack>
+
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$3"
+                right="$3"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
 const StarterCard = () => {
   const { subscriptions } = useUser()
   const productId = getStripeProductId('universal-starter')
@@ -549,6 +656,7 @@ const StarterCard = () => {
   const subscription = subscriptions?.find(
     (sub) => sub.plan?.product === productId && sub.status === 'active'
   )
+  const store = useTakeoutStore()
 
   useEffect(() => {
     if (!ref) return
@@ -589,27 +697,26 @@ const StarterCard = () => {
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
             <ThemeTintAlt>
-              <ButtonLink
-                href={
-                  subscription
-                    ? `/account/subscriptions#${subscription.id}`
-                    : `api/checkout?${new URLSearchParams({
-                        product_id: productId,
-                      }).toString()}`
-                }
-                fontFamily="$munro"
-                size="$6"
-                fontSize="$8"
-                animation="quick"
-                hoverStyle={{
-                  scale: 1.025,
-                }}
-                pressStyle={{
-                  scale: 0.975,
-                }}
-              >
-                {subscription ? 'View Subscription' : 'Purchase - $499'}
-              </ButtonLink>
+              <Theme inverse>
+                <ButtonLink
+                  href={subscription ? `/account/subscriptions#${subscription.id}` : ''}
+                  onPress={() => {
+                    store.showPurchase = true
+                  }}
+                  fontFamily="$munro"
+                  size="$6"
+                  fontSize="$8"
+                  animation="quick"
+                  hoverStyle={{
+                    scale: 1.025,
+                  }}
+                  pressStyle={{
+                    scale: 0.975,
+                  }}
+                >
+                  {subscription ? 'View Subscription' : 'Purchase - $350'}
+                </ButtonLink>
+              </Theme>
             </ThemeTintAlt>
           </YStack>
 
@@ -823,3 +930,154 @@ const MunroP = styled(Paragraph, {
   className: 'pixelate',
   fontFamily: '$munro',
 })
+
+const tabs = [
+  { value: '1' },
+  { value: '2' },
+  { value: '4' },
+  { value: '8' },
+  { value: '16' },
+  { value: '32' },
+]
+
+export const PurchaseSelectTeam = () => {
+  const [tabRovingState, setTabRovingState] = useState<{
+    /**
+     * Layout of the Tab user might intend to select (hovering / focusing)
+     */
+    intentAt: TabLayout | null
+    /**
+     * Layout of the Tab user selected
+     */
+    activeAt: TabLayout | null
+    /**
+     * Used to get the direction of activation for animating the active indicator
+     */
+    prevActiveAt: TabLayout | null
+  }>({
+    activeAt: null,
+    intentAt: null,
+    prevActiveAt: null,
+  })
+
+  const [currentTab, setCurrentTab] = useState(tabs[0].value)
+  const setIntentIndicator = (intentAt) =>
+    setTabRovingState({ ...tabRovingState, intentAt })
+  const setActiveIndicator = (activeAt) =>
+    setTabRovingState({
+      ...tabRovingState,
+      prevActiveAt: tabRovingState.activeAt,
+      activeAt,
+    })
+  const { activeAt, intentAt } = tabRovingState
+
+  /**
+   * -1: from left
+   *  0: n/a
+   *  1: from right
+   */
+  //   const direction = (() => {
+  //     if (!activeAt || !prevActiveAt || activeAt.x === prevActiveAt.x) {
+  //       return 0
+  //     }
+  //     return activeAt.x > prevActiveAt.x ? -1 : 1
+  //   })()
+
+  //   const enterVariant =
+  //     direction === 1 ? 'isLeft' : direction === -1 ? 'isRight' : 'defaultFade'
+  //   const exitVariant =
+  //     direction === 1 ? 'isRight' : direction === -1 ? 'isLeft' : 'defaultFade'
+
+  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
+    if (type === 'select') {
+      setActiveIndicator(layout)
+    } else {
+      setIntentIndicator(layout)
+    }
+  }
+
+  return (
+    <Tabs
+      value={currentTab}
+      onValueChange={setCurrentTab}
+      orientation="horizontal"
+      size="$2"
+      flexDirection="column"
+      activationMode="manual"
+      position="relative"
+    >
+      <YStack>
+        <AnimatePresence>
+          {intentAt && (
+            <TabsRovingIndicator
+              key="intent-indicator"
+              width={intentAt.width}
+              height={intentAt.height}
+              x={intentAt.x}
+              y={intentAt.y}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {activeAt && (
+            <TabsRovingIndicator
+              key="active-indicator"
+              isActive
+              width={activeAt.width}
+              height={activeAt.height}
+              x={activeAt.x}
+              y={activeAt.y}
+            />
+          )}
+        </AnimatePresence>
+
+        <Tabs.List
+          disablePassBorderRadius
+          loop={false}
+          aria-label="Manage your account"
+          space="$2"
+          backgroundColor="transparent"
+        >
+          {tabs.map(({ value }) => (
+            <Tabs.Tab
+              key={value}
+              unstyled
+              bc="transparent"
+              px="$3"
+              value={value}
+              onInteraction={handleOnInteraction}
+            >
+              {value}
+            </Tabs.Tab>
+          ))}
+        </Tabs.List>
+      </YStack>
+    </Tabs>
+  )
+}
+
+const TabsRovingIndicator = ({
+  isActive,
+  ...props
+}: { isActive?: boolean } & YStackProps) => {
+  return (
+    <YStack
+      borderRadius="$2"
+      position="absolute"
+      backgroundColor="$color3"
+      animation="quick"
+      enterStyle={{
+        opacity: 0,
+      }}
+      exitStyle={{
+        opacity: 0,
+      }}
+      opacity={0.7}
+      {...(isActive && {
+        backgroundColor: '$color8',
+        opacity: 0.6,
+      })}
+      {...props}
+    />
+  )
+}

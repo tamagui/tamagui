@@ -741,10 +741,9 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 1px 1px var(--color),
-    -1px -1px var(--color),
-    1px -1px var(--color),
-    -1px 1px var(--color);
+  text-shadow: 2px 2px var(--color),
+    -2px -2px var(--color),
+    -2px 2px var(--color);
 }
 
 .invert {
@@ -773,7 +772,7 @@ input, textarea {
   -webkit-mask-size: 100% 100%;
   -webkit-mask-clip: border-box;
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 300% 300%;
+  mask-size: 200% 200%;
   mask-clip: border-box;
   animation: clip-fade 40s infinite;
 }
