@@ -214,6 +214,9 @@ export type TokensMerged = {
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
+export type ThemeMediaProps<A> = {
+    [key in `$theme-${keyof Themes}`]?: A;
+};
 export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export type ThemeTokens = `$${ThemeKeys}`;
 export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
@@ -468,7 +471,11 @@ export type PseudoStyles = {
 };
 type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>> & WithShorthands<WithThemeValues<A>>;
 type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
-type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
+export type PlatformMediaProps<A> = {
+    [key in `$platform-${AllPlatforms}`]?: A;
+};
+type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>> & ThemeMediaProps<WithThemeShorthandsAndPseudos<A>> & PlatformMediaProps<WithThemeShorthandsAndPseudos<A>>;
 /**
  * Base style-only props (no media, pseudo):
  */
