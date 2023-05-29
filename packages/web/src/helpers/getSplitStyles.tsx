@@ -117,7 +117,7 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  const theme = themeState.theme!
+  const theme = themeState.theme || {}!
   conf = conf || getConfig()
   const { shorthands } = conf
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
@@ -857,6 +857,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   // loop backwards so we can skip already-used props
+  debugger
   for (let i = len - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
     const valInit = props[keyInit]
