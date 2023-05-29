@@ -276,7 +276,9 @@ export const getMediaImportanceIfMoreImportant = (
   importancesUsed: Record<string, number>,
   isSizeMedia: boolean
 ) => {
-  const importance = isSizeMedia ? getMediaKeyImportance(mediaKey) : 2
+  const conf = getConfig()
+  const importance =
+    isSizeMedia && !conf.enableMediaPropOrder ? getMediaKeyImportance(mediaKey) : 2
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 
