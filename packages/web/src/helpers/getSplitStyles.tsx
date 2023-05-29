@@ -785,6 +785,12 @@ export const getSplitStyles: StyleSplitter = (
           mediaStyleResolvedCounter += 1
         } else {
           const isThemeMedia = mediaKeyShort.startsWith('theme-')
+          const isPlatformMedia = mediaKeyShort.startsWith('platform-')
+          if (!isThemeMedia && !isPlatformMedia) {
+            if (!mediaState[mediaKeyShort]) {
+              continue
+            }
+          }
           if (isThemeMedia) {
             const themeName = mediaKeyShort.slice(6)
             if (!(themeState.name === themeName || themeState.parentName === themeName)) {
