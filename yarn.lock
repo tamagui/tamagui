@@ -5222,8 +5222,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
-    "@floating-ui/react-dom": ^1.2.2
-    "@floating-ui/react-native": ^0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.6
     react: ^18.2.0
     react-native: ^0.71.7
@@ -5689,7 +5689,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react": ^0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/adapt": 1.30.6
     "@tamagui/animate-presence": 1.30.6
     "@tamagui/aria-hidden": 1.30.6
@@ -5720,8 +5720,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@workspace:packages/popper"
   dependencies:
-    "@floating-ui/react-dom": ^1.2.2
-    "@floating-ui/react-native": ^0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.6
     "@tamagui/compose-refs": 1.30.6
     "@tamagui/core": 1.30.6
@@ -5960,9 +5960,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
-    "@floating-ui/react": ^0.19.1
-    "@floating-ui/react-dom": ^1.2.2
-    "@floating-ui/react-native": ^0.9.0
+    "@floating-ui/react": ^0.24.2
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/adapt": 1.30.6
     "@tamagui/build": 1.30.6
@@ -6466,7 +6466,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react": ^0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/build": 1.30.6
     "@tamagui/compose-refs": 1.30.6
     "@tamagui/core": 1.30.6
