@@ -862,7 +862,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   // loop backwards so we can skip already-used props
-  debugger
   for (let i = len - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
     const valInit = props[keyInit]
