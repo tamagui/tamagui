@@ -134,7 +134,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               <Paragraph
                 color="$color"
                 size="$1"
-                fontSize={14}
+                fontSize={12}
                 ls={105}
                 fontFamily="$glusp"
                 pe="none"
@@ -323,15 +323,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 pos="absolute"
                 fontFamily="$munro"
                 tt="uppercase"
-                x={-50}
+                x={-650}
                 scale={0.5}
                 rotate="-90deg"
-                o={0.25}
-                ls={10}
-                w={3000}
+                o={0.15}
+                ls={15}
+                w={4000}
               >
-                A new take on bootstrap · A new take on bootstrap · A new take on
-                bootstrap · A new take on bootstrap
+                A new take on bootstrapping · A new take on bootstrapping · A new take on
+                bootstrapping · A new take on bootstrapping
               </H2>
             </YStack>
           </YStack>
@@ -371,6 +371,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(var(--color9), var(--yellow9))`,
                     }}
+                    $sm={{
+                      size: '$10',
+                    }}
                   >
                     From idea to shipped in less time than ever.
                   </H2>
@@ -384,35 +387,41 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   <img src="/heart.svg" style={{ width: 24, height: 24 }} />
                 </XStack>
 
-                <Paragraph size="$9" fow="400">
+                <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
                   We can't promise the 🌕 or the ✨ (success is up to you) but if you want
                   a cheat code to shipping a stunning web & native mobile app fast, you've
                   found it.
                 </Paragraph>
 
-                <Paragraph size="$8" fow="400">
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                   Takeout 🥡 is a novel bootstrap that delivers on years of effort putting
                   together a stack that gives you nearly a whole startup in a box on day
                   one. And of course it's powered by Tamagui, the best frontend UI system
                   around.
                 </Paragraph>
 
-                <Paragraph size="$8" fow="400">
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                   Within an hour you'll be deploying your app on the web to Vercel (with
                   easy configuration of other providers), as well as production-ready
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <YStack tag="ul" space="$3" zi={2} mt="$8">
-                  <Point>React (Web and Native) Monorepo</Point>
-                  <Point>SSR, RSC, all the acronyms</Point>
-                  <Point>Complete typed design system</Point>
+                <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
+                  <Point>
+                    React (web, native, ios) monorepo sharing a single codebase
+                  </Point>
+                  <Point>
+                    All the important screens: onboard, auth, account, settings, profile,
+                    tabs, and more
+                  </Point>
+                  <Point>SSR, RSC, choose from 3 animation drivers</Point>
+                  <Point>Complete & fully typed design system</Point>
                   <Point>20 icon packs</Point>
                   <Point>2 all new theme suites: Pastel & Neon</Point>
                   <Point>35 custom fonts</Point>
                   <Point>Github template with PR bot for updates</Point>
                   <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-                  <Point>Deploys to web and builds to app stores</Point>
+                  <Point>Preview deploys for web, app-store builds with EAS</Point>
                 </YStack>
 
                 <YStack marginTop={-450} marginBottom={-500} x={400} zi={-1}>
@@ -429,32 +438,32 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <YStack p="$6" className="blur-medium" space="$6" elevation="$4">
                   <YStack zi={-1} fullscreen bc="$color" o={0.1} />
 
-                  <Paragraph size="$8" fow="800">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="800">
                     Speedrun from 0-to-💯 with Tamagui Takeout 🥡
                   </Paragraph>
 
-                  <Paragraph size="$8" fow="400">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     It's not just about shipping fast. It's the long run.
                   </Paragraph>
 
-                  <Paragraph size="$8" fow="400">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     The template repo is designed with pluggable features that are
                     well-isolated. Then we install a Github bot that sends a PR whenever
                     we make an update.
                   </Paragraph>
 
-                  <Paragraph size="$8" fow="400" color="$yellow10">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400" color="$yellow10">
                     That means you get constant improvements to your codebase.
                   </Paragraph>
 
-                  <Paragraph size="$8" fow="400">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     It's why we've set up pricing the way we have: lifetime rights, one
                     year of updates. Forever pricing wouldn't incentivize us to keep
                     innovating, and we want to make the Takeout stack the best stack,
                     period.
                   </Paragraph>
 
-                  <Paragraph size="$8" fow="400">
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     We're working on bringing many nice new features that you can pick and
                     choose from:
                   </Paragraph>
@@ -539,7 +548,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
             <YStack mt={200} w={3} mih={500} h="100%" />
 
-            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.06} zi={-2}>
+            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.05} zi={-2}>
               <Image
                 alt="mandala"
                 width={1800}
@@ -559,12 +568,14 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 const Point = (props: { children: any; upcoming?: boolean; subtitle?: any }) => {
   return (
     <ThemeTint>
-      <XStack tag="li" ai="center" space ml="$4">
-        <YStack>
+      <XStack tag="li" ai="flex-start" space ml="$4" f={1} ov="hidden">
+        <YStack py="$1.5">
           {props.upcoming ? <Newspaper color="$color10" /> : <Check color="$color10" />}
         </YStack>
-        <YStack>
-          <Paragraph size="$7">{props.children}</Paragraph>
+        <YStack f={1}>
+          <Paragraph wordWrap="break-word" size="$7" $sm={{ size: '$6' }}>
+            {props.children}
+          </Paragraph>
           {!!props.subtitle && (
             <Paragraph size="$4" theme="alt1">
               {props.subtitle}
@@ -815,7 +826,7 @@ const StarterCard = memo(() => {
           y={100}
           mah="calc(min(95vh, 800px))"
           $md={{
-            x: 0,
+            x: -20,
             y: 0,
             mb: 280,
             mah: 'auto',
