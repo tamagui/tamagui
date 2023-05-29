@@ -15,7 +15,7 @@ export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
     )
   : ((() => {}) as any as SupabaseClient<Database>)
 
-const upsertProductRecord = async (product: Stripe.Product) => {
+export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
     id: product.id,
     active: product.active,
@@ -30,7 +30,13 @@ const upsertProductRecord = async (product: Stripe.Product) => {
   console.log(`Product inserted/updated: ${product.id}`)
 }
 
-const upsertPriceRecord = async (price: Stripe.Price) => {
+export const deleteProductRecord = async (id: Stripe.Product['id']) => {
+  const { error } = await supabaseAdmin.from('products').delete().eq('id', id)
+  if (error) throw error
+  console.log(`Product deleted: ${id}`)
+}
+
+export const upsertPriceRecord = async (price: Stripe.Price) => {
   const priceData: Price = {
     id: price.id,
     product_id: typeof price.product === 'string' ? price.product : '',
@@ -51,7 +57,13 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
   console.log(`Price inserted/updated: ${price.id}`)
 }
 
-const createOrRetrieveCustomer = async ({
+export const deletePriceRecord = async (id: Stripe.Price['id']) => {
+  const { error } = await supabaseAdmin.from('prices').delete().eq('id', id)
+  if (error) throw error
+  console.log(`Price deleted: ${id}`)
+}
+
+export const createOrRetrieveCustomer = async ({
   email,
   uuid,
 }: {
@@ -106,7 +118,7 @@ const copyBillingDetailsToCustomer = async (
   if (error) throw error
 }
 
-const manageSubscriptionStatusChange = async (
+export const manageSubscriptionStatusChange = async (
   subscriptionId: string,
   customerId: string,
   createAction = false
@@ -158,6 +170,12 @@ const manageSubscriptionStatusChange = async (
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     )
+}
+
+export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
+  const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
+  if (error) throw error
+  console.log(`Deleted subscription: ${sub.id}`)
 }
 
 // commented cause supabase code is outdated

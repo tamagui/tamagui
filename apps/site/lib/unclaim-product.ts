@@ -1,0 +1,72 @@
+import { removeCollaboratorFromRepo } from '@protected/_utils/github'
+import { User } from '@supabase/supabase-js'
+
+import { Database, Json } from './supabase-types'
+import { supabaseAdmin } from './supabaseAdmin'
+
+/**
+ * removes access to previously claimed access
+ */
+export async function unclaimProduct(
+  claim: Database['public']['Tables']['claims']['Row']
+) {
+  const data = claim.data
+  if (typeof data !== 'object' || !data || Array.isArray(data)) {
+    throw new Error('bad `data` on claim row')
+  }
+
+  const subscriptionRes = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('id', claim.subscription_id)
+    .single()
+  if (subscriptionRes.error) throw subscriptionRes.error
+  const subscription = subscriptionRes.data
+
+  const userRes = await supabaseAdmin.auth.admin.getUserById(subscription.user_id)
+  if (userRes.error) throw userRes.error
+  const { user } = userRes.data
+
+  switch (data.claim_type) {
+    case 'repo_access':
+      unclaimRepoAccess({ data, claim, user })
+      break
+    default:
+      break
+  }
+  await supabaseAdmin.from('claims').update({
+    unclaimed_at: Number(new Date()).toString(),
+  })
+}
+
+type UnclaimFunction = (args: {
+  data: {
+    [key: string]: Json
+  }
+  user: User
+  claim: Database['public']['Tables']['claims']['Row']
+}) => Promise<void>
+
+const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
+  if (typeof data.repository_name !== 'string') {
+    throw new Error(`repository_name is not set on product metadata or is not correct`)
+  }
+
+  const githubTokenRes = await supabaseAdmin
+    .from('github_tokens')
+    .select()
+    .eq('id', user.id)
+    .single()
+
+  if (githubTokenRes.error) {
+    throw new Error(githubTokenRes.error.message)
+  }
+
+  const userGithubToken = githubTokenRes.data.token
+
+  const githubUser = await fetch('https://api.github.com/user', {
+    headers: { Authorization: `Bearer ${userGithubToken}` },
+  }).then((res) => res.json())
+
+  removeCollaboratorFromRepo(data.repository_name, githubUser)
+}
