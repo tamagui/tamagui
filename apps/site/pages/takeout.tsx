@@ -3,7 +3,7 @@ import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Newspaper, Subtitles, X } from '@tamagui/lucide-icons'
+import { Check, Newspaper, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -687,9 +687,17 @@ const StarterCard = memo(() => {
   const { subscriptions } = useUser()
   const productId = getStripeProductId('universal-starter')
   const [ref, setRef] = useState<any>()
-  const subscription = subscriptions?.find(
-    (sub) => sub.plan?.product === productId && sub.status === 'active'
-  )
+
+  const subscription = subscriptions?.find((sub) => {
+    if (sub.status !== 'active') return false
+    const price = sub.prices
+      ? Array.isArray(sub.prices)
+        ? sub.prices[0]
+        : sub.prices
+      : null
+    if (!price) return false
+    return price.product_id === productId
+  })
   const store = useTakeoutStore()
 
   useEffect(() => {

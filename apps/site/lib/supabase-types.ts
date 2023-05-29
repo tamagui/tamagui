@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      claims: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: number
+          product_id: string
+          subscription_id: string
+          unclaimed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: number
+          product_id: string
+          subscription_id: string
+          unclaimed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: number
+          product_id?: string
+          subscription_id?: string
+          unclaimed_at?: string | null
+        }
+      }
       customers: {
         Row: {
           id: string

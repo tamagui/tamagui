@@ -12,17 +12,35 @@ import {
   useReducer,
   useState,
 } from 'react'
-import Stripe from 'stripe'
 import { Spinner, YStack } from 'tamagui'
+
+const getUserDetails = async (
+  supabase: ReturnType<typeof useSupabaseClient<Database>>
+) => {
+  const result = await supabase.from('users').select('*').single()
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
+
+const getUserTeams = async (supabase: ReturnType<typeof useSupabaseClient<Database>>) => {
+  const result = await supabase.from('teams').select('*')
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
+
+const getSubscriptions = async (
+  supabase: ReturnType<typeof useSupabaseClient<Database>>
+) => {
+  const result = await supabase.from('subscriptions').select('*, prices(*, products(*))')
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
 
 type UserContextType = {
   accessToken: string | null
-  subscriptions?: (Stripe.Subscription & {
-    plan?: Stripe.Plan
-    product: Stripe.Product
-  })[]
+  subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
   user: User | null
-  userDetails?: Database['public']['Tables']['users']['Row'] | null
+  userDetails?: Awaited<ReturnType<typeof getUserDetails>> | null
   teams: {
     all?: Database['public']['Tables']['teams']['Row'][] | null
     orgs?: Database['public']['Tables']['teams']['Row'][] | null
@@ -53,29 +71,10 @@ export const MyUserContextProvider = (props: Props) => {
           return
         }
         await fetch('/api/github-sync', { method: 'POST' })
-
       }
     })
     return () => listener.data.subscription.unsubscribe()
   }, [session])
-
-  const getUserDetails = async () => {
-    const result = await supabase.from('users').select('*').single()
-    if (result.error) throw new Error(result.error.message)
-    return result.data
-  }
-
-  const getUserTeams = async () => {
-    const result = await supabase.from('teams').select('*')
-    if (result.error) throw new Error(result.error.message)
-    return result.data
-  }
-
-  const getSubscriptions = async () => {
-    const res = await fetch('/api/subscriptions')
-    const data = (await res.json()) as UserContextType['subscriptions']
-    return data
-  }
 
   const [isLoadingData, setIsloadingData] = useState(false)
   const [userDetails, setUserDetails] = useState<UserContextType['userDetails']>()
@@ -85,24 +84,25 @@ export const MyUserContextProvider = (props: Props) => {
   useEffect(() => {
     if (session?.user && !isLoadingData && !userDetails) {
       setIsloadingData(true)
-      Promise.allSettled([getSubscriptions(), getUserDetails(), getUserTeams()]).then(
-        ([subscriptionsPromise, userDetailsPromise, userTeamsPromise]) => {
-          if (subscriptionsPromise.status === 'fulfilled') {
-            setSubscriptions(subscriptionsPromise.value)
-          }
-
-          if (userDetailsPromise.status === 'fulfilled') {
-            setUserDetails(userDetailsPromise.value)
-          }
-          if (userTeamsPromise.status === 'fulfilled') {
-            setUserTeams(userTeamsPromise.value)
-          }
-          setIsloadingData(false)
+      Promise.allSettled([
+        getSubscriptions(supabase),
+        getUserDetails(supabase),
+        getUserTeams(supabase),
+      ]).then(([subscriptionsPromise, userDetailsPromise, userTeamsPromise]) => {
+        if (subscriptionsPromise.status === 'fulfilled') {
+          setSubscriptions(subscriptionsPromise.value)
         }
-      )
+
+        if (userDetailsPromise.status === 'fulfilled') {
+          setUserDetails(userDetailsPromise.value)
+        }
+        if (userTeamsPromise.status === 'fulfilled') {
+          setUserTeams(userTeamsPromise.value)
+        }
+        setIsloadingData(false)
+      })
     } else if (!session?.user && !isLoadingUser && !isLoadingData) {
       setUserDetails(null)
-      // setSubscription(null)
     }
   }, [session?.user, isLoadingUser])
 

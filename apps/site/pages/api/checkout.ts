@@ -1,6 +1,6 @@
 import { getURL } from '@lib/helpers'
 import { stripe } from '@lib/stripe'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
@@ -41,34 +41,15 @@ const handler: NextApiHandler = async (req, res) => {
         : product.default_price.id
   }
 
-  const customerResult = await supabaseAdmin
-    .from('customers')
-    .select('*')
-    .eq('id', user.id)
-    .maybeSingle()
-  let customerId: string
+  const stripeCustomerId = await createOrRetrieveCustomer({
+    email: user.email!,
+    uuid: user.id,
+  })
 
-  if (customerResult.error) {
-    throw new Error(customerResult.error.message)
+  if (!stripeCustomerId) {
+    throw new Error(`Something went wrong with createOrRetrieveCustomer.`)
   }
   // if stripe customer doesn't exist, create one and insert it into supabase
-  if (customerResult.data?.id) {
-    if (!customerResult.data.stripe_customer_id) {
-      throw new Error(
-        `User with id ${user.id} has a customer row with no stripe ID associated.`
-      )
-    }
-    customerId = customerResult.data.stripe_customer_id
-  } else {
-    const stripeCustomer = await stripe.customers.create({
-      email: user.email,
-    })
-
-    await supabaseAdmin
-      .from('customers')
-      .insert({ id: user.id, stripe_customer_id: stripeCustomer.id })
-    customerId = stripeCustomer.id
-  }
 
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: [
@@ -77,7 +58,7 @@ const handler: NextApiHandler = async (req, res) => {
         quantity: 1,
       },
     ],
-    customer: customerId,
+    customer: stripeCustomerId,
     mode: 'subscription',
     success_url: `${getURL()}/account/subscriptions`,
     cancel_url: `${getURL()}/takeout`,

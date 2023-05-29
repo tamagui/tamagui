@@ -126,9 +126,9 @@ const UserSettings = () => {
     <YStack space="$8" separator={<Separator />}>
       <YStack space="$6" id="profile"></YStack>
 
-      <YStack space="$6" id="studio-queue">
+      {/* <YStack space="$6" id="studio-queue">
         <QueueContent />
-      </YStack>
+      </YStack> */}
 
       <YStack space="$6" id="sponsorship-status">
         <SizableText size="$8">Sponsorship Status</SizableText>
@@ -161,7 +161,9 @@ const ProfileContent = () => {
 
   return (
     <XStack space="$4" separator={<Separator vertical />}>
-      <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
+      {!!userDetails?.full_name && (
+        <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
+      )}
       <Paragraph theme="alt1">{user?.email}</Paragraph>
     </XStack>
   )
@@ -214,8 +216,8 @@ const SponsorshipContent = () => {
         <SponsorButton />
         <YStack space>
           <Paragraph size="$6">
-            You are not a sponsor. Become a sponsor to get early access to the studio
-            and other upcoming features.
+            You are not a sponsor. Become a sponsor to get early access to the studio and
+            other upcoming features.
           </Paragraph>
           <Paragraph size="$5" theme="alt1">
             If you're a member of an organization that is sponsoring Tamagui, make sure
