@@ -12,7 +12,7 @@ import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Suspense, memo, useEffect, useRef, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -37,6 +37,7 @@ import {
   YStackProps,
   isClient,
   styled,
+  useMedia,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -321,8 +322,15 @@ export default function TakeoutPage() {
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10">
-            <XStack f={1} p="$8" mt={20}>
+          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+            <XStack
+              f={1}
+              p="$8"
+              mt={20}
+              $md={{
+                flexDirection: 'column',
+              }}
+            >
               <YStack mt={-500} ml={20} mr={-20}>
                 <StarterCard />
               </YStack>
@@ -674,7 +682,8 @@ const PurchaseModal = () => {
   )
 }
 
-const StarterCard = () => {
+const StarterCard = memo(() => {
+  const media = useMedia()
   const { subscriptions } = useUser()
   const productId = getStripeProductId('universal-starter')
   const [ref, setRef] = useState<any>()
@@ -685,13 +694,26 @@ const StarterCard = () => {
 
   useEffect(() => {
     if (!ref) return
-    if (isClient) {
-      // @ts-ignore
-      import('../lib/sticksy').then(({ Sticksy }) => {
-        new Sticksy(ref as any)
-      })
+    if (!isClient) return
+
+    if (media.md) {
+      // disable on medium
+      return
     }
-  }, [ref])
+
+    let dispose = () => {}
+
+    // @ts-ignore
+    import('../lib/sticksy').then(({ Sticksy }) => {
+      new Sticksy(ref as any)
+
+      dispose = () => {
+        Sticksy.disableAll()
+      }
+    })
+
+    return dispose
+  }, [ref, media.md])
 
   return (
     <div ref={setRef}>
@@ -707,6 +729,15 @@ const StarterCard = () => {
           x={-100}
           y={100}
           mah="calc(min(95vh, 800px))"
+          $md={{
+            x: 0,
+            y: 0,
+            mb: 280,
+            mah: 'auto',
+            w: '100%',
+            maw: '100%',
+            mt: 160,
+          }}
         >
           <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
 
@@ -732,7 +763,7 @@ const StarterCard = () => {
             </PurchaseButton>
           </YStack>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
               <Paragraph fontFamily="$munro" size="$3" theme="alt2">
                 Drop 0001
@@ -799,7 +830,7 @@ const StarterCard = () => {
       </ThemeTint>
     </div>
   )
-}
+})
 
 const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
@@ -918,11 +949,38 @@ function Box(props) {
 }
 
 const Row = (props: { title: any; description: any; after: any }) => {
+  const media = useMedia()
+  const [showDetail, setShowDetail] = useState(false)
+
   return (
-    <XStack bbw={1} boc="$borderColor">
+    <XStack
+      bbw={1}
+      boc="$borderColor"
+      px="$4"
+      mx="$-4"
+      onPress={() => {
+        if (media.md) {
+          setShowDetail((x) => !x)
+        }
+      }}
+      $md={{
+        cursor: 'pointer',
+        // @ts-ignore
+        hoverStyle: {
+          backgroundColor: 'var(--color2)',
+        },
+      }}
+    >
       <YStack f={1} py="$3" space="$1">
         <MunroP size="$7">{props.title}</MunroP>
-        <Paragraph size="$3" lh={18} theme="alt2">
+        <Paragraph
+          size="$3"
+          lh={18}
+          theme="alt2"
+          $md={{
+            display: showDetail ? 'flex' : 'none',
+          }}
+        >
           {props.description}
         </Paragraph>
       </YStack>
