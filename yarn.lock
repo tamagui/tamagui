@@ -5504,7 +5504,7 @@ __metadata:
     react-native-safe-area-context: 4.5.0
     react-native-screens: ^3.18.2
     react-native-svg: 13.4.0
-    react-native-web: ^0.18.10
+    react-native-web: ^0.19.4
     solito: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -5925,7 +5925,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-reanimated: ^2.14.4
-    react-native-web: ^0.18.10
+    react-native-web: ^0.19.4
     react-refresh: ^0.14.0
     solito: ^2.3.0
     style-loader: ^3.3.3
@@ -6228,7 +6228,7 @@ __metadata:
     null-loader: ^4.0.1
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-native-web: ^0.18.10
+    react-native-web: ^0.19.4
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.3
     typescript: ^5.0.4
@@ -6285,7 +6285,7 @@ __metadata:
     lodash: ^4.17.21
     null-loader: ^4.0.1
     react: ^18.2.0
-    react-native-web: ^0.18.10
+    react-native-web: ^0.19.4
     react-native-web-internals: 1.30.6
     react-native-web-lite: 1.30.6
     react-test-renderer: ^18.2.0
@@ -22639,7 +22639,7 @@ __metadata:
     "@types/node": ^16.11.9
     "@types/react": ^18.0.15
     react: ^18.2.0
-    react-native-web: ^0.18.10
+    react-native-web: ^0.19.4
     reforest: ^0.12.1
   peerDependencies:
     react: "*"

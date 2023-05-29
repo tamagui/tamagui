@@ -7,6 +7,8 @@ import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
   Button,
+  Image,
+  Input,
   Separator,
   TamaguiProvider,
   Theme,
@@ -46,6 +48,22 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
+  return (
+    <Image
+      animation="slow"
+      debug="verbose"
+      enterStyle={{ y: 0, opacity: 0, scale: 2 }}
+      o={1}
+      y={10}
+      scale={1}
+      source={{ uri: 'http://placekitten.com/200/300', width: 200, height: 300 }}
+      width={200}
+      height={300}
+    />
+  )
+
+  return <Button theme="orange">test</Button>
+
   return <SandboxHeading>Hi</SandboxHeading>
 }
 
