@@ -305,6 +305,7 @@ export const getSplitStyles: StyleSplitter = (
        * Copying in the accessibility/prop handling from react-native-web here
        * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
        */
+
       if (keyInit === 'disabled' && valInit === true) {
         usedKeys[keyInit] = 1
         viewProps['aria-disabled'] = true
@@ -862,13 +863,11 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      if ('elevationAndroid' in style) {
-        // @ts-ignore
-        style['elevation'] = style.elevationAndroid
-        // @ts-ignore
-        delete style.elevationAndroid
-      }
+    if ('elevationAndroid' in style) {
+      // @ts-ignore
+      style['elevation'] = style.elevationAndroid
+      // @ts-ignore
+      delete style.elevationAndroid
     }
   }
 
@@ -938,6 +937,49 @@ export const getSplitStyles: StyleSplitter = (
           } as StyleObject)
         }
         classNames[namespace] = identifier
+      }
+    }
+
+    if (viewProps.tabIndex == undefined) {
+      const isFocusable = props.focusable ?? props.accessible
+
+      if (props.focusable) {
+        delete props.focusable
+      }
+
+      const role = viewProps.role
+      if (isFocusable === false) {
+        viewProps.tabIndex = '-1'
+      }
+      if (
+        // These native elements are focusable by default
+        elementType === 'a' ||
+        elementType === 'button' ||
+        elementType === 'input' ||
+        elementType === 'select' ||
+        elementType === 'textarea'
+      ) {
+        if (isFocusable === false || props.accessibilityDisabled === true) {
+          viewProps.tabIndex = '-1'
+        }
+      } else if (
+        // These roles are made focusable by default
+        role === 'button' ||
+        role === 'checkbox' ||
+        role === 'link' ||
+        role === 'radio' ||
+        // @ts-expect-error (consistent with RNW)
+        role === 'textbox' ||
+        role === 'switch'
+      ) {
+        if (isFocusable !== false) {
+          viewProps.tabIndex = '0'
+        }
+      }
+      // Everything else must explicitly set the prop
+      if (isFocusable === true) {
+        viewProps.tabIndex = '0'
+        delete viewProps.focusable
       }
     }
   }
