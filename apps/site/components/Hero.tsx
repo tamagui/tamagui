@@ -192,6 +192,10 @@ const HeroContents = memo(() => {
             ai="center"
             jc="center"
             space="$2"
+            $theme-dark={{
+              backgroundColor: 'red',
+            }}
+            debug="verbose"
             $xxs={{
               // words web-only
               // @ts-ignore

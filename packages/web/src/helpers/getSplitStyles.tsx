@@ -729,12 +729,6 @@ export const getSplitStyles: StyleSplitter = (
 
         const mediaKeyShort = key.slice(1)
 
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          // prettier-ignore
-          // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
-        }
-
         if ('space' in mediaStyle) {
           if (!Array.isArray(hasMedia)) {
             hasMedia = []
@@ -768,6 +762,13 @@ export const getSplitStyles: StyleSplitter = (
 
           const mediaStyles = getStylesAtomic(mediaStyle)
           const priority = numberOfMediaStyles - mediaStyleResolvedCounter
+
+          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+            // prettier-ignore
+            // rome-ignore lint/nursery/noConsoleLog: ok
+            console.log(`  📺 ${key}`, { key, mediaStyle, mediaStyles, props, shouldDoClasses })
+          }
+
           for (const style of mediaStyles) {
             const out = createMediaStyle(
               style,
@@ -824,6 +825,8 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
         }
+
+        continue
       }
 
       if (process.env.TAMAGUI_TARGET === 'native') {
