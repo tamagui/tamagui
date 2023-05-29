@@ -61,8 +61,12 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         radiused
         hoverTheme
         pressTheme
-        focusTheme
         focusable
+        focusStyle={{
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorFocus',
+        }}
         borderWidth={1}
         size={context.size}
         // aria-controls={context.contentId}
@@ -191,7 +195,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       open,
       setOpen,
       onChange,
-      setActiveIndex,
+      activeIndex,
       allowMouseUpRef,
       allowSelectRef,
       setValueAtIndex,
@@ -262,6 +266,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           onPress: handleSelect,
         }
 
+    const isActive = activeIndex === index
+
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -274,12 +280,13 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         ) : (
           <ListItem
             tag="div"
+            componentName={ITEM_NAME}
             backgrounded
             pressTheme
             hoverTheme
+            focusTheme
             cursor="default"
             outlineWidth={0}
-            componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}
             aria-selected={isSelected}
@@ -288,9 +295,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             size={context.size}
-            focusStyle={{
-              backgroundColor: '$backgroundHover',
-            }}
             {...itemProps}
             {...selectItemProps}
           />
