@@ -3,7 +3,7 @@ title: Next.js Guide
 description: How to set up Tamagui with Next.js
 ---
 
-You should run `npm create tamagui` which bootstraps a very nicely configured Next.js app where you can take or leave whatever you want.
+Running `npm create tamagui` let's you choose the `next-expo-solito` starter which is a very nicely configured Next.js app where you can take or leave whatever you want.
 
 Also check out the [source for this site](https://github.com/tamagui/tamagui/tree/master/apps/site) to see a good example of a full featured Next.js website as well, especially the `next.config.js` and `tamagui.config.ts`.
 
@@ -21,9 +21,9 @@ module.exports = function (name, { defaultConfig }) {
   const tamaguiPlugin = withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui'],
-    // build-time generate you CSS styles for better performance
+    // build-time generate CSS styles for better performance
     // we recommend only using this for production so you get reloading during dev mode
-    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null
+    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
   })
 
   return {
@@ -33,15 +33,15 @@ module.exports = function (name, { defaultConfig }) {
 }
 ```
 
-### \pages/\_app.tsx
+### pages/\_app.tsx
 
-Add the reset to get more consistent performance:
+Add the reset to get more consistent styles accross browsers:
 
 ```tsx
 import '@tamagui/core/reset.css'
 ```
 
-And then add this if you are using the `outputCSS` option for build-time CSS generation:
+And then add this if you are using the `outputCSS` option to include the CSS file generated at build-time:
 
 ```tsx
 if (process.env.NODE_ENV === 'production') {
@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 ```
 
-### \pages/\_document.tsx
+### pages/\_document.tsx
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element.
 
@@ -100,7 +100,6 @@ export default class Document extends NextDocument {
     )
   }
 }
-
 ```
 
 ### Themes
@@ -181,8 +180,6 @@ Tamagui includes Server Components support for the Next.js app directory. It sho
 In your `app/layout.tsx` add this:
 
 ```tsx
-'use client'
-
 import { useServerInsertedHTML } from 'next/navigation'
 import React, { useState } from 'react'
 

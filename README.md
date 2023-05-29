@@ -33,7 +33,7 @@ yarn
 While developing, you'll want to run the build watcher in a dedicated terminal:
 
 ```
-yarn watch
+yarn watch:build
 ```
 
 It's easiest to use the `sandbox` project to test and develop things for web:
@@ -57,7 +57,7 @@ Before submitting a PR, check everything works across every combination of envir
 To do so, run the site, first in development to test if it works entirely at runtime:
 
 ```
-# Make sure you have run `yarn watch` before you execute this command.
+# Make sure you have run `yarn watch:build` before you execute this command.
 
 yarn site
 ```

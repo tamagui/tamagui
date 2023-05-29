@@ -6,8 +6,6 @@ import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-let shorthands: Record<string, string> | null = null
-
 /**
  * This is what you want to run before Object.assign() a style onto another.
  * It does the following:
@@ -20,15 +18,15 @@ export function expandStyles(style: Record<string, any>, config = getConfig()) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
-    shorthands = shorthands || (config ? config.shorthands : null)
-    if (shorthands) {
-      key = shorthands[key] || key
+    const valIn = style[key]
+    if (config.shorthands) {
+      key = config.shorthands[key] || key
     }
     if (key in pseudoDescriptors) {
-      res[key] = expandStyles(style[key])
+      res[key] = expandStyles(valIn)
       continue
     }
-    const val = normalizeValueWithProperty(style[key], key)
+    const val = normalizeValueWithProperty(valIn, key)
     // expand react-native shorthands
     const out = expandStyle(key, val)
     if (out) {

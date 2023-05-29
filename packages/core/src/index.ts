@@ -118,45 +118,6 @@ setupHooks({
       }
     }
 
-    // FOCUS
-    // "focusable" indicates that an element may be a keyboard tab-stop.
-    // ported from RNW: TODO move into getSplitStyles
-    if (!viewProps.tabIndex) {
-      const _focusable = focusable !== undefined ? focusable : accessible
-      const role = viewProps.role
-      if (_focusable === false) {
-        viewProps.tabIndex = '-1'
-      }
-      if (
-        // These native elements are focusable by default
-        elementType === 'a' ||
-        elementType === 'button' ||
-        elementType === 'input' ||
-        elementType === 'select' ||
-        elementType === 'textarea'
-      ) {
-        if (_focusable === false || accessibilityDisabled === true) {
-          viewProps.tabIndex = '-1'
-        }
-      } else if (
-        // These roles are made focusable by default
-        role === 'button' ||
-        role === 'checkbox' ||
-        role === 'link' ||
-        role === 'radio' ||
-        role === 'textbox' ||
-        role === 'switch'
-      ) {
-        if (_focusable !== false) {
-          viewProps.tabIndex = '0'
-        }
-      }
-      // Everything else must explicitly set the prop
-      if (_focusable === true) {
-        viewProps.tabIndex = '0'
-      }
-    }
-
     return viewProps
   },
 

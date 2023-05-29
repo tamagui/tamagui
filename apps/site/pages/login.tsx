@@ -1,9 +1,10 @@
 import { getAuthLayout } from '@components/layouts/AuthLayout'
-import { NextSeo } from 'next-seo'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
+import { NextSeo } from 'next-seo'
+import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
 
@@ -23,6 +24,7 @@ export default function SignInPage() {
 }
 
 function SignIn() {
+  const router = useRouter()
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -77,11 +79,19 @@ function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
+    const redirectTo = `${window.location.origin}/login?${new URLSearchParams(
+      typeof router.query.redirect_to === 'string'
+        ? {
+            redirect_to: router.query.redirect_to,
+          }
+        : undefined
+    ).toString()}`
     setLoading(true)
+    
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/login`,
+        redirectTo,
         scopes: 'read:org',
       },
     })

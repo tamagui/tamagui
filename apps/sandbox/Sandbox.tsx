@@ -16,7 +16,6 @@ import {
   getStylesAtomic,
 } from 'tamagui'
 
-import { CustomButtonDemo } from './CustomButton'
 import config from './tamagui.config'
 
 // useful for debugging why things render:
@@ -59,13 +58,14 @@ const SandboxInner = () => {
       hoverStyle={{
         height: 100,
       }}
-      $dark={{
+      $theme-dark={{
         width: 100,
         height: 200,
         backgroundColor: 'red',
       }}
     />
   )
+  return <SandboxHeading>Hi</SandboxHeading>
 }
 
 // function TestAnimatePresence() {

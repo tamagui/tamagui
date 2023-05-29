@@ -1,16 +1,19 @@
-import { ScopedProps } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
 import {
   GetProps,
-  TamaguiElement,
-  isTamaguiElement,
+  SizeTokens,
+  createStyledContext,
   styled,
   withStaticProperties,
 } from '@tamagui/web'
-import React, { cloneElement, forwardRef } from 'react'
+
+const CardContext = createStyledContext({
+  size: '$true' as SizeTokens,
+})
 
 export const CardFrame = styled(ThemeableStack, {
   name: 'Card',
+  context: CardContext,
 
   variants: {
     unstyled: {
@@ -38,6 +41,7 @@ export const CardFrame = styled(ThemeableStack, {
 
 export const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
+  context: CardContext,
 
   variants: {
     unstyled: {
@@ -105,29 +109,8 @@ export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>
 export type CardProps = GetProps<typeof CardFrame>
 
-export const Card = withStaticProperties(
-  CardFrame.styleable<CardProps>(
-    forwardRef<TamaguiElement, ScopedProps<CardProps, 'Card'>>(
-      ({ __scopeCard, children, ...props }, ref) => {
-        return (
-          <CardFrame ref={ref} {...props}>
-            {React.Children.map(children, (child) => {
-              // @ts-ignore
-              if (isTamaguiElement(child) && !child.props.size) {
-                return cloneElement(child, {
-                  size: props.size,
-                })
-              }
-              return child
-            })}
-          </CardFrame>
-        )
-      }
-    )
-  ),
-  {
-    Header: CardHeader,
-    Footer: CardFooter,
-    Background: CardBackground,
-  }
-)
+export const Card = withStaticProperties(CardFrame, {
+  Header: CardHeader,
+  Footer: CardFooter,
+  Background: CardBackground,
+})

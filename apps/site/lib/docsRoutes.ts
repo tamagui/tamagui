@@ -69,7 +69,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Stacks', route: '/docs/components/stacks' },
       { title: 'Headings', route: '/docs/components/headings' },
-      { title: 'Paragraph', route: '/docs/components/text' },
+      { title: 'Text', route: '/docs/components/text' },
     ],
   },
 

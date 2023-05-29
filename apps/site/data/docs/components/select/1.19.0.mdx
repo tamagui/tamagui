@@ -27,10 +27,10 @@ demoName: Select
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Select } from 'tamagui' // or from '@tamagui/select'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -58,9 +58,9 @@ export default () => (
   See below for docs.
 </Notice>
 
-### API
+## API Reference
 
-#### &lt;Select /&gt;
+### Select
 
 Contains every component for the select:
 
@@ -129,11 +129,11 @@ Contains every component for the select:
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### Select.Trigger
 
 Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
 
-#### &lt;Value /&gt;
+#### Select.Value
 
 Extends [Paragraph](/docs/components/text), adding:
 
@@ -147,23 +147,23 @@ Extends [Paragraph](/docs/components/text), adding:
   ]}
 />
 
-#### &lt;Content /&gt;
+#### SelectContent
 
 Main container for Select content, used to contain the up/down arrows, no API beyond children.
 
-#### &lt;ScrollUpButton /&gt;
+#### Select.ScrollUpButton
 
 Inside Content first, displays when you can scroll up, stuck to the top.
 
 Extends [YStack](/docs/components/stacks).
 
-#### &lt;ScrollDownButton /&gt;
+### Select.ScrollDownButton
 
 Inside Content last, displays when you can scroll down, stuck to the bottom.
 
 Extends [YStack](/docs/components/stacks).
 
-#### &lt;Viewport /&gt;
+### Select.Viewport
 
 Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
 
@@ -177,15 +177,15 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
   ]}
 />
 
-#### &lt;Group /&gt;
+### Select.Group
 
 Extends [YStack](/docs/components/stacks). Use only when grouping together items, alongside a Label as the first child.
 
-#### &lt;Label /&gt;
+### Select.Label
 
 Extends [ListItem](/docs/components/list-item). Used to label Groups.
 
-#### &lt;Item /&gt;
+### Select.Item
 
 Extends [ListItem](/docs/components/list-item). Used to add selectable values ot the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
@@ -207,11 +207,11 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values ot
 ]}
 />
 
-#### &lt;ItemText /&gt;
+### Select.ItemText
 
 Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
 
-#### &lt;Sheet /&gt;
+### Select.Sheet
 
 When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
 
@@ -222,7 +222,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from 'tamagui' // or from '@tamagui/select'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">

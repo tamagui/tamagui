@@ -10,7 +10,6 @@ import {
 } from '@tamagui/text'
 import {
   ButtonNestingContext,
-  ColorStyleProp,
   GetProps,
   SizeTokens,
   ThemeableProps,

@@ -314,6 +314,7 @@ export const getSplitStyles: StyleSplitter = (
        * Copying in the accessibility/prop handling from react-native-web here
        * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
        */
+
       if (keyInit === 'disabled' && valInit === true) {
         usedKeys[keyInit] = 1
         viewProps['aria-disabled'] = true
@@ -557,6 +558,7 @@ export const getSplitStyles: StyleSplitter = (
 
     for (const [key, val] of expanded) {
       if (val === undefined) continue
+
       if (key in stylePropsFont && !special && key !== 'fontFamily') {
         specialProps.push([key, val])
         continue
@@ -833,7 +835,10 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (key === 'fontFamily' && !fontFamily && valInit && val) {
-        fontFamily = valInit[0] === '$' ? valInit : val
+        const fam = valInit[0] === '$' ? valInit : val
+        if (fam in conf.fontsParsed) {
+          fontFamily = fam
+        }
       }
 
       if (key in validStyleProps) {
@@ -899,13 +904,11 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
     }
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      if ('elevationAndroid' in style) {
-        // @ts-ignore
-        style['elevation'] = style.elevationAndroid
-        // @ts-ignore
-        delete style.elevationAndroid
-      }
+    if ('elevationAndroid' in style) {
+      // @ts-ignore
+      style['elevation'] = style.elevationAndroid
+      // @ts-ignore
+      delete style.elevationAndroid
     }
   }
 
@@ -977,6 +980,49 @@ export const getSplitStyles: StyleSplitter = (
         classNames[namespace] = identifier
       }
     }
+
+    if (viewProps.tabIndex == undefined) {
+      const isFocusable = props.focusable ?? props.accessible
+
+      if (props.focusable) {
+        delete props.focusable
+      }
+
+      const role = viewProps.role
+      if (isFocusable === false) {
+        viewProps.tabIndex = '-1'
+      }
+      if (
+        // These native elements are focusable by default
+        elementType === 'a' ||
+        elementType === 'button' ||
+        elementType === 'input' ||
+        elementType === 'select' ||
+        elementType === 'textarea'
+      ) {
+        if (isFocusable === false || props.accessibilityDisabled === true) {
+          viewProps.tabIndex = '-1'
+        }
+      } else if (
+        // These roles are made focusable by default
+        role === 'button' ||
+        role === 'checkbox' ||
+        role === 'link' ||
+        role === 'radio' ||
+        // @ts-expect-error (consistent with RNW)
+        role === 'textbox' ||
+        role === 'switch'
+      ) {
+        if (isFocusable !== false) {
+          viewProps.tabIndex = '0'
+        }
+      }
+      // Everything else must explicitly set the prop
+      if (isFocusable === true) {
+        viewProps.tabIndex = '0'
+        delete viewProps.focusable
+      }
+    }
   }
 
   // now we need to reverse viewProps because order is important for wrapped tamagui children:
@@ -985,7 +1031,8 @@ export const getSplitStyles: StyleSplitter = (
   const ks = Object.keys(viewProps)
   const l = ks.length
   for (let i = l - 1; i >= 0; i--) {
-    nextViewProps[ks[i]] = viewProps[ks[i]]
+    const key = ks[i]
+    nextViewProps[key] = viewProps[key]
   }
 
   const result: GetStyleResult = {

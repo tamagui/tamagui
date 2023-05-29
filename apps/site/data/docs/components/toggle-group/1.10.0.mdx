@@ -28,7 +28,7 @@ demoName: ToggleGroup
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { ToggleGroup } from 'tamagui'
@@ -36,16 +36,18 @@ import { ToggleGroup } from 'tamagui'
 export default () => {
   return (
     <ToggleGroup type="single">
-      <ToggleGroup.Item value="dummy"></ToggleGroup.Item>
-      <ToggleGroup.Item value="other"></ToggleGroup.Item>
+      <ToggleGroup.Item value="foo"></ToggleGroup.Item>
+      <ToggleGroup.Item value="bar"></ToggleGroup.Item>
     </ToggleGroup>
   )
 }
 ```
 
-### ToggleGroup props
+## API Reference
 
-ToggleGroup extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
+### ToggleGroup
+
+`ToggleGroup` extends the [Group](/docs/components/group) component. You can disable passing border radius to children by passing `disablePassBorderRadius`. plus:
 
 <PropsTable
   data={[
@@ -114,9 +116,9 @@ ToggleGroup extends the [Group](/docs/components/group) component. You can disab
   ]}
 />
 
-### ToggleGroup Item props
+### ToggleGroup.Item
 
-ToggleGroup extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
+`ToggleGroup.Item` extend Stack views inheriting all the [Tamagui standard props](notion://www.notion.so/docs/intro/props), plus:
 
 <PropsTable
   data={[

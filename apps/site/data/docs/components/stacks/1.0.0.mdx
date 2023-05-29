@@ -29,7 +29,7 @@ demoName: Stacks
   ]}
 />
 
-### Usage
+## Usage
 
 XStack, YStack and ZStack are the base views in Tamagui, they both extend directly off the simple [Stack](/docs/core/stack-and-text) view from `@tamagui/core`.
 
@@ -80,7 +80,9 @@ export default () => (
 )
 ```
 
-### Stacks Props
+## API Reference
+
+### Stack
 
 Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
 
@@ -112,8 +114,8 @@ Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
 Adds a variety of helpers that automatically apply theme values when set to true. Useful for creating higher level components by wrapping with `styled()`:
 
 ```tsx
-import { styled } from 'tamagui' // or @tamagui/core
-import { ThemeableStack } from 'tamagui' // or @tamagui/stacks
+import { styled } from 'tamagui' // or '@tamagui/core'
+import { ThemeableStack } from 'tamagui' // or '@tamagui/stacks'
 
 const MyCard = styled(ThemeableStack, {
   hoverTheme: true,

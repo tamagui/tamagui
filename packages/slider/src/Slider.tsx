@@ -456,8 +456,8 @@ SliderThumb.displayName = THUMB_NAME
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-const Slider = withStaticProperties(
-  React.forwardRef<View, SliderProps>((props: ScopedProps<SliderProps>, forwardedRef) => {
+const SliderComponent = React.forwardRef<View, SliderProps>(
+  (props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,
       min = 0,
@@ -581,22 +581,23 @@ const Slider = withStaticProperties(
           }}
         />
         {/* {isFormControl &&
-          values.map((value, index) => (
-            <BubbleInput
-              key={index}
-              name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
-              value={value}
-            />
-          ))} */}
+        values.map((value, index) => (
+          <BubbleInput
+            key={index}
+            name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
+            value={value}
+          />
+        ))} */}
       </SliderProvider>
     )
-  }),
-  {
-    Track: SliderTrack,
-    TrackActive: SliderTrackActive,
-    Thumb: SliderThumb,
   }
 )
+
+const Slider = withStaticProperties(SliderComponent, {
+  Track: SliderTrack,
+  TrackActive: SliderTrackActive,
+  Thumb: SliderThumb,
+})
 
 Slider.displayName = SLIDER_NAME
 

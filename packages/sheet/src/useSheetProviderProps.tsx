@@ -89,7 +89,12 @@ export function useSheetProviderProps(
 
   const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal)
 
+  const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
+  const screenSize = frameSize / (maxSnapPoint / 100)
+
   const providerProps = {
+    screenSize,
+    maxSnapPoint,
     removeScrollEnabled,
     scrollBridge,
     modal: !!props.modal,

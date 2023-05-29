@@ -20,4 +20,9 @@ export declare const ThemeTint: (props: {
     children: any;
     disable?: boolean;
 }) => JSX.Element;
+export declare const ThemeTintAlt: ({ children, disable, offset, }: {
+    children: any;
+    disable?: boolean | undefined;
+    offset?: number | undefined;
+}) => JSX.Element;
 //# sourceMappingURL=useTint.d.ts.map
