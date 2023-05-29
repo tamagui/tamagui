@@ -1,3 +1,6 @@
+import { platform } from 'os'
+
+import { getConfig } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { MediaQueries, MediaStyleObject, StyleObject } from '../types'
 
@@ -12,36 +15,47 @@ export const createMediaStyle = (
   { property, identifier, rules }: StyleObject,
   mediaKey: string,
   mediaQueries: MediaQueries,
-  negate?: boolean
+  negate?: boolean,
+  priority?: number
 ): MediaStyleObject => {
-  const isThemeMedia = !(mediaKey in mediaQueries)
-  if (!(prefixes && selectors)) {
-    // TODO move this into useMedia calc once there and unify w getMediaImportance
-    const mediaKeys = Object.keys(mediaQueries)
-    if (!isThemeMedia) {
-      prefixes = Object.fromEntries(
-        mediaKeys.map((key, index) => [key, new Array(index + 1).fill(':root').join('')])
-      )
-      selectors = Object.fromEntries(
-        mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
-      )
-      // for themes
-    } else {
-      prefixes = {
-        [mediaKey]: `.t_${mediaKey}`,
-      }
-      selectors = {}
-    }
-  }
-  const precendencePrefix = prefixes[mediaKey]
-  const mediaSelector = selectors[mediaKey]
+  const enableMediaPropOrder = getConfig().enableMediaPropOrder
+  const isThemeMedia = mediaKey.startsWith('theme-')
+  const isPlatformMedia = mediaKey.startsWith('platform-')
+  const isThemeOrPlatform = isThemeMedia || isPlatformMedia
   const negKey = negate ? '0' : ''
   const ogPrefix = identifier.slice(0, identifier.indexOf('-') + 1)
-  const nextIdentifier = `${identifier.replace(
-    ogPrefix,
-    `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
-  )}`
-  if (!isThemeMedia) {
+  if (!isThemeOrPlatform) {
+    if (!enableMediaPropOrder) {
+      if (!(prefixes && selectors)) {
+        // TODO move this into useMedia calc once there and unify w getMediaImportance
+        const mediaKeys = Object.keys(mediaQueries)
+        prefixes = Object.fromEntries(
+          mediaKeys.map((key, index) => [
+            key,
+            new Array(index + 1).fill(':root').join(''),
+          ])
+        )
+        selectors = Object.fromEntries(
+          mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+        )
+      }
+    } else {
+      if (!selectors) {
+        const mediaKeys = Object.keys(mediaQueries)
+        selectors = Object.fromEntries(
+          mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+        )
+      }
+    }
+    const precedencePrefix = enableMediaPropOrder
+      ? new Array(priority).fill(':root').join('')
+      : // @ts-ignore
+        prefixes[mediaKey]
+    const mediaSelector = selectors[mediaKey]
+    const nextIdentifier = `${identifier.replace(
+      ogPrefix,
+      `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
+    )}`
     const screenStr = negate ? 'not all and' : ''
     const mediaQuery = `${screenStr} ${mediaSelector}`
     const styleInner = rules
@@ -53,7 +67,7 @@ export const createMediaStyle = (
       // combine
       styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
     } else {
-      styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+      styleRule = `@media ${mediaQuery} { ${precedencePrefix} ${styleInner} }`
     }
     return {
       property,
@@ -61,10 +75,25 @@ export const createMediaStyle = (
       identifier: nextIdentifier,
     }
   } else {
+    const precedencePrefix = new Array(priority).fill(':root').join('')
+    if (isThemeMedia) {
+      mediaKey = mediaKey.replace('theme-', '')
+    } else {
+      mediaKey = mediaKey.replace('platform-', '')
+    }
+    const nextIdentifier = `${identifier.replace(
+      ogPrefix,
+      `${ogPrefix}${MEDIA_SEP}${mediaKey}${negKey}${MEDIA_SEP}`
+    )}`
     const styleInner = rules
       .map((rule) => rule.replace(identifier, nextIdentifier))
       .join(';')
-    const styleRule = `${precendencePrefix} ${styleInner}`
+    let styleRule
+    if (isThemeMedia) {
+      styleRule = `${precedencePrefix} .t_${mediaKey} ${styleInner}`
+    } else {
+      styleRule = `${precedencePrefix} ${styleInner}`
+    }
     return {
       property,
       rules: [styleRule],

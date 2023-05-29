@@ -35,9 +35,10 @@ export let mediaState: MediaQueryState =
 
 export const mediaQueryConfig: MediaQueries = {}
 export const getMedia = () => mediaState
+// note: mediaKeys also contains $theme- keys
 export const mediaKeys = new Set<string>() // with $ prefix
 export const isMediaKey = (key: string) =>
-  mediaKeys.has(key) || key.split('$')[1] in getConfig().themes
+  mediaKeys.has(key) || key.startsWith('$platform-')
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -51,6 +52,11 @@ export const getMediaKeyImportance = (key: string) => {
     throw new Error('use short key')
   }
   // + 2 because we set base usedKeys=1 in getSplitStyles and all media go above 1
+  const conf = getConfig()
+  if (conf.enableMediaPropOrder) {
+    // media keys are always 2 so they will override other non media keys which are 1
+    return 2
+  }
   return mediaKeysOrdered.indexOf(key) + 2
 }
 
@@ -249,14 +255,14 @@ export function useMediaPropsActive<A extends Object>(
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
-            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed)
+            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed, true)
           }
         }
       } else {
         if (shouldExpandShorthands) {
           key = config.shorthands[key] || key
         }
-        mergeMediaByImportance(next, '', key, val, importancesUsed)
+        mergeMediaByImportance(next, '', key, val, importancesUsed, true)
       }
     }
 
@@ -267,9 +273,10 @@ export function useMediaPropsActive<A extends Object>(
 export const getMediaImportanceIfMoreImportant = (
   mediaKey: string,
   key: string,
-  importancesUsed: Record<string, number>
+  importancesUsed: Record<string, number>,
+  isSizeMedia: boolean
 ) => {
-  const importance = getMediaKeyImportance(mediaKey)
+  const importance = isSizeMedia ? getMediaKeyImportance(mediaKey) : 2
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 
@@ -278,9 +285,15 @@ export function mergeMediaByImportance(
   mediaKey: string,
   key: string,
   value: any,
-  importancesUsed: Record<string, number>
+  importancesUsed: Record<string, number>,
+  isSizeMedia: boolean
 ) {
-  const importance = getMediaImportanceIfMoreImportant(mediaKey, key, importancesUsed)
+  const importance = getMediaImportanceIfMoreImportant(
+    mediaKey,
+    key,
+    importancesUsed,
+    isSizeMedia
+  )
   if (importance === null) {
     return false
   }

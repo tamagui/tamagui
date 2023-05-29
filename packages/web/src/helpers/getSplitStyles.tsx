@@ -1,4 +1,5 @@
 import {
+  currentPlatform,
   isAndroid,
   isClient,
   isRSC,
@@ -116,7 +117,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  debugger
   const theme = themeState.theme!
   conf = conf || getConfig()
   const { shorthands } = conf
@@ -129,6 +129,12 @@ export const getSplitStyles: StyleSplitter = (
   const mediaState = state.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   const propKeys = Object.keys(props)
+  // numberOfMediaStyles and mediaStyleResolvedCounter are used to apply correct importance
+  let mediaStyleResolvedCounter = 0
+  const numberOfMediaStyles: number = propKeys.reduce(
+    (ac, p) => ac + Number(p.startsWith('$')),
+    0
+  )
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
 
@@ -697,6 +703,15 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         if (!val) continue
 
+        const isPlatformMedia = key.startsWith('$platform-')
+
+        if (isPlatformMedia) {
+          const platform = key.slice(10)
+          if (platform !== currentPlatform) {
+            continue
+          }
+        }
+
         hasMedia ||= true
 
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
@@ -733,7 +748,8 @@ export const getSplitStyles: StyleSplitter = (
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
-                usedKeys
+                usedKeys,
+                true
               )
               if (importance) {
                 space = val
@@ -749,8 +765,15 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyles = getStylesAtomic(mediaStyle)
+          const priority = numberOfMediaStyles - mediaStyleResolvedCounter
           for (const style of mediaStyles) {
-            const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
+            const out = createMediaStyle(
+              style,
+              mediaKeyShort,
+              mediaQueryConfig,
+              false,
+              priority
+            )
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
 
             if (!usedKeys[fullKey]) {
@@ -759,12 +782,21 @@ export const getSplitStyles: StyleSplitter = (
               mergeClassName(transforms, classNames, fullKey, out.identifier, true)
             }
           }
-        } else if (mediaState[mediaKeyShort]) {
+          mediaStyleResolvedCounter += 1
+        } else {
+          const isThemeMedia = mediaKeyShort.startsWith('theme-')
+          if (isThemeMedia) {
+            const themeName = mediaKeyShort.slice(6)
+            if (!(themeState.name === themeName || themeState.parentName === themeName)) {
+              continue
+            }
+          }
           for (const subKey in mediaStyle) {
             const importance = getMediaImportanceIfMoreImportant(
               mediaKeyShort,
               subKey,
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (importance === null) continue
             if (subKey === 'space') {
@@ -776,23 +808,14 @@ export const getSplitStyles: StyleSplitter = (
               mediaKeyShort,
               subKey,
               mediaStyle[subKey],
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (key === 'fontFamily') {
               fontFamily = mediaStyle.fontFamily as string
             }
           }
-        } else if (mediaKeyShort in conf.themes) {
-          if (
-            themeState.name === mediaKeyShort ||
-            // add types to the themeState
-            // @ts-ignore
-            themeState.parentName === mediaKeyShort
-          ) {
-            style = { ...style, ...mediaStyle }
-          }
         }
-        continue
       }
 
       if (process.env.TAMAGUI_TARGET === 'native') {

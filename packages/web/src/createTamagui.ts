@@ -14,7 +14,7 @@ import {
   variableToCSS,
 } from './helpers/registerCSSVariable'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
-import { configureMedia } from './hooks/useMedia'
+import { configureMedia, mediaKeys } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import {
@@ -137,6 +137,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     // first, de-dupe and parse them
     for (const themeName in themes) {
+      mediaKeys.add('$theme-' + themeName)
       const rawTheme = themes[themeName] as ThemeParsed
       // dont force referential equality but may need something more consistent than JSON.stringify
       const key = JSON.stringify(rawTheme)
