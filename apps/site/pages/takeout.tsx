@@ -1,4 +1,5 @@
 import { getStripeProductId } from '@lib/products'
+import { stripe } from '@lib/stripe'
 import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -9,10 +10,12 @@ import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
+import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, memo, useEffect, useRef, useState } from 'react'
+import Stripe from 'stripe'
 import {
   AnimatePresence,
   Button,
@@ -20,15 +23,21 @@ import {
   Dialog,
   H1,
   H2,
+  H3,
   H4,
+  Input,
+  Label,
   Paragraph,
+  RadioGroup,
   ScrollView,
   Separator,
   Sheet,
+  SizableText,
   Spacer,
   Stack,
   TabLayout,
   Tabs,
+  TabsProps,
   TabsTabProps,
   Theme,
   Unspaced,
@@ -47,7 +56,14 @@ import { Stage } from '../components/Stage'
 
 const heroHeight = 850
 
-export default function TakeoutPage() {
+type TakeoutPageProps = {
+  starter: {
+    product: Stripe.Product
+    prices: Stripe.Price[]
+  }
+}
+
+export default function TakeoutPage({ starter }: TakeoutPageProps) {
   const store = useTakeoutStore()
   const enable3d = useClientValue(
     isClient && !window.location.search?.includes('disable-3d')
@@ -72,7 +88,7 @@ export default function TakeoutPage() {
         </Head>
       </>
 
-      <PurchaseModal />
+      <PurchaseModal product={starter.product} prices={starter.prices} />
 
       <YStack
         pos="absolute"
@@ -572,11 +588,25 @@ class TakeoutStore extends Store {
   showPurchase = false
 }
 
+function formatPrice(amount: number, currency: string) {
+  return new Intl.NumberFormat('en', {
+    style: 'currency',
+    currency: currency.toUpperCase(),
+  }).format(amount)
+}
 const useTakeoutStore = createUseStore(TakeoutStore)
 
-const PurchaseModal = () => {
-  const productId = getStripeProductId('universal-starter')
+const PurchaseModal = ({
+  product,
+  prices,
+}: {
+  product: Stripe.Product
+  prices: Stripe.Price[]
+}) => {
   const store = useTakeoutStore()
+  const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
+  const [seats, setSeats] = useState(1)
+  const selectedPrice = prices.find((p) => p.id === selectedPriceId)
 
   return (
     <Dialog
@@ -622,47 +652,78 @@ const PurchaseModal = () => {
           w="90%"
           h="90%"
         >
-          <ScrollView space mih="100%" contentContainerStyle={{ minHeight: '100%' }}>
+          <YStack h="100%" space>
             <Dialog.Title size="$11">🥡</Dialog.Title>
-
+            <YStack w="50%">
+              <RadioGroup
+                gap="$2"
+                value={selectedPriceId}
+                onValueChange={setSelectedPriceId}
+                flexDirection="row"
+              >
+                {prices.map((price) => {
+                  const active = price.id === selectedPriceId
+                  return (
+                    <Label
+                      f={1}
+                      htmlFor=""
+                      p="$4"
+                      height="unset"
+                      display="flex"
+                      borderWidth="$0.25"
+                      borderColor={active ? '$color12' : '$color8'}
+                      borderRadius="$4"
+                      space="$4"
+                      ai="flex-start"
+                    >
+                      <RadioGroup.Item size="$6" value={price.id} mt="$2">
+                        <RadioGroup.Indicator />
+                      </RadioGroup.Item>
+                      <YStack space="$1">
+                        <H2>{formatPrice(price.unit_amount! / 100, price.currency)}</H2>
+                        <Paragraph>{price.nickname}</Paragraph>
+                      </YStack>
+                    </Label>
+                  )
+                })}
+              </RadioGroup>
+            </YStack>
             <YStack>
-              <PurchaseSelectTeam />
+              <PurchaseSelectTeam
+                onValueChange={(val) => setSeats(Number(val))}
+                value={seats.toString()}
+              />
             </YStack>
 
-            <YStack space="$4">
-              <H4>Included</H4>
-
-              <Separator />
-
+            <ScrollView space>
               <YStack space="$4">
-                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                  Starter Kit
-                </Point>
-                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                  Starter Kit
-                </Point>
-                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                  Starter Kit
-                </Point>
-                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                  Starter Kit
-                </Point>
-                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                  Starter Kit
-                </Point>
+                <H4>Included</H4>
+
+                <Separator />
+
+                <YStack space="$4">
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                  <Point>Starter Kit</Point>
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                    Starter Kit
+                  </Point>
+                </YStack>
               </YStack>
-            </YStack>
-
-            <Spacer flex />
-
-            <NextLink
-              href={`api/checkout?${new URLSearchParams({
-                product_id: productId,
-              }).toString()}`}
-            >
-              <PurchaseButton>Purchase</PurchaseButton>
-            </NextLink>
-
+            </ScrollView>
             <Unspaced>
               <Dialog.Close asChild>
                 <Button
@@ -675,7 +736,22 @@ const PurchaseModal = () => {
                 />
               </Dialog.Close>
             </Unspaced>
-          </ScrollView>
+            <YStack pb="$8" px="$4" f={1}>
+              <NextLink
+                href={`api/checkout?${new URLSearchParams({
+                  product_id: product.id,
+                }).toString()}`}
+              >
+                <PurchaseButton>
+                  Purchase -{' '}
+                  {formatPrice(
+                    (selectedPrice!.unit_amount! / 100) * seats,
+                    selectedPrice!.currency
+                  )}
+                </PurchaseButton>
+              </NextLink>
+            </YStack>
+          </YStack>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -767,7 +843,7 @@ const StarterCard = memo(() => {
                 store.showPurchase = true
               }}
             >
-              {subscription ? 'View Subscription' : 'Purchase - $350'}
+              {subscription ? 'View Subscription' : 'Purchase'}
             </PurchaseButton>
           </YStack>
 
@@ -854,8 +930,6 @@ function PurchaseButton(props: ButtonProps) {
     <Theme name="pink">
       <Button
         size="$6"
-        fontSize="$8"
-        fontWeight="800"
         backgroundColor="$color9"
         borderWidth={2}
         borderColor="$color10"
@@ -866,7 +940,11 @@ function PurchaseButton(props: ButtonProps) {
           backgroundColor: '$color7',
         }}
         {...props}
-      />
+      >
+        <Button.Text fontSize="$8" fontWeight="800">
+          {props.children}
+        </Button.Text>
+      </Button>
     </Theme>
   )
 }
@@ -1039,7 +1117,10 @@ const tabs = [
   { value: '16' },
 ]
 
-export const PurchaseSelectTeam = () => {
+export const PurchaseSelectTeam = ({
+  value: currentTab,
+  onValueChange: setCurrentTab,
+}: TabsProps) => {
   const [tabRovingState, setTabRovingState] = useState<{
     /**
      * Layout of the Tab user might intend to select (hovering / focusing)
@@ -1059,7 +1140,13 @@ export const PurchaseSelectTeam = () => {
     prevActiveAt: null,
   })
 
-  const [currentTab, setCurrentTab] = useState(tabs[0].value)
+  const [idPreset, setIsPreset] = useState(true)
+
+  const handleChangePresetValue = (value: string) => {
+    setIsPreset(true)
+    setCurrentTab?.(value)
+  }
+
   const setIntentIndicator = (intentAt) =>
     setTabRovingState({ ...tabRovingState, intentAt })
   const setActiveIndicator = (activeAt) =>
@@ -1095,10 +1182,12 @@ export const PurchaseSelectTeam = () => {
     }
   }
 
+  // const usingPresetValues = tabs.find((t) => t.value === currentTab)
+
   return (
     <Tabs
       value={currentTab}
-      onValueChange={setCurrentTab}
+      onValueChange={handleChangePresetValue}
       orientation="horizontal"
       size="$4"
       flexDirection="column"
@@ -1153,6 +1242,35 @@ export const PurchaseSelectTeam = () => {
               <Paragraph>{value}</Paragraph>
             </Tabs.Tab>
           ))}
+          {idPreset ? (
+            <Button
+              onPress={() => {
+                setCurrentTab?.('100')
+                setIsPreset(false)
+                setIntentIndicator(null)
+                setActiveIndicator(null)
+              }}
+              bc="transparent"
+              borderColor="transparent"
+              borderRadius="$2"
+              px="$4"
+            >
+              <Paragraph>Custom</Paragraph>
+            </Button>
+          ) : (
+            <Input
+              backgroundColor="$color3"
+              autoFocus
+              bc="transparent"
+              width={100}
+              borderRadius="$2"
+              value={currentTab}
+              onChangeText={(text) => {
+                setActiveIndicator(null)
+                setCurrentTab?.(text)
+              }}
+            />
+          )}
         </Tabs.List>
       </YStack>
     </Tabs>
@@ -1168,7 +1286,7 @@ const TabsRovingIndicator = ({
       borderRadius="$2"
       position="absolute"
       backgroundColor="$color3"
-      animation="quick"
+      animation="100ms"
       enterStyle={{
         opacity: 0,
       }}
@@ -1183,4 +1301,21 @@ const TabsRovingIndicator = ({
       {...props}
     />
   )
+}
+
+export const getServerSideProps: GetServerSideProps<TakeoutPageProps> = async () => {
+  const productId = getStripeProductId('universal-starter')
+  const [product, { data: prices }] = await Promise.all([
+    stripe.products.retrieve(getStripeProductId('universal-starter')),
+    stripe.prices.list({ product: productId }),
+  ])
+
+  return {
+    props: {
+      starter: {
+        product,
+        prices,
+      },
+    },
+  }
 }
