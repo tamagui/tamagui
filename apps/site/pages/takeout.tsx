@@ -23,7 +23,6 @@ import {
   Dialog,
   H1,
   H2,
-  H3,
   H4,
   Input,
   Label,
@@ -32,7 +31,6 @@ import {
   ScrollView,
   Separator,
   Sheet,
-  SizableText,
   Spacer,
   Stack,
   TabLayout,
@@ -690,7 +688,10 @@ const PurchaseModal = ({
             </YStack>
             <YStack>
               <PurchaseSelectTeam
-                onValueChange={(val) => setSeats(Number(val))}
+                onValueChange={(val) => {
+                  const num = Number(val)
+                  setSeats(Math.max(1, Number(val)))
+                }}
                 value={seats.toString()}
               />
             </YStack>
@@ -1259,13 +1260,13 @@ export const PurchaseSelectTeam = ({
             </Button>
           ) : (
             <Input
-              backgroundColor="$color3"
+              backgroundColor="$color4"
               autoFocus
-              bc="transparent"
               width={100}
               borderRadius="$2"
               value={currentTab}
               onChangeText={(text) => {
+                if (isNaN(Number(text))) return
                 setActiveIndicator(null)
                 setCurrentTab?.(text)
               }}
