@@ -120,7 +120,6 @@ export const SheetImplementationCustom = themeable(
       },
       (value) => {
         if (!driver.isReactNative) return
-        console.warn('setting it to', value)
         at.current = value
         scrollBridge.paneY = value
       }

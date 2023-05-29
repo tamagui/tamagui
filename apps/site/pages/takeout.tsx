@@ -573,7 +573,7 @@ const PurchaseModal = () => {
         store.showPurchase = val
       }}
     >
-      <Dialog.Adapt when="sm" platform="touch">
+      <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
             <Dialog.Adapt.Contents />
@@ -1049,7 +1049,7 @@ export const PurchaseSelectTeam = () => {
               value={value}
               onInteraction={handleOnInteraction}
             >
-              {value}
+              <Paragraph>{value}</Paragraph>
             </Tabs.Tab>
           ))}
         </Tabs.List>
