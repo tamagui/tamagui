@@ -23,6 +23,7 @@ import {
   Dialog,
   H1,
   H2,
+  H3,
   H4,
   Input,
   Label,
@@ -663,12 +664,13 @@ const PurchaseModal = ({
         >
           <YStack h="100%" space>
             <Dialog.Title size="$11">🥡</Dialog.Title>
-            <YStack w="50%">
+            <YStack>
               <RadioGroup
-                gap="$2"
+                space="$4"
                 value={selectedPriceId}
                 onValueChange={setSelectedPriceId}
                 flexDirection="row"
+                flexWrap="wrap"
               >
                 {prices.map((price) => {
                   const active = price.id === selectedPriceId
@@ -697,14 +699,16 @@ const PurchaseModal = ({
                 })}
               </RadioGroup>
             </YStack>
-            <YStack>
-              <PurchaseSelectTeam
-                onValueChange={(val) => {
-                  const num = Number(val)
-                  setSeats(Math.max(1, Number(val)))
-                }}
-                value={seats.toString()}
-              />
+            <YStack space="$2">
+              <H3>Seats</H3>
+              <YStack ai="flex-start">
+                <PurchaseSelectTeam
+                  onValueChange={(val) => {
+                    setSeats(Math.max(1, Number(val)))
+                  }}
+                  value={seats.toString()}
+                />
+              </YStack>
             </YStack>
 
             <ScrollView space>
@@ -752,6 +756,8 @@ const PurchaseModal = ({
               <NextLink
                 href={`api/checkout?${new URLSearchParams({
                   product_id: product.id,
+                  price_id: selectedPriceId,
+                  quantity: seats.toString(),
                 }).toString()}`}
               >
                 <PurchaseButton>
@@ -1208,7 +1214,6 @@ export const PurchaseSelectTeam = ({
       p="$2"
       bc="$backgroundStrong"
       br="$3"
-      als="center"
     >
       <YStack>
         <AnimatePresence>

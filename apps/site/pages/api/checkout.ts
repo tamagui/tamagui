@@ -19,6 +19,13 @@ const handler: NextApiHandler = async (req, res) => {
   }
   let priceId: string
 
+  const quantity =
+    typeof req.query.quantity === 'string' &&
+    !isNaN(Number(req.query.quantity)) &&
+    Number(req.query.quantity) > 0
+      ? Number(req.query.quantity)
+      : 1
+
   // if there's a price id, just use that
   if (typeof req.query.price_id === 'string') {
     priceId = req.query.price_id
@@ -55,7 +62,7 @@ const handler: NextApiHandler = async (req, res) => {
     line_items: [
       {
         price: priceId,
-        quantity: 1,
+        quantity,
       },
     ],
     customer: stripeCustomerId,
