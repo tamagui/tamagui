@@ -1631,7 +1631,7 @@ export type AnimatedNumberStrategy =
 export type UniversalAnimatedNumber<A> = {
   getInstance(): A
   getValue(): number
-  setValue(next: number, config?: AnimatedNumberStrategy): void
+  setValue(next: number, config?: AnimatedNumberStrategy, onFinished?: () => void): void
   stop(): void
 }
 

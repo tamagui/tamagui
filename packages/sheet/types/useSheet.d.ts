@@ -1,5 +1,7 @@
 /// <reference types="react" />
 export declare const useSheet: () => {
+    screenSize: number;
+    maxSnapPoint: number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;

@@ -32,7 +32,9 @@ export const SponsorButton = (props: { tiny?: boolean }) => {
   return (
     <NextLink target="_blank" href="https://github.com/sponsors/natew">
       {props.tiny ? (
-        <TooltipSimple label="Support OSS development of Tamagui">{el}</TooltipSimple>
+        <TooltipSimple delay={0} restMs={25} label="Support OSS development of Tamagui">
+          {el}
+        </TooltipSimple>
       ) : (
         el
       )}

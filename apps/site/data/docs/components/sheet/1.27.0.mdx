@@ -28,10 +28,10 @@ demoName: Sheet
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Sheet } from 'tamagui' // or from '@tamagui/sheet'
+import { Sheet } from 'tamagui' // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
@@ -42,11 +42,11 @@ export default () => (
 )
 ```
 
-### Unstyled
+## Unstyled
 
 Adding the `unstyled` prop to your Handle, Overlay or Frame will turn off the default styles allowing you to customize without having to override any of the built-in styling.
 
-### Headless with `createSheet`
+## Headless with `createSheet`
 
 Using the `createSheet` export, you can create a fully custom sheet without using any of the default styles. This is similar to `unstyled`, but it lets you also control the `open` variant.
 
@@ -96,7 +96,7 @@ export const Sheet = createSheet({
 })
 ```
 
-### Native support
+## Native support
 
 Sheets now support rendering to a native iOS sheet, while still rendering any of your React Native content inside of them.
 
@@ -123,9 +123,9 @@ export default (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Sheet /&gt;
+### Sheet
 
 Contains every component for the sheet.
 
@@ -216,11 +216,11 @@ Contains every component for the sheet.
   ]}
 />
 
-#### &lt;Overlay /&gt;
+### Sheet.Overlay
 
 Displays behind Frame. Extends [YStack](/docs/components/stacks).
 
-#### &lt;Frame /&gt;
+### Sheet.Frame
 
 Contains the content. Extends [YStack](/docs/components/stacks).
 
@@ -234,13 +234,13 @@ Contains the content. Extends [YStack](/docs/components/stacks).
   ]}
 />
 
-#### &lt;Handle /&gt;
+### Sheet.Handle
 
 Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overridden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
 
-#### &lt;ScrollView /&gt;
+### Sheet.ScrollView
 
 Allows scrolling within Sheet. Extends [Scrollview](/docs/components/scroll-view).
 
@@ -264,6 +264,6 @@ Use this to control the sheet programatically.
   ]}
 />
 
-### Notes
+## Notes
 
 For Android you need to manually re-propagate any context when using `modal`. This is because React Native doesn't support portals yet.

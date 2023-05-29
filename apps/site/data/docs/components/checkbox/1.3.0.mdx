@@ -28,7 +28,7 @@ demoName: Checkbox
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { Check } from '@tamagui/lucide-icons'
@@ -43,11 +43,11 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### Checkbox
+### Checkbox
 
-`Checkbox` extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+`Checkbox` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
 
 <PropsTable
   data={[
@@ -112,6 +112,27 @@ export default () => (
       required: false,
       type: `boolean`,
       description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Checkbox.Indicator
+
+`Checkbox.Indicator` extend ThemeableStack inheriting all the [props](/docs/components/stacks#themeablestack), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'forceMount',
+      required: false,
+      type: `boolean`,
+      description: `Used to force mounting when more control is needed.`,
+    },
+    {
+      name: 'disablePassStyles',
+      required: false,
+      type: 'boolean',
+      description: `Used to disable passing styles down to children.`,
     },
   ]}
 />

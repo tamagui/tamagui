@@ -11,6 +11,8 @@ export declare const createSheetContext: <ContextValueType extends object | null
 } | undefined) => ContextValueType], createSheetScope: import("@tamagui/create-context").CreateScope;
 export declare const SheetProvider: {
     (props: {
+        screenSize: number;
+        maxSnapPoint: number;
         removeScrollEnabled: boolean | undefined;
         scrollBridge: import("./types").ScrollBridge;
         modal: boolean;
@@ -31,6 +33,8 @@ export declare const SheetProvider: {
         onlyShowFrame: boolean;
     } & {
         scope: import("@tamagui/create-context").Scope<{
+            screenSize: number;
+            maxSnapPoint: number;
             removeScrollEnabled: boolean | undefined;
             scrollBridge: import("./types").ScrollBridge;
             modal: boolean;
@@ -54,6 +58,8 @@ export declare const SheetProvider: {
     }): JSX.Element;
     displayName: string;
 }, useSheetContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
+    screenSize: number;
+    maxSnapPoint: number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;
@@ -75,6 +81,8 @@ export declare const SheetProvider: {
 } | undefined>, options?: {
     warn?: boolean | undefined;
     fallback?: Partial<{
+        screenSize: number;
+        maxSnapPoint: number;
         removeScrollEnabled: boolean | undefined;
         scrollBridge: import("./types").ScrollBridge;
         modal: boolean;
@@ -95,6 +103,8 @@ export declare const SheetProvider: {
         onlyShowFrame: boolean;
     }> | undefined;
 } | undefined) => {
+    screenSize: number;
+    maxSnapPoint: number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: import("./types").ScrollBridge;
     modal: boolean;

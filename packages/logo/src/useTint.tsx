@@ -64,3 +64,23 @@ export const ThemeTint = (props: { children: any; disable?: boolean }) => {
     </Theme>
   )
 }
+
+export const ThemeTintAlt = ({
+  children,
+  disable,
+  offset = 2,
+}: {
+  children: any
+  disable?: boolean
+  offset?: number
+}) => {
+  const tint = useTint()
+  const curTint = tint.tints[(tint.tintIndex + offset) % tint.tints.length]
+
+  return (
+    <Theme name={disable ? null : curTint}>
+      {/*  */}
+      {useMemo(() => children, [children])}
+    </Theme>
+  )
+}

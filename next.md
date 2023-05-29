@@ -1,3 +1,5 @@
+- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
+
 - doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
 
 - add just early return hooks eslint check
@@ -16,12 +18,25 @@ high level:
   - income:
     - font packages + font package builder ui
     - merch
-    - outlined theme
-    - other theme drops (gumroad cheap)
+    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
     - auth/account/profile drop
     - better monorepo pro drop
 
 ---
+
+- $web / $native / $ios / $android
+
+starter
+- feed
+- more work on profile
+- cropper on web, potentially
+- add users to github repo
+- template github action
+
+takeout
+- checkout
+- page for showing all purchased products / subscriptions
+- discord integration
 
 studio
 - templates working
@@ -495,6 +510,47 @@ const SheetOverlay = styled(Sheet.Overlay, {
 ---
 
 ## Descendent Styles
+
+ideas:
+
+```tsx
+const Child = styled(Stack, {
+  $Parent: [
+    {
+      backgroundColor: 'green'
+    },
+    {
+      when: 'small',
+      backgroundColor: 'red',
+    },
+  ],
+})
+```
+
+```tsx
+styled(Stack, {
+  $sm$dark$Parent: { ... }
+})
+```
+
+```tsx
+const Child = styled(Stack, {
+  $sm: { ... },
+  $dark: { ... },
+  $Parent: { ... },
+  compounds: [
+    {
+       media: '$sm',
+       theme: 'dark',
+       parent: 'Parent',
+       styles: {
+          // ...
+       }
+    }
+  ]
+});
+```
+
 
 ### On the parent:
 

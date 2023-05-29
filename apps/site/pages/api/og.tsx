@@ -191,17 +191,19 @@ const BackgroundedOg = ({
         <Logo pos="left" source={logo} />
       )}
 
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          right: 0,
-          height: 500,
-          transform: `rotate(12deg) scale(1.5)`,
-          background: `linear-gradient(0deg, black, transparent)`,
-        }}
-      />
+      {hasDemo && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            right: 0,
+            height: 500,
+            transform: `rotate(12deg) scale(1.5)`,
+            background: `linear-gradient(0deg, black, transparent)`,
+          }}
+        />
+      )}
 
       <div
         style={{

@@ -28,7 +28,7 @@ export const Portal = ({ host = globalThis.document?.body, ...props }: PortalPro
     setHostElement(host)
   }, [host])
 
-  if (hostElement) {
+  if (hostElement && props.children) {
     return createPortal(contents, hostElement)
   }
 

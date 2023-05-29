@@ -98,8 +98,13 @@ export function useAnimatedNumber(
       state.current.composite?.stop()
       state.current.composite = null
     },
-    setValue(next: number, { type, ...config } = { type: 'spring' }) {
+    setValue(next: number, { type, ...config } = { type: 'spring' }, onFinish) {
       const val = state.current.val
+
+      const handleFinish = onFinish
+        ? ({ finished }) => (finished ? onFinish() : null)
+        : undefined
+
       if (type === 'direct') {
         val.setValue(next)
       } else if (type === 'spring') {
@@ -109,7 +114,7 @@ export function useAnimatedNumber(
           toValue: next,
           useNativeDriver: !isWeb,
         })
-        composite.start()
+        composite.start(handleFinish)
         state.current.composite = composite
       } else {
         state.current.composite?.stop()
@@ -118,7 +123,7 @@ export function useAnimatedNumber(
           toValue: next,
           useNativeDriver: !isWeb,
         })
-        composite.start()
+        composite.start(handleFinish)
         state.current.composite = composite
       }
     },

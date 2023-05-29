@@ -163,32 +163,29 @@ const resolveVariants: StyleResolver = (
   avoidDefaultProps = false,
   debug
 ) => {
-  const variant = variants?.[key]
-
-  if (!variant || value === undefined) {
+  if (!(key in variants) || value === undefined) {
     return
   }
 
-  let variantValue = getVariantDefinition(variant, key, value, conf)
+  let variantValue = getVariantDefinition(variants[key], key, value, conf)
 
-  if (process.env.NODE_ENV === 'development') {
-    if (debug === 'verbose') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('resolve variant', { key, value, variantValue })
-    }
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log('resolve variant', { key, value, variantValue })
   }
 
   if (!variantValue) {
-    // variant at key exists, but no matching variant value, return nothing
-    if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.validStyles && key in staticConfig.validStyles) return
-      // don't warn on missing boolean values, common to only one of true/false
-      if (value === true || value === false) return
-      const name = staticConfig.componentName || '[UnnamedComponent]'
-      console.warn(
-        `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
-      )
-    }
+    // variant at key exists, but no matching variant
+    // disabling warnings, its fine to pass through, could re-enable later somehoiw
+    // if (process.env.NODE_ENV === 'development') {
+    //   // don't warn on missing booleans
+    //   if (typeof value !== 'boolean') {
+    //     const name = staticConfig.componentName || '[UnnamedComponent]'
+    //     console.warn(
+    //       `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
+    //     )
+    //   }
+    // }
     return
   }
 

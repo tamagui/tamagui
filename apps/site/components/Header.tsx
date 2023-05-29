@@ -8,7 +8,6 @@ import {
   Adapt,
   Button,
   Paragraph,
-  ParagraphProps,
   Popover,
   Separator,
   Text,
@@ -51,31 +50,50 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        className={`ease-out all ms200 ${
-          isScrolled ? 'blur-light hover-highlights ' : ''
-        }`}
-        bbc="$borderColor"
-        zi={50000}
         // @ts-ignore
         pos="fixed"
         top={0}
-        my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? '$1' : 0}
-        py={isScrolled ? '$0' : '$2'}
+        ai="center"
+        jc="center"
+        zi={50000000}
+        $gtSm={{
+          px: '$4',
+        }}
       >
-        <YStack o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
-        <ContainerLarge>
-          <ThemeTint>
-            {React.useMemo(
-              () => (
-                <HeaderContents floating {...props} />
-              ),
-              [props]
-            )}
-          </ThemeTint>
-        </ContainerLarge>
+        <XStack
+          className={`ease-out all ms200 ${
+            isScrolled ? 'blur-medium hover-highlights ' : ''
+          }`}
+          bbc="$borderColor"
+          elevation="$0"
+          py="$2"
+          y={0}
+          ov="hidden"
+          width="100%"
+          maw={1120}
+          {...(isScrolled && {
+            $gtSm: {
+              py: '$1',
+              y: 5,
+              elevation: '$3',
+              br: '$10',
+            },
+          })}
+        >
+          <YStack o={isScrolled ? 0.7 : 0} fullscreen bc="$background" />
+          <ContainerLarge>
+            <ThemeTint>
+              {React.useMemo(
+                () => (
+                  <HeaderContents floating {...props} />
+                ),
+                [props]
+              )}
+            </ThemeTint>
+          </ContainerLarge>
+        </XStack>
       </XStack>
       <YStack height={54} w="100%" />
     </>
@@ -87,8 +105,7 @@ const tooltipDelay = { open: 3000, close: 100 }
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isInSubApp =
-    router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
+  const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
   // const user = useUser()
 
@@ -117,9 +134,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <TooltipGroup delay={tooltipDelay}>
           <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
-            </XGroup.Item>
+            {!isTakeout && (
+              <XGroup.Item>
+                <ThemeToggle borderWidth={0} chromeless />
+              </XGroup.Item>
+            )}
             <XGroup.Item>
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
@@ -173,12 +192,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           <HeaderLinks {...props} />
 
           <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-            <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-              <VisuallyHidden>
-                <Text>Github</Text>
-              </VisuallyHidden>
-              <GithubIcon width={23} />
-            </YStack>
+            <TooltipSimple delay={0} restMs={25} label="Star on Github">
+              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                <VisuallyHidden>
+                  <Text>Github</Text>
+                </VisuallyHidden>
+                <GithubIcon width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
 
           <SmallMenu />
@@ -242,18 +263,20 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {/* <NextLink prefetch={false} href="/takeout">
-        <TooltipSimple delay={0} restMs={25} label="Takeout">
-          <HeadAnchor
-            size="$8"
-            $sm={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            🥡
-          </HeadAnchor>
-        </TooltipSimple>
-      </NextLink> */}
+      {process.env.NODE_ENV === 'development' && (
+        <NextLink prefetch={false} href="/takeout">
+          <TooltipSimple delay={0} restMs={25} label="Takeout">
+            <HeadAnchor
+              size="$8"
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              🥡
+            </HeadAnchor>
+          </TooltipSimple>
+        </NextLink>
+      )}
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
@@ -285,6 +308,10 @@ const SmallMenu = React.memo(() => {
         <Button
           size="$3"
           chromeless
+          circular
+          hoverStyle={{
+            bc: 'transparent',
+          }}
           noTextWrap
           onPress={() => setOpen(!open)}
           theme={open ? 'alt1' : undefined}

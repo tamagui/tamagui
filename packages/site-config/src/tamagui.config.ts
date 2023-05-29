@@ -11,8 +11,9 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
-const gluspFont = createGluspFont()
-const munroFont = createMunroFont()
+export const gluspFont = createGluspFont()
+export const munroFont = createMunroFont()
+
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
@@ -60,7 +61,6 @@ const bodyFont = createInterFont(
   {
     weight: {
       1: '400',
-      7: '600',
     },
   },
   {

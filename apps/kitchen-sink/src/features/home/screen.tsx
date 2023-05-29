@@ -1,8 +1,6 @@
-import { Theme, getConfig, getVariable, styled, useThemeName } from '@tamagui/core'
-import { SelectDemo } from '@tamagui/demos'
+import { getVariable } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { setupNativeSheet } from '@tamagui/sheet'
-import { memo } from 'react'
 import { ScrollView } from 'react-native'
 import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -17,22 +15,12 @@ import {
   Switch,
   YGroup,
   YStack,
-  updateTheme,
   useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
 setupNativeSheet('ios', ModalView)
-
-const SubComponent = memo(() => {
-  return (
-    <>
-      <Button>test me</Button>
-      <YStack w={100} h={100} bc="$background" />
-    </>
-  )
-})
 
 export function HomeScreen() {
   return (

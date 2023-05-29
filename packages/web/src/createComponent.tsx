@@ -134,7 +134,14 @@ export function createComponent<
     }
   })()
 
-  const { isHOC } = staticConfig
+  const {
+    Component,
+    isText,
+    isZStack,
+    isHOC,
+    validStyles = {},
+    variants = {},
+  } = staticConfig
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
   let defaultProps: any
@@ -164,24 +171,28 @@ export function createComponent<
     // const time = t.start({ quiet: true })
 
     // set variants through context
-    let contextProps: Object | undefined
+    // order is after default props but before props
+    let styledContextProps: Object | undefined
     let overriddenContextProps: Object | undefined
     const { context } = staticConfig
     if (context) {
       const contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
-        const propVal = propsIn[key] || propsIn[inverseShorthands[key]]
+        const propVal =
+          // because its after default props but before props this annoying amount of checks
+          propsIn[key] ||
+          propsIn[inverseShorthands[key]] ||
+          defaultProps[key] ||
+          defaultProps[inverseShorthands[key]]
         // if not set, use context
         if (propVal == null) {
-          if (
-            contextValue &&
-            // is valid style or variant allow it
-            ((staticConfig.validStyles && key in staticConfig.validStyles) ||
-              (staticConfig.variants && key in staticConfig.variants))
-          ) {
-            contextProps ||= {}
-            contextProps[key] = contextValue[key]
+          if (contextValue) {
+            const isValidValue = key in validStyles || key in variants
+            if (isValidValue) {
+              styledContextProps ||= {}
+              styledContextProps[key] = contextValue[key]
+            }
           }
         }
         // if set in props, update context
@@ -193,8 +204,8 @@ export function createComponent<
     }
 
     // context overrides defaults but not props
-    const curDefaultProps = contextProps
-      ? { ...defaultProps, ...contextProps }
+    const curDefaultProps = styledContextProps
+      ? { ...defaultProps, ...styledContextProps }
       : defaultProps
 
     // React inserts default props after your props for some reason...
@@ -208,7 +219,6 @@ export function createComponent<
     }
 
     const debugProp = props['debug'] as DebugProp
-    const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
 
     // conditional but if ever true stays true
@@ -387,7 +397,7 @@ export function createComponent<
             elementType,
             themeStateProps,
             themeState,
-            styledContext: { contextProps, overriddenContextProps },
+            styledContext: { contextProps: styledContextProps, overriddenContextProps },
           })
           console.groupEnd()
         }

@@ -253,7 +253,9 @@ export const useChangeThemeEffect = (
           console.log(` 🔸 onChange`, themeManager.id, logs)
         }
         if (shouldUpdate) {
-          setThemeState(createState)
+          queueMicrotask(() => {
+            setThemeState(createState)
+          })
         }
       }, themeManager.id)
 
