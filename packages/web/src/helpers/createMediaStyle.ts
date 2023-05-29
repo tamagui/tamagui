@@ -1,5 +1,3 @@
-import { platform } from 'os'
-
 import { getConfig } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { MediaQueries, MediaStyleObject, StyleObject } from '../types'
