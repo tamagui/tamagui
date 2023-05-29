@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
+import { DialogDemo } from '@tamagui/demos'
 import { SandboxHeading } from '@tamagui/sandbox-ui'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
@@ -54,13 +55,7 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return (
-    <Theme name="blue">
-      <Stack theme="orange" componentName="Button" w={100} h={100} bc="$background">
-        <Stack w={50} h={50} bc="$color" />
-      </Stack>
-    </Theme>
-  )
+  return <DialogDemo />
 
   return <Button theme="orange">test</Button>
 
