@@ -6,17 +6,11 @@ import {
   TamaguiComponentExpectingVariants,
   mergeEvent,
   useDidFinishSSR,
+  useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import {
-  FunctionComponent,
-  RefAttributes,
-  forwardRef,
-  memo,
-  useLayoutEffect,
-  useMemo,
-} from 'react'
+import { FunctionComponent, RefAttributes, forwardRef, memo, useMemo } from 'react'
 import { Platform, View } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -97,7 +91,7 @@ export function createSheet<
         [context.open, propsIn, context.hidden, context.dismissOnOverlayPress]
       )
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         context.onOverlayComponent?.(element)
       }, [element])
 
