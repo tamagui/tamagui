@@ -66,6 +66,16 @@ config.plugins.push(
 
 config.resolve.alias['react-native$'] = 'react-native-web'
 // or react-native-web-lite if using our more modern but less supported version
+
+// set up web extensions
+compiler.options.resolve.extensions = [
+  '.web.tsx',
+  '.web.ts',
+  '.web.js',
+  '.ts',
+  '.tsx',
+  '.js',
+]
 ```
 
 #### Vite
@@ -79,6 +89,25 @@ config.define = {
 
 config.resolve.alias['react-native'] = 'react-native-web'
 // or react-native-web-lite if using our more modern but less supported version
+
+// set up web extensions
+config.optimizeDeps.esbuildOptions = {
+  ...config.optimizeDeps.esbuildOptions,
+  resolveExtensions: [
+    '.web.js',
+    '.web.ts',
+    '.web.tsx',
+    '.js',
+    '.jsx',
+    '.json',
+    '.ts',
+    '.tsx',
+    '.mjs',
+  ],
+  loader: {
+    '.js': 'jsx',
+  },
+}
 ```
 
 ### Native
