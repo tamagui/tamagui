@@ -1,3 +1,35 @@
+---
+
+via #gwun:
+
+- if you have light_blue_Button but no light_blue theme, causes update issues when you switch
+
+- defining a theme and componentName on a Stack/View should make the instantiated components inside inherit:
+
+  ```tsx
+  <Theme name=(theme}>
+    <YStack
+      theme="none"
+      componentName="GaContainer"
+      backgroundColor="$background"?
+      <GaScrollView bg="$backgroundSoft"›
+      </GaScrollView>
+    </YStack>
+  </Theme>
+  ```
+
+  After upgrading to latest, just on native, the "$background" in the
+  YStack works as expected but the child <GaScrollView
+  bg="$backgroundSoft" does not. Same applies if replaced with a
+  <Stack> or anv other component.
+
+- <Theme name="blue"><Theme reset><Button theme="orange" /></Theme></Theme>
+
+something like this i believe, where native is correct but web the button isn't orange
+
+---
+
+
 - modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
 
 - doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing

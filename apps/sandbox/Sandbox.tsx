@@ -10,6 +10,7 @@ import {
   Image,
   Input,
   Separator,
+  Stack,
   TamaguiProvider,
   Theme,
   XStack,
@@ -27,9 +28,13 @@ if (typeof require !== 'undefined') {
 }
 
 export const Sandbox = () => {
+  const kitchenSink = new URLSearchParams(window.location.search).get('kitchen')
   const demoComponentName = new URLSearchParams(window.location.search).get('demo')
   const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
-  const Component = demoComponentName
+  const Component = kitchenSink
+    ? // solito breaking
+      () => null //require('../kitchen-sink/src/features/home/screen').HomeScreen
+    : demoComponentName
     ? Demos[
         demoComponentName.endsWith('Demo')
           ? demoComponentName
@@ -38,6 +43,7 @@ export const Sandbox = () => {
     : useCaseComponentName
     ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
+
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">
@@ -49,17 +55,11 @@ export const Sandbox = () => {
 
 const SandboxInner = () => {
   return (
-    <Image
-      animation="slow"
-      debug="verbose"
-      enterStyle={{ y: 0, opacity: 0, scale: 2 }}
-      o={1}
-      y={10}
-      scale={1}
-      source={{ uri: 'http://placekitten.com/200/300', width: 200, height: 300 }}
-      width={200}
-      height={300}
-    />
+    <Theme name="blue">
+      <Stack theme="orange" componentName="Button" w={100} h={100} bc="$background">
+        <Stack w={50} h={50} bc="$color" />
+      </Stack>
+    </Theme>
   )
 
   return <Button theme="orange">test</Button>

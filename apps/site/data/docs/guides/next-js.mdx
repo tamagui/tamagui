@@ -183,15 +183,17 @@ Create a new component:
 'use client'
 
 import { useServerInsertedHTML } from 'next/navigation'
+import { TamaguiProvider } from 'tamagui'
 
-export function NextTamaguiProvider(children) {
+export function NextTamaguiProvider({ children }) {
   useServerInsertedHTML(() => {
     // this first time this runs you'll get the full CSS including all themes
     // after that, it will only return CSS generated since the last call
     return <>{Tamagui.getNewCSS()}</>
   })
 
-  return <>{props.children}</>
+  // see Tamagui provider setup in the example above
+  return <TamaguiProvider>{children}</TamaguiProvider>
 }
 ```
 
@@ -200,11 +202,9 @@ The new `getNewCSS` helper in Tamagui will keep track of the last call and only 
 And then use it in your `app/layout.tsx` like this:
 
 ```tsx
-import React from 'react'
-
 import { NextTamaguiProvider } from './NextTamaguiProvider'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }) {
   return <NextTamaguiProvider>{children}</NextTamaguiProvider>
 }
 ```
