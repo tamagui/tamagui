@@ -44,7 +44,7 @@ const handler: NextApiHandler = async (req, res) => {
   ) {
     console.error(`Failed to get github data for ${user.email}.`, { session })
     res.status(403).json({
-      error: 'No GitHub connection found. Try logging out and logging in again.',
+      error: 'No GitHub connection found. Connect or sync GitHub account and try again.',
       action: `${siteRootDir}/account`,
     })
     return

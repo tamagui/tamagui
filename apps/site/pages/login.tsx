@@ -12,7 +12,8 @@ import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 
-const emailAuthDisabledFlag = true
+const isProd = process.env.NODE_ENV === 'production'
+const emailAuthDisabledFlag = isProd
 
 export default function SignInPage() {
   return (
@@ -22,7 +23,6 @@ export default function SignInPage() {
     </>
   )
 }
-
 function SignIn() {
   const router = useRouter()
   const supabaseClient = useSupabaseClient()
@@ -87,7 +87,7 @@ function SignIn() {
         : undefined
     ).toString()}`
     setLoading(true)
-    
+
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider,
       options: {

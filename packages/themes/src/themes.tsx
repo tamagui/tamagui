@@ -103,7 +103,7 @@ const template = {
   background: 2,
   backgroundHover: 3,
   backgroundPress: 4,
-  backgroundFocus: 2,
+  backgroundFocus: 5,
   backgroundStrong: 1,
   backgroundTransparent: 0,
   color: -1,

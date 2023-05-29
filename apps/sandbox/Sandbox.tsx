@@ -2,13 +2,17 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
+import { DialogDemo } from '@tamagui/demos'
 import { SandboxHeading } from '@tamagui/sandbox-ui'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
   Button,
+  Image,
+  Input,
   Separator,
   Square,
+  Stack,
   TamaguiProvider,
   Theme,
   XStack,
@@ -26,9 +30,13 @@ if (typeof require !== 'undefined') {
 }
 
 export const Sandbox = () => {
+  const kitchenSink = new URLSearchParams(window.location.search).get('kitchen')
   const demoComponentName = new URLSearchParams(window.location.search).get('demo')
   const useCaseComponentName = new URLSearchParams(window.location.search).get('test')
-  const Component = demoComponentName
+  const Component = kitchenSink
+    ? // solito breaking
+      () => null //require('../kitchen-sink/src/features/home/screen').HomeScreen
+    : demoComponentName
     ? Demos[
         demoComponentName.endsWith('Demo')
           ? demoComponentName
@@ -37,6 +45,7 @@ export const Sandbox = () => {
     : useCaseComponentName
     ? require(`./usecases/${useCaseComponentName}`).default
     : SandboxInner
+
   return (
     <SandboxFrame>
       <Suspense fallback="Loading...">

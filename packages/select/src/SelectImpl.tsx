@@ -164,6 +164,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     useListNavigation(context, {
       listRef: listItemsRef,
       activeIndex,
+      focusItemOnOpen: true,
+      focusItemOnHover: true,
+      openOnArrowKeyDown: true,
       selectedIndex,
       onNavigate: setActiveIndex,
     }),

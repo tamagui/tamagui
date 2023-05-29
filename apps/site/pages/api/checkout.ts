@@ -1,6 +1,6 @@
 import { getURL } from '@lib/helpers'
 import { stripe } from '@lib/stripe'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
+import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
@@ -18,6 +18,13 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
   let priceId: string
+
+  const quantity =
+    typeof req.query.quantity === 'string' &&
+    !isNaN(Number(req.query.quantity)) &&
+    Number(req.query.quantity) > 0
+      ? Number(req.query.quantity)
+      : 1
 
   // if there's a price id, just use that
   if (typeof req.query.price_id === 'string') {
@@ -41,43 +48,24 @@ const handler: NextApiHandler = async (req, res) => {
         : product.default_price.id
   }
 
-  const customerResult = await supabaseAdmin
-    .from('customers')
-    .select('*')
-    .eq('id', user.id)
-    .maybeSingle()
-  let customerId: string
+  const stripeCustomerId = await createOrRetrieveCustomer({
+    email: user.email!,
+    uuid: user.id,
+  })
 
-  if (customerResult.error) {
-    throw new Error(customerResult.error.message)
+  if (!stripeCustomerId) {
+    throw new Error(`Something went wrong with createOrRetrieveCustomer.`)
   }
   // if stripe customer doesn't exist, create one and insert it into supabase
-  if (customerResult.data?.id) {
-    if (!customerResult.data.stripe_customer_id) {
-      throw new Error(
-        `User with id ${user.id} has a customer row with no stripe ID associated.`
-      )
-    }
-    customerId = customerResult.data.stripe_customer_id
-  } else {
-    const stripeCustomer = await stripe.customers.create({
-      email: user.email,
-    })
-
-    await supabaseAdmin
-      .from('customers')
-      .insert({ id: user.id, stripe_customer_id: stripeCustomer.id })
-    customerId = stripeCustomer.id
-  }
 
   const stripeSession = await stripe.checkout.sessions.create({
     line_items: [
       {
         price: priceId,
-        quantity: 1,
+        quantity,
       },
     ],
-    customer: customerId,
+    customer: stripeCustomerId,
     mode: 'subscription',
     success_url: `${getURL()}/account/subscriptions`,
     cancel_url: `${getURL()}/takeout`,

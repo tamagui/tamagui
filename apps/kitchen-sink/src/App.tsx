@@ -1,12 +1,16 @@
 import { ToastProvider, ToastViewport } from '@tamagui/sandbox-ui'
+import { setupNativeSheet } from '@tamagui/sheet'
 import { useFonts } from 'expo-font'
 import { useEffect, useMemo, useState } from 'react'
 import { Appearance, useColorScheme } from 'react-native'
+import { ModalView } from 'react-native-ios-modal'
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
+
+setupNativeSheet('ios', ModalView)
 
 export default function App() {
   const [theme, setTheme] = useState(Appearance.getColorScheme())

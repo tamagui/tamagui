@@ -1,8 +1,5 @@
-import { getVariable } from '@tamagui/core'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
-import { setupNativeSheet } from '@tamagui/sheet'
 import { ScrollView } from 'react-native'
-import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -20,8 +17,6 @@ import {
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
-setupNativeSheet('ios', ModalView)
-
 export function HomeScreen() {
   return (
     <ScrollView>
@@ -29,29 +24,6 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
-
-        {/* 
-        <Button
-          onPress={() => {
-            updateTheme({
-              name: 'light_Button',
-              theme: {
-                background: 'red',
-              },
-            })
-
-            updateTheme({
-              name: 'light',
-              theme: {
-                background: 'green',
-              },
-            })
-          }}
-        >
-          test
-        </Button>
-
-        <SubComponent /> */}
 
         <YGroup size="$4">
           <YGroup.Item>
@@ -97,7 +69,7 @@ const LinkListItem = ({
     <ListItem
       {...linkProps}
       {...props}
-      iconAfter={<ChevronRight color={getVariable(theme.color11)} />}
+      iconAfter={<ChevronRight color={theme.color11.get()} />}
     >
       {children}
     </ListItem>
