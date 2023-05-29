@@ -3,7 +3,7 @@ import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { CheckCircle, Newspaper, X } from '@tamagui/lucide-icons'
+import { Check, Newspaper, Subtitles, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -13,13 +13,14 @@ import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { ButtonLink } from 'studio/Link'
 import {
   AnimatePresence,
   Button,
+  ButtonProps,
   Dialog,
   H1,
   H2,
+  H4,
   Paragraph,
   ScrollView,
   Separator,
@@ -40,6 +41,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
+import { NextLink } from '../components/NextLink'
 import { Stage } from '../components/Stage'
 
 const heroHeight = 850
@@ -58,15 +60,16 @@ export default function TakeoutPage() {
 
   return (
     <>
-      <NextSeo
-        title="🥡 Tamagui Takeout"
-        description="Tamagui Takeout React Native Bootstrap Starter Kit"
-      />
-
-      <Head>
-        <LoadGlusp />
-        <LoadMunro />
-      </Head>
+      <>
+        <NextSeo
+          title="🥡 Tamagui Takeout"
+          description="Tamagui Takeout React Native Bootstrap Starter Kit"
+        />
+        <Head>
+          <LoadGlusp />
+          <LoadMunro />
+        </Head>
+      </>
 
       <PurchaseModal />
 
@@ -531,18 +534,21 @@ export default function TakeoutPage() {
   )
 }
 
-const Point = (props: { children: any; upcoming?: boolean }) => {
+const Point = (props: { children: any; upcoming?: boolean; subtitle?: any }) => {
   return (
     <ThemeTint>
       <XStack tag="li" ai="center" space ml="$4">
         <YStack>
-          {props.upcoming ? (
-            <Newspaper color="$color10" />
-          ) : (
-            <CheckCircle color="$color10" />
+          {props.upcoming ? <Newspaper color="$color10" /> : <Check color="$color10" />}
+        </YStack>
+        <YStack>
+          <Paragraph size="$7">{props.children}</Paragraph>
+          {!!props.subtitle && (
+            <Paragraph size="$4" theme="alt1">
+              {props.subtitle}
+            </Paragraph>
           )}
         </YStack>
-        <Paragraph size="$8">{props.children}</Paragraph>
       </XStack>
     </ThemeTint>
   )
@@ -568,7 +574,6 @@ const PurchaseModal = () => {
     <Dialog
       modal
       open={store.showPurchase}
-      disableRemoveScroll
       onOpenChange={(val) => {
         store.showPurchase = val
       }}
@@ -606,45 +611,63 @@ const PurchaseModal = () => {
           ]}
           enterStyle={{ opacity: 0, scale: 0.975 }}
           exitStyle={{ opacity: 0, scale: 0.975 }}
-          space
           w="90%"
           h="90%"
         >
-          <YStack display="none">
-            <Dialog.Title>Purchase</Dialog.Title>
-            <Dialog.Description>Purchase Tamagui Takeout.</Dialog.Description>
-          </YStack>
+          <ScrollView space mih="100%" contentContainerStyle={{ minHeight: '100%' }}>
+            <Dialog.Title size="$11">🥡</Dialog.Title>
 
-          <PurchaseSelectTeam />
+            <YStack>
+              <PurchaseSelectTeam />
+            </YStack>
 
-          <ButtonLink
-            href={`api/checkout?${new URLSearchParams({
-              product_id: productId,
-            }).toString()}`}
-          >
-            Purchase
-          </ButtonLink>
+            <YStack space="$4">
+              <H4>Included</H4>
 
-          <YStack alignItems="flex-end" marginTop="$2">
-            <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="alt1" aria-label="Close">
-                Save changes
-              </Button>
-            </Dialog.Close>
-          </YStack>
+              <Separator />
 
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button
-                position="absolute"
-                top="$3"
-                right="$3"
-                size="$2"
-                circular
-                icon={X}
-              />
-            </Dialog.Close>
-          </Unspaced>
+              <YStack space="$4">
+                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                  Starter Kit
+                </Point>
+                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                  Starter Kit
+                </Point>
+                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                  Starter Kit
+                </Point>
+                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                  Starter Kit
+                </Point>
+                <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                  Starter Kit
+                </Point>
+              </YStack>
+            </YStack>
+
+            <Spacer flex />
+
+            <NextLink
+              href={`api/checkout?${new URLSearchParams({
+                product_id: productId,
+              }).toString()}`}
+            >
+              <PurchaseButton>Purchase</PurchaseButton>
+            </NextLink>
+
+            <Unspaced>
+              <Dialog.Close asChild>
+                <Button
+                  position="absolute"
+                  top="$3"
+                  right="$3"
+                  size="$2"
+                  circular
+                  icon={X}
+                />
+              </Dialog.Close>
+            </Unspaced>
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -698,28 +721,15 @@ const StarterCard = () => {
           />
 
           <YStack pos="absolute" b="$4" l="$4" r="$4" zi={100}>
-            <Theme name="pink">
-              <ButtonLink
-                href={subscription ? `/account/subscriptions#${subscription.id}` : ''}
-                onPress={() => {
-                  store.showPurchase = true
-                }}
-                size="$6"
-                fontSize="$8"
-                fontWeight="800"
-                backgroundColor="$color9"
-                borderWidth={2}
-                borderColor="$color10"
-                hoverStyle={{
-                  backgroundColor: '$color10',
-                }}
-                pressStyle={{
-                  backgroundColor: '$color7',
-                }}
-              >
-                {subscription ? 'View Subscription' : 'Purchase - $350'}
-              </ButtonLink>
-            </Theme>
+            {/* cant use buttonlink it breaks scroll on press if not enabled, conditionally use a link */}
+            {/* subscription ? `/account/subscriptions#${subscription.id}` : '' */}
+            <PurchaseButton
+              onPress={() => {
+                store.showPurchase = true
+              }}
+            >
+              {subscription ? 'View Subscription' : 'Purchase - $350'}
+            </PurchaseButton>
           </YStack>
 
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -799,6 +809,28 @@ const modelUrl = `${
 useGLTF.preload(modelUrl)
 
 let frameCount = 0
+
+function PurchaseButton(props: ButtonProps) {
+  return (
+    <Theme name="pink">
+      <Button
+        size="$6"
+        fontSize="$8"
+        fontWeight="800"
+        backgroundColor="$color9"
+        borderWidth={2}
+        borderColor="$color10"
+        hoverStyle={{
+          backgroundColor: '$color10',
+        }}
+        pressStyle={{
+          backgroundColor: '$color7',
+        }}
+        {...props}
+      />
+    </Theme>
+  )
+}
 
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
@@ -939,7 +971,6 @@ const tabs = [
   { value: '4' },
   { value: '8' },
   { value: '16' },
-  { value: '32' },
 ]
 
 export const PurchaseSelectTeam = () => {
@@ -1003,10 +1034,14 @@ export const PurchaseSelectTeam = () => {
       value={currentTab}
       onValueChange={setCurrentTab}
       orientation="horizontal"
-      size="$2"
+      size="$4"
       flexDirection="column"
       activationMode="manual"
       position="relative"
+      p="$2"
+      bc="$backgroundStrong"
+      br="$3"
+      als="center"
     >
       <YStack>
         <AnimatePresence>
@@ -1045,7 +1080,7 @@ export const PurchaseSelectTeam = () => {
               key={value}
               unstyled
               bc="transparent"
-              px="$3"
+              px="$4"
               value={value}
               onInteraction={handleOnInteraction}
             >
