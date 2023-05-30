@@ -226,9 +226,9 @@ export const PopperContentFrame = styled(ThemeableStack, {
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
   function PopperContent(props: PopperContentProps, forwardedRef) {
-    const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
+    const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted } =
       usePopperContext()
-    const contentRefs = useComposedRefs<any>(floating, forwardedRef)
+    const contentRefs = useComposedRefs<any>(refs.floating, forwardedRef)
 
     const contents = React.useMemo(() => {
       return (
