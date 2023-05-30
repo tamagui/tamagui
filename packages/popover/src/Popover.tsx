@@ -67,7 +67,7 @@ type PopoverContextValue = {
   breakpointActive?: boolean
 }
 
-const PopoverContext = createStyledContext<PopoverContextValue>({} as any)
+export const PopoverContext = createStyledContext<PopoverContextValue>({} as any)
 
 export const usePopoverContext = () => React.useContext(PopoverContext)
 
