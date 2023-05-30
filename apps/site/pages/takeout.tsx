@@ -1,5 +1,5 @@
-import { getStripeProductId } from '@lib/products'
-import { stripe } from '@lib/stripe'
+import { Database } from '@lib/supabase-types'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -15,7 +15,6 @@ import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, memo, useEffect, useRef, useState } from 'react'
-import Stripe from 'stripe'
 import {
   AnimatePresence,
   Button,
@@ -56,9 +55,8 @@ import { Stage } from '../components/Stage'
 const heroHeight = 850
 
 type TakeoutPageProps = {
-  starter: {
-    product: Stripe.Product
-    prices: Stripe.Price[]
+  starter: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
   }
 }
 
@@ -87,7 +85,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         </Head>
       </>
 
-      <PurchaseModal product={starter.product} prices={starter.prices} />
+      <PurchaseModal productWithPrices={starter} />
 
       <YStack
         pos="absolute"
@@ -347,7 +345,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               }}
             >
               <YStack mt={-500} ml={20} mr={-20}>
-                <StarterCard />
+                <StarterCard product={starter} />
               </YStack>
               {/* <YStack
                 className="mix-blend"
@@ -607,16 +605,26 @@ function formatPrice(amount: number, currency: string) {
 const useTakeoutStore = createUseStore(TakeoutStore)
 
 const PurchaseModal = ({
-  product,
-  prices,
+  productWithPrices: product,
 }: {
-  product: Stripe.Product
-  prices: Stripe.Price[]
+  productWithPrices: TakeoutPageProps['starter']
 }) => {
+  const prices = product.prices
   const store = useTakeoutStore()
   const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
   const [seats, setSeats] = useState(1)
   const selectedPrice = prices.find((p) => p.id === selectedPriceId)
+  const { subscriptions } = useUser()
+  const subscription = subscriptions?.find((sub) => {
+    if (sub.status !== 'active') return false
+    const price = sub.prices
+      ? Array.isArray(sub.prices)
+        ? sub.prices[0]
+        : sub.prices
+      : null
+    if (!price) return false
+    return price.product_id === product.id
+  })
 
   return (
     <Dialog
@@ -691,8 +699,10 @@ const PurchaseModal = ({
                         <RadioGroup.Indicator />
                       </RadioGroup.Item>
                       <YStack space="$1">
-                        <H2>{formatPrice(price.unit_amount! / 100, price.currency)}</H2>
-                        <Paragraph>{price.nickname}</Paragraph>
+                        <H2>
+                          {formatPrice(price.unit_amount! / 100, price.currency ?? 'usd')}
+                        </H2>
+                        <Paragraph>{price.description}</Paragraph>
                       </YStack>
                     </Label>
                   )
@@ -754,18 +764,23 @@ const PurchaseModal = ({
             </Unspaced>
             <YStack pb="$8" px="$4" f={1}>
               <NextLink
-                href={`api/checkout?${new URLSearchParams({
-                  product_id: product.id,
-                  price_id: selectedPriceId,
-                  quantity: seats.toString(),
-                }).toString()}`}
+                href={
+                  subscription
+                    ? `/account/subscriptions`
+                    : `api/checkout?${new URLSearchParams({
+                        product_id: product.id,
+                        price_id: selectedPriceId,
+                        quantity: seats.toString(),
+                      }).toString()}`
+                }
               >
                 <PurchaseButton>
-                  Purchase -{' '}
-                  {formatPrice(
-                    (selectedPrice!.unit_amount! / 100) * seats,
-                    selectedPrice!.currency
-                  )}
+                  {subscription
+                    ? `View Subscription`
+                    : `Purchase - ${formatPrice(
+                        (selectedPrice!.unit_amount! / 100) * seats,
+                        selectedPrice!.currency ?? 'usd'
+                      )}`}
                 </PurchaseButton>
               </NextLink>
             </YStack>
@@ -776,22 +791,10 @@ const PurchaseModal = ({
   )
 }
 
-const StarterCard = memo(() => {
+const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] }) => {
   const media = useMedia()
-  const { subscriptions } = useUser()
-  const productId = getStripeProductId('universal-starter')
   const [ref, setRef] = useState<any>()
 
-  const subscription = subscriptions?.find((sub) => {
-    if (sub.status !== 'active') return false
-    const price = sub.prices
-      ? Array.isArray(sub.prices)
-        ? sub.prices[0]
-        : sub.prices
-      : null
-    if (!price) return false
-    return price.product_id === productId
-  })
   const store = useTakeoutStore()
 
   useEffect(() => {
@@ -861,7 +864,7 @@ const StarterCard = memo(() => {
                 store.showPurchase = true
               }}
             >
-              {subscription ? 'View Subscription' : 'Purchase'}
+              Purchase
             </PurchaseButton>
           </YStack>
 
@@ -872,7 +875,7 @@ const StarterCard = memo(() => {
               </Paragraph>
 
               <Paragraph fontFamily="$munro" size="$10">
-                Universal App Starter
+                {product.name}
               </Paragraph>
 
               <YStack>
@@ -1321,18 +1324,21 @@ const TabsRovingIndicator = ({
 }
 
 export const getServerSideProps: GetServerSideProps<TakeoutPageProps> = async () => {
-  const productId = getStripeProductId('universal-starter')
-  const [product, { data: prices }] = await Promise.all([
-    stripe.products.retrieve(getStripeProductId('universal-starter')),
-    stripe.prices.list({ product: productId }),
-  ])
+  const query = await supabaseAdmin
+    .from('products')
+    .select('*, prices(*)')
+    .eq('metadata->>slug', 'universal-starter')
+    .single()
+  if (query.error) throw query.error
+  if (!query.data.prices) throw query.error
 
-  return {
-    props: {
-      starter: {
-        product,
-        prices,
-      },
+  const props: TakeoutPageProps = {
+    starter: {
+      ...query.data,
+      prices: Array.isArray(query.data.prices) ? query.data.prices : [query.data.prices],
     },
+  }
+  return {
+    props,
   }
 }

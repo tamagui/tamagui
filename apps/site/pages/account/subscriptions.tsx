@@ -1,6 +1,5 @@
 import { Container } from '@components/Container'
 import { getUserLayout } from '@components/layouts/UserLayout'
-import { getProductSlug } from '@lib/products'
 import { Database, Json } from '@lib/supabase-types'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
@@ -145,6 +144,13 @@ const ProductDetail = ({
     }
   }
 
+  const productSlug =
+    typeof product.metadata === 'object' &&
+    !Array.isArray(product.metadata) &&
+    product.metadata
+      ? product.metadata.slug
+      : null
+
   return (
     <YStack key={product.id} gap="$2">
       <XStack gap="$2" jc="space-between">
@@ -166,13 +172,15 @@ const ProductDetail = ({
           >
             {claimLabel}
           </Button>
-          <ButtonLink
-            href={`/takeout/${getProductSlug(product.id)}`}
-            size="$2"
-            iconAfter={ArrowUpRight}
-          >
-            View Page
-          </ButtonLink>
+          {!!productSlug && (
+            <ButtonLink
+              href={`/takeout/${productSlug}`}
+              size="$2"
+              iconAfter={ArrowUpRight}
+            >
+              View Page
+            </ButtonLink>
+          )}
         </YStack>
       </XStack>
       <YStack>
