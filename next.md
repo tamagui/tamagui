@@ -1,3 +1,28 @@
+
+- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
+
+- doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
+
+- add just early return hooks eslint check
+- Sheet.Close, Sheet imperative close
+
+high level:
+
+  - automate sponsors a bit better (link discord on tamagui site)
+  - private canary packages on github
+  - tiered line system for studio
+  - improve tests and docs
+  - make themes and sizing easier, simpler, better documented, more controllable
+  - headless
+  - studio
+  - takeout
+  - income:
+    - font packages + font package builder ui
+    - merch
+    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
+    - auth/account/profile drop
+    - better monorepo pro drop
+
 ---
 
 via #gwun:
@@ -27,32 +52,6 @@ via #gwun:
 
 something like this i believe, where native is correct but web the button isn't orange
 
----
-
-
-- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
-
-- doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
-
-- add just early return hooks eslint check
-- Sheet.Close, Sheet imperative close
-
-high level:
-
-  - automate sponsors a bit better (link discord on tamagui site)
-  - private canary packages on github
-  - tiered line system for studio
-  - improve tests and docs
-  - make themes and sizing easier, simpler, better documented, more controllable
-  - headless
-  - studio
-  - takeout
-  - income:
-    - font packages + font package builder ui
-    - merch
-    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
-    - auth/account/profile drop
-    - better monorepo pro drop
 
 ---
 

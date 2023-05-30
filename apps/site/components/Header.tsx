@@ -57,7 +57,7 @@ export function Header(props: HeaderProps) {
         right={0}
         ai="center"
         jc="center"
-        zi={50000000}
+        zi={50000}
         $gtSm={{
           px: '$4',
         }}
