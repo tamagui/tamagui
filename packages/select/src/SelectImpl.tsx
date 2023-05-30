@@ -111,7 +111,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     padding: WINDOW_PADDING,
   })
 
-  const { x, y, reference, floating, strategy, context, refs } = useFloating({
+  const { x, y, refs, strategy, context } = useFloating({
     open,
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
@@ -183,7 +183,8 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       ...interactions,
       getReferenceProps() {
         return interactions.getReferenceProps({
-          ref: reference,
+          // @ts-ignore
+          ref: refs.reference,
           className: 'SelectTrigger',
           onKeyDown(event) {
             if (
@@ -198,7 +199,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       },
       getFloatingProps(props) {
         return interactions.getFloatingProps({
-          ref: floating,
+          ref: refs.floating,
           className: 'Select',
           ...props,
           style: {
@@ -235,7 +236,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         })
       },
     }
-  }, [floating, y, x, interactions])
+  }, [refs.floating, y, x, interactions])
 
   // effects
 
