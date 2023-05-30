@@ -2,7 +2,7 @@ import { Page, expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/?test=ToastCase', { waitUntil: 'networkidle' })
-  await new Promise((res) => setTimeout(res, 3000))
+  await new Promise((res) => setTimeout(res, 1000))
 })
 
 async function buttonIsFocused(page: Page, identifier: number) {
@@ -31,6 +31,7 @@ test.describe('given multiple toasts', () => {
   test.beforeEach(async ({ page }) => {
     await page.getByTestId('button-add-toast').click()
     await page.getByTestId('button-add-toast').click()
+    await new Promise((res) => setTimeout(res, 1000))
   })
 
   test('should reverse tab order from most recent to least', async ({ page }) => {
