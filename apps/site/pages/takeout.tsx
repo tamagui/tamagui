@@ -1,3 +1,4 @@
+import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { withSupabase } from '@lib/withSupabase'
@@ -31,6 +32,7 @@ import {
   ScrollView,
   Separator,
   Sheet,
+  SizableText,
   Spacer,
   Stack,
   TabLayout,
@@ -686,34 +688,41 @@ const PurchaseModal = ({
               >
                 {prices.map((price) => {
                   const active = price.id === selectedPriceId
+                  const htmlId = `radio-${price.id}`
                   return (
-                    <Label
-                      f={1}
-                      htmlFor=""
-                      p="$4"
-                      height="unset"
-                      display="flex"
-                      borderWidth="$0.25"
-                      borderColor={active ? '$color12' : '$color8'}
-                      borderRadius="$4"
-                      space="$4"
-                      ai="flex-start"
-                      maw="calc(33% - 16px)"
-                      hoverStyle={{
-                        borderColor: active ? '$color12' : '$color10',
-                      }}
-                    >
-                      <RadioGroup.Item size="$6" value={price.id} mt="$2">
-                        <RadioGroup.Indicator />
-                      </RadioGroup.Item>
+                    <Theme name={active ? 'blue' : undefined}>
+                      <Label
+                        f={1}
+                        htmlFor={htmlId}
+                        p="$4"
+                        height="unset"
+                        display="flex"
+                        borderWidth="$0.25"
+                        borderColor={active ? '$color8' : '$color1'}
+                        borderRadius="$4"
+                        space="$4"
+                        ai="flex-start"
+                        maw="calc(33% - 16px)"
+                        hoverStyle={{
+                          borderColor: active ? '$color9' : '$color2',
+                        }}
+                      >
+                        <RadioGroup.Item id={htmlId} size="$6" value={price.id} mt="$2">
+                          <RadioGroup.Indicator
+                            backgroundColor={active ? '$color8' : '$color1'}
+                          />
+                        </RadioGroup.Item>
 
-                      <YStack gap="$1" f={1}>
-                        <H2>
-                          {formatPrice(price.unit_amount! / 100, price.currency ?? 'usd')}
-                        </H2>
-                        <Paragraph ellipse>{price.description}</Paragraph>
-                      </YStack>
-                    </Label>
+                        <YStack gap="$1" f={1}>
+                          <H3>
+                            {price.interval === "year" && "Yearly Plan"}
+                            {price.interval === "month" && "Monthly Plan"}
+                            {" "}🥡
+                          </H3>
+                          <Paragraph ellipse>{price.description}</Paragraph>
+                        </YStack>
+                      </Label>
+                    </Theme>
                   )
                 })}
               </RadioGroup>
@@ -773,7 +782,7 @@ const PurchaseModal = ({
 
                   <Separator />
 
-                  <YStack pb="$8" px="$4">
+                  <YStack pb="$8" px="$4" space>
                     <NextLink
                       href={
                         subscription
@@ -789,6 +798,35 @@ const PurchaseModal = ({
                         {subscription ? `View Subscription` : `Purchase`}
                       </PurchaseButton>
                     </NextLink>
+                    <XStack jc="space-between" space="$2" ai="center">
+                      <XStack
+                        ai="center"
+                        separator={<Separator vertical bc="$color8" my="$2" />}
+                        space="$2"
+                      >
+                        <NextLink href="#">
+                          <SizableText
+                            theme="alt1"
+                            style={{ textDecoration: 'underline' }}
+                            size="$1"
+                          >
+                            FAQ
+                          </SizableText>
+                        </NextLink>
+                        <NextLink href="#">
+                          <SizableText
+                            theme="alt1"
+                            style={{ textDecoration: 'underline' }}
+                            size="$1"
+                          >
+                            License Agreement
+                          </SizableText>
+                        </NextLink>
+                      </XStack>
+                      <Theme name="alt1">
+                        <PoweredByStripeIcon width={96} />
+                      </Theme>
+                    </XStack>
                   </YStack>
                 </YStack>
               </YStack>
