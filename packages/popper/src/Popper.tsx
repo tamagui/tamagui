@@ -156,8 +156,6 @@ export function Popper(props: PopperProps) {
  * PopperAnchor
  * -----------------------------------------------------------------------------------------------*/
 
-const ANCHOR_NAME = 'PopperAnchor'
-
 type PopperAnchorRef = HTMLElement | View
 
 export type PopperAnchorProps = YStackProps & {
@@ -189,8 +187,6 @@ export const PopperAnchor = YStack.extractable(
 /* -------------------------------------------------------------------------------------------------
  * PopperContent
  * -----------------------------------------------------------------------------------------------*/
-
-const CONTENT_NAME = 'PopperContent'
 
 type PopperContentElement = HTMLElement | View
 
@@ -226,7 +222,7 @@ export const PopperContentFrame = styled(ThemeableStack, {
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
   function PopperContent(props: PopperContentProps, forwardedRef) {
-    const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted } =
+    const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
       usePopperContext()
     const contentRefs = useComposedRefs<any>(refs.floating, forwardedRef)
 
@@ -241,6 +237,12 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         />
       )
     }, [placement, strategy, props])
+
+    useIsomorphicLayoutEffect(() => {
+      if (isMounted) {
+        update()
+      }
+    }, [isMounted])
 
     // all poppers hidden on ssr by default
     if (!isMounted) {
