@@ -74,20 +74,6 @@ export interface Database {
           stripe_customer_id?: string | null
         }
       }
-      github_tokens: {
-        Row: {
-          id: string
-          token: string
-        }
-        Insert: {
-          id: string
-          token: string
-        }
-        Update: {
-          id?: string
-          token?: string
-        }
-      }
       memberships: {
         Row: {
           created_at: string | null
@@ -281,6 +267,20 @@ export interface Database {
           full_name?: string | null
           id?: string
           payment_method?: Json | null
+        }
+      }
+      users_private: {
+        Row: {
+          github_token: string
+          id: string
+        }
+        Insert: {
+          github_token: string
+          id: string
+        }
+        Update: {
+          github_token?: string
+          id?: string
         }
       }
     }
