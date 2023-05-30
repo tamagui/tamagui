@@ -37,7 +37,6 @@
     "@tamagui/aria-hidden": "1.30.8",
     "@tamagui/compose-refs": "1.30.8",
     "@tamagui/core": "1.30.8",
-    "@tamagui/create-context": "1.30.8",
     "@tamagui/dismissable": "1.30.8",
     "@tamagui/floating": "1.30.8",
     "@tamagui/focus-scope": "1.30.8",
