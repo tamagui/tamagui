@@ -99,7 +99,7 @@ export function Popper(props: PopperProps) {
   const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
 
   useIsomorphicLayoutEffect(() => {
-    floating.refs.setReference(anchorRef.current)
+    floating.reference(anchorRef.current)
   }, [anchorRef])
 
   if (isWeb) {
