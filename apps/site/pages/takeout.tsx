@@ -1347,12 +1347,18 @@ export const getServerSideProps: GetServerSideProps<TakeoutPageProps> = async ()
     .eq('metadata->>slug', 'universal-starter')
     .single()
   if (query.error) throw query.error
-  if (!query.data.prices) throw query.error
+  if (
+    !query.data.prices ||
+    !Array.isArray(query.data.prices) ||
+    query.data.prices.length === 0
+  ) {
+    throw new Error('No prices are attached to the product.')
+  }
 
   const props: TakeoutPageProps = {
     starter: {
       ...query.data,
-      prices: Array.isArray(query.data.prices) ? query.data.prices : [query.data.prices],
+      prices: query.data.prices,
     },
   }
   return {
