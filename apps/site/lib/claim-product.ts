@@ -53,20 +53,20 @@ type ClaimFunction = (args: {
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
   const permission = 'triage'
-  const githubTokenRes = await supabaseAdmin
-    .from('github_tokens')
+  const userPrivateRes = await supabaseAdmin
+    .from('users_private')
     .select()
     .eq('id', user.id)
     .single()
 
-  if (githubTokenRes.error) {
-    throw new Error(githubTokenRes.error.message)
+  if (userPrivateRes.error) {
+    throw new Error(userPrivateRes.error.message)
   }
 
-  const userGithubToken = githubTokenRes.data.token
+  const githubToken = userPrivateRes.data.github_token
 
   const githubUser = await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${userGithubToken}` },
+    headers: { Authorization: `Bearer ${githubToken}` },
   }).then((res) => res.json())
 
   const repoName = metadata.repository_name

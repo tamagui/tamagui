@@ -10,7 +10,9 @@ import { NextApiHandler } from 'next'
 async function githubTokenSync(session: Session) {
   const token = session?.provider_token ?? session?.user?.user_metadata.github_token
   if (token) {
-    await supabaseAdmin.from('github_tokens').upsert({ id: session.user.id, token })
+    await supabaseAdmin
+      .from('users_private')
+      .upsert({ id: session.user.id, github_token: token })
   }
 
   return token

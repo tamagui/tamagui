@@ -52,17 +52,17 @@ const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
     throw new Error(`repository_name is not set on product metadata or is not correct`)
   }
 
-  const githubTokenRes = await supabaseAdmin
-    .from('github_tokens')
+  const userPrivate = await supabaseAdmin
+    .from('users_private')
     .select()
     .eq('id', user.id)
     .single()
 
-  if (githubTokenRes.error) {
-    throw new Error(githubTokenRes.error.message)
+  if (userPrivate.error) {
+    throw new Error(userPrivate.error.message)
   }
 
-  const userGithubToken = githubTokenRes.data.token
+  const userGithubToken = userPrivate.data.github_token
 
   const githubUser = await fetch('https://api.github.com/user', {
     headers: { Authorization: `Bearer ${userGithubToken}` },
