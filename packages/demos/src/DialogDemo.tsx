@@ -1,4 +1,5 @@
 import { X } from '@tamagui/lucide-icons'
+import { useState } from 'react'
 import {
   Adapt,
   Button,
@@ -10,16 +11,28 @@ import {
   Sheet,
   TooltipSimple,
   Unspaced,
+  XStack,
   YStack,
 } from 'tamagui'
 
 import { SelectDemoItem } from './SelectDemo'
 
 export function DialogDemo() {
+  return <DialogInstance />
+}
+
+function DialogInstance() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog modal>
+    <Dialog
+      modal
+      onOpenChange={(open) => {
+        setOpen(open)
+      }}
+    >
       <Dialog.Trigger asChild>
-        <Button>Edit Profile</Button>
+        <Button>Show Dialog</Button>
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
@@ -75,13 +88,15 @@ export function DialogDemo() {
             <SelectDemoItem />
           </Fieldset>
 
-          <YStack alignItems="flex-end" marginTop="$2">
+          <XStack alignSelf="flex-end" space>
+            <DialogInstance />
+
             <Dialog.Close displayWhenAdapted asChild>
               <Button theme="alt1" aria-label="Close">
                 Save changes
               </Button>
             </Dialog.Close>
-          </YStack>
+          </XStack>
 
           <Unspaced>
             <Dialog.Close asChild>
