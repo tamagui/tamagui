@@ -14,16 +14,15 @@ import {
 import { SizeTokens, useEvent, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import { FloatingOverrideContext, UseFloatingFn } from '@tamagui/floating'
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-token'
+import { getSize } from '@tamagui/get-token'
 import {
   PopoverAnchor,
   PopoverArrow,
   PopoverArrowProps,
   PopoverContent,
   PopoverContentProps,
+  PopoverContext,
   PopoverTrigger,
-  __PopoverProviderInternal,
-  usePopoverScope,
 } from '@tamagui/popover'
 import {
   Popper,
@@ -39,8 +38,7 @@ const TooltipContent = PopperContentFrame.extractable(
       { __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>,
       ref: any
     ) => {
-      const popperScope = usePopoverScope(__scopePopover)
-      const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
+      const popper = usePopperContext()
       const padding =
         props.size ||
         popper.size ||
@@ -116,7 +114,6 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     focus,
     ...restProps
   } = props
-  const popperScope = usePopoverScope(__scopePopover)
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
@@ -165,19 +162,11 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper
-        size={smallerSize.key as SizeTokens}
-        allowFlip
-        {...popperScope}
-        {...restProps}
-      >
-        <__PopoverProviderInternal
-          scope={__scopePopover}
-          popperScope={popperScope.__scopePopper}
+      <Popper size={smallerSize.key as SizeTokens} allowFlip {...restProps}>
+        <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}
           sheetBreakpoint={false}
-          scopeKey=""
           open={open}
           onOpenChange={setOpen}
           onOpenToggle={voidFn}
@@ -186,7 +175,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
           onCustomAnchorRemove={onCustomAnchorRemove}
         >
           {children}
-        </__PopoverProviderInternal>
+        </PopoverContext.Provider>
       </Popper>
     </FloatingOverrideContext.Provider>
   )

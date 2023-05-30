@@ -26,6 +26,7 @@ type PopoverContextValue = {
     sheetBreakpoint: any;
     breakpointActive?: boolean;
 };
+export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: () => PopoverContextValue;
 export type PopoverAnchorProps = YStackProps;
 export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
