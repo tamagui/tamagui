@@ -4,13 +4,13 @@ import { withSupabase } from '@lib/withSupabase'
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Newspaper, X } from '@tamagui/lucide-icons'
+import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -1340,7 +1340,7 @@ const TabsRovingIndicator = ({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<TakeoutPageProps> = async () => {
+export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
   const query = await supabaseAdmin
     .from('products')
     .select('*, prices(*)')
@@ -1362,6 +1362,7 @@ export const getServerSideProps: GetServerSideProps<TakeoutPageProps> = async ()
     },
   }
   return {
+    revalidate: 60,
     props,
   }
 }
