@@ -962,7 +962,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://localhost:5005`
+    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
 }/takeout.gltf`
 useGLTF.preload(modelUrl)
 
