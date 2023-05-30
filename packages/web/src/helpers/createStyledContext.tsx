@@ -24,7 +24,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     ...values
   }: VariantProps & { children?: React.ReactNode }) => {
     return (
-      <OGProvider value={useMemo(() => values, [JSON.stringify(values)])}>
+      <OGProvider value={useMemo(() => values, Object.values(values))}>
         {children}
       </OGProvider>
     )
