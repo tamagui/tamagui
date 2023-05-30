@@ -468,12 +468,12 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   </Paragraph>
 
                   <YStack tag="ul" space="$3">
-                    <Point upcoming>Simple state management system</Point>
-                    <Point upcoming>Reanimated integration</Point>
-                    <Point upcoming>Layout animations</Point>
-                    <Point upcoming>Entire Google font library</Point>
-                    <Point upcoming>Maestro native integration testing</Point>
-                    <Point upcoming>Notifications</Point>
+                    <Point>Simple state management system</Point>
+                    <Point>Reanimated integration</Point>
+                    <Point>Layout animations</Point>
+                    <Point>Entire Google font library</Point>
+                    <Point>Maestro native integration testing</Point>
+                    <Point>Notifications</Point>
                   </YStack>
                 </YStack>
 
@@ -564,19 +564,19 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
   )
 }
 
-const Point = (props: { children: any; upcoming?: boolean; subtitle?: any }) => {
+const Point = (props: { children: any; subtitle?: any }) => {
   return (
     <ThemeTint>
       <XStack tag="li" ai="flex-start" space ml="$4" f={1} ov="hidden">
         <YStack py="$1.5">
-          {props.upcoming ? <Newspaper color="$color10" /> : <Check color="$color10" />}
+          <Check size={16} color="$color10" />
         </YStack>
         <YStack f={1}>
-          <Paragraph wordWrap="break-word" size="$7" $sm={{ size: '$6' }}>
+          <Paragraph wordWrap="break-word" size="$6" $sm={{ size: '$6' }}>
             {props.children}
           </Paragraph>
           {!!props.subtitle && (
-            <Paragraph size="$4" theme="alt1">
+            <Paragraph size="$3" theme="gray_alt2" o={0.5}>
               {props.subtitle}
             </Paragraph>
           )}
@@ -647,7 +647,6 @@ const PurchaseModal = ({
         <Dialog.Overlay
           key="overlay"
           animation="quick"
-          opacity={0.75}
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -669,12 +668,17 @@ const PurchaseModal = ({
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
           h="90%"
+          maw={900}
+          mah={900}
         >
           <YStack h="100%" space>
-            <Dialog.Title size="$11">🥡</Dialog.Title>
+            <Dialog.Title size="$8" my="$3" als="center">
+              Purchase 🥡
+            </Dialog.Title>
+
             <YStack>
               <RadioGroup
-                space="$4"
+                gap="$4"
                 value={selectedPriceId}
                 onValueChange={setSelectedPriceId}
                 flexDirection="row"
@@ -694,62 +698,102 @@ const PurchaseModal = ({
                       borderRadius="$4"
                       space="$4"
                       ai="flex-start"
+                      maw="calc(33% - 16px)"
+                      hoverStyle={{
+                        borderColor: active ? '$color12' : '$color10',
+                      }}
                     >
                       <RadioGroup.Item size="$6" value={price.id} mt="$2">
                         <RadioGroup.Indicator />
                       </RadioGroup.Item>
-                      <YStack space="$1">
+
+                      <YStack gap="$1" f={1}>
                         <H2>
                           {formatPrice(price.unit_amount! / 100, price.currency ?? 'usd')}
                         </H2>
-                        <Paragraph>{price.description}</Paragraph>
+                        <Paragraph ellipse>{price.description}</Paragraph>
                       </YStack>
                     </Label>
                   )
                 })}
               </RadioGroup>
             </YStack>
-            <YStack space="$2">
-              <H3>Seats</H3>
-              <YStack ai="flex-start">
-                <PurchaseSelectTeam
-                  onValueChange={(val) => {
-                    setSeats(Math.max(1, Number(val)))
-                  }}
-                  value={seats.toString()}
-                />
-              </YStack>
-            </YStack>
 
-            <ScrollView space>
-              <YStack space="$4">
-                <H4>Included</H4>
-
-                <Separator />
-
+            <XStack f={1} space separator={<Separator vertical />}>
+              <ScrollView space>
                 <YStack space="$4">
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
-                  <Point>Starter Kit</Point>
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
-                  <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                    Starter Kit
-                  </Point>
+                  <H4>Included</H4>
+
+                  <YStack space="$4">
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                    <Point>Starter Kit</Point>
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
+                      Starter Kit
+                    </Point>
+                  </YStack>
+                </YStack>
+              </ScrollView>
+
+              <YStack f={1} space="$2">
+                <H3>Seats</H3>
+                <YStack ai="flex-start">
+                  <PurchaseSelectTeam
+                    onValueChange={(val) => {
+                      setSeats(Math.max(1, Number(val)))
+                    }}
+                    value={seats.toString()}
+                  />
+                </YStack>
+
+                <Spacer f={100} />
+
+                <YStack space>
+                  <YStack ai="flex-end">
+                    <H3 size="$10">
+                      {formatPrice(
+                        (selectedPrice!.unit_amount! / 100) * seats,
+                        selectedPrice!.currency ?? 'usd'
+                      )}
+                    </H3>
+                  </YStack>
+
+                  <Separator />
+
+                  <YStack pb="$8" px="$4">
+                    <NextLink
+                      href={
+                        subscription
+                          ? `/account/subscriptions`
+                          : `api/checkout?${new URLSearchParams({
+                              product_id: product.id,
+                              price_id: selectedPriceId,
+                              quantity: seats.toString(),
+                            }).toString()}`
+                      }
+                    >
+                      <PurchaseButton>
+                        {subscription ? `View Subscription` : `Purchase`}
+                      </PurchaseButton>
+                    </NextLink>
+                  </YStack>
                 </YStack>
               </YStack>
-            </ScrollView>
+            </XStack>
+
             <Unspaced>
               <Dialog.Close asChild>
                 <Button
@@ -762,28 +806,6 @@ const PurchaseModal = ({
                 />
               </Dialog.Close>
             </Unspaced>
-            <YStack pb="$8" px="$4" f={1}>
-              <NextLink
-                href={
-                  subscription
-                    ? `/account/subscriptions`
-                    : `api/checkout?${new URLSearchParams({
-                        product_id: product.id,
-                        price_id: selectedPriceId,
-                        quantity: seats.toString(),
-                      }).toString()}`
-                }
-              >
-                <PurchaseButton>
-                  {subscription
-                    ? `View Subscription`
-                    : `Purchase - ${formatPrice(
-                        (selectedPrice!.unit_amount! / 100) * seats,
-                        selectedPrice!.currency ?? 'usd'
-                      )}`}
-                </PurchaseButton>
-              </NextLink>
-            </YStack>
           </YStack>
         </Dialog.Content>
       </Dialog.Portal>
@@ -1130,13 +1152,7 @@ const MunroP = styled(Paragraph, {
   fontFamily: '$munro',
 })
 
-const tabs = [
-  { value: '1' },
-  { value: '2' },
-  { value: '4' },
-  { value: '8' },
-  { value: '16' },
-]
+const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
 
 export const PurchaseSelectTeam = ({
   value: currentTab,
@@ -1264,8 +1280,9 @@ export const PurchaseSelectTeam = ({
           ))}
           {idPreset ? (
             <Button
+              width={100}
               onPress={() => {
-                setCurrentTab?.('100')
+                setCurrentTab?.('10')
                 setIsPreset(false)
                 setIntentIndicator(null)
                 setActiveIndicator(null)

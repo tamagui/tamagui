@@ -11,6 +11,7 @@ import {
   Image,
   Input,
   Separator,
+  Square,
   Stack,
   TamaguiProvider,
   Theme,
@@ -55,11 +56,7 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
-  return <DialogDemo />
-
-  return <Button theme="orange">test</Button>
-
-  return <SandboxHeading>Hi</SandboxHeading>
+  return <Square size={100} bc="red" />
 }
 
 // function TestAnimatePresence() {
