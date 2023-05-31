@@ -1,11 +1,14 @@
 import { ThemeToggle } from '@components/ThemeToggle'
+import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Menu } from '@tamagui/lucide-icons'
+import { Menu, User } from '@tamagui/lucide-icons'
+import { useUnsafeUser, useUser } from 'hooks/useUser'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
   Button,
   Paragraph,
   Popover,
@@ -107,7 +110,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const isHome = router.pathname === '/'
   const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
-  // const user = useUser()
+  const user = useUnsafeUser()
 
   return (
     <XStack
@@ -191,56 +194,46 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack ai="center" space="$3">
           <HeaderLinks {...props} />
 
-          <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-            <TooltipSimple delay={0} restMs={25} label="Star on Github">
-              <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </TooltipSimple>
-          </NextLink>
+          {user?.user ? (
+            <XStack ai="center" space="$2">
+              <NextLink href="/account">
+                <Avatar circular size="$2">
+                  <Avatar.Image
+                    source={{
+                      uri:
+                        user.userDetails?.avatar_url ??
+                        getDefaultAvatarImage(
+                          user.userDetails?.full_name ?? user.user?.email ?? 'User'
+                        ),
+                    }}
+                  />
+                </Avatar>
+              </NextLink>
+            </XStack>
+          ) : (
+            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+              <TooltipSimple delay={0} restMs={25} label="Star on Github">
+                <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={23} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
+          )}
 
           <SmallMenu />
         </XStack>
-        {/* 
-          <XStack ai="center" space="$2">
-            {user.user ? (
-              <Avatar circular size="$2">
-                <Avatar.Image src={user.user.user_metadata.avatar_url} />
-              </Avatar>
-            ) : (
-              <NextLink href="/login">
-                <Paragraph
-                  fontFamily="$silkscreen"
-                  px="$3"
-                  py="$2"
-                  cursor="pointer"
-                  size="$3"
-                  o={0.7}
-                  hoverStyle={{ opacity: 1 }}
-                  $xxs={{
-                    display: 'none',
-                  }}
-                >
-                  Login
-                </Paragraph>
-              </NextLink>
-            )}
-
-            <NextLink href="/takeout/purchase">
-              <Button fontFamily="$silkscreen" size="$3">
-                Purchase
-              </Button>
-            </NextLink>
-          </XStack> */}
       </XStack>
     </XStack>
   )
 })
 
 const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
+  const user = useUnsafeUser()
+  // there is user context and supabase setup in the current page
+  const pageSupportsAuth = typeof user !== 'undefined'
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation">
@@ -262,6 +255,18 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
           Studio
         </HeadAnchor>
       </NextLink>
+
+      {pageSupportsAuth && !user?.user && (
+        <NextLink prefetch={false} href="/studio">
+          <HeadAnchor
+            $md={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            Login
+          </HeadAnchor>
+        </NextLink>
+      )}
 
       {process.env.NODE_ENV === 'development' && (
         <NextLink prefetch={false} href="/takeout">
