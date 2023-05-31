@@ -32,7 +32,7 @@ export const TextAreaFrame = styled(InputFrame, {
 
 export type TextAreaProps = InputProps
 
-export const TextArea = InputFrame.styleable<InputProps>((propsIn, ref) => {
+export const TextArea = TextAreaFrame.styleable<InputProps>((propsIn, ref) => {
   const props = useInputProps(propsIn, ref)
-  return <InputFrame {...props} />
+  return <TextAreaFrame {...props} />
 })
