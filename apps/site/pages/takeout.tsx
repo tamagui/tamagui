@@ -70,7 +70,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
     useClientValue(
       isClient &&
         (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-          window.location.search?.includes('disable-motion'))
+          window.location.search?.includes('disable-motion') ||
+          /firefox/i.test(navigator.userAgent))
     ) || store.showPurchase
 
   return (
@@ -148,15 +149,17 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
               {!disableMotion && (
                 <ThemeTint>
+                  {/* main color slices */}
                   <TAKEOUT
                     className="clip-slice mix-blend"
                     pos="absolute"
                     t={44}
                     color="$color7"
                     scale={1.04}
-                    o={0.45}
+                    o={0.75}
                   />
 
+                  {/* alt color slices */}
                   <ThemeTintAlt>
                     <TAKEOUT
                       className="clip-slice mix-blend animate-fade2"
@@ -164,24 +167,16 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                       t={44}
                       color="$color7"
                       scale={1.04}
-                      o={0.45}
+                      o={0.75}
                     />
                   </ThemeTintAlt>
 
-                  <TAKEOUT
-                    className="clip-slice mix-blend-dodge animate-fade2"
-                    pos="absolute"
-                    t={44}
-                    color="$color7"
-                    scale={1.04}
-                    o={0.45}
-                  />
-
+                  {/* animated borders shine */}
                   <TAKEOUT
                     pos="absolute"
                     t={45}
-                    className="theme-shadow mix-blend masked2"
-                    zi={1}
+                    className="theme-shadow masked3"
+                    zi={100}
                     color="transparent"
                   />
                 </ThemeTint>
@@ -247,11 +242,14 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 pe="none"
                 ai="center"
                 jc="center"
-                scale={1.15}
+                scale={1.2}
+                y={-30}
+                scaleX={0.9}
               >
                 <TAKEOUT className="bg-dot-grid clip-text" />
               </YStack>
 
+              {/* takeout shadow */}
               <YStack
                 pos="absolute"
                 fullscreen
@@ -260,8 +258,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 ai="center"
                 jc="center"
                 x={-10}
-                y={-70}
-                o={0.65}
+                y={-50}
+                o={0.5}
+                scale={1.03}
               >
                 <TAKEOUT color="$background" className="" />
               </YStack>
@@ -339,7 +338,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               /> */}
 
               <YStack f={1} space="$6">
-                <MunroP className="mix-blend" mt={-180} mb={-20} size="$8">
+                <MunroP className="mix-blend pixelate" mt={-180} mb={-20} size="$7">
                   Jumpstart your startup
                 </MunroP>
 
@@ -419,12 +418,17 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <YStack p="$6" className="blur-medium" space="$6" elevation="$4">
                   <YStack zi={-1} fullscreen bc="$color" o={0.1} />
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="800">
-                    Speedrun from 0-to-💯 with Tamagui Takeout 🥡
+                  <Paragraph
+                    fontFamily="$munro"
+                    size="$12"
+                    $sm={{ size: '$7' }}
+                    fow="800"
+                  >
+                    Speedrun from 0-to-100 🥡
                   </Paragraph>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    It's not just about shipping fast. It's the long run.
+                    It's not just about shipping fast, it's the long run.
                   </Paragraph>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
@@ -457,6 +461,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     <Point>Maestro native integration testing</Point>
                     <Point>Notifications</Point>
                   </YStack>
+
+                  <Spacer />
                 </YStack>
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
@@ -502,7 +508,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 </XStack>
 
                 <MunroP size="$10">
-                  A reference design for a building a truly high quality app that keeps
+                  A reference design for a building a truly high quality app - that keeps
                   improving.
                 </MunroP>
 
@@ -528,16 +534,16 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
             </XStack>
 
             <YStack mt={200} w={3} mih={500} h="100%" />
-
-            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.05} zi={-2}>
-              <Image
-                alt="mandala"
-                width={1800}
-                height={1800}
-                src="/takeout/geometric.svg"
-              />
-            </YStack>
           </XStack>
+
+          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.025} zi={-2}>
+            <Image
+              alt="mandala"
+              width={2500}
+              height={2500}
+              src="/takeout/geometric.svg"
+            />
+          </YStack>
 
           <Spacer size="$10" />
         </ContainerXL>

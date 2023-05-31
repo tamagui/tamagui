@@ -312,8 +312,11 @@ iframe {
   -webkit-user-select: none !important;
 }
 
-.glow {
+.glow, .mix-blend-multiply {
   mix-blend-mode: multiply;
+}
+
+.glow {
   filter: blur(170px);
 }
 
@@ -743,9 +746,10 @@ input, textarea {
 }
 
 .font-outlined {
-  text-shadow: 2px 2px var(--color),
-    -2px -2px var(--color),
-    -2px 2px var(--color);
+  text-shadow: 1px 1px var(--color),
+    -1px -1px var(--color),
+    -1px 1px var(--color),
+    1px -1px var(--color);
 }
 
 .invert {
@@ -784,7 +788,7 @@ input, textarea {
   -webkit-mask-size: 100% 100%;
   -webkit-mask-clip: border-box;
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 200% 200%;
+  mask-size: 30% 30%;
   mask-clip: border-box;
   animation: clip-fade 70s infinite;
 }
@@ -808,6 +812,5 @@ input, textarea {
   
   100% {
     mask-position: right;
-    -webkit-mask-position: 420%;
   }
 }
