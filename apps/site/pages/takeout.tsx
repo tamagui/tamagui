@@ -610,6 +610,7 @@ const PurchaseModal = ({
     if (!price) return false
     return price.product_id === product.id
   })
+  const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
 
   return (
     <Dialog
@@ -668,7 +669,7 @@ const PurchaseModal = ({
                 flexDirection="row"
                 flexWrap="wrap"
               >
-                {prices.map((price) => {
+                {sortedPrices.map((price) => {
                   const active = price.id === selectedPriceId
                   const htmlId = `radio-${price.id}`
                   return (
