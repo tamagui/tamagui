@@ -672,7 +672,7 @@ const PurchaseModal = ({
                   const active = price.id === selectedPriceId
                   const htmlId = `radio-${price.id}`
                   return (
-                    <Theme name={active ? 'blue' : undefined}>
+                    <ThemeTint key={price.id} disable={!active}>
                       <Label
                         f={1}
                         htmlFor={htmlId}
@@ -680,13 +680,13 @@ const PurchaseModal = ({
                         height="unset"
                         display="flex"
                         borderWidth="$0.25"
-                        borderColor={active ? '$color8' : '$color1'}
+                        borderColor={active ? '$color8' : '$color5'}
                         borderRadius="$4"
                         space="$4"
                         ai="flex-start"
                         maw="calc(33% - 16px)"
                         hoverStyle={{
-                          borderColor: active ? '$color9' : '$color2',
+                          borderColor: active ? '$color10' : '$color7',
                         }}
                       >
                         <RadioGroup.Item id={htmlId} size="$6" value={price.id} mt="$2">
@@ -703,7 +703,7 @@ const PurchaseModal = ({
                           <Paragraph ellipse>{price.description}</Paragraph>
                         </YStack>
                       </Label>
-                    </Theme>
+                    </ThemeTint>
                   )
                 })}
               </RadioGroup>
@@ -1141,6 +1141,7 @@ const PurchaseSelectTeam = ({
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
+              animation="100ms"
               key="intent-indicator"
               width={intentAt.width}
               height={intentAt.height}
@@ -1150,16 +1151,18 @@ const PurchaseSelectTeam = ({
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {activeAt && (
-            <TabsRovingIndicator
-              key="active-indicator"
-              isActive
-              width={activeAt.width}
-              height={activeAt.height}
-              x={activeAt.x}
-              y={activeAt.y}
-            />
-          )}
+          <ThemeTint>
+            {activeAt && (
+              <TabsRovingIndicator
+                key="active-indicator"
+                isActive
+                width={activeAt.width}
+                height={activeAt.height}
+                x={activeAt.x}
+                y={activeAt.y}
+              />
+            )}
+          </ThemeTint>
         </AnimatePresence>
 
         <Tabs.List
@@ -1198,18 +1201,20 @@ const PurchaseSelectTeam = ({
               <Paragraph>Custom</Paragraph>
             </Button>
           ) : (
-            <Input
-              backgroundColor="$color4"
-              autoFocus
-              width={100}
-              borderRadius="$2"
-              value={currentTab}
-              onChangeText={(text) => {
-                if (isNaN(Number(text))) return
-                setActiveIndicator(null)
-                setCurrentTab?.(text)
-              }}
-            />
+            <ThemeTint>
+              <Input
+                backgroundColor="$color7"
+                autoFocus
+                width={100}
+                borderRadius="$2"
+                value={currentTab}
+                onChangeText={(text) => {
+                  if (isNaN(Number(text))) return
+                  setActiveIndicator(null)
+                  setCurrentTab?.(text)
+                }}
+              />
+            </ThemeTint>
           )}
         </Tabs.List>
       </YStack>
@@ -1226,7 +1231,7 @@ const TabsRovingIndicator = ({
       borderRadius="$2"
       position="absolute"
       backgroundColor="$color3"
-      animation="100ms"
+      animation="quicker"
       enterStyle={{
         opacity: 0,
       }}
@@ -1235,8 +1240,8 @@ const TabsRovingIndicator = ({
       }}
       opacity={0.7}
       {...(isActive && {
-        backgroundColor: '$color8',
-        opacity: 0.6,
+        backgroundColor: '$color7',
+        opacity: 1,
       })}
       {...props}
     />
