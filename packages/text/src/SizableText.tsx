@@ -6,11 +6,17 @@ export const SizableText = styled(Text, {
   fontFamily: '$body',
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+      },
+    },
+
     size: getFontSized,
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    unstyled: false,
   },
 })
 
