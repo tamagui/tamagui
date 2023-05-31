@@ -5,18 +5,22 @@ import { ToastProps } from './ToastImpl';
 import { ToastProvider, ToastProviderProps, createToastScope } from './ToastProvider';
 import { ToastViewport, ToastViewportProps } from './ToastViewport';
 declare const ToastTitleFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, import("@tamagui/core").TextPropsBase, {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
@@ -26,18 +30,22 @@ declare const ToastTitleFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
 type PrimitiveDivProps = GetProps<typeof ToastTitleFrame>;
 type ToastTitleProps = PrimitiveDivProps & {};
 declare const ToastDescriptionFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>>, TamaguiElement, import("@tamagui/core").TextPropsBase, {
+    readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
@@ -175,27 +183,33 @@ type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
 type ToastCloseProps = ToastCloseFrameProps & {};
 declare const Toast: ((props: Omit<ToastProps & React.RefAttributes<TamaguiElement>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
     Title: React.ForwardRefExoticComponent<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
     Description: React.ForwardRefExoticComponent<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").TextProps, "children" | ("onLayout" | keyof import("react-native/types").GestureResponderHandlers)> & import("@tamagui/core").ExtendsBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+        readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
