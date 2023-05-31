@@ -2,22 +2,20 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { DialogDemo } from '@tamagui/demos'
-import { SandboxHeading } from '@tamagui/sandbox-ui'
 import { ToastProvider } from '@tamagui/toast'
 import { Suspense, useState } from 'react'
 import {
   Button,
-  Image,
-  Input,
+  Label,
   Separator,
+  SizableText,
   Square,
-  Stack,
   TamaguiProvider,
   Theme,
   XStack,
   YStack,
   getStylesAtomic,
+  styled,
 } from 'tamagui'
 
 import config from './tamagui.config'
@@ -56,6 +54,7 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
+  return <HomeScreen />
   return <Square size={100} bc="red" />
 }
 
@@ -202,3 +201,28 @@ const SandboxFrame = (props: { children: any }) => {
     </TamaguiProvider>
   )
 }
+
+function HomeScreen() {
+  return (
+    <YStack space>
+      {/* the label here has an extra height of 44px set even when using unstyled. 
+      Similarly styled SizableText does not have this issue */}
+      <CustomLabel>Custom Label with height 44px set</CustomLabel>
+      <CustomLabelWithSizableText>
+        sizable text with no set height
+      </CustomLabelWithSizableText>
+    </YStack>
+  )
+}
+
+const CustomLabel = styled(Label, {
+  name: 'CustomLabel',
+  unstyled: true,
+  debug: 'verbose',
+  fontSize: '$3',
+})
+
+const CustomLabelWithSizableText = styled(SizableText, {
+  name: 'CustomLabelWithSizableText',
+  fontSize: '$3',
+})
