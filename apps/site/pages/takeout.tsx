@@ -100,7 +100,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         ov="hidden"
       >
         <TAKEOUT
-          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' masked3')}
+          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' masked2')}
           fontSize={150 * 5}
           lineHeight={110 * 5}
           color="#000"
@@ -111,6 +111,17 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
+            <YStack position="absolute" t={20} r="15%">
+              <PurchaseButton
+                onPress={() => {
+                  store.showPurchase = true
+                }}
+                size="$3"
+              >
+                Purchase
+              </PurchaseButton>
+            </YStack>
+
             <YStack
               y={heroHeight / 2 - 340}
               ai="center"
@@ -175,7 +186,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   <TAKEOUT
                     pos="absolute"
                     t={45}
-                    className="theme-shadow masked3"
+                    className="theme-shadow masked2"
                     zi={100}
                     color="transparent"
                   />
@@ -386,23 +397,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
-                  <Point>
-                    React (web, native, ios) monorepo sharing a single codebase
-                  </Point>
-                  <Point>
-                    All the important screens: onboard, auth, account, settings, profile,
-                    tabs, and more
-                  </Point>
-                  <Point>SSR, RSC, choose from 3 animation drivers</Point>
-                  <Point>Complete & fully typed design system</Point>
-                  <Point>20 icon packs</Point>
-                  <Point>2 all new theme suites: Pastel & Neon</Point>
-                  <Point>35 custom fonts</Point>
-                  <Point>Github template with PR bot for updates</Point>
-                  <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-                  <Point>Preview deploys for web, app-store builds with EAS</Point>
-                </YStack>
+                <Points />
 
                 <YStack marginTop={-450} marginBottom={-500} x={400} zi={-1}>
                   <Image
@@ -657,7 +652,6 @@ const PurchaseModal = ({
           enterStyle={{ opacity: 0, scale: 0.975 }}
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
-          h="90%"
           maw={900}
           mah={900}
         >
@@ -716,31 +710,9 @@ const PurchaseModal = ({
             </YStack>
 
             <XStack f={1} space separator={<Separator vertical />}>
-              <ScrollView space>
+              <ScrollView space maw="55%" ov="hidden">
                 <YStack space="$4">
-                  <H4>Included</H4>
-
-                  <YStack space="$4">
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point>Starter Kit</Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                  </YStack>
+                  <Points />
                 </YStack>
               </ScrollView>
 
@@ -1002,9 +974,7 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text fontSize="$8" fontWeight="800">
-          {props.children}
-        </Button.Text>
+        <Button.Text fontWeight="700">{props.children}</Button.Text>
       </Button>
     </Theme>
   )
@@ -1272,6 +1242,23 @@ const TabsRovingIndicator = ({
     />
   )
 }
+
+const Points = () => (
+  <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
+    <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
+    <Point>
+      All the important screens: onboard, auth, account, settings, profile, tabs, and more
+    </Point>
+    <Point>SSR, RSC, choose from 3 animation drivers</Point>
+    <Point>Complete & fully typed design system</Point>
+    <Point>20 icon packs</Point>
+    <Point>2 all new theme suites: Pastel & Neon</Point>
+    <Point>35 custom fonts</Point>
+    <Point>Github template with PR bot for updates</Point>
+    <Point>Fully tested CI/CD: unit, integration, web and native</Point>
+    <Point>Preview deploys for web, app-store builds with EAS</Point>
+  </YStack>
+)
 
 export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
   try {

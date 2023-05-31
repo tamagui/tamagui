@@ -780,17 +780,7 @@ input, textarea {
   mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
   mask-size: 200% 200%;
   mask-clip: border-box;
-  animation: clip-fade 40s infinite;
-}
-
-.masked3 {
-  -webkit-mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  -webkit-mask-size: 100% 100%;
-  -webkit-mask-clip: border-box;
-  mask-image: url(/retro-icons/computers-devices-electronicscd-disk-17.svg);
-  mask-size: 30% 30%;
-  mask-clip: border-box;
-  animation: clip-fade 70s infinite;
+  animation: clip-fade 60s infinite;
 }
 
 @keyframes clip-fade {
