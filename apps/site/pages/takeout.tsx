@@ -2,7 +2,6 @@ import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { withSupabase } from '@lib/withSupabase'
-import { Canvas } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
@@ -14,7 +13,7 @@ import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, lazy, memo, useEffect, useState } from 'react'
+import { lazy, memo, useEffect, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -51,7 +50,6 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
-import { Stage } from '../components/Stage'
 
 const TakeoutBox3D = lazy(() => import('../components/TakeoutBox3D'))
 
@@ -1075,7 +1073,7 @@ const MunroP = styled(Paragraph, {
 
 const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
 
-export const PurchaseSelectTeam = ({
+const PurchaseSelectTeam = ({
   value: currentTab,
   onValueChange: setCurrentTab,
 }: TabsProps) => {

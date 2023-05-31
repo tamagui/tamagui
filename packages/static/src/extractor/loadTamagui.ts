@@ -1,9 +1,11 @@
 import { basename, dirname, extname, join, resolve } from 'path'
 
+import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui } from '@tamagui/core-node'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
+import chalk from 'chalk'
 import esbuild from 'esbuild'
 import fs, { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
@@ -52,7 +54,9 @@ export async function loadTamagui(
     if (options.outputCSS) {
       // emit css
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(`  Output Tamagui CSS to ${options.outputCSS}`)
+      console.log(
+        colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)
+      )
       await writeFile(options.outputCSS, config.getCSS())
     }
   }
