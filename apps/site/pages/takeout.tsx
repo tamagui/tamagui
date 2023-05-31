@@ -2,8 +2,7 @@ import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { withSupabase } from '@lib/withSupabase'
-import { useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
@@ -15,7 +14,7 @@ import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, memo, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, memo, useEffect, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -53,6 +52,8 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 import { Stage } from '../components/Stage'
+
+const TakeoutBox3D = lazy(() => import('../components/TakeoutBox3D'))
 
 const heroHeight = 850
 
@@ -276,30 +277,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 $lg={{ r: '-20%' }}
                 zIndex={-1}
               >
-                {enable3d && (
-                  <Canvas
-                    style={{
-                      width: 620,
-                      height: 620,
-                    }}
-                    gl={{ preserveDrawingBuffer: true }}
-                    shadows
-                    dpr={[1, 1]}
-                    // camera={{ position: [0, 0, 150], fov: 10 }}
-                  >
-                    <Suspense fallback={null}>
-                      {/* <ambientLight intensity={0.9} /> */}
-                      <Stage
-                        shadows="accumulative"
-                        scale={1}
-                        adjustCamera={1}
-                        intensity={1}
-                      >
-                        <TakeoutBox3D />
-                      </Stage>
-                    </Suspense>
-                  </Canvas>
-                )}
+                {enable3d && <TakeoutBox3D />}
               </YStack>
             </YStack>
           </YStack>
@@ -715,9 +693,8 @@ const PurchaseModal = ({
 
                         <YStack gap="$1" f={1}>
                           <H3>
-                            {price.interval === "year" && "Yearly Plan"}
-                            {price.interval === "month" && "Monthly Plan"}
-                            {" "}🥡
+                            {price.interval === 'year' && 'Yearly Plan'}
+                            {price.interval === 'month' && 'Monthly Plan'} 🥡
                           </H3>
                           <Paragraph ellipse>{price.description}</Paragraph>
                         </YStack>
@@ -997,15 +974,6 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
   )
 })
 
-const modelUrl = `${
-  process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
-}/takeout.gltf`
-useGLTF.preload(modelUrl)
-
-let frameCount = 0
-
 function PurchaseButton(props: ButtonProps) {
   return (
     <Theme name="pink">
@@ -1027,91 +995,6 @@ function PurchaseButton(props: ButtonProps) {
         </Button.Text>
       </Button>
     </Theme>
-  )
-}
-
-function TakeoutBox3D(props) {
-  const ref = useRef<any>()
-  const { nodes, materials } = useGLTF(modelUrl) as any
-
-  useEffect(() => {}, [])
-
-  useFrame((state, delta) => {
-    const isSlow = frameCount > 40
-
-    // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 2)
-
-    // effect to spin faster on first entering
-    if (frameCount <= 40) {
-      frameCount++
-    }
-    // ref.current!.rotation.x += delta * 0.1
-  })
-
-  return (
-    <group ref={ref} dispose={null} {...props}>
-      <mesh
-        geometry={nodes.pack.geometry}
-        material={materials.Chinese_Takeout_Box_chinese}
-        position={[0.13, 0.01, 0.23]}
-        rotation={[-Math.PI, 0, -Math.PI]}
-        scale={0.1}
-      />
-      <mesh
-        geometry={nodes.handle.geometry}
-        material={materials.Material}
-        position={[-0.26, 0.08, 0.06]}
-        scale={0.1}
-      />
-    </group>
-  )
-  // return (
-  //   <group ref={ref} dispose={null}>
-  //     <mesh
-  //       castShadow
-  //       receiveShadow
-  //       geometry={nodes.handle.geometry}
-  //       material={materials.Material}
-  //       position={[-0.26, 0.08, 0.06]}
-  //       scale={5}
-  //     />
-  //     <mesh
-  //       castShadow
-  //       receiveShadow
-  //       geometry={nodes.pack.geometry}
-  //       material={materials.Chinese_Takeout_Box_chinese}
-  //       position={[0.13, 0.01, 0.23]}
-  //       rotation={[-Math.PI, 0, -Math.PI]}
-  //       scale={5}
-  //     />
-  //   </group>
-  // )
-}
-
-function Box(props) {
-  const ref = useRef<any>()
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-
-  useFrame((state, delta) => {
-    ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * 0.1
-    ref.current!.rotation.x += delta * 0.1
-  })
-
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 3.5 : 3}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'white'} />
-    </mesh>
   )
 }
 
