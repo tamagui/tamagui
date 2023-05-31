@@ -19,6 +19,7 @@ import { useInsertionEffect } from 'react'
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
+import { isVariable } from '../createVariable'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
@@ -196,7 +197,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  function passDownProp(key: string, val: any, shouldMergeObject = false) {
+  function passDownProp(
+    key: string,
+    val: any,
+    shouldMergeObject = key in pseudoDescriptors
+  ) {
     if (shouldMergeObject) {
       viewProps[key] ||= {}
       // we are going backwards to apply in front
@@ -578,7 +583,7 @@ export const getSplitStyles: StyleSplitter = (
         (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
 
       if (isHOCShouldPassThrough) {
-        passDownProp(key, val, true)
+        passDownProp(key, val)
         // if its also a variant here, pass down but also keep it
         if (!isVariant) {
           continue
