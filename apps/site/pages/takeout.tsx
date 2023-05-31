@@ -13,7 +13,7 @@ import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import Image from 'next/image'
-import { lazy, memo, useEffect, useState } from 'react'
+import { Suspense, lazy, memo, useEffect, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -56,7 +56,7 @@ const TakeoutBox3D = lazy(() => import('../components/TakeoutBox3D'))
 const heroHeight = 850
 
 type TakeoutPageProps = {
-  starter: Database['public']['Tables']['products']['Row'] & {
+  starter?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
 }
@@ -275,7 +275,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 $lg={{ r: '-20%' }}
                 zIndex={-1}
               >
-                {enable3d && <TakeoutBox3D />}
+                {enable3d && (
+                  <Suspense fallback={null}>
+                    <TakeoutBox3D />
+                  </Suspense>
+                )}
               </YStack>
             </YStack>
           </YStack>
@@ -587,6 +591,8 @@ const PurchaseModal = ({
 }: {
   productWithPrices: TakeoutPageProps['starter']
 }) => {
+  if (!product) return null
+
   const prices = product.prices
   const store = useTakeoutStore()
   const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
@@ -782,6 +788,7 @@ const PurchaseModal = ({
                         <NextLink href="#">
                           <SizableText
                             theme="alt1"
+                            // @ts-ignore
                             style={{ textDecoration: 'underline' }}
                             size="$1"
                           >
@@ -791,6 +798,7 @@ const PurchaseModal = ({
                         <NextLink href="#">
                           <SizableText
                             theme="alt1"
+                            // @ts-ignore
                             style={{ textDecoration: 'underline' }}
                             size="$1"
                           >
@@ -910,7 +918,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               </Paragraph>
 
               <Paragraph fontFamily="$munro" size="$10">
-                {product.name}
+                {product?.name}
               </Paragraph>
 
               <YStack>
@@ -1260,28 +1268,35 @@ const TabsRovingIndicator = ({
 }
 
 export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
-  const query = await supabaseAdmin
-    .from('products')
-    .select('*, prices(*)')
-    .eq('metadata->>slug', 'universal-starter')
-    .single()
-  if (query.error) throw query.error
-  if (
-    !query.data.prices ||
-    !Array.isArray(query.data.prices) ||
-    query.data.prices.length === 0
-  ) {
-    throw new Error('No prices are attached to the product.')
-  }
+  try {
+    const query = await supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'universal-starter')
+      .single()
+    if (query.error) throw query.error
+    if (
+      !query.data.prices ||
+      !Array.isArray(query.data.prices) ||
+      query.data.prices.length === 0
+    ) {
+      throw new Error('No prices are attached to the product.')
+    }
 
-  const props: TakeoutPageProps = {
-    starter: {
-      ...query.data,
-      prices: query.data.prices,
-    },
-  }
-  return {
-    revalidate: 60,
-    props,
+    const props: TakeoutPageProps = {
+      starter: {
+        ...query.data,
+        prices: query.data.prices,
+      },
+    }
+    return {
+      revalidate: 60,
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      props: {},
+    }
   }
 }
