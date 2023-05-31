@@ -1,3 +1,3 @@
 export * from './NextTheme';
-export { ColorScheme } from './useRootTheme';
+export * from './types';
 //# sourceMappingURL=index.d.ts.map
