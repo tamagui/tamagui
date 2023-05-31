@@ -408,7 +408,6 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
         data-disabled={context.disabled ? '' : undefined}
         tabIndex={context.disabled ? undefined : 0}
         animateOnly={['transform', 'left', 'right', 'top', 'bottom']}
-        {...thumbProps}
         {...(context.orientation === 'horizontal'
           ? {
               x: thumbInBoundsOffset - size / 2,
@@ -432,6 +431,7 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
           [orientation.startEdge]: `${percent}%`,
         }}
         size={sizeIn}
+        {...thumbProps}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
         }}
