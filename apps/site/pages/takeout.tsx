@@ -13,6 +13,7 @@ import { DefaultLayout, getDefaultLayout } from 'components/layouts/DefaultLayou
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Suspense, lazy, memo, useEffect, useState } from 'react'
@@ -50,12 +51,11 @@ import {
   useMedia,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
-const TakeoutBox3D = lazy(() => import('../components/TakeoutBox3D'))
+const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
 const heroHeight = 850
 

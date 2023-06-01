@@ -259,7 +259,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
       </NextLink>
 
       {pageSupportsAuth && !user?.user && (
-        <NextLink prefetch={false} href="/studio">
+        <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{
               display: forceShowAllLinks ? 'flex' : 'none',

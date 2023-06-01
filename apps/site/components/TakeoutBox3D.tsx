@@ -1,6 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useRef } from 'react'
+import { useRouter } from 'next/router'
+import { Suspense, useEffect, useRef } from 'react'
 
 import { Stage } from '../components/Stage'
 
@@ -30,6 +31,14 @@ export default (props) => (
 
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
+  const router = useRouter()
+  useEffect(() => {
+    function resetFrameCount() {
+      frameCount = 0
+    }
+    router.events.on('routeChangeComplete', resetFrameCount)
+    return () => router.events.off('routeChangeComplete', resetFrameCount)
+  }, [])
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
