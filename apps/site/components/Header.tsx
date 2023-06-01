@@ -70,22 +70,24 @@ export function Header(props: HeaderProps) {
             isScrolled ? 'blur-medium hover-highlights ' : ''
           }`}
           bbc="$borderColor"
-          elevation="$0"
-          py="$2"
-          y={0}
+          py="$1"
+          y={3}
           ov="hidden"
           width="100%"
+          br="$10"
+          bw={1}
+          boc="transparent"
           maw={1120}
           {...(isScrolled && {
             $gtSm: {
-              py: '$1',
+              py: '$2',
               y: 5,
               elevation: '$3',
-              br: '$10',
+              boc: '$borderColor',
             },
           })}
         >
-          <YStack o={isScrolled ? 0.7 : 0} fullscreen bc="$background" />
+          <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
           <ContainerLarge>
             <ThemeTint>
               {React.useMemo(

@@ -44,12 +44,14 @@ import {
   XStack,
   YStack,
   YStackProps,
+  composeRefs,
   isClient,
   styled,
   useMedia,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
+import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
@@ -88,6 +90,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
           <LoadMunro />
         </Head>
       </>
+
+      <Glow />
 
       <PurchaseModal productWithPrices={starter} />
 
@@ -150,15 +154,16 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 size="$1"
                 fontSize={12}
                 ls={105}
-                fontFamily="$glusp"
+                o={0.2}
+                fontFamily="$silkscreen"
                 pe="none"
                 h={40}
                 userSelect="none"
               >
-                Tamagui
+                TAMAGUI
               </Paragraph>
 
-              <TAKEOUT />
+              <TAKEOUT zi={1000} />
 
               {!disableMotion && (
                 <ThemeTint>
@@ -169,18 +174,30 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     t={44}
                     color="$color7"
                     scale={1.04}
-                    o={0.75}
+                    o={1}
                   />
 
                   {/* alt color slices */}
                   <ThemeTintAlt>
                     <TAKEOUT
-                      className="clip-slice mix-blend animate-fade2"
+                      className="clip-slice mix-blend animate-fade2 slice-alt"
                       pos="absolute"
                       t={44}
                       color="$color7"
                       scale={1.04}
-                      o={0.75}
+                      o={1}
+                    />
+                  </ThemeTintAlt>
+
+                  {/* alt color slices */}
+                  <ThemeTintAlt offset={1}>
+                    <TAKEOUT
+                      className="clip-slice mix-blend animate-fade2"
+                      pos="absolute"
+                      t={40}
+                      color="$color7"
+                      scale={1.024}
+                      o={0.5}
                     />
                   </ThemeTintAlt>
 
@@ -250,7 +267,6 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               <YStack
                 pos="absolute"
                 fullscreen
-                className="animated"
                 zi={2}
                 pe="none"
                 ai="center"
@@ -1300,4 +1316,48 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
       props: {},
     }
   }
+}
+
+const Glow = () => {
+  const glow = useHoverGlow({
+    resist: 85,
+    size: 800,
+    strategy: 'blur',
+    offset: {
+      x: -300,
+      y: -200,
+    },
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.2,
+    background: 'transparent',
+  })
+  const glow2 = useHoverGlow({
+    resist: 85,
+    size: 800,
+    strategy: 'blur',
+    offset: {
+      x: 300,
+      y: 200,
+    },
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.2,
+    background: 'transparent',
+  })
+
+  return (
+    <ContainerXL ref={composeRefs(glow.parentRef as any, glow2.parentRef as any)}>
+      <YStack fullscreen>
+        <ThemeTint>
+          <glow.Component />
+        </ThemeTint>
+      </YStack>
+      <YStack fullscreen>
+        <ThemeTintAlt>
+          <glow2.Component />
+        </ThemeTintAlt>
+      </YStack>
+    </ContainerXL>
+  )
 }
