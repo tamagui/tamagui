@@ -120,7 +120,7 @@ function createGroup(verticalDefault: boolean) {
 
       const childrenArray = Children.toArray(childrenProp)
       const children = isUsingItems
-        ? childrenProp
+        ? Children.toArray(childrenProp).filter(isValidElement)
         : childrenArray.map((child, i) => {
             if (!isValidElement(child)) {
               return child
