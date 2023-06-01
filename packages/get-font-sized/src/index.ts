@@ -8,7 +8,7 @@ import type {
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
-  { font, props }
+  { font, fontFamily, props }
 ) => {
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
@@ -18,7 +18,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     }
     return
   }
-  const fontFamily = font.family
+
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
   const fontSize = props.fontSize || font.size[sizeToken]
   const lineHeight = props.lineHeight || font.lineHeight?.[sizeToken]

@@ -135,6 +135,8 @@ export const useUser = () => {
   return context
 }
 
+export const useUnsafeUser = () => useContext(UserContext)
+
 export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading } = useUser()
   const router = useRouter()

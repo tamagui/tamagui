@@ -1,5 +1,6 @@
 import { basename, dirname, extname, join, resolve } from 'path'
 
+import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui } from '@tamagui/core-node'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
@@ -50,9 +51,7 @@ export async function loadTamagui(
     const config = createTamagui(bundleInfo.tamaguiConfig)
 
     if (options.outputCSS) {
-      // emit css
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(`  Output Tamagui CSS to ${options.outputCSS}`)
+      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)
       await writeFile(options.outputCSS, config.getCSS())
     }
   }

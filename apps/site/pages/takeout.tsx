@@ -1,21 +1,22 @@
+import { Footer } from '@components/Footer'
+import { Header } from '@components/Header'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { withSupabase } from '@lib/withSupabase'
-import { useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
-import { getDefaultLayout } from 'components/layouts/DefaultLayout'
+import { DefaultLayout, getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, memo, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, memo, useEffect, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -44,20 +45,22 @@ import {
   XStack,
   YStack,
   YStackProps,
+  composeRefs,
   isClient,
   styled,
   useMedia,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
-
+import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
-import { Stage } from '../components/Stage'
+
+const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
 const heroHeight = 850
 
 type TakeoutPageProps = {
-  starter: Database['public']['Tables']['products']['Row'] & {
+  starter?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
 }
@@ -71,7 +74,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
     useClientValue(
       isClient &&
         (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-          window.location.search?.includes('disable-motion'))
+          window.location.search?.includes('disable-motion') ||
+          /firefox/i.test(navigator.userAgent))
     ) || store.showPurchase
 
   return (
@@ -87,6 +91,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         </Head>
       </>
 
+      {/* <Glow /> */}
+
       <PurchaseModal productWithPrices={starter} />
 
       <YStack
@@ -98,19 +104,31 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         ai="center"
         jc="center"
         ov="hidden"
+        contain="paint layout"
       >
         <TAKEOUT
-          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' masked3')}
-          fontSize={150 * 5}
-          lineHeight={110 * 5}
+          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' ')}
+          fontSize={150 * 3}
+          lineHeight={110 * 3}
           color="#000"
-          o={0.085}
+          o={0.07}
         />
       </YStack>
 
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
+            <YStack position="absolute" t={20} r="15%">
+              <PurchaseButton
+                onPress={() => {
+                  store.showPurchase = true
+                }}
+                size="$3"
+              >
+                Purchase
+              </PurchaseButton>
+            </YStack>
+
             <YStack
               y={heroHeight / 2 - 340}
               ai="center"
@@ -137,52 +155,59 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 size="$1"
                 fontSize={12}
                 ls={105}
-                fontFamily="$glusp"
+                o={0.2}
+                fontFamily="$silkscreen"
                 pe="none"
                 h={40}
                 userSelect="none"
               >
-                Tamagui
+                TAMAGUI
               </Paragraph>
 
-              <TAKEOUT />
+              <TAKEOUT zi={1000} />
 
               {!disableMotion && (
                 <ThemeTint>
+                  {/* main color slices */}
                   <TAKEOUT
                     className="clip-slice mix-blend"
                     pos="absolute"
                     t={44}
                     color="$color7"
                     scale={1.04}
-                    o={0.45}
+                    o={1}
                   />
 
+                  {/* alt color slices */}
                   <ThemeTintAlt>
                     <TAKEOUT
-                      className="clip-slice mix-blend animate-fade2"
+                      className="clip-slice mix-blend animate-fade2 slice-alt"
                       pos="absolute"
                       t={44}
                       color="$color7"
                       scale={1.04}
-                      o={0.45}
+                      o={1}
                     />
                   </ThemeTintAlt>
 
-                  <TAKEOUT
-                    className="clip-slice mix-blend-dodge animate-fade2"
-                    pos="absolute"
-                    t={44}
-                    color="$color7"
-                    scale={1.04}
-                    o={0.45}
-                  />
+                  {/* alt color slices */}
+                  <ThemeTintAlt offset={1}>
+                    <TAKEOUT
+                      className="clip-slice mix-blend animate-fade2"
+                      pos="absolute"
+                      t={40}
+                      color="$color7"
+                      scale={1.024}
+                      o={0.5}
+                    />
+                  </ThemeTintAlt>
 
+                  {/* animated borders shine */}
                   <TAKEOUT
                     pos="absolute"
                     t={45}
-                    className="theme-shadow mix-blend masked2"
-                    zi={1}
+                    className="theme-shadow masked2"
+                    zi={100}
                     color="transparent"
                   />
                 </ThemeTint>
@@ -243,16 +268,18 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               <YStack
                 pos="absolute"
                 fullscreen
-                className="animated"
                 zi={2}
                 pe="none"
                 ai="center"
                 jc="center"
-                scale={1.15}
+                scale={1.2}
+                y={-30}
+                scaleX={0.9}
               >
                 <TAKEOUT className="bg-dot-grid clip-text" />
               </YStack>
 
+              {/* takeout shadow */}
               <YStack
                 pos="absolute"
                 fullscreen
@@ -261,8 +288,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 ai="center"
                 jc="center"
                 x={-10}
-                y={-70}
-                o={0.65}
+                y={-50}
+                o={0.5}
+                scale={1.03}
               >
                 <TAKEOUT color="$background" className="" />
               </YStack>
@@ -277,28 +305,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 zIndex={-1}
               >
                 {enable3d && (
-                  <Canvas
-                    style={{
-                      width: 620,
-                      height: 620,
-                    }}
-                    gl={{ preserveDrawingBuffer: true }}
-                    shadows
-                    dpr={[1, 1]}
-                    // camera={{ position: [0, 0, 150], fov: 10 }}
-                  >
-                    <Suspense fallback={null}>
-                      {/* <ambientLight intensity={0.9} /> */}
-                      <Stage
-                        shadows="accumulative"
-                        scale={1}
-                        adjustCamera={1}
-                        intensity={1}
-                      >
-                        <TakeoutBox3D />
-                      </Stage>
-                    </Suspense>
-                  </Canvas>
+                  <Suspense fallback={null}>
+                    <TakeoutBox3D />
+                  </Suspense>
                 )}
               </YStack>
             </YStack>
@@ -359,7 +368,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               /> */}
 
               <YStack f={1} space="$6">
-                <MunroP className="mix-blend" mt={-180} mb={-20} size="$8">
+                <MunroP className="mix-blend pixelate" mt={-180} mb={-20} size="$7">
                   Jumpstart your startup
                 </MunroP>
 
@@ -381,23 +390,26 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 </ThemeTint>
 
                 <XStack space="$6" spaceDirection="horizontal">
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
                 </XStack>
 
                 <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the 🌕 or the ✨ (success is up to you) but if you want
+                  We can't promise the 🌕 or the ✨, success is up to you, but if you want
                   a cheat code to shipping a stunning web & native mobile app fast, you've
                   found it.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Takeout 🥡 is a novel bootstrap that delivers on years of effort putting
-                  together a stack that gives you nearly a whole startup in a box on day
-                  one. And of course it's powered by Tamagui, the best frontend UI system
+                  Takeout 🥡 is a bootstrap that delivers on years of effort putting
+                  together a better unified React Native + web stack for startups.
+                </Paragraph>
+
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  And of course it's powered by Tamagui, the best frontend UI system
                   around.
                 </Paragraph>
 
@@ -407,22 +419,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
-                  <Point>
-                    React (web, native, ios) monorepo sharing a single codebase
-                  </Point>
-                  <Point>
-                    All the important screens: onboard, auth, account, settings, profile,
-                    tabs, and more
-                  </Point>
-                  <Point>SSR, RSC, choose from 3 animation drivers</Point>
-                  <Point>Complete & fully typed design system</Point>
-                  <Point>20 icon packs</Point>
-                  <Point>2 all new theme suites: Pastel & Neon</Point>
-                  <Point>35 custom fonts</Point>
-                  <Point>Github template with PR bot for updates</Point>
-                  <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-                  <Point>Preview deploys for web, app-store builds with EAS</Point>
+                <YStack scale={1.12}>
+                  <Points />
                 </YStack>
 
                 <YStack marginTop={-450} marginBottom={-500} x={400} zi={-1}>
@@ -439,12 +437,31 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <YStack p="$6" className="blur-medium" space="$6" elevation="$4">
                   <YStack zi={-1} fullscreen bc="$color" o={0.1} />
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="800">
-                    Speedrun from 0-to-💯 with Tamagui Takeout 🥡
-                  </Paragraph>
+                  <YStack
+                    bc="#000"
+                    als="flex-start"
+                    rotate="-2deg"
+                    mt={-90}
+                    mb={20}
+                    p="$6"
+                    py="$2"
+                    elevation="$4"
+                  >
+                    <ThemeTint>
+                      <Paragraph
+                        color="$color9"
+                        fontFamily="$munro"
+                        size="$12"
+                        $sm={{ size: '$7' }}
+                        fow="800"
+                      >
+                        Speedrun from 0-to-100 🥡
+                      </Paragraph>
+                    </ThemeTint>
+                  </YStack>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    It's not just about shipping fast. It's the long run.
+                    It's not just about shipping fast, it's the long run.
                   </Paragraph>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
@@ -477,6 +494,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     <Point>Maestro native integration testing</Point>
                     <Point>Notifications</Point>
                   </YStack>
+
+                  <Spacer />
                 </YStack>
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
@@ -522,7 +541,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 </XStack>
 
                 <MunroP size="$10">
-                  A reference design for a building a truly high quality app that keeps
+                  A reference design for a building a truly high quality app - that keeps
                   improving.
                 </MunroP>
 
@@ -548,16 +567,16 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
             </XStack>
 
             <YStack mt={200} w={3} mih={500} h="100%" />
-
-            <YStack pos="absolute" t={0} r={-500} rotate="120deg" o={0.05} zi={-2}>
-              <Image
-                alt="mandala"
-                width={1800}
-                height={1800}
-                src="/takeout/geometric.svg"
-              />
-            </YStack>
           </XStack>
+
+          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.025} zi={-2}>
+            <Image
+              alt="mandala"
+              width={2500}
+              height={2500}
+              src="/takeout/geometric.svg"
+            />
+          </YStack>
 
           <Spacer size="$10" />
         </ContainerXL>
@@ -611,6 +630,8 @@ const PurchaseModal = ({
 }: {
   productWithPrices: TakeoutPageProps['starter']
 }) => {
+  if (!product) return null
+
   const prices = product.prices
   const store = useTakeoutStore()
   const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
@@ -627,6 +648,7 @@ const PurchaseModal = ({
     if (!price) return false
     return price.product_id === product.id
   })
+  const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
 
   return (
     <Dialog
@@ -669,7 +691,6 @@ const PurchaseModal = ({
           enterStyle={{ opacity: 0, scale: 0.975 }}
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
-          h="90%"
           maw={900}
           mah={900}
         >
@@ -686,11 +707,11 @@ const PurchaseModal = ({
                 flexDirection="row"
                 flexWrap="wrap"
               >
-                {prices.map((price) => {
+                {sortedPrices.map((price) => {
                   const active = price.id === selectedPriceId
                   const htmlId = `radio-${price.id}`
                   return (
-                    <Theme name={active ? 'blue' : undefined}>
+                    <ThemeTint key={price.id} disable={!active}>
                       <Label
                         f={1}
                         htmlFor={htmlId}
@@ -698,13 +719,13 @@ const PurchaseModal = ({
                         height="unset"
                         display="flex"
                         borderWidth="$0.25"
-                        borderColor={active ? '$color8' : '$color1'}
+                        borderColor={active ? '$color8' : '$color5'}
                         borderRadius="$4"
                         space="$4"
                         ai="flex-start"
                         maw="calc(33% - 16px)"
                         hoverStyle={{
-                          borderColor: active ? '$color9' : '$color2',
+                          borderColor: active ? '$color10' : '$color7',
                         }}
                       >
                         <RadioGroup.Item id={htmlId} size="$6" value={price.id} mt="$2">
@@ -715,45 +736,22 @@ const PurchaseModal = ({
 
                         <YStack gap="$1" f={1}>
                           <H3>
-                            {price.interval === "year" && "Yearly Plan"}
-                            {price.interval === "month" && "Monthly Plan"}
-                            {" "}🥡
+                            {price.interval === 'year' && 'Yearly Plan'}
+                            {price.interval === 'month' && 'Monthly Plan'} 🥡
                           </H3>
                           <Paragraph ellipse>{price.description}</Paragraph>
                         </YStack>
                       </Label>
-                    </Theme>
+                    </ThemeTint>
                   )
                 })}
               </RadioGroup>
             </YStack>
 
             <XStack f={1} space separator={<Separator vertical />}>
-              <ScrollView space>
+              <ScrollView space maw="55%" ov="hidden">
                 <YStack space="$4">
-                  <H4>Included</H4>
-
-                  <YStack space="$4">
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point>Starter Kit</Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                    <Point subtitle="Complete starter kit repo with automatic setup into your own private repo.">
-                      Starter Kit
-                    </Point>
-                  </YStack>
+                  <Points />
                 </YStack>
               </ScrollView>
 
@@ -807,6 +805,7 @@ const PurchaseModal = ({
                         <NextLink href="#">
                           <SizableText
                             theme="alt1"
+                            // @ts-ignore
                             style={{ textDecoration: 'underline' }}
                             size="$1"
                           >
@@ -816,6 +815,7 @@ const PurchaseModal = ({
                         <NextLink href="#">
                           <SizableText
                             theme="alt1"
+                            // @ts-ignore
                             style={{ textDecoration: 'underline' }}
                             size="$1"
                           >
@@ -911,7 +911,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             b={0}
             l={0}
             r={0}
-            h={100}
+            h={200}
             colors={['$backgroundTransparent', 'rgba(0,0,0,1)']}
             zi={100}
           />
@@ -930,12 +930,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <Paragraph fontFamily="$munro" size="$3" theme="alt2">
+              <Paragraph fontFamily="$munro" size="$3" o={0.12} mt={-5}>
                 Drop 0001
               </Paragraph>
 
-              <Paragraph fontFamily="$munro" size="$10">
-                {product.name}
+              <Paragraph fontFamily="$munro" size="$10" ls={4}>
+                Stack
               </Paragraph>
 
               <YStack>
@@ -997,15 +997,6 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
   )
 })
 
-const modelUrl = `${
-  process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
-}/takeout.gltf`
-useGLTF.preload(modelUrl)
-
-let frameCount = 0
-
 function PurchaseButton(props: ButtonProps) {
   return (
     <Theme name="pink">
@@ -1022,96 +1013,9 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text fontSize="$8" fontWeight="800">
-          {props.children}
-        </Button.Text>
+        <Button.Text fontWeight="700">{props.children}</Button.Text>
       </Button>
     </Theme>
-  )
-}
-
-function TakeoutBox3D(props) {
-  const ref = useRef<any>()
-  const { nodes, materials } = useGLTF(modelUrl) as any
-
-  useEffect(() => {}, [])
-
-  useFrame((state, delta) => {
-    const isSlow = frameCount > 40
-
-    // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 2)
-
-    // effect to spin faster on first entering
-    if (frameCount <= 40) {
-      frameCount++
-    }
-    // ref.current!.rotation.x += delta * 0.1
-  })
-
-  return (
-    <group ref={ref} dispose={null} {...props}>
-      <mesh
-        geometry={nodes.pack.geometry}
-        material={materials.Chinese_Takeout_Box_chinese}
-        position={[0.13, 0.01, 0.23]}
-        rotation={[-Math.PI, 0, -Math.PI]}
-        scale={0.1}
-      />
-      <mesh
-        geometry={nodes.handle.geometry}
-        material={materials.Material}
-        position={[-0.26, 0.08, 0.06]}
-        scale={0.1}
-      />
-    </group>
-  )
-  // return (
-  //   <group ref={ref} dispose={null}>
-  //     <mesh
-  //       castShadow
-  //       receiveShadow
-  //       geometry={nodes.handle.geometry}
-  //       material={materials.Material}
-  //       position={[-0.26, 0.08, 0.06]}
-  //       scale={5}
-  //     />
-  //     <mesh
-  //       castShadow
-  //       receiveShadow
-  //       geometry={nodes.pack.geometry}
-  //       material={materials.Chinese_Takeout_Box_chinese}
-  //       position={[0.13, 0.01, 0.23]}
-  //       rotation={[-Math.PI, 0, -Math.PI]}
-  //       scale={5}
-  //     />
-  //   </group>
-  // )
-}
-
-function Box(props) {
-  const ref = useRef<any>()
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-
-  useFrame((state, delta) => {
-    ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * 0.1
-    ref.current!.rotation.x += delta * 0.1
-  })
-
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 3.5 : 3}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'white'} />
-    </mesh>
   )
 }
 
@@ -1123,8 +1027,8 @@ const Row = (props: { title: any; description: any; after: any }) => {
     <XStack
       bbw={1}
       boc="$borderColor"
-      px="$4"
-      mx="$-4"
+      px="$8"
+      mx="$-8"
       onPress={() => {
         if (media.md) {
           setShowDetail((x) => !x)
@@ -1143,7 +1047,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         <Paragraph
           size="$3"
           lh={18}
-          theme="alt2"
+          color="$color10"
           $md={{
             display: showDetail ? 'flex' : 'none',
           }}
@@ -1192,7 +1096,7 @@ const MunroP = styled(Paragraph, {
 
 const tabs = [{ value: '1' }, { value: '2' }, { value: '4' }, { value: '8' }]
 
-export const PurchaseSelectTeam = ({
+const PurchaseSelectTeam = ({
   value: currentTab,
   onValueChange: setCurrentTab,
 }: TabsProps) => {
@@ -1276,6 +1180,7 @@ export const PurchaseSelectTeam = ({
         <AnimatePresence>
           {intentAt && (
             <TabsRovingIndicator
+              animation="100ms"
               key="intent-indicator"
               width={intentAt.width}
               height={intentAt.height}
@@ -1285,16 +1190,18 @@ export const PurchaseSelectTeam = ({
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {activeAt && (
-            <TabsRovingIndicator
-              key="active-indicator"
-              isActive
-              width={activeAt.width}
-              height={activeAt.height}
-              x={activeAt.x}
-              y={activeAt.y}
-            />
-          )}
+          <ThemeTint>
+            {activeAt && (
+              <TabsRovingIndicator
+                key="active-indicator"
+                isActive
+                width={activeAt.width}
+                height={activeAt.height}
+                x={activeAt.x}
+                y={activeAt.y}
+              />
+            )}
+          </ThemeTint>
         </AnimatePresence>
 
         <Tabs.List
@@ -1333,18 +1240,20 @@ export const PurchaseSelectTeam = ({
               <Paragraph>Custom</Paragraph>
             </Button>
           ) : (
-            <Input
-              backgroundColor="$color4"
-              autoFocus
-              width={100}
-              borderRadius="$2"
-              value={currentTab}
-              onChangeText={(text) => {
-                if (isNaN(Number(text))) return
-                setActiveIndicator(null)
-                setCurrentTab?.(text)
-              }}
-            />
+            <ThemeTint>
+              <Input
+                backgroundColor="$color7"
+                autoFocus
+                width={100}
+                borderRadius="$2"
+                value={currentTab}
+                onChangeText={(text) => {
+                  if (isNaN(Number(text))) return
+                  setActiveIndicator(null)
+                  setCurrentTab?.(text)
+                }}
+              />
+            </ThemeTint>
           )}
         </Tabs.List>
       </YStack>
@@ -1361,7 +1270,7 @@ const TabsRovingIndicator = ({
       borderRadius="$2"
       position="absolute"
       backgroundColor="$color3"
-      animation="100ms"
+      animation="quicker"
       enterStyle={{
         opacity: 0,
       }}
@@ -1370,37 +1279,111 @@ const TabsRovingIndicator = ({
       }}
       opacity={0.7}
       {...(isActive && {
-        backgroundColor: '$color8',
-        opacity: 0.6,
+        backgroundColor: '$color7',
+        opacity: 1,
       })}
       {...props}
     />
   )
 }
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
-  const query = await supabaseAdmin
-    .from('products')
-    .select('*, prices(*)')
-    .eq('metadata->>slug', 'universal-starter')
-    .single()
-  if (query.error) throw query.error
-  if (
-    !query.data.prices ||
-    !Array.isArray(query.data.prices) ||
-    query.data.prices.length === 0
-  ) {
-    throw new Error('No prices are attached to the product.')
-  }
+const Points = () => (
+  <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
+    <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
+    <Point>
+      All the important screens: Onboard, Register, Login, Forgot Password, Account,
+      Settings, Profile, Edit Profile, Feed
+    </Point>
+    <Point>SSR, RSC, choose from 3 animation drivers</Point>
+    <Point>Complete & fully typed design system</Point>
+    <Point>20 icon packs</Point>
+    <Point>2 all new theme suites: Pastel & Neon</Point>
+    <Point>35 custom fonts</Point>
+    <Point>Github template with PR bot for updates</Point>
+    <Point>Fully tested CI/CD: unit, integration, web and native</Point>
+    <Point>Preview deploys for web, app-store builds with EAS</Point>
+  </YStack>
+)
 
-  const props: TakeoutPageProps = {
-    starter: {
-      ...query.data,
-      prices: query.data.prices,
+export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
+  try {
+    const query = await supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'universal-starter')
+      .single()
+    if (query.error) throw query.error
+    if (
+      !query.data.prices ||
+      !Array.isArray(query.data.prices) ||
+      query.data.prices.length === 0
+    ) {
+      throw new Error('No prices are attached to the product.')
+    }
+
+    const props: TakeoutPageProps = {
+      starter: {
+        ...query.data,
+        prices: query.data.prices,
+      },
+    }
+    return {
+      revalidate: 60,
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      props: {},
+    }
+  }
+}
+
+const Glow = () => {
+  const glow = useHoverGlow({
+    resist: 85,
+    size: 500,
+    strategy: 'blur',
+    offset: {
+      x: -300,
+      y: -200,
     },
-  }
-  return {
-    revalidate: 60,
-    props,
-  }
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.2,
+    background: 'transparent',
+  })
+  const glow2 = useHoverGlow({
+    resist: 85,
+    size: 500,
+    strategy: 'blur',
+    offset: {
+      x: 300,
+      y: 200,
+    },
+    blurPct: 100,
+    color: 'var(--color10)',
+    opacity: 0.2,
+    background: 'transparent',
+  })
+
+  return (
+    <ContainerXL
+      ref={composeRefs(glow.parentRef as any, glow2.parentRef as any)}
+      pos="absolute"
+      zi={10000}
+      h={1000}
+    >
+      <YStack fullscreen>
+        <ThemeTint>
+          <glow.Component />
+        </ThemeTint>
+      </YStack>
+      <YStack fullscreen>
+        <ThemeTintAlt>
+          <glow2.Component />
+        </ThemeTintAlt>
+      </YStack>
+    </ContainerXL>
+  )
 }

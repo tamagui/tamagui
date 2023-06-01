@@ -7,6 +7,7 @@ import { getDefaultAvatarImage } from '@lib/avatar'
 import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
+import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
@@ -69,6 +70,7 @@ const Account = () => {
               </H3>
             </YStack>
           </XStack>
+
           <YStack space="$2">
             {teams.personal?.is_active && <SponsorBadge />}
             {teams.orgs
@@ -82,6 +84,14 @@ const Account = () => {
           </XStack>
         </YStack>
       </XStack>
+
+      <YStack mt="$4" ai="flex-start">
+        <ThemeTint>
+          <ButtonLink href="/account/subscriptions" size="$2">
+            View Subscriptions
+          </ButtonLink>
+        </ThemeTint>
+      </YStack>
 
       <YStack>
         <UserSettings />

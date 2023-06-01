@@ -532,6 +532,13 @@ const getToken = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+    console.groupCollapsed('  ﹒ propMap (val)', key, value)
+    // rome-ignore lint/nursery/noConsoleLog: ok
+    console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
+    console.groupEnd()
+  }
+
   return value
 }
 
