@@ -1,6 +1,6 @@
 // we can bring this page back if we wanna do custom checkout
 export default () => null
-// import { getUserLayout } from '@components/layouts/UserLayout'
+// import { getDefaultLayout } from '@lib/getLayout'
 // import { stripe } from '@lib/stripe'
 // import { getStripe } from '@lib/stripeClient'
 // import { Elements } from '@stripe/react-stripe-js'
@@ -42,7 +42,7 @@ export default () => null
 //   )
 // }
 
-// Page.getLayout = getUserLayout
+// Page.getLayout = getDefaultLayout
 
 // export default Page
 

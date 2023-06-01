@@ -196,7 +196,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack ai="center" space="$3">
           <HeaderLinks {...props} />
 
-          {user?.user ? (
+          {user?.user && props.showAuth ? (
             <XStack ai="center" space="$2">
               <NextLink href="/account">
                 <Avatar circular size="$2">
@@ -232,10 +232,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   )
 })
 
-const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
+const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
   const user = useUnsafeUser()
   // there is user context and supabase setup in the current page
-  const pageSupportsAuth = typeof user !== 'undefined'
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation">
@@ -258,7 +257,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {pageSupportsAuth && !user?.user && (
+      {showAuth && !user?.user && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{

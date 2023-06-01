@@ -1,9 +1,9 @@
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
-import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
+import { getDefaultLayout } from '@lib/getLayout'
 import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
@@ -381,4 +381,4 @@ const SponsorButton = () => {
   )
 }
 
-Page.getLayout = getUserLayout
+Page.getLayout = getDefaultLayout

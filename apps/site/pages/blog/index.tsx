@@ -1,4 +1,4 @@
-import { getBlogLayout } from '@components/layouts/BlogLayout'
+import { getDefaultLayout } from '@lib/getLayout'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
@@ -44,7 +44,7 @@ export default function Blog({ frontmatters }) {
   )
 }
 
-Blog.getLayout = getBlogLayout
+Blog.getLayout = getDefaultLayout
 
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')

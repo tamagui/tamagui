@@ -1,4 +1,4 @@
-import { getAuthLayout } from '@components/layouts/AuthLayout'
+import { getDefaultLayout } from '@lib/getLayout'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -262,4 +262,4 @@ function SignIn() {
   )
 }
 
-SignInPage.getLayout = getAuthLayout
+SignInPage.getLayout = getDefaultLayout

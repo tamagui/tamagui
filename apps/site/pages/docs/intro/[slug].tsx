@@ -1,11 +1,11 @@
-import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
-import { NextSeo } from 'next-seo'
+import { getDefaultLayout } from '@lib/getLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { NextSeo } from 'next-seo'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
 
@@ -37,11 +37,11 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
             {
               url: getOgUrl('default', {
                 title: frontmatter.title,
-          description: frontmatter.description ?? '',
-          category: "intro",
+                description: frontmatter.description ?? '',
+                category: 'intro',
               }),
-            }
-          ]
+            },
+          ],
         }}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
@@ -55,7 +55,7 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   )
 }
 
-DocIntroPage.getLayout = getDocLayout
+DocIntroPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/intro')

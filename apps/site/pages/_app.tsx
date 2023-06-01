@@ -3,6 +3,7 @@ import '@tamagui/core/reset.css'
 // import '../lib/wdyr'
 import '../app.css'
 
+import { withSupabase } from '@lib/withSupabase'
 import {
   ColorScheme,
   NextThemeProvider,
@@ -10,19 +11,11 @@ import {
   useThemeSetting,
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import {
-  LoadGlusp,
-  LoadInter400,
-  LoadInter700,
-  LoadInter900,
-  LoadMunro,
-  LoadSilkscreen,
-} from '../components/LoadFont'
+import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity

@@ -1,5 +1,5 @@
 import { Container } from '@components/Container'
-import { getUserLayout } from '@components/layouts/UserLayout'
+import { getDefaultLayout } from '@lib/getLayout'
 import { Database, Json } from '@lib/supabase-types'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
@@ -191,4 +191,4 @@ const ProductDetail = ({
   )
 }
 
-Page.getLayout = getUserLayout
+Page.getLayout = getDefaultLayout
