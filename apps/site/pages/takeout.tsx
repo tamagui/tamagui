@@ -390,23 +390,26 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 </ThemeTint>
 
                 <XStack space="$6" spaceDirection="horizontal">
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
                 </XStack>
 
                 <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the 🌕 or the ✨ (success is up to you) but if you want
+                  We can't promise the 🌕 or the ✨, success is up to you, but if you want
                   a cheat code to shipping a stunning web & native mobile app fast, you've
                   found it.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Takeout 🥡 is a novel bootstrap that delivers on years of effort putting
-                  together a stack that gives you nearly a whole startup in a box on day
-                  one. And of course it's powered by Tamagui, the best frontend UI system
+                  Takeout 🥡 is a bootstrap that delivers on years of effort putting
+                  together a better unified React Native + web stack for startups.
+                </Paragraph>
+
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  And of course it's powered by Tamagui, the best frontend UI system
                   around.
                 </Paragraph>
 
@@ -416,7 +419,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   builds for iOS and Android via Expo EAS.
                 </Paragraph>
 
-                <Points />
+                <YStack scale={1.12}>
+                  <Points />
+                </YStack>
 
                 <YStack marginTop={-450} marginBottom={-500} x={400} zi={-1}>
                   <Image
@@ -432,14 +437,28 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <YStack p="$6" className="blur-medium" space="$6" elevation="$4">
                   <YStack zi={-1} fullscreen bc="$color" o={0.1} />
 
-                  <Paragraph
-                    fontFamily="$munro"
-                    size="$12"
-                    $sm={{ size: '$7' }}
-                    fow="800"
+                  <YStack
+                    bc="#000"
+                    als="flex-start"
+                    rotate="-2deg"
+                    mt={-90}
+                    mb={20}
+                    p="$6"
+                    py="$2"
+                    elevation="$4"
                   >
-                    Speedrun from 0-to-100 🥡
-                  </Paragraph>
+                    <ThemeTint>
+                      <Paragraph
+                        color="$color9"
+                        fontFamily="$munro"
+                        size="$12"
+                        $sm={{ size: '$7' }}
+                        fow="800"
+                      >
+                        Speedrun from 0-to-100 🥡
+                      </Paragraph>
+                    </ThemeTint>
+                  </YStack>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     It's not just about shipping fast, it's the long run.
@@ -911,12 +930,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <Paragraph fontFamily="$munro" size="$3" theme="alt2">
+              <Paragraph fontFamily="$munro" size="$3" o={0.12} mt={-5}>
                 Drop 0001
               </Paragraph>
 
-              <Paragraph fontFamily="$munro" size="$9">
-                {product?.name}
+              <Paragraph fontFamily="$munro" size="$10" ls={4}>
+                Stack
               </Paragraph>
 
               <YStack>
@@ -1272,7 +1291,8 @@ const Points = () => (
   <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
     <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
-      All the important screens: onboard, auth, account, settings, profile, tabs, and more
+      All the important screens: Onboard, Register, Login, Forgot Password, Account,
+      Settings, Profile, Edit Profile, Feed
     </Point>
     <Point>SSR, RSC, choose from 3 animation drivers</Point>
     <Point>Complete & fully typed design system</Point>
