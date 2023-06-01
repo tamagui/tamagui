@@ -91,7 +91,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         </Head>
       </>
 
-      <Glow />
+      {/* <Glow /> */}
 
       <PurchaseModal productWithPrices={starter} />
 
@@ -104,13 +104,14 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         ai="center"
         jc="center"
         ov="hidden"
+        contain="paint layout"
       >
         <TAKEOUT
-          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' masked2')}
-          fontSize={150 * 5}
-          lineHeight={110 * 5}
+          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' ')}
+          fontSize={150 * 3}
+          lineHeight={110 * 3}
           color="#000"
-          o={0.085}
+          o={0.07}
         />
       </YStack>
 
@@ -891,7 +892,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             b={0}
             l={0}
             r={0}
-            h={100}
+            h={200}
             colors={['$backgroundTransparent', 'rgba(0,0,0,1)']}
             zi={100}
           />
@@ -914,7 +915,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </Paragraph>
 
-              <Paragraph fontFamily="$munro" size="$10">
+              <Paragraph fontFamily="$munro" size="$9">
                 {product?.name}
               </Paragraph>
 
@@ -1007,8 +1008,8 @@ const Row = (props: { title: any; description: any; after: any }) => {
     <XStack
       bbw={1}
       boc="$borderColor"
-      px="$4"
-      mx="$-4"
+      px="$8"
+      mx="$-8"
       onPress={() => {
         if (media.md) {
           setShowDetail((x) => !x)
@@ -1027,7 +1028,7 @@ const Row = (props: { title: any; description: any; after: any }) => {
         <Paragraph
           size="$3"
           lh={18}
-          theme="alt2"
+          color="$color10"
           $md={{
             display: showDetail ? 'flex' : 'none',
           }}
@@ -1321,7 +1322,7 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
 const Glow = () => {
   const glow = useHoverGlow({
     resist: 85,
-    size: 800,
+    size: 500,
     strategy: 'blur',
     offset: {
       x: -300,
@@ -1334,7 +1335,7 @@ const Glow = () => {
   })
   const glow2 = useHoverGlow({
     resist: 85,
-    size: 800,
+    size: 500,
     strategy: 'blur',
     offset: {
       x: 300,
@@ -1347,7 +1348,12 @@ const Glow = () => {
   })
 
   return (
-    <ContainerXL ref={composeRefs(glow.parentRef as any, glow2.parentRef as any)}>
+    <ContainerXL
+      ref={composeRefs(glow.parentRef as any, glow2.parentRef as any)}
+      pos="absolute"
+      zi={10000}
+      h={1000}
+    >
       <YStack fullscreen>
         <ThemeTint>
           <glow.Component />
