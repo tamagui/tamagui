@@ -139,7 +139,7 @@ export const SheetImplementationCustom = themeable(
       if (frameSize === 0) return
 
       let toValue =
-        hasntMeasured || isHidden || position === -1 ? screenSize : positions[position]
+         isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
       at.current = toValue
