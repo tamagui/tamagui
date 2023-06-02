@@ -45,6 +45,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         screens: {
           home: '',
           demo: 'demo/:id',
+          sandbox: 'sandbox'
         },
       } as const,
     }),

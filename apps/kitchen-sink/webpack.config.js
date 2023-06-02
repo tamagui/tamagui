@@ -18,7 +18,7 @@ const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 const tamaguiOptions = {
-  config: './tamagui.config.ts',
+  config: './src/tamagui.config.ts',
   components: ['tamagui', '@tamagui/sandbox-ui'],
   importsWhitelist: ['constants.js'],
   disableExtraction,
@@ -30,7 +30,7 @@ module.exports = {
   context: __dirname,
   stats: 'normal', // 'detailed'
   mode: NODE_ENV,
-  entry: ['./index.tsx'],
+  entry: ['./src/index.web.tsx'],
   devtool: 'source-map',
   optimization: {
     concatenateModules: false,
@@ -131,7 +131,7 @@ module.exports = {
       },
     }),
     new HtmlWebpackPlugin({
-      template: `./public/index.html`,
+      template: `./index.html`,
     }),
   ].filter(Boolean),
 }

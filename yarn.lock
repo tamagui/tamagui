@@ -5518,6 +5518,10 @@ __metadata:
     react-native-svg: 13.4.0
     react-native-web: ^0.19.4
     solito: ^2.3.0
+    webpack: ^5.83.1
+    webpack-bundle-analyzer: ^4.8.0
+    webpack-cli: ^4.9.2
+    webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
 

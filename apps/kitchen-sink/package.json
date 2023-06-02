@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "dev:web": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native expo start --dev-client --offline",
     "start:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 TAMAGUI_TARGET=native yarn start",
     "dev": "tama dev",
@@ -13,7 +14,13 @@
     "ios": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
     "web": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=web yarn expo start --web",
     "eject": "EXPO_NO_TELEMETRY=true expo eject",
-    "test:native": "maestro test ./flows --exclude-tags=util"
+    "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
+    "test:native": "maestro test ./flows --exclude-tags=util",
+    "test:web": "node -r esbuild-register ../../node_modules/.bin/playwright test",
+    "test:web:debug": "yarn test:web --debug",
+    "dev:web:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
+    "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
+    "test": "yarn test:web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.17.11",
@@ -58,6 +65,11 @@
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.71.3",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "metro-runtime": "*"
+    "metro-runtime": "*",
+    "webpack": "^5.83.1",
+    "webpack-bundle-analyzer": "^4.8.0",
+    "webpack-cli": "^4.9.2",
+    "@playwright/test": "^1.29.0",
+    "webpack-dev-server": "^4.8.1"
   }
 }

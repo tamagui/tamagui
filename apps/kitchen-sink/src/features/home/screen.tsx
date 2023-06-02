@@ -1,6 +1,7 @@
+import { useLinkProps } from '@react-navigation/native'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
-import { UseLinkProps, useLink } from 'solito/link'
+// import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
@@ -63,11 +64,16 @@ const LinkListItem = ({
   shallow,
   ...props
 }: UseLinkProps & ListItemProps) => {
-  const linkProps = useLink({ href, as, shallow })
+  const linkProps = useLinkProps({ to: href })
   const theme = useTheme()
+
   return (
     <ListItem
       {...linkProps}
+      onPress={(e) => {
+        console.log(linkProps)
+        linkProps.onPress(e)
+      }}
       {...props}
       iconAfter={<ChevronRight color={theme.color11.get()} />}
     >
@@ -109,6 +115,9 @@ const ColorSchemeListItem = (props: ListItemProps) => {
 }
 
 const demos = [
+  {
+    pages: [{ title: 'Sandbox', route: '/sandbox' }],
+  },
   {
     pages: [
       { title: 'Stacks', route: '/demo/stacks' },
