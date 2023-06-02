@@ -14,14 +14,12 @@ import { pseudoDescriptors } from './pseudoDescriptors'
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
 
-export function expandStyles(style: Record<string, any>, config = getConfig()) {
+export function expandStyles(style: Record<string, any>, { shorthands } = getConfig()) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
     const valIn = style[key]
-    if (config.shorthands) {
-      key = config.shorthands[key] || key
-    }
+    key = shorthands?.[key] || key
     if (key in pseudoDescriptors) {
       res[key] = expandStyles(valIn)
       continue
