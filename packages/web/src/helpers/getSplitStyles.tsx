@@ -19,7 +19,6 @@ import { useInsertionEffect } from 'react'
 import { getConfig, getFont } from '../config'
 import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
-import { isVariable } from '../createVariable'
 import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,

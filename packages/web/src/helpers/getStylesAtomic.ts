@@ -97,10 +97,6 @@ export const generateAtomicStyles = (
   return out
 }
 
-const presetHashes = {
-  none: true,
-}
-
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
@@ -138,8 +134,7 @@ export function styleToCSS(style: Record<string, any>) {
 function createDeclarationBlock(style: [string, any][], important = false) {
   let next = ''
   for (const [key, value] of style) {
-    const prop = hyphenateStyleName(key)
-    next += `${prop}:${value}${important ? ' !important' : ''};`
+    next += `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};`
   }
   return `{${next}}`
 }
