@@ -98,6 +98,9 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   let rules: CSSRuleList
   try {
     rules = sheet.cssRules
+    if (!rules) {
+      return
+    }
   } catch {
     return
   }
