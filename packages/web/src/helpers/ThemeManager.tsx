@@ -26,8 +26,8 @@ export type ThemeManagerState = {
 
 const emptyState: ThemeManagerState = { name: '' }
 
-export function hasNoThemeUpdatingProps(props: ThemeProps) {
-  return !(props.name || props.componentName || props.inverse || props.reset)
+export function getHasThemeUpdatingProps(props: ThemeProps) {
+  return props.name || props.componentName || props.inverse || props.reset
 }
 
 let uid = 0
@@ -48,9 +48,7 @@ export class ThemeManager {
       return
     }
 
-    const parentManager = getNonComponentParentManager(parentManagerIn)
-
-    if (!parentManager) {
+    if (!parentManagerIn) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
@@ -60,10 +58,11 @@ export class ThemeManager {
     }
 
     // no change no props
-    if (hasNoThemeUpdatingProps(props)) {
-      return parentManager
+    if (!getHasThemeUpdatingProps(props)) {
+      return parentManagerIn
     }
 
+    const parentManager = getNonComponentParentManager(parentManagerIn)
     if (parentManager) {
       this.parentManager = parentManager
     }

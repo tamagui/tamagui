@@ -13,7 +13,7 @@ export type ThemeManagerState = {
     className?: string;
     parentName?: string;
 };
-export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
+export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
