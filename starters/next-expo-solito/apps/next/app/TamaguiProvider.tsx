@@ -27,12 +27,18 @@ declare module 'tamagui' {
 export const TamaguiProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useRootTheme()
 
-  AppRegistry.registerComponent('Main', () => Main)
-  // @ts-ignore
-  const { getStyleElement } = AppRegistry.getApplication('Main')
+  useServerInsertedHTML(() => {
+    AppRegistry.registerComponent('Main', () => Main)
 
-  useServerInsertedHTML(() => getStyleElement())
-  useServerInsertedHTML(() => <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />)
+    // @ts-ignore
+    const { getStyleElement } = AppRegistry.getApplication('Main')
+    return (
+      <>
+        <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />
+        {getStyleElement()}
+      </>
+    )
+  })
 
   return (
     <NextThemeProvider
