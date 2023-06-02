@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 // import '../lib/wdyr'
 import '../app.css'
 
-import { withSupabase } from '@lib/withSupabase'
+import { GetLayout } from '@lib/getLayout'
 import {
   ColorScheme,
   NextThemeProvider,
@@ -132,10 +132,11 @@ function AppContents(
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
+  const router = useRouter()
+  const path = router.asPath
 
   return useMemo(() => {
-    return getLayout(<Component {...pageProps} />, pageProps)
+    return getLayout(<Component {...pageProps} />, pageProps, path)
   }, [pageProps])
 }
