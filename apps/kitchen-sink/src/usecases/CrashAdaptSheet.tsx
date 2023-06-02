@@ -81,7 +81,7 @@ function TestModal10() {
 }
 
 /* Minimal test case for reproducing crashes */
-export default function TestModal100() {
+export function CrashAdaptSheet() {
   return (
     <>
       <TestModal10 />

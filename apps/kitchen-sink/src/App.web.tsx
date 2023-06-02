@@ -3,11 +3,12 @@ import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
 import { ToastViewport } from '@tamagui/toast'
-import { useMemo, useState } from 'react'
-import { H1, Separator, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { useState } from 'react'
+import { Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
+import * as TestCases from './usecases'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -30,7 +31,7 @@ export default function App() {
           : `${demoComponentName}Demo`
       ]
     : useCaseComponentName
-    ? require(`./usecases/${useCaseComponentName}`).default
+    ? TestCases[useCaseComponentName]
     : Sandbox
 
   return (

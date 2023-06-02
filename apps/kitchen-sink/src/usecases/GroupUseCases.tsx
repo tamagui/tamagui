@@ -1,6 +1,6 @@
 import { Button, XGroup, YStack } from 'tamagui'
 
-export default function GroupUseCases() {
+export function GroupUseCases() {
   return (
     <YStack space>
       <XGroup testID="simple-api-group">

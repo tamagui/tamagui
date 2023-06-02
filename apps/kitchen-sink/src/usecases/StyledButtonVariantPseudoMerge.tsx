@@ -41,7 +41,7 @@ const StyledButtonVariantTheme = styled(Button, {
   },
 })
 
-export default () => (
+export const StyledButtonVariantPseudoMerge = () => (
   <>
     <StyledButton id="test" reddish>
       test

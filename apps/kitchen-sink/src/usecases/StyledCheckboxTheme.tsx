@@ -16,7 +16,7 @@ export const Checkbox = withStaticProperties(
   }
 )
 
-export default () => (
+export const StyledCheckboxTheme = () => (
   <Checkbox defaultChecked={true} theme="green">
     <Checkbox.Indicator />
   </Checkbox>

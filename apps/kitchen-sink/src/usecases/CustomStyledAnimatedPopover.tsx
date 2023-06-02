@@ -30,7 +30,7 @@ export const Popover = withStaticProperties(TamaguiPopover, {
   }),
 })
 
-export default function SandboxCustomStyledAnimatedPopover() {
+export function CustomStyledAnimatedPopover() {
   return (
     <Stack f={1} ai="center" jc="center" gap="$5">
       <Stack theme="red">

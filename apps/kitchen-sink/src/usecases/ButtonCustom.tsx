@@ -16,7 +16,7 @@ type CustomButtonFrameProps = GetProps<typeof Frame>
 type CustomButtonTextProps = GetProps<typeof Text>
 type ButtonProps = CustomButtonFrameProps & CustomButtonTextProps
 
-export const Button = Frame.styleable<ButtonProps>((props, ref) => {
+export const ButtonCustom = Frame.styleable<ButtonProps>((props, ref) => {
   const { props: buttonProps } = useButton(props, { Text })
   return <Frame ref={ref} {...buttonProps} />
 })

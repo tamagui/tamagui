@@ -1,6 +1,6 @@
 import { Input, styled } from 'tamagui'
 
-export default function TestStyledInputFocusStyle() {
+export function StyledInputFocusStyle() {
   const StyledInput = styled(Input, {
     debug: 'verbose',
 

@@ -1,6 +1,6 @@
 import { Text as TamaguiText, styled } from 'tamagui'
 
-export default styled(TamaguiText, {
+export const FontTokensInVariants = styled(TamaguiText, {
   borderRadius: 100_000_000,
 
   variants: {

@@ -51,7 +51,7 @@ export const CustomButton2 = CustomButtonFrame.styleable<CustomButtonProps>(
   }
 )
 
-export default () => (
+export const StyledButtonTheme = () => (
   <>
     <CustomButton id="test" theme="green">
       test2

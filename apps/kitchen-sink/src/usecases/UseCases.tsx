@@ -30,7 +30,7 @@ if (typeof require !== 'undefined') {
 console.log('[Sandbox] getMedia().sm', getMedia().sm)
 
 // TODO: extract the use cases
-export default function ThemeChangeRenderTest() {
+export function UseCases() {
   const [theme, setTheme] = useState('blue')
   console.log('theme', theme)
 

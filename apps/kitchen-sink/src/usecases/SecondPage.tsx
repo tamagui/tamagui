@@ -1,5 +1,5 @@
 import { Square } from 'tamagui'
 
-export default function SandboxSecondPage() {
+export function SecondPage() {
   return <Square zIndex={100_001} />
 }

@@ -16,7 +16,7 @@ export const Heading = styled(Text, {
   } as const,
 })
 
-export default function SandboxVariantFontFamily() {
+export function VariantFontFamily() {
   return (
     <Heading data-testid="heading" type="myVariant" fontSize="$1">
       H1

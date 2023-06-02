@@ -16,41 +16,25 @@ import {
   useTheme,
 } from 'tamagui'
 
+import * as TestCases from '../../usecases'
 import { useThemeControl } from '../../useKitchenSinkTheme'
 
-export function HomeScreen() {
+export function TestCasesScreen() {
   return (
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
-        <H1 fontFamily="$heading" size="$9">
-          Kitchen Sink
-        </H1>
-
-        <YGroup size="$4">
-          <YGroup.Item>
-            <ColorSchemeListItem />
-          </YGroup.Item>
-        </YGroup>
-        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
-          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
-        </YStack>
-
         <YStack space="$4" maw={600}>
-          {demos.map((group, i) => {
-            return (
-              <YGroup size="$4" key={i} separator={<Separator />}>
-                {group.pages.map((page) => {
-                  return (
-                    <YGroup.Item key={page.route}>
-                      <LinkListItem href={page.route} pressTheme size="$4">
-                        {page.title}
-                      </LinkListItem>
-                    </YGroup.Item>
-                  )
-                })}
-              </YGroup>
-            )
-          })}
+          <YGroup size="$4" separator={<Separator />}>
+            {Object.keys(TestCases).map((page) => {
+              return (
+                <YGroup.Item key={page}>
+                  <LinkListItem href={`/test/${page}`} pressTheme size="$4">
+                    {page}
+                  </LinkListItem>
+                </YGroup.Item>
+              )
+            })}
+          </YGroup>
         </YStack>
       </YStack>
     </ScrollView>
@@ -116,13 +100,7 @@ const ColorSchemeListItem = (props: ListItemProps) => {
 
 const demos = [
   {
-    pages: [
-      { title: 'Sandbox', route: '/sandbox' },
-      {
-        title: 'Test Cases',
-        route: '/tests',
-      },
-    ],
+    pages: [{ title: 'Sandbox', route: '/sandbox' }],
   },
   {
     pages: [

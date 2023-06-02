@@ -18,7 +18,7 @@ const UnstyledMerged = styled(Button, {
   },
 })
 
-export default () => (
+export const ButtonUnstyled = () => (
   <>
     <Button id="unstyled-inline" unstyled>
       hi

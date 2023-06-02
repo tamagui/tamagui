@@ -16,7 +16,7 @@ const TransparentInput = styled(Input, {
   },
 })
 
-export default function SandboxStyledOverridePseudo() {
+export function StyledOverridePsuedo() {
   return (
     <YStack space="$4">
       <TransparentInput placeholder="transparent border 0px" />

@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from 'react'
 import { Button, Card, Square, Theme, YStack } from 'tamagui'
 
-export default function SandboxThemeChange() {
+export function ThemeChange () {
   return <Button themeInverse>inverse</Button>
 
   return (

@@ -1,3 +1,3 @@
 import { Button } from 'tamagui'
 
-export default () => <Button id="circular" circular />
+export const ButtonCircular = () => <Button id="circular" circular />

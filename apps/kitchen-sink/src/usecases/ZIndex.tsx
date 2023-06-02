@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react'
-import { Modal } from 'react-native'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button, Paragraph, TooltipSimple } from 'tamagui'
+import { Modal, StyleSheet, Text, View } from 'react-native'
+import { Button, TooltipSimple } from 'tamagui'
 
-export default function ZIndex() {
+export function ZIndex() {
   return <TooltipInModal />
 }
 

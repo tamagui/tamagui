@@ -15,7 +15,7 @@ const StyledButton = styled(Button, {
   },
 })
 
-export default () => (
+export const StyledButtonVariantPseudo = () => (
   <StyledButton id="test" reddish>
     test
   </StyledButton>

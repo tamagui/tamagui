@@ -1,3 +1,5 @@
 import { Button, Input } from 'tamagui'
 
-export default () => <Input placeholder="hello world" placeholderTextColor="$color10" />
+export const PlaceholderTextColor = () => (
+  <Input placeholder="hello world" placeholderTextColor="$color10" />
+)
