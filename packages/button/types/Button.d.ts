@@ -622,6 +622,9 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         onResponderRelease?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
         onResponderStart?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
         onResponderTerminationRequest?: ((event: import("react-native/types").GestureResponderEvent) => boolean) | undefined;
+        /**
+         * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
+         */
         onResponderTerminate?: ((event: import("react-native/types").GestureResponderEvent) => void) | undefined;
         onStartShouldSetResponderCapture?: ((event: import("react-native/types").GestureResponderEvent) => boolean) | undefined;
         onMoveShouldSetResponderCapture?: ((event: import("react-native/types").GestureResponderEvent) => boolean) | undefined;

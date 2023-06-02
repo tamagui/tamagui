@@ -132,7 +132,7 @@ const ButtonFrame = styled(ThemeableStack, {
 })
 
 const ButtonText = styled(SizableText, {
-  name: 'ButtonText',
+  name: 'Button',
   context: ButtonContext,
 
   variants: {
