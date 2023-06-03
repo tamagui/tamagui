@@ -105,7 +105,7 @@ export function Header(props: HeaderProps) {
   )
 }
 
-const tooltipDelay = { open: 3000, close: 100 }
+const tooltipDelay = { open: 500, close: 150 }
 
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
