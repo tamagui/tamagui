@@ -7,7 +7,6 @@ import { SearchContext } from './SearchContext'
 
 export const SearchButton = memo((props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)
-  const isTouch = useIsTouchDevice()
   const ref = useRef()
 
   useEffect(() => {

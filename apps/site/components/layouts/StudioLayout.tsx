@@ -5,6 +5,7 @@ import { Lock } from '@tamagui/lucide-icons'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { ButtonLink } from 'studio/Link'
 import { ToastProvider as StudioToastProvider } from 'studio/ToastProvider'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
@@ -46,6 +47,7 @@ const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
 
 const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
   const { teams } = useUser()
+  const router = useRouter()
 
   if (!teams.main) {
     return <Spinner />
@@ -59,7 +61,7 @@ const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
   //   )
   // }
 
-  if (!isLocal) {
+  if (!isLocal && !router.query?.showStudio) {
     return <StudioQueueCard teamId={teams?.main?.id} />
   }
 

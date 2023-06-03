@@ -153,7 +153,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="$2" br="$10" elevation="$4" />
+        <SearchButton
+          size="$2"
+          br="$10"
+          elevation="$1"
+          shadowRadius={6}
+          shadowOpacity={0.0025}
+          debug="verbose"
+        />
 
         <YStack $xs={{ display: 'none' }}>
           <SponsorButton tiny />
