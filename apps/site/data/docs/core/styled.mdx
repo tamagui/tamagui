@@ -216,7 +216,8 @@ This advanced usage is necessary if you are doing a pattern like the following:
 // 1. you create a `styled` primitive as usual
 const StyledText = styled(Text)
 
-// 2. you create a wrapper component that adds some logic but still returns a single styled component
+// 2. you create a wrapper component that adds some logic
+//    but still returns a styled component that recieves the props
 const HigherOrderStyledText = (props) => <StyledText {...props} />
 
 // 3. you want that wrapper component itself to be able to use with `styled`
@@ -243,6 +244,6 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 })
 ```
 
-Note that theme will automatically now happen above this `HigherOrderStyledText` so it's available if you use `useTheme`.
+Note that `styleable` automatically wraps your component in [`themeable`](/docs/core/exports#themeable), which means it will handle the theme props for you and change the theme above your wrapped component. This means that in `HigherOrderStyledText` you can use `useTheme` and if you do something like `<HigherOrderStyledText theme="some_different_theme">`, then your `useTheme()` hook will properly get the `some_difference_theme` Theme object.
 
-You also must always return only a single `StyledText` (or null) from this component.
+Also note that you also must always pass the props given to `HigherOrderStyledText` down to `StyledText` for things to work properly.
