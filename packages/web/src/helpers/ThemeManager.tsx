@@ -38,6 +38,7 @@ export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
+  scheme: 'light' | 'dark' | null = null
 
   constructor(
     public props: ThemeProps = {},
@@ -97,6 +98,7 @@ export class ThemeManager {
       const lastName = names[names.length - 1][0]
       this.isComponent = lastName[0] === lastName[0].toUpperCase()
       this._allKeys = null
+      this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
 
       if (process.env.NODE_ENV === 'development') {
         this['_numChangeEventsSent'] ??= 0
@@ -191,24 +193,6 @@ export class ThemeManager {
 
 function getNextThemeClassName(name: string, props: ThemeProps) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  if (
-    props.inverse ||
-    props.forceClassName ||
-    // light and dark inverse each other so force classname
-    name === 'light' ||
-    name === 'dark'
-  ) {
-    // ensure you invert to base dark as well as specific dark
-    // ... logic should likely be elsewhere
-    const lessSpecificCN = props.componentName
-      ? ''
-      : next.includes('dark_')
-      ? ` t_dark`
-      : next.includes('light_')
-      ? ` t_light`
-      : ''
-    return next + lessSpecificCN
-  }
   return next.replace('light_', '').replace('dark_', '')
 }
 

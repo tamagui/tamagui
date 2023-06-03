@@ -26,16 +26,12 @@ export function themeable<Component extends (props: any) => any>(
         name={(theme as any) || null}
         disable-child-theme
         debug={props.debug}
+        inverse={themeInverse}
         reset={themeReset}
       >
         {element}
       </Theme>
     )
-
-    // fixes components needing to inverse before changing to component theme
-    if (themeInverse) {
-      contents = <Theme inverse>{contents}</Theme>
-    }
 
     return contents
   })
