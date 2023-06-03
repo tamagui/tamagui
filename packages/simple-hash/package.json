@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/simple-hash",
-  "version": "1.30.0-1685833167060",
+  "version": "1.30.20",
   "sideEffects": false,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -25,7 +25,7 @@
     }
   },
   "devDependencies": {
-    "@tamagui/build": "1.30.0-1685833167060"
+    "@tamagui/build": "1.30.20"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.30.0-1685833167060",
+  "version": "1.30.20",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -18,11 +18,11 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/lucide-icons": "1.30.0-1685833167060",
-    "@tamagui/toast": "1.30.0-1685833167060",
-    "tamagui": "1.30.0-1685833167060"
+    "@tamagui/lucide-icons": "1.30.20",
+    "@tamagui/toast": "1.30.20",
+    "tamagui": "1.30.20"
   },
   "devDependencies": {
-    "@tamagui/build": "1.30.0-1685833167060"
+    "@tamagui/build": "1.30.20"
   }
 }
