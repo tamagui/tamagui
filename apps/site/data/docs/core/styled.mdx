@@ -213,13 +213,16 @@ Any `styled()` component will have a helper function on it called `.styleable()`
 This advanced usage is necessary if you are doing a pattern like the following:
 
 ```tsx
+// 1. you create a `styled` primitive as usual
 const StyledText = styled(Text)
 
-const HigherOrderStyledText = (props) => <StyledText />
+// 2. you create a wrapper component that adds some logic but still returns a single styled component
+const HigherOrderStyledText = (props) => <StyledText {...props} />
 
+// 3. you want that wrapper component itself to be able to use with `styled`
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
-    // variants will merge incorrectly
+    // oops, variants will merge incorrectly
   },
 })
 ```
@@ -230,12 +233,12 @@ So you must add a `.styleable()` around your `HigherOrderStyledText`. You'll als
 const StyledText = styled(Text)
 
 const HigherOrderStyledText = StyledText.styleable((props, ref) => (
-  <StyledText ref={ref} />
+  <StyledText ref={ref} {...props} />
 ))
 
 const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
   variants: {
-    // variants will merge incorrectly
+    // variants now merge correctly
   },
 })
 ```
