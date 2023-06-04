@@ -57,7 +57,18 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
     }${sourceGitRepo} ${targetGitDir}`
     console.log(`$ ${cmd}`)
-    execSync(cmd)
+    try {
+      execSync(cmd)
+    } catch (error) {
+      if (template.value === 'takeout-starter') {
+        console.error(
+          chalk.yellow(
+            "You are trying to create your project from a starter you don't own. Purchase the starter here first: https://tamagui.dev/takeout"
+          )
+        )
+      }
+      throw error
+    }
   } else {
     if (!(await pathExists(join(targetGitDir, '.git')))) {
       console.error(`Corrupt Tamagui directory, please delete ${targetGitDir} and re-run`)
