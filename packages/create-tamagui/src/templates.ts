@@ -34,7 +34,10 @@ export const templates = [
     },
     extraSteps: simpleWeb,
   },
-  {
+]
+
+if (process.env.NODE_ENV !== 'production') {
+  templates.push({
     title: `${chalk.bold.underline(
       `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
     )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
@@ -46,5 +49,5 @@ export const templates = [
       branch: 'main',
     },
     extraSteps: takeoutSteps,
-  },
-]
+  })
+}
