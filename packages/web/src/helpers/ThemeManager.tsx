@@ -63,16 +63,15 @@ export class ThemeManager {
       return parentManagerIn
     }
 
-    const parentManager = getNonComponentParentManager(parentManagerIn)
-    if (parentManager) {
-      this.parentManager = parentManager
+    if (parentManagerIn) {
+      this.parentManager = parentManagerIn
     }
 
     if (this.updateState(props, false)) {
       return
     }
 
-    return parentManager || this
+    return parentManagerIn || this
   }
 
   updateState(
@@ -200,6 +199,9 @@ function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
+  const validManagerAndAllComponentThemes = getNonComponentParentManager(parentManager)
+  parentManager = validManagerAndAllComponentThemes[0]
+  const allComponentThemes = validManagerAndAllComponentThemes[1]
   const themes = getThemes()
 
   if (props.name && props.reset) {
@@ -295,7 +297,7 @@ function getState(
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
-      potentials = [...componentPotentials, ...potentials]
+      potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
 
     const found = potentials.find((t) => t in themes)
@@ -338,12 +340,14 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
   // example <Switch><Switch.Thumb /></Switch>
   // the Switch theme shouldn't be considered parent of Thumb
   let res = themeManager
+  let componentThemeNames: string[] = []
   while (res) {
     if (res?.isComponent) {
       res = res.parentManager
+      componentThemeNames.push(res?.state?.name!)
     } else {
       break
     }
   }
-  return res || null
+  return [res || null, componentThemeNames] as const
 }

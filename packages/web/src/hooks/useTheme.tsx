@@ -9,7 +9,6 @@ import {
   ThemeManager,
   ThemeManagerState,
   getHasThemeUpdatingProps,
-  getNonComponentParentManager,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeParsed, ThemeProps } from '../types'
@@ -172,19 +171,15 @@ export const useChangeThemeEffect = (
     disable,
   } = props
 
-  const ogParentManager = useContext(ThemeManagerContext)
+  const parentManager = useContext(ThemeManagerContext)
   const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
-  const parentManager =
-    disable || !hasThemeUpdatingProps
-      ? ogParentManager
-      : getNonComponentParentManager(ogParentManager)
 
   if (disable) {
-    if (!ogParentManager) throw `❌`
+    if (!parentManager) throw `❌`
     return {
       isNewTheme: false,
-      ...ogParentManager.state,
-      themeManager: ogParentManager,
+      ...parentManager.state,
+      themeManager: parentManager,
     }
   }
 
@@ -366,8 +361,8 @@ export const useChangeThemeEffect = (
       if (isNewTheme) {
         state = { ...themeManager.state }
       } else {
-        state = ogParentManager!.state
-        themeManager = ogParentManager!
+        state = parentManager!.state
+        themeManager = parentManager!
       }
     }
 
