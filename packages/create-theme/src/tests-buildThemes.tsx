@@ -56,6 +56,8 @@ withThemes.state.themes.dark.template
 // light_blue_ListItem
 // light_alt1_ListItem
 
+withThemes.state.themes
+
 const withSubThemes = withThemes.addChildThemes({
   blue: {
     palette: '*_blue',

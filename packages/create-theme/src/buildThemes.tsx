@@ -103,38 +103,39 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       avoidNestingWithin?: string[]
     }
   ) {
-    return null
-    // if (!this.state.themes) {
-    //   throw new Error(
-    //     `No themes defined yet, use addThemes first to set your base themes`
-    //   )
-    // }
+    const currentThemes = this.state.themes as State['themes']
+    if (!currentThemes) {
+      throw new Error(
+        `No themes defined yet, use addThemes first to set your base themes`
+      )
+    }
 
-    // const currentThemeNames = objectKeys(this.state.themes)
-    // const incomingThemeNames = objectKeys(childThemeDefinition)
+    const currentThemeNames = objectKeys(currentThemes)
+    const incomingThemeNames = objectKeys(childThemeDefinition)
 
-    // const childThemes = objectFromEntries(
-    //   currentThemeNames.flatMap((prefix) => {
-    //     const names = incomingThemeNames.map((name) => {
-    //       if (typeof name === 'string') {
-    //         return `${prefix}_${name}`
-    //       }
-    //       return `` as never
-    //     })
-    //     return names.map((name) => [name, childThemeDefinition] as const)
-    //   })
-    // )
+    type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>
+    type ChildNames = Exclude<keyof CT, symbol | number>
 
-    // return childThemes
+    const names = currentThemeNames.flatMap((prefix) => {
+      return incomingThemeNames.map(
+        (name) =>
+          // @ts-expect-error always strings
+          `${prefix}_${name}`
+      )
+    }) as `${CurrentNames}_${ChildNames}`[]
 
-    // return new ThemeBuilder({
-    //   ...this.state,
-    //   themes: {
-    //     // as {} prevents generic string key merge messing up types
-    //     ...(this.state.themes as {}),
-    //     ...childThemes,
-    //   },
-    // })
+    const childThemes = objectFromEntries(
+      names.map((name) => [name, childThemeDefinition])
+    )
+
+    return new ThemeBuilder({
+      ...this.state,
+      themes: {
+        // as {} prevents generic string key merge messing up types
+        ...(this.state.themes as {}),
+        ...childThemes,
+      },
+    })
   }
 
   build() {
