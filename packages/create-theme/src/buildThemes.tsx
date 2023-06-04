@@ -1,4 +1,5 @@
 import { objectFromEntries, objectKeys } from './helpers'
+import { applyMask } from './masks'
 
 export function buildThemes() {
   return new ThemeBuilder({})
@@ -54,14 +55,6 @@ class ThemeBuilder<State extends ThemeBuilderState> {
         ...palettes,
       },
     } as const)
-
-    // return new ThemeBuilder({
-    //   ...this.state,
-    //   palettes: {
-    //     ...this.state.palettes,
-    //     ...palettes,
-    //   },
-    // })
   }
 
   addTemplates<T extends TemplateDefinitions>(templates: T) {
@@ -139,12 +132,38 @@ class ThemeBuilder<State extends ThemeBuilderState> {
   }
 
   build() {
+    if (!this.state.themes) {
+      return {}
+    }
+
+    const out = {}
+
+    for (const themeName in this.state.themes) {
+      const theme = this.state.themes[themeName]
+      const nameParts = themeName.split('_')
+      const parentName = nameParts.slice(0, nameParts.length - 1).join('_')
+      const parentTheme = this.state.themes[parentName]
+
+      if ('mask' in theme) {
+        // ...
+        // const next = applyMask()
+      } else {
+        if (!this.state.palettes) {
+          throw new Error(
+            `No palettes defined for theme with palette expected: ${themeName}`
+          )
+        }
+
+        const palette = this.state.palettes[theme.palette]
+
+        if (!palette) {
+          throw new Error(`No palette for theme ${themeName}: ${theme.palette}`)
+        }
+
+        console.log('build', themeName, { theme, palette })
+      }
+    }
+
     return this
   }
-}
-
-// -------------------------------------
-
-if (process.env.NODE_ENV === 'development') {
-  require('./tests-buildThemes')
 }
