@@ -1,4 +1,4 @@
-export declare function buildThemes(): ThemeBuilder;
+export declare function buildThemes(): ThemeBuilder<{}>;
 type Palette = string[];
 type Template = {
     [key: string]: number;
@@ -27,14 +27,25 @@ type ThemeBuilderState = {
     themes?: ThemeDefinitions;
     masks?: MaskDefinitions;
 };
-declare class ThemeBuilder {
-    private state;
-    constructor(state: ThemeBuilderState);
-    addPalettes<P extends PaletteDefinitions>(palettes: P): ThemeBuilder;
-    addTemplates<T extends TemplateDefinitions>(templates: T): ThemeBuilder;
-    addMasks<T extends TemplateDefinitions>(masks: T): ThemeBuilder;
-    addThemes<T extends ThemeDefinitions>(themes: T): ThemeBuilder;
-    addChildThemes<CT extends ThemeDefinitions>(childThemes: CT): ThemeBuilder;
+declare class ThemeBuilder<State extends ThemeBuilderState> {
+    state: State;
+    constructor(state: State);
+    addPalettes<P extends PaletteDefinitions>(palettes: P): ThemeBuilder<State & {
+        readonly palettes: P;
+    }>;
+    addTemplates<T extends TemplateDefinitions>(templates: T): ThemeBuilder<State & {
+        templates: T;
+    }>;
+    addMasks<T extends MaskDefinitions>(masks: T): ThemeBuilder<State & {
+        masks: T;
+    }>;
+    addThemes<T extends ThemeDefinitions>(themes: T): ThemeBuilder<State & {
+        themes: T;
+    }>;
+    addChildThemes<CT extends ThemeDefinitions>(childThemeDefinition: CT, options?: {
+        avoidNestingWithin?: string[];
+    }): null;
+    build(): this;
 }
 export {};
 //# sourceMappingURL=buildThemes.d.ts.map

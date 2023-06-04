@@ -1,3 +1,5 @@
+import { objectFromEntries, objectKeys } from './helpers'
+
 export function buildThemes() {
   return new ThemeBuilder({})
 }
@@ -40,47 +42,103 @@ type ThemeBuilderState = {
   masks?: MaskDefinitions
 }
 
-class ThemeBuilder {
-  constructor(private state: ThemeBuilderState) {}
+class ThemeBuilder<State extends ThemeBuilderState> {
+  constructor(public state: State) {}
 
   addPalettes<P extends PaletteDefinitions>(palettes: P) {
-    this.state.palettes = {
-      ...this.state.palettes,
-      ...palettes,
-    }
-    return new ThemeBuilder(this.state)
+    return new ThemeBuilder({
+      ...this.state,
+      palettes: {
+        // as {} prevents generic string key merge messing up types
+        ...(this.state.palettes as {}),
+        ...palettes,
+      },
+    } as const)
+
+    // return new ThemeBuilder({
+    //   ...this.state,
+    //   palettes: {
+    //     ...this.state.palettes,
+    //     ...palettes,
+    //   },
+    // })
   }
 
   addTemplates<T extends TemplateDefinitions>(templates: T) {
-    this.state.templates = {
-      ...this.state.templates,
-      ...templates,
-    }
-    return new ThemeBuilder(this.state)
+    return new ThemeBuilder({
+      ...this.state,
+      templates: {
+        // as {} prevents generic string key merge messing up types
+        ...(this.state.templates as {}),
+        ...templates,
+      },
+    })
   }
 
-  addMasks<T extends TemplateDefinitions>(masks: T) {
-    this.state.masks = {
-      ...this.state.masks,
-      ...masks,
-    }
-    return new ThemeBuilder(this.state)
+  addMasks<T extends MaskDefinitions>(masks: T) {
+    return new ThemeBuilder({
+      ...this.state,
+      masks: {
+        // as {} prevents generic string key merge messing up types
+        ...(this.state.masks as {}),
+        ...masks,
+      },
+    })
   }
 
   addThemes<T extends ThemeDefinitions>(themes: T) {
-    this.state.themes = {
-      ...this.state.themes,
-      ...themes,
-    }
-    return new ThemeBuilder(this.state)
+    return new ThemeBuilder({
+      ...this.state,
+      themes: {
+        // as {} prevents generic string key merge messing up types
+        ...(this.state.themes as {}),
+        ...themes,
+      },
+    })
   }
 
-  addChildThemes<CT extends ThemeDefinitions>(childThemes: CT) {
-    this.state.themes = {
-      ...this.state.themes,
-      ...childThemes,
+  addChildThemes<CT extends ThemeDefinitions>(
+    childThemeDefinition: CT,
+    options?: {
+      avoidNestingWithin?: string[]
     }
-    return new ThemeBuilder(this.state)
+  ) {
+    return null
+    // if (!this.state.themes) {
+    //   throw new Error(
+    //     `No themes defined yet, use addThemes first to set your base themes`
+    //   )
+    // }
+
+    // const currentThemeNames = objectKeys(this.state.themes)
+    // const incomingThemeNames = objectKeys(childThemeDefinition)
+
+    // const childThemes = objectFromEntries(
+    //   currentThemeNames.flatMap((prefix) => {
+    //     const names = incomingThemeNames.map((name) => {
+    //       if (typeof name === 'string') {
+    //         return `${prefix}_${name}`
+    //       }
+    //       return `` as never
+    //     })
+    //     return names.map((name) => [name, childThemeDefinition] as const)
+    //   })
+    // )
+
+    // return childThemes
+
+    // return new ThemeBuilder({
+    //   ...this.state,
+    //   themes: {
+    //     // as {} prevents generic string key merge messing up types
+    //     ...(this.state.themes as {}),
+    //     ...childThemes,
+    //   },
+    // })
+  }
+
+  build() {
+    return this
   }
 }
 
