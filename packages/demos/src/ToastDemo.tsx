@@ -83,7 +83,6 @@ const NativeOptions = ({
         Custom
       </Label>
       <Switch
-        debug="verbose"
         id="native-toggle"
         nativeID="native-toggle"
         theme="active"
