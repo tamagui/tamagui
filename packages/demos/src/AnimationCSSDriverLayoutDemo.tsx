@@ -15,11 +15,11 @@ import {
 } from 'tamagui'
 
 export function AnimationCSSDriverLayoutDemo(props) {
-  const [birds, setBirds] = useState(15)
+  const [birds, setBirds] = useState(25)
   const [fd, setFd] = useState<'row' | 'column'>('row')
 
   const onPress = useEvent(() => {
-    setBirds(15)
+    setBirds(25)
   })
   return (
     <>
@@ -39,6 +39,9 @@ export function AnimationCSSDriverLayoutDemo(props) {
               <Square
                 onPress={() => {
                   setBirds(birds - 1)
+                }}
+                hoverStyle={{
+                  size: 70,
                 }}
                 // don't use index as key
                 key={index}
@@ -63,7 +66,6 @@ export function AnimationCSSDriverLayoutDemo(props) {
             )
           })}
       </XStack>
-
       <Button
         position="absolute"
         bottom={20}
