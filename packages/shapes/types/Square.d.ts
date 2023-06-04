@@ -1,5 +1,8 @@
+/// <reference types="react" />
 import { GetProps } from '@tamagui/web';
-export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 } & {
@@ -17,7 +20,9 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 } & {
@@ -35,7 +40,9 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 } & {
@@ -53,7 +60,9 @@ export declare const Square: import("@tamagui/web").TamaguiComponent<Omit<import
 }, "size" | "circular"> & {
     readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
-}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/web").SizeTokens | undefined;
 } & {

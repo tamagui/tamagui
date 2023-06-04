@@ -891,7 +891,7 @@ export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> &
   }
 
 export interface ExtendBaseStackProps {}
-export interface ExtendsBaseTextProps {}
+export interface ExtendBaseTextProps {}
 
 //
 // Stack
@@ -902,10 +902,13 @@ type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers
 
 export type StackNonStyleProps = Omit<
   ViewProps,
-  'display' | 'children' | OmitRemovedNonWebProps
+  'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'
 > &
   ExtendBaseStackProps &
-  TamaguiComponentPropsBase
+  TamaguiComponentPropsBase & {
+    // we allow either RN or web style props, of course only web css props only works on web
+    style?: StyleProp<React.CSSProperties & ViewStyle>
+  }
 
 export type StackStyleProps =
   WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
@@ -921,10 +924,13 @@ export type StackProps = StackNonStyleProps & StackStyleProps
 
 export type TextNonStyleProps = Omit<
   ReactTextProps,
-  'children' | OmitRemovedNonWebProps
+  'children' | OmitRemovedNonWebProps | keyof ExtendBaseTextProps | 'style'
 > &
-  ExtendsBaseTextProps &
-  TamaguiComponentPropsBase
+  ExtendBaseTextProps &
+  TamaguiComponentPropsBase & {
+    // we allow either RN or web style props, of course only web css props only works on web
+    style?: StyleProp<React.CSSProperties & TextStyle>
+  }
 
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>
 
@@ -1731,3 +1737,17 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> =
   | boolean
   | Platform
   | Platform[]
+
+/**
+ * `StyleProp` copied from React Native:
+ */
+
+type Falsy = undefined | null | false
+interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
+/** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
+type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
+export type StyleProp<T> =
+  | T
+  | RegisteredStyle<T>
+  | RecursiveArray<T | RegisteredStyle<T> | Falsy>
+  | Falsy
