@@ -24,7 +24,7 @@ const darkShadows = {
   shadowColorFocus: darkShadowColor,
 }
 
-const setup = buildThemes()
+const themes = buildThemes()
   //
   .addPalettes(palettes)
   .addTemplates(templates)
@@ -32,59 +32,38 @@ const setup = buildThemes()
     soften: createWeakenMask(),
     strengthen: createStrengthenMask(),
   })
-
-setup.state.palettes.dark_blue
-
-const withThemes = setup.addThemes({
-  dark: {
-    template: 'dark',
-    palette: 'dark',
-  },
-  light: {
-    template: 'light',
-    palette: 'light',
-  },
-})
-
-withThemes.state.themes.dark.template
-
-// light
-// light_blue
-// light_alt1
-// light_ListItem
-// light_blue_alt1
-// light_blue_ListItem
-// light_alt1_ListItem
-
-withThemes.state.themes
-
-const withSubThemes = withThemes.addChildThemes({
-  blue: {
-    palette: '*_blue',
-    template: 'color',
-  },
-})
-
-withSubThemes
-
-// .addChildThemes({
-//   alt1: {
-//     mask: 'soften',
-//   },
-// })
-// .addChildThemes(
-//   {
-//     ListItem: {
-//       mask: 'strengthen',
-//     },
-//   },
-//   {
-//     // we dont actually do this right now but this is an important api to figure out
-//     avoidNestingWithin: ['alt1'],
-//   }
-// )
-
-withSubThemes.state.themes.dark_blue
+  .addThemes({
+    dark: {
+      template: 'dark',
+      palette: 'dark',
+    },
+    light: {
+      template: 'light',
+      palette: 'light',
+    },
+  })
+  .addChildThemes({
+    blue: {
+      palette: '*_blue',
+      template: 'color',
+    },
+  })
+  .addChildThemes({
+    alt1: {
+      mask: 'soften',
+    },
+  })
+  .addChildThemes(
+    {
+      ListItem: {
+        mask: 'strengthen',
+      },
+    },
+    {
+      // we dont actually do this right now but this is an important api to figure out
+      avoidNestingWithin: ['alt1'],
+    }
+  )
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-console.log(withSubThemes.build())
+console.log(themes.build())
