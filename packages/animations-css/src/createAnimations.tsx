@@ -108,16 +108,18 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
               ? Number(time.replace('ms', ''))
               : Number(time.replace('s', '')) * 1000,
             onUpdate: ({ x, y, scaleX, scaleY }) => {
-              // @ts-ignore
-              hostRef.current?.style.translate = `${x}px ${y}px`
-              // @ts-ignore
-              hostRef.current?.style.scale = `${scaleX} ${scaleY}`
-              childrenRefs?.current?.forEach((childRef) => {
-                if (childRef && scaleX !== undefined && scaleY !== undefined) {
-                  // @ts-ignore
-                  childRef.style.scale = `${1 / scaleX} ${1 / scaleY}`
-                }
-              })
+              if (hostRef.current) {
+                // @ts-ignore
+                hostRef.current.style.translate = `${x}px ${y}px`
+                // @ts-ignore
+                hostRef.current.style.scale = `${scaleX} ${scaleY}`
+                childrenRefs?.current?.forEach((childRef) => {
+                  if (childRef && scaleX !== undefined && scaleY !== undefined) {
+                    // @ts-ignore
+                    childRef.style.scale = `${1 / scaleX} ${1 / scaleY}`
+                  }
+                })
+              }
             },
             cubicBezier: easingStringToCubicBezier(func),
           })
