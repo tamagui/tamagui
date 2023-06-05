@@ -267,7 +267,6 @@ describe('ThemeManager', () => {
       },
       child
     )
-    // // TODO fix this wrong parent
     expect(child3.parentManager).toBe(child)
     expect(child3.state.name).toBe('dark')
   })
