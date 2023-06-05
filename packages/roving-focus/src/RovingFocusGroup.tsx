@@ -126,6 +126,7 @@ const RovingFocusGroupImpl = React.forwardRef<
 
           isClickFocusRef.current = false
         })}
+        // @ts-ignore
         onBlur={composeEventHandlers((props as any).onBlur, () =>
           setIsTabbingBackOut(false)
         )}

@@ -496,14 +496,18 @@ export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> & Transfo
 };
 export interface ExtendBaseStackProps {
 }
-export interface ExtendsBaseTextProps {
+export interface ExtendBaseTextProps {
 }
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers;
-export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps> & ExtendBaseStackProps & TamaguiComponentPropsBase;
+export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'> & ExtendBaseStackProps & TamaguiComponentPropsBase & {
+    style?: StyleProp<React.CSSProperties & ViewStyle>;
+};
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export type StackPropsBase = StackNonStyleProps & WithThemeAndShorthands<StackStylePropsBase>;
 export type StackProps = StackNonStyleProps & StackStyleProps;
-export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNonWebProps> & ExtendsBaseTextProps & TamaguiComponentPropsBase;
+export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNonWebProps | keyof ExtendBaseTextProps | 'style'> & ExtendBaseTextProps & TamaguiComponentPropsBase & {
+    style?: StyleProp<React.CSSProperties & TextStyle>;
+};
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
@@ -837,4 +841,15 @@ type NarrowRaw<A> = (A extends [] ? [] : never) | (A extends Narrowable ? A : ne
 export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>;
 export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
 export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[];
+/**
+ * `StyleProp` copied from React Native:
+ */
+type Falsy = undefined | null | false;
+interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
+}
+/** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
+type RegisteredStyle<T> = number & {
+    __registeredStyleBrand: T;
+};
+export type StyleProp<T> = T | RegisteredStyle<T> | RecursiveArray<T | RegisteredStyle<T> | Falsy> | Falsy;
 //# sourceMappingURL=types.d.ts.map

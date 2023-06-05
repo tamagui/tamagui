@@ -288,13 +288,13 @@ export const getSplitStyles: StyleSplitter = (
     const isMainStyle = keyInit === 'style'
     if (isMainStyle || keyInit.startsWith('_style')) {
       if (!valInit) return
-      const styles = Array.isArray(valInit) ? valInit : [valInit]
+      const styles = [].concat(valInit).flat()
       const styleLen = styles.length
       for (let j = styleLen; j >= 0; j--) {
         const cur = styles[j]
         if (!cur) continue
         for (const key in cur) {
-          if (!isMainStyle && usedKeys[key]) {
+          if (!isMainStyle && key in usedKeys) {
             continue
           }
           usedKeys[key] = 1

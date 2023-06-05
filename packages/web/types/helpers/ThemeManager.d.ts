@@ -21,6 +21,7 @@ export declare class ThemeManager {
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
+    scheme: 'light' | 'dark' | null;
     constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
