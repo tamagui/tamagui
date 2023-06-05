@@ -63,9 +63,7 @@ export class ThemeManager {
       return parentManagerIn
     }
 
-    if (parentManagerIn) {
-      this.parentManager = parentManagerIn
-    }
+    this.parentManager = parentManagerIn
 
     if (this.updateState(props, false)) {
       return
@@ -212,7 +210,7 @@ function getState(
     return null
   }
 
-  if (props.reset && !parentManager?.parentManager) {
+  if (props.reset && allComponentThemes.length === 0 && !parentManager?.parentManager) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Cannot reset no grandparent exists')
     }
@@ -222,10 +220,17 @@ function getState(
   let result: ThemeManagerState | null = null
 
   const nextName = props.reset
-    ? parentManager?.parentManager?.state?.name || ''
+    ? allComponentThemes.length === 0
+      ? parentManager?.parentManager?.state?.name || ''
+      : parentManager?.state?.name || ''
     : props.name || ''
   const { componentName } = props
   const parentName = parentManager?.state?.name || ''
+
+  if (props.reset && allComponentThemes.length) {
+    // skip nearest component theme
+    allComponentThemes.shift()
+  }
 
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
@@ -299,7 +304,6 @@ function getState(
       }
       potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
-
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
@@ -343,8 +347,8 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
   let componentThemeNames: string[] = []
   while (res) {
     if (res?.isComponent) {
-      res = res.parentManager
       componentThemeNames.push(res?.state?.name!)
+      res = res.parentManager
     } else {
       break
     }
