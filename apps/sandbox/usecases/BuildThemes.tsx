@@ -230,41 +230,43 @@ const overlayThemeDefinitions = [
   },
 ]
 
+const masks = {
+  identity: createIdentityMask(),
+  soften: createSoftenMask(),
+  soften2: createSoftenMask({ strength: 2 }),
+  soften3: createSoftenMask({ strength: 3 }),
+  strengthen: createStrengthenMask(),
+  inverse: createInverseMask(),
+  inverseSoften: combineMasks(createInverseMask(), createSoftenMask()),
+  inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
+  strengthenButSoftenBorder: (template, options) => {
+    const stronger = createStrengthenMask()(template, options)
+    const softer = createSoftenMask()(template, options)
+    return {
+      ...stronger,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  },
+  softenBorder: (template, options) => {
+    const plain = skipMask(template, options)
+    const softer = createSoftenMask()(template, options)
+    return {
+      ...plain,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  },
+}
+
 const themesBuilder = createThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
-  .addMasks({
-    identity: createIdentityMask(),
-    soften: createSoftenMask(),
-    soften2: createSoftenMask({ strength: 2 }),
-    soften3: createSoftenMask({ strength: 3 }),
-    strengthen: createStrengthenMask(),
-    inverse: createInverseMask(),
-    inverseSoften: combineMasks(createInverseMask(), createSoftenMask()),
-    inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
-    strengthenButSoftenBorder: (template, options) => {
-      const stronger = createStrengthenMask()(template, options)
-      const softer = createSoftenMask()(template, options)
-      return {
-        ...stronger,
-        borderColor: softer.borderColor,
-        borderColorHover: softer.borderColorHover,
-        borderColorPress: softer.borderColorPress,
-        borderColorFocus: softer.borderColorFocus,
-      }
-    },
-    softenBorder: (template, options) => {
-      const plain = skipMask(template, options)
-      const softer = createSoftenMask()(template, options)
-      return {
-        ...plain,
-        borderColor: softer.borderColor,
-        borderColorHover: softer.borderColorHover,
-        borderColorPress: softer.borderColorPress,
-        borderColorFocus: softer.borderColorFocus,
-      }
-    },
-  })
+  .addMasks(masks)
   .addThemes({
     dark: {
       template: 'base',
