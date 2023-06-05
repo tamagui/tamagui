@@ -34,20 +34,17 @@ export const templates = [
     },
     extraSteps: simpleWeb,
   },
+  // {
+  //   title: `${chalk.bold.underline(
+  //     `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
+  //   )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
+  //   value: `takeout-starter`,
+  //   type: 'premium',
+  //   repo: {
+  //     url: `https://github.com/tamagui/unistack`,
+  //     dir: [],
+  //     branch: 'main',
+  //   },
+  //   extraSteps: takeoutSteps,
+  // },
 ]
-
-if (process.env.NODE_ENV !== 'production') {
-  templates.push({
-    title: `${chalk.bold.underline(
-      `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
-    )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
-    value: `takeout-starter`,
-    type: 'premium',
-    repo: {
-      url: `https://github.com/tamagui/unistack`,
-      dir: [],
-      branch: 'main',
-    },
-    extraSteps: takeoutSteps,
-  })
-}
