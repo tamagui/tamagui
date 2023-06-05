@@ -1,11 +1,11 @@
-import { GenericTheme, Palette, ThemeMask } from './types';
-export declare function createTheme<Definition extends ThemeMask, Extras extends Record<string, string> = {}>(palette: Palette, definition: Definition, options?: {
+import { CreateThemePalette, GenericTheme, ThemeMask } from './types';
+export declare function createTheme<Definition extends ThemeMask, Extras extends Record<string, string> = {}>(palette: CreateThemePalette, definition: Definition, options?: {
     nonInheritedValues?: Extras;
 }): {
     [key in keyof Definition | keyof Extras]: string;
 };
 export declare const THEME_INFO: WeakMap<any, {
-    palette: Palette;
+    palette: CreateThemePalette;
     definition: ThemeMask;
     cache: Map<any, any>;
 }>;

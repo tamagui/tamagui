@@ -1,11 +1,11 @@
 import { isMinusZero } from './isMinusZero'
-import { GenericTheme, Palette, ThemeMask } from './types'
+import { CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 export function createTheme<
   Definition extends ThemeMask,
   Extras extends Record<string, string> = {}
 >(
-  palette: Palette,
+  palette: CreateThemePalette,
   definition: Definition,
   options?: {
     nonInheritedValues?: Extras
@@ -28,10 +28,10 @@ export function createTheme<
 
 export const THEME_INFO = new WeakMap<
   any,
-  { palette: Palette; definition: ThemeMask; cache: Map<any, any> }
+  { palette: CreateThemePalette; definition: ThemeMask; cache: Map<any, any> }
 >()
 
-const getValue = (palette: Palette, value: string | number) => {
+const getValue = (palette: CreateThemePalette, value: string | number) => {
   if (typeof value === 'string') return value
   const max = palette.length - 1
   const isPositive = value === 0 ? !isMinusZero(value) : value >= 0

@@ -10,7 +10,12 @@ type ThemeUsingTemplate = {
     palette: string;
     template: string;
 };
-export type Theme<Masks = string> = ThemeUsingTemplate | ThemeUsingMask<Masks>;
+type ThemePreDefined = {
+    theme: {
+        [key: string]: string;
+    };
+};
+export type Theme<Masks = string> = ThemePreDefined | ThemeUsingTemplate | ThemeUsingMask<Masks>;
 type ThemeWithParent<Masks = string> = Theme<Masks> & {
     parent: string;
 };
@@ -56,4 +61,4 @@ export declare class ThemeBuilder<State extends ThemeBuilderState> {
     build(): {};
 }
 export {};
-//# sourceMappingURL=buildThemes.d.ts.map
+//# sourceMappingURL=ThemeBuilder.d.ts.map

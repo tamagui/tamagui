@@ -1,8 +1,11 @@
 import {
-  buildThemes,
+  ThemeBuilder,
+  combineMasks,
   createIdentityMask,
+  createInverseMask,
+  createSoftenMask,
   createStrengthenMask,
-  createWeakenMask,
+  skipMask,
 } from '@tamagui/create-theme'
 import { colorTokens } from '@tamagui/themes'
 
@@ -194,13 +197,84 @@ const darkShadows = {
   shadowColorFocus: darkShadowColor,
 }
 
-const themesBuilder = buildThemes()
+const colorThemeDefinition = [
+  {
+    parent: 'light',
+    palette: 'blue',
+    template: 'colorLight',
+  },
+  {
+    parent: 'dark',
+    palette: 'blue',
+    template: 'base',
+  },
+]
+
+const overlayThemes = {
+  light: {
+    background: 'rgba(0,0,0,0.5)',
+  },
+  dark: {
+    background: 'rgba(0,0,0,0.9)',
+  },
+}
+
+const overlayThemeDefinitions = [
+  {
+    parent: 'light',
+    theme: overlayThemes.light,
+  },
+  {
+    parent: 'dark',
+    theme: overlayThemes.dark,
+  },
+]
+
+const inputThemeDefinitions = [
+  {
+    parent: 'light',
+    mask: 'strengthenButSoftenBorder',
+  },
+  {
+    parent: 'dark',
+    mask: 'softenBorder',
+  },
+]
+
+const themesBuilder = new ThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
   .addMasks({
     identity: createIdentityMask(),
-    soften: createWeakenMask(),
+    soften: createSoftenMask(),
+    soften2: createSoftenMask({ strength: 2 }),
+    soften3: createSoftenMask({ strength: 3 }),
     strengthen: createStrengthenMask(),
+    inverse: createInverseMask(),
+    inverseSoften: combineMasks(createInverseMask(), createSoftenMask()),
+    inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
+    strengthenButSoftenBorder: (template, options) => {
+      const stronger = createStrengthenMask()(template, options)
+      const softer = createSoftenMask()(template, options)
+      return {
+        ...stronger,
+        borderColor: softer.borderColor,
+        borderColorHover: softer.borderColorHover,
+        borderColorPress: softer.borderColorPress,
+        borderColorFocus: softer.borderColorFocus,
+      }
+    },
+    softenBorder: (template, options) => {
+      const plain = skipMask(template, options)
+      const softer = createSoftenMask()(template, options)
+      return {
+        ...plain,
+        borderColor: softer.borderColor,
+        borderColorHover: softer.borderColorHover,
+        borderColorPress: softer.borderColorPress,
+        borderColorFocus: softer.borderColorFocus,
+      }
+    },
   })
   .addThemes({
     dark: {
@@ -213,22 +287,26 @@ const themesBuilder = buildThemes()
     },
   })
   .addChildThemes({
-    blue: [
-      {
-        parent: 'light',
-        palette: 'blue',
-        template: 'colorLight',
-      },
-      {
-        parent: 'dark',
-        palette: 'blue',
-        template: 'base',
-      },
-    ],
+    orange: colorThemeDefinition,
+    yellow: colorThemeDefinition,
+    green: colorThemeDefinition,
+    blue: colorThemeDefinition,
+    purple: colorThemeDefinition,
+    pink: colorThemeDefinition,
+    red: colorThemeDefinition,
   })
   .addChildThemes({
     alt1: {
       mask: 'soften',
+    },
+    alt2: {
+      mask: 'soften2',
+    },
+    active: {
+      mask: 'soften3',
+      skip: {
+        color: 1,
+      },
     },
   })
   .addChildThemes(
@@ -243,6 +321,73 @@ const themesBuilder = buildThemes()
           mask: 'identity',
         },
       ],
+
+      Card: {
+        mask: 'soften',
+      },
+
+      Button: {
+        mask: 'soften2',
+        override: {
+          borderColor: 'transparent',
+          borderColorHover: 'transparent',
+        },
+      },
+
+      Checkbox: {
+        mask: 'soften2',
+      },
+
+      SliderTrackActive: {
+        mask: 'soften2',
+      },
+
+      Switch: {
+        mask: 'soften2',
+      },
+
+      TooltipContent: {
+        mask: 'soften2',
+      },
+
+      DrawerFrame: {
+        mask: 'soften',
+      },
+
+      Progress: {
+        mask: 'soften',
+      },
+
+      TooltipArrow: {
+        mask: 'soften',
+      },
+
+      SliderTrack: {
+        mask: 'strengthen',
+      },
+
+      SliderThumb: {
+        mask: 'inverseSoften',
+      },
+
+      Tooltip: {
+        mask: 'inverse',
+      },
+
+      ProgressIndicator: {
+        mask: 'inverse',
+      },
+
+      SwitchThumb: {
+        mask: 'inverseSoften2',
+      },
+
+      SheetOverlay: overlayThemeDefinitions,
+      DialogOverlay: overlayThemeDefinitions,
+      ModalOverlay: overlayThemeDefinitions,
+
+      Input: inputThemeDefinitions,
+      TextArea: inputThemeDefinitions,
     },
     {
       // we dont actually do this right now but api to figure out
@@ -252,6 +397,7 @@ const themesBuilder = buildThemes()
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(1, themesBuilder)
+
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(2, themesBuilder.build())
 

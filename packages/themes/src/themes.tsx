@@ -264,34 +264,26 @@ function getAltThemes({
   theme,
   inverse,
   isLight,
-  activeTheme,
 }: {
   theme: SubTheme
   inverse: SubTheme
   isLight: boolean
-  activeTheme?: SubTheme
 }) {
   const maskOptionsAlt = {
     ...maskOptions,
     override: overrideShadows,
   }
+
   const alt1 = applyMask(theme, masks.weaker, maskOptionsAlt)
   const alt2 = applyMask(alt1, masks.weaker, maskOptionsAlt)
-
-  const active =
-    activeTheme ??
-    (process.env.ACTIVE_THEME_INVERSE
-      ? inverse
-      : (() => {
-          return applyMask(theme, masks.weaker, {
-            ...maskOptions,
-            strength: 3,
-            skip: {
-              ...maskOptions.skip,
-              color: 1,
-            },
-          })
-        })())
+  const active = applyMask(theme, masks.weaker, {
+    ...maskOptions,
+    strength: 3,
+    skip: {
+      ...maskOptions.skip,
+      color: 1,
+    },
+  })
 
   return addChildren({ alt1, alt2, active }, (_, subTheme) => {
     return getComponentThemes(subTheme, subTheme === inverse ? theme : inverse, isLight)

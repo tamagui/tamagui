@@ -1,19 +1,16 @@
 import { createTheme } from './createTheme'
 import { objectFromEntries, objectKeys } from './helpers'
 import { applyMask } from './masks'
+import { MaskOptions } from './types'
 
-export function buildThemes() {
-  return new ThemeBuilder({})
-}
+export type Palette = string[]
 
-type Palette = string[]
-
-type Template = {
+export type Template = {
   [key: string]: number
 }
 
-type ThemeUsingMask = {
-  mask: string
+type ThemeUsingMask<Masks = string> = MaskOptions & {
+  mask: Masks
 }
 
 type ThemeUsingTemplate = {
@@ -21,9 +18,18 @@ type ThemeUsingTemplate = {
   template: string
 }
 
-type Theme = ThemeUsingTemplate | ThemeUsingMask
+type ThemePreDefined = {
+  theme: {
+    [key: string]: string
+  }
+}
 
-type ThemeWithParent = Theme & {
+export type Theme<Masks = string> =
+  | ThemePreDefined
+  | ThemeUsingTemplate
+  | ThemeUsingMask<Masks>
+
+type ThemeWithParent<Masks = string> = Theme<Masks> & {
   parent: string
 }
 
@@ -31,8 +37,8 @@ type PaletteDefinitions = {
   [key: string]: Palette
 }
 
-type ThemeDefinitions = {
-  [key: string]: Theme | ThemeWithParent[]
+type ThemeDefinitions<Masks extends string = string> = {
+  [key: string]: Theme<Masks> | ThemeWithParent<Masks>[]
 }
 
 type TemplateDefinitions = {
@@ -50,8 +56,12 @@ type ThemeBuilderState = {
   masks?: MaskDefinitions
 }
 
-class ThemeBuilder<State extends ThemeBuilderState> {
-  constructor(public state: State) {}
+type ObjectStringKeys<A extends Object | undefined> = A extends Object
+  ? Exclude<keyof A, symbol | number>
+  : never
+
+export class ThemeBuilder<State extends ThemeBuilderState> {
+  constructor(public state: State = {} as State) {}
 
   addPalettes<P extends PaletteDefinitions>(palettes: P) {
     return new ThemeBuilder({
@@ -86,7 +96,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     })
   }
 
-  addThemes<T extends ThemeDefinitions>(themes: T) {
+  addThemes<T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T) {
     return new ThemeBuilder({
       ...this.state,
       themes: {
@@ -97,8 +107,8 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     })
   }
 
-  addChildThemes<CT extends ThemeDefinitions>(
-    childThemeDefinition: CT,
+  addChildThemes<CTD extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(
+    childThemeDefinition: CTD,
     options?: {
       avoidNestingWithin?: string[]
     }
@@ -111,7 +121,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     }
 
     type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>
-    type ChildNames = Exclude<keyof CT, symbol | number>
+    type ChildNames = Exclude<keyof CTD, symbol | number>
 
     const currentThemeNames = objectKeys(currentThemes) as CurrentNames[]
     const incomingThemeNames = objectKeys(childThemeDefinition) as ChildNames[]
@@ -122,7 +132,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
         const definition = childThemeDefinition[subName]
         return [fullName, definition] as const
       })
-    }) as any as [`${CurrentNames}_${ChildNames}`, CT][]
+    }) as any as [`${CurrentNames}_${ChildNames}`, CTD][]
 
     const childThemes = objectFromEntries(namesWithDefinitions)
 
@@ -163,7 +173,9 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           })()
         : definitions
 
-      if ('mask' in themeDefinition) {
+      if ('theme' in themeDefinition) {
+        out[themeName] = themeDefinition.theme
+      } else if ('mask' in themeDefinition) {
         maskedThemes.push({ parentName, themeName, mask: themeDefinition.mask })
       } else {
         if (!this.state.palettes) {
@@ -191,9 +203,8 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           )
         }
 
-        const generated = createTheme(palette, template)
-
-        out[themeName] = { palette, themeDefinition, template, generated }
+        console.log(palette, template)
+        out[themeName] = createTheme(palette, template)
       }
     }
 
@@ -212,12 +223,8 @@ class ThemeBuilder<State extends ThemeBuilderState> {
         throw new Error(`No mask ${maskFunction}`)
       }
 
-      if (!parent.generated) {
-        console.warn('??', themeName, parentName, mask)
-        continue
-      }
-
-      out[themeName] = applyMask(parent.generated, maskFunction as any)
+      console.log('go', themeName, parent)
+      out[themeName] = applyMask(parent, maskFunction as any)
     }
 
     return out as {

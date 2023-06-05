@@ -1,6 +1,18 @@
 import { THEME_INFO, createTheme } from './createTheme'
+import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
 import { CreateMask, GenericTheme, MaskOptions } from './types'
+
+export const combineMasks = (...masks: CreateMask[]) => {
+  const mask: CreateMask = (template, opts) => {
+    let current = template
+    for (const mask of masks) {
+      current = applyMask(current as any, mask, opts)
+    }
+    return current
+  }
+  return mask
+}
 
 export const skipMask: CreateMask = (template, { skip }) => {
   if (!skip) return template
@@ -11,9 +23,30 @@ export const skipMask: CreateMask = (template, { skip }) => {
 
 export const createIdentityMask = () => (template) => template
 
-export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
-  return ((template, opts) => {
-    const { override, max: maxIn, palette, min = 0, strength = 1 } = opts
+export const createInverseMask = () => {
+  const mask: CreateMask = (template, opts) => {
+    const inversed = objectFromEntries(
+      objectEntries(template).map(([k, v]) => [k, -v])
+    ) as any
+    return skipMask(inversed, opts)
+  }
+  return mask
+}
+
+type ShiftMaskOptions = { inverse?: boolean }
+
+export const createShiftMask = (
+  { inverse }: ShiftMaskOptions = {},
+  defaultOptions?: MaskOptions
+) => {
+  const mask: CreateMask = (template, opts) => {
+    const {
+      override,
+      max: maxIn,
+      palette,
+      min = 0,
+      strength = 1,
+    } = { ...defaultOptions, ...opts }
     const values = Object.entries(template)
     const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
     const out = {}
@@ -36,12 +69,17 @@ export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
     }
 
     return skipMask(out, opts) as typeof template
-  }) as CreateMask
+  }
+  return mask
 }
 
-export const createWeakenMask = () => createShiftMask()
+export const createWeakenMask = (defaultOptions?: MaskOptions) =>
+  createShiftMask({}, defaultOptions)
 
-export const createStrengthenMask = () => createShiftMask({ inverse: true })
+export const createSoftenMask = createWeakenMask
+
+export const createStrengthenMask = (defaultOptions?: MaskOptions) =>
+  createShiftMask({ inverse: true }, defaultOptions)
 
 export function applyMask<Theme extends GenericTheme>(
   theme: Theme,
