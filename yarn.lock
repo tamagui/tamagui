@@ -5509,7 +5509,7 @@ __metadata:
     expo-splash-screen: ~0.18.2
     expo-status-bar: ~1.4.2
     expo-updates: ~0.16.4
-    html-webpack-plugin: ^5.5.1
+    html-webpack-plugin: ^5.5.0
     metro-runtime: "*"
     mini-css-extract-plugin: ^2.7.6
     react: ^18.2.0
@@ -14292,7 +14292,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:^5.5.0, html-webpack-plugin@npm:^5.5.1":
+"html-webpack-plugin@npm:^5.5.0":
   version: 5.5.1
   resolution: "html-webpack-plugin@npm:5.5.1"
   dependencies:

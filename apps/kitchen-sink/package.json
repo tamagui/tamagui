@@ -67,7 +67,7 @@
     "@types/react": "^18.0.15",
     "@types/react-native": "^0.71.3",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "html-webpack-plugin": "^5.5.1",
+    "html-webpack-plugin": "^5.5.0",
     "metro-runtime": "*",
     "mini-css-extract-plugin": "^2.7.6",
     "webpack": "^5.83.1",
