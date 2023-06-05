@@ -112,13 +112,6 @@ const SandboxFrame = (props: { children: any }) => {
           🌗
         </div>
       )}
-      <ToastViewport
-        flexDirection="column-reverse"
-        top={10}
-        left={10}
-        right={10}
-        mx="auto"
-      />
     </Provider>
   )
 }
