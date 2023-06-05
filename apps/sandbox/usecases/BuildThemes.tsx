@@ -197,15 +197,15 @@ const darkShadows = {
   shadowColorFocus: darkShadowColor,
 }
 
-const colorThemeDefinition = [
+const colorThemeDefinition = (colorName: string) => [
   {
     parent: 'light',
-    palette: 'blue',
+    palette: colorName,
     template: 'colorLight',
   },
   {
     parent: 'dark',
-    palette: 'blue',
+    palette: colorName,
     template: 'base',
   },
 ]
@@ -278,13 +278,13 @@ const themesBuilder = createThemeBuilder()
     },
   })
   .addChildThemes({
-    orange: colorThemeDefinition,
-    yellow: colorThemeDefinition,
-    green: colorThemeDefinition,
-    blue: colorThemeDefinition,
-    purple: colorThemeDefinition,
-    pink: colorThemeDefinition,
-    red: colorThemeDefinition,
+    orange: colorThemeDefinition('orange'),
+    yellow: colorThemeDefinition('yellow'),
+    green: colorThemeDefinition('green'),
+    blue: colorThemeDefinition('blue'),
+    purple: colorThemeDefinition('purple'),
+    pink: colorThemeDefinition('pink'),
+    red: colorThemeDefinition('red'),
   })
   .addChildThemes({
     alt1: {
