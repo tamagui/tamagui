@@ -404,6 +404,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- remove from web (can keep in core or make pluggable):
+  - themeable
+  - space
+  - can have an env setting to exclude all the theme generation stuff if you are using the pre-build: `getThemeCSSRules`
 - replace all RN stuff left in tamagui: Image, Input, Spinner, etc
 - Accessibility + RTL
 - tag="a" should get the typed props of a link

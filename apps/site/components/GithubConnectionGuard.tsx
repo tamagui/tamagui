@@ -1,4 +1,5 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
+import { useRouter } from 'next/router'
 import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
@@ -24,6 +25,7 @@ export const GithubConnectionGuard = ({ children }: { children: React.ReactNode 
 
 export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
   const { data } = useUser()
+  const router = useRouter()
   const teams = data?.teams
   if (!teams) return null
 
@@ -39,7 +41,7 @@ export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) =>
   //   )
   // }
 
-  if (!isLocal) {
+  if (!isLocal && !router.query?.showStudio) {
     return <StudioQueueCard teamId={teams?.main?.id} />
   }
 

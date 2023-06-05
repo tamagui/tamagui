@@ -7,7 +7,6 @@ export declare const elevate: {
         id?: string | import("@tamagui/web").Variable<any> | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | import("@tamagui/web").Variable<any> | undefined;
         removeClippedSubviews?: boolean | import("@tamagui/web").Variable<any> | undefined;
-        style?: import("@tamagui/web").Variable<any> | import("react-native/types").StyleProp<import("react-native/types").ViewStyle>;
         testID?: string | import("@tamagui/web").Variable<any> | undefined;
         nativeID?: string | import("@tamagui/web").Variable<any> | undefined;
         collapsable?: boolean | import("@tamagui/web").Variable<any> | undefined;
@@ -106,6 +105,7 @@ export declare const elevate: {
         onMouseUp?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
         onFocus?: import("@tamagui/web").Variable<any> | ((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) | undefined;
         onScroll?: import("@tamagui/web").Variable<any> | ((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
+        style?: import("@tamagui/web").Variable<any> | import("@tamagui/web").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
         backgroundColor?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
@@ -121,7 +121,7 @@ export declare const elevate: {
         borderRightColor?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderRightWidth?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         borderStartColor?: import("@tamagui/web").Variable<any> | import("react-native/types").ColorValue | undefined;
-        borderStyle?: import("@tamagui/web").Variable<any> | "solid" | "dotted" | "dashed" | undefined;
+        borderStyle?: import("@tamagui/web").Variable<any> | "dashed" | "dotted" | "solid" | undefined;
         borderTopColor?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallback | import("react-native/types").OpaqueColorValue | undefined;
         borderTopEndRadius?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
         borderTopLeftRadius?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").RadiusTokens | undefined;
@@ -130,7 +130,7 @@ export declare const elevate: {
         borderTopWidth?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         borderWidth?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         opacity?: number | import("@tamagui/web").Variable<any> | undefined;
-        alignContent?: import("@tamagui/web").Variable<any> | "flex-start" | "flex-end" | "center" | "stretch" | "space-between" | "space-around" | undefined;
+        alignContent?: import("@tamagui/web").Variable<any> | "space-around" | "space-between" | "stretch" | "center" | "flex-end" | "flex-start" | undefined;
         alignItems?: import("@tamagui/web").Variable<any> | import("react-native/types").FlexAlignType | undefined;
         alignSelf?: "auto" | import("@tamagui/web").Variable<any> | import("react-native/types").FlexAlignType | undefined;
         aspectRatio?: string | number | import("@tamagui/web").Variable<any> | undefined;
@@ -140,12 +140,12 @@ export declare const elevate: {
         end?: string | number | import("@tamagui/web").Variable<any> | undefined;
         flex?: number | import("@tamagui/web").Variable<any> | undefined;
         flexBasis?: string | number | import("@tamagui/web").Variable<any> | undefined;
-        flexDirection?: "row" | import("@tamagui/web").Variable<any> | "column" | "row-reverse" | "column-reverse" | undefined;
+        flexDirection?: "row" | import("@tamagui/web").Variable<any> | "column" | "column-reverse" | "row-reverse" | undefined;
         flexGrow?: number | import("@tamagui/web").Variable<any> | undefined;
         flexShrink?: number | import("@tamagui/web").Variable<any> | undefined;
-        flexWrap?: import("@tamagui/web").Variable<any> | "wrap" | "nowrap" | "wrap-reverse" | undefined;
+        flexWrap?: import("@tamagui/web").Variable<any> | "nowrap" | "wrap" | "wrap-reverse" | undefined;
         height?: import("@tamagui/web").SizeTokens | import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | undefined;
-        justifyContent?: import("@tamagui/web").Variable<any> | "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly" | undefined;
+        justifyContent?: import("@tamagui/web").Variable<any> | "space-around" | "space-between" | "space-evenly" | "center" | "flex-end" | "flex-start" | undefined;
         left?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         margin?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         marginBottom?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
@@ -160,7 +160,7 @@ export declare const elevate: {
         maxWidth?: import("@tamagui/web").SizeTokens | import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | undefined;
         minHeight?: import("@tamagui/web").SizeTokens | import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | undefined;
         minWidth?: import("@tamagui/web").SizeTokens | import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | undefined;
-        overflow?: import("@tamagui/web").Variable<any> | "visible" | "hidden" | "scroll" | undefined;
+        overflow?: import("@tamagui/web").Variable<any> | "hidden" | "visible" | "scroll" | undefined;
         padding?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         paddingBottom?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
         paddingEnd?: import("@tamagui/web").Variable<any> | import("@tamagui/web").ThemeValueFallback | import("@tamagui/web").SpaceTokens | undefined;
@@ -207,7 +207,7 @@ export declare const elevate: {
         rotateZ?: string | import("@tamagui/web").Variable<any> | undefined;
         cursor?: import("@tamagui/web").Variable<any> | import("csstype").Property.Cursor | undefined;
         contain?: import("@tamagui/web").Variable<any> | import("csstype").Property.Contain | undefined;
-        display?: "flex" | "none" | import("@tamagui/web").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        display?: "flex" | "none" | import("@tamagui/web").Variable<any> | "inherit" | "block" | "inline" | "inline-flex" | "contents" | undefined;
         gap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
         columnGap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;
         rowGap?: import("@tamagui/web").Variable<any> | import("@tamagui/web").SpaceTokens | undefined;

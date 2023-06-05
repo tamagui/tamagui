@@ -5,10 +5,9 @@ import '@tamagui/polyfill-dev'
 
 import { config as configBase } from '@tamagui/config'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { Main } from 'next/document'
 import { useServerInsertedHTML } from 'next/navigation'
 import React from 'react'
-import { AppRegistry } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { createTamagui, TamaguiProvider as TamaguiProviderOG } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
@@ -27,12 +26,16 @@ declare module 'tamagui' {
 export const TamaguiProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useRootTheme()
 
-  AppRegistry.registerComponent('Main', () => Main)
-  // @ts-ignore
-  const { getStyleElement } = AppRegistry.getApplication('Main')
-
-  useServerInsertedHTML(() => getStyleElement())
-  useServerInsertedHTML(() => <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />)
+  useServerInsertedHTML(() => {
+    // @ts-ignore
+    const rnwStyle = StyleSheet.getSheet()
+    return (
+      <>
+        <style dangerouslySetInnerHTML={{ __html: Tamagui.getCSS() }} />
+        <style dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }} id={rnwStyle.id} />
+      </>
+    )
+  })
 
   return (
     <NextThemeProvider

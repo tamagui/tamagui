@@ -44,16 +44,16 @@ function mergeProp(
   leaveOutClassNames: boolean,
   inverseShorthands?: AnyRecord
 ) {
-  const val = a[key]
   const shorthand = inverseShorthands?.[key] || null
+  if (b && (key in b || (shorthand && shorthand in b))) {
+    return
+  }
+  const val = a[key]
   if (key in pseudoDescriptors) {
     out[key] = {
       ...out[key],
       ...val,
     }
-    return
-  }
-  if (b && (key in b || (shorthand && shorthand in b))) {
     return
   }
   if (shorthand) {

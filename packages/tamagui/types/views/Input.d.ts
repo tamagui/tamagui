@@ -197,7 +197,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMagicTap?: (() => void) | undefined;
     accessibilityIgnoresInvertColors?: boolean | undefined;
     accessibilityLanguage?: string | undefined;
-    display?: "none" | "inherit" | "flex" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+    display?: "none" | "inherit" | "flex" | "block" | "inline" | "inline-flex" | "contents" | undefined;
     gap?: import("@tamagui/core").SpaceTokens | undefined;
     columnGap?: import("@tamagui/core").SpaceTokens | undefined;
     rowGap?: import("@tamagui/core").SpaceTokens | undefined;
@@ -205,8 +205,8 @@ export declare function useInputProps(props: InputProps, ref: any): {
     fontStyle?: "normal" | "italic" | undefined;
     fontWeight?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").FontWeightTokens | undefined;
     letterSpacing?: number | import("@tamagui/core").ThemeValueFallback | undefined;
-    textDecorationLine?: "none" | "underline" | "line-through" | "underline line-through" | undefined;
-    textDecorationStyle?: "solid" | "double" | "dotted" | "dashed" | undefined;
+    textDecorationLine?: "none" | "line-through" | "underline" | "underline line-through" | undefined;
+    textDecorationStyle?: "dashed" | "dotted" | "double" | "solid" | undefined;
     textDecorationColor?: import("react-native").ColorValue | undefined;
     textShadowColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     textShadowOffset?: {
@@ -214,7 +214,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
         height: number;
     } | undefined;
     textShadowRadius?: number | undefined;
-    textTransform?: "none" | "capitalize" | "uppercase" | "lowercase" | undefined;
+    textTransform?: "none" | "capitalize" | "lowercase" | "uppercase" | undefined;
     fontVariant?: import("react-native").FontVariant[] | undefined;
     writingDirection?: "auto" | "ltr" | "rtl" | undefined;
     borderBottomColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | undefined;
@@ -227,7 +227,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     borderRightColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     borderRightWidth?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     borderStartColor?: import("react-native").ColorValue | undefined;
-    borderStyle?: "solid" | "dotted" | "dashed" | undefined;
+    borderStyle?: "dashed" | "dotted" | "solid" | undefined;
     borderTopColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     borderTopEndRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
     borderTopStartRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
@@ -252,12 +252,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     start?: string | number | undefined;
     top?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     direction?: "inherit" | "ltr" | "rtl" | undefined;
-    shadowOffset?: import("@tamagui/core").ThemeValueFallback | {
-        width: import("@tamagui/core").SpaceTokens;
-        height: import("@tamagui/core").SpaceTokens;
-    } | {
+    shadowOffset?: {
         width: number;
         height: number;
+    } | import("@tamagui/core").ThemeValueFallback | {
+        width: import("@tamagui/core").SpaceTokens;
+        height: import("@tamagui/core").SpaceTokens;
     } | undefined;
     shadowOpacity?: number | undefined;
     shadowRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;

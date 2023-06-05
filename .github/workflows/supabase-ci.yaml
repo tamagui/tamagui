@@ -11,6 +11,8 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: supabase/setup-cli@v1
+        with:
+          version: 1.64.8
 
       - name: Start Supabase local development setup
         run: cd apps/site && supabase start
@@ -18,7 +20,7 @@ jobs:
       - name: Verify generated types are up-to-date
         run: |
           cd apps/site
-          yarn supabase:generate
+          npx supabase gen types typescript --local > lib/supabase-types.ts
           if [ "$(git diff --ignore-space-at-eol lib/supabase-types.ts | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build. See status below:"
             git diff

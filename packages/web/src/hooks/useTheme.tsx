@@ -8,8 +8,8 @@ import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
   ThemeManagerState,
+  getHasThemeUpdatingProps,
   getNonComponentParentManager,
-  hasNoThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeParsed, ThemeProps } from '../types'
@@ -173,10 +173,11 @@ export const useChangeThemeEffect = (
   } = props
 
   const ogParentManager = useContext(ThemeManagerContext)
-  const hasThemeUpdatingProps = !hasNoThemeUpdatingProps(props)
-  const parentManager = disable
-    ? ogParentManager
-    : getNonComponentParentManager(ogParentManager)
+  const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
+  const parentManager =
+    disable || !hasThemeUpdatingProps
+      ? ogParentManager
+      : getNonComponentParentManager(ogParentManager)
 
   if (disable) {
     if (!ogParentManager) throw `❌`

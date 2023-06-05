@@ -152,7 +152,7 @@ export function styled<
       }
 
       // bail on non className views as well
-      if (defaultProps.children || !acceptsClassName) {
+      if (defaultProps.children || !acceptsClassName || context) {
         conf.neverFlatten = true
       }
 

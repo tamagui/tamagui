@@ -54,6 +54,14 @@ export const Sandbox = () => {
 }
 
 const SandboxInner = () => {
+  return (
+    <Theme name="yellow">
+      <YStack componentName="Button">
+        <YStack w={100} h={100} bc="$background" />
+      </YStack>
+    </Theme>
+  )
+
   return <HomeScreen />
   return <Square size={100} bc="red" />
 }

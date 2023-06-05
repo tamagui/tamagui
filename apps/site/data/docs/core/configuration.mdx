@@ -59,6 +59,18 @@ export default appConfig
 
 Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom design library, be sure the import of `createTamagui` and `declare module` type matches to the one you're using.
 
+### Customizing themes
+
+A lot of people want to use the Tamagui themes as the base, but then customize specific pieces. For this, we recommend literally installing `@tamagui/create-theme` and then [copy-pasting the source of `@tamagui/themes` somewhere near your tamagui.config.ts](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes.tsx).
+
+The file uses our `create-theme` package which isn't documented yet but has somewhat simple source you can check out and it gives you a really complete example of building out a suite of themes, sub-themes, and component themes that you can fork or change to your taste.
+
+<Notice>
+  We highly recommend you don't get bogged down in customizing themes too early. It's
+  better to get used to Tamagui with the quick start, get a feel for how themes work, and
+  then go in and customize.
+</Notice>
+
 ## Overview
 
 Let's start with an example of a complete `tamagui.config.ts` which is in the code block below. Note that keys used here can be customized to your liking, but using them in combination with [shorthands](#shorthands) give you a nice syntax like this:

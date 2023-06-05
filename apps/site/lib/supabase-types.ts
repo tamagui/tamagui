@@ -59,6 +59,20 @@ export interface Database {
           subscription_id?: string
           unclaimed_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "claims_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "claims_subscription_id_fkey"
+            columns: ["subscription_id"]
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       customers: {
         Row: {
@@ -73,6 +87,14 @@ export interface Database {
           id?: string
           stripe_customer_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "customers_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       memberships: {
         Row: {
@@ -93,6 +115,20 @@ export interface Database {
           team_id?: number
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_team_id_fkey"
+            columns: ["team_id"]
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memberships_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       prices: {
         Row: {
@@ -134,6 +170,14 @@ export interface Database {
           type?: Database["public"]["Enums"]["pricing_type"] | null
           unit_amount?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "prices_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       products: {
         Row: {
@@ -160,6 +204,7 @@ export interface Database {
           metadata?: Json | null
           name?: string | null
         }
+        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -213,6 +258,20 @@ export interface Database {
           trial_start?: string | null
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_price_id_fkey"
+            columns: ["price_id"]
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       teams: {
         Row: {
@@ -245,6 +304,7 @@ export interface Database {
           studio_queued_at?: string
           tier?: string | null
         }
+        Relationships: []
       }
       users: {
         Row: {
@@ -268,6 +328,14 @@ export interface Database {
           id?: string
           payment_method?: Json | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users_private: {
         Row: {
@@ -282,6 +350,14 @@ export interface Database {
           github_token?: string
           id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "users_private_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -342,6 +418,14 @@ export interface Database {
           public?: boolean | null
           updated_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "buckets_owner_fkey"
+            columns: ["owner"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       migrations: {
         Row: {
@@ -362,6 +446,7 @@ export interface Database {
           id?: number
           name?: string
         }
+        Relationships: []
       }
       objects: {
         Row: {
@@ -400,6 +485,20 @@ export interface Database {
           updated_at?: string | null
           version?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "objects_owner_fkey"
+            columns: ["owner"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -431,7 +530,7 @@ export interface Database {
         Args: {
           name: string
         }
-        Returns: string[]
+        Returns: unknown
       }
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
