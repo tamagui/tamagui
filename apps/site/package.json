@@ -95,6 +95,7 @@
     "seamless-scroll-polyfill": "^1.2.3",
     "sharp": "^0.32.0",
     "stripe": "^9.1.0",
+    "swr": "^2.1.5",
     "tamagui": "1.30.16",
     "three": "^0.152.2",
     "ts-morph": "^15.1.0",

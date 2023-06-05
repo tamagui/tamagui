@@ -634,7 +634,8 @@ const PurchaseModal = ({
   const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
   const [seats, setSeats] = useState(1)
   const selectedPrice = prices.find((p) => p.id === selectedPriceId)
-  const { subscriptions } = useUser()
+  const { data} = useUser()
+  const subscriptions = data?.subscriptions
   const subscription = subscriptions?.find((sub) => {
     if (sub.status !== 'active') return false
     const price = sub.prices

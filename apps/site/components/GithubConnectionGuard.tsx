@@ -6,7 +6,9 @@ import { ButtonLink } from 'studio/Link'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
 export const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useUser()
+  const { data } = useUser()
+
+  const user = data?.session?.user
 
   if (!user?.app_metadata.providers.includes('github')) {
     return (
@@ -21,7 +23,9 @@ export const GithubConnectionGuard = ({ children }: { children: React.ReactNode 
 }
 
 export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
-  const { teams } = useUser()
+  const { data } = useUser()
+  const teams = data?.teams
+  if (!teams) return null
 
   if (!teams.main) {
     return <Spinner />

@@ -34,7 +34,8 @@ function SignIn() {
     type: '',
     content: '',
   })
-  const { user } = useUser()
+  const { data } = useUser()
+  const user = data?.session?.user
   const emailRef = useRef(null)
 
   useEffect(() => {

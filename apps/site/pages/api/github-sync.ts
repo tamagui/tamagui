@@ -36,7 +36,7 @@ const handler: NextApiHandler = async (req, res) => {
   const userGithubToken = await githubTokenSync(session)
 
   const githubLogin =
-    session.user.user_metadata.user_name ??
+    session.user?.user_metadata.user_name ??
     session.user?.identities?.find((identity) => identity.provider === 'github')
       ?.identity_data?.user_name
   if (

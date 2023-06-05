@@ -30,7 +30,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
     </DefaultLayout>
   )
 
-  if (!isHome || !isBlog || !isBlog) {
+  if (isAuthPage || isAccountPage) {
     return withSupabase(layout, pageProps)
   }
   return layout

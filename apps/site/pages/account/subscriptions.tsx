@@ -33,11 +33,14 @@ export default function Page() {
 }
 
 const Subscriptions = () => {
-  const { subscriptions, isLoading } = useUser()
+  const { data, isLoading } = useUser()
 
-  if (isLoading || !subscriptions) {
+  if (isLoading || !data) {
     return <Spinner my="$10" />
   }
+
+  const { subscriptions } = data
+  if (!subscriptions) return null
 
   return (
     <Container f={1} py="$8" gap="$8">
@@ -60,7 +63,7 @@ const SubscriptionDetail = ({
   subscription,
 }: {
   subscription: Exclude<
-    ReturnType<typeof useUser>['subscriptions'],
+    Exclude<ReturnType<typeof useUser>['data'], undefined>['subscriptions'],
     null | undefined
   >[number]
 }) => {
