@@ -63,11 +63,8 @@
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
-    "sandbox": "yarn workspace @tamagui/sandbox dev",
-    "sandbox:vite": "yarn workspace @tamagui/sandbox dev:vite",
+    "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
-    "sandbox-web": "yarn workspace @tamagui/sandbox-web dev",
-    "sandbox-web:extract": "yarn workspace @tamagui/sandbox-web dev:extract",
     "check-deps": "check-dependency-version-consistency .",
     "fix": "yarn manypkg fix"
   },

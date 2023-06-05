@@ -226,7 +226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.13.16, @babel/core@npm:^7.15.5, @babel/core@npm:^7.19.6, @babel/core@npm:^7.2.2, @babel/core@npm:^7.20.0":
+"@babel/core@npm:^7.13.16, @babel/core@npm:^7.15.5, @babel/core@npm:^7.2.2, @babel/core@npm:^7.20.0":
   version: 7.21.4
   resolution: "@babel/core@npm:7.21.4"
   dependencies:
@@ -5478,6 +5478,8 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
     "@babel/core": ^7.21.8
+    "@playwright/test": ^1.29.0
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@react-native-async-storage/async-storage": 1.17.11
     "@react-native/polyfills": ^2.0.0
     "@react-navigation/native": ^6.0.11
@@ -5507,7 +5509,9 @@ __metadata:
     expo-splash-screen: ~0.18.2
     expo-status-bar: ~1.4.2
     expo-updates: ~0.16.4
+    html-webpack-plugin: ^5.5.0
     metro-runtime: "*"
+    mini-css-extract-plugin: ^2.7.6
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: ^0.71.7
@@ -5518,6 +5522,10 @@ __metadata:
     react-native-svg: 13.4.0
     react-native-web: ^0.19.4
     solito: ^2.3.0
+    webpack: ^5.83.1
+    webpack-bundle-analyzer: ^4.9.0
+    webpack-cli: ^4.9.2
+    webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
 
@@ -5902,54 +5910,6 @@ __metadata:
     "@tamagui/lucide-icons": 1.30.21
     "@tamagui/toast": 1.30.21
     tamagui: 1.30.21
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/sandbox@workspace:apps/sandbox":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/sandbox@workspace:apps/sandbox"
-  dependencies:
-    "@babel/preset-react": ^7.18.6
-    "@babel/preset-typescript": ^7.21.5
-    "@playwright/test": ^1.29.0
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
-    "@tamagui/animations-css": 1.30.21
-    "@tamagui/animations-reanimated": 1.30.21
-    "@tamagui/colors": 1.30.21
-    "@tamagui/core": 1.30.21
-    "@tamagui/demos": 1.30.21
-    "@tamagui/font-inter": 1.30.21
-    "@tamagui/lucide-icons": 1.30.21
-    "@tamagui/select": 1.30.21
-    "@tamagui/shorthands": 1.30.21
-    "@tamagui/slider": 1.30.21
-    "@tamagui/themes": 1.30.21
-    "@tamagui/toast": 1.30.21
-    "@tamagui/vite-plugin": 1.30.21
-    "@tamagui/vite-plugin-reanimated": 1.14.9
-    css-loader: ^6.7.4
-    esbuild-loader: ^3.0.1
-    file-loader: ^6.2.0
-    html-webpack-plugin: ^5.5.0
-    mini-css-extract-plugin: ^2.7.2
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-native-reanimated: ^2.14.4
-    react-native-web: ^0.19.4
-    react-refresh: ^0.14.0
-    solito: ^2.3.0
-    style-loader: ^3.3.3
-    tamagui: 1.30.21
-    tamagui-loader: 1.30.21
-    thread-loader: ^4.0.1
-    url-loader: ^4.1.1
-    vite: ^4.3.0
-    wait-port: ^0.3.0
-    webpack: ^5.83.1
-    webpack-bundle-analyzer: ^4.8.0
-    webpack-cli: ^4.9.2
-    webpack-dev-server: ^4.8.1
-    zx: ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -6664,15 +6624,6 @@ __metadata:
     vitest-mock-process: ^1.0.4
   languageName: unknown
   linkType: soft
-
-"@tamagui/vite-plugin-reanimated@npm:1.14.9":
-  version: 1.14.9
-  resolution: "@tamagui/vite-plugin-reanimated@npm:1.14.9"
-  dependencies:
-    "@babel/core": ^7.19.6
-  checksum: 1d1ce838baca918315740ddb22df915acc77e1c21f544cf52339b2cc617b1e7402699665684ddc6eb3ec55ad2f34e6b3c2e7dc18ea4d7eb73ce61f4a6cfea338
-  languageName: node
-  linkType: hard
 
 "@tamagui/vite-plugin@1.30.21, @tamagui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
@@ -10295,9 +10246,9 @@ __metadata:
   linkType: hard
 
 "core-js-pure@npm:^3.23.3":
-  version: 3.30.1
-  resolution: "core-js-pure@npm:3.30.1"
-  checksum: ea64c72cd68ddde43eddb250033af784cc00251195faaee665163e7d6a69df964c9eba9e931f3adf4cc1e1be0fabc1b59aa54de1c847811583c09bf1737911f9
+  version: 3.30.2
+  resolution: "core-js-pure@npm:3.30.2"
+  checksum: e0e012fe94e38663d837410baac62efe05d0c7431e3fbaa70c65f51eb980da9c3add225eca04208d576bc0d92cefeca9a4f7671a65fd84fd7dfc92d8618dddfd
   languageName: node
   linkType: hard
 
@@ -17623,14 +17574,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^2.7.2":
-  version: 2.7.5
-  resolution: "mini-css-extract-plugin@npm:2.7.5"
+"mini-css-extract-plugin@npm:^2.7.6":
+  version: 2.7.6
+  resolution: "mini-css-extract-plugin@npm:2.7.6"
   dependencies:
     schema-utils: ^4.0.0
   peerDependencies:
     webpack: ^5.0.0
-  checksum: afc37cdfb765e8826a1babbab3cd8a99ffc4eaeabb6c013a6b3c80801e44ebc37d930b98c6f66168bb8cd545fcb2e8fc2630d72b4501a1bb8add1547c2534a53
+  checksum: be6f7cefc6275168eb0a6b8fe977083a18c743c9612c9f00e6c1a62c3393ca7960e93fba1a7ebb09b75f36a0204ad087d772c1ef574bc29c90c0e8175a3c0b83
   languageName: node
   linkType: hard
 
@@ -24497,9 +24448,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-bundle-analyzer@npm:^4.8.0":
-  version: 4.8.0
-  resolution: "webpack-bundle-analyzer@npm:4.8.0"
+"webpack-bundle-analyzer@npm:^4.9.0":
+  version: 4.9.0
+  resolution: "webpack-bundle-analyzer@npm:4.9.0"
   dependencies:
     "@discoveryjs/json-ext": 0.5.7
     acorn: ^8.0.4
@@ -24513,7 +24464,7 @@ __metadata:
     ws: ^7.3.1
   bin:
     webpack-bundle-analyzer: lib/bin/analyzer.js
-  checksum: acd86f68abb2bcb1a240043c6e2d8e53079499363afed94b96c0ec1abcc4fca2b7a7cbeeb5e13027d02a993c6ea8153194c69e7697faf47528bdaff1e2ce297e
+  checksum: e439aea4e88e18bfdc16eb69782c1bb17b2e581905a5cfa8d34058dc6677f6e202f896189268e58b49fa14ae12f5ef4c25cdca9f98f3de7e6699ac62def2f0af
   languageName: node
   linkType: hard
 
