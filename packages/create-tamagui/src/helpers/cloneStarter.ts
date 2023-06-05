@@ -50,6 +50,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
   if (!(await pathExists(targetGitDir))) {
     console.log(`Cloning tamagui base directory`)
+    console.log()
 
     const sourceGitRepo = template.repo.url
 
@@ -57,6 +58,8 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
     }${sourceGitRepo} ${targetGitDir}`
     console.log(`$ ${cmd}`)
+    console.log()
+
     try {
       execSync(cmd)
     } catch (error) {
@@ -75,11 +78,14 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       process.exit(1)
     }
   }
-
+  console.log()
   console.log(`Updating tamagui starters repo`)
+  console.log()
+
   if (isInSubDir) {
     const cmd = `git sparse-checkout set ${template.repo.dir[0] ?? '.'}`
     execSync(cmd, { cwd: targetGitDir })
+    console.log()
     console.log(`$ ${cmd}`)
   }
   try {
@@ -87,6 +93,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     execSync(cmd2, {
       cwd: targetGitDir,
     })
+    console.log()
     console.log(`$ ${cmd2}`)
   } catch (err: any) {
     console.log(
@@ -114,12 +121,15 @@ export const cloneStarter = async (
     ? join(tamaguiDir, 'tamagui-test', template.repo.url.split('/').at(-1)!)
     : join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
 
+  console.log()
   await setupTamaguiDotDir(template)
   const starterDir = join(targetGitDir, ...template.repo.dir)
-
+  console.log()
   console.log(
     `Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`
   )
+  console.log()
+
   // if (!(await pathExists(starterDir))) {
   //   console.error(`Missing template for ${template.value} in ${starterDir}`)
   //   process.exit(1)
@@ -127,4 +137,5 @@ export const cloneStarter = async (
   await copy(starterDir, resolvedProjectPath)
 
   console.log(chalk.green(`${projectName} created!`))
+  console.log()
 }
