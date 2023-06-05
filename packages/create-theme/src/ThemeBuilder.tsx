@@ -60,8 +60,8 @@ type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
 
-export class ThemeBuilder<State extends ThemeBuilderState> {
-  constructor(public state: State = {} as State) {}
+class ThemeBuilder<State extends ThemeBuilderState> {
+  constructor(public state: State) {}
 
   addPalettes<P extends PaletteDefinitions>(palettes: P) {
     return new ThemeBuilder({
@@ -132,9 +132,11 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         const definition = childThemeDefinition[subName]
         return [fullName, definition] as const
       })
-    }) as any as [`${CurrentNames}_${ChildNames}`, CTD][]
+    })
 
-    const childThemes = objectFromEntries(namesWithDefinitions)
+    const childThemes = objectFromEntries(namesWithDefinitions) as {
+      [key in `${CurrentNames}_${ChildNames}`]: CTD
+    }
 
     return new ThemeBuilder({
       ...this.state,
@@ -232,3 +234,25 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     }
   }
 }
+
+export function createThemeBuilder() {
+  return new ThemeBuilder({})
+}
+
+// // test types
+// let x = new ThemeBuilder()
+//   .addThemes({
+//     light: {
+//       template: '',
+//       palette: ''
+//     }
+//   })
+
+//   x.state.themes
+
+// let y = x
+//   .addChildThemes({
+//     blue: {
+//       mask: 'ok'
+//     }
+//   })

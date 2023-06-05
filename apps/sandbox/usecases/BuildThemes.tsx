@@ -1,10 +1,10 @@
 import {
-  ThemeBuilder,
   combineMasks,
   createIdentityMask,
   createInverseMask,
   createSoftenMask,
   createStrengthenMask,
+  createThemeBuilder,
   skipMask,
 } from '@tamagui/create-theme'
 import { colorTokens } from '@tamagui/themes'
@@ -241,7 +241,7 @@ const inputThemeDefinitions = [
   },
 ]
 
-const themesBuilder = new ThemeBuilder()
+const themesBuilder = createThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
   .addMasks({
