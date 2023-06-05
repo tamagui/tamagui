@@ -230,17 +230,6 @@ const overlayThemeDefinitions = [
   },
 ]
 
-const inputThemeDefinitions = [
-  {
-    parent: 'light',
-    mask: 'strengthenButSoftenBorder',
-  },
-  {
-    parent: 'dark',
-    mask: 'softenBorder',
-  },
-]
-
 const themesBuilder = createThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
@@ -386,8 +375,27 @@ const themesBuilder = createThemeBuilder()
       DialogOverlay: overlayThemeDefinitions,
       ModalOverlay: overlayThemeDefinitions,
 
-      Input: inputThemeDefinitions,
-      TextArea: inputThemeDefinitions,
+      Input: [
+        {
+          parent: 'light',
+          mask: 'strengthenButSoftenBorder',
+        },
+        {
+          parent: 'dark',
+          mask: 'softenBorder',
+        },
+      ],
+
+      TextArea: [
+        {
+          parent: 'light',
+          mask: 'strengthenButSoftenBorder',
+        },
+        {
+          parent: 'dark',
+          mask: 'softenBorder',
+        },
+      ],
     },
     {
       // we dont actually do this right now but api to figure out
