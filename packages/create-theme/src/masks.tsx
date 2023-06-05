@@ -49,6 +49,7 @@ export function applyMask<Theme extends GenericTheme>(
   options: MaskOptions = {}
 ): Theme {
   const info = THEME_INFO.get(theme)
+
   if (!info) {
     throw new Error(
       process.env.NODE_ENV !== 'production'

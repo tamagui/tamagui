@@ -3,19 +3,22 @@ type Palette = string[];
 type Template = {
     [key: string]: number;
 };
-type Theme = {
+type ThemeUsingMask = {
+    mask: string;
+};
+type ThemeUsingTemplate = {
     palette: string;
     template: string;
-    parent?: string;
-} | {
-    mask: string;
-    parent?: string;
+};
+type Theme = ThemeUsingTemplate | ThemeUsingMask;
+type ThemeWithParent = Theme & {
+    parent: string;
 };
 type PaletteDefinitions = {
     [key: string]: Palette;
 };
 type ThemeDefinitions = {
-    [key: string]: Theme | Theme[];
+    [key: string]: Theme | ThemeWithParent[];
 };
 type TemplateDefinitions = {
     [key: string]: Template;

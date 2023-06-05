@@ -194,7 +194,7 @@ const darkShadows = {
   shadowColorFocus: darkShadowColor,
 }
 
-const themes2 = buildThemes()
+const themesBuilder = buildThemes()
   .addPalettes(palettes)
   .addTemplates(templates)
   .addMasks({
@@ -204,19 +204,27 @@ const themes2 = buildThemes()
   })
   .addThemes({
     dark: {
-      template: 'dark',
+      template: 'base',
       palette: 'dark',
     },
     light: {
-      template: 'light',
+      template: 'base',
       palette: 'light',
     },
   })
   .addChildThemes({
-    blue: {
-      palette: 'blue',
-      template: 'color',
-    },
+    blue: [
+      {
+        parent: 'light',
+        palette: 'blue',
+        template: 'colorLight',
+      },
+      {
+        parent: 'dark',
+        palette: 'blue',
+        template: 'base',
+      },
+    ],
   })
   .addChildThemes({
     alt1: {
@@ -243,7 +251,10 @@ const themes2 = buildThemes()
   )
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-console.log(1, themes2)
-console.log(2, themes2.build())
+console.log(1, themesBuilder)
+// rome-ignore lint/nursery/noConsoleLog: <explanation>
+console.log(2, themesBuilder.build())
+
+export const themes = themesBuilder.build()
 
 export default () => <div />

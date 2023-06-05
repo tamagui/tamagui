@@ -1,3 +1,4 @@
+import { createTheme } from './createTheme'
 import { objectFromEntries, objectKeys } from './helpers'
 import { applyMask } from './masks'
 
@@ -11,23 +12,27 @@ type Template = {
   [key: string]: number
 }
 
-type Theme =
-  | {
-      palette: string
-      template: string
-      parent?: string
-    }
-  | {
-      mask: string
-      parent?: string
-    }
+type ThemeUsingMask = {
+  mask: string
+}
+
+type ThemeUsingTemplate = {
+  palette: string
+  template: string
+}
+
+type Theme = ThemeUsingTemplate | ThemeUsingMask
+
+type ThemeWithParent = Theme & {
+  parent: string
+}
 
 type PaletteDefinitions = {
   [key: string]: Palette
 }
 
 type ThemeDefinitions = {
-  [key: string]: Theme | Theme[]
+  [key: string]: Theme | ThemeWithParent[]
 }
 
 type TemplateDefinitions = {
@@ -137,6 +142,11 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     }
 
     const out = {}
+    const maskedThemes: {
+      parentName: string
+      themeName: string
+      mask: ThemeUsingMask['mask']
+    }[] = []
 
     for (const themeName in this.state.themes) {
       const nameParts = themeName.split('_')
@@ -153,14 +163,8 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           })()
         : definitions
 
-      const parentTheme = this.state.themes[parentName]
-
-      console.log('themeDefinition', themeName, themeDefinition)
-
       if ('mask' in themeDefinition) {
-        out[themeName] = {}
-        // ...
-        // const next = applyMask()
+        maskedThemes.push({ parentName, themeName, mask: themeDefinition.mask })
       } else {
         if (!this.state.palettes) {
           throw new Error(
@@ -172,7 +176,6 @@ class ThemeBuilder<State extends ThemeBuilderState> {
 
         if (!palette) {
           const fullPaletteName = `${parentName}_${themeDefinition.palette}`
-          console.log('fullPaletteName', fullPaletteName)
           palette = this.state.palettes[fullPaletteName]
           // try using the prefix
         }
@@ -181,10 +184,44 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           throw new Error(`No palette for theme ${themeName}: ${themeDefinition.palette}`)
         }
 
-        out[themeName] = { palette, themeDefinition }
+        const template = this.state.templates?.[themeDefinition.template]
+        if (!template) {
+          throw new Error(
+            `No template for theme ${themeName}: ${themeDefinition.template}`
+          )
+        }
+
+        const generated = createTheme(palette, template)
+
+        out[themeName] = { palette, themeDefinition, template, generated }
       }
     }
 
-    return out
+    for (const { mask, themeName, parentName } of maskedThemes) {
+      const parent = out[parentName]
+
+      if (!parent) {
+        throw new Error(
+          `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target`
+        )
+      }
+
+      const maskFunction = this.state.masks?.[mask]
+
+      if (!maskFunction) {
+        throw new Error(`No mask ${maskFunction}`)
+      }
+
+      if (!parent.generated) {
+        console.warn('??', themeName, parentName, mask)
+        continue
+      }
+
+      out[themeName] = applyMask(parent.generated, maskFunction as any)
+    }
+
+    return out as {
+      [key in keyof State['themes']]: any
+    }
   }
 }

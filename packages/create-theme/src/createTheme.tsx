@@ -21,6 +21,7 @@ export function createTheme<
     ) as any),
     ...options?.nonInheritedValues,
   }
+
   THEME_INFO.set(theme, { palette, definition, cache: new Map() })
   return theme
 }
