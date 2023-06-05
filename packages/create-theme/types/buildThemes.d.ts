@@ -6,14 +6,16 @@ type Template = {
 type Theme = {
     palette: string;
     template: string;
+    parent?: string;
 } | {
     mask: string;
+    parent?: string;
 };
 type PaletteDefinitions = {
     [key: string]: Palette;
 };
 type ThemeDefinitions = {
-    [key: string]: Theme;
+    [key: string]: Theme | Theme[];
 };
 type TemplateDefinitions = {
     [key: string]: Template;

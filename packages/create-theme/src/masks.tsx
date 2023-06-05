@@ -9,6 +9,8 @@ export const skipMask: CreateMask = (template, { skip }) => {
   ) as typeof template
 }
 
+export const createIdentityMask = () => (template) => template
+
 export const createShiftMask = ({ inverse }: { inverse?: boolean } = {}) => {
   return ((template, opts) => {
     const { override, max: maxIn, palette, min = 0, strength = 1 } = opts

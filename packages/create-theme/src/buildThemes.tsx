@@ -15,9 +15,11 @@ type Theme =
   | {
       palette: string
       template: string
+      parent?: string
     }
   | {
       mask: string
+      parent?: string
     }
 
 type PaletteDefinitions = {
@@ -25,7 +27,7 @@ type PaletteDefinitions = {
 }
 
 type ThemeDefinitions = {
-  [key: string]: Theme
+  [key: string]: Theme | Theme[]
 }
 
 type TemplateDefinitions = {
@@ -103,23 +105,21 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       )
     }
 
-    const currentThemeNames = objectKeys(currentThemes)
-    const incomingThemeNames = objectKeys(childThemeDefinition)
-
     type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>
     type ChildNames = Exclude<keyof CT, symbol | number>
 
-    const names = currentThemeNames.flatMap((prefix) => {
-      return incomingThemeNames.map(
-        (name) =>
-          // @ts-expect-error always strings
-          `${prefix}_${name}`
-      )
-    }) as `${CurrentNames}_${ChildNames}`[]
+    const currentThemeNames = objectKeys(currentThemes) as CurrentNames[]
+    const incomingThemeNames = objectKeys(childThemeDefinition) as ChildNames[]
 
-    const childThemes = objectFromEntries(
-      names.map((name) => [name, childThemeDefinition])
-    )
+    const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
+      return incomingThemeNames.map((subName) => {
+        const fullName = `${prefix}_${subName}`
+        const definition = childThemeDefinition[subName]
+        return [fullName, definition] as const
+      })
+    }) as any as [`${CurrentNames}_${ChildNames}`, CT][]
+
+    const childThemes = objectFromEntries(namesWithDefinitions)
 
     return new ThemeBuilder({
       ...this.state,
@@ -139,12 +139,26 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     const out = {}
 
     for (const themeName in this.state.themes) {
-      const theme = this.state.themes[themeName]
       const nameParts = themeName.split('_')
       const parentName = nameParts.slice(0, nameParts.length - 1).join('_')
+
+      const definitions = this.state.themes[themeName]
+      const themeDefinition = Array.isArray(definitions)
+        ? (() => {
+            const found = definitions.find((d) => parentName.startsWith(d.parent!))
+            if (!found) {
+              throw new Error(`No parent for ${themeName}: ${parentName}`)
+            }
+            return found
+          })()
+        : definitions
+
       const parentTheme = this.state.themes[parentName]
 
-      if ('mask' in theme) {
+      console.log('themeDefinition', themeName, themeDefinition)
+
+      if ('mask' in themeDefinition) {
+        out[themeName] = {}
         // ...
         // const next = applyMask()
       } else {
@@ -154,16 +168,23 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           )
         }
 
-        const palette = this.state.palettes[theme.palette]
+        let palette = this.state.palettes[themeDefinition.palette]
 
         if (!palette) {
-          throw new Error(`No palette for theme ${themeName}: ${theme.palette}`)
+          const fullPaletteName = `${parentName}_${themeDefinition.palette}`
+          console.log('fullPaletteName', fullPaletteName)
+          palette = this.state.palettes[fullPaletteName]
+          // try using the prefix
         }
 
-        console.log('build', themeName, { theme, palette })
+        if (!palette) {
+          throw new Error(`No palette for theme ${themeName}: ${themeDefinition.palette}`)
+        }
+
+        out[themeName] = { palette, themeDefinition }
       }
     }
 
-    return this
+    return out
   }
 }

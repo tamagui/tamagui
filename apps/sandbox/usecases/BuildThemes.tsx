@@ -1,5 +1,6 @@
 import {
   buildThemes,
+  createIdentityMask,
   createStrengthenMask,
   createWeakenMask,
 } from '@tamagui/create-theme'
@@ -197,6 +198,7 @@ const themes2 = buildThemes()
   .addPalettes(palettes)
   .addTemplates(templates)
   .addMasks({
+    identity: createIdentityMask(),
     soften: createWeakenMask(),
     strengthen: createStrengthenMask(),
   })
@@ -223,17 +225,25 @@ const themes2 = buildThemes()
   })
   .addChildThemes(
     {
-      ListItem: {
-        mask: 'strengthen',
-      },
+      ListItem: [
+        {
+          parent: 'light',
+          mask: 'strengthen',
+        },
+        {
+          parent: 'dark',
+          mask: 'identity',
+        },
+      ],
     },
     {
-      // we dont actually do this right now but this is an important api to figure out
+      // we dont actually do this right now but api to figure out
       avoidNestingWithin: ['alt1'],
     }
   )
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-console.log(themes2.build())
+console.log(1, themes2)
+console.log(2, themes2.build())
 
 export default () => <div />

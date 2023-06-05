@@ -1,5 +1,6 @@
 import { CreateMask, GenericTheme, MaskOptions } from './types';
 export declare const skipMask: CreateMask;
+export declare const createIdentityMask: () => (template: any) => any;
 export declare const createShiftMask: ({ inverse }?: {
     inverse?: boolean | undefined;
 }) => CreateMask;
