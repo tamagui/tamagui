@@ -6173,6 +6173,7 @@ __metadata:
     sharp: ^0.32.0
     stripe: ^9.1.0
     supabase: ^1.64.8
+    swr: ^2.1.5
     tamagui: 1.30.21
     tamagui-loader: 1.30.21
     three: ^0.152.2
@@ -22589,6 +22590,17 @@ __metadata:
   peerDependencies:
     react: ">=17.0"
   checksum: 173a56c8df8f401098697b640567f80d756849bbee02928a5283f25b94e9aef74fa58c48c974a073e3a57f6f5c0d51dcf19f410bfe0a81cc70c232d759f25c93
+  languageName: node
+  linkType: hard
+
+"swr@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "swr@npm:2.1.5"
+  dependencies:
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0 || ^18.0.0
+  checksum: f2ef9b83ec4b2ebf4d520578ab847307700db01ffcab64b3aec6ea94feaf96ca10e38e8b08bc8adfab8eaa6ec1bdfd64f82b6f5c14cc4cb5cf11e6fd22b405a4
   languageName: node
   linkType: hard
 

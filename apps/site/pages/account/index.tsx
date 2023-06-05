@@ -1,9 +1,9 @@
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
-import { getUserLayout } from '@components/layouts/UserLayout'
 import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
+import { getDefaultLayout } from '@lib/getLayout'
 import { Database } from '@lib/supabase-types'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
@@ -38,11 +38,17 @@ export default function Page() {
 }
 
 const Account = () => {
-  const { isLoading, userDetails, user, teams } = useUser()
+  const { isLoading, data } = useUser()
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <Spinner my="$10" />
   }
+
+  const {
+    userDetails,
+    session: { user },
+    teams,
+  } = data
 
   return (
     <Container f={1}>
@@ -130,8 +136,6 @@ const TeamBadge = ({
 }
 
 const UserSettings = () => {
-  const { signout } = useUser()
-
   return (
     <YStack space="$8" separator={<Separator />}>
       <YStack space="$6" id="profile"></YStack>
@@ -153,7 +157,7 @@ const UserSettings = () => {
       <Button
         f={1}
         onPress={() => {
-          signout()
+          location.href = '/api/logout'
         }}
         icon={<LogOut />}
         size="$2"
@@ -167,7 +171,13 @@ const UserSettings = () => {
 }
 
 const ProfileContent = () => {
-  const { user, userDetails } = useUser()
+  const { data } = useUser()
+
+  if (!data) return null
+  const {
+    session: { user },
+    userDetails,
+  } = data
 
   return (
     <XStack space="$4" separator={<Separator vertical />}>
@@ -180,7 +190,10 @@ const ProfileContent = () => {
 }
 
 const QueueContent = () => {
-  const { teams } = useUser()
+  const { data } = useUser()
+  if (!data) return null
+
+  const { teams } = data
 
   // if (accessStatus.access.studio.access) {
   //   return (
@@ -217,7 +230,9 @@ const QueueContent = () => {
 }
 
 const SponsorshipContent = () => {
-  const { userDetails, teams } = useUser()
+  const { data } = useUser()
+  if (!data) return null
+  const { teams } = data
   // {/* TODO: get info of sponsorship here... tier, etc. */}
 
   if (!teams.main?.is_active) {
@@ -285,7 +300,12 @@ const SyncSponsorshipButton = () => {
 }
 
 const ConnectionsContent = () => {
-  const { user } = useUser()
+  const { data } = useUser()
+  if (!data) return null
+
+  const {
+    session: { user },
+  } = data
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type?: string; content?: string }>({
@@ -381,4 +401,4 @@ const SponsorButton = () => {
   )
 }
 
-Page.getLayout = getUserLayout
+Page.getLayout = getDefaultLayout

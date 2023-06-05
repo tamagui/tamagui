@@ -1,37 +1,15 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { withSupabase } from '@lib/withSupabase'
+import { useRouter } from 'next/router'
 import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
-import { UserGuard, useUser } from 'hooks/useUser'
-import { NextSeo } from 'next-seo'
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import { useUser } from 'hooks/useUser'
 import { ButtonLink } from 'studio/Link'
-import { ToastProvider as StudioToastProvider } from 'studio/ToastProvider'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 
-const StudioLayout = dynamic(() => import('@protected/studio/layout'), { ssr: false })
+export const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
+  const { data } = useUser()
 
-export const getStudioLayout: GetLayout = (page, pageProps) => {
-  return withSupabase(
-    <StudioToastProvider>
-      <NextSeo title="Studio — Tamagui" />
-
-      <UserGuard>
-        <StudioLayout>
-          <GithubConnectionGuard>
-            <SponsorshipGuard>{page}</SponsorshipGuard>
-          </GithubConnectionGuard>
-        </StudioLayout>
-      </UserGuard>
-    </StudioToastProvider>,
-    pageProps,
-    true
-  )
-}
-
-const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useUser()
+  const user = data?.session?.user
 
   if (!user?.app_metadata.providers.includes('github')) {
     return (
@@ -45,9 +23,11 @@ const GithubConnectionGuard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
-const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
-  const { teams } = useUser()
+export const SponsorshipGuard = ({ children }: { children: React.ReactNode }) => {
+  const { data } = useUser()
   const router = useRouter()
+  const teams = data?.teams
+  if (!teams) return null
 
   if (!teams.main) {
     return <Spinner />

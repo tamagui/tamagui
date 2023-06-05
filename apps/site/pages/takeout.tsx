@@ -1,22 +1,19 @@
-import { Footer } from '@components/Footer'
-import { Header } from '@components/Header'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
+import { getDefaultLayout } from '@lib/getLayout'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { withSupabase } from '@lib/withSupabase'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
-import { DefaultLayout, getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Suspense, lazy, memo, useEffect, useState } from 'react'
+import { Suspense, memo, useEffect, useState } from 'react'
 import {
   AnimatePresence,
   Button,
@@ -25,7 +22,6 @@ import {
   H1,
   H2,
   H3,
-  H4,
   Input,
   Label,
   Paragraph,
@@ -51,6 +47,7 @@ import {
   useMedia,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
+
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
@@ -637,7 +634,8 @@ const PurchaseModal = ({
   const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
   const [seats, setSeats] = useState(1)
   const selectedPrice = prices.find((p) => p.id === selectedPriceId)
-  const { subscriptions } = useUser()
+  const { data} = useUser()
+  const subscriptions = data?.subscriptions
   const subscription = subscriptions?.find((sub) => {
     if (sub.status !== 'active') return false
     const price = sub.prices
@@ -1086,8 +1084,7 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
   </H1>
 )
 
-TakeoutPage.getLayout = (page, pageProps) =>
-  withSupabase(getDefaultLayout(page, pageProps), pageProps)
+TakeoutPage.getLayout = getDefaultLayout
 
 const MunroP = styled(Paragraph, {
   className: 'pixelate',

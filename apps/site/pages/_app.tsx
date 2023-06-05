@@ -3,6 +3,7 @@ import '@tamagui/core/reset.css'
 // import '../lib/wdyr'
 import '../app.css'
 
+import { GetLayout } from '@lib/getLayout'
 import {
   ColorScheme,
   NextThemeProvider,
@@ -10,19 +11,11 @@ import {
   useThemeSetting,
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import {
-  LoadGlusp,
-  LoadInter400,
-  LoadInter700,
-  LoadInter900,
-  LoadMunro,
-  LoadSilkscreen,
-} from '../components/LoadFont'
+import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -139,10 +132,11 @@ function AppContents(
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
+  const router = useRouter()
+  const path = router.asPath
 
   return useMemo(() => {
-    return getLayout(<Component {...pageProps} />, pageProps)
+    return getLayout(<Component {...pageProps} />, pageProps, path)
   }, [pageProps])
 }

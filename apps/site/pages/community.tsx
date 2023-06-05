@@ -1,4 +1,4 @@
-import { getDefaultLayout } from '@components/layouts/DefaultLayout'
+import { getDefaultLayout } from '@lib/getLayout'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'

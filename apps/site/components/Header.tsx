@@ -2,7 +2,7 @@ import { ThemeToggle } from '@components/ThemeToggle'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Menu, User } from '@tamagui/lucide-icons'
-import { useUnsafeUser, useUser } from 'hooks/useUser'
+import { useUser } from 'hooks/useUser'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -112,7 +112,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   const isHome = router.pathname === '/'
   const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
-  const user = useUnsafeUser()
+  const userSwr = useUser()
 
   return (
     <XStack
@@ -202,16 +202,18 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack ai="center" space="$3">
           <HeaderLinks {...props} />
 
-          {user?.user ? (
+          {userSwr.data?.userDetails && props.showAuth ? (
             <XStack ai="center" space="$2">
               <NextLink href="/account">
                 <Avatar circular size="$2">
                   <Avatar.Image
                     source={{
                       uri:
-                        user.userDetails?.avatar_url ??
+                        userSwr.data.userDetails?.avatar_url ??
                         getDefaultAvatarImage(
-                          user.userDetails?.full_name ?? user.user?.email ?? 'User'
+                          userSwr.data?.userDetails?.full_name ??
+                            userSwr.data?.session?.user?.email ??
+                            'User'
                         ),
                     }}
                   />
@@ -238,10 +240,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
   )
 })
 
-const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
-  const user = useUnsafeUser()
+const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
+  const userSwr = useUser()
   // there is user context and supabase setup in the current page
-  const pageSupportsAuth = typeof user !== 'undefined'
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation">
@@ -264,7 +265,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {pageSupportsAuth && !user?.user && (
+      {showAuth && !userSwr.data?.session?.user && (
         <NextLink prefetch={false} href="/login">
           <HeadAnchor
             $md={{
@@ -313,7 +314,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 }
 
 const SmallMenu = React.memo(() => {
-  const { router, open, setOpen } = useDocsMenu()
+  const { open, setOpen } = useDocsMenu()
 
   return (
     <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
