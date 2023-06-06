@@ -1,4 +1,4 @@
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { AlertTriangle } from '@tamagui/lucide-icons'
 import { H2, YStack } from 'tamagui'
 

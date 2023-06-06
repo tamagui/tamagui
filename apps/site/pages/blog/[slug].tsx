@@ -1,4 +1,4 @@
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { getMDXComponent } from 'mdx-bundler/client'

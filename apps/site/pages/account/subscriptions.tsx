@@ -1,5 +1,5 @@
 import { Container } from '@components/Container'
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database, Json } from '@lib/supabase-types'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'

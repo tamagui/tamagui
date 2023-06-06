@@ -1,4 +1,4 @@
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTint } from '@tamagui/logo'
 import { Lock } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'

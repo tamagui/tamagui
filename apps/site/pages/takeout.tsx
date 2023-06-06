@@ -1,5 +1,5 @@
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'

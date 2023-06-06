@@ -1,6 +1,6 @@
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'

@@ -1,7 +1,5 @@
 import { DefaultLayout } from '@components/DefaultLayout'
 import { DocsPage } from '@components/DocsPage'
-import { StudioLayout } from '@components/StudioLayout'
-import { withSupabase } from '@lib/withSupabase'
 
 export type GetLayout<Props = any> = (
   page: React.ReactNode,
@@ -30,12 +28,7 @@ export const getDefaultLayout: GetLayout = (page, pageProps, path) => {
     </DefaultLayout>
   )
 
-  if (isAuthPage || isAccountPage) {
-    return withSupabase(layout, pageProps)
-  }
   return layout
 }
 
-export const getStudioLayout: GetLayout = (page, pageProps) => {
-  return withSupabase(<StudioLayout>{page}</StudioLayout>, pageProps, true)
-}
+

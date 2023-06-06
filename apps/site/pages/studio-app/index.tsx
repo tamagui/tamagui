@@ -1,4 +1,4 @@
-import { getStudioLayout } from '@lib/getLayout'
+import { getStudioLayout } from "@lib/getStudioLayout"
 import AnimationsPage from '@protected/studio/(loaded)/(sponsor-protected)/animations/page'
 import ColorsPage from '@protected/studio/(loaded)/(sponsor-protected)/colors/page'
 import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/page'

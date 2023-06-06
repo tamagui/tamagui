@@ -3,7 +3,7 @@ import '@tamagui/core/reset.css'
 // import '../lib/wdyr'
 import '../app.css'
 
-import { GetLayout } from '@lib/getLayout'
+import { GetLayout } from '@lib/getDefaultLayout'
 import {
   ColorScheme,
   NextThemeProvider,

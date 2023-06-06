@@ -1,4 +1,5 @@
-import { getDefaultLayout } from '@lib/getLayout'
+import { SupabaseProvider } from '@components/SupabaseProvider'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
@@ -15,12 +16,12 @@ import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 const isProd = process.env.NODE_ENV === 'production'
 const emailAuthDisabledFlag = isProd
 
-export default function SignInPage() {
+export default function SignInPage(props) {
   return (
-    <>
+    <SupabaseProvider initialSession={props.initialSession}>
       <NextSeo title="Login — Tamagui" />
       <SignIn />
-    </>
+    </SupabaseProvider>
   )
 }
 function SignIn() {

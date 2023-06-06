@@ -1,5 +1,5 @@
 import { Hero } from '@components/Hero'
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { NextSeo } from 'next-seo'

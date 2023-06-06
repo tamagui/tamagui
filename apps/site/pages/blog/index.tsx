@@ -1,4 +1,4 @@
-import { getDefaultLayout } from '@lib/getLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
