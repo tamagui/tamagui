@@ -301,6 +301,11 @@ const themesBuilder = createThemeBuilder()
       },
     },
   })
+  .addChildThemes({
+    List: {
+      mask: 'soften',
+    },
+  })
   .addChildThemes(
     {
       ListItem: [
@@ -416,8 +421,10 @@ themesBuilder.state.themes.dark_orange_alt1
 
 const built = themesBuilder.build()
 
+built.dark_ListItem
+
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-console.log(2, built.dark)
+console.log(2, built.dark_SheetOverlay === built.dark_DialogOverlay, built.dark)
 
 type x = typeof built.dark
 type x2 = typeof built.dark_alt1

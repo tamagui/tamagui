@@ -1,3 +1,4 @@
+import { Narrow } from '../../web/types'
 import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask, createMask } from './masks'
@@ -68,12 +69,27 @@ type GetGeneratedThemeFromTemplate<Template> = {
   [key in keyof Template]: string
 }
 
+type GetParentTemplate<
+  P,
+  Templates extends TemplateDefinitions | undefined
+> = P extends string
+  ? P extends keyof Templates
+    ? Templates[P]
+    : GetParentName<P> extends keyof Templates
+    ? Templates[GetParentName<P>]
+    : GetParentName<GetParentName<P>> extends keyof Templates
+    ? Templates[GetParentName<GetParentName<P>>]
+    : GetParentName<GetParentName<GetParentName<P>>> extends keyof Templates
+    ? Templates[GetParentName<GetParentName<GetParentName<P>>>]
+    : never
+  : never
+
 type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends {
   theme: infer T
 }
   ? T
   : TD extends { parent: infer P }
-  ? P //GetGeneratedThemeFromTemplate<P>
+  ? GetGeneratedThemeFromTemplate<GetParentTemplate<P, S['templates']>>
   : TD extends { template: infer T }
   ? T extends keyof S['templates']
     ? GetGeneratedThemeFromTemplate<S['templates'][T]>
@@ -83,6 +99,19 @@ type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends
 type GetGeneratedThemes<S extends ThemeBuilderState> = {
   [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
 }
+
+type GetParentName<N extends string> =
+  N extends `${infer A}_${infer B}_${infer C}_${infer D}_${infer F}_${string}`
+    ? `${A}_${B}_${C}_${D}_${F}`
+    : N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
+    ? `${A}_${B}_${C}_${D}`
+    : N extends `${infer A}_${infer B}_${infer C}_${string}`
+    ? `${A}_${B}_${C}`
+    : N extends `${infer A}_${infer B}_${string}`
+    ? `${A}_${B}`
+    : N extends `${infer A}_${string}`
+    ? `${A}`
+    : never
 
 class ThemeBuilder<State extends ThemeBuilderState> {
   constructor(public state: State) {}
@@ -135,7 +164,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     })
   }
 
-  addChildThemes<const CTD extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(
+  addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>>(
     childThemeDefinition: CTD,
     options?: {
       avoidNestingWithin?: string[]
@@ -164,7 +193,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
 
     const childThemes = objectFromEntries(namesWithDefinitions) as {
       [key in `${CurrentNames}_${ChildNames}`]: CTD & {
-        parent: key extends `${infer ParentName}_${string}` ? ParentName : never
+        parent: GetParentName<key>
       }
     }
 
@@ -279,9 +308,19 @@ export function createThemeBuilder() {
 //       palette: '',
 //     },
 //     dark: {
-//       mask: '',
+//       mask: 'test',
 //     },
 //   })
+//   .addChildThemes({
+//     List: [
+//       {
+//         parent: '',
+//         mask: 'test',
+//       },
+//     ],
+//   })
+
+// x
 
 // x.state.themes
 // x.state.masks
