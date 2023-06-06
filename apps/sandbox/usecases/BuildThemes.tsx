@@ -2,6 +2,7 @@ import {
   combineMasks,
   createIdentityMask,
   createInverseMask,
+  createMask,
   createSoftenMask,
   createStrengthenMask,
   createThemeBuilder,
@@ -239,7 +240,7 @@ const masks = {
   inverse: createInverseMask(),
   inverseSoften: combineMasks(createInverseMask(), createSoftenMask()),
   inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
-  strengthenButSoftenBorder: (template, options) => {
+  strengthenButSoftenBorder: createMask((template, options) => {
     const stronger = createStrengthenMask().mask(template, options)
     const softer = createSoftenMask().mask(template, options)
     return {
@@ -249,8 +250,8 @@ const masks = {
       borderColorPress: softer.borderColorPress,
       borderColorFocus: softer.borderColorFocus,
     }
-  },
-  softenBorder: (template, options) => {
+  }),
+  softenBorder: createMask((template, options) => {
     const plain = skipMask.mask(template, options)
     const softer = createSoftenMask().mask(template, options)
     return {
@@ -260,7 +261,7 @@ const masks = {
       borderColorPress: softer.borderColorPress,
       borderColorFocus: softer.borderColorFocus,
     }
-  },
+  }),
 }
 
 const themesBuilder = createThemeBuilder()
@@ -405,13 +406,14 @@ const themesBuilder = createThemeBuilder()
     }
   )
 
-console.log('????????')
-
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(1, themesBuilder)
 
+themesBuilder.state.themes.dark
+
+const built = themesBuilder.build()
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-console.log(2, themesBuilder.build())
+console.log(2, built.dark)
 
 export const themes = themesBuilder.build()
 

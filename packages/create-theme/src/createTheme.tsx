@@ -2,6 +2,8 @@ import { isMinusZero } from './isMinusZero'
 import { setThemeInfo } from './themeInfo'
 import { CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
+const identityCache = new Map()
+
 export function createTheme<
   Definition extends ThemeMask,
   Extras extends Record<string, string> = {}
@@ -14,6 +16,11 @@ export function createTheme<
 ): {
   [key in keyof Definition | keyof Extras]: string
 } {
+  const cacheKey = JSON.stringify([palette, definition, options])
+  if (identityCache.has(cacheKey)) {
+    return identityCache.get(cacheKey)
+  }
+
   const theme = {
     ...(Object.fromEntries(
       Object.entries(definition).map(([key, offset]) => {
@@ -24,6 +31,8 @@ export function createTheme<
   }
 
   setThemeInfo(theme, { palette, definition })
+  identityCache.set(cacheKey, theme)
+
   return theme
 }
 

@@ -1,6 +1,6 @@
 import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
-import { applyMask } from './masks'
+import { applyMask, createMask } from './masks'
 import { CreateMask, MaskOptions } from './types'
 
 export type Palette = string[]
@@ -37,8 +37,12 @@ type PaletteDefinitions = {
   [key: string]: Palette
 }
 
+type ThemeDefinition<Masks extends string = string> =
+  | Theme<Masks>
+  | ThemeWithParent<Masks>[]
+
 type ThemeDefinitions<Masks extends string = string> = {
-  [key: string]: Theme<Masks> | ThemeWithParent<Masks>[]
+  [key: string]: ThemeDefinition<Masks>
 }
 
 type TemplateDefinitions = {
@@ -59,6 +63,23 @@ type ThemeBuilderState = {
 type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
+
+type GetGeneratedTheme<
+  TD extends ThemeDefinition,
+  S extends ThemeBuilderState
+> = TD extends { theme: infer T }
+  ? T
+  : TD extends { mask: infer M }
+  ? M
+  : TD extends { palette: infer P; template: infer T }
+  ? { p: P; t: T }
+  : never
+
+type GetGeneratedThemes<S extends ThemeBuilderState> = {
+  [Key in keyof S['themes']]: S['themes'][Key] extends ThemeDefinition
+    ? GetGeneratedTheme<S['themes'][Key], S>
+    : never
+}
 
 class ThemeBuilder<State extends ThemeBuilderState> {
   constructor(public state: State) {}
@@ -91,20 +112,9 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       masks: {
         // as {} prevents generic string key merge messing up types
         ...(this.state.masks as {}),
-        ...objectFromEntries(
-          objectEntries(masks).map(([key, val]) => [
-            key,
-            (() => {
-              if (typeof val === 'function') {
-                return {
-                  name: val.name || 'unnamed',
-                  mask: val,
-                }
-              }
-              return val
-            })(),
-          ])
-        ),
+        ...(objectFromEntries(
+          objectEntries(masks).map(([key, val]) => [key, createMask(val)])
+        ) as T),
       },
     })
   }
@@ -161,9 +171,9 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     })
   }
 
-  build() {
+  build(): GetGeneratedThemes<State> {
     if (!this.state.themes) {
-      return {}
+      return {} as any
     }
 
     const out = {}
@@ -240,9 +250,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       out[themeName] = applyMask(parent, maskFunction as any)
     }
 
-    return out as {
-      [key in keyof State['themes']]: any
-    }
+    return out as any
   }
 }
 
@@ -251,19 +259,28 @@ export function createThemeBuilder() {
 }
 
 // // test types
-// let x = new ThemeBuilder()
+// let x = createThemeBuilder()
+//   .addMasks({
+//     test: {
+//       name: 'mask',
+//       mask: (() => {}) as any,
+//     },
+//   })
 //   .addThemes({
 //     light: {
 //       template: '',
-//       palette: ''
-//     }
+//       palette: '',
+//     },
+//     dark: {
+//       mask: '',
+//     },
 //   })
 
-//   x.state.themes
+// x.state.themes
+// x.state.masks
 
-// let y = x
-//   .addChildThemes({
-//     blue: {
-//       mask: 'ok'
-//     }
-//   })
+// let y = x.addChildThemes({
+//   blue: {
+//     mask: 'ok',
+//   },
+// })

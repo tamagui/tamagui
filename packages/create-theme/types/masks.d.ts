@@ -1,4 +1,5 @@
-import { CreateMask, GenericTheme, MaskOptions, ThemeMask } from './types';
+import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types';
+export declare const createMask: <C extends MaskFunction | CreateMask>(createMask: C) => CreateMask;
 export declare const combineMasks: (...masks: CreateMask[]) => CreateMask;
 export declare const skipMask: CreateMask;
 export declare const createIdentityMask: () => CreateMask;

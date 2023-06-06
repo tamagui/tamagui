@@ -22,8 +22,9 @@ type ThemeWithParent<Masks = string> = Theme<Masks> & {
 type PaletteDefinitions = {
     [key: string]: Palette;
 };
+type ThemeDefinition<Masks extends string = string> = Theme<Masks> | ThemeWithParent<Masks>[];
 type ThemeDefinitions<Masks extends string = string> = {
-    [key: string]: Theme<Masks> | ThemeWithParent<Masks>[];
+    [key: string]: ThemeDefinition<Masks>;
 };
 type TemplateDefinitions = {
     [key: string]: Template;
@@ -38,6 +39,20 @@ type ThemeBuilderState = {
     masks?: MaskDefinitions;
 };
 type ObjectStringKeys<A extends Object | undefined> = A extends Object ? Exclude<keyof A, symbol | number> : never;
+type GetGeneratedTheme<TD extends ThemeDefinition, S extends ThemeBuilderState> = TD extends {
+    theme: infer T;
+} ? T : TD extends {
+    mask: infer M;
+} ? M : TD extends {
+    palette: infer P;
+    template: infer T;
+} ? {
+    p: P;
+    t: T;
+} : never;
+type GetGeneratedThemes<S extends ThemeBuilderState> = {
+    [Key in keyof S['themes']]: S['themes'][Key] extends ThemeDefinition ? GetGeneratedTheme<S['themes'][Key], S> : never;
+};
 declare class ThemeBuilder<State extends ThemeBuilderState> {
     state: State;
     constructor(state: State);
@@ -48,7 +63,7 @@ declare class ThemeBuilder<State extends ThemeBuilderState> {
         templates: T;
     }>;
     addMasks<T extends MaskDefinitions>(masks: T): ThemeBuilder<State & {
-        masks: {};
+        masks: T;
     }>;
     addThemes<T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
         themes: T;
@@ -58,7 +73,7 @@ declare class ThemeBuilder<State extends ThemeBuilderState> {
     }): ThemeBuilder<State & {
         themes: { [key in `${Exclude<keyof NonNullable<State["themes"]>, number | symbol>}_${Exclude<keyof CTD, number | symbol>}`]: CTD; };
     }>;
-    build(): {};
+    build(): GetGeneratedThemes<State>;
 }
 export declare function createThemeBuilder(): ThemeBuilder<{}>;
 export {};

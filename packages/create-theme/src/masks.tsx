@@ -2,7 +2,14 @@ import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
 import { getThemeInfo, setThemeInfo } from './themeInfo'
-import { CreateMask, GenericTheme, MaskOptions, ThemeMask } from './types'
+import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types'
+
+export const createMask = <C extends CreateMask | MaskFunction>(
+  createMask: C
+): CreateMask =>
+  typeof createMask === 'function'
+    ? { name: createMask.name || 'unnamed', mask: createMask }
+    : createMask
 
 export const combineMasks = (...masks: CreateMask[]) => {
   const mask: CreateMask = {
@@ -89,13 +96,17 @@ export const createShiftMask = (
   return mask
 }
 
-export const createWeakenMask = (defaultOptions?: MaskOptions) =>
-  createShiftMask({}, defaultOptions)
+export const createWeakenMask = (defaultOptions?: MaskOptions): CreateMask => ({
+  name: 'soften-mask',
+  mask: createShiftMask({}, defaultOptions).mask,
+})
 
 export const createSoftenMask = createWeakenMask
 
-export const createStrengthenMask = (defaultOptions?: MaskOptions) =>
-  createShiftMask({ inverse: true }, defaultOptions)
+export const createStrengthenMask = (defaultOptions?: MaskOptions): CreateMask => ({
+  name: 'strengthen-mask',
+  mask: createShiftMask({ inverse: true }, defaultOptions).mask,
+})
 
 export function applyMask<Theme extends GenericTheme | ThemeMask>(
   theme: Theme,
