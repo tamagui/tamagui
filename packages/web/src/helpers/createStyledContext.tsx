@@ -23,11 +23,9 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     children,
     ...values
   }: VariantProps & { children?: React.ReactNode }) => {
-    return (
-      <OGProvider value={useMemo(() => values, Object.values(values))}>
-        {children}
-      </OGProvider>
-    )
+    const stableMemoArray = Object.keys(props).map((key) => values[key])
+    const value = useMemo(() => values, stableMemoArray)
+    return <OGProvider value={value}>{children}</OGProvider>
   }
 
   // @ts-ignore
