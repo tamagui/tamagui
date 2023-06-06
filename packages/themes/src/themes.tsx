@@ -301,11 +301,6 @@ const themesBuilder = createThemeBuilder()
       },
     },
   })
-  .addChildThemes({
-    List: {
-      mask: 'soften',
-    },
-  })
   .addChildThemes(
     {
       ListItem: [
