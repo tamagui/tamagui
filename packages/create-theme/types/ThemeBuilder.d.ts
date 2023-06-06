@@ -39,39 +39,40 @@ type ThemeBuilderState = {
     masks?: MaskDefinitions;
 };
 type ObjectStringKeys<A extends Object | undefined> = A extends Object ? Exclude<keyof A, symbol | number> : never;
-type GetGeneratedTheme<TD extends ThemeDefinition, S extends ThemeBuilderState> = TD extends {
+type GetGeneratedThemeFromTemplate<Template> = {
+    [key in keyof Template]: string;
+};
+type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends {
     theme: infer T;
 } ? T : TD extends {
-    mask: infer M;
-} ? M : TD extends {
-    palette: infer P;
+    parent: infer P;
+} ? P : TD extends {
     template: infer T;
-} ? {
-    p: P;
-    t: T;
-} : never;
+} ? T extends keyof S['templates'] ? GetGeneratedThemeFromTemplate<S['templates'][T]> : TD : TD;
 type GetGeneratedThemes<S extends ThemeBuilderState> = {
-    [Key in keyof S['themes']]: S['themes'][Key] extends ThemeDefinition ? GetGeneratedTheme<S['themes'][Key], S> : never;
+    [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>;
 };
 declare class ThemeBuilder<State extends ThemeBuilderState> {
     state: State;
     constructor(state: State);
-    addPalettes<P extends PaletteDefinitions>(palettes: P): ThemeBuilder<State & {
+    addPalettes<const P extends PaletteDefinitions>(palettes: P): ThemeBuilder<State & {
         readonly palettes: P;
     }>;
-    addTemplates<T extends TemplateDefinitions>(templates: T): ThemeBuilder<State & {
+    addTemplates<const T extends TemplateDefinitions>(templates: T): ThemeBuilder<State & {
         templates: T;
     }>;
-    addMasks<T extends MaskDefinitions>(masks: T): ThemeBuilder<State & {
+    addMasks<const T extends MaskDefinitions>(masks: T): ThemeBuilder<State & {
         masks: T;
     }>;
-    addThemes<T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
+    addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
         themes: T;
     }>;
-    addChildThemes<CTD extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(childThemeDefinition: CTD, options?: {
+    addChildThemes<const CTD extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(childThemeDefinition: CTD, options?: {
         avoidNestingWithin?: string[];
     }): ThemeBuilder<State & {
-        themes: { [key in `${Exclude<keyof NonNullable<State["themes"]>, number | symbol>}_${Exclude<keyof CTD, number | symbol>}`]: CTD; };
+        themes: { [key in `${Exclude<keyof NonNullable<State["themes"]>, number | symbol>}_${Exclude<keyof CTD, number | symbol>}`]: CTD & {
+            parent: key extends `${infer ParentName}_${string}` ? ParentName : never;
+        }; };
     }>;
     build(): GetGeneratedThemes<State>;
 }

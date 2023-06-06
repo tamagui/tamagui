@@ -409,11 +409,19 @@ const themesBuilder = createThemeBuilder()
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(1, themesBuilder)
 
+themesBuilder.state.palettes.dark
 themesBuilder.state.themes.dark
+themesBuilder.state.themes.dark_alt1
+themesBuilder.state.themes.dark_orange_alt1
 
 const built = themesBuilder.build()
+
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(2, built.dark)
+
+type x = typeof built.dark
+type x2 = typeof built.dark_alt1
+type x3 = typeof built.dark_orange_alt1
 
 export const themes = themesBuilder.build()
 
