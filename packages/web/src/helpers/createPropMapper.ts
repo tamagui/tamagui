@@ -9,6 +9,7 @@ import type {
   PropMapper,
   SplitStyleState,
   StaticConfigParsed,
+  StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
@@ -129,23 +130,6 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
 
   return mapper
 }
-
-type StyleResolver = (
-  key: string,
-  value: any,
-  props: Record<string, any>,
-  defaultProps: any,
-  theme: any,
-  variants: GenericVariantDefinitions,
-  fontFamily: string,
-  conf: TamaguiInternalConfig,
-  returnVariablesAs: 'auto' | 'value' | 'non-color-value',
-  staticConfig: StaticConfigParsed,
-  parentVariantKey: string,
-  languageContext?: LanguageContextType,
-  avoidDefaultProps?: boolean,
-  debug?: DebugProp
-) => any
 
 const resolveVariants: StyleResolver = (
   key,
@@ -293,7 +277,7 @@ export const getPropMappedFontFamily = (expanded?: any) => {
   return expanded && fontFamilyCache.get(expanded)
 }
 
-const resolveTokensAndVariants: StyleResolver = (
+const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
   props,
@@ -336,6 +320,10 @@ const resolveTokensAndVariants: StyleResolver = (
           avoidDefaultProps,
           debug
         )
+
+        if (!variantOut) {
+          continue
+        }
 
         const { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle, ...rest } =
           Object.fromEntries(variantOut)

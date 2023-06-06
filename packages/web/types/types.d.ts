@@ -5,7 +5,7 @@ import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextPr
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import { StyledContext } from './helpers/createStyledContext';
-import type { FontLanguageProps } from './views/FontLanguage.types';
+import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
@@ -528,7 +528,9 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
     disableInjectCSS?: boolean;
     children?: ReactNode;
 };
-export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
+export type PropMappedValue = [string, any][] | undefined;
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: Record<string, any>, defaultProps: any, theme: any, variants: GenericVariantDefinitions, fontFamily: string, conf: TamaguiInternalConfig, returnVariablesAs: 'auto' | 'value' | 'non-color-value', staticConfig: StaticConfigParsed, parentVariantKey: string, languageContext?: LanguageContextType, avoidDefaultProps?: boolean, debug?: DebugProp) => Response;
+export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;
@@ -843,13 +845,12 @@ export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
 export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[];
 /**
  * `StyleProp` copied from React Native:
- *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
-export type Falsy = undefined | null | false;
-export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
+type Falsy = undefined | null | false;
+interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
 }
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
-export type RegisteredStyle<T> = number & {
+type RegisteredStyle<T> = number & {
     __registeredStyleBrand: T;
 };
 export type StyleProp<T> = T | RegisteredStyle<T> | RecursiveArray<T | RegisteredStyle<T> | Falsy> | Falsy;

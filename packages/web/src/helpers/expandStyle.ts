@@ -5,7 +5,9 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-export function expandStyle(key: string, value: any) {
+import { PropMappedValue } from '../types'
+
+export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
       return [

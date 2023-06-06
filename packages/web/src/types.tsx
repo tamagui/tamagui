@@ -24,7 +24,7 @@ import type {
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import { StyledContext } from './helpers/createStyledContext'
-import type { FontLanguageProps } from './views/FontLanguage.types'
+import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -985,6 +985,25 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
   children?: ReactNode
 }
 
+export type PropMappedValue = [string, any][] | undefined
+
+export type StyleResolver<Response = PropMappedValue> = (
+  key: string,
+  value: any,
+  props: Record<string, any>,
+  defaultProps: any,
+  theme: any,
+  variants: GenericVariantDefinitions,
+  fontFamily: string,
+  conf: TamaguiInternalConfig,
+  returnVariablesAs: 'auto' | 'value' | 'non-color-value',
+  staticConfig: StaticConfigParsed,
+  parentVariantKey: string,
+  languageContext?: LanguageContextType,
+  avoidDefaultProps?: boolean,
+  debug?: DebugProp
+) => Response
+
 export type PropMapper = (
   key: string,
   value: any,
@@ -994,7 +1013,7 @@ export type PropMapper = (
   languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
-) => undefined | [string, any][]
+) => PropMappedValue
 
 export type StaticConfigParsed = StaticConfig & {
   parsed: true
@@ -1740,17 +1759,12 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> =
 
 /**
  * `StyleProp` copied from React Native:
- *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
 
-export type Falsy = undefined | null | false
-
-export interface RecursiveArray<T>
-  extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
-
+type Falsy = undefined | null | false
+interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
-export type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
-
+type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
 export type StyleProp<T> =
   | T
   | RegisteredStyle<T>
