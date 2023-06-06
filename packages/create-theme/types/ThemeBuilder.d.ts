@@ -54,7 +54,7 @@ type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends
 type GetGeneratedThemes<S extends ThemeBuilderState> = {
     [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>;
 };
-type GetParentName<N extends string> = N extends `${infer A}_${infer B}_${infer C}_${infer D}_${infer F}_${string}` ? `${A}_${B}_${C}_${D}_${F}` : N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}` ? `${A}_${B}_${C}_${D}` : N extends `${infer A}_${infer B}_${infer C}_${string}` ? `${A}_${B}_${C}` : N extends `${infer A}_${infer B}_${string}` ? `${A}_${B}` : N extends `${infer A}_${string}` ? `${A}` : never;
+type GetParentName<N extends string> = N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}` ? `${A}_${B}_${C}_${D}` : N extends `${infer A}_${infer B}_${infer C}_${string}` ? `${A}_${B}_${C}` : N extends `${infer A}_${infer B}_${string}` ? `${A}_${B}` : N extends `${infer A}_${string}` ? `${A}` : never;
 declare class ThemeBuilder<State extends ThemeBuilderState> {
     state: State;
     constructor(state: State);

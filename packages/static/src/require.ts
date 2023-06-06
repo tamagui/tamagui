@@ -90,20 +90,18 @@ function tamaguiRequire(this: any, path: string) {
      * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
      */
 
-    if (process.env.DEBUG?.startsWith('tamagui')) {
-      console.error(
-        `Tamagui failed loading the pre-built tamagui.config.ts
+    console.error(
+      `Tamagui failed loading the pre-built tamagui.config.ts
 
 ${err.message}
 ${err.stack}
 
-  You can see if it loads in the node repl:
+You can see if it loads in the node repl:
 
-  require("./${relative(process.cwd(), path)}").default
+require("./${relative(process.cwd(), path)}").default
 
 `
-      )
-    }
+    )
 
     return proxyWorm
   }

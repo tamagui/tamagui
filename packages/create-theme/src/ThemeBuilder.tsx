@@ -99,9 +99,7 @@ type GetGeneratedThemes<S extends ThemeBuilderState> = {
 }
 
 type GetParentName<N extends string> =
-  N extends `${infer A}_${infer B}_${infer C}_${infer D}_${infer F}_${string}`
-    ? `${A}_${B}_${C}_${D}_${F}`
-    : N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
+  N extends `${infer A}_${infer B}_${infer C}_${infer D}_${string}`
     ? `${A}_${B}_${C}_${D}`
     : N extends `${infer A}_${infer B}_${infer C}_${string}`
     ? `${A}_${B}_${C}`
