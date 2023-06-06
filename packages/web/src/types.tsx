@@ -1759,12 +1759,17 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> =
 
 /**
  * `StyleProp` copied from React Native:
+ *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
 
-type Falsy = undefined | null | false
-interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
+export type Falsy = undefined | null | false
+
+export interface RecursiveArray<T>
+  extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
+
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
-type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
+export type RegisteredStyle<T> = number & { __registeredStyleBrand: T }
+
 export type StyleProp<T> =
   | T
   | RegisteredStyle<T>
