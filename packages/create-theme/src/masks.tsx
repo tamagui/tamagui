@@ -1,34 +1,47 @@
-import { THEME_INFO, createTheme } from './createTheme'
+import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
-import { CreateMask, GenericTheme, MaskOptions } from './types'
+import { getThemeInfo, setThemeInfo } from './themeInfo'
+import { CreateMask, GenericTheme, MaskOptions, ThemeMask } from './types'
 
 export const combineMasks = (...masks: CreateMask[]) => {
-  const mask: CreateMask = (template, opts) => {
-    let current = template
-    for (const mask of masks) {
-      current = applyMask(current as any, mask, opts)
-    }
-    return current
+  const mask: CreateMask = {
+    name: 'combine-mask',
+    mask: (template, opts) => {
+      let current = template
+      for (const mask of masks) {
+        current = applyMask(current, mask, opts)
+      }
+      return current
+    },
   }
   return mask
 }
 
-export const skipMask: CreateMask = (template, { skip }) => {
-  if (!skip) return template
-  return Object.fromEntries(
-    Object.entries(template).filter(([k]) => !(k in skip))
-  ) as typeof template
+export const skipMask: CreateMask = {
+  name: 'skip-mask',
+  mask: (template, { skip }) => {
+    if (!skip) return template
+    return Object.fromEntries(
+      Object.entries(template).filter(([k]) => !(k in skip))
+    ) as typeof template
+  },
 }
 
-export const createIdentityMask = () => (template) => template
+export const createIdentityMask = (): CreateMask => ({
+  name: 'identity-mask',
+  mask: (template) => template,
+})
 
 export const createInverseMask = () => {
-  const mask: CreateMask = (template, opts) => {
-    const inversed = objectFromEntries(
-      objectEntries(template).map(([k, v]) => [k, -v])
-    ) as any
-    return skipMask(inversed, opts)
+  const mask: CreateMask = {
+    name: 'inverse-mask',
+    mask: (template, opts) => {
+      const inversed = objectFromEntries(
+        objectEntries(template).map(([k, v]) => [k, -v])
+      ) as any
+      return skipMask.mask(inversed, opts)
+    },
   }
   return mask
 }
@@ -39,36 +52,39 @@ export const createShiftMask = (
   { inverse }: ShiftMaskOptions = {},
   defaultOptions?: MaskOptions
 ) => {
-  const mask: CreateMask = (template, opts) => {
-    const {
-      override,
-      max: maxIn,
-      palette,
-      min = 0,
-      strength = 1,
-    } = { ...defaultOptions, ...opts }
-    const values = Object.entries(template)
-    const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
-    const out = {}
-    for (const [key, value] of values) {
-      if (typeof value === 'string') continue
-      if (typeof override?.[key] === 'number') {
-        const overrideShift = override[key] as number
-        out[key] = value + overrideShift
-        continue
+  const mask: CreateMask = {
+    name: 'shift-mask',
+    mask: (template, opts) => {
+      const {
+        override,
+        max: maxIn,
+        palette,
+        min = 0,
+        strength = 1,
+      } = { ...defaultOptions, ...opts }
+      const values = Object.entries(template)
+      const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
+      const out = {}
+      for (const [key, value] of values) {
+        if (typeof value === 'string') continue
+        if (typeof override?.[key] === 'number') {
+          const overrideShift = override[key] as number
+          out[key] = value + overrideShift
+          continue
+        }
+        const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
+        const direction = isPositive ? 1 : -1
+        const invert = inverse ? -1 : 1
+        const next = value + strength * direction * invert
+        const clamped = isPositive
+          ? Math.max(min, Math.min(max, next))
+          : Math.min(-min, Math.max(-max, next))
+
+        out[key] = clamped
       }
-      const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
-      const direction = isPositive ? 1 : -1
-      const invert = inverse ? -1 : 1
-      const next = value + strength * direction * invert
-      const clamped = isPositive
-        ? Math.max(min, Math.min(max, next))
-        : Math.min(-min, Math.max(-max, next))
 
-      out[key] = clamped
-    }
-
-    return skipMask(out, opts) as typeof template
+      return skipMask.mask(out, opts) as typeof template
+    },
   }
   return mask
 }
@@ -81,12 +97,12 @@ export const createSoftenMask = createWeakenMask
 export const createStrengthenMask = (defaultOptions?: MaskOptions) =>
   createShiftMask({ inverse: true }, defaultOptions)
 
-export function applyMask<Theme extends GenericTheme>(
+export function applyMask<Theme extends GenericTheme | ThemeMask>(
   theme: Theme,
   mask: CreateMask,
   options: MaskOptions = {}
 ): Theme {
-  const info = THEME_INFO.get(theme)
+  const info = getThemeInfo(theme)
 
   if (!info) {
     throw new Error(
@@ -96,11 +112,19 @@ export function applyMask<Theme extends GenericTheme>(
     )
   }
 
-  const template = mask(info.definition, {
+  // convert theme back to template first
+
+  const template = mask.mask(info.definition, {
     palette: info.palette,
     ...options,
   })
+
   const next = createTheme(info.palette, template) as Theme
+
+  setThemeInfo(next, {
+    definition: template,
+    palette: info.palette,
+  })
 
   return next
 }

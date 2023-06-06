@@ -1,7 +1,7 @@
 import { createTheme } from './createTheme'
-import { objectFromEntries, objectKeys } from './helpers'
+import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask } from './masks'
-import { MaskOptions } from './types'
+import { CreateMask, MaskOptions } from './types'
 
 export type Palette = string[]
 
@@ -46,7 +46,7 @@ type TemplateDefinitions = {
 }
 
 type MaskDefinitions = {
-  [key: string]: Function
+  [key: string]: CreateMask | CreateMask['mask']
 }
 
 type ThemeBuilderState = {
@@ -91,7 +91,20 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       masks: {
         // as {} prevents generic string key merge messing up types
         ...(this.state.masks as {}),
-        ...masks,
+        ...objectFromEntries(
+          objectEntries(masks).map(([key, val]) => [
+            key,
+            (() => {
+              if (typeof val === 'function') {
+                return {
+                  name: val.name || 'unnamed',
+                  mask: val,
+                }
+              }
+              return val
+            })(),
+          ])
+        ),
       },
     })
   }
@@ -205,7 +218,6 @@ class ThemeBuilder<State extends ThemeBuilderState> {
           )
         }
 
-        console.log(palette, template)
         out[themeName] = createTheme(palette, template)
       }
     }
@@ -225,7 +237,6 @@ class ThemeBuilder<State extends ThemeBuilderState> {
         throw new Error(`No mask ${maskFunction}`)
       }
 
-      console.log('go', themeName, parent)
       out[themeName] = applyMask(parent, maskFunction as any)
     }
 

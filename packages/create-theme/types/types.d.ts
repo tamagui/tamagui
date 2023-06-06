@@ -12,5 +12,8 @@ export type MaskOptions = {
 export type GenericTheme = {
     [key: string]: string | Variable;
 };
-export type CreateMask = <A extends ThemeMask>(template: A, options: MaskOptions) => A;
+export type CreateMask = {
+    name: string;
+    mask: <A extends ThemeMask>(template: A, options: MaskOptions) => A;
+};
 //# sourceMappingURL=types.d.ts.map

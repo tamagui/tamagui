@@ -1,4 +1,4 @@
-import { MaskOptions } from './types';
+import { CreateMask, MaskOptions } from './types';
 export type Palette = string[];
 export type Template = {
     [key: string]: number;
@@ -29,7 +29,7 @@ type TemplateDefinitions = {
     [key: string]: Template;
 };
 type MaskDefinitions = {
-    [key: string]: Function;
+    [key: string]: CreateMask | CreateMask['mask'];
 };
 type ThemeBuilderState = {
     palettes?: PaletteDefinitions;
@@ -48,7 +48,7 @@ declare class ThemeBuilder<State extends ThemeBuilderState> {
         templates: T;
     }>;
     addMasks<T extends MaskDefinitions>(masks: T): ThemeBuilder<State & {
-        masks: T;
+        masks: {};
     }>;
     addThemes<T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
         themes: T;

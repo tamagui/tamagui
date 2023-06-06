@@ -1,4 +1,5 @@
 import { isMinusZero } from './isMinusZero'
+import { setThemeInfo } from './themeInfo'
 import { CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 export function createTheme<
@@ -22,14 +23,9 @@ export function createTheme<
     ...options?.nonInheritedValues,
   }
 
-  THEME_INFO.set(theme, { palette, definition, cache: new Map() })
+  setThemeInfo(theme, { palette, definition })
   return theme
 }
-
-export const THEME_INFO = new WeakMap<
-  any,
-  { palette: CreateThemePalette; definition: ThemeMask; cache: Map<any, any> }
->()
 
 const getValue = (palette: CreateThemePalette, value: string | number) => {
   if (typeof value === 'string') return value

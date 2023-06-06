@@ -4,11 +4,6 @@ export declare function createTheme<Definition extends ThemeMask, Extras extends
 }): {
     [key in keyof Definition | keyof Extras]: string;
 };
-export declare const THEME_INFO: WeakMap<any, {
-    palette: CreateThemePalette;
-    definition: ThemeMask;
-    cache: Map<any, any>;
-}>;
 type SubThemeKeys<ParentKeys, ChildKeys> = `${ParentKeys extends string ? ParentKeys : never}_${ChildKeys extends string ? ChildKeys : never}`;
 type ChildGetter<Name extends string | number | symbol, Theme extends GenericTheme> = (name: Name, theme: Theme) => {
     [key: string]: Theme;

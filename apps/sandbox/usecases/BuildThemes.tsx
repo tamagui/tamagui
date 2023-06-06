@@ -240,8 +240,8 @@ const masks = {
   inverseSoften: combineMasks(createInverseMask(), createSoftenMask()),
   inverseSoften2: combineMasks(createInverseMask(), createSoftenMask({ strength: 2 })),
   strengthenButSoftenBorder: (template, options) => {
-    const stronger = createStrengthenMask()(template, options)
-    const softer = createSoftenMask()(template, options)
+    const stronger = createStrengthenMask().mask(template, options)
+    const softer = createSoftenMask().mask(template, options)
     return {
       ...stronger,
       borderColor: softer.borderColor,
@@ -251,8 +251,8 @@ const masks = {
     }
   },
   softenBorder: (template, options) => {
-    const plain = skipMask(template, options)
-    const softer = createSoftenMask()(template, options)
+    const plain = skipMask.mask(template, options)
+    const softer = createSoftenMask().mask(template, options)
     return {
       ...plain,
       borderColor: softer.borderColor,
@@ -404,6 +404,8 @@ const themesBuilder = createThemeBuilder()
       avoidNestingWithin: ['alt1'],
     }
   )
+
+console.log('????????')
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(1, themesBuilder)
