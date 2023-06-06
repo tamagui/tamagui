@@ -135,6 +135,7 @@ export const cloneStarter = async (
   //   process.exit(1)
   // }
   await copy(starterDir, resolvedProjectPath)
+  execSync(`rm -rf ${resolvedProjectPath}/.git`)
 
   console.log(chalk.green(`${projectName} created!`))
   console.log()
