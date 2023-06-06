@@ -43,12 +43,12 @@ type ObjectStringKeys<A extends Object | undefined> = A extends Object ? Exclude
 type GetGeneratedThemeFromTemplate<Template> = {
     [key in keyof Template]: string;
 };
-type GetParentTemplate<P, Templates extends TemplateDefinitions | undefined> = P extends string ? P extends keyof Templates ? Templates[P] : GetParentName<P> extends keyof Templates ? Templates[GetParentName<P>] : GetParentName<GetParentName<P>> extends keyof Templates ? Templates[GetParentName<GetParentName<P>>] : GetParentName<GetParentName<GetParentName<P>>> extends keyof Templates ? Templates[GetParentName<GetParentName<GetParentName<P>>>] : never : never;
+type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends string ? P extends keyof Themes ? Themes[P] : GetParentName<P> extends keyof Themes ? Themes[GetParentName<P>] : GetParentName<GetParentName<P>> extends keyof Themes ? Themes[GetParentName<GetParentName<P>>] : GetParentName<GetParentName<GetParentName<P>>> extends keyof Themes ? Themes[GetParentName<GetParentName<GetParentName<P>>>] : never : never;
 type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends {
     theme: infer T;
 } ? T : TD extends {
     parent: infer P;
-} ? GetGeneratedThemeFromTemplate<GetParentTemplate<P, S['templates']>> : TD extends {
+} ? GetGeneratedTheme<GetParentTheme<P, S['themes']>, S> : TD extends {
     template: infer T;
 } ? T extends keyof S['templates'] ? GetGeneratedThemeFromTemplate<S['templates'][T]> : TD : TD;
 type GetGeneratedThemes<S extends ThemeBuilderState> = {

@@ -414,21 +414,16 @@ const themesBuilder = createThemeBuilder()
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(1, themesBuilder)
 
-themesBuilder.state.palettes.dark
-themesBuilder.state.themes.dark
-themesBuilder.state.themes.dark_alt1
-themesBuilder.state.themes.dark_orange_alt1
-
 const built = themesBuilder.build()
-
-built.dark_ListItem
 
 // rome-ignore lint/nursery/noConsoleLog: <explanation>
 console.log(2, built.dark_SheetOverlay === built.dark_DialogOverlay, built.dark)
 
 type x = typeof built.dark
+type x1 = typeof built.dark_orange
 type x2 = typeof built.dark_alt1
 type x3 = typeof built.dark_orange_alt1
+type x4 = typeof built.dark_Button
 
 export const themes = themesBuilder.build()
 
