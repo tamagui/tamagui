@@ -44,6 +44,9 @@ export class ThemeManager {
     public props: ThemeProps = {},
     parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
+    // if (props.reset) {
+    //   debugger
+    // }
     if (parentManagerIn === 'root') {
       this.updateState(props, false)
       return
@@ -201,6 +204,7 @@ function getState(
   parentManager = validManagerAndAllComponentThemes[0]
   const allComponentThemes = validManagerAndAllComponentThemes[1]
   const themes = getThemes()
+  const isDirectParentAComponent = allComponentThemes.length > 0
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
@@ -225,7 +229,18 @@ function getState(
       : parentManager?.state?.name || ''
     : props.name || ''
   const { componentName } = props
-  const parentName = parentManager?.state?.name || ''
+  // const parentName = isDirectParentAComponent
+  //   ? // because we skipped componentTheme so parentManger is not our actual parent
+  //     allComponentThemes[0]
+  //   : parentManager?.state?.name || ''
+  const parentName = props.reset
+    ? isDirectParentAComponent
+      ? // here because parentManager already skipped componentTheme so we have to only go up once
+        parentManager?.parentManager?.state.name || ''
+      : parentManager?.parentManager?.parentManager?.state.name || ''
+    : isDirectParentAComponent
+    ? allComponentThemes[0] || ''
+    : parentManager?.state.name || ''
 
   if (props.reset && allComponentThemes.length) {
     // skip nearest component theme
