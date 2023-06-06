@@ -44,9 +44,6 @@ export class ThemeManager {
     public props: ThemeProps = {},
     parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
-    // if (props.reset) {
-    //   debugger
-    // }
     if (parentManagerIn === 'root') {
       this.updateState(props, false)
       return
@@ -204,7 +201,7 @@ function getState(
   parentManager = validManagerAndAllComponentThemes[0]
   const allComponentThemes = validManagerAndAllComponentThemes[1]
   const themes = getThemes()
-  const isDirectParentAComponent = allComponentThemes.length > 0
+  const isDirectParentAComponentTheme = allComponentThemes.length > 0
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
@@ -214,7 +211,7 @@ function getState(
     return null
   }
 
-  if (props.reset && allComponentThemes.length === 0 && !parentManager?.parentManager) {
+  if (props.reset && !isDirectParentAComponentTheme && !parentManager?.parentManager) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Cannot reset no grandparent exists')
     }
@@ -224,25 +221,21 @@ function getState(
   let result: ThemeManagerState | null = null
 
   const nextName = props.reset
-    ? allComponentThemes.length === 0
-      ? parentManager?.parentManager?.state?.name || ''
-      : parentManager?.state?.name || ''
+    ? isDirectParentAComponentTheme
+      ? parentManager?.state?.name || ''
+      : parentManager?.parentManager?.state?.name || ''
     : props.name || ''
   const { componentName } = props
-  // const parentName = isDirectParentAComponent
-  //   ? // because we skipped componentTheme so parentManger is not our actual parent
-  //     allComponentThemes[0]
-  //   : parentManager?.state?.name || ''
   const parentName = props.reset
-    ? isDirectParentAComponent
+    ? isDirectParentAComponentTheme
       ? // here because parentManager already skipped componentTheme so we have to only go up once
         parentManager?.parentManager?.state.name || ''
       : parentManager?.parentManager?.parentManager?.state.name || ''
-    : isDirectParentAComponent
+    : isDirectParentAComponentTheme
     ? allComponentThemes[0] || ''
     : parentManager?.state.name || ''
 
-  if (props.reset && allComponentThemes.length) {
+  if (props.reset && isDirectParentAComponentTheme) {
     // skip nearest component theme
     allComponentThemes.shift()
   }
