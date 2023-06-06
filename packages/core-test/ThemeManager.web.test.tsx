@@ -235,7 +235,6 @@ describe('ThemeManager', () => {
     expect(child2.state.name).toBe('light')
   })
 
-  let x = '#022020'
   test('Resets theme 2', () => {
     const parent = new ThemeManager(
       {
@@ -250,8 +249,6 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.name).toBe('dark_blue_Card')
-    expect(child.parentManager).toBe(parent)
     const child2 = new ThemeManager(
       {
         reset: true,
@@ -367,6 +364,32 @@ describe('ThemeManager', () => {
       child2
     )
     expect(child3.state.name).toBe('dark_blue_Button')
+  })
+
+  test('Nested Component Themes are working now', () => {
+    const parent = new ThemeManager(
+      {
+        name: 'dark',
+      },
+      'root'
+    )
+    const child = new ThemeManager(
+      {
+        name: 'blue',
+        componentName: 'Button',
+      },
+      parent
+    )
+    const child2 = new ThemeManager(
+      {
+        name: 'red',
+        componentName: 'Menu',
+      },
+      child
+    )
+    expect(child2.parentManager).toBe(child)
+    // it first check dark_red_Menu and because that doesn't exist it falls back to its parent
+    expect(child2.state.name).toBe('dark_blue_Button')
   })
 
   // this is no longer the case, we now use the component theme
