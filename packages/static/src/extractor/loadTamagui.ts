@@ -1,11 +1,12 @@
 import { basename, dirname, extname, join, resolve } from 'path'
 
+import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
 import { createTamagui } from '@tamagui/core-node'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import fs, { existsSync, pathExists, readJSON } from 'fs-extra'
+import fs, { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire } from '../require'
@@ -31,8 +32,9 @@ const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => (
 export async function loadTamagui(
   propsIn: TamaguiOptions
 ): Promise<TamaguiProjectInfo | null> {
-  const props = getFilledOptions(propsIn)
-  const bundleInfo = await getBundledConfig(props)
+  const options = getFilledOptions(propsIn)
+
+  const bundleInfo = await getBundledConfig(options)
   if (!bundleInfo) {
     console.warn(
       `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
@@ -40,17 +42,22 @@ export async function loadTamagui(
     return null
   }
 
-  if (bundleInfo) {
-    // init core-node
-    createTamagui(bundleInfo.tamaguiConfig)
-  }
-
   if (!hasBundledConfigChanged()) {
     return bundleInfo
   }
 
+  if (bundleInfo) {
+    // init core-node
+    const config = createTamagui(bundleInfo.tamaguiConfig)
+
+    if (options.outputCSS) {
+      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)
+      await writeFile(options.outputCSS, config.getCSS())
+    }
+  }
+
   try {
-    await generateTamaguiStudioConfig(props, bundleInfo)
+    await generateTamaguiStudioConfig(options, bundleInfo)
   } catch {
     // ok for now
   }
@@ -147,12 +154,6 @@ export async function getOptions({
   host,
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
-  const tsConfigFilePath = join(root, tsconfigPath)
-
-  if (!(await fs.pathExists(tsConfigFilePath))) {
-    throw new Error(`No tsconfig found: ${tsConfigFilePath}`)
-  }
-
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
 

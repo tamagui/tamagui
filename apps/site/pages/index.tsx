@@ -1,8 +1,8 @@
 import { Hero } from '@components/Hero'
-import { getDefaultLayout } from '@components/layouts/DefaultLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
+import { NextSeo } from 'next-seo'
 import { YStack } from 'tamagui'
 
 import { HeroBelow } from '../components/HeroBelow'
@@ -21,7 +21,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <TitleAndMetaTags
+      <NextSeo
         title="Tamagui — React Native + Web UI kit"
         description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
       />
@@ -69,7 +69,7 @@ export default function Home({ animationCode, compilationExamples }) {
   )
 }
 
-Home.getLayout = getDefaultLayout satisfies GetLayout
+Home.getLayout = getDefaultLayout
 
 export async function getStaticProps() {
   return {

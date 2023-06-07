@@ -69,7 +69,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Stacks', route: '/docs/components/stacks' },
       { title: 'Headings', route: '/docs/components/headings' },
-      { title: 'Paragraph', route: '/docs/components/text' },
+      { title: 'Text', route: '/docs/components/text' },
     ],
   },
 
@@ -158,6 +158,7 @@ export const docsRoutes = [
   {
     pages: [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
+      { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },

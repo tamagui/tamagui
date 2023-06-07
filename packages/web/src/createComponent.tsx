@@ -6,7 +6,7 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import { stylePropsView, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import { stylePropsView, validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -20,7 +20,7 @@ import React, {
 } from 'react'
 import type { View } from 'react-native'
 
-import { onConfiguredOnce } from './config'
+import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
@@ -122,11 +122,11 @@ export function createComponent<
   Ref = TamaguiElement,
   BaseProps = never
 >(
-  configIn: Partial<StaticConfig> | StaticConfigParsed,
+  staticConfigIn: Partial<StaticConfig> | StaticConfigParsed,
   ParentComponent?: StylableComponent
 ) {
   const staticConfig = (() => {
-    const next = extendStaticConfig(configIn, ParentComponent)
+    const next = extendStaticConfig(staticConfigIn, ParentComponent)
 
     if ('parsed' in next) {
       return next
@@ -135,7 +135,14 @@ export function createComponent<
     }
   })()
 
-  const { isHOC } = staticConfig
+  const {
+    Component,
+    isText,
+    isZStack,
+    isHOC,
+    validStyles = {},
+    variants = {},
+  } = staticConfig
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
   let defaultProps: any
@@ -164,17 +171,55 @@ export function createComponent<
     }
     // const time = t.start({ quiet: true })
 
+    // set variants through context
+    // order is after default props but before props
+    let styledContextProps: Object | undefined
+    let overriddenContextProps: Object | undefined
+    const { context } = staticConfig
+    if (context) {
+      const contextValue = useContext(context)
+      const { inverseShorthands } = getConfig()
+      for (const key in context.props) {
+        const propVal =
+          // because its after default props but before props this annoying amount of checks
+          propsIn[key] ||
+          propsIn[inverseShorthands[key]] ||
+          defaultProps[key] ||
+          defaultProps[inverseShorthands[key]]
+        // if not set, use context
+        if (propVal == null) {
+          if (contextValue) {
+            const isValidValue = key in validStyles || key in variants
+            if (isValidValue) {
+              styledContextProps ||= {}
+              styledContextProps[key] = contextValue[key]
+            }
+          }
+        }
+        // if set in props, update context
+        else {
+          overriddenContextProps ||= {}
+          overriddenContextProps[key] = propVal
+        }
+      }
+    }
+
+    // context overrides defaults but not props
+    const curDefaultProps = styledContextProps
+      ? { ...defaultProps, ...styledContextProps }
+      : defaultProps
+
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
-    if (defaultProps && !propsIn.asChild) {
-      props = mergeProps(defaultProps, propsIn)[0]
+
+    if (curDefaultProps) {
+      props = mergeProps(curDefaultProps, propsIn)[0]
     } else {
       props = propsIn
     }
 
     const debugProp = props['debug'] as DebugProp
-    const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
 
     // conditional but if ever true stays true
@@ -312,10 +357,7 @@ export function createComponent<
       // @ts-ignore this is internal use only
       disable: disableTheme,
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
-    }
-    if (process.env.NODE_ENV === 'development') {
-      // @ts-expect-error
-      themeStateProps.debug = props.debug
+      debug: debugProp,
     }
     const themeState = useThemeWithState(themeStateProps)!
 
@@ -361,6 +403,7 @@ export function createComponent<
             elementType,
             themeStateProps,
             themeState,
+            styledContext: { contextProps: styledContextProps, overriddenContextProps },
           })
           console.groupEnd()
         }
@@ -843,6 +886,11 @@ export function createComponent<
       }
     }
 
+    if (overriddenContextProps) {
+      const Provider = staticConfig.context!.Provider!
+      content = <Provider {...overriddenContextProps}>{content}</Provider>
+    }
+
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
@@ -915,6 +963,10 @@ export function createComponent<
 
     defaultProps = restProps
 
+    if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
+      defaultProps.fontFamily = `$${conf.defaultFont}`
+    }
+
     // add debug logs
     if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
@@ -931,11 +983,11 @@ export function createComponent<
     }
   })
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
 
   let res: ComponentType = component as any
 
-  if (configIn.memo) {
+  if (staticConfigIn.memo) {
     res = memo(res) as any
   }
 

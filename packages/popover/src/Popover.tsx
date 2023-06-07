@@ -10,9 +10,12 @@ import {
   MediaQueryKey,
   SizeTokens,
   Stack,
+  StackProps,
   TamaguiElement,
   Theme,
+  View,
   composeEventHandlers,
+  createStyledContext,
   isWeb,
   useEvent,
   useGet,
@@ -20,8 +23,6 @@ import {
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
-import type { Scope } from '@tamagui/create-context'
-import { createContextScope } from '@tamagui/create-context'
 import { DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
@@ -33,9 +34,8 @@ import {
   PopperContent,
   PopperContentFrame,
   PopperContentProps,
+  PopperContext,
   PopperProps,
-  PopperProvider,
-  createPopperScope,
   usePopperContext,
 } from '@tamagui/popper'
 import { Portal, PortalHost, PortalItem } from '@tamagui/portal'
@@ -44,13 +44,9 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { Platform, ScrollView, ScrollViewProps, View } from 'react-native'
+import { Platform, ScrollView, ScrollViewProps } from 'react-native'
 
 import { useFloatingContext } from './useFloatingContext'
-
-const POPOVER_NAME = 'Popover'
-
-type ScopedProps<P> = P & { __scopePopover?: Scope }
 
 export type PopoverProps = PopperProps & {
   open?: boolean
@@ -59,6 +55,7 @@ export type PopoverProps = PopperProps & {
 }
 
 type PopoverContextValue = {
+  id: string
   triggerRef: React.RefObject<any>
   contentId?: string
   open: boolean
@@ -69,37 +66,22 @@ type PopoverContextValue = {
   onCustomAnchorRemove(): void
   size?: SizeTokens
   sheetBreakpoint: any
-  scopeKey: string
-  popperScope: any
   breakpointActive?: boolean
 }
 
-const [createPopoverContext, createPopoverScopeInternal] = createContextScope(
-  POPOVER_NAME,
-  [createPopperScope]
-)
-export const usePopoverScope = createPopperScope()
-export const createPopoverScope = createPopoverScopeInternal
+export const PopoverContext = createStyledContext<PopoverContextValue>({} as any)
 
-const [PopoverProviderInternal, usePopoverInternalContext] =
-  createPopoverContext<PopoverContextValue>(POPOVER_NAME)
-
-export const __PopoverProviderInternal = PopoverProviderInternal
+export const usePopoverContext = () => React.useContext(PopoverContext)
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverAnchor
  * -----------------------------------------------------------------------------------------------*/
 
-const ANCHOR_NAME = 'PopoverAnchor'
-
-type PopoverAnchorElement = HTMLElement | View
 export type PopoverAnchorProps = YStackProps
 
-export const PopoverAnchor = React.forwardRef<PopoverAnchorElement, PopoverAnchorProps>(
-  (props: ScopedProps<PopoverAnchorProps>, forwardedRef) => {
-    const { __scopePopover, ...anchorProps } = props
-    const context = usePopoverInternalContext(ANCHOR_NAME, __scopePopover)
-    const popperScope = usePopoverScope(__scopePopover)
+export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps>(
+  function PopoverAnchor(props: PopoverAnchorProps, forwardedRef) {
+    const context = usePopoverContext()
     const { onCustomAnchorAdd, onCustomAnchorRemove } = context
 
     React.useEffect(() => {
@@ -107,59 +89,46 @@ export const PopoverAnchor = React.forwardRef<PopoverAnchorElement, PopoverAncho
       return () => onCustomAnchorRemove()
     }, [onCustomAnchorAdd, onCustomAnchorRemove])
 
-    return <PopperAnchor {...popperScope} {...anchorProps} ref={forwardedRef} />
+    return <PopperAnchor {...props} ref={forwardedRef} />
   }
 )
-
-PopoverAnchor.displayName = ANCHOR_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-const TRIGGER_NAME = 'PopoverTrigger'
+export type PopoverTriggerProps = StackProps
 
-type PopoverTriggerElement = HTMLElement | View
-export type PopoverTriggerProps = YStackProps
+export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
+  function PopoverTrigger(props: PopoverTriggerProps, forwardedRef) {
+    const context = usePopoverContext()
+    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
-export const PopoverTrigger = React.forwardRef<
-  PopoverTriggerElement,
-  PopoverTriggerProps
->((props: ScopedProps<PopoverTriggerProps>, forwardedRef) => {
-  const { __scopePopover, ...triggerProps } = props
-  const context = usePopoverInternalContext(TRIGGER_NAME, __scopePopover)
-  const popperScope = usePopoverScope(__scopePopover)
-  const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    const trigger = (
+      <View
+        aria-haspopup="dialog"
+        aria-expanded={context.open}
+        // TODO not matching
+        // aria-controls={context.contentId}
+        data-state={getState(context.open)}
+        {...props}
+        // @ts-ignore
+        ref={composedTriggerRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      />
+    )
 
-  const trigger = (
-    <YStack
-      aria-haspopup="dialog"
-      aria-expanded={context.open}
-      // TODO not matching
-      // aria-controls={context.contentId}
-      data-state={getState(context.open)}
-      {...triggerProps}
-      ref={composedTriggerRef}
-      onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-    />
-  )
-
-  return context.hasCustomAnchor ? (
-    trigger
-  ) : (
-    <PopperAnchor asChild {...popperScope}>
-      {trigger}
-    </PopperAnchor>
-  )
-})
-
-PopoverTrigger.displayName = TRIGGER_NAME
+    return context.hasCustomAnchor ? (
+      trigger
+    ) : (
+      <PopperAnchor asChild>{trigger}</PopperAnchor>
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverContent
  * -----------------------------------------------------------------------------------------------*/
-
-const CONTENT_NAME = 'PopoverContent'
 
 export type PopoverContentProps = PopoverContentTypeProps
 
@@ -175,7 +144,7 @@ export interface PopoverContentTypeProps
 
 export const PopoverContent = PopperContentFrame.extractable(
   React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
-    function PopoverContent(props: ScopedProps<PopoverContentTypeProps>, forwardedRef) {
+    function PopoverContent(props: PopoverContentTypeProps, forwardedRef) {
       const {
         allowPinchZoom,
         trapFocus,
@@ -183,7 +152,7 @@ export const PopoverContent = PopperContentFrame.extractable(
         zIndex,
         ...contentImplProps
       } = props
-      const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
+      const context = usePopoverContext()
       const contentRef = React.useRef<any>(null)
       const composedRefs = useComposedRefs(forwardedRef, contentRef)
       const isRightClickOutsideRef = React.useRef(false)
@@ -195,64 +164,68 @@ export const PopoverContent = PopperContentFrame.extractable(
         if (content) return hideOthers(content)
       }, [context.open])
 
+      const themeName = useThemeName()
       return (
         <PopoverContentPortal zIndex={zIndex}>
-          <PopoverContentImpl
-            {...contentImplProps}
-            disableRemoveScroll={disableRemoveScroll}
-            ref={composedRefs}
-            // we make sure we're not trapping once it's been closed
-            // (closed !== unmounted when animating out)
-            trapFocus={trapFocus ?? context.open}
-            disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
-            onPointerDownOutside={composeEventHandlers(
-              props.onPointerDownOutside,
-              (event) => {
-                const originalEvent = event.detail.originalEvent
-                const ctrlLeftClick =
-                  originalEvent.button === 0 && originalEvent.ctrlKey === true
-                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                isRightClickOutsideRef.current = isRightClick
-              },
-              { checkDefaultPrevented: false }
-            )}
-            // When focus is trapped, a `focusout` event may still happen.
-            // We make sure we don't trigger our `onDismiss` in such case.
-            onFocusOutside={composeEventHandlers(
-              props.onFocusOutside,
-              (event) => event.preventDefault(),
-              { checkDefaultPrevented: false }
-            )}
-          />
+          <Theme name={themeName}>
+            <PopoverContentImpl
+              {...contentImplProps}
+              disableRemoveScroll={disableRemoveScroll}
+              ref={composedRefs}
+              // we make sure we're not trapping once it's been closed
+              // (closed !== unmounted when animating out)
+              trapFocus={trapFocus ?? context.open}
+              disableOutsidePointerEvents
+              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                event.preventDefault()
+                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+              })}
+              onPointerDownOutside={composeEventHandlers(
+                props.onPointerDownOutside,
+                (event) => {
+                  const originalEvent = event.detail.originalEvent
+                  const ctrlLeftClick =
+                    originalEvent.button === 0 && originalEvent.ctrlKey === true
+                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                  isRightClickOutsideRef.current = isRightClick
+                },
+                { checkDefaultPrevented: false }
+              )}
+              // When focus is trapped, a `focusout` event may still happen.
+              // We make sure we don't trigger our `onDismiss` in such case.
+              onFocusOutside={composeEventHandlers(
+                props.onFocusOutside,
+                (event) => event.preventDefault(),
+                { checkDefaultPrevented: false }
+              )}
+            />
+          </Theme>
         </PopoverContentPortal>
       )
     }
   )
 )
 
-function PopoverContentPortal(props: ScopedProps<PopoverContentTypeProps>) {
+function PopoverRepropagateContext(props: { children: any }) {
+  const context = usePopoverContext()
+  const popperContext = usePopperContext()
+
+  return (
+    <PopperContext.Provider {...popperContext}>
+      <PopoverContext.Provider {...context}>{props.children}</PopoverContext.Provider>
+    </PopperContext.Provider>
+  )
+}
+
+function PopoverContentPortal(props: PopoverContentTypeProps) {
   const themeName = useThemeName()
-  const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
+  const context = usePopoverContext()
 
   // on android we have to re-pass context
   let contents = props.children
 
   if (Platform.OS === 'android') {
-    // ok conditional hooks by platform
-    const popperContext = usePopperContext(CONTENT_NAME, context.popperScope)
-
-    contents = (
-      <PopperProvider {...popperContext} scope={context.popperScope}>
-        <PopoverProviderInternal scope={props.__scopePopover} {...context}>
-          {/* does this need to be props.__scopePopper? */}
-          {props.children}
-        </PopoverProviderInternal>
-      </PopperProvider>
-    )
+    contents = <PopoverRepropagateContext>{props.children}</PopoverRepropagateContext>
   }
 
   const zIndex = props.zIndex ?? 150_000
@@ -304,9 +277,8 @@ export interface PopoverContentImplProps
 const PopoverContentImpl = React.forwardRef<
   PopoverContentImplElement,
   PopoverContentImplProps
->((props: ScopedProps<PopoverContentImplProps>, forwardedRef) => {
+>((props: PopoverContentImplProps, forwardedRef) => {
   const {
-    __scopePopover,
     trapFocus,
     onOpenAutoFocus,
     onCloseAutoFocus,
@@ -319,12 +291,12 @@ const PopoverContentImpl = React.forwardRef<
     disableRemoveScroll,
     ...contentProps
   } = props
-  const popperScope = usePopoverScope(__scopePopover)
-  const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
+  const context = usePopoverContext()
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
+    // TODO this should be disabled through context
     const childrenWithoutScrollView = React.Children.toArray(children).map((child) => {
       if (React.isValidElement(child)) {
         if (child.type === PopoverScrollView) {
@@ -336,7 +308,7 @@ const PopoverContentImpl = React.forwardRef<
 
     // doesn't show as popover yet on native, must use as sheet
     return (
-      <PortalItem hostName={`${context.scopeKey}PopoverContents`}>
+      <PortalItem hostName={`${context.id}PopoverContents`}>
         {childrenWithoutScrollView}
       </PortalItem>
     )
@@ -375,7 +347,6 @@ const PopoverContentImpl = React.forwardRef<
           id={context.contentId}
           pointerEvents="auto"
           ref={forwardedRef}
-          {...popperScope}
           {...contentProps}
         >
           <RemoveScroll
@@ -410,19 +381,16 @@ const PopoverContentImpl = React.forwardRef<
  * PopoverClose
  * -----------------------------------------------------------------------------------------------*/
 
-const CLOSE_NAME = 'PopoverClose'
-
-type PopoverCloseElement = HTMLElement | View
 export type PopoverCloseProps = YStackProps
 
-export const PopoverClose = React.forwardRef<PopoverCloseElement, PopoverCloseProps>(
-  (props: ScopedProps<PopoverCloseProps>, forwardedRef) => {
-    const { __scopePopover, ...closeProps } = props
-    const context = usePopoverInternalContext(CLOSE_NAME, __scopePopover)
+export const PopoverClose = React.forwardRef<TamaguiElement, PopoverCloseProps>(
+  function PopoverClose(props: PopoverCloseProps, forwardedRef) {
+    const context = usePopoverContext()
     return (
       <YStack
-        {...closeProps}
+        {...props}
         ref={forwardedRef}
+        componentName="PopoverClose"
         onPress={composeEventHandlers(props.onPress as any, () =>
           context.onOpenChange(false)
         )}
@@ -431,25 +399,17 @@ export const PopoverClose = React.forwardRef<PopoverCloseElement, PopoverClosePr
   }
 )
 
-PopoverClose.displayName = CLOSE_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * PopoverArrow
  * -----------------------------------------------------------------------------------------------*/
 
-const ARROW_NAME = 'PopoverArrow'
-
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = PopperArrow.styleable<ScopedProps<PopperArrowProps>>(
-  (props, forwardedRef) => {
-    const { __scopePopover, ...arrowProps } = props
-    const popperScope = usePopoverScope(__scopePopover)
-    return <PopperArrow {...popperScope} {...arrowProps} ref={forwardedRef} />
+export const PopoverArrow = React.forwardRef<TamaguiElement, PopoverArrowProps>(
+  function PopoverArrow(props: PopoverArrowProps, forwardedRef) {
+    return <PopperArrow componentName="PopoverArrow" {...props} ref={forwardedRef} />
   }
 )
-
-PopoverArrow.displayName = ARROW_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverScrollView
@@ -464,19 +424,10 @@ const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>((props, 
  * -----------------------------------------------------------------------------------------------*/
 
 export const Popover = withStaticProperties(
-  function Popover(props: ScopedProps<PopoverProps>) {
-    const {
-      __scopePopover,
-      children,
-      open: openProp,
-      defaultOpen,
-      onOpenChange,
-      ...restProps
-    } = props
+  function Popover(props: PopoverProps) {
+    const { children, open: openProp, defaultOpen, onOpenChange, ...restProps } = props
 
-    const internalId = React.useId()
-    const id = __scopePopover ? Object.keys(__scopePopover)[0] : internalId
-
+    const id = React.useId()
     const { when, AdaptProvider } = useAdaptParent({
       Contents: React.useCallback(() => {
         return <PortalHost name={`${id}PopoverContents`} />
@@ -484,7 +435,6 @@ export const Popover = withStaticProperties(
     })
 
     const sheetBreakpoint = when
-    const popperScope = usePopoverScope(__scopePopover)
     const triggerRef = React.useRef<TamaguiElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const [open, setOpen] = useControllableState({
@@ -499,9 +449,7 @@ export const Popover = withStaticProperties(
     const floatingContext = useFloatingContext({ open, setOpen, breakpointActive }) as any
 
     const popoverContext = {
-      scope: __scopePopover,
-      scopeKey: id,
-      popperScope: popperScope.__scopePopper,
+      id,
       sheetBreakpoint,
       contentId: React.useId(),
       triggerRef,
@@ -527,12 +475,12 @@ export const Popover = withStaticProperties(
     // }
 
     const contents = (
-      <Popper {...popperScope} stayInFrame {...restProps}>
-        <PopoverProviderInternal {...popoverContext}>
-          <PopoverSheetController onOpenChange={setOpen} __scopePopover={__scopePopover}>
+      <Popper stayInFrame {...restProps}>
+        <PopoverContext.Provider {...popoverContext}>
+          <PopoverSheetController onOpenChange={setOpen}>
             {children}
           </PopoverSheetController>
-        </PopoverProviderInternal>
+        </PopoverContext.Provider>
       </Popper>
     )
 
@@ -566,19 +514,15 @@ function getState(open: boolean) {
   return open ? 'open' : 'closed'
 }
 
-const PopoverSheetController = (
-  props: ScopedProps<{
-    children: React.ReactNode
-    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }>
-) => {
-  const context = usePopoverInternalContext(
-    'PopoverSheetController',
-    props.__scopePopover
-  )
+const PopoverSheetController = (props: {
+  children: React.ReactNode
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const context = usePopoverContext()
   const showSheet = useShowPopoverSheet(context)
   const breakpointActive = context.breakpointActive
   const getShowSheet = useGet(showSheet)
+
   return (
     <SheetController
       onOpenChange={(val) => {

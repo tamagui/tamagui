@@ -5,9 +5,9 @@ import {
   Paragraph,
   Separator,
   Sheet,
+  useToastController,
   XStack,
   YStack,
-  useToastController,
 } from '@my/ui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'

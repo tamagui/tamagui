@@ -56,7 +56,7 @@ export default async function handler(request: NextRequest) {
     return getImageResponse(<ComponentOg searchParams={searchParams} logo={logoData} />)
   }
 
-  return getImageResponse(<DefaultOg searchParams={searchParams} logo={logoData} />)
+  return getImageResponse(<BackgroundedOg searchParams={searchParams} logo={logoData} />)
 }
 
 const ComponentOg = ({
@@ -75,7 +75,7 @@ const ComponentOg = ({
     ? searchParams.get('description')!
     : ''
 
-  const imageData = `${getURL()}/screenshots/dark/${demoName}Demo.png`
+  const imageData = `${getURL()}/screenshots/dark/${demoName}Demo/650x650.png`
 
   return (
     <div
@@ -83,7 +83,7 @@ const ComponentOg = ({
         display: 'flex',
         width: '100%',
         height: '100%',
-        padding: '20px',
+        padding: 20,
         // backgroundColor: '#050505',
         background: `url(${getURL()}/bg-grid.png)`,
         flexDirection: 'row',
@@ -139,17 +139,26 @@ const ComponentOg = ({
   )
 }
 
-const DefaultOg = ({
+const BackgroundedOg = ({
   searchParams,
   logo,
 }: {
   searchParams: URLSearchParams
   logo: any
 }) => {
+  const hasDemo = searchParams.has('demoName')
+  // demoName name. e.g. "Input"
+  const demoName = hasDemo ? searchParams.get('demoName') : null
+  // title. e.g. Input And TextArea
   const title = searchParams.has('title') ? searchParams.get('title')! : ''
   const description = searchParams.has('description')
     ? searchParams.get('description')!
     : ''
+
+  const hasCategory = searchParams.has('category')
+  const category = searchParams.get('category')
+
+  const imageData = `${getURL()}/screenshots/dark/${demoName}Demo/1200x630.png`
 
   return (
     <div
@@ -157,23 +166,71 @@ const DefaultOg = ({
         display: 'flex',
         width: '100%',
         height: '100%',
-        padding: '20px',
+        padding: 30,
         // backgroundColor: '#050505',
         background: `url(${getURL()}/bg-grid.png)`,
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-end',
       }}
     >
-      <Logo pos="center" source={logo} />
+      {hasDemo ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            right: 0,
+            top: 0,
+            // height: 200,
+            background: `url(${imageData})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'cover',
+          }}
+        />
+      ) : (
+        <Logo pos="left" source={logo} />
+      )}
+
+      {hasDemo && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            right: 0,
+            height: 500,
+            transform: `rotate(12deg) scale(1.5)`,
+            background: `linear-gradient(0deg, black, transparent)`,
+          }}
+        />
+      )}
 
       <div
         style={{
           display: 'flex',
+          marginRight: 30,
           flexDirection: 'column',
-          alignItems: 'center',
+          // alignItems: 'center',
         }}
       >
+        {hasCategory && (
+          <h6
+            style={{
+              color: colors.whiteA.whiteA12,
+              fontWeight: 600,
+              opacity: 0.75,
+              fontSize: 24,
+              marginBottom: -10,
+              fontFamily: 'Inter',
+              textAlign: 'center',
+              textTransform: 'uppercase',
+              letterSpacing: 10,
+              marginLeft: 10,
+            }}
+          >
+            {category}
+          </h6>
+        )}
         <h1
           style={{
             color: colors.whiteA.whiteA12,
@@ -181,7 +238,6 @@ const DefaultOg = ({
             fontSize: 96,
             marginBottom: -10,
             fontFamily: 'Inter',
-            textAlign: 'center',
           }}
         >
           {title}
@@ -192,7 +248,6 @@ const DefaultOg = ({
             fontSize: 32,
             // lineHeight: 1,
             fontFamily: 'Inter',
-            textAlign: 'center',
           }}
         >
           {description}
@@ -207,9 +262,9 @@ const Logo = ({ source, pos }: { source: any; pos: 'left' | 'center' }) => {
     <div
       style={{
         position: 'absolute',
-        left: 96,
-        right: 96,
-        top: 64,
+        left: 60,
+        right: 60,
+        top: 60,
         display: 'flex',
         ...(pos === 'center'
           ? {

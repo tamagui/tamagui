@@ -1,4 +1,3 @@
-import { isWeb } from '@tamagui/constants'
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
@@ -16,26 +15,25 @@ export const Text = createComponent<TextProps, React.Component<TextProps>, TextP
     acceptsClassName: true,
     isText: true,
 
-    defaultProps: {
-      // @ts-ignore
-      display: 'flex',
-      fontFamily: 'System',
-      ...(isWeb
+    defaultProps:
+      process.env.TAMAGUI_TARGET === 'web'
         ? {
+            color: '$color',
             display: 'inline',
             boxSizing: 'border-box',
             wordWrap: 'break-word',
             margin: 0,
           }
         : {
+            color: '$color',
+            display: 'flex',
             suppressHighlighting: true,
-          }),
-    },
+          },
 
     inlineWhenUnflattened: new Set(['fontFamily']),
 
     variants: {
-      ...(isWeb && {
+      ...(process.env.TAMAGUI_TARGET === 'web' && {
         numberOfLines: {
           1: ellipseStyle,
 
@@ -68,16 +66,17 @@ export const Text = createComponent<TextProps, React.Component<TextProps>, TextP
       },
 
       ellipse: {
-        true: isWeb
-          ? ellipseStyle
-          : {
-              numberOfLines: 1,
-              lineBreakMode: 'clip',
-            },
+        true:
+          process.env.TAMAGUI_TARGET === 'web'
+            ? ellipseStyle
+            : {
+                numberOfLines: 1,
+                lineBreakMode: 'clip',
+              },
       },
     },
 
-    deoptProps: new Set(isWeb ? [] : ['ellipse']),
+    deoptProps: new Set(process.env.TAMAGUI_TARGET === 'web' ? [] : ['ellipse']),
 
     validStyles: {
       ...validStyles,

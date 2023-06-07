@@ -13,7 +13,7 @@ export type ThemeManagerState = {
     className?: string;
     parentName?: string;
 };
-export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
+export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
@@ -21,6 +21,7 @@ export declare class ThemeManager {
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
+    scheme: 'light' | 'dark' | null;
     constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
@@ -34,6 +35,6 @@ export declare class ThemeManager {
     notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
-export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): ThemeManager | null;
+export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): readonly [ThemeManager | null, string[]];
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

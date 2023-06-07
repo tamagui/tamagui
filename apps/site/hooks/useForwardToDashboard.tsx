@@ -4,12 +4,20 @@ import { useEffect } from 'react'
 import { useUser } from './useUser'
 
 export function useForwardToDashboard() {
-  const { user, isLoading } = useUser()
+  const { data, isLoading } = useUser()
+  const user = data?.session?.user
   const router = useRouter()
 
   useEffect(() => {
-    if (user && !isLoading) {
-      router.replace('/account')
+    const main = async () => {
+      if (user && !isLoading) {
+        await router.replace(
+          typeof router.query.redirect_to === 'string'
+            ? router.query.redirect_to
+            : '/account'
+        )
+      }
     }
-  }, [user, isLoading])
+    main()
+  }, [user, isLoading, router.query.redirect_to])
 }

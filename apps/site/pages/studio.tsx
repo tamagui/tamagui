@@ -1,12 +1,12 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { ThemeTint } from '@tamagui/logo'
 import { Lock } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { Container, ContainerXL } from 'components/Container'
 import { Features } from 'components/Features'
 import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
-import { getDefaultLayout } from 'components/layouts/DefaultLayout'
 import { NextLink } from 'components/NextLink'
+import { NextSeo } from 'next-seo'
 import Head from 'next/head'
 import { memo } from 'react'
 import {
@@ -42,7 +42,7 @@ export default function StudioSplashPage() {
 
   return (
     <>
-      <TitleAndMetaTags title="Tamagui Studio" description="Tamagui Studio" />
+      <NextSeo title="Tamagui Studio" description="Tamagui Studio" />
 
       <Head>
         <LoadInter900 />

@@ -11,8 +11,9 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
-const gluspFont = createGluspFont()
-const munroFont = createMunroFont()
+export const gluspFont = createGluspFont()
+export const munroFont = createMunroFont()
+
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
@@ -39,11 +40,12 @@ const headingFont = createInterFont(
       6: 1,
       7: 0,
       8: 0,
-      9: -1,
-      10: -1.5,
-      12: -2,
-      14: -3,
-      15: -4,
+      9: -0.5,
+      10: -0.75,
+      11: -1,
+      12: -1.25,
+      14: -1.75,
+      15: -3,
     },
     // for native
     face: {
@@ -59,7 +61,6 @@ const bodyFont = createInterFont(
   {
     weight: {
       1: '400',
-      7: '600',
     },
   },
   {
@@ -99,6 +100,7 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
+  defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,

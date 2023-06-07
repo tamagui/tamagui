@@ -9,6 +9,7 @@ import type {
   PropMapper,
   SplitStyleState,
   StaticConfigParsed,
+  StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
@@ -56,12 +57,12 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
-    const fontFamily =
+    let fontFamily =
       props[conf.inverseShorthands.fontFamily] ||
       props.fontFamily ||
       defaultProps.fontFamily ||
       propsIn.fontFamily ||
-      '$body'
+      `$${conf.defaultFont}`
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -130,23 +131,6 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   return mapper
 }
 
-type StyleResolver = (
-  key: string,
-  value: any,
-  props: Record<string, any>,
-  defaultProps: any,
-  theme: any,
-  variants: GenericVariantDefinitions,
-  fontFamily: string,
-  conf: TamaguiInternalConfig,
-  returnVariablesAs: 'auto' | 'value' | 'non-color-value',
-  staticConfig: StaticConfigParsed,
-  parentVariantKey: string,
-  languageContext?: LanguageContextType,
-  avoidDefaultProps?: boolean,
-  debug?: DebugProp
-) => any
-
 const resolveVariants: StyleResolver = (
   key,
   value,
@@ -163,24 +147,29 @@ const resolveVariants: StyleResolver = (
   avoidDefaultProps = false,
   debug
 ) => {
-  const variant = variants?.[key]
-  if (!variant || value === undefined) {
+  if (!(key in variants) || value === undefined) {
     return
   }
 
-  let variantValue = getVariantDefinition(variant, key, value, conf)
+  let variantValue = getVariantDefinition(variants[key], key, value, conf)
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log('resolve variant', { key, value, variantValue })
+  }
 
   if (!variantValue) {
-    // variant at key exists, but no matching variant value, return nothing
-    if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.validStyles?.[key]) return
-      // don't warn on missing boolean values, common to only one of true/false
-      if (typeof value === 'boolean') return
-      const name = staticConfig.componentName || '[UnnamedComponent]'
-      console.warn(
-        `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
-      )
-    }
+    // variant at key exists, but no matching variant
+    // disabling warnings, its fine to pass through, could re-enable later somehoiw
+    // if (process.env.NODE_ENV === 'development') {
+    //   // don't warn on missing booleans
+    //   if (typeof value !== 'boolean') {
+    //     const name = staticConfig.componentName || '[UnnamedComponent]'
+    //     console.warn(
+    //       `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
+    //     )
+    //   }
+    // }
     return
   }
 
@@ -188,8 +177,25 @@ const resolveVariants: StyleResolver = (
     const fn = variantValue as VariantSpreadFunction<any>
     variantValue = fn(
       value,
-      getVariantExtras(props, languageContext, theme, defaultProps, avoidDefaultProps)
+      getVariantExtras(
+        props,
+        languageContext,
+        theme,
+        defaultProps,
+        avoidDefaultProps,
+        fontFamily
+      )
     )
+
+    if (process.env.NODE_ENV === 'development') {
+      if (debug === 'verbose') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('expanded functional variant', {
+          variant: fn,
+          response: variantValue,
+        })
+      }
+    }
   }
 
   let fontFamilyResult: any
@@ -271,7 +277,7 @@ export const getPropMappedFontFamily = (expanded?: any) => {
   return expanded && fontFamilyCache.get(expanded)
 }
 
-const resolveTokensAndVariants: StyleResolver = (
+const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
   props,
@@ -314,6 +320,10 @@ const resolveTokensAndVariants: StyleResolver = (
           avoidDefaultProps,
           debug
         )
+
+        if (!variantOut) {
+          continue
+        }
 
         const { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle, ...rest } =
           Object.fromEntries(variantOut)
@@ -411,21 +421,16 @@ function getVariantDefinition(
   }
   const { tokensParsed } = conf
   for (const { name, spreadName } of tokenCats) {
-    if (variant[spreadName] && value in tokensParsed[name]) {
+    if (spreadName in variant && value in tokensParsed[name]) {
       return variant[spreadName]
     }
   }
-  let fn: any
-  const type = typeof value
-  if (type === 'number') {
-    fn = variant[':number']
-  } else if (type === 'string') {
-    fn = variant[':string']
-  } else if (value === true || value === false) {
-    fn = variant[':boolean']
+  const fontSizeVariant = variant['...fontSize']
+  if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
+    return fontSizeVariant
   }
-  // fallback to catch all or size
-  return fn || variant['...'] || variant['...size']
+  // fallback to catch all | size
+  return variant[`:${typeof value}`] || variant['...'] || variant['...size']
 }
 
 const fontShorthand = {
@@ -438,7 +443,7 @@ const getToken = (
   value: string,
   conf: TamaguiInternalConfig,
   theme: any,
-  fontFamily: string | undefined = '$body',
+  fontFamily: string | undefined,
   languageContext?: LanguageContextType,
   resolveAs?: ResolveVariableTypes,
   debug?: DebugProp
@@ -467,11 +472,14 @@ const getToken = (
       case 'lineHeight':
       case 'letterSpacing':
       case 'fontWeight': {
-        const fontsParsed = languageContext
-          ? getFontsForLanguage(conf.fontsParsed, languageContext)
-          : conf.fontsParsed
-        valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
-        hasSet = true
+        if (fontFamily) {
+          const fontsParsed = languageContext
+            ? getFontsForLanguage(conf.fontsParsed, languageContext)
+            : conf.fontsParsed
+          valOrVar =
+            fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+          hasSet = true
+        }
         break
       }
     }
@@ -510,6 +518,13 @@ const getToken = (
     if (value && value[0] === '$') {
       return
     }
+  }
+
+  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+    console.groupCollapsed('  ﹒ propMap (val)', key, value)
+    // rome-ignore lint/nursery/noConsoleLog: ok
+    console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
+    console.groupEnd()
   }
 
   return value

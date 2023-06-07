@@ -1,12 +1,12 @@
-import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
@@ -51,17 +51,24 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
 
   return (
     <>
-      <TitleAndMetaTags
+      <NextSeo
         title={`${frontmatter.title} — Tamagui — React Native Universal UI`}
         description={frontmatter.description}
-        image={
-          frontmatter.image ??
-          getOgUrl('component', {
-            title: frontmatter.title,
-            demoName: frontmatter.demoName ?? undefined,
-            description: frontmatter.description ?? '',
-          })
-        }
+        openGraph={{
+          images: [
+            {
+              url:
+                frontmatter.image ??
+                getOgUrl('component', {
+                  title: frontmatter.title,
+                  demoName: frontmatter.demoName ?? undefined,
+                  description: frontmatter.description ?? '',
+                }),
+              width: 1200,
+              height: 630,
+            },
+          ],
+        }}
       />
       {/* {frontmatter.version !== frontmatter.versions?.[0] && (
         <OldVersionNote
@@ -79,7 +86,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocComponentsPage.getLayout = getDocLayout
+DocComponentsPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/components')

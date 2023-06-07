@@ -8,7 +8,8 @@ import {
   useIsomorphicLayoutEffect,
   useSafeRef,
 } from '@tamagui/web'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
+
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -67,9 +68,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         ? props.animation[0]
         : props.animation
       const animation = animations[animationKey as any]
-      if (!animation) {
-        return null
-      }
 
       const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
@@ -87,6 +85,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         }
       }, [sendExitComplete, isExiting])
 
+      // layout animations
       useIsomorphicLayoutEffect(() => {
         if (!hostRef.current || !layout) {
           return
@@ -127,18 +126,27 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         initialPositionRef.current = boundingBox
       })
 
+<<<<<<< HEAD
       style.transition = `${keys} ${animation} ${
         layout ? ', width, height, translate, scale, padding, margin' : ''
+=======
+      if (!animation) {
+        return null
+      }
+
+      // add css transition
+      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
+      // for non layout transform properties either use animate function or find a workaround to do it with css
+      style.transition = `${keys} ${animation}${
+        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
+>>>>>>> master
       }`
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('CSS animation', style, { isEntering, isExiting })
       }
 
-      return useMemo(() => {
-        return { style }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [JSON.stringify(style)])
+      return { style }
     },
     populateChildrenRefsAndPassDisableCssProp: populateChildrenRefsAndPassDisableCssProp,
   }

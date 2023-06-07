@@ -38,10 +38,7 @@ import {
   objToStr,
 } from './extractHelpers'
 import { findTopmostFunction } from './findTopmostFunction'
-import {
-  cleanupBeforeExit,
-  getStaticBindingsForScope,
-} from './getStaticBindingsForScope'
+import { cleanupBeforeExit, getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
@@ -73,7 +70,6 @@ const validHooks = {
   useTheme: true,
 }
 
-const isAttr = (x: ExtractedAttr): x is ExtractedAttrAttr => x.type === 'attr'
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>
@@ -1657,40 +1653,41 @@ export function createExtractor(
             pressIn: false,
           }
 
-          function splitVariants(style: any) {
-            const variants = {}
-            const styles = {}
-            for (const key in style) {
-              if (staticConfig.variants?.[key]) {
-                variants[key] = style[key]
-              } else {
-                styles[key] = style[key]
-              }
+          function mergeToEnd(obj: Object, key: string, val: any) {
+            if (key in obj) {
+              delete obj[key]
             }
-            return {
-              variants,
-              styles,
-            }
+            obj[key] = val
           }
 
+          // preserves order
           function expandStylesWithoutVariants(style: any) {
-            const { variants, styles } = splitVariants(style)
-            return {
-              ...expandStyles(styles),
-              ...variants,
+            let res = {}
+            for (const key in style) {
+              if (staticConfig.variants && key in staticConfig.variants) {
+                mergeToEnd(res, key, style[key])
+              } else {
+                const expanded = expandStyles({ [key]: style[key] })
+                for (const key in expanded) {
+                  mergeToEnd(res, key, expanded[key])
+                }
+              }
             }
+            return res
           }
 
           // evaluates all static attributes into a simple object
           let foundStaticProps = {}
+
           for (const key in attrs) {
             const cur = attrs[key]
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              foundStaticProps = {
-                ...foundStaticProps,
-                ...expandStylesWithoutVariants(cur.value),
+              const expanded = expandStylesWithoutVariants(cur.value)
+              // preserve order
+              for (const key in expanded) {
+                mergeToEnd(foundStaticProps, key, expanded[key])
               }
               continue
             }
@@ -1705,10 +1702,7 @@ export function createExtractor(
               // undefined = boolean true
               const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
               if (value !== FAILED_EVAL) {
-                foundStaticProps = {
-                  ...foundStaticProps,
-                  [key]: value,
-                }
+                mergeToEnd(foundStaticProps, key, value)
               }
             }
           }
@@ -1849,7 +1843,7 @@ export function createExtractor(
                 prev[key] = prev[key] || {}
                 Object.assign(prev[key], next[key])
               } else {
-                prev[key] = next[key]
+                mergeToEnd(prev, key, next[key])
               }
             }
           }
@@ -1920,11 +1914,11 @@ export function createExtractor(
 
           // post process
           const getStyles = (props: Object | null, debugName = '') => {
-            if (!props || !Object.keys(props).length) {
+            if (!props) {
               if (shouldPrintDebug) logger.info([' getStyles() no props'].join(' '))
               return {}
             }
-            if (excludeProps && !!excludeProps.size) {
+            if (excludeProps?.size) {
               for (const key in props) {
                 if (excludeProps.has(key)) {
                   if (shouldPrintDebug) logger.info([' delete excluded', key].join(' '))
@@ -1932,6 +1926,7 @@ export function createExtractor(
                 }
               }
             }
+
             try {
               const out = getSplitStyles(
                 props,
@@ -1944,7 +1939,7 @@ export function createExtractor(
                 undefined,
                 undefined,
                 undefined,
-                debugPropValue
+                debugPropValue || shouldPrintDebug
               )
 
               const outStyle = {
@@ -1952,11 +1947,11 @@ export function createExtractor(
                 ...out.pseudos,
               }
 
-              if (shouldPrintDebug === 'verbose') {
+              if (shouldPrintDebug) {
                 // prettier-ignore
-                logger.info(`       getStyles ${debugName} (props in): ${Object.keys(props)}`)
+                logger.info(`\n       getStyles (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`       getStyles ${debugName} (outStyle): ${Object.keys(outStyle)}`)
+                logger.info(`\n       getStyles (outStyle): ${logLines(objToStr(outStyle))}`)
               }
 
               return outStyle
@@ -2119,6 +2114,7 @@ export function createExtractor(
             node,
             lineNumbers,
             filePath,
+            config: tamaguiConfig,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
@@ -2127,9 +2123,9 @@ export function createExtractor(
             completeProps,
             staticConfig,
           })
-        } catch (err) {
+        } catch (err: any) {
           node.attributes = ogAttributes
-          console.error(`err: ${err}`)
+          console.error(`@tamagui/static Error: ${err.message} ${err.stack}`)
         } finally {
           if (debugPropValue) {
             shouldPrintDebug = ogDebug

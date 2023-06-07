@@ -64,7 +64,7 @@ function mergeSlotProps(child: any, slotProps: Record<string, any>) {
     const slotPropValue = slotProps[propName]
     const childPropValue = childProps[propName]
 
-    if (isHTMLChild && pressMap[propName]) {
+    if (isHTMLChild && propName in pressMap) {
       propName = pressMap[propName]
       delete overrideProps[propName]
     }

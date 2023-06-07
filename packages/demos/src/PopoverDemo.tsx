@@ -7,7 +7,6 @@ import {
   Popover,
   PopoverProps,
   XStack,
-  YGroup,
   YStack,
 } from 'tamagui'
 

@@ -1,10 +1,11 @@
-import { getAuthLayout } from '@components/layouts/AuthLayout'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { SupabaseProvider } from '@components/SupabaseProvider'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
-import Link from 'next/link'
+import { NextSeo } from 'next-seo'
+import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
 
@@ -12,18 +13,19 @@ import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 
-const emailAuthDisabledFlag = true
+const isProd = process.env.NODE_ENV === 'production'
+const emailAuthDisabledFlag = isProd
 
-export default function SignInPage() {
+export default function SignInPage(props) {
   return (
-    <>
-      <TitleAndMetaTags title="Login — Tamagui" />
+    <SupabaseProvider initialSession={props.initialSession}>
+      <NextSeo title="Login — Tamagui" />
       <SignIn />
-    </>
+    </SupabaseProvider>
   )
 }
-
 function SignIn() {
+  const router = useRouter()
   const supabaseClient = useSupabaseClient()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -33,7 +35,8 @@ function SignIn() {
     type: '',
     content: '',
   })
-  const { user } = useUser()
+  const { data } = useUser()
+  const user = data?.session?.user
   const emailRef = useRef(null)
 
   useEffect(() => {
@@ -78,11 +81,19 @@ function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
+    const redirectTo = `${window.location.origin}/login?${new URLSearchParams(
+      typeof router.query.redirect_to === 'string'
+        ? {
+            redirect_to: router.query.redirect_to,
+          }
+        : undefined
+    ).toString()}`
     setLoading(true)
+
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/login`,
+        redirectTo,
         scopes: 'read:org',
       },
     })
@@ -253,4 +264,4 @@ function SignIn() {
   )
 }
 
-SignInPage.getLayout = getAuthLayout
+SignInPage.getLayout = getDefaultLayout

@@ -8,7 +8,7 @@ import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
   ThemeManagerState,
-  getNonComponentParentManager,
+  getHasThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeParsed, ThemeProps } from '../types'
@@ -41,7 +41,13 @@ function getDefaultThemeProxied() {
   })
 }
 
-export const useTheme = (props: ThemeProps = emptyProps): ThemeParsed => {
+type UseThemeResult = {
+  [key in keyof ThemeParsed]: ThemeParsed[key] & {
+    get: () => string | ThemeParsed[key]['val']
+  }
+}
+
+export const useTheme = (props: ThemeProps = emptyProps): UseThemeResult => {
   return (isRSC ? null : useThemeWithState(props)?.theme) || getDefaultThemeProxied()
 }
 
@@ -96,7 +102,7 @@ export function getThemeProxied(
     theme: ThemeParsed
   },
   keys?: string[]
-) {
+): UseThemeResult {
   return createProxy(theme, {
     has(_, key) {
       if (typeof key === 'string') {
@@ -127,6 +133,9 @@ export function getThemeProxied(
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
+            if (subkey === 'get') {
+              return () => val
+            }
             if (subkey === 'val' && !keys.includes(keyString)) {
               keys.push(keyString)
             }
@@ -137,7 +146,7 @@ export function getThemeProxied(
 
       return val
     },
-  })
+  }) as UseThemeResult
 }
 
 export const activeThemeManagers = new Set<ThemeManager>()
@@ -162,11 +171,8 @@ export const useChangeThemeEffect = (
     disable,
   } = props
 
-  let parentManager = useContext(ThemeManagerContext)
-
-  if (!disable) {
-    parentManager = getNonComponentParentManager(parentManager)
-  }
+  const parentManager = useContext(ThemeManagerContext)
+  const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (disable) {
     if (!parentManager) throw `❌`
@@ -243,7 +249,9 @@ export const useChangeThemeEffect = (
           console.log(` 🔸 onChange`, themeManager.id, logs)
         }
         if (shouldUpdate) {
-          setThemeState(createState)
+          queueMicrotask(() => {
+            setThemeState(createState)
+          })
         }
       }, themeManager.id)
 
@@ -295,44 +303,53 @@ export const useChangeThemeEffect = (
     }
 
     //  returns previous theme manager if no change
-    let themeManager: ThemeManager
+    let themeManager: ThemeManager = parentManager!
     let state: ThemeManagerState | undefined
 
     const getNewThemeManager = () => {
       return new ThemeManager(props, root ? 'root' : parentManager)
     }
 
-    if (prev?.themeManager) {
-      themeManager = prev.themeManager
+    // only if has updating theme props
+    if (hasThemeUpdatingProps) {
+      if (prev?.themeManager) {
+        themeManager = prev.themeManager
 
-      // this could be a bit better, problem is on toggling light/dark the state is actually
-      // showing light even when the last was dark. but technically allso onChangeTheme should
-      // basically always call on a change, so i'm wondering if we even need the shouldUpdate
-      // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
-      // which is correct, potentially in the future we can avoid forceChange and just know to
-      // update if keys.length is set + onChangeTheme called
-      const forceChange = Boolean(keys?.length)
-      const next = themeManager.getState(props, parentManager)
-      const nextState = getShouldUpdateTheme(themeManager, next, prev.state, forceChange)
+        // this could be a bit better, problem is on toggling light/dark the state is actually
+        // showing light even when the last was dark. but technically allso onChangeTheme should
+        // basically always call on a change, so i'm wondering if we even need the shouldUpdate
+        // at all anymore. this forces updates onChangeTheme for all dynamic style accessed components
+        // which is correct, potentially in the future we can avoid forceChange and just know to
+        // update if keys.length is set + onChangeTheme called
+        const forceChange = Boolean(keys?.length)
+        const next = themeManager.getState(props, parentManager)
+        const nextState = getShouldUpdateTheme(
+          themeManager,
+          next,
+          prev.state,
+          forceChange
+        )
 
-      if (nextState) {
-        state = nextState
+        if (nextState) {
+          state = nextState
 
-        if (!prev.isNewTheme || !isWeb) {
-          themeManager = getNewThemeManager()
+          if (!prev.isNewTheme || !isWeb) {
+            themeManager = getNewThemeManager()
+          } else {
+            themeManager.updateState(nextState, true)
+          }
         } else {
-          themeManager.updateState(nextState, true)
-        }
-      } else {
-        if (prev.isNewTheme) {
-          // reset to parent
-          if (parentManager && !next) {
-            themeManager = parentManager
+          if (prev.isNewTheme) {
+            // reset to parent
+            if (parentManager && !next) {
+              themeManager = parentManager
+            }
           }
         }
+      } else {
+        themeManager = getNewThemeManager()
+        state = { ...themeManager.state }
       }
-    } else {
-      themeManager = getNewThemeManager()
     }
 
     const isNewTheme = Boolean(themeManager !== parentManager)
@@ -341,7 +358,12 @@ export const useChangeThemeEffect = (
     const mounted = !props.inverse ? true : root || prev?.mounted
 
     if (!state) {
-      state = isNewTheme ? { ...themeManager.state } : { ...parentManager!.state }
+      if (isNewTheme) {
+        state = { ...themeManager.state }
+      } else {
+        state = parentManager!.state
+        themeManager = parentManager!
+      }
     }
 
     if (!force && state.name === prev?.state.name) {

@@ -10,7 +10,7 @@ import {
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
-import { getSpace } from '@tamagui/helpers-tamagui'
+import { getSpace } from '@tamagui/get-token'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
@@ -45,10 +45,15 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     const { __scopeSelect, disabled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setReference as any
+    )
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
+
+    // console.log('wtf', context.interactions.getReferenceProps())
 
     if (context.shouldRenderWebNative) {
       return null
@@ -61,8 +66,12 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         radiused
         hoverTheme
         pressTheme
-        focusTheme
         focusable
+        focusStyle={{
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorFocus',
+        }}
         borderWidth={1}
         size={context.size}
         // aria-controls={context.contentId}
@@ -72,9 +81,15 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
-        ref={forwardedRef}
+        ref={composedRefs}
         {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
-          ? context.interactions.getReferenceProps()
+          ? {
+              ...context.interactions.getReferenceProps(),
+              onMouseDown() {
+                context.floatingContext?.update()
+                context.setOpen(!context.open)
+              },
+            }
           : {
               onPress() {
                 context.setOpen(!context.open)
@@ -191,7 +206,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       open,
       setOpen,
       onChange,
-      setActiveIndex,
+      activeIndex,
       allowMouseUpRef,
       allowSelectRef,
       setValueAtIndex,
@@ -262,6 +277,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           onPress: handleSelect,
         }
 
+    const isActive = activeIndex === index
+
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -274,12 +291,13 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         ) : (
           <ListItem
             tag="div"
+            componentName={ITEM_NAME}
             backgrounded
             pressTheme
             hoverTheme
+            focusTheme
             cursor="default"
             outlineWidth={0}
-            componentName={ITEM_NAME}
             ref={composedRefs}
             aria-labelledby={textId}
             aria-selected={isSelected}
@@ -288,9 +306,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             size={context.size}
-            focusStyle={{
-              backgroundColor: '$backgroundHover',
-            }}
             {...itemProps}
             {...selectItemProps}
           />
@@ -401,7 +416,10 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
     const context = useSelectContext(ITEM_INDICATOR_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
 
-    if (context.shouldRenderWebNative) return null
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
     return itemContext.isSelected ? (
       <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
     ) : null
@@ -454,7 +472,9 @@ const NativeSelectFrame = styled(ThemeableStack, {
           minHeight: tokens.size[val],
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(val, -2),
+          paddingVertical: getSpace(val, {
+            shift: -3,
+          }),
         }
       },
     },

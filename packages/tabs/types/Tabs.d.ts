@@ -11,7 +11,9 @@ type TabsListProps = TabsListFrameProps & {
      */
     loop?: boolean;
 };
-declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -30,7 +32,9 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly size?: SizeTokens | undefined;
     readonly disabled?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -49,7 +53,9 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly size?: SizeTokens | undefined;
     readonly disabled?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -68,7 +74,9 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly size?: SizeTokens | undefined;
     readonly disabled?: boolean | undefined;
     readonly unstyled?: boolean | undefined;
-}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -89,6 +97,30 @@ declare const TabsTriggerFrame: import("@tamagui/web").TamaguiComponent<Omit<imp
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    };
 }>;
 /**
  * @deprecated Use `TabLayout` instead
@@ -107,7 +139,9 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
     onInteraction?: (type: InteractionType, layout: TabLayout | null) => void;
 };
 type TabsTabProps = TabsTriggerProps;
-declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -122,7 +156,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -137,7 +173,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -152,7 +190,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -169,7 +209,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -186,7 +228,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -203,7 +247,9 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly chromeless?: boolean | "all" | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>>), import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -222,6 +268,30 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     [x: string]: undefined;
 }), {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    };
 }>;
 type TabsContentFrameProps = GetProps<typeof TabsContentFrame>;
 type TabsContentProps = TabsContentFrameProps & {
@@ -233,7 +303,9 @@ type TabsContentProps = TabsContentFrameProps & {
      */
     forceMount?: true;
 };
-declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -245,7 +317,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -257,7 +331,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -269,7 +345,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -283,7 +361,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -297,7 +377,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -311,7 +393,9 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
+}>>), import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -327,6 +411,27 @@ declare const TabsFrame: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly unstyled?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly size?: SizeTokens | undefined;
+    };
 }>;
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
 type TabsFrameProps = GetProps<typeof TabsFrame>;
@@ -353,7 +458,9 @@ type TabsProps = TabsFrameProps & {
      * */
     activationMode?: 'automatic' | 'manual';
 };
-export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -365,7 +472,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -377,7 +486,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }, "size" | "unstyled" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered"> & {
@@ -411,7 +522,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
      * @defaultValue automatic
      * */
     activationMode?: "automatic" | "manual" | undefined;
-}) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -425,7 +538,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -439,7 +554,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     readonly size?: SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+} & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -476,7 +593,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
      * */
     activationMode?: "automatic" | "manual" | undefined;
 }, "ref">) & React.RefAttributes<HTMLDivElement>> & {
-    List: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    List: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -494,7 +613,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: any;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -512,7 +633,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: any;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -548,7 +671,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
     /**
      * @deprecated Use Tabs.Tab instead
      */
-    Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -567,7 +692,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly size?: SizeTokens | undefined;
         readonly disabled?: boolean | undefined;
         readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -586,70 +713,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly size?: SizeTokens | undefined;
         readonly disabled?: boolean | undefined;
         readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    } & {
-        readonly backgrounded?: boolean | undefined;
-        readonly radiused?: boolean | undefined;
-        readonly hoverTheme?: boolean | undefined;
-        readonly pressTheme?: boolean | undefined;
-        readonly focusTheme?: boolean | undefined;
-        readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined;
-        readonly elevate?: boolean | undefined;
-        readonly bordered?: number | boolean | undefined;
-        readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled" | "disabled"> & {
-        readonly size?: SizeTokens | undefined;
-        readonly disabled?: boolean | undefined;
-        readonly unstyled?: boolean | undefined;
-    }>> & {
-        /** The value for the tabs state to be changed to after activation of the trigger */
-        value: string;
-        /** Used for making custom indicators when trigger interacted with */
-        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
-    } & React.RefAttributes<HTMLButtonElement>>;
-    Tab: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    } & {
-        readonly backgrounded?: boolean | undefined;
-        readonly radiused?: boolean | undefined;
-        readonly hoverTheme?: boolean | undefined;
-        readonly pressTheme?: boolean | undefined;
-        readonly focusTheme?: boolean | undefined;
-        readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined;
-        readonly elevate?: boolean | undefined;
-        readonly bordered?: number | boolean | undefined;
-        readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled" | "disabled"> & {
-        readonly size?: SizeTokens | undefined;
-        readonly disabled?: boolean | undefined;
-        readonly unstyled?: boolean | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    } & {
-        readonly backgrounded?: boolean | undefined;
-        readonly radiused?: boolean | undefined;
-        readonly hoverTheme?: boolean | undefined;
-        readonly pressTheme?: boolean | undefined;
-        readonly focusTheme?: boolean | undefined;
-        readonly circular?: boolean | undefined;
-        readonly padded?: boolean | undefined;
-        readonly elevate?: boolean | undefined;
-        readonly bordered?: number | boolean | undefined;
-        readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
-    }, "size" | "unstyled" | "disabled"> & {
-        readonly size?: SizeTokens | undefined;
-        readonly disabled?: boolean | undefined;
-        readonly unstyled?: boolean | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -674,7 +740,78 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         /** Used for making custom indicators when trigger interacted with */
         onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
     } & React.RefAttributes<HTMLButtonElement>>;
-    Content: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    Tab: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    }, "size" | "unstyled" | "disabled"> & {
+        readonly size?: SizeTokens | undefined;
+        readonly disabled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    }, "size" | "unstyled" | "disabled"> & {
+        readonly size?: SizeTokens | undefined;
+        readonly disabled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    }, "size" | "unstyled" | "disabled"> & {
+        readonly size?: SizeTokens | undefined;
+        readonly disabled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
+    }>> & {
+        /** The value for the tabs state to be changed to after activation of the trigger */
+        value: string;
+        /** Used for making custom indicators when trigger interacted with */
+        onInteraction?: ((type: InteractionType, layout: TabLayout | null) => void) | undefined;
+    } & React.RefAttributes<HTMLButtonElement>>;
+    Content: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -689,7 +826,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -704,7 +843,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
@@ -727,7 +868,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
          * controlling animation with Tamagui animations.
          */
         forceMount?: true | undefined;
-    }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -744,7 +887,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -761,7 +906,9 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly chromeless?: boolean | "all" | undefined;
     }, string | number> & {
         [x: string]: undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {

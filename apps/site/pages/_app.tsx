@@ -2,39 +2,34 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
-import '../public/fonts/fonts.css'
 
-// import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-// import { SessionContextProvider, useSupabaseClient } from '@supabase/auth-helpers-react'
-// import { MyUserContextProvider } from 'hooks/useUser'
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { GetLayout } from '@lib/getDefaultLayout'
+import {
+  ColorScheme,
+  NextThemeProvider,
+  useRootTheme,
+  useThemeSetting,
+} from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDidFinishSSR, useSafeRef } from 'tamagui'
+import { TamaguiProvider } from 'tamagui'
 
-import { LoadFont, LoadInter900 } from '../components/LoadFont'
+import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+if (process.env.NODE_ENV === 'production') {
+  require('../public/tamagui.css')
+}
 
 // for auto mode
 // // santa mode
 // if (isClient) {
 //   const goXmas = setTimeout(() => {
 //     setTintFamily('xmas')
-//     window.removeEventListener('scroll', onScroll)
 //   }, 2500)
-
-//   // dont activate santa mode if they scroll down, a bit confusing right?
-//   const onScroll = (e: Event) => {
-//     if ((document.scrollingElement?.scrollTop || 0) > 100) {
-//       clearTimeout(goXmas)
-//       window.removeEventListener('scroll', onScroll)
-//     }
-//   }
-
-//   window.addEventListener('scroll', onScroll)
-// }
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -50,7 +45,39 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+
+  // set up NextThemeProvider above AppContents so it can useThemeSetting
+
+  return (
+    <>
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          setTheme(next as any)
+        }}
+      >
+        <AppContents {...props} theme={theme} setTheme={setTheme} />
+      </NextThemeProvider>
+    </>
+  )
+}
+
+function AppContents(
+  props: AppProps & {
+    theme: ColorScheme
+    setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
+  }
+) {
+  const [theme, setTheme] = useRootTheme()
   const [didInteract, setDidInteract] = useState(false)
+  const themeSetting = useThemeSetting()!
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.pathname === '/takeout' && theme !== 'dark') {
+      themeSetting.set('dark')
+      setTheme('dark')
+    }
+  }, [router.pathname, theme])
 
   useEffect(() => {
     const onDown = () => {
@@ -58,11 +85,11 @@ export default function App(props: AppProps) {
       unlisten()
     }
     const unlisten = () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown', onDown)
+      document.removeEventListener('mousedown', onDown, { capture: true })
+      document.removeEventListener('keydown', onDown, { capture: true })
     }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown', onDown)
+    document.addEventListener('mousedown', onDown, { capture: true })
+    document.addEventListener('keydown', onDown, { capture: true })
     return unlisten
   }, [])
 
@@ -77,10 +104,12 @@ export default function App(props: AppProps) {
         }}
       />
 
-      {/* this will lazy load the font for /studio splash page */}
+      {/* this will lazy load the font for /studio and /takeout pages */}
       {didInteract && (
         <>
           <LoadInter900 />
+          <LoadGlusp />
+          <LoadMunro />
         </>
       )}
 
@@ -103,10 +132,11 @@ export default function App(props: AppProps) {
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
+  const router = useRouter()
+  const path = router.asPath
 
   return useMemo(() => {
-    return getLayout(<Component {...pageProps} />, pageProps)
+    return getLayout(<Component {...pageProps} />, pageProps, path)
   }, [pageProps])
 }

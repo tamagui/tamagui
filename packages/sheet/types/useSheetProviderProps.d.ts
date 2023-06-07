@@ -6,6 +6,8 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps>;
 export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
     onOverlayComponent?: (comp: any) => void;
 }): {
+    screenSize: number;
+    maxSnapPoint: number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: ScrollBridge;
     modal: boolean;

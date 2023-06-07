@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import { Children, cloneElement, isValidElement, useEffect, useId, useMemo } from 'react'
+import React, { Children, cloneElement, isValidElement } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
@@ -47,7 +47,7 @@ export function useThemedChildren(
   },
   isRoot = false
 ) {
-  const { themeManager, className, theme, isNewTheme } = themeState
+  const { themeManager, isNewTheme } = themeState
   const { shallow, forceClassName } = props
   const hasEverThemed = useServerRef(false)
   if (isNewTheme) {
@@ -57,64 +57,86 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
-  return useMemo(() => {
-    if (!shouldRenderChildrenWithTheme) {
-      return children
-    }
+  if (!shouldRenderChildrenWithTheme) {
+    return children
+  }
 
-    // be sure to memoize shouldReset to avoid reparenting
+  // be sure to memoize shouldReset to avoid reparenting
+
+  // each children of these children wont get the theme
+  if (shallow && themeManager) {
     let next = Children.toArray(children)
+    next = next.map((child) => {
+      return isValidElement(child)
+        ? cloneElement(
+            child,
+            undefined,
+            <Theme name={themeManager.state.parentName}>
+              {(child as any).props.children}
+            </Theme>
+          )
+        : child
+    })
+  }
 
-    // each children of these children wont get the theme
-    if (shallow && themeManager) {
-      next = next.map((child) => {
-        return isValidElement(child)
-          ? cloneElement(
-              child,
-              undefined,
-              <Theme name={themeManager.state.parentName}>
-                {(child as any).props.children}
-              </Theme>
-            )
-          : child
-      })
-    }
+  const elementsWithContext = (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {children}
+    </ThemeManagerContext.Provider>
+  )
 
-    const wrapped = (
-      <ThemeManagerContext.Provider value={themeManager}>
-        {next}
-      </ThemeManagerContext.Provider>
+  if (forceClassName === false) {
+    return elementsWithContext
+  }
+
+  if (isWeb && !props.passPropsToChildren) {
+    return wrapThemeElements({
+      children: elementsWithContext,
+      themeState,
+    })
+  }
+
+  return elementsWithContext
+}
+
+export function wrapThemeElements({
+  children,
+  themeState,
+}: {
+  children?: React.ReactNode
+  themeState: ChangedThemeResponse
+}) {
+  // in order to provide currentColor, set color by default
+  const themeColor =
+    themeState.theme && themeState.isNewTheme
+      ? variableToString(themeState.theme.color)
+      : ''
+  const colorStyle = themeColor
+    ? {
+        color: themeColor,
+      }
+    : undefined
+
+  const parentScheme = themeState.themeManager?.parentManager?.scheme
+  const scheme = themeState.themeManager?.scheme
+  const isInversing = scheme && parentScheme && scheme !== parentScheme
+
+  let themedChildren = (
+    <span
+      className={`${themeState.className || ''} _dsp_contents is_Theme`}
+      style={colorStyle}
+    >
+      {children}
+    </span>
+  )
+
+  if (isInversing) {
+    themedChildren = (
+      <span className={`t_${scheme} _dsp_contents is_Theme is_inversed`}>
+        {themedChildren}
+      </span>
     )
+  }
 
-    if (forceClassName === false) {
-      return wrapped
-    }
-
-    if (isWeb && !props.passPropsToChildren) {
-      // in order to provide currentColor, set color by default
-      const themeColor = theme && isNewTheme ? variableToString(theme.color) : ''
-      const colorStyle = themeColor
-        ? {
-            color: themeColor,
-          }
-        : undefined
-
-      return (
-        <span className={`${className || ''} _dsp_contents is_Theme`} style={colorStyle}>
-          {wrapped}
-        </span>
-      )
-    }
-
-    return wrapped
-  }, [
-    forceClassName,
-    props.passPropsToChildren,
-    shouldRenderChildrenWithTheme,
-    themeManager,
-    children,
-    theme,
-    isNewTheme,
-    className,
-  ])
+  return themedChildren
 }

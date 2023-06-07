@@ -151,13 +151,15 @@ export function getThemeCSSRules({
   if (config.selectionStyles) {
     const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
     const rules = config.selectionStyles(theme)
-    const styles = Object.entries(rules)
-      .map(
-        ([k, v]) => `${k === 'backgroundColor' ? 'background' : k}:${variableToString(v)}`
-      )
-      .join(';')
-    const css = `${selectionSelectors} {${styles}}`
-    cssRuleSets.push(css)
+    if (rules) {
+      const styles = Object.entries(rules)
+        .flatMap(([k, v]) =>
+          v ? `${k === 'backgroundColor' ? 'background' : k}:${variableToString(v)}` : []
+        )
+        .join(';')
+      const css = `${selectionSelectors} {${styles}}`
+      cssRuleSets.push(css)
+    }
   }
 
   return cssRuleSets

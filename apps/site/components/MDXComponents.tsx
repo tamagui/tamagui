@@ -5,7 +5,6 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  GetProps,
   H1,
   H2,
   H3,
@@ -98,8 +97,6 @@ const code = (props) => {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        isCollapsible={hero !== undefined || collapsible !== undefined}
-        isScrollable={scrollable !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...rest}
       >
@@ -254,9 +251,10 @@ export const components = {
     return (
       <Paragraph
         tag="p"
-        size={large ? '$9' : '$7'}
+        size={large ? '$10' : '$9'}
+        fontSize={large ? 32 : 26}
         className={'intro-paragraph' + (large ? ' large' : '')}
-        my="$3"
+        my="$4"
         fow={large ? '200' : '300'}
         {...props}
       >
@@ -337,8 +335,7 @@ export const components = {
     <Paragraph
       className="docs-paragraph"
       display="block"
-      fontSize={15}
-      lineHeight={24}
+      size="$6"
       my="$2.5"
       {...props}
     />
@@ -382,7 +379,11 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    return <LI my="$1">{props.children}</LI>
+    return (
+      <LI size="$6" my="$1.5" className="docs-paragraph">
+        {props.children}
+      </LI>
+    )
   },
 
   strong: (props) => (

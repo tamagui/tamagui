@@ -199,6 +199,12 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         6: import("@tamagui/core").Variable<number>;
         7: import("@tamagui/core").Variable<number>;
         5: import("@tamagui/core").Variable<number>;
+        8: import("@tamagui/core").Variable<number>;
+        9: import("@tamagui/core").Variable<number>;
+        10: import("@tamagui/core").Variable<number>;
+        12: import("@tamagui/core").Variable<number>;
+        14: import("@tamagui/core").Variable<number>;
+        15: import("@tamagui/core").Variable<number>;
         0: import("@tamagui/core").Variable<number>;
         0.25: import("@tamagui/core").Variable<number>;
         0.5: import("@tamagui/core").Variable<number>;
@@ -211,14 +217,8 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         3.5: import("@tamagui/core").Variable<number>;
         4: import("@tamagui/core").Variable<number>;
         4.5: import("@tamagui/core").Variable<number>;
-        8: import("@tamagui/core").Variable<number>;
-        9: import("@tamagui/core").Variable<number>;
-        10: import("@tamagui/core").Variable<number>;
         11: import("@tamagui/core").Variable<number>;
-        12: import("@tamagui/core").Variable<number>;
         13: import("@tamagui/core").Variable<number>;
-        14: import("@tamagui/core").Variable<number>;
-        15: import("@tamagui/core").Variable<number>;
         16: import("@tamagui/core").Variable<number>;
         17: import("@tamagui/core").Variable<number>;
         18: import("@tamagui/core").Variable<number>;
@@ -228,6 +228,12 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         [-6]: import("@tamagui/core").Variable<number>;
         [-7]: import("@tamagui/core").Variable<number>;
         [-5]: import("@tamagui/core").Variable<number>;
+        [-8]: import("@tamagui/core").Variable<number>;
+        [-9]: import("@tamagui/core").Variable<number>;
+        [-10]: import("@tamagui/core").Variable<number>;
+        [-12]: import("@tamagui/core").Variable<number>;
+        [-14]: import("@tamagui/core").Variable<number>;
+        [-15]: import("@tamagui/core").Variable<number>;
         [-0.25]: import("@tamagui/core").Variable<number>;
         [-0.5]: import("@tamagui/core").Variable<number>;
         [-0.75]: import("@tamagui/core").Variable<number>;
@@ -239,14 +245,8 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         [-3.5]: import("@tamagui/core").Variable<number>;
         [-4]: import("@tamagui/core").Variable<number>;
         [-4.5]: import("@tamagui/core").Variable<number>;
-        [-8]: import("@tamagui/core").Variable<number>;
-        [-9]: import("@tamagui/core").Variable<number>;
-        [-10]: import("@tamagui/core").Variable<number>;
         [-11]: import("@tamagui/core").Variable<number>;
-        [-12]: import("@tamagui/core").Variable<number>;
         [-13]: import("@tamagui/core").Variable<number>;
-        [-14]: import("@tamagui/core").Variable<number>;
-        [-15]: import("@tamagui/core").Variable<number>;
         [-16]: import("@tamagui/core").Variable<number>;
         [-17]: import("@tamagui/core").Variable<number>;
         [-18]: import("@tamagui/core").Variable<number>;
@@ -258,6 +258,12 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         6: import("@tamagui/core").Variable<number>;
         7: import("@tamagui/core").Variable<number>;
         5: import("@tamagui/core").Variable<number>;
+        8: import("@tamagui/core").Variable<number>;
+        9: import("@tamagui/core").Variable<number>;
+        10: import("@tamagui/core").Variable<number>;
+        12: import("@tamagui/core").Variable<number>;
+        14: import("@tamagui/core").Variable<number>;
+        15: import("@tamagui/core").Variable<number>;
         0: import("@tamagui/core").Variable<number>;
         0.25: import("@tamagui/core").Variable<number>;
         0.5: import("@tamagui/core").Variable<number>;
@@ -270,14 +276,8 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         3.5: import("@tamagui/core").Variable<number>;
         4: import("@tamagui/core").Variable<number>;
         4.5: import("@tamagui/core").Variable<number>;
-        8: import("@tamagui/core").Variable<number>;
-        9: import("@tamagui/core").Variable<number>;
-        10: import("@tamagui/core").Variable<number>;
         11: import("@tamagui/core").Variable<number>;
-        12: import("@tamagui/core").Variable<number>;
         13: import("@tamagui/core").Variable<number>;
-        14: import("@tamagui/core").Variable<number>;
-        15: import("@tamagui/core").Variable<number>;
         16: import("@tamagui/core").Variable<number>;
         17: import("@tamagui/core").Variable<number>;
         18: import("@tamagui/core").Variable<number>;
@@ -445,7 +445,7 @@ export declare const config: import("@tamagui/core").TamaguiInternalConfig<{
         stiffness: number;
     };
 }, {
-    heading: import("@tamagui/core").GenericFont<16 | "true" | 10 | 11 | 12 | 13 | 14 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 15>;
-    body: import("@tamagui/core").GenericFont<16 | "true" | 10 | 11 | 12 | 13 | 14 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 15>;
-}, boolean | undefined>;
+    heading: import("@tamagui/core").GenericFont;
+    body: import("@tamagui/core").GenericFont;
+}, boolean | undefined, string | undefined>;
 //# sourceMappingURL=tamagui.config.d.ts.map

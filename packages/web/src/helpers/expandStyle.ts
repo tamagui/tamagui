@@ -5,7 +5,9 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-export function expandStyle(key: string, value: any) {
+import { PropMappedValue } from '../types'
+
+export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
       return [
@@ -34,9 +36,8 @@ export function expandStyle(key: string, value: any) {
     return [['elevation', value]]
   }
 
-  const longKey = EXPANSIONS[key]
-  if (longKey) {
-    return longKey.map((key) => {
+  if (key in EXPANSIONS) {
+    return EXPANSIONS[key].map((key) => {
       return [key, value]
     })
   }

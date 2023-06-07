@@ -33,6 +33,7 @@ const CurrentToast = () => {
       scale={1}
       animation="100ms"
       viewportName={currentToast.viewportName}
+      width={100}
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
@@ -59,8 +60,6 @@ const ToastControl = ({ native }: { native: boolean }) => {
         Show
       </Button>
       <Button
-        id="wot"
-        nativeID="woot"
         onPress={() => {
           toast.hide()
         }}
@@ -84,7 +83,6 @@ const NativeOptions = ({
         Custom
       </Label>
       <Switch
-        debug="verbose"
         id="native-toggle"
         nativeID="native-toggle"
         theme="active"

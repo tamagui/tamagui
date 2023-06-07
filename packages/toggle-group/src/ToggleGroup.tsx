@@ -1,7 +1,7 @@
 import { Scope, createContextScope } from '@tamagui/create-context'
 import { registerFocusable } from '@tamagui/focusable'
 import { getFontSize } from '@tamagui/font-size'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSize } from '@tamagui/get-token'
 import { Group, GroupProps, useGroupItem } from '@tamagui/group'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-focus'
@@ -70,16 +70,20 @@ const ToggleGroupItem = ToggleFrame.extractable(
       const groupItemProps = useGroupItem({ disabled })
       const size = props.size ?? context.size
 
-      const sizeProps: Record<string, any> = {
-        width: undefined,
-        height: undefined,
-        padding: getVariableValue(size) * 0.6,
-      }
+      const sizeProps: Record<string, any> = props.unstyled
+        ? {}
+        : {
+            width: undefined,
+            height: undefined,
+            padding: getVariableValue(size) * 0.6,
+          }
 
-      if (props.orientation === 'horizontal') {
-        sizeProps.height = getVariableValue(size) * 2.4
-      } else {
-        sizeProps.width = getVariableValue(size) * 2.4
+      if (!props.unstyled) {
+        if (props.orientation === 'horizontal') {
+          sizeProps.height = getVariableValue(size) * 2.4
+        } else {
+          sizeProps.width = getVariableValue(size) * 2.4
+        }
       }
 
       const iconSize = (typeof size === 'number' ? size * 0.7 : getFontSize(size)) * 1.2
@@ -101,23 +105,31 @@ const ToggleGroupItem = ToggleFrame.extractable(
         <ToggleGroupItemProvider scope={__scopeToggleGroup}>
           {context.rovingFocus ? (
             <RovingFocusGroup.Item
-              asChild
+              asChild="except-style"
               {...rovingFocusGroupScope}
               focusable={!disabled}
               active={pressed}
             >
               <ToggleFrame
-                asChild
+                asChild="except-style"
                 focusable={!disabled}
                 disabled={disabled}
                 ref={ref}
-                {...groupItemProps}
               >
-                <ToggleGroupItemImpl {...commonProps} ref={forwardedRef} />
+                <ToggleGroupItemImpl
+                  {...commonProps}
+                  ref={forwardedRef}
+                  {...groupItemProps}
+                />
               </ToggleFrame>
             </RovingFocusGroup.Item>
           ) : (
-            <ToggleFrame asChild focusable={!disabled} disabled={disabled} ref={ref}>
+            <ToggleFrame
+              asChild="except-style"
+              focusable={!disabled}
+              disabled={disabled}
+              ref={ref}
+            >
               <ToggleGroupItemImpl {...commonProps} ref={forwardedRef} />
             </ToggleFrame>
           )}
@@ -431,7 +443,9 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         ...toggleGroupProps,
       }
       const adjustedSize = getVariableValue(
-        stepTokenUpOrDown('size', props.size, sizeAdjust)
+        getSize(props.size, {
+          shift: sizeAdjust,
+        })
       )
       const size = Math.round(adjustedSize * 0.45)
 
@@ -444,7 +458,7 @@ const ToggleGroupImpl = ToggleGroupImplElementFrame.extractable(
         >
           {rovingFocus ? (
             <RovingFocusGroup
-              asChild
+              asChild="except-style"
               {...rovingFocusGroupScope}
               orientation={orientation}
               dir={direction}
@@ -480,6 +494,6 @@ export { ToggleGroup, createToggleGroupScope }
 export type {
   ToggleGroupItemProps,
   ToggleGroupMultipleProps,
-  ToggleGroupSingleProps,
   ToggleGroupProps,
+  ToggleGroupSingleProps,
 }

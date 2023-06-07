@@ -1,9 +1,9 @@
-import { getSize, stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSpace } from '@tamagui/get-token'
 import type { SizeTokens, VariantSpreadExtras } from '@tamagui/web'
 
 export const getButtonSized = (
   val: SizeTokens | number,
-  { tokens }: VariantSpreadExtras<any>
+  { tokens }: VariantSpreadExtras<{}>
 ) => {
   if (typeof val === 'number') {
     return {
@@ -12,12 +12,11 @@ export const getButtonSized = (
       borderRadius: val * 0.2,
     }
   }
-  const ySize = getSize(val, 0)
-  const xSize = stepTokenUpOrDown('space', val)
+  const xSize = getSpace(val)
   const radiusToken = tokens.radius[val] ?? tokens.radius['$true']
   return {
     paddingHorizontal: xSize,
-    height: ySize,
+    height: val,
     borderRadius: radiusToken,
   }
 }

@@ -1,6 +1,7 @@
 import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent'
+import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/extendStaticConfig'
 import { ReactNativeStaticConfigs } from './setupReactNative'
 import type {
@@ -51,6 +52,7 @@ export function styled<
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
+    context?: StyledContext
     acceptsClassName?: boolean
   },
   staticExtractionOptions?: Partial<StaticConfig>
@@ -96,6 +98,7 @@ export function styled<
         name,
         defaultVariants,
         acceptsClassName: acceptsClassNameProp,
+        context,
         ...defaultProps
       } = options
 
@@ -144,11 +147,12 @@ export function styled<
         isReactNative,
         isText,
         acceptsClassName,
+        context,
         ...nativeConf,
       }
 
       // bail on non className views as well
-      if (defaultProps.children || !acceptsClassName) {
+      if (defaultProps.children || !acceptsClassName || context) {
         conf.neverFlatten = true
       }
 

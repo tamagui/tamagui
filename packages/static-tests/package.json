@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.27.3",
+  "version": "1.31.1",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
@@ -18,29 +18,29 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/plugin-syntax-typescript": "^7.18.6",
-    "@babel/types": "^7.19.4",
+    "@babel/plugin-syntax-typescript": "^7.21.4",
+    "@babel/types": "^7.21.5",
     "@dish/babel-preset": "^0.0.6",
-    "@tamagui/test-design-system": "1.27.3",
+    "@tamagui/test-design-system": "1.31.1",
     "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
     "@types/node": "^16.11.9",
     "@types/webpack": "^4.41.26",
-    "babel-loader": "^8.2.5",
-    "css-loader": "^5.2.4",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.4",
     "dedent": "^0.7.0",
     "esbuild-loader": "^3.0.1",
     "null-loader": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native-web": "^0.18.10",
+    "react-native-web": "^0.19.4",
     "react-test-renderer": "^18.2.0",
-    "style-loader": "^3.3.1",
-    "typescript": "^5.0.4",
+    "style-loader": "^3.3.3",
+    "typescript": "^5.1.3",
     "vitest": "^0.26.3",
-    "webpack": "^5.74.0"
+    "webpack": "^5.83.1"
   },
   "peerDependencies": {
     "react-native-web": "*"

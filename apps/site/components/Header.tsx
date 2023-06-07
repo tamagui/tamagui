@@ -1,14 +1,16 @@
 import { ThemeToggle } from '@components/ThemeToggle'
+import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Menu } from '@tamagui/lucide-icons'
+import { Menu, User } from '@tamagui/lucide-icons'
+import { useUser } from 'hooks/useUser'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
   Button,
   Paragraph,
-  ParagraphProps,
   Popover,
   Separator,
   Text,
@@ -51,46 +53,66 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        className={`ease-out all ms200 ${
-          isScrolled ? 'blur-light hover-highlights ' : ''
-        }`}
-        bbc="$borderColor"
-        zi={50000}
         // @ts-ignore
         pos="fixed"
         top={0}
-        my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? '$1' : 0}
-        py={isScrolled ? '$0' : '$2'}
+        ai="center"
+        jc="center"
+        zi={50000}
+        $gtSm={{
+          px: '$4',
+        }}
       >
-        <YStack o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
-        <ContainerLarge>
-          <ThemeTint>
-            {React.useMemo(
-              () => (
-                <HeaderContents floating {...props} />
-              ),
-              [props]
-            )}
-          </ThemeTint>
-        </ContainerLarge>
+        <XStack
+          className={`ease-out all ms200 ${
+            isScrolled ? 'blur-medium hover-highlights ' : ''
+          }`}
+          bbc="$borderColor"
+          py="$1"
+          y={3}
+          ov="hidden"
+          width="100%"
+          br="$10"
+          bw={1}
+          boc="transparent"
+          maw={1120}
+          {...(isScrolled && {
+            $gtSm: {
+              py: '$2',
+              y: 5,
+              elevation: '$3',
+              boc: '$borderColor',
+            },
+          })}
+        >
+          <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
+          <ContainerLarge>
+            <ThemeTint>
+              {React.useMemo(
+                () => (
+                  <HeaderContents floating {...props} />
+                ),
+                [props]
+              )}
+            </ThemeTint>
+          </ContainerLarge>
+        </XStack>
       </XStack>
       <YStack height={54} w="100%" />
     </>
   )
 }
 
-const tooltipDelay = { open: 3000, close: 100 }
+const tooltipDelay = { open: 500, close: 150 }
 
 export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isInSubApp =
-    router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
+  const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
-  // const user = useUser()
+  const userSwr = useUser()
 
   return (
     <XStack
@@ -117,9 +139,11 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <TooltipGroup delay={tooltipDelay}>
           <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
-            </XGroup.Item>
+            {!isTakeout && (
+              <XGroup.Item>
+                <ThemeToggle borderWidth={0} chromeless />
+              </XGroup.Item>
+            )}
             <XGroup.Item>
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
@@ -129,9 +153,15 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="$2" br="$10" elevation="$4" />
+        <SearchButton
+          size="$2"
+          br="$10"
+          elevation="$1"
+          shadowRadius={6}
+          shadowOpacity={0.0025}
+        />
 
-        <YStack paddingStart={200}>
+        <YStack $xs={{ display: 'none' }}>
           <SponsorButton tiny />
         </YStack>
       </XStack>
@@ -172,54 +202,47 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <XStack ai="center" space="$3">
           <HeaderLinks {...props} />
 
-          <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-            <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
-              <VisuallyHidden>
-                <Text>Github</Text>
-              </VisuallyHidden>
-              <GithubIcon width={23} />
-            </YStack>
-          </NextLink>
+          {userSwr.data?.userDetails && props.showAuth ? (
+            <XStack ai="center" space="$2">
+              <NextLink href="/account">
+                <Avatar circular size="$2">
+                  <Avatar.Image
+                    source={{
+                      uri:
+                        userSwr.data.userDetails?.avatar_url ??
+                        getDefaultAvatarImage(
+                          userSwr.data?.userDetails?.full_name ??
+                            userSwr.data?.session?.user?.email ??
+                            'User'
+                        ),
+                    }}
+                  />
+                </Avatar>
+              </NextLink>
+            </XStack>
+          ) : (
+            <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
+              <TooltipSimple delay={0} restMs={25} label="Star on Github">
+                <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={23} />
+                </YStack>
+              </TooltipSimple>
+            </NextLink>
+          )}
 
           <SmallMenu />
         </XStack>
-        {/* 
-          <XStack ai="center" space="$2">
-            {user.user ? (
-              <Avatar circular size="$2">
-                <Avatar.Image src={user.user.user_metadata.avatar_url} />
-              </Avatar>
-            ) : (
-              <NextLink href="/login">
-                <Paragraph
-                  fontFamily="$silkscreen"
-                  px="$3"
-                  py="$2"
-                  cursor="pointer"
-                  size="$3"
-                  o={0.7}
-                  hoverStyle={{ opacity: 1 }}
-                  $xxs={{
-                    display: 'none',
-                  }}
-                >
-                  Login
-                </Paragraph>
-              </NextLink>
-            )}
-
-            <NextLink href="/takeout/purchase">
-              <Button fontFamily="$silkscreen" size="$3">
-                Purchase
-              </Button>
-            </NextLink>
-          </XStack> */}
       </XStack>
     </XStack>
   )
 })
 
-const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
+const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
+  const userSwr = useUser()
+  // there is user context and supabase setup in the current page
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation">
@@ -242,18 +265,32 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      {/* <NextLink prefetch={false} href="/takeout">
-        <TooltipSimple delay={0} restMs={25} label="Takeout">
+      {showAuth && !userSwr.data?.session?.user && (
+        <NextLink prefetch={false} href="/login">
           <HeadAnchor
-            size="$8"
-            $sm={{
+            $md={{
               display: forceShowAllLinks ? 'flex' : 'none',
             }}
           >
-            🥡
+            Login
           </HeadAnchor>
-        </TooltipSimple>
-      </NextLink> */}
+        </NextLink>
+      )}
+
+      {process.env.NODE_ENV === 'development' && (
+        <NextLink prefetch={false} href="/takeout">
+          <TooltipSimple delay={0} restMs={25} label="Takeout">
+            <HeadAnchor
+              size="$8"
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              🥡
+            </HeadAnchor>
+          </TooltipSimple>
+        </NextLink>
+      )}
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
@@ -277,7 +314,7 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 }
 
 const SmallMenu = React.memo(() => {
-  const { router, open, setOpen } = useDocsMenu()
+  const { open, setOpen } = useDocsMenu()
 
   return (
     <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
@@ -285,6 +322,10 @@ const SmallMenu = React.memo(() => {
         <Button
           size="$3"
           chromeless
+          circular
+          hoverStyle={{
+            bc: 'transparent',
+          }}
           noTextWrap
           onPress={() => setOpen(!open)}
           theme={open ? 'alt1' : undefined}
@@ -335,6 +376,8 @@ const SmallMenu = React.memo(() => {
             // display={open ? 'flex' : 'none'}
           >
             <HeaderLinks forceShowAllLinks />
+            <Separator my="$4" w="100%" />
+            <SponsorButton />
             <Separator my="$4" w="100%" />
             <DocsMenuContents />
           </YStack>

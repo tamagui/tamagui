@@ -20,7 +20,6 @@ const StyledImage = styled(RNImage, {
   name: 'Image',
   position: 'relative',
   source: { uri: '' },
-  zIndex: 1,
 })
 
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {

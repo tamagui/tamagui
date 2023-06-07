@@ -1,47 +1,14 @@
+
+- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
+
+- doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
+
 - add just early return hooks eslint check
-- Popover.Close working inside Adapt Sheet
-- shadowOpacity not being applied
-
-
-
-```tsx
-const ButtonVariant = createVariantProvider<{ size: SizeTokens }>()
-
-const ButtonFrame = styled(Stack, {
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-const ButtonText = styled(Stack, 
-  variantProvider: ButtonVariant,
-  variants: {
-    
-    size: {
-      '...size': (val) => {
-        return // ... val will come automatically from context
-      }
-    }
-  }
-})
-
-export const SomeExampleButton = (props: { size: SizeTokens }) => (
-  <ButtonVariant size={props.size}>
-    <ButtonFrame>
-      <ButtonText />
-    </ButtonFrame>
-  </ButtonVariant>
-)
-```
+- Sheet.Close, Sheet imperative close
 
 high level:
 
+  - automate sponsors a bit better (link discord on tamagui site)
   - private canary packages on github
   - tiered line system for studio
   - improve tests and docs
@@ -52,12 +19,55 @@ high level:
   - income:
     - font packages + font package builder ui
     - merch
-    - outlined theme
-    - other theme drops (gumroad cheap)
+    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
     - auth/account/profile drop
     - better monorepo pro drop
 
 ---
+
+via #gwun:
+
+- if you have light_blue_Button but no light_blue theme, causes update issues when you switch
+
+- defining a theme and componentName on a Stack/View should make the instantiated components inside inherit:
+
+  ```tsx
+  <Theme name=(theme}>
+    <YStack
+      theme="none"
+      componentName="GaContainer"
+      backgroundColor="$background"?
+      <GaScrollView bg="$backgroundSoft"›
+      </GaScrollView>
+    </YStack>
+  </Theme>
+  ```
+
+  After upgrading to latest, just on native, the "$background" in the
+  YStack works as expected but the child <GaScrollView
+  bg="$backgroundSoft" does not. Same applies if replaced with a
+  <Stack> or anv other component.
+
+- <Theme name="blue"><Theme reset><Button theme="orange" /></Theme></Theme>
+
+something like this i believe, where native is correct but web the button isn't orange
+
+
+---
+
+- $web / $native / $ios / $android
+
+starter
+- feed
+- more work on profile
+- cropper on web, potentially
+- add users to github repo
+- template github action
+
+takeout
+- checkout
+- page for showing all purchased products / subscriptions
+- discord integration
 
 studio
 - templates working
@@ -92,16 +102,12 @@ Ali todos:
       - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
   - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
 
----
-
-2.0
-
-- deprecate `:number` other type variants
-- Text shouldn't have `selectable` / `ellipse` custom stuff?
 
 ---
 
 # Backlog
+
+
 
 - if you change webpack config to alias RN to RNW (not lite) one animation test fails
 
@@ -161,7 +167,9 @@ a package.json etc etc + zip file
   - output nice message
 
 - $web / $native make them work as media queries
-- $dark / $light to make adjustments based on mode
+
+- theme based "media queries" automatically:
+  - $dark / $light but could be any theme?
 
 - '> Child' descendent queries
   - only with css driver it can extract to css
@@ -283,10 +291,10 @@ Ali:
 - in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
   - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
     - we could have a generic ComponentContext internally in createComponent
-    - we can export a createVariantContext()
-    - `const CardVariants = createVariantContext<{ size: number }>()`
+    - we can export a createStyledContext()
+    - `const CardVariants = createStyledContext<{ size: number }>()`
     - then in Card or any parent you can do `<CardVariants size={} />`
-    - finally, in `styled({ variantContext: CardVariants })`
+    - finally, in `styled({ provider: CardVariants })`
 
     <CardVariants.Provider size="$10">
       <Card />
@@ -396,6 +404,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- remove from web (can keep in core or make pluggable):
+  - themeable
+  - space
+  - can have an env setting to exclude all the theme generation stuff if you are using the pre-build: `getThemeCSSRules`
 - replace all RN stuff left in tamagui: Image, Input, Spinner, etc
 - Accessibility + RTL
 - tag="a" should get the typed props of a link
@@ -529,6 +541,103 @@ const SheetOverlay = styled(Sheet.Overlay, {
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
+
+---
+
+## Descendent Styles
+
+ideas:
+
+```tsx
+const Child = styled(Stack, {
+  $Parent: [
+    {
+      backgroundColor: 'green'
+    },
+    {
+      when: 'small',
+      backgroundColor: 'red',
+    },
+  ],
+})
+```
+
+```tsx
+styled(Stack, {
+  $sm$dark$Parent: { ... }
+})
+```
+
+```tsx
+const Child = styled(Stack, {
+  $sm: { ... },
+  $dark: { ... },
+  $Parent: { ... },
+  compounds: [
+    {
+       media: '$sm',
+       theme: 'dark',
+       parent: 'Parent',
+       styles: {
+          // ...
+       }
+    }
+  ]
+});
+```
+
+
+### On the parent:
+
+```tsx
+const ButtonFrame = styled(Stack, {
+  ButtonText: {
+    color: 'red',
+  },
+
+  hoverStyle: {
+    ButtonText: {
+      color: 'green'
+    }
+  },
+
+  $small: {
+    hoverStyle: {
+      ButtonText: {
+        color: 'blue'
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+})
+```
+
+### On the child:
+
+```tsx
+const ButtonFrame = styled(Stack, {})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+
+  in_ButtonFrame: {
+    color: 'red',
+
+    hoverStyle: {
+      color: 'green',
+    },
+
+    $small: {
+      hoverStyle: {
+        color: 'blue'
+      }
+    }
+  },
+})
+```
 
 ---
 

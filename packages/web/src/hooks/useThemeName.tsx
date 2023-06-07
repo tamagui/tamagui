@@ -10,6 +10,7 @@ export function useThemeName(opts?: { parent?: true }): ThemeName {
     const config = getConfig()
     return config.themes[Object.keys(config.themes)[0]] as any
   }
+
   const manager = useContext(ThemeManagerContext)
   const [name, setName] = useState(manager?.state.name || '')
 

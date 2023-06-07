@@ -17,3 +17,17 @@ export function useDidFinishSSR() {
 
   return did
 }
+
+export function useClientValue<Value extends any>(value?: Value): Value | undefined {
+  if (isServer || isRSC) {
+    return undefined
+  }
+
+  const [v, setV] = useState<Value | undefined>(undefined)
+
+  useIsomorphicLayoutEffect(() => {
+    setV(value)
+  }, [])
+
+  return v
+}

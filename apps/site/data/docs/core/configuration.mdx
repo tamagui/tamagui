@@ -11,12 +11,15 @@ You can use `@tamagui/config` a totally complete config out of the box, the same
 
 ```tsx
 import { config } from '@tamagui/config'
-import * as ReactNative from 'react-native'
+import { Text, View } from 'react-native'
 import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 
 // if using only @tamagui/core with `react-native` components
-// if using `tamagui` this isn't necessary
-setupReactNative(ReactNative)
+// if using `tamagui` this isn't necessary as it does this setup for you (for most components)
+setupReactNative({
+  Text,
+  View,
+})
 
 const appConfig = createTamagui(config)
 
@@ -58,6 +61,18 @@ export default appConfig
 ```
 
 Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom design library, be sure the import of `createTamagui` and `declare module` type matches to the one you're using.
+
+### Customizing themes
+
+A lot of people want to use the Tamagui themes as the base, but then customize specific pieces. For this, we recommend literally installing `@tamagui/create-theme` and then [copy-pasting the source of `@tamagui/themes` somewhere near your tamagui.config.ts](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes.tsx).
+
+The file uses our `create-theme` package which isn't documented yet but has somewhat simple source you can check out and it gives you a really complete example of building out a suite of themes, sub-themes, and component themes that you can fork or change to your taste.
+
+<Notice>
+  We highly recommend you don't get bogged down in customizing themes too early. It's
+  better to get used to Tamagui with the quick start, get a feel for how themes work, and
+  then go in and customize.
+</Notice>
 
 ## Overview
 
@@ -167,7 +182,7 @@ const config = createTamagui({
   // optional:
 
   // add custom shorthand props
-  // note: as const in important, without it you may see breaking types
+  // note: as const is important, without it you may see breaking types
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
@@ -213,7 +228,7 @@ export const tokens = createTokens({
     true: 30, // note true = 30 just like medium, your default size token
     large: 40,
   },
-   space: {
+  space: {
     small: 10,
     medium: 20,
     true: 20, // same goes for space and other token categories
@@ -283,12 +298,22 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
-If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js), there are also docs for app directory and RSC support.
+Note that you can optimize this a bit by generating your CSS at build-time and then avoiding generating it on the client. This is covered in the Next.js Guide as it gives a good example of how to put all the pieces together properly, but you can apply it to any other framework.
+
+If using Next.js, [see the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
   `react-native-web` style tags to ensure Tamagui can override the built-in styles.
 </Notice>
+
+### Including the reset css
+
+There is an optional CSS reset that helps normalize styling, you can import it into your app like so:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
 
 ### Setup media query driver
 
@@ -532,6 +557,11 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
 
 <PropsTable
   data={[
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+    },
     {
       name: 'mediaQueryDefaultActive',
       required: false,

@@ -1,8 +1,11 @@
-import { GetProps, styled } from '@tamagui/core'
-import { focusableInputHOC } from '@tamagui/focusable'
+import { styled } from '@tamagui/core'
 
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
-import { InputFrame, defaultStyles } from './Input'
+import { InputFrame, InputProps, defaultStyles, useInputProps } from './Input'
+
+/**
+ * Is basically Input but with numberOfLines = 4 to start
+ */
 
 export const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
@@ -27,6 +30,9 @@ export const TextAreaFrame = styled(InputFrame, {
   },
 })
 
-export type TextAreaProps = GetProps<typeof TextArea>
+export type TextAreaProps = InputProps
 
-export const TextArea = focusableInputHOC(TextAreaFrame)
+export const TextArea = TextAreaFrame.styleable<InputProps>((propsIn, ref) => {
+  const props = useInputProps(propsIn, ref)
+  return <TextAreaFrame {...props} />
+})

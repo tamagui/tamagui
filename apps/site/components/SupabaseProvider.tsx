@@ -3,9 +3,11 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
   SessionContextProviderProps,
+  useSession,
+  useSupabaseClient,
 } from '@supabase/auth-helpers-react'
-import { MyUserContextProvider } from 'hooks/useUser'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSWRConfig } from 'swr'
 
 export const SupabaseProvider = ({
   initialSession,
@@ -35,7 +37,30 @@ export const SupabaseProvider = ({
       initialSession={initialSession}
       supabaseClient={supabaseClient}
     >
-      <MyUserContextProvider>{children}</MyUserContextProvider>
+      <SupabaseInside>{children}</SupabaseInside>
     </SessionContextProvider>
   )
+}
+
+const SupabaseInside = ({ children }: { children: React.ReactNode }) => {
+  const supabase = useSupabaseClient()
+  const session = useSession()
+  const swrClient = useSWRConfig()
+
+  useEffect(() => {
+    const listener = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      console.log(event, currentSession)
+      if (event === 'SIGNED_IN') {
+        if (session?.user.id === currentSession?.user.id) {
+          return
+        }
+        await fetch('/api/github-sync', { method: 'POST' })
+      }
+
+      await swrClient.mutate('user')
+    })
+    return () => listener.data.subscription.unsubscribe()
+  }, [session])
+
+  return <>{children}</>
 }

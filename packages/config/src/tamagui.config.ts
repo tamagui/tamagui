@@ -2,7 +2,6 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
-import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
@@ -96,6 +95,7 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
+  defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
@@ -113,10 +113,13 @@ export const config = {
 }
 
 // @ts-ignore
-config.selectionStyles = (theme) => ({
-  backgroundColor: theme.color5,
-  color: theme.color11,
-})
+config.selectionStyles = (theme) =>
+  theme.color5
+    ? {
+        backgroundColor: theme.color5,
+        color: theme.color11,
+      }
+    : null
 
 // @ts-ignore bad types
 config.mediaQueryDefaultActive = mediaQueryDefaultActive

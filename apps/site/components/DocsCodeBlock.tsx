@@ -1,25 +1,10 @@
-import {
-  CheckCircle,
-  Clipboard,
-  Film,
-  Paintbrush,
-  Timer,
-  Waves,
-} from '@tamagui/lucide-icons'
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import { CheckCircle, Clipboard, Paintbrush } from '@tamagui/lucide-icons'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H6,
-  SizableText,
-  Switch,
-  Text,
-  TooltipSimple,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
-import { setTinted, toggleTinted } from '../hooks/setTinted'
+import { toggleTinted } from '../hooks/setTinted'
 import { useClipboard } from '../lib/useClipboard'
 import { Code } from './Code'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -30,18 +15,23 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     className,
     children,
     id,
-    showLineNumbers = false,
     isHero = false,
-    isCollapsible = false,
     isHighlightingLines,
+    showLineNumbers: showLineNumbersIn,
     disableCopy,
     size,
     ...rest
   } = props
-  const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
+  const lines = Array.isArray(children) ? children.length : 0
+  const isCollapsible = isHero || props.isCollapsible
+  const [isCollapsed, setIsCollapsed] = useState(isCollapsible)
+  const isLong = lines > 22
+  const [isCutoff, setIsCutoff] = useState(isLong && !isCollapsible)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
   const { hasCopied, onCopy, value } = useClipboard(code)
+  const showLineNumbers = showLineNumbersIn ?? (lines > 10 ? true : false)
+
   // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {
@@ -107,7 +97,32 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
         )}
 
         {(!isCollapsed || !isCollapsible) && (
-          <YStack position="relative">
+          <YStack
+            position="relative"
+            {...(isCutoff && {
+              maxHeight: 400,
+              ov: 'hidden',
+              br: '$4',
+            })}
+          >
+            {isCutoff && (
+              <LinearGradient
+                pos="absolute"
+                b={0}
+                l={0}
+                r={0}
+                height={200}
+                colors={['$backgroundTransparent', '$background']}
+                zi={1000}
+              >
+                <Spacer f={1} />
+                <Button onPress={() => setIsCutoff(!isCutoff)} als="center">
+                  Show more
+                </Button>
+                <Spacer size="$4" />
+              </LinearGradient>
+            )}
+
             <Pre
               ref={preRef}
               data-invert-line-highlight={isHighlightingLines}
@@ -130,8 +145,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   backgroundColor="transparent"
                   f={1}
                   className={className}
-                  size={size ?? '$4'}
-                  lineHeight={size ?? '$4'}
+                  size={size ?? '$5'}
+                  lineHeight={size ?? '$5'}
                   {...rest}
                 >
                   {children}

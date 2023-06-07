@@ -1,7 +1,6 @@
 /// <reference types="react" />
-type ColorScheme = 'dark' | 'light';
+import { ColorScheme } from './types';
 export declare const useRootTheme: ({ fallback }?: {
     fallback?: ColorScheme | undefined;
 }) => readonly [ColorScheme, import("react").Dispatch<import("react").SetStateAction<ColorScheme>>];
-export {};
 //# sourceMappingURL=useRootTheme.d.ts.map

@@ -1,11 +1,11 @@
-import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { NextSeo } from 'next-seo'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
 
@@ -29,12 +29,20 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
     <TamaguiExamples.Provider value={examples}>
-      <TitleAndMetaTags
+      <NextSeo
         title={`${frontmatter.title} — Tamagui`}
-        image={getOgUrl('default', {
-          title: frontmatter.title,
-          description: frontmatter.description ?? '',
-        })}
+        description={frontmatter.description}
+        openGraph={{
+          images: [
+            {
+              url: getOgUrl('default', {
+                title: frontmatter.title,
+                description: frontmatter.description ?? '',
+                category: 'intro',
+              }),
+            },
+          ],
+        }}
       />
       <HomeH1>{nbspLastWord(frontmatter.title)}</HomeH1>
       <Spacer size="$1" />
@@ -47,7 +55,7 @@ export default function DocIntroPage({ frontmatter, code, examples }: Doc) {
   )
 }
 
-DocIntroPage.getLayout = getDocLayout
+DocIntroPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/intro')

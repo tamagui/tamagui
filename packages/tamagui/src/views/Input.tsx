@@ -1,12 +1,12 @@
 import {
   ColorStyleProp,
   GetProps,
-  ModifyTamaguiComponentStyleProps,
   setupReactNative,
   styled,
+  useTheme,
 } from '@tamagui/core'
-import { focusableInputHOC } from '@tamagui/focusable'
-import { ColorValue, TextInput } from 'react-native'
+import { useFocusable } from '@tamagui/focusable'
+import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
 
@@ -23,7 +23,6 @@ export const defaultStyles = {
   focusable: true,
   borderColor: '$borderColor',
   backgroundColor: '$background',
-  placeholderTextColor: '$placeholderColor',
 
   // this fixes a flex bug where it overflows container
   minWidth: 0,
@@ -40,7 +39,7 @@ export const defaultStyles = {
   },
 } as const
 
-const InputFramePreTyped = styled(
+export const InputFrame = styled(
   TextInput,
   {
     name: 'Input',
@@ -64,15 +63,34 @@ const InputFramePreTyped = styled(
   }
 )
 
-type InputFrameType = ModifyTamaguiComponentStyleProps<
-  typeof InputFramePreTyped,
-  {
-    placeholderTextColor?: ColorStyleProp | ColorValue
+export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
+  placeholderTextColor?: ColorStyleProp
+}
+
+export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
+  const props = useInputProps(propsIn, ref)
+  return <InputFrame {...props} />
+})
+
+export function useInputProps(props: InputProps, ref: any) {
+  const theme = useTheme()
+  const { onChangeText, ref: combinedRef } = useFocusable({
+    props,
+    ref,
+    isInput: true,
+  })
+
+  const placeholderTextColor =
+    typeof props.placeholderTextColor !== 'string'
+      ? props.placeholderTextColor
+      : theme[props.placeholderTextColor]?.get() ||
+        props.placeholderTextColor ||
+        (props.unstyled ? null : theme['$placeholderColor']?.get())
+
+  return {
+    ref: combinedRef,
+    ...props,
+    placeholderTextColor,
+    onChangeText,
   }
->
-
-export const InputFrame = InputFramePreTyped as InputFrameType
-
-export type InputProps = GetProps<InputFrameType>
-
-export const Input = focusableInputHOC(InputFrame)
+}

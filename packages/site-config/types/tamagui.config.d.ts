@@ -1,5 +1,8 @@
 export * from './animations';
+export declare const gluspFont: import("@tamagui/web").GenericFont;
+export declare const munroFont: import("@tamagui/web").GenericFont;
 export declare const config: {
+    defaultFont: string;
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
     animations: import("@tamagui/web").AnimationDriver<{
@@ -52060,8 +52063,8 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        heading: import("@tamagui/web").GenericFont;
+        body: import("@tamagui/web").GenericFont;
         mono: {
             weight: {
                 1: string;
@@ -52086,8 +52089,8 @@ export declare const config: {
             };
         };
         silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        glusp: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        munro: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        glusp: import("@tamagui/web").GenericFont;
+        munro: import("@tamagui/web").GenericFont;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

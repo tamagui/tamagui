@@ -61,7 +61,7 @@ let isBundling = false
 let lastBundle: BundledConfig | null = null
 const waitForBundle = new Set<Function>()
 
-export async function hasBundledConfigChanged() {
+export function hasBundledConfigChanged() {
   if (lastBundle === currentBundle) {
     return false
   }
@@ -140,7 +140,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       colorLog(
         Color.FgYellow,
         `
-        Tamagui built config and components (${Date.now() - start}ms):`
+    ➡ [tamagui] (${Date.now() - start}ms):`
       )
       colorLog(
         Color.Dim,
@@ -161,7 +161,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     try {
       out = require(configOutPath)
     } catch (err) {
-      // rome-ignore lint/nursery/noUselessCatch: <explanation>
+      // rome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
     } finally {
       unregister()

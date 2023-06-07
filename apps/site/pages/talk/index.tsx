@@ -1,4 +1,4 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
@@ -67,7 +67,7 @@ export default function TamaguiTalk() {
 
   return (
     <YStack {...slideDimensions}>
-      <TitleAndMetaTags title="Tamagui App.js Talk" description="Tamagui App.js Talk" />
+      <NextSeo title="Tamagui App.js Talk" description="Tamagui App.js Talk" />
       <XStack pos="absolute" t="$0" l="$0" r="$0" p="$4" zi={1000}>
         <YStack>
           <TamaguiLogo y={15} x={10} downscale={2} />

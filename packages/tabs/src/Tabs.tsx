@@ -50,7 +50,7 @@ const TabsList = TabsListFrame.extractable(
 
       return (
         <RovingFocusGroup
-          asChild
+          asChild="except-style"
           orientation={context.orientation}
           dir={context.dir}
           loop={loop}
@@ -60,6 +60,7 @@ const TabsList = TabsListFrame.extractable(
             role="tablist"
             aria-orientation={context.orientation}
             ref={forwardedRef}
+            orientation="horizontal"
             axis={context.orientation}
             {...listProps}
           >
@@ -198,7 +199,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
       return (
         <Theme name={isSelected ? 'active' : null}>
           <RovingFocusGroup.Item
-            asChild
+            asChild="except-style"
             {...rovingFocusGroupScope}
             focusable={!disabled}
             active={isSelected}
@@ -226,6 +227,7 @@ const TabsTrigger = TabsTriggerFrame.extractable(
               id={triggerId}
               // @ts-ignore
               size={context.size}
+              {...groupItemProps}
               {...triggerProps}
               ref={composeRefs(forwardedRef, triggerRef)}
               onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
@@ -269,7 +271,6 @@ const TabsTrigger = TabsTriggerFrame.extractable(
                   onInteraction?.('focus', null)
                 }),
               })}
-              {...groupItemProps}
             />
           </RovingFocusGroup.Item>
         </Theme>

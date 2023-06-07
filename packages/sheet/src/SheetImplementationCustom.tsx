@@ -48,6 +48,7 @@ export const SheetImplementationCustom = themeable(
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
+      unmountChildrenWhenHidden = false,
       portalProps,
     } = props
 
@@ -57,8 +58,16 @@ export const SheetImplementationCustom = themeable(
     const providerProps = useSheetProviderProps(props, state, {
       onOverlayComponent: setOverlayComponent,
     })
-    const { frameSize, setFrameSize, snapPoints, position, setPosition, scrollBridge } =
-      providerProps
+    const {
+      frameSize,
+      setFrameSize,
+      snapPoints,
+      position,
+      setPosition,
+      scrollBridge,
+      screenSize,
+      maxSnapPoint,
+    } = providerProps
     const { open, controller, isHidden } = state
 
     const sheetRef = useRef<View>(null)
@@ -73,9 +82,6 @@ export const SheetImplementationCustom = themeable(
     const onInnerSheet = useCallback((hasChild: boolean) => {
       setIsShowingInnerSheet(hasChild)
     }, [])
-
-    const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
-    const screenSize = frameSize / (maxSnapPoint / 100)
 
     const positions = useMemo(
       () => snapPoints.map((point) => getPercentSize(point, screenSize)),
@@ -105,9 +111,7 @@ export const SheetImplementationCustom = themeable(
     )
 
     const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
-
-    // native only fix
-    const at = useRef(0)
+    const at = useRef(HIDDEN_SIZE)
 
     useAnimatedNumberReaction(
       {
@@ -129,35 +133,55 @@ export const SheetImplementationCustom = themeable(
       }
     }
 
+    const hasntMeasured = at.current === HIDDEN_SIZE
+
     const animateTo = useEvent((position: number) => {
-      const current = animatedNumber.getValue()
-      if (isHidden && open) return
-      if (!current) return
       if (frameSize === 0) return
-      const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : screenSize
-      const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
+
+      let toValue =
+         isHidden || position === -1 ? screenSize : positions[position]
+
       if (at.current === toValue) return
+      at.current = toValue
+
       stopSpring()
-      if (isHidden) {
-        animatedNumber.setValue(toValue, {
+
+      if (hasntMeasured || isHidden) {
+        // first run, we need to set to screen size before running
+        animatedNumber.setValue(screenSize, {
           type: 'timing',
           duration: 0,
         })
+
+        if (isHidden) {
+          return
+        }
+
+        toValue = positions[position]
         at.current = toValue
-        return
       }
-      // dont bounce on initial measure to bottom
-      const overshootClamping = at.current === HIDDEN_SIZE
+
       animatedNumber.setValue(toValue, {
         ...animationConfig,
         type: 'spring',
-        overshootClamping,
       })
     })
 
     useIsomorphicLayoutEffect(() => {
+      if (screenSize && hasntMeasured) {
+        animatedNumber.setValue(screenSize, {
+          type: 'timing',
+          duration: 0,
+        })
+      }
+    }, [hasntMeasured, screenSize])
+
+    useIsomorphicLayoutEffect(() => {
+      if (!frameSize || isHidden || (hasntMeasured && !open)) {
+        return
+      }
       animateTo(position)
-    }, [isHidden, frameSize, position, animateTo])
+    }, [isHidden, frameSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
@@ -274,11 +298,15 @@ export const SheetImplementationCustom = themeable(
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        let next = e.nativeEvent?.layout.height
-        if (isWeb && isTouchable && !open) {
-          // temp fix ios bug where it doesn't go below dynamic bottom...
-          next += 100
-        }
+        const next = (() => {
+          let _ = e.nativeEvent?.layout.height
+          if (isWeb && isTouchable && !open) {
+            // temp fix ios bug where it doesn't go below dynamic bottom...
+            _ += 100
+          }
+          return _
+        })()
+
         if (!next) return
         setFrameSize(next)
       },
@@ -351,6 +379,7 @@ export const SheetImplementationCustom = themeable(
                 zIndex,
                 width: '100%',
                 height: `${maxSnapPoint}%`,
+                minHeight: `${maxSnapPoint}%`,
                 opacity,
               },
               animatedStyle,
@@ -364,14 +393,19 @@ export const SheetImplementationCustom = themeable(
 
     const adaptContext = useContext(AdaptParentContext)
 
+    // start mounted so we get an accurate measurement the first time
+    const shouldMountChildren = Boolean(opacity || !unmountChildrenWhenHidden)
+
     if (modal) {
       const modalContents = (
         <Portal zIndex={zIndex} {...portalProps}>
-          <Theme forceClassName name={themeName}>
-            <AdaptParentContext.Provider value={adaptContext}>
-              {contents}
-            </AdaptParentContext.Provider>
-          </Theme>
+          {shouldMountChildren && (
+            <Theme forceClassName name={themeName}>
+              <AdaptParentContext.Provider value={adaptContext}>
+                {contents}
+              </AdaptParentContext.Provider>
+            </Theme>
+          )}
         </Portal>
       )
 

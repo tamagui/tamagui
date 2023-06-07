@@ -1,4 +1,4 @@
-import { GetProps, StackProps, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
 import { FunctionComponent, RefAttributes } from 'react';
 import { View } from 'react-native';
 import { SheetProps, SheetScopedProps } from './types';
@@ -6,12 +6,12 @@ type SharedSheetProps = {
     open?: boolean;
 };
 type BaseProps = StackProps & SharedSheetProps;
-export type CreateSheetProps = {
-    Frame: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
-    Handle: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
-    Overlay: TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
-};
-export declare function createSheet({ Handle, Frame, Overlay }: CreateSheetProps): import("react").ForwardRefExoticComponent<{
+type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
+export declare function createSheet<H extends SheetStyledComponent | TamaguiComponent, F extends SheetStyledComponent | TamaguiComponent, O extends SheetStyledComponent | TamaguiComponent>({ Handle, Frame, Overlay }: {
+    Handle: H;
+    Frame: F;
+    Overlay: O;
+}): import("react").ForwardRefExoticComponent<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
     onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;
@@ -24,6 +24,7 @@ export declare function createSheet({ Handle, Frame, Overlay }: CreateSheetProps
     dismissOnSnapToBottom?: boolean | undefined;
     forceRemoveScrollEnabled?: boolean | undefined;
     animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
+    unmountChildrenWhenHidden?: boolean | undefined;
     native?: boolean | "ios"[] | undefined;
     animation?: import("@tamagui/core").AnimationProp | undefined;
     handleDisableScroll?: boolean | undefined;
@@ -36,12 +37,10 @@ export declare function createSheet({ Handle, Frame, Overlay }: CreateSheetProps
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & RefAttributes<View>> & {
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<View>> & {
-        Frame: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & SharedSheetProps & {
+        Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
             disableHideBottomOverflow?: boolean | undefined;
-        } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        } & RefAttributes<unknown>>;
-        Overlay: (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null;
+        }>> & RefAttributes<unknown>>;
+        Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
         ScrollView: import("react").ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
@@ -51,12 +50,10 @@ export declare function createSheet({ Handle, Frame, Overlay }: CreateSheetProps
             readonly fullscreen?: boolean | undefined;
         }>> & RefAttributes<import("@tamagui/core").TamaguiElement>>;
     };
-    Frame: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & SharedSheetProps & {
+    Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
         disableHideBottomOverflow?: boolean | undefined;
-    } & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    } & RefAttributes<unknown>>;
-    Overlay: (propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null;
+    }>> & RefAttributes<unknown>>;
+    Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
     ScrollView: import("react").ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;

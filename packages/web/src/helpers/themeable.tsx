@@ -20,18 +20,20 @@ export function themeable<Component extends (props: any) => any>(
 
     const element = React.createElement(component, { ...rest, ref } as any)
 
-    return (
+    let contents = (
       <Theme
-        inverse={themeInverse}
         componentName={componentName || staticConfig?.componentName}
         name={(theme as any) || null}
         disable-child-theme
         debug={props.debug}
+        inverse={themeInverse}
         reset={themeReset}
       >
         {element}
       </Theme>
     )
+
+    return contents
   })
 
   const withTheme: any = withThemeComponent

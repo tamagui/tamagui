@@ -26,8 +26,8 @@ export type ThemeManagerState = {
 
 const emptyState: ThemeManagerState = { name: '' }
 
-export function hasNoThemeUpdatingProps(props: ThemeProps) {
-  return !(props.name || props.componentName || props.inverse || props.reset)
+export function getHasThemeUpdatingProps(props: ThemeProps) {
+  return props.name || props.componentName || props.inverse || props.reset
 }
 
 let uid = 0
@@ -38,6 +38,7 @@ export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
+  scheme: 'light' | 'dark' | null = null
 
   constructor(
     public props: ThemeProps = {},
@@ -48,9 +49,7 @@ export class ThemeManager {
       return
     }
 
-    const parentManager = getNonComponentParentManager(parentManagerIn)
-
-    if (!parentManager) {
+    if (!parentManagerIn) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
@@ -60,19 +59,17 @@ export class ThemeManager {
     }
 
     // no change no props
-    if (hasNoThemeUpdatingProps(props)) {
-      return parentManager
+    if (!getHasThemeUpdatingProps(props)) {
+      return parentManagerIn
     }
 
-    if (parentManager) {
-      this.parentManager = parentManager
-    }
+    this.parentManager = parentManagerIn
 
     if (this.updateState(props, false)) {
       return
     }
 
-    return parentManager || this
+    return parentManagerIn || this
   }
 
   updateState(
@@ -98,6 +95,7 @@ export class ThemeManager {
       const lastName = names[names.length - 1][0]
       this.isComponent = lastName[0] === lastName[0].toUpperCase()
       this._allKeys = null
+      this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
 
       if (process.env.NODE_ENV === 'development') {
         this['_numChangeEventsSent'] ??= 0
@@ -192,24 +190,6 @@ export class ThemeManager {
 
 function getNextThemeClassName(name: string, props: ThemeProps) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
-  if (
-    props.inverse ||
-    props.forceClassName ||
-    // light and dark inverse each other so force classname
-    name === 'light' ||
-    name === 'dark'
-  ) {
-    // ensure you invert to base dark as well as specific dark
-    // ... logic should likely be elsewhere
-    const lessSpecificCN = props.componentName
-      ? ''
-      : next.includes('dark_')
-      ? ` t_dark`
-      : next.includes('light_')
-      ? ` t_light`
-      : ''
-    return next + lessSpecificCN
-  }
   return next.replace('light_', '').replace('dark_', '')
 }
 
@@ -217,7 +197,11 @@ function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
+  const validManagerAndAllComponentThemes = getNonComponentParentManager(parentManager)
+  parentManager = validManagerAndAllComponentThemes[0]
+  const allComponentThemes = validManagerAndAllComponentThemes[1]
   const themes = getThemes()
+  const isDirectParentAComponentTheme = allComponentThemes.length > 0
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
@@ -227,7 +211,7 @@ function getState(
     return null
   }
 
-  if (props.reset && !parentManager?.parentManager) {
+  if (props.reset && !isDirectParentAComponentTheme && !parentManager?.parentManager) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Cannot reset no grandparent exists')
     }
@@ -237,10 +221,24 @@ function getState(
   let result: ThemeManagerState | null = null
 
   const nextName = props.reset
-    ? parentManager?.parentManager?.state?.name || ''
+    ? isDirectParentAComponentTheme
+      ? parentManager?.state?.name || ''
+      : parentManager?.parentManager?.state?.name || ''
     : props.name || ''
   const { componentName } = props
-  const parentName = parentManager?.state?.name || ''
+  const parentName = props.reset
+    ? isDirectParentAComponentTheme
+      ? // here because parentManager already skipped componentTheme so we have to only go up once
+        parentManager?.parentManager?.state.name || ''
+      : parentManager?.parentManager?.parentManager?.state.name || ''
+    : isDirectParentAComponentTheme
+    ? allComponentThemes[0] || ''
+    : parentManager?.state.name || ''
+
+  if (props.reset && isDirectParentAComponentTheme) {
+    // skip nearest component theme
+    allComponentThemes.shift()
+  }
 
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
@@ -312,9 +310,8 @@ function getState(
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
-      potentials = [...componentPotentials, ...potentials]
+      potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
-
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
@@ -355,12 +352,14 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
   // example <Switch><Switch.Thumb /></Switch>
   // the Switch theme shouldn't be considered parent of Thumb
   let res = themeManager
+  let componentThemeNames: string[] = []
   while (res) {
     if (res?.isComponent) {
+      componentThemeNames.push(res?.state?.name!)
       res = res.parentManager
     } else {
       break
     }
   }
-  return res || null
+  return [res || null, componentThemeNames] as const
 }

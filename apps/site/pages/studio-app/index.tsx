@@ -1,3 +1,4 @@
+import { getStudioLayout } from "@lib/getStudioLayout"
 import AnimationsPage from '@protected/studio/(loaded)/(sponsor-protected)/animations/page'
 import ColorsPage from '@protected/studio/(loaded)/(sponsor-protected)/colors/page'
 import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/page'
@@ -6,9 +7,10 @@ import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/pa
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
 import { isLocal, siteRootDir } from '@protected/studio/constants'
 import LoadPage from '@protected/studio/load/page'
+import { rootStore } from '@protected/studio/state/RootStore'
+import { themesStore } from '@protected/studio/state/ThemesStore'
 import { Tab } from '@protected/studio/state/types'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { getStudioLayout } from '@tamagui/site/components/layouts/StudioLayout'
 import { useSelector } from '@tamagui/use-store'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
@@ -22,9 +24,6 @@ import React, {
   useTransition,
 } from 'react'
 import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
-
-import { rootStore } from '../../app/(protected)/studio/state/RootStore'
-import { themesStore } from '../../app/(protected)/studio/state/ThemesStore'
 
 export default function Page() {
   const hydrated = useDidFinishSSR()

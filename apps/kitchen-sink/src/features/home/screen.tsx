@@ -1,11 +1,7 @@
-import { Theme, getVariable, styled } from '@tamagui/core'
-import { SelectDemo } from '@tamagui/demos'
 import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
-import { setupNativeSheet } from '@tamagui/sheet'
-import { memo } from 'react'
 import { ScrollView } from 'react-native'
-import { ModalView } from 'react-native-ios-modal'
 import { UseLinkProps, useLink } from 'solito/link'
+// import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
@@ -17,22 +13,10 @@ import {
   Switch,
   YGroup,
   YStack,
-  updateTheme,
   useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useKitchenSinkTheme'
-
-setupNativeSheet('ios', ModalView)
-
-const SubComponent = memo(() => {
-  return (
-    <>
-      <Button>test me</Button>
-      <YStack w={100} h={100} bc="$background" />
-    </>
-  )
-})
 
 export function HomeScreen() {
   return (
@@ -41,28 +25,6 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Kitchen Sink
         </H1>
-
-        <Button
-          onPress={() => {
-            updateTheme({
-              name: 'light_Button',
-              theme: {
-                background: 'red',
-              },
-            })
-
-            updateTheme({
-              name: 'light',
-              theme: {
-                background: 'green',
-              },
-            })
-          }}
-        >
-          test
-        </Button>
-
-        <SubComponent />
 
         <YGroup size="$4">
           <YGroup.Item>
@@ -104,11 +66,16 @@ const LinkListItem = ({
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
   const theme = useTheme()
+
   return (
     <ListItem
       {...linkProps}
+      onPress={(e) => {
+        console.log(linkProps)
+        linkProps.onPress(e)
+      }}
       {...props}
-      iconAfter={<ChevronRight color={getVariable(theme.color11)} />}
+      iconAfter={<ChevronRight color={theme.color11.get()} />}
     >
       {children}
     </ListItem>
@@ -120,18 +87,17 @@ const ColorSchemeListItem = (props: ListItemProps) => {
   const checked = theme.value === 'light'
 
   return (
-    <ListItem
-      {...props}
-      pressTheme
-      paddingVertical={0}
-      onPress={() => {
-        theme.set(theme.value === 'dark' ? 'light' : 'dark')
-      }}
-    >
+    <ListItem {...props} pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
-      <Switch checked={checked}>
+      <Switch
+        native
+        checked={checked}
+        onCheckedChange={() => {
+          theme.set(theme.value === 'dark' ? 'light' : 'dark')
+        }}
+      >
         <Switch.Thumb
           animation={[
             'quick',
@@ -149,6 +115,15 @@ const ColorSchemeListItem = (props: ListItemProps) => {
 }
 
 const demos = [
+  {
+    pages: [
+      { title: 'Sandbox', route: '/sandbox' },
+      {
+        title: 'Test Cases',
+        route: '/tests',
+      },
+    ],
+  },
   {
     pages: [
       { title: 'Stacks', route: '/demo/stacks' },
