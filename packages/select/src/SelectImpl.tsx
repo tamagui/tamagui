@@ -160,6 +160,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       enabled: !fallback,
       onChange: setInnerOffset,
       overflowRef,
+      scrollRef: refs.floating,
     }),
     useListNavigation(context, {
       listRef: listItemsRef,
