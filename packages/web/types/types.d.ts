@@ -748,7 +748,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
         value: V;
         hostRef: RefObject<HTMLElement | View>;
     }, onValue: (current: number) => void) => void;
-    populateChildrenRefs: (children: any, refs: any) => any;
+    populateChildrenRefsAndPassDisableCssProp: (children: any, refs: any) => any;
     animations: A;
     View?: any;
     Text?: any;
@@ -767,6 +767,7 @@ export type UseAnimationHook = (props: {
     delay?: number;
     childrenRefs?: MutableRefObject<(HTMLElement | View)[]>;
     layout?: boolean;
+    disableCSSClasses?: boolean;
 }) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };

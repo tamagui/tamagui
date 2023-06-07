@@ -1,12 +1,13 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import {
   Button,
   Circle,
   SizableStack,
   SizableText,
   Square,
+  Stack,
   XStack,
   YGroup,
   YStack,
@@ -15,11 +16,11 @@ import {
 } from 'tamagui'
 
 export function AnimationCSSDriverLayoutDemo(props) {
-  const [birds, setBirds] = useState(25)
+  const [birds, setBirds] = useState(1)
   const [fd, setFd] = useState<'row' | 'column'>('row')
 
   const onPress = useEvent(() => {
-    setBirds(25)
+    setBirds(5)
   })
   return (
     <>
@@ -35,35 +36,7 @@ export function AnimationCSSDriverLayoutDemo(props) {
         {Array(birds)
           .fill(0)
           .map((_, index) => {
-            return (
-              <Square
-                onPress={() => {
-                  setBirds(birds - 1)
-                }}
-                hoverStyle={{
-                  size: 70,
-                }}
-                // don't use index as key
-                key={index}
-                backgroundColor={'$color9'}
-                borderRadius={10}
-                animation={'bouncy'}
-                layout
-                size={50}
-              >
-                <Circle
-                  size={20}
-                  backgroundColor={'#fff'}
-                  bordered
-                  position="absolute"
-                  left={-5}
-                  top={-5}
-                >
-                  <SizableText>{index + 1}</SizableText>
-                </Circle>
-                {props.children || <LogoIcon downscale={1.5} />}
-              </Square>
-            )
+            return <Bird index={index} birds={birds} setBirds={setBirds} key={index} />
           })}
       </XStack>
       <Button
@@ -119,3 +92,30 @@ export function AnimationCSSDriverLayoutDemo(props) {
     </>
   )
 }
+
+interface PropsBird {
+  birds: any
+  setBirds: any
+  index: any
+}
+const Bird = forwardRef((props: PropsBird, ref: any) => (
+  <YStack
+    width={60}
+    ref={ref}
+    height={60}
+    onPress={() => {
+      props.setBirds(props.birds - 1)
+    }}
+    hoverStyle={{
+      width: 100,
+      height: 100,
+    }}
+    // don't use index as key
+    backgroundColor={'$color9'}
+    borderRadius={10}
+    animation={'bouncy'}
+    layout
+  >
+    <LogoIcon downscale={1.5} />
+  </YStack>
+))
