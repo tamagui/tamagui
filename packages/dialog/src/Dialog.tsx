@@ -4,8 +4,10 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  StackProps,
   TamaguiElement,
   Theme,
+  View,
   composeEventHandlers,
   isWeb,
   spacedChildren,
@@ -79,11 +81,11 @@ const [DialogProvider, useDialogContext] =
 
 const TRIGGER_NAME = 'DialogTrigger'
 
-const DialogTriggerFrame = styled(YStack, {
+const DialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-interface DialogTriggerProps extends YStackProps {}
+interface DialogTriggerProps extends StackProps {}
 
 const DialogTrigger = React.forwardRef<TamaguiElement, DialogTriggerProps>(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {

@@ -13,6 +13,7 @@ import {
   StackProps,
   TamaguiElement,
   Theme,
+  View,
   composeEventHandlers,
   createStyledContext,
   isWeb,
@@ -104,7 +105,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
     const trigger = (
-      <Stack
+      <View
         aria-haspopup="dialog"
         aria-expanded={context.open}
         // TODO not matching

@@ -36,7 +36,7 @@ export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
 export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
-    asChild?: boolean;
+    asChild?: boolean | 'except-style';
     space?: SpaceTokens | null;
     spaceDirection?: SpaceDirection;
     separator?: ReactNode;

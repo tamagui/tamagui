@@ -458,7 +458,7 @@ export const getSplitStyles: StyleSplitter = (
     const isStyleProp =
       isMediaOrPseudo || isVariant || keyInit in validStyleProps || keyInit in shorthands
 
-    if (isStyleProp && props.asChild === 'skip-styles') {
+    if (isStyleProp && props.asChild === 'except-style') {
       return
     }
 

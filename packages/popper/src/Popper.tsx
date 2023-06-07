@@ -5,6 +5,7 @@ import {
   SizeTokens,
   Stack,
   StackProps,
+  View as TamaguiView,
   createStyledContext,
   getVariableValue,
   isWeb,
@@ -179,7 +180,11 @@ export const PopperAnchor = YStack.extractable(
       ref: composedRefs,
       ...anchorProps,
     }
-    return <Stack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
+    return (
+      <TamaguiView
+        {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
+      />
+    )
   })
 )
 
