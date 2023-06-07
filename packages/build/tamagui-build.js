@@ -131,8 +131,8 @@ async function buildTsc() {
     await fs.ensureDir(targetDir)
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const baseUrlFlag = ignoreBaseUrl ? '' : `--baseUrl ${baseUrl}`
-    const cmd = `tsc ${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
+    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
