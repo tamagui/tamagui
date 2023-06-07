@@ -31,10 +31,10 @@ export declare function createSheet<H extends SheetStyledComponent, F extends Sh
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
     zIndex?: number | undefined;
-    portalProps?: import("@tamagui/portal").PortalProps | undefined;
+    portalProps?: import("@tamagui/portal/types").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
 } & {
-    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
 } & RefAttributes<View>> & {
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<View>> & {
         Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {

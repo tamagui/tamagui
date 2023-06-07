@@ -226,7 +226,7 @@ export declare const Popover: React.FC<PopoverProps> & {
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
         } & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+            __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
         } & React.RefAttributes<unknown>>;
         Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
             style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;

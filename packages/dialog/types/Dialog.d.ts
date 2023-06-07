@@ -3600,10 +3600,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
     };
     Sheet: React.FunctionComponent<Omit<import("@tamagui/sheet").SheetProps, "open" | "onOpenChange"> & React.RefAttributes<import("react-native/types").View>> & {
         Frame: React.ForwardRefExoticComponent<Omit<import("react-native/types").ViewProps, "style" | "children" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-            style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>; /**
-             * Event handler called when auto-focusing on close.
-             * Can be prevented.
-             */
+            style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
         } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
             readonly fullscreen?: boolean | undefined;
             readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
