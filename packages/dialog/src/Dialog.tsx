@@ -660,7 +660,7 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-const DialogCloseFrame = styled(YStack, {
+const DialogCloseFrame = styled(View, {
   name: CLOSE_NAME,
   tag: 'button',
 
