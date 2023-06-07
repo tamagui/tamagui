@@ -45,7 +45,10 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     const { __scopeSelect, disabled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setReference as any
+    )
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
@@ -78,9 +81,15 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
-        ref={forwardedRef}
+        ref={composedRefs}
         {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
-          ? context.interactions.getReferenceProps()
+          ? {
+              ...context.interactions.getReferenceProps(),
+              onMouseDown() {
+                context.floatingContext?.update()
+                context.setOpen(!context.open)
+              },
+            }
           : {
               onPress() {
                 context.setOpen(!context.open)

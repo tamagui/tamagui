@@ -1,11 +1,11 @@
-import type { UseFloatingProps } from '@floating-ui/react'
+import type { UseFloatingOptions } from '@floating-ui/react'
 import { useDismiss, useFloating, useInteractions, useRole } from '@floating-ui/react'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 // Custom floating context to override the Popper on web
 export const useFloatingContext = ({ open, setOpen, breakpointActive }) =>
   useCallback(
-    (props: UseFloatingProps) => {
+    (props: UseFloatingOptions) => {
       const floating = useFloating({
         ...props,
         open,

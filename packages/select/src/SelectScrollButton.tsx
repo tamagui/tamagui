@@ -62,24 +62,20 @@ const SelectScrollButtonImpl = React.memo(
   React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
     (props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
       const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
-      const {
-        floatingRef,
-        forceUpdate,
-        open,
-        fallback,
-        setScrollTop,
-        setInnerOffset,
-        ...context
-      } = useSelectContext(componentName, __scopeSelect)
+      const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
+        useSelectContext(componentName, __scopeSelect)
+      const floatingRef = context.floatingContext?.refs.floating
 
-      const [element, setElement] = React.useState<HTMLElement | null>(null)
       const statusRef = React.useRef<'idle' | 'active'>('idle')
       const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
       const frameRef = React.useRef<any>()
 
-      const { x, y, refs, strategy, update } = useFloating({
+      const { x, y, refs, strategy } = useFloating({
         open: open && isVisible,
         strategy: 'fixed',
+        elements: {
+          reference: floatingRef?.current,
+        },
         placement: dir === 'up' ? 'top' : 'bottom',
         middleware: [offset(({ rects }) => -rects.floating.height)],
         whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
@@ -87,34 +83,17 @@ const SelectScrollButtonImpl = React.memo(
 
       const composedRef = useComposedRefs(forwardedRef, refs.setFloating)
 
-      if (floatingRef) {
-        if (open) {
-          if (element !== floatingRef.current) {
-            setElement(floatingRef.current)
-            refs.setReference(floatingRef.current)
-            requestAnimationFrame(update)
-          }
-        } else {
-          cancelAnimationFrame(frameRef.current)
-        }
-      }
-
-      useIsomorphicLayoutEffect(() => {
-        return () => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          cancelAnimationFrame(frameRef.current)
-        }
-      }, [])
-
-      if (!(isVisible && floatingRef)) {
+      if (!isVisible) {
         return null
       }
 
       const onScroll = (amount: number) => {
+        const floating = floatingRef
+        if (!floating) return
         if (fallback) {
-          if (refs.floating.current) {
-            refs.floating.current.scrollTop -= amount
-            flushSync(() => setScrollTop!(refs.floating.current?.scrollTop ?? 0))
+          if (floating.current) {
+            floating.current.scrollTop -= amount
+            flushSync(() => setScrollTop!(floating.current?.scrollTop ?? 0))
           }
         } else {
           flushSync(() => setInnerOffset!((value) => value - amount))
@@ -138,6 +117,7 @@ const SelectScrollButtonImpl = React.memo(
             let prevNow = Date.now()
 
             function frame() {
+              const element = floatingRef?.current
               if (element) {
                 const currentNow = Date.now()
                 const msElapsed = currentNow - prevNow

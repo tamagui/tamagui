@@ -111,10 +111,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     padding: WINDOW_PADDING,
   })
 
-  const { x, y, strategy, context, refs } = useFloating({
+  const { x, y, strategy, context, refs, update } = useFloating({
     open,
     onOpenChange: setOpen,
-    whileElementsMounted: autoUpdate,
     placement: 'bottom-start',
     middleware: fallback
       ? [
@@ -140,6 +139,14 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           updateFloatingSize,
         ],
   })
+
+  React.useLayoutEffect(() => {
+    window.addEventListener('resize', update)
+    if (open) {
+      update()
+    }
+    return () => window.removeEventListener('resize', update)
+  }, [update, open])
 
   const floatingRef = refs.floating
 
@@ -319,7 +326,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       {...(selectContext as Required<typeof selectContext>)}
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
-      floatingRef={floatingRef}
       setValueAtIndex={(index, value) => {
         listContentRef.current[index] = value
       }}
