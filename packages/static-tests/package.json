@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.30.28",
+  "version": "1.30.29",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
@@ -21,7 +21,7 @@
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
     "@dish/babel-preset": "^0.0.6",
-    "@tamagui/test-design-system": "1.30.28",
+    "@tamagui/test-design-system": "1.30.29",
     "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",

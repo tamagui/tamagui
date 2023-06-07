@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-base",
-  "version": "1.30.28",
+  "version": "1.30.29",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,12 +27,12 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.30.28",
-    "@tamagui/core": "1.30.28",
-    "@tamagui/create-themes": "1.30.28"
+    "@tamagui/colors": "1.30.29",
+    "@tamagui/core": "1.30.29",
+    "@tamagui/create-themes": "1.30.29"
   },
   "devDependencies": {
-    "@tamagui/build": "1.30.28"
+    "@tamagui/build": "1.30.29"
   },
   "publishConfig": {
     "access": "public"
