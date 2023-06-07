@@ -107,7 +107,7 @@ const ToggleGroupItem = ToggleFrame.extractable(
               active={pressed}
             >
               <ToggleFrame
-                asChild
+                asChild="except-style"
                 focusable={!disabled}
                 disabled={disabled}
                 ref={ref}
