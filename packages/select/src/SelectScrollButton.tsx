@@ -77,7 +77,7 @@ const SelectScrollButtonImpl = React.memo(
       const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
       const frameRef = React.useRef<any>()
 
-      const { x, y, reference, floating, strategy, update, refs } = useFloating({
+      const { x, y, refs, strategy, update } = useFloating({
         open: open && isVisible,
         strategy: 'fixed',
         placement: dir === 'up' ? 'top' : 'bottom',
@@ -85,13 +85,13 @@ const SelectScrollButtonImpl = React.memo(
         whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
       })
 
-      const composedRef = useComposedRefs(forwardedRef, floating)
+      const composedRef = useComposedRefs(forwardedRef, refs.setFloating)
 
       if (floatingRef) {
         if (open) {
           if (element !== floatingRef.current) {
             setElement(floatingRef.current)
-            reference(floatingRef.current)
+            refs.setReference(floatingRef.current)
             requestAnimationFrame(update)
           }
         } else {

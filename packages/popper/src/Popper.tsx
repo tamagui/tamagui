@@ -75,7 +75,7 @@ export function Popper(props: PopperProps) {
     setIsMounted(true)
   }, [])
 
-  const anchorRef = React.useRef<any>()
+  const [anchorRef, setAnchorRef] = React.useState<any>()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const arrowRef = React.useRef()
@@ -99,7 +99,7 @@ export function Popper(props: PopperProps) {
   const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
 
   useIsomorphicLayoutEffect(() => {
-    floating.reference(anchorRef.current)
+    floating.refs.setReference(anchorRef)
   }, [anchorRef])
 
   if (isWeb) {
@@ -139,7 +139,7 @@ export function Popper(props: PopperProps) {
 
   return (
     <PopperContext.Provider
-      anchorRef={anchorRef}
+      anchorRef={setAnchorRef}
       size={size}
       arrowRef={composedArrowRefs}
       arrowStyle={middlewareData.arrow}
@@ -271,8 +271,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 /* -------------------------------------------------------------------------------------------------
  * PopperArrow
  * -----------------------------------------------------------------------------------------------*/
-
-const ARROW_NAME = 'PopperArrow'
 
 export type PopperArrowProps = YStackProps & {
   offset?: number

@@ -50,6 +50,8 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
 
+    // console.log('wtf', context.interactions.getReferenceProps())
+
     if (context.shouldRenderWebNative) {
       return null
     }
