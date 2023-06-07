@@ -473,7 +473,7 @@ const NativeSelectFrame = styled(ThemeableStack, {
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
           paddingVertical: getSpace(val, {
-            shift: -4,
+            shift: -3,
           }),
         }
       },
