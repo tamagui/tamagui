@@ -356,7 +356,7 @@ export const getSplitStyles: StyleSplitter = (
       } else {
         didUseKeyInit = true
 
-        if (accessibilityDirectMap[keyInit]) {
+        if (keyInit in accessibilityDirectMap) {
           viewProps[accessibilityDirectMap[keyInit]] = valInit
         } else {
           switch (keyInit) {
