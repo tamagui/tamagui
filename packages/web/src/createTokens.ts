@@ -36,12 +36,12 @@ type MakeTokens<T> = T extends {
     }
   : never
 
-// test
-// TODO move to tests
-const tokens = createTokens({
-  size: { 0: 1 },
-  space: { 0: 1 },
-  radius: { 0: 1 },
-  zIndex: { 0: 1 },
-  color: { 0: 'hi' },
-})
+// // test
+// // TODO move to tests
+// const tokens = createTokens({
+//   size: { 0: 1 },
+//   space: { 0: 1 },
+//   radius: { 0: 1 },
+//   zIndex: { 0: 1 },
+//   color: { 0: 'hi' },
+// })

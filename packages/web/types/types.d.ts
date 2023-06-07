@@ -36,7 +36,7 @@ export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
 export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
-    asChild?: boolean;
+    asChild?: boolean | 'except-style';
     space?: SpaceTokens | null;
     spaceDirection?: SpaceDirection;
     separator?: ReactNode;
@@ -515,7 +515,10 @@ export type Styleable<Props, Ref> = <CustomProps extends Object, X extends Funct
     staticConfig: StaticConfigParsed;
     styleable: Styleable<Props, Ref>;
 };
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties;
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties & {
+    __baseProps: BaseProps;
+    __variantProps: VariantProps;
+};
 type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfigParsed;
     /** @deprecated use `styleable` instead (same functionality, better name) */
@@ -846,11 +849,11 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> = bool
 /**
  * `StyleProp` copied from React Native:
  */
-type Falsy = undefined | null | false;
-interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
+export type Falsy = undefined | null | false;
+export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
 }
 /** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
-type RegisteredStyle<T> = number & {
+export type RegisteredStyle<T> = number & {
     __registeredStyleBrand: T;
 };
 export type StyleProp<T> = T | RegisteredStyle<T> | RecursiveArray<T | RegisteredStyle<T> | Falsy> | Falsy;

@@ -84,6 +84,30 @@ export declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    };
 }>;
 export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>;
 export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -181,6 +205,15 @@ export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    };
 }>;
 type SwitchButtonProps = GetProps<typeof SwitchFrame>;
 export type SwitchProps = SwitchButtonProps & {

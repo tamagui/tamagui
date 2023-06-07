@@ -3,29 +3,29 @@ import * as React from 'react';
 declare const VIEWPORT_DEFAULT_HOTKEY: string[];
 declare const VIEWPORT_PAUSE = "toast.viewportPause";
 declare const VIEWPORT_RESUME = "toast.viewportResume";
-declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, TamaguiElement, Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>>, TamaguiElement, Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -33,6 +33,15 @@ declare const ToastViewportFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    };
 }>;
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>;
 type ToastViewportProps = ToastViewportFrameProps & {
@@ -56,22 +65,22 @@ type ToastViewportProps = ToastViewportFrameProps & {
      */
     multipleToasts?: boolean;
 };
-declare const ToastViewport: React.ForwardRefExoticComponent<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+declare const ToastViewport: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

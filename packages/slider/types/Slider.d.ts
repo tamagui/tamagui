@@ -50,6 +50,19 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly orientation?: "vertical" | "horizontal" | undefined;
+    } & {
+        readonly size?: any;
+    };
 }>;
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
 export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -125,6 +138,19 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     [x: string]: undefined;
 }), {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly orientation?: "vertical" | "horizontal" | undefined;
+    } & {
+        readonly size?: any;
+    };
 }>;
 type SliderTrackActiveProps = GetProps<typeof SliderTrackActiveFrame>;
 declare const SliderTrackActive: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -270,6 +296,30 @@ export declare const SliderThumbFrame: import("@tamagui/core").TamaguiComponent<
     readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    };
 }>;
 interface SliderThumbProps extends SizableStackProps {
     index: number;

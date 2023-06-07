@@ -1,4 +1,4 @@
-import { GetProps, StackProps, TamaguiComponentExpectingVariants } from '@tamagui/core';
+import { GetProps, StackProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
 import { FunctionComponent, RefAttributes } from 'react';
 import { View } from 'react-native';
 import { SheetProps, SheetScopedProps } from './types';
@@ -7,7 +7,7 @@ type SharedSheetProps = {
 };
 type BaseProps = StackProps & SharedSheetProps;
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
-export declare function createSheet<H extends SheetStyledComponent, F extends SheetStyledComponent, O extends SheetStyledComponent>({ Handle, Frame, Overlay }: {
+export declare function createSheet<H extends SheetStyledComponent | TamaguiComponent, F extends SheetStyledComponent | TamaguiComponent, O extends SheetStyledComponent | TamaguiComponent>({ Handle, Frame, Overlay }: {
     Handle: H;
     Frame: F;
     Overlay: O;

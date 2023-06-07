@@ -26,13 +26,9 @@ if (typeof require !== 'undefined') {
   globalThis['React'] = require('react')
 }
 
-// rome-ignore lint/nursery/noConsoleLog: ok
-console.log('[Sandbox] getMedia().sm', getMedia().sm)
-
 // TODO: extract the use cases
 export function UseCases() {
   const [theme, setTheme] = useState('blue')
-  console.log('theme', theme)
 
   const memoized = useMemo(() => <Square size={100} bc="$background" />, [])
 
@@ -42,7 +38,6 @@ export function UseCases() {
         <Button
           onPress={() => {
             setTheme((prev) => {
-              console.log('hi', prev)
               return prev === 'blue' ? 'red' : 'blue'
             })
           }}

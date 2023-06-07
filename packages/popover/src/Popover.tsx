@@ -10,8 +10,10 @@ import {
   MediaQueryKey,
   SizeTokens,
   Stack,
+  StackProps,
   TamaguiElement,
   Theme,
+  View,
   composeEventHandlers,
   createStyledContext,
   isWeb,
@@ -95,7 +97,7 @@ export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = YStackProps
+export type PopoverTriggerProps = StackProps
 
 export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props: PopoverTriggerProps, forwardedRef) {
@@ -103,13 +105,14 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
     const trigger = (
-      <YStack
+      <View
         aria-haspopup="dialog"
         aria-expanded={context.open}
         // TODO not matching
         // aria-controls={context.contentId}
         data-state={getState(context.open)}
         {...props}
+        // @ts-ignore
         ref={composedTriggerRef}
         onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       />
@@ -161,39 +164,42 @@ export const PopoverContent = PopperContentFrame.extractable(
         if (content) return hideOthers(content)
       }, [context.open])
 
+      const themeName = useThemeName()
       return (
         <PopoverContentPortal zIndex={zIndex}>
-          <PopoverContentImpl
-            {...contentImplProps}
-            disableRemoveScroll={disableRemoveScroll}
-            ref={composedRefs}
-            // we make sure we're not trapping once it's been closed
-            // (closed !== unmounted when animating out)
-            trapFocus={trapFocus ?? context.open}
-            disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
-            onPointerDownOutside={composeEventHandlers(
-              props.onPointerDownOutside,
-              (event) => {
-                const originalEvent = event.detail.originalEvent
-                const ctrlLeftClick =
-                  originalEvent.button === 0 && originalEvent.ctrlKey === true
-                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                isRightClickOutsideRef.current = isRightClick
-              },
-              { checkDefaultPrevented: false }
-            )}
-            // When focus is trapped, a `focusout` event may still happen.
-            // We make sure we don't trigger our `onDismiss` in such case.
-            onFocusOutside={composeEventHandlers(
-              props.onFocusOutside,
-              (event) => event.preventDefault(),
-              { checkDefaultPrevented: false }
-            )}
-          />
+          <Theme name={themeName}>
+            <PopoverContentImpl
+              {...contentImplProps}
+              disableRemoveScroll={disableRemoveScroll}
+              ref={composedRefs}
+              // we make sure we're not trapping once it's been closed
+              // (closed !== unmounted when animating out)
+              trapFocus={trapFocus ?? context.open}
+              disableOutsidePointerEvents
+              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                event.preventDefault()
+                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+              })}
+              onPointerDownOutside={composeEventHandlers(
+                props.onPointerDownOutside,
+                (event) => {
+                  const originalEvent = event.detail.originalEvent
+                  const ctrlLeftClick =
+                    originalEvent.button === 0 && originalEvent.ctrlKey === true
+                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                  isRightClickOutsideRef.current = isRightClick
+                },
+                { checkDefaultPrevented: false }
+              )}
+              // When focus is trapped, a `focusout` event may still happen.
+              // We make sure we don't trigger our `onDismiss` in such case.
+              onFocusOutside={composeEventHandlers(
+                props.onFocusOutside,
+                (event) => event.preventDefault(),
+                { checkDefaultPrevented: false }
+              )}
+            />
+          </Theme>
         </PopoverContentPortal>
       )
     }

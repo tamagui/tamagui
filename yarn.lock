@@ -2785,14 +2785,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.1.0, @floating-ui/core@npm:^1.2.6":
+"@floating-ui/core@npm:^1.2.6":
   version: 1.2.6
   resolution: "@floating-ui/core@npm:1.2.6"
   checksum: e4aa96c435277f1720d4bc939e17a79b1e1eebd589c20b622d3c646a5273590ff889b8c6e126f7be61873cf8c4d7db7d418895986ea19b8b0d0530de32504c3a
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.1.1, @floating-ui/dom@npm:^1.2.1":
+"@floating-ui/dom@npm:^1.2.7":
   version: 1.2.9
   resolution: "@floating-ui/dom@npm:1.2.9"
   dependencies:
@@ -2801,53 +2801,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@floating-ui/react-dom@npm:1.3.0"
+"@floating-ui/react-dom@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@floating-ui/react-dom@npm:2.0.0"
   dependencies:
-    "@floating-ui/dom": ^1.2.1
+    "@floating-ui/dom": ^1.2.7
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: ce0ad3e3bbe43cfd15a6a0d5cccede02175c845862bfab52027995ab99c6b29630180dc7d146f76ebb34730f90a6ab9bf193c8984fe8d7f56062308e4ca98f77
+  checksum: c5dd02b7babf9c26d5e11b8ebe58411131b37844f7d6362a767cd1eedfb506ca6db3228fb192e0a5822c9289a5b500e2ef31e069dce28a0fbec4722f22bcdd95
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:~1.2.2":
-  version: 1.2.2
-  resolution: "@floating-ui/react-dom@npm:1.2.2"
+"@floating-ui/react-native@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@floating-ui/react-native@npm:0.10.0"
   dependencies:
-    "@floating-ui/dom": ^1.1.1
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 5cb7879a8fe53ce4ca8361473d93e18806402d6bcde4e935d5aafa2b72032019e62f7d019d7d7145ead1ed829569ac14d6d8c50d7beedcea04cb3d02af661597
-  languageName: node
-  linkType: hard
-
-"@floating-ui/react-native@npm:~0.9.0":
-  version: 0.9.0
-  resolution: "@floating-ui/react-native@npm:0.9.0"
-  dependencies:
-    "@floating-ui/core": ^1.1.0
+    "@floating-ui/core": ^1.2.6
   peerDependencies:
     react: ">=16.8.0"
     react-native: ">=0.64.0"
-  checksum: 6926d12d518da1bec41016088a7728b87f2b259d9676f8a45dc675ba1f414f5b632e77c4f8a38659775c830b9d36d05df94fe3cb705578645f4c272bcedb9c9b
+  checksum: cc4d7a31d913452ccc240b629238d657dccd3906da2763a829e2d1e3a00c82c417cf306ea1b6efe549ce0e10965553186cef72e380a718b3f536fba26528cda9
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:~0.19.1":
-  version: 0.19.2
-  resolution: "@floating-ui/react@npm:0.19.2"
+"@floating-ui/react@npm:^0.24.2":
+  version: 0.24.2
+  resolution: "@floating-ui/react@npm:0.24.2"
   dependencies:
-    "@floating-ui/react-dom": ^1.3.0
+    "@floating-ui/react-dom": ^2.0.0
     aria-hidden: ^1.1.3
     tabbable: ^6.0.1
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 00fd827c2dcf879fec221d89ef5b90836bbecacc236ce2acc787db32ae7311d490cd136b13a8d0b6ab12842554a2ee1110605aa832af71a45c0a7297e342072c
+  checksum: 0d8300f5706ca7cf69c1b4c26822287fd545b23d9f89c03fca1c04d3899edd188f374567ed98e1ccebd80869b50cd7c4908e9d4be91d25dd5800b787961faf83
   languageName: node
   linkType: hard
 
@@ -4789,7 +4777,7 @@ __metadata:
     fs-extra: ^11.1.0
     get-tsconfig: ^4.5.0
     lodash.debounce: ^4.0.8
-    typescript: ^5.0.4
+    typescript: ^5.1.3
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
@@ -4903,7 +4891,7 @@ __metadata:
     pretty-format: ^28.1.0
     source-map: ^0.7.3
     ts-morph: ^15.1.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     url: ^0.11.0
     vite: ^4.3.0
     ws: ^8.7.0
@@ -4983,7 +4971,7 @@ __metadata:
     jsdom: ^21.1.1
     react: ^18.2.0
     react-dom: ^18.2.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
     vitest-axe: ^0.1.0
   languageName: unknown
@@ -5071,8 +5059,6 @@ __metadata:
     "@babel/runtime": ^7.21.5
     "@tamagui/core": 1.30.29
     "@tamagui/helpers": 1.30.29
-    "@types/node": ^16.11.9
-    "@types/react": ^18.0.15
     chokidar: ^3.5.2
     esbuild: ^0.17.17
     execa: ^5.0.0
@@ -5090,7 +5076,7 @@ __metadata:
     csstype: ^3.0.10
     react: ^18.2.0
     react-dom: ^18.2.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
   languageName: unknown
   linkType: soft
@@ -5107,7 +5093,7 @@ __metadata:
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10
     react: ^18.2.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
   peerDependencies:
     react: "*"
@@ -5234,8 +5220,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.29
     react: ^18.2.0
     react-native: ^0.71.7
@@ -5366,7 +5352,6 @@ __metadata:
     "@tamagui/build": 1.30.29
     "@tamagui/get-token": 1.30.29
     "@tamagui/web": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -5379,7 +5364,6 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.30.29
     "@tamagui/core": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -5497,8 +5481,6 @@ __metadata:
     "@tamagui/lucide-icons": 1.30.29
     "@tamagui/shorthands": 1.30.29
     "@tamagui/themes": 1.30.29
-    "@types/react": ^18.0.15
-    "@types/react-native": ^0.71.3
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.10.0
     expo: ~48.0.15
@@ -5709,7 +5691,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react": ~0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/adapt": 1.30.29
     "@tamagui/animate-presence": 1.30.29
     "@tamagui/aria-hidden": 1.30.29
@@ -5739,8 +5721,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@workspace:packages/popper"
   dependencies:
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.29
     "@tamagui/compose-refs": 1.30.29
     "@tamagui/core": 1.30.29
@@ -5853,7 +5835,6 @@ __metadata:
   resolution: "@tamagui/react-native-use-pressable@workspace:packages/react-native-use-pressable"
   dependencies:
     "@tamagui/build": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -5865,7 +5846,6 @@ __metadata:
   resolution: "@tamagui/react-native-use-responder-events@workspace:packages/react-native-use-responder-events"
   dependencies:
     "@tamagui/build": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -5930,9 +5910,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
-    "@floating-ui/react": ~0.19.1
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react": ^0.24.2
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/adapt": 1.30.29
     "@tamagui/build": 1.30.29
@@ -6086,9 +6066,6 @@ __metadata:
     "@tauri-apps/cli": ^1.2.2
     "@types/d3-scale": ^4.0.2
     "@types/lodash-es": ^4.17.6
-    "@types/node": ^16.11.9
-    "@types/react": ^18.0.15
-    "@types/react-dom": 18.0.11
     "@types/uuid": ^8.3.4
     "@types/wicg-file-system-access": ^2020.9.6
     babel-polyfill: ^6.26.0
@@ -6138,7 +6115,7 @@ __metadata:
     tamagui-loader: 1.30.29
     three: ^0.152.2
     ts-morph: ^15.1.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     unified: ^10.1.2
     unist-util-visit: ^2.0.3
     webpack-stats-plugin: ^1.1.0
@@ -6203,7 +6180,7 @@ __metadata:
     react-native-web: ^0.19.4
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.3
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
     webpack: ^5.83.1
   peerDependencies:
@@ -6262,7 +6239,7 @@ __metadata:
     react-native-web-lite: 1.30.29
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.3
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
     webpack: ^5.83.1
   languageName: unknown
@@ -6438,7 +6415,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react": ~0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/build": 1.30.29
     "@tamagui/compose-refs": 1.30.29
     "@tamagui/core": 1.30.29
@@ -6505,7 +6482,6 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.30.29
     "@tamagui/constants": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
   peerDependencies:
     react: "*"
@@ -6589,7 +6565,6 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.30.29
     "@tamagui/constants": 1.30.29
-    "@types/react": ^18.0.15
     react: ^18.2.0
     react-native: ^0.71.7
   peerDependencies:
@@ -6662,7 +6637,7 @@ __metadata:
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10
     react: ^18.2.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     vitest: ^0.26.3
   peerDependencies:
     react: "*"
@@ -7361,21 +7336,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.11, @types/react-dom@npm:^18.0.0":
+"@types/react-dom@npm:^18.0.0":
   version: 18.0.11
   resolution: "@types/react-dom@npm:18.0.11"
   dependencies:
     "@types/react": "*"
   checksum: 579691e4d5ec09688087568037c35edf8cfb1ab3e07f6c60029280733ee7b5c06d66df6fcc90786702c93ac8cb13bc7ff16c79ddfc75d082938fbaa36e1cdbf4
-  languageName: node
-  linkType: hard
-
-"@types/react-native@npm:0.71.3":
-  version: 0.71.3
-  resolution: "@types/react-native@npm:0.71.3"
-  dependencies:
-    "@types/react": "*"
-  checksum: 5ee02f9c780c630e145c1887c80d1739d59e01d45ff9e862b475538376ddd17fc605a1245fea04813593c1c0153b5f4a41247283036adcdfbf4779555f956d93
   languageName: node
   linkType: hard
 
@@ -7397,7 +7363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.0.15":
+"@types/react@npm:*":
   version: 18.0.38
   resolution: "@types/react@npm:18.0.38"
   dependencies:
@@ -22612,9 +22578,6 @@ __metadata:
   resolution: "tamagui-monorepo@workspace:."
   dependencies:
     "@manypkg/cli": ^0.19.1
-    "@types/fs-extra": ^9.0.13
-    "@types/node": ^16.11.9
-    "@types/react": ^18.0.15
     "@vercel/og": ^0.5.4
     check-dependency-version-consistency: ^3.0.3
     import-sort-style-module: ^6.0.0
@@ -22625,7 +22588,7 @@ __metadata:
     prompts: 2.1.0
     rome: ^12.1.0
     turbo: ^1.10.0
-    typescript: ^5.0.4
+    typescript: ^5.1.3
     ultra-runner: ^3.10.5
   languageName: unknown
   linkType: soft
@@ -22684,8 +22647,6 @@ __metadata:
     "@tamagui/use-force-update": 1.30.29
     "@tamagui/use-window-dimensions": 1.30.29
     "@tamagui/visually-hidden": 1.30.29
-    "@types/node": ^16.11.9
-    "@types/react": ^18.0.15
     react: ^18.2.0
     react-native-web: ^0.19.4
     reforest: ^0.12.1
@@ -23499,13 +23460,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.4":
-  version: 5.0.4
-  resolution: "typescript@npm:5.0.4"
+"typescript@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "typescript@npm:5.1.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 82b94da3f4604a8946da585f7d6c3025fff8410779e5bde2855ab130d05e4fd08938b9e593b6ebed165bda6ad9292b230984f10952cf82f0a0ca07bbeaa08172
+  checksum: d9d51862d98efa46534f2800a1071a613751b1585dc78884807d0c179bcd93d6e9d4012a508e276742f5f33c480adefc52ffcafaf9e0e00ab641a14cde9a31c7
   languageName: node
   linkType: hard
 
@@ -23519,13 +23480,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>":
-  version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"
+"typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
+  version: 5.1.3
+  resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=85af82"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: bb309d320c59a26565fb3793dba550576ab861018ff3fd1b7fccabbe46ae4a35546bc45f342c0a0b6f265c801ccdf64ffd68f548f117ceb7f0eac4b805cd52a9
+  checksum: 32a25b2e128a4616f999d4ee502aabb1525d5647bc8955e6edf05d7fbc53af8aa98252e2f6ba80bcedfc0260c982b885f3c09cfac8bb65d2924f3133ad1e1e62
   languageName: node
   linkType: hard
 

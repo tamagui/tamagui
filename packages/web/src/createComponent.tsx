@@ -212,7 +212,7 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
 
-    if (curDefaultProps && !propsIn.asChild) {
+    if (curDefaultProps) {
       props = mergeProps(curDefaultProps, propsIn)[0]
     } else {
       props = propsIn
@@ -963,7 +963,7 @@ export function createComponent<
     }
   })
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
 
   let res: ComponentType = component as any
 
