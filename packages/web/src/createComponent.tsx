@@ -272,7 +272,8 @@ export function createComponent<
       ? (isAnimated ? AnimatedText : null) || BaseTextComponent
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
-    const avoidClassesWhileAnimating = animationsConfig?.isReactNative
+    const avoidClassesWhileAnimating =
+      animationsConfig?.isReactNative || props.layout || props.disableCSSClasses
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -293,7 +294,9 @@ export function createComponent<
     const shouldAvoidClasses =
       !isWeb ||
       !!(isAnimated && avoidClassesWhileAnimating) ||
-      !staticConfig.acceptsClassName
+      !staticConfig.acceptsClassName ||
+      props.disableCSSClasses ||
+      props.layout
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -597,7 +600,7 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web') {
       const style = animationStyles ?? splitStyles.style
 
-      if (isAnimatedReactNativeWeb) {
+      if (isAnimatedReactNativeWeb || props.layout || props.disableCSSClasses) {
         viewProps.style = style
       } else if (isReactNative) {
         // TODO these shouldn't really return from getSplitStyles when in Native mode
@@ -788,8 +791,15 @@ export function createComponent<
       }
     }
 
-    if (layout && children && animationsConfig.populateChildrenRefs) {
-      content = animationsConfig.populateChildrenRefs(content, childrenRefs)
+    if (
+      layout &&
+      children &&
+      animationsConfig.populateChildrenRefsAndPassDisableCssProp
+    ) {
+      content = animationsConfig.populateChildrenRefsAndPassDisableCssProp(
+        content,
+        childrenRefs
+      )
     }
 
     content = createElement(elementType, viewProps, content)

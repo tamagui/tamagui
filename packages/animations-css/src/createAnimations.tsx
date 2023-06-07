@@ -140,7 +140,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [JSON.stringify(style)])
     },
-    populateChildrenRefs: populateChildrenRefs,
+    populateChildrenRefsAndPassDisableCssProp: populateChildrenRefsAndPassDisableCssProp,
   }
 }
 
@@ -169,7 +169,7 @@ const invert = (el, from, to) => {
   return transform
 }
 
-export function populateChildrenRefs(children: any, refs: any) {
+export function populateChildrenRefsAndPassDisableCssProp(children: any, refs: any) {
   if (!children) return children
   return React.Children.map(children, (child, index) => {
     if (child) {
@@ -178,6 +178,7 @@ export function populateChildrenRefs(children: any, refs: any) {
       }
       return React.cloneElement(child, {
         ref: (el) => (refs.current[index] = el),
+        disableCSSClasses: true,
       })
     } else {
       return null
