@@ -10,6 +10,8 @@ export const DocsMenuContents = React.memo(() => {
   const { currentPath } = useDocsMenu()
 
   return React.useMemo(() => {
+    console.warn('rederadsd', currentPath)
+
     return (
       <>
         {docsRoutes.map((section, i) => {
@@ -17,7 +19,7 @@ export const DocsMenuContents = React.memo(() => {
             if (section.type === 'hr') {
               return (
                 <YStack key={`sep${i}`} mx="$4">
-                  {!!section.title ? (
+                  {section.title ? (
                     <XStack
                       ai="center"
                       space="$6"

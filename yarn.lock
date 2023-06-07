@@ -2785,14 +2785,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.1.0, @floating-ui/core@npm:^1.2.6":
+"@floating-ui/core@npm:^1.2.6":
   version: 1.2.6
   resolution: "@floating-ui/core@npm:1.2.6"
   checksum: e4aa96c435277f1720d4bc939e17a79b1e1eebd589c20b622d3c646a5273590ff889b8c6e126f7be61873cf8c4d7db7d418895986ea19b8b0d0530de32504c3a
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.1.1, @floating-ui/dom@npm:^1.2.1":
+"@floating-ui/dom@npm:^1.2.7":
   version: 1.2.9
   resolution: "@floating-ui/dom@npm:1.2.9"
   dependencies:
@@ -2801,53 +2801,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@floating-ui/react-dom@npm:1.3.0"
+"@floating-ui/react-dom@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@floating-ui/react-dom@npm:2.0.0"
   dependencies:
-    "@floating-ui/dom": ^1.2.1
+    "@floating-ui/dom": ^1.2.7
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: ce0ad3e3bbe43cfd15a6a0d5cccede02175c845862bfab52027995ab99c6b29630180dc7d146f76ebb34730f90a6ab9bf193c8984fe8d7f56062308e4ca98f77
+  checksum: c5dd02b7babf9c26d5e11b8ebe58411131b37844f7d6362a767cd1eedfb506ca6db3228fb192e0a5822c9289a5b500e2ef31e069dce28a0fbec4722f22bcdd95
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:~1.2.2":
-  version: 1.2.2
-  resolution: "@floating-ui/react-dom@npm:1.2.2"
+"@floating-ui/react-native@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@floating-ui/react-native@npm:0.10.0"
   dependencies:
-    "@floating-ui/dom": ^1.1.1
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 5cb7879a8fe53ce4ca8361473d93e18806402d6bcde4e935d5aafa2b72032019e62f7d019d7d7145ead1ed829569ac14d6d8c50d7beedcea04cb3d02af661597
-  languageName: node
-  linkType: hard
-
-"@floating-ui/react-native@npm:~0.9.0":
-  version: 0.9.0
-  resolution: "@floating-ui/react-native@npm:0.9.0"
-  dependencies:
-    "@floating-ui/core": ^1.1.0
+    "@floating-ui/core": ^1.2.6
   peerDependencies:
     react: ">=16.8.0"
     react-native: ">=0.64.0"
-  checksum: 6926d12d518da1bec41016088a7728b87f2b259d9676f8a45dc675ba1f414f5b632e77c4f8a38659775c830b9d36d05df94fe3cb705578645f4c272bcedb9c9b
+  checksum: cc4d7a31d913452ccc240b629238d657dccd3906da2763a829e2d1e3a00c82c417cf306ea1b6efe549ce0e10965553186cef72e380a718b3f536fba26528cda9
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:~0.19.1":
-  version: 0.19.2
-  resolution: "@floating-ui/react@npm:0.19.2"
+"@floating-ui/react@npm:^0.24.2":
+  version: 0.24.2
+  resolution: "@floating-ui/react@npm:0.24.2"
   dependencies:
-    "@floating-ui/react-dom": ^1.3.0
+    "@floating-ui/react-dom": ^2.0.0
     aria-hidden: ^1.1.3
     tabbable: ^6.0.1
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 00fd827c2dcf879fec221d89ef5b90836bbecacc236ce2acc787db32ae7311d490cd136b13a8d0b6ab12842554a2ee1110605aa832af71a45c0a7297e342072c
+  checksum: 0d8300f5706ca7cf69c1b4c26822287fd545b23d9f89c03fca1c04d3899edd188f374567ed98e1ccebd80869b50cd7c4908e9d4be91d25dd5800b787961faf83
   languageName: node
   linkType: hard
 
@@ -5234,8 +5222,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/floating@workspace:packages/floating"
   dependencies:
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.29
     react: ^18.2.0
     react-native: ^0.71.7
@@ -5709,7 +5697,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react": ~0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/adapt": 1.30.29
     "@tamagui/animate-presence": 1.30.29
     "@tamagui/aria-hidden": 1.30.29
@@ -5739,8 +5727,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@workspace:packages/popper"
   dependencies:
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@tamagui/build": 1.30.29
     "@tamagui/compose-refs": 1.30.29
     "@tamagui/core": 1.30.29
@@ -5930,9 +5918,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
-    "@floating-ui/react": ~0.19.1
-    "@floating-ui/react-dom": ~1.2.2
-    "@floating-ui/react-native": ~0.9.0
+    "@floating-ui/react": ^0.24.2
+    "@floating-ui/react-dom": ^2.0.0
+    "@floating-ui/react-native": ^0.10.0
     "@radix-ui/react-use-previous": ^1.0.0
     "@tamagui/adapt": 1.30.29
     "@tamagui/build": 1.30.29
@@ -6438,7 +6426,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react": ~0.19.1
+    "@floating-ui/react": ^0.24.2
     "@tamagui/build": 1.30.29
     "@tamagui/compose-refs": 1.30.29
     "@tamagui/core": 1.30.29

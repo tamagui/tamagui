@@ -69,7 +69,6 @@ export interface SelectContextValue {
   dataRef?: MutableRefObject<ContextData>
   controlledScrolling?: boolean
   listRef?: MutableRefObject<Array<HTMLElement | null>>
-  floatingRef?: MutableRefObject<HTMLElement | null>
   canScrollUp?: boolean
   canScrollDown?: boolean
   floatingContext?: FloatingContext<ReferenceType>
