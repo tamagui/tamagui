@@ -1,7 +1,7 @@
 import { StyledContext } from './helpers/createStyledContext';
 import type { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, TamaguiElement, VariantDefinitions, VariantSpreadFunction } from './types';
-type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer P> ? P : GetProps<A>;
-type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, any, infer V> ? V : {};
+type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer P> ? P extends unknown ? GetProps<A> : P : GetProps<A>;
+type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, any, infer V> ? V extends unknown ? {} : V : {};
 type GetVariantAcceptedValues<V> = V extends Object ? {
     [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof V[Key]>;
 } : undefined;

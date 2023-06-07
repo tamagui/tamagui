@@ -8,6 +8,7 @@ import type {
   GetProps,
   GetVariantValues,
   MediaProps,
+  Narrow,
   PseudoProps,
   StaticConfig,
   StylableComponent,
@@ -16,13 +17,17 @@ import type {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
+import { Stack } from './views/Stack'
 
 type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
   any,
   infer P
 >
-  ? P
+  ? // bugfix for TS 5.1, for some reason it isn't doing the basic infer from TamaguiComponent so fallback to GetProps :/
+    P extends unknown
+    ? GetProps<A>
+    : P
   : GetProps<A>
 
 type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
@@ -31,7 +36,10 @@ type GetVariantProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
   infer V
 >
-  ? V
+  ? // bugfix for TS 5.1, for some reason it isn't doing the basic infer from TamaguiComponent so fallback to {} :/
+    V extends unknown
+    ? {}
+    : V
   : {}
 
 type GetVariantAcceptedValues<V> = V extends Object

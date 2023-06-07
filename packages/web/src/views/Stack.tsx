@@ -1,5 +1,6 @@
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
+import { styled } from '../styled'
 import type { StackProps, StackPropsBase } from '../types'
 
 export const Stack = createComponent<
@@ -17,6 +18,16 @@ export const Stack = createComponent<
 // test types
 // export const YStack = styled(Stack, {
 //   flexDirection: 'column',
+
+//   variants: {
+//     test: {
+//       blue: {
+//         backgroundColor: 'red'
+//       },
+
+//       '...color': (val) => ({}),
+//     }
+//   } as const
 // })
 // // test types
 // const x00 = <Stack missing={0} /> // should err
