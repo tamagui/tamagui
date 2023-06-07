@@ -1,4 +1,4 @@
-import { isAbsolute, relative, sep } from 'path'
+import { relative, sep } from 'path'
 
 const nameToPaths = {}
 const Module = require('module')
@@ -98,7 +98,7 @@ ${err.stack}
 
 You can see if it loads in the node repl:
 
-require(${isAbsolute(path) ? path : `./${relative(process.cwd(), path)}`}").default
+require("./${relative(process.cwd(), path)}").default
 
 `
     )
