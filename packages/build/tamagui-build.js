@@ -8,6 +8,7 @@ const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { dirname } = require('path')
+const { getTsconfig } = require('get-tsconfig')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -21,6 +22,8 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 const declarationToRoot = !!process.argv.includes('--declaration-root')
+const baseUrlIndex = process.argv.indexOf('--base-url')
+const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -127,7 +130,7 @@ async function buildTsc() {
     await fs.ensureDir(targetDir)
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const cmd = `tsc --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const cmd = `tsc --baseUrl ${baseUrl} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
