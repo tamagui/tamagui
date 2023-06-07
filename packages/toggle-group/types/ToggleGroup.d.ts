@@ -153,10 +153,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -262,10 +259,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -371,10 +365,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -480,10 +471,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>; /**
-     * The value of the items that are pressed when initially rendered. Use
-     * `defaultValue` if you do not need to control the state of a toggle group.
-     */
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -583,5 +571,5 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     sizeAdjust?: number;
 };
 export { ToggleGroup, createToggleGroupScope };
-export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupSingleProps, ToggleGroupProps, };
+export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };
 //# sourceMappingURL=ToggleGroup.d.ts.map
