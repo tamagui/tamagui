@@ -23,6 +23,6 @@ export declare const SheetImplementationCustom: (props: Omit<{
     portalProps?: import("@tamagui/portal").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
 } & {
-    __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
+    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
 //# sourceMappingURL=SheetImplementationCustom.d.ts.map

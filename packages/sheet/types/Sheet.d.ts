@@ -170,10 +170,10 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;
     zIndex?: number | undefined;
-    portalProps?: import("@tamagui/portal/types").PortalProps | undefined;
+    portalProps?: import("@tamagui/portal").PortalProps | undefined;
     moveOnKeyboardChange?: boolean | undefined;
 } & {
-    __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
+    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & import("react").RefAttributes<import("react-native/types").View>> & {
     Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & import("react").RefAttributes<import("react-native/types").View>> & {
         Frame: import("react").ForwardRefExoticComponent<Omit<import("react-native/types").ViewProps, "style" | "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
@@ -200,7 +200,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
         } & {
-            __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & import("react").RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: import("./types").SheetScopedProps<Omit<import("react-native/types").ViewProps, "style" | "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
             style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;
@@ -320,7 +320,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     }>> & {
         disableHideBottomOverflow?: boolean | undefined;
     } & {
-        __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
+        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & import("react").RefAttributes<unknown>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: import("./types").SheetScopedProps<Omit<import("react-native/types").ViewProps, "style" | "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native/types").ViewStyle>;

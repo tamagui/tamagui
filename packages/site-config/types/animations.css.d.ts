@@ -1,4 +1,4 @@
-export declare const animations: import("@tamagui/web/types").AnimationDriver<{
+export declare const animations: import("@tamagui/web").AnimationDriver<{
     bouncy: string;
     lazy: string;
     slow: string;

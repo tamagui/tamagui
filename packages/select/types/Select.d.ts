@@ -272,8 +272,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         children?: React.ReactNode;
         zIndex?: number | undefined;
     } & {
-        __scopeSelect?: import("@tamagui/create-context/types").Scope;
-    } & import("@tamagui/focus-scope/types").FocusScopeProps) => JSX.Element | null;
+        __scopeSelect?: import("@tamagui/create-context").Scope;
+    } & import("@tamagui/focus-scope").FocusScopeProps) => JSX.Element | null;
     Group: React.ForwardRefExoticComponent<((Omit<import("react-native/types").ViewProps, "style" | "children" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {
@@ -783,7 +783,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
         } & {
-            __scopeSheet?: import("@tamagui/create-context/types").Scope<any>;
+            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & React.RefAttributes<unknown>>;
         Overlay: React.MemoExoticComponent<(propsIn: import("@tamagui/sheet").SheetScopedProps<Omit<import("react-native/types").ViewProps, "style" | "children" | "display" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
             style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;

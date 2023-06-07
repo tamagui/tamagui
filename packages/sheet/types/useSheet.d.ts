@@ -8,13 +8,13 @@ export declare const useSheet: () => {
     open: boolean;
     setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
     hidden: boolean;
-    contentRef: import("react").RefObject<import("@tamagui/web/types").TamaguiElement>;
+    contentRef: import("react").RefObject<import("@tamagui/web").TamaguiElement>;
     frameSize: number;
     setFrameSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
     dismissOnSnapToBottom: boolean;
     onOverlayComponent: ((comp: any) => void) | undefined;
-    scope: import("@tamagui/create-context/types").Scope<any>;
+    scope: import("@tamagui/create-context").Scope<any>;
     position: number;
     snapPoints: number[];
     setPosition: (next: number) => void;
