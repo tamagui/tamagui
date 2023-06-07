@@ -21,6 +21,7 @@ import {
   generateTamaguiStudioConfig,
   generateTamaguiStudioConfigSync,
 } from './generateTamaguiStudioConfig'
+import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -82,7 +83,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
       if (props.config) {
-        const configPath = join(process.cwd(), props.config)
+        const configPath = getTamaguiConfigPathFromOptionsConfig(props.config)
         const exp = require(configPath)
         tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
