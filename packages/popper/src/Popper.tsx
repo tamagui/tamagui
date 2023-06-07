@@ -3,6 +3,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
+  Stack,
   StackProps,
   createStyledContext,
   getVariableValue,
@@ -178,9 +179,7 @@ export const PopperAnchor = YStack.extractable(
       ref: composedRefs,
       ...anchorProps,
     }
-    return (
-      <YStack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
-    )
+    return <Stack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
   })
 )
 

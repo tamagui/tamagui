@@ -10,6 +10,7 @@ import {
   MediaQueryKey,
   SizeTokens,
   Stack,
+  StackProps,
   TamaguiElement,
   Theme,
   composeEventHandlers,
@@ -95,7 +96,7 @@ export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = YStackProps
+export type PopoverTriggerProps = StackProps
 
 export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props: PopoverTriggerProps, forwardedRef) {
@@ -103,13 +104,14 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
 
     const trigger = (
-      <YStack
+      <Stack
         aria-haspopup="dialog"
         aria-expanded={context.open}
         // TODO not matching
         // aria-controls={context.contentId}
         data-state={getState(context.open)}
         {...props}
+        // @ts-ignore
         ref={composedTriggerRef}
         onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
       />
