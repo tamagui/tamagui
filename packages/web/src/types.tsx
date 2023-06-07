@@ -961,7 +961,10 @@ export type TamaguiComponent<
   ParentStaticProperties = {}
 > = ReactComponentWithRef<Props, Ref> &
   StaticComponentObject<Props, Ref> &
-  ParentStaticProperties
+  ParentStaticProperties & {
+    __baseProps: BaseProps
+    __variantProps: VariantProps
+  }
 
 type StaticComponentObject<Props, Ref> = {
   staticConfig: StaticConfigParsed

@@ -963,7 +963,7 @@ export function createComponent<
     }
   })
 
-  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps>
+  type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
 
   let res: ComponentType = component as any
 

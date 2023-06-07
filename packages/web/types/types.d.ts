@@ -515,7 +515,10 @@ export type Styleable<Props, Ref> = <CustomProps extends Object, X extends Funct
     staticConfig: StaticConfigParsed;
     styleable: Styleable<Props, Ref>;
 };
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties;
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties & {
+    __baseProps: BaseProps;
+    __variantProps: VariantProps;
+};
 type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfigParsed;
     /** @deprecated use `styleable` instead (same functionality, better name) */

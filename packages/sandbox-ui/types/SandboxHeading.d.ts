@@ -17,5 +17,9 @@ export declare const SandboxHeading: import("@tamagui/core").TamaguiComponent<Om
     size?: "large" | "small" | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").TextStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNTextProps;
+    __variantProps: {};
 }>;
 //# sourceMappingURL=SandboxHeading.d.ts.map

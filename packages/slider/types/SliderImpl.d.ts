@@ -31,6 +31,15 @@ export declare const DirectionalYStack: import("@tamagui/core").TamaguiComponent
     readonly orientation?: "vertical" | "horizontal" | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    };
 }>;
 export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
@@ -70,6 +79,17 @@ export declare const SliderFrame: import("@tamagui/core").TamaguiComponent<Omit<
     readonly size?: any;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+    } & {
+        readonly orientation?: "vertical" | "horizontal" | undefined;
+    };
 }>;
 export declare const SliderImpl: React.ForwardRefExoticComponent<SliderImplProps & React.RefAttributes<View>>;
 //# sourceMappingURL=SliderImpl.d.ts.map

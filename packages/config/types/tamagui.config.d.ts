@@ -52056,8 +52056,8 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        heading: import("@tamagui/web").GenericFont;
+        body: import("@tamagui/web").GenericFont;
         mono: {
             weight: {
                 1: string;

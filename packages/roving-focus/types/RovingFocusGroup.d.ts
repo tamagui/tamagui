@@ -34,8 +34,8 @@ interface RovingFocusGroupOptions {
 }
 interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
-declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & React.RefAttributes<import("react-native/types").View>> & {
-    Item: React.ForwardRefExoticComponent<RovingFocusItemProps & React.RefAttributes<import("react-native/types").View>>;
+declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & React.RefAttributes<import("react-native").View>> & {
+    Item: React.ForwardRefExoticComponent<RovingFocusItemProps & React.RefAttributes<import("react-native").View>>;
 };
 export { createRovingFocusGroupScope, RovingFocusGroup };
 export type { RovingFocusGroupProps, RovingFocusItemProps };

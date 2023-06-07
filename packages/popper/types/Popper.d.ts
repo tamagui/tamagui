@@ -133,6 +133,30 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
+        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    };
+    __variantProps: {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    } & {
+        readonly backgrounded?: boolean | undefined;
+        readonly radiused?: boolean | undefined;
+        readonly hoverTheme?: boolean | undefined;
+        readonly pressTheme?: boolean | undefined;
+        readonly focusTheme?: boolean | undefined;
+        readonly circular?: boolean | undefined;
+        readonly padded?: boolean | undefined;
+        readonly elevate?: boolean | undefined;
+        readonly bordered?: number | boolean | undefined;
+        readonly transparent?: boolean | undefined;
+        readonly chromeless?: boolean | "all" | undefined;
+    };
 }>;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
@@ -224,7 +248,7 @@ export declare const PopperArrow: import("@tamagui/core").ReactComponentWithRef<
     pointerEvents?: "none" | "box-none" | "box-only" | "auto" | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
     contain?: import("csstype").Property.Contain | undefined;
-    display?: "none" | "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | undefined;
+    display?: "none" | "flex" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     gap?: import("@tamagui/core").SpaceTokens | undefined;
     columnGap?: import("@tamagui/core").SpaceTokens | undefined;
     rowGap?: import("@tamagui/core").SpaceTokens | undefined;
