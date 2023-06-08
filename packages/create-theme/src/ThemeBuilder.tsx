@@ -276,8 +276,6 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       const { mask: maskName, ...options } = mask
       const maskFunction = this.state.masks?.[maskName]
 
-      console.log('options', options)
-
       if (!maskFunction) {
         throw new Error(`No mask ${maskFunction}`)
       }

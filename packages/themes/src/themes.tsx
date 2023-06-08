@@ -1,4 +1,5 @@
 import {
+  MaskOptions,
   combineMasks,
   createIdentityMask,
   createInverseMask,
@@ -101,7 +102,13 @@ const palettes = (() => {
   }
 })()
 
-const templates = (() => {
+const {
+  templates,
+  maskOptions,
+  maskOptionsAlt,
+  maskOptionsComponent,
+  maskOptionsButton,
+} = (() => {
   const templateColors = {
     color1: 1,
     color2: 2,
@@ -166,7 +173,7 @@ const templates = (() => {
     borderColorPress: 6,
   }
 
-  return {
+  const templates = {
     base: baseTemplate,
     colorLight: {
       ...baseTemplate,
@@ -176,6 +183,56 @@ const templates = (() => {
       borderColorFocus: 4,
       borderColorPress: 4,
     },
+  }
+
+  const override = Object.fromEntries(Object.entries(toSkip).map(([k]) => [k, 0]))
+  const overrideShadows = Object.fromEntries(
+    Object.entries(templateShadows).map(([k]) => [k, 0])
+  )
+  const overrideWithColors = {
+    ...override,
+    color: 0,
+    colorHover: 0,
+    colorFocus: 0,
+    colorPress: 0,
+  }
+
+  // default mask options for most uses
+  const maskOptions: MaskOptions = {
+    override,
+    skip: toSkip,
+    // avoids the transparent ends
+    max: palettes.light.length - 2,
+    min: 1,
+  }
+
+  // default mask options for most uses
+  const maskOptionsComponent: MaskOptions = {
+    ...maskOptions,
+    override: overrideWithColors,
+  }
+
+  // default mask options for most uses
+  const maskOptionsAlt: MaskOptions = {
+    ...maskOptions,
+    override: overrideShadows,
+  }
+
+  const maskOptionsButton: MaskOptions = {
+    ...maskOptions,
+    override: {
+      ...overrideWithColors,
+      borderColor: 'transparent',
+      borderColorHover: 'transparent',
+    },
+  }
+
+  return {
+    templates,
+    maskOptions,
+    maskOptionsComponent,
+    maskOptionsAlt,
+    maskOptionsButton,
   }
 })()
 
@@ -290,9 +347,11 @@ const themesBuilder = createThemeBuilder()
   .addChildThemes({
     alt1: {
       mask: 'soften',
+      ...maskOptionsAlt,
     },
     alt2: {
       mask: 'soften2',
+      ...maskOptionsAlt,
     },
     active: {
       mask: 'soften3',
@@ -307,71 +366,83 @@ const themesBuilder = createThemeBuilder()
         {
           parent: 'light',
           mask: 'strengthen',
+          ...maskOptionsComponent,
         },
         {
           parent: 'dark',
           mask: 'identity',
+          ...maskOptionsComponent,
         },
       ],
 
       Card: {
         mask: 'soften',
+        ...maskOptionsComponent,
       },
 
       Button: {
         mask: 'soften2',
-        override: {
-          borderColor: 'transparent',
-          borderColorHover: 'transparent',
-        },
+        ...maskOptionsButton,
       },
 
       Checkbox: {
         mask: 'soften2',
+        ...maskOptionsComponent,
       },
 
       SliderTrackActive: {
         mask: 'soften2',
+        ...maskOptionsComponent,
       },
 
       Switch: {
         mask: 'soften2',
+        ...maskOptionsComponent,
       },
 
       TooltipContent: {
         mask: 'soften2',
+        ...maskOptionsComponent,
       },
 
       DrawerFrame: {
         mask: 'soften',
+        ...maskOptionsComponent,
       },
 
       Progress: {
         mask: 'soften',
+        ...maskOptionsComponent,
       },
 
       TooltipArrow: {
         mask: 'soften',
+        ...maskOptionsComponent,
       },
 
       SliderTrack: {
         mask: 'strengthen',
+        ...maskOptionsComponent,
       },
 
       SliderThumb: {
         mask: 'inverseSoften',
+        ...maskOptionsComponent,
       },
 
       Tooltip: {
         mask: 'inverse',
+        ...maskOptionsComponent,
       },
 
       ProgressIndicator: {
         mask: 'inverse',
+        ...maskOptionsComponent,
       },
 
       SwitchThumb: {
         mask: 'inverseSoften2',
+        ...maskOptionsComponent,
       },
 
       SheetOverlay: overlayThemeDefinitions,
@@ -382,10 +453,12 @@ const themesBuilder = createThemeBuilder()
         {
           parent: 'light',
           mask: 'strengthenButSoftenBorder',
+          ...maskOptionsComponent,
         },
         {
           parent: 'dark',
           mask: 'softenBorder',
+          ...maskOptionsComponent,
         },
       ],
 
@@ -393,10 +466,12 @@ const themesBuilder = createThemeBuilder()
         {
           parent: 'light',
           mask: 'strengthenButSoftenBorder',
+          ...maskOptionsComponent,
         },
         {
           parent: 'dark',
           mask: 'softenBorder',
+          ...maskOptionsComponent,
         },
       ],
     },
