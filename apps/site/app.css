@@ -328,6 +328,10 @@ iframe {
   backdrop-filter: blur(20px);
 }
 
+.blur-8 {
+  backdrop-filter: blur(30px);
+}
+
 .blur-light {
   backdrop-filter: blur(2px);
 }
@@ -766,7 +770,7 @@ input, textarea {
   mask-image: url(./public/slice-mask.svg);
   mask-size: 50% 50%;
   mask-clip: border-box;
-  animation: clip-fade2 120s infinite alternate;
+  animation: clip-fade2 70s infinite alternate;
 }
 
 .slice-alt {
