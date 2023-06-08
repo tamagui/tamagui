@@ -11,12 +11,15 @@ You can use `@tamagui/config` a totally complete config out of the box, the same
 
 ```tsx
 import { config } from '@tamagui/config'
-import * as ReactNative from 'react-native'
+import { Text, View } from 'react-native'
 import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 
 // if using only @tamagui/core with `react-native` components
-// if using `tamagui` this isn't necessary
-setupReactNative(ReactNative)
+// if using `tamagui` this isn't necessary as it does this setup for you (for most components)
+setupReactNative({
+  Text,
+  View,
+})
 
 const appConfig = createTamagui(config)
 

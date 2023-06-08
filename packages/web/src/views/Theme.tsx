@@ -132,7 +132,9 @@ export function wrapThemeElements({
 
   if (isInversing) {
     themedChildren = (
-      <span className={`t_${scheme} _dsp_contents is_Theme`}>{themedChildren}</span>
+      <span className={`t_${scheme} _dsp_contents is_Theme is_inversed`}>
+        {themedChildren}
+      </span>
     )
   }
 

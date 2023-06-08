@@ -22,6 +22,9 @@ const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
 const declarationToRoot = !!process.argv.includes('--declaration-root')
+const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
+const baseUrlIndex = process.argv.indexOf('--base-url')
+const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -121,9 +124,6 @@ async function buildTsc() {
     return
   }
 
-  const config = getTsconfig()
-  const baseUrl = config.compilerOptions?.baseUrl || '.'
-
   const targetDir = 'types'
   try {
     // typescripts build cache messes up when doing declarationOnly
@@ -131,7 +131,8 @@ async function buildTsc() {
     await fs.ensureDir(targetDir)
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const cmd = `tsc --baseUrl ${baseUrl} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
+    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))

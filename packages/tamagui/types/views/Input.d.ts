@@ -328,7 +328,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPointerUp?: ((event: import("react-native").PointerEvent) => void) | undefined;
     onPointerUpCapture?: ((event: import("react-native").PointerEvent) => void) | undefined;
     target?: string | undefined;
-    asChild?: boolean | undefined;
+    asChild?: boolean | "except-style" | undefined;
     spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
     dangerouslySetInnerHTML?: {
         __html: string;

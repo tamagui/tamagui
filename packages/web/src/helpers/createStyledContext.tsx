@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react'
 
+import { objectIdentityKey } from './objectIdentityKey'
+
 export type StyledContext<Props extends Object = any> = Omit<
   React.Context<Props>,
   'Provider'
@@ -23,11 +25,8 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     children,
     ...values
   }: VariantProps & { children?: React.ReactNode }) => {
-    return (
-      <OGProvider value={useMemo(() => values, Object.values(values))}>
-        {children}
-      </OGProvider>
-    )
+    const value = useMemo(() => values, [objectIdentityKey(values)])
+    return <OGProvider value={value}>{children}</OGProvider>
   }
 
   // @ts-ignore

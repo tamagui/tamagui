@@ -63,16 +63,13 @@ export class ThemeManager {
       return parentManagerIn
     }
 
-    const parentManager = getNonComponentParentManager(parentManagerIn)
-    if (parentManager) {
-      this.parentManager = parentManager
-    }
+    this.parentManager = parentManagerIn
 
     if (this.updateState(props, false)) {
       return
     }
 
-    return parentManager || this
+    return parentManagerIn || this
   }
 
   updateState(
@@ -200,7 +197,11 @@ function getState(
   props: ThemeProps,
   parentManager?: ThemeManager | null
 ): ThemeManagerState | null {
+  const validManagerAndAllComponentThemes = getNonComponentParentManager(parentManager)
+  parentManager = validManagerAndAllComponentThemes[0]
+  const allComponentThemes = validManagerAndAllComponentThemes[1]
   const themes = getThemes()
+  const isDirectParentAComponentTheme = allComponentThemes.length > 0
 
   if (props.name && props.reset) {
     throw new Error('Cannot reset + set new name')
@@ -210,7 +211,7 @@ function getState(
     return null
   }
 
-  if (props.reset && !parentManager?.parentManager) {
+  if (props.reset && !isDirectParentAComponentTheme && !parentManager?.parentManager) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('Cannot reset no grandparent exists')
     }
@@ -220,10 +221,24 @@ function getState(
   let result: ThemeManagerState | null = null
 
   const nextName = props.reset
-    ? parentManager?.parentManager?.state?.name || ''
+    ? isDirectParentAComponentTheme
+      ? parentManager?.state?.name || ''
+      : parentManager?.parentManager?.state?.name || ''
     : props.name || ''
   const { componentName } = props
-  const parentName = parentManager?.state?.name || ''
+  const parentName = props.reset
+    ? isDirectParentAComponentTheme
+      ? // here because parentManager already skipped componentTheme so we have to only go up once
+        parentManager?.parentManager?.state.name || ''
+      : parentManager?.parentManager?.parentManager?.state.name || ''
+    : isDirectParentAComponentTheme
+    ? allComponentThemes[0] || ''
+    : parentManager?.state.name || ''
+
+  if (props.reset && isDirectParentAComponentTheme) {
+    // skip nearest component theme
+    allComponentThemes.shift()
+  }
 
   // components look for most specific, fallback upwards
   const base = parentName.split(THEME_NAME_SEPARATOR)
@@ -295,9 +310,8 @@ function getState(
         const moreSpecific = `${prefix}_${nextName}_${componentName}`
         componentPotentials.unshift(moreSpecific)
       }
-      potentials = [...componentPotentials, ...potentials]
+      potentials = [...componentPotentials, ...potentials, ...allComponentThemes]
     }
-
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
@@ -338,12 +352,14 @@ export function getNonComponentParentManager(themeManager?: ThemeManager | null)
   // example <Switch><Switch.Thumb /></Switch>
   // the Switch theme shouldn't be considered parent of Thumb
   let res = themeManager
+  let componentThemeNames: string[] = []
   while (res) {
     if (res?.isComponent) {
+      componentThemeNames.push(res?.state?.name!)
       res = res.parentManager
     } else {
       break
     }
   }
-  return res || null
+  return [res || null, componentThemeNames] as const
 }

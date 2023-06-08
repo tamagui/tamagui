@@ -43,6 +43,7 @@ export * from './hooks/useIsTouchDevice';
 export * from './hooks/useProps';
 export * from './views/Slot';
 export * from './views/Stack';
+export * from './views/View';
 export * from './views/Text';
 export * from './contexts/TextAncestorContext';
 export * from './views/Theme';

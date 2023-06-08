@@ -12,7 +12,6 @@ import {
   RandomizedLightProps,
   useBounds,
 } from '@react-three/drei'
-import { PresetsType } from '@react-three/drei/helpers/environment-assets'
 import * as React from 'react'
 
 const presets = {
@@ -60,8 +59,6 @@ type StageProps = {
   shadows?: boolean | 'contact' | 'accumulative' | StageShadows
   /** Optionally wraps and thereby centers the models using <Bounds>, can also be a margin, default: true */
   adjustCamera?: boolean | number
-  /** The default environment, default: "city" */
-  environment?: PresetsType | Partial<EnvironmentProps>
   /** The lighting intensity, default: 0.5 */
   intensity?: number
   /** To adjust centering, default: undefined */
@@ -96,7 +93,6 @@ export function Stage({
   adjustCamera = true,
   intensity = 0.5,
   shadows = 'contact',
-  environment = 'city',
   preset = 'rembrandt',
   ...props
 }: JSX.IntrinsicElements['group'] & StageProps) {
@@ -116,11 +112,6 @@ export function Stage({
   const accumulativeShadow =
     shadows === 'accumulative' || (shadows as StageShadows)?.type === 'accumulative'
   const shadowSpread = { ...(typeof shadows === 'object' ? shadows : {}) }
-  const environmentProps = !environment
-    ? null
-    : typeof environment === 'string'
-    ? { preset: environment }
-    : environment
   const onCentered = React.useCallback((props) => {
     const { width, height, depth, boundingSphere } = props
     set({ radius: boundingSphere.radius, width, height, depth })
@@ -201,7 +192,6 @@ export function Stage({
           </AccumulativeShadows>
         )}
       </group>
-      {environment && <Environment {...environmentProps} />}
     </>
   )
 }

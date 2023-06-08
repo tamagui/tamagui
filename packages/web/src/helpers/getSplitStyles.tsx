@@ -356,7 +356,7 @@ export const getSplitStyles: StyleSplitter = (
       } else {
         didUseKeyInit = true
 
-        if (accessibilityDirectMap[keyInit]) {
+        if (keyInit in accessibilityDirectMap) {
           viewProps[accessibilityDirectMap[keyInit]] = valInit
         } else {
           switch (keyInit) {
@@ -455,13 +455,14 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = isMedia || isPseudo
 
     const isVariant = variants && keyInit in variants
+    const isStyleProp =
+      isMediaOrPseudo || isVariant || keyInit in validStyleProps || keyInit in shorthands
 
-    const shouldPassProp = !(
-      isMediaOrPseudo ||
-      isVariant ||
-      keyInit in validStyleProps ||
-      keyInit in shorthands
-    )
+    if (isStyleProp && props.asChild === 'except-style') {
+      return
+    }
+
+    const shouldPassProp = !isStyleProp
 
     const isHOCShouldPassThrough =
       staticConfig.isHOC &&

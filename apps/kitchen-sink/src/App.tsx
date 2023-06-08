@@ -1,4 +1,4 @@
-import { ToastProvider, ToastViewport } from '@tamagui/sandbox-ui'
+import { ToastViewport } from '@tamagui/sandbox-ui'
 import { setupNativeSheet } from '@tamagui/sheet'
 import { useFonts } from 'expo-font'
 import { useEffect, useMemo, useState } from 'react'
@@ -44,11 +44,9 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeContext.Provider value={themeContext}>
         <Provider defaultTheme={theme as any}>
-          <ToastProvider swipeDirection="horizontal">
-            {children}
+          {children}
 
-            <SafeToastViewport />
-          </ToastProvider>
+          <SafeToastViewport />
         </Provider>
       </ThemeContext.Provider>
     </SafeAreaProvider>

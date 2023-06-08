@@ -201,10 +201,10 @@ Outside of flat style properties, Tamagui adds the following props:
     {
       name: 'asChild',
       required: false,
-      type: 'boolean',
+      type: 'boolean | "except-style"',
       description: (
         <span>
-          When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.
+          When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props. When "except-style", the same behavior except Tamagui won't pass styles down from the parent, only non-style props.
         </span>
       ),
     },

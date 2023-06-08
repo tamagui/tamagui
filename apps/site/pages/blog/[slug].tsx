@@ -1,4 +1,4 @@
-import { getBlogLayout } from '@components/layouts/BlogLayout'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { getMDXComponent } from 'mdx-bundler/client'
@@ -39,7 +39,7 @@ export default function BlogSlug(props: BlogPost) {
   )
 }
 
-BlogSlug.getLayout = getBlogLayout
+BlogSlug.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('blog')

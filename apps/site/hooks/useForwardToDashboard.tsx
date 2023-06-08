@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import { useUser } from './useUser'
 
 export function useForwardToDashboard() {
-  const { user, isLoading } = useUser()
+  const { data, isLoading } = useUser()
+  const user = data?.session?.user
   const router = useRouter()
 
   useEffect(() => {

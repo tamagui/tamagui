@@ -1,7 +1,7 @@
-import { getDocLayout } from '@components/layouts/DocLayout'
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
@@ -86,7 +86,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocComponentsPage.getLayout = getDocLayout
+DocComponentsPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/components')

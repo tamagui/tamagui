@@ -56,7 +56,7 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage shadows="accumulative" scale={1} adjustCamera={1} intensity={1}>
+      <Stage shadows="accumulative" scale={1} adjustCamera={1.2} intensity={1}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
             geometry={nodes.pack.geometry}

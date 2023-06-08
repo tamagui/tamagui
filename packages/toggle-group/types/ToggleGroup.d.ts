@@ -23,8 +23,8 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 }
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
 declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSingleProps, "ref"> | Omit<ToggleGroupMultipleProps, "ref">) & React.RefAttributes<HTMLElement>> & {
-    Item: React.ForwardRefExoticComponent<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+    Item: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -44,8 +44,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;
         readonly orientation?: "horizontal" | "vertical" | undefined;
-    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+    } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -65,8 +65,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;
         readonly orientation?: "horizontal" | "vertical" | undefined;
-    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+    }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -132,8 +132,8 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
     onValueChange?(value: string[]): void;
 }
 type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>;
-declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -149,11 +149,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -169,11 +169,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -189,7 +189,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
@@ -215,8 +215,8 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
     outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "unstyled" | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | "unstyled" | "orientation" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -232,14 +232,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -255,11 +255,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -275,11 +275,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -295,7 +295,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
@@ -321,8 +321,8 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
     outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "unstyled" | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | "unstyled" | "orientation" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -338,14 +338,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -361,11 +361,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -381,11 +381,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -401,7 +401,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
@@ -427,8 +427,8 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
     outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "unstyled" | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | "unstyled" | "orientation" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -444,14 +444,14 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>> & Omit<{}, "unstyled" | "orientation"> & {
     readonly unstyled?: boolean | undefined;
     readonly orientation?: "horizontal" | "vertical" | undefined;
-}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>>, import("@tamagui/web").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -467,11 +467,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -487,11 +487,11 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
-}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+}>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -507,7 +507,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> & {
@@ -533,8 +533,8 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineOffset?: import("@tamagui/web").SpaceTokens | undefined;
     outlineWidth?: import("@tamagui/web").SpaceTokens | undefined;
-} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "unstyled" | "orientation" | "size" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native/types").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native/types").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native/types").ViewStyle>;
+} | keyof import("@tamagui/web").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | "size" | "unstyled" | "orientation" | keyof import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/web").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -550,7 +550,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "unstyled" | "size"> & {
+}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: any;
 }>> | "axis" | "scrollable" | "showScrollIndicator" | "disablePassBorderRadius" | "forceUseItem" | "__scopeGroup" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement>>, {
@@ -571,5 +571,5 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupImplElementFrame> & Group
     sizeAdjust?: number;
 };
 export { ToggleGroup, createToggleGroupScope };
-export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupSingleProps, ToggleGroupProps, };
+export type { ToggleGroupItemProps, ToggleGroupMultipleProps, ToggleGroupProps, ToggleGroupSingleProps, };
 //# sourceMappingURL=ToggleGroup.d.ts.map

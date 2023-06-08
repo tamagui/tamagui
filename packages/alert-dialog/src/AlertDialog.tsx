@@ -5,6 +5,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Slottable,
   TamaguiElement,
+  View,
   composeEventHandlers,
   isTamaguiElement,
   isWeb,
@@ -64,8 +65,8 @@ const TRIGGER_NAME = 'AlertDialogTrigger'
 
 interface AlertDialogTriggerProps extends DialogTriggerProps {}
 
-const NativeAlertDialogTriggerFrame = styled(YStack, {
-  name: 'DialogTrigger',
+const NativeAlertDialogTriggerFrame = styled(View, {
+  name: TRIGGER_NAME,
 })
 
 const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(

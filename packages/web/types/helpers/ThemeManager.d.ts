@@ -35,6 +35,6 @@ export declare class ThemeManager {
     notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
-export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): ThemeManager | null;
+export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): readonly [ThemeManager | null, string[]];
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map
