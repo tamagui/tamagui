@@ -212,7 +212,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     const maskedThemes: {
       parentName: string
       themeName: string
-      mask: ThemeUsingMask['mask']
+      mask: ThemeUsingMask
     }[] = []
 
     for (const themeName in this.state.themes) {
@@ -233,7 +233,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       if ('theme' in themeDefinition) {
         out[themeName] = themeDefinition.theme
       } else if ('mask' in themeDefinition) {
-        maskedThemes.push({ parentName, themeName, mask: themeDefinition.mask })
+        maskedThemes.push({ parentName, themeName, mask: themeDefinition })
       } else {
         if (!this.state.palettes) {
           throw new Error(
@@ -273,13 +273,16 @@ class ThemeBuilder<State extends ThemeBuilderState> {
         )
       }
 
-      const maskFunction = this.state.masks?.[mask]
+      const { mask: maskName, ...options } = mask
+      const maskFunction = this.state.masks?.[maskName]
+
+      console.log('options', options)
 
       if (!maskFunction) {
         throw new Error(`No mask ${maskFunction}`)
       }
 
-      out[themeName] = applyMask(parent, maskFunction as any)
+      out[themeName] = applyMask(parent, maskFunction as any, options)
     }
 
     return out as any

@@ -6353,6 +6353,7 @@ __metadata:
     "@tamagui/colors": 1.31.2
     "@tamagui/create-theme": 1.31.2
     "@tamagui/web": 1.31.2
+    vitest: ^0.26.3
   languageName: unknown
   linkType: soft
 
