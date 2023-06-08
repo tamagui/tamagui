@@ -3,7 +3,7 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
@@ -42,6 +42,7 @@ import {
   Theme,
   Unspaced,
   XStack,
+  XStackProps,
   YStack,
   YStackProps,
   composeRefs,
@@ -150,7 +151,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 
           {!!icon && (
             <YStack pos="absolute" b={0} r={0}>
-              <Image className="pixelate" src={icon} alt="Icon" width={64} height={64} />
+              <Image className="pixelate" src={icon} alt="Icon" width={52} height={52} />
             </YStack>
           )}
         </YStack>
@@ -500,13 +501,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   </H2>
                 </ThemeTint>
 
-                <XStack space="$6" spaceDirection="horizontal">
-                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-                  <img src="/heart.svg" style={{ width: 16, height: 16 }} />
-                </XStack>
+                <HeartsRow />
 
                 <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
                   We can't promise the moon or the ✨ - success is up to you - but if you
@@ -520,21 +515,14 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  And of course it's powered by Tamagui, the best frontend UI system
-                  around.
+                  And of course it's powered by{' '}
+                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />, the
+                  best universal UI system ever created (by far). Within an hour you'll be
+                  deploying your app on the web to Vercel and to iOS and Android app
+                  stores via Expo EAS.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Within an hour you'll be deploying your app on the web to Vercel (with
-                  easy configuration of other providers), as well as production-ready
-                  builds for iOS and Android via Expo EAS.
-                </Paragraph>
-
-                {/* <YStack scale={1.12}>
-                  <Points />
-                </YStack> */}
-
-                <Spacer size="$8" />
+                <Spacer size="$6" />
 
                 <XStack fw="wrap" gap="$4" mx="$-6">
                   <TakeoutCard
@@ -543,9 +531,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-module-21.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">Well-isolated configuration.</Point>
+                      <Point size="$4">100% shared code between web and native.</Point>
+                      <Point size="$4" mr="$10">
+                        Scripts for running your dev env in one command.
+                      </Point>
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -554,9 +544,13 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/design-color-painting-palette-25.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">
+                        Complete design system with the new ThemeBuilder for easy
+                        customization.
+                      </Point>
+                      <Point size="$4">
+                        Two brand new theme packs - Neon and Pastel.
+                      </Point>
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -565,9 +559,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">Vercel + Preview Deploys.</Point>
+                      <Point size="$4">Expo EAS + Expo Router.</Point>
+                      <Point size="$4" mr="$10">
+                        Script that sets up both local and remote dev environments.
+                      </Point>
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -576,9 +572,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-app-website-ui-62.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">100% shared native and web.</Point>
+                      <Point size="$4">Adapted to each platform.</Point>
+                      <Point size="$4" mr="$10">
+                        Onboarding, auth, account, settings, profile, feed, edit profile.
+                      </Point>
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -587,20 +585,25 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-plugin-33.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">
+                        30 icon packs, adapted to use themes, sizing, and tree shaking.
+                      </Point>
+                      <Point size="$4">All of Google fonts, over 100&nbsp;packs.</Point>
+                      <Point size="$4">More every month.</Point>
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
                     theme="pink"
-                    title="Updates"
+                    title="& More"
                     icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Isolated swappable configuration.</Point>
-                      <Point size="$4">100% shared code.</Point>
-                      <Point size="$4">Something else.</Point>
+                      <Point size="$4">Supabase DB, auth.</Point>
+                      <Point size="$4">TakeoutBot ongoing updates.</Point>
+                      <Point size="$4">Test, lint, CI/CD.</Point>
+                      <Point size="$4" mr="$10">
+                        #takeout discord access.
+                      </Point>
                     </YStack>
                   </TakeoutCard>
                 </XStack>
@@ -622,11 +625,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   className="blur-medium"
                   space="$6"
                   elevation="$6"
-                  br="$6"
+                  br="$10"
                   mt={-100}
                 >
-                  <YStack br="$6" zi={-1} fullscreen bc="$background" o={0.3} />
-                  <YStack br="$6" zi={-1} fullscreen bc="$color" o={0.1} />
+                  <YStack br="$10" zi={-1} fullscreen bc="$background" o={0.3} />
+                  <YStack br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
 
                   <YStack
                     bc="#000"
@@ -637,6 +640,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     py="$2"
                     elevation="$4"
                     als="center"
+                    br="$5"
                   >
                     <ThemeTint>
                       <Paragraph
@@ -653,6 +657,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                       color="$color9"
                       fontFamily="$munro"
                       size="$8"
+                      mt={-10}
                       $sm={{ size: '$6' }}
                       fow="800"
                       ta="center"
@@ -746,13 +751,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   improving.
                 </MunroP>
 
-                <XStack space="$6" spaceDirection="horizontal">
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                  <img src="/heart.svg" style={{ width: 24, height: 24 }} />
-                </XStack>
+                <HeartsRow />
 
                 <MunroP size="$10" color="$yellow10">
                   We hope you enjoy.
@@ -790,37 +789,36 @@ const Point = ({
   size = '$6',
   children,
   subtitle,
-}: {
+  ...props
+}: XStackProps & {
   children: any
   subtitle?: any
   size?: SizeTokens
 }) => {
   return (
-    <>
-      <XStack tag="li" ai="flex-start" space f={1} ov="hidden">
-        <YStack py="$1.5">
-          <Check size={16} color="$color10" />
-        </YStack>
-        <YStack f={1}>
-          <Paragraph wordWrap="break-word" size={size}>
-            {children}
+    <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
+      <YStack py="$1.5">
+        <Check size={16} color="$color10" />
+      </YStack>
+      <YStack f={1}>
+        <Paragraph wordWrap="break-word" size={size}>
+          {children}
+        </Paragraph>
+        {!!subtitle && (
+          <Paragraph
+            size={
+              getSize(size, {
+                shift: -2,
+              }) as any
+            }
+            theme="gray_alt2"
+            o={0.5}
+          >
+            {subtitle}
           </Paragraph>
-          {!!subtitle && (
-            <Paragraph
-              size={
-                getSize(size, {
-                  shift: -2,
-                }) as any
-              }
-              theme="gray_alt2"
-              o={0.5}
-            >
-              {subtitle}
-            </Paragraph>
-          )}
-        </YStack>
-      </XStack>
-    </>
+        )}
+      </YStack>
+    </XStack>
   )
 }
 
@@ -1152,8 +1150,8 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </Paragraph>
 
-              <Paragraph fontFamily="$munro" size="$10" ls={4}>
-                Stack
+              <Paragraph fontFamily="$munro" size="$12" ls={2}>
+                The Stack
               </Paragraph>
 
               <YStack>
@@ -1176,6 +1174,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 />
 
                 <Row
+                  title="Data & Auth"
+                  description="Supabase pre-configured with migrations, auth, and everything set up to get rolling immediately - local dev and remote setup included."
+                  after="01"
+                />
+
+                <Row
                   title="Icons"
                   description="A whopping ~100k icons in total across 30 different packs, tree-shakeable, from icones.js.org."
                   after="30"
@@ -1189,7 +1193,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Themes"
-                  description="Two all new theme suites join Tamagui - Pastel and Neon - that bring a more muted or more bright feel to your app."
+                  description="Two all new theme - Pastel and Neon - that bring a muted or more bright feel."
                   after="03"
                 />
 
@@ -1206,7 +1210,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 />
               </YStack>
 
-              <Spacer f={1} minHeight={80} />
+              <Spacer f={1} minHeight={120} />
             </YStack>
           </ScrollView>
         </TakeoutCardFrame>
@@ -1555,3 +1559,13 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
     }
   }
 }
+
+const HeartsRow = () => (
+  <XStack space="$12" als="center" spaceDirection="horizontal">
+    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+    <img src="/heart.svg" style={{ width: 16, height: 16 }} />
+  </XStack>
+)

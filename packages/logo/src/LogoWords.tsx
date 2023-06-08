@@ -1,10 +1,14 @@
 import { memo, useEffect, useState } from 'react'
-import { Circle, XStack } from 'tamagui'
+import { Circle, XStack, XStackProps } from 'tamagui'
 
 import { useTint } from './useTint'
 
 export const LogoWords = memo(
-  ({ downscale = 1, animated }: { downscale?: number; animated?: boolean }) => {
+  ({
+    downscale = 1,
+    animated,
+    ...props
+  }: XStackProps & { downscale?: number; animated?: boolean }) => {
     const Tint = useTint()
     const { tintIndex: index, tint } = Tint
     const tints = Tint.tints.map((t) => `var(--${t}9)`)
@@ -43,6 +47,7 @@ export const LogoWords = memo(
         paddingVertical="$2"
         marginVertical="$-2"
         position="relative"
+        {...props}
       >
         {animated && (
           <Circle
