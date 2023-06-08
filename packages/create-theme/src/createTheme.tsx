@@ -1,18 +1,16 @@
 import { isMinusZero } from './isMinusZero'
 import { setThemeInfo } from './themeInfo'
-import { CreateThemePalette, GenericTheme, ThemeMask } from './types'
+import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 const identityCache = new Map()
 
 export function createTheme<
   Definition extends ThemeMask,
-  Extras extends Record<string, string> = {}
+  Extras extends GenericTheme = {}
 >(
   palette: CreateThemePalette,
   definition: Definition,
-  options?: {
-    nonInheritedValues?: Extras
-  }
+  options?: CreateThemeOptions
 ): {
   [key in keyof Definition | keyof Extras]: string
 } {
@@ -30,7 +28,7 @@ export function createTheme<
     ...options?.nonInheritedValues,
   }
 
-  setThemeInfo(theme, { palette, definition })
+  setThemeInfo(theme, { palette, definition, options })
   identityCache.set(cacheKey, theme)
 
   return theme

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "composite": true
   },
+  "exclude": ["generated"],
   "references": [
     {
       "path": "../colors"

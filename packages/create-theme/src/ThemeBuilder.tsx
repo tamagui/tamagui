@@ -1,10 +1,14 @@
 import { Narrow } from '../../web/types'
-import { createTheme } from './createTheme'
+import { CreateThemeOptions, createTheme } from './createTheme'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask, createMask } from './masks'
 import { CreateMask, MaskOptions } from './types'
 
 export type Palette = string[]
+
+type GenericTheme = {
+  [key: string]: string
+}
 
 export type Template = {
   [key: string]: number
@@ -14,15 +18,13 @@ type ThemeUsingMask<Masks = string> = MaskOptions & {
   mask: Masks
 }
 
-type ThemeUsingTemplate = {
+type ThemeUsingTemplate = CreateThemeOptions & {
   palette: string
   template: string
 }
 
 type ThemePreDefined = {
-  theme: {
-    [key: string]: string
-  }
+  theme: GenericTheme
 }
 
 export type Theme<Masks = string> =

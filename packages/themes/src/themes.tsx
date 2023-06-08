@@ -11,6 +11,7 @@ import {
 } from '@tamagui/create-theme'
 
 import { objectFromEntries, objectKeys } from './helpers'
+import { themes as themesOld } from './themes-old'
 import { colorTokens } from './tokens'
 
 const palettes = (() => {
@@ -481,3 +482,5 @@ const themesBuilder = createThemeBuilder()
   )
 
 export const themes = themesBuilder.build()
+
+console.log('wtf is', themes.dark_Button, 'vs', themesOld.dark_Button)

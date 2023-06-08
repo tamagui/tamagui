@@ -2194,6 +2194,36 @@ export const dark_Button = {
     colorPress: '#fff',
     colorFocus: '#a5a5a5',
     colorTransparent: '#a5a5a5',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: '#494949',
+    borderColorFocus: '#424242',
+    placeholderColor: '#424242'
+} as Theme
+export const dark_Checkbox = {
+    color1: '#191919',
+    color2: '#232323',
+    color3: '#282828',
+    color4: '#323232',
+    color5: '#424242',
+    color6: '#494949',
+    color7: '#545454',
+    color8: '#626262',
+    color9: '#a5a5a5',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: '#232323',
+    backgroundHover: '#282828',
+    backgroundPress: '#323232',
+    backgroundFocus: '#424242',
+    backgroundStrong: '#191919',
+    backgroundTransparent: '#151515',
+    color: '#fff',
+    colorHover: '#a5a5a5',
+    colorPress: '#fff',
+    colorFocus: '#a5a5a5',
+    colorTransparent: '#a5a5a5',
     borderColor: '#494949',
     borderColorHover: '#545454',
     borderColorPress: '#494949',
@@ -2201,10 +2231,9 @@ export const dark_Button = {
     placeholderColor: '#424242'
 } as Theme
 
-export const dark_Checkbox = dark_Button as Theme
-export const dark_SliderTrackActive = dark_Button as Theme
-export const dark_Switch = dark_Button as Theme
-export const dark_TooltipContent = dark_Button as Theme
+export const dark_SliderTrackActive = dark_Checkbox as Theme
+export const dark_Switch = dark_Checkbox as Theme
+export const dark_TooltipContent = dark_Checkbox as Theme
 export const dark_SliderTrack = {
     color1: '#050505',
     color2: '#050505',
@@ -2453,6 +2482,36 @@ export const light_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(0, 0%, 42.5%)',
     colorTransparent: 'hsl(0, 0%, 42.5%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(0, 0%, 81.0%)',
+    borderColorFocus: 'hsl(0, 0%, 89.5%)',
+    placeholderColor: 'hsl(0, 0%, 89.5%)'
+} as Theme
+export const light_Checkbox = {
+    color1: 'hsl(0, 0%, 97.3%)',
+    color2: 'hsl(0, 0%, 95.1%)',
+    color3: 'hsl(0, 0%, 94.0%)',
+    color4: 'hsl(0, 0%, 92.0%)',
+    color5: 'hsl(0, 0%, 89.5%)',
+    color6: 'hsl(0, 0%, 81.0%)',
+    color7: 'hsl(0, 0%, 56.1%)',
+    color8: 'hsl(0, 0%, 50.3%)',
+    color9: 'hsl(0, 0%, 42.5%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(0, 0%, 95.1%)',
+    backgroundHover: 'hsl(0, 0%, 94.0%)',
+    backgroundPress: 'hsl(0, 0%, 92.0%)',
+    backgroundFocus: 'hsl(0, 0%, 89.5%)',
+    backgroundStrong: 'hsl(0, 0%, 97.3%)',
+    backgroundTransparent: '#f9f9f9',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(0, 0%, 42.5%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(0, 0%, 42.5%)',
+    colorTransparent: 'hsl(0, 0%, 42.5%)',
     borderColor: 'hsl(0, 0%, 81.0%)',
     borderColorHover: 'hsl(0, 0%, 56.1%)',
     borderColorPress: 'hsl(0, 0%, 81.0%)',
@@ -2460,10 +2519,9 @@ export const light_Button = {
     placeholderColor: 'hsl(0, 0%, 89.5%)'
 } as Theme
 
-export const light_Checkbox = light_Button as Theme
-export const light_SliderTrackActive = light_Button as Theme
-export const light_Switch = light_Button as Theme
-export const light_TooltipContent = light_Button as Theme
+export const light_SliderTrackActive = light_Checkbox as Theme
+export const light_Switch = light_Checkbox as Theme
+export const light_TooltipContent = light_Checkbox as Theme
 export const light_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(0, 0%, 42.5%)',
@@ -2586,6 +2644,36 @@ export const dark_orange_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(24, 97.0%, 93.2%)',
     colorTransparent: 'hsl(24, 97.0%, 93.2%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(24, 94.0%, 50.0%)',
+    borderColorFocus: 'hsl(25, 100%, 29.0%)',
+    placeholderColor: 'hsl(25, 100%, 29.0%)'
+} as Theme
+export const dark_orange_Checkbox = {
+    color1: 'hsl(26, 91.1%, 11.6%)',
+    color2: 'hsl(25, 88.3%, 14.1%)',
+    color3: 'hsl(24, 87.6%, 16.6%)',
+    color4: 'hsl(24, 88.6%, 19.8%)',
+    color5: 'hsl(25, 100%, 29.0%)',
+    color6: 'hsl(24, 94.0%, 50.0%)',
+    color7: 'hsl(24, 100%, 58.5%)',
+    color8: 'hsl(24, 100%, 62.2%)',
+    color9: 'hsl(24, 97.0%, 93.2%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(25, 88.3%, 14.1%)',
+    backgroundHover: 'hsl(24, 87.6%, 16.6%)',
+    backgroundPress: 'hsl(24, 88.6%, 19.8%)',
+    backgroundFocus: 'hsl(25, 100%, 29.0%)',
+    backgroundStrong: 'hsl(26, 91.1%, 11.6%)',
+    backgroundTransparent: 'hsl(28, 100%, 8.4%)',
+    color: '#fff',
+    colorHover: 'hsl(24, 97.0%, 93.2%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(24, 97.0%, 93.2%)',
+    colorTransparent: 'hsl(24, 97.0%, 93.2%)',
     borderColor: 'hsl(24, 94.0%, 50.0%)',
     borderColorHover: 'hsl(24, 100%, 58.5%)',
     borderColorPress: 'hsl(24, 94.0%, 50.0%)',
@@ -2593,10 +2681,9 @@ export const dark_orange_Button = {
     placeholderColor: 'hsl(25, 100%, 29.0%)'
 } as Theme
 
-export const dark_orange_Checkbox = dark_orange_Button as Theme
-export const dark_orange_SliderTrackActive = dark_orange_Button as Theme
-export const dark_orange_Switch = dark_orange_Button as Theme
-export const dark_orange_TooltipContent = dark_orange_Button as Theme
+export const dark_orange_SliderTrackActive = dark_orange_Checkbox as Theme
+export const dark_orange_Switch = dark_orange_Checkbox as Theme
+export const dark_orange_TooltipContent = dark_orange_Checkbox as Theme
 export const dark_orange_SliderTrack = {
     color1: 'hsl(30, 70.0%, 7.2%)',
     color2: 'hsl(30, 70.0%, 7.2%)',
@@ -2809,6 +2896,36 @@ export const dark_yellow_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(53, 100%, 91.0%)',
     colorTransparent: 'hsl(53, 100%, 91.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(53, 92.0%, 50.0%)',
+    borderColorFocus: 'hsl(50, 100%, 22.0%)',
+    placeholderColor: 'hsl(50, 100%, 22.0%)'
+} as Theme
+export const dark_yellow_Checkbox = {
+    color1: 'hsl(45, 100%, 8.7%)',
+    color2: 'hsl(45, 100%, 10.4%)',
+    color3: 'hsl(47, 100%, 12.1%)',
+    color4: 'hsl(49, 100%, 14.3%)',
+    color5: 'hsl(50, 100%, 22.0%)',
+    color6: 'hsl(53, 92.0%, 50.0%)',
+    color7: 'hsl(54, 100%, 68.0%)',
+    color8: 'hsl(48, 100%, 47.0%)',
+    color9: 'hsl(53, 100%, 91.0%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(45, 100%, 10.4%)',
+    backgroundHover: 'hsl(47, 100%, 12.1%)',
+    backgroundPress: 'hsl(49, 100%, 14.3%)',
+    backgroundFocus: 'hsl(50, 100%, 22.0%)',
+    backgroundStrong: 'hsl(45, 100%, 8.7%)',
+    backgroundTransparent: 'hsl(46, 100%, 6.7%)',
+    color: '#fff',
+    colorHover: 'hsl(53, 100%, 91.0%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(53, 100%, 91.0%)',
+    colorTransparent: 'hsl(53, 100%, 91.0%)',
     borderColor: 'hsl(53, 92.0%, 50.0%)',
     borderColorHover: 'hsl(54, 100%, 68.0%)',
     borderColorPress: 'hsl(53, 92.0%, 50.0%)',
@@ -2816,10 +2933,9 @@ export const dark_yellow_Button = {
     placeholderColor: 'hsl(50, 100%, 22.0%)'
 } as Theme
 
-export const dark_yellow_Checkbox = dark_yellow_Button as Theme
-export const dark_yellow_SliderTrackActive = dark_yellow_Button as Theme
-export const dark_yellow_Switch = dark_yellow_Button as Theme
-export const dark_yellow_TooltipContent = dark_yellow_Button as Theme
+export const dark_yellow_SliderTrackActive = dark_yellow_Checkbox as Theme
+export const dark_yellow_Switch = dark_yellow_Checkbox as Theme
+export const dark_yellow_TooltipContent = dark_yellow_Checkbox as Theme
 export const dark_yellow_SliderTrack = {
     color1: 'hsl(45, 100%, 5.5%)',
     color2: 'hsl(45, 100%, 5.5%)',
@@ -3032,6 +3148,36 @@ export const dark_green_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(137, 72.0%, 94.0%)',
     colorTransparent: 'hsl(137, 72.0%, 94.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(151, 55.0%, 41.5%)',
+    borderColorFocus: 'hsl(151, 51.7%, 28.4%)',
+    placeholderColor: 'hsl(151, 51.7%, 28.4%)'
+} as Theme
+export const dark_green_Checkbox = {
+    color1: 'hsl(155, 46.7%, 10.9%)',
+    color2: 'hsl(154, 48.4%, 12.9%)',
+    color3: 'hsl(154, 49.7%, 14.9%)',
+    color4: 'hsl(154, 50.9%, 17.6%)',
+    color5: 'hsl(151, 51.7%, 28.4%)',
+    color6: 'hsl(151, 55.0%, 41.5%)',
+    color7: 'hsl(151, 49.3%, 46.5%)',
+    color8: 'hsl(151, 50.0%, 53.2%)',
+    color9: 'hsl(137, 72.0%, 94.0%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(154, 48.4%, 12.9%)',
+    backgroundHover: 'hsl(154, 49.7%, 14.9%)',
+    backgroundPress: 'hsl(154, 50.9%, 17.6%)',
+    backgroundFocus: 'hsl(151, 51.7%, 28.4%)',
+    backgroundStrong: 'hsl(155, 46.7%, 10.9%)',
+    backgroundTransparent: 'hsl(155, 44.2%, 8.4%)',
+    color: '#fff',
+    colorHover: 'hsl(137, 72.0%, 94.0%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(137, 72.0%, 94.0%)',
+    colorTransparent: 'hsl(137, 72.0%, 94.0%)',
     borderColor: 'hsl(151, 55.0%, 41.5%)',
     borderColorHover: 'hsl(151, 49.3%, 46.5%)',
     borderColorPress: 'hsl(151, 55.0%, 41.5%)',
@@ -3039,10 +3185,9 @@ export const dark_green_Button = {
     placeholderColor: 'hsl(151, 51.7%, 28.4%)'
 } as Theme
 
-export const dark_green_Checkbox = dark_green_Button as Theme
-export const dark_green_SliderTrackActive = dark_green_Button as Theme
-export const dark_green_Switch = dark_green_Button as Theme
-export const dark_green_TooltipContent = dark_green_Button as Theme
+export const dark_green_SliderTrackActive = dark_green_Checkbox as Theme
+export const dark_green_Switch = dark_green_Checkbox as Theme
+export const dark_green_TooltipContent = dark_green_Checkbox as Theme
 export const dark_green_SliderTrack = {
     color1: 'hsl(146, 30.0%, 7.4%)',
     color2: 'hsl(146, 30.0%, 7.4%)',
@@ -3255,6 +3400,36 @@ export const dark_blue_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(206, 98.0%, 95.8%)',
     colorTransparent: 'hsl(206, 98.0%, 95.8%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(206, 100%, 50.0%)',
+    borderColorFocus: 'hsl(211, 89.7%, 34.1%)',
+    placeholderColor: 'hsl(211, 89.7%, 34.1%)'
+} as Theme
+export const dark_blue_Checkbox = {
+    color1: 'hsl(214, 59.4%, 15.3%)',
+    color2: 'hsl(214, 65.8%, 17.9%)',
+    color3: 'hsl(213, 71.2%, 20.2%)',
+    color4: 'hsl(212, 77.4%, 23.1%)',
+    color5: 'hsl(211, 89.7%, 34.1%)',
+    color6: 'hsl(206, 100%, 50.0%)',
+    color7: 'hsl(209, 100%, 60.6%)',
+    color8: 'hsl(210, 100%, 66.1%)',
+    color9: 'hsl(206, 98.0%, 95.8%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(214, 65.8%, 17.9%)',
+    backgroundHover: 'hsl(213, 71.2%, 20.2%)',
+    backgroundPress: 'hsl(212, 77.4%, 23.1%)',
+    backgroundFocus: 'hsl(211, 89.7%, 34.1%)',
+    backgroundStrong: 'hsl(214, 59.4%, 15.3%)',
+    backgroundTransparent: 'hsl(216, 50.0%, 11.8%)',
+    color: '#fff',
+    colorHover: 'hsl(206, 98.0%, 95.8%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(206, 98.0%, 95.8%)',
+    colorTransparent: 'hsl(206, 98.0%, 95.8%)',
     borderColor: 'hsl(206, 100%, 50.0%)',
     borderColorHover: 'hsl(209, 100%, 60.6%)',
     borderColorPress: 'hsl(206, 100%, 50.0%)',
@@ -3262,10 +3437,9 @@ export const dark_blue_Button = {
     placeholderColor: 'hsl(211, 89.7%, 34.1%)'
 } as Theme
 
-export const dark_blue_Checkbox = dark_blue_Button as Theme
-export const dark_blue_SliderTrackActive = dark_blue_Button as Theme
-export const dark_blue_Switch = dark_blue_Button as Theme
-export const dark_blue_TooltipContent = dark_blue_Button as Theme
+export const dark_blue_SliderTrackActive = dark_blue_Checkbox as Theme
+export const dark_blue_Switch = dark_blue_Checkbox as Theme
+export const dark_blue_TooltipContent = dark_blue_Checkbox as Theme
 export const dark_blue_SliderTrack = {
     color1: 'hsl(212, 35.0%, 9.2%)',
     color2: 'hsl(212, 35.0%, 9.2%)',
@@ -3478,6 +3652,36 @@ export const dark_purple_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(279, 75.0%, 95.7%)',
     colorTransparent: 'hsl(279, 75.0%, 95.7%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(272, 51.0%, 54.0%)',
+    borderColorFocus: 'hsl(272, 52.1%, 45.9%)',
+    placeholderColor: 'hsl(272, 52.1%, 45.9%)'
+} as Theme
+export const dark_purple_Checkbox = {
+    color1: 'hsl(281, 37.5%, 16.5%)',
+    color2: 'hsl(280, 41.2%, 20.0%)',
+    color3: 'hsl(279, 43.8%, 23.3%)',
+    color4: 'hsl(277, 46.4%, 27.5%)',
+    color5: 'hsl(272, 52.1%, 45.9%)',
+    color6: 'hsl(272, 51.0%, 54.0%)',
+    color7: 'hsl(273, 57.3%, 59.1%)',
+    color8: 'hsl(275, 80.0%, 71.0%)',
+    color9: 'hsl(279, 75.0%, 95.7%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(280, 41.2%, 20.0%)',
+    backgroundHover: 'hsl(279, 43.8%, 23.3%)',
+    backgroundPress: 'hsl(277, 46.4%, 27.5%)',
+    backgroundFocus: 'hsl(272, 52.1%, 45.9%)',
+    backgroundStrong: 'hsl(281, 37.5%, 16.5%)',
+    backgroundTransparent: 'hsl(283, 30.0%, 11.8%)',
+    color: '#fff',
+    colorHover: 'hsl(279, 75.0%, 95.7%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(279, 75.0%, 95.7%)',
+    colorTransparent: 'hsl(279, 75.0%, 95.7%)',
     borderColor: 'hsl(272, 51.0%, 54.0%)',
     borderColorHover: 'hsl(273, 57.3%, 59.1%)',
     borderColorPress: 'hsl(272, 51.0%, 54.0%)',
@@ -3485,10 +3689,9 @@ export const dark_purple_Button = {
     placeholderColor: 'hsl(272, 52.1%, 45.9%)'
 } as Theme
 
-export const dark_purple_Checkbox = dark_purple_Button as Theme
-export const dark_purple_SliderTrackActive = dark_purple_Button as Theme
-export const dark_purple_Switch = dark_purple_Button as Theme
-export const dark_purple_TooltipContent = dark_purple_Button as Theme
+export const dark_purple_SliderTrackActive = dark_purple_Checkbox as Theme
+export const dark_purple_Switch = dark_purple_Checkbox as Theme
+export const dark_purple_TooltipContent = dark_purple_Checkbox as Theme
 export const dark_purple_SliderTrack = {
     color1: 'hsl(284, 20.0%, 9.6%)',
     color2: 'hsl(284, 20.0%, 9.6%)',
@@ -3701,6 +3904,36 @@ export const dark_pink_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(322, 90.0%, 95.8%)',
     colorTransparent: 'hsl(322, 90.0%, 95.8%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(322, 65.0%, 54.5%)',
+    borderColorFocus: 'hsl(322, 74.9%, 37.5%)',
+    placeholderColor: 'hsl(322, 74.9%, 37.5%)'
+} as Theme
+export const dark_pink_Checkbox = {
+    color1: 'hsl(319, 41.0%, 16.0%)',
+    color2: 'hsl(320, 45.4%, 18.7%)',
+    color3: 'hsl(320, 49.0%, 21.1%)',
+    color4: 'hsl(321, 53.6%, 24.4%)',
+    color5: 'hsl(322, 74.9%, 37.5%)',
+    color6: 'hsl(322, 65.0%, 54.5%)',
+    color7: 'hsl(323, 72.8%, 59.2%)',
+    color8: 'hsl(325, 90.0%, 66.4%)',
+    color9: 'hsl(322, 90.0%, 95.8%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(320, 45.4%, 18.7%)',
+    backgroundHover: 'hsl(320, 49.0%, 21.1%)',
+    backgroundPress: 'hsl(321, 53.6%, 24.4%)',
+    backgroundFocus: 'hsl(322, 74.9%, 37.5%)',
+    backgroundStrong: 'hsl(319, 41.0%, 16.0%)',
+    backgroundTransparent: 'hsl(319, 32.2%, 11.6%)',
+    color: '#fff',
+    colorHover: 'hsl(322, 90.0%, 95.8%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(322, 90.0%, 95.8%)',
+    colorTransparent: 'hsl(322, 90.0%, 95.8%)',
     borderColor: 'hsl(322, 65.0%, 54.5%)',
     borderColorHover: 'hsl(323, 72.8%, 59.2%)',
     borderColorPress: 'hsl(322, 65.0%, 54.5%)',
@@ -3708,10 +3941,9 @@ export const dark_pink_Button = {
     placeholderColor: 'hsl(322, 74.9%, 37.5%)'
 } as Theme
 
-export const dark_pink_Checkbox = dark_pink_Button as Theme
-export const dark_pink_SliderTrackActive = dark_pink_Button as Theme
-export const dark_pink_Switch = dark_pink_Button as Theme
-export const dark_pink_TooltipContent = dark_pink_Button as Theme
+export const dark_pink_SliderTrackActive = dark_pink_Checkbox as Theme
+export const dark_pink_Switch = dark_pink_Checkbox as Theme
+export const dark_pink_TooltipContent = dark_pink_Checkbox as Theme
 export const dark_pink_SliderTrack = {
     color1: 'hsl(318, 25.0%, 9.6%)',
     color2: 'hsl(318, 25.0%, 9.6%)',
@@ -3924,6 +4156,36 @@ export const dark_red_Button = {
     colorPress: '#fff',
     colorFocus: 'hsl(351, 89.0%, 96.0%)',
     colorTransparent: 'hsl(351, 89.0%, 96.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(358, 75.0%, 59.0%)',
+    borderColorFocus: 'hsl(358, 65.0%, 40.4%)',
+    placeholderColor: 'hsl(358, 65.0%, 40.4%)'
+} as Theme
+export const dark_red_Checkbox = {
+    color1: 'hsl(356, 43.4%, 16.4%)',
+    color2: 'hsl(356, 47.6%, 19.2%)',
+    color3: 'hsl(356, 51.1%, 21.9%)',
+    color4: 'hsl(356, 55.2%, 25.9%)',
+    color5: 'hsl(358, 65.0%, 40.4%)',
+    color6: 'hsl(358, 75.0%, 59.0%)',
+    color7: 'hsl(358, 85.3%, 64.0%)',
+    color8: 'hsl(358, 100%, 69.5%)',
+    color9: 'hsl(351, 89.0%, 96.0%)',
+    color10: '#fff',
+    color11: '#fff',
+    color12: '#fff',
+    background: 'hsl(356, 47.6%, 19.2%)',
+    backgroundHover: 'hsl(356, 51.1%, 21.9%)',
+    backgroundPress: 'hsl(356, 55.2%, 25.9%)',
+    backgroundFocus: 'hsl(358, 65.0%, 40.4%)',
+    backgroundStrong: 'hsl(356, 43.4%, 16.4%)',
+    backgroundTransparent: 'hsl(357, 34.4%, 12.0%)',
+    color: '#fff',
+    colorHover: 'hsl(351, 89.0%, 96.0%)',
+    colorPress: '#fff',
+    colorFocus: 'hsl(351, 89.0%, 96.0%)',
+    colorTransparent: 'hsl(351, 89.0%, 96.0%)',
     borderColor: 'hsl(358, 75.0%, 59.0%)',
     borderColorHover: 'hsl(358, 85.3%, 64.0%)',
     borderColorPress: 'hsl(358, 75.0%, 59.0%)',
@@ -3931,10 +4193,9 @@ export const dark_red_Button = {
     placeholderColor: 'hsl(358, 65.0%, 40.4%)'
 } as Theme
 
-export const dark_red_Checkbox = dark_red_Button as Theme
-export const dark_red_SliderTrackActive = dark_red_Button as Theme
-export const dark_red_Switch = dark_red_Button as Theme
-export const dark_red_TooltipContent = dark_red_Button as Theme
+export const dark_red_SliderTrackActive = dark_red_Checkbox as Theme
+export const dark_red_Switch = dark_red_Checkbox as Theme
+export const dark_red_TooltipContent = dark_red_Checkbox as Theme
 export const dark_red_SliderTrack = {
     color1: 'hsl(353, 23.0%, 9.8%)',
     color2: 'hsl(353, 23.0%, 9.8%)',
@@ -4179,6 +4440,36 @@ export const light_orange_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(15, 60.0%, 17.0%)',
     colorTransparent: 'hsl(15, 60.0%, 17.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(25, 100%, 82.8%)',
+    borderColorFocus: 'hsl(25, 100%, 82.8%)',
+    placeholderColor: 'hsl(24, 94.5%, 64.3%)'
+} as Theme
+export const light_orange_Checkbox = {
+    color1: 'hsl(24, 100%, 95.3%)',
+    color2: 'hsl(25, 100%, 92.2%)',
+    color3: 'hsl(25, 100%, 88.2%)',
+    color4: 'hsl(25, 100%, 82.8%)',
+    color5: 'hsl(24, 94.5%, 64.3%)',
+    color6: 'hsl(24, 94.0%, 50.0%)',
+    color7: 'hsl(24, 100%, 46.5%)',
+    color8: 'hsl(24, 100%, 37.0%)',
+    color9: 'hsl(15, 60.0%, 17.0%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(25, 100%, 92.2%)',
+    backgroundHover: 'hsl(25, 100%, 88.2%)',
+    backgroundPress: 'hsl(25, 100%, 82.8%)',
+    backgroundFocus: 'hsl(24, 94.5%, 64.3%)',
+    backgroundStrong: 'hsl(24, 100%, 95.3%)',
+    backgroundTransparent: 'hsl(24, 83.3%, 97.6%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(15, 60.0%, 17.0%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(15, 60.0%, 17.0%)',
+    colorTransparent: 'hsl(15, 60.0%, 17.0%)',
     borderColor: 'hsl(25, 100%, 82.8%)',
     borderColorHover: 'hsl(24, 94.5%, 64.3%)',
     borderColorPress: 'hsl(25, 100%, 82.8%)',
@@ -4186,10 +4477,9 @@ export const light_orange_Button = {
     placeholderColor: 'hsl(24, 94.5%, 64.3%)'
 } as Theme
 
-export const light_orange_Checkbox = light_orange_Button as Theme
-export const light_orange_SliderTrackActive = light_orange_Button as Theme
-export const light_orange_Switch = light_orange_Button as Theme
-export const light_orange_TooltipContent = light_orange_Button as Theme
+export const light_orange_SliderTrackActive = light_orange_Checkbox as Theme
+export const light_orange_Switch = light_orange_Checkbox as Theme
+export const light_orange_TooltipContent = light_orange_Checkbox as Theme
 export const light_orange_SliderThumb = {
     color1: 'hsl(354, 50.0%, 14.6%)',
     color2: 'hsl(358, 65.0%, 48.7%)',
@@ -4418,6 +4708,36 @@ export const light_yellow_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(40, 55.0%, 13.5%)',
     colorTransparent: 'hsl(40, 55.0%, 13.5%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(50, 89.4%, 76.1%)',
+    borderColorFocus: 'hsl(50, 89.4%, 76.1%)',
+    placeholderColor: 'hsl(48, 100%, 46.1%)'
+} as Theme
+export const light_yellow_Checkbox = {
+    color1: 'hsl(55, 100%, 90.9%)',
+    color2: 'hsl(54, 100%, 86.6%)',
+    color3: 'hsl(52, 97.9%, 82.0%)',
+    color4: 'hsl(50, 89.4%, 76.1%)',
+    color5: 'hsl(48, 100%, 46.1%)',
+    color6: 'hsl(53, 92.0%, 50.0%)',
+    color7: 'hsl(50, 100%, 48.5%)',
+    color8: 'hsl(42, 100%, 29.0%)',
+    color9: 'hsl(40, 55.0%, 13.5%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(54, 100%, 86.6%)',
+    backgroundHover: 'hsl(52, 97.9%, 82.0%)',
+    backgroundPress: 'hsl(50, 89.4%, 76.1%)',
+    backgroundFocus: 'hsl(48, 100%, 46.1%)',
+    backgroundStrong: 'hsl(55, 100%, 90.9%)',
+    backgroundTransparent: 'hsl(52, 100%, 95.5%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(40, 55.0%, 13.5%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(40, 55.0%, 13.5%)',
+    colorTransparent: 'hsl(40, 55.0%, 13.5%)',
     borderColor: 'hsl(50, 89.4%, 76.1%)',
     borderColorHover: 'hsl(48, 100%, 46.1%)',
     borderColorPress: 'hsl(50, 89.4%, 76.1%)',
@@ -4425,10 +4745,9 @@ export const light_yellow_Button = {
     placeholderColor: 'hsl(48, 100%, 46.1%)'
 } as Theme
 
-export const light_yellow_Checkbox = light_yellow_Button as Theme
-export const light_yellow_SliderTrackActive = light_yellow_Button as Theme
-export const light_yellow_Switch = light_yellow_Button as Theme
-export const light_yellow_TooltipContent = light_yellow_Button as Theme
+export const light_yellow_SliderTrackActive = light_yellow_Checkbox as Theme
+export const light_yellow_Switch = light_yellow_Checkbox as Theme
+export const light_yellow_TooltipContent = light_yellow_Checkbox as Theme
 export const light_yellow_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(40, 55.0%, 13.5%)',
@@ -4583,6 +4902,36 @@ export const light_green_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(155, 40.0%, 14.0%)',
     colorTransparent: 'hsl(155, 40.0%, 14.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(143, 40.3%, 79.0%)',
+    borderColorFocus: 'hsl(143, 40.3%, 79.0%)',
+    placeholderColor: 'hsl(151, 40.2%, 54.1%)'
+} as Theme
+export const light_green_Checkbox = {
+    color1: 'hsl(139, 55.2%, 94.5%)',
+    color2: 'hsl(140, 48.7%, 91.0%)',
+    color3: 'hsl(141, 43.7%, 86.0%)',
+    color4: 'hsl(143, 40.3%, 79.0%)',
+    color5: 'hsl(151, 40.2%, 54.1%)',
+    color6: 'hsl(151, 55.0%, 41.5%)',
+    color7: 'hsl(152, 57.5%, 37.6%)',
+    color8: 'hsl(153, 67.0%, 28.5%)',
+    color9: 'hsl(155, 40.0%, 14.0%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(140, 48.7%, 91.0%)',
+    backgroundHover: 'hsl(141, 43.7%, 86.0%)',
+    backgroundPress: 'hsl(143, 40.3%, 79.0%)',
+    backgroundFocus: 'hsl(151, 40.2%, 54.1%)',
+    backgroundStrong: 'hsl(139, 55.2%, 94.5%)',
+    backgroundTransparent: 'hsl(138, 62.5%, 96.9%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(155, 40.0%, 14.0%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(155, 40.0%, 14.0%)',
+    colorTransparent: 'hsl(155, 40.0%, 14.0%)',
     borderColor: 'hsl(143, 40.3%, 79.0%)',
     borderColorHover: 'hsl(151, 40.2%, 54.1%)',
     borderColorPress: 'hsl(143, 40.3%, 79.0%)',
@@ -4590,10 +4939,9 @@ export const light_green_Button = {
     placeholderColor: 'hsl(151, 40.2%, 54.1%)'
 } as Theme
 
-export const light_green_Checkbox = light_green_Button as Theme
-export const light_green_SliderTrackActive = light_green_Button as Theme
-export const light_green_Switch = light_green_Button as Theme
-export const light_green_TooltipContent = light_green_Button as Theme
+export const light_green_SliderTrackActive = light_green_Checkbox as Theme
+export const light_green_Switch = light_green_Checkbox as Theme
+export const light_green_TooltipContent = light_green_Checkbox as Theme
 export const light_green_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(155, 40.0%, 14.0%)',
@@ -4748,6 +5096,36 @@ export const light_blue_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(211, 100%, 15.0%)',
     colorTransparent: 'hsl(211, 100%, 15.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(209, 81.2%, 84.5%)',
+    borderColorFocus: 'hsl(209, 81.2%, 84.5%)',
+    placeholderColor: 'hsl(206, 81.9%, 65.3%)'
+} as Theme
+export const light_blue_Checkbox = {
+    color1: 'hsl(209, 100%, 96.5%)',
+    color2: 'hsl(210, 98.8%, 94.0%)',
+    color3: 'hsl(209, 95.0%, 90.1%)',
+    color4: 'hsl(209, 81.2%, 84.5%)',
+    color5: 'hsl(206, 81.9%, 65.3%)',
+    color6: 'hsl(206, 100%, 50.0%)',
+    color7: 'hsl(208, 100%, 47.3%)',
+    color8: 'hsl(211, 100%, 43.2%)',
+    color9: 'hsl(211, 100%, 15.0%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(210, 98.8%, 94.0%)',
+    backgroundHover: 'hsl(209, 95.0%, 90.1%)',
+    backgroundPress: 'hsl(209, 81.2%, 84.5%)',
+    backgroundFocus: 'hsl(206, 81.9%, 65.3%)',
+    backgroundStrong: 'hsl(209, 100%, 96.5%)',
+    backgroundTransparent: 'hsl(210, 100%, 98.0%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(211, 100%, 15.0%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(211, 100%, 15.0%)',
+    colorTransparent: 'hsl(211, 100%, 15.0%)',
     borderColor: 'hsl(209, 81.2%, 84.5%)',
     borderColorHover: 'hsl(206, 81.9%, 65.3%)',
     borderColorPress: 'hsl(209, 81.2%, 84.5%)',
@@ -4755,10 +5133,9 @@ export const light_blue_Button = {
     placeholderColor: 'hsl(206, 81.9%, 65.3%)'
 } as Theme
 
-export const light_blue_Checkbox = light_blue_Button as Theme
-export const light_blue_SliderTrackActive = light_blue_Button as Theme
-export const light_blue_Switch = light_blue_Button as Theme
-export const light_blue_TooltipContent = light_blue_Button as Theme
+export const light_blue_SliderTrackActive = light_blue_Checkbox as Theme
+export const light_blue_Switch = light_blue_Checkbox as Theme
+export const light_blue_TooltipContent = light_blue_Checkbox as Theme
 export const light_blue_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(211, 100%, 15.0%)',
@@ -4913,6 +5290,36 @@ export const light_purple_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(272, 66.0%, 16.0%)',
     colorTransparent: 'hsl(272, 66.0%, 16.0%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(274, 65.4%, 87.8%)',
+    borderColorFocus: 'hsl(274, 65.4%, 87.8%)',
+    placeholderColor: 'hsl(272, 60.0%, 73.5%)'
+} as Theme
+export const light_purple_Checkbox = {
+    color1: 'hsl(276, 83.1%, 97.0%)',
+    color2: 'hsl(275, 76.4%, 94.7%)',
+    color3: 'hsl(275, 70.8%, 91.8%)',
+    color4: 'hsl(274, 65.4%, 87.8%)',
+    color5: 'hsl(272, 60.0%, 73.5%)',
+    color6: 'hsl(272, 51.0%, 54.0%)',
+    color7: 'hsl(272, 46.8%, 50.3%)',
+    color8: 'hsl(272, 50.0%, 45.8%)',
+    color9: 'hsl(272, 66.0%, 16.0%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(275, 76.4%, 94.7%)',
+    backgroundHover: 'hsl(275, 70.8%, 91.8%)',
+    backgroundPress: 'hsl(274, 65.4%, 87.8%)',
+    backgroundFocus: 'hsl(272, 60.0%, 73.5%)',
+    backgroundStrong: 'hsl(276, 83.1%, 97.0%)',
+    backgroundTransparent: 'hsl(276, 100%, 99.0%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(272, 66.0%, 16.0%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(272, 66.0%, 16.0%)',
+    colorTransparent: 'hsl(272, 66.0%, 16.0%)',
     borderColor: 'hsl(274, 65.4%, 87.8%)',
     borderColorHover: 'hsl(272, 60.0%, 73.5%)',
     borderColorPress: 'hsl(274, 65.4%, 87.8%)',
@@ -4920,10 +5327,9 @@ export const light_purple_Button = {
     placeholderColor: 'hsl(272, 60.0%, 73.5%)'
 } as Theme
 
-export const light_purple_Checkbox = light_purple_Button as Theme
-export const light_purple_SliderTrackActive = light_purple_Button as Theme
-export const light_purple_Switch = light_purple_Button as Theme
-export const light_purple_TooltipContent = light_purple_Button as Theme
+export const light_purple_SliderTrackActive = light_purple_Checkbox as Theme
+export const light_purple_Switch = light_purple_Checkbox as Theme
+export const light_purple_TooltipContent = light_purple_Checkbox as Theme
 export const light_purple_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(272, 66.0%, 16.0%)',
@@ -5078,6 +5484,36 @@ export const light_pink_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(320, 70.0%, 13.5%)',
     colorTransparent: 'hsl(320, 70.0%, 13.5%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(323, 66.3%, 86.6%)',
+    borderColorFocus: 'hsl(323, 66.3%, 86.6%)',
+    placeholderColor: 'hsl(323, 60.3%, 72.4%)'
+} as Theme
+export const light_pink_Checkbox = {
+    color1: 'hsl(323, 86.3%, 96.5%)',
+    color2: 'hsl(323, 78.7%, 94.2%)',
+    color3: 'hsl(323, 72.2%, 91.1%)',
+    color4: 'hsl(323, 66.3%, 86.6%)',
+    color5: 'hsl(323, 60.3%, 72.4%)',
+    color6: 'hsl(322, 65.0%, 54.5%)',
+    color7: 'hsl(322, 63.9%, 50.7%)',
+    color8: 'hsl(322, 75.0%, 46.0%)',
+    color9: 'hsl(320, 70.0%, 13.5%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(323, 78.7%, 94.2%)',
+    backgroundHover: 'hsl(323, 72.2%, 91.1%)',
+    backgroundPress: 'hsl(323, 66.3%, 86.6%)',
+    backgroundFocus: 'hsl(323, 60.3%, 72.4%)',
+    backgroundStrong: 'hsl(323, 86.3%, 96.5%)',
+    backgroundTransparent: 'hsl(323, 100%, 98.4%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(320, 70.0%, 13.5%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(320, 70.0%, 13.5%)',
+    colorTransparent: 'hsl(320, 70.0%, 13.5%)',
     borderColor: 'hsl(323, 66.3%, 86.6%)',
     borderColorHover: 'hsl(323, 60.3%, 72.4%)',
     borderColorPress: 'hsl(323, 66.3%, 86.6%)',
@@ -5085,10 +5521,9 @@ export const light_pink_Button = {
     placeholderColor: 'hsl(323, 60.3%, 72.4%)'
 } as Theme
 
-export const light_pink_Checkbox = light_pink_Button as Theme
-export const light_pink_SliderTrackActive = light_pink_Button as Theme
-export const light_pink_Switch = light_pink_Button as Theme
-export const light_pink_TooltipContent = light_pink_Button as Theme
+export const light_pink_SliderTrackActive = light_pink_Checkbox as Theme
+export const light_pink_Switch = light_pink_Checkbox as Theme
+export const light_pink_TooltipContent = light_pink_Checkbox as Theme
 export const light_pink_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(320, 70.0%, 13.5%)',
@@ -5243,6 +5678,36 @@ export const light_red_Button = {
     colorPress: 'hsl(0, 0%, 9.0%)',
     colorFocus: 'hsl(354, 50.0%, 14.6%)',
     colorTransparent: 'hsl(354, 50.0%, 14.6%)',
+    borderColor: 'transparent',
+    borderColorHover: 'transparent',
+    borderColorPress: 'hsl(360, 81.7%, 87.8%)',
+    borderColorFocus: 'hsl(360, 81.7%, 87.8%)',
+    placeholderColor: 'hsl(359, 69.5%, 74.3%)'
+} as Theme
+export const light_red_Checkbox = {
+    color1: 'hsl(360, 100%, 96.8%)',
+    color2: 'hsl(360, 97.9%, 94.8%)',
+    color3: 'hsl(360, 90.2%, 91.9%)',
+    color4: 'hsl(360, 81.7%, 87.8%)',
+    color5: 'hsl(359, 69.5%, 74.3%)',
+    color6: 'hsl(358, 75.0%, 59.0%)',
+    color7: 'hsl(358, 69.4%, 55.2%)',
+    color8: 'hsl(358, 65.0%, 48.7%)',
+    color9: 'hsl(354, 50.0%, 14.6%)',
+    color10: 'hsl(0, 0%, 9.0%)',
+    color11: 'hsl(0, 0%, 9.0%)',
+    color12: 'hsl(0, 0%, 9.0%)',
+    background: 'hsl(360, 97.9%, 94.8%)',
+    backgroundHover: 'hsl(360, 90.2%, 91.9%)',
+    backgroundPress: 'hsl(360, 81.7%, 87.8%)',
+    backgroundFocus: 'hsl(359, 69.5%, 74.3%)',
+    backgroundStrong: 'hsl(360, 100%, 96.8%)',
+    backgroundTransparent: 'hsl(359, 100%, 98.6%)',
+    color: 'hsl(0, 0%, 9.0%)',
+    colorHover: 'hsl(354, 50.0%, 14.6%)',
+    colorPress: 'hsl(0, 0%, 9.0%)',
+    colorFocus: 'hsl(354, 50.0%, 14.6%)',
+    colorTransparent: 'hsl(354, 50.0%, 14.6%)',
     borderColor: 'hsl(360, 81.7%, 87.8%)',
     borderColorHover: 'hsl(359, 69.5%, 74.3%)',
     borderColorPress: 'hsl(360, 81.7%, 87.8%)',
@@ -5250,10 +5715,9 @@ export const light_red_Button = {
     placeholderColor: 'hsl(359, 69.5%, 74.3%)'
 } as Theme
 
-export const light_red_Checkbox = light_red_Button as Theme
-export const light_red_SliderTrackActive = light_red_Button as Theme
-export const light_red_Switch = light_red_Button as Theme
-export const light_red_TooltipContent = light_red_Button as Theme
+export const light_red_SliderTrackActive = light_red_Checkbox as Theme
+export const light_red_Switch = light_red_Checkbox as Theme
+export const light_red_TooltipContent = light_red_Checkbox as Theme
 export const light_red_Tooltip = {
     color1: 'hsl(0, 0%, 9.0%)',
     color2: 'hsl(354, 50.0%, 14.6%)',

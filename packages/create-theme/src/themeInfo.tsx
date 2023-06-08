@@ -1,8 +1,9 @@
-import { CreateThemePalette, GenericTheme, ThemeMask } from './types'
+import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 export type ThemeInfo = {
   palette: CreateThemePalette
   definition: ThemeMask
+  options?: CreateThemeOptions
   cache: Map<any, any>
 }
 
@@ -14,7 +15,7 @@ export const getThemeInfo = (theme: GenericTheme | ThemeMask): ThemeInfo | undef
 
 export const setThemeInfo = (
   theme: GenericTheme | ThemeMask,
-  info: Pick<ThemeInfo, 'palette' | 'definition'>
+  info: Pick<ThemeInfo, 'palette' | 'definition' | 'options'>
 ) => {
   const next = {
     ...info,

@@ -17,4 +17,7 @@ export type CreateMask = {
     name: string;
     mask: MaskFunction;
 };
+export type CreateThemeOptions = {
+    nonInheritedValues?: GenericTheme;
+};
 //# sourceMappingURL=types.d.ts.map

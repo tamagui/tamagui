@@ -78,6 +78,9 @@ export const createShiftMask = (
           const overrideShift = override[key] as number
           out[key] = value + overrideShift
           continue
+        } else if (typeof override?.[key] === 'string') {
+          out[key] = override[key]
+          continue
         }
         const isPositive = value === 0 ? !isMinusZero(value) : value >= 0
         const direction = isPositive ? 1 : -1
@@ -123,11 +126,22 @@ export function applyMask<Theme extends GenericTheme | ThemeMask>(
     )
   }
 
-  // convert theme back to template first
+  const skip = {
+    ...options.skip,
+  }
 
+  // skip nonInheritedValues from parent theme
+  if (info.options?.nonInheritedValues) {
+    for (const key in info.options.nonInheritedValues) {
+      skip[key] = 1
+    }
+  }
+
+  // convert theme back to template first
   const template = mask.mask(info.definition, {
     palette: info.palette,
     ...options,
+    skip,
   })
 
   const next = createTheme(info.palette, template) as Theme

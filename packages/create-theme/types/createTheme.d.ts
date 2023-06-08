@@ -1,7 +1,5 @@
-import { CreateThemePalette, GenericTheme, ThemeMask } from './types';
-export declare function createTheme<Definition extends ThemeMask, Extras extends Record<string, string> = {}>(palette: CreateThemePalette, definition: Definition, options?: {
-    nonInheritedValues?: Extras;
-}): {
+import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types';
+export declare function createTheme<Definition extends ThemeMask, Extras extends GenericTheme = {}>(palette: CreateThemePalette, definition: Definition, options?: CreateThemeOptions): {
     [key in keyof Definition | keyof Extras]: string;
 };
 type SubThemeKeys<ParentKeys, ChildKeys> = `${ParentKeys extends string ? ParentKeys : never}_${ChildKeys extends string ? ChildKeys : never}`;

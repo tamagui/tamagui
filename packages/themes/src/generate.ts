@@ -4,11 +4,11 @@ import { themes } from './themes'
 import { themes as themesOld } from './themes-old'
 
 async function run() {
-  await writeFile('./generated.json', JSON.stringify(themes, null, 2))
-  await writeFile('./generated-old.json', JSON.stringify(themesOld, null, 2))
+  await writeFile('./generated/generated.json', JSON.stringify(themes, null, 2))
+  await writeFile('./generated/generated-old.json', JSON.stringify(themesOld, null, 2))
 
-  await writeFile('./generated.ts', generatedThemesToTypescript(themes))
-  await writeFile('./generated-old.ts', generatedThemesToTypescript(themesOld))
+  await writeFile('./generated/generated.ts', generatedThemesToTypescript(themes))
+  await writeFile('./generated/generated-old.ts', generatedThemesToTypescript(themesOld))
 
   const baseType = `type Theme = {
 ${Object.entries(themes.light)

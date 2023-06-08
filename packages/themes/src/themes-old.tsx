@@ -310,10 +310,7 @@ function getComponentThemes(theme: SubTheme, inverse: SubTheme, isLight: boolean
   }
   const weaker1 = applyMask(theme, masks.weaker, componentMaskOptions)
   const base = applyMask(weaker1, masks.stronger, componentMaskOptions)
-  const weaker2 = applyMask(weaker1, masks.weaker, {
-    ...componentMaskOptions,
-    override: overrideWithColors,
-  })
+  const weaker2 = applyMask(weaker1, masks.weaker, componentMaskOptions)
   const stronger1 = applyMask(theme, masks.stronger, componentMaskOptions)
   const inverse1 = applyMask(inverse, masks.weaker, componentMaskOptions)
   const inverse2 = applyMask(inverse1, masks.weaker, componentMaskOptions)
