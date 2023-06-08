@@ -6049,6 +6049,7 @@ __metadata:
     "@tamagui/font-fira-mono": 1.31.2
     "@tamagui/font-inter": 1.31.2
     "@tamagui/font-silkscreen": 1.31.2
+    "@tamagui/get-token": 1.31.2
     "@tamagui/logo": 1.31.2
     "@tamagui/lucide-icons": 1.31.2
     "@tamagui/menu": 1.31.2
