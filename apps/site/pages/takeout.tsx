@@ -235,8 +235,7 @@ const TakeoutHero = () => {
               pos="absolute"
               t={40}
               color="$color7"
-              scale={1.024}
-              o={0.5}
+              scale={1}
             />
           </ThemeTintAlt>
 
@@ -354,13 +353,11 @@ const TakeoutHero = () => {
 
 const useDisableMotion = () => {
   const store = useTakeoutStore()
-  return (
-    useClientValue(
-      isClient &&
-        (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-          window.location.search?.includes('disable-motion') ||
-          /firefox/i.test(navigator.userAgent))
-    ) || store.showPurchase
+  return useClientValue(
+    isClient &&
+      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+        window.location.search?.includes('disable-motion') ||
+        /firefox/i.test(navigator.userAgent))
   )
 }
 
@@ -524,7 +521,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
                 <Spacer size="$6" />
 
-                <XStack fw="wrap" gap="$4" mx="$-6">
+                <XStack fw="wrap" gap="$4" mx="$-6" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
                     title="Monorepo"
@@ -786,7 +783,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 }
 
 const Point = ({
-  size = '$6',
+  size = '$4',
   children,
   subtitle,
   ...props
@@ -908,12 +905,15 @@ const PurchaseModal = ({
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
-          mah={900}
         >
           <YStack h="100%" space>
-            <Dialog.Title size="$8" my="$3" als="center">
-              Purchase 🥡
-            </Dialog.Title>
+            <XStack ai="center" jc="space-between" gap="$6" mx="$8">
+              <Separator />
+              <Dialog.Title size="$9" my="$3" als="center">
+                Purchase 🥡
+              </Dialog.Title>
+              <Separator />
+            </XStack>
 
             <YStack>
               <RadioGroup
@@ -971,8 +971,9 @@ const PurchaseModal = ({
                 </YStack>
               </ScrollView>
 
-              <YStack f={1} space="$2">
+              <YStack f={1} space="$4">
                 <H3>Seats</H3>
+                <Separator />
                 <YStack ai="flex-start">
                   <PurchaseSelectTeam
                     onValueChange={(val) => {
@@ -1052,8 +1053,8 @@ const PurchaseModal = ({
               <Dialog.Close asChild>
                 <Button
                   position="absolute"
-                  top="$3"
-                  right="$3"
+                  top="$1"
+                  right="$1"
                   size="$2"
                   circular
                   icon={X}
@@ -1221,7 +1222,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
 function PurchaseButton(props: ButtonProps) {
   return (
-    <Theme name="pink">
+    <ThemeTint>
       <Button
         size="$6"
         backgroundColor="$color9"
@@ -1235,9 +1236,11 @@ function PurchaseButton(props: ButtonProps) {
         }}
         {...props}
       >
-        <Button.Text fontWeight="700">{props.children}</Button.Text>
+        <Button.Text ff="$silkscreen" fontWeight="700">
+          {props.children}
+        </Button.Text>
       </Button>
-    </Theme>
+    </ThemeTint>
   )
 }
 
@@ -1395,6 +1398,7 @@ const PurchaseSelectTeam = ({
       position="relative"
       p="$2"
       bc="$backgroundStrong"
+      als="center"
       br="$3"
     >
       <YStack>
@@ -1500,7 +1504,7 @@ const TabsRovingIndicator = ({
       }}
       opacity={0.7}
       {...(isActive && {
-        backgroundColor: '$color7',
+        backgroundColor: '$color6',
         opacity: 1,
       })}
       {...props}
@@ -1509,7 +1513,7 @@ const TabsRovingIndicator = ({
 }
 
 const Points = () => (
-  <YStack tag="ul" space="$3" zi={2} mt="$8" maw={660} ov="hidden">
+  <YStack tag="ul" space="$2.5" zi={2} mt="$8" maw={660} ov="hidden">
     <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
       All the important screens: Onboard, Register, Login, Forgot Password, Account,
