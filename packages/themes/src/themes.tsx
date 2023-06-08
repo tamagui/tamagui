@@ -476,8 +476,7 @@ const themesBuilder = createThemeBuilder()
       ],
     },
     {
-      // we dont actually do this right now but api to figure out
-      avoidNestingWithin: ['alt1'],
+      avoidNestingWithin: ['alt1', 'alt2', 'active'],
     }
   )
 

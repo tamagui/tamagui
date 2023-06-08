@@ -180,6 +180,16 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     const incomingThemeNames = objectKeys(childThemeDefinition) as ChildNames[]
 
     const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
+      if (options?.avoidNestingWithin) {
+        if (
+          options.avoidNestingWithin.some(
+            (avoidName) => prefix.startsWith(avoidName) || prefix.endsWith(avoidName)
+          )
+        ) {
+          return []
+        }
+      }
+
       return incomingThemeNames.map((subName) => {
         const fullName = `${prefix}_${subName}`
         const definition = childThemeDefinition[subName]
