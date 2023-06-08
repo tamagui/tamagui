@@ -92,18 +92,20 @@ const TakeoutCard2Frame = styled(YStack, {
 
 type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
   title: React.ReactNode
+  icon?: string
 }
 
-const TakeoutCard = ({ children, title, ...props }: TakeoutCardFrameProps) => {
+const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
-    resist: 0,
+    resist: 50,
     size: 450,
     strategy: 'blur',
-    blurPct: 60,
+    blurPct: 100,
     // inverse: true,
     color: 'var(--color10)',
-    opacity: 0.1,
+    opacity: 0.25,
     background: 'transparent',
+    recenterOnRest: true,
   })
 
   const borderGlow = useHoverGlow({
@@ -142,9 +144,15 @@ const TakeoutCard = ({ children, title, ...props }: TakeoutCardFrameProps) => {
 
         <YStack fullscreen bg="$background" pe="none" zi={-1} o={0.5} />
 
-        <YStack space zi={100}>
+        <YStack f={1} space zi={100}>
           <H2 className="mix-blend">{title}</H2>
           {children}
+
+          {!!icon && (
+            <YStack pos="absolute" b={0} r={0}>
+              <Image className="pixelate" src={icon} alt="Icon" width={64} height={64} />
+            </YStack>
+          )}
         </YStack>
       </TakeoutCard2Frame>
     </>
@@ -529,42 +537,66 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <Spacer size="$8" />
 
                 <XStack fw="wrap" gap="$4" mx="$-6">
-                  <TakeoutCard theme="orange" title="Monorepo">
+                  <TakeoutCard
+                    theme="orange"
+                    title="Monorepo"
+                    icon="retro-icons/coding-apps-websites-module-21.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
                       <Point size="$4">Something else.</Point>
                     </YStack>
                   </TakeoutCard>
-                  <TakeoutCard theme="yellow" title="Monorepo">
+                  <TakeoutCard
+                    theme="yellow"
+                    title="Design"
+                    icon="retro-icons/design-color-painting-palette-25.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
                       <Point size="$4">Something else.</Point>
                     </YStack>
                   </TakeoutCard>
-                  <TakeoutCard theme="green" title="Monorepo">
+                  <TakeoutCard
+                    theme="green"
+                    title="Deploy"
+                    icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
                       <Point size="$4">Something else.</Point>
                     </YStack>
                   </TakeoutCard>
-                  <TakeoutCard theme="blue" title="Monorepo">
+                  <TakeoutCard
+                    theme="blue"
+                    title="Screens"
+                    icon="retro-icons/coding-app-website-ui-62.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
                       <Point size="$4">Something else.</Point>
                     </YStack>
                   </TakeoutCard>
-                  <TakeoutCard theme="purple" title="Monorepo">
+                  <TakeoutCard
+                    theme="purple"
+                    title="Assets"
+                    icon="retro-icons/coding-apps-websites-plugin-33.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
                       <Point size="$4">Something else.</Point>
                     </YStack>
                   </TakeoutCard>
-                  <TakeoutCard theme="pink" title="Monorepo">
+                  <TakeoutCard
+                    theme="pink"
+                    title="Updates"
+                    icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+                  >
                     <YStack space>
                       <Point size="$4">Isolated swappable configuration.</Point>
                       <Point size="$4">100% shared code.</Point>
@@ -738,7 +770,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
             <YStack mt={200} w={3} mih={500} h="100%" />
           </XStack>
 
-          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.025} zi={-2}>
+          <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.045} zi={-2}>
             <Image
               alt="mandala"
               width={2500}
