@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "generate": "node -r esbuild-register ./src/generate.ts",
-    "build": "tamagui-build && yarn generate",
+    "build": "yarn generate && tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply src",

@@ -971,10 +971,10 @@ export declare const tokens: {
     radius: {
         0: Variable<number>;
         2: Variable<number>;
-        1: Variable<number>;
         4: Variable<number>;
         8: Variable<number>;
         true: Variable<number>;
+        1: Variable<number>;
         12: Variable<number>;
         3: Variable<number>;
         5: Variable<number>;
@@ -987,8 +987,8 @@ export declare const tokens: {
     zIndex: {
         0: Variable<number>;
         2: Variable<number>;
-        1: Variable<number>;
         4: Variable<number>;
+        1: Variable<number>;
         3: Variable<number>;
         5: Variable<number>;
     };

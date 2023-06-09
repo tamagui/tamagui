@@ -1,30 +1,13 @@
 import { writeFile } from 'fs/promises'
 
-import { themes } from './themes'
+import { themes } from './themes-new'
 import { themes as themesOld } from './themes-old'
 
 async function run() {
-  await writeFile('./generated/generated.json', JSON.stringify(themes, null, 2))
-  await writeFile('./generated/generated-old.json', JSON.stringify(themesOld, null, 2))
-
-  await writeFile('./generated/generated.ts', generatedThemesToTypescript(themes))
-  await writeFile('./generated/generated-old.ts', generatedThemesToTypescript(themesOld))
-
-  const baseType = `type Theme = {
-${Object.entries(themes.light)
-  .map(([k]) => {
-    return `  ${k}: string;\n`
-  })
-  .join('')}
-}`
-
-  const types = Object.keys(themes)
-    .map((name) => {
-      return `export type ${name} = Theme`
-    })
-    .join('\n')
-
-  await writeFile('./generated.d.ts', `${baseType}\n${types}`)
+  await Promise.all([
+    writeFile('./src/generated.ts', generatedThemesToTypescript(themes)),
+    writeFile('./src/generated-old.ts', generatedThemesToTypescript(themesOld)),
+  ])
 }
 
 run()
