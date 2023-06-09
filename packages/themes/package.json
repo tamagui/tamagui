@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "generate": "node -r esbuild-register ./generate.ts",
+    "generate": "tamagui generate-themes ./src/themes-new.tsx ./src/generated-new.ts",
     "build": "yarn generate && tamagui-build",
     "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.31.2",
+    "@tamagui/cli": "1.31.2",
     "vitest": "^0.26.3"
   },
   "publishConfig": {

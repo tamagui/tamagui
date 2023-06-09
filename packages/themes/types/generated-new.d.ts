@@ -513,4 +513,4 @@ export declare const dark_red_ProgressIndicator: Theme;
 export declare const dark_red_Input: Theme;
 export declare const dark_red_TextArea: Theme;
 export {};
-//# sourceMappingURL=generated.d.ts.map
+//# sourceMappingURL=generated-new.d.ts.map

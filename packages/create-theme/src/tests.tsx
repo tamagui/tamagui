@@ -1,7 +1,6 @@
 import { createTheme } from './createTheme'
 import { applyMask, createStrengthenMask, createWeakenMask } from './masks'
 
-export const tests = {}
 // --- tests ---
 if (process.env.NODE_ENV === 'development') {
   const palette = ['0', '1', '2', '3', '-3', '-2', '-1', '-0']

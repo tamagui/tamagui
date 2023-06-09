@@ -1,16 +1,20 @@
-import { writeFile } from 'fs/promises'
+#!/usr/bin/env node
 
-import { themes } from './src/themes-new'
-import { themes as themesOld } from './src/themes-old'
+import { CLIResolvedOptions } from '@tamagui/types'
+import fs from 'fs-extra'
 
-async function run() {
-  await Promise.all([
-    writeFile('./src/generated.ts', generatedThemesToTypescript(themes)),
-    writeFile('./src/generated-old.ts', generatedThemesToTypescript(themesOld)),
-  ])
+export async function generateThemes(
+  options: CLIResolvedOptions & {
+    inPath: string
+    outPath: string
+  }
+) {
+  require('esbuild-register/dist/node').register()
+  const requiredThemes = require(options.inPath)
+  const themes = requiredThemes['default'] || requiredThemes['themes']
+  const generatedThemes = generatedThemesToTypescript(themes)
+  await fs.writeFile(options.outPath, generatedThemes)
 }
-
-run()
 
 function generatedThemesToTypescript(themes: Record<string, any>) {
   const deduped = new Map<string, Object>()

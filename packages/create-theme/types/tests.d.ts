@@ -1,2 +1,2 @@
-export declare const tests: {};
+export {};
 //# sourceMappingURL=tests.d.ts.map

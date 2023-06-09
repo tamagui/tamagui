@@ -1,4 +1,5 @@
-import { Narrow } from '../../web/types'
+import { Narrow } from '@tamagui/web'
+
 import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask, createMask } from './masks'
