@@ -223,7 +223,6 @@ function useButton(
     ...rest
   } = propsIn
 
-  const hasUnstyled = typeof propsIn.unstyled !== 'undefined'
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn)
   const size = propsActive.size || '$true'
@@ -234,9 +233,10 @@ function useButton(
   const contents = wrapChildrenInText(
     Text,
     propsActive,
-    Text === ButtonText && hasUnstyled
+    Text === ButtonText && propsIn.unstyled !== true
       ? {
-          unstyled: propsIn.unstyled,
+          unstyled: true,
+          size,
         }
       : undefined
   )
