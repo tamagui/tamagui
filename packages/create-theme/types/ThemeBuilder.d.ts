@@ -1,6 +1,5 @@
 import { Narrow } from '../../web/types';
-import { CreateThemeOptions } from './createTheme';
-import { CreateMask, MaskOptions } from './types';
+import { CreateMask, CreateThemeOptions, MaskOptions } from './types';
 export type Palette = string[];
 type GenericTheme = {
     [key: string]: string;

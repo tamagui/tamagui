@@ -12,7 +12,7 @@ import {
 
 import { objectFromEntries, objectKeys } from './helpers'
 import { themes as themesOld } from './themes-old'
-import { colorTokens } from './tokens'
+import { colorTokens, darkColors, lightColors } from './tokens'
 
 const palettes = (() => {
   const lightTransparent = 'rgba(255,255,255,0)'
@@ -327,13 +327,21 @@ const themesBuilder = createThemeBuilder()
   .addTemplates(templates)
   .addMasks(masks)
   .addThemes({
-    dark: {
-      template: 'base',
-      palette: 'dark',
-    },
     light: {
       template: 'base',
       palette: 'light',
+      nonInheritedValues: {
+        ...lightColors,
+        ...lightShadows,
+      },
+    },
+    dark: {
+      template: 'base',
+      palette: 'dark',
+      nonInheritedValues: {
+        ...darkColors,
+        ...darkShadows,
+      },
     },
   })
   .addChildThemes({
@@ -483,4 +491,5 @@ const themesBuilder = createThemeBuilder()
 
 export const themes = themesBuilder.build()
 
-console.log('wtf is', themes.dark_Button, 'vs', themesOld.dark_Button)
+console.log('wtf is1', themes.dark, 'vs', themesOld.dark)
+console.log('wtf is2', themes.dark_Button, 'vs', themesOld.dark_Button)

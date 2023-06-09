@@ -1,8 +1,8 @@
 import { Narrow } from '../../web/types'
-import { CreateThemeOptions, createTheme } from './createTheme'
+import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask, createMask } from './masks'
-import { CreateMask, MaskOptions } from './types'
+import { CreateMask, CreateThemeOptions, MaskOptions } from './types'
 
 export type Palette = string[]
 
@@ -247,32 +247,36 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       } else if ('mask' in themeDefinition) {
         maskedThemes.push({ parentName, themeName, mask: themeDefinition })
       } else {
+        const {
+          palette: paletteName,
+          template: templateName,
+          ...options
+        } = themeDefinition
+
         if (!this.state.palettes) {
           throw new Error(
             `No palettes defined for theme with palette expected: ${themeName}`
           )
         }
 
-        let palette = this.state.palettes[themeDefinition.palette]
+        let palette = this.state.palettes[paletteName]
 
         if (!palette) {
-          const fullPaletteName = `${parentName}_${themeDefinition.palette}`
+          const fullPaletteName = `${parentName}_${paletteName}`
           palette = this.state.palettes[fullPaletteName]
           // try using the prefix
         }
 
         if (!palette) {
-          throw new Error(`No palette for theme ${themeName}: ${themeDefinition.palette}`)
+          throw new Error(`No palette for theme ${themeName}: ${paletteName}`)
         }
 
-        const template = this.state.templates?.[themeDefinition.template]
+        const template = this.state.templates?.[templateName]
         if (!template) {
-          throw new Error(
-            `No template for theme ${themeName}: ${themeDefinition.template}`
-          )
+          throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
 
-        out[themeName] = createTheme(palette, template)
+        out[themeName] = createTheme(palette, template, options)
       }
     }
 
