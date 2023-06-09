@@ -11,7 +11,6 @@ import {
 } from '@tamagui/create-theme'
 
 import { objectFromEntries, objectKeys } from './helpers'
-import { themes as themesOld } from './themes-old'
 import { colorTokens, darkColors, lightColors } from './tokens'
 
 const palettes = (() => {
@@ -110,7 +109,9 @@ const {
   maskOptionsComponent,
   maskOptionsButton,
 } = (() => {
-  const templateColors = {
+  // templates use the palette and specify index
+  // negative goes backwards from end so -1 is the last item
+  const template = {
     color1: 1,
     color2: 2,
     color3: 3,
@@ -123,26 +124,6 @@ const {
     color10: 10,
     color11: 11,
     color12: 12,
-  }
-
-  const templateShadows = {
-    shadowColor: 1,
-    shadowColorHover: 1,
-    shadowColorPress: 2,
-    shadowColorFocus: 2,
-  }
-
-  // we can use subset of our template as a "override" so it doesn't get adjusted with masks
-  // we want to skip over templateColor + templateShadows
-  const toSkip = {
-    ...templateShadows,
-  }
-
-  // templates use the palette and specify index
-  // negative goes backwards from end so -1 is the last item
-  const template = {
-    ...templateColors,
-    ...toSkip,
     // the background, color, etc keys here work like generics - they make it so you
     // can publish components for others to use without mandating a specific color scale
     // the @tamagui/button Button component looks for `$background`, so you set the
@@ -186,12 +167,15 @@ const {
     },
   }
 
-  const override = Object.fromEntries(Object.entries(toSkip).map(([k]) => [k, 0]))
-  const overrideShadows = Object.fromEntries(
-    Object.entries(templateShadows).map(([k]) => [k, 0])
-  )
+  const overrideShadows = {
+    shadowColor: 0,
+    shadowColorHover: 0,
+    shadowColorPress: 0,
+    shadowColorFocus: 0,
+  }
+
   const overrideWithColors = {
-    ...override,
+    ...overrideShadows,
     color: 0,
     colorHover: 0,
     colorFocus: 0,
@@ -200,8 +184,8 @@ const {
 
   // default mask options for most uses
   const maskOptions: MaskOptions = {
-    override,
-    skip: toSkip,
+    override: overrideShadows,
+    skip: overrideShadows,
     // avoids the transparent ends
     max: palettes.light.length - 2,
     min: 1,
@@ -216,7 +200,6 @@ const {
   // default mask options for most uses
   const maskOptionsAlt: MaskOptions = {
     ...maskOptions,
-    override: overrideShadows,
   }
 
   const maskOptionsButton: MaskOptions = {
@@ -490,6 +473,3 @@ const themesBuilder = createThemeBuilder()
   )
 
 export const themes = themesBuilder.build()
-
-console.log('wtf is1', themes.dark, 'vs', themesOld.dark)
-console.log('wtf is2', themes.dark_Button, 'vs', themesOld.dark_Button)
