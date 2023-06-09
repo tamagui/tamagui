@@ -38,6 +38,12 @@ export declare const config: {
             mass: number;
             stiffness: number;
         };
+        quicker: {
+            type: "spring";
+            damping: number;
+            mass: number;
+            stiffness: number;
+        };
     }>;
     themes: {
         light: {
@@ -52088,7 +52094,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
         glusp: import("@tamagui/web").GenericFont;
         munro: import("@tamagui/web").GenericFont;
     };
