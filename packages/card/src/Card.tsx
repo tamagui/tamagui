@@ -21,7 +21,6 @@ export const CardFrame = styled(ThemeableStack, {
         size: '$true',
         backgroundColor: '$background',
         position: 'relative',
-        overflow: 'hidden',
       },
     },
 
