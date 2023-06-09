@@ -33,7 +33,6 @@ const CurrentToast = () => {
       scale={1}
       animation="100ms"
       viewportName={currentToast.viewportName}
-      width={100}
     >
       <YStack>
         <Toast.Title>{currentToast.title}</Toast.Title>
