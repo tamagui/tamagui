@@ -897,6 +897,8 @@ export interface ExtendBaseTextProps {}
 // Stack
 //
 
+type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
+
 // these are added back in by core
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers
 
@@ -907,7 +909,7 @@ export type StackNonStyleProps = Omit<
   ExtendBaseStackProps &
   TamaguiComponentPropsBase & {
     // we allow either RN or web style props, of course only web css props only works on web
-    style?: StyleProp<React.CSSProperties & ViewStyle>
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
   }
 
 export type StackStyleProps =
@@ -929,7 +931,7 @@ export type TextNonStyleProps = Omit<
   ExtendBaseTextProps &
   TamaguiComponentPropsBase & {
     // we allow either RN or web style props, of course only web css props only works on web
-    style?: StyleProp<React.CSSProperties & TextStyle>
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
   }
 
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>
