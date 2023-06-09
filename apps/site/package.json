@@ -109,6 +109,7 @@
     "@tamagui/static": "1.31.4",
     "@tauri-apps/cli": "^1.2.2",
     "@types/wicg-file-system-access": "^2020.9.6",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-polyfill": "^6.26.0",
     "esbuild-loader": "^3.0.1",
     "next-remote-watch": "^2.0.0",
