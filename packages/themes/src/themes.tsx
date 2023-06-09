@@ -102,13 +102,7 @@ const palettes = (() => {
   }
 })()
 
-const {
-  templates,
-  maskOptions,
-  maskOptionsAlt,
-  maskOptionsComponent,
-  maskOptionsButton,
-} = (() => {
+const { templates, maskOptionsAlt, maskOptionsComponent, maskOptionsButton } = (() => {
   // templates use the palette and specify index
   // negative goes backwards from end so -1 is the last item
   const template = {
@@ -213,7 +207,6 @@ const {
 
   return {
     templates,
-    maskOptions,
     maskOptionsComponent,
     maskOptionsAlt,
     maskOptionsButton,
@@ -468,6 +461,7 @@ const themesBuilder = createThemeBuilder()
       ],
     },
     {
+      // TODO types should then avoid generating these types!
       avoidNestingWithin: ['alt1', 'alt2', 'active'],
     }
   )

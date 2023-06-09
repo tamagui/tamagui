@@ -162,10 +162,13 @@ class ThemeBuilder<State extends ThemeBuilderState> {
     })
   }
 
-  addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>>(
+  addChildThemes<
+    CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>,
+    const AvoidNestingWithin extends string[] = []
+  >(
     childThemeDefinition: CTD,
     options?: {
-      avoidNestingWithin?: string[]
+      avoidNestingWithin?: AvoidNestingWithin
     }
   ) {
     const currentThemes = this.state.themes as State['themes']
@@ -175,6 +178,7 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       )
     }
 
+    // AvoidNestingWithin[number] exclude isn't working here...
     type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>
     type ChildNames = Exclude<keyof CTD, symbol | number>
 

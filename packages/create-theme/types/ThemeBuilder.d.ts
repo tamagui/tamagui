@@ -71,8 +71,8 @@ declare class ThemeBuilder<State extends ThemeBuilderState> {
     addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
         themes: T;
     }>;
-    addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>>(childThemeDefinition: CTD, options?: {
-        avoidNestingWithin?: string[];
+    addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>, const AvoidNestingWithin extends string[] = []>(childThemeDefinition: CTD, options?: {
+        avoidNestingWithin?: AvoidNestingWithin;
     }): ThemeBuilder<State & {
         themes: { [key in `${Exclude<keyof NonNullable<State["themes"]>, number | symbol>}_${Exclude<keyof CTD, number | symbol>}`]: CTD & {
             parent: GetParentName<key>;

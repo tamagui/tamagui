@@ -31,6 +31,8 @@ export function getThemeCSSRules({
     // if (varToValMap) {
     //   varToValMap[variable.variable] = variable.val
     // }
+    console.log('tokensValueToVariable', tokensValueToVariable)
+
     if (!tokensValueToVariable.has(variable.val)) {
       value = variable.val
     } else {
