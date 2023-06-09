@@ -8,7 +8,7 @@ import {
   skipMask,
 } from '@tamagui/create-theme'
 
-import { colorTokens, darkColors, lightColors, tokens } from './tokens'
+import { colorTokens, darkColors, lightColors } from './tokens'
 
 type ColorName = keyof typeof colorTokens.dark
 

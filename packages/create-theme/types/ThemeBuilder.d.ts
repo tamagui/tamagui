@@ -25,8 +25,9 @@ type PaletteDefinitions = {
     [key: string]: Palette;
 };
 type ThemeDefinition<Masks extends string = string> = Theme<Masks> | ThemeWithParent<Masks>[];
+type UnionableString = string & {};
 type ThemeDefinitions<Masks extends string = string> = {
-    [key: string]: ThemeDefinition<Masks>;
+    [key: string]: ThemeDefinition<Masks | UnionableString>;
 };
 type TemplateDefinitions = {
     [key: string]: Template;

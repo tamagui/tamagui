@@ -11,9 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "generate": "node -r esbuild-register ./src/generate.ts",
+    "generate": "node -r esbuild-register ./generate.ts",
     "build": "yarn generate && tamagui-build",
-    "watch": "tamagui-build --watch",
+    "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",

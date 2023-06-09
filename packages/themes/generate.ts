@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises'
 
-import { themes } from './themes-new'
-import { themes as themesOld } from './themes-old'
+import { themes } from './src/themes-new'
+import { themes as themesOld } from './src/themes-old'
 
 async function run() {
   await Promise.all([
