@@ -20,7 +20,6 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
-    "@dish/babel-preset": "^0.0.6",
     "@tamagui/test-design-system": "1.31.3",
     "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
