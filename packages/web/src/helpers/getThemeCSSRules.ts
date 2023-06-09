@@ -28,10 +28,6 @@ export function getThemeCSSRules({
   for (const themeKey in theme) {
     const variable = theme[themeKey] as Variable
     let value: any = null
-    // if (varToValMap) {
-    //   varToValMap[variable.variable] = variable.val
-    // }
-    console.log('tokensValueToVariable', tokensValueToVariable)
 
     if (!tokensValueToVariable.has(variable.val)) {
       value = variable.val

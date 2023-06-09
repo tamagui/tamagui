@@ -172,8 +172,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       themes[themeName] = proxyThemeToParents(themeName, themes[themeName], themes)
     }
 
-    tokensValueToVariable.clear()
-
     return {
       themes,
       cssRuleSets,

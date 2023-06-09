@@ -1,6 +1,6 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
-import { AppRegistry } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import {
   LoadGlusp,
@@ -13,24 +13,32 @@ import {
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
-  static async getInitialProps(props) {
-    const { renderPage } = props
-    AppRegistry.registerComponent('Main', () => Main)
+  static async getInitialProps({ renderPage }) {
     const page = await renderPage()
-    // @ts-ignore
-    const { getStyleElement } = AppRegistry.getApplication('Main')
-    const styles = [
-      getStyleElement(),
-      <style
-        key="tamagui-css"
-        dangerouslySetInnerHTML={{
-          __html: Tamagui.getCSS({
-            exclude: process.env.NODE_ENV === 'development' ? null : 'design-system',
-          }),
-        }}
-      />,
-    ]
-    return { ...page, styles: Children.toArray(styles) }
+
+    // @ts-ignore RN doesn't have this type
+    const rnwStyle = StyleSheet.getSheet()
+
+    return {
+      ...page,
+      styles: (
+        <>
+          <style
+            id={rnwStyle.id}
+            dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+          />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: Tamagui.getCSS({
+                // if you are using "outputCSS" option, you should use this "exclude"
+                // if not, then you can leave the option out
+                exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+              }),
+            }}
+          />
+        </>
+      ),
+    }
   }
 
   render() {
