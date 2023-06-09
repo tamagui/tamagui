@@ -1,12 +1,6 @@
 import { config } from '@tamagui/config'
 import { createTamagui } from 'tamagui'
 
-
-config.themes['light_green_Button'] = {
-  ...config.themes['light_green_Button'],
-  background: 'green',
-}
-
 const tamaConf = createTamagui({
   ...config,
   themeClassNameOnRoot: false,

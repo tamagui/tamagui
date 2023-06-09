@@ -1,5 +1,5 @@
-import { H1 } from 'tamagui'
+import { Button, H1 } from 'tamagui'
 
 export const Sandbox = () => {
-  return <H1> test things here </H1>
+  return <Button>test things here</Button>
 }
