@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "generate": "tamagui generate-themes ./src/themes-new.tsx ./src/generated-new.ts",
-    "build": "yarn generate && tamagui-build",
+    "build": "tamagui-build",
     "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply src",
