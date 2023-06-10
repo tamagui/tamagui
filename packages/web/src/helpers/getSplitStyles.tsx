@@ -722,7 +722,8 @@ export const getSplitStyles: StyleSplitter = (
           console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
         }
 
-        if ('space' in mediaStyle) {
+        const hasSpace = 'space' in val
+        if (hasSpace || !shouldDoClasses) {
           if (!Array.isArray(hasMedia)) {
             hasMedia = []
           }
@@ -730,17 +731,16 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (shouldDoClasses) {
-          if ('space' in mediaStyle) {
+          if (hasSpace) {
             delete mediaStyle['space']
             if (mediaState[mediaKeyShort]) {
-              const val = valInit.space
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
                 usedKeys
               )
               if (importance) {
-                space = val
+                space = val['space']
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                   // rome-ignore lint/nursery/noConsoleLog: <explanation>

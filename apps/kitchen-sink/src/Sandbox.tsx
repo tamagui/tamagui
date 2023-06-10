@@ -1,18 +1,24 @@
-import { Button, H1, Square, Stack } from 'tamagui'
+import { H1 } from 'tamagui'
+
+// TODO this is a great test: media + animation + space (test without animation too)
+// <Stack
+//       animation="bouncy"
+//       space="$4"
+//       debug="verbose"
+//       backgroundColor="blue"
+//       $sm={{
+//         backgroundColor: 'yellow',
+//       }}
+//       $md={{
+//         space: '$5',
+//         backgroundColor: 'red',
+//       }}
+//     >
+//       <Square size={20} bc="red" />
+//       <Square size={20} bc="red" />
+//       <Square size={20} bc="red" />
+//     </Stack>
 
 export const Sandbox = () => {
-  return (
-    <Stack
-      space="$4"
-      $md={{
-        space: '$5',
-      }}
-    >
-      <Square size={20} bc="red" />
-      <Square size={20} bc="red" />
-      <Square size={20} bc="red" />
-    </Stack>
-  )
-
-  return <Button>test things here</Button>
+  return <H1>test things here</H1>
 }
