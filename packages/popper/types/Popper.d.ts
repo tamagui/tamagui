@@ -245,18 +245,23 @@ export declare const PopperArrow: import("@tamagui/core").ReactComponentWithRef<
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
 }>>, "size" | `$${string}` | `$${number}` | "top" | "right" | "bottom" | "left" | "start" | "end" | "padding" | "width" | "height" | "transform" | "style" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "justifyContent" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "fullscreen" | keyof import("@tamagui/core").TransformStyleProps | keyof {
-    pointerEvents?: "none" | "box-none" | "box-only" | "auto" | undefined;
-    cursor?: import("csstype").Property.Cursor | undefined;
+    columnGap?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
     contain?: import("csstype").Property.Contain | undefined;
+    cursor?: import("csstype").Property.Cursor | undefined;
     display?: "none" | "flex" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
-    gap?: import("@tamagui/core").SpaceTokens | undefined;
-    columnGap?: import("@tamagui/core").SpaceTokens | undefined;
-    rowGap?: import("@tamagui/core").SpaceTokens | undefined;
-    userSelect?: import("csstype").Property.UserSelect | undefined;
+    gap?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
+    outlineOffset?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-    outlineOffset?: import("@tamagui/core").SpaceTokens | undefined;
-    outlineWidth?: import("@tamagui/core").SpaceTokens | undefined;
+    outlineWidth?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto" | undefined;
+    rowGap?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
+    space?: (import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback) | undefined;
+    spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;
+    separator?: React.ReactNode;
+    animation?: import("@tamagui/core").AnimationProp | null | undefined;
+    animateOnly?: string[] | undefined;
+    userSelect?: import("csstype").Property.UserSelect | undefined;
 } | keyof import("@tamagui/core").TamaguiComponentPropsBase | keyof import("@tamagui/core/types/reactNativeTypes").RNViewProps | keyof import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<React.CSSProperties | import("react-native").ViewStyle | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {

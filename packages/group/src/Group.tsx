@@ -152,6 +152,7 @@ function createGroup(verticalDefault: boolean) {
         spacedChildren({
           direction: spaceDirection,
           separator,
+          // @ts-ignore
           space,
           children,
         })

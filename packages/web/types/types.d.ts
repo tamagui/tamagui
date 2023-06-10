@@ -227,7 +227,7 @@ export interface ThemeProps {
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 type SpacerPropsBase = {
-    size?: number | SpaceTokens | null;
+    size?: SpaceValue;
     flex?: boolean | number;
     direction?: SpaceDirection;
 };
@@ -466,19 +466,20 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShort
 /**
  * Base style-only props (no media, pseudo):
  */
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 type SharedBaseExtraStyleProps = {
-    columnGap?: number | SpaceTokens;
+    columnGap?: SpaceValue;
     contain?: Properties['contain'];
     cursor?: Properties['cursor'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    gap?: number | SpaceTokens;
+    gap?: SpaceValue;
     outlineColor?: Properties['outlineColor'];
-    outlineOffset?: number | SpaceTokens;
+    outlineOffset?: SpaceValue;
     outlineStyle?: Properties['outlineStyle'];
-    outlineWidth?: number | SpaceTokens;
+    outlineWidth?: SpaceValue;
     pointerEvents?: ViewProps['pointerEvents'];
-    rowGap?: number | SpaceTokens;
-    space?: SpaceTokens | null;
+    rowGap?: SpaceValue;
+    space?: SpaceValue;
     spaceDirection?: SpaceDirection;
     separator?: ReactNode;
     animation?: AnimationProp | null;

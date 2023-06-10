@@ -39,6 +39,7 @@ import {
   DebugProp,
   SpaceDirection,
   SpaceTokens,
+  SpaceValue,
   SpacerProps,
   StaticConfig,
   StaticConfigParsed,
@@ -1072,7 +1073,7 @@ export const Spacer = createComponent<SpacerProps>({
 export type SpacedChildrenProps = {
   isZStack?: boolean
   children?: React.ReactNode
-  space?: SpaceTokens | number | null
+  space?: SpaceValue
   spaceFlex?: boolean | number
   direction?: SpaceDirection
   separator?: React.ReactNode
