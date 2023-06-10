@@ -55,7 +55,7 @@
     "react-native-screens": "^3.18.2",
     "react-native-svg": "13.4.0",
     "react-native-web": "^0.19.4",
-    "solito": "^2.3.0"
+    "solito": "^4.0.0-alpha.4"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",

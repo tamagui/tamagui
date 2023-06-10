@@ -18,8 +18,10 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@tamagui/lucide-icons": "1.31.0-1686362094230",
     "@tamagui/toast": "1.31.0-1686362094230",
+    "solito": "^4.0.0-alpha.4",
     "tamagui": "1.31.0-1686362094230"
   },
   "devDependencies": {
