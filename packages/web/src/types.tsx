@@ -139,7 +139,6 @@ export type TamaguiComponentPropsBase = {
   target?: string
   hitSlop?: PressableProps['hitSlop']
   asChild?: boolean | 'except-style'
-  space?: SpaceTokens | null
   spaceDirection?: SpaceDirection
   separator?: ReactNode
   dangerouslySetInnerHTML?: { __html: string }
@@ -854,18 +853,19 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
  */
 
 type SharedBaseExtraStyleProps = {
-  pointerEvents?: ViewProps['pointerEvents']
-  cursor?: Properties['cursor']
+  columnGap?: number | SpaceTokens
   contain?: Properties['contain']
+  cursor?: Properties['cursor']
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   gap?: number | SpaceTokens
-  columnGap?: number | SpaceTokens
-  rowGap?: number | SpaceTokens
-  userSelect?: Properties['userSelect']
   outlineColor?: Properties['outlineColor']
-  outlineStyle?: Properties['outlineStyle']
   outlineOffset?: number | SpaceTokens
+  outlineStyle?: Properties['outlineStyle']
   outlineWidth?: number | SpaceTokens
+  pointerEvents?: ViewProps['pointerEvents']
+  rowGap?: number | SpaceTokens
+  space?: SpaceTokens | null
+  userSelect?: Properties['userSelect']
 }
 
 type OverrideRNStyleProps =

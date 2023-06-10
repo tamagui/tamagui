@@ -121,6 +121,7 @@ export {
   // components
   Spacer,
   Stack,
+  View,
   Text,
   Theme,
   FontLanguage,
