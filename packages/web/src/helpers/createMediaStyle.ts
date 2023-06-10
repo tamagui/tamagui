@@ -43,7 +43,7 @@ export const createMediaStyle = (
     // combine
     styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
   } else {
-    styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner} }`
+    styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner.trim()} }`
   }
 
   return {

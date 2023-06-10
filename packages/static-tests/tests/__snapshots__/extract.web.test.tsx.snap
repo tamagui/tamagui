@@ -1,10 +1,10 @@
 // Vitest Snapshot v1
 
-exports[`extract-tests > converts a style object to class names 1`] = `"._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}"`;
+exports[`extract-tests > converts a style object to class names 1`] = `":root ._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}"`;
 
-exports[`extract-tests > converts a style object to class names 2`] = `"._transform-827061876{transform:rotateY(10deg);}"`;
+exports[`extract-tests > converts a style object to class names 2`] = `":root ._transform-827061876{transform:rotateY(10deg);}"`;
 
-exports[`extract-tests > converts a style object to class names 3`] = `"._bxsh-2132166440{box-shadow:0px 0px 10px red;}"`;
+exports[`extract-tests > converts a style object to class names 3`] = `":root ._bxsh-2132166440{box-shadow:0px 0px 10px red;}"`;
 
 exports[`extract-tests > supports RTL properties 1`] = `
 [
@@ -13,7 +13,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "property": "paddingStart",
     "pseudo": undefined,
     "rules": [
-      "._paddingStart-100px{padding-start:100px;}",
+      ":root ._paddingStart-100px{padding-start:100px;}",
     ],
     "value": "100px",
   },
@@ -22,7 +22,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "property": "paddingEnd",
     "pseudo": undefined,
     "rules": [
-      "._paddingEnd-10px{padding-end:10px;}",
+      ":root ._paddingEnd-10px{padding-end:10px;}",
     ],
     "value": "10px",
   },
@@ -31,7 +31,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "property": "marginStart",
     "pseudo": undefined,
     "rules": [
-      "._marginStart-50px{margin-start:50px;}",
+      ":root ._marginStart-50px{margin-start:50px;}",
     ],
     "value": "50px",
   },
@@ -40,7 +40,7 @@ exports[`extract-tests > supports RTL properties 1`] = `
     "property": "marginEnd",
     "pseudo": undefined,
     "rules": [
-      "._marginEnd-2px{margin-end:2px;}",
+      ":root ._marginEnd-2px{margin-end:2px;}",
     ],
     "value": "2px",
   },
