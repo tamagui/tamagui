@@ -61,10 +61,6 @@ export function useStore<A extends Store<B>, B extends Object>(
   const selectorCb = useCallback(options.selector || idFn, [])
   const selector = options.selector ? selectorCb : options.selector
 
-  if (options.debug) {
-    useDebugStoreComponent(StoreKlass)
-  }
-
   // if (options.once) {
   //   const key = props ? getKey(props) : ''
   //   const info = useMemo(() => {
@@ -73,8 +69,8 @@ export function useStore<A extends Store<B>, B extends Object>(
   //   return useStoreFromInfo(info, selector)
   // }
 
-  const info = getOrCreateStoreInfo(StoreKlass, props)
-  return useStoreFromInfo(info, selector)
+  const info = getOrCreateStoreInfo(StoreKlass, props, options)
+  return useStoreFromInfo(info, selector, options)
 }
 
 export function useStoreDebug<A extends Store<B>, B extends Object>(
@@ -89,9 +85,10 @@ export function useStoreDebug<A extends Store<B>, B extends Object>(
 // singleton
 export function createStore<A extends Store<B>, B extends Object>(
   StoreKlass: new (props: B) => A | (new () => A),
-  props?: B
+  props?: B,
+  options?: UseStoreOptions<A, any>
 ): A {
-  return getOrCreateStoreInfo(StoreKlass, props).store as any
+  return getOrCreateStoreInfo(StoreKlass, props, options).store as any
 }
 // use singleton with react
 // TODO selector support with types...
@@ -200,12 +197,12 @@ export function getStore<A extends Store<B>, B extends Object>(
 function getOrCreateStoreInfo(
   StoreKlass: any,
   props: any,
-  opts?: { avoidCache: boolean },
+  options?: UseStoreOptions & { avoidCache?: boolean },
   propsKeyCalculated?: string
 ) {
   const uid = getStoreUid(StoreKlass, propsKeyCalculated ?? props)
 
-  if (!opts?.avoidCache) {
+  if (!options?.avoidCache) {
     const cached = cache.get(uid)
     if (cached) {
       // warn if creating an already existing store!
@@ -248,6 +245,7 @@ function getOrCreateStoreInfo(
     getters,
     stateKeys,
     actions,
+    debug: options?.debug,
     gettersState: {
       getCache: new Map<string, any>(),
       depsToGetter: new Map<string, Set<string>>(),
@@ -271,7 +269,7 @@ function getOrCreateStoreInfo(
     store,
   }
 
-  if (!opts?.avoidCache) {
+  if (!options?.avoidCache) {
     cache.set(uid, value)
   }
 
@@ -299,7 +297,8 @@ export const setIsInReaction = (val: boolean) => {
 
 function useStoreFromInfo(
   info: StoreInfo,
-  userSelector?: Selector<any> | undefined
+  userSelector?: Selector<any> | undefined,
+  options?: UseStoreOptions
 ): any {
   const { store } = info
   if (!store) {
@@ -323,8 +322,7 @@ function useStoreFromInfo(
   const curInternal = internal.current!
 
   const shouldPrintDebug =
-    !!process.env.LOG_LEVEL &&
-    (configureOpts.logLevel === 'debug' || shouldDebug(component, info))
+    configureOpts.logLevel === 'debug' || shouldDebug(component, info) || options?.debug
 
   const getSnapshot = useCallback(() => {
     const curInternal = internal.current!
@@ -361,6 +359,12 @@ function useStoreFromInfo(
       })
 
     if (shouldPrintDebug) {
+      if (!isUnchanged) {
+        console.log('changed', keys, last, 'vs', snap)
+      }
+    }
+
+    if (shouldPrintDebug) {
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, snap, curInternal })
@@ -387,7 +391,7 @@ function useStoreFromInfo(
     curInternal.isTracking = true
 
     // track access, runs after each render
-    useLayoutEffect(() => {
+    queueMicrotask(() => {
       curInternal.isTracking = false
       curInternal.firstRun = false
       if (shouldPrintDebug) {
@@ -422,6 +426,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
   const { actions, storeInstance, getters, gettersState } = storeInfo
   const { getCache, curGetKeys, depsToGetter } = gettersState
   const constr = storeInstance.constructor
+  const shouldDebug = storeInfo.debug ?? DebugStores.has(constr)
 
   let didSet = false
   let isInAction = false
@@ -446,7 +451,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       if (isGetFn || gettersState.isGetting) {
         return Reflect.apply(actionFn, proxiedStore, args)
       }
-      if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+      if (process.env.NODE_ENV === 'development' && shouldDebug) {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('(debug) startAction', key, { isInAction })
       }
@@ -466,7 +471,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
         const ogAction = wrappedActions[key]
         wrappedActions[key] = new Proxy(ogAction, {
           apply(target, thisArg, args) {
-            const isDebugging = DebugStores.has(constr)
+            const isDebugging = shouldDebug || storeInfo.debug
             const shouldLog =
               process.env.LOG_LEVEL !== '0' &&
               (isDebugging || configureOpts.logLevel !== 'error')
@@ -582,7 +587,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
   }
 
   const finishAction = (val?: any) => {
-    if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+    if (process.env.NODE_ENV === 'development' && shouldDebug) {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
     }
@@ -624,14 +629,11 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
 
       // non-actions...
 
-      const shouldPrintDebug =
-        process.env.NODE_ENV === 'development' && DebugStores.has(constr)
-
       if (!trackingDisabled) {
         if (gettersState.isGetting) {
           gettersState.curGetKeys.add(key)
         } else {
-          storeInstance[TRACK](key, shouldPrintDebug)
+          storeInstance[TRACK](key, shouldDebug)
         }
       }
 
@@ -676,7 +678,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
         if (typeof key === 'string') {
           clearGetterCache(key)
         }
-        if (process.env.LOG_LEVEL && configureOpts.logLevel !== 'error') {
+        if (shouldDebug) {
           setters.add({ key, value })
           if (storeInstance[SHOULD_DEBUG]()) {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
