@@ -194,7 +194,7 @@ const SwitchComponent = SwitchFrame.extractable(
       const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
       const shouldRenderMobileNative =
         (!isWeb && nativeProp === true) ||
-        native.includes('mobile') ||
+        (!isWeb && native.includes('mobile')) ||
         (native.includes('android') && Platform.OS === 'android') ||
         (native.includes('ios') && Platform.OS === 'ios')
       if (shouldRenderMobileNative) {

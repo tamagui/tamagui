@@ -79,17 +79,17 @@ import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
-"._w-10{width:10;}
-._fd-column{flex-direction:column;}
-._miw-0{min-width:0;}
-._mih-0{min-height:0;}
-._pos-relative{position:relative;}
-._fb-auto{flex-basis:auto;}
-._dsp-flex{display:flex;}
-._fs-0{flex-shrink:0;}
-._ai-stretch{align-items:stretch;}
-._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
-._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
+":root ._w-10{width:10;}
+:root ._fd-column{flex-direction:column;}
+:root ._miw-0{min-width:0;}
+:root ._mih-0{min-height:0;}
+:root ._pos-relative{position:relative;}
+:root ._fb-auto{flex-basis:auto;}
+:root ._dsp-flex{display:flex;}
+:root ._fs-0{flex-shrink:0;}
+:root ._ai-stretch{align-items:stretch;}
+:root ._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
+:root ._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
@@ -105,17 +105,17 @@ import { concatClassName } from \\"@tamagui/helpers\\";"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
-"._w-10{width:10;}
-._fd-column{flex-direction:column;}
-._miw-0{min-width:0;}
-._mih-0{min-height:0;}
-._pos-relative{position:relative;}
-._fb-auto{flex-basis:auto;}
-._dsp-flex{display:flex;}
-._fs-0{flex-shrink:0;}
-._ai-stretch{align-items:stretch;}
-._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
-._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
+":root ._w-10{width:10;}
+:root ._fd-column{flex-direction:column;}
+:root ._miw-0{min-width:0;}
+:root ._mih-0{min-height:0;}
+:root ._pos-relative{position:relative;}
+:root ._fb-auto{flex-basis:auto;}
+:root ._dsp-flex{display:flex;}
+:root ._fs-0{flex-shrink:0;}
+:root ._ai-stretch{align-items:stretch;}
+:root ._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
+:root ._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
 `;
 
 exports[`flat transform props 1`] = `

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 declare const createRadioGroupScope: import("@tamagui/create-context").CreateScope;
 type TamaguiElement = HTMLElement | View;
 declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -23,7 +23,7 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -42,7 +42,7 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -61,7 +61,7 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -82,9 +82,9 @@ declare const RadioGroupFrame: import("@tamagui/core").TamaguiComponent<Omit<imp
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
         readonly fullscreen?: boolean | undefined;
@@ -117,7 +117,7 @@ type RadioGroupProps = GetProps<typeof RadioGroupFrame> & {
     accentColor?: string;
 };
 declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -136,7 +136,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -155,7 +155,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
 }, "orientation"> & {
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -184,7 +184,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
     accentColor?: string | undefined;
 } & React.RefAttributes<TamaguiElement>> & {
     Indicator: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -203,7 +203,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -222,7 +222,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -245,7 +245,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         unstyled?: boolean | undefined;
     } & React.RefAttributes<TamaguiElement>>;
     Item: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -265,7 +265,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -285,7 +285,7 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<import("react-nat
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

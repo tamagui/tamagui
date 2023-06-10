@@ -16,7 +16,7 @@ interface BubbleInputProps extends Omit<InputProps, 'checked'> {
 }
 export declare const BubbleInput: (props: BubbleInputProps) => JSX.Element;
 declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -33,7 +33,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -50,7 +50,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -67,7 +67,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -86,7 +86,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -105,7 +105,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -124,7 +124,7 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
 }, string | number> & {
     [x: string]: undefined;
 }>>), TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -145,9 +145,9 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
 }), {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
         readonly fullscreen?: boolean | undefined;
@@ -182,7 +182,7 @@ export type CheckboxIndicatorProps = CheckboxIndicatorFrameProps & {
     disablePassStyles?: boolean;
 };
 export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -202,7 +202,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -222,7 +222,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -242,7 +242,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>, TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -264,9 +264,9 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     };
     __variantProps: {
         readonly fullscreen?: boolean | undefined;
@@ -305,7 +305,7 @@ export interface CheckboxProps extends Omit<CheckboxFrameProps, 'checked' | 'def
 }
 export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<HTMLButtonElement>> & {
     Indicator: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -322,7 +322,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -339,7 +339,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -366,7 +366,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
          */
         disablePassStyles?: boolean | undefined;
     }) | Omit<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -385,7 +385,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
     }, string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -404,7 +404,7 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
     }, string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<React.CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;

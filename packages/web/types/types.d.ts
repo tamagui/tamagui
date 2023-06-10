@@ -498,15 +498,16 @@ export interface ExtendBaseStackProps {
 }
 export interface ExtendBaseTextProps {
 }
+type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers;
 export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'> & ExtendBaseStackProps & TamaguiComponentPropsBase & {
-    style?: StyleProp<React.CSSProperties & ViewStyle>;
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 };
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export type StackPropsBase = StackNonStyleProps & WithThemeAndShorthands<StackStylePropsBase>;
 export type StackProps = StackNonStyleProps & StackStyleProps;
 export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNonWebProps | keyof ExtendBaseTextProps | 'style'> & ExtendBaseTextProps & TamaguiComponentPropsBase & {
-    style?: StyleProp<React.CSSProperties & TextStyle>;
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
 };
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;

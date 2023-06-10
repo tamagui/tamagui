@@ -49,6 +49,10 @@ export function extractMediaStyle(
     return acc
   }, {})
   let mediaStyles: StyleObject[] = []
+
+  // TODO this should NOT be here
+  // this should be done using the same logic as createMediaStyle
+
   for (const { styleObj, negate } of styleOpts) {
     const styles = getStylesAtomic(styleObj)
     const singleMediaStyles = styles.map((style) => {
@@ -63,6 +67,7 @@ export function extractMediaStyle(
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(tamaguiConfig.media[key])
+      // screen and
       const screenStr = negate ? 'not all' : 'screen'
       const mediaQuery = `${screenStr} and ${mediaSelector}`
       const precendencePrefix = mediaKeyPrecendence[key]
@@ -75,7 +80,7 @@ export function extractMediaStyle(
         // combine
         styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
       } else {
-        styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+        styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner} }`
       }
       return {
         ...style,

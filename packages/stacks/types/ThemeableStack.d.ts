@@ -165,7 +165,7 @@ export declare const themeableVariants: {
             onMouseUp?: import("@tamagui/core").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;
             onFocus?: import("@tamagui/core").Variable<any> | ((event: import("react").FocusEvent<HTMLDivElement, Element>) => void) | undefined;
             onScroll?: import("@tamagui/core").Variable<any> | ((event: import("react").UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-            style?: import("@tamagui/core").Variable<any> | import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+            style?: import("@tamagui/core").Variable<any> | import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
             backgroundColor?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
             borderBottomColor?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
             borderBottomEndRadius?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
@@ -181,7 +181,7 @@ export declare const themeableVariants: {
             borderRightColor?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
             borderRightWidth?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             borderStartColor?: import("@tamagui/core").Variable<any> | import("react-native").ColorValue | undefined;
-            borderStyle?: import("@tamagui/core").Variable<any> | "solid" | "dotted" | "dashed" | undefined;
+            borderStyle?: import("@tamagui/core").Variable<any> | "dashed" | "dotted" | "solid" | undefined;
             borderTopColor?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallback | import("react-native").OpaqueColorValue | undefined;
             borderTopEndRadius?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
             borderTopLeftRadius?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").RadiusTokens | undefined;
@@ -190,7 +190,7 @@ export declare const themeableVariants: {
             borderTopWidth?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             borderWidth?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             opacity?: number | import("@tamagui/core").Variable<any> | undefined;
-            alignContent?: import("@tamagui/core").Variable<any> | "flex-start" | "flex-end" | "center" | "stretch" | "space-between" | "space-around" | undefined;
+            alignContent?: import("@tamagui/core").Variable<any> | "space-around" | "space-between" | "stretch" | "center" | "flex-end" | "flex-start" | undefined;
             alignItems?: import("@tamagui/core").Variable<any> | import("react-native").FlexAlignType | undefined;
             alignSelf?: "auto" | import("@tamagui/core").Variable<any> | import("react-native").FlexAlignType | undefined;
             aspectRatio?: string | number | import("@tamagui/core").Variable<any> | undefined;
@@ -200,12 +200,12 @@ export declare const themeableVariants: {
             end?: string | number | import("@tamagui/core").Variable<any> | undefined;
             flex?: number | import("@tamagui/core").Variable<any> | undefined;
             flexBasis?: string | number | import("@tamagui/core").Variable<any> | undefined;
-            flexDirection?: "row" | import("@tamagui/core").Variable<any> | "column" | "row-reverse" | "column-reverse" | undefined;
+            flexDirection?: "row" | import("@tamagui/core").Variable<any> | "column" | "column-reverse" | "row-reverse" | undefined;
             flexGrow?: number | import("@tamagui/core").Variable<any> | undefined;
             flexShrink?: number | import("@tamagui/core").Variable<any> | undefined;
-            flexWrap?: import("@tamagui/core").Variable<any> | "wrap" | "nowrap" | "wrap-reverse" | undefined;
+            flexWrap?: import("@tamagui/core").Variable<any> | "nowrap" | "wrap" | "wrap-reverse" | undefined;
             height?: import("@tamagui/core").SizeTokens | import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | undefined;
-            justifyContent?: import("@tamagui/core").Variable<any> | "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly" | undefined;
+            justifyContent?: import("@tamagui/core").Variable<any> | "space-around" | "space-between" | "space-evenly" | "center" | "flex-end" | "flex-start" | undefined;
             left?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             margin?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             marginBottom?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
@@ -220,7 +220,7 @@ export declare const themeableVariants: {
             maxWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | undefined;
             minHeight?: import("@tamagui/core").SizeTokens | import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | undefined;
             minWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | undefined;
-            overflow?: import("@tamagui/core").Variable<any> | "visible" | "hidden" | "scroll" | undefined;
+            overflow?: import("@tamagui/core").Variable<any> | "hidden" | "visible" | "scroll" | undefined;
             padding?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             paddingBottom?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
             paddingEnd?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SpaceTokens | undefined;
@@ -267,7 +267,7 @@ export declare const themeableVariants: {
             rotateZ?: string | import("@tamagui/core").Variable<any> | undefined;
             cursor?: import("@tamagui/core").Variable<any> | import("csstype").Property.Cursor | undefined;
             contain?: import("@tamagui/core").Variable<any> | import("csstype").Property.Contain | undefined;
-            display?: "flex" | "none" | import("@tamagui/core").Variable<any> | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+            display?: "flex" | "none" | import("@tamagui/core").Variable<any> | "inherit" | "block" | "inline" | "inline-flex" | "contents" | undefined;
             gap?: import("@tamagui/core").Variable<any> | import("@tamagui/core").SpaceTokens | undefined;
             columnGap?: import("@tamagui/core").Variable<any> | import("@tamagui/core").SpaceTokens | undefined;
             rowGap?: import("@tamagui/core").Variable<any> | import("@tamagui/core").SpaceTokens | undefined;
@@ -320,7 +320,7 @@ export declare const themeableVariants: {
     };
 };
 export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -337,7 +337,7 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -354,7 +354,7 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -371,7 +371,7 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 }>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+    style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -390,7 +390,7 @@ export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<Om
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
-        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties & import("react-native").ViewStyle>;
+        style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
     __variantProps: {
         readonly fullscreen?: boolean | undefined;

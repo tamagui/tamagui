@@ -252,12 +252,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     start?: string | number | undefined;
     top?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | undefined;
     direction?: "inherit" | "ltr" | "rtl" | undefined;
-    shadowOffset?: {
-        width: number;
-        height: number;
-    } | import("@tamagui/core").ThemeValueFallback | {
+    shadowOffset?: import("@tamagui/core").ThemeValueFallback | {
         width: import("@tamagui/core").SpaceTokens;
         height: import("@tamagui/core").SpaceTokens;
+    } | {
+        width: number;
+        height: number;
     } | undefined;
     shadowOpacity?: number | undefined;
     shadowRadius?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").SizeTokens | undefined;

@@ -164,8 +164,9 @@ function createAtomicRules(
   pseudo?: PseudoDescriptor
 ): string[] {
   const selector = pseudo
-    ? `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
-    : `.${identifier}`
+    ? // adding one more :root so we always override react native web styles :/
+      `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
+    : `:root .${identifier}`
   const important = !!pseudo
 
   let rules: string[] = []
@@ -233,7 +234,7 @@ function createAtomicRules(
   // and hardcode for hover styles, if we need to later we can
   // WEIRD SYNTAX, SEE:
   //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
-  if (pseudo && pseudo.name === 'hover') {
+  if (pseudo?.name === 'hover') {
     rules = rules.map((r) => `@media not all and (hover: none) { ${r} }`)
   }
 
