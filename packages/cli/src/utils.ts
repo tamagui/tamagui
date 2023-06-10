@@ -17,6 +17,12 @@ export async function getOptions({
   ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
+  let config = ''
+  try {
+    config = await getDefaultTamaguiConfigPath()
+  } catch {
+    // ok
+  }
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -27,7 +33,7 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       components: ['tamagui'],
-      config: await getDefaultTamaguiConfigPath(),
+      config,
       ...tamaguiOptions,
     },
     paths: {

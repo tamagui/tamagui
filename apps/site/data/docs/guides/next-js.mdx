@@ -53,40 +53,42 @@ if (process.env.NODE_ENV === 'production') {
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element.
 
-<Notice>
-  Make sure the Tamagui style tag always comes after the `getStyleElement` style tag to
-  ensure Tamagui styles override built-in `react-native-web` ones.
-</Notice>
-
 Note that we only are importing `react-native` here because if you use `tamagui` views like Input or Image they rely on React Native Image/Input (and therefore on the web, `react-native-web`). If you are just using core, or aren't using Image or Input in `tamagui`, you can forego the entire `AppRegistry` import and setup here. We're working on making even `tamagui` completely de-coupled from RN/RNW by building their own image and input components eventually.
 
 ```tsx
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
-import { AppRegistry } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import Tamagui from '../tamagui.config'
 
 export default class Document extends NextDocument {
   static async getInitialProps({ renderPage }) {
-    AppRegistry.registerComponent('Main', () => Main)
     const page = await renderPage()
-    // @ts-ignore
-    const { getStyleElement } = AppRegistry.getApplication('Main')
-    const styles = [
-      getStyleElement(),
 
-      <style
-        dangerouslySetInnerHTML={{
-          __html: Tamagui.getCSS({
-            // if you are using "outputCSS" option, you should use this "exclude"
-            // if not, then you can leave the option out
-            exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
-          }),
-        }}
-      />,
-    ]
-    return { ...page, styles: Children.toArray(styles) }
+    // @ts-ignore RN doesn't have this type
+    const rnwStyle = StyleSheet.getSheet()
+
+    return {
+      ...page,
+      styles: (
+        <>
+          <style
+            id={rnwStyle.id}
+            dangerouslySetInnerHTML={{ __html: rnwStyle.textContent }}
+          />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: Tamagui.getCSS({
+                // if you are using "outputCSS" option, you should use this "exclude"
+                // if not, then you can leave the option out
+                exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+              }),
+            }}
+          />
+        </>
+      ),
+    }
   }
 
   render() {

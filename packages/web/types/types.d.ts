@@ -849,6 +849,7 @@ export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
 export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[];
 /**
  * `StyleProp` copied from React Native:
+ *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
 export type Falsy = undefined | null | false;
 export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {

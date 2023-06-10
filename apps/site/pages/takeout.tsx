@@ -808,7 +808,7 @@ const Point = ({
                 shift: -2,
               }) as any
             }
-            theme="gray_alt2"
+            theme="alt2"
             o={0.5}
           >
             {subtitle}
