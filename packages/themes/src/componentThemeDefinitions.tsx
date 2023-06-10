@@ -59,6 +59,12 @@ export const componentThemeDefinitions = {
     ...maskOptions.component,
   },
 
+  SwitchThumb: {
+    mask: 'inverseStrengthen2',
+    ...maskOptions.component,
+    debug: true,
+  },
+
   TooltipContent: {
     mask: 'soften2',
     ...maskOptions.component,
@@ -80,12 +86,12 @@ export const componentThemeDefinitions = {
   },
 
   SliderTrack: {
-    mask: 'strengthen',
+    mask: 'soften',
     ...maskOptions.component,
   },
 
   SliderThumb: {
-    mask: 'inverseSoften',
+    mask: 'inverse',
     ...maskOptions.component,
   },
 
@@ -96,11 +102,6 @@ export const componentThemeDefinitions = {
 
   ProgressIndicator: {
     mask: 'inverse',
-    ...maskOptions.component,
-  },
-
-  SwitchThumb: {
-    mask: 'inverseSoften2',
     ...maskOptions.component,
   },
 

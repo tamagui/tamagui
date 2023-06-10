@@ -3,27 +3,9 @@ import { createThemeBuilder } from '@tamagui/create-theme'
 import { componentThemeDefinitions } from './componentThemeDefinitions'
 import { masks } from './masks'
 import { palettes } from './palettes'
+import { shadows } from './shadows'
 import { maskOptions, templates } from './templates'
 import { darkColors, lightColors } from './tokens'
-
-const lightShadowColor = 'rgba(0,0,0,0.02)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.066)'
-const darkShadowColor = 'rgba(0,0,0,0.2)'
-const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
-
-const lightShadows = {
-  shadowColor: lightShadowColorStrong,
-  shadowColorHover: lightShadowColorStrong,
-  shadowColorPress: lightShadowColor,
-  shadowColorFocus: lightShadowColor,
-}
-
-const darkShadows = {
-  shadowColor: darkShadowColorStrong,
-  shadowColorHover: darkShadowColorStrong,
-  shadowColorPress: darkShadowColor,
-  shadowColorFocus: darkShadowColor,
-}
 
 const colorThemeDefinition = (colorName: string) => [
   {
@@ -48,7 +30,7 @@ const themesBuilder = createThemeBuilder()
       palette: 'light',
       nonInheritedValues: {
         ...lightColors,
-        ...lightShadows,
+        ...shadows.light,
       },
     },
     dark: {
@@ -56,7 +38,7 @@ const themesBuilder = createThemeBuilder()
       palette: 'dark',
       nonInheritedValues: {
         ...darkColors,
-        ...darkShadows,
+        ...shadows.dark,
       },
     },
   })
@@ -86,7 +68,6 @@ const themesBuilder = createThemeBuilder()
     },
   })
   .addChildThemes(componentThemeDefinitions, {
-    // TODO types should then avoid generating these types!
     avoidNestingWithin: ['alt1', 'alt2', 'active'],
   })
 
