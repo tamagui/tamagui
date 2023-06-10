@@ -37,13 +37,9 @@ export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
     asChild?: boolean | 'except-style';
-    spaceDirection?: SpaceDirection;
-    separator?: ReactNode;
     dangerouslySetInnerHTML?: {
         __html: string;
     };
-    animation?: AnimationProp | null;
-    animateOnly?: string[];
     children?: any | any[];
     debug?: DebugProp;
     disabled?: boolean;
@@ -483,6 +479,10 @@ type SharedBaseExtraStyleProps = {
     pointerEvents?: ViewProps['pointerEvents'];
     rowGap?: number | SpaceTokens;
     space?: SpaceTokens | null;
+    spaceDirection?: SpaceDirection;
+    separator?: ReactNode;
+    animation?: AnimationProp | null;
+    animateOnly?: string[];
     userSelect?: Properties['userSelect'];
 };
 type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
