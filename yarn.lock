@@ -5558,34 +5558,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-test@workspace:apps/next-test":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/next-test@workspace:apps/next-test"
-  dependencies:
-    "@tamagui/animate-presence": 1.31.0-1686362094230
-    "@tamagui/colors": 1.31.0-1686362094230
-    "@tamagui/config": 1.31.0-1686362094230
-    "@tamagui/demos": 1.31.0-1686362094230
-    "@tamagui/font-fira-mono": 1.31.0-1686362094230
-    "@tamagui/font-inter": 1.31.0-1686362094230
-    "@tamagui/font-silkscreen": 1.31.0-1686362094230
-    "@tamagui/logo": 1.31.0-1686362094230
-    "@tamagui/lucide-icons": 1.31.0-1686362094230
-    "@tamagui/menu": 1.31.0-1686362094230
-    "@tamagui/next-theme": 1.31.0-1686362094230
-    "@tamagui/remove-scroll": 1.31.0-1686362094230
-    "@tamagui/shorthands": 1.31.0-1686362094230
-    "@tamagui/themes": 1.31.0-1686362094230
-    next: ^13.4.4
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-native: ^0.71.7
-    react-native-web-lite: 1.31.0-1686362094230
-    tamagui: 1.31.0-1686362094230
-    tamagui-loader: 1.31.0-1686362094230
-  languageName: unknown
-  linkType: soft
-
 "@tamagui/next-theme@1.31.0-1686362094230, @tamagui/next-theme@workspace:packages/next-theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-theme@workspace:packages/next-theme"
