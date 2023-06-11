@@ -391,14 +391,14 @@ function useStoreFromInfo(
     curInternal.isTracking = true
 
     // track access, runs after each render
-    queueMicrotask(() => {
+    setTimeout(() => {
       curInternal.isTracking = false
       curInternal.firstRun = false
       if (shouldPrintDebug) {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('🌑 finish render, tracking', [...curInternal.tracked])
       }
-    })
+    }, 0)
   } else {
     return state
   }
