@@ -1,4 +1,4 @@
-import { getStudioLayout } from "@lib/getStudioLayout"
+import { getStudioLayout } from '@lib/getStudioLayout'
 import AnimationsPage from '@protected/studio/(loaded)/(sponsor-protected)/animations/page'
 import ColorsPage from '@protected/studio/(loaded)/(sponsor-protected)/colors/page'
 import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/page'
@@ -23,7 +23,7 @@ import React, {
   useState,
   useTransition,
 } from 'react'
-import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
+import { YStack, useDidFinishSSR, useIsomorphicLayoutEffect, useThemeName } from 'tamagui'
 
 export default function Page() {
   const hydrated = useDidFinishSSR()
@@ -67,7 +67,7 @@ function useStudioInitialize() {
 function useSyncThemeToThemeState() {
   const themeName = useThemeName()
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     themesStore.toggleFocusedThemeItem({
       id: themeName,
     })

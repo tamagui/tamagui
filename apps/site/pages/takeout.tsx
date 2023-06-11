@@ -5,7 +5,7 @@ import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons'
-import { useClientValue } from '@tamagui/use-did-finish-ssr'
+import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
@@ -56,6 +56,20 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
+const ua = (() => {
+  if (typeof window === 'undefined') return
+  return window.navigator.userAgent
+})()
+
+const isWebkit = (() => {
+  return !!ua?.match(/WebKit/i)
+})()
+
+const isSafariMobile = (() => {
+  const iOS = !!ua?.match(/iPad/i) || !!ua?.match(/iPhone/i)
+  return isClient && iOS && isWebkit && !ua?.match(/CriOS/i)
+})()
+
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
 const heroHeight = 850
@@ -67,7 +81,7 @@ type TakeoutPageProps = {
 }
 
 const TakeoutCard2Frame = styled(YStack, {
-  className: 'blur-8 mix-blend',
+  className: 'blur-8',
   borderWidth: 1,
   borderColor: '$borderColor',
   minWidth: 302,
@@ -146,7 +160,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         <YStack fullscreen bg="$background" pe="none" zi={-1} o={0.5} />
 
         <YStack f={1} space zi={100}>
-          <H2 className="mix-blend">{title}</H2>
+          <H2>{title}</H2>
           {children}
 
           {!!icon && (
@@ -163,7 +177,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 const TakeoutHero = () => {
   const disableMotion = useDisableMotion()
   const enable3d = useClientValue(
-    isClient && !window.location.search?.includes('disable-3d')
+    !isSafariMobile && isClient && !window.location.search?.includes('disable-3d')
   )
 
   return (
@@ -336,9 +350,9 @@ const TakeoutHero = () => {
         position="absolute"
         top={360}
         r="-10%"
-        $sm={{ r: '-40%' }}
-        $md={{ r: '-30%' }}
-        $lg={{ r: '-20%' }}
+        $sm={{ r: '-180%' }}
+        $md={{ r: '-50%' }}
+        $lg={{ r: '-35%' }}
         zIndex={-1}
       >
         {enable3d && (
@@ -352,7 +366,6 @@ const TakeoutHero = () => {
 }
 
 const useDisableMotion = () => {
-  const store = useTakeoutStore()
   return useClientValue(
     isClient &&
       (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
@@ -392,20 +405,21 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         jc="center"
         ov="hidden"
         contain="paint layout"
+        y={20}
       >
         <TAKEOUT
           className={`font-outlined theme-shadow` + (disableMotion ? '' : ' ')}
-          fontSize={150 * 3}
-          lineHeight={110 * 3}
+          fontSize={150 * 3.5}
+          lineHeight={110 * 3.5}
           color="#000"
-          o={0.1}
+          o={0.12}
         />
       </YStack>
 
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
-            <YStack position="absolute" t={20} r="15%">
+            <YStack position="absolute" t={20} r="5%">
               <PurchaseButton
                 onPress={() => {
                   store.showPurchase = true
@@ -428,7 +442,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               <Separator o={0.75} w={3000} pos="absolute" b={0} l={-1000} />
 
               <YStack mb="$6" space="$4">
-                <H2 ta="right" fontFamily="$munro">
+                <H2 ta="right" fontFamily="$munro" o={0.1}>
                   x
                 </H2>
                 <LogoIcon />
@@ -460,6 +474,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               $md={{
                 flexDirection: 'column',
               }}
+              $lg={{
+                p: '$6',
+              }}
               $sm={{
                 p: '$4',
               }}
@@ -477,8 +494,18 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               /> */}
 
               <YStack f={1} space="$6">
-                <MunroP className="mix-blend pixelate" mt={-180} mb={-20} size="$7">
-                  Jumpstart your startup
+                <MunroP
+                  className="mix-blend pixelate"
+                  mt={-210}
+                  mb={-20}
+                  size="$7"
+                  ls={4}
+                  o={0.5}
+                  $sm={{
+                    size: '$4',
+                  }}
+                >
+                  Jumpstarting startups since '23
                 </MunroP>
 
                 <ThemeTint>
@@ -489,6 +516,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     style={{
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(var(--color9), var(--yellow9))`,
+                    }}
+                    $lg={{
+                      size: '$11',
                     }}
                     $sm={{
                       size: '$10',
@@ -501,9 +531,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                 <HeartsRow />
 
                 <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the moon or the ✨ - success is up to you - but if you
-                  want a cheat code to shipping a stunning web & native mobile app fast,
-                  you've found it.
+                  We can't promise the moon or the ✨ - success is up to you. But if you
+                  want a cheat code to shipping a stunning web + native app fast, you've
+                  found it.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
@@ -624,6 +654,10 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   elevation="$6"
                   br="$10"
                   mt={-100}
+                  $sm={{
+                    px: '$4',
+                    mx: '$-4',
+                  }}
                 >
                   <YStack br="$10" zi={-1} fullscreen bc="$background" o={0.3} />
                   <YStack br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
@@ -644,8 +678,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                         color="$color9"
                         fontFamily="$munro"
                         size="$11"
-                        $sm={{ size: '$7' }}
+                        $sm={{ size: '$8' }}
                         fow="800"
+                        ta="center"
                       >
                         Speedrun from 0-to-100 🥡
                       </Paragraph>
@@ -655,7 +690,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                       fontFamily="$munro"
                       size="$8"
                       mt={-10}
-                      $sm={{ size: '$6' }}
+                      $sm={{ dsp: 'none' }}
                       fow="800"
                       ta="center"
                     >
@@ -1147,13 +1182,13 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <Paragraph fontFamily="$munro" size="$3" o={0.12} mt={-5}>
+              <MunroP size="$3" o={0.12} mt={-5}>
                 Drop 0001
-              </Paragraph>
+              </MunroP>
 
-              <Paragraph fontFamily="$munro" size="$12" ls={2}>
+              <MunroP size="$11" ls={2}>
                 The Stack
-              </Paragraph>
+              </MunroP>
 
               <YStack>
                 <Row

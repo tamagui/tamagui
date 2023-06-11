@@ -140,7 +140,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         ],
   })
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     window.addEventListener('resize', update)
     if (open) {
       update()
