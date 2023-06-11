@@ -359,12 +359,6 @@ function useStoreFromInfo(
       })
 
     if (shouldPrintDebug) {
-      if (!isUnchanged) {
-        console.log('changed', keys, last, 'vs', snap)
-      }
-    }
-
-    if (shouldPrintDebug) {
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, snap, curInternal })
