@@ -31,6 +31,17 @@ export function registerRequire() {
   }
 }
 
+const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
+const extraIgnores =
+  IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
+const knownIgnorableModules = {
+  'expo-modules': true,
+  solito: true,
+  ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
+}
+
+const hasWarnedForModules = new Set<string>()
+
 function tamaguiRequire(this: any, path: string) {
   if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/.test(path)) {
     return {}
@@ -58,6 +69,11 @@ function tamaguiRequire(this: any, path: string) {
   ) {
     return core
   }
+
+  if (path in knownIgnorableModules) {
+    return proxyWorm
+  }
+
   try {
     const out = og.apply(this, arguments)
     // only for studio disable for now
@@ -85,23 +101,37 @@ function tamaguiRequire(this: any, path: string) {
     // }
     return out
   } catch (err: any) {
-    /**
-     * Allow errors to happen, we're just reading config and components but sometimes external modules cause problems
-     * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
-     */
+    if (IGNORES === 'true') {
+      // ignore
+    } else if (!process.env.TAMAGUI_SHOW_FULL_BUNDLE_ERRORS) {
+      if (hasWarnedForModules.has(path)) {
+        // ignore
+      } else {
+        hasWarnedForModules.add(path)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(
+          ` Tamagui Warning 001: Skipping loading ${path} due to error bundling. See https://tamagui.dev/docs/intro/erorrs#warning-001`
+        )
+      }
+    } else {
+      /**
+       * Allow errors to happen, we're just reading config and components but sometimes external modules cause problems
+       * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
+       */
 
-    console.error(
-      `Tamagui failed loading the pre-built tamagui.config.ts
-
-${err.message}
-${err.stack}
-
-You can see if it loads in the node repl:
-
-require("./${relative(process.cwd(), path)}").default
-
-`
-    )
+      console.error(
+        `Tamagui failed loading the pre-built tamagui.config.ts
+  
+  ${err.message}
+  ${err.stack}
+  
+  You can see if it loads in the node repl:
+  
+  require("./${relative(process.cwd(), path)}").default
+  
+  `
+      )
+    }
 
     return proxyWorm
   }
