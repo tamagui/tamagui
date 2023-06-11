@@ -21,8 +21,6 @@ export declare class Store<Props extends Object = {}> {
     constructor(props: Props);
     subscribe: (onChanged: Function) => () => void;
     [TRIGGER_UPDATE](): void;
-    [ADD_TRACKER](tracker: StoreTracker): () => void;
-    [TRACK](key: string, debug?: boolean): void;
     [SHOULD_DEBUG](): boolean;
 }
 //# sourceMappingURL=Store.d.ts.map

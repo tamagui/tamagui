@@ -35,6 +35,9 @@ import {
   useDebugStoreComponent,
 } from './useStoreDebug'
 
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect
+
 // sanity check types here
 // class StoreTest extends Store<{ id: number }> {}
 // const storeTest = createStore(StoreTest, { id: 3 })
@@ -201,20 +204,8 @@ function getOrCreateStoreInfo(
   propsKeyCalculated?: string
 ) {
   const uid = getStoreUid(StoreKlass, propsKeyCalculated ?? props)
-
-  if (!options?.avoidCache) {
-    const cached = cache.get(uid)
-    if (cached) {
-      // warn if creating an already existing store!
-      // need to detect HMR more cleanly if possible
-      if (cached.storeInstance.constructor.toString() !== StoreKlass.toString()) {
-        console.warn(
-          'Error: Stores must have a unique name (ignore if this is a hot reload)'
-        )
-      } else {
-        return cached
-      }
-    }
+  if (!options?.avoidCache && cache.has(uid)) {
+    return cache.get(uid)!
   }
 
   // init
@@ -222,7 +213,7 @@ function getOrCreateStoreInfo(
 
   const getters = {}
   const actions = {}
-  const stateKeys: string[] = []
+  const stateKeys = new Set<string>()
   const descriptors = getStoreDescriptors(storeInstance)
   for (const key in descriptors) {
     const descriptor = descriptors[key]
@@ -233,7 +224,7 @@ function getOrCreateStoreInfo(
       getters[key] = descriptor.get
     } else {
       if (key !== 'props' && key[0] !== '_') {
-        stateKeys.push(key)
+        stateKeys.add(key)
       }
     }
   }
@@ -316,8 +307,6 @@ function useStoreFromInfo(
       last: null,
       lastKeys: null,
     }
-    const dispose = store[ADD_TRACKER](internal.current)
-    internal.current.dispose = dispose
   }
   const curInternal = internal.current!
 
@@ -326,7 +315,7 @@ function useStoreFromInfo(
 
   const getSnapshot = useCallback(() => {
     const curInternal = internal.current!
-    const keys = curInternal.firstRun ? info.stateKeys : [...curInternal.tracked]
+    const keys = [...(curInternal.firstRun ? info.stateKeys : curInternal.tracked)]
 
     const nextKeys = `${store._version}${keys.join('')}${userSelector?.toString() || ''}`
     if (nextKeys === curInternal.lastKeys) {
@@ -374,25 +363,20 @@ function useStoreFromInfo(
     ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
     : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
-  // dispose tracker on unmount
-  useEffect(() => {
-    return curInternal.dispose
-  }, [])
-
   // we never allow removing selector
   if (!userSelector) {
     // before each render
     curInternal.isTracking = true
 
     // track access, runs after each render
-    setTimeout(() => {
+    useIsomorphicLayoutEffect(() => {
       curInternal.isTracking = false
       curInternal.firstRun = false
       if (shouldPrintDebug) {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('🌑 finish render, tracking', [...curInternal.tracked])
       }
-    }, 0)
+    })
   } else {
     return state
   }
@@ -404,6 +388,10 @@ function useStoreFromInfo(
       // while in reactions, don't proxy to old state as they aren't inside of react render
       if (isInReaction) {
         return curVal
+      }
+      const keyString = key as string // fine for our uses
+      if (info.stateKeys.has(keyString) || keyString in info.getters) {
+        curInternal.tracked.add(keyString)
       }
       if (Reflect.has(state, key)) {
         return Reflect.get(state, key)
@@ -565,19 +553,19 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
           },
         })
       }
-    }
-  }
 
-  function hashCode(str: string) {
-    let hash = 0
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash)
-    }
-    return hash
-  }
+      function hashCode(str: string) {
+        let hash = 0
+        for (let i = 0; i < str.length; i++) {
+          hash = str.charCodeAt(i) + ((hash << 5) - hash)
+        }
+        return hash
+      }
 
-  function strColor(str: string) {
-    return `hsl(${hashCode(str) % 360}, 90%, 40%)`
+      function strColor(str: string) {
+        return `hsl(${hashCode(str) % 360}, 90%, 40%)`
+      }
+    }
   }
 
   const finishAction = (val?: any) => {
@@ -627,7 +615,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
         if (gettersState.isGetting) {
           gettersState.curGetKeys.add(key)
         } else {
-          storeInstance[TRACK](key, shouldDebug)
+          // storeInstance[TRACK](key, shouldDebug)
         }
       }
 

@@ -16,7 +16,7 @@ export type StoreInfo<A = Store> = {
         [key: string]: any;
     };
     actions: any;
-    stateKeys: string[];
+    stateKeys: Set<string>;
     debug?: boolean;
     gettersState: {
         getCache: Map<string, any>;
