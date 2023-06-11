@@ -290,9 +290,11 @@ function useStoreFromInfo(
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
     }
+
     if (isUnchanged) {
       return last
     }
+
     curInternal.last = snap
     return snap
   }, [])
