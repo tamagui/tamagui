@@ -49,7 +49,6 @@ const SupabaseInside = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const listener = supabase.auth.onAuthStateChange(async (event, currentSession) => {
-      console.log(event, currentSession)
       if (event === 'SIGNED_IN') {
         if (session?.user.id === currentSession?.user.id) {
           return

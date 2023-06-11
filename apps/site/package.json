@@ -5,6 +5,7 @@
   "source": "src",
   "scripts": {
     "dev": "./scripts/dev.sh",
+    "studio": "./scripts/kill-existing.sh && PORT=5005 next dev",
     "clean:build": "./scripts/clean.sh",
     "ci:build": "yarn next:build",
     "ci:build:no-extract": "DISABLE_EXTRACTION=true yarn ci:build",

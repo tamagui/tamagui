@@ -180,9 +180,27 @@ const TakeoutHero = () => {
     !isSafariMobile && isClient && !window.location.search?.includes('disable-3d')
   )
 
+  // unfortunately costs too much perf
+  // const glow = useHoverGlow({
+  //   resist: 80,
+  //   size: 800,
+  //   strategy: 'blur',
+  //   blurPct: 100,
+  //   color: 'var(--color9)',
+  //   opacity: 0.09,
+  //   offset: {
+  //     y: -200,
+  //     x: -70,
+  //   },
+  //   style: {
+  //     zIndex: -1,
+  //   },
+  //   background: 'transparent',
+  // })
+
   return (
     <YStack
-      y={heroHeight / 2 - 340}
+      y={heroHeight / 2 - 360}
       ai="center"
       jc="center"
       className="ease-in ms300 all"
@@ -201,13 +219,18 @@ const TakeoutHero = () => {
       $lg={{
         scale: 0.8,
       }}
+      // ref={glow.parentRef as any}
     >
+      {/* <ThemeTint>
+        <glow.Component />
+      </ThemeTint> */}
+
       <Paragraph
         color="$color"
         size="$1"
         fontSize={12}
-        ls={105}
-        o={0.2}
+        ls={135}
+        o={0.1}
         fontFamily="$silkscreen"
         pe="none"
         h={40}
@@ -340,10 +363,10 @@ const TakeoutHero = () => {
         jc="center"
         x={-10}
         y={-50}
-        o={0.5}
-        scale={1.03}
+        o={0.25}
+        scale={1.2}
       >
-        <TAKEOUT color="$background" className="" />
+        <TAKEOUT color="$backgroundStrong" className="" />
       </YStack>
 
       <YStack
@@ -408,11 +431,11 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         y={20}
       >
         <TAKEOUT
-          className={`font-outlined theme-shadow` + (disableMotion ? '' : ' ')}
+          className={`font-outlined theme-shadow`}
           fontSize={150 * 3.5}
           lineHeight={110 * 3.5}
           color="#000"
-          o={0.12}
+          o={0.1}
         />
       </YStack>
 

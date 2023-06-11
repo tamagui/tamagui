@@ -51,6 +51,7 @@
     "starter": "yarn workspace @tamagui/starter web",
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
     "starter:native": "yarn workspace @tamagui/starter native",
+    "studio": "yarn workspace @tamagui/site studio",
     "site": "cd apps/site && ./scripts/dev.sh",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",

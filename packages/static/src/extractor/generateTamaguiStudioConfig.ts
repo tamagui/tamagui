@@ -19,21 +19,13 @@ export async function generateTamaguiStudioConfig(
 ) {
   try {
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
-
     if (!config) return
-
-    await fs.writeJSON(
-      confFile,
-      {
-        ...config,
-        tamaguiConfig: transformConfig(config),
-      },
-      {
-        spaces: 2,
-      }
-    )
+    const out = transformConfig(config)
+    await fs.writeJSON(confFile, out, {
+      spaces: 2,
+    })
   } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui')) {
+    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
       console.warn('generateTamaguiStudioConfig error', err)
     }
     // ignore for now
@@ -45,30 +37,40 @@ export function generateTamaguiStudioConfigSync(
   config: BundledConfig
 ) {
   try {
-    fs.writeJSONSync(
-      confFile,
-      {
-        ...config,
-        tamaguiConfig: transformConfig(config),
-      },
-      {
-        spaces: 2,
-      }
-    )
+    fs.writeJSONSync(confFile, transformConfig(config), {
+      spaces: 2,
+    })
   } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui')) {
+    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
       console.warn('generateTamaguiStudioConfig error', err)
     }
     // ignore for now
   }
 }
 
-function transformConfig(config: BundledConfig) {
-  // ensure we don't mangle anything in the original
-  const next = JSON.parse(JSON.stringify(config))
+function cloneDeepSafe(x: any, excludeKeys = {}) {
+  if (!x) return x
+  if (Array.isArray(x)) return x.map((_) => cloneDeepSafe(_))
+  if (typeof x === 'function') return `Function`
+  if (typeof x !== 'object') return x
+  if ('$$typeof' in x) return 'Component'
+  return Object.fromEntries(
+    Object.entries(x).flatMap(([k, v]) => (excludeKeys[k] ? [] : [[k, cloneDeepSafe(v)]]))
+  )
+}
 
-  const { components, nameToPaths } = next
-  const { themes, tokens } = next.tamaguiConfig
+function transformConfig(config: BundledConfig) {
+  if (!config) {
+    return null
+  }
+
+  // ensure we don't mangle anything in the original
+  const next = cloneDeepSafe(config, {
+    validStyles: true,
+  }) as BundledConfig
+
+  const { components, nameToPaths, tamaguiConfig } = next
+  const { themes, tokens } = tamaguiConfig
 
   // reduce down to usable, smaller json
 
@@ -103,14 +105,18 @@ function transformConfig(config: BundledConfig) {
   }
 
   // set to array
+  next.nameToPaths = {}
   for (const key in nameToPaths) {
-    // @ts-ignore
-    nameToPaths[key] = [...nameToPaths[key]]
+    next.nameToPaths[key] = [...nameToPaths[key]]
   }
 
   // remove stuff we dont need to send
   const { fontsParsed, getCSS, tokensParsed, themeConfig, ...cleanedConfig } =
     next.tamaguiConfig
 
-  return cleanedConfig
+  return {
+    components,
+    nameToPaths,
+    tamaguiConfig: cleanedConfig,
+  }
 }

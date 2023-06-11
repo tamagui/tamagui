@@ -54,7 +54,7 @@ export const esbuildOptions = {
   platform: 'node',
 } as const
 
-export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>
+export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>
 
 // will use cached one if watching
 let currentBundle: BundledConfig | null = null

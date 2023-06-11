@@ -57,11 +57,7 @@ export async function loadTamagui(
     }
   }
 
-  try {
-    await generateTamaguiStudioConfig(options, bundleInfo)
-  } catch {
-    // ok for now
-  }
+  await generateTamaguiStudioConfig(options, bundleInfo)
 
   return bundleInfo
 }
@@ -242,6 +238,7 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
               hasRunOnce = true
               return
             } else {
+              console.log('generating tamagui config')
               void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
             }
           })

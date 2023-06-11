@@ -24,7 +24,7 @@ import { DebugStores, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
 const shouldUseSyncDefault =
-  typeof window !== 'undefined' && !window.location.hash.includes(`use-async-store`)
+  typeof window === 'undefined' || !window.location.hash.includes(`use-async-store`)
 
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(

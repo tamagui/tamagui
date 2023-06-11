@@ -21,7 +21,7 @@ export declare const esbuildOptions: {
     readonly jsx: "transform";
     readonly platform: "node";
 };
-export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>;
+export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<{
     components: LoadedComponents[];
