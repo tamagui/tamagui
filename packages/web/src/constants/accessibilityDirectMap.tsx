@@ -49,3 +49,25 @@ if (process.env.TAMAGUI_TARGET === 'web') {
     accessibilityDirectMap[`accessibility${key}`] = `aria-${val}`
   }
 }
+
+export const webToNativeAccessibilityDirectMap = {
+  'aria-label': 'accessibilityLabel',
+  'aria-labelledby': 'accessibilityLabelledBy',
+  'aria-live': 'accessibilityLiveRegion',
+  'aria-modal': 'accessibilityViewIsModal',
+  'aria-hidden': 'accessibilityElementsHidden',
+}
+export const nativeAccessibilityValue = {
+  'aria-valuemin': 'min',
+  'aria-valuemax': 'max',
+  'aria-valuenow': 'now',
+  'aria-valuetext': 'text',
+}
+
+export const nativeAccessibilityState = {
+  'aria-disabled': 'disabled',
+  'aria-selected': 'selected',
+  'aria-checked': 'checked',
+  'aria-busy': 'busy',
+  'aria-expanded': 'expanded',
+}
