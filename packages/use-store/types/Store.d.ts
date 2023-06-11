@@ -3,11 +3,8 @@ export declare const ADD_TRACKER: unique symbol;
 export declare const TRACK: unique symbol;
 export declare const SHOULD_DEBUG: unique symbol;
 export type StoreTracker = {
-    isTracking: boolean;
     tracked: Set<string>;
-    dispose: () => void;
     component?: any;
-    firstRun: boolean;
     last?: any;
     lastKeys?: any;
 };

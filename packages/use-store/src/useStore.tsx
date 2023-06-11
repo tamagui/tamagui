@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useSyncExternalStore,
-} from 'react'
+import { useCallback, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -18,42 +12,19 @@ import {
 } from './helpers'
 import { Selector, StoreInfo, UseStoreOptions } from './interfaces'
 import {
-  ADD_TRACKER,
   SHOULD_DEBUG,
   Store,
   StoreTracker,
-  TRACK,
   TRIGGER_UPDATE,
   disableTracking,
   setDisableStoreTracking,
 } from './Store'
 import { useAsyncExternalStore } from './useAsyncExternalStore'
-import {
-  DebugStores,
-  shouldDebug,
-  useCurrentComponent,
-  useDebugStoreComponent,
-} from './useStoreDebug'
-
-const useIsomorphicLayoutEffect =
-  typeof window === 'undefined' ? useEffect : useLayoutEffect
-
-// sanity check types here
-// class StoreTest extends Store<{ id: number }> {}
-// const storeTest = createStore(StoreTest, { id: 3 })
-// const useStoreTest = createUseStore(StoreTest)
-// const useStoreSelectorTest = createUseStoreSelector(StoreTest, (s) => s.props.id)
-// const num = useStoreSelectorTest({ id: 0 })
-// const ya = useStoreTest({ id: 1 })
-// const yb = useStoreTest({ id: 1 }, (x) => x.props.id)
-// const z = useStore(StoreTest)
-// const abc = useGlobalStore(storeTest)
-// const abc2 = useGlobalStore(storeTest)
-// const abcSel = useGlobalStoreSelector(storeTest, (x) => x.props.id)
+import { DebugStores, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
 const shouldUseSyncDefault =
-  typeof window !== 'undefined' && window.location.hash.includes(`sync-store`)
+  typeof window !== 'undefined' && !window.location.hash.includes(`use-async-store`)
 
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(
@@ -63,26 +34,15 @@ export function useStore<A extends Store<B>, B extends Object>(
 ): A {
   const selectorCb = useCallback(options.selector || idFn, [])
   const selector = options.selector ? selectorCb : options.selector
-
-  // if (options.once) {
-  //   const key = props ? getKey(props) : ''
-  //   const info = useMemo(() => {
-  //     return getOrCreateStoreInfo(StoreKlass, props, { avoidCache: true }, key)
-  //   }, [key])
-  //   return useStoreFromInfo(info, selector)
-  // }
-
   const info = getOrCreateStoreInfo(StoreKlass, props, options)
   return useStoreFromInfo(info, selector, options)
 }
 
 export function useStoreDebug<A extends Store<B>, B extends Object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
-  props?: B,
-  selector?: any
+  props?: B
 ): A {
-  useDebugStoreComponent(StoreKlass)
-  return useStore(StoreKlass, props, selector)
+  return useStore(StoreKlass, props, { debug: true })
 }
 
 // singleton
@@ -106,10 +66,7 @@ export function useGlobalStore<A extends Store<B>, B extends Object>(
   if (!info) {
     throw new Error(`This store not created using createStore()`)
   }
-  if (debug) {
-    useDebugStoreComponent(store.constructor)
-  }
-  return useStoreFromInfo(info)
+  return useStoreFromInfo(info, undefined, { debug })
 }
 
 export function useGlobalStoreSelector<
@@ -127,10 +84,7 @@ export function useGlobalStoreSelector<
   if (!info) {
     throw new Error(`This store not created using createStore()`)
   }
-  if (debug) {
-    useDebugStoreComponent(store.constructor)
-  }
-  return useStoreFromInfo(info, selector)
+  return useStoreFromInfo(info, selector, { debug })
 }
 
 // for creating a usable store hook
@@ -177,16 +131,6 @@ export function trackStoresAccess(cb: StoreAccessTracker) {
   return () => {
     storeAccessTrackers.delete(cb)
   }
-}
-
-// TODO deprecate and replace with usePortal
-// for ephemeral stores (alpha, not working correctly yet)
-export function useStoreOnce<A extends Store<B>, B extends Object>(
-  StoreKlass: (new (props: B) => A) | (new () => A),
-  props?: B,
-  selector?: any
-): A {
-  return useStore(StoreKlass, props, { selector, once: true })
 }
 
 // get non-singleton outside react (weird)
@@ -300,31 +244,25 @@ function useStoreFromInfo(
   if (!internal.current) {
     internal.current = {
       component,
-      isTracking: false,
-      firstRun: true,
       tracked: new Set<string>(),
-      dispose: null as any,
       last: null,
       lastKeys: null,
     }
   }
   const curInternal = internal.current!
-
-  const shouldPrintDebug =
-    configureOpts.logLevel === 'debug' || shouldDebug(component, info) || options?.debug
+  const shouldPrintDebug = options?.debug
 
   const getSnapshot = useCallback(() => {
     const curInternal = internal.current!
-    const keys = [...(curInternal.firstRun ? info.stateKeys : curInternal.tracked)]
+    const keys = [...(!curInternal.tracked.size ? info.stateKeys : curInternal.tracked)]
+    const nextKeys = `${store._version}${keys.join('')}${userSelector || ''}`
+    const lastKeys = curInternal.lastKeys
 
-    const nextKeys = `${store._version}${keys.join('')}${userSelector?.toString() || ''}`
+    // avoid updates
     if (nextKeys === curInternal.lastKeys) {
-      if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('avoid update', nextKeys, curInternal.lastKeys)
-      }
       return curInternal.last
     }
+
     curInternal.lastKeys = nextKeys
 
     let snap: any
@@ -350,7 +288,7 @@ function useStoreFromInfo(
     if (shouldPrintDebug) {
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, snap, curInternal })
+      console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
     }
     if (isUnchanged) {
       return last
@@ -363,21 +301,7 @@ function useStoreFromInfo(
     ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
     : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
-  // we never allow removing selector
-  if (!userSelector) {
-    // before each render
-    curInternal.isTracking = true
-
-    // track access, runs after each render
-    useIsomorphicLayoutEffect(() => {
-      curInternal.isTracking = false
-      curInternal.firstRun = false
-      if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('🌑 finish render, tracking', [...curInternal.tracked])
-      }
-    })
-  } else {
+  if (userSelector) {
     return state
   }
 
@@ -391,6 +315,10 @@ function useStoreFromInfo(
       }
       const keyString = key as string // fine for our uses
       if (info.stateKeys.has(keyString) || keyString in info.getters) {
+        if (shouldPrintDebug) {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log('tracking', keyString)
+        }
         curInternal.tracked.add(keyString)
       }
       if (Reflect.has(state, key)) {

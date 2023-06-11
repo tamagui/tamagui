@@ -7,11 +7,8 @@ export const TRACK = Symbol()
 export const SHOULD_DEBUG = Symbol()
 
 export type StoreTracker = {
-  isTracking: boolean
   tracked: Set<string>
-  dispose: () => void
   component?: any
-  firstRun: boolean
   last?: any
   lastKeys?: any
 }
