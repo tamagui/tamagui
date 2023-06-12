@@ -5335,7 +5335,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers-icon@workspace:packages/helpers-icon":
+"@tamagui/helpers-icon@1.33.0, @tamagui/helpers-icon@workspace:packages/helpers-icon":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-icon@workspace:packages/helpers-icon"
   dependencies:
@@ -5521,6 +5521,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.33.0
     "@tamagui/core": 1.33.0
+    "@tamagui/helpers-icon": 1.33.0
     camelcase: ^6.0.0
     cheerio: ^1.0.0-rc.5
     glob: ^7.1.6
