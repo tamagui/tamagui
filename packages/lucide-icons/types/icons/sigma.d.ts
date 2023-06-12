@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Sigma: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Sigma: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sigma.d.ts.map

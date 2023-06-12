@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Wheat: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Wheat: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wheat.d.ts.map

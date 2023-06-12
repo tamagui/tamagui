@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CloudRainWind: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CloudRainWind: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-rain-wind.d.ts.map

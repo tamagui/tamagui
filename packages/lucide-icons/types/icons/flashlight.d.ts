@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Flashlight: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Flashlight: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=flashlight.d.ts.map

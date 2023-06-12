@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FastForward: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FastForward: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=fast-forward.d.ts.map

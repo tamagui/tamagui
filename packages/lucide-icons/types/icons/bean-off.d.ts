@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const BeanOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const BeanOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bean-off.d.ts.map

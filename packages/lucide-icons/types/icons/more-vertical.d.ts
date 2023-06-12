@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MoreVertical: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MoreVertical: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=more-vertical.d.ts.map

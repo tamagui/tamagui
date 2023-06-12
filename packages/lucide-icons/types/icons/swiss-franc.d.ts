@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SwissFranc: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SwissFranc: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=swiss-franc.d.ts.map

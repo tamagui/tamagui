@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SeparatorVertical: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SeparatorVertical: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=separator-vertical.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Feather: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Feather: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=feather.d.ts.map

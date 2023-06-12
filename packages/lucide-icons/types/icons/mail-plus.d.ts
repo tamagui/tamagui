@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MailPlus: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MailPlus: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=mail-plus.d.ts.map

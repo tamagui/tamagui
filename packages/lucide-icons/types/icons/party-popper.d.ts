@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const PartyPopper: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const PartyPopper: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=party-popper.d.ts.map

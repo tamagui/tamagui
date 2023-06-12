@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Eraser: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Eraser: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=eraser.d.ts.map

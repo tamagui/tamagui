@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CupSoda: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CupSoda: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cup-soda.d.ts.map

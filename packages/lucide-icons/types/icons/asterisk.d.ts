@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Asterisk: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Asterisk: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=asterisk.d.ts.map

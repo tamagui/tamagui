@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Hourglass: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Hourglass: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=hourglass.d.ts.map

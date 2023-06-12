@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FileScan: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FileScan: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=file-scan.d.ts.map

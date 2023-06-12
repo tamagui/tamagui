@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MessageSquarePlus: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MessageSquarePlus: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=message-square-plus.d.ts.map

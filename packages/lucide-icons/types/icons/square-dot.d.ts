@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SquareDot: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SquareDot: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=square-dot.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Wallet: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Wallet: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wallet.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FishOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FishOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=fish-off.d.ts.map

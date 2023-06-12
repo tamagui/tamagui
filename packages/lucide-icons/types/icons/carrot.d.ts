@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Carrot: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Carrot: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=carrot.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlignVerticalJustifyEnd: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlignVerticalJustifyEnd: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=align-vertical-justify-end.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const LineChart: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const LineChart: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=line-chart.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const WrapText: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const WrapText: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wrap-text.d.ts.map

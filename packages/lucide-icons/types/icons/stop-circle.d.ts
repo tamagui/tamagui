@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const StopCircle: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const StopCircle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=stop-circle.d.ts.map

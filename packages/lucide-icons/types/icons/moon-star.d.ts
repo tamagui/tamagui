@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MoonStar: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MoonStar: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=moon-star.d.ts.map

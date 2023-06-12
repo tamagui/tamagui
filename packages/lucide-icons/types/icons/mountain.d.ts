@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Mountain: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Mountain: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=mountain.d.ts.map

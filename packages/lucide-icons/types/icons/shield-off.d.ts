@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ShieldOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ShieldOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=shield-off.d.ts.map

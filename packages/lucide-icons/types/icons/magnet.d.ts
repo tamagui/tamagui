@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Magnet: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Magnet: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=magnet.d.ts.map

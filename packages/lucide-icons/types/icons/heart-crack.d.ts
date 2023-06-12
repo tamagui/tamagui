@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const HeartCrack: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const HeartCrack: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=heart-crack.d.ts.map

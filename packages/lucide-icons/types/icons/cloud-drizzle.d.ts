@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CloudDrizzle: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CloudDrizzle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-drizzle.d.ts.map

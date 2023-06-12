@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FileVideo: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FileVideo: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=file-video.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Inbox: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Inbox: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=inbox.d.ts.map

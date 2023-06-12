@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const PoundSterling: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const PoundSterling: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=pound-sterling.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Clipboard: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Clipboard: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=clipboard.d.ts.map

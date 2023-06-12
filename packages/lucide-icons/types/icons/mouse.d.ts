@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Mouse: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Mouse: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=mouse.d.ts.map

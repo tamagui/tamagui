@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const DollarSign: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const DollarSign: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=dollar-sign.d.ts.map

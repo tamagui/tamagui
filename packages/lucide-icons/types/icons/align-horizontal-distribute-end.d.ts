@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlignHorizontalDistributeEnd: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlignHorizontalDistributeEnd: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=align-horizontal-distribute-end.d.ts.map

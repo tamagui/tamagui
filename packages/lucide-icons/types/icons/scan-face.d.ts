@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ScanFace: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ScanFace: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=scan-face.d.ts.map

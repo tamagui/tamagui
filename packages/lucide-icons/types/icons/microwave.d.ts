@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Microwave: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Microwave: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=microwave.d.ts.map

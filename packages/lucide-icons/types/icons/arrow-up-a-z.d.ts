@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ArrowUpAZ: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ArrowUpAZ: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-up-a-z.d.ts.map

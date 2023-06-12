@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SatelliteDish: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SatelliteDish: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=satellite-dish.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Ticket: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Ticket: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=ticket.d.ts.map

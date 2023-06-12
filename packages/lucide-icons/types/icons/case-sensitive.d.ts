@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CaseSensitive: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CaseSensitive: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=case-sensitive.d.ts.map

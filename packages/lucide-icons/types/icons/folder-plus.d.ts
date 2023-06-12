@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FolderPlus: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FolderPlus: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=folder-plus.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Accessibility: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Accessibility: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=accessibility.d.ts.map

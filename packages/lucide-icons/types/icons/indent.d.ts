@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Indent: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Indent: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=indent.d.ts.map

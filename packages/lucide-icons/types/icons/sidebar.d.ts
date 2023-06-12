@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Sidebar: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Sidebar: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sidebar.d.ts.map

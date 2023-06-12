@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CalendarDays: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CalendarDays: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=calendar-days.d.ts.map

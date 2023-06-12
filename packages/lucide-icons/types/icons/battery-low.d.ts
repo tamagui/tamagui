@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const BatteryLow: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const BatteryLow: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=battery-low.d.ts.map

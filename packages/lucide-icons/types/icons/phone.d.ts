@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Phone: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Phone: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=phone.d.ts.map

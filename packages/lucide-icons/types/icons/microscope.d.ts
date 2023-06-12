@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Microscope: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Microscope: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=microscope.d.ts.map

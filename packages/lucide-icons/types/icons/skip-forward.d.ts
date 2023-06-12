@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SkipForward: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SkipForward: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=skip-forward.d.ts.map

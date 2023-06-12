@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const TowerControl: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const TowerControl: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=tower-control.d.ts.map

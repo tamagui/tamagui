@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Bike: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Bike: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bike.d.ts.map

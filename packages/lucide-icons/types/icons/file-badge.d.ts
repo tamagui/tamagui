@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FileBadge: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FileBadge: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=file-badge.d.ts.map

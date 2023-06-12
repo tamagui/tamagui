@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Ligature: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Ligature: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=ligature.d.ts.map

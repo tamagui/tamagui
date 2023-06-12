@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlignStartVertical: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlignStartVertical: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=align-start-vertical.d.ts.map

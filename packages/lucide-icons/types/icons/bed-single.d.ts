@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const BedSingle: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const BedSingle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bed-single.d.ts.map

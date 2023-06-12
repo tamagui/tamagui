@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Wifi: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Wifi: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wifi.d.ts.map

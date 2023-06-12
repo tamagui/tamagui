@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const JapaneseYen: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const JapaneseYen: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=japanese-yen.d.ts.map

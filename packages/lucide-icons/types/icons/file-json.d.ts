@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FileJson: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FileJson: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=file-json.d.ts.map

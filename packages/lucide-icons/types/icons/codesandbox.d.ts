@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Codesandbox: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Codesandbox: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=codesandbox.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const PieChart: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const PieChart: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=pie-chart.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MonitorSpeaker: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MonitorSpeaker: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=monitor-speaker.d.ts.map

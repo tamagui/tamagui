@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ScanLine: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ScanLine: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=scan-line.d.ts.map

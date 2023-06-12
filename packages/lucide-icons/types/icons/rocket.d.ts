@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Rocket: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Rocket: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=rocket.d.ts.map

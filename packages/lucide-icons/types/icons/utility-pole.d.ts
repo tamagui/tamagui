@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const UtilityPole: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const UtilityPole: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=utility-pole.d.ts.map

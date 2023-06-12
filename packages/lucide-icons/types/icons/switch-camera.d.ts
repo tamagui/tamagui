@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SwitchCamera: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SwitchCamera: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=switch-camera.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Move: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Move: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=move.d.ts.map

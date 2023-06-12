@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Parentheses: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Parentheses: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=parentheses.d.ts.map

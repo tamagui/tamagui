@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const GitPullRequestDraft: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const GitPullRequestDraft: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=git-pull-request-draft.d.ts.map

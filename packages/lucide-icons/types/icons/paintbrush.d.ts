@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Paintbrush: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Paintbrush: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=paintbrush.d.ts.map

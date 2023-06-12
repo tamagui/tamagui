@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Syringe: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Syringe: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=syringe.d.ts.map

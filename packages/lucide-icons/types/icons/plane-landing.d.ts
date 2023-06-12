@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const PlaneLanding: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const PlaneLanding: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=plane-landing.d.ts.map

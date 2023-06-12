@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Martini: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Martini: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=martini.d.ts.map

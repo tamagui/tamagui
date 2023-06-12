@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Grape: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Grape: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=grape.d.ts.map

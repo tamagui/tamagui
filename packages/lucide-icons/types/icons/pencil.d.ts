@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Pencil: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Pencil: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=pencil.d.ts.map

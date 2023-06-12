@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const TextCursor: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const TextCursor: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=text-cursor.d.ts.map

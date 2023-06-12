@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ConciergeBell: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ConciergeBell: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=concierge-bell.d.ts.map

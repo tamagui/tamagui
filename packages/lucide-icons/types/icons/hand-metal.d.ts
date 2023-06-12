@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const HandMetal: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const HandMetal: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=hand-metal.d.ts.map

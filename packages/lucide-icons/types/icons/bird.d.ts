@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Bird: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Bird: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bird.d.ts.map

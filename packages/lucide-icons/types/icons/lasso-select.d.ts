@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const LassoSelect: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const LassoSelect: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=lasso-select.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Joystick: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Joystick: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=joystick.d.ts.map

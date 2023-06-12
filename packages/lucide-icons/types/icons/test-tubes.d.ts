@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const TestTubes: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const TestTubes: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=test-tubes.d.ts.map

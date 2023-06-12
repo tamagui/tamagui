@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Twitter: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Twitter: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=twitter.d.ts.map

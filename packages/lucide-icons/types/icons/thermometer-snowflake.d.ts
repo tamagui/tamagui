@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ThermometerSnowflake: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ThermometerSnowflake: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=thermometer-snowflake.d.ts.map

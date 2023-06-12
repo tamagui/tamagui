@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Podcast: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Podcast: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=podcast.d.ts.map

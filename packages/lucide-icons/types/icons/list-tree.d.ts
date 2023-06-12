@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ListTree: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ListTree: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=list-tree.d.ts.map

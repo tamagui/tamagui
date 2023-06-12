@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const RedoDot: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const RedoDot: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=redo-dot.d.ts.map

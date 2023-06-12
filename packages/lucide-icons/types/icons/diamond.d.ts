@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Diamond: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Diamond: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=diamond.d.ts.map

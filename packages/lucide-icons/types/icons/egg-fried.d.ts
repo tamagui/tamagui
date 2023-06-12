@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const EggFried: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const EggFried: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=egg-fried.d.ts.map

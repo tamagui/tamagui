@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ArrowDownSquare: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ArrowDownSquare: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-down-square.d.ts.map

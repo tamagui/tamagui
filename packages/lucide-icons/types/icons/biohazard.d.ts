@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Biohazard: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Biohazard: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=biohazard.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const TrendingUp: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const TrendingUp: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=trending-up.d.ts.map

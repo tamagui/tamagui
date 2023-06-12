@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MonitorSmartphone: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MonitorSmartphone: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=monitor-smartphone.d.ts.map

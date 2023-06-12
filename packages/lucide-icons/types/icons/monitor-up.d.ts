@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MonitorUp: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MonitorUp: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=monitor-up.d.ts.map

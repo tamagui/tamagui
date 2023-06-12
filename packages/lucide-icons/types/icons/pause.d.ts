@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Pause: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Pause: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=pause.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Merge: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Merge: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=merge.d.ts.map

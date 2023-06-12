@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Webcam: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Webcam: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=webcam.d.ts.map

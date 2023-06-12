@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const IterationCcw: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const IterationCcw: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=iteration-ccw.d.ts.map

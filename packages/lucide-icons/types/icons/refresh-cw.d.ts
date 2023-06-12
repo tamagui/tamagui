@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const RefreshCw: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const RefreshCw: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=refresh-cw.d.ts.map

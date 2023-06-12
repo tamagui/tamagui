@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CheckSquare: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CheckSquare: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=check-square.d.ts.map

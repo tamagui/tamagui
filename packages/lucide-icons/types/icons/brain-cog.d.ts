@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const BrainCog: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const BrainCog: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=brain-cog.d.ts.map

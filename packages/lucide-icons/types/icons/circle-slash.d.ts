@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CircleSlash: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CircleSlash: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=circle-slash.d.ts.map

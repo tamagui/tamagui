@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AtSign: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AtSign: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=at-sign.d.ts.map

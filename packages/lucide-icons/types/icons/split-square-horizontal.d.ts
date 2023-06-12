@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SplitSquareHorizontal: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SplitSquareHorizontal: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=split-square-horizontal.d.ts.map

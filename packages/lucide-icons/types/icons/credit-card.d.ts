@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CreditCard: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CreditCard: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=credit-card.d.ts.map

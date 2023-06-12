@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const BookmarkMinus: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const BookmarkMinus: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bookmark-minus.d.ts.map

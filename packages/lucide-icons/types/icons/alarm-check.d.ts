@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlarmCheck: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlarmCheck: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=alarm-check.d.ts.map

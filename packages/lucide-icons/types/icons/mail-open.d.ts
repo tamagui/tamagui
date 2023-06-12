@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MailOpen: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MailOpen: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=mail-open.d.ts.map

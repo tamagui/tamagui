@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const QrCode: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const QrCode: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=qr-code.d.ts.map

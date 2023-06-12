@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Zap: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Zap: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=zap.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Candy: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Candy: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=candy.d.ts.map

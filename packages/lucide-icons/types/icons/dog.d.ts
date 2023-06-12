@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Dog: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Dog: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=dog.d.ts.map

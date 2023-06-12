@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CaseLower: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CaseLower: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=case-lower.d.ts.map

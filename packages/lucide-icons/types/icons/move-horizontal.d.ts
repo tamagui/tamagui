@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MoveHorizontal: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MoveHorizontal: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=move-horizontal.d.ts.map

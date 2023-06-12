@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Headphones: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Headphones: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=headphones.d.ts.map

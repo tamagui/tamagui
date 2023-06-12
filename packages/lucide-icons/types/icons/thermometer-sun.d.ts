@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ThermometerSun: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ThermometerSun: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=thermometer-sun.d.ts.map

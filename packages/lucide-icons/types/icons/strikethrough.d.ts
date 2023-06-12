@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Strikethrough: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Strikethrough: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=strikethrough.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Workflow: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Workflow: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=workflow.d.ts.map

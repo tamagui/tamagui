@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Superscript: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Superscript: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=superscript.d.ts.map

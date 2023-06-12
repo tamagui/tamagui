@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const RectangleVertical: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const RectangleVertical: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=rectangle-vertical.d.ts.map

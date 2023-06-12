@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const RadioTower: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const RadioTower: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=radio-tower.d.ts.map

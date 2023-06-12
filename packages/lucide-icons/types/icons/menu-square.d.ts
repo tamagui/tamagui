@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MenuSquare: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MenuSquare: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=menu-square.d.ts.map

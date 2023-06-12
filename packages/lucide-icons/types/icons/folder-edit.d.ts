@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FolderEdit: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FolderEdit: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=folder-edit.d.ts.map

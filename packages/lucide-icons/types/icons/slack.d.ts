@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Slack: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Slack: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=slack.d.ts.map

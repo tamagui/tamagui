@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ListOrdered: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ListOrdered: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=list-ordered.d.ts.map

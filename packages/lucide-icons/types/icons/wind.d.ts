@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Wind: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Wind: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wind.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const NavigationOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const NavigationOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=navigation-off.d.ts.map

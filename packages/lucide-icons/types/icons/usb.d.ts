@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Usb: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Usb: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=usb.d.ts.map

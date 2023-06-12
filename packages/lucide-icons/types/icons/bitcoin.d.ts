@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Bitcoin: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Bitcoin: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bitcoin.d.ts.map

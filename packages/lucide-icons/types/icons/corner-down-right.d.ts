@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CornerDownRight: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CornerDownRight: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=corner-down-right.d.ts.map

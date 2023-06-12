@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ChevronLast: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ChevronLast: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=chevron-last.d.ts.map

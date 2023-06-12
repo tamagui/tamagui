@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Clover: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Clover: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=clover.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ParkingSquare: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ParkingSquare: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=parking-square.d.ts.map

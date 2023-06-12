@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const VideoOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const VideoOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=video-off.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const LifeBuoy: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const LifeBuoy: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=life-buoy.d.ts.map

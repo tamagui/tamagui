@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ArrowUpToLine: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ArrowUpToLine: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-up-to-line.d.ts.map

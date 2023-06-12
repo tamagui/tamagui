@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const SortDesc: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const SortDesc: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sort-desc.d.ts.map

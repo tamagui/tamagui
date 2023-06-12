@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Cookie: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Cookie: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cookie.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Braces: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Braces: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=braces.d.ts.map

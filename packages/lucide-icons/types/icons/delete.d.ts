@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Delete: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Delete: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=delete.d.ts.map

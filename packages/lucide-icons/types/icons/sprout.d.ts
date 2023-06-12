@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Sprout: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Sprout: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sprout.d.ts.map

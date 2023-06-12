@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const IndianRupee: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const IndianRupee: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=indian-rupee.d.ts.map

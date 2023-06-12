@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const GraduationCap: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const GraduationCap: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=graduation-cap.d.ts.map

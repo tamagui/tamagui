@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Wallpaper: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Wallpaper: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=wallpaper.d.ts.map

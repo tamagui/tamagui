@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Bath: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Bath: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bath.d.ts.map

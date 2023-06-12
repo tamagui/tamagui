@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const CigaretteOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const CigaretteOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cigarette-off.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Cloudy: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Cloudy: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cloudy.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ArrowDownNarrowWide: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ArrowDownNarrowWide: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-down-narrow-wide.d.ts.map

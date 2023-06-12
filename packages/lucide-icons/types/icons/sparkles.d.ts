@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Sparkles: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Sparkles: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sparkles.d.ts.map

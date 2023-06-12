@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const MilkOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const MilkOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=milk-off.d.ts.map

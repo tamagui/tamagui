@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Sofa: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Sofa: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sofa.d.ts.map

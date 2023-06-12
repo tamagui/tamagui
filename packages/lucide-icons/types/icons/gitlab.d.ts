@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Gitlab: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Gitlab: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=gitlab.d.ts.map

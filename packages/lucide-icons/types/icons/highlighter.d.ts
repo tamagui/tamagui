@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Highlighter: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Highlighter: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=highlighter.d.ts.map

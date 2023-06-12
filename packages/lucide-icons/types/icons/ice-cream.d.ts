@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const IceCream: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const IceCream: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=ice-cream.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const LampFloor: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const LampFloor: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=lamp-floor.d.ts.map

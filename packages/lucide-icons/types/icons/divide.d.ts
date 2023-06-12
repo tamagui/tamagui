@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Divide: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Divide: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=divide.d.ts.map

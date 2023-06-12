@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const EyeOff: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const EyeOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=eye-off.d.ts.map

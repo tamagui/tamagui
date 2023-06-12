@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlertCircle: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlertCircle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=alert-circle.d.ts.map

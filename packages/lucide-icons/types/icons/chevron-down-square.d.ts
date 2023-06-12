@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ChevronDownSquare: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ChevronDownSquare: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=chevron-down-square.d.ts.map

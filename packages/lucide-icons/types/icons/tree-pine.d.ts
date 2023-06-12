@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const TreePine: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const TreePine: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=tree-pine.d.ts.map

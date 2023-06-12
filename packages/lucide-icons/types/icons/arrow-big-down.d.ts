@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const ArrowBigDown: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const ArrowBigDown: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-big-down.d.ts.map

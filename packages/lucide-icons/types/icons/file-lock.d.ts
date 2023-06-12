@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const FileLock: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const FileLock: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=file-lock.d.ts.map

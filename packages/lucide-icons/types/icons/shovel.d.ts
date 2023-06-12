@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Shovel: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Shovel: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=shovel.d.ts.map

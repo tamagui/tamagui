@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Shuffle: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Shuffle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=shuffle.d.ts.map

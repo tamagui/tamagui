@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const AlarmClock: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const AlarmClock: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=alarm-clock.d.ts.map

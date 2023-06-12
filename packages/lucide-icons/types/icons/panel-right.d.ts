@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const PanelRight: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const PanelRight: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=panel-right.d.ts.map

@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Calculator: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Calculator: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=calculator.d.ts.map

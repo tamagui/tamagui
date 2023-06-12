@@ -1,3 +1,4 @@
 import React from 'react';
-export declare const Grid: React.MemoExoticComponent<IconProps>;
+import type { IconProps } from '@tamagui/helpers-icon';
+export declare const Grid: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=grid.d.ts.map
