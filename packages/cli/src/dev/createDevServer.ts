@@ -1,5 +1,3 @@
-import { readFile } from 'fs/promises'
-
 import { CLIResolvedOptions } from '@tamagui/types'
 
 import { DEFAULT_PORT } from '../utils/constants'

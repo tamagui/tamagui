@@ -3,7 +3,6 @@
   "version": "1.32.3",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "module": "dist/esm",
   "main": "dist/cjs",
   "bin": {
     "tama": "./dist/cjs/index.js",
@@ -22,12 +21,12 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/esm/index.mjs"
     }
   },
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --output-mjs",
+    "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

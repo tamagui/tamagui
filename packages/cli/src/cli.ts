@@ -68,23 +68,25 @@ const COMMAND_MAP = {
   //     await update()
   //   },
   // },
-  // dev: {
-  //   shorthands: ['d'],
-  //   description: `Run tamagui vite`,
-  //   flags: {
-  //     '--help': Boolean,
-  //     '--debug': Boolean,
-  //     '--verbose': Boolean,
-  //   },
-  //   async run() {
-  //     const { _, ...flags } = arg(this.flags)
-  //     const { dev } = await import('./dev')
-  //     const options = await getOptions({
-  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-  //     })
-  //     await dev(options)
-  //   },
-  // },
+
+  dev: {
+    shorthands: ['d'],
+    description: `Run tamagui vite`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { dev } = await import('./dev')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await dev(options)
+    },
+  },
+
   // studio: {
   //   shorthands: ['s'],
   //   description: `Studio`,

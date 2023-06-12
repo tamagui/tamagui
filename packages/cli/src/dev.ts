@@ -44,7 +44,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       // @ts-ignore
       plugins,
       appType: 'custom',
-      root: join(root, 'src/index.ts'),
+      root: join(root, 'src/test-tamagui-stack.tsx'),
       build: {
         ssr: true,
       },
@@ -66,9 +66,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     }
 
     const [react, reactJsxRuntime, reactNative] = await Promise.all([
-      readFile(join(process.cwd(), 'react.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'react-jsx-runtime.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'react-native.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-native.js'), 'utf-8'),
     ])
 
     const reactCode = react.replace(
