@@ -110,7 +110,7 @@ function tamaguiRequire(this: any, path: string) {
         hasWarnedForModules.add(path)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(
-          ` Tamagui Warning 001: Skipping loading ${path} due to error bundling. See https://tamagui.dev/docs/intro/erorrs#warning-001`
+          ` Tamagui Warning 001: Skipping loading ${path} due to error bundling. See https://tamagui.dev/docs/intro/errors#warning-001`
         )
       }
     } else {
