@@ -21,15 +21,14 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "latest"
+    "@tamagui/core": "1.32.4"
   },
   "peerDependencies": {
     "react": "*",
     "react-native-svg": ">=12"
   },
   "devDependencies": {
-    "@react-icons/all-files": "^4.1.0",
-    "@tamagui/build": "latest",
+    "@tamagui/build": "1.32.4",
     "eslint": "^8.36.0",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",

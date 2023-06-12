@@ -3498,15 +3498,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-icons/all-files@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@react-icons/all-files@npm:4.1.0"
-  peerDependencies:
-    react: "*"
-  checksum: c34c644650a144e4f2157c20b3106200ac1f76b3132dcda1a40f061e000a34c78df188266395afae571d5c85bf48365824db7b1bf8b7ae6229fdc148c941ab85
-  languageName: node
-  linkType: hard
-
 "@react-native-async-storage/async-storage@npm:1.17.11":
   version: 1.17.11
   resolution: "@react-native-async-storage/async-storage@npm:1.17.11"
@@ -4751,25 +4742,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@npm:latest":
-  version: 1.32.4
-  resolution: "@tamagui/build@npm:1.32.4"
-  dependencies:
-    "@types/fs-extra": ^9.0.13
-    chokidar: ^3.5.2
-    esbuild: ^0.17.17
-    execa: ^5.0.0
-    fast-glob: ^3.2.11
-    fs-extra: ^11.1.0
-    get-tsconfig: ^4.5.0
-    lodash.debounce: ^4.0.8
-    typescript: ^5.1.3
-  bin:
-    tamagui-build: tamagui-build.js
-  checksum: 0140c718192faba4becbe1c13f56b9fcf8fe213b7acb251ba2aab7371ba1c362f520bdc0331c3cd9cbf4596e0dbd96e43255333e1da6f39e945b4ec5addd4e10
-  languageName: node
-  linkType: hard
-
 "@tamagui/button@1.32.4, @tamagui/button@workspace:packages/button":
   version: 0.0.0-use.local
   resolution: "@tamagui/button@workspace:packages/button"
@@ -5090,20 +5062,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@npm:latest":
-  version: 1.32.4
-  resolution: "@tamagui/core@npm:1.32.4"
-  dependencies:
-    "@tamagui/react-native-use-pressable": 1.32.4
-    "@tamagui/react-native-use-responder-events": 1.32.4
-    "@tamagui/use-event": 1.32.4
-    "@tamagui/web": 1.32.4
-  peerDependencies:
-    react: "*"
-  checksum: 0485c894db23e50a4297b4b27effaf854fb9e3a1d80ba84a187f6a9f43deafcafa8c368bb8f4990c8b4b537c29b9727819139d308b7828a14aa61ed5f11cb304
-  languageName: node
-  linkType: hard
-
 "@tamagui/create-context@1.32.4, @tamagui/create-context@workspace:packages/create-context":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-context@workspace:packages/create-context"
@@ -5416,9 +5374,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-icon@workspace:packages/helpers-icon"
   dependencies:
-    "@react-icons/all-files": ^4.1.0
-    "@tamagui/build": latest
-    "@tamagui/core": latest
+    "@tamagui/build": 1.32.4
+    "@tamagui/core": 1.32.4
     eslint: ^8.36.0
     prop-types: ^15.7.2
     react: ^18.2.0
