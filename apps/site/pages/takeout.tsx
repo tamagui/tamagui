@@ -622,10 +622,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-app-website-ui-62.svg"
                   >
                     <YStack space>
-                      <Point size="$4">100% shared native and web.</Point>
-                      <Point size="$4">Adapted to each platform.</Point>
-                      <Point size="$4" mr="$10">
+                      <Point size="$4">
+                        100% shared native and web, adapted to each platform.
+                      </Point>
+                      {/* <Point size="$4">Adapted to each platform.</Point> */}
+                      <Point size="$4">
                         Onboarding, auth, account, settings, profile, feed, edit profile.
+                      </Point>
+                      <Point size="$4" mr="$10">
+                        Universal form system + validation.
                       </Point>
                     </YStack>
                   </TakeoutCard>
@@ -636,9 +641,9 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   >
                     <YStack space>
                       <Point size="$4">
-                        30 icon packs, adapted to use themes, sizing, and tree shaking.
+                        +150 icon packs, adapted to use themes, sizing, and tree shaking.
                       </Point>
-                      <Point size="$4">All of Google fonts, over 100&nbsp;packs.</Point>
+                      <Point size="$4">All of Google fonts, over +1500 packs.</Point>
                       <Point size="$4">More every month.</Point>
                     </YStack>
                   </TakeoutCard>
@@ -648,11 +653,13 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Supabase DB, auth.</Point>
+                      <Point size="$4">
+                        Universal light/dark mode, image upload and Supabase utils.
+                      </Point>
                       <Point size="$4">TakeoutBot ongoing updates.</Point>
-                      <Point size="$4">Test, lint, CI/CD.</Point>
+                      {/* <Point size="$4">Test, lint, CI/CD.</Point> */}
                       <Point size="$4" mr="$10">
-                        #takeout discord access.
+                        #takeout Discord access.
                       </Point>
                     </YStack>
                   </TakeoutCard>
@@ -1216,38 +1223,38 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
               <YStack>
                 <Row
                   title="Template"
-                  description="Complete Github Template with a built-in bot to send PRs with updates."
+                  description="Complete GitHub Template with a built-in bot to send PRs with updates."
                   after="01"
                 />
 
                 <Row
                   title="Monorepo"
-                  description="Complete with Next.js, Vercel deploy, Expo Native and Web, and EAS."
+                  description="Complete with Next.js, Vercel deploy, Expo and EAS."
                   after="01"
                 />
 
                 <Row
                   title="Screens"
-                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed and more."
+                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed and more + carefully crafted layouts to adapt to web and native."
                   after="08"
                 />
 
                 <Row
                   title="Data & Auth"
-                  description="Supabase pre-configured with migrations, auth, and everything set up to get rolling immediately - local dev and remote setup included."
+                  description="Supabase pre-configured with migrations, auth, utilities, automatic setup and everything to get rolling immediately."
                   after="01"
                 />
 
                 <Row
                   title="Icons"
-                  description="A whopping ~100k icons in total across 30 different packs, tree-shakeable, from icones.js.org."
-                  after="30"
+                  description="A whopping ~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from icones.js.org."
+                  after="+150"
                 />
 
                 <Row
                   title="Fonts"
-                  description="Three new fonts join the party, with more being added each month."
-                  after="03"
+                  description="All of Google fonts, more than +1500 font packages."
+                  after="+1500"
                 />
 
                 <Row
@@ -1266,6 +1273,18 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                   title="Native"
                   description="Tamagui native components like Sheet and Toast pre-configured, saving you setup and build."
                   after="03"
+                />
+
+                <Row
+                  title="Form"
+                  description="Universal forms with react-hook-form, ts-form and zod, adaptable components for the most native look on web and native."
+                  after="01"
+                />
+
+                <Row
+                  title="Image Upload"
+                  description="Component and utilities for uploading images that adapt to the native image picker. Avatar upload with Supabase Storage + RLS included."
+                  after="01"
                 />
               </YStack>
 
