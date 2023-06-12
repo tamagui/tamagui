@@ -2,7 +2,7 @@
 
 import Module from 'module'
 
-import type { ThemeBuilder } from '@tamagui/create-theme'
+import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
 import { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 
@@ -25,7 +25,7 @@ export async function generateThemes(
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
-    if (id === '@tamagui/create-theme') {
+    if (id === '@tamagui/create-theme/theme-builder') {
       if (!promise) {
         let resolve: Function
         promise = new Promise((res) => {

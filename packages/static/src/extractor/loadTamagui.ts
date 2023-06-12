@@ -238,7 +238,6 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
               hasRunOnce = true
               return
             } else {
-              console.log('generating tamagui config')
               void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
             }
           })

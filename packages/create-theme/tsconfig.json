@@ -3,6 +3,11 @@
   "compilerOptions": {
     "composite": true
   },
+  "exclude": [
+    "./types",
+    "./theme-builder.d.ts",
+    "./theme-builder.js",
+  ],
   "references": [
     {
       "path": "../colors"
