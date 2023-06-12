@@ -485,9 +485,7 @@ declare function useButton(propsIn: ButtonProps, { Text }?: {
         accessible?: boolean | undefined;
         accessibilityActions?: readonly Readonly<{
             name: string;
-            label?: string | undefined; /**
-             * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
-             */
+            label?: string | undefined;
         }>[] | undefined;
         accessibilityLabel?: string | undefined;
         'aria-label'?: string | undefined;
