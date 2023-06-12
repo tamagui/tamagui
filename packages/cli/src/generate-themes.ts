@@ -1,7 +1,14 @@
 #!/usr/bin/env node
 
+import Module from 'module'
+
+import type { ThemeBuilder } from '@tamagui/create-theme'
 import { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
+
+type ThemeBuilderInterceptOpts = {
+  onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
+}
 
 export async function generateThemes(
   options: CLIResolvedOptions & {
@@ -10,10 +17,45 @@ export async function generateThemes(
   }
 ) {
   require('esbuild-register/dist/node').register()
+
+  let promise: Promise<null | ThemeBuilder<any>> | null = null as any
+
+  const ogRequire = Module.prototype.require
+  // @ts-ignore
+  Module.prototype.require = function (id) {
+    // @ts-ignore
+    const out = ogRequire.apply(this, arguments)
+    if (id === '@tamagui/create-theme') {
+      if (!promise) {
+        let resolve: Function
+        promise = new Promise((res) => {
+          resolve = res
+        })
+        return createThemeIntercept(out, {
+          onComplete: (result) => {
+            resolve?.(result.themeBuilder)
+          },
+        })
+      }
+    }
+    return out
+  }
+
   const requiredThemes = require(options.inPath)
   const themes = requiredThemes['default'] || requiredThemes['themes']
   const generatedThemes = generatedThemesToTypescript(themes)
-  await fs.writeFile(options.outPath, generatedThemes)
+
+  const themeBuilder = promise ? await promise : null
+
+  await Promise.all([
+    fs.writeFile(options.outPath, generatedThemes),
+    themeBuilder?.state
+      ? fs.writeFile(
+          `${options.outPath}.theme-builder.json`,
+          JSON.stringify(themeBuilder?.state)
+        )
+      : null,
+  ])
 }
 
 function generatedThemesToTypescript(themes: Record<string, any>) {
@@ -65,4 +107,42 @@ ${Object.entries(obj)
   .map(([k, v]) => `${whitespace}${k}: '${v}'`)
   .join(',\n')}
 }`
+}
+
+function createThemeIntercept(
+  createThemeExport: any,
+  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
+) {
+  return new Proxy(createThemeExport, {
+    get(target, key) {
+      const out = Reflect.get(target, key)
+      if (key === 'createThemeBuilder') {
+        return new Proxy(out, {
+          apply(target, thisArg, argArray) {
+            const builder = Reflect.apply(target, thisArg, argArray) as any
+            return themeBuilderIntercept(builder, themeBuilderInterceptOpts)
+          },
+        })
+      }
+      return out
+    },
+  })
+}
+
+function themeBuilderIntercept(
+  themeBuilder: any,
+  themeBuilderInterceptOpts: ThemeBuilderInterceptOpts
+) {
+  return new Proxy(themeBuilder, {
+    get(target, key) {
+      const out = Reflect.get(target, key)
+      if (key === 'build') {
+        // get the state and return!
+        themeBuilderInterceptOpts.onComplete({
+          themeBuilder,
+        })
+      }
+      return out
+    },
+  })
 }

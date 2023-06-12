@@ -99,7 +99,7 @@ type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends
     : TD
   : TD
 
-type GetGeneratedThemes<S extends ThemeBuilderState> = {
+type ThemeBuilderBuildResult<S extends ThemeBuilderState> = {
   [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>
 }
 
@@ -114,55 +114,63 @@ type GetParentName<N extends string> =
     ? `${A}`
     : never
 
-class ThemeBuilder<State extends ThemeBuilderState> {
+export class ThemeBuilder<State extends ThemeBuilderState> {
   constructor(public state: State) {}
 
   addPalettes<const P extends PaletteDefinitions>(palettes: P) {
-    return new ThemeBuilder({
-      ...this.state,
-      palettes: {
-        // as {} prevents generic string key merge messing up types
-        ...(this.state.palettes as {}),
-        ...palettes,
-      },
-    } as const)
+    this.state.palettes = {
+      // as {} prevents generic string key merge messing up types
+      ...(this.state.palettes as {}),
+      ...palettes,
+    }
+    return this as any as ThemeBuilder<
+      State & {
+        palettes: P
+      }
+    >
   }
 
   addTemplates<const T extends TemplateDefinitions>(templates: T) {
-    return new ThemeBuilder({
-      ...this.state,
-      templates: {
-        // as {} prevents generic string key merge messing up types
-        ...(this.state.templates as {}),
-        ...templates,
-      },
-    })
+    this.state.templates = {
+      // as {} prevents generic string key merge messing up types
+      ...(this.state.templates as {}),
+      ...templates,
+    }
+    return this as any as ThemeBuilder<
+      State & {
+        templates: T
+      }
+    >
   }
 
-  addMasks<const T extends MaskDefinitions>(masks: T) {
-    return new ThemeBuilder({
-      ...this.state,
-      masks: {
-        // as {} prevents generic string key merge messing up types
-        ...(this.state.masks as {}),
-        ...(objectFromEntries(
-          objectEntries(masks).map(([key, val]) => [key, createMask(val)])
-        ) as T),
-      },
-    })
+  addMasks<const M extends MaskDefinitions>(masks: M) {
+    this.state.masks = {
+      // as {} prevents generic string key merge messing up types
+      ...(this.state.masks as {}),
+      ...(objectFromEntries(
+        objectEntries(masks).map(([key, val]) => [key, createMask(val)])
+      ) as M),
+    }
+    return this as any as ThemeBuilder<
+      State & {
+        masks: M
+      }
+    >
   }
 
   addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(
     themes: T
   ) {
-    return new ThemeBuilder({
-      ...this.state,
-      themes: {
-        // as {} prevents generic string key merge messing up types
-        ...(this.state.themes as {}),
-        ...themes,
-      },
-    })
+    this.state.themes = {
+      // as {} prevents generic string key merge messing up types
+      ...(this.state.themes as {}),
+      ...themes,
+    }
+    return this as any as ThemeBuilder<
+      State & {
+        themes: T
+      }
+    >
   }
 
   addChildThemes<
@@ -206,23 +214,31 @@ class ThemeBuilder<State extends ThemeBuilderState> {
       })
     })
 
-    const childThemes = objectFromEntries(namesWithDefinitions) as {
+    type ChildThemes = {
       [key in `${CurrentNames}_${ChildNames}`]: CTD & {
         parent: GetParentName<key>
       }
     }
 
-    return new ThemeBuilder({
-      ...this.state,
-      themes: {
-        // as {} prevents generic string key merge messing up types
-        ...(this.state.themes as {}),
-        ...childThemes,
-      },
-    })
+    const childThemes = objectFromEntries(namesWithDefinitions) as ChildThemes
+
+    const next = {
+      // as {} prevents generic string key merge messing up types
+      ...(this.state.themes as {}),
+      ...childThemes,
+    }
+
+    // @ts-ignore
+    this.state.themes = next
+
+    return this as any as ThemeBuilder<
+      State & {
+        themes: ChildThemes
+      }
+    >
   }
 
-  build(): GetGeneratedThemes<State> {
+  build(): ThemeBuilderBuildResult<State> {
     if (!this.state.themes) {
       return {} as any
     }

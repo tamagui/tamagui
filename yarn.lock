@@ -4785,6 +4785,7 @@ __metadata:
     "@fastify/sensible": ^4.1.0
     "@fastify/static": ^5.0.2
     "@tamagui/build": 1.32.2
+    "@tamagui/create-theme": 1.32.2
     "@tamagui/static": 1.32.2
     "@tamagui/types": 1.32.2
     "@tamagui/vite-plugin": 1.32.2
