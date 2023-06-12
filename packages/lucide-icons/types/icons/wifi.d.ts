@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Wifi: React.NamedExoticComponent<IconProps>;
+export declare const Wifi: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=wifi.d.ts.map

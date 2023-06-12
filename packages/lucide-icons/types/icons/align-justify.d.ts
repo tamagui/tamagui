@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlignJustify: React.NamedExoticComponent<IconProps>;
+export declare const AlignJustify: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=align-justify.d.ts.map

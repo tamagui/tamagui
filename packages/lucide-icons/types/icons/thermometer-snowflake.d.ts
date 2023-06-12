@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ThermometerSnowflake: React.NamedExoticComponent<IconProps>;
+export declare const ThermometerSnowflake: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=thermometer-snowflake.d.ts.map

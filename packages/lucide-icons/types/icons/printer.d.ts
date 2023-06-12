@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Printer: React.NamedExoticComponent<IconProps>;
+export declare const Printer: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=printer.d.ts.map

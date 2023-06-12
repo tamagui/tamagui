@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const LineChart: React.NamedExoticComponent<IconProps>;
+export declare const LineChart: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=line-chart.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CalendarRange: React.NamedExoticComponent<IconProps>;
+export declare const CalendarRange: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=calendar-range.d.ts.map

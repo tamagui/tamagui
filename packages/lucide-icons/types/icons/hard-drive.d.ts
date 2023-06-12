@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const HardDrive: React.NamedExoticComponent<IconProps>;
+export declare const HardDrive: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=hard-drive.d.ts.map

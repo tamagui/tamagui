@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Paperclip: React.NamedExoticComponent<IconProps>;
+export declare const Paperclip: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=paperclip.d.ts.map

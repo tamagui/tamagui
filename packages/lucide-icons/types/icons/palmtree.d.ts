@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Palmtree: React.NamedExoticComponent<IconProps>;
+export declare const Palmtree: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=palmtree.d.ts.map

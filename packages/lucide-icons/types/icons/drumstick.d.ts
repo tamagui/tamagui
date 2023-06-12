@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Drumstick: React.NamedExoticComponent<IconProps>;
+export declare const Drumstick: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=drumstick.d.ts.map

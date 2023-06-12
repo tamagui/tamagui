@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const XCircle: React.NamedExoticComponent<IconProps>;
+export declare const XCircle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=x-circle.d.ts.map

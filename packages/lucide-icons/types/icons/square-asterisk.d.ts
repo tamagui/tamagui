@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SquareAsterisk: React.NamedExoticComponent<IconProps>;
+export declare const SquareAsterisk: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=square-asterisk.d.ts.map

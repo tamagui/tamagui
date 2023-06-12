@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const LifeBuoy: React.NamedExoticComponent<IconProps>;
+export declare const LifeBuoy: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=life-buoy.d.ts.map

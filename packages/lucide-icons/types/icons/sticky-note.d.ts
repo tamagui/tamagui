@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const StickyNote: React.NamedExoticComponent<IconProps>;
+export declare const StickyNote: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sticky-note.d.ts.map

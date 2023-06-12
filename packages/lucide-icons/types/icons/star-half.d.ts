@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const StarHalf: React.NamedExoticComponent<IconProps>;
+export declare const StarHalf: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=star-half.d.ts.map

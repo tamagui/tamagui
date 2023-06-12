@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudDrizzle: React.NamedExoticComponent<IconProps>;
+export declare const CloudDrizzle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-drizzle.d.ts.map

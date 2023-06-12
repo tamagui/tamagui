@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FastForward: React.NamedExoticComponent<IconProps>;
+export declare const FastForward: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=fast-forward.d.ts.map

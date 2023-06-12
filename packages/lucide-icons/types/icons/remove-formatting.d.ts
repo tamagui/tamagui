@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RemoveFormatting: React.NamedExoticComponent<IconProps>;
+export declare const RemoveFormatting: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=remove-formatting.d.ts.map

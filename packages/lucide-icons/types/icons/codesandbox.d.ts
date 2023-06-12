@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Codesandbox: React.NamedExoticComponent<IconProps>;
+export declare const Codesandbox: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=codesandbox.d.ts.map

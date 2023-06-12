@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Twitch: React.NamedExoticComponent<IconProps>;
+export declare const Twitch: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=twitch.d.ts.map

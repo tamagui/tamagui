@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const WineOff: React.NamedExoticComponent<IconProps>;
+export declare const WineOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=wine-off.d.ts.map

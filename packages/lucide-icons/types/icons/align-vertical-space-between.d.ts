@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlignVerticalSpaceBetween: React.NamedExoticComponent<IconProps>;
+export declare const AlignVerticalSpaceBetween: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=align-vertical-space-between.d.ts.map

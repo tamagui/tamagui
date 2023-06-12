@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ShieldQuestion: React.NamedExoticComponent<IconProps>;
+export declare const ShieldQuestion: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=shield-question.d.ts.map

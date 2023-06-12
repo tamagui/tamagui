@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FoldHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const FoldHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=fold-horizontal.d.ts.map

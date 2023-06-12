@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Cherry: React.NamedExoticComponent<IconProps>;
+export declare const Cherry: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cherry.d.ts.map

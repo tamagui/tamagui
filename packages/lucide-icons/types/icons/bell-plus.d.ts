@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BellPlus: React.NamedExoticComponent<IconProps>;
+export declare const BellPlus: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=bell-plus.d.ts.map

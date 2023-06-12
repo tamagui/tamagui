@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const GripHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const GripHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=grip-horizontal.d.ts.map

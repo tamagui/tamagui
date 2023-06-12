@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MoveDiagonal: React.NamedExoticComponent<IconProps>;
+export declare const MoveDiagonal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=move-diagonal.d.ts.map

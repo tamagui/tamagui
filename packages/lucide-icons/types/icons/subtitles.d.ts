@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Subtitles: React.NamedExoticComponent<IconProps>;
+export declare const Subtitles: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=subtitles.d.ts.map

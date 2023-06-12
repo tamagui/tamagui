@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const WholeWord: React.NamedExoticComponent<IconProps>;
+export declare const WholeWord: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=whole-word.d.ts.map

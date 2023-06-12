@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ArchiveRestore: React.NamedExoticComponent<IconProps>;
+export declare const ArchiveRestore: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=archive-restore.d.ts.map

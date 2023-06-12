@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FolderHeart: React.NamedExoticComponent<IconProps>;
+export declare const FolderHeart: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=folder-heart.d.ts.map

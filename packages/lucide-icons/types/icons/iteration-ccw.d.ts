@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const IterationCcw: React.NamedExoticComponent<IconProps>;
+export declare const IterationCcw: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=iteration-ccw.d.ts.map

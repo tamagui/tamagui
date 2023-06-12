@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Fish: React.NamedExoticComponent<IconProps>;
+export declare const Fish: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=fish.d.ts.map

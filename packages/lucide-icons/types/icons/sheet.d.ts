@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Sheet: React.NamedExoticComponent<IconProps>;
+export declare const Sheet: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sheet.d.ts.map

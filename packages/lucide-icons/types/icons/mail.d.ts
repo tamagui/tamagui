@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Mail: React.NamedExoticComponent<IconProps>;
+export declare const Mail: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=mail.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Trello: React.NamedExoticComponent<IconProps>;
+export declare const Trello: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=trello.d.ts.map

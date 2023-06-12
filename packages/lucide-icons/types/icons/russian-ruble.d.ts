@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RussianRuble: React.NamedExoticComponent<IconProps>;
+export declare const RussianRuble: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=russian-ruble.d.ts.map

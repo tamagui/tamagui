@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FileSpreadsheet: React.NamedExoticComponent<IconProps>;
+export declare const FileSpreadsheet: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=file-spreadsheet.d.ts.map

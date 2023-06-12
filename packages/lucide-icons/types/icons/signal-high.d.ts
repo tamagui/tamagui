@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SignalHigh: React.NamedExoticComponent<IconProps>;
+export declare const SignalHigh: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=signal-high.d.ts.map

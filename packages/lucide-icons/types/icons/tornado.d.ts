@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Tornado: React.NamedExoticComponent<IconProps>;
+export declare const Tornado: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=tornado.d.ts.map

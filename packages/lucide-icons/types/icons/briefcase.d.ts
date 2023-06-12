@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Briefcase: React.NamedExoticComponent<IconProps>;
+export declare const Briefcase: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=briefcase.d.ts.map

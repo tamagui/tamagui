@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SplitSquareVertical: React.NamedExoticComponent<IconProps>;
+export declare const SplitSquareVertical: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=split-square-vertical.d.ts.map

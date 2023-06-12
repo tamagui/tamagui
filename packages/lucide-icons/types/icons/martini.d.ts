@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Martini: React.NamedExoticComponent<IconProps>;
+export declare const Martini: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=martini.d.ts.map

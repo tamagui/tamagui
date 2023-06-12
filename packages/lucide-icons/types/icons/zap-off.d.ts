@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ZapOff: React.NamedExoticComponent<IconProps>;
+export declare const ZapOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=zap-off.d.ts.map

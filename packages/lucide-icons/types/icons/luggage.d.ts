@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Luggage: React.NamedExoticComponent<IconProps>;
+export declare const Luggage: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=luggage.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Wallpaper: React.NamedExoticComponent<IconProps>;
+export declare const Wallpaper: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=wallpaper.d.ts.map

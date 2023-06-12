@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const HelpingHand: React.NamedExoticComponent<IconProps>;
+export declare const HelpingHand: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=helping-hand.d.ts.map

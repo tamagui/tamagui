@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BoxSelect: React.NamedExoticComponent<IconProps>;
+export declare const BoxSelect: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=box-select.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const StepForward: React.NamedExoticComponent<IconProps>;
+export declare const StepForward: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=step-forward.d.ts.map

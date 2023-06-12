@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RedoDot: React.NamedExoticComponent<IconProps>;
+export declare const RedoDot: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=redo-dot.d.ts.map

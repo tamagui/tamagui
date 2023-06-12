@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const DivideSquare: React.NamedExoticComponent<IconProps>;
+export declare const DivideSquare: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=divide-square.d.ts.map

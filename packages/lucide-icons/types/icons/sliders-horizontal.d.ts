@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SlidersHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const SlidersHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sliders-horizontal.d.ts.map

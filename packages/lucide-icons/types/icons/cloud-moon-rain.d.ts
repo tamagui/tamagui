@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudMoonRain: React.NamedExoticComponent<IconProps>;
+export declare const CloudMoonRain: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-moon-rain.d.ts.map

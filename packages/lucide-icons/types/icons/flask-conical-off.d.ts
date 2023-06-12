@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FlaskConicalOff: React.NamedExoticComponent<IconProps>;
+export declare const FlaskConicalOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=flask-conical-off.d.ts.map

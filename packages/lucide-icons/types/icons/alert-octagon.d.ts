@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlertOctagon: React.NamedExoticComponent<IconProps>;
+export declare const AlertOctagon: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=alert-octagon.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Armchair: React.NamedExoticComponent<IconProps>;
+export declare const Armchair: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=armchair.d.ts.map

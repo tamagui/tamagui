@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const EggOff: React.NamedExoticComponent<IconProps>;
+export declare const EggOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=egg-off.d.ts.map

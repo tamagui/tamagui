@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Plane: React.NamedExoticComponent<IconProps>;
+export declare const Plane: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=plane.d.ts.map

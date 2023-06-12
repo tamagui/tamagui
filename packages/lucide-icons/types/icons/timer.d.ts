@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Timer: React.NamedExoticComponent<IconProps>;
+export declare const Timer: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=timer.d.ts.map

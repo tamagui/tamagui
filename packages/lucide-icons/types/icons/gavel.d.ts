@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Gavel: React.NamedExoticComponent<IconProps>;
+export declare const Gavel: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=gavel.d.ts.map

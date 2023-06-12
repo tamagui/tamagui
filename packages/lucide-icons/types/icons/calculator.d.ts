@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Calculator: React.NamedExoticComponent<IconProps>;
+export declare const Calculator: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=calculator.d.ts.map

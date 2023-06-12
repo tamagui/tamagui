@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const UndoDot: React.NamedExoticComponent<IconProps>;
+export declare const UndoDot: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=undo-dot.d.ts.map

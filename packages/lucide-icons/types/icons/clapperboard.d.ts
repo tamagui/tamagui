@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Clapperboard: React.NamedExoticComponent<IconProps>;
+export declare const Clapperboard: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=clapperboard.d.ts.map

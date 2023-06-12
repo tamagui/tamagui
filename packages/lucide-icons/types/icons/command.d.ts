@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Command: React.NamedExoticComponent<IconProps>;
+export declare const Command: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=command.d.ts.map

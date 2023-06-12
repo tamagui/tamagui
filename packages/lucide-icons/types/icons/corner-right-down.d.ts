@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CornerRightDown: React.NamedExoticComponent<IconProps>;
+export declare const CornerRightDown: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=corner-right-down.d.ts.map

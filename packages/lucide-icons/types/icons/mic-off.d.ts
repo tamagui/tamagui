@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MicOff: React.NamedExoticComponent<IconProps>;
+export declare const MicOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=mic-off.d.ts.map

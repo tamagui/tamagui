@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudCog: React.NamedExoticComponent<IconProps>;
+export declare const CloudCog: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-cog.d.ts.map

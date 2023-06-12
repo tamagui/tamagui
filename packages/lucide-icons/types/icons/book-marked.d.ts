@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BookMarked: React.NamedExoticComponent<IconProps>;
+export declare const BookMarked: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=book-marked.d.ts.map

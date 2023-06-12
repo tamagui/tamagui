@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Scroll: React.NamedExoticComponent<IconProps>;
+export declare const Scroll: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=scroll.d.ts.map

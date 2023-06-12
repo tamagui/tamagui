@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Touchpad: React.NamedExoticComponent<IconProps>;
+export declare const Touchpad: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=touchpad.d.ts.map

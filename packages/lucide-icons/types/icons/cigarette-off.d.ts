@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CigaretteOff: React.NamedExoticComponent<IconProps>;
+export declare const CigaretteOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cigarette-off.d.ts.map

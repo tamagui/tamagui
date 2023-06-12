@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Triangle: React.NamedExoticComponent<IconProps>;
+export declare const Triangle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=triangle.d.ts.map

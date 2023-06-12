@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BarChartHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const BarChartHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=bar-chart-horizontal.d.ts.map

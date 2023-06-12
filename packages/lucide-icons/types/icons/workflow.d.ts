@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Workflow: React.NamedExoticComponent<IconProps>;
+export declare const Workflow: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=workflow.d.ts.map

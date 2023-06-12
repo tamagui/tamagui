@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Delete: React.NamedExoticComponent<IconProps>;
+export declare const Delete: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=delete.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CheckSquare: React.NamedExoticComponent<IconProps>;
+export declare const CheckSquare: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=check-square.d.ts.map

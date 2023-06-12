@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SignalLow: React.NamedExoticComponent<IconProps>;
+export declare const SignalLow: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=signal-low.d.ts.map

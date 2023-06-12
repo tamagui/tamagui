@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Vibrate: React.NamedExoticComponent<IconProps>;
+export declare const Vibrate: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=vibrate.d.ts.map

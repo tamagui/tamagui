@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CircuitBoard: React.NamedExoticComponent<IconProps>;
+export declare const CircuitBoard: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=circuit-board.d.ts.map

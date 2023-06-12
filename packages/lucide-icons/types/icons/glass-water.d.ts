@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const GlassWater: React.NamedExoticComponent<IconProps>;
+export declare const GlassWater: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=glass-water.d.ts.map

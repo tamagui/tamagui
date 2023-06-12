@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MoreVertical: React.NamedExoticComponent<IconProps>;
+export declare const MoreVertical: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=more-vertical.d.ts.map

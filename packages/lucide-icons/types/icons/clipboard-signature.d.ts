@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ClipboardSignature: React.NamedExoticComponent<IconProps>;
+export declare const ClipboardSignature: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=clipboard-signature.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SmartphoneNfc: React.NamedExoticComponent<IconProps>;
+export declare const SmartphoneNfc: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=smartphone-nfc.d.ts.map

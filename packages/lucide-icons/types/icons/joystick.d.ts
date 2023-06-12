@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Joystick: React.NamedExoticComponent<IconProps>;
+export declare const Joystick: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=joystick.d.ts.map

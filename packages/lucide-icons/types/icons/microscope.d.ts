@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Microscope: React.NamedExoticComponent<IconProps>;
+export declare const Microscope: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=microscope.d.ts.map

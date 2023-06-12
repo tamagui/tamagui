@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FileBarChart: React.NamedExoticComponent<IconProps>;
+export declare const FileBarChart: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=file-bar-chart.d.ts.map

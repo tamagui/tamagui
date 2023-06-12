@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudHail: React.NamedExoticComponent<IconProps>;
+export declare const CloudHail: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-hail.d.ts.map

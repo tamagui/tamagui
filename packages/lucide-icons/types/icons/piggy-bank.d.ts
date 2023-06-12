@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const PiggyBank: React.NamedExoticComponent<IconProps>;
+export declare const PiggyBank: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=piggy-bank.d.ts.map

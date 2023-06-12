@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FolderClosed: React.NamedExoticComponent<IconProps>;
+export declare const FolderClosed: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=folder-closed.d.ts.map

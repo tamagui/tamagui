@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SeparatorVertical: React.NamedExoticComponent<IconProps>;
+export declare const SeparatorVertical: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=separator-vertical.d.ts.map

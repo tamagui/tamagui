@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Lasso: React.NamedExoticComponent<IconProps>;
+export declare const Lasso: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=lasso.d.ts.map

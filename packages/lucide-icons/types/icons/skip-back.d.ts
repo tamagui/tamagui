@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SkipBack: React.NamedExoticComponent<IconProps>;
+export declare const SkipBack: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=skip-back.d.ts.map

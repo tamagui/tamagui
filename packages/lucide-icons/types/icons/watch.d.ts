@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Watch: React.NamedExoticComponent<IconProps>;
+export declare const Watch: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=watch.d.ts.map

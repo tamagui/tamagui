@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const HardHat: React.NamedExoticComponent<IconProps>;
+export declare const HardHat: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=hard-hat.d.ts.map

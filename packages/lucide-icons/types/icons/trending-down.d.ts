@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const TrendingDown: React.NamedExoticComponent<IconProps>;
+export declare const TrendingDown: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=trending-down.d.ts.map

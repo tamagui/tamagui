@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Axis3d: React.NamedExoticComponent<IconProps>;
+export declare const Axis3d: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=axis-3d.d.ts.map

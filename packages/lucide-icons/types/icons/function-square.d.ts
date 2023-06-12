@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FunctionSquare: React.NamedExoticComponent<IconProps>;
+export declare const FunctionSquare: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=function-square.d.ts.map

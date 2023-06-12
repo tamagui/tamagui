@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RotateCw: React.NamedExoticComponent<IconProps>;
+export declare const RotateCw: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=rotate-cw.d.ts.map

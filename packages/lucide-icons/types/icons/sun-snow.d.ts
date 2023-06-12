@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SunSnow: React.NamedExoticComponent<IconProps>;
+export declare const SunSnow: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sun-snow.d.ts.map

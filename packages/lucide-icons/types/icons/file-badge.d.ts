@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FileBadge: React.NamedExoticComponent<IconProps>;
+export declare const FileBadge: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=file-badge.d.ts.map

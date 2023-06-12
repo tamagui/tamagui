@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AtSign: React.NamedExoticComponent<IconProps>;
+export declare const AtSign: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=at-sign.d.ts.map

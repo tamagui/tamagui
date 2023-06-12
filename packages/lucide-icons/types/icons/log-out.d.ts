@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const LogOut: React.NamedExoticComponent<IconProps>;
+export declare const LogOut: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=log-out.d.ts.map

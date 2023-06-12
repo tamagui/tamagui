@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const HeartCrack: React.NamedExoticComponent<IconProps>;
+export declare const HeartCrack: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=heart-crack.d.ts.map

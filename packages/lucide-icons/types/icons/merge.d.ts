@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Merge: React.NamedExoticComponent<IconProps>;
+export declare const Merge: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=merge.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Asterisk: React.NamedExoticComponent<IconProps>;
+export declare const Asterisk: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=asterisk.d.ts.map

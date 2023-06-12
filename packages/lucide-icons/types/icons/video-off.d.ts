@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const VideoOff: React.NamedExoticComponent<IconProps>;
+export declare const VideoOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=video-off.d.ts.map

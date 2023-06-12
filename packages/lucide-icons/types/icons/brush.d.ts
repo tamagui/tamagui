@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Brush: React.NamedExoticComponent<IconProps>;
+export declare const Brush: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=brush.d.ts.map

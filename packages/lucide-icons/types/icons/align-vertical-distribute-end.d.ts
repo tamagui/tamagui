@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlignVerticalDistributeEnd: React.NamedExoticComponent<IconProps>;
+export declare const AlignVerticalDistributeEnd: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=align-vertical-distribute-end.d.ts.map

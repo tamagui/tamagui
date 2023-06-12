@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Shovel: React.NamedExoticComponent<IconProps>;
+export declare const Shovel: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=shovel.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Grid: React.NamedExoticComponent<IconProps>;
+export declare const Grid: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=grid.d.ts.map

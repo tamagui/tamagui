@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FileDiff: React.NamedExoticComponent<IconProps>;
+export declare const FileDiff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=file-diff.d.ts.map

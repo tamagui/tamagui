@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BatteryWarning: React.NamedExoticComponent<IconProps>;
+export declare const BatteryWarning: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=battery-warning.d.ts.map

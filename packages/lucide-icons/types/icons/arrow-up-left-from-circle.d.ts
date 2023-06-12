@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ArrowUpLeftFromCircle: React.NamedExoticComponent<IconProps>;
+export declare const ArrowUpLeftFromCircle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=arrow-up-left-from-circle.d.ts.map

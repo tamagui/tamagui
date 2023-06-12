@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MonitorSmartphone: React.NamedExoticComponent<IconProps>;
+export declare const MonitorSmartphone: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=monitor-smartphone.d.ts.map

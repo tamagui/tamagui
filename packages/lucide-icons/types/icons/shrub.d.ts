@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Shrub: React.NamedExoticComponent<IconProps>;
+export declare const Shrub: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=shrub.d.ts.map

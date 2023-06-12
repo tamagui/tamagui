@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Sprout: React.NamedExoticComponent<IconProps>;
+export declare const Sprout: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sprout.d.ts.map

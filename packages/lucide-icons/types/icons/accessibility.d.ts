@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Accessibility: React.NamedExoticComponent<IconProps>;
+export declare const Accessibility: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=accessibility.d.ts.map

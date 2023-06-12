@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Bluetooth: React.NamedExoticComponent<IconProps>;
+export declare const Bluetooth: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=bluetooth.d.ts.map

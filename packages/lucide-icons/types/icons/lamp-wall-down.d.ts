@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const LampWallDown: React.NamedExoticComponent<IconProps>;
+export declare const LampWallDown: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=lamp-wall-down.d.ts.map

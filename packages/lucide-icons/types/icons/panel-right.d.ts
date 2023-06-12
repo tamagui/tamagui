@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const PanelRight: React.NamedExoticComponent<IconProps>;
+export declare const PanelRight: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=panel-right.d.ts.map

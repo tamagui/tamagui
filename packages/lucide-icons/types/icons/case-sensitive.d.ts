@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CaseSensitive: React.NamedExoticComponent<IconProps>;
+export declare const CaseSensitive: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=case-sensitive.d.ts.map

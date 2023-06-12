@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlignHorizontalDistributeEnd: React.NamedExoticComponent<IconProps>;
+export declare const AlignHorizontalDistributeEnd: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=align-horizontal-distribute-end.d.ts.map

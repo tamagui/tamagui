@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Frown: React.NamedExoticComponent<IconProps>;
+export declare const Frown: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=frown.d.ts.map

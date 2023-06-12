@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FolderClock: React.NamedExoticComponent<IconProps>;
+export declare const FolderClock: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=folder-clock.d.ts.map

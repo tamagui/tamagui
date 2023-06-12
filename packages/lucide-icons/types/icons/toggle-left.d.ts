@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ToggleLeft: React.NamedExoticComponent<IconProps>;
+export declare const ToggleLeft: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=toggle-left.d.ts.map

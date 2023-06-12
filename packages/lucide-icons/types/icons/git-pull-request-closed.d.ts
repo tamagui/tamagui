@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const GitPullRequestClosed: React.NamedExoticComponent<IconProps>;
+export declare const GitPullRequestClosed: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=git-pull-request-closed.d.ts.map

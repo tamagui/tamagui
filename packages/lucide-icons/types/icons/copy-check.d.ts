@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CopyCheck: React.NamedExoticComponent<IconProps>;
+export declare const CopyCheck: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=copy-check.d.ts.map

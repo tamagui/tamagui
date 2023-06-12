@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Pilcrow: React.NamedExoticComponent<IconProps>;
+export declare const Pilcrow: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=pilcrow.d.ts.map

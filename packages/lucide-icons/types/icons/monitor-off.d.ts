@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MonitorOff: React.NamedExoticComponent<IconProps>;
+export declare const MonitorOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=monitor-off.d.ts.map

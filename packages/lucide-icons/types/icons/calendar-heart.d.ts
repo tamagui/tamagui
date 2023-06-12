@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CalendarHeart: React.NamedExoticComponent<IconProps>;
+export declare const CalendarHeart: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=calendar-heart.d.ts.map

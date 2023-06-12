@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const TreeDeciduous: React.NamedExoticComponent<IconProps>;
+export declare const TreeDeciduous: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=tree-deciduous.d.ts.map

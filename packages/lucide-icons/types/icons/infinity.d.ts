@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Infinity: React.NamedExoticComponent<IconProps>;
+export declare const Infinity: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=infinity.d.ts.map

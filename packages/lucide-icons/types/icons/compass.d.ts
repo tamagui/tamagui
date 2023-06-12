@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Compass: React.NamedExoticComponent<IconProps>;
+export declare const Compass: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=compass.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Cloudy: React.NamedExoticComponent<IconProps>;
+export declare const Cloudy: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloudy.d.ts.map

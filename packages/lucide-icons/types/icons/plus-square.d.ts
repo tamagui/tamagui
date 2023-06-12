@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const PlusSquare: React.NamedExoticComponent<IconProps>;
+export declare const PlusSquare: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=plus-square.d.ts.map

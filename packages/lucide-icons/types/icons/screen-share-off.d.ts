@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ScreenShareOff: React.NamedExoticComponent<IconProps>;
+export declare const ScreenShareOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=screen-share-off.d.ts.map

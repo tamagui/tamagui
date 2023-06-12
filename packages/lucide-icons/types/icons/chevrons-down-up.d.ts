@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ChevronsDownUp: React.NamedExoticComponent<IconProps>;
+export declare const ChevronsDownUp: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=chevrons-down-up.d.ts.map

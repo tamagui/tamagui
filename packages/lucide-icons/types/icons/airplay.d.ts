@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Airplay: React.NamedExoticComponent<IconProps>;
+export declare const Airplay: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=airplay.d.ts.map

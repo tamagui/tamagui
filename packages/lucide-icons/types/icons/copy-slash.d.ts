@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CopySlash: React.NamedExoticComponent<IconProps>;
+export declare const CopySlash: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=copy-slash.d.ts.map

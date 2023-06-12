@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Voicemail: React.NamedExoticComponent<IconProps>;
+export declare const Voicemail: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=voicemail.d.ts.map

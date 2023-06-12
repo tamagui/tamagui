@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Umbrella: React.NamedExoticComponent<IconProps>;
+export declare const Umbrella: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=umbrella.d.ts.map

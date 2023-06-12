@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Newspaper: React.NamedExoticComponent<IconProps>;
+export declare const Newspaper: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=newspaper.d.ts.map

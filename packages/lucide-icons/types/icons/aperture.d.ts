@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Aperture: React.NamedExoticComponent<IconProps>;
+export declare const Aperture: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=aperture.d.ts.map

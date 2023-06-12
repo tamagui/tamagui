@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const TextCursor: React.NamedExoticComponent<IconProps>;
+export declare const TextCursor: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=text-cursor.d.ts.map

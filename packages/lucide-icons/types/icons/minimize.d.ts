@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Minimize: React.NamedExoticComponent<IconProps>;
+export declare const Minimize: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=minimize.d.ts.map

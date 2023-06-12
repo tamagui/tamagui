@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FolderGit: React.NamedExoticComponent<IconProps>;
+export declare const FolderGit: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=folder-git.d.ts.map

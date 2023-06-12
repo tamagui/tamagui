@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Sigma: React.NamedExoticComponent<IconProps>;
+export declare const Sigma: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sigma.d.ts.map

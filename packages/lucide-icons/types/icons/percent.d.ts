@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Percent: React.NamedExoticComponent<IconProps>;
+export declare const Percent: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=percent.d.ts.map

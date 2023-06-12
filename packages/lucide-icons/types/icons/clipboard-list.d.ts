@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ClipboardList: React.NamedExoticComponent<IconProps>;
+export declare const ClipboardList: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=clipboard-list.d.ts.map

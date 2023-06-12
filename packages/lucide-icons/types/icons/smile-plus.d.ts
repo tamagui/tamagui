@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SmilePlus: React.NamedExoticComponent<IconProps>;
+export declare const SmilePlus: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=smile-plus.d.ts.map

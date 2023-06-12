@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlarmClock: React.NamedExoticComponent<IconProps>;
+export declare const AlarmClock: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=alarm-clock.d.ts.map

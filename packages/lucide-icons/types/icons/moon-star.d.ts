@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MoonStar: React.NamedExoticComponent<IconProps>;
+export declare const MoonStar: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=moon-star.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RectangleHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const RectangleHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=rectangle-horizontal.d.ts.map

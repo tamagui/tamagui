@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const HelpCircle: React.NamedExoticComponent<IconProps>;
+export declare const HelpCircle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=help-circle.d.ts.map

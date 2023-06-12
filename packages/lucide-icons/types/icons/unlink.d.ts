@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Unlink: React.NamedExoticComponent<IconProps>;
+export declare const Unlink: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=unlink.d.ts.map

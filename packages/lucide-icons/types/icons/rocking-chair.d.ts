@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const RockingChair: React.NamedExoticComponent<IconProps>;
+export declare const RockingChair: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=rocking-chair.d.ts.map

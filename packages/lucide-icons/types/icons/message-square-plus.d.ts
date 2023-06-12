@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MessageSquarePlus: React.NamedExoticComponent<IconProps>;
+export declare const MessageSquarePlus: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=message-square-plus.d.ts.map

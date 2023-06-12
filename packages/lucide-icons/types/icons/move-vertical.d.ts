@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const MoveVertical: React.NamedExoticComponent<IconProps>;
+export declare const MoveVertical: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=move-vertical.d.ts.map

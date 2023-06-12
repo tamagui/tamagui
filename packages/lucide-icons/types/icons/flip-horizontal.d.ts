@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const FlipHorizontal: React.NamedExoticComponent<IconProps>;
+export declare const FlipHorizontal: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=flip-horizontal.d.ts.map

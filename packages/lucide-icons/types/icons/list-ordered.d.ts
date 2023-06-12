@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const ListOrdered: React.NamedExoticComponent<IconProps>;
+export declare const ListOrdered: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=list-ordered.d.ts.map

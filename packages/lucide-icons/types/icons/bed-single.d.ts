@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const BedSingle: React.NamedExoticComponent<IconProps>;
+export declare const BedSingle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=bed-single.d.ts.map

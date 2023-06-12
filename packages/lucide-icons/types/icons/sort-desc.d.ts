@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const SortDesc: React.NamedExoticComponent<IconProps>;
+export declare const SortDesc: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=sort-desc.d.ts.map

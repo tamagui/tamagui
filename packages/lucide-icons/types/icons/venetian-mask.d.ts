@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const VenetianMask: React.NamedExoticComponent<IconProps>;
+export declare const VenetianMask: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=venetian-mask.d.ts.map

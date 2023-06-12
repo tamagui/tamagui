@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Wheat: React.NamedExoticComponent<IconProps>;
+export declare const Wheat: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=wheat.d.ts.map

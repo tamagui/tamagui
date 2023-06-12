@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const NavigationOff: React.NamedExoticComponent<IconProps>;
+export declare const NavigationOff: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=navigation-off.d.ts.map

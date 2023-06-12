@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const WrapText: React.NamedExoticComponent<IconProps>;
+export declare const WrapText: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=wrap-text.d.ts.map

@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Forklift: React.NamedExoticComponent<IconProps>;
+export declare const Forklift: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=forklift.d.ts.map

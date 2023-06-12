@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CalendarX: React.NamedExoticComponent<IconProps>;
+export declare const CalendarX: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=calendar-x.d.ts.map

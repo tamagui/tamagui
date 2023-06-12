@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudSnow: React.NamedExoticComponent<IconProps>;
+export declare const CloudSnow: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-snow.d.ts.map

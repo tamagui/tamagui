@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const LayoutGrid: React.NamedExoticComponent<IconProps>;
+export declare const LayoutGrid: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=layout-grid.d.ts.map

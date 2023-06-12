@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Croissant: React.NamedExoticComponent<IconProps>;
+export declare const Croissant: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=croissant.d.ts.map

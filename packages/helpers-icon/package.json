@@ -1,0 +1,38 @@
+{
+  "name": "@tamagui/helpers-icon",
+  "version": "1.32.4",
+  "sideEffects": false,
+  "description": "Utilities for icon packages",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@tamagui/core": "latest"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native-svg": ">=12"
+  },
+  "devDependencies": {
+    "@react-icons/all-files": "^4.1.0",
+    "@tamagui/build": "latest",
+    "eslint": "^8.36.0",
+    "prop-types": "^15.7.2",
+    "react": "^18.2.0",
+    "react-native-svg": "13.4.0"
+  }
+}

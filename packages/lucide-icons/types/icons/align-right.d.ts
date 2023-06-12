@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const AlignRight: React.NamedExoticComponent<IconProps>;
+export declare const AlignRight: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=align-right.d.ts.map

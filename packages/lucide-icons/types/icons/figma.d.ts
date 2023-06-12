@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Figma: React.NamedExoticComponent<IconProps>;
+export declare const Figma: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=figma.d.ts.map

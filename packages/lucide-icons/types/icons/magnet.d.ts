@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Magnet: React.NamedExoticComponent<IconProps>;
+export declare const Magnet: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=magnet.d.ts.map

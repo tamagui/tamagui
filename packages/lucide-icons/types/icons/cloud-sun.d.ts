@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const CloudSun: React.NamedExoticComponent<IconProps>;
+export declare const CloudSun: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-sun.d.ts.map

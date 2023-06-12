@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const StretchVertical: React.NamedExoticComponent<IconProps>;
+export declare const StretchVertical: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=stretch-vertical.d.ts.map

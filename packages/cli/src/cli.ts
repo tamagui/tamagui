@@ -42,6 +42,42 @@ const COMMAND_MAP = {
     },
   },
 
+  'install-font': {
+    shorthands: ['if'],
+    description: `Use to install fonts into your monorepo`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      // const { _, ...flags } = arg(this.flags)
+      const { installGeneratedPackage } = await import('./install-generated-package.js')
+      // const options = await getOptions({
+      //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      // })
+      await installGeneratedPackage('font')
+    },
+  },
+
+  'install-icon': {
+    shorthands: ['ic'],
+    description: `Use to install icon packs into your monorepo`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
+    async run() {
+      // const { _, ...flags } = arg(this.flags)
+      const { installGeneratedPackage } = await import('./install-generated-package.js')
+      // const options = await getOptions({
+      //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      // })
+      await installGeneratedPackage('icon')
+    },
+  },
+
   // build: {
   //   shorthands: ['b'],
   //   description: `Use to pre-build a Tamagui component directory`,

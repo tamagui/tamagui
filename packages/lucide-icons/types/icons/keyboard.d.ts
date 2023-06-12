@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Keyboard: React.NamedExoticComponent<IconProps>;
+export declare const Keyboard: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=keyboard.d.ts.map

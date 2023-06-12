@@ -1,4 +1,3 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
-export declare const Recycle: React.NamedExoticComponent<IconProps>;
+export declare const Recycle: React.MemoExoticComponent<IconProps>;
 //# sourceMappingURL=recycle.d.ts.map
