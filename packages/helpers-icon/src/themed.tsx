@@ -2,7 +2,6 @@ import {
   getTokens,
   getVariable,
   getVariableValue,
-  useMediaPropsActive,
   useProps,
   useTheme,
 } from "@tamagui/core";

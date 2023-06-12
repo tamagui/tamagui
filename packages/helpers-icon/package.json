@@ -29,8 +29,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.32.4",
-    "eslint": "^8.36.0",
-    "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-native-svg": "13.4.0"
   }
