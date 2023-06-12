@@ -4733,7 +4733,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@*, @tamagui/build@1.32.4, @tamagui/build@workspace:packages/build":
+"@tamagui/build@1.32.4, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5412,7 +5412,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers-icon@*, @tamagui/helpers-icon@workspace:packages/helpers-icon":
+"@tamagui/helpers-icon@workspace:packages/helpers-icon":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers-icon@workspace:packages/helpers-icon"
   dependencies:
@@ -5461,20 +5461,6 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.32.4
     "@tamagui/simple-hash": 1.32.4
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/icons-heroicons@workspace:packages/heroicons":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/icons-heroicons@workspace:packages/heroicons"
-  dependencies:
-    "@tamagui/build": "*"
-    "@tamagui/helpers-icon": "*"
-    "@types/react": "*"
-    react-native-svg: 13.4.0
-  peerDependencies:
-    react: "*"
-    react-native-svg: ">=12"
   languageName: unknown
   linkType: soft
 
