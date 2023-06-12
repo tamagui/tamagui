@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const ClipboardList: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=clipboard-list.d.ts.map

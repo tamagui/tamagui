@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Blinds: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=blinds.d.ts.map

@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const ListOrdered: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=list-ordered.d.ts.map

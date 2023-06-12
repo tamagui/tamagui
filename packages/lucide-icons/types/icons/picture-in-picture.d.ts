@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const PictureInPicture: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=picture-in-picture.d.ts.map

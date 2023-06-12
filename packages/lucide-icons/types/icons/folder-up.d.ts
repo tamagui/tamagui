@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const FolderUp: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=folder-up.d.ts.map

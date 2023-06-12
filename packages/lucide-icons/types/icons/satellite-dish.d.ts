@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const SatelliteDish: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=satellite-dish.d.ts.map
