@@ -79,6 +79,7 @@ const ButtonFrame = styled(ThemeableStack, {
   tag: 'button',
   context: ButtonContext,
   focusable: true,
+  role: 'button',
 
   variants: {
     unstyled: {

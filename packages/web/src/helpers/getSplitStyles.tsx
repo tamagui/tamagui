@@ -17,7 +17,13 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
+import {
+  accessibilityDirectMap,
+  accessibilityWebRoleToNativeRole,
+  nativeAccessibilityState,
+  nativeAccessibilityValue,
+  webToNativeAccessibilityDirectMap,
+} from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -243,7 +249,49 @@ export const getSplitStyles: StyleSplitter = (
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
-      } else if (keyInit.startsWith('data-') || keyInit.startsWith('aria-')) {
+      } else if (keyInit.startsWith('aria-*') || keyInit === 'role') {
+        if (webToNativeAccessibilityDirectMap[keyInit]) {
+          const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
+          if (keyInit === 'aria-hidden') {
+            // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
+            viewProps['aria-hidden'] = valInit
+          }
+          viewProps[nativeA11yProp] = valInit
+          usedKeys[keyInit] = 1
+          return
+        } else if (nativeAccessibilityValue[keyInit]) {
+          let field = nativeAccessibilityValue[keyInit]
+          if (viewProps['accessibilityValue']) {
+            viewProps['accessibilityValue'][field] = valInit
+          } else {
+            viewProps['accessibilityValue'] = {
+              [field]: valInit,
+            }
+          }
+          usedKeys[keyInit] = 1
+        } else if (nativeAccessibilityState[keyInit]) {
+          let field = nativeAccessibilityState[keyInit]
+          if (viewProps['accessibilityState']) {
+            viewProps['accessibilityState'][field] = valInit
+          } else {
+            viewProps['accessibilityState'] = {
+              [field]: valInit,
+            }
+          }
+          usedKeys[keyInit] = 1
+        } else if (keyInit === 'role') {
+          if (valInit === 'list') {
+            // role = "list"
+            viewProps[keyInit] = valInit
+          } else if (accessibilityWebRoleToNativeRole[valInit]) {
+            viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+              valInit
+            ] as GetStyleResult['viewProps']['AccessibilityRole']
+          }
+          return
+        }
+        return
+      } else if (keyInit.startsWith('data-')) {
         return
       }
     }
