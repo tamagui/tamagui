@@ -19,6 +19,7 @@ import { useInsertionEffect } from 'react'
 import { getConfig, getFont } from '../config'
 import {
   accessibilityDirectMap,
+  accessibilityWebRoleToNativeRole,
   nativeAccessibilityState,
   nativeAccessibilityValue,
   webToNativeAccessibilityDirectMap,
@@ -282,8 +283,10 @@ export const getSplitStyles: StyleSplitter = (
           if (valInit === 'list') {
             // role = "list"
             viewProps[keyInit] = valInit
-          } else if (accessibilityAriaRoleToNativeRole[valInit]) {
-            viewProps['accessibilityRole'] = accessibilityAriaRoleToNativeRole[valInit]
+          } else if (accessibilityWebRoleToNativeRole[valInit]) {
+            viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+              valInit
+            ] as GetStyleResult['viewProps']['AccessibilityRole']
           }
           return
         }
@@ -1346,40 +1349,4 @@ const accessibilityRoleToWebRole = {
   link: 'link',
   none: 'presentation',
   summary: 'region',
-}
-
-// Note: left side is not alway web role, for example togglebutton
-const accessibilityAriaRoleToNativeRole = {
-  slider: 'adjustable',
-  heading: 'header',
-  img: 'image',
-  link: 'link',
-  presentation: 'none',
-  region: 'summary',
-  group: 'none',
-  alert: 'alert',
-  button: 'button',
-  checkbox: 'checkbox',
-  combobox: 'combobox',
-  imagebutton: 'imagebutton',
-  keyboardkey: 'keyboardkey',
-  menu: 'menu',
-  menubar: 'menubar',
-  menuitem: 'menuitem',
-  none: 'none',
-  progressbar: 'progressbar',
-  radio: 'radio',
-  radiogroup: 'radiogroup',
-  scrollbar: 'scrollbar',
-  searchbox: 'search',
-  spinbutton: 'spinbutton',
-  grid: 'grid',
-  summary: 'summary',
-  switch: 'switch',
-  tab: 'tab',
-  tablist: 'tablist',
-  text: 'text',
-  timer: 'timer',
-  toolbar: 'toolbar',
-  togglebutton: 'togglebutton',
 }
