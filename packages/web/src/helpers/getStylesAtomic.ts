@@ -102,15 +102,15 @@ export function styleToCSS(style: Record<string, any>) {
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius) {
     const offset = shadowOffset || defaultOffset
-    const shadow = `${normalizeValueWithProperty(
-      offset.width
-    )} ${normalizeValueWithProperty(offset.height)} ${normalizeValueWithProperty(
-      shadowRadius
-    )} ${shadowColor}`
+    const width = normalizeValueWithProperty(offset.width)
+    const height = normalizeValueWithProperty(offset.height)
+    const radius = normalizeValueWithProperty(shadowRadius)
+    const shadow = `${width} ${height} ${radius} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     style.shadowOffset = undefined
     style.shadowRadius = undefined
     style.shadowColor = undefined
+    style.shadowOpacity = undefined
   }
 
   // text-shadow

@@ -103,6 +103,16 @@ describe('getSplitStyles', () => {
     expect(styles.rulesToInsert[0].value).toEqual('var(--zIndex-2)')
   })
 
+  test(`shadowColor + shadowOpacity`, () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      shadowColor: 'red',
+      shadowOpacity: 0.5,
+    })
+    expect(styles.rulesToInsert.length).toEqual(1)
+    expect(styles.rulesToInsert[0].value).toEqual(`0px 0px 0px rgba(255,0,0,0.50)`)
+    expect(styles.rulesToInsert[0].property).toEqual(`boxShadow`)
+  })
+
   const timed = async (fn: Function, opts?: { runs?: number }) => {
     const start = performance.now()
     const runs = opts?.runs ?? 1
