@@ -20,7 +20,7 @@ export const nativeAccessibilityState = {
   'aria-expanded': 'expanded',
 }
 
-// Note: left side is not alway web role, for example togglebutton
+// Note: left side is not always web role, for example togglebutton
 export const accessibilityWebRoleToNativeRole = {
   slider: 'adjustable',
   heading: 'header',

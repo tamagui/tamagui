@@ -240,6 +240,11 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = shorthands[keyInit]
     }
 
+    // edge-case: given we have `role="A"`, without this check, `accessibilityRole="B"` doesn't overwrite `role` and the value remains "A"
+    if (keyInit === "accessibilityRole") {
+      usedKeys["role"] = 1
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isAndroid) {
         // only works in android
@@ -249,7 +254,7 @@ export const getSplitStyles: StyleSplitter = (
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
-      } else if (keyInit.startsWith('aria-*') || keyInit === 'role') {
+      } else if (keyInit.startsWith('aria-') || keyInit === 'role') {
         if (webToNativeAccessibilityDirectMap[keyInit]) {
           const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
           if (keyInit === 'aria-hidden') {
