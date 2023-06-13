@@ -3979,6 +3979,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tamagui/animations-reanimated@npm:^1.33.2":
+  version: 1.33.2
+  resolution: "@tamagui/animations-reanimated@npm:1.33.2"
+  dependencies:
+    "@tamagui/animations-react-native": 1.33.2
+    "@tamagui/use-presence": 1.33.2
+    "@tamagui/web": 1.33.2
+  checksum: 02edc92c71eb88ab458595c43b9ea9c48b7c4c374a4378072e6ce74a49b3c483c323f2aa74e78f7cbc48b06e1da9c3e4a40a020e4bac955403fd0950fc499c67
+  languageName: node
+  linkType: hard
+
 "@tamagui/aria-hidden@npm:1.33.2":
   version: 1.33.2
   resolution: "@tamagui/aria-hidden@npm:1.33.2"
@@ -9663,6 +9674,7 @@ __metadata:
     "@expo/metro-config": ^0.3.21
     "@my/ui": 0.0.1
     "@react-navigation/native": ^6.1.6
+    "@tamagui/animations-reanimated": ^1.33.2
     "@tamagui/babel-plugin": latest
     "@types/react-native": ^0.71.3
     app: 0.0.0

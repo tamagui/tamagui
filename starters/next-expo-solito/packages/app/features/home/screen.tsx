@@ -13,7 +13,7 @@ import {
 
 import { Square, useControllableState, useEvent } from 'tamagui'
 import { Button as RNButton, View } from 'react-native'
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { ChevronDown, ChevronUp, PlayCircle } from '@tamagui/lucide-icons'
 import React, { useState } from 'react'
 import { useLink } from 'solito/link'
 
@@ -56,11 +56,15 @@ export function HomeScreen() {
           </Anchor>
         </Paragraph>
       </YStack>
-      <H3>Reanimated 2 Animation</H3>
-      <ReanimatedAnimationDemo />
+
       <H3>Tamagui Animation</H3>
       <TamaguiAnimationDemo />
 
+      <H3>Reanimated 2 Animation</H3>
+      <ReanimatedAnimationDemo />
+
+      <H3>Tamagui Reanimated 2 Animation</H3>
+      <ReanimatedHoverDemo />
       <XStack>
         <Button {...linkProps}>Link to user</Button>
       </XStack>
@@ -146,7 +150,26 @@ function ReanimatedAnimationDemo() {
     </View>
   )
 }
-
+function ReanimatedHoverDemo() {
+  return (
+    <Square
+      borderColor="$borderColor"
+      animation="quick"
+      elevation="$4"
+      backgroundColor="$color9"
+      size={104}
+      borderRadius="$9"
+      hoverStyle={{
+        scale: 1.2,
+      }}
+      pressStyle={{
+        scale: 0.9,
+      }}
+    >
+      <PlayCircle />
+    </Square>
+  )
+}
 export function TamaguiAnimationDemo(props) {
   const [positionI, setPositionI] = useControllableState({
     strategy: 'most-recent-wins',
@@ -177,17 +200,9 @@ export function TamaguiAnimationDemo(props) {
           scale: 0.9,
         }}
         {...position}
-      ></Square>
-      <Button
-        position="absolute"
-        bottom={20}
-        left={20}
-        icon={Play}
-        theme={props.tint}
-        size="$5"
-        circular
-        onPress={onPress}
-      />
+      >
+        <Button icon={Play} theme={props.tint} size="$5" circular onPress={onPress} />
+      </Square>
     </>
   )
 }

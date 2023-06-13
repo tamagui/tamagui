@@ -13,6 +13,7 @@
     "@babel/runtime": "^7.18.9",
     "@my/ui": "0.0.1",
     "@react-navigation/native": "^6.1.6",
+    "@tamagui/animations-reanimated": "^1.33.2",
     "@types/react-native": "^0.71.3",
     "app": "0.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
