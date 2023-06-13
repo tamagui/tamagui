@@ -12,7 +12,16 @@ import prompts from 'prompts'
 const home = homedir()
 const tamaguiDir = path.join(home, '.tamagui')
 
-export const installGeneratedPackage = async (type: 'font' | 'icon') => {
+export const generatedPackageTypes = ['font', 'icon'] as const
+export const installGeneratedPackage = async (type: string, packagesPath?: string) => {
+  packagesPath = packagesPath || 'packages'
+  if (!generatedPackageTypes.includes(type as (typeof generatedPackageTypes)[number])) {
+    throw new Error(
+      `${
+        type ? `Type "${type}" is Not supported.` : `No type provided.`
+      } Supported types: ${generatedPackageTypes.join(', ')}`
+    )
+  }
   const repoName = type === 'font' ? 'tamagui-google-fonts' : 'tamagui-iconify'
   console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
 
@@ -63,14 +72,15 @@ export const installGeneratedPackage = async (type: 'font' | 'icon') => {
   })
 
   const packageName = `${type === 'font' ? 'font-' : ''}${result.packageName}`
-  const packageDir = path.join(tempDir, `packages`, packageName)
+  const packageDir = path.join(tempDir, 'packages', packageName)
 
   execSync(
     `cd ${tempDir} &&
     git sparse-checkout set --no-cone packages/${packageName}
     git checkout`
   )
-  const finalDir = path.join('packages', packageName)
+  const finalDir = path.join(packagesPath, packageName)
+  await ensureDir(packagesPath)
   await copy(packageDir, finalDir)
   console.log(`Created the package under ${finalDir}`)
 }
