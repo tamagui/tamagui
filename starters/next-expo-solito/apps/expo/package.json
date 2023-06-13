@@ -4,7 +4,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "TAMAGUI_TARGET=native npx expo start -c",
+    "dev": "TAMAGUI_TARGET=native npx expo start -c",
     "android": "TAMAGUI_TARGET=native npx expo run:android",
     "ios": "TAMAGUI_TARGET=native npx expo run:ios",
     "eject": "npx expo eject"
