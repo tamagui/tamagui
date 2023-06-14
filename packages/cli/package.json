@@ -4,6 +4,7 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
+  "module": "dist/esm",
   "bin": {
     "tama": "./dist/cjs/index.js",
     "tamagui": "./dist/cjs/index.js"
@@ -21,7 +22,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/esm/index.mjs"
+      "require": "./dist/esm/index.js"
     }
   },
   "scripts": {
@@ -37,6 +38,7 @@
     "@fastify/static": "^5.0.2",
     "@tamagui/build": "1.33.3",
     "@tamagui/create-theme": "1.33.3",
+    "@tamagui/generate-themes": "1.33.3",
     "@tamagui/static": "1.33.3",
     "@tamagui/types": "1.33.3",
     "@tamagui/vite-plugin": "1.33.3",

@@ -4786,6 +4786,7 @@ __metadata:
     "@fastify/static": ^5.0.2
     "@tamagui/build": 1.33.3
     "@tamagui/create-theme": 1.33.3
+    "@tamagui/generate-themes": 1.33.3
     "@tamagui/static": 1.33.3
     "@tamagui/types": 1.33.3
     "@tamagui/vite-plugin": 1.33.3
@@ -5269,6 +5270,17 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/generate-themes@1.33.3, @tamagui/generate-themes@workspace:packages/generate-themes":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/generate-themes@workspace:packages/generate-themes"
+  dependencies:
+    "@tamagui/create-theme": 1.33.3
+    "@tamagui/types": 1.33.3
+    esbuild-register: ^3.4.2
+    fs-extra: ^11.1.0
   languageName: unknown
   linkType: soft
 
@@ -6125,6 +6137,7 @@ __metadata:
     "@tamagui/config-default-node": 1.33.3
     "@tamagui/core-node": 1.33.3
     "@tamagui/fake-react-native": 1.33.3
+    "@tamagui/generate-themes": 1.33.3
     "@tamagui/helpers": 1.33.3
     "@tamagui/helpers-node": 1.33.3
     "@tamagui/proxy-worm": 1.33.3

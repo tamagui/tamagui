@@ -25,7 +25,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { generateThemes } = await import('./generate-themes.js')
+      const { generateThemes } = await import('@tamagui/generate-themes')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })

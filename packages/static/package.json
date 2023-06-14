@@ -40,6 +40,7 @@
     "@tamagui/config-default-node": "1.33.3",
     "@tamagui/core-node": "1.33.3",
     "@tamagui/fake-react-native": "1.33.3",
+    "@tamagui/generate-themes": "1.33.3",
     "@tamagui/helpers": "1.33.3",
     "@tamagui/helpers-node": "1.33.3",
     "@tamagui/proxy-worm": "1.33.3",

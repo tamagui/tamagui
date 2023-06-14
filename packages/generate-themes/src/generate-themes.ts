@@ -1,21 +1,13 @@
-#!/usr/bin/env node
-
 import Module from 'module'
 
 import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
-import { CLIResolvedOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
-export async function generateThemes(
-  options: CLIResolvedOptions & {
-    inPath: string
-    outPath: string
-  }
-) {
+export async function generateThemes(options: { inPath: string; outPath: string }) {
   require('esbuild-register/dist/node').register()
 
   let promise: Promise<null | ThemeBuilder<any>> | null = null as any
@@ -41,21 +33,25 @@ export async function generateThemes(
     return out
   }
 
-  const requiredThemes = require(options.inPath)
-  const themes = requiredThemes['default'] || requiredThemes['themes']
-  const generatedThemes = generatedThemesToTypescript(themes)
+  try {
+    const requiredThemes = require(options.inPath)
+    const themes = requiredThemes['default'] || requiredThemes['themes']
+    const generatedThemes = generatedThemesToTypescript(themes)
 
-  const themeBuilder = promise ? await promise : null
+    const themeBuilder = promise ? await promise : null
 
-  await Promise.all([
-    fs.writeFile(options.outPath, generatedThemes),
-    themeBuilder?.state
-      ? fs.writeFile(
-          `${options.outPath}.theme-builder.json`,
-          JSON.stringify(themeBuilder?.state)
-        )
-      : null,
-  ])
+    await Promise.all([
+      fs.writeFile(options.outPath, generatedThemes),
+      themeBuilder?.state
+        ? fs.writeFile(
+            `${options.outPath}.theme-builder.json`,
+            JSON.stringify(themeBuilder?.state)
+          )
+        : null,
+    ])
+  } finally {
+    Module.prototype.require = ogRequire
+  }
 }
 
 function generatedThemesToTypescript(themes: Record<string, any>) {

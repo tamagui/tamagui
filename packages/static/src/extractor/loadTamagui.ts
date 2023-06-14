@@ -20,6 +20,7 @@ import {
 import {
   generateTamaguiStudioConfig,
   generateTamaguiStudioConfigSync,
+  generateTamaguiThemes,
 } from './generateTamaguiStudioConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
@@ -57,7 +58,10 @@ export async function loadTamagui(
     }
   }
 
-  await generateTamaguiStudioConfig(options, bundleInfo)
+  await Promise.all([
+    generateTamaguiStudioConfig(options, bundleInfo),
+    generateTamaguiThemes(options),
+  ])
 
   return bundleInfo
 }

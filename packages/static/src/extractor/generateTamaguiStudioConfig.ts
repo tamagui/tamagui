@@ -1,12 +1,14 @@
 import { join } from 'path'
 
 import { getVariableValue } from '@tamagui/core-node'
+import { generateThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
-const confFile = join(process.cwd(), '.tamagui', 'tamagui.config.json')
+const tamaguiDir = join(process.cwd(), '.tamagui')
+const confFile = join(tamaguiDir, 'tamagui.config.json')
 
 /**
  * Sort of a super-set of bundleConfig(), this code needs some refactoring ideally
@@ -21,7 +23,8 @@ export async function generateTamaguiStudioConfig(
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
     const out = transformConfig(config)
-    await fs.writeJSON(confFile, out, {
+
+    fs.writeJSON(confFile, out, {
       spaces: 2,
     })
   } catch (err) {
@@ -30,6 +33,21 @@ export async function generateTamaguiStudioConfig(
     }
     // ignore for now
   }
+}
+
+export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
+  if (!tamaguiOptions.themes) {
+    return
+  }
+
+  const inPath = tamaguiOptions.themes.startsWith('.')
+    ? join(process.cwd(), tamaguiOptions.themes)
+    : require.resolve(tamaguiOptions.themes)
+
+  await generateThemes({
+    inPath,
+    outPath: join(tamaguiDir, `tamagui.themes.json`),
+  })
 }
 
 export function generateTamaguiStudioConfigSync(

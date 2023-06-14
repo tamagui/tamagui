@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "generate": "tamagui generate-themes ./src/themes-new.tsx ./src/generated-new.ts",
+    "generate": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
     "build": "tamagui-build",
     "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
@@ -21,6 +21,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./src/themes-new.ts": "./src/themes-new.ts",
     "./generated.json": {
       "types": "./generated.d.ts",
       "import": "./generated.json",
