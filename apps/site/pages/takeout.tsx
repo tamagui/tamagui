@@ -4,7 +4,7 @@ import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -19,6 +19,7 @@ import {
   AnimatePresence,
   Button,
   ButtonProps,
+  Circle,
   Dialog,
   GetProps,
   H1,
@@ -751,17 +752,25 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     We're working on bringing many nice new features that you can pick and
-                    choose from:
+                    choose from, some of which are already in progress:
                   </Paragraph>
 
-                  <YStack tag="ul" space="$3">
-                    <Point>Simple state management system</Point>
-                    <Point>Reanimated integration</Point>
-                    <Point>Layout animations</Point>
-                    <Point>Entire Google font library</Point>
-                    <Point>Maestro native integration testing</Point>
-                    <Point>Notifications</Point>
-                  </YStack>
+                  <Separator />
+
+                  <XStack tag="ul" fw="wrap" gap="$4" my="$4">
+                    <Bullet inProgress>Maestro for native integration testing</Bullet>
+                    <Bullet inProgress>Playwright integration tests</Bullet>
+                    <Bullet inProgress>Reanimated + reanimated modules</Bullet>
+                    <Bullet inProgress>Simple state management system</Bullet>
+                    <Bullet inProgress>Layout animations</Bullet>
+                    <Bullet inProgress>Storybook</Bullet>
+                    <Bullet>Notifications</Bullet>
+                    <Bullet>Alternative deployment targets</Bullet>
+                    <Bullet>Simple data fetching library</Bullet>
+                    <Bullet>Premium font add-ons</Bullet>
+                    <Bullet>Unified RN and web testing tools</Bullet>
+                    <Bullet>Improved CI/CD caching</Bullet>
+                  </XStack>
 
                   <Spacer />
                 </YStack>
@@ -844,6 +853,59 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
         </ContainerXL>
       </YStack>
     </>
+  )
+}
+
+const Bullet = ({
+  size = '$6',
+  children,
+  subtitle,
+  inProgress,
+  ...props
+}: XStackProps & {
+  children: any
+  subtitle?: any
+  size?: SizeTokens
+  inProgress?: boolean
+}) => {
+  return (
+    <XStack
+      tag="li"
+      ai="flex-start"
+      space
+      f={1}
+      {...props}
+      w="calc(50% - 10px)"
+      ov="hidden"
+    >
+      <YStack y={-1}>
+        <Circle size={28} boc="$borderColor" bw={1}>
+          {inProgress ? (
+            <Hammer size={24} color="$color10" />
+          ) : (
+            <Dot size={24} color="$color10" />
+          )}
+        </Circle>
+      </YStack>
+      <YStack f={1}>
+        <Paragraph wordWrap="break-word" size={size}>
+          {children}
+        </Paragraph>
+        {!!subtitle && (
+          <Paragraph
+            size={
+              getSize(size, {
+                shift: -2,
+              }) as any
+            }
+            theme="alt2"
+            o={0.5}
+          >
+            {subtitle}
+          </Paragraph>
+        )}
+      </YStack>
+    </XStack>
   )
 }
 
