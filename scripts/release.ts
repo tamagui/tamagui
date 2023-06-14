@@ -41,6 +41,10 @@ const isCI = process.argv.includes('--ci')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
 const nextVersion = (() => {
+  if (rePublish) {
+    return curVersion
+  }
+
   const plusVersion = skipVersion ? 0 : 1
   const curPatch = +curVersion.split('.')[2] || 0
   const patchVersion = patch ? curPatch + plusVersion : 0
@@ -363,7 +367,7 @@ async function run() {
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    if (!rePublish) {
+    if (!rePublish || finish) {
       await spawnify(`git add -A`)
       await spawnify(`git commit -m ${gitTag}`)
       await spawnify(`git tag ${gitTag}`)
