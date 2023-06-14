@@ -12,6 +12,7 @@ export type ThemeManagerState = {
     theme?: ThemeParsed | null;
     className?: string;
     parentName?: string;
+    componentName?: string;
 };
 export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
@@ -22,7 +23,6 @@ export declare class ThemeManager {
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
     scheme: 'light' | 'dark' | null;
-    componentName: string | undefined;
     constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;

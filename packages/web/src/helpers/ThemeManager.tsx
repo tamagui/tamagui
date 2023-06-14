@@ -22,6 +22,7 @@ export type ThemeManagerState = {
   theme?: ThemeParsed | null
   className?: string
   parentName?: string
+  componentName?: string
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -39,7 +40,6 @@ export class ThemeManager {
   parentManager: ThemeManager | null = null
   state: ThemeManagerState = emptyState
   scheme: 'light' | 'dark' | null = null
-  componentName = undefined as undefined | string
 
   constructor(
     public props: ThemeProps = {},
@@ -48,9 +48,6 @@ export class ThemeManager {
     if (parentManagerIn === 'root') {
       this.updateState(props, false)
       return
-    }
-    if (props.componentName) {
-      this.componentName = props.componentName
     }
 
     if (!parentManagerIn) {
@@ -80,7 +77,6 @@ export class ThemeManager {
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
     shouldNotify = true
   ) {
-    props = { ...props, componentName: this.componentName }
     const isChanging = (() => {
       if (props.forceTheme) {
         this.state.theme = props.forceTheme
@@ -330,6 +326,7 @@ function getState(
         theme: getThemeUnwrapped(themes[found]),
         className: getNextThemeClassName(found, props),
         parentName,
+        componentName,
       }
       break
     }
