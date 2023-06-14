@@ -240,53 +240,95 @@ const TakeoutHero = () => {
         TAMAGUI
       </Paragraph>
 
-      <TAKEOUT zi={1000} />
-
-      {!disableMotion && (
+      {/* animated borders shine */}
+      <YStack fullscreen y={33}>
         <ThemeTint>
-          {/* main color slices */}
-          <TAKEOUT
-            className="clip-slice mix-blend"
-            pos="absolute"
-            t={44}
-            color="$color7"
-            scale={1.04}
-            o={1}
-          />
+          <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
+        </ThemeTint>
+      </YStack>
 
-          {/* alt color slices */}
-          <ThemeTintAlt>
+      <YStack
+        pos="absolute"
+        className="mix-blend"
+        y={-35}
+        style={{
+          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%)`,
+        }}
+      >
+        <TAKEOUT className="" zi={1000} color="#fff" />
+      </YStack>
+
+      <YStack
+        className="mix-blend"
+        style={{
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%)`,
+        }}
+      >
+        <TAKEOUT zi={1000} />
+
+        {!disableMotion && (
+          <ThemeTint>
+            {/* main color slices */}
             <TAKEOUT
-              className="clip-slice mix-blend animate-fade2 slice-alt"
+              className="clip-slice mix-blend"
               pos="absolute"
-              t={44}
               color="$color7"
               scale={1.04}
               o={1}
             />
-          </ThemeTintAlt>
 
-          {/* alt color slices */}
-          <ThemeTintAlt offset={1}>
-            <TAKEOUT
-              className="clip-slice mix-blend animate-fade2"
-              pos="absolute"
-              t={40}
-              color="$color7"
-              scale={1}
-            />
-          </ThemeTintAlt>
+            {/* alt color slices */}
+            <ThemeTintAlt>
+              <TAKEOUT
+                className="clip-slice mix-blend animate-fade2 slice-alt"
+                pos="absolute"
+                color="$color7"
+                y={2}
+                o={1}
+              />
+            </ThemeTintAlt>
 
-          {/* animated borders shine */}
-          <TAKEOUT
-            pos="absolute"
-            t={45}
-            className="theme-shadow masked2"
-            zi={100}
-            color="transparent"
-          />
-        </ThemeTint>
-      )}
+            {/* alt color slices */}
+            <ThemeTintAlt offset={1}>
+              <TAKEOUT
+                className="clip-slice mix-blend animate-fade2"
+                pos="absolute"
+                color="$color7"
+                scale={1}
+              />
+            </ThemeTintAlt>
+          </ThemeTint>
+        )}
+
+        <YStack
+          pos="absolute"
+          fullscreen
+          zi={2}
+          pe="none"
+          ai="center"
+          jc="center"
+          y={30}
+          scaleX={0.9}
+        >
+          <TAKEOUT className="bg-dot-grid clip-text" />
+        </YStack>
+
+        {/* takeout shadow */}
+        <YStack
+          pos="absolute"
+          fullscreen
+          zi={-1}
+          pe="none"
+          ai="center"
+          jc="center"
+          x={-10}
+          y={-10}
+          o={0.75}
+          scale={1.05}
+        >
+          <TAKEOUT color="$background" className="" />
+        </YStack>
+      </YStack>
 
       <XStack my="$5" gap={125} f={1} jc="space-between" className="mix-blend">
         <IconFrame>
@@ -339,36 +381,6 @@ const TakeoutHero = () => {
           />
         </IconFrame>
       </XStack>
-
-      <YStack
-        pos="absolute"
-        fullscreen
-        zi={2}
-        pe="none"
-        ai="center"
-        jc="center"
-        scale={1.2}
-        y={-30}
-        scaleX={0.9}
-      >
-        <TAKEOUT className="bg-dot-grid clip-text" />
-      </YStack>
-
-      {/* takeout shadow */}
-      <YStack
-        pos="absolute"
-        fullscreen
-        zi={-1}
-        pe="none"
-        ai="center"
-        jc="center"
-        x={-10}
-        y={-50}
-        o={0.25}
-        scale={1.2}
-      >
-        <TAKEOUT color="$backgroundStrong" className="" />
-      </YStack>
 
       <YStack
         position="absolute"
