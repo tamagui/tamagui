@@ -13,10 +13,39 @@ const home = homedir()
 const tamaguiDir = join(home, '.tamagui')
 let targetGitDir = ''
 
+export const cloneStarter = async (
+  template: (typeof templates)[number],
+  resolvedProjectPath: string,
+  projectName: string
+) => {
+  targetGitDir = IS_TEST
+    ? join(tamaguiDir, 'tamagui-test', template.repo.url.split('/').at(-1)!)
+    : join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
+
+  console.log()
+  await setupTamaguiDotDir(template)
+  const starterDir = join(targetGitDir, ...template.repo.dir)
+  console.log()
+  console.log(
+    `Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`
+  )
+  console.log()
+
+  // if (!(await pathExists(starterDir))) {
+  //   console.error(`Missing template for ${template.value} in ${starterDir}`)
+  //   process.exit(1)
+  // }
+  await copy(starterDir, resolvedProjectPath)
+  execSync(`rm -rf ${resolvedProjectPath}/.git`)
+
+  console.log(chalk.green(`${projectName} created!`))
+  console.log()
+}
+
 async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry = false) {
   const repoRoot = join(__dirname, '..', '..', '..')
 
-  console.log(`Setting up ${chalk.blueBright(tamaguiDir)}...`)
+  console.log(`Setting up ${chalk.blueBright(targetGitDir)}...`)
 
   cd(repoRoot)
 
@@ -28,14 +57,14 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     }
   }
 
-  const branch =
-    IS_TEST && template.type === 'included-in-monorepo'
-      ? // use current branch
-        (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
-      : template.repo.branch
+  const branch = IS_TEST
+    ? // use current branch
+      (await $`git rev-parse --abbrev-ref HEAD`).stdout.trim()
+    : template.repo.branch
 
   // setup tests for CI
   if (IS_TEST) {
+    console.log(`Test mode: cleaning old tamagui git dir`)
     // always clean for test
     await remove(targetGitDir)
     if (!(await pathExists(join(repoRoot, '.git')))) {
@@ -110,33 +139,4 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     await remove(targetGitDir)
     await setupTamaguiDotDir(template, true)
   }
-}
-
-export const cloneStarter = async (
-  template: (typeof templates)[number],
-  resolvedProjectPath: string,
-  projectName: string
-) => {
-  targetGitDir = IS_TEST
-    ? join(tamaguiDir, 'tamagui-test', template.repo.url.split('/').at(-1)!)
-    : join(tamaguiDir, 'tamagui', template.repo.url.split('/').at(-1)!)
-
-  console.log()
-  await setupTamaguiDotDir(template)
-  const starterDir = join(targetGitDir, ...template.repo.dir)
-  console.log()
-  console.log(
-    `Copying starter from ${starterDir} into ${chalk.blueBright(projectName)}...`
-  )
-  console.log()
-
-  // if (!(await pathExists(starterDir))) {
-  //   console.error(`Missing template for ${template.value} in ${starterDir}`)
-  //   process.exit(1)
-  // }
-  await copy(starterDir, resolvedProjectPath)
-  execSync(`rm -rf ${resolvedProjectPath}/.git`)
-
-  console.log(chalk.green(`${projectName} created!`))
-  console.log()
 }

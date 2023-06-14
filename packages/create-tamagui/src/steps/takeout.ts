@@ -13,6 +13,7 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ projectName }) => {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`
 ${tamaguiRainbowAsciiArt
   .split('\n')
@@ -22,6 +23,7 @@ ${takeoutAsciiArt}
 
 `)
 
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log()
   const { setupSupabase } = await prompts({
     name: 'setupSupabase',
@@ -31,6 +33,7 @@ ${takeoutAsciiArt}
   })
 
   if (setupSupabase) {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log()
     const { startLocalSupabase } = await prompts({
       name: 'startLocalSupabase',
@@ -44,6 +47,7 @@ ${takeoutAsciiArt}
       console.log("Don't forget to create storage bucket with the name `avatars`.")
     }
 
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log()
     const { setupRemoteSupabase } = await prompts({
       name: 'setupRemoteSupabase',
@@ -55,6 +59,7 @@ ${takeoutAsciiArt}
 
     if (setupRemoteSupabase) {
       execSync(`npx supabase login`, { stdio: 'inherit' })
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log()
       const { supabaseRefId } = await prompts({
         name: 'supabaseRefId',
@@ -76,6 +81,7 @@ ${takeoutAsciiArt}
     }
   }
 
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`
 ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 

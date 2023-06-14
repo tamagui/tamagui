@@ -9,6 +9,7 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ projectName }) => {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`
 ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 
