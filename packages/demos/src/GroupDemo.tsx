@@ -4,7 +4,7 @@ import { Button, Group, ListItem, Separator, XGroup, YGroup, YStack } from 'tama
 export function GroupDemo() {
   return (
     <YStack padding="$3" space="$2" alignItems="center">
-      <Group axis="horizontal">
+      <Group orientation="horizontal">
         <Group.Item>
           <Button>First</Button>
         </Group.Item>
