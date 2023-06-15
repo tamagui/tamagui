@@ -5073,6 +5073,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/generate-themes@workspace:packages/generate-themes"
   dependencies:
+    "@tamagui/build": 1.33.4
     "@tamagui/create-theme": 1.33.4
     "@tamagui/types": 1.33.4
     esbuild-register: ^3.4.2
@@ -5228,6 +5229,7 @@ __metadata:
     "@tamagui/demos": 1.33.4
     "@tamagui/font-inter": 1.33.4
     "@tamagui/lucide-icons": 1.33.4
+    "@tamagui/sandbox-ui": 1.33.4
     "@tamagui/shorthands": 1.33.4
     "@tamagui/themes": 1.33.4
     "@welldone-software/why-did-you-render": ^7.0.1
@@ -5244,9 +5246,9 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     metro-runtime: "*"
     mini-css-extract-plugin: ^2.7.6
-    react: ^18.2.0
+    react: 18.2.0
     react-dom: ^18.2.0
-    react-native: ^0.71.7
+    react-native: 0.71.8
     react-native-gesture-handler: ^2.8.0
     react-native-ios-modal: ^0.1.8
     react-native-safe-area-context: 4.5.0
@@ -5605,7 +5607,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox-ui@workspace:packages/sandbox-ui":
+"@tamagui/sandbox-ui@1.33.4, @tamagui/sandbox-ui@workspace:packages/sandbox-ui":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:packages/sandbox-ui"
   dependencies:

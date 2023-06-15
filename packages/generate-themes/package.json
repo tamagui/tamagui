@@ -28,6 +28,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/build": "1.33.4",
     "@tamagui/create-theme": "1.33.4",
     "@tamagui/types": "1.33.4",
     "esbuild-register": "^3.4.2",
