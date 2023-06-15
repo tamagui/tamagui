@@ -121,7 +121,9 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     color: 'var(--color10)',
     opacity: 0.25,
     background: 'transparent',
-    recenterOnRest: true,
+    style: {
+      transition: `all ease-out 500ms`,
+    },
   })
 
   const borderGlow = useHoverGlow({
@@ -161,7 +163,9 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
         <YStack fullscreen bg="$background" pe="none" zi={-1} o={0.5} />
 
         <YStack f={1} space zi={100}>
-          <H2>{title}</H2>
+          <H2 fontFamily="$munro" size="$10" my={-12}>
+            {title}
+          </H2>
           {children}
 
           {!!icon && (
@@ -205,6 +209,7 @@ const TakeoutHero = () => {
       ai="center"
       jc="center"
       className="ease-in ms300 all"
+      pos="relative"
       $xxs={{
         scale: 0.3,
       }}
@@ -241,7 +246,7 @@ const TakeoutHero = () => {
       </Paragraph>
 
       {/* animated borders shine */}
-      <YStack fullscreen y={33}>
+      <YStack pos="absolute" y={-38}>
         <ThemeTint>
           <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
         </ThemeTint>
@@ -252,16 +257,18 @@ const TakeoutHero = () => {
         className="mix-blend"
         y={-35}
         style={{
-          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%)`,
+          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
       >
-        <TAKEOUT className="" zi={1000} color="#fff" />
+        <ThemeTint>
+          <TAKEOUT className="" zi={1000} color="$color10" />
+        </ThemeTint>
       </YStack>
 
       <YStack
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -274,7 +281,7 @@ const TakeoutHero = () => {
               pos="absolute"
               color="$color7"
               scale={1.04}
-              o={1}
+              o={0.8}
             />
 
             {/* alt color slices */}
@@ -284,7 +291,7 @@ const TakeoutHero = () => {
                 pos="absolute"
                 color="$color7"
                 y={2}
-                o={1}
+                o={0.8}
               />
             </ThemeTintAlt>
 
@@ -321,8 +328,7 @@ const TakeoutHero = () => {
           pe="none"
           ai="center"
           jc="center"
-          x={-10}
-          y={-10}
+          y={-20}
           o={0.75}
           scale={1.05}
         >
@@ -330,7 +336,7 @@ const TakeoutHero = () => {
         </YStack>
       </YStack>
 
-      <XStack my="$5" gap={125} f={1} jc="space-between" className="mix-blend">
+      <XStack my={21} gap={125} f={1} jc="space-between" className="mix-blend">
         <IconFrame>
           <Image
             className="pixelate"
@@ -431,6 +437,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
       <PurchaseModal productWithPrices={starter} />
 
+      {/* big background outlined font */}
       <YStack
         pos="absolute"
         fullscreen
@@ -532,7 +539,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
               <YStack f={1} space="$6">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-210}
+                  mt={-230}
                   mb={-20}
                   size="$7"
                   ls={4}
@@ -551,7 +558,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     color="$color10"
                     style={{
                       // @ts-ignore
-                      backgroundImage: `-webkit-linear-gradient(var(--color9), var(--yellow9))`,
+                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9) 50%, #fff 50%)`,
                     }}
                     $lg={{
                       size: '$11',
@@ -566,8 +573,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
                 <HeartsRow />
 
-                <Paragraph size="$9" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the moon or the ✨ - success is up to you. But if you
+                <Paragraph fontFamily="$munro" size="$10" fow="400" $sm={{ size: '$8' }}>
+                  We can't promise the moon or the ✨, success is up to you. But if you
                   want a cheat code to shipping a stunning web + native app fast, you've
                   found it.
                 </Paragraph>
@@ -770,7 +777,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                   <Separator />
 
                   <XStack tag="ul" fw="wrap" gap="$4" my="$4">
-                    <Bullet inProgress>Maestro for native integration testing</Bullet>
+                    <Bullet inProgress>Maestro native integration tests</Bullet>
                     <Bullet inProgress>Playwright integration tests</Bullet>
                     <Bullet inProgress>Reanimated + reanimated modules</Bullet>
                     <Bullet inProgress>Simple state management system</Bullet>
@@ -881,17 +888,9 @@ const Bullet = ({
   inProgress?: boolean
 }) => {
   return (
-    <XStack
-      tag="li"
-      ai="flex-start"
-      space
-      f={1}
-      {...props}
-      w="calc(50% - 10px)"
-      ov="hidden"
-    >
+    <XStack tag="li" ai="flex-start" space f={1} {...props} w="calc(50% - 10px)">
       <YStack y={-1}>
-        <Circle size={28} boc="$borderColor" bw={1}>
+        <Circle size={42} my={-6} boc="$borderColor" bw={1}>
           {inProgress ? (
             <Hammer size={24} color="$color10" />
           ) : (
@@ -1453,6 +1452,8 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
     fontSize={fontSize}
     lineHeight={lineHeight}
     mt={40}
+    whiteSpace="nowrap"
+    minWidth={970}
     ta="center"
     {...props}
   >
