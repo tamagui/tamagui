@@ -1,11 +1,33 @@
-import { useState } from 'react'
-import { Button, H1, Stack, styled, useProps } from 'tamagui'
+import { forwardRef, useState } from 'react'
+import {
+  Button,
+  GetProps,
+  H1,
+  Stack,
+  TamaguiElement,
+  Text,
+  XStack,
+  createStyledContext,
+  styled,
+  useProps,
+  withStaticProperties,
+} from 'tamagui'
+
+const StyledContext = createStyledContext({
+  isInvalid: false,
+  isError: false,
+  isFocused: false,
+})
 
 const Frame = styled(Stack, {
+  context: StyledContext,
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'row',
   gap: '$1',
+  w: 100,
+  h: 100,
+  bg: '$blue10',
 
   paddingVertical: '$2',
   paddingHorizontal: '$4',
@@ -60,6 +82,18 @@ const FrameContainer = Frame.styleable((propsIn, ref) => {
   return <Frame ref={ref} {...props} />
 })
 
+const ForwardRefContainer = forwardRef<TamaguiElement, GetProps<typeof Frame>>(
+  (propsIn, ref) => {
+    return (
+      <Stack>
+        <Frame ref={ref} {...propsIn} />
+      </Stack>
+    )
+  }
+)
+
+const ContainerWithStaticProperty = withStaticProperties(ForwardRefContainer, {})
+
 // TODO this is a great test: media + animation + space (test without animation too)
 // <Stack
 //       animation="bouncy"
@@ -94,22 +128,48 @@ export const Sandbox = () => {
       <Button onPress={() => setIsFocus(!isFocus)}>
         Toggle focus {isFocus ? 'true' : 'false'}
       </Button>
-      <FrameContainer
-        width={200}
-        height={200}
-        bg="$blue10"
-        isFocused={isFocus}
-        isInvalid={isInvalid || isError}
-        isError={isError}
-      />
-      <Frame
-        width={200}
-        height={200}
-        bg="$blue10"
-        isFocused={isFocus}
-        isInvalid={isInvalid || isError}
-        isError={isError}
-      />
+      <XStack>
+        <Stack>
+          <Text>With Styled Context</Text>
+          <StyledContext.Provider
+            isFocused={isFocus}
+            isInvalid={isInvalid || isError}
+            isError={isError}
+          >
+            <Stack>
+              <FrameContainer />
+              <ContainerWithStaticProperty />
+              <Frame />
+              <ForwardRefContainer />
+            </Stack>
+          </StyledContext.Provider>
+        </Stack>
+        <Stack>
+          <Text>Without Styled Context</Text>
+          <Stack>
+            <FrameContainer
+              isFocused={isFocus}
+              isInvalid={isInvalid || isError}
+              isError={isError}
+            />
+            <ContainerWithStaticProperty
+              isFocused={isFocus}
+              isInvalid={isInvalid || isError}
+              isError={isError}
+            />
+            <Frame
+              isFocused={isFocus}
+              isInvalid={isInvalid || isError}
+              isError={isError}
+            />
+            <ForwardRefContainer
+              isFocused={isFocus}
+              isInvalid={isInvalid || isError}
+              isError={isError}
+            />
+          </Stack>
+        </Stack>
+      </XStack>
     </Stack>
   )
 }
