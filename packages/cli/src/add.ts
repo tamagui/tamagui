@@ -71,7 +71,7 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     })),
   })
 
-  const packageName = `${type === 'font' ? 'font-' : ''}${result.packageName}`
+  const packageName = `${type}-${result.packageName}`
   const packageDir = path.join(tempDir, 'packages', packageName)
 
   execSync(
