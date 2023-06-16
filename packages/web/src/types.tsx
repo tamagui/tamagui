@@ -196,7 +196,12 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
   zIndex: { [key: GenericKey]: Val }
 }
 
-type Tokenify<A extends GenericTokens> = {
+type Tokenify<A extends GenericTokens> = Omit<
+  {
+    [Key in keyof A]: TokenifyRecord<A[Key]>
+  },
+  'color' | 'space' | 'size' | 'radius' | 'zIndex'
+> & {
   color: TokenifyRecord<A['color']>
   space: TokenifyRecord<A['space']>
   size: TokenifyRecord<A['size']>
@@ -396,11 +401,7 @@ export type ThemeParsed = {
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  size: TokenPrefixed<Tokens['size']>
-  color: TokenPrefixed<Tokens['color']>
-  radius: TokenPrefixed<Tokens['radius']>
-  zIndex: TokenPrefixed<Tokens['zIndex']>
-  space: TokenPrefixed<Tokens['space']>
+  [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
@@ -413,13 +414,7 @@ type Ensure$Prefix<A extends string | number | symbol> = A extends string
     : `$${A}`
   : never
 
-export type TokensMerged = {
-  size: TokensParsed['size'] & Tokens['size']
-  color: TokensParsed['color'] & Tokens['color']
-  radius: TokensParsed['radius'] & Tokens['radius']
-  zIndex: TokensParsed['zIndex'] & Tokens['zIndex']
-  space: TokensParsed['space'] & Tokens['space']
-}
+export type TokensMerged = TokensParsed & Tokens
 
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
@@ -684,16 +679,37 @@ type GetTokenFontKeysFor<
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
+// export type SpecificTokens<K extends keyof Tokens = keyof Tokens> =
+//   `${K}.${keyof Tokens[K] extends string ? keyof Tokens[K] : never}`
+
+export type SpecificTokens<
+  Record extends Object = Tokens,
+  RK extends keyof Record = keyof Record
+> = RK extends string
+  ? `${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}`
+  : never
+
 // base tokens
-export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
-export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
+export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number
+export type SpaceTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['space']>
+  | number
+  | boolean
 
 export type ColorTokens =
+  | SpecificTokens
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
   | CSSColorNames
-export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
-export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
+export type ZIndexTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['zIndex']>
+  | number
+export type RadiusTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['radius']>
+  | number
 
 // fonts
 type DefaultFont = TamaguiConfig['defaultFont']
@@ -753,7 +769,10 @@ export type ThemeValueByCategory<K extends string | number | symbol> = K extends
   ? FontWeightTokens
   : K extends 'letterSpacing'
   ? FontLetterSpacingTokens
-  : {}
+  : K extends keyof Tokens
+  ? // fallback to user-defined tokens
+    GetTokenString<Tokens[K]>
+  : never
 
 type FontKeys = 'fontFamily'
 type FontSizeKeys = 'fontSize'

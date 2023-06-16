@@ -1,3 +1,4 @@
+import { SpecificTokens, Stack, TamaguiCustomConfig } from '@tamagui/core'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { setupNativeSheet } from '@tamagui/sheet'
 import { useFonts } from 'expo-font'
@@ -11,6 +12,8 @@ import { Provider } from './provider'
 import { ThemeContext } from './useKitchenSinkTheme'
 
 setupNativeSheet('ios', ModalView)
+
+const x = <Stack margin="" />
 
 export default function App() {
   const [theme, setTheme] = useState(Appearance.getColorScheme())

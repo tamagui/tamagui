@@ -91,7 +91,9 @@ export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string,
         [key: GenericKey]: Val;
     };
 };
-type Tokenify<A extends GenericTokens> = {
+type Tokenify<A extends GenericTokens> = Omit<{
+    [Key in keyof A]: TokenifyRecord<A[Key]>;
+}, 'color' | 'space' | 'size' | 'radius' | 'zIndex'> & {
     color: TokenifyRecord<A['color']>;
     space: TokenifyRecord<A['space']>;
     size: TokenifyRecord<A['size']>;
@@ -189,11 +191,7 @@ export type ThemeParsed = {
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    size: TokenPrefixed<Tokens['size']>;
-    color: TokenPrefixed<Tokens['color']>;
-    radius: TokenPrefixed<Tokens['radius']>;
-    zIndex: TokenPrefixed<Tokens['zIndex']>;
-    space: TokenPrefixed<Tokens['space']>;
+    [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>;
 };
 type TokenPrefixed<A extends {
     [key: string]: any;
@@ -201,13 +199,7 @@ type TokenPrefixed<A extends {
     [key in Ensure$Prefix<keyof A>]: A[keyof A];
 };
 type Ensure$Prefix<A extends string | number | symbol> = A extends string ? A extends `$${string}` ? A : `$${A}` : never;
-export type TokensMerged = {
-    size: TokensParsed['size'] & Tokens['size'];
-    color: TokensParsed['color'] & Tokens['color'];
-    radius: TokensParsed['radius'] & Tokens['radius'];
-    zIndex: TokensParsed['zIndex'] & Tokens['zIndex'];
-    space: TokensParsed['space'] & Tokens['space'];
-};
+export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
@@ -395,11 +387,12 @@ export type AnimationProp = AnimationKeys | {
 ];
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
-export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
-export type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
-export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
-export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
+export type SpecificTokens<Record extends Object = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}` : never;
+export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number;
+export type SpaceTokens = SpecificTokens | GetTokenString<keyof Tokens['space']> | number | boolean;
+export type ColorTokens = SpecificTokens | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
+export type ZIndexTokens = SpecificTokens | GetTokenString<keyof Tokens['zIndex']> | number;
+export type RadiusTokens = SpecificTokens | GetTokenString<keyof Tokens['radius']> | number;
 type DefaultFont = TamaguiConfig['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
 export type Font = ParseFont<Fonts>;
@@ -425,7 +418,7 @@ type ParseFont<A extends GenericFont> = {
     face: TokenPrefixedIfExists<A['face']>;
 };
 type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
-export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
+export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<Tokens[K]> : never;
 type FontKeys = 'fontFamily';
 type FontSizeKeys = 'fontSize';
 type FontWeightKeys = 'fontWeight';
