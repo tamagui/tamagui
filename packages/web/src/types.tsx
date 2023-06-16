@@ -185,7 +185,10 @@ export type VariableColorVal = string | Variable
 
 type GenericKey = string
 
-export interface CreateTokens<Val extends VariableVal = VariableVal> {
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
+  string,
+  { [key: GenericKey]: Val }
+> & {
   color: { [key: GenericKey]: Val }
   space: { [key: GenericKey]: Val }
   size: { [key: GenericKey]: Val }

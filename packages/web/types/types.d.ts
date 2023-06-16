@@ -72,7 +72,9 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
-export interface CreateTokens<Val extends VariableVal = VariableVal> {
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
+    [key: GenericKey]: Val;
+}> & {
     color: {
         [key: GenericKey]: Val;
     };
@@ -88,7 +90,7 @@ export interface CreateTokens<Val extends VariableVal = VariableVal> {
     zIndex: {
         [key: GenericKey]: Val;
     };
-}
+};
 type Tokenify<A extends GenericTokens> = {
     color: TokenifyRecord<A['color']>;
     space: TokenifyRecord<A['space']>;
