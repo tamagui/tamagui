@@ -25,7 +25,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { generateThemes } = await import('@tamagui/generate-themes')
+      const { generateThemes } = require('@tamagui/generate-themes')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -55,7 +55,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { installGeneratedPackage } = await import('./add.js')
+      const { installGeneratedPackage } = require('./add.js')
       const [cmd, type, path] = _
       // const options = await getOptions({
       //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
@@ -101,7 +101,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { dev } = await import('./dev')
+      const { dev } = require('./dev')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })

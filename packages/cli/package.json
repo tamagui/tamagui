@@ -4,7 +4,6 @@
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
-  "module": "dist/esm",
   "bin": {
     "tama": "./dist/cjs/index.js",
     "tamagui": "./dist/cjs/index.js"
@@ -17,16 +16,8 @@
     "types",
     "dist"
   ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/esm/index.js"
-    }
-  },
   "scripts": {
-    "build": "tamagui-build --output-mjs",
+    "build": "tamagui-build",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

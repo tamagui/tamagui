@@ -2,4 +2,4 @@
 
 process.env.TAMAGUI_TARGET = 'web'
 
-import './cli'
+require('./cli')
