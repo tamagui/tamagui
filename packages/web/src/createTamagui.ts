@@ -1,6 +1,7 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
+import { getVariableValue } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -8,11 +9,7 @@ import {
   listenForSheetChanges,
   scanAllSheets,
 } from './helpers/insertStyleRule'
-import {
-  registerCSSVariable,
-  tokensValueToVariable,
-  variableToCSS,
-} from './helpers/registerCSSVariable'
+import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
 import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
@@ -84,7 +81,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       for (const key in configIn.tokens) {
         for (const skey in configIn.tokens[key]) {
-          const val = configIn.tokens[key][skey]
+          const val = getVariableValue(configIn.tokens[key][skey])
           registerCSSVariable(val)
           declarations.push(variableToCSS(val, key === 'zIndex'))
         }
