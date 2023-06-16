@@ -32,7 +32,10 @@ export const isWebTouchable =
 export const isTouchable = !isWeb || isWebTouchable
 
 if (!process.env.TAMAGUI_TARGET) {
-  console.warn(`⚠️ Must set TAMAGUI_TARGET`)
+  console.warn(`⚠️ Must set TAMAGUI_TARGET (set TAMAGUI_SHOW_TRACE=1 to see trace)`)
+  if (process.env.TAMAGUI_SHOW_TRACE) {
+    console.trace()
+  }
 }
 
 if (process.env.NODE_ENV === 'development') {
