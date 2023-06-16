@@ -155,6 +155,9 @@ async function buildJs() {
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
+
+  const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
+  
   const start = Date.now()
   return await Promise.all([
     pkgMain
@@ -162,6 +165,7 @@ async function buildJs() {
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node14',
@@ -181,6 +185,7 @@ async function buildJs() {
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node16',
@@ -200,6 +205,7 @@ async function buildJs() {
           outExtension: { '.js': '.mjs' },
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node16',
@@ -221,6 +227,7 @@ async function buildJs() {
           outExtension: { '.js': '.mjs' },
           entryPoints: files,
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           allowOverwrite: true,
