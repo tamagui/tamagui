@@ -3,9 +3,9 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
-import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
@@ -19,6 +19,7 @@ import {
   AnimatePresence,
   Button,
   ButtonProps,
+  Checkbox,
   Circle,
   Dialog,
   GetProps,
@@ -28,7 +29,6 @@ import {
   Input,
   Label,
   Paragraph,
-  RadioGroup,
   ScrollView,
   Separator,
   Sheet,
@@ -57,6 +57,40 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
+const points = {
+  monorepo: [
+    'Well-isolated configuration.',
+    '100% shared code between web and native.',
+    'Scripts for running your dev env in one command.',
+  ],
+  design: [
+    'Complete design system with the new ThemeBuilder for easy customization.',
+    'Two brand new theme packs - Neon and Pastel.',
+  ],
+  deploy: [
+    'Vercel + Preview Deploys.',
+    'Expo EAS + Expo Router.',
+    'Script that sets up both local and remote dev environments.',
+  ],
+  screens: [
+    '100% shared native and web, adapted to each platform.',
+    'Onboarding, auth, account, settings, profile, feed, edit profile.',
+    // 'Adapted to each platform.',
+    'Universal form system + validation.',
+  ],
+  assets: [
+    '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
+    'All of Google fonts, over +1500 packs.',
+    'More every month.',
+  ],
+  more: [
+    'Universal light/dark mode, image upload and Supabase utils.',
+    'TakeoutBot ongoing updates.',
+    // 'Test, lint, CI/CD.',
+    '#takeout Discord access.',
+  ],
+}
+
 const ua = (() => {
   if (typeof window === 'undefined') return
   return window.navigator.userAgent
@@ -77,6 +111,12 @@ const heroHeight = 850
 
 type TakeoutPageProps = {
   starter?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  iconsPack?: Database['public']['Tables']['products']['Row'] & {
+    prices: Database['public']['Tables']['prices']['Row'][]
+  }
+  fontsPack?: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
 }
@@ -416,10 +456,9 @@ const useDisableMotion = () => {
   )
 }
 
-export default function TakeoutPage({ starter }: TakeoutPageProps) {
+export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPageProps) {
   const store = useTakeoutStore()
   const disableMotion = useDisableMotion()
-
   return (
     <>
       <>
@@ -435,7 +474,7 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
 
       {/* <Glow /> */}
 
-      <PurchaseModal productWithPrices={starter} />
+      <PurchaseModal products={[starter!, iconsPack!, fontsPack!]} />
 
       {/* big background outlined font */}
       <YStack
@@ -601,11 +640,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-module-21.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Well-isolated configuration.</Point>
-                      <Point size="$4">100% shared code between web and native.</Point>
-                      <Point size="$4" mr="$10">
-                        Scripts for running your dev env in one command.
-                      </Point>
+                      {points.monorepo.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -614,13 +657,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/design-color-painting-palette-25.svg"
                   >
                     <YStack space>
-                      <Point size="$4">
-                        Complete design system with the new ThemeBuilder for easy
-                        customization.
-                      </Point>
-                      <Point size="$4">
-                        Two brand new theme packs - Neon and Pastel.
-                      </Point>
+                      {points.design.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -629,11 +674,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
                   >
                     <YStack space>
-                      <Point size="$4">Vercel + Preview Deploys.</Point>
-                      <Point size="$4">Expo EAS + Expo Router.</Point>
-                      <Point size="$4" mr="$10">
-                        Script that sets up both local and remote dev environments.
-                      </Point>
+                      {points.deploy.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -642,16 +691,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-app-website-ui-62.svg"
                   >
                     <YStack space>
-                      <Point size="$4">
-                        100% shared native and web, adapted to each platform.
-                      </Point>
-                      {/* <Point size="$4">Adapted to each platform.</Point> */}
-                      <Point size="$4">
-                        Onboarding, auth, account, settings, profile, feed, edit profile.
-                      </Point>
-                      <Point size="$4" mr="$10">
-                        Universal form system + validation.
-                      </Point>
+                      {points.screens.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -660,11 +708,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-plugin-33.svg"
                   >
                     <YStack space>
-                      <Point size="$4">
-                        +150 icon packs, adapted to use themes, sizing, and tree shaking.
-                      </Point>
-                      <Point size="$4">All of Google fonts, over +1500 packs.</Point>
-                      <Point size="$4">More every month.</Point>
+                      {points.assets.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                   <TakeoutCard
@@ -673,14 +725,15 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
                     icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                   >
                     <YStack space>
-                      <Point size="$4">
-                        Universal light/dark mode, image upload and Supabase utils.
-                      </Point>
-                      <Point size="$4">TakeoutBot ongoing updates.</Point>
-                      {/* <Point size="$4">Test, lint, CI/CD.</Point> */}
-                      <Point size="$4" mr="$10">
-                        #takeout Discord access.
-                      </Point>
+                      {points.more.map((point, idx, arr) => (
+                        <Point
+                          key={point}
+                          size="$4"
+                          mr={arr.length === idx + 1 ? '$10' : undefined}
+                        >
+                          {point}
+                        </Point>
+                      ))}
                     </YStack>
                   </TakeoutCard>
                 </XStack>
@@ -976,31 +1029,39 @@ function formatPrice(amount: number, currency: string) {
 const useTakeoutStore = createUseStore(TakeoutStore)
 
 const PurchaseModal = ({
-  productWithPrices: product,
+  products,
 }: {
-  productWithPrices: TakeoutPageProps['starter']
+  products: Exclude<TakeoutPageProps['starter'], undefined>[]
 }) => {
-  if (!product) return null
-
-  const prices = product.prices
+  if (!products) return null
+  // const prices = products.prices
   const store = useTakeoutStore()
-  const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
+  // const [selectedPriceId, setSelectedPriceId] = useState(prices[prices.length - 1].id)
+  const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
+    products.map((p) => p.id)
+  )
   const [seats, setSeats] = useState(1)
-  const selectedPrice = prices.find((p) => p.id === selectedPriceId)
+  const selectedProducts = products.filter((p) => selectedProductsIds.includes(p.id))
   const { data } = useUser()
   const subscriptions = data?.subscriptions
-  const subscription = subscriptions?.find((sub) => {
-    if (sub.status !== 'active') return false
-    const price = sub.prices
-      ? Array.isArray(sub.prices)
-        ? sub.prices[0]
-        : sub.prices
-      : null
-    if (!price) return false
-    return price.product_id === product.id
-  })
-  const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
+  // const subscription = subscriptions?.find((sub) => {
+  //   if (sub.status !== 'active') return false
+  //   const price = sub.prices
+  //     ? Array.isArray(sub.prices)
+  //       ? sub.prices[0]
+  //       : sub.prices
+  //     : null
+  //   if (!price) return false
+  //   return price.product_id === products.id
+  // })
+  // const sortedPrices = prices.sort((a, b) => (a.unit_amount ?? 0) - (b.unit_amount ?? 0))
 
+  const sum = selectedProducts.reduce((acc, product) => {
+    const price = product.prices.find((p) => p.active)!
+
+    // const productPrice =
+    return acc + (price.unit_amount ?? 0)
+  }, 0)
   return (
     <Dialog
       modal
@@ -1054,20 +1115,38 @@ const PurchaseModal = ({
             </XStack>
 
             <YStack>
-              <RadioGroup
-                gap="$4"
-                value={selectedPriceId}
-                onValueChange={setSelectedPriceId}
-                flexDirection="row"
-                flexWrap="wrap"
-              >
-                {sortedPrices.map((price) => {
-                  const active = price.id === selectedPriceId
-                  const htmlId = `radio-${price.id}`
+              <YStack gap="$4" flexDirection="row" flexWrap="wrap">
+                {products.map((product, idx) => {
+                  const active = selectedProductsIds.includes(product.id)
+                  const price = product.prices[0]
+                  const htmlId = `check-${price.id}`
+                  // const hasSubscription =
+                  const subscription = subscriptions?.find((sub) => {
+                    if (sub.status !== 'active') return false
+                    const price = sub.prices
+                      ? Array.isArray(sub.prices)
+                        ? sub.prices[0]
+                        : sub.prices
+                      : null
+                    if (!price) return false
+                    return price.product_id === product.id
+                  })
+
+                  const onChange = (value: boolean) => {
+                    setSelectedProductsIds(
+                      active
+                        ? selectedProductsIds.filter((id) => id !== product.id)
+                        : [...selectedProductsIds, product.id]
+                    )
+                  }
+
                   return (
                     <ThemeTint key={price.id} disable={!active}>
                       <Label
-                        f={1}
+                        width="100%"
+                        $gtSm={{
+                          width: idx === 0 ? 'calc(100% - 16px)' : 'calc(50% - 16px)',
+                        }}
                         htmlFor={htmlId}
                         p="$4"
                         height="unset"
@@ -1077,29 +1156,34 @@ const PurchaseModal = ({
                         borderRadius="$4"
                         space="$4"
                         ai="flex-start"
-                        maw="calc(33% - 16px)"
                         hoverStyle={{
                           borderColor: active ? '$color10' : '$color7',
                         }}
                       >
-                        <RadioGroup.Item id={htmlId} size="$6" value={price.id} mt="$2">
-                          <RadioGroup.Indicator
-                            backgroundColor={active ? '$color8' : '$color1'}
-                          />
-                        </RadioGroup.Item>
+                        <Checkbox
+                          checked={active}
+                          onCheckedChange={onChange}
+                          id={htmlId}
+                          size="$6"
+                          value={price.id}
+                          mt="$2"
+                        >
+                          <Checkbox.Indicator
+                          // backgroundColor={active ? '$color8' : '$color1'}
+                          >
+                            <Check />
+                          </Checkbox.Indicator>
+                        </Checkbox>
 
                         <YStack gap="$1" f={1}>
-                          <H3>
-                            {price.interval === 'year' && 'Yearly Plan'}
-                            {price.interval === 'month' && 'Monthly Plan'} 🥡
-                          </H3>
-                          <Paragraph ellipse>{price.description}</Paragraph>
+                          <H3>{product.name}</H3>
+                          <Paragraph ellipse>{product.description}</Paragraph>
                         </YStack>
                       </Label>
                     </ThemeTint>
                   )
                 })}
-              </RadioGroup>
+              </YStack>
             </YStack>
 
             <XStack f={1} space separator={<Separator vertical />}>
@@ -1109,7 +1193,7 @@ const PurchaseModal = ({
                 </YStack>
               </ScrollView>
 
-              <YStack f={1} space="$4">
+              <YStack f={1} space="$4" mt="$8">
                 <H3>Seats</H3>
                 <Separator />
                 <YStack ai="flex-start">
@@ -1125,31 +1209,26 @@ const PurchaseModal = ({
 
                 <YStack space>
                   <YStack ai="flex-end">
-                    <H3 size="$10">
-                      {formatPrice(
-                        (selectedPrice!.unit_amount! / 100) * seats,
-                        selectedPrice!.currency ?? 'usd'
-                      )}
-                    </H3>
+                    <H3 size="$10">{formatPrice(sum! / 100, 'usd')}</H3>
                   </YStack>
 
                   <Separator />
 
                   <YStack pb="$8" px="$4" space>
                     <NextLink
-                      href={
-                        subscription
-                          ? `/account/subscriptions`
-                          : `api/checkout?${new URLSearchParams({
-                              product_id: product.id,
-                              price_id: selectedPriceId,
-                              quantity: seats.toString(),
-                            }).toString()}`
-                      }
+                      href={`api/checkout?${(function () {
+                        const params = new URLSearchParams({
+                          // product_id: products.id,
+                          // price_id: selectedPriceId,
+                          // quantity: seats.toString(),
+                        })
+                        for (const productId of selectedProductsIds) {
+                          params.append('product_id', productId)
+                        }
+                        return params.toString()
+                      })()}`}
                     >
-                      <PurchaseButton>
-                        {subscription ? `View Subscription` : `Purchase`}
-                      </PurchaseButton>
+                      <PurchaseButton>Purchase</PurchaseButton>
                     </NextLink>
                     <XStack jc="space-between" space="$2" ai="center">
                       <XStack
@@ -1248,7 +1327,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           shadowColor="#000"
           x={-100}
           y={100}
-          mah="calc(min(95vh, 800px))"
+          mah="calc(min(85vh, 800px))"
           $md={{
             x: -20,
             y: 0,
@@ -1665,30 +1744,55 @@ const TabsRovingIndicator = ({
 }
 
 const Points = () => (
-  <YStack tag="ul" space="$2.5" zi={2} mt="$8" maw={660} ov="hidden">
-    <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
+  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" maw={660} ov="hidden">
+    {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
       All the important screens: Onboard, Register, Login, Forgot Password, Account,
       Settings, Profile, Edit Profile, Feed
     </Point>
-    <Point>SSR, RSC, choose from 3 animation drivers</Point>
+    <Point>SSR, RSC, choose from 3 animation drivers</Point> 
     <Point>Complete & fully typed design system</Point>
-    <Point>20 icon packs</Point>
+    <Point>+150 icon packs</Point>
     <Point>2 all new theme suites: Pastel & Neon</Point>
-    <Point>35 custom fonts</Point>
+    <Point>All of Google fonts fonts</Point>
     <Point>Github template with PR bot for updates</Point>
     <Point>Fully tested CI/CD: unit, integration, web and native</Point>
-    <Point>Preview deploys for web, app-store builds with EAS</Point>
+    <Point>Preview deploys for web, app-store builds with EAS</Point> */}
+    {Object.entries(points).map(([key, group]) => (
+      <React.Fragment key={key}>
+        {group.map((point) => (
+          <Point key={point}>{point}</Point>
+        ))}
+      </React.Fragment>
+    ))}
   </YStack>
 )
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
-  try {
-    const query = await supabaseAdmin
+const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
+  const queries = await Promise.all([
+    supabaseAdmin
       .from('products')
       .select('*, prices(*)')
       .eq('metadata->>slug', 'universal-starter')
-      .single()
+      .eq('active', true)
+      .eq('prices.active', true)
+      .single(),
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'icon-packs')
+      .eq('active', true)
+      .eq('prices.active', true)
+      .single(),
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'font-packs')
+      .eq('active', true)
+      .eq('prices.active', true)
+      .single(),
+  ])
+  for (const query of queries) {
     if (query.error) throw query.error
     if (
       !query.data.prices ||
@@ -1697,13 +1801,18 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
     ) {
       throw new Error('No prices are attached to the product.')
     }
+  }
 
-    const props: TakeoutPageProps = {
-      starter: {
-        ...query.data,
-        prices: query.data.prices,
-      },
-    }
+  return {
+    starter: queries[0].data,
+    iconsPack: queries[1].data,
+    fontsPack: queries[2].data,
+  } as any // trust me lol
+}
+
+export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
+  try {
+    const props = await getTakeoutProducts()
     return {
       revalidate: 60,
       props,
