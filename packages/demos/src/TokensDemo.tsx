@@ -77,7 +77,7 @@ function SizeSection({ section }: { section: Section }) {
                   <H4 size="$5">{tokens[token]?.val}px</H4>
                 </YStack>
                 <Square
-                  size={tokens[token]?.val}
+                  size={tokens[token]?.val as any}
                   backgroundColor="$color5"
                   {...(section === 'spaceNegative' && {
                     backgroundColor: '$red5',

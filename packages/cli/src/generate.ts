@@ -20,9 +20,10 @@ export async function getTypes(options: CLIResolvedOptions) {
     throw new Error(`No tamagui config`)
   }
 
+  const nameToPaths = tamagui.nameToPaths || []
   const uniqueViewExportingPaths = new Set(
-    Object.keys(tamagui.nameToPaths).map((name) => {
-      return `${[...tamagui.nameToPaths[name]][0]}.ts*`
+    Object.keys(nameToPaths).map((name) => {
+      return `${[...nameToPaths[name]][0]}.ts*`
     })
   )
 

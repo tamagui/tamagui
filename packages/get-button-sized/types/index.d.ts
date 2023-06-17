@@ -5,7 +5,7 @@ export declare const getButtonSized: (val: SizeTokens | number, { tokens }: Vari
     borderRadius: number;
 } | {
     paddingHorizontal: import("@tamagui/web").Variable<number>;
-    height: `$${string}` | `$${number}`;
+    height: `$${string}.${string}` | `$${string}.${number}` | `$${string}` | `$${number}`;
     borderRadius: import("@tamagui/web").VariableVal;
 };
 //# sourceMappingURL=index.d.ts.map
