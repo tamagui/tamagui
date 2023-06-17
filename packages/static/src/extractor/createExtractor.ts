@@ -78,6 +78,10 @@ type FileOrPath = NodePath<t.Program> | t.File
 
 let hasLoggedBaseInfo = false
 
+function isFullyDisabled(props: TamaguiOptions) {
+  return props.disableExtraction && props.disableDebugAttr
+}
+
 export function createExtractor(
   { logger = console }: ExtractorOptions = { logger: console }
 ) {
@@ -101,14 +105,14 @@ export function createExtractor(
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
 
   function loadSync(props: TamaguiOptions) {
-    if (props.disableExtraction) {
+    if (isFullyDisabled(props)) {
       return null
     }
     return (projectInfo ||= loadTamaguiSync(props))
   }
 
   async function load(props: TamaguiOptions) {
-    if (props.disableExtraction) {
+    if (isFullyDisabled(props)) {
       return null
     }
     return (projectInfo ||= await loadTamagui(props))
@@ -166,7 +170,7 @@ export function createExtractor(
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
-    if (!disableExtraction) {
+    if (!isFullyDisabled(options)) {
       if (!components) {
         throw new Error(`Must provide components`)
       }
@@ -240,7 +244,7 @@ export function createExtractor(
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
 
-    if (!disableExtraction) {
+    if (!isFullyDisabled(options)) {
       if (!tamaguiConfig?.themes) {
         console.error(
           `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
@@ -279,7 +283,7 @@ export function createExtractor(
     const body =
       fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
-    if (!disableExtraction) {
+    if (!isFullyDisabled(options)) {
       if (Object.keys(components || []).length === 0) {
         console.warn(
           `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
