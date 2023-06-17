@@ -1,3 +1,4 @@
+import { SpecificTokens } from '@tamagui/core'
 import { config } from '@tamagui/site-config'
 import { createTamagui } from 'tamagui'
 

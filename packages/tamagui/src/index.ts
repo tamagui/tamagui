@@ -90,6 +90,7 @@ export type {
   StackNonStyleProps,
   StaticConfig,
   StaticConfigParsed,
+  SpecificTokens,
   TamaguiBaseTheme,
   TamaguiComponent,
   TamaguiComponentPropsBase,
