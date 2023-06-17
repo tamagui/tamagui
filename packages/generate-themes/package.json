@@ -32,5 +32,8 @@
     "@tamagui/types": "1.33.5",
     "esbuild-register": "^3.4.2",
     "fs-extra": "^11.1.0"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.33.5"
   }
 }

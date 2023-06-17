@@ -5073,6 +5073,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/generate-themes@workspace:packages/generate-themes"
   dependencies:
+    "@tamagui/build": 1.33.5
     "@tamagui/create-theme": 1.33.5
     "@tamagui/types": 1.33.5
     esbuild-register: ^3.4.2
