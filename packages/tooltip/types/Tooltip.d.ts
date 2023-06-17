@@ -5,6 +5,7 @@ import * as React from 'react';
 export type TooltipProps = PopperProps & {
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
+    followMouse?: boolean;
     focus?: {
         enabled?: boolean;
         keyboardOnly?: boolean;
@@ -27,6 +28,7 @@ export declare const TooltipGroup: ({ children, delay }: {
 export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
     children?: React.ReactNode;
     onOpenChange?: ((open: boolean) => void) | undefined;
+    followMouse?: boolean | undefined;
     focus?: {
         enabled?: boolean | undefined;
         keyboardOnly?: boolean | undefined;

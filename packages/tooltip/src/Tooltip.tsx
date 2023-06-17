@@ -67,6 +67,7 @@ const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
 export type TooltipProps = PopperProps & {
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
+  followMouse?: boolean
   focus?: {
     enabled?: boolean
     keyboardOnly?: boolean
@@ -112,6 +113,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       : 0,
     onOpenChange: onOpenChangeProp,
     focus,
+    followMouse,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -143,11 +145,54 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       useDismiss(floating.context),
       useDelayGroup(floating.context, { id }),
     ])
-    return {
+
+    const out = {
       ...floating,
-      getReferenceProps,
       getFloatingProps,
+      getReferenceProps,
     } as any
+
+    if (followMouse) {
+      out.getReferenceProps = (userProps) => {
+        const referenceProps = getReferenceProps(userProps)
+
+        const onMouseEvent = (name: string) => (e: MouseEvent) => {
+          // @ts-ignore
+          referenceProps[name]?.(e)
+
+          const { clientX, clientY } = e
+          const boundingClientRect =
+            floating.refs.floating.current?.getBoundingClientRect()
+
+          if (!boundingClientRect) return
+
+          floating.refs.setReference({
+            getBoundingClientRect() {
+              return {
+                width: 0,
+                height: 0,
+                x: clientX,
+                y: clientY + 24,
+                left: clientX,
+                right: clientX,
+                top: clientY + 24,
+                bottom: clientY + 24,
+              }
+            },
+          })
+
+          floating.update()
+        }
+
+        return {
+          ...referenceProps,
+          onMouseMove: onMouseEvent('onMouseMove'),
+          onMouseOver: onMouseEvent('onMouseOver'),
+        }
+      }
+    }
+
+    return out
   }
 
   const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
