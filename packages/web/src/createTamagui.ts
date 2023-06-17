@@ -68,6 +68,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return res!
   })()
 
+  const specificTokens = {}
+
   const themeConfig = (() => {
     const themes = { ...configIn.themes }
     const cssRuleSets: string[] = []
@@ -82,10 +84,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const key in configIn.tokens) {
         for (const skey in configIn.tokens[key]) {
           const variable = configIn.tokens[key][skey] as Variable
-          const val = getVariableValue(variable)
+
+          // set specific tokens (like $size.sm)
+          specificTokens[`$${key}.${skey}`] = variable
 
           if (process.env.NODE_ENV === 'development') {
-            if (typeof val === 'undefined') {
+            if (typeof variable === 'undefined') {
               throw new Error(
                 `No value for tokens.${key}.${skey}:\n${JSON.stringify(
                   variable,
@@ -96,7 +100,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             }
           }
 
-          registerCSSVariable(val)
+          registerCSSVariable(variable)
           declarations.push(variableToCSS(variable, key === 'zIndex'))
         }
       }
@@ -279,6 +283,7 @@ ${runtimeStyles}`
     getCSS,
     defaultFont,
     fontSizeTokens: fontSizeTokens || new Set(),
+    specificTokens,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }

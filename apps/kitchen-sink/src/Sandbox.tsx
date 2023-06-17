@@ -20,6 +20,5 @@ import { H1, Stack } from 'tamagui'
 //     </Stack>
 
 export const Sandbox = () => {
-  return <Stack w="$icon.lg" h="$icon.lg" bc="red" />
   return <H1>test things here</H1>
 }
