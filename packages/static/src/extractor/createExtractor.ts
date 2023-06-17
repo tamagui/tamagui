@@ -101,10 +101,16 @@ export function createExtractor(
   // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
 
   function loadSync(props: TamaguiOptions) {
+    if (props.disableExtraction) {
+      return null
+    }
     return (projectInfo ||= loadTamaguiSync(props))
   }
 
   async function load(props: TamaguiOptions) {
+    if (props.disableExtraction) {
+      return null
+    }
     return (projectInfo ||= await loadTamagui(props))
   }
 
@@ -120,13 +126,11 @@ export function createExtractor(
     },
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
       const projectInfo = loadSync(props)
-      return parseWithConfig(projectInfo, f, props)
+      return parseWithConfig(projectInfo || {}, f, props)
     },
     parse: async (f: FileOrPath, props: ExtractorParseProps) => {
       const projectInfo = await load(props)
-      if (projectInfo) {
-        return parseWithConfig(projectInfo, f, props)
-      }
+      return parseWithConfig(projectInfo || {}, f, props)
     },
   }
 
@@ -162,8 +166,10 @@ export function createExtractor(
     if (disable === true || (Array.isArray(disable) && disable.includes(sourcePath))) {
       return null
     }
-    if (!components) {
-      throw new Error(`Must provide components`)
+    if (!disableExtraction) {
+      if (!components) {
+        throw new Error(`Must provide components`)
+      }
     }
     if (
       sourcePath &&
@@ -192,7 +198,7 @@ export function createExtractor(
         pseudoDescriptors[name] ||
         // dont disable variants or else you lose many things flattening
         staticConfig.variants?.[name] ||
-        projectInfo?.tamaguiConfig.shorthands[name] ||
+        projectInfo?.tamaguiConfig?.shorthands[name] ||
         (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
       )
     }
@@ -234,17 +240,19 @@ export function createExtractor(
 
     tm.mark('load-tamagui', !!shouldPrintDebug)
 
-    if (!tamaguiConfig.themes) {
-      console.error(
-        `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
-      )
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(`  Got config:`, tamaguiConfig)
-      process.exit(0)
+    if (!disableExtraction) {
+      if (!tamaguiConfig?.themes) {
+        console.error(
+          `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
+        )
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(`  Got config:`, tamaguiConfig)
+        process.exit(0)
+      }
     }
 
-    const firstThemeName = Object.keys(tamaguiConfig.themes)[0]
-    const firstTheme = tamaguiConfig.themes[firstThemeName]
+    const firstThemeName = Object.keys(tamaguiConfig?.themes || {})[0]
+    const firstTheme = tamaguiConfig?.themes[firstThemeName] || {}
 
     if (!firstTheme || typeof firstTheme !== 'object') {
       console.error(`Missing theme, an error occurred when importing your config`)
@@ -1606,7 +1614,7 @@ export function createExtractor(
                   return []
                 }
                 const value = staticConfig.defaultProps[key]
-                const name = tamaguiConfig.shorthands[key] || key
+                const name = tamaguiConfig?.shorthands[key] || key
                 if (value === undefined) {
                   logger.warn(
                     `⚠️ Error evaluating default style for component, prop ${key} ${value}`
@@ -1789,7 +1797,7 @@ export function createExtractor(
 
             let key = Object.keys(cur.value)[0]
             const value = cur.value[key]
-            const fullKey = tamaguiConfig.shorthands[key]
+            const fullKey = tamaguiConfig?.shorthands[key]
             // expand shorthands
             if (fullKey) {
               cur.value = { [fullKey]: value }

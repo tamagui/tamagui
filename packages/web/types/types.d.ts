@@ -387,7 +387,7 @@ export type AnimationProp = AnimationKeys | {
 ];
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type SpecificTokens<Record extends Object = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}` : never;
+export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}` : never;
 export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number;
 export type SpaceTokens = SpecificTokens | GetTokenString<keyof Tokens['space']> | number | boolean;
 export type ColorTokens = SpecificTokens | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
