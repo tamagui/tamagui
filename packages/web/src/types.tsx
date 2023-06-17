@@ -687,7 +687,7 @@ export type SpecificTokens<
   Record = Tokens,
   RK extends keyof Record = keyof Record
 > = RK extends string
-  ? `$${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}`
+  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
   : never
 
 // base tokens
