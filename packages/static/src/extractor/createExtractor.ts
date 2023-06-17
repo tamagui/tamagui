@@ -213,7 +213,7 @@ export function createExtractor(
     const propsWithFileInfo: TamaguiOptionsWithFileInfo = {
       ...options,
       sourcePath,
-      allLoadedComponents: [...components],
+      allLoadedComponents: components ? [...components] : [],
     }
 
     if (!hasLoggedBaseInfo) {
@@ -279,13 +279,13 @@ export function createExtractor(
     const body =
       fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
-    if (Object.keys(components).length === 0) {
+    if (Object.keys(components || []).length === 0) {
       console.warn(
         `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
       )
       if (process.env.DEBUG === 'tamagui') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`components`, Object.keys(components), components)
+        console.log(`components`, Object.keys(components || []), components)
       }
     }
 
