@@ -301,6 +301,7 @@ export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B ext
     reactNative?: any;
     defaultFont?: H;
     fontSizeTokens: Set<string>;
+    specificTokens: Record<string, Variable>;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};

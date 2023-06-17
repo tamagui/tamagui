@@ -17,6 +17,7 @@ import { expandStyles } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
+import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type ResolveVariableTypes =
   | 'auto'
@@ -319,18 +320,16 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
           debug
         )
 
-        if (!variantOut) {
-          continue
-        }
-
-        const { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle, ...rest } =
-          Object.fromEntries(variantOut)
-        const subs = { pressStyle, hoverStyle, focusStyle, enterStyle, exitStyle }
-        Object.assign(res, rest)
-        for (const key in subs) {
-          if (subs[key]) {
-            res[key] ??= {}
-            Object.assign(res[key], subs[key])
+        // apply, merging sub-styles
+        if (variantOut) {
+          for (const [key, val] of variantOut) {
+            if (val == null) continue
+            if (key in pseudoDescriptors) {
+              res[key] ??= {}
+              Object.assign(res[key], val)
+            } else {
+              res[key] = val
+            }
           }
         }
       }
@@ -457,44 +456,49 @@ const getToken = (
     valOrVar = theme[value]
     hasSet = true
   } else {
-    switch (key) {
-      case 'fontFamily': {
-        const fontsParsed = languageContext
-          ? getFontsForLanguage(conf.fontsParsed, languageContext)
-          : conf.fontsParsed
-        valOrVar = fontsParsed[value]?.family || value
-        hasSet = true
-        break
-      }
-      case 'fontSize':
-      case 'lineHeight':
-      case 'letterSpacing':
-      case 'fontWeight': {
-        if (fontFamily) {
+    if (value in conf.specificTokens) {
+      hasSet = true
+      valOrVar = conf.specificTokens[value]
+    } else {
+      switch (key) {
+        case 'fontFamily': {
           const fontsParsed = languageContext
             ? getFontsForLanguage(conf.fontsParsed, languageContext)
             : conf.fontsParsed
-          valOrVar =
-            fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+          valOrVar = fontsParsed[value]?.family || value
+          hasSet = true
+          break
+        }
+        case 'fontSize':
+        case 'lineHeight':
+        case 'letterSpacing':
+        case 'fontWeight': {
+          if (fontFamily) {
+            const fontsParsed = languageContext
+              ? getFontsForLanguage(conf.fontsParsed, languageContext)
+              : conf.fontsParsed
+            valOrVar =
+              fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+            hasSet = true
+          }
+          break
+        }
+      }
+      for (const cat in tokenCategories) {
+        if (key in tokenCategories[cat]) {
+          const res = tokensParsed[cat][value]
+          if (res) {
+            valOrVar = res
+            hasSet = true
+          }
+        }
+      }
+      if (!hasSet) {
+        const spaceVar = tokensParsed.space[value]
+        if (spaceVar) {
+          valOrVar = spaceVar
           hasSet = true
         }
-        break
-      }
-    }
-    for (const cat in tokenCategories) {
-      if (key in tokenCategories[cat]) {
-        const res = tokensParsed[cat][value]
-        if (res) {
-          valOrVar = res
-          hasSet = true
-        }
-      }
-    }
-    if (!hasSet) {
-      const spaceVar = tokensParsed.space[value]
-      if (spaceVar) {
-        valOrVar = spaceVar
-        hasSet = true
       }
     }
   }

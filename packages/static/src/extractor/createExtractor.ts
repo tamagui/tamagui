@@ -279,13 +279,15 @@ export function createExtractor(
     const body =
       fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
-    if (Object.keys(components || []).length === 0) {
-      console.warn(
-        `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
-      )
-      if (process.env.DEBUG === 'tamagui') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`components`, Object.keys(components || []), components)
+    if (!disableExtraction) {
+      if (Object.keys(components || []).length === 0) {
+        console.warn(
+          `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
+        )
+        if (process.env.DEBUG === 'tamagui') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log(`components`, Object.keys(components || []), components)
+        }
       }
     }
 
