@@ -51,7 +51,10 @@ export function createStore<A extends Store<B>, B extends Object>(
   props?: B,
   options?: UseStoreOptions<A, any>
 ): A {
-  return getOrCreateStoreInfo(StoreKlass, props, options).store as any
+  return getOrCreateStoreInfo(StoreKlass, props, {
+    ...options,
+    avoidCache: true,
+  }).store as any
 }
 // use singleton with react
 // TODO selector support with types...
@@ -204,9 +207,8 @@ function getOrCreateStoreInfo(
     store,
   }
 
-  if (!options?.avoidCache) {
-    cache.set(uid, value)
-  }
+  // still set even when avoidCache is true (hmr)
+  cache.set(uid, value)
 
   return value
 }
