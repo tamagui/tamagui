@@ -3,10 +3,10 @@
   "version": "1.33.5",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "main": "dist/cjs",
+  "main": "dist",
   "bin": {
-    "tama": "./dist/cjs/index.js",
-    "tamagui": "./dist/cjs/index.js"
+    "tama": "./dist/index.js",
+    "tamagui": "./dist/index.js"
   },
   "publishConfig": {
     "access": "public"

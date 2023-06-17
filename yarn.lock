@@ -4621,8 +4621,8 @@ __metadata:
     ws: ^8.7.0
     zx: ^7.1.1
   bin:
-    tama: ./dist/cjs/index.js
-    tamagui: ./dist/cjs/index.js
+    tama: ./dist/index.js
+    tamagui: ./dist/index.js
   languageName: unknown
   linkType: soft
 
