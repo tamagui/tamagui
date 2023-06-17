@@ -10,9 +10,9 @@ export type LoadedComponents = {
     }>;
 };
 export type TamaguiProjectInfo = {
-    components: LoadedComponents[];
-    tamaguiConfig: TamaguiInternalConfig;
-    nameToPaths: NameToPaths;
+    components?: LoadedComponents[];
+    tamaguiConfig?: TamaguiInternalConfig;
+    nameToPaths?: NameToPaths;
 };
 export declare const esbuildOptions: {
     readonly loader: "tsx";

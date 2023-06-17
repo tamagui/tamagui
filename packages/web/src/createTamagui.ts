@@ -1,7 +1,7 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { getVariableValue } from './createVariable'
+import { Variable, getVariableValue } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -81,9 +81,23 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       for (const key in configIn.tokens) {
         for (const skey in configIn.tokens[key]) {
-          const val = getVariableValue(configIn.tokens[key][skey])
+          const variable = configIn.tokens[key][skey] as Variable
+          const val = getVariableValue(variable)
+
+          if (process.env.NODE_ENV === 'development') {
+            if (typeof val === 'undefined') {
+              throw new Error(
+                `No value for tokens.${key}.${skey}:\n${JSON.stringify(
+                  variable,
+                  null,
+                  2
+                )}`
+              )
+            }
+          }
+
           registerCSSVariable(val)
-          declarations.push(variableToCSS(val, key === 'zIndex'))
+          declarations.push(variableToCSS(variable, key === 'zIndex'))
         }
       }
 

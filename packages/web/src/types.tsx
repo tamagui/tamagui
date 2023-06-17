@@ -683,10 +683,10 @@ type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 //   `${K}.${keyof Tokens[K] extends string ? keyof Tokens[K] : never}`
 
 export type SpecificTokens<
-  Record extends Object = Tokens,
+  Record = Tokens,
   RK extends keyof Record = keyof Record
 > = RK extends string
-  ? `${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}`
+  ? `$${RK}.${keyof Record[RK] extends string ? keyof Record[RK] : never}`
   : never
 
 // base tokens
