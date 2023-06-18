@@ -5871,6 +5871,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/stack@workspace:apps/tamastack":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/stack@workspace:apps/tamastack"
+  dependencies:
+    "@tamagui/cli": 1.34.0
+    "@tamagui/colors": 1.34.0
+    "@tamagui/config": 1.34.0
+    "@tamagui/core": 1.34.0
+    "@tamagui/shorthands": 1.34.0
+    "@tamagui/themes": 1.34.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: ^0.71.7
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/stacks@1.34.0, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"

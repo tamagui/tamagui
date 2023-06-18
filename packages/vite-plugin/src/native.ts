@@ -81,8 +81,7 @@ export function nativePlugin(): Plugin {
 
       config.build.rollupOptions ??= {}
 
-      config.build.rollupOptions.input =
-        '/Users/n8/tamagui/apps/kitchen-sink/src/index.tsx'
+      config.build.rollupOptions.input = config.root
 
       config.build.rollupOptions.output ??= {}
 
