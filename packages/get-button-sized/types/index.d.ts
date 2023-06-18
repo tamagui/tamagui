@@ -1,8 +1,5 @@
 import type { SizeTokens, VariantSpreadExtras } from '@tamagui/web';
-export declare const getButtonSized: (val: SizeTokens | number, { tokens, props }: VariantSpreadExtras<{
-    size?: SizeTokens;
-    circular?: boolean;
-}>) => {
+export declare const getButtonSized: (val: SizeTokens | number, { tokens, props }: VariantSpreadExtras<any>) => {
     paddingHorizontal: number;
     height: number;
     borderRadius: number;

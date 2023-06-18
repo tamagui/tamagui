@@ -3,7 +3,7 @@ import type { SizeTokens, VariantSpreadExtras } from '@tamagui/web'
 
 export const getButtonSized = (
   val: SizeTokens | number,
-  { tokens, props }: VariantSpreadExtras<{ size?: SizeTokens; circular?: boolean }>
+  { tokens, props }: VariantSpreadExtras<any>
 ) => {
   if (typeof val === 'number') {
     return {
