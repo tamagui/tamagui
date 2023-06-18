@@ -5,8 +5,8 @@ import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   const defaultConfigFile = await readFile(
-    join(process.cwd(), '.tamagui', 'tamagui.config.json'),
-    'utf-8'
+    join(process.cwd(), '.tamagui', 'tamagui.themes.json.theme-builder.json'),
+    'utf8'
   )
 
   const config = JSON.parse(defaultConfigFile.toString())

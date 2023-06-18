@@ -41,7 +41,7 @@ type PaletteDefinitions = {
   [key: string]: Palette
 }
 
-type ThemeDefinition<Masks extends string = string> =
+export type ThemeDefinition<Masks extends string = string> =
   | Theme<Masks>
   | ThemeWithParent<Masks>[]
 

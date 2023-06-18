@@ -106,7 +106,7 @@ function SignIn() {
   if (!user)
     return (
       <YStack mih="100vh" miw="100vw" ai="center" jc="center" p="$2">
-        <YStack miw={300} maw={320} jc="space-between" p="$2" space="$4">
+        <YStack miw={300} maw={320} jc="space-between" p="$2" gap="$4">
           <YStack mb="$4">
             <LogoIcon />
           </YStack>
@@ -129,9 +129,10 @@ function SignIn() {
           </Button>
 
           <Paragraph ta="center" color="$color8">
-            Note: If you're a part of a sponsoring organization, you'll need to grant
-            access to your organization when logging in to access sponsor benefits.
+            Note: If part of a sponsoring organization, you'll need to grant access to
+            your org when logging in to access sponsor benefits.
           </Paragraph>
+
           {!emailAuthDisabledFlag && (
             <>
               <XStack mx="$4" jc="center" space ai="center">
@@ -142,7 +143,7 @@ function SignIn() {
               <YStack>
                 {!showPasswordInput && (
                   <form onSubmit={handleSignin}>
-                    <YStack space="$2">
+                    <YStack space="$3">
                       <Input
                         autoComplete="email"
                         inputMode="email"
