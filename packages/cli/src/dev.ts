@@ -45,7 +45,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       // @ts-ignore
       plugins,
       appType: 'custom',
-      root: rootFile,
+      root,
       build: {
         ssr: true,
       },
@@ -100,7 +100,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   }
 
   const server = await createServer({
-    root: rootFile,
+    root,
     mode: 'development',
     plugins,
     server: {

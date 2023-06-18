@@ -51,7 +51,10 @@ export function nativePlugin(): Plugin {
       config.optimizeDeps.esbuildOptions.plugins.push(
         esbuildFlowPlugin(
           /node_modules\/(react-native\/|@react-native\/assets)/,
-          (_) => 'jsx'
+          (_) => 'jsx',
+          {
+            all: true,
+          }
         )
       )
       // config.optimizeDeps.esbuildOptions.plugins.push(esbuildCommonjs(['react-native']))
