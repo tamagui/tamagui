@@ -24,6 +24,7 @@
   "dependencies": {
     "@docsearch/react": "^3.0.0",
     "@github/mini-throttle": "^2.1.0",
+    "@monaco-editor/react": "^4.2.2",
     "@react-three/drei": "^9.68.3",
     "@react-three/fiber": "^8.13.0",
     "@stripe/react-stripe-js": "^2.1.0",
