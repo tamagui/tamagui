@@ -24,7 +24,7 @@ type ThemeWithParent<Masks = string> = Theme<Masks> & {
 type PaletteDefinitions = {
     [key: string]: Palette;
 };
-type ThemeDefinition<Masks extends string = string> = Theme<Masks> | ThemeWithParent<Masks>[];
+export type ThemeDefinition<Masks extends string = string> = Theme<Masks> | ThemeWithParent<Masks>[];
 type UnionableString = string & {};
 type ThemeDefinitions<Masks extends string = string> = {
     [key: string]: ThemeDefinition<Masks | UnionableString>;
