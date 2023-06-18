@@ -2,9 +2,20 @@
   <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.png" alt="Tamagui">
 </div>
 
+<br/>
+
+<div align="center">
+  <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>
+  <img alt="Discord users online" src="https://img.shields.io/github/commit-activity/m/tamagui/tamagui?label=Commits&logo=git" />
+  <img alt="Commits per month" src="https://img.shields.io/discord/909986013848412191?logo=discord&label=Discord&cacheSeconds=3600" />
+</div>
+
+<br/>
+
 <h1 align="center">
   Style React Native and Web with an optimizing compiler
 </h1>
+
 
 - `@tamagui/core` - Universal style system for both web and React Native.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
