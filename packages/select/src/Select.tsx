@@ -41,8 +41,8 @@ const TRIGGER_NAME = 'SelectTrigger'
 export type SelectTriggerProps = ListItemProps
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
-  (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
-    const { __scopeSelect, disabled = false, ...triggerProps } = props
+  function SelectTrigger(props: ScopedProps<SelectTriggerProps>, forwardedRef) {
+    const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
     const composedRefs = useComposedRefs(
@@ -53,8 +53,6 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
 
-    // console.log('wtf', context.interactions.getReferenceProps())
-
     if (context.shouldRenderWebNative) {
       return null
     }
@@ -62,17 +60,20 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     return (
       <ListItem
         componentName={TRIGGER_NAME}
-        backgrounded
-        radiused
-        hoverTheme
-        pressTheme
-        focusable
-        focusStyle={{
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$borderColorFocus',
-        }}
-        borderWidth={1}
+        unstyled={unstyled}
+        {...(!unstyled && {
+          backgrounded: true,
+          radiused: true,
+          hoverTheme: true,
+          pressTheme: true,
+          focusable: true,
+          focusStyle: {
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: '$borderColorFocus',
+          },
+          borderWidth: 1,
+        })}
         size={context.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
@@ -99,8 +100,6 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     )
   }
 )
-
-SelectTrigger.displayName = TRIGGER_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
