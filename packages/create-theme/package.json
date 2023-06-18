@@ -8,7 +8,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "theme-builder"
   ],
   "scripts": {
     "build": "tamagui-build",
