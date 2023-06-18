@@ -96,7 +96,6 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
                 context.setOpen(!context.open)
               },
             })}
-        color="red"
       />
     )
   }
@@ -108,7 +107,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(Paragraph, {
+const SelectValueFrame = styled(SizableText, {
   name: VALUE_NAME,
   userSelect: 'none',
 })
@@ -117,40 +116,44 @@ type SelectValueProps = GetProps<typeof SelectValueFrame> & {
   placeholder?: React.ReactNode
 }
 
-const SelectValue = SelectValueFrame.extractable(
-  React.forwardRef<TamaguiElement, SelectValueProps>(
-    (
-      {
-        __scopeSelect,
-        children: childrenProp,
-        placeholder,
-      }: ScopedProps<SelectValueProps>,
-      forwardedRef
-    ) => {
-      // We ignore `className` and `style` as this part shouldn't be styled.
-      const context = useSelectContext(VALUE_NAME, __scopeSelect)
-      const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function SelectValue(
+  {
+    __scopeSelect,
+    children: childrenProp,
+    placeholder,
+    ...props
+  }: ScopedProps<SelectValueProps>,
+  forwardedRef
+) {
+  // We ignore `className` and `style` as this part shouldn't be styled.
+  const context = useSelectContext(VALUE_NAME, __scopeSelect)
+  const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+  const children = childrenProp ?? context.selectedItem
+  const isEmptyValue = context.value == null || context.value === ''
+  const selectValueChildren = isEmptyValue ? placeholder ?? children : children
 
-      const children = childrenProp ?? context.selectedItem
-      const isEmptyValue = context.value == null || context.value === ''
-      const selectValueChildren = isEmptyValue ? placeholder ?? children : children
-
-      return (
-        <SelectValueFrame
-          size={context.size}
-          ref={composedRefs}
-          // we don't want events from the portalled `SelectValue` children to bubble
-          // through the item they came from
-          pointerEvents="none"
-        >
-          {selectValueChildren}
-        </SelectValueFrame>
-      )
-    }
+  return (
+    <SelectValueFrame
+      size={context.size}
+      ref={composedRefs}
+      // we don't want events from the portalled `SelectValue` children to bubble
+      // through the item they came from
+      pointerEvents="none"
+      {...props}
+    >
+      {unwrapSelectItem(selectValueChildren)}
+    </SelectValueFrame>
   )
-)
+})
 
-SelectValue.displayName = VALUE_NAME
+function unwrapSelectItem(selectValueChildren: any) {
+  return React.Children.map(selectValueChildren, (child) => {
+    if (child.type.staticConfig.componentName === ITEM_TEXT_NAME) {
+      return child.props.children
+    }
+    return child
+  })
+}
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIcon
