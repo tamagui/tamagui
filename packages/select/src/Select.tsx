@@ -96,6 +96,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
                 context.setOpen(!context.open)
               },
             })}
+        color="red"
       />
     )
   }

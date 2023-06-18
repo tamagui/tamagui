@@ -182,7 +182,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
 const TakeoutHero = () => {
   const disableMotion = useDisableMotion()
   const enable3d = useClientValue(
-    !isSafariMobile && isClient && !window.location.search?.includes('disable-3d')
+    () => !isSafariMobile && !window.location.search?.includes('disable-3d')
   )
 
   // unfortunately costs too much perf

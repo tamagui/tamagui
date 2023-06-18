@@ -30,15 +30,12 @@ export default function Page() {
 
   const fsReadSucceeded = useSelector(() => rootStore.fsReadSucceeded)
 
+  // disable ssr
   if (!hydrated) {
     return null
   }
 
-  return (
-    <React.StrictMode>
-      {!fsReadSucceeded && !isLocal ? <LoadPage /> : <StudioContents />}
-    </React.StrictMode>
-  )
+  return <>{!fsReadSucceeded && !isLocal ? <LoadPage /> : <StudioContents />}</>
 }
 
 function StudioContents() {
@@ -135,26 +132,27 @@ const StudioTab = memo(
   }
 )
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // Create authenticated Supabase Client
-  const supabase = createServerSupabaseClient(ctx)
-  // Check if we have a session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  if (!session)
-    return {
-      redirect: {
-        destination: `${siteRootDir}/login`,
-        permanent: false,
-      },
-    }
+//   // Create authenticated Supabase Client
+//   const supabase = createServerSupabaseClient(ctx)
+//   // Check if we have a session
+//   const {
+//     data: { session },
+//   } = await supabase.auth.getSession()
 
-  return {
-    props: {
-      initialSession: session,
-      user: session.user,
-    },
-  }
-}
+//   if (!session)
+//     return {
+//       redirect: {
+//         destination: `${siteRootDir}/login`,
+//         permanent: false,
+//       },
+//     }
+
+//   return {
+//     props: {
+//       initialSession: session,
+//       user: session.user,
+//     },
+//   }
+// }
