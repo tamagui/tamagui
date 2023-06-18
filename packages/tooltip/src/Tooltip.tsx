@@ -162,7 +162,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper size={smallerSize.key as SizeTokens} allowFlip {...restProps}>
+      <Popper size={smallerSize.key as SizeTokens} allowFlip stayInFrame {...restProps}>
         <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}
