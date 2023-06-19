@@ -5,6 +5,7 @@ import prompts from 'prompts'
 
 import { takeoutAsciiArt, tamaguiRainbowAsciiArt } from '../helpers/asciiArts'
 import { ExtraSteps } from './types'
+import fs from 'fs/promises'
 
 const packageManager = 'yarn'
 const useYarn = packageManager === 'yarn'
@@ -56,6 +57,22 @@ ${takeoutAsciiArt}
         'Link remote Supabase instance for you? (Create a project on https://app.supabase.com/projects first)',
       initial: true,
     })
+
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log()
+    const { setUpSupabaseEnv } = await prompts({
+      name: 'setUpSupabaseEnv',
+      type: 'confirm',
+      message: "Do you want us to add the local env variables for you? This will create a file called .env.local.",
+      initial: true,
+    })
+    if (setUpSupabaseEnv) {
+      await fs.writeFile("./.env.local", `NEXT_PUBLIC_SUPABASE_PROJECT_ID=default
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+SUPABASE_SERVICE_ROLE=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+`)
+    }
 
     if (setupRemoteSupabase) {
       execSync(`npx supabase login`, { stdio: 'inherit' })
