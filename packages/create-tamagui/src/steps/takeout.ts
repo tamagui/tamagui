@@ -87,12 +87,12 @@ ${chalk.green.bold('Done!')} created a new project under ./${projectName}
 
 cd into the project using:
   ${chalk.green('  cd')} ${projectName}
-  
+
 Inside that directory, you can run several commands:
-  
+
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}
-    
+
   To start developing for iOS, run:
     ${chalk.green(runCommand('ios'))}
 
@@ -101,11 +101,15 @@ Inside that directory, you can run several commands:
 
   To run Supabase scripts, cd into the supabase package:
     ${chalk.green('cd supabase')}
-  
+
     ${chalk.green('yarn reset')} - Resets local database
     ${chalk.green('yarn generate')} - Generates new types
 
     Find info on the rest of the scripts in ${chalk.cyan(`supabase/README.md`)}
+
+    If you've purchased and gained access to font and icon packages, you can run:
+    ${chalk.green('yarn tamagui add icon')}
+    ${chalk.green('yarn tamagui add font')}
   `)
 }
 export default main
