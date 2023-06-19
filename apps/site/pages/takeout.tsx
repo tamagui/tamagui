@@ -25,6 +25,7 @@ import {
   H1,
   H2,
   H3,
+  H5,
   Input,
   Label,
   Paragraph,
@@ -436,6 +437,8 @@ export default function TakeoutPage({ starter }: TakeoutPageProps) {
       {/* <Glow /> */}
 
       <PurchaseModal productWithPrices={starter} />
+      <FaqModal />
+      <AgreementModal />
 
       {/* big background outlined font */}
       <YStack
@@ -965,6 +968,8 @@ const IconFrame = styled(Stack, {
 
 class TakeoutStore extends Store {
   showPurchase = false
+  showFaq = false
+  showAgreement = false
 }
 
 function formatPrice(amount: number, currency: string) {
@@ -1157,26 +1162,29 @@ const PurchaseModal = ({
                         separator={<Separator vertical bc="$color8" my="$2" />}
                         space="$2"
                       >
-                        <NextLink href="#">
-                          <SizableText
-                            theme="alt1"
-                            // @ts-ignore
-                            style={{ textDecoration: 'underline' }}
-                            size="$1"
-                          >
-                            FAQ
-                          </SizableText>
-                        </NextLink>
-                        <NextLink href="#">
-                          <SizableText
-                            theme="alt1"
-                            // @ts-ignore
-                            style={{ textDecoration: 'underline' }}
-                            size="$1"
-                          >
-                            License Agreement
-                          </SizableText>
-                        </NextLink>
+                        <SizableText
+                          theme="alt1"
+                          cursor="pointer"
+                          onPress={() => {
+                            store.showFaq = true
+                          }}
+                          style={{ textDecorationLine: 'underline' }}
+                          size="$1"
+                        >
+                          FAQ
+                        </SizableText>
+
+                        <SizableText
+                          theme="alt1"
+                          cursor="pointer"
+                          onPress={() => {
+                            store.showAgreement = true
+                          }}
+                          style={{ textDecorationLine: 'underline' }}
+                          size="$1"
+                        >
+                          License Agreement
+                        </SizableText>
                       </XStack>
                       <Theme name="alt1">
                         <PoweredByStripeIcon width={96} />
@@ -1320,7 +1328,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Icons"
-                  description="A whopping ~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from icones.js.org."
+                  description="A whopping ~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
                   after="+150"
                 />
 
@@ -1725,3 +1733,194 @@ const HeartsRow = () => (
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
   </XStack>
 )
+
+const FaqModal = () => {
+  const store = useTakeoutStore()
+  return (
+    <Dialog
+      modal
+      open={store.showFaq}
+      onOpenChange={(val) => {
+        store.showFaq = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Dialog.Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ opacity: 0, scale: 0.975 }}
+          exitStyle={{ opacity: 0, scale: 0.975 }}
+          w="90%"
+          maw={900}
+        >
+          <YStack h="100%">
+            <ScrollView>
+              <H1 ta="center">Frequently Asked Questions</H1>
+              <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>Can I still ues the starter after my subscription has ended?</H5>
+                  <Paragraph>
+                    Of course! the subscription is only for the bot updates. If you cancel
+                    your subscription you will stop receiving updates but can still use
+                    your starter.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>Do I have to annually pay for the icon and font packages?</H5>
+                  <Paragraph>
+                    No. Technically the icon and font packages are offered as a
+                    subscription but the renewal will be free so you pay only once. We
+                    apply a 100% coupon right after your checkout.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>Can I suggest a feature for the upcoming updates?</H5>
+                  <Paragraph>
+                    Yes. You will have access to an exclusive Discord channel in which you
+                    can chat directly with the creators of the template, suggest features,
+                    ask questions and so forth.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>Is there a refund policy?</H5>
+                  <Paragraph>
+                    No. Since that would allow folks to just purchase the starter, fork
+                    and refund. We don't offer a refund to prevent abuse of our product.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How does the GitHub bot work?</H5>
+                  <Paragraph>
+                    Whenever we make changes to the starter, we may trigger the bot to
+                    send update PRs to all the repositories that have the bot installed
+                    and have an active subscription. You may tweak the changes on the PR
+                    and merge, or just disable it if you want to.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>What are the next steps after I purchase the starter?</H5>
+                  <Paragraph>
+                    You will see the full instructions after purchase. You can gain access
+                    to the source code repository on GitHub, which allows you to install
+                    the starter through the create-tamagui CLI. Simply run `yarn create
+                    tamagui --template=takeout-starter` and follow the steps.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>
+                    What are the next steps after I purchase the font/icon packages?
+                  </H5>
+                  <Paragraph>
+                    You will see the full instructions after purchase. You can gain access
+                    to the source code of icon or font packages on GitHub, which allows
+                    you to install packages through the `@tamagui/cli` package. Simply
+                    install the cli and run `yarn tamagui add icon` or `yarn tamagui add
+                    font` and follow the steps to install the packages.
+                  </Paragraph>
+                </YStack>
+                {/* 
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>
+                    Can I get auto-updates if I have my repository on a git server that
+                    doesn't support GitHub bots?
+                  </H5>
+                  <Paragraph>
+                    You can't use the bot outside of GitHub but you can write a custom
+                    script / workflow to look for new changes on the repository source and
+                    create PRs.
+                  </Paragraph>
+                </YStack> */}
+              </XStack>
+            </ScrollView>
+          </YStack>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
+const AgreementModal = () => {
+  const store = useTakeoutStore()
+  return (
+    <Dialog
+      modal
+      open={store.showAgreement}
+      onOpenChange={(val) => {
+        store.showAgreement = val
+      }}
+    >
+      <Dialog.Adapt when="sm">
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" space>
+            <Dialog.Adapt.Contents />
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      </Dialog.Adapt>
+
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          className="blur-medium"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ opacity: 0, scale: 0.975 }}
+          exitStyle={{ opacity: 0, scale: 0.975 }}
+          w="90%"
+          maw={900}
+        >
+          <YStack h="100%" space>
+            <Paragraph>TODO</Paragraph>
+          </YStack>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
