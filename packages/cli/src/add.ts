@@ -82,5 +82,23 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   const finalDir = path.join(packagesPath, packageName)
   await ensureDir(packagesPath)
   await copy(packageDir, finalDir)
+
+  console.log()
   console.log(`Created the package under ${finalDir}`)
+  switch (type) {
+    case 'icon':
+      console.log(`If you're using Next.js, make sure to add this to next.config.js:
+    
+${chalk.green(`modularizeImports: {
+  '@tamagui/${packageName}': {
+    transform: "@tamagui/${packageName}/dist/esm/icons/{{kebabCase member}}",
+    skipDefaultConversion: true,
+  },
+},`)}`)
+      break
+    case 'font':
+      // TODO: instructions on how to install the font on expo and next.js
+      console.log()
+      break
+  }
 }
