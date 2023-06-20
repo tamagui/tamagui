@@ -3,9 +3,15 @@ import React from 'react'
 
 import { IconProps } from './IconProps'
 
+type ThemedOptions = {
+  defaultThemeColor?: string
+  defaultStrokeWidth?: number
+  fallbackColor?: string
+}
+
 export function themed(
   Component: React.FC<IconProps>,
-  opts = {
+  opts: ThemedOptions = {
     defaultThemeColor: 'black',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
@@ -17,7 +23,7 @@ export function themed(
 
     const defaultColor = props.color ?? opts.defaultThemeColor
     const color = getVariable(
-      (defaultColor in theme ? theme[defaultColor] : undefined) ||
+      (defaultColor ? theme[defaultColor] : undefined) ||
         props.color ||
         (!props.disableTheme ? theme.color : null) ||
         opts.fallbackColor

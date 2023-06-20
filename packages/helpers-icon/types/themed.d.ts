@@ -1,8 +1,10 @@
 import React from 'react';
 import { IconProps } from './IconProps';
-export declare function themed(Component: React.FC<IconProps>, opts?: {
-    defaultThemeColor: string;
-    defaultStrokeWidth: number;
-    fallbackColor: string;
-}): (propsIn: IconProps) => JSX.Element;
+type ThemedOptions = {
+    defaultThemeColor?: string;
+    defaultStrokeWidth?: number;
+    fallbackColor?: string;
+};
+export declare function themed(Component: React.FC<IconProps>, opts?: ThemedOptions): (propsIn: IconProps) => JSX.Element;
+export {};
 //# sourceMappingURL=themed.d.ts.map
