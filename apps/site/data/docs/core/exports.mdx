@@ -83,8 +83,8 @@ getToken('$small', 'size') // returns on web var(--size-small), native 14
 Similar to getToken, but always returns the raw value rather than the variable name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
-getToken('$size.small') // returns 14
-getToken('$small', 'size') // returns 14
+getTokenValue('$size.small') // returns 14
+getTokenValue('$small', 'size') // returns 14
 ```
 
 ### getExpandedShorthands
