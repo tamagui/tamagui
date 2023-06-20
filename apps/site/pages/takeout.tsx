@@ -1893,9 +1893,18 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   }
 
   return {
-    starter: { ...queries[0].data!, prices: getArray(queries[0].data!.prices!) },
-    iconsPack: { ...queries[1].data!, prices: getArray(queries[1].data!.prices!) },
-    fontsPack: { ...queries[2].data!, prices: getArray(queries[2].data!.prices!) },
+    starter: {
+      ...queries[0].data!,
+      prices: getArray(queries[0].data!.prices!).filter((p) => p.active),
+    },
+    iconsPack: {
+      ...queries[1].data!,
+      prices: getArray(queries[1].data!.prices!).filter((p) => p.active),
+    },
+    fontsPack: {
+      ...queries[2].data!,
+      prices: getArray(queries[2].data!.prices!).filter((p) => p.active),
+    },
   }
 }
 
