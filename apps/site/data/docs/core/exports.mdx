@@ -64,27 +64,31 @@ Returns the parsed Tamagui config object of all your tokens, can be used at runt
 ### getToken
 
 ```tsx
-(name: Token) => any
+(name: Token, group?: keyof Tokens) => any
 ```
 
-Given the specific name of a token, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
+Given the specific name of a token or a name + group, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
 
 ```tsx
 getToken('$size.small') // returns on web var(--size-small), native 14
 getToken('size.small') // returns on web var(--size-small), native 14
+getToken('$small', 'size') // returns on web var(--size-small), native 14
+getToken('small', 'size') // returns on web var(--size-small), native 14
 ```
 
 ### getTokenValue
 
 ```tsx
-(name: Token) => any
+(name: Token, group?: keyof Tokens) => any
 ```
 
-Similar to getToken, but always returns the raw value rather than the variable name. Iff you define a size token with key `small` and value of `14`:
+Similar to getToken, but always returns the raw value rather than the variable name. If you define a size token with key `small` and value of `14`:
 
 ```tsx
-getTokenValue('$size.small') // returns 14
-getTokenValue('size.small') // returns 14
+getToken('$size.small') // returns 14
+getToken('size.small') // returns 14
+getToken('$small', 'size') // returns 14
+getToken('small', 'size') // returns 14
 ```
 
 ### getExpandedShorthands

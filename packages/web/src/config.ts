@@ -1,6 +1,12 @@
 import { isWeb } from '@tamagui/constants'
 
-import { ConfigListener, TamaguiInternalConfig, Token, TokensMerged } from './types'
+import {
+  ConfigListener,
+  TamaguiInternalConfig,
+  Token,
+  Tokens,
+  TokensMerged,
+} from './types'
 
 let conf: TamaguiInternalConfig | null
 
@@ -69,13 +75,14 @@ export const getTokens = ({
   return cached
 }
 
-export const getToken = (value: Token) => {
-  const token = getTokens()[value]
-  return isWeb ? token.variable : token.val
+export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {
+  const tokens = getTokens()
+  const token = value in tokens ? tokens[value] : (tokens[group as any]?.[value] as any)
+  return useVariable ? token?.variable : token?.val
 }
 
-export const getTokenValue = (value: Token) => {
-  return getTokens()[value].val
+export const getTokenValue = (value: Token, group?: keyof Tokens) => {
+  return getToken(value, group, false)
 }
 
 /**
