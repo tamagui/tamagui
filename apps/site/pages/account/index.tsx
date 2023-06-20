@@ -9,7 +9,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { ThemeTint } from '@tamagui/logo'
 import { CheckCircle, LogOut, Star } from '@tamagui/lucide-icons'
-import { useUser } from 'hooks/useUser'
+import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -32,7 +32,9 @@ export default function Page() {
     <>
       <NextSeo title="Account — Tamagui" description="A better universal UI system." />
 
-      <Account />
+      <UserGuard>
+        <Account />
+      </UserGuard>
     </>
   )
 }
