@@ -148,8 +148,11 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 
 function unwrapSelectItem(selectValueChildren: any) {
   return React.Children.map(selectValueChildren, (child) => {
-    if (child.type.staticConfig.componentName === ITEM_TEXT_NAME) {
+    if (child.type?.staticConfig?.componentName === ITEM_TEXT_NAME) {
       return child.props.children
+    }
+    if (child.props.children) {
+      child.props.children = unwrapSelectItem(child.props.children)
     }
     return child
   })
