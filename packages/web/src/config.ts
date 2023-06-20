@@ -53,31 +53,18 @@ export const getTokens = ({
   if (prefixed === false) return cachedUnprefixed
   if (prefixed === true) return cachedPrefixed
   if (cached) return cached
-  const specificTokensParsed = conf!.specificTokens
-  const specificTokens = Object.fromEntries(
-    Object.entries(conf!.specificTokens).map(([k, v]) => [k.slice(1), v])
-  )
-  cached = {
-    ...(Object.fromEntries(
-      Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
-    ) as any),
-    ...specificTokens,
-    ...specificTokensParsed,
-  }
-  cachedPrefixed = {
-    ...tokensParsed,
-    ...specificTokensParsed,
-  } as any
-  cachedUnprefixed = {
-    ...tokens,
-    ...specificTokens,
-  } as any
+  cached = Object.fromEntries(
+    Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
+  ) as any
   return cached
 }
 
 export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {
   const tokens = getTokens()
-  const token = value in tokens ? tokens[value] : (tokens[group as any]?.[value] as any)
+  const token =
+    value in conf!.specificTokens
+      ? conf!.specificTokens[value]
+      : (tokens[group as any]?.[value] as any)
   return useVariable ? token?.variable : token?.val
 }
 
@@ -88,7 +75,7 @@ export const getTokenValue = (value: Token, group?: keyof Tokens) => {
 /**
  * Note: this is the same as `getTokens`
  */
-export const useTokens = () => getTokens()
+export const useTokens = getTokens
 
 export const getThemes = () => conf!.themes
 

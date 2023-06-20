@@ -71,9 +71,7 @@ Given the specific name of a token or a name + group, will return the value as e
 
 ```tsx
 getToken('$size.small') // returns on web var(--size-small), native 14
-getToken('size.small') // returns on web var(--size-small), native 14
 getToken('$small', 'size') // returns on web var(--size-small), native 14
-getToken('small', 'size') // returns on web var(--size-small), native 14
 ```
 
 ### getTokenValue
@@ -86,9 +84,7 @@ Similar to getToken, but always returns the raw value rather than the variable n
 
 ```tsx
 getToken('$size.small') // returns 14
-getToken('size.small') // returns 14
 getToken('$small', 'size') // returns 14
-getToken('small', 'size') // returns 14
 ```
 
 ### getExpandedShorthands
