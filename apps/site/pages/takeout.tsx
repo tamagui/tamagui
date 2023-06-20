@@ -1053,7 +1053,9 @@ const PurchaseModal = ({
   const [selectedProductsIds, setSelectedProductsIds] = useState<string[]>(
     products.map((p) => p.id)
   )
-  const sortedStarterPrices = starter.prices.sort((a, b) => a.unit_amount! - b.unit_amount!)
+  const sortedStarterPrices = starter.prices.sort(
+    (a, b) => a.unit_amount! - b.unit_amount!
+  )
 
   const [starterPriceId, setStarterPriceId] = useState(sortedStarterPrices[0].id)
   // const selectedProducts = products.filter((p) => selectedProductsIds.includes(p.id))
@@ -1150,13 +1152,21 @@ const PurchaseModal = ({
                   // const hasSubscription =
                   const subscription = subscriptions?.find((sub) => {
                     if (sub.status !== 'active') return false
-                    const price = sub.prices
-                      ? Array.isArray(sub.prices)
-                        ? sub.prices[0]
-                        : sub.prices
-                      : null
-                    if (!price) return false
-                    return price.product_id === product.id
+                    const items = sub.subscription_items
+                      ? Array.isArray(sub.subscription_items)
+                        ? sub.subscription_items
+                        : [sub.subscription_items]
+                      : []
+                    return !!items.find((i) =>
+                      Array.isArray(i.prices) ? i.prices[0] : i.prices
+                    )
+                    //   const price = sub.prices
+                    //   ? Array.isArray(sub.prices)
+                    //     ? sub.prices[0]
+                    //     : sub.prices
+                    //   : null
+                    // if (!price) return false
+                    // return price.product_id === product.id
                   })
 
                   const onChange = (value: boolean) => {

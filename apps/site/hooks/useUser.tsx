@@ -28,7 +28,6 @@ export const UserGuard = ({ children }: { children: React.ReactNode }) => {
     if (isOffline) {
       return
     }
-    debugger
     if (!user && !isLoading && router.isReady) {
       router.push(`${siteRootDir}/login`)
     }
