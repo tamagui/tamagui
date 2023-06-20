@@ -6,6 +6,7 @@ export type StyledContext<Props extends Object = any> = Omit<
   React.Context<Props>,
   'Provider'
 > & {
+  context: React.Context<Props>
   props: Object
   Provider: React.ProviderExoticComponent<
     Partial<Props> & {
@@ -32,6 +33,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   // @ts-ignore
   Context.Provider = Provider
   Context.props = props
+  Context.context = OGContext
 
   return Context
 }

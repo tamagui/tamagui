@@ -241,8 +241,8 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     // edge-case: given we have `role="A"`, without this check, `accessibilityRole="B"` doesn't overwrite `role` and the value remains "A"
-    if (keyInit === "accessibilityRole") {
-      usedKeys["role"] = 1
+    if (keyInit === 'accessibilityRole') {
+      usedKeys['role'] = 1
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {

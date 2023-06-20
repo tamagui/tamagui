@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { Spinner, YStack } from 'tamagui'
 
 import type { UserContextType } from '../pages/api/user'
+import { useOfflineMode } from './useOfflineMode'
 
 export const useUser = () => {
   return useSWR<UserContextType>('user', {
@@ -20,13 +21,17 @@ export const useUser = () => {
 export const UserGuard = ({ children }: { children: React.ReactNode }) => {
   const { data, isLoading } = useUser()
   const router = useRouter()
+  const isOffline = useOfflineMode()
   const user = data?.session?.user
 
   useEffect(() => {
+    if (isOffline) {
+      return
+    }
     if (!user && !isLoading && router.isReady) {
       router.push(`${siteRootDir}/login`)
     }
-  }, [user, isLoading, router])
+  }, [isOffline, user, isLoading, router])
 
   if (!user)
     return (

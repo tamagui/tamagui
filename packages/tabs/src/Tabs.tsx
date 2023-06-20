@@ -60,8 +60,7 @@ const TabsList = TabsListFrame.extractable(
             role="tablist"
             aria-orientation={context.orientation}
             ref={forwardedRef}
-            orientation="horizontal"
-            axis={context.orientation}
+            orientation={context.orientation}
             {...listProps}
           >
             {children}

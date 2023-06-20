@@ -712,6 +712,14 @@ export type RadiusTokens =
   | GetTokenString<keyof Tokens['radius']>
   | number
 
+export type Token =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['radius']>
+  | GetTokenString<keyof Tokens['zIndex']>
+  | GetTokenString<keyof Tokens['color']>
+  | GetTokenString<keyof Tokens['space']>
+  | GetTokenString<keyof Tokens['size']>
+
 // fonts
 type DefaultFont = TamaguiConfig['defaultFont']
 

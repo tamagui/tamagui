@@ -3,6 +3,7 @@ type GetTokenBase = Variable | string | number | undefined;
 type GetTokenOptions = {
     shift?: number;
     bounds?: [number] | [number, number];
+    excludeHalfSteps?: boolean;
 };
 export declare const getSize: (size: GetTokenBase, options?: GetTokenOptions) => Variable<number>;
 export declare const getSpace: (space: GetTokenBase, options?: GetTokenOptions) => Variable<number>;

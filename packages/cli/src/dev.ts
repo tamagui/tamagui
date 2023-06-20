@@ -16,9 +16,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   process.chdir(process.cwd())
 
-  const { tamaguiPlugin, nativePlugin, nativePrebuild } = await import(
-    '@tamagui/vite-plugin'
-  )
+  const { tamaguiPlugin, nativePlugin, nativePrebuild } = require('@tamagui/vite-plugin')
 
   // build react-native
   await nativePrebuild()
@@ -31,6 +29,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   ]
 
   async function getBundle() {
+    console.log('get bundle')
     const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
     const outputCode = await getBundleCode()
     // debug out each time
@@ -38,13 +37,15 @@ export const dev = async (options: CLIResolvedOptions) => {
     return outputCode
   }
 
+  const rootFile = join(root, 'src/test-tamagui-stack.tsx')
+
   async function getBundleCode() {
     // build app
     const buildOutput = await build({
       // @ts-ignore
       plugins,
       appType: 'custom',
-      root: join(root, 'src/test-tamagui-stack.tsx'),
+      root,
       build: {
         ssr: true,
       },
@@ -99,7 +100,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   }
 
   const server = await createServer({
-    root: root,
+    root,
     mode: 'development',
     plugins,
     server: {
@@ -111,7 +112,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   await server.listen()
 
   await ensureDir(options.paths.dotDir)
-  const res = await watchTamaguiConfig(options.tamaguiOptions)
+  // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
   const info = server.httpServer?.address() as AddressInfo
 
@@ -184,7 +185,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   await new Promise((res) => server.httpServer?.on('close', res))
 
-  await res?.context.dispose()
+  // await res?.context.dispose()
 
   console.log('closed')
 }

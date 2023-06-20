@@ -1,48 +1,44 @@
-import {
-  getTokens,
-  getVariable,
-  getVariableValue,
-  useProps,
-  useTheme,
-} from "@tamagui/core";
-import React from "react";
-import { IconProps } from "./IconProps";
+import { getTokenValue, getVariable, useProps, useTheme } from '@tamagui/core'
+import React from 'react'
 
-export function themed(Component: React.FC<IconProps>) {
+import { IconProps } from './IconProps'
+
+type ThemedOptions = {
+  defaultThemeColor?: string
+  defaultStrokeWidth?: number
+  fallbackColor?: string
+}
+
+export function themed(
+  Component: React.FC<IconProps>,
+  opts: ThemedOptions = {
+    defaultThemeColor: 'black',
+    defaultStrokeWidth: 2,
+    fallbackColor: '#000',
+  }
+) {
   const wrapped = (propsIn: IconProps) => {
-    const props = useProps(propsIn);
-    const theme = useTheme();
+    const props = useProps(propsIn)
+    const theme = useTheme()
 
-    const defaultColor = props.color ?? "black";
-
+    const defaultColor = props.color ?? opts.defaultThemeColor
     const color = getVariable(
-      (defaultColor in theme ? theme[defaultColor] : undefined) ||
+      (defaultColor ? theme[defaultColor] : undefined) ||
         props.color ||
         (!props.disableTheme ? theme.color : null) ||
-        "#000"
-    );
+        opts.fallbackColor
+    )
 
     const size =
-      typeof props.size === "string"
-        ? getVariableValue(getTokens().size[props.size] || props.size)
-        : props.size;
+      typeof props.size === 'string' ? getTokenValue(props.size, 'size') : props.size
 
     const strokeWidth =
-      typeof props.strokeWidth === "string"
-        ? getVariableValue(
-            getTokens().size[props.strokeWidth] || props.strokeWidth
-          )
-        : props.strokeWidth ?? "2";
+      typeof props.strokeWidth === 'string'
+        ? getTokenValue(props.strokeWidth, 'size')
+        : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
 
-    return (
-      <Component
-        {...props}
-        color={color}
-        size={size}
-        strokeWidth={strokeWidth}
-      />
-    );
-  };
+    return <Component {...props} color={color} size={size} strokeWidth={strokeWidth} />
+  }
 
-  return wrapped;
+  return wrapped
 }

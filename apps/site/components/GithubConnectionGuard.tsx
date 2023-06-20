@@ -1,8 +1,8 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { useRouter } from 'next/router'
 import { isLocal } from '@protected/studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
+import { useRouter } from 'next/router'
 import { ButtonLink } from 'studio/Link'
 import { H2, Paragraph, Spinner, YStack } from 'tamagui'
 

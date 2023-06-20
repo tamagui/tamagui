@@ -111,7 +111,7 @@ export const ButtonText = styled(Text, {
 })
 
 const ButtonIcon = (props: { children: any }) => {
-  const { size } = useContext(ButtonContext)
+  const { size } = useContext(ButtonContext.context)
   const smaller = getSize(size, {
     shift: -2,
   })
@@ -505,7 +505,7 @@ export const ButtonContext = createStyledContext({
 })
 ```
 
-This in fact it returns a `React.Context` just like `createContext` does, so you can use it with `useContext` later on just as you'd expect.
+This in fact it returns a slightly modified `React.Context` just like `createContext` does, so you can use it with `useContext` later on - though we still export a `.context` object with the original type just in case there's any issue.
 
 And now, bringing back the full example, we add an extra property to each `styled` component, `context`:
 
