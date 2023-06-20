@@ -15,13 +15,14 @@ import {
 } from '@tamagui/core'
 import {
   Coords,
+  OffsetOptions,
   Placement,
   Strategy,
   UseFloatingReturn,
   arrow,
   autoUpdate,
   flip,
-  offset,
+  offset as offsetFn,
   shift,
   useFloating,
 } from '@tamagui/floating'
@@ -60,6 +61,7 @@ export type PopperProps = {
   stayInFrame?: ShiftProps | boolean
   allowFlip?: FlipProps | boolean
   strategy?: Strategy
+  offset?: OffsetOptions
 }
 
 export function Popper(props: PopperProps) {
@@ -70,6 +72,7 @@ export function Popper(props: PopperProps) {
     placement = 'bottom',
     stayInFrame,
     allowFlip,
+    offset,
   } = props
 
   const [isMounted, setIsMounted] = React.useState(false)
@@ -81,6 +84,7 @@ export function Popper(props: PopperProps) {
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const arrowRef = React.useRef()
+  const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
     strategy,
@@ -92,7 +96,7 @@ export function Popper(props: PopperProps) {
         : (null as any),
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
-      arrowSize ? offset(arrowSize) : (null as any),
+      typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
     ].filter(Boolean),
   })
 
