@@ -394,6 +394,7 @@ export type SpaceTokens = SpecificTokens | GetTokenString<keyof Tokens['space']>
 export type ColorTokens = SpecificTokens | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = SpecificTokens | GetTokenString<keyof Tokens['zIndex']> | number;
 export type RadiusTokens = SpecificTokens | GetTokenString<keyof Tokens['radius']> | number;
+export type Token = SpecificTokens | GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
 type DefaultFont = TamaguiConfig['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
 export type Font = ParseFont<Fonts>;

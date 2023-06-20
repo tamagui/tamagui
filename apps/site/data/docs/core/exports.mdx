@@ -37,16 +37,6 @@ Will add a new font after initial createTamagui call. Where `GenericFont` is the
 
 The same as insertFont, but will update an existing font.
 
-### getVariable
-
-```tsx
-type getVariable = (value: Variable) => string
-```
-
-If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
-
-Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
-
 ### isTamaguiComponent
 
 ```tsx
@@ -69,7 +59,33 @@ If no name given, true if a Tamagui ReactElement, if name given ensures it's the
 ;() => TokensParsed
 ```
 
-Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens.
+Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens. If you are looking to get a single token value, prefer `getToken` or `getTokenValue`.
+
+### getToken
+
+```tsx
+(name: Token) => any
+```
+
+Given the specific name of a token, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
+
+```tsx
+getToken('$size.small') // returns on web var(--size-small), native 14
+getToken('size.small') // returns on web var(--size-small), native 14
+```
+
+### getTokenValue
+
+```tsx
+(name: Token) => any
+```
+
+Similar to getToken, but always returns the raw value rather than the variable name. Iff you define a size token with key `small` and value of `14`:
+
+```tsx
+getTokenValue('$size.small') // returns 14
+getTokenValue('size.small') // returns 14
+```
 
 ### getExpandedShorthands
 
@@ -86,6 +102,16 @@ themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 ```
 
 [A higher order component](https://github.com/tamagui/tamagui/blob/master/packages/core/src/helpers/themeable.tsx) that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
+
+### getVariable
+
+```tsx
+type getVariable = (value: Variable) => string
+```
+
+If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
+
+Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
 
 ---
 

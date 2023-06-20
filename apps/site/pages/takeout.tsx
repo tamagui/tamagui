@@ -1899,7 +1899,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   }
 }
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
+export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
   try {
     const props = await getTakeoutProducts()
 

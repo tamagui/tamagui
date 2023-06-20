@@ -151,6 +151,8 @@ export {
   getStylesAtomic,
   getThemes,
   getTokens,
+  getToken,
+  getTokenValue,
   getVariable,
   variableToString,
   getVariableValue,

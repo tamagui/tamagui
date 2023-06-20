@@ -12,7 +12,15 @@ export * from './styled'
 export * from './types'
 export * from './setupReactNative'
 
-export { getConfig, getThemes, getTokens, onConfiguredOnce, updateConfig } from './config'
+export {
+  getConfig,
+  getThemes,
+  getTokens,
+  onConfiguredOnce,
+  updateConfig,
+  getToken,
+  getTokenValue,
+} from './config'
 
 export * from './constants/constants'
 

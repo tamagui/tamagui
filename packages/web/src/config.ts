@@ -1,4 +1,6 @@
-import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types'
+import { isWeb } from '@tamagui/constants'
+
+import { ConfigListener, TamaguiInternalConfig, Token, TokensMerged } from './types'
 
 let conf: TamaguiInternalConfig | null
 
@@ -27,6 +29,9 @@ export const getConfig = () => {
 }
 
 let cached: TokensMerged
+let cachedPrefixed: TokensMerged
+let cachedUnprefixed: TokensMerged
+
 export const getTokens = ({
   prefixed,
 }: {
@@ -39,13 +44,38 @@ export const getTokens = ({
     if (!conf) throw new Error(`Haven't called createTamagui yet`)
   }
   const { tokens, tokensParsed } = conf!
-  if (prefixed === false) return tokens
-  if (prefixed === true) return tokensParsed
+  if (prefixed === false) return cachedUnprefixed
+  if (prefixed === true) return cachedPrefixed
   if (cached) return cached
-  cached = Object.fromEntries(
-    Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
-  ) as any
+  const specificTokensParsed = conf!.specificTokens
+  const specificTokens = Object.fromEntries(
+    Object.entries(conf!.specificTokens).map(([k, v]) => [k.slice(1), v])
+  )
+  cached = {
+    ...(Object.fromEntries(
+      Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
+    ) as any),
+    ...specificTokens,
+    ...specificTokensParsed,
+  }
+  cachedPrefixed = {
+    ...tokensParsed,
+    ...specificTokensParsed,
+  } as any
+  cachedUnprefixed = {
+    ...tokens,
+    ...specificTokens,
+  } as any
   return cached
+}
+
+export const getToken = (value: Token) => {
+  const token = getTokens()[value]
+  return isWeb ? token.variable : token.val
+}
+
+export const getTokenValue = (value: Token) => {
+  return getTokens()[value].val
 }
 
 /**
