@@ -1909,7 +1909,9 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
     }
   } catch (err) {
     console.error(`Error getting props`, err)
-    throw err
+    return {
+      notFound: true,
+    }
   }
 }
 
