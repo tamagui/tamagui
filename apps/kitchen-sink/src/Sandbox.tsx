@@ -21,5 +21,6 @@ import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagu
 //     </Stack>
 
 export const Sandbox = () => {
+  console.log('wtf', getTokens({ prefixed: true }))
   return <H1>test things here</H1>
 }

@@ -35,8 +35,6 @@ export const getConfig = () => {
 }
 
 let cached: TokensMerged
-let cachedPrefixed: TokensMerged
-let cachedUnprefixed: TokensMerged
 
 export const getTokens = ({
   prefixed,
@@ -50,8 +48,8 @@ export const getTokens = ({
     if (!conf) throw new Error(`Haven't called createTamagui yet`)
   }
   const { tokens, tokensParsed } = conf!
-  if (prefixed === false) return cachedUnprefixed
-  if (prefixed === true) return cachedPrefixed
+  if (prefixed === false) return tokens
+  if (prefixed === true) return tokensParsed
   if (cached) return cached
   cached = Object.fromEntries(
     Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
