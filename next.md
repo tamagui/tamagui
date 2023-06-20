@@ -1,3 +1,5 @@
+- merge font-size and get-font-sized packages
+
 - forwardRef to icons
 
 - modal flicker https://discord.com/channels/909986013848412191/1111044987858206821

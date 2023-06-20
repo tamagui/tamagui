@@ -7,6 +7,7 @@ type GetTokenBase = Variable | string | number | undefined
 type GetTokenOptions = {
   shift?: number
   bounds?: [number] | [number, number]
+  excludeHalfSteps?: boolean
 }
 
 const defaultOptions: GetTokenOptions = {
@@ -27,7 +28,9 @@ export const getRadius = (radius: GetTokenBase, options?: GetTokenOptions) => {
 }
 
 const cacheVariables: Record<string, Variable[]> = {}
+const cacheWholeVariables: Record<string, Variable[]> = {}
 const cacheKeys: Record<string, string[]> = {}
+const cacheWholeKeys: Record<string, string[]> = {}
 
 /** @deprecated use getSize, getSpace, or getTokenRelative instead */
 export const stepTokenUpOrDown = (
@@ -40,6 +43,9 @@ export const stepTokenUpOrDown = (
   if (!(type in cacheVariables)) {
     cacheKeys[type] = []
     cacheVariables[type] = []
+    cacheWholeKeys[type] = []
+    cacheWholeVariables[type] = []
+
     const sorted = Object.keys(tokens)
       .map((k) => tokens[k])
       .sort((a, b) => a.val - b.val)
@@ -48,10 +54,24 @@ export const stepTokenUpOrDown = (
       cacheKeys[type].push(token.key)
       cacheVariables[type].push(token)
     }
+
+    const sortedExcludingHalfSteps = sorted.filter((x) => !x.key.endsWith('.5'))
+    for (const token of sortedExcludingHalfSteps) {
+      cacheWholeKeys[type].push(token.key)
+      cacheWholeVariables[type].push(token)
+    }
   }
 
-  const tokensOrdered =
-    typeof current === 'string' ? cacheKeys[type] : cacheVariables[type]
+  const isString = typeof current === 'string'
+  const cache = options.excludeHalfSteps
+    ? isString
+      ? cacheWholeKeys
+      : cacheWholeVariables
+    : isString
+    ? cacheKeys
+    : cacheVariables
+
+  const tokensOrdered = cache[type]
 
   const min = options.bounds?.[0] ?? 0
   const max = options.bounds?.[1] ?? tokensOrdered.length - 1

@@ -1,5 +1,6 @@
 import { getFontSize } from '@tamagui/font-size'
-import { getSpace } from '@tamagui/get-token'
+import { getFontSized } from '@tamagui/get-font-sized'
+import { getSize, getSpace } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
@@ -124,13 +125,14 @@ export const ListItemText = styled(SizableText, {
     unstyled: {
       false: {
         color: '$color',
+        size: '$true',
         flexGrow: 1,
         flexShrink: 1,
         ellipse: true,
         cursor: 'default',
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     unstyled: false,
@@ -145,8 +147,18 @@ export const ListItemSubtitle = styled(ListItemText, {
       false: {
         opacity: 0.6,
         maxWidth: '100%',
-        size: '$3',
         color: '$color',
+      },
+    },
+
+    size: {
+      '...size': (val, extras) => {
+        const oneSmaller = getSize(val, {
+          shift: -1,
+          excludeHalfSteps: true,
+        })
+        const fontStyle = getFontSized(oneSmaller.key as SizeTokens, extras)
+        return fontStyle
       },
     },
   } as const,
@@ -183,6 +195,7 @@ export const useListItem = (
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 1,
+    unstyled = false,
     subTitle,
 
     // text props
@@ -197,9 +210,13 @@ export const useListItem = (
     ...rest
   } = props
 
-  const mediaActiveProps = useProps(props)
+  const mediaActiveProps = useProps({
+    scaleIcon,
+    scaleSpace,
+    unstyled,
+    ...props,
+  })
   const size = mediaActiveProps.size || '$true'
-  const subtitleSize = `$${+String(size).replace('$', '') - 1}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
@@ -222,7 +239,8 @@ export const useListItem = (
             </>
           ) : null}
           {/* helper for common title/subtitle pttern */}
-          {title || subTitle ? (
+          {/* rome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
+          {Boolean(title || subTitle) ? (
             <YStack flex={1}>
               {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}
               {subTitle ? (
@@ -230,7 +248,9 @@ export const useListItem = (
                   {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
                     // TODO can use theme but we need to standardize to alt themes
                     // or standardize on subtle colors in themes
-                    <Subtitle size={subtitleSize}>{subTitle}</Subtitle>
+                    <Subtitle unstyled={mediaActiveProps.unstyled} size={size}>
+                      {subTitle}
+                    </Subtitle>
                   ) : (
                     subTitle
                   )}

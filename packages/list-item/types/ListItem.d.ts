@@ -201,26 +201,26 @@ export declare const ListItemText: import("@tamagui/web").TamaguiComponent<Omit<
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -237,34 +237,38 @@ export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<O
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
-}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: SizeTokens | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
-}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
-}, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+}, "size" | "unstyled"> & {
+    readonly unstyled?: boolean | undefined;
+    readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+    readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
     __baseProps: Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -274,7 +278,7 @@ export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<O
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     };
 }>;
 export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -283,28 +287,28 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }>>) | (Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -313,7 +317,7 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -322,14 +326,14 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
 }>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
-    unstyled?: boolean | undefined;
+    readonly unstyled?: boolean | undefined;
 } & ({} | {
     [x: string]: undefined;
 }), {
@@ -341,7 +345,7 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     };
 }>;
 export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title, }?: {
@@ -602,7 +606,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
         size?: SizeTokens | undefined;
         active?: boolean | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -972,26 +975,26 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     }, "unstyled"> & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     }, "unstyled"> & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     }, "unstyled"> & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     }, {
         displayName: string | undefined;
         __baseProps: Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -1008,34 +1011,38 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
-    }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+    }, "size" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
+        readonly size?: SizeTokens | undefined;
     } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
-    }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+    }, "size" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
+        readonly size?: SizeTokens | undefined;
     }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
-    }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
+    }, "size" | "unstyled"> & {
+        readonly unstyled?: boolean | undefined;
+        readonly size?: SizeTokens | undefined;
     }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
-        unstyled?: boolean | undefined;
+        readonly unstyled?: boolean | undefined;
     } & {
         readonly unstyled?: boolean | undefined;
+        readonly size?: SizeTokens | undefined;
     }, {
         displayName: string | undefined;
         __baseProps: Omit<import("react-native").TextProps, "children" | "style" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
@@ -1045,7 +1052,7 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
             readonly unstyled?: boolean | undefined;
             readonly size?: FontSizeTokens | undefined;
         } & {
-            unstyled?: boolean | undefined;
+            readonly unstyled?: boolean | undefined;
         };
     }>;
 };
