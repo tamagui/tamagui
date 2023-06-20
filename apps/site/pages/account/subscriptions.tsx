@@ -1,11 +1,10 @@
 import { Container } from '@components/Container'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { Database, Json } from '@lib/supabase-types'
+import { Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
-import Link from 'next/link'
 import { useState } from 'react'
 import { ButtonLink } from 'studio/Link'
 import { useSWRConfig } from 'swr'
@@ -13,7 +12,6 @@ import {
   Button,
   H2,
   H3,
-  H6,
   Image,
   Paragraph,
   Separator,
@@ -21,6 +19,7 @@ import {
   Spinner,
   XStack,
   YStack,
+  useTheme,
 } from 'tamagui'
 
 export default function Page() {
@@ -211,7 +210,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
           if (!price || !product) return null
           // const product = item?.prices
           return (
-            <ProductDetail
+            <SubscriptionItem
               key={`${price.id}-${subscription.id}`}
               item={item}
               subscription={subscription}
@@ -223,7 +222,7 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
   )
 }
 
-const ProductDetail = ({
+const SubscriptionItem = ({
   item,
   subscription,
 }: {
@@ -233,7 +232,7 @@ const ProductDetail = ({
   >[number]
   subscription: SubscriptionDetailProps['subscription']
 }) => {
-  const { mutate } = useSWRConfig()
+  // const { mutate } = useSWRConfig()
   const [isLoading, setIsLoading] = useState(false)
   const product = item.price.product
   const metadata = product?.metadata as { [key: string]: Json }
@@ -243,6 +242,7 @@ const ProductDetail = ({
     return null
   }
   const installInstructions = (product.metadata as any).install_instructions
+  const hasGithubApp = (product.metadata as any).has_github_app
 
   // async function handleRemoveFormSub() {
   //   setIsLoading(true)
@@ -324,11 +324,20 @@ const ProductDetail = ({
           >
             {claimLabel}
           </Button>
-          {!!productSlug && (
-            <ButtonLink href={`/takeout`} size="$2" iconAfter={ArrowUpRight}>
-              View Page
+          {hasGithubApp && (
+            <ButtonLink
+              href="/api/github/install-bot"
+              size="$2"
+              themeInverse
+            >
+              Install App
             </ButtonLink>
           )}
+          {/* {!!productSlug && ( */}
+          <ButtonLink href={`/takeout`} size="$2" iconAfter={ArrowUpRight}>
+            View Page
+          </ButtonLink>
+          {/* )} */}
           {/* <Button
             disabled={isLoading}
             {...(isLoading && { opacity: 0.5 })}

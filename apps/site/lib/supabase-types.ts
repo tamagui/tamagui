@@ -34,6 +34,37 @@ export interface Database {
   }
   public: {
     Tables: {
+      app_installations: {
+        Row: {
+          created_at: string | null
+          github_installation_id: number | null
+          id: number
+          installed_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          github_installation_id?: number | null
+          id?: number
+          installed_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          github_installation_id?: number | null
+          id?: number
+          installed_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_installations_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       claims: {
         Row: {
           created_at: string
