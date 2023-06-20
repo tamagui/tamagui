@@ -13,7 +13,12 @@ export declare const getTokenValue: (value: Token, group?: keyof Tokens) => any;
 /**
  * Note: this is the same as `getTokens`
  */
-export declare const useTokens: () => TokensMerged;
+export declare const useTokens: ({ prefixed, }?: {
+    /**
+     * Force either with $ or without $ prefix
+     */
+    prefixed?: boolean | undefined;
+}) => TokensMerged;
 export declare const getThemes: () => {
     [x: string]: {
         [x: string]: import("./createVariable").Variable<any>;
