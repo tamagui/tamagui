@@ -47,7 +47,7 @@ const handler: NextApiHandler = async (req, res) => {
   })
   if (data) {
     res.json({
-      message: 'The subscription will be cancelled at the end of the current period.',
+      message: 'The subscription will be canceled at the end of the current period.',
     })
   }
 }
