@@ -333,7 +333,7 @@ export const useChangeThemeEffect = (
         if (nextState) {
           state = nextState
 
-          if (!prev.isNewTheme && !isWeb) {
+          if (!prev.isNewTheme || !isWeb) {
             themeManager = getNewThemeManager()
           } else {
             themeManager.updateState(nextState, true)
