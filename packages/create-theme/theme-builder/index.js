@@ -1,1 +1,1 @@
-Object.assign(module.exports, require('./dist/cjs/ThemeBuilder'))
+Object.assign(module.exports, require('../dist/cjs/ThemeBuilder'))

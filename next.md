@@ -65,6 +65,9 @@ something like this i believe, where native is correct but web the button isn't 
 
 ---
 
+- `tamagui [clone|eject] Sheet ./packages/sheet`
+  - clones the sheet package into your repo somewhere
+
 - $web / $native / $ios / $android
 
 starter
