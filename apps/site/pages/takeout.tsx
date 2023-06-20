@@ -1,6 +1,7 @@
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
+import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
@@ -1892,10 +1893,10 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   }
 
   return {
-    starter: queries[0].data,
-    iconsPack: queries[1].data,
-    fontsPack: queries[2].data,
-  } as any // trust me lol
+    starter: { ...queries[0].data!, prices: getArray(queries[0].data!.prices!) },
+    iconsPack: { ...queries[1].data!, prices: getArray(queries[1].data!.prices!) },
+    fontsPack: { ...queries[2].data!, prices: getArray(queries[2].data!.prices!) },
+  }
 }
 
 export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
@@ -1908,9 +1909,7 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps> = async () => {
     }
   } catch (err) {
     console.error(`Error getting props`, err)
-    return {
-      props: {},
-    }
+    throw err
   }
 }
 
