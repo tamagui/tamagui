@@ -91,6 +91,7 @@ export type {
   StaticConfig,
   StaticConfigParsed,
   SpecificTokens,
+  ThemeTokens,
   TamaguiBaseTheme,
   TamaguiComponent,
   TamaguiComponentPropsBase,
