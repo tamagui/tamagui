@@ -172,11 +172,11 @@ const TooltipComponent = React.forwardRef(function Tooltip(
                 width: 0,
                 height: 0,
                 x: clientX,
-                y: clientY + 24,
+                y: clientY,
                 left: clientX,
                 right: clientX,
-                top: clientY + 24,
-                bottom: clientY + 24,
+                top: clientY,
+                bottom: clientY,
               }
             },
           })
