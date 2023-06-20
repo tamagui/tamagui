@@ -1,3 +1,7 @@
+- inverse not updating theme on doc site after two theme changes (see http://localhost:5005/docs/core/theme inverse demos)
+
+- #questportal how to build a button the ...size tokens.size[name] type is breaking
+
 - merge font-size and get-font-sized packages
 
 - forwardRef to icons
