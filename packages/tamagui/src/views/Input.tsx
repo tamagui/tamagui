@@ -65,6 +65,7 @@ export const InputFrame = styled(
 
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
   placeholderTextColor?: ColorStyleProp
+  rows?: number
 }
 
 export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
@@ -80,12 +81,11 @@ export function useInputProps(props: InputProps, ref: any) {
     isInput: true,
   })
 
+  const placeholderColorProp = props.placeholderTextColor
   const placeholderTextColor =
-    typeof props.placeholderTextColor !== 'string'
-      ? props.placeholderTextColor
-      : theme[props.placeholderTextColor]?.get() ||
-        props.placeholderTextColor ||
-        (props.unstyled ? null : theme['$placeholderColor']?.get())
+    theme[placeholderColorProp as any]?.get() ??
+    placeholderColorProp ??
+    theme.placeholderColor?.get()
 
   return {
     ref: combinedRef,

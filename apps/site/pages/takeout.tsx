@@ -164,7 +164,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     blurPct: 100,
     // inverse: true,
     color: 'var(--color10)',
-    opacity: 0.25,
+    opacity: 0.2,
     background: 'transparent',
     style: {
       transition: `all ease-out 500ms`,
@@ -177,7 +177,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color12)',
-    opacity: 0.9,
+    opacity: 1,
     background: 'transparent',
   })
 
@@ -205,10 +205,8 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
           <borderGlow.Component />
         </YStack>
 
-        <YStack fullscreen bg="$background" pe="none" zi={-1} o={0.5} />
-
         <YStack f={1} space zi={100}>
-          <H2 fontFamily="$munro" size="$10" my={-12}>
+          <H2 color="$color10" fontFamily="$munro" size="$10" my={-8}>
             {title}
           </H2>
           {children}
@@ -301,6 +299,20 @@ const TakeoutHero = () => {
         pos="absolute"
         className="mix-blend"
         y={-35}
+        style={{
+          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+        }}
+      >
+        <ThemeTint>
+          <TAKEOUT className="" zi={1000} color="$color10" />
+        </ThemeTint>
+      </YStack>
+
+      <YStack
+        pos="absolute"
+        className="mix-blend"
+        y={-35}
+        scale={0.95}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
@@ -605,7 +617,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     color="$color10"
                     style={{
                       // @ts-ignore
-                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9) 50%, #fff 50%)`,
+                      backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
                     }}
                     $lg={{
                       size: '$11',
@@ -621,9 +633,9 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                 <HeartsRow />
 
                 <Paragraph fontFamily="$munro" size="$10" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the moon or the ✨, success is up to you. But if you
-                  want a cheat code to shipping a stunning web + native app fast, you've
-                  found it.
+                  We can't promise the 🌑 or the ✨, success is up to you. But if you want
+                  a cheat code to shipping a stunning web + native app fast, you've found
+                  it.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
@@ -641,13 +653,13 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
 
                 <Spacer size="$6" />
 
-                <XStack fw="wrap" gap="$4" mx="$-6" ai="center" jc="center">
+                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
                     title="Monorepo"
                     icon="retro-icons/coding-apps-websites-module-21.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.monorepo.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -664,7 +676,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     title="Design"
                     icon="retro-icons/design-color-painting-palette-25.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.design.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -681,7 +693,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     title="Deploy"
                     icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.deploy.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -698,7 +710,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     title="Screens"
                     icon="retro-icons/coding-app-website-ui-62.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.screens.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -715,7 +727,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     title="Assets"
                     icon="retro-icons/coding-apps-websites-plugin-33.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.assets.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -732,7 +744,7 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
                     title="& More"
                     icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
                   >
-                    <YStack space>
+                    <YStack space="$2">
                       {points.more.map((point, idx, arr) => (
                         <Point
                           key={point}
@@ -1091,6 +1103,7 @@ const PurchaseModal = ({
   }, [selectedProductsIds, starterPriceId, starter, iconsPack, fontsPack])
 
   const noProductSelected = selectedProductsIds.length === 0
+  const showTeamSelect = selectedProductsIds.includes(starter.id)
 
   return (
     <Dialog
@@ -1103,7 +1116,9 @@ const PurchaseModal = ({
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -1130,250 +1145,248 @@ const PurchaseModal = ({
               },
             },
           ]}
+          // animateOnly={['transform']}
           enterStyle={{ opacity: 0, scale: 0.975 }}
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
         >
-          <YStack h="100%" space>
-            <XStack ai="center" jc="space-between" gap="$6" mx="$8">
-              <Separator />
-              <Dialog.Title size="$9" my="$3" als="center">
-                Purchase 🥡
-              </Dialog.Title>
-              <Separator />
-            </XStack>
+          <ScrollView>
+            <YStack h="100%" space>
+              <XStack ai="center" jc="space-between" gap="$6" mx="$8">
+                <Separator />
+                <Dialog.Title size="$9" $sm={{ size: '$8' }} my="$3" als="center">
+                  Purchase 🥡
+                </Dialog.Title>
+                <Separator />
+              </XStack>
 
-            <YStack>
-              <YStack gap="$4" flexDirection="row" flexWrap="wrap">
-                {products.map((product) => {
-                  const active = selectedProductsIds.includes(product.id)
-                  const price = product.prices[0]
-                  const htmlId = `check-${price.id}`
-                  // const hasSubscription =
-                  const subscription = subscriptions?.find((sub) => {
-                    if (sub.status !== 'active') return false
-                    const items = sub.subscription_items
-                      ? Array.isArray(sub.subscription_items)
-                        ? sub.subscription_items
-                        : [sub.subscription_items]
-                      : []
-                    return !!items.find((i) =>
-                      Array.isArray(i.prices) ? i.prices[0] : i.prices
-                    )
-                    //   const price = sub.prices
-                    //   ? Array.isArray(sub.prices)
-                    //     ? sub.prices[0]
-                    //     : sub.prices
-                    //   : null
-                    // if (!price) return false
-                    // return price.product_id === product.id
-                  })
+              <YStack>
+                <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
+                  {products.map((product) => {
+                    const active = selectedProductsIds.includes(product.id)
+                    const price = product.prices[0]
+                    const htmlId = `check-${price.id}`
+                    // const hasSubscription =
+                    const subscription = subscriptions?.find((sub) => {
+                      if (sub.status !== 'active') return false
+                      const items = sub.subscription_items
+                        ? Array.isArray(sub.subscription_items)
+                          ? sub.subscription_items
+                          : [sub.subscription_items]
+                        : []
+                      return !!items.find((i) =>
+                        Array.isArray(i.prices) ? i.prices[0] : i.prices
+                      )
+                      //   const price = sub.prices
+                      //   ? Array.isArray(sub.prices)
+                      //     ? sub.prices[0]
+                      //     : sub.prices
+                      //   : null
+                      // if (!price) return false
+                      // return price.product_id === product.id
+                    })
 
-                  const onChange = (value: boolean) => {
-                    setSelectedProductsIds(
-                      active
-                        ? selectedProductsIds.filter((id) => id !== product.id)
-                        : [...selectedProductsIds, product.id]
-                    )
-                  }
+                    const onChange = (value: boolean) => {
+                      setSelectedProductsIds(
+                        active
+                          ? selectedProductsIds.filter((id) => id !== product.id)
+                          : [...selectedProductsIds, product.id]
+                      )
+                    }
 
-                  return (
-                    <ThemeTint key={price.id} disable={!active}>
-                      <Label
-                        f={1}
-                        htmlFor={htmlId}
-                        p="$4"
-                        height="unset"
-                        display="flex"
-                        borderWidth="$0.25"
-                        borderColor={active ? '$color8' : '$color5'}
-                        borderRadius="$4"
-                        space="$4"
-                        ai="flex-start"
-                        maw="calc(33% - 16px)"
-                        hoverStyle={{
-                          borderColor: active ? '$color10' : '$color7',
-                        }}
-                      >
-                        <Checkbox
-                          checked={active}
-                          onCheckedChange={onChange}
-                          id={htmlId}
-                          size="$6"
-                          value={price.id}
-                          mt="$2"
+                    return (
+                      <ThemeTint key={price.id} disable={!active}>
+                        <Label
+                          f={1}
+                          htmlFor={htmlId}
+                          p="$4"
+                          height="unset"
+                          display="flex"
+                          borderWidth="$0.25"
+                          backgroundColor={active ? '$color7' : '$color5'}
+                          borderColor={active ? '$color8' : '$color7'}
+                          borderRadius="$4"
+                          space="$4"
+                          ai="flex-start"
+                          $gtSm={{
+                            maw: 'calc(33% - 8px)',
+                          }}
+                          hoverStyle={{
+                            borderColor: active ? '$color10' : '$color7',
+                          }}
                         >
-                          <Checkbox.Indicator
-                          // backgroundColor={active ? '$color8' : '$color1'}
+                          <Checkbox
+                            checked={active}
+                            onCheckedChange={onChange}
+                            id={htmlId}
+                            size="$6"
+                            value={price.id}
                           >
-                            <Check />
-                          </Checkbox.Indicator>
-                        </Checkbox>
+                            <Checkbox.Indicator
+                            // backgroundColor={active ? '$color8' : '$color1'}
+                            >
+                              <Check />
+                            </Checkbox.Indicator>
+                          </Checkbox>
 
-                        <YStack gap="$1" f={1}>
-                          <H3>{product.name}</H3>
-                          <Paragraph ellipse>{product.description}</Paragraph>
-                        </YStack>
-                      </Label>
-                    </ThemeTint>
-                  )
-                })}
-              </YStack>
-            </YStack>
-
-            <XStack f={1} space separator={<Separator vertical />}>
-              <ScrollView space maw="55%" ov="hidden">
-                <YStack space="$4">
-                  <Points />
+                          <YStack gap="$2" f={1}>
+                            <H3 lh="$6">{product.name}</H3>
+                            <Paragraph size="$3" lh="$1" theme="alt2">
+                              {product.description}
+                            </Paragraph>
+                          </YStack>
+                        </Label>
+                      </ThemeTint>
+                    )
+                  })}
                 </YStack>
-              </ScrollView>
+              </YStack>
 
-              <YStack f={1} space="$4" mt="$8">
-                {/* <H3>Seats</H3>
-                <Separator /> */}
-                <AnimatePresence>
-                  {selectedProductsIds.includes(starter.id) && (
-                    <YStack
-                      animation="100ms"
-                      enterStyle={{ opacity: 0, y: -20 }}
-                      exitStyle={{ opacity: 0, y: -20 }}
-                      opacity={1}
-                      y={0}
+              <XStack
+                f={1}
+                space
+                separator={<Separator vertical />}
+                $sm={{ fd: 'column-reverse' }}
+              >
+                <ScrollView space $gtSm={{ maw: '55%' }} ov="hidden">
+                  <YStack space="$4">
+                    <Points />
+                  </YStack>
+                </ScrollView>
+
+                <YStack f={1} space="$4" mt="$8">
+                  <YStack
+                    opacity={showTeamSelect ? 1 : 0.25}
+                    pointerEvents={showTeamSelect ? 'auto' : 'none'}
+                  >
+                    <RadioGroup
+                      gap="$2"
+                      value={starterPriceId}
+                      onValueChange={(val) => setStarterPriceId(val)}
                     >
-                      <RadioGroup
-                        gap="$2"
-                        value={starterPriceId}
-                        onValueChange={(val) => setStarterPriceId(val)}
-                      >
-                        {sortedStarterPrices.map((price) => {
-                          const active = starterPriceId === price.id
-                          const htmlId = `price-${price.id}`
-                          return (
-                            <ThemeTint key={price.id} disable={!active}>
-                              <Label
-                                f={1}
-                                htmlFor={htmlId}
-                                p="$4"
-                                height="unset"
-                                display="flex"
-                                borderWidth="$0.25"
-                                borderColor={active ? '$color8' : '$color5'}
-                                borderRadius="$4"
-                                space="$4"
-                                ai="center"
-                                hoverStyle={{
-                                  borderColor: active ? '$color10' : '$color7',
-                                }}
-                              >
-                                <RadioGroup.Item
-                                  id={htmlId}
-                                  size="$6"
-                                  value={price.id}
-                                  mt="$2"
-                                >
-                                  <RadioGroup.Indicator />
-                                </RadioGroup.Item>
+                      {sortedStarterPrices.map((price) => {
+                        const active = starterPriceId === price.id
+                        const htmlId = `price-${price.id}`
+                        return (
+                          <ThemeTint key={price.id} disable={!active}>
+                            <Label
+                              f={1}
+                              htmlFor={htmlId}
+                              p="$4"
+                              height="unset"
+                              display="flex"
+                              borderWidth="$0.25"
+                              borderColor={active ? '$color8' : '$color5'}
+                              borderRadius="$4"
+                              space="$4"
+                              ai="center"
+                              hoverStyle={{
+                                borderColor: active ? '$color10' : '$color7',
+                              }}
+                            >
+                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
+                                <RadioGroup.Indicator />
+                              </RadioGroup.Item>
 
-                                <YStack gap="$1" f={1}>
-                                  <H4>{price.description}</H4>
+                              <YStack gap="$0" f={1}>
+                                <H4 mt="$-1">{price.description}</H4>
 
-                                  <Paragraph ellipse>
-                                    {formatPrice(price.unit_amount! / 100, 'usd')}
-                                  </Paragraph>
-                                </YStack>
-                              </Label>
-                            </ThemeTint>
-                          )
-                        })}
-                      </RadioGroup>
+                                <Paragraph theme="alt1" ellipse>
+                                  {formatPrice(price.unit_amount! / 100, 'usd')}
+                                </Paragraph>
+                              </YStack>
+                            </Label>
+                          </ThemeTint>
+                        )
+                      })}
+                    </RadioGroup>
+                  </YStack>
+
+                  <Spacer f={100} />
+
+                  <YStack space>
+                    <YStack ai="flex-end">
+                      <H3 size="$10">{formatPrice(sum! / 100, 'usd')}</H3>
                     </YStack>
-                  )}
-                </AnimatePresence>
 
-                <Spacer f={100} />
+                    <Separator />
 
-                <YStack space>
-                  <YStack ai="flex-end">
-                    <H3 size="$10">{formatPrice(sum! / 100, 'usd')}</H3>
-                  </YStack>
-
-                  <Separator />
-
-                  <YStack pb="$8" px="$4" space>
-                    <NextLink
-                      href={`api/checkout?${(function () {
-                        const params = new URLSearchParams({
-                          // product_id: products.id,
-                          // price_id: selectedPriceId,
-                          // quantity: seats.toString(),
-                        })
-                        for (const productId of selectedProductsIds) {
-                          params.append('product_id', productId)
-                        }
-                        params.append(`price-${starter.id}`, starterPriceId)
-                        return params.toString()
-                      })()}`}
-                    >
-                      <PurchaseButton
-                        disabled={noProductSelected}
-                        opacity={noProductSelected ? 0.5 : undefined}
+                    <YStack pb="$8" px="$4" space>
+                      <NextLink
+                        href={`api/checkout?${(function () {
+                          const params = new URLSearchParams({
+                            // product_id: products.id,
+                            // price_id: selectedPriceId,
+                            // quantity: seats.toString(),
+                          })
+                          for (const productId of selectedProductsIds) {
+                            params.append('product_id', productId)
+                          }
+                          params.append(`price-${starter.id}`, starterPriceId)
+                          return params.toString()
+                        })()}`}
                       >
-                        Purchase
-                      </PurchaseButton>
-                    </NextLink>
-                    <XStack jc="space-between" space="$2" ai="center">
-                      <XStack
-                        ai="center"
-                        separator={<Separator vertical bc="$color8" my="$2" />}
-                        space="$2"
-                      >
-                        <SizableText
-                          theme="alt1"
-                          cursor="pointer"
-                          onPress={() => {
-                            store.showFaq = true
-                          }}
-                          style={{ textDecorationLine: 'underline' }}
-                          size="$1"
+                        <PurchaseButton
+                          disabled={noProductSelected}
+                          opacity={noProductSelected ? 0.5 : undefined}
                         >
-                          FAQ
-                        </SizableText>
+                          Purchase
+                        </PurchaseButton>
+                      </NextLink>
+                      <XStack jc="space-between" space="$2" ai="center">
+                        <XStack
+                          ai="center"
+                          separator={<Separator vertical bc="$color8" my="$2" />}
+                          space="$2"
+                        >
+                          <SizableText
+                            theme="alt1"
+                            cursor="pointer"
+                            onPress={() => {
+                              store.showFaq = true
+                            }}
+                            style={{ textDecorationLine: 'underline' }}
+                            size="$1"
+                          >
+                            FAQ
+                          </SizableText>
 
-                        <SizableText
-                          theme="alt1"
-                          cursor="pointer"
-                          onPress={() => {
-                            store.showAgreement = true
-                          }}
-                          style={{ textDecorationLine: 'underline' }}
-                          size="$1"
-                        >
-                          License Agreement
-                        </SizableText>
+                          <SizableText
+                            theme="alt1"
+                            cursor="pointer"
+                            onPress={() => {
+                              store.showAgreement = true
+                            }}
+                            style={{ textDecorationLine: 'underline' }}
+                            size="$1"
+                          >
+                            License Agreement
+                          </SizableText>
+                        </XStack>
+                        <Theme name="alt1">
+                          <PoweredByStripeIcon width={96} />
+                        </Theme>
                       </XStack>
-                      <Theme name="alt1">
-                        <PoweredByStripeIcon width={96} />
-                      </Theme>
-                    </XStack>
+                    </YStack>
                   </YStack>
                 </YStack>
-              </YStack>
-            </XStack>
+              </XStack>
 
-            <Unspaced>
-              <Dialog.Close asChild>
-                <Button
-                  position="absolute"
-                  top="$1"
-                  right="$1"
-                  size="$2"
-                  circular
-                  icon={X}
-                />
-              </Dialog.Close>
-            </Unspaced>
-          </YStack>
+              <Unspaced>
+                <Dialog.Close asChild>
+                  <Button
+                    position="absolute"
+                    top="$1"
+                    right="$1"
+                    size="$2"
+                    circular
+                    icon={X}
+                  />
+                </Dialog.Close>
+              </Unspaced>
+            </YStack>
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -1839,7 +1852,7 @@ const TabsRovingIndicator = ({
 }
 
 const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" maw={660} ov="hidden">
+  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" $gtSm={{ maw: 660 }} ov="hidden">
     {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
       All the important screens: Onboard, Register, Login, Forgot Password, Account,

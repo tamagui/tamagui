@@ -13,7 +13,7 @@ export function InputsDemo() {
       <InputDemo size="$2" />
       <InputDemo size="$3" />
       <InputDemo size="$4" />
-      <TextArea minHeight={140} placeholder="Enter your details..." numberOfLines={4} />
+      <TextArea placeholder="Enter your details..." />
     </YStack>
   )
 }
