@@ -39,13 +39,24 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(400).json({ message: `state is not a number` })
   }
 
+  // fetch by user's session to see if RLS lets them pass
+  const { error: subscriptionItemError } = await supabase
+    .from('subscription_items')
+    .select('id')
+    .eq('id', state)
+    .single()
+
+  if (subscriptionItemError) {
+    res.status(404).json({ message: 'subscription item not found' })
+    return
+  }
+
   const { error } = await supabaseAdmin
     .from('app_installations')
     .update({
       github_installation_id: installationId,
       installed_at: new Date() as unknown as string,
     })
-    .eq('user_id', user.id)
     .eq('id', state)
     .select('*')
     .single()

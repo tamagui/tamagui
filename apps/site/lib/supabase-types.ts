@@ -40,27 +40,27 @@ export interface Database {
           github_installation_id: number | null
           id: number
           installed_at: string | null
-          user_id: string | null
+          subscription_item_id: string
         }
         Insert: {
           created_at?: string | null
           github_installation_id?: number | null
           id?: number
           installed_at?: string | null
-          user_id?: string | null
+          subscription_item_id: string
         }
         Update: {
           created_at?: string | null
           github_installation_id?: number | null
           id?: number
           installed_at?: string | null
-          user_id?: string | null
+          subscription_item_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "app_installations_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
+            foreignKeyName: "app_installations_subscription_item_id_fkey"
+            columns: ["subscription_item_id"]
+            referencedRelation: "subscription_items"
             referencedColumns: ["id"]
           }
         ]
