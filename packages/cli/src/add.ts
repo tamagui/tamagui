@@ -7,6 +7,7 @@ import path from 'path'
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'
 import { copy, ensureDir } from 'fs-extra'
+import open from 'open'
 import prompts from 'prompts'
 
 const home = homedir()
@@ -36,17 +37,23 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
       git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}
       cd ${repoName}
       git sparse-checkout set --no-cone meta
-      git checkout`,
-      {
-        stdio: 'inherit',
-      }
+      git checkout`
     )
   } catch (error) {
-    throw new Error(
-      `You don't have access to Tamagui ${
-        type === 'font' ? 'fonts' : 'icons'
-      }. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
-    )
+    if (error instanceof Error) {
+      if ((error as any)?.stderr.includes('Repository not found')) {
+        console.log(
+          chalk.yellow(
+            `You don't have access to Tamagui ${
+              type === 'font' ? 'fonts' : 'icons'
+            }. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
+          )
+        )
+        open('https://tamagui.dev/takeout')
+        process.exit(0)
+      }
+      throw error
+    }
   }
 
   const meta = JSON.parse(
