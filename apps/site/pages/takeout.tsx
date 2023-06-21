@@ -1142,7 +1142,7 @@ const PurchaseModal = ({
               },
             },
           ]}
-          animateOnly={['transform', 'opacity']}
+          // animateOnly={['transform']}
           enterStyle={{ opacity: 0, scale: 0.975 }}
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
