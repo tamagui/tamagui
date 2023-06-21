@@ -153,8 +153,12 @@ export const manageSubscriptionStatusChange = async (
       canceled_at: subscription.canceled_at
         ? (toDateTime(subscription.canceled_at) as unknown as string)
         : null,
-      current_period_start: toDateTime(subscription.current_period_start) as unknown as string,
-      current_period_end: toDateTime(subscription.current_period_end) as unknown as string,
+      current_period_start: toDateTime(
+        subscription.current_period_start
+      ) as unknown as string,
+      current_period_end: toDateTime(
+        subscription.current_period_end
+      ) as unknown as string,
       created: toDateTime(subscription.created) as unknown as string,
       ended_at: subscription.ended_at
         ? (toDateTime(subscription.ended_at) as unknown as string)
@@ -191,6 +195,41 @@ export const manageSubscriptionStatusChange = async (
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     )
+
+  // handle code for the prices marked as one time -
+  // i.e. font and icon packs are one-time pay so we apply 100% discount on renewals
+  const oneTimeProducts: string[] = []
+  for (const item of subscription.items.data) {
+    const isOneTime = item.price.metadata.is_one_time
+    if (isOneTime) {
+      oneTimeProducts.push(
+        typeof item.price.product === 'string'
+          ? item.price.product
+          : item.price.product.id
+      )
+    }
+  }
+
+  if (oneTimeProducts.length > 0) {
+    const couponId = `${subscription.id}-one-time`
+    try {
+      await stripe.coupons.retrieve(couponId)
+      // no error, so coupon exists and it's already been applied
+    } catch {
+      // we now know this is the first time we're running this, so go ahead and create and apply the coupon
+      const coupon = await stripe.coupons.create({
+        id: couponId,
+        applies_to: {
+          products: oneTimeProducts,
+        },
+        duration: 'forever',
+        percent_off: 100,
+      })
+      await stripe.subscriptions.update(subscription.id, {
+        coupon: coupon.id,
+      })
+    }
+  }
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
