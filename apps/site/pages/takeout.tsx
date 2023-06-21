@@ -1,5 +1,6 @@
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
+import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
@@ -11,12 +12,13 @@ import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, ProductJsonLd } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
+import Stripe from 'stripe'
 import {
   AnimatePresence,
   Button,
@@ -124,6 +126,7 @@ type TakeoutPageProps = {
   fontsPack: Database['public']['Tables']['products']['Row'] & {
     prices: Database['public']['Tables']['prices']['Row'][]
   }
+  coupon: Stripe.Coupon | null
 }
 
 const TakeoutCard2Frame = styled(YStack, {
@@ -473,7 +476,12 @@ const useDisableMotion = () => {
   )
 }
 
-export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPageProps) {
+export default function TakeoutPage({
+  starter,
+  fontsPack,
+  iconsPack,
+  coupon,
+}: TakeoutPageProps) {
   const store = useTakeoutStore()
   const disableMotion = useDisableMotion()
 
@@ -492,10 +500,40 @@ export default function TakeoutPage({ starter, fontsPack, iconsPack }: TakeoutPa
 
       {/* <Glow /> */}
 
-      <PurchaseModal starter={starter} iconsPack={iconsPack} fontsPack={fontsPack} />
+      <PurchaseModal
+        coupon={coupon}
+        starter={starter}
+        iconsPack={iconsPack}
+        fontsPack={fontsPack}
+      />
       <FaqModal />
       <AgreementModal />
 
+      {coupon && (
+        <YStack fullscreen w="100vw" h="100vh" position="absolute">
+          <YStack
+            position="absolute"
+            left={100}
+            top='70%'
+            zIndex="$5"
+            $sm={{
+              top: 215,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <YStack m="auto" $gtSm={{ rotate: '10deg' }}>
+              <Paragraph textAlign='center' fontFamily="$munro" size="$10" $sm={{size: "$8"}}>
+                {coupon.amount_off
+                  ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
+                  : coupon.percent_off
+                  ? `${coupon.percent_off}% ${coupon.name}`
+                  : ''}
+              </Paragraph>
+            </YStack>
+          </YStack>
+        </YStack>
+      )}
       {/* big background outlined font */}
       <YStack
         pos="absolute"
@@ -1050,15 +1088,7 @@ function formatPrice(amount: number, currency: string) {
 }
 const useTakeoutStore = createUseStore(TakeoutStore)
 
-const PurchaseModal = ({
-  starter,
-  iconsPack,
-  fontsPack,
-}: {
-  starter: TakeoutPageProps['starter']
-  iconsPack: TakeoutPageProps['iconsPack']
-  fontsPack: TakeoutPageProps['fontsPack']
-}) => {
+const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPageProps) => {
   const products = [starter, iconsPack, fontsPack]
   // const prices = products.prices
   const store = useTakeoutStore()
@@ -1101,6 +1131,14 @@ const PurchaseModal = ({
     }
     return final
   }, [selectedProductsIds, starterPriceId, starter, iconsPack, fontsPack])
+
+  // with discount applied
+  const finalPrice = useMemo(() => {
+    if (coupon?.amount_off) return sum - coupon.amount_off
+    if (coupon?.percent_off) return (sum * (100 - coupon.percent_off)) / 100
+    return sum
+  }, [sum])
+  const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter.id)
@@ -1306,9 +1344,18 @@ const PurchaseModal = ({
                   <Spacer f={100} />
 
                   <YStack space>
-                    <YStack ai="flex-end">
-                      <H3 size="$10">{formatPrice(sum! / 100, 'usd')}</H3>
-                    </YStack>
+                    <XStack ai="flex-end" jc="flex-end" gap="$2">
+                      {hasDiscountApplied ? (
+                        <>
+                          <H3 textDecorationLine="line-through" size="$8" theme="alt2">
+                            {formatPrice(sum! / 100, 'usd')}
+                          </H3>
+                          <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                        </>
+                      ) : (
+                        <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
+                      )}
+                    </XStack>
 
                     <Separator />
 
@@ -1324,6 +1371,9 @@ const PurchaseModal = ({
                             params.append('product_id', productId)
                           }
                           params.append(`price-${starter.id}`, starterPriceId)
+                          if (coupon) {
+                            params.append(`coupon`, coupon.id)
+                          }
                           return params.toString()
                         })()}`}
                       >
@@ -1877,7 +1927,8 @@ const Points = () => (
 )
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const queries = await Promise.all([
+  const couponPromise = stripe.coupons.list()
+  const productPromises = [
     supabaseAdmin
       .from('products')
       .select('*, prices(*)')
@@ -1893,13 +1944,29 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .select('*, prices(*)')
       .eq('metadata->>slug', 'font-packs')
       .single(),
-  ])
-  for (const query of queries) {
-    if (query.error) throw query.error
+  ]
+  const promises = [couponPromise, ...productPromises]
+  const queries = await Promise.all(promises)
+
+  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
+  const couponsList = queries[0] as Awaited<typeof couponPromise>
+
+  let coupon: Stripe.Coupon | null = null
+
+  if (couponsList.data.length > 0) {
+    for (const _coupon of couponsList.data) {
+      if (_coupon.metadata?.show_on_site) {
+        coupon = _coupon
+      }
+    }
+  }
+
+  for (const product of products) {
+    if (product.error) throw product.error
     if (
-      !query.data.prices ||
-      !Array.isArray(query.data.prices) ||
-      query.data.prices.length === 0
+      !product.data.prices ||
+      !Array.isArray(product.data.prices) ||
+      product.data.prices.length === 0
     ) {
       throw new Error('No prices are attached to the product.')
     }
@@ -1907,24 +1974,24 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
 
   return {
     starter: {
-      ...queries[0].data!,
-      prices: getArray(queries[0].data!.prices!).filter((p) => p.active),
+      ...products[0].data!,
+      prices: getArray(products[0].data!.prices!).filter((p) => p.active),
     },
     iconsPack: {
-      ...queries[1].data!,
-      prices: getArray(queries[1].data!.prices!).filter((p) => p.active),
+      ...products[1].data!,
+      prices: getArray(products[1].data!.prices!).filter((p) => p.active),
     },
     fontsPack: {
-      ...queries[2].data!,
-      prices: getArray(queries[2].data!.prices!).filter((p) => p.active),
+      ...products[2].data!,
+      prices: getArray(products[2].data!.prices!).filter((p) => p.active),
     },
+    coupon,
   }
 }
 
 export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
   try {
     const props = await getTakeoutProducts()
-
     return {
       revalidate: 60,
       props,
