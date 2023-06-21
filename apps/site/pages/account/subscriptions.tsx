@@ -52,7 +52,7 @@ const Subscriptions = () => {
       <YStack gap="$8">
         {subscriptions.length === 0 && (
           <Paragraph ta="center" theme="alt1">
-            You don't have any subscription.
+            You don't have any subscriptions.
           </Paragraph>
         )}
         {subscriptions.map((sub) => {
