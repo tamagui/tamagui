@@ -57,6 +57,7 @@ if (process.argv.includes('--version')) {
 const packageManager = 'yarn'
 
 async function run() {
+  console.log() // this newline prevents the ascii art from breaking
   console.log(tamaguiRainbowAsciiArt)
   console.log(chalk.bold('Creating tamagui app...'))
 
