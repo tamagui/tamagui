@@ -9,6 +9,8 @@ import { $, cd } from 'zx'
 import { IS_TEST } from '../constants'
 import { templates } from '../templates'
 
+const open = require('opn')
+
 const home = homedir()
 const tamaguiDir = join(home, '.tamagui')
 let targetGitDir = ''
@@ -92,12 +94,18 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     try {
       execSync(cmd)
     } catch (error) {
-      if (template.value === 'takeout-starter') {
-        console.error(
-          chalk.yellow(
-            "You are trying to create your project from a starter you don't own. Purchase the starter here first: https://tamagui.dev/takeout"
-          )
-        )
+      if (error instanceof Error) {
+        if (template.value === 'takeout-starter') {
+          if ((error as any)?.stderr.includes('Repository not found')) {
+            console.log(
+              chalk.yellow(
+                `You don't have access to this starter. Check 🥡 Tamagui Takeout (https://tamagui.dev/takeout) for more info.`
+              )
+            )
+            open('https://tamagui.dev/takeout')
+            process.exit(0)
+          }
+        }
       }
       throw error
     }
