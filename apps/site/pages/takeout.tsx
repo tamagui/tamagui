@@ -1116,7 +1116,9 @@ const PurchaseModal = ({
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -1153,7 +1155,7 @@ const PurchaseModal = ({
             <YStack h="100%" space>
               <XStack ai="center" jc="space-between" gap="$6" mx="$8">
                 <Separator />
-                <Dialog.Title size="$9" my="$3" als="center">
+                <Dialog.Title size="$9" $sm={{ size: '$8' }} my="$3" als="center">
                   Purchase 🥡
                 </Dialog.Title>
                 <Separator />
@@ -1247,7 +1249,7 @@ const PurchaseModal = ({
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <ScrollView space maw="55%" ov="hidden">
+                <ScrollView space $gtSm={{ maw: '55%' }} ov="hidden">
                   <YStack space="$4">
                     <Points />
                   </YStack>
@@ -1850,7 +1852,7 @@ const TabsRovingIndicator = ({
 }
 
 const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" maw={660} ov="hidden">
+  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" $gtSm={{ maw: 660 }} ov="hidden">
     {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
       All the important screens: Onboard, Register, Login, Forgot Password, Account,
