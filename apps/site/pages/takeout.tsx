@@ -1103,6 +1103,7 @@ const PurchaseModal = ({
   }, [selectedProductsIds, starterPriceId, starter, iconsPack, fontsPack])
 
   const noProductSelected = selectedProductsIds.length === 0
+  const showTeamSelect = selectedProductsIds.includes(starter.id)
 
   return (
     <Dialog
@@ -1201,12 +1202,13 @@ const PurchaseModal = ({
                           height="unset"
                           display="flex"
                           borderWidth="$0.25"
-                          borderColor={active ? '$color8' : '$color5'}
+                          backgroundColor={active ? '$color7' : '$color5'}
+                          borderColor={active ? '$color8' : '$color7'}
                           borderRadius="$4"
                           space="$4"
                           ai="flex-start"
                           $gtSm={{
-                            maw: 'calc(33% - 16px)',
+                            maw: 'calc(33% - 8px)',
                           }}
                           hoverStyle={{
                             borderColor: active ? '$color10' : '$color7',
@@ -1218,7 +1220,6 @@ const PurchaseModal = ({
                             id={htmlId}
                             size="$6"
                             value={price.id}
-                            mt="$2"
                           >
                             <Checkbox.Indicator
                             // backgroundColor={active ? '$color8' : '$color1'}
@@ -1227,9 +1228,11 @@ const PurchaseModal = ({
                             </Checkbox.Indicator>
                           </Checkbox>
 
-                          <YStack gap="$1" f={1}>
-                            <H3>{product.name}</H3>
-                            <Paragraph ellipse>{product.description}</Paragraph>
+                          <YStack gap="$2" f={1}>
+                            <H3 lh="$6">{product.name}</H3>
+                            <Paragraph size="$3" lh="$1" theme="alt2">
+                              {product.description}
+                            </Paragraph>
                           </YStack>
                         </Label>
                       </ThemeTint>
@@ -1251,66 +1254,52 @@ const PurchaseModal = ({
                 </ScrollView>
 
                 <YStack f={1} space="$4" mt="$8">
-                  {/* <H3>Seats</H3>
-                <Separator /> */}
-                  <AnimatePresence>
-                    {selectedProductsIds.includes(starter.id) && (
-                      <YStack
-                        animation="100ms"
-                        enterStyle={{ opacity: 0, y: -20 }}
-                        exitStyle={{ opacity: 0, y: -20 }}
-                        opacity={1}
-                        y={0}
-                      >
-                        <RadioGroup
-                          gap="$2"
-                          value={starterPriceId}
-                          onValueChange={(val) => setStarterPriceId(val)}
-                        >
-                          {sortedStarterPrices.map((price) => {
-                            const active = starterPriceId === price.id
-                            const htmlId = `price-${price.id}`
-                            return (
-                              <ThemeTint key={price.id} disable={!active}>
-                                <Label
-                                  f={1}
-                                  htmlFor={htmlId}
-                                  p="$4"
-                                  height="unset"
-                                  display="flex"
-                                  borderWidth="$0.25"
-                                  borderColor={active ? '$color8' : '$color5'}
-                                  borderRadius="$4"
-                                  space="$4"
-                                  ai="center"
-                                  hoverStyle={{
-                                    borderColor: active ? '$color10' : '$color7',
-                                  }}
-                                >
-                                  <RadioGroup.Item
-                                    id={htmlId}
-                                    size="$6"
-                                    value={price.id}
-                                    mt="$2"
-                                  >
-                                    <RadioGroup.Indicator />
-                                  </RadioGroup.Item>
+                  <YStack
+                    opacity={showTeamSelect ? 1 : 0.25}
+                    pointerEvents={showTeamSelect ? 'auto' : 'none'}
+                  >
+                    <RadioGroup
+                      gap="$2"
+                      value={starterPriceId}
+                      onValueChange={(val) => setStarterPriceId(val)}
+                    >
+                      {sortedStarterPrices.map((price) => {
+                        const active = starterPriceId === price.id
+                        const htmlId = `price-${price.id}`
+                        return (
+                          <ThemeTint key={price.id} disable={!active}>
+                            <Label
+                              f={1}
+                              htmlFor={htmlId}
+                              p="$4"
+                              height="unset"
+                              display="flex"
+                              borderWidth="$0.25"
+                              borderColor={active ? '$color8' : '$color5'}
+                              borderRadius="$4"
+                              space="$4"
+                              ai="center"
+                              hoverStyle={{
+                                borderColor: active ? '$color10' : '$color7',
+                              }}
+                            >
+                              <RadioGroup.Item id={htmlId} size="$6" value={price.id}>
+                                <RadioGroup.Indicator />
+                              </RadioGroup.Item>
 
-                                  <YStack gap="$1" f={1}>
-                                    <H4>{price.description}</H4>
+                              <YStack gap="$0" f={1}>
+                                <H4 mt="$-1">{price.description}</H4>
 
-                                    <Paragraph ellipse>
-                                      {formatPrice(price.unit_amount! / 100, 'usd')}
-                                    </Paragraph>
-                                  </YStack>
-                                </Label>
-                              </ThemeTint>
-                            )
-                          })}
-                        </RadioGroup>
-                      </YStack>
-                    )}
-                  </AnimatePresence>
+                                <Paragraph theme="alt1" ellipse>
+                                  {formatPrice(price.unit_amount! / 100, 'usd')}
+                                </Paragraph>
+                              </YStack>
+                            </Label>
+                          </ThemeTint>
+                        )
+                      })}
+                    </RadioGroup>
+                  </YStack>
 
                   <Spacer f={100} />
 
