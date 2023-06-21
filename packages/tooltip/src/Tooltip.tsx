@@ -2,6 +2,7 @@ import '@tamagui/polyfill-dev'
 
 import {
   FloatingDelayGroup,
+  useClientPoint,
   useDelayGroup,
   useDelayGroupContext,
   useDismiss,
@@ -138,64 +139,34 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       open,
       onOpenChange,
     })
+    const clientPoint = useClientPoint(floating.context, {
+      enabled: followMouse,
+    })
+
     const { getReferenceProps, getFloatingProps } = useInteractions([
       useHover(floating.context, { delay, restMs }),
       useFocus(floating.context, focus),
       useRole(floating.context, { role: 'tooltip' }),
       useDismiss(floating.context),
       useDelayGroup(floating.context, { id }),
+      clientPoint,
     ])
 
-    const out = {
+    return {
       ...floating,
       getFloatingProps,
       getReferenceProps,
     } as any
-
-    if (followMouse) {
-      out.getReferenceProps = (userProps) => {
-        const referenceProps = getReferenceProps(userProps)
-
-        const onMouseEvent = (name: string) => (e: MouseEvent) => {
-          // @ts-ignore
-          referenceProps[name]?.(e)
-
-          const { clientX, clientY } = e
-          const boundingClientRect =
-            floating.refs.floating.current?.getBoundingClientRect()
-
-          if (!boundingClientRect) return
-
-          floating.refs.setReference({
-            getBoundingClientRect() {
-              return {
-                width: 0,
-                height: 0,
-                x: clientX,
-                y: clientY,
-                left: clientX,
-                right: clientX,
-                top: clientY,
-                bottom: clientY,
-              }
-            },
-          })
-
-          floating.update()
-        }
-
-        return {
-          ...referenceProps,
-          onMouseMove: onMouseEvent('onMouseMove'),
-          onMouseOver: onMouseEvent('onMouseOver'),
-        }
-      }
-    }
-
-    return out
   }
 
-  const useFloatingContext = React.useCallback(useFloatingFn, [id, delay, open])
+  const useFloatingContext = React.useCallback(useFloatingFn, [
+    id,
+    delay,
+    open,
+    restMs,
+    followMouse,
+    focus,
+  ])
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
