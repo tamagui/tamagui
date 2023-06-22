@@ -24,7 +24,7 @@ export const templates = [
   },
 
   {
-    title: `Simple Web (recommended for learning) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
+    title: `Simple Web (only for learning - not recommended for production) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
     value: 'simple-web',
     type: 'included-in-monorepo',
     repo: {
