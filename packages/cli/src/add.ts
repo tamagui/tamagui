@@ -6,7 +6,7 @@ import path from 'path'
 
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'
-import { copy, ensureDir } from 'fs-extra'
+import { copy, ensureDir, readFileSync } from 'fs-extra'
 import open from 'open'
 import prompts from 'prompts'
 
@@ -91,21 +91,11 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   await copy(packageDir, finalDir)
 
   console.log()
-  console.log(`Created the package under ${finalDir}`)
-  switch (type) {
-    case 'icon':
-      console.log(`If you're using Next.js, make sure to add this to next.config.js:
-    
-${chalk.green(`modularizeImports: {
-  '@tamagui/${packageName}': {
-    transform: "@tamagui/${packageName}/dist/esm/icons/{{kebabCase member}}",
-    skipDefaultConversion: true,
-  },
-},`)}`)
-      break
-    case 'font':
-      // TODO: instructions on how to install the font on expo and next.js
-      console.log()
-      break
+  console.log(chalk.green(`Created the package under ${finalDir}`))
+  console.log()
+
+  const readmePath = path.join(finalDir, 'README.md')
+  if (existsSync(readmePath)) {
+    console.log(chalk.blue(readFileSync(readmePath).toString()))
   }
 }
