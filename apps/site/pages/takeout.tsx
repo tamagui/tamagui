@@ -6,7 +6,7 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
 import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -260,16 +260,16 @@ const TakeoutHero = () => {
         scale: 0.3,
       }}
       $xs={{
-        scale: 0.35,
-      }}
-      $sm={{
         scale: 0.5,
       }}
+      $sm={{
+        scale: 0.58,
+      }}
       $md={{
-        scale: 0.6,
+        scale: 0.65,
       }}
       $lg={{
-        scale: 0.8,
+        scale: 0.85,
       }}
       // ref={glow.parentRef as any}
     >
@@ -315,7 +315,7 @@ const TakeoutHero = () => {
         pos="absolute"
         className="mix-blend"
         y={-35}
-        scale={0.95}
+        scale={0.975}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
@@ -339,9 +339,9 @@ const TakeoutHero = () => {
             <TAKEOUT
               className="clip-slice mix-blend"
               pos="absolute"
-              color="$color7"
+              color="$color8"
               scale={1.04}
-              o={0.8}
+              o={1}
             />
 
             {/* alt color slices */}
@@ -349,9 +349,9 @@ const TakeoutHero = () => {
               <TAKEOUT
                 className="clip-slice mix-blend animate-fade2 slice-alt"
                 pos="absolute"
-                color="$color7"
+                color="$color8"
                 y={2}
-                o={0.8}
+                o={1}
               />
             </ThemeTintAlt>
 
@@ -360,7 +360,7 @@ const TakeoutHero = () => {
               <TAKEOUT
                 className="clip-slice mix-blend animate-fade2"
                 pos="absolute"
-                color="$color7"
+                color="$color8"
                 scale={1}
               />
             </ThemeTintAlt>
@@ -670,11 +670,12 @@ export default function TakeoutPage({
 
                 <HeartsRow />
 
-                <Paragraph fontFamily="$munro" size="$10" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the 🌑 or the ✨, success is up to you. But if you want
-                  a cheat code to shipping a stunning web + native app fast, you've found
-                  it.
-                </Paragraph>
+                <MunroP size="$10" fow="400" $sm={{ size: '$8' }}>
+                  We can't promise the <Moon size="$3" style={{ marginBottom: -6 }} /> or
+                  the <Star size="$3" style={{ marginBottom: -6 }} />s - success is up to
+                  you. But if you want a cheat code to shipping a stunning web + native
+                  app fast, you've found it.
+                </MunroP>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                   Takeout 🥡 is a bootstrap that delivers on years of effort putting
@@ -684,7 +685,7 @@ export default function TakeoutPage({
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                   And of course it's powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />, the
-                  best universal UI system ever created (by far). Within an hour you'll be
+                  best universal UI system ever created. Within an hour you'll be
                   deploying your app on the web to Vercel and to iOS and Android app
                   stores via Expo EAS.
                 </Paragraph>
@@ -859,7 +860,13 @@ export default function TakeoutPage({
                     </Paragraph>
                   </YStack>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  <Paragraph
+                    fontFamily="$glusp"
+                    size="$4"
+                    ls={-1}
+                    $sm={{ size: '$3' }}
+                    fow="400"
+                  >
                     It's not just about shipping fast.
                   </Paragraph>
 
@@ -904,6 +911,67 @@ export default function TakeoutPage({
 
                   <Spacer />
                 </YStack>
+
+                <Separator />
+                <Spacer />
+
+                <Paragraph als="center" fontFamily="$glusp" size="$1" scale={0.75}>
+                  Gallery
+                </Paragraph>
+
+                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                  <TakeoutImage
+                    alt="asd"
+                    src="https://placekitten.com/200/200"
+                    width={200}
+                    height={200}
+                  />
+                </XStack>
+
+                <Spacer />
+                <Separator />
 
                 <XStack my="$8" gap="$4" f={1} jc="space-around">
                   <Image
@@ -985,6 +1053,20 @@ export default function TakeoutPage({
     </>
   )
 }
+
+const TakeoutImage = (props: any) => (
+  <XStack
+    animation="quick"
+    br="$10"
+    ov="hidden"
+    elevation="$2"
+    hoverStyle={{ scale: 1.025 }}
+    pressStyle={{ scale: 0.975 }}
+    cursor="pointer"
+  >
+    <Image {...props} />
+  </XStack>
+)
 
 const Bullet = ({
   size = '$6',

@@ -95,6 +95,16 @@ module.exports = function (name, { defaultConfig }) {
         skipDefaultConversion: true,
       },
     },
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'placekitten.com',
+          port: '',
+          pathname: '/**/**',
+        },
+      ]
+    },
     experimental: {
       esmExternals: true,
       forceSwcTransforms: true,
