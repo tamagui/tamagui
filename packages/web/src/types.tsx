@@ -1703,7 +1703,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     },
     onValue: (current: number) => void
   ) => void
-  populateChildrenRefsAndPassDisableCssProp: (children: any, refs: any) => any
+  populateChildrenRefsAndPassDisableCssProp?: (children: any, refs: any) => any
   animations: A
   View?: any
   Text?: any
