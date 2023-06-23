@@ -4,6 +4,7 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
+import { getVariable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
@@ -134,7 +135,7 @@ export function getThemeProxied(
           // if its a variable (web), its ignored!
           get(_, subkey) {
             if (subkey === 'get') {
-              return () => val
+              return () => getVariable(val)
             }
             if (subkey === 'val' && !keys.includes(keyString)) {
               keys.push(keyString)
