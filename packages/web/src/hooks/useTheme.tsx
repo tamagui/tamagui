@@ -134,11 +134,15 @@ export function getThemeProxied(
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
+            // trigger read key that makes it track updates
+            if (
+              (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
+              !keys.includes(keyString)
+            ) {
+              keys.push(keyString)
+            }
             if (subkey === 'get') {
               return () => getVariable(val)
-            }
-            if (subkey === 'val' && !keys.includes(keyString)) {
-              keys.push(keyString)
             }
             return Reflect.get(val as any, subkey)
           },
