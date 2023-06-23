@@ -238,8 +238,6 @@ export function createComponent<
 
     const childrenRefs = useServerRef<(HTMLElement | View)[]>([])
 
-    useResizeObserver(hostRef.current, props.layout)
-
     /**
      * Component state for tracking animations, pseudos
      */

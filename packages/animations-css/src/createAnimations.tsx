@@ -68,6 +68,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         : props.animation
       const animation = animations[animationKey as any]
 
+      const isLayoutAnimationInProgress = useSafeRef(false)
       const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
       useIsomorphicLayoutEffect(() => {
@@ -80,13 +81,13 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         node.addEventListener('transitioncancel', onFinishAnimation)
         return () => {
           node.removeEventListener('transitionend', onFinishAnimation)
-          node.addEventListener('transitioncancel', onFinishAnimation)
+          node.removeEventListener('transitioncancel', onFinishAnimation)
         }
       }, [sendExitComplete, isExiting])
 
       // layout animations
       useIsomorphicLayoutEffect(() => {
-        if (!hostRef.current || !layout) {
+        if (!hostRef.current || !layout || isLayoutAnimationInProgress.current) {
           return
         }
         // @ts-ignore
@@ -105,6 +106,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             duration: time.includes('ms')
               ? Number(time.replace('ms', ''))
               : Number(time.replace('s', '')) * 1000,
+            onStart: () => {
+              isLayoutAnimationInProgress.current = true
+            },
             onUpdate: ({ x, y, scaleX, scaleY }) => {
               if (hostRef.current) {
                 // @ts-ignore
@@ -118,6 +122,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
                   }
                 })
               }
+            },
+            onFinish: () => {
+              isLayoutAnimationInProgress.current = false
             },
             cubicBezier: easingStringToCubicBezier(func),
           })
