@@ -33,6 +33,7 @@ import { themeable } from './helpers/themeable'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { useAnimationDriver } from './hooks/useAnimationDriver'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import useResizeObserver from './hooks/useResizeObserver'
 import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
@@ -236,6 +237,8 @@ export function createComponent<
     const hostRef = useServerRef<TamaguiElement>(null)
 
     const childrenRefs = useServerRef<(HTMLElement | View)[]>([])
+
+    useResizeObserver(hostRef.current, props.layout)
 
     /**
      * Component state for tracking animations, pseudos
