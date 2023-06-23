@@ -5,10 +5,11 @@ import {
   Stack,
   Text,
   UniversalAnimatedNumber,
+  useEvent,
   useIsomorphicLayoutEffect,
   useSafeRef,
 } from '@tamagui/web'
-import React, { useState } from 'react'
+import * as React from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -18,7 +19,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     usePresence,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
-      const [val, setVal] = useState(initial)
+      const [val, setVal] = React.useState(initial)
 
       return {
         getInstance() {
@@ -59,6 +60,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     },
 
     useAnimations: ({ props, presence, style, state, hostRef, childrenRefs, layout }) => {
+      const { toggle, trigger } = useLayoutAnimationGroup()
+      const prevTrigger = usePrevious(trigger)
       const isEntering = !!state.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -93,6 +96,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // @ts-ignore
         const boundingBox = hostRef.current?.getBoundingClientRect()
         if (isChanged(initialPositionRef.current, boundingBox)) {
+          if (toggle && (prevTrigger === 'undefined' || prevTrigger === trigger)) {
+            toggle()
+          }
           const transform = invert(
             hostRef.current,
             boundingBox,
@@ -186,4 +192,34 @@ export function populateChildrenRefsAndPassDisableCssProp(children: any, refs: a
       return null
     }
   })
+}
+const LayoutAnimationGroupContext = React.createContext({
+  /** it's just to trigger re-render */
+  trigger: false,
+  toggle: () => {},
+})
+export function LayoutAnimationGroup({ children }) {
+  const [trigger, setTrigger] = React.useState(false)
+  const toggle = useEvent(() => setTrigger((prev) => !prev))
+
+  const value = React.useMemo(() => ({ trigger, toggle }), [trigger, toggle])
+
+  return (
+    <LayoutAnimationGroupContext.Provider value={value}>
+      {children}
+    </LayoutAnimationGroupContext.Provider>
+  )
+}
+
+export function useLayoutAnimationGroup() {
+  const context = React.useContext(LayoutAnimationGroupContext)
+  return context
+}
+
+const usePrevious = (value) => {
+  const ref = React.useRef()
+  React.useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }

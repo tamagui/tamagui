@@ -1,3 +1,4 @@
+import { LayoutAnimationGroup } from '@tamagui/animations-css'
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons'
 import { forwardRef, useState } from 'react'
@@ -16,7 +17,7 @@ import {
 } from 'tamagui'
 
 export function AnimationCSSDriverLayoutDemo(props) {
-  const [birds, setBirds] = useState(1)
+  const [birds, setBirds] = useState(4)
   const [fd, setFd] = useState<'row' | 'column'>('row')
 
   const onPress = useEvent(() => {
@@ -33,11 +34,13 @@ export function AnimationCSSDriverLayoutDemo(props) {
         fd={fd}
         gap={5}
       >
-        {Array(birds)
-          .fill(0)
-          .map((_, index) => {
-            return <Bird index={index} birds={birds} setBirds={setBirds} key={index} />
-          })}
+        <LayoutAnimationGroup>
+          {Array(birds)
+            .fill(0)
+            .map((_, index) => {
+              return <Bird index={index} birds={birds} setBirds={setBirds} key={index} />
+            })}
+        </LayoutAnimationGroup>
       </XStack>
       <Button
         position="absolute"
