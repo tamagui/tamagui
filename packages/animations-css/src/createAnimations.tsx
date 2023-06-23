@@ -80,7 +80,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         node.addEventListener('transitioncancel', onFinishAnimation)
         return () => {
           node.removeEventListener('transitionend', onFinishAnimation)
-          node.addEventListener('transitioncancel', onFinishAnimation)
+          node.removeEventListener('transitioncancel', onFinishAnimation)
         }
       }, [sendExitComplete, isExiting])
 
