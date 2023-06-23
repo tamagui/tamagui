@@ -225,7 +225,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
   )
 }
 
-const TakeoutHero = () => {
+const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
   const disableMotion = useDisableMotion()
   const enable3d = useClientValue(
     () => !isSafariMobile && !window.location.search?.includes('disable-3d')
@@ -324,6 +324,18 @@ const TakeoutHero = () => {
           <TAKEOUT className="" zi={1000} color="$color10" />
         </ThemeTint>
       </YStack>
+      {coupon && (
+        <YStack
+          className="mix-blend"
+          position="absolute"
+          left={0}
+          right={0}
+          top={-10}
+          zIndex="$5"
+        >
+          <DiscountText coupon={coupon} />
+        </YStack>
+      )}
 
       <YStack
         className="mix-blend"
@@ -356,6 +368,7 @@ const TakeoutHero = () => {
             </ThemeTintAlt>
 
             {/* alt color slices */}
+
             <ThemeTintAlt offset={1}>
               <TAKEOUT
                 className="clip-slice mix-blend animate-fade2"
@@ -509,31 +522,6 @@ export default function TakeoutPage({
       <FaqModal />
       <AgreementModal />
 
-      {coupon && (
-        <YStack fullscreen w="100vw" h="100vh" position="absolute">
-          <YStack
-            position="absolute"
-            left={100}
-            top='70%'
-            zIndex="$5"
-            $sm={{
-              top: 215,
-              left: 0,
-              right: 0,
-            }}
-          >
-            <YStack m="auto" $gtSm={{ rotate: '10deg' }}>
-              <Paragraph textAlign='center' fontFamily="$munro" size="$10" $sm={{size: "$8"}}>
-                {coupon.amount_off
-                  ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-                  : coupon.percent_off
-                  ? `${coupon.percent_off}% ${coupon.name}`
-                  : ''}
-              </Paragraph>
-            </YStack>
-          </YStack>
-        </YStack>
-      )}
       {/* big background outlined font */}
       <YStack
         pos="absolute"
@@ -570,7 +558,7 @@ export default function TakeoutPage({
               </PurchaseButton>
             </YStack>
 
-            <TakeoutHero />
+            <TakeoutHero coupon={coupon} />
           </YStack>
 
           <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
@@ -2284,5 +2272,37 @@ const AgreementModal = () => {
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
+  )
+}
+
+const DiscountText = ({
+  coupon,
+}: {
+  coupon: NonNullable<TakeoutPageProps['coupon']>
+}) => {
+  return (
+    <ThemeTint>
+      <YStack
+        style={{
+          clipPath:
+            'polygon(0% 6px, 6px 6px, 6px 0%, calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px))',
+        }}
+        m="auto"
+        px="$3"
+        py="$1"
+        backgroundColor="$color5"
+        theme="alt2"
+        scale={1}
+        $sm={{ scale: 1.5 }}
+      >
+        <Paragraph color="white" textAlign="center" fontFamily="$munro" size="$8">
+          {coupon.amount_off
+            ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
+            : coupon.percent_off
+            ? `${coupon.percent_off}% ${coupon.name}`
+            : ''}
+        </Paragraph>
+      </YStack>
+    </ThemeTint>
   )
 }
