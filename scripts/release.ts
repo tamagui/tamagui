@@ -21,7 +21,8 @@ export const spawn = proc.spawn
 
 // for failed publishes that need to re-run
 const confirmFinalPublish = process.argv.includes('--confirm-final-publish')
-const rePublish = process.argv.includes('--republish')
+const reRun = process.argv.includes('--rerun')
+const rePublish = reRun || process.argv.includes('--republish')
 const finish = process.argv.includes('--finish')
 
 const canary = process.argv.includes('--canary')
@@ -41,6 +42,10 @@ const isCI = process.argv.includes('--ci')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 
 const nextVersion = (() => {
+  if (rePublish) {
+    return curVersion
+  }
+
   const plusVersion = skipVersion ? 0 : 1
   const curPatch = +curVersion.split('.')[2] || 0
   const patchVersion = patch ? curPatch + plusVersion : 0
@@ -80,7 +85,7 @@ async function run() {
         if ((await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() !== 'master') {
           throw new Error(`Not on master`)
         }
-        if (!dirty) {
+        if (!dirty && !rePublish) {
           await spawnify(`git pull --rebase origin master`)
         }
       }
@@ -363,7 +368,7 @@ async function run() {
     const tagPrefix = canary ? 'canary' : 'v'
     const gitTag = `${tagPrefix}${version}`
 
-    if (!rePublish) {
+    if (!rePublish || reRun || finish) {
       await spawnify(`git add -A`)
       await spawnify(`git commit -m ${gitTag}`)
       await spawnify(`git tag ${gitTag}`)

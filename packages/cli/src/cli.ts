@@ -1,21 +1,23 @@
+import { join } from 'path'
+
 /* eslint-disable no-console */
-import arg, { flag } from 'arg'
+import arg from 'arg'
 import chalk from 'chalk'
 
+import { generatedPackageTypes } from './add.js'
 import { disposeAll, getOptions } from './utils'
 
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
-    process.stdout.write(`bye\n`)
     disposeAll()
     process.exit()
   })
 })
 
 const COMMAND_MAP = {
-  build: {
-    shorthands: ['b'],
-    description: `Use to pre-build a Tamagui component directory`,
+  'generate-themes': {
+    shorthands: ['gt'],
+    description: `Use to pre-build your themes`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -23,23 +25,71 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { build } = await import('./build')
+      const { generateThemes } = require('@tamagui/generate-themes')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await build(options)
+      const [cmd, inPath, outPath] = _
+      if (!inPath || !outPath) {
+        throw new Error(
+          `Must supply both input and output paths, missing one (inPath: ${inPath}, outPath: ${outPath})`
+        )
+      }
+      await generateThemes({
+        ...options,
+        inPath: join(options.root, inPath),
+        outPath: join(options.root, outPath),
+      })
     },
   },
 
-  update: {
-    shorthands: [],
-    description: `Update all tamagui packages within a monorepo`,
-    flags: {},
+  add: {
+    shorthands: ['a'],
+    description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
+      ', '
+    )}`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
     async run() {
-      const { update } = await import('./update')
-      await update()
+      const { _, ...flags } = arg(this.flags)
+      const { installGeneratedPackage } = require('./add.js')
+      const [cmd, type, path] = _
+      // const options = await getOptions({
+      //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      // })
+      await installGeneratedPackage(type, path)
     },
   },
+
+  // build: {
+  //   shorthands: ['b'],
+  //   description: `Use to pre-build a Tamagui component directory`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { build } = await import('./build')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await build(options)
+  //   },
+  // },
+  // update: {
+  //   shorthands: [],
+  //   description: `Update all tamagui packages within a monorepo`,
+  //   flags: {},
+  //   async run() {
+  //     const { update } = await import('./update')
+  //     await update()
+  //   },
+  // },
 
   dev: {
     shorthands: ['d'],
@@ -51,7 +101,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { dev } = await import('./dev')
+      const { dev } = require('./dev')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -59,24 +109,24 @@ const COMMAND_MAP = {
     },
   },
 
-  studio: {
-    shorthands: ['s'],
-    description: `Studio`,
-    flags: {
-      '--help': Boolean,
-      '--debug': Boolean,
-      '--verbose': Boolean,
-      '--local': Boolean,
-    },
-    async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { studio } = await import('./studio')
-      const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      })
-      await studio(options, !flags['--local'])
-    },
-  },
+  // studio: {
+  //   shorthands: ['s'],
+  //   description: `Studio`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //     '--local': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { studio } = await import('./studio')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await studio(options, !flags['--local'])
+  //   },
+  // },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP
@@ -158,8 +208,12 @@ async function main() {
     process.exit(0)
   }
 
-  await definition.run()
-  console.log(`done`)
+  try {
+    await definition.run()
+  } catch (err: any) {
+    console.error(`Error running command: ${err.message}`)
+  }
+
   process.exit(0)
 }
 

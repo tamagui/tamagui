@@ -15,7 +15,6 @@ export function PopoverContentStyledPlusAnimations() {
 }
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
-  debug: 'verbose',
   elevate: true,
   bordered: true,
   p: '$3',
@@ -42,4 +41,3 @@ const PopoverStyledContent = styled(Popover.Content, {
     },
   ],
 })
-console.log('PopoverStyledContent', PopoverStyledContent)

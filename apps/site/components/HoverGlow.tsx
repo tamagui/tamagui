@@ -3,8 +3,6 @@ import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useIsomorphicLayoutEffect } from 'tamagui'
 
-import { getBoundingClientRectAsync } from '../lib/getBoundingClientRectAsync'
-
 type Bounds = { width: number; height: number; left: number; top: number }
 
 interface BoundedCursorProps {
@@ -369,15 +367,9 @@ export const useRelativePositionedItem = (
 
       if (process.env.NODE_ENV === 'development' && debug) {
         console.table({
-          start: {
-            x: position.x,
-            y: position.y,
-            position: [position.x, position.y].map((val) => Math.round(val)).join(', '),
-            bounds: [bounds.width, bounds.height]
-              .map((val) => Math.round(val))
-              .join(', '),
-            glowDimensions: [width, height].join(', '),
-          },
+          bounds,
+          position,
+          glowDimensions: [width, height].join(', '),
           resisted: {
             x: doResist(bounds.width, position.x),
             y: doResist(bounds.height, position.y),
@@ -534,7 +526,7 @@ const getOffset = async (ev: MouseEvent, parentElement?: HTMLElement) => {
   const clientY = ev.clientY || 0
   let parentDimensions = lastDimensions.get(parent)
   if (!parentDimensions) {
-    parentDimensions = await getBoundingClientRectAsync(parent)
+    parentDimensions = parent.getBoundingClientRect()
     if (!parentDimensions) return [0, 0]
     lastDimensions.set(parent, parentDimensions)
   }
@@ -566,18 +558,12 @@ const useGetBounds = ({
       onDidUpdate?.(state.current)
     }
 
-    getBoundingClientRectAsync(node).then((rect) => rect && update(rect))
+    update(node.getBoundingClientRect())
 
     const ro = new ResizeObserver(
       throttleFn(([entry]) => {
         if (!entry) return
-
-        // fixes safari vs chrome diff (dont ask me)
-        const rect = useResizeObserverRect
-          ? entry.contentRect
-          : node.getBoundingClientRect()
-
-        update(rect)
+        update(node.getBoundingClientRect())
       }, 40)
     )
 

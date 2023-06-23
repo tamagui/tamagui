@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const CaseUpper: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=case-upper.d.ts.map

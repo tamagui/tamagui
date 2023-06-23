@@ -49,3 +49,9 @@ if (process.env.TAMAGUI_TARGET === 'web') {
     accessibilityDirectMap[`accessibility${key}`] = `aria-${val}`
   }
 }
+
+export const webToNativeAccessibilityDirectMap = null as unknown as Record<string, string>
+export const nativeAccessibilityValue = null as unknown as Record<string, string>
+
+export const nativeAccessibilityState = null as unknown as Record<string, string>
+export const accessibilityWebRoleToNativeRole = null as unknown as Record<string, string>

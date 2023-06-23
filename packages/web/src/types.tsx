@@ -140,12 +140,7 @@ export type TamaguiComponentPropsBase = {
   target?: string
   hitSlop?: PressableProps['hitSlop']
   asChild?: boolean | 'except-style'
-  space?: SpaceTokens | null
-  spaceDirection?: SpaceDirection
-  separator?: ReactNode
   dangerouslySetInnerHTML?: { __html: string }
-  animation?: AnimationProp | null
-  animateOnly?: string[]
   children?: any | any[]
   debug?: DebugProp
   disabled?: boolean
@@ -191,7 +186,10 @@ export type VariableColorVal = string | Variable
 
 type GenericKey = string
 
-export interface CreateTokens<Val extends VariableVal = VariableVal> {
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
+  string,
+  { [key: GenericKey]: Val }
+> & {
   color: { [key: GenericKey]: Val }
   space: { [key: GenericKey]: Val }
   size: { [key: GenericKey]: Val }
@@ -199,7 +197,12 @@ export interface CreateTokens<Val extends VariableVal = VariableVal> {
   zIndex: { [key: GenericKey]: Val }
 }
 
-type Tokenify<A extends GenericTokens> = {
+type Tokenify<A extends GenericTokens> = Omit<
+  {
+    [Key in keyof A]: TokenifyRecord<A[Key]>
+  },
+  'color' | 'space' | 'size' | 'radius' | 'zIndex'
+> & {
   color: TokenifyRecord<A['color']>
   space: TokenifyRecord<A['space']>
   size: TokenifyRecord<A['size']>
@@ -399,11 +402,7 @@ export type ThemeParsed = {
 export type Tokens = TamaguiConfig['tokens']
 
 export type TokensParsed = {
-  size: TokenPrefixed<Tokens['size']>
-  color: TokenPrefixed<Tokens['color']>
-  radius: TokenPrefixed<Tokens['radius']>
-  zIndex: TokenPrefixed<Tokens['zIndex']>
-  space: TokenPrefixed<Tokens['space']>
+  [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>
 }
 
 type TokenPrefixed<A extends { [key: string]: any }> = {
@@ -416,13 +415,7 @@ type Ensure$Prefix<A extends string | number | symbol> = A extends string
     : `$${A}`
   : never
 
-export type TokensMerged = {
-  size: TokensParsed['size'] & Tokens['size']
-  color: TokensParsed['color'] & Tokens['color']
-  radius: TokensParsed['radius'] & Tokens['radius']
-  zIndex: TokensParsed['zIndex'] & Tokens['zIndex']
-  space: TokensParsed['space'] & Tokens['space']
-}
+export type TokensMerged = TokensParsed & Tokens
 
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
@@ -457,10 +450,11 @@ type GetAltThemeNames<S> =
   | S
 
 type SpacerPropsBase = {
-  size?: number | SpaceTokens | null
+  size?: SpaceValue
   flex?: boolean | number
   direction?: SpaceDirection
 }
+
 type SpacerOwnProps = SpacerPropsBase &
   //
   WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>
@@ -582,6 +576,7 @@ export type TamaguiInternalConfig<
     reactNative?: any
     defaultFont?: H
     fontSizeTokens: Set<string>
+    specificTokens: Record<string, Variable>
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
@@ -686,16 +681,45 @@ type GetTokenFontKeysFor<
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
+// export type SpecificTokens<K extends keyof Tokens = keyof Tokens> =
+//   `${K}.${keyof Tokens[K] extends string ? keyof Tokens[K] : never}`
+
+export type SpecificTokens<
+  Record = Tokens,
+  RK extends keyof Record = keyof Record
+> = RK extends string
+  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
+  : never
+
 // base tokens
-export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
-export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
+export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number
+export type SpaceTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['space']>
+  | number
+  | boolean
 
 export type ColorTokens =
+  | SpecificTokens
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
   | CSSColorNames
-export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
-export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
+export type ZIndexTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['zIndex']>
+  | number
+export type RadiusTokens =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['radius']>
+  | number
+
+export type Token =
+  | SpecificTokens
+  | GetTokenString<keyof Tokens['radius']>
+  | GetTokenString<keyof Tokens['zIndex']>
+  | GetTokenString<keyof Tokens['color']>
+  | GetTokenString<keyof Tokens['space']>
+  | GetTokenString<keyof Tokens['size']>
 
 // fonts
 type DefaultFont = TamaguiConfig['defaultFont']
@@ -755,7 +779,10 @@ export type ThemeValueByCategory<K extends string | number | symbol> = K extends
   ? FontWeightTokens
   : K extends 'letterSpacing'
   ? FontLetterSpacingTokens
-  : {}
+  : K extends keyof Tokens
+  ? // fallback to user-defined tokens
+    GetTokenString<Tokens[K]>
+  : never
 
 type FontKeys = 'fontFamily'
 type FontSizeKeys = 'fontSize'
@@ -854,19 +881,26 @@ type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
  * Base style-only props (no media, pseudo):
  */
 
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback
+
 type SharedBaseExtraStyleProps = {
-  pointerEvents?: ViewProps['pointerEvents']
-  cursor?: Properties['cursor']
+  columnGap?: SpaceValue
   contain?: Properties['contain']
+  cursor?: Properties['cursor']
   display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-  gap?: number | SpaceTokens
-  columnGap?: number | SpaceTokens
-  rowGap?: number | SpaceTokens
-  userSelect?: Properties['userSelect']
+  gap?: SpaceValue
   outlineColor?: Properties['outlineColor']
+  outlineOffset?: SpaceValue
   outlineStyle?: Properties['outlineStyle']
-  outlineOffset?: number | SpaceTokens
-  outlineWidth?: number | SpaceTokens
+  outlineWidth?: SpaceValue
+  pointerEvents?: ViewProps['pointerEvents']
+  rowGap?: SpaceValue
+  space?: SpaceValue
+  spaceDirection?: SpaceDirection
+  separator?: ReactNode
+  animation?: AnimationProp | null
+  animateOnly?: string[]
+  userSelect?: Properties['userSelect']
 }
 
 type OverrideRNStyleProps =
@@ -898,6 +932,8 @@ export interface ExtendBaseTextProps {}
 // Stack
 //
 
+type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B)
+
 // these are added back in by core
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers
 
@@ -908,7 +944,7 @@ export type StackNonStyleProps = Omit<
   ExtendBaseStackProps &
   TamaguiComponentPropsBase & {
     // we allow either RN or web style props, of course only web css props only works on web
-    style?: StyleProp<React.CSSProperties & ViewStyle>
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
   }
 
 export type StackStyleProps =
@@ -930,7 +966,7 @@ export type TextNonStyleProps = Omit<
   ExtendBaseTextProps &
   TamaguiComponentPropsBase & {
     // we allow either RN or web style props, of course only web css props only works on web
-    style?: StyleProp<React.CSSProperties & TextStyle>
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>
   }
 
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>
@@ -1767,6 +1803,7 @@ export type NativeValue<Platform extends NativePlatform = NativePlatform> =
 
 /**
  * `StyleProp` copied from React Native:
+ *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
  */
 
 export type Falsy = undefined | null | false

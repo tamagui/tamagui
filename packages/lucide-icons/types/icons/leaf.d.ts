@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Leaf: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=leaf.d.ts.map

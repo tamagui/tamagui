@@ -20,7 +20,9 @@ import {
 import {
   generateTamaguiStudioConfig,
   generateTamaguiStudioConfigSync,
+  generateTamaguiThemes,
 } from './generateTamaguiStudioConfig'
+import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
@@ -56,11 +58,10 @@ export async function loadTamagui(
     }
   }
 
-  try {
-    await generateTamaguiStudioConfig(options, bundleInfo)
-  } catch {
-    // ok for now
-  }
+  await Promise.all([
+    generateTamaguiStudioConfig(options, bundleInfo),
+    generateTamaguiThemes(options),
+  ])
 
   return bundleInfo
 }
@@ -82,7 +83,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
       if (props.config) {
-        const configPath = join(process.cwd(), props.config)
+        const configPath = getTamaguiConfigPathFromOptionsConfig(props.config)
         const exp = require(configPath)
         tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
         if (!tamaguiConfig || !tamaguiConfig.parsed) {

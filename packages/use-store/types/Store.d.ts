@@ -3,11 +3,8 @@ export declare const ADD_TRACKER: unique symbol;
 export declare const TRACK: unique symbol;
 export declare const SHOULD_DEBUG: unique symbol;
 export type StoreTracker = {
-    isTracking: boolean;
     tracked: Set<string>;
-    dispose: () => void;
     component?: any;
-    firstRun: boolean;
     last?: any;
     lastKeys?: any;
 };
@@ -21,8 +18,6 @@ export declare class Store<Props extends Object = {}> {
     constructor(props: Props);
     subscribe: (onChanged: Function) => () => void;
     [TRIGGER_UPDATE](): void;
-    [ADD_TRACKER](tracker: StoreTracker): () => void;
-    [TRACK](key: string, debug?: boolean): void;
     [SHOULD_DEBUG](): boolean;
 }
 //# sourceMappingURL=Store.d.ts.map

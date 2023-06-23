@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const AlarmMinus: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=alarm-minus.d.ts.map

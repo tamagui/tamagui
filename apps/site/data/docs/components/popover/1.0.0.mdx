@@ -127,7 +127,13 @@ Contains every component for the popover.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip.`,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
     },
     {
       name: 'unstyled',

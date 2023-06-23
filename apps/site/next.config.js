@@ -4,8 +4,6 @@ process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
-// const withPreact = require('next-plugin-preact')
-
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
@@ -25,21 +23,18 @@ const plugins = [
   }),
   withTamagui({
     useReactNativeWebLite: true,
-    // enableCSSOptimizations: true,
     config: './tamagui.config.ts',
+    themes: '@tamagui/themes/src/themes-new.ts',
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
   }),
-  // withPreact,
   (config) => {
     return {
       ...config,
       webpack(webpackConfig, options) {
-        // webpackConfig.optimization.minimize = false
-
         webpackConfig.resolve.alias ??= {}
 
         // https://github.com/theKashey/react-remove-scroll/pull/78
@@ -100,9 +95,17 @@ module.exports = function (name, { defaultConfig }) {
         skipDefaultConversion: true,
       },
     },
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'placekitten.com',
+          port: '',
+          pathname: '/**/**',
+        },
+      ]
+    },
     experimental: {
-      // appDir: true,
-      // optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,

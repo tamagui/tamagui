@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const NutOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=nut-off.d.ts.map

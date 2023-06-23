@@ -74,10 +74,15 @@ export function Header(props: HeaderProps) {
           y={3}
           ov="hidden"
           width="100%"
-          br="$10"
           bw={1}
           boc="transparent"
           maw={1120}
+          br="$10"
+          $sm={{
+            br: 0,
+            y: 0,
+            py: '$2',
+          }}
           {...(isScrolled && {
             $gtSm: {
               py: '$2',

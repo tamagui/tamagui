@@ -60,7 +60,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
     .single()
 
   if (userPrivateRes.error) {
-    throw new Error(userPrivateRes.error.message)
+    if (userPrivateRes.error.message.includes("rows returned")) {
+      throw new Error("No GitHub connection found. Try logging out and logging in with GitHub again.")
+    }
+    throw userPrivateRes.error
   }
 
   const githubToken = userPrivateRes.data.github_token

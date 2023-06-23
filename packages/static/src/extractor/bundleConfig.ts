@@ -13,6 +13,7 @@ import { registerRequire } from '../require'
 import { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle } from './bundle'
+import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 
 let loggedOutputInfo = false
 
@@ -31,9 +32,9 @@ export type LoadedComponents = {
 }
 
 export type TamaguiProjectInfo = {
-  components: LoadedComponents[]
-  tamaguiConfig: TamaguiInternalConfig
-  nameToPaths: NameToPaths
+  components?: LoadedComponents[]
+  tamaguiConfig?: TamaguiInternalConfig
+  nameToPaths?: NameToPaths
 }
 
 const external = [
@@ -53,7 +54,7 @@ export const esbuildOptions = {
   platform: 'node',
 } as const
 
-export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>
+export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>
 
 // will use cached one if watching
 let currentBundle: BundledConfig | null = null
@@ -84,7 +85,9 @@ export async function bundleConfig(props: TamaguiOptions) {
   try {
     isBundling = true
 
-    const configEntry = props.config ? join(process.cwd(), props.config) : ''
+    const configEntry = props.config
+      ? getTamaguiConfigPathFromOptionsConfig(props.config)
+      : ''
     const tmpDir = join(process.cwd(), '.tamagui')
     const configOutPath = join(tmpDir, `tamagui.config.cjs`)
     const baseComponents = props.components.filter((x) => x !== '@tamagui/core')

@@ -24,7 +24,7 @@ export const templates = [
   },
 
   {
-    title: `Simple Web (recommended for learning) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
+    title: `Simple Web (only for learning - not recommended for production) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
     value: 'simple-web',
     type: 'included-in-monorepo',
     repo: {
@@ -34,17 +34,18 @@ export const templates = [
     },
     extraSteps: simpleWeb,
   },
-  // {
-  //   title: `${chalk.bold.underline(
-  //     `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
-  //   )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
-  //   value: `takeout-starter`,
-  //   type: 'premium',
-  //   repo: {
-  //     url: `https://github.com/tamagui/unistack`,
-  //     dir: [],
-  //     branch: 'main',
-  //   },
-  //   extraSteps: takeoutSteps,
-  // },
+  {
+    title: `${chalk.bold.underline(
+      `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
+    )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
+    value: `takeout-starter`,
+    type: 'premium',
+    hidden: true,
+    repo: {
+      url: `https://github.com/tamagui/unistack`,
+      dir: [],
+      branch: 'main',
+    },
+    extraSteps: takeoutSteps,
+  },
 ]

@@ -191,7 +191,7 @@ export function createAnimations<A extends AnimationsConfig>(
       )
       const animateOnly = props.animateOnly || []
 
-      const args = [style, state, isExiting, !!onDidAnimate]
+      const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = useMemo(() => {

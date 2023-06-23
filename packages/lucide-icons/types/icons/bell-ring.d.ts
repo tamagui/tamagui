@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const BellRing: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bell-ring.d.ts.map

@@ -41,6 +41,7 @@ import {
   DebugProp,
   SpaceDirection,
   SpaceTokens,
+  SpaceValue,
   SpacerProps,
   StaticConfig,
   StaticConfigParsed,
@@ -437,15 +438,16 @@ export function createComponent<
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const isMediaSpaced = Array.isArray(splitStyles.hasMedia)
+    const isMediaArray = Array.isArray(splitStyles.hasMedia)
     const shouldListenForMedia =
       didGetVariableValue() ||
-      isMediaSpaced ||
+      isMediaArray ||
       (noClassNames && splitStyles.hasMedia === true)
+    const mediaListeningKeys = isMediaArray ? (splitStyles.hasMedia as any) : null
 
     setMediaShouldUpdate(stateRef, {
       enabled: shouldListenForMedia,
-      keys: noClassNames && isMediaSpaced ? (splitStyles.hasMedia as any) : null,
+      keys: mediaListeningKeys,
     })
 
     // animation setup
@@ -459,14 +461,14 @@ export function createComponent<
       }
 
       if (debugProp) {
-        console.groupCollapsed('props')
+        console.groupCollapsed('>>>')
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
         // rome-ignore lint/nursery/noConsoleLog: ok
-        console.log('shouldListenForMedia', shouldListenForMedia)
+        console.log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
@@ -1092,7 +1094,7 @@ export const Spacer = createComponent<SpacerProps>({
 export type SpacedChildrenProps = {
   isZStack?: boolean
   children?: React.ReactNode
-  space?: SpaceTokens | number | null
+  space?: SpaceValue
   spaceFlex?: boolean | number
   direction?: SpaceDirection
   separator?: React.ReactNode

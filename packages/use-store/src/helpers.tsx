@@ -15,7 +15,10 @@ export function getStoreUid(Constructor: any, props: string | Object | void) {
   // in prod mode it usually is minified and mangled, unsafe to use name so use weakkey
   const storeName =
     process.env.NODE_ENV === 'development' ? Constructor.name : weakKey(Constructor)
-  return `${storeName}${!props ? '' : typeof props === 'string' ? props : getKey(props)}`
+  const uid = `${storeName}${
+    !props ? '' : typeof props === 'string' ? props : getKey(props)
+  }`
+  return uid
 }
 
 export const UNWRAP_STORE_INFO = Symbol('UNWRAP_STORE_INFO')

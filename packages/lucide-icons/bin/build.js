@@ -61,7 +61,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     const element = `
       import React, { memo } from 'react'
       import PropTypes from 'prop-types'
-      import { IconProps } from '../IconProps'
+      import type { IconProps } from '@tamagui/helpers-icon'
       import {
         Svg,
         Circle as _Circle,
@@ -80,7 +80,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
         Defs,
         Stop
       } from 'react-native-svg'
-      import { themed } from '../themed'
+      import { themed } from '@tamagui/helpers-icon'
 
       const Icon = (props) => {
         const { color = 'black', size = 24, ...otherProps } = props

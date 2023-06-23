@@ -51,7 +51,10 @@ export function nativePlugin(): Plugin {
       config.optimizeDeps.esbuildOptions.plugins.push(
         esbuildFlowPlugin(
           /node_modules\/(react-native\/|@react-native\/assets)/,
-          (_) => 'jsx'
+          (_) => 'jsx',
+          {
+            all: true,
+          }
         )
       )
       // config.optimizeDeps.esbuildOptions.plugins.push(esbuildCommonjs(['react-native']))
@@ -81,8 +84,7 @@ export function nativePlugin(): Plugin {
 
       config.build.rollupOptions ??= {}
 
-      config.build.rollupOptions.input =
-        '/Users/n8/tamagui/apps/kitchen-sink/src/index.tsx'
+      config.build.rollupOptions.input = config.root
 
       config.build.rollupOptions.output ??= {}
 

@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const PanelLeftOpen: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=panel-left-open.d.ts.map

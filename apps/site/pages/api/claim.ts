@@ -1,5 +1,6 @@
 import { claimProductAccess } from '@lib/claim-product'
 import { Database } from '@lib/supabase-types'
+import { getArray, getSingle } from '@lib/supabase-utils'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
@@ -45,7 +46,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const subscriptionRes = await supabase
     .from('subscriptions')
-    .select('*, prices(id, products(*))')
+    .select('*, subscription_items(id, prices(*, products(*)))')
     .eq('id', subscriptionId)
     .single()
 
@@ -53,32 +54,30 @@ const handler: NextApiHandler = async (req, res) => {
 
   const subscription = subscriptionRes.data
 
-  if (!subscription.prices) {
-    throw new Error('No prices found.')
+  const prices = getArray(subscriptionRes.data.subscription_items).map((s) =>
+    getSingle(s?.prices)
+  )
+
+  for (const price of prices) {
+    for (const product of getArray(price?.products)) {
+      if (!product) continue
+      if (product.id === productId) {
+        try {
+          const { message } = await claimProductAccess(subscription, product, user)
+          res.json({
+            message,
+          })
+        } catch (error) {
+          res.status(500).json({
+            message: error.message,
+          })
+        }
+        return
+      }
+    }
   }
-  const price = Array.isArray(subscription.prices)
-    ? subscription.prices[0]
-    : subscription.prices
 
-  const products = price.products
-    ? Array.isArray(price.products)
-      ? price.products
-      : [price.products]
-    : null
-  if (!products) {
-    throw new Error('No products found.')
-  }
-
-  const product = products.find((p) => p.id === productId)
-
-  if (!product) {
-    throw new Error('No product match')
-  }
-
-  const { message } = await claimProductAccess(subscription, product, user)
-  res.json({
-    message,
-  })
+  res.status(404).json({ error: 'no product matched' })
 }
 
 export default handler

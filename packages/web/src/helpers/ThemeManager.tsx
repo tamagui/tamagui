@@ -22,6 +22,7 @@ export type ThemeManagerState = {
   theme?: ThemeParsed | null
   className?: string
   parentName?: string
+  componentName?: string
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -325,6 +326,7 @@ function getState(
         theme: getThemeUnwrapped(themes[found]),
         className: getNextThemeClassName(found, props),
         parentName,
+        componentName,
       }
       break
     }

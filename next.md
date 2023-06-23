@@ -1,3 +1,13 @@
+- document createStyledContext
+- document ThemeBuilder
+
+- inverse not updating theme on doc site after two theme changes (see http://localhost:5005/docs/core/theme inverse demos)
+
+- #questportal how to build a button the ...size tokens.size[name] type is breaking
+
+- merge font-size and get-font-sized packages
+
+- forwardRef to icons
 
 - modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
 
@@ -54,6 +64,9 @@ something like this i believe, where native is correct but web the button isn't 
 
 
 ---
+
+- `tamagui [clone|eject] Sheet ./packages/sheet`
+  - clones the sheet package into your repo somewhere
 
 - $web / $native / $ios / $android
 

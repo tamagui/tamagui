@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const EarOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=ear-off.d.ts.map

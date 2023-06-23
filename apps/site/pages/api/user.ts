@@ -1,3 +1,4 @@
+import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { tiersPriority } from '@protected/_utils/sponsorship'
@@ -19,7 +20,7 @@ export type UserContextType = {
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })
-
+  
   const {
     data: { session },
   } = await supabase.auth.getSession()
@@ -66,9 +67,20 @@ const getUserTeams = async (supabase: SupabaseClient<Database>) => {
 }
 
 const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase.from('subscriptions').select('*, prices(*, products(*))')
+  const result = await supabase
+    .from('subscriptions')
+    .select('*, subscription_items(*, prices(*, products(*)))')
   if (result.error) throw new Error(result.error.message)
-  return result.data
+  return result.data.map((sub) => ({
+    ...sub,
+    subscription_items: getArray(sub.subscription_items).map((item) => {
+      const price = getSingle(item?.prices)
+      return {
+        ...item,
+        price: { ...price, product: getSingle(price?.products) },
+      }
+    }),
+  }))
 }
 
 function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {

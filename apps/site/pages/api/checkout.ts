@@ -17,36 +17,49 @@ const handler: NextApiHandler = async (req, res) => {
     res.redirect(303, `/login?${params.toString()}`)
     return
   }
-  let priceId: string
+  // let priceId: string
 
-  const quantity =
-    typeof req.query.quantity === 'string' &&
-    !isNaN(Number(req.query.quantity)) &&
-    Number(req.query.quantity) > 0
-      ? Number(req.query.quantity)
-      : 1
+  // const quantity =
+  //   typeof req.query.quantity === 'string' &&
+  //   !isNaN(Number(req.query.quantity)) &&
+  //   Number(req.query.quantity) > 0
+  //     ? Number(req.query.quantity)
+  //     : 1
 
-  // if there's a price id, just use that
-  if (typeof req.query.price_id === 'string') {
-    priceId = req.query.price_id
-  } else {
-    // if there's no price id provided, get the product and use the default price id
-    if (typeof req.query.product_id !== 'string') {
-      res.status(400).json({ error: 'no `priceId` provided.' })
-      return
-    }
+  // // if there's a price id, just use that
+  // if (typeof req.query.price_id === 'string') {
+  //   priceId = req.query.price_id
+  // } else  {
+  //   // if there's no price id provided, get the product and use the default price id
+  //   if (typeof req.query.product_id !== 'string') {
+  //     res.status(400).json({ error: 'no `priceId` provided.' })
+  //     return
+  //   }
 
-    const product = await stripe.products.retrieve(req.query.product_id)
+  if (typeof req.query.product_id === 'undefined') {
+    res.status(400).json({ error: 'no `product_id` provided' })
+    return
+  }
+  const productIds = Array.isArray(req.query.product_id)
+    ? req.query.product_id
+    : [req.query.product_id]
+  const products = await stripe.products.list({ ids: productIds })
+  for (const product of products.data) {
     if (!product.default_price) {
       throw new Error(
         `Product with id of ${product.id} does not have a default price and no price id is provided.`
       )
     }
-    priceId =
-      typeof product.default_price === 'string'
-        ? product.default_price
-        : product.default_price.id
   }
+  let coupon: string | undefined
+
+  if (req.query.coupon && typeof req.query.coupon === 'string') {
+    coupon = req.query.coupon
+  }
+  // priceId =
+  //   typeof product.default_price === 'string'
+  //     ? product.default_price
+  //     : product.default_price.id
 
   const stripeCustomerId = await createOrRetrieveCustomer({
     email: user.email!,
@@ -59,14 +72,26 @@ const handler: NextApiHandler = async (req, res) => {
   // if stripe customer doesn't exist, create one and insert it into supabase
 
   const stripeSession = await stripe.checkout.sessions.create({
-    line_items: [
-      {
+    line_items: products.data.map((product) => {
+      // can use ! cause we've checked before
+      const queryPriceId = req.query[`price-${product.id}`]
+      let priceId =
+        typeof product.default_price! === 'string'
+          ? product.default_price
+          : product.default_price!.id
+
+      if (typeof queryPriceId === 'string') {
+        priceId = queryPriceId
+      }
+
+      return {
         price: priceId,
-        quantity,
-      },
-    ],
+        quantity: 1,
+      }
+    }),
     customer: stripeCustomerId,
     mode: 'subscription',
+    discounts: coupon ? [{ coupon }] : undefined,
     success_url: `${getURL()}/account/subscriptions`,
     cancel_url: `${getURL()}/takeout`,
   })

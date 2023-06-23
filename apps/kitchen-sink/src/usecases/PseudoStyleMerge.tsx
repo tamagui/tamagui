@@ -1,7 +1,6 @@
 import { Stack, Text, YStack, styled } from 'tamagui'
 
 const CustomYStack = styled(YStack, {
-  debug: 'verbose',
   backgroundColor: 'yellow',
   hoverStyle: {
     backgroundColor: 'red',

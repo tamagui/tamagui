@@ -3,10 +3,16 @@ export interface TamaguiOptions {
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */
   components: string[]
+
   /**
    * your tamagui.config.ts
    */
   config?: string
+
+  /**
+   * your themes generation file
+   */
+  themes?: string
 
   /**
    * Emit design system related CSS during build step for usage with frameworks

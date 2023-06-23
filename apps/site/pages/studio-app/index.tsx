@@ -1,4 +1,4 @@
-import { getStudioLayout } from "@lib/getStudioLayout"
+import { getStudioLayout } from '@lib/getStudioLayout'
 import AnimationsPage from '@protected/studio/(loaded)/(sponsor-protected)/animations/page'
 import ColorsPage from '@protected/studio/(loaded)/(sponsor-protected)/colors/page'
 import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/page'
@@ -23,22 +23,19 @@ import React, {
   useState,
   useTransition,
 } from 'react'
-import { YStack, useDidFinishSSR, useThemeName } from 'tamagui'
+import { YStack, useDidFinishSSR, useIsomorphicLayoutEffect, useThemeName } from 'tamagui'
 
 export default function Page() {
   const hydrated = useDidFinishSSR()
 
   const fsReadSucceeded = useSelector(() => rootStore.fsReadSucceeded)
 
+  // disable ssr
   if (!hydrated) {
     return null
   }
 
-  return (
-    <React.StrictMode>
-      {!fsReadSucceeded && !isLocal ? <LoadPage /> : <StudioContents />}
-    </React.StrictMode>
-  )
+  return <>{!fsReadSucceeded && !isLocal ? <LoadPage /> : <StudioContents />}</>
 }
 
 function StudioContents() {
@@ -67,7 +64,7 @@ function useStudioInitialize() {
 function useSyncThemeToThemeState() {
   const themeName = useThemeName()
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     themesStore.toggleFocusedThemeItem({
       id: themeName,
     })
@@ -135,26 +132,27 @@ const StudioTab = memo(
   }
 )
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // Create authenticated Supabase Client
-  const supabase = createServerSupabaseClient(ctx)
-  // Check if we have a session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  if (!session)
-    return {
-      redirect: {
-        destination: `${siteRootDir}/login`,
-        permanent: false,
-      },
-    }
+//   // Create authenticated Supabase Client
+//   const supabase = createServerSupabaseClient(ctx)
+//   // Check if we have a session
+//   const {
+//     data: { session },
+//   } = await supabase.auth.getSession()
 
-  return {
-    props: {
-      initialSession: session,
-      user: session.user,
-    },
-  }
-}
+//   if (!session)
+//     return {
+//       redirect: {
+//         destination: `${siteRootDir}/login`,
+//         permanent: false,
+//       },
+//     }
+
+//   return {
+//     props: {
+//       initialSession: session,
+//       user: session.user,
+//     },
+//   }
+// }

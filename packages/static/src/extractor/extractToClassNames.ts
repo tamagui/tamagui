@@ -66,8 +66,10 @@ export async function extractToClassNames({
     console.warn(`${sourcePath?.slice(0, 100)} - bad filename.`)
   }
 
-  // dont include loading in timing of parsing (one time cost)
-  await extractor.loadTamagui(options)
+  if (!options.disableExtraction) {
+    // dont include loading in timing of parsing (one time cost)
+    await extractor.loadTamagui(options)
+  }
 
   const shouldLogTiming = options.logTimings ?? true
   const start = Date.now()

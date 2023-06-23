@@ -7,13 +7,15 @@ export function useAsyncExternalStore(
 ) {
   const [storeState, setStoreState] = useState(getServerSnapshot)
 
-  useLayoutEffect(() => {
-    return subscribe((next: any) => {
-      startTransition(() => {
-        setStoreState(getSnapshot(next))
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      return subscribe((next: any) => {
+        startTransition(() => {
+          setStoreState(getSnapshot(next))
+        })
       })
-    })
-  }, [subscribe])
+    }, [subscribe])
+  }
 
   return storeState
 }

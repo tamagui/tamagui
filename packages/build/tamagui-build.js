@@ -8,7 +8,6 @@ const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { dirname } = require('path')
-const { getTsconfig } = require('get-tsconfig')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -131,8 +130,8 @@ async function buildTsc() {
     await fs.ensureDir(targetDir)
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
-    const baseUrlFlag = ignoreBaseUrl ? '' : `--baseUrl ${baseUrl}`
-    const cmd = `tsc ${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
+    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
@@ -156,6 +155,9 @@ async function buildJs() {
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
+
+  const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
+  
   const start = Date.now()
   return await Promise.all([
     pkgMain
@@ -163,6 +165,7 @@ async function buildJs() {
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node14',
@@ -182,6 +185,7 @@ async function buildJs() {
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node16',
@@ -201,6 +205,7 @@ async function buildJs() {
           outExtension: { '.js': '.mjs' },
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           target: 'node16',
@@ -222,6 +227,7 @@ async function buildJs() {
           outExtension: { '.js': '.mjs' },
           entryPoints: files,
           bundle: shouldBundle,
+          external,
           sourcemap: true,
           sourcesContent: false,
           allowOverwrite: true,

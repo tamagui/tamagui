@@ -25,7 +25,7 @@ const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module '@tamagui/core' {
+declare module 'tamagui' { // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
@@ -81,14 +81,6 @@ Let's start with an example of a complete `tamagui.config.ts` which is in the co
 ```tsx
 <XStack bg="$red" w="$2" h="$1" />
 ```
-
-And if you want even shorter, like this:
-
-```tsx
-<Box bg-red w-2 h-1 />
-```
-
-You can achieve that by writing variants (see [an example at bottom of page](#example-of-shorthands-an-variants)).
 
 ```tsx
 import { createMedia } from '@tamagui/react-native-media-driver'

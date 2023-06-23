@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const ImageOff: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=image-off.d.ts.map

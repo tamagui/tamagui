@@ -17,7 +17,13 @@ import {
 import { useInsertionEffect } from 'react'
 
 import { getConfig, getFont } from '../config'
-import { accessibilityDirectMap } from '../constants/accessibilityDirectMap'
+import {
+  accessibilityDirectMap,
+  accessibilityWebRoleToNativeRole,
+  nativeAccessibilityState,
+  nativeAccessibilityValue,
+  webToNativeAccessibilityDirectMap,
+} from '../constants/accessibilityDirectMap'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -234,6 +240,11 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = shorthands[keyInit]
     }
 
+    // edge-case: given we have `role="A"`, without this check, `accessibilityRole="B"` doesn't overwrite `role` and the value remains "A"
+    if (keyInit === 'accessibilityRole') {
+      usedKeys['role'] = 1
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isAndroid) {
         // only works in android
@@ -243,7 +254,49 @@ export const getSplitStyles: StyleSplitter = (
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
-      } else if (keyInit.startsWith('data-') || keyInit.startsWith('aria-')) {
+      } else if (keyInit.startsWith('aria-') || keyInit === 'role') {
+        if (webToNativeAccessibilityDirectMap[keyInit]) {
+          const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
+          if (keyInit === 'aria-hidden') {
+            // accessibilityElementsHidden only works with ios, RN version >0.71.1 support aria-hidden which works for both ios/android
+            viewProps['aria-hidden'] = valInit
+          }
+          viewProps[nativeA11yProp] = valInit
+          usedKeys[keyInit] = 1
+          return
+        } else if (nativeAccessibilityValue[keyInit]) {
+          let field = nativeAccessibilityValue[keyInit]
+          if (viewProps['accessibilityValue']) {
+            viewProps['accessibilityValue'][field] = valInit
+          } else {
+            viewProps['accessibilityValue'] = {
+              [field]: valInit,
+            }
+          }
+          usedKeys[keyInit] = 1
+        } else if (nativeAccessibilityState[keyInit]) {
+          let field = nativeAccessibilityState[keyInit]
+          if (viewProps['accessibilityState']) {
+            viewProps['accessibilityState'][field] = valInit
+          } else {
+            viewProps['accessibilityState'] = {
+              [field]: valInit,
+            }
+          }
+          usedKeys[keyInit] = 1
+        } else if (keyInit === 'role') {
+          if (valInit === 'list') {
+            // role = "list"
+            viewProps[keyInit] = valInit
+          } else if (accessibilityWebRoleToNativeRole[valInit]) {
+            viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+              valInit
+            ] as GetStyleResult['viewProps']['AccessibilityRole']
+          }
+          return
+        }
+        return
+      } else if (keyInit.startsWith('data-')) {
         return
       }
     }
@@ -722,7 +775,8 @@ export const getSplitStyles: StyleSplitter = (
           console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
         }
 
-        if ('space' in mediaStyle) {
+        const hasSpace = 'space' in val
+        if (hasSpace || !shouldDoClasses) {
           if (!Array.isArray(hasMedia)) {
             hasMedia = []
           }
@@ -730,17 +784,16 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (shouldDoClasses) {
-          if ('space' in mediaStyle) {
+          if (hasSpace) {
             delete mediaStyle['space']
             if (mediaState[mediaKeyShort]) {
-              const val = valInit.space
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
                 usedKeys
               )
               if (importance) {
-                space = val
+                space = val['space']
                 usedKeys['space'] = importance
                 if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                   // rome-ignore lint/nursery/noConsoleLog: <explanation>

@@ -32,7 +32,7 @@ export class WebSocketRouter {
         const { pathname } = new URL(request.url || '', 'http://localhost')
         let matched = false
 
-        console.log('check for upgrade', pathname)
+        console.log('check for upgrade', pathname, 'servers?')
 
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {

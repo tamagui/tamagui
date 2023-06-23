@@ -17,8 +17,6 @@ export const build = async (options: CLIResolvedOptions) => {
   const promises: Promise<void>[] = []
   const targets = ['web']
 
-  console.log('sourceDir', sourceDir, targets)
-
   await new Promise<void>((res) => {
     chokidar
       // prevent infinite loop but cause race condition if you just build directly

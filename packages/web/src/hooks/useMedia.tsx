@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useSyncExternalStore } from 'react'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useMemo, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -117,7 +118,8 @@ export function setupMediaListeners() {
 
 export function useMediaListeners(config: TamaguiInternalConfig) {
   if (config.disableSSR) return
-  useEffect(() => {
+
+  useIsomorphicLayoutEffect(() => {
     setupMediaListeners()
   }, [])
 }

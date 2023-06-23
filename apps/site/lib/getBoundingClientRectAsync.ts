@@ -1,3 +1,5 @@
+// this is not equivalent
+
 export const getBoundingClientRectAsync = (
   element: Element
 ): Promise<DOMRectReadOnly | undefined> =>

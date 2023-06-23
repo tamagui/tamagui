@@ -136,32 +136,57 @@ export const manageSubscriptionStatusChange = async (
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['default_payment_method'],
   })
-  // Upsert the latest status of the subscription object.
-  const subscriptionData = {
-    id: subscription.id,
-    user_id: uuid,
-    metadata: subscription.metadata,
-    status: subscription.status,
-    price_id: subscription.items.data[0].price.id,
-    //TODO check quantity on subscription
-    // @ts-ignore
-    quantity: subscription.quantity,
-    cancel_at_period_end: subscription.cancel_at_period_end,
-    cancel_at: subscription.cancel_at ? toDateTime(subscription.cancel_at) : null,
-    canceled_at: subscription.canceled_at ? toDateTime(subscription.canceled_at) : null,
-    current_period_start: toDateTime(subscription.current_period_start),
-    current_period_end: toDateTime(subscription.current_period_end),
-    created: toDateTime(subscription.created),
-    ended_at: subscription.ended_at ? toDateTime(subscription.ended_at) : null,
-    trial_start: subscription.trial_start ? toDateTime(subscription.trial_start) : null,
-    trial_end: subscription.trial_end ? toDateTime(subscription.trial_end) : null,
-  }
 
-  // @ts-expect-error
-  const { error } = await supabaseAdmin.from('subscriptions').upsert([subscriptionData])
+  const { error } = await supabaseAdmin.from('subscriptions').upsert([
+    {
+      id: subscription.id,
+      user_id: uuid,
+      metadata: subscription.metadata,
+      status: subscription.status,
+      //TODO check quantity on subscription
+      // @ts-ignore
+      quantity: subscription.quantity,
+      cancel_at_period_end: subscription.cancel_at_period_end,
+      cancel_at: subscription.cancel_at
+        ? (toDateTime(subscription.cancel_at) as unknown as string)
+        : null,
+      canceled_at: subscription.canceled_at
+        ? (toDateTime(subscription.canceled_at) as unknown as string)
+        : null,
+      current_period_start: toDateTime(
+        subscription.current_period_start
+      ) as unknown as string,
+      current_period_end: toDateTime(
+        subscription.current_period_end
+      ) as unknown as string,
+      created: toDateTime(subscription.created) as unknown as string,
+      ended_at: subscription.ended_at
+        ? (toDateTime(subscription.ended_at) as unknown as string)
+        : null,
+      trial_start: subscription.trial_start
+        ? (toDateTime(subscription.trial_start) as unknown as string)
+        : null,
+      trial_end: subscription.trial_end
+        ? (toDateTime(subscription.trial_end) as unknown as string)
+        : null,
+    },
+  ])
   if (error) throw error
-  console.log(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
+  const { error: deletionError } = await supabaseAdmin
+    .from('subscription_items')
+    .delete()
+    .eq('subscription_id', subscription.id)
+  if (deletionError) throw deletionError
+  const { error: insertionError } = await supabaseAdmin.from('subscription_items').insert(
+    subscription.items.data.map((item) => ({
+      id: item.id,
+      subscription_id: subscription.id,
+      price_id: typeof item.price === 'string' ? item.price : item.price.id,
+    }))
+  )
+  if (insertionError) throw insertionError
 
+  console.log(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
   // For a new subscription copy the billing details to the customer object.
   // NOTE: This is a costly operation and should happen at the very end.
   if (createAction && subscription.default_payment_method && uuid)
@@ -170,6 +195,41 @@ export const manageSubscriptionStatusChange = async (
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     )
+
+  // handle code for the prices marked as one time -
+  // i.e. font and icon packs are one-time pay so we apply 100% discount on renewals
+  const oneTimeProducts: string[] = []
+  for (const item of subscription.items.data) {
+    const isOneTime = item.price.metadata.is_one_time
+    if (isOneTime) {
+      oneTimeProducts.push(
+        typeof item.price.product === 'string'
+          ? item.price.product
+          : item.price.product.id
+      )
+    }
+  }
+
+  if (oneTimeProducts.length > 0) {
+    const couponId = `${subscription.id}-one-time`
+    try {
+      await stripe.coupons.retrieve(couponId)
+      // no error, so coupon exists and it's already been applied
+    } catch {
+      // we now know this is the first time we're running this, so go ahead and create and apply the coupon
+      const coupon = await stripe.coupons.create({
+        id: couponId,
+        applies_to: {
+          products: oneTimeProducts,
+        },
+        duration: 'forever',
+        percent_off: 100,
+      })
+      await stripe.subscriptions.update(subscription.id, {
+        coupon: coupon.id,
+      })
+    }
+  }
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {

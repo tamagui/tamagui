@@ -23,10 +23,6 @@ export const SizableStack = styled(XStack, {
         elevate: false,
         bordered: false,
       },
-      false: {
-        backgroundColor: '$background',
-        flexShrink: 1,
-      },
     },
 
     hoverTheme,

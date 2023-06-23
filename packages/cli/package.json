@@ -1,13 +1,12 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.31.1",
+  "version": "1.35.9",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
-  "module": "dist/esm",
-  "main": "dist/cjs",
+  "main": "dist",
   "bin": {
-    "tama": "./dist/cjs/index.js",
-    "tamagui": "./dist/cjs/index.js"
+    "tama": "./dist/index.js",
+    "tamagui": "./dist/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -17,17 +16,9 @@
     "types",
     "dist"
   ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch",
+    "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -36,15 +27,18 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
-    "@tamagui/build": "1.31.1",
-    "@tamagui/static": "1.31.1",
-    "@tamagui/types": "1.31.1",
-    "@tamagui/vite-plugin": "1.31.1",
+    "@tamagui/build": "1.35.9",
+    "@tamagui/create-theme": "1.35.9",
+    "@tamagui/generate-themes": "1.35.9",
+    "@tamagui/static": "1.35.9",
+    "@tamagui/types": "1.35.9",
+    "@tamagui/vite-plugin": "1.35.9",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "arg": "^5.0.2",
     "chalk": "^4.1.2",
+    "change-case": "^4.1.2",
     "chokidar": "^3.5.2",
     "compression": "^1.7.4",
     "esbuild": "^0.17.17",
@@ -65,6 +59,7 @@
     "open": "^8.4.0",
     "open-editor": "^4.0.0",
     "pretty-format": "^28.1.0",
+    "prompts": "2.1.0",
     "source-map": "^0.7.3",
     "ts-morph": "^15.1.0",
     "typescript": "^5.1.3",

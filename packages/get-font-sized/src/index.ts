@@ -38,6 +38,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     fontSize,
     lineHeight,
   }
+
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)

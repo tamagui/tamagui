@@ -1,5 +1,3 @@
-import { readFile } from 'fs/promises'
-
 import { CLIResolvedOptions } from '@tamagui/types'
 
 import { DEFAULT_PORT } from '../utils/constants'
@@ -136,6 +134,7 @@ export async function createDevServer(
           onMessage: (log) => {
             const logEntry = makeLogEntryFromFastifyLog(log)
             logEntry.issuer = 'DevServer'
+            // error DevServer, warn DevServer
             console.log(
               logEntry.type,
               logEntry.issuer,

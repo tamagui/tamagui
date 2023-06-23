@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.31.1",
+  "version": "1.35.9",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -11,9 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "generate": "node -r esbuild-register ./src/generate.ts",
-    "build": "tamagui-build && yarn generate",
-    "watch": "tamagui-build --watch",
+    "generate": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "build": "tamagui-build",
+    "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
     "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
@@ -21,6 +21,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./src/themes-new.ts": "./src/themes-new.ts",
     "./generated.json": {
       "types": "./generated.d.ts",
       "import": "./generated.json",
@@ -33,12 +34,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.31.1",
-    "@tamagui/create-theme": "1.31.1",
-    "@tamagui/web": "1.31.1"
+    "@tamagui/colors": "1.35.9",
+    "@tamagui/create-theme": "1.35.9",
+    "@tamagui/web": "1.35.9"
   },
   "devDependencies": {
-    "@tamagui/build": "1.31.1"
+    "@tamagui/build": "1.35.9",
+    "@tamagui/cli": "1.35.9",
+    "vitest": "^0.26.3"
   },
   "publishConfig": {
     "access": "public"

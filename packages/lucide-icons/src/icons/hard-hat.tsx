@@ -19,8 +19,8 @@ import {
   Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props

@@ -10,9 +10,9 @@ export type LoadedComponents = {
     }>;
 };
 export type TamaguiProjectInfo = {
-    components: LoadedComponents[];
-    tamaguiConfig: TamaguiInternalConfig;
-    nameToPaths: NameToPaths;
+    components?: LoadedComponents[];
+    tamaguiConfig?: TamaguiInternalConfig;
+    nameToPaths?: NameToPaths;
 };
 export declare const esbuildOptions: {
     readonly loader: "tsx";
@@ -21,7 +21,7 @@ export declare const esbuildOptions: {
     readonly jsx: "transform";
     readonly platform: "node";
 };
-export type BundledConfig = Awaited<ReturnType<typeof bundleConfig>>;
+export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<{
     components: LoadedComponents[];

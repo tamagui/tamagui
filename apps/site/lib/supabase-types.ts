@@ -34,6 +34,37 @@ export interface Database {
   }
   public: {
     Tables: {
+      app_installations: {
+        Row: {
+          created_at: string | null
+          github_installation_id: number | null
+          id: number
+          installed_at: string | null
+          subscription_item_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          github_installation_id?: number | null
+          id?: number
+          installed_at?: string | null
+          subscription_item_id: string
+        }
+        Update: {
+          created_at?: string | null
+          github_installation_id?: number | null
+          id?: number
+          installed_at?: string | null
+          subscription_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_installations_subscription_item_id_fkey"
+            columns: ["subscription_item_id"]
+            referencedRelation: "subscription_items"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       claims: {
         Row: {
           created_at: string
@@ -206,6 +237,37 @@ export interface Database {
         }
         Relationships: []
       }
+      subscription_items: {
+        Row: {
+          id: string
+          price_id: string
+          subscription_id: string
+        }
+        Insert: {
+          id: string
+          price_id: string
+          subscription_id: string
+        }
+        Update: {
+          id?: string
+          price_id?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_items_price_id_fkey"
+            columns: ["price_id"]
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_items_subscription_id_fkey"
+            columns: ["subscription_id"]
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       subscriptions: {
         Row: {
           cancel_at: string | null
@@ -217,7 +279,6 @@ export interface Database {
           ended_at: string | null
           id: string
           metadata: Json | null
-          price_id: string | null
           quantity: number | null
           status: Database["public"]["Enums"]["subscription_status"] | null
           trial_end: string | null
@@ -234,7 +295,6 @@ export interface Database {
           ended_at?: string | null
           id: string
           metadata?: Json | null
-          price_id?: string | null
           quantity?: number | null
           status?: Database["public"]["Enums"]["subscription_status"] | null
           trial_end?: string | null
@@ -251,7 +311,6 @@ export interface Database {
           ended_at?: string | null
           id?: string
           metadata?: Json | null
-          price_id?: string | null
           quantity?: number | null
           status?: Database["public"]["Enums"]["subscription_status"] | null
           trial_end?: string | null
@@ -259,12 +318,6 @@ export interface Database {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "subscriptions_price_id_fkey"
-            columns: ["price_id"]
-            referencedRelation: "prices"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "subscriptions_user_id_fkey"
             columns: ["user_id"]

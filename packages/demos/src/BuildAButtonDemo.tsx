@@ -1,5 +1,5 @@
-import { Activity, Airplay, Drumstick, FileWarning, Hand } from '@tamagui/lucide-icons'
-import { Button, ButtonProps, Theme, ThemeName, XGroup, XStack, YStack } from 'tamagui'
+import { Drumstick, Hand } from '@tamagui/lucide-icons'
+import { Button, ButtonProps, ThemeName, XStack, YStack } from 'tamagui'
 
 const outlined = {
   backgroundColor: 'transparent',

@@ -20,7 +20,7 @@ test(`should expand webkit user-select`, () => {
         "property": "userSelect",
         "pseudo": undefined,
         "rules": [
-          "._ussel-none{user-select:none;-webkit-user-select:none;}",
+          ":root ._ussel-none{user-select:none;-webkit-user-select:none;}",
         ],
         "value": "none",
       },

@@ -43,10 +43,11 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
+        const fontStyle = getFontSized(val, extras)
+
         return {
-          ...getFontSized(val, extras),
-          height: buttonStyle.height,
-          lineHeight: buttonStyle.height,
+          ...fontStyle,
+          lineHeight: extras.tokens.size[buttonStyle.height],
         }
       },
     },
