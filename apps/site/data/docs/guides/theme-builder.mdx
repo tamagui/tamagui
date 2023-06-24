@@ -48,14 +48,18 @@ The way the new ThemeBuilder works is through three main concepts: a palette, a 
 
 The first layer of building a theme starts with a palette. All a palette is is a gradient along a single color going from background to foreground:
 
-<Blog.ThemeBuilder.Example1 />
+<Blog.ThemeBuilder.ExamplePalette />
 
 You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palettes: `light_blue` and `dark_blue`.
 
-Palettes are great for a design system because they constrain you. They force you to choose a limited set of colors to work with, and then build up from there. Designs look better when they have consistency.
+Palettes are great for a design system because they constrain you. They force you to choose a limited set of colors to work with, and then build up from there. Designs look better when they have limits.
 
 #### Templates
 
-The next level up is a template. A template is incredibly simple: it maps a _name to a color_, specifically it maps a name in your theme to an offset within your palette. As usual, it's best illustrated visually:
+The next level up is a template, and a template is incredibly simple: it maps a _name to a color_.
+
+Specifically it maps a name in your theme to an offset within your palette:
+
+<Blog.ThemeBuilder.ExampleTemplate />
 
 ### How

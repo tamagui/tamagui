@@ -546,8 +546,11 @@ export const components = {
 
   Blog: {
     ThemeBuilder: {
-      Example1: React.lazy(() =>
-        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.Example1 }))
+      ExamplePalette: React.lazy(() =>
+        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.ExamplePalette }))
+      ),
+      ExampleTemplate: React.lazy(() =>
+        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.ExampleTemplate }))
       ),
     },
   },
