@@ -1,7 +1,7 @@
 import { join } from 'path'
 
 import { getVariableValue } from '@tamagui/core-node'
-import { generateThemes } from '@tamagui/generate-themes'
+import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
 import fs from 'fs-extra'
 
@@ -36,18 +36,21 @@ export async function generateTamaguiStudioConfig(
 }
 
 export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
-  if (!tamaguiOptions.themes) {
+  if (!tamaguiOptions.themeBuilder) {
     return
   }
 
-  const inPath = tamaguiOptions.themes.startsWith('.')
-    ? join(process.cwd(), tamaguiOptions.themes)
-    : require.resolve(tamaguiOptions.themes)
+  const { input, output } = tamaguiOptions.themeBuilder
+  const resolveRelativePath = (inputPath: string) =>
+    inputPath.startsWith('.')
+      ? join(process.cwd(), inputPath)
+      : require.resolve(inputPath)
 
-  await generateThemes({
-    inPath,
-    outPath: join(tamaguiDir, `tamagui.themes.json`),
-  })
+  const inPath = resolveRelativePath(input)
+  const outPath = resolveRelativePath(output)
+
+  const generatedOutput = await generateThemes(inPath)
+  await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)
 }
 
 export function generateTamaguiStudioConfigSync(

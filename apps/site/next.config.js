@@ -24,7 +24,10 @@ const plugins = [
   withTamagui({
     useReactNativeWebLite: true,
     config: './tamagui.config.ts',
-    themes: '@tamagui/themes/src/themes-new.ts',
+    themeBuilder: {
+      input: '@tamagui/themes/src/themes-new.ts',
+      ouput: join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
+    },
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
