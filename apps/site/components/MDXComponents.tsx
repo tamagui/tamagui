@@ -553,6 +553,14 @@ export const components = {
       </NoticeFrame>
     )
   },
+
+  Blog: {
+    ThemeBuilder: {
+      Example1: React.lazy(() =>
+        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.Example1 }))
+      ),
+    },
+  },
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
@@ -574,6 +582,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
 )
 
 const getNonTextChildren = (children) => {
+  // rome-ignore lint/complexity/useFlatMap: <explanation>
   return React.Children.map(children, (x) => {
     if (typeof x === 'string') return null
     if (x['type'] === code) return null
