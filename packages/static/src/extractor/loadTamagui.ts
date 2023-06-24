@@ -242,7 +242,11 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
               hasRunOnce = true
               return
             } else {
-              void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+              console.log(`watchasd sadsad`)
+              void Promise.all([
+                generateTamaguiStudioConfig(options.tamaguiOptions, null, true),
+                generateTamaguiThemes(options.tamaguiOptions),
+              ])
             }
           })
         },
