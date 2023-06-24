@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -25,6 +25,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
@@ -275,17 +276,6 @@ export const components = {
       // color: '$slate11',
       // lineHeight: '23px',
       // margin: 0,
-      {...props}
-    />
-  ),
-
-  Aside: (props) => (
-    <Paragraph
-      color="$color11"
-      tag="span"
-      als="center"
-      fow="600"
-      fontSize="$2"
       {...props}
     />
   ),
@@ -560,6 +550,54 @@ export const components = {
         import('./BlogThemeBuilderExamples').then((x) => ({ default: x.Example1 }))
       ),
     },
+  },
+
+  Aside: ({ children, ...props }) => {
+    const [cutoff, setCutoff] = useState(true)
+
+    return (
+      <YStack
+        tag="aside"
+        space="$2"
+        bc="$color1"
+        br="$4"
+        p="$5"
+        px="$5"
+        pb="$10"
+        mx="$-2"
+        boc="$borderColor"
+        bw={1}
+        my="$4"
+        pos="relative"
+        {...(cutoff && {
+          maxHeight: 300,
+          overflow: 'hidden',
+        })}
+        {...props}
+      >
+        <YStack tag="span" my="$-5">
+          {children}
+        </YStack>
+
+        {cutoff && (
+          <LinearGradient
+            pos="absolute"
+            b={0}
+            l={0}
+            r={0}
+            height={200}
+            colors={['$backgroundTransparent', '$background']}
+            zi={1000}
+          >
+            <Spacer f={1} />
+            <Button onPress={() => setCutoff(!cutoff)} als="center">
+              Show more
+            </Button>
+            <Spacer size="$4" />
+          </LinearGradient>
+        )}
+      </YStack>
+    )
   },
 }
 

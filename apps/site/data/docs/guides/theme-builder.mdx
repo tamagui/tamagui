@@ -10,13 +10,15 @@ description: Learn how to create a suite of themes for a Tamagui app.
 
 The Tamagui theme system is powerful - maybe a bit too powerful for its own good. In the past, this has meant that rolling your own suite of themes has been too much work for most to invest into figuring out. Getting a well balanced set of themes across an entire component kit is a lot of work to begin with, let alone one with many alternatives, and that looks good across the many possible combinations and states.
 
-### A bit of history
-
-Tamagui has gone through many stages of "theme builders", ie functional APIs that let you generate a suite of themes. It means the current version is the result of a lot of iteration, and we think its led to a better outcome than if we had pushed out something quickly.
-
 <Notice>
   <Paragraph>You can skip to [How](#how) if you just want to get to the how.</Paragraph>
 </Notice>
+
+<Aside>
+
+### A bit of history
+
+Tamagui has gone through many stages of "theme builders", ie functional APIs that let you generate a suite of themes. It means the current version is the result of a lot of iteration, and we think its led to a better outcome than if we had pushed out something quickly.
 
 #### The first attempt
 
@@ -35,6 +37,8 @@ With version 1.37 we're officially documenting and making a new ThemeBuilder fir
 It also has a variety of improvements - it makes it far easier to change your themes at any "level," while still sharing code at any other level. Further, it makes the idea of a palette and mask first class and named, which is key for us going forward with the [Studio](/studio). This means we can now have two-way sync with the Tamagui Studio - we can understand not just your themes, but the palettes, templates and masks you used the generate theme, but also, we can write back out to them if you change them within the visual affordances the Studio begets.
 
 All in all this means that generating a complete suite of themes is now not only easy, but within reach of anyone, even designers! This is especially true as it's super easy to actually keep all the masks and templates the same, but just swap out the root level palettes. We expect an explosion of theme suites will bloom due to the big wins in ease of use enabled by the new `@tamagui/create-theme`.
+
+</Aside>
 
 ### The Concepts
 
