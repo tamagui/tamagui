@@ -7,6 +7,7 @@ process.env.TAMAGUI_TARGET = 'web'
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
+const { join } = require('path')
 
 const boolVals = {
   true: true,

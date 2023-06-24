@@ -1,0 +1,27 @@
+---
+title: Creating Themes
+description: Learn how to create a suite of themes for a Tamagui app.
+---
+
+<IntroParagraph>
+  The new ThemeBuilder API allows for intuitively creating entire suites of themes for use
+  with your design system on Tamagui with a simple syntax.
+</IntroParagraph>
+
+The Tamagui theme system is powerful - maybe a bit too powerful for its own good. In the past, this has meant that rolling your own suite of themes has been too much work for most to invest into figuring out. Getting a well balanced set of themes across an entire component kit is a lot of work to begin with, let alone one with many alternatives, and that looks good across the many possible combinations and states.
+
+#### A bit of history
+
+Tamagui has gone through many stages of "theme builders", ie functional APIs that let you generate a suite of themes. In the beginning there was simply a big imperative ball of goop that we recommended copy/pasting into your own app.
+
+We eventually put that behind a very ad-hoc and rigid single function that let you customize the base palettes, but nothing below that.
+
+Our first attempt at formalizing the theme system came around version 1.2, with `@tamagui/create-theme`, which added a variety of concepts and helper functions. These basically let you generate your own full suite of themes from base palettes, as well as two new ideas, "templates" and "masks". Templates would simply pick values off a palette, where a mask could take a previous template and generate a new one based off of it.
+
+These concepts were key in allowing for the new API to work. But still, it was a lot of work to put together a theme suite, and the resulting code was fairly verbose. We also never fully got around to documenting the system, as it was clear there were a variety of improvements to be made. So we still recommended just copy/pasting the themes config we built, and left users on their own.
+
+With version 1.37 we're officially documenting and making a new ThemeBuilder first-class. It further builds off the work in `@tamagui/create-theme`, adding a layer above all the helper functions we previously created. Instead of having to import 6-7 different functions and compose them together yourself, you can import a single function, `createThemeBuilder`, which has a chained API that makes the resulting code far more elegant and readable.
+
+It also has a variety of improvements - it makes it far easier to change your themes at any "level," while still sharing code at any other level. Further, it makes the idea of a palette and mask first class and named, which is key for us going forward with the [Studio](/studio). This means we can now have two-way sync with the Tamagui Studio - we can understand not just your themes, but the palettes, templates and masks you used the generate theme, but also, we can write back out to them if you change them within the visual affordances the Studio begets.
+
+All in all this means that generating a complete suite of themes is now not only easy, but within reach of anyone, even designers! This is especially true as it's super easy to actually keep all the masks and templates the same, but just swap out the root level palettes. We expect an explosion of theme suites will bloom due to the big wins in ease of use enabled by the new `@tamagui/create-theme`.

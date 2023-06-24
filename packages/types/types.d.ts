@@ -10,7 +10,8 @@ export interface TamaguiOptions {
   config?: string
 
   /**
-   * use the new ThemeBuilder in @tamagui/create-theme to create beautiful theme sets
+   * Use the new ThemeBuilder in `@tamagui/create-theme` to create beautiful theme sets,
+   * see docs at https://tamagui.dev/docs/guides/theme-builder
    */
   themeBuilder?: {
     input: string
