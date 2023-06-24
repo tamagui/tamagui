@@ -41,17 +41,15 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
   }
 
   const { input, output } = tamaguiOptions.themeBuilder
-  const resolveRelativePath = (inputPath: string) =>
-    inputPath.startsWith('.')
-      ? join(process.cwd(), inputPath)
-      : require.resolve(inputPath)
-
   const inPath = resolveRelativePath(input)
   const outPath = resolveRelativePath(output)
 
   const generatedOutput = await generateThemes(inPath)
   await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)
 }
+
+const resolveRelativePath = (inputPath: string) =>
+  inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
 
 export function generateTamaguiStudioConfigSync(
   _tamaguiOptions: TamaguiOptions,

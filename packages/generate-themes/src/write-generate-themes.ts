@@ -10,10 +10,17 @@ export async function writeGeneratedThemes(
   generatedOutput: Awaited<ReturnType<typeof generateThemes>>
 ) {
   const { generated, state } = generatedOutput
+  const themeBuilderStatePath = join(tamaguiDotDir, `theme-builder.json`)
+
+  if (process.env.DEBUG === 'tamagui') {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(`Generated themes:`, JSON.stringify({ generated, state }, null, 2))
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(`Writing themes to`, { outPath, themeBuilderStatePath })
+  }
+
   await Promise.all([
     fs.writeFile(outPath, generated),
-    state
-      ? fs.writeFile(join(tamaguiDotDir, `theme-builder.json`), JSON.stringify(state))
-      : null,
+    state ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state)) : null,
   ])
 }

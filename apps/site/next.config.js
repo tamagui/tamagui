@@ -27,7 +27,7 @@ const plugins = [
     config: './tamagui.config.ts',
     themeBuilder: {
       input: '@tamagui/themes/src/themes-new.ts',
-      ouput: join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
+      output: join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
     },
     outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     components: ['tamagui'],
