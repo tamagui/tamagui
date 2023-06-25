@@ -8,11 +8,13 @@ description: Learn how to create a suite of themes for a Tamagui app.
   with your design system on Tamagui with a simple syntax.
 </IntroParagraph>
 
-The Tamagui theme system is powerful - maybe a bit too powerful for its own good. In the past, this has meant that rolling your own suite of themes has been too much work for most to invest into figuring out. Getting a well balanced set of themes across an entire component kit is a lot of work to begin with, let alone one with many alternatives, and that looks good across the many possible combinations and states.
+The Tamagui theme system is powerful, perhaps even too much for its own good. In the past, this complexity, combined with a relative lack of documentation, meant rolling your own theme suite was too much of a bother for most.
 
-<Notice>
-  <Paragraph>You can skip to [How](#how) if you just want to get to the how.</Paragraph>
-</Notice>
+With version 1.37 Tamagui is releasing two new things: a "ThemeBuilder", exported as `createThemeBuilder` from `@tamagui/create-theme`, and a corresponding compile-time option `themeBuilder`.
+
+The new ThemeBuilder makes it dramatically easier to generate a theme suite, while the `themeBuilder` option automates pre-generating themes and therefore avoids the cost of generating themes at runtime (as well as avoiding the extra bundle size of the `@tamagui/create-theme` package).
+
+This guide goes into the concepts behind the ThemeBuilder, and ends with [a complete example](#complete-example).
 
 <Aside>
 
@@ -40,26 +42,116 @@ All in all this means that generating a complete suite of themes is now not only
 
 </Aside>
 
+---
+
 ### The Concepts
 
 The way the new ThemeBuilder works is through three main concepts: a palette, a template, and a mask. It's worth understanding each and how they relate to a design system before getting your hands dirty.
 
+But first - what is a theme?
+
+#### Themes
+
+A theme is simple, it's a static typed object with properties that map from name => color. The simplest example is this:
+
+```tsx
+{
+  background: '#000',
+  color: '#fff',
+}
+```
+
+You can have as many values as you want in your themes, but what's important is that they share the same shape. Of course Tamagui themes [go rather deep with their support of sub-themes](/docs/intro/themes) that can be a subset of their parents'. But this is the only important thing to remember - themes all share the same shape, and (as of the current version) simply map to colors.
+
 #### Palettes
 
-The first layer of building a theme starts with a palette. All a palette is is a gradient along a single color going from background to foreground:
+The first layer of building a theme starts with a palette. All a palette is is a gradient within a single color, going from background to foreground:
 
-<Blog.ThemeBuilder.ExamplePalette />
+<Blog.ThemeBuilder.ExamplePalette showLabels />
 
 You can toggle dark mode in the top left of the site to see that in fact we have _two_ blue palettes: `light_blue` and `dark_blue`.
 
-Palettes are great for a design system because they constrain you. They force you to choose a limited set of colors to work with, and then build up from there. Designs look better when they have limits.
+Here's a palette in code (the `dark_blue` one):
+
+```tsx
+const dark_blue = [
+  'hsl(212, 35.0%, 9.2%)', // background
+  'hsl(216, 50.0%, 11.8%)',
+  'hsl(214, 59.4%, 15.3%)',
+  'hsl(214, 65.8%, 17.9%)',
+  'hsl(213, 71.2%, 20.2%)',
+  'hsl(212, 77.4%, 23.1%)',
+  'hsl(211, 85.1%, 27.4%)',
+  'hsl(211, 89.7%, 34.1%)',
+  'hsl(206, 100%, 50.0%)',
+  'hsl(209, 100%, 60.6%)',
+  'hsl(210, 100%, 66.1%)',
+  'hsl(206, 98.0%, 95.8%)', // foreground
+]
+```
+
+Palettes are great for a design system because they constrain your color choices to a consistent scale, and designs look better when they have consistency.
+
+We can refer to a single color in the pallete based on their index:
+
+<Blog.ThemeBuilder.ExamplePalette showIndices />
+
+Where in this case 0 is the background, and 11 is the foreground.
+
+Within Tamagui you can define your palettes to have as many of few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent (and for being able to share masks, which we'll get into shortly).
+
+The offical `@tamagui/themes` theme suite that this very websites uses adds one more layer to this equation - the 0-index color is actually a "background transparent", leaving the 1st index as the actual background. Correspondingly, the 12th index is the strongest foreground, while the 13th is "foreground transparent".
 
 #### Templates
 
-The next level up is a template, and a template is incredibly simple: it maps a _name to a color_.
+The next level up from a palette is a template, and templates are very simple: they simply maps a _name to an index of a palette_.
 
-Specifically it maps a name in your theme to an offset within your palette:
+The name can be any name you want, and the index just refers to an offset of your palette. In practice, it looks something like this:
 
-<Blog.ThemeBuilder.ExampleTemplate />
+```tsx
+{
+  background: 0,
+  color: 12
+}
+```
+
+The **why** behind templates will become apparent soon, but first lets see **how** they are used. First, we can make a function that takes a palette and returns a theme:
+
+```tsx
+const createTheme = (palette: string[]) => ({
+  background: palette[0],
+  color: palette[12],
+})
+```
+
+Which leads us naturally to combining palette + template:
+
+```tsx
+const createTheme = (palette: string[], template: Record<string, number>) => ({
+  background: palette[template.background],
+  color: palette[template.color],
+})
+```
+
+Of course you can abstract this so it works with any type of template:
+
+```tsx
+const createTheme = (palette: string[], template: Record<string, number>) => {
+  return Object.fromEntries(
+    Object.entries(template).map(([key, offset]) => [
+      // returns an object with keys from the template, values from the palette
+      key,
+      palette[offset],
+    ])
+  )
+}
+```
+
+Before we get lost in the weeds, lets get into why we even want templates. To do that we need to first udnerstand that we often share the same shape of themes across different sub-themes, and so the idea of a generic template is useful.
+
+For example, we may have two different color palettes that closely match in their brightness/saturation, while differing in their hue:
+
+<Blog.ThemeBuilder.ExamplePalette theme="blue" />
+<Blog.ThemeBuilder.ExamplePalette theme="red" />
 
 ### How

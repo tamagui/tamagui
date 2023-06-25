@@ -1,25 +1,61 @@
-import { Paragraph, XStack, YStack } from 'tamagui'
+import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
-const PaletteExample = () => (
-  <XStack br="$5" ov="hidden" bw={1} boc="$borderColor">
-    {new Array(13).fill(0).map((_, i) => (
-      <XStack key={i} h={40} f={1} bc={`$blue${i}`} />
-    ))}
-  </XStack>
+const PaletteExample = ({
+  showIndices,
+  theme,
+}: {
+  showIndices?: boolean
+  theme?: string
+}) => (
+  <YStack space="$2">
+    {theme && (
+      <XStack ai="center" theme={theme as any} gap="$4">
+        <Separator />
+        <Paragraph ta="center" size="$2" color="$color10">
+          {theme[0].toUpperCase() + theme.slice(1)}
+        </Paragraph>
+        <Separator />
+      </XStack>
+    )}
+    <XStack br="$5" ov="hidden" bw={1} boc="$borderColor">
+      {new Array(12).fill(0).map((_, i) => (
+        <XStack key={i} h={40} f={1} bc={`$${theme || 'blue'}${i}`} />
+      ))}
+    </XStack>
+    {showIndices && (
+      <XStack br="$5" ov="hidden">
+        {new Array(12).fill(0).map((_, i) => (
+          <Paragraph f={1} ta="center" key={i}>
+            {i}
+          </Paragraph>
+        ))}
+      </XStack>
+    )}
+  </YStack>
 )
 
-export const ExamplePalette = () => {
+export const ExamplePalette = ({
+  showIndices,
+  showLabels,
+  theme,
+}: {
+  showIndices?: boolean
+  showLabels?: boolean
+  theme?: string
+}) => {
   return (
     <YStack my="$4" space="$2">
-      <XStack jc="space-between">
-        <Paragraph size="$2" theme="alt2">
-          Background
-        </Paragraph>
-        <Paragraph size="$2" theme="alt2">
-          Foreground
-        </Paragraph>
-      </XStack>
-      <PaletteExample />
+      {showLabels && (
+        <XStack jc="space-between">
+          <Paragraph size="$2" theme="alt2">
+            Background
+          </Paragraph>
+          <Paragraph size="$2" theme="alt2">
+            Foreground
+          </Paragraph>
+        </XStack>
+      )}
+      <PaletteExample showIndices={showIndices} theme={theme} />
     </YStack>
   )
 }
