@@ -154,4 +154,65 @@ For example, we may have two different color palettes that closely match in thei
 <Blog.ThemeBuilder.ExamplePalette theme="blue" />
 <Blog.ThemeBuilder.ExamplePalette theme="red" />
 
+In this case, we could use our `createTheme` function from above and generate a theme for both, simply by swapping out the palette:
+
+```tsx
+const colorTemplate = {
+  background: 0,
+  color: 12,
+}
+
+const blue_theme = createTheme(bluePalette, colorTemplate)
+const red_theme = createTheme(redPalette, colorTemplate)
+```
+
+But it's not just this that makes templates useful, it also comes in handy when we want to modify a theme. In order to really understand that, we'll probably want to just dive right into the last concept in the ThemeBuilder - masks.
+
+#### Masks
+
+Masks are what make sub-themes shine. To understand them, lets start with examples that show why they are needed. In Tamagui, you can nest as many themes as you want. Child themes extend from parent themes like so:
+
+```tsx
+const dark_red = {
+  background: '#000',
+  color: 'red',
+}
+
+const dark_red_subtle = {
+  background: '#222',
+  color: 'red',
+}
+
+createTamagui({
+  themes: {
+    dark_red,
+    dark_red_subtle,
+  },
+})
+```
+
+Note that `_subtle` actually makes this `dark_red_subtle` theme a child of the `dark_red` theme. In your code you can now do this:
+
+```tsx
+import { Stack, Theme, styled } from '@tamagui/core'
+
+const Square = styled(Stack, {
+  background: '$background',
+  width: 100,
+  height: 100,
+})
+
+export default () => (
+  <Theme name="dark_red">
+    {/* this will have a background of #000 */}
+    <Square />
+
+    <Theme name="subtle">
+      {/* this will have a background of #222 */}
+      <Square />
+    </Theme>
+  </Theme>
+)
+```
+
 ### How
