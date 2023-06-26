@@ -1,3 +1,5 @@
+- make it so specific tokens can be omitted from types where theres a default token category
+
 - studio: https://codemirror.net instead of monaco
 - document createStyledContext
 - document ThemeBuilder

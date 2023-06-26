@@ -104,9 +104,11 @@ The offical `@tamagui/themes` theme suite that this very websites uses adds one 
 
 #### Templates
 
-The next level up from a palette is a template, and templates are very simple: they simply maps a _name to an index of a palette_.
+The next level up from a palette is a template which are simple: they map a _name to an index of a palette_.
 
-The name can be any name you want, and the index just refers to an offset of your palette. In practice, it looks something like this:
+The name can be anything, and the index just refers to an offset of your palette.
+
+In practice, it looks something like this:
 
 ```tsx
 {
@@ -115,7 +117,34 @@ The name can be any name you want, and the index just refers to an offset of you
 }
 ```
 
-The **why** behind templates will become apparent soon, but first lets see **how** they are used. First, we can make a function that takes a palette and returns a theme:
+The `tamagui` components have standardized on the following minimum theme:
+
+```tsx
+{
+  background: string
+  backgroundFocus: string
+  backgroundHover: string
+  backgroundPress: string
+  backgroundStrong: string
+  backgroundTransparent: string
+  borderColor: string
+  borderColorFocus: string
+  borderColorHover: string
+  borderColorPress: string
+  color: string
+  colorFocus: string
+  colorHover: string
+  colorPress: string
+  colorTransparent: string
+  placeholderColor: string
+  shadowColor: string
+  shadowColorFocus: string
+  shadowColorHover: string
+  shadowColorPress: string
+}
+```
+
+The **why** behind templates will become apparent shortly, but first lets see **how** they are used. First, we can make a function that takes a palette and returns a theme:
 
 ```tsx
 const createTheme = (palette: string[]) => ({
@@ -124,37 +153,36 @@ const createTheme = (palette: string[]) => ({
 })
 ```
 
-Which leads us naturally to combining palette + template:
+Which means if we call it with our pallete above, we get:
+
+```tsx
+createTheme(dark_blue)
+// => {
+//   background: 'hsl(212, 35.0%, 9.2%)',
+//   color: 'hsl(206, 98.0%, 95.8%)'
+// }
+```
+
+Now we can see how we can make this a generic function that accepts a template:
 
 ```tsx
 const createTheme = (palette: string[], template: Record<string, number>) => ({
   background: palette[template.background],
   color: palette[template.color],
 })
+
+// now call createTheme(dark_blue, { background: 0, color: 12 })
+// and we get the same output
 ```
 
-Of course you can abstract this so it works with any type of template:
+So, why do this? Well, if we have more than one theme, we likely want to use the same template over and over. This generally makes sense when you match the lightness/saturation, but have a different hue. Even your base `light` and `dark` theme could share the same template.
 
-```tsx
-const createTheme = (palette: string[], template: Record<string, number>) => {
-  return Object.fromEntries(
-    Object.entries(template).map(([key, offset]) => [
-      // returns an object with keys from the template, values from the palette
-      key,
-      palette[offset],
-    ])
-  )
-}
-```
-
-Before we get lost in the weeds, lets get into why we even want templates. To do that we need to first udnerstand that we often share the same shape of themes across different sub-themes, and so the idea of a generic template is useful.
-
-For example, we may have two different color palettes that closely match in their brightness/saturation, while differing in their hue:
+The Tamagui site shares templates across all the color themes:
 
 <Blog.ThemeBuilder.ExamplePalette theme="blue" />
 <Blog.ThemeBuilder.ExamplePalette theme="red" />
 
-In this case, we could use our `createTheme` function from above and generate a theme for both, simply by swapping out the palette:
+In this case, we'd call `createTheme` with the same template, just changing out the red or blue palette:
 
 ```tsx
 const colorTemplate = {
@@ -166,32 +194,36 @@ const blue_theme = createTheme(bluePalette, colorTemplate)
 const red_theme = createTheme(redPalette, colorTemplate)
 ```
 
-But it's not just this that makes templates useful, it also comes in handy when we want to modify a theme. In order to really understand that, we'll probably want to just dive right into the last concept in the ThemeBuilder - masks.
+But it's not just this that makes templates useful, it also comes in handy when we want to modify a theme.
 
-#### Masks
+But in order to really understand that, we'll want to understand two final things: component themes, and masks.
 
-Masks are what make sub-themes shine. To understand them, lets start with examples that show why they are needed. In Tamagui, you can nest as many themes as you want. Child themes extend from parent themes like so:
+#### Sub-themes
+
+Lets take a quick detour. Tamagui themes can nest as many times as you want. This lets you do some amazing things.
+
+We can set up a "subtle" sub-theme that turns anything inside it to have a lower contrast feel:
 
 ```tsx
-const dark_red = {
-  background: '#000',
-  color: 'red',
+const dark = {
+  background: 'black',
+  color: 'white',
 }
 
-const dark_red_subtle = {
-  background: '#222',
-  color: 'red',
+const dark_subtle = {
+  background: '#222', // dark gray
+  color: '#ccc', // light gray
 }
 
 createTamagui({
   themes: {
-    dark_red,
-    dark_red_subtle,
+    dark,
+    dark_subtle,
   },
 })
 ```
 
-Note that `_subtle` actually makes this `dark_red_subtle` theme a child of the `dark_red` theme. In your code you can now do this:
+Note the `_subtle`. Underscores define a sub-theme. In your code you can now do this:
 
 ```tsx
 import { Stack, Theme, styled } from '@tamagui/core'
@@ -215,4 +247,52 @@ export default () => (
 )
 ```
 
-### How
+Sub-themes are amazing - they avoid a trap that you can fall into when designing screens where you decide you want a different look for an area, so you go off and change all the color values. But then later on you want to share that area somewhere else, or perhaps you just change your mind and want to revert the feel. In those two cases you'd either be stuck refactoring the whole area to accept two or more sets of ternaries on every color value, or you'd have to manually go through and change all the values by hand.
+
+Instead with a sub-theme, you can throw `<Theme name="subtle">` around the entire area without having to change any of the code inside of it at all.
+
+Where it gets interesting is in a final feature of sub-themes: component themes.
+
+Taking our example above, we can add a `name` to our `styled` call:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const Square = styled(Stack, {
+  name: 'Square',
+  background: '$background',
+  width: 100,
+  height: 100,
+})
+```
+
+And just like that, if we define a `_Square` sub-theme, any usage of `<Square />` will pick it up:
+
+```tsx
+// in your tamagui.config.ts:
+
+const dark_Square = {
+  background: 'darkblue',
+}
+
+createThemes({
+  dark,
+  dark_Square,
+})
+
+// in your app:
+
+export default () => (
+  <>
+    <Theme name="dark">
+      <Square /> {/* <-- this gets background: 'darkblue' */}
+    </Theme>
+  </>
+)
+```
+
+This is how Tamagui solves themes. It gives you incredible power to re-skin the entire interface, without having to touch any code. It's not mandatory - you can always just go in and change the color values inline as you please. But it does mean that we (or your team) can ship default styles that are easy to override contextually at any point in the tree. Think of it as a super-power - if you don't use it, there's no downside, but if you do, you gain a pretty powerful new ability.
+
+#### Masks
+
+Ok, with the knowledge of sub-themes in hand, we're ready to see how masks bring the final piece of the puzzle together.
