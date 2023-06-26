@@ -2315,7 +2315,7 @@ const FeatureIcon = ({
   const Tint = useTint()
   const theme = Tint.tints[themeIndex] as ThemeName
   const active = Tint.tint === theme
-  console.log(theme, Tint.name, active)
+
   return (
     <YStack>
       <Theme name={theme}>
