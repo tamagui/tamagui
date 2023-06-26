@@ -7,8 +7,16 @@ import path from 'path'
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'
 import { copy, ensureDir, readFileSync } from 'fs-extra'
+import { marked } from 'marked'
+import TerminalRenderer from 'marked-terminal'
 import open from 'open'
 import prompts from 'prompts'
+
+marked.setOptions({
+  headerIds: false,
+  mangle: false,
+  renderer: new TerminalRenderer(),
+})
 
 const home = homedir()
 const tamaguiDir = path.join(home, '.tamagui')
@@ -96,6 +104,6 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
 
   const readmePath = path.join(finalDir, 'README.md')
   if (existsSync(readmePath)) {
-    console.log(chalk.blue(readFileSync(readmePath).toString()))
+    console.log(marked.parse(readFileSync(readmePath).toString()))
   }
 }
