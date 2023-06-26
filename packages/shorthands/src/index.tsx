@@ -64,7 +64,7 @@ export const shorthands = {
   mr: 'marginRight',
   mt: 'marginTop',
   mx: 'marginHorizontal',
-  my: 'marginVertical',
+  mv: 'marginVertical',
   o: 'opacity',
   ov: 'overflow',
   p: 'padding',
