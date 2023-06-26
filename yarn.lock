@@ -4350,69 +4350,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji":
-  version: 0.0.0-use.local
-  resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
-  dependencies:
-    "@tamagui/build": ^1.7.1
-    "@tamagui/core": ^1.7.1
-  languageName: unknown
-  linkType: soft
-
-"@takeout/studio@1.5.24, @takeout/studio@workspace:takeout/studio":
-  version: 0.0.0-use.local
-  resolution: "@takeout/studio@workspace:takeout/studio"
-  dependencies:
-    "@babel/preset-react": ^7.18.6
-    "@babel/preset-typescript": ^7.18.6
-    "@tamagui/animations-reanimated": ^1.7.1
-    "@tamagui/build": ^1.7.1
-    "@tamagui/colors": ^1.7.1
-    "@tamagui/config": ^1.7.1
-    "@tamagui/core": ^1.7.1
-    "@tamagui/lucide-icons": ^1.7.1
-    "@tamagui/polyfill-dev": ^1.7.1
-    "@tamagui/static": ^1.7.1
-    "@tamagui/themes": ^1.7.1
-    "@tauri-apps/api": ^1.2.0
-    "@tauri-apps/cli": ^1.2.2
-    "@types/d3-scale": ^4.0.2
-    "@types/lodash-es": ^4.17.6
-    "@types/uuid": ^8.3.4
-    babel-polyfill: ^6.26.0
-    color2k: ^1.2.4
-    d3-scale: ^3.3.0
-    esbuild-loader: ^2.20.0
-    hsluv: ^0.1.0
-    lodash-es: ^4.17.21
-    react-draggable: ^4.4.5
-    react-hotkeys-hook: ^3.4.6
-    react-native: "*"
-    react-refresh: ^0.14.0
-    tamagui: ^1.7.1
-    ts-morph: ^15.1.0
-    valtio: ^1.6.1
-    vite: ^4.0.4
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/accordion@1.7.1, @tamagui/accordion@workspace:packages/accordion":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/accordion@workspace:packages/accordion"
-  dependencies:
-    "@tamagui/build": 1.7.1
-    "@tamagui/collection": 1.7.1
-    "@tamagui/compose-refs": 1.7.1
-    "@tamagui/core": 1.7.1
-    "@tamagui/create-context": 1.7.1
-    "@tamagui/polyfill-dev": 1.7.1
-    "@tamagui/stacks": 1.7.1
-    "@tamagui/use-controllable-state": 1.7.1
-"@tamagui/accordion@workspace:packages/accordion":
+"@tamagui/accordion@1.35.12, @tamagui/accordion@workspace:packages/accordion":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
   dependencies:
     "@tamagui/build": 1.35.12
+    "@tamagui/collection": 1.35.12
     "@tamagui/compose-refs": 1.35.12
     "@tamagui/core": 1.35.12
     "@tamagui/create-context": 1.35.12
@@ -22470,6 +22413,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+    "@tamagui/accordion": 1.35.12
     "@tamagui/adapt": 1.35.12
     "@tamagui/alert-dialog": 1.35.12
     "@tamagui/animate-presence": 1.35.12
