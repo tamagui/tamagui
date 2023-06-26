@@ -2,9 +2,11 @@ import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
 const PaletteExample = ({
   showIndices,
+  showNegativeIndices,
   theme,
 }: {
   showIndices?: boolean
+  showNegativeIndices?: boolean
   theme?: string
 }) => (
   <YStack space="$2">
@@ -15,6 +17,15 @@ const PaletteExample = ({
           {theme[0].toUpperCase() + theme.slice(1)}
         </Paragraph>
         <Separator />
+      </XStack>
+    )}
+    {showNegativeIndices && (
+      <XStack br="$5" ov="hidden">
+        {new Array(12).fill(0).map((_, i) => (
+          <Paragraph f={1} ta="center" key={i}>
+            {11 - i}
+          </Paragraph>
+        ))}
       </XStack>
     )}
     <XStack br="$5" ov="hidden" bw={1} boc="$borderColor">
