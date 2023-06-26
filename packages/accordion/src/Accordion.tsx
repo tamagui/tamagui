@@ -7,7 +7,6 @@ import {
   composeEventHandlers,
   useComposedRefs,
   useEvent,
-  useId,
   withStaticProperties,
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
@@ -415,7 +414,7 @@ const AccordionItem = React.forwardRef<AccordionItemElement, AccordionItemProps>
     const accordionContext = useAccordionContext(ITEM_NAME, __scopeAccordion)
     const valueContext = useAccordionValueContext(ITEM_NAME, __scopeAccordion)
     const collapsibleScope = useCollapsibleScope(__scopeAccordion)
-    const triggerId = useId()
+    const triggerId = React.useId()
     const open = (value && valueContext.value.includes(value)) || false
     const disabled = accordionContext.disabled || props.disabled
 

@@ -6,7 +6,6 @@ import {
   composeEventHandlers,
   styled,
   useComposedRefs,
-  useId,
   withStaticProperties,
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
@@ -58,7 +57,7 @@ const _Collapsible = React.forwardRef<CollapsibleElement, CollapsibleProps>(
 
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
-      defaultProp: defaultOpen,
+      defaultProp: defaultOpen!,
       onChange: onOpenChange,
     })
 
@@ -66,7 +65,7 @@ const _Collapsible = React.forwardRef<CollapsibleElement, CollapsibleProps>(
       <CollapsibleProvider
         scope={__scopeCollapsible}
         disabled={disabled}
-        contentId={useId()}
+        contentId={React.useId()}
         open={open}
         onOpenToggle={React.useCallback(
           () => setOpen((prevOpen) => !prevOpen),
