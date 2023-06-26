@@ -6,7 +6,16 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Dot,
+  Hammer,
+  Moon,
+  Star,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -54,6 +63,7 @@ import {
   YStackProps,
   composeRefs,
   isClient,
+  isWeb,
   styled,
   useMedia,
 } from 'tamagui'
@@ -966,15 +976,19 @@ export default function TakeoutPage({
                   Gallery
                 </Paragraph>
 
+                <ImageGallery />
+
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.map((image) => (
+                  {takeoutImages.map((image, index) => (
                     <YStack pos="relative" overflow="hidden">
                       <TakeoutImage
+                        key={index}
                         alt={image.alt}
                         src={image.src}
                         style={{ objectFit: 'cover' }}
                         width={200}
                         height={200}
+                        index={index}
                       />
                     </YStack>
                   ))}
@@ -1064,19 +1078,26 @@ export default function TakeoutPage({
   )
 }
 
-const TakeoutImage = (props: ImageProps) => (
-  <XStack
-    animation="quick"
-    br="$10"
-    ov="hidden"
-    elevation="$2"
-    hoverStyle={{ scale: 1.025 }}
-    pressStyle={{ scale: 0.975 }}
-    cursor="pointer"
-  >
-    <Image {...props} />
-  </XStack>
-)
+const TakeoutImage = (props: ImageProps & { index: number }) => {
+  const store = useTakeoutStore()
+  return (
+    <XStack
+      onPress={() => {
+        store.galleryOpen = true
+        store.galleryImageIdx = props.index
+      }}
+      animation="quick"
+      br="$10"
+      ov="hidden"
+      elevation="$2"
+      hoverStyle={{ scale: 1.025 }}
+      pressStyle={{ scale: 0.975 }}
+      cursor="pointer"
+    >
+      <Image {...props} />
+    </XStack>
+  )
+}
 
 const Bullet = ({
   size = '$6',
@@ -1170,6 +1191,17 @@ class TakeoutStore extends Store {
   showPurchase = false
   showFaq = false
   showAgreement = false
+  galleryOpen = false
+  galleryImageIdx = 0
+  galleryDirection = 0
+  paginateGallery(newDirection: number) {
+    this.galleryImageIdx = wrap(
+      0,
+      takeoutImages.length,
+      this.galleryImageIdx + newDirection
+    )
+    this.galleryDirection = newDirection
+  }
 }
 
 function formatPrice(amount: number, currency: string) {
@@ -2327,4 +2359,152 @@ const DiscountText = ({
       </YStack>
     </ThemeTint>
   )
+}
+
+const ImageGallery = () => {
+  const store = useTakeoutStore()
+
+  return (
+    <Dialog
+      modal
+      open={store.galleryOpen}
+      onOpenChange={(open) => {
+        store.galleryOpen = open
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.1}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ x: 0, opacity: 0 }}
+          exitStyle={{ x: 0, opacity: 0 }}
+          space
+        >
+          <ImagesCarousel />
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$4"
+                right="$6"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
+const YStackEnterable = styled(YStack, {
+  variants: {
+    isLeft: { true: { x: -300, opacity: 0 } },
+    isRight: { true: { x: 300, opacity: 0 } },
+  } as const,
+})
+
+const ImagesCarousel = () => {
+  const store = useTakeoutStore()
+
+  useEffect(() => {
+    const eventHandler = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowLeft') {
+        store.paginateGallery(-1)
+      } else if (event.code === 'ArrowRight') {
+        store.paginateGallery(1)
+      }
+    }
+
+    document.addEventListener('keydown', eventHandler)
+    return () => {
+      document.removeEventListener('keydown', eventHandler)
+    }
+  }, [store.galleryOpen])
+
+  const enterVariant =
+    store.galleryDirection === 1 || store.galleryDirection === 0 ? 'isRight' : 'isLeft'
+  const exitVariant = store.galleryDirection === 1 ? 'isLeft' : 'isRight'
+
+  const currentImage = takeoutImages[store.galleryImageIdx]
+  return (
+    <XStack
+      overflow="hidden"
+      backgroundColor="#00000000"
+      position="relative"
+      height="100vh"
+      width="100vw"
+      alignItems="center"
+    >
+      <AnimatePresence
+        enterVariant={enterVariant}
+        exitVariant={exitVariant}
+        exitBeforeEnter
+      >
+        <YStackEnterable
+          key={store.galleryImageIdx}
+          animation="100ms"
+          x={0}
+          opacity={1}
+          width="100vw"
+          height="100vh"
+        >
+          <Image
+            key={store.galleryImageIdx}
+            src={currentImage.src}
+            alt={currentImage.alt}
+            fill
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+        </YStackEnterable>
+      </AnimatePresence>
+
+      <Button
+        accessibilityLabel="Carousel left"
+        icon={ArrowLeft}
+        size="$5"
+        position="absolute"
+        left="$4"
+        circular
+        elevate
+        onPress={() => store.paginateGallery(-1)}
+      />
+      <Button
+        accessibilityLabel="Carousel right"
+        icon={ArrowRight}
+        size="$5"
+        position="absolute"
+        right="$4"
+        circular
+        elevate
+        onPress={() => store.paginateGallery(1)}
+      />
+    </XStack>
+  )
+}
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }
