@@ -5,17 +5,8 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Dot,
-  Hammer,
-  Moon,
-  Star,
-  X,
-} from '@tamagui/lucide-icons'
+import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ArrowLeft, ArrowRight, Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -56,6 +47,8 @@ import {
   TabsProps,
   TabsTabProps,
   Theme,
+  ThemeName,
+  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -63,7 +56,6 @@ import {
   YStackProps,
   composeRefs,
   isClient,
-  isWeb,
   styled,
   useMedia,
 } from 'tamagui'
@@ -478,58 +470,43 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </YStack>
       </YStack>
 
-      <XStack my={21} gap={125} f={1} jc="space-between" className="mix-blend">
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-module-21.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+      <XStack my={21} gap={64} f={1} jc="space-between" className="mix-blend">
+        <FeatureIcon
+          themeIndex={0}
+          title="Monorepo"
+          icon="retro-icons/coding-apps-websites-module-21.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={1}
+          title="Design"
+          icon="retro-icons/design-color-painting-palette-25.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-database-60.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={2}
+          title="Deploy"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-bucket-brush-63.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={4}
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-palette-sample-26.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={5}
+          title="Assets"
+          icon="retro-icons/coding-apps-websites-plugin-33.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={6}
+          title="& More"
+          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+        />
       </XStack>
-
       <YStack
         position="absolute"
         top={360}
@@ -663,7 +640,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }} zi={-1}>
             <XStack
               f={1}
               p="$10"
@@ -2361,6 +2338,39 @@ const DiscountText = ({
   )
 }
 
+const FeatureIcon = ({
+  themeIndex,
+  title,
+  icon,
+}: {
+  themeIndex: number
+  icon: string
+  title: string
+}) => {
+  const Tint = useTint()
+  const theme = Tint.tints[themeIndex] as ThemeName
+  const active = Tint.tint === theme
+
+  return (
+    <YStack>
+      <Theme name={theme}>
+        <TooltipSimple label={title} delay={{ open: 100 }}>
+          <IconFrame
+            hoverStyle={{
+              scale: 1.2,
+            }}
+            scale={1}
+            animation="quick"
+            onMouseEnter={() => Tint.setTintIndex(themeIndex)}
+            backgroundColor={active ? '$color6' : '$color1'}
+          >
+            <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
+          </IconFrame>
+        </TooltipSimple>
+      </Theme>
+    </YStack>
+  )
+}
 const ImageGallery = () => {
   const store = useTakeoutStore()
 
