@@ -1,14 +1,15 @@
+import { animate, easingStringToCubicBezier } from '@tamagui/cubic-bezier-animator'
+import { usePresence } from '@tamagui/use-presence'
 import {
   AnimationDriver,
   Stack,
   Text,
   UniversalAnimatedNumber,
+  useEvent,
   useIsomorphicLayoutEffect,
   useSafeRef,
-} from '@tamagui/core'
-import { animate } from '@tamagui/cubic-bezier-animator'
-import { usePresence } from '@tamagui/use-presence'
-import { useMemo, useState } from 'react'
+} from '@tamagui/web'
+import * as React from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -18,7 +19,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     usePresence,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
-      const [val, setVal] = useState(initial)
+      const [val, setVal] = React.useState(initial)
 
       return {
         getInstance() {
@@ -58,7 +59,9 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, state, hostRef }) => {
+    useAnimations: ({ props, presence, style, state, hostRef, childrenRefs, layout }) => {
+      const { toggle, trigger } = useLayoutAnimationGroup()
+      const prevTrigger = usePrevious(trigger)
       const isEntering = !!state.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -68,6 +71,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         : props.animation
       const animation = animations[animationKey as any]
 
+      const isLayoutAnimationInProgress = useSafeRef(false)
       const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
       useIsomorphicLayoutEffect(() => {
@@ -86,48 +90,57 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
       // layout animations
       useIsomorphicLayoutEffect(() => {
-        if (!hostRef.current || !props.layout) {
+        if (!hostRef.current || !layout || isLayoutAnimationInProgress.current) {
           return
         }
         // @ts-ignore
         const boundingBox = hostRef.current?.getBoundingClientRect()
         if (isChanged(initialPositionRef.current, boundingBox)) {
+          if (toggle && (prevTrigger === 'undefined' || prevTrigger === trigger)) {
+            toggle()
+          }
           const transform = invert(
             hostRef.current,
             boundingBox,
             initialPositionRef.current
           )
 
+          const [func, time] = animation.split(' ')
           animate({
             from: transform,
             to: { x: 0, y: 0, scaleX: 1, scaleY: 1 },
-            duration: 1000,
-            onUpdate: ({ x, y, scaleX, scaleY }) => {
-              // @ts-ignore
-              hostRef.current.style.transform = `translate(${x}px, ${y}px) scaleX(${scaleX}) scaleY(${scaleY})`
-              // TODO: handle childRef inverse scale
-              //   childRef.current.style.transform = `scaleX(${1 / scaleX}) scaleY(${
-              //     1 / scaleY
-              //   })`
+            duration: time.includes('ms')
+              ? Number(time.replace('ms', ''))
+              : Number(time.replace('s', '')) * 1000,
+            onStart: () => {
+              isLayoutAnimationInProgress.current = true
             },
-            // TODO: extract ease-in from string and convert/map it to a cubicBezier array
-            cubicBezier: [0, 1.38, 1, -0.41],
+            onUpdate: ({ x, y, scaleX, scaleY }) => {
+              if (hostRef.current) {
+                // @ts-ignore
+                hostRef.current.style.translate = `${x}px ${y}px`
+                // @ts-ignore
+                hostRef.current.style.scale = `${scaleX} ${scaleY}`
+                childrenRefs?.current?.forEach((childRef) => {
+                  if (childRef && scaleX !== undefined && scaleY !== undefined) {
+                    // @ts-ignore
+                    childRef.style.scale = `${1 / scaleX} ${1 / scaleY}`
+                  }
+                })
+              }
+            },
+            onFinish: () => {
+              isLayoutAnimationInProgress.current = false
+            },
+            cubicBezier: easingStringToCubicBezier(func),
           })
         }
         initialPositionRef.current = boundingBox
       })
 
-      if (!animation) {
-        return null
-      }
-
-      // add css transition
-      // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
-      // for non layout transform properties either use animate function or find a workaround to do it with css
-      style.transition = `${keys} ${animation}${
-        props.layout ? ',width 0s, height 0s, margin 0s, padding 0s, transform' : ''
+      style.transition = `${keys} ${animation} ${
+        layout ? ', width, height, translate, scale, padding, margin' : ''
       }`
-
       if (process.env.NODE_ENV === 'development' && props['debug']) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('CSS animation', style, { isEntering, isExiting })
@@ -135,6 +148,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
       return { style }
     },
+    populateChildrenRefsAndPassDisableCssProp: populateChildrenRefsAndPassDisableCssProp,
   }
 }
 
@@ -157,7 +171,55 @@ const invert = (el, from, to) => {
     scaleY: height / fromHeight,
   }
 
-  el.style.transform = `translate(${transform.x}px, ${transform.y}px) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
+  el.style.translate = `${transform.x}px ${transform.y}px`
+  el.style.scale = `${transform.scaleX} ${transform.scaleY}`
 
   return transform
+}
+
+export function populateChildrenRefsAndPassDisableCssProp(children: any, refs: any) {
+  if (!children) return children
+  return React.Children.map(children, (child, index) => {
+    if (child) {
+      if (typeof child === 'string') {
+        return child
+      }
+      return React.cloneElement(child, {
+        ref: (el) => (refs.current[index] = el),
+        disableCSSClasses: true,
+      })
+    } else {
+      return null
+    }
+  })
+}
+const LayoutAnimationGroupContext = React.createContext({
+  /** it's just to trigger re-render */
+  trigger: false,
+  toggle: () => {},
+})
+export function LayoutAnimationGroup({ children }) {
+  const [trigger, setTrigger] = React.useState(false)
+  const toggle = useEvent(() => setTrigger((prev) => !prev))
+
+  const value = React.useMemo(() => ({ trigger, toggle }), [trigger, toggle])
+
+  return (
+    <LayoutAnimationGroupContext.Provider value={value}>
+      {children}
+    </LayoutAnimationGroupContext.Provider>
+  )
+}
+
+export function useLayoutAnimationGroup() {
+  const context = React.useContext(LayoutAnimationGroupContext)
+  return context
+}
+
+const usePrevious = (value) => {
+  const ref = React.useRef()
+  React.useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }

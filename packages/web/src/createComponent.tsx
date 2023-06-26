@@ -18,6 +18,7 @@ import React, {
   useId,
   useRef,
 } from 'react'
+import type { View } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -235,6 +236,8 @@ export function createComponent<
 
     const hostRef = useServerRef<TamaguiElement>(null)
 
+    const childrenRefs = useServerRef<(HTMLElement | View)[]>([])
+
     /**
      * Component state for tracking animations, pseudos
      */
@@ -315,7 +318,8 @@ export function createComponent<
       ? (isAnimated ? AnimatedText : null) || BaseTextComponent
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
-    const avoidClassesWhileAnimating = animationsConfig?.isReactNative
+    const avoidClassesWhileAnimating =
+      animationsConfig?.isReactNative || props.layout || props.disableCSSClasses
 
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
@@ -336,7 +340,9 @@ export function createComponent<
     const shouldAvoidClasses =
       !isWeb ||
       !!(isAnimated && avoidClassesWhileAnimating) ||
-      !staticConfig.acceptsClassName
+      !staticConfig.acceptsClassName ||
+      props.disableCSSClasses ||
+      props.layout
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -500,6 +506,8 @@ export function createComponent<
         onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
+        childrenRefs,
+        layout: viewPropsIn.layout,
       })
       if (isAnimated) {
         if (animations) {
@@ -531,6 +539,7 @@ export function createComponent<
       theme: _themeProp,
       // @ts-ignore
       defaultVariants,
+      layout,
 
       ...nonTamaguiProps
     } = viewPropsIn
@@ -636,7 +645,7 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'web') {
       const style = animationStyles ?? splitStyles.style
 
-      if (isAnimatedReactNativeWeb) {
+      if (isAnimatedReactNativeWeb || props.layout || props.disableCSSClasses) {
         viewProps.style = style
       } else if (isReactNative) {
         // TODO these shouldn't really return from getSplitStyles when in Native mode
@@ -825,6 +834,17 @@ export function createComponent<
         onPressIn,
         onPressOut,
       }
+    }
+
+    if (
+      layout &&
+      children &&
+      animationsConfig.populateChildrenRefsAndPassDisableCssProp
+    ) {
+      content = animationsConfig.populateChildrenRefsAndPassDisableCssProp(
+        content,
+        childrenRefs
+      )
     }
 
     content = createElement(elementType, viewProps, content)

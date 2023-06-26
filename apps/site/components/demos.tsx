@@ -33,6 +33,13 @@ export function lazyDemo(ComponentPromise: any) {
   }
 }
 
+export const AnimationCSSDriverLayoutDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/AnimationCSSDriverLayoutDemo').then(
+    (x) => x.AnimationCSSDriverLayoutDemo
+  )
+)
+
 export const BuildAButtonDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/BuildAButtonDemo').then((x) => x.BuildAButtonDemo)

@@ -7,6 +7,7 @@ import type {
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
+  MutableRefObject,
   ReactNode,
   RefAttributes,
   RefObject,
@@ -1702,6 +1703,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     },
     onValue: (current: number) => void
   ) => void
+  populateChildrenRefsAndPassDisableCssProp?: (children: any, refs: any) => any
   animations: A
   View?: any
   Text?: any
@@ -1720,6 +1722,9 @@ export type UseAnimationHook = (props: {
   pseudos: PseudoProps<ViewStyle> | null
   onDidAnimate?: any
   delay?: number
+  childrenRefs?: MutableRefObject<(HTMLElement | View)[]>
+  layout?: boolean
+  disableCSSClasses?: boolean
 }) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
 }

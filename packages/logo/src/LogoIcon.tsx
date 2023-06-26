@@ -1,10 +1,12 @@
+import { forwardRef } from 'react'
 import { YStack } from 'tamagui'
 
 import { TamaguiIconSvg } from './TamaguiLogoSvg'
 
-export const LogoIcon = ({ downscale = 2 }: any) => {
+export const LogoIcon = forwardRef(({ downscale = 2 }: any, ref: any) => {
   return (
     <YStack
+      ref={ref}
       tag="span"
       className="unselectable"
       alignSelf="center"
@@ -21,4 +23,6 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
       />
     </YStack>
   )
-}
+})
+
+LogoIcon.displayName = 'LogoIcon'

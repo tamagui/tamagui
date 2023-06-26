@@ -67,7 +67,7 @@ function LinearEasing(x: number) {
   return x
 }
 
-export function bezier(mX1: number, mY1: number, mX2: number, mY2: number) {
+export function bezier([mX1, mY1, mX2, mY2]: [number, number, number, number]) {
   if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
     throw new Error('bezier x values must be in [0, 1] range')
   }

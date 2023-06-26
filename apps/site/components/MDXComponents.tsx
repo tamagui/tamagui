@@ -36,6 +36,7 @@ import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
 import { Features } from './Features'
 import { HeroContainer } from './HeroContainer'
+import { HeroCSSLayoutAnimation } from './HeroCSSLayoutAnimation'
 import { ExampleAnimations } from './HeroExampleAnimations'
 import { Highlights } from './Highlights'
 import { HR } from './HR'
@@ -179,6 +180,7 @@ export const components = {
   Separator,
   Code,
   HeroContainer,
+  HeroCSSLayoutAnimation,
   BenchmarkChartNative,
   BenchmarkChartWeb,
   TooltipSimple,

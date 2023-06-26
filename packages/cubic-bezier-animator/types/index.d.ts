@@ -10,8 +10,12 @@ interface AnimateProps {
     to: TransformType;
     duration: number;
     onUpdate: (param: TransformType) => void;
-    cubicBezier?: CubicBuzier;
+    onFinish?: () => void;
+    onStart?: () => void;
+    easingFunction?: string;
+    cubicBezier: CubicBuzier;
 }
 export declare function animate(param: AnimateProps): void;
+export declare function easingStringToCubicBezier(str: string): [number, number, number, number];
 export {};
 //# sourceMappingURL=index.d.ts.map
