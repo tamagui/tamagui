@@ -31,7 +31,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.24.2",
+    "@floating-ui/react": "^0.24.3",
     "@tamagui/compose-refs": "1.36.1",
     "@tamagui/core": "1.36.1",
     "@tamagui/create-context": "1.36.1",
