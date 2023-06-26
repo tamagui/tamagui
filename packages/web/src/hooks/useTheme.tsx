@@ -4,6 +4,7 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
+import { getVariable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
@@ -133,11 +134,15 @@ export function getThemeProxied(
           // when they touch the actual value we only track it
           // if its a variable (web), its ignored!
           get(_, subkey) {
-            if (subkey === 'get') {
-              return () => val
-            }
-            if (subkey === 'val' && !keys.includes(keyString)) {
+            // trigger read key that makes it track updates
+            if (
+              (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
+              !keys.includes(keyString)
+            ) {
               keys.push(keyString)
+            }
+            if (subkey === 'get') {
+              return () => getVariable(val)
             }
             return Reflect.get(val as any, subkey)
           },

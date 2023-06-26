@@ -512,6 +512,7 @@ export function createComponent<
       asChild,
       children,
       onPress,
+      onLongPress,
       onPressIn,
       onPressOut,
       onHoverIn,
@@ -696,7 +697,7 @@ export function createComponent<
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const attachPress = Boolean(
-      runtimePressStyle || onPress || onPressOut || onPressIn || onClick
+      runtimePressStyle || onPress || onPressOut || onPressIn || onLongPress || onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
@@ -778,6 +779,12 @@ export function createComponent<
                   onPress?.(e)
                 }
               : undefined,
+            onLongPress: attachPress
+              ? (e) => {
+                  unPress()
+                  onLongPress?.(e)
+                }
+              : undefined,
           }
         : null
 
@@ -822,6 +829,7 @@ export function createComponent<
       viewProps = {
         ...viewProps,
         onPress,
+        onLongPress,
         onPressIn,
         onPressOut,
       }

@@ -1,3 +1,6 @@
+- Popover.Close inside Sheet
+
+- studio: https://codemirror.net instead of monaco
 - document createStyledContext
 - document ThemeBuilder
 

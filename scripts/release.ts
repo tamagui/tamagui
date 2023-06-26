@@ -174,7 +174,7 @@ async function run() {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('run checks')
 
-      if (!skipTest) {
+      if (!skipTest && !finish) {
         await spawnify(`yarn fix`)
         await spawnify(`yarn lint`)
         await spawnify(`yarn check`)
@@ -188,7 +188,7 @@ async function run() {
         }
       }
 
-      if (!skipVersion) {
+      if (!skipVersion && !finish) {
         await Promise.all(
           allPackageJsons.map(async ({ json, path }) => {
             const next = { ...json }

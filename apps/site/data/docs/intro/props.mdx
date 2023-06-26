@@ -375,8 +375,13 @@ Press events come along for easy single-touch events:
       required: false,
       type: '(e: PressEvent) => void',
     },
-
-]}
+    {
+      name: 'onLongPress',
+      required: false,
+      type: '(e: PressEvent) => void',
+      description: 'Native only: no distinction on web between long press and click',
+    },
+  ]}
 />
 
 Note: Internally Tamagui Stack and Text implement press events through [React Native Pressable](https://reactnative.dev/docs/pressable) - which includes some important details on how it works.
