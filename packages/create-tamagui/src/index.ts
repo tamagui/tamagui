@@ -15,7 +15,6 @@ import { IS_TEST } from './constants'
 import { tamaguiDuckAsciiArt, tamaguiRainbowAsciiArt } from './helpers/asciiArts'
 import { cloneStarter } from './helpers/cloneStarter'
 import { getProjectName } from './helpers/getProjectName'
-import { getShouldInstallDependencies } from './helpers/getShouldInstallDependencies'
 import { getShouldUseGit } from './helpers/getShouldUseGit'
 import { getTemplateInfo } from './helpers/getTemplateInfo'
 import { installDependencies } from './helpers/installDependencies'
@@ -129,21 +128,14 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     process.exit(1)
   }
 
-  const shouldInstallDependencies = await getShouldInstallDependencies()
+  console.log('Installing packages. This might take a couple of minutes.')
+  console.log()
 
-  if (shouldInstallDependencies) {
-    console.log('Installing packages. This might take a couple of minutes.')
-    console.log()
-
-    try {
-      await installDependencies(resolvedProjectPath, packageManager)
-    } catch (e: any) {
-      console.error(
-        '[tamagui] error installing with ' + packageManager + '\n',
-        e?.message
-      )
-      process.exit(1)
-    }
+  try {
+    await installDependencies(resolvedProjectPath, packageManager)
+  } catch (e: any) {
+    console.error('[tamagui] error installing with ' + packageManager + '\n', e?.message)
+    process.exit(1)
   }
 
   if (shouldGitInit) {
