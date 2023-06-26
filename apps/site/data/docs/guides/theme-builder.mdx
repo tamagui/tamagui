@@ -14,7 +14,7 @@ With version 1.37 Tamagui is releasing two new things: a "ThemeBuilder", exporte
 
 The new ThemeBuilder makes it dramatically easier to generate a theme suite, while the `themeBuilder` option automates pre-generating themes and therefore avoids the cost of generating themes at runtime (as well as avoiding the extra bundle size of the `@tamagui/create-theme` package).
 
-This guide goes into the concepts behind the ThemeBuilder, and ends with [a complete example](#complete-example).
+This guide goes into the why and how of `createThemeBuilder`. If you want to [skip to the API click go here](#createThemeBuilder), and if you just want a [complete example to copy-paste, go here](#complete-example).
 
 <Aside>
 
@@ -394,3 +394,82 @@ We also export two helper functions for creating your own masks:
 #### createMask
 
 #### combineMasks
+
+---
+
+### createThemeBuilder
+
+Now that we have all the required context to understand palettes, templates, and masks, we can get familiar with the `createThemeBuilder` API.
+
+Let's start with a minimal example:
+
+```tsx
+import { createSoftenMask, createThemeBuilder } from '@tamagui/theme-builder'
+
+const themesBuilder = createThemeBuilder()
+  .addPalettes({
+    dark: ['#000', '#111', '#222', '#999', '#ccc', '#eee', '#fff'],
+    light: ['#fff', '#eee', '#ccc', '#999', '#222', '#111', '#000'],
+  })
+  .addTemplates({
+    base: {
+      background: 0,
+      color: -0,
+    },
+  })
+  .addMasks({
+    soften: createSoftenMask(),
+  })
+  .addThemes({
+    light: {
+      template: 'base',
+      palette: 'light',
+    },
+    dark: {
+      template: 'base',
+      palette: 'dark',
+    },
+  })
+  .addChildThemes({
+    subtle: {
+      mask: 'soften',
+    },
+  })
+
+export const themes = themesBuilder.build()
+```
+
+This is the full API, minus a variety of options that each of these can take. Calling `themesBuilder.build()` will generate the following:
+
+```tsx
+{
+  light: {
+    background: '#fff',
+    color: '#000',
+  },
+  dark: {
+    background: '#000',
+    color: '#fff',
+  },
+  light_subtle: {
+    background: '#eee',
+    color: '#111',
+  },
+  dark_subtle: {
+    background: '#111',
+    color: '#eee',
+  },
+}
+```
+
+#### Complete Example
+
+Moving further, we can make a much fuller example that handles a variety of nice things:
+
+- Adds multiple levels of themes, like `light_orange`, `light_subtle`, and `light_orange_subtle`.
+- Adds component themes like `light_Button`, `light_orange_Button`, and `light_orange_subtle_Button`.
+- Makes the base (`light` and `dark`) themes have extra properties that are a superset of their children.
+- Creates and uses custom masks using `combineMasks` and `createMask`.
+- Diverges templates between light and dark by using the optional array syntax.
+- Passes options to some masks to "skip" changing certain values in the templates.
+- Uses `avoidNestingWithin` to prevent combinations of sub-themes.
