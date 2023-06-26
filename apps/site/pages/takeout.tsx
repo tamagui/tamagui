@@ -5,18 +5,17 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
 import { Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
-import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
-import { NextSeo, ProductJsonLd } from 'next-seo'
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import Image, { ImageProps } from 'next/image'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
 import Stripe from 'stripe'
 import {
@@ -64,6 +63,66 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
+const androidImages = [
+  require('public/takeout/starter-screenshots/android-001.png'),
+  require('public/takeout/starter-screenshots/android-002.png'),
+  require('public/takeout/starter-screenshots/android-003.png'),
+  require('public/takeout/starter-screenshots/android-004.png'),
+  require('public/takeout/starter-screenshots/android-005.png'),
+  require('public/takeout/starter-screenshots/android-006.png'),
+  require('public/takeout/starter-screenshots/android-007.png'),
+  require('public/takeout/starter-screenshots/android-008.png'),
+  require('public/takeout/starter-screenshots/android-009.png'),
+  require('public/takeout/starter-screenshots/android-010.png'),
+  require('public/takeout/starter-screenshots/android-011.png'),
+  require('public/takeout/starter-screenshots/android-012.png'),
+  require('public/takeout/starter-screenshots/android-013.png'),
+  require('public/takeout/starter-screenshots/android-014.png'),
+]
+
+const iosImages = [
+  require('public/takeout/starter-screenshots/ios-001.png'),
+  require('public/takeout/starter-screenshots/ios-002.png'),
+  require('public/takeout/starter-screenshots/ios-003.png'),
+  require('public/takeout/starter-screenshots/ios-004.png'),
+  require('public/takeout/starter-screenshots/ios-005.png'),
+  require('public/takeout/starter-screenshots/ios-006.png'),
+  require('public/takeout/starter-screenshots/ios-007.png'),
+  require('public/takeout/starter-screenshots/ios-008.png'),
+  require('public/takeout/starter-screenshots/ios-009.png'),
+  require('public/takeout/starter-screenshots/ios-010.png'),
+  require('public/takeout/starter-screenshots/ios-011.png'),
+  require('public/takeout/starter-screenshots/ios-012.png'),
+  require('public/takeout/starter-screenshots/ios-013.png'),
+  require('public/takeout/starter-screenshots/ios-014.png'),
+]
+
+const webImages = [
+  require('public/takeout/starter-screenshots/web-001.png'),
+  require('public/takeout/starter-screenshots/web-002.png'),
+  require('public/takeout/starter-screenshots/web-003.png'),
+  require('public/takeout/starter-screenshots/web-004.png'),
+  require('public/takeout/starter-screenshots/web-005.png'),
+  require('public/takeout/starter-screenshots/web-006.png'),
+  require('public/takeout/starter-screenshots/web-007.png'),
+  require('public/takeout/starter-screenshots/web-008.png'),
+  require('public/takeout/starter-screenshots/web-009.png'),
+]
+
+const takeoutImages = [
+  ...androidImages.map((src, idx) => ({
+    src,
+    alt: `Android screenshot #${idx + 1}`,
+  })),
+  ...iosImages.map((src, idx) => ({
+    src,
+    alt: `iOS screenshot #${idx + 1}`,
+  })),
+  ...webImages.map((src, idx) => ({
+    src,
+    alt: `Web screenshot #${idx + 1}`,
+  })),
+]
 const points = {
   monorepo: [
     'Well-isolated configuration.',
@@ -908,54 +967,17 @@ export default function TakeoutPage({
                 </Paragraph>
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
+                  {takeoutImages.map((image) => (
+                    <YStack pos="relative" overflow="hidden">
+                      <TakeoutImage
+                        alt={image.alt}
+                        src={image.src}
+                        style={{ objectFit: 'cover' }}
+                        width={200}
+                        height={200}
+                      />
+                    </YStack>
+                  ))}
                 </XStack>
 
                 <Spacer />
@@ -1042,7 +1064,7 @@ export default function TakeoutPage({
   )
 }
 
-const TakeoutImage = (props: any) => (
+const TakeoutImage = (props: ImageProps) => (
   <XStack
     animation="quick"
     br="$10"
