@@ -29,10 +29,11 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     delete svgAttribs['xmlns']
     const attribsOfInterest = {}
     Object.keys(svgAttribs).forEach((key) => {
-      if (key !== 'height' && key !== 'width' && key !== 'viewBox') {
+      if (!['height', 'width', 'viewBox', 'fill', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'].includes(key)) {
         attribsOfInterest[key] = svgAttribs[key]
       }
     })
+
     $('*').each((index, el) => {
       Object.keys(el.attribs).forEach((x) => {
         if (x.includes('-')) {
@@ -60,7 +61,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     const element = `
       import React, { memo } from 'react'
       import PropTypes from 'prop-types'
-      import { IconProps } from '../IconProps'
+      import type { IconProps } from '@tamagui/helpers-icon'
       import {
         Svg,
         Circle as _Circle,
@@ -74,12 +75,12 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
         Polyline,
         Rect,
         Symbol,
-        Text,
+        Text as _Text,
         Use,
         Defs,
         Stop
       } from 'react-native-svg'
-      import { themed } from '../themed'
+      import { themed } from '@tamagui/helpers-icon'
 
       const Icon = (props) => {
         const { color = 'black', size = 24, ...otherProps } = props
@@ -87,6 +88,7 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
           ${$('svg')
             .toString()
             .replace(/ class=\"[^\"]+\"/g, '')
+            .replace(/ version=\"[^\"]+\"/g, '')
             .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={`${color}`}')
             .replace('width="24"', 'width={size}')
             .replace('height="24"', 'height={size}')
@@ -115,8 +117,8 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
             .replace(new RegExp('</rect', 'g'), '</Rect')
             .replace(new RegExp('<symbol', 'g'), '<Symbol')
             .replace(new RegExp('</symbol', 'g'), '</Symbol')
-            .replace(new RegExp('<text', 'g'), '<Text')
-            .replace(new RegExp('</text', 'g'), '</Text')
+            .replace(new RegExp('<text', 'g'), '<_Text')
+            .replace(new RegExp('</text', 'g'), '</_Text')
             .replace(new RegExp('<use', 'g'), '<Use')
             .replace(new RegExp('</use', 'g'), '</Use')
             .replace(new RegExp('<defs', 'g'), '<Defs')

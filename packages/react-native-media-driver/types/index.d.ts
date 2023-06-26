@@ -1,3 +1,3 @@
-export * from './createMedia.js';
+export * from './createMedia';
 export * from './matchMedia';
 //# sourceMappingURL=index.d.ts.map

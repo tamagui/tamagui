@@ -4,13 +4,14 @@ description: A simple popover component
 name: popover
 component: Popover
 package: popover
+demoName: Popover
 ---
 
 # Popover
 
 <Description>Show content with a trigger in a floating pane.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <PopoverDemo />
 </HeroContainer>
 
@@ -26,10 +27,19 @@ package: popover
   ]}
 />
 
-### Anatomy
+Popovers are a great way to show content that's only visible when trigger is pressed, floating above the current content.
+
+<Notice>
+  Support for native was contributed by a community member, but not guaranteed to work
+  until we get time to fully test and improve native interactions. We don't recommend the
+  Popover pattern for phone-sized devices either way, and instead you can adapt it to a
+  Sheet.
+</Notice>
+
+## Anatomy
 
 ```tsx
-import { Popover } from '@tamagui/popover'
+import { Popover } from 'tamagui' // or '@tamagui/popover'
 
 export default () => (
   <Popover>
@@ -58,9 +68,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### Popover
+### Popover
 
 Contains every component for the popover.
 
@@ -117,28 +127,40 @@ Contains every component for the popover.
       name: 'allowFlip',
       type: 'FlipProps | boolean',
       required: false,
-      description: `Moves the Popover to other sides when space allows it, see floating-ui flip.`,
+      description: `Moves the Popover to other sides when space allows it, see floating-ui flip().`,
+    },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
     },
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### Popover.Trigger
 
 Used to trigger opening of the popover when uncontrolled, just renders a YStack, see [Stacks](/docs/components/stacks).
 
-#### &lt;Content /&gt;
+### Popover.Content
 
 Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
 
 Used to display the content of the popover.
 
-#### &lt;Anchor /&gt;
+### Popover.Anchor
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
 
 When you want the Trigger to be in another location from where the Popover attaches, use Anchor. When used, Anchor is where the Popover will attach, while Trigger will open it.
 
-#### &lt;Sheet /&gt;
+### Popover.Sheet
 
 When used with `Adapt`, Popover will render as a sheet when that breakpoint is active.
 
@@ -146,6 +168,6 @@ See [Sheet](/docs/components/sheet) for more props.
 
 Must use `Adapt.Contents` inside the `Popover.Sheet.Frame` to insert the contents given to `Popover.Content`
 
-#### &lt;ScrollView /&gt;
+### Popover.ScrollView
 
 Must be nested inside Content. Renders as a plain React Native ScrollView. If used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove this ScrollView when swapping into the Sheet, as the Sheet must use it's own ScrollView that handles special logic for interactions with dragging.

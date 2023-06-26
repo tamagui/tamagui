@@ -6,7 +6,7 @@ description: All the properties supported on base Tamagui components.
 Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-its-important)). So you can write:
 
 ```tsx
-import { Stack } from '@tamagui/core'
+import { Stack } from 'tamagui' // or '@tamagui/core'
 
 export default () => <Stack padding={10} backgroundColor="red" />
 ```
@@ -201,10 +201,10 @@ Outside of flat style properties, Tamagui adds the following props:
     {
       name: 'asChild',
       required: false,
-      type: 'boolean',
+      type: 'boolean | "except-style"',
       description: (
         <span>
-          When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props.
+          When true, Tamagui expects a single child element. Instead of rendering its own element, it will pass all props to that child, merging together any event handling props. When "except-style", the same behavior except Tamagui won't pass styles down from the parent, only non-style props.
         </span>
       ),
     },

@@ -4,14 +4,7 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
-import {
-  GetProps,
-  ReactComponentWithRef,
-  isWeb,
-  styled,
-  themeable,
-  useId,
-} from '@tamagui/web'
+import { GetProps, ReactComponentWithRef, isWeb, styled, themeable } from '@tamagui/web'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -50,10 +43,11 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
+        const fontStyle = getFontSized(val, extras)
+
         return {
-          ...getFontSized(val, extras),
-          height: buttonStyle.height,
-          lineHeight: buttonStyle.height,
+          ...fontStyle,
+          lineHeight: extras.tokens.size[buttonStyle.height],
         }
       },
     },
@@ -74,7 +68,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     const controlRef = React.useRef<HTMLElement | null>(null)
     const ref = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
-    const backupId = useId()
+    const backupId = React.useId()
     const id = idProp ?? backupId
 
     if (isWeb) {
@@ -108,7 +102,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     return (
       <LabelProvider id={id} controlRef={controlRef}>
         <LabelFrame
-          role="label"
+          role="heading"
           id={id}
           // @ts-ignore
           htmlFor={htmlFor}

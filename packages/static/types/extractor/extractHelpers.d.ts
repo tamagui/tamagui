@@ -1,6 +1,6 @@
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js';
+import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types';
 export declare function isPresent<T extends Object>(input: null | void | undefined | T): input is T;
 export declare function isSimpleSpread(node: t.JSXSpreadAttribute): boolean;
 export declare const attrStr: (attr?: ExtractedAttr) => string | t.JSXIdentifier;
@@ -11,14 +11,14 @@ export declare function isValidThemeHook(props: TamaguiOptionsWithFileInfo, jsxP
 export declare const isInsideComponentPackage: (props: TamaguiOptionsWithFileInfo, moduleName: string) => any;
 export declare const isComponentPackage: (props: TamaguiOptionsWithFileInfo, srcName: string) => any;
 export declare function getValidComponent(props: TamaguiOptionsWithFileInfo, moduleName: string, componentName: string): false | {
-    staticConfig: StaticConfigParsed;
+    staticConfig: import("@tamagui/web").StaticConfigParsed;
 } | null;
 export declare const isValidModule: (props: TamaguiOptionsWithFileInfo, moduleName: string) => {
     isLocal: boolean;
     isValid: any;
 };
 export declare const getValidImport: (props: TamaguiOptionsWithFileInfo, moduleName: string, componentName?: string) => {
-    staticConfig: StaticConfigParsed;
+    staticConfig: import("@tamagui/web").StaticConfigParsed;
 } | null;
 export declare const isValidImport: (props: TamaguiOptionsWithFileInfo, moduleName: string, componentName?: string) => any;
 //# sourceMappingURL=extractHelpers.d.ts.map

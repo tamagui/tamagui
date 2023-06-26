@@ -4,14 +4,15 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  StackProps,
   TamaguiElement,
   Theme,
+  View,
   composeEventHandlers,
   isWeb,
   spacedChildren,
   styled,
   useGet,
-  useId,
   useMedia,
   useThemeName,
   withStaticProperties,
@@ -21,7 +22,7 @@ import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
+import { Overlay, Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -43,6 +44,11 @@ interface DialogProps {
   modal?: boolean
 
   /**
+   * Used to disable the remove scroll functionality when open
+   */
+  disableRemoveScroll?: boolean
+
+  /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
@@ -51,6 +57,7 @@ interface DialogProps {
 type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
+  disableRemoveScroll?: boolean
   triggerRef: React.RefObject<TamaguiElement>
   contentRef: React.RefObject<TamaguiElement>
   contentId: string
@@ -74,11 +81,11 @@ const [DialogProvider, useDialogContext] =
 
 const TRIGGER_NAME = 'DialogTrigger'
 
-const DialogTriggerFrame = styled(YStack, {
+const DialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-interface DialogTriggerProps extends YStackProps {}
+interface DialogTriggerProps extends StackProps {}
 
 const DialogTrigger = React.forwardRef<TamaguiElement, DialogTriggerProps>(
   (props: ScopedProps<DialogTriggerProps>, forwardedRef) => {
@@ -126,14 +133,24 @@ type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   }
 
 export const DialogPortalFrame = styled(YStack, {
-  alignItems: 'center',
-  justifyContent: 'center',
-  fullscreen: true,
-  zIndex: 100,
-  ...(isWeb && {
-    maxHeight: '100vh',
-    position: 'fixed' as any,
-  }),
+  variants: {
+    unstyled: {
+      false: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        fullscreen: true,
+        zIndex: 100_000,
+        ...(isWeb && {
+          maxHeight: '100vh',
+          position: 'fixed' as any,
+        }),
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const DialogPortalItem = (props: ScopedProps<DialogPortalProps>) => {
@@ -239,10 +256,11 @@ DialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-const DialogOverlayFrame = styled(ThemeableStack, {
+/**
+ * exported for internal use with extractable()
+ */
+export const DialogOverlayFrame = styled(Overlay, {
   name: OVERLAY_NAME,
-  backgrounded: true,
-  fullscreen: true,
 })
 
 interface DialogOverlayProps extends YStackProps {
@@ -253,23 +271,24 @@ interface DialogOverlayProps extends YStackProps {
   forceMount?: true
 }
 
-const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
-  ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
-    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
-    const { forceMount = portalContext.forceMount, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
-    const showSheet = useShowDialogSheet(context)
+const DialogOverlay = DialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, DialogOverlayProps>(
+    ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
+      const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
+      const { forceMount = portalContext.forceMount, ...overlayProps } = props
+      const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+      const showSheet = useShowDialogSheet(context)
 
-    if (!forceMount) {
-      if (!context.modal || showSheet) {
-        return null
+      if (!forceMount) {
+        if (!context.modal || showSheet) {
+          return null
+        }
       }
+
+      return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
     }
-
-    return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
-  }
+  )
 )
-
 DialogOverlay.displayName = OVERLAY_NAME
 
 type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {
@@ -303,11 +322,6 @@ const CONTENT_NAME = 'DialogContent'
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   tag: 'dialog',
-  position: 'relative',
-  backgrounded: true,
-  padded: true,
-  radiused: true,
-  elevate: true,
 
   variants: {
     size: {
@@ -315,10 +329,22 @@ const DialogContentFrame = styled(ThemeableStack, {
         return {}
       },
     },
+
+    unstyled: {
+      false: {
+        position: 'relative',
+        backgrounded: true,
+        padded: true,
+        radiused: true,
+        elevate: true,
+        zIndex: 100_000,
+      },
+    },
   } as const,
 
   defaultVariants: {
     size: '$true',
+    unstyled: false,
   },
 })
 
@@ -347,7 +373,7 @@ const DialogContent = DialogContentFrame.extractable(
         <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
       )
 
-      if (!isWeb) {
+      if (!isWeb || context.disableRemoveScroll) {
         return contents
       }
 
@@ -634,11 +660,28 @@ DialogDescription.displayName = DESCRIPTION_NAME
 
 const CLOSE_NAME = 'DialogClose'
 
-type DialogCloseProps = YStackProps & {
+const DialogCloseFrame = styled(View, {
+  name: CLOSE_NAME,
+  tag: 'button',
+
+  variants: {
+    unstyled: {
+      false: {
+        zIndex: 100,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
+})
+
+type DialogCloseProps = GetProps<typeof DialogCloseFrame> & {
   displayWhenAdapted?: boolean
 }
 
-const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
+const DialogClose = DialogCloseFrame.styleable<DialogCloseProps>(
   (props: ScopedProps<DialogCloseProps>, forwardedRef) => {
     const { __scopeDialog, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(CLOSE_NAME, __scopeDialog, {
@@ -652,8 +695,7 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     }
 
     return (
-      <YStack
-        tag="button"
+      <DialogCloseFrame
         accessibilityLabel="Dialog Close"
         {...closeProps}
         ref={forwardedRef}
@@ -664,8 +706,6 @@ const DialogClose = React.forwardRef<TamaguiElement, DialogCloseProps>(
     )
   }
 )
-
-DialogClose.displayName = CLOSE_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -689,16 +729,13 @@ const TitleWarning: React.FC<TitleWarningProps> = ({ titleId }) => {
 
     const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
 
-If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`
+If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.`
 
     React.useEffect(() => {
       if (!isWeb) return
       if (titleId) {
         const hasTitle = document.getElementById(titleId)
         if (!hasTitle) {
-          // eslint-disable-next-line no-console
           console.warn(MESSAGE)
         }
       }
@@ -734,7 +771,6 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
       if (descriptionId && describedById) {
         const hasDescription = document.getElementById(descriptionId)
         if (!hasDescription) {
-          // eslint-disable-next-line no-console
           console.warn(MESSAGE)
         }
       }
@@ -761,12 +797,14 @@ const Dialog = withStaticProperties(
       onOpenChange,
       modal = true,
       allowPinchZoom = false,
+      disableRemoveScroll = false,
     } = props
 
-    const scopeId = useId()
-    const contentId = useId()
-    const titleId = useId()
-    const descriptionId = useId()
+    const baseId = React.useId()
+    const scopeId = `scope-${baseId}`
+    const contentId = `content-${baseId}`
+    const titleId = `title-${baseId}`
+    const descriptionId = `description-${baseId}`
     const scopeKey = __scopeDialog ? Object.keys(__scopeDialog)[0] : scopeId
     const sheetContentsName = getSheetContentsName({ scopeKey, contentId })
     const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -778,10 +816,9 @@ const Dialog = withStaticProperties(
       onChange: onOpenChange,
     })
 
-    const onOpenToggle = React.useCallback(
-      () => setOpen((prevOpen) => !prevOpen),
-      [setOpen]
-    )
+    const onOpenToggle = React.useCallback(() => {
+      setOpen((prevOpen) => !prevOpen)
+    }, [setOpen])
 
     const context = {
       scope: __scopeDialog,
@@ -817,7 +854,11 @@ const Dialog = withStaticProperties(
 
     return (
       <AdaptProvider>
-        <DialogProvider {...context} sheetBreakpoint={when}>
+        <DialogProvider
+          {...context}
+          sheetBreakpoint={when}
+          disableRemoveScroll={disableRemoveScroll}
+        >
           <DialogSheetController onOpenChange={setOpen} __scopeDialog={__scopeDialog}>
             {children}
           </DialogSheetController>
@@ -833,7 +874,7 @@ const Dialog = withStaticProperties(
     Title: DialogTitle,
     Description: DialogDescription,
     Close: DialogClose,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
     Adapt,
   }
 )

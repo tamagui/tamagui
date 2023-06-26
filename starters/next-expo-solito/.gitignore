@@ -1,4 +1,4 @@
-/node_modules
+**/node_modules
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -41,3 +41,6 @@ yarn-error.log*
 .DS_Store
 THUMBS_DB
 thumbs.db
+
+# turbo build log
+**/.turbo/*

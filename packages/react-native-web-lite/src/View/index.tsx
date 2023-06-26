@@ -21,9 +21,9 @@ import {
   useResponderEvents,
 } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import type { PlatformMethods } from '../types.js'
-import type { ViewProps } from './types.js'
+import createElement from '../createElement/index'
+import type { PlatformMethods } from '../types'
+import type { ViewProps } from './types'
 
 const pickProps = (props) => pick(props, forwardPropsListView)
 
@@ -54,9 +54,9 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
     if (process.env.NODE_ENV !== 'production') {
       React.Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.error(
-            `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`,
+            `Unexpected text node: ${item}. A text node cannot be a child of a <View>.`
           )
         }
       })
@@ -121,7 +121,7 @@ const View = React.forwardRef<HTMLElement & PlatformMethods, ViewProps>(
     supportedProps.ref = setRef
 
     return createElement(component, supportedProps, { writingDirection })
-  },
+  }
 )
 
 View.displayName = 'View'

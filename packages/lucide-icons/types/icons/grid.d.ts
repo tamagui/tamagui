@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Grid: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=grid.d.ts.map

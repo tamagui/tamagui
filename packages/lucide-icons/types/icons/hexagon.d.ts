@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Hexagon: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=hexagon.d.ts.map

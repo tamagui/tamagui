@@ -2,23 +2,21 @@ import { readFile } from 'fs/promises'
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
+import { watchTamaguiConfig } from '@tamagui/static'
+import { CLIResolvedOptions } from '@tamagui/types'
 import chalk from 'chalk'
-import fs from 'fs-extra'
+import fs, { ensureDir } from 'fs-extra'
 import { build, createServer } from 'vite'
 
-import { createDevServer } from './dev/createDevServer.js'
-import { watchTamaguiConfig } from './tamaguiConfigUtils.js'
-import { ResolvedOptions } from './types.js'
-import { registerDispose } from './utils.js'
+import { createDevServer } from './dev/createDevServer'
+import { registerDispose } from './utils'
 
-export const dev = async (options: ResolvedOptions) => {
+export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options
 
   process.chdir(process.cwd())
 
-  const { tamaguiPlugin, nativePlugin, nativePrebuild } = await import(
-    '@tamagui/vite-plugin'
-  )
+  const { tamaguiPlugin, nativePlugin, nativePrebuild } = require('@tamagui/vite-plugin')
 
   // build react-native
   await nativePrebuild()
@@ -31,6 +29,7 @@ export const dev = async (options: ResolvedOptions) => {
   ]
 
   async function getBundle() {
+    console.log('get bundle')
     const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
     const outputCode = await getBundleCode()
     // debug out each time
@@ -38,12 +37,15 @@ export const dev = async (options: ResolvedOptions) => {
     return outputCode
   }
 
+  const rootFile = join(root, 'src/test-tamagui-stack.tsx')
+
   async function getBundleCode() {
     // build app
     const buildOutput = await build({
+      // @ts-ignore
       plugins,
       appType: 'custom',
-      root: join(root, 'src/index.ts'),
+      root,
       build: {
         ssr: true,
       },
@@ -65,9 +67,9 @@ export const dev = async (options: ResolvedOptions) => {
     }
 
     const [react, reactJsxRuntime, reactNative] = await Promise.all([
-      readFile(join(process.cwd(), 'react.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'react-jsx-runtime.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'react-native.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-native.js'), 'utf-8'),
     ])
 
     const reactCode = react.replace(
@@ -98,7 +100,7 @@ export const dev = async (options: ResolvedOptions) => {
   }
 
   const server = await createServer({
-    root: root,
+    root,
     mode: 'development',
     plugins,
     server: {
@@ -108,7 +110,9 @@ export const dev = async (options: ResolvedOptions) => {
   })
 
   await server.listen()
-  await watchTamaguiConfig(options)
+
+  await ensureDir(options.paths.dotDir)
+  // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
   const info = server.httpServer?.address() as AddressInfo
 
@@ -170,7 +174,7 @@ export const dev = async (options: ResolvedOptions) => {
     indexJson: defaultResponse,
   })
 
-  // eslint-disable-next-line no-console
+  // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 
@@ -180,6 +184,8 @@ export const dev = async (options: ResolvedOptions) => {
   })
 
   await new Promise((res) => server.httpServer?.on('close', res))
+
+  // await res?.context.dispose()
 
   console.log('closed')
 }

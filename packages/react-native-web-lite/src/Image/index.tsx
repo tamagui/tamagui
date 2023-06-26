@@ -16,10 +16,10 @@ import {
 } from 'react-native-web-internals'
 import { ImageLoader, getAssetByID } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import PixelRatio from '../PixelRatio/index.js'
-import View from '../View/index.js'
-import type { ImageProps } from './types.js'
+import createElement from '../createElement/index'
+import PixelRatio from '../PixelRatio/index'
+import View from '../View/index'
+import type { ImageProps } from './types'
 
 export type { ImageProps }
 
@@ -100,11 +100,7 @@ function resolveAssetDimensions(source) {
   if (typeof source === 'number') {
     const { height, width } = getAssetByID(source)
     return { height, width }
-  } else if (
-    source != null &&
-    !Array.isArray(source) &&
-    typeof source === 'object'
-  ) {
+  } else if (source != null && !Array.isArray(source) && typeof source === 'object') {
     const { height, width } = source
     return { height, width }
   }
@@ -120,9 +116,7 @@ function resolveAssetUri(source): string | null {
       const preferredScale = PixelRatio.get()
       // Get the scale which is closest to the preferred scale
       scale = asset.scales.reduce((prev, curr) =>
-        Math.abs(curr - preferredScale) < Math.abs(prev - preferredScale)
-          ? curr
-          : prev,
+        Math.abs(curr - preferredScale) < Math.abs(prev - preferredScale) ? curr : prev
       )
     }
     const scaleSuffix = scale !== 1 ? `@${scale}x` : ''
@@ -152,7 +146,7 @@ interface ImageStatics {
   getSize: (
     uri: string,
     success: (width: number, height: number) => void,
-    failure: () => void,
+    failure: () => void
   ) => void
   prefetch: (uri: string) => Promise<void>
   queryCache: (uris: Array<string>) => Promise<{ [uri: string]: 'disk/memory' }>
@@ -178,7 +172,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
   if (process.env.NODE_ENV !== 'production') {
     if (props.children) {
       throw new Error(
-        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.',
+        'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.'
       )
     }
   }
@@ -202,10 +196,11 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
   const shouldDisplaySource =
     state === LOADED || (state === LOADING && defaultSource == null)
   const [flatStyle, _resizeMode, filter, tintColor] = getFlatStyle(
-    style,
+    {},
     blurRadius,
-    filterRef.current,
+    filterRef.current
   )
+
   const resizeMode = props.resizeMode || _resizeMode || 'cover'
   const selectedSource = shouldDisplaySource ? source : defaultSource
   const displayImageUri = resolveAssetUri(selectedSource)
@@ -286,7 +281,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
             // @ts-ignore
             onLoadEnd()
           }
-        },
+        }
       )
     }
 
@@ -308,6 +303,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
       pointerEvents={pointerEvents}
       ref={ref as any}
       style={[
+        style,
         styles.root,
         hasTextAncestor && styles.inline,
         imageSizeStyle,
@@ -316,7 +312,7 @@ const Image = React.forwardRef<typeof View, ImageProps>((props, ref) => {
     >
       <View
         style={[
-          styles.image,
+          ...[].concat(styles.image),
           resizeModeStyles[resizeMode],
           { backgroundImage, filter },
           backgroundSize != null && { backgroundSize },

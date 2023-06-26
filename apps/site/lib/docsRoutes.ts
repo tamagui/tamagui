@@ -9,26 +9,14 @@ export const docsRoutes = [
 
   {
     type: 'hr',
-    title: 'Compiler',
-  },
-
-  {
-    pages: [
-      { title: 'About', route: '/docs/intro/why-a-compiler' },
-      { title: 'Install', route: '/docs/intro/compiler-install' },
-      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
-    ],
-  },
-
-  {
-    type: 'hr',
     title: 'Core',
   },
 
   {
     pages: [
       { title: 'Configuration', route: '/docs/core/configuration' },
-      { title: 'Stack + Text', route: '/docs/core/stack-and-text' },
+      { title: 'Tokens', route: '/docs/core/tokens' },
+      { title: 'Stack & Text', route: '/docs/core/stack-and-text' },
       { title: 'styled', route: '/docs/core/styled' },
       { title: 'Variants', route: '/docs/core/variants' },
       { title: 'Props', route: '/docs/intro/props' },
@@ -39,6 +27,19 @@ export const docsRoutes = [
       { title: 'useTheme', route: '/docs/core/use-theme' },
       { title: 'FontLanguage', route: '/docs/core/font-language' },
       { title: 'Extras', route: '/docs/core/exports' },
+    ],
+  },
+
+  {
+    type: 'hr',
+    title: 'Compiler',
+  },
+
+  {
+    pages: [
+      { title: 'About', route: '/docs/intro/why-a-compiler' },
+      { title: 'Install', route: '/docs/intro/compiler-install' },
+      { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
     ],
   },
 
@@ -69,7 +70,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Stacks', route: '/docs/components/stacks' },
       { title: 'Headings', route: '/docs/components/headings' },
-      { title: 'Paragraph', route: '/docs/components/text' },
+      { title: 'Text', route: '/docs/components/text' },
     ],
   },
 
@@ -86,6 +87,7 @@ export const docsRoutes = [
       { title: 'Select', route: '/docs/components/select' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
+      { title: 'ToggleGroup', route: '/docs/components/toggle-group' },
     ],
   },
 
@@ -97,6 +99,7 @@ export const docsRoutes = [
       { title: 'Popover', route: '/docs/components/popover' },
       { title: 'Sheet', route: '/docs/components/sheet' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
+      { title: 'Toast', route: '/docs/components/toast' },
     ],
   },
 
@@ -157,6 +160,7 @@ export const docsRoutes = [
   {
     pages: [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
+      { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },

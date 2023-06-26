@@ -1,0 +1,19 @@
+# name: Changelog
+
+# on:
+#   push:
+#     tags:
+#       - "canary*"
+
+# jobs:
+#   tagged-release:
+#     name: Changelog
+#     runs-on: ubuntu-latest
+#     # needs: release
+
+#     steps:
+#       - uses: marvinpinto/action-automatic-releases@latest
+#         with:
+#           repo_token: "${{ github.token }}"
+#           automatic_release_tag: "canary"
+#           prerelease: true

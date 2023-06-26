@@ -1,3 +1,2 @@
-export declare const simpleHash: (str: string, hashMin?: number) => string;
-export declare function isValidCSSCharCode(code: number): boolean;
+export declare const simpleHash: (str: string, hashMin?: number) => any;
 //# sourceMappingURL=index.d.ts.map

@@ -4,13 +4,14 @@ description: A simple tooltip component
 name: tooltip
 component: Tooltip
 package: tooltip
+demoName: Tooltip
 ---
 
 # Tooltip
 
 <Description>A tooltip on web, with only accessibility output on native.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <TooltipDemo />
 </HeroContainer>
 
@@ -26,10 +27,10 @@ package: tooltip
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Tooltip } from '@tamagui/tooltip'
+import { Tooltip } from 'tamagui' // or '@tamagui/tooltip'
 
 export default () => (
   <Tooltip>
@@ -42,9 +43,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Tooltip /&gt;
+### Tooltip
 
 Contains every component for the tooltip.
 
@@ -121,18 +122,24 @@ Contains every component for the tooltip.
       required: false,
       description: `See floating-ui flip`,
     },
+    {
+      name: 'offset',
+      type: 'OffsetOptions',
+      required: false,
+      description: `Determines the distance the Popover appears from the target, see floating-ui offset().`,
+    },
   ]}
 />
 
-#### Trigger
+### Tooltip.Trigger
 
 Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/docs/components/stacks).
 
-#### Content
+### Tooltip.Content
 
 Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
 
-#### Anchor
+### Tooltip.Anchor
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
 

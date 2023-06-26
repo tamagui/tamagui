@@ -1,9 +1,9 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-import { NavigationContainer } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 // causes metro bundle issue it seems:
 // import * as Linking from 'expo-linking'
 import React, { useMemo } from 'react'
-import { Linking, Platform } from 'react-native'
+import { Linking, Platform, useColorScheme } from 'react-native'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V4'
 
@@ -45,11 +45,16 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         screens: {
           home: '',
           demo: 'demo/:id',
+          tests: 'tests',
+          test: 'test/:id',
+          sandbox: 'sandbox',
         },
       } as const,
     }),
     []
   )
+
+  const scheme = useColorScheme()
 
   if (!isReady) {
     return null
@@ -62,6 +67,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
         storage.setItem(JSON.stringify(state))
       }}
       linking={linking}
+      theme={scheme === 'dark' ? DarkTheme : DefaultTheme}
     >
       {children}
     </NavigationContainer>

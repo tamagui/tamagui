@@ -14,13 +14,13 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -38,50 +38,12 @@ const Icon = (props) => {
     >
       <Polygon
         points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"
-        fill="none"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <Line
-        x1="12"
-        y1="22"
-        x2="12"
-        y2="15.5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="22 8.5 12 15.5 2 8.5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Polyline
-        points="2 15.5 12 8.5 22 15.5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="12"
-        y1="2"
-        x2="12"
-        y2="8.5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Line x1="12" x2="12" y1="22" y2="15.5" stroke={`${color}`} />
+      <Polyline points="22 8.5 12 15.5 2 8.5" stroke={`${color}`} />
+      <Polyline points="2 15.5 12 8.5 22 15.5" stroke={`${color}`} />
+      <Line x1="12" x2="12" y1="2" y2="8.5" stroke={`${color}`} />
     </Svg>
   )
 }

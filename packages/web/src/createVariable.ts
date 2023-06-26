@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import { simpleHash } from '@tamagui/helpers'
 
-import { getConfig } from './config.js'
+import { getConfig } from './config'
 
 /**
  * Should rename this to Token
@@ -50,7 +50,7 @@ export function isVariable(v: Variable | any): v is Variable {
   return v && typeof v === 'object' && IS_VAR in v
 }
 
-export function getVariable(nameOrVariable: Variable | string) {
+export function getVariable(nameOrVariable: Variable | string | any) {
   setDidGetVariableValue(true)
   if (isVariable(nameOrVariable)) {
     return variableToString(nameOrVariable)
@@ -85,7 +85,7 @@ export function getVariableVariable(v: Variable | any) {
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
   if (process.env.NODE_ENV === 'development') {
     if (!nameProp || typeof nameProp !== 'string') {
-      throw new Error(`createCSSVariable expected string: ${nameProp}`)
+      throw new Error(`createCSSVariable expected string, got: ${nameProp}`)
     }
   }
   const name = simpleHash(nameProp, 60)

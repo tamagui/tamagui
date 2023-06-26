@@ -4,7 +4,7 @@ description: Universal styles for React Native and Web
 ---
 
 <IntroParagraph>
-  Style more consistently, easily, and flexibly while sharing consistent tokens, themes
+  Style more consistently, easily, and performantly while sharing typed tokens, themes,
   fonts and more across both React Native and Web.
 </IntroParagraph>
 
@@ -15,13 +15,10 @@ The highest level part of Tamagui is `tamagui` itself, a complete UI kit built o
 After [configuring](/docs/core/configuration), use `@tamagui/core` as simply as:
 
 ```tsx
-import { Stack, Text } from '@tamagui/core'
+import { Stack, Text } from 'tamagui' // or '@tamagui/core'
 
 export const App = () => (
-  <Stack
-    backgroundColor="red"
-    borderRadius=""
-  >
+  <Stack backgroundColor="red" borderRadius={10}>
     <Text color="white">Hello</Text>
   </Stack>
 )
@@ -31,7 +28,7 @@ Core also includes a `styled` utility with a `variants` field that is a very qui
 props by letting you quickly type both the key and the value of the prop you expect:
 
 ```tsx
-import { Theme, Stack, styled } from '@tamagui/core'
+import { Stack, Theme, styled } from 'tamagui' // or '@tamagui/core'
 
 export const AvatarCircle = styled(Stack, {
   // use direct values
@@ -41,7 +38,7 @@ export const AvatarCircle = styled(Stack, {
   shadowColor: '$color2',
 
   pressStyle: {
-    scale: 1.05
+    scale: 1.05,
   },
 
   variants: {
@@ -57,7 +54,7 @@ export const AvatarCircle = styled(Stack, {
       true: {
         scale: 1.1,
         borderRadius: 12,
-      }
+      },
     },
   } as const,
 })
@@ -74,9 +71,9 @@ Variants can also take functions to catch either all values or specific types of
 You can nest styled components multiple times:
 
 ```tsx
-import { styled, Stack } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
-const const SizedHorizontal = styled(Stack, {
+export const SizedHorizontal = styled(Stack, {
   variants: {
     size: {
       sm: {
@@ -86,31 +83,31 @@ const const SizedHorizontal = styled(Stack, {
       lg: {
         minWidth: 68,
         height: 68,
-      }
-    }
-  }
+      },
+    },
+  },
 })
 
-
-const const SizedButton = styled(SizedHorizontal, {
+export const SizedButton = styled(SizedHorizontal, {
   tag: 'button',
 
   variants: {
     disabled: {
       true: {
         backgroundColor: '#ccc',
-        pointerEvents: 'none'
-      }
+        pointerEvents: 'none',
+      },
     },
-  }
+  },
 })
 ```
 
 Tamagui has the nice feature of fully-deterministic rendering based on the order of their definition, where the last key of the style object wins. This works both on props and styled() calls:
 
 ```tsx
+import { styled } from 'tamagui' // or '@tamagui/core'
+
 import { SizedButton } from './example-above'
-import { styled } from '@tamagui/core'
 
 const HeroButton = styled(SizedButton, {
   // bigger border, of course
@@ -122,12 +119,12 @@ const HeroButton = styled(SizedButton, {
       true: {
         backgroundColor: 'transparent',
         borderColor: 'black',
-      }
-    }
-  }
+      },
+    },
+  },
 })
 
-export default (props => (
+export default (props) => (
   <HeroButton
     outlined
     // overrides the borderColor in outlined
@@ -138,7 +135,7 @@ export default (props => (
     borderRadius={12}
     // borderRadius is *always* 12
   />
-))
+)
 ```
 
 This works across the Web and Native with the full typed APIs of React Native, with additional web-only API's and escape hatches that make it a great experience no matter if you're targeting Native only, Native and Web, or Web only.

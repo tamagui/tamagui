@@ -1,10 +1,10 @@
 import { Hero } from '@components/Hero'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
-import { Button, XStack, YStack } from 'tamagui'
+import { NextSeo } from 'next-seo'
+import { YStack } from 'tamagui'
 
-import { ContainerLarge } from '../components/Container'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
@@ -14,8 +14,6 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { HomeGlow } from '../components/HomeGlow'
-import { MailingListSignup } from '../components/MailingListSignup'
-import { NextLink } from '../components/NextLink'
 import { HomeSection, SectionTinted, TintSection } from '../components/TintSection'
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
@@ -23,7 +21,7 @@ export default function Home({ animationCode, compilationExamples }) {
   return (
     <>
       <HomeGlow />
-      <TitleAndMetaTags
+      <NextSeo
         title="Tamagui — React Native + Web UI kit"
         description="Write less, run faster. Styles, optimizing compiler & UI kit that unify React Native + Web."
       />
@@ -70,6 +68,8 @@ export default function Home({ animationCode, compilationExamples }) {
     </>
   )
 }
+
+Home.getLayout = getDefaultLayout
 
 export async function getStaticProps() {
   return {

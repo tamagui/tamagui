@@ -1,11 +1,10 @@
-import { readFile } from 'fs/promises'
+import { CLIResolvedOptions } from '@tamagui/types'
 
-import { ResolvedOptions } from '../types.js'
-import { DEFAULT_PORT } from '../utils/constants.js'
+import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
 
 export async function createDevServer(
-  options: ResolvedOptions,
+  options: CLIResolvedOptions,
   {
     indexJson,
     getIndexBundle,
@@ -135,6 +134,7 @@ export async function createDevServer(
           onMessage: (log) => {
             const logEntry = makeLogEntryFromFastifyLog(log)
             logEntry.issuer = 'DevServer'
+            // error DevServer, warn DevServer
             console.log(
               logEntry.type,
               logEntry.issuer,

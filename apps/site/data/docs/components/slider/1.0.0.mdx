@@ -3,7 +3,8 @@ title: Slider
 description: A simple slider component
 name: slider
 component: Slider
-package: stacks
+package: slider
+demoName: Slider
 ---
 
 # Slider
@@ -27,7 +28,7 @@ package: stacks
   ]}
 />
 
-### Usage
+## Usage
 
 Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
 
@@ -63,9 +64,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### Slider
+### Slider
 
 Contains every component for the slider.
 
@@ -143,6 +144,29 @@ Contains every component for the slider.
       required: false,
       type: 'number',
       description: `Minimum steps between thumbs.`,
+    },
+  ]}
+/>
+
+### Slider.Track
+
+`Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props).
+
+### Slider.TrackActive
+
+`Slider.Track` Inherits `Stack`, extending all the default [props](/docs/intro/props).
+
+### Slider.Thumb
+
+`Slider.Track` Inherits `SizableStack`, extending all the default [props](/docs/intro/props), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'index',
+      required: true,
+      type: 'number',
+      description: `Corresponds to the index of \`value\` or \`defaultValue\`. Use to correlate thumbs to each value in the array.`,
     },
   ]}
 />

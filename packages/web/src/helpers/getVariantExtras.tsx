@@ -1,7 +1,8 @@
-import { getConfig } from '../config.js'
-import { GenericFonts } from '../types.js'
-import { LanguageContextType } from '../views/FontLanguage.types.js'
-import { createProxy } from './createProxy.js'
+import { getConfig } from '../config'
+import { getVariableValue } from '../createVariable'
+import { GenericFonts } from '../types'
+import { LanguageContextType } from '../views/FontLanguage.types'
+import { createProxy } from './createProxy'
 
 const extrasCache = new WeakMap()
 
@@ -10,7 +11,8 @@ export function getVariantExtras(
   languageContext?: LanguageContextType,
   theme?: any,
   defaultProps?: any,
-  avoidDefaultProps = false
+  avoidDefaultProps = false,
+  fontFamily?: string
 ) {
   const conf = getConfig()
 
@@ -27,6 +29,15 @@ export function getVariantExtras(
     fonts,
     tokens: conf.tokensParsed,
     theme,
+
+    get fontFamily() {
+      return getVariableValue(props.fontFamily || fontFamily)
+    },
+
+    get font() {
+      return fonts[this.fontFamily]
+    },
+
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: avoidDefaultProps

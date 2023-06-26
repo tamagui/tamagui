@@ -3,7 +3,7 @@ import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useIsomorphicLayoutEffect } from 'tamagui'
 
-import { getBoundingClientRectAsync } from '../lib/getBoundingClientRectAsync'
+type Bounds = { width: number; height: number; left: number; top: number }
 
 interface BoundedCursorProps {
   size?: number
@@ -17,23 +17,29 @@ interface BoundedCursorProps {
   throttle?: number
   scale?: number
   initialOffset?: { x?: number; y?: number }
+  initialParentBounds?: Bounds
+  // this one is super arbitrary but we gotta ship
+  initialRelativeToParentBounds?: Bounds
   offset?: { x?: number; y?: number }
   limitToParentSize?: boolean
   debug?: boolean
   disableUpdates?: boolean
+  recenterOnRest?: boolean
+  useResizeObserverRect?: boolean
 }
 
-type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+export type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-type HoverGlowProps = BoundedCursorProps & {
+export type HoverGlowProps = BoundedCursorProps & {
   background?: string
   opacity?: number
   borderRadius?: number
   blurPct?: number
-  strategy?: 'blur' | 'radial-gradient'
+  strategy?: 'blur' | 'radial-gradient' | 'plain' | 'plain-underlay'
   glowProps?: DivProps
   style?: DivProps['style']
   restingStyle?: DivProps['style']
+  underlayStyle?: DivProps['style']
 }
 
 export function useHoverGlow(props: HoverGlowProps) {
@@ -50,16 +56,66 @@ export function useHoverGlow(props: HoverGlowProps) {
     scale,
     size,
     restingStyle,
+    underlayStyle,
   } = props
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
-  const { setParentNode, getGlowBounds, getBounds, parentNode, recalculate } =
+
+  const getStyle = (
+    transform: string,
+    bounds: Bounds,
+    isResting = true
+  ): CSSProperties => {
+    // estimate size close to final measured size
+    const fullSize = full ? `calc(100 * ${scale || 1})%` : 0
+    const width = bounds.width || size || fullSize
+    const height = bounds.height || size || fullSize
+    const restingStyleNow = isResting && restingStyle ? restingStyle : {}
+
+    return {
+      position: 'absolute',
+      top: '0px',
+      left: '0px',
+      pointerEvents: 'none',
+      opacity: transform ? opacity : 0,
+      ...(strategy === 'radial-gradient' && {
+        background: `radial-gradient(${color} ${0 + (20 - blurPct)}%, ${background} 70%)`,
+      }),
+      ...(strategy === 'blur' && {
+        background: color,
+        filter: `blur(${blurPct}px)`,
+      }),
+      ...(strategy === 'plain' && {
+        background,
+      }),
+      borderRadius,
+      height: `${height}px`,
+      width: `${width}px`,
+      transformStyle: 'preserve-3d',
+      // nice fade in effect after first measure/show
+      transition: transform
+        ? 'transform linear 100ms, opacity ease-in 300ms'
+        : 'opacity ease-in 300ms',
+      ...style,
+      ...restingStyleNow,
+      transform: restingStyleNow.transform
+        ? `${transform} ${restingStyleNow.transform}`
+        : `${transform} ${style?.transform || ''}`,
+      ...(props.debug && {
+        background: 'yellow',
+        opacity: 0.8,
+        filter: 'none',
+      }),
+    }
+  }
+
+  const { setParentNode, getBounds, getGlowBounds, parentNode, recalculate } =
     useRelativePositionedItem(
       {
         ...props,
         itemRef: elementRef,
       },
-      ({ transform, position, isResting }) => {
+      ({ transform, position, isResting, glowBounds }) => {
         if (transform === transformRef.current) return
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
@@ -86,7 +142,10 @@ height: ${parentBounds.height}`
           }
         }
         transformRef.current = transform
-        Object.assign(elementRef.current?.style || {}, getStyle(transform, isResting))
+        Object.assign(
+          elementRef.current?.style || {},
+          getStyle(transform, glowBounds, isResting)
+        )
       }
     )
 
@@ -108,67 +167,44 @@ height: ${parentBounds.height}`
   useIsomorphicLayoutEffect(() => {
     recalculate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(restingStyle)])
-
-  const getStyle = (transform: string, isResting = true): CSSProperties => {
-    const bounds = getGlowBounds()
-    // estimate size close to final measured size
-    const fullSize = full ? `calc(100 * ${scale || 1})%` : 0
-    const width = bounds.width || size || fullSize
-    const height = bounds.height || size || fullSize
-    const restingStyleNow = isResting && restingStyle ? restingStyle : {}
-    return {
-      position: 'absolute',
-      top: '0px',
-      left: '0px',
-      pointerEvents: 'none',
-      opacity: transform ? opacity : 0,
-      ...(strategy === 'radial-gradient' && {
-        background: `radial-gradient(${color} ${0 + (20 - blurPct)}%, ${background} 70%)`,
-      }),
-      ...(strategy === 'blur' && {
-        background: color,
-        filter: `blur(${blurPct}px)`,
-      }),
-      borderRadius,
-      height: `${height}px`,
-      width: `${width}px`,
-      // nice fade in effect after first measure/show
-      transition: transform
-        ? 'transform linear 100ms, opacity ease-in 300ms'
-        : 'opacity ease-in 300ms',
-      ...restingStyleNow,
-      transform: restingStyleNow.transform
-        ? `${transform} ${restingStyleNow.transform}`
-        : transform,
-      ...(props.debug && {
-        background: 'yellow',
-        opacity: 0.8,
-        filter: 'none',
-      }),
-      ...style,
-    }
-  }
+  }, [JSON.stringify({ restingStyle, style })])
 
   const parentRef = (ref?: HTMLElement | null) => setParentNode(ref || undefined)
 
-  const element = (
+  type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+
+  const finalStyle = getStyle(transformRef.current, getGlowBounds())
+
+  const Component = (divProps?: DivProps) => (
     <div
       className="hoverglow"
       {...glowProps}
       ref={elementRef}
-      style={getStyle(transformRef.current)}
+      style={finalStyle}
+      {...divProps}
     >
       {props.debug ? crosshair : null}
+      {divProps?.children}
+      {strategy === 'plain-underlay' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            background,
+            ...underlayStyle,
+          }}
+        />
+      )}
     </div>
   )
 
   if (process.env.NODE_ENV === 'development' && props.debug) {
     return {
       parentRef,
-      element: (
+      Component: (props?: DivProps) => (
         <>
-          {element}
+          {Component(props)}
           {crosshair}
           <div
             style={{
@@ -200,7 +236,7 @@ height: ${parentBounds.height}`
 
   return {
     parentRef,
-    element,
+    Component,
   }
 }
 
@@ -221,6 +257,7 @@ export const useRelativePositionedItem = (
   onPositionChange?: (props: {
     position: { x: number; y: number }
     transform: string
+    glowBounds: Bounds
     isResting: boolean
   }) => void
 ) => {
@@ -236,9 +273,13 @@ export const useRelativePositionedItem = (
     initialOffset = { x: 0, y: 0 },
     full,
     inverse,
+    recenterOnRest,
     debug,
     throttle = 16,
     disableUpdates,
+    initialParentBounds,
+    initialRelativeToParentBounds,
+    useResizeObserverRect,
   } = props
   const [parentNode, setParentNode] = useState<HTMLElement>()
   const state = useRef({
@@ -246,17 +287,32 @@ export const useRelativePositionedItem = (
     currentPosition: { x: 0, y: 0 },
   })
   const relativeToParentNode = findRelativePositionedParent(props.itemRef?.current)
-  const getRelativeToParentBounds = useGetBounds(relativeToParentNode)
-  const getParentBounds = useGetBounds(parentNode, () => {
-    setInitialPosition()
+  const getRelativeToParentBounds = useGetBounds({
+    node: relativeToParentNode,
+    useResizeObserverRect,
+    defaultBounds: initialRelativeToParentBounds,
   })
-  const offX = initialOffset.x || 0
-  const offY = initialOffset.y || 0
+  const getParentBounds = useGetBounds({
+    node: parentNode,
+    defaultBounds: initialParentBounds,
+    useResizeObserverRect,
+    onDidUpdate: () => {
+      setInitialPosition()
+    },
+  })
+
+  const offX = offset.x ?? initialOffset.x ?? 0
+  const offY = offset.y ?? initialOffset.y ?? 0
 
   const getGlowBounds = useCallback(() => {
     const bounds = getParentBounds()
+    const parentSize = {
+      left: bounds?.left || 0,
+      top: bounds?.top || 0,
+    }
+
     if (!bounds) {
-      return { width: 0, height: 0 }
+      return { ...parentSize, width: 0, height: 0 }
     }
 
     const width = Math.min(
@@ -268,6 +324,7 @@ export const useRelativePositionedItem = (
       scale * (full ? bounds.height : size || propHeight)
     )
     return {
+      ...parentSize,
       width,
       height,
     }
@@ -278,7 +335,8 @@ export const useRelativePositionedItem = (
       if (!onPositionChange) return
       if (disableUpdates) return
       state.current.currentPosition = position
-      const { width, height } = getGlowBounds()
+      const glowBounds = getGlowBounds()
+      const { width, height } = glowBounds
       const bounds = getParentBounds()
       const containerBounds = getRelativeToParentBounds()
       if (!bounds || !containerBounds) return
@@ -297,7 +355,7 @@ export const useRelativePositionedItem = (
       x = doInverse(bounds.width, x)
       const halfW = width / 2
       x = x - halfW + misfitX
-      x = x + (offset.x || 0)
+      x = Math.round(x + (offset.x || 0))
 
       let y = position.y
       y = doResist(bounds.height, y)
@@ -305,20 +363,13 @@ export const useRelativePositionedItem = (
       y = doInverse(bounds.height, y)
       const halfH = height / 2
       y = y - halfH + misfitY
-      y = y + (offset.y || 0)
+      y = Math.round(y + (offset.y || 0))
 
       if (process.env.NODE_ENV === 'development' && debug) {
-        // eslint-disable-next-line no-console
         console.table({
-          start: {
-            x: position.x,
-            y: position.y,
-            position: [position.x, position.y].map((val) => Math.round(val)).join(', '),
-            bounds: [bounds.width, bounds.height]
-              .map((val) => Math.round(val))
-              .join(', '),
-            glowDimensions: [width, height].join(', '),
-          },
+          bounds,
+          position,
+          glowDimensions: [width, height].join(', '),
           resisted: {
             x: doResist(bounds.width, position.x),
             y: doResist(bounds.height, position.y),
@@ -345,16 +396,13 @@ export const useRelativePositionedItem = (
       }
 
       onPositionChange({
+        glowBounds,
         isResting: !state.current.tracking,
         position: {
           x,
           y,
         },
-        transform: `
-        translateX(${x}px)
-        translateY(${y}px)
-        translateZ(0px)
-      `,
+        transform: `translateX(${x}px) translateY(${y}px) translateZ(0px)`,
       })
     },
     [
@@ -375,11 +423,16 @@ export const useRelativePositionedItem = (
   const setInitialPosition = useCallback(() => {
     const bounds = getParentBounds()
     if (!bounds) return
-    callback({
+    const position = {
       x: bounds.width / 2 + offX,
       y: bounds.height / 2 + offY,
-    })
+    }
+    callback(position)
   }, [getParentBounds, callback, offX, offY])
+
+  if (!state.current.currentPosition.x && !state.current.currentPosition.y) {
+    setInitialPosition()
+  }
 
   useIsomorphicLayoutEffect(() => {
     setInitialPosition()
@@ -411,8 +464,10 @@ export const useRelativePositionedItem = (
     const trackMouse = (val: boolean) => () => {
       state.current.tracking = val
       if (!val) {
-        // reset to center on mouseleave
-        setInitialPosition()
+        if (recenterOnRest) {
+          // reset to center on mouseleave
+          setInitialPosition()
+        }
       }
     }
 
@@ -471,7 +526,7 @@ const getOffset = async (ev: MouseEvent, parentElement?: HTMLElement) => {
   const clientY = ev.clientY || 0
   let parentDimensions = lastDimensions.get(parent)
   if (!parentDimensions) {
-    parentDimensions = await getBoundingClientRectAsync(parent)
+    parentDimensions = parent.getBoundingClientRect()
     if (!parentDimensions) return [0, 0]
     lastDimensions.set(parent, parentDimensions)
   }
@@ -480,10 +535,17 @@ const getOffset = async (ev: MouseEvent, parentElement?: HTMLElement) => {
   return [xOffset, yOffset] as const
 }
 
-const useGetBounds = (
-  node?: HTMLElement | null,
-  onDidUpdate?: (props: { width: number; height: number }) => void
-) => {
+const useGetBounds = ({
+  node,
+  onDidUpdate,
+  defaultBounds,
+  useResizeObserverRect,
+}: {
+  node?: HTMLElement | null
+  onDidUpdate?: (props: Bounds) => void
+  defaultBounds?: Bounds
+  useResizeObserverRect?: boolean
+}) => {
   const state = useRef<DOMRect>()
 
   useIsomorphicLayoutEffect(() => {
@@ -496,7 +558,7 @@ const useGetBounds = (
       onDidUpdate?.(state.current)
     }
 
-    getBoundingClientRectAsync(node).then((rect) => rect && update(rect))
+    update(node.getBoundingClientRect())
 
     const ro = new ResizeObserver(
       throttleFn(([entry]) => {
@@ -514,7 +576,10 @@ const useGetBounds = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [node])
 
-  return useCallback(() => state.current, [])
+  return useCallback(
+    () => state.current || defaultBounds,
+    [JSON.stringify(defaultBounds)]
+  )
 }
 
 const addEvent = <K extends keyof HTMLElementEventMap>(
@@ -569,3 +634,7 @@ const crosshair =
       />
     </div>
   ) : null
+
+export const IS_SAFARI =
+  typeof navigator !== 'undefined' &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent)

@@ -11,7 +11,7 @@ import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
   useReactNativeWebLite: boolean
-  disableFontSupport?: boolean
+  enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
@@ -24,6 +24,8 @@ export type WithTamaguiProps = TamaguiOptions & {
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
+    const isAppDir = nextConfig.experimental?.appDir
+
     return {
       ...nextConfig,
       webpack: (webpackConfig: any, options: any) => {
@@ -63,7 +65,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // eslint-disable-next-line no-console
+                // rome-ignore lint/nursery/noConsoleLog: ok
                 console.log(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
@@ -159,7 +161,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log('Tamagui alias:', alias)
         }
 
@@ -194,7 +196,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               )
             )
           } catch (err) {
-            // eslint-disable-next-line no-console
             console.warn(
               `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(
                 ', '
@@ -205,7 +206,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.log(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {
@@ -332,7 +333,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
          * Font Support
          */
         if (cssRules) {
-          if (!tamaguiOptions.disableFontSupport) {
+          if (tamaguiOptions.enableLegacyFontSupport) {
             // fonts support
             cssRules.unshift({
               test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
@@ -359,7 +360,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           const cssLoader = getGlobalCssLoader(
             // @ts-ignore
             {
-              assetPrefix: options.config.assetPrefix || config.assetPrefix,
+              assetPrefix:
+                nextConfig.assetPrefix ||
+                options.config.assetPrefix ||
+                config.assetPrefix,
               future: nextConfig.future,
               experimental: nextConfig.experimental || {},
               isEdgeRuntime: true,
@@ -373,17 +377,21 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
             []
           )
-
-          cssRules.unshift({
-            test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
-            sideEffects: true,
-            use: cssLoader,
-          })
+          if (!isAppDir) {
+            cssRules.unshift({
+              test: tamaguiOptions.includeCSSTest ?? /\.tamagui\.css$/,
+              sideEffects: true,
+              use: cssLoader,
+            })
+          }
         }
+
+        const enableStudio = options.dev && options.nextRuntime === 'nodejs' && isServer
 
         webpackConfig.plugins.push(
           new TamaguiPlugin({
-            commonjs: isServer,
+            enableStudio,
+            isServer,
             exclude: (path: string) => {
               const res = shouldExclude(path, options.dir)
               // console.log(`shouldExclude`, res, path)

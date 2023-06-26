@@ -1,2 +1,2 @@
-export * from './createMedia.js'
+export * from './createMedia'
 export * from './matchMedia'

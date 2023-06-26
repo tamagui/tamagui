@@ -2,7 +2,7 @@ import generate from '@babel/generator'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 
-import { Ternary } from '../types.js'
+import { Ternary } from '../types'
 
 export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(
@@ -33,7 +33,11 @@ export function normalizeTernaries(ternaries: Ternary[]) {
       shouldSwap = true
     } else if (t.isBinaryExpression(test)) {
       if (test.operator === '!==' || test.operator === '!=') {
-        ternaryTest = t.binaryExpression(test.operator, test.left, test.right)
+        ternaryTest = t.binaryExpression(
+          test.operator.replace('!', '=') as any,
+          test.left,
+          test.right
+        )
         shouldSwap = true
       }
     }

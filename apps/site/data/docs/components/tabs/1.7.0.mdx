@@ -4,6 +4,7 @@ description: Vertical and horizontal accessible tabs.
 name: tabs
 component: Tabs
 package: tabs
+demoName: Tabs
 ---
 
 # Tabs <Beta />
@@ -37,8 +38,8 @@ import { Tabs } from 'tamagui'
 export default () => (
   <Tabs defaultValue="tab1" width={400}>
     <Tabs.List space>
-      <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
-      <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+      <Tabs.Tab value="tab1">Tab 1</Tabs.Tab>
+      <Tabs.Tab value="tab2">Tab 2</Tabs.Tab>
     </Tabs.List>
 
     <Tabs.Content value="tab1">
@@ -51,19 +52,7 @@ export default () => (
 )
 ```
 
-## Advanced Demo
-
-Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
-
-<HeroContainer noPad>
-  <TabsAdvancedDemo />
-</HeroContainer>
-
-```tsx hero template=TabsAdvanced
-
-```
-
-## API
+## API Reference
 
 ### Tabs
 
@@ -106,7 +95,7 @@ Root tabs component. Extends [Stack](/docs/components/stack). Passing the `size`
   ]}
 />
 
-### List
+### Tabs.List
 
 Container for the trigger buttons. Supports scrolling by extending [Group](/docs/components/group). You can disable passing border radius to children by passing `disablePassBorderRadius`.
 
@@ -121,7 +110,7 @@ Container for the trigger buttons. Supports scrolling by extending [Group](/docs
   ]}
 />
 
-### Trigger
+### Tabs.Trigger
 
 Extends [Button](/docs/components/button), adding:
 
@@ -137,10 +126,15 @@ Extends [Button](/docs/components/button), adding:
       type: `(type: InteractionType, layout: TabTriggerLayout | null) => void`,
       description: `Used for making custom indicators when trigger interacted with`,
     },
+    {
+      name: 'unstyled',
+      type: `boolean`,
+      description: `When true, remove all default tamagui styling`,
+    },
   ]}
 />
 
-### Content
+### Tabs.Content
 
 Where each tab's content will be shown. Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
@@ -159,3 +153,17 @@ Where each tab's content will be shown. Extends [ThemeableStack](/docs/component
     },
   ]}
 />
+
+## Examples
+
+### Animations
+
+Here is a demo with more advanced animations using [AnimatePresence](/docs/core/animations#animatepresence-and-exitstyle) and [Trigger](#trigger)'s `onInteraction` prop.
+
+<HeroContainer noPad showAnimationDriverControl>
+  <TabsAdvancedDemo />
+</HeroContainer>
+
+```tsx hero template=TabsAdvanced
+
+```

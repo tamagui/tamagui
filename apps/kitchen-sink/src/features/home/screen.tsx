@@ -1,7 +1,7 @@
-import { variableToString } from '@tamagui/core'
+import { ChevronRight, Moon, Sun } from '@tamagui/lucide-icons'
 import { ScrollView } from 'react-native'
-import { ChevronRight, Moon, Sun } from 'sandbox-ui'
 import { UseLinkProps, useLink } from 'solito/link'
+// import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
   H1,
@@ -23,18 +23,17 @@ export function HomeScreen() {
     <ScrollView>
       <YStack bc="$background" p="$3" pt="$6" pb="$8" f={1} space>
         <H1 fontFamily="$heading" size="$9">
-          Demos
+          Kitchen Sink
         </H1>
-
-        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
-          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
-        </YStack>
 
         <YGroup size="$4">
           <YGroup.Item>
             <ColorSchemeListItem />
           </YGroup.Item>
         </YGroup>
+        <YStack theme="yellow" bc="$background" p="$3" br="$4" bw={1} boc="$borderColor">
+          <Paragraph>Welcome to the Tamagui Kitchen Sink!</Paragraph>
+        </YStack>
 
         <YStack space="$4" maw={600}>
           {demos.map((group, i) => {
@@ -67,33 +66,38 @@ const LinkListItem = ({
 }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
   const theme = useTheme()
+
   return (
     <ListItem
       {...linkProps}
+      onPress={(e) => {
+        console.log(linkProps)
+        linkProps.onPress(e)
+      }}
       {...props}
-      iconAfter={<ChevronRight color={variableToString(theme.color11)} />}
+      iconAfter={<ChevronRight color={theme.color11.get()} />}
     >
       {children}
     </ListItem>
   )
 }
 
-const ColorSchemeListItem = () => {
+const ColorSchemeListItem = (props: ListItemProps) => {
   const theme = useThemeControl()
   const checked = theme.value === 'light'
 
   return (
-    <ListItem
-      pressTheme
-      paddingVertical={0}
-      onPress={() => {
-        theme.set(theme.value === 'dark' ? 'light' : 'dark')
-      }}
-    >
+    <ListItem {...props} pressTheme paddingVertical={0}>
       <ListItem.Text>Theme</ListItem.Text>
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
-      <Switch checked={checked}>
+      <Switch
+        native
+        checked={checked}
+        onCheckedChange={() => {
+          theme.set(theme.value === 'dark' ? 'light' : 'dark')
+        }}
+      >
         <Switch.Thumb
           animation={[
             'quick',
@@ -111,6 +115,15 @@ const ColorSchemeListItem = () => {
 }
 
 const demos = [
+  {
+    pages: [
+      { title: 'Sandbox', route: '/sandbox' },
+      {
+        title: 'Test Cases',
+        route: '/tests',
+      },
+    ],
+  },
   {
     pages: [
       { title: 'Stacks', route: '/demo/stacks' },
@@ -133,6 +146,7 @@ const demos = [
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
       { title: 'RadioGroup', route: '/demo/radio-group' },
+      { title: 'ToggleGroup', route: '/demo/toggle-group' },
     ],
   },
 
@@ -144,6 +158,7 @@ const demos = [
       // { title: 'Drawer', route: '/demo/drawer' },
       { title: 'Popover', route: '/demo/popover' },
       { title: 'Sheet', route: '/demo/sheet' },
+      { title: 'Toast', route: '/demo/toast' },
     ],
   },
 

@@ -41,6 +41,31 @@ const animatedStyleKey = {
   opacity: true,
 }
 
+const colorStyleKey = {
+  backgroundColor: true,
+  color: true,
+  borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
+}
+// these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
+const costlyToAnimateStyleKey = {
+  borderRadius: true,
+  borderTopLeftRadius: true,
+  borderTopRightRadius: true,
+  borderBottomLeftRadius: true,
+  borderBottomRightRadius: true,
+  borderWidth: true,
+  borderLeftWidth: true,
+  borderRightWidth: true,
+  borderTopWidth: true,
+  borderBottomWidth: true,
+  ...colorStyleKey,
+  // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
+}
+
 export const AnimatedView = Animated.View
 export const AnimatedText = Animated.Text
 
@@ -73,8 +98,13 @@ export function useAnimatedNumber(
       state.current.composite?.stop()
       state.current.composite = null
     },
-    setValue(next: number, { type, ...config } = { type: 'spring' }) {
+    setValue(next: number, { type, ...config } = { type: 'spring' }, onFinish) {
       const val = state.current.val
+
+      const handleFinish = onFinish
+        ? ({ finished }) => (finished ? onFinish() : null)
+        : undefined
+
       if (type === 'direct') {
         val.setValue(next)
       } else if (type === 'spring') {
@@ -84,7 +114,7 @@ export function useAnimatedNumber(
           toValue: next,
           useNativeDriver: !isWeb,
         })
-        composite.start()
+        composite.start(handleFinish)
         state.current.composite = composite
       } else {
         state.current.composite?.stop()
@@ -93,7 +123,7 @@ export function useAnimatedNumber(
           toValue: next,
           useNativeDriver: !isWeb,
         })
-        composite.start()
+        composite.start(handleFinish)
         state.current.composite = composite
       }
     },
@@ -101,11 +131,15 @@ export function useAnimatedNumber(
 }
 
 export function useAnimatedNumberReaction(
-  value: UniversalAnimatedNumber<Animated.Value>,
-  cb: (current: number) => void
+  {
+    value,
+  }: {
+    value: UniversalAnimatedNumber<Animated.Value>
+  },
+  onValue: (current: number) => void
 ) {
   const onChange = useEvent((current) => {
-    cb(current.value)
+    onValue(current.value)
   })
 
   useEffect(() => {
@@ -141,39 +175,49 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const mergedStyles = style
+      /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-
-      const animationsState = useSafeRef<
-        WeakMap<
+      const animationsState = useSafeRef(
+        new WeakMap<
           Animated.Value,
           {
-            interopolation: Animated.AnimatedInterpolation<any>
-            current?: number | undefined
+            interpolation: Animated.AnimatedInterpolation<any>
+            current?: number | string | undefined
+            // only for colors
+            animateToValue?: number
           }
-        >
-      >(null as any)
-      if (!animationsState.current) {
-        animationsState.current = new WeakMap()
-      }
+        >()
+      )
+      const animateOnly = props.animateOnly || []
 
-      // const args = [JSON.stringify(mergedStyles)]
-      const args = [
-        JSON.stringify(mergedStyles),
-        JSON.stringify(state),
-        isExiting,
-        !!onDidAnimate,
-      ]
+      const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
+
+      // check if there is any style that is not supported by native driver
+      const isThereNoNativeStyleKeys = useMemo(() => {
+        if (isWeb) return true
+
+        return Object.keys(style).some((key) => {
+          if (animateOnly.length) {
+            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          } else {
+            return !animatedStyleKey[key]
+          }
+        })
+      }, args)
 
       const res = useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
 
         const nonAnimatedStyle = {}
-        for (const key in mergedStyles) {
-          const val = mergedStyles[key]
-          if (!animatedStyleKey[key]) {
+        for (const key in style) {
+          const val = style[key]
+          if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+          if (animateOnly.length && animateOnly.indexOf(key) === -1) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -187,6 +231,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
+            // tkey: e.g: 'translateX'
             const tkey = Object.keys(transform)[0]
             const currentTransform = animatedTranforms.current[index]?.[tkey]
             animatedTranforms.current[index] = {
@@ -200,12 +245,12 @@ export function createAnimations<A extends AnimationsConfig>(
           ...Object.fromEntries(
             Object.entries(animateStyles.current).map(([k, v]) => [
               k,
-              animationsState.current!.get(v)?.interopolation || v,
+              animationsState.current!.get(v)?.interpolation || v,
             ])
           ),
           transform: animatedTranforms.current.map((r) => {
             const key = Object.keys(r)[0]
-            const val = animationsState.current!.get(r[key])?.interopolation || r[key]
+            const val = animationsState.current!.get(r[key])?.interpolation || r[key]
             return { [key]: val }
           }),
         }
@@ -221,28 +266,37 @@ export function createAnimations<A extends AnimationsConfig>(
           animated: Animated.Value | undefined,
           valIn: string | number
         ) {
-          const [val, type] = getValue(valIn)
+          const isColorStyleKey = colorStyleKey[key]
+          const [val, type] = isColorStyleKey ? [0, undefined] : getValue(valIn)
+          let animateToValue = val
           const value = animated || new Animated.Value(val)
 
-          // this optimization seems to work for web but not native...
-          if (isWeb) {
-            if (animated && val === animated['_value']) {
-              // avoid running again for same value
-              return value
-            }
-          }
-
+          const curInterpolation = animationsState.current.get(value)
           let interpolateArgs: any
           if (type) {
-            const curInterpolation = animationsState.current.get(value)
             interpolateArgs = getInterpolated(
               curInterpolation?.current ?? value['_value'],
               val,
               type
             )
             animationsState.current!.set(value, {
-              interopolation: value.interpolate(interpolateArgs),
+              interpolation: value.interpolate(interpolateArgs),
               current: val,
+            })
+          }
+
+          if (isColorStyleKey) {
+            animateToValue = curInterpolation?.animateToValue ? 0 : 1
+            interpolateArgs = getColorInterpolated(
+              curInterpolation?.current as string,
+              // valIn is the next color
+              valIn as string,
+              animateToValue
+            )
+            animationsState.current!.set(value, {
+              current: valIn,
+              interpolation: value.interpolate(interpolateArgs),
+              animateToValue: curInterpolation?.animateToValue ? 0 : 1,
             })
           }
 
@@ -257,11 +311,22 @@ export function createAnimations<A extends AnimationsConfig>(
 
             runners.push(() => {
               value.stopAnimation()
-              Animated[animationConfig.type || 'spring'](value, {
-                toValue: val,
-                useNativeDriver: !isWeb,
-                ...animationConfig,
-              }).start(({ finished }) => {
+
+              function getAnimation() {
+                return Animated[animationConfig.type || 'spring'](value, {
+                  toValue: animateToValue,
+                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
+                  ...animationConfig,
+                })
+              }
+
+              const animation = animationConfig.delay
+                ? Animated.sequence([
+                    Animated.delay(animationConfig.delay),
+                    getAnimation(),
+                  ])
+                : getAnimation()
+              animation.start(({ finished }) => {
                 if (finished) {
                   resolve()
                 }
@@ -270,8 +335,8 @@ export function createAnimations<A extends AnimationsConfig>(
           }
 
           if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) {
-              // eslint-disable-next-line no-console
+            if (props['debug'] === 'verbose') {
+              // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
               console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
             }
@@ -297,14 +362,31 @@ export function createAnimations<A extends AnimationsConfig>(
       }, args)
 
       if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
-          // eslint-disable-next-line no-console
+        if (props['debug'] === 'verbose') {
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`Returning animated`, res)
         }
       }
 
       return res
     },
+  }
+}
+
+function getColorInterpolated(
+  currentColor: string | undefined,
+  nextColor: string,
+  animateToValue: number
+) {
+  const inputRange = [0, 1]
+  const outputRange = [currentColor ? currentColor : nextColor, nextColor]
+  if (animateToValue === 0) {
+    // because we are animating from value 1 to 0, we need to put target color at the beginning
+    outputRange.reverse()
+  }
+  return {
+    inputRange,
+    outputRange,
   }
 }
 
@@ -334,9 +416,10 @@ function getAnimationConfig(
   }
   let type = ''
   let extraConf: any
+  const shortKey = transformShorthands[key]
   if (Array.isArray(animation)) {
     type = animation[0] as string
-    const conf = animation[1] && animation[1][key]
+    const conf = animation[1]?.[key] ?? animation[1]?.[shortKey]
     if (conf) {
       if (typeof conf === 'string') {
         type = conf
@@ -346,7 +429,7 @@ function getAnimationConfig(
       }
     }
   } else {
-    const val = animation?.[key]
+    const val = animation?.[key] ?? animation?.[shortKey]
     type = val?.type
     extraConf = val
   }
@@ -360,7 +443,15 @@ function getAnimationConfig(
   }
 }
 
-function getValue(input: number | string) {
+// try both combos
+const transformShorthands = {
+  x: 'translateX',
+  y: 'translateY',
+  translateX: 'x',
+  translateY: 'y',
+}
+
+function getValue(input: number | string, isColor = false) {
   if (typeof input !== 'string') {
     return [input] as const
   }

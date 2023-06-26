@@ -67,7 +67,76 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
         3: import("@tamagui/core").Variable<number>;
         5: import("@tamagui/core").Variable<number>;
     };
-}, {
+} & Omit<{
+    color: {
+        white: import("@tamagui/core").Variable<string>;
+        black: import("@tamagui/core").Variable<string>;
+    };
+    radius: {
+        0: import("@tamagui/core").Variable<number>;
+        1: import("@tamagui/core").Variable<number>;
+        2: import("@tamagui/core").Variable<number>;
+        4: import("@tamagui/core").Variable<number>;
+        8: import("@tamagui/core").Variable<number>;
+        3: import("@tamagui/core").Variable<number>;
+        5: import("@tamagui/core").Variable<number>;
+        6: import("@tamagui/core").Variable<number>;
+        7: import("@tamagui/core").Variable<number>;
+        9: import("@tamagui/core").Variable<number>;
+        10: import("@tamagui/core").Variable<number>;
+        11: import("@tamagui/core").Variable<number>;
+        12: import("@tamagui/core").Variable<number>;
+    };
+    zIndex: {
+        0: import("@tamagui/core").Variable<number>;
+        1: import("@tamagui/core").Variable<number>;
+        2: import("@tamagui/core").Variable<number>;
+        4: import("@tamagui/core").Variable<number>;
+        3: import("@tamagui/core").Variable<number>;
+        5: import("@tamagui/core").Variable<number>;
+    };
+    space: {
+        [x: string]: import("@tamagui/core").Variable<any>;
+        [x: number]: import("@tamagui/core").Variable<any>;
+        [x: symbol]: import("@tamagui/core").Variable<any>;
+    };
+    size: {
+        0: import("@tamagui/core").Variable<number>;
+        15: import("@tamagui/core").Variable<number>;
+        1: import("@tamagui/core").Variable<number>;
+        2: import("@tamagui/core").Variable<number>;
+        4: import("@tamagui/core").Variable<number>;
+        8: import("@tamagui/core").Variable<number>;
+        20: import("@tamagui/core").Variable<number>;
+        0.25: import("@tamagui/core").Variable<number>;
+        0.5: import("@tamagui/core").Variable<number>;
+        0.75: import("@tamagui/core").Variable<number>;
+        1.5: import("@tamagui/core").Variable<number>;
+        2.5: import("@tamagui/core").Variable<number>;
+        3: import("@tamagui/core").Variable<number>;
+        3.5: import("@tamagui/core").Variable<number>;
+        true: import("@tamagui/core").Variable<number>;
+        4.5: import("@tamagui/core").Variable<number>;
+        5: import("@tamagui/core").Variable<number>;
+        5.5: import("@tamagui/core").Variable<number>;
+        6: import("@tamagui/core").Variable<number>;
+        6.5: import("@tamagui/core").Variable<number>;
+        7: import("@tamagui/core").Variable<number>;
+        7.6: import("@tamagui/core").Variable<number>;
+        8.5: import("@tamagui/core").Variable<number>;
+        9: import("@tamagui/core").Variable<number>;
+        9.5: import("@tamagui/core").Variable<number>;
+        10: import("@tamagui/core").Variable<number>;
+        11: import("@tamagui/core").Variable<number>;
+        12: import("@tamagui/core").Variable<number>;
+        13: import("@tamagui/core").Variable<number>;
+        14: import("@tamagui/core").Variable<number>;
+        16: import("@tamagui/core").Variable<number>;
+        17: import("@tamagui/core").Variable<number>;
+        18: import("@tamagui/core").Variable<number>;
+        19: import("@tamagui/core").Variable<number>;
+    };
+}, "color" | "space" | "size" | "radius" | "zIndex">, {
     light: {
         background: import("@tamagui/core").Variable<string>;
         color: import("@tamagui/core").Variable<string>;
@@ -277,5 +346,5 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
             1: number;
         };
     };
-}>;
+}, boolean | undefined, string | undefined>;
 //# sourceMappingURL=index.d.ts.map

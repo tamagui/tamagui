@@ -1,22 +1,49 @@
 import { useState } from 'react'
-import { Button, H5, SizableText, Tabs, XStack } from 'tamagui'
+import {
+  Button,
+  H5,
+  Separator,
+  SizableText,
+  Tabs,
+  TabsContentProps,
+  XStack,
+  YStack,
+  isWeb,
+} from 'tamagui'
 
 const demos = ['horizontal', 'vertical'] as const
+const demosTitle: Record<(typeof demos)[number], string> = {
+  horizontal: 'Horizontal',
+  vertical: 'Vertical',
+}
 
 export function TabsDemo() {
   const [demoIndex, setDemoIndex] = useState(0)
   const demo = demos[demoIndex]
 
   return (
-    <>
+    // web only fix for position relative
+    <YStack
+      paddingHorizontal="$4"
+      {...(isWeb && {
+        position: 'unset' as any,
+      })}
+    >
       {demo === 'horizontal' ? <HorizontalTabs /> : <VerticalTabs />}
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
-          {demo}
+          {demosTitle[demo]}
         </Button>
       </XStack>
-    </>
+    </YStack>
   )
 }
 
@@ -28,31 +55,38 @@ const HorizontalTabs = () => {
       flexDirection="column"
       width={400}
       height={150}
-      br="$4"
+      borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="bottom" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" f={1} value="tab1">
+      <Tabs.List
+        separator={<Separator vertical />}
+        disablePassBorderRadius="bottom"
+        aria-label="Manage your account"
+      >
+        <Tabs.Tab flex={1} value="tab1">
           <SizableText fontFamily="$body">Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab2">
           <SizableText fontFamily="$body">Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" f={1} value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab flex={1} value="tab3">
           <SizableText fontFamily="$body">Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
-
-      <Tabs.Content value="tab1" key="tab1" p="$5" ai="center" jc="center" f={1}>
+      <Separator />
+      <TabsContent value="tab1">
         <H5>Profile</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content value="tab2" key="tab2" p="$5" ai="center" jc="center" f={1}>
+      <TabsContent value="tab2">
         <H5>Connections</H5>
-      </Tabs.Content>
+      </TabsContent>
 
-      <Tabs.Content value="tab3" key="tab3" p="$5" ai="center" jc="center" f={1}>
+      <TabsContent value="tab3">
         <H5>Notifications</H5>
-      </Tabs.Content>
+      </TabsContent>
     </Tabs>
   )
 }
@@ -64,28 +98,57 @@ const VerticalTabs = () => {
       flexDirection="row"
       orientation="vertical"
       width={400}
-      br="$4"
+      borderRadius="$4"
+      borderWidth="$0.25"
+      overflow="hidden"
+      borderColor="$borderColor"
     >
-      <Tabs.List disablePassBorderRadius="end" aria-label="Manage your account">
-        <Tabs.Trigger theme="Button" value="tab1">
+      <Tabs.List
+        disablePassBorderRadius="end"
+        aria-label="Manage your account"
+        separator={<Separator />}
+      >
+        <Tabs.Tab value="tab1">
           <SizableText>Profile</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab2">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab2">
           <SizableText>Connections</SizableText>
-        </Tabs.Trigger>
-        <Tabs.Trigger theme="Button" value="tab3">
+        </Tabs.Tab>
+        <Tabs.Tab value="tab3">
           <SizableText>Notifications</SizableText>
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
-      <Tabs.Content value="tab1" key="tab1" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Profile</H5>
-      </Tabs.Content>
-      <Tabs.Content value="tab2" key="tab2" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Connections</H5>
-      </Tabs.Content>
-      <Tabs.Content value="tab3" key="tab3" p="$2" ai="center" jc="center" f={1}>
-        <H5 ta="center">Notifications</H5>
-      </Tabs.Content>
+      <Separator vertical />
+      <TabsContent value="tab1">
+        <H5 textAlign="center">Profile</H5>
+      </TabsContent>
+      <TabsContent value="tab2">
+        <H5 textAlign="center">Connections</H5>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <H5 textAlign="center">Notifications</H5>
+      </TabsContent>
     </Tabs>
+  )
+}
+
+const TabsContent = (props: TabsContentProps) => {
+  return (
+    <Tabs.Content
+      backgroundColor="$background"
+      key="tab3"
+      padding="$2"
+      alignItems="center"
+      justifyContent="center"
+      flex={1}
+      borderColor="$background"
+      borderRadius="$2"
+      borderTopLeftRadius={0}
+      borderTopRightRadius={0}
+      borderWidth="$2"
+      {...props}
+    >
+      {props.children}
+    </Tabs.Content>
   )
 }

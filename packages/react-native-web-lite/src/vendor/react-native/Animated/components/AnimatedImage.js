@@ -9,7 +9,7 @@
  */
 import * as React from 'react'
 
-import Image from '../../../../Image/index.js'
-import createAnimatedComponent from '../createAnimatedComponent.js'
+import Image from '../../../../Image/index'
+import createAnimatedComponent from '../createAnimatedComponent'
 
 export default createAnimatedComponent(Image)

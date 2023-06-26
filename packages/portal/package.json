@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -14,23 +14,31 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/core": "1.7.1",
-    "@tamagui/stacks": "1.7.1",
-    "@tamagui/use-event": "1.7.1"
+    "@tamagui/core": "1.35.12",
+    "@tamagui/stacks": "1.35.12",
+    "@tamagui/use-event": "1.35.12"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.7"
   },
   "publishConfig": {
     "access": "public"

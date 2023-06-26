@@ -43,19 +43,21 @@ export function Hero() {
   // const element = useAlwaysConcurrent()
 
   return (
-    <Theme className={`${name}-season`} name={tint as any}>
-      {/* {element} */}
-      <YStack
-        o={0.5}
-        zi={-1}
-        pos="absolute"
-        t={0}
-        l={0}
-        r={0}
-        h={2000}
-        className="hero-blur"
-      />
-      <HeroContents />
+    <Theme name={tint as any}>
+      <div className={`${name}-season _dsp-contents`}>
+        {/* {element} */}
+        <YStack
+          o={0.5}
+          zi={-1}
+          pos="absolute"
+          t={0}
+          l={0}
+          r={0}
+          h={2000}
+          className="hero-blur"
+        />
+        <HeroContents />
+      </div>
     </Theme>
   )
 }
@@ -117,7 +119,7 @@ const HeroContents = memo(() => {
           >
             <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
             <br />
-            runs&nbsp;faster.
+            runs&nbsp;faster
           </H1>
 
           <YStack
@@ -299,7 +301,7 @@ const Tag = styled(Text, {
   px: '$1',
   mx: '$-1',
   cursor: 'pointer',
-  color: '$color10',
+  color: '$color',
   bc: '$color2',
 
   hoverStyle: {

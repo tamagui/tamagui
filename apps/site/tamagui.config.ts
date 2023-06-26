@@ -1,6 +1,8 @@
-import { config } from '@tamagui/config'
+import { SpecificTokens } from '@tamagui/core'
+import { config } from '@tamagui/site-config'
 import { createTamagui } from 'tamagui'
 
+// for site responsive demo
 Object.assign(config.media, {
   tiny: { maxWidth: 500 },
   gtTiny: { minWidth: 500 + 1 },

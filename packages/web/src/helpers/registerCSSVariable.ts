@@ -1,12 +1,13 @@
-import { Variable, createCSSVariable } from '../createVariable.js'
+import { Variable, createCSSVariable, getVariableValue } from '../createVariable'
+import { VariableVal } from '../types'
 
-export const registerCSSVariable = (v: Variable) => {
-  tokensValueToVariable.set(v.val, v)
+export const registerCSSVariable = (v: Variable | VariableVal) => {
+  tokensValueToVariable.set(getVariableValue(v), v)
 }
 
-export const variableToCSS = (v: Variable) => {
+export const variableToCSS = (v: Variable, unitless = false) => {
   return `--${createCSSVariable(v.name, false)}:${
-    typeof v.val === 'number' ? `${v.val}px` : v.val
+    !unitless && typeof v.val === 'number' ? `${v.val}px` : v.val
   }`
 }
 

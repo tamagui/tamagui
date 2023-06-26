@@ -1,5 +1,5 @@
 import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react';
-import type { SizeTokens } from '@tamagui/core';
+import type { NativeValue, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks';
 import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
@@ -25,6 +25,10 @@ export interface SelectProps {
     name?: string;
     autoComplete?: string;
     size?: SizeTokens;
+    /**
+     * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
+     */
+    native?: NativeValue<'web'>;
 }
 export interface SelectContextValue {
     dir?: Direction;
@@ -44,8 +48,6 @@ export interface SelectContextValue {
     onChange: (value: string) => void;
     valueNode: Element | null;
     onValueNodeChange(node: HTMLElement): void;
-    valueNodeHasChildren: boolean;
-    onValueNodeHasChildrenChange(hasChildren: boolean): void;
     forceUpdate: DispatchWithoutAction;
     isInSheet?: boolean;
     fallback: boolean;
@@ -60,7 +62,6 @@ export interface SelectContextValue {
     dataRef?: MutableRefObject<ContextData>;
     controlledScrolling?: boolean;
     listRef?: MutableRefObject<Array<HTMLElement | null>>;
-    floatingRef?: MutableRefObject<HTMLElement | null>;
     canScrollUp?: boolean;
     canScrollDown?: boolean;
     floatingContext?: FloatingContext<ReferenceType>;
@@ -69,6 +70,8 @@ export interface SelectContextValue {
         getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
         getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any;
     };
+    native?: NativeValue;
+    shouldRenderWebNative: boolean;
 }
 export type SelectViewportProps = ThemeableStackProps & {
     size?: SizeTokens;

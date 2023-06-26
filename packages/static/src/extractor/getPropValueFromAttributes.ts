@@ -1,7 +1,7 @@
 import generate from '@babel/generator'
 import * as t from '@babel/types'
 
-import { accessSafe } from './accessSafe.js'
+import { accessSafe } from './accessSafe'
 
 /**
  * getPropValueFromAttributes gets a prop by name from a list of attributes and accounts for potential spread operators.
@@ -52,7 +52,6 @@ export function getPropValueFromAttributes(
 
   // TODO how to handle this??
   if (t.isJSXEmptyExpression(propValue)) {
-    // eslint-disable-next-line no-console
     console.error('encountered JSXEmptyExpression')
     return null
   }

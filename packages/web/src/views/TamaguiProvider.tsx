@@ -1,11 +1,12 @@
 import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
 import * as React from 'react'
 
-import { ButtonNestingContext } from '../contexts/ButtonNestingContext.js'
-import { TextAncestorContext } from '../contexts/TextAncestorContext.js'
-import { useMediaListeners } from '../hooks/useMedia.js'
-import type { TamaguiProviderProps } from '../types.js'
-import { ThemeProvider } from './ThemeProvider.js'
+import { ButtonNestingContext } from '../contexts/ButtonNestingContext'
+import { TextAncestorContext } from '../contexts/TextAncestorContext'
+import { useMediaListeners } from '../hooks/useMedia'
+import type { TamaguiProviderProps } from '../types'
+import { ThemeProvider } from './ThemeProvider'
+import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
 
 export function TamaguiProvider({
   children,
@@ -51,14 +52,18 @@ export function TamaguiProvider({
   return (
     <ButtonNestingContext.Provider value={false}>
       <TextAncestorContext.Provider value={false}>
-        <ThemeProvider
-          themeClassNameOnRoot={config.themeClassNameOnRoot}
-          disableRootThemeClass={config.disableRootThemeClass}
-          {...themePropsProvider}
-          defaultTheme={themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]}
-        >
-          {children}
-        </ThemeProvider>
+        <AnimationDriverContext.Provider value={config.animations}>
+          <ThemeProvider
+            themeClassNameOnRoot={config.themeClassNameOnRoot}
+            disableRootThemeClass={config.disableRootThemeClass}
+            {...themePropsProvider}
+            defaultTheme={
+              themePropsProvider.defaultTheme ?? Object.keys(config.themes)[0]
+            }
+          >
+            {children}
+          </ThemeProvider>
+        </AnimationDriverContext.Provider>
       </TextAncestorContext.Provider>
     </ButtonNestingContext.Provider>
   )

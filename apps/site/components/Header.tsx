@@ -1,26 +1,29 @@
 import { ThemeToggle } from '@components/ThemeToggle'
+import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Menu } from '@tamagui/lucide-icons'
+import { Menu, User } from '@tamagui/lucide-icons'
+import { useUser } from 'hooks/useUser'
+// import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
   Adapt,
+  Avatar,
   Button,
   Paragraph,
-  ParagraphProps,
   Popover,
   Separator,
   Text,
   TooltipGroup,
+  TooltipSimple,
   VisuallyHidden,
   XGroup,
   XStack,
   YStack,
   isClient,
-  useMedia,
+  styled,
 } from 'tamagui'
 
-import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { DocsMenuContents } from './DocsMenuContents'
@@ -50,38 +53,71 @@ export function Header(props: HeaderProps) {
   return (
     <>
       <XStack
-        className={`ease-out all ms200 ${
-          isScrolled ? 'blur-light hover-highlights ' : ''
-        }`}
-        bbc="$borderColor"
-        zi={50000}
         // @ts-ignore
         pos="fixed"
         top={0}
-        my={isScrolled ? -2 : 0}
         left={0}
         right={0}
-        elevation={isScrolled ? '$1' : 0}
-        py={isScrolled ? '$0' : '$2'}
+        ai="center"
+        jc="center"
+        zi={50000}
+        $gtSm={{
+          px: '$4',
+        }}
       >
-        <YStack o={isScrolled ? 0.9 : 0} fullscreen bc="$background" />
-        <ContainerLarge>
-          <ThemeTint>
-            <HeaderContents floating {...props} />
-          </ThemeTint>
-        </ContainerLarge>
+        <XStack
+          className={`ease-out all ms200 ${
+            isScrolled ? 'blur-medium hover-highlights ' : ''
+          }`}
+          bbc="$borderColor"
+          py="$1"
+          y={3}
+          ov="hidden"
+          width="100%"
+          bw={1}
+          boc="transparent"
+          maw={1120}
+          br="$10"
+          $sm={{
+            br: 0,
+            y: 0,
+            py: '$2',
+          }}
+          {...(isScrolled && {
+            $gtSm: {
+              py: '$2',
+              y: 5,
+              elevation: '$3',
+              boc: '$borderColor',
+            },
+          })}
+        >
+          <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
+          <ContainerLarge>
+            <ThemeTint>
+              {React.useMemo(
+                () => (
+                  <HeaderContents floating {...props} />
+                ),
+                [props]
+              )}
+            </ThemeTint>
+          </ContainerLarge>
+        </XStack>
       </XStack>
       <YStack height={54} w="100%" />
     </>
   )
 }
 
-export function HeaderContents(props: HeaderProps) {
+const tooltipDelay = { open: 500, close: 150 }
+
+export const HeaderContents = React.memo((props: HeaderProps) => {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const isInSubApp =
-    router.pathname.startsWith('/takeout') || router.pathname.startsWith('/studio')
+  const isTakeout = router.pathname === '/takeout'
   const { setNextTint } = useTint()
+  const userSwr = useUser()
 
   return (
     <XStack
@@ -106,39 +142,33 @@ export function HeaderContents(props: HeaderProps) {
           </NextLink>
         )}
 
-        <TooltipGroup delay={{ open: 3000, close: 100 }}>
-          <XGroup
-            ov="hidden"
-            boc="$color2"
-            bw={1}
-            mah={32}
-            bc="transparent"
-            ai="center"
-            size="$3"
-          >
-            <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
-            </XGroup.Item>
+        <TooltipGroup delay={tooltipDelay}>
+          <XGroup boc="$color2" bw={1} mah={32} bc="transparent" ai="center" size="$3">
+            {!isTakeout && (
+              <XGroup.Item>
+                <ThemeToggle borderWidth={0} chromeless />
+              </XGroup.Item>
+            )}
             <XGroup.Item>
               <ColorToggleButton borderWidth={0} chromeless />
             </XGroup.Item>
             <XGroup.Item>
-              <SeasonToggleButton borderWidth={0} chromeless />
+              <SeasonToggleButton $xs={{ display: 'none' }} borderWidth={0} chromeless />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <YStack paddingStart={200} $xxs={{ dsp: 'none' }}>
+        <SearchButton
+          size="$2"
+          br="$10"
+          elevation="$1"
+          shadowRadius={6}
+          shadowOpacity={0.0025}
+        />
+
+        <YStack $xs={{ display: 'none' }}>
           <SponsorButton tiny />
         </YStack>
-
-        {!props.disableNew && <AlphaButton />}
-
-        {isInSubApp && (
-          <NextLink href="/">
-            <Button size="$2">Back to Tamagui</Button>
-          </NextLink>
-        )}
       </XStack>
 
       <XStack
@@ -174,60 +204,50 @@ export function HeaderContents(props: HeaderProps) {
         pointerEvents="auto"
         tag="nav"
       >
-        {isInSubApp ? (
-          <XStack ai="center" space="$2">
-            <NextLink href="/signin">
-              <Paragraph
-                fontFamily="$silkscreen"
-                px="$3"
-                py="$2"
-                cursor="pointer"
-                size="$3"
-                o={0.7}
-                hoverStyle={{ opacity: 1 }}
-                $xxs={{
-                  display: 'none',
-                }}
-              >
-                Login
-              </Paragraph>
-            </NextLink>
+        <XStack ai="center" space="$3">
+          <HeaderLinks {...props} />
 
-            <NextLink href="/takeout/purchase">
-              <Button fontFamily="$silkscreen" size="$3">
-                Purchase
-              </Button>
-            </NextLink>
-          </XStack>
-        ) : (
-          <XStack ai="center" space="$3">
-            <HeaderLinks {...props} />
-
-            <SearchButton size="$2" br="$10" elevation="$4" />
-
+          {userSwr.data?.userDetails && props.showAuth ? (
+            <XStack ai="center" space="$2">
+              <NextLink href="/account">
+                <Avatar circular size="$2">
+                  <Avatar.Image
+                    source={{
+                      uri:
+                        userSwr.data.userDetails?.avatar_url ??
+                        getDefaultAvatarImage(
+                          userSwr.data?.userDetails?.full_name ??
+                            userSwr.data?.session?.user?.email ??
+                            'User'
+                        ),
+                    }}
+                  />
+                </Avatar>
+              </NextLink>
+            </XStack>
+          ) : (
             <NextLink target="_blank" href="https://github.com/tamagui/tamagui">
-              <YStack
-                $xs={{ maw: 0, mah: 0, ov: 'hidden', mr: '$-6' }}
-                p="$2"
-                opacity={0.7}
-                hoverStyle={{ opacity: 1 }}
-              >
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
+              <TooltipSimple delay={0} restMs={25} label="Star on Github">
+                <YStack p="$2" opacity={0.7} hoverStyle={{ opacity: 1 }}>
+                  <VisuallyHidden>
+                    <Text>Github</Text>
+                  </VisuallyHidden>
+                  <GithubIcon width={23} />
+                </YStack>
+              </TooltipSimple>
             </NextLink>
+          )}
 
-            <SmallMenu />
-          </XStack>
-        )}
+          <SmallMenu />
+        </XStack>
       </XStack>
     </XStack>
   )
-}
+})
 
-const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
+const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
+  const userSwr = useUser()
+  // there is user context and supabase setup in the current page
   return (
     <>
       <NextLink prefetch={false} href="/docs/intro/installation">
@@ -240,35 +260,58 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/blog">
+      <NextLink prefetch={false} href="/studio">
         <HeadAnchor
           $md={{
             display: forceShowAllLinks ? 'flex' : 'none',
           }}
         >
-          Blog
+          Studio
         </HeadAnchor>
       </NextLink>
 
-      <NextLink prefetch={false} href="/community">
-        <HeadAnchor
-          $md={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          More
-        </HeadAnchor>
-      </NextLink>
+      {showAuth && !userSwr.data?.session?.user && (
+        <NextLink prefetch={false} href="/login">
+          <HeadAnchor
+            $md={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            Login
+          </HeadAnchor>
+        </NextLink>
+      )}
 
-      {showExtra && (
-        <NextLink prefetch={false} href="/studio">
-          <HeadAnchor>Studio</HeadAnchor>
+      {process.env.NODE_ENV === 'development' && (
+        <NextLink prefetch={false} href="/takeout">
+          <TooltipSimple delay={0} restMs={25} label="Takeout">
+            <HeadAnchor
+              size="$8"
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              🥡
+            </HeadAnchor>
+          </TooltipSimple>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/blog">
+          <HeadAnchor>Blog</HeadAnchor>
+        </NextLink>
+      )}
+
+      {forceShowAllLinks && (
+        <NextLink prefetch={false} href="/community">
+          <HeadAnchor>Community</HeadAnchor>
         </NextLink>
       )}
 
       {showExtra && (
-        <NextLink prefetch={false} href="/takeout">
-          <HeadAnchor>Takeout</HeadAnchor>
+        <NextLink prefetch={false} href="/studio">
+          <HeadAnchor>Studio</HeadAnchor>
         </NextLink>
       )}
     </>
@@ -276,32 +319,24 @@ const HeaderLinks = ({ showExtra, forceShowAllLinks }: HeaderProps) => {
 }
 
 const SmallMenu = React.memo(() => {
-  const { router, open, setOpen } = useDocsMenu()
-  // const isDocs = router.pathname.startsWith('/docs')
-  const media = useMedia()
-
-  if (media.gtMd) {
-    return null
-  }
+  const { open, setOpen } = useDocsMenu()
 
   return (
     <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
       <Popover.Trigger asChild>
-        <YStack
-          $gtMd={{
-            display: 'none',
+        <Button
+          size="$3"
+          chromeless
+          circular
+          hoverStyle={{
+            bc: 'transparent',
           }}
+          noTextWrap
+          onPress={() => setOpen(!open)}
+          theme={open ? 'alt1' : undefined}
         >
-          <Button
-            size="$3"
-            chromeless
-            noTextWrap
-            onPress={() => setOpen(!open)}
-            theme={open ? 'alt1' : undefined}
-          >
-            <Menu size={16} color="var(--color)" />
-          </Button>
-        </YStack>
+          <Menu size={16} color="var(--color)" />
+        </Button>
       </Popover.Trigger>
 
       <Adapt platform="touch" when="sm">
@@ -336,7 +371,7 @@ const SmallMenu = React.memo(() => {
         elevate
         zIndex={100000000}
       >
-        <Popover.Arrow bw={1} boc="$borderColor" />
+        <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
         <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           <YStack
@@ -347,6 +382,8 @@ const SmallMenu = React.memo(() => {
           >
             <HeaderLinks forceShowAllLinks />
             <Separator my="$4" w="100%" />
+            <SponsorButton />
+            <Separator my="$4" w="100%" />
             <DocsMenuContents />
           </YStack>
         </Popover.ScrollView>
@@ -355,21 +392,15 @@ const SmallMenu = React.memo(() => {
   )
 })
 
-const HeadAnchor = React.forwardRef((props: ParagraphProps, ref) => (
-  <Paragraph
-    ref={ref as any}
-    fontFamily="$silkscreen"
-    px="$3"
-    py="$2"
-    cursor="pointer"
-    size="$3"
-    color="$color10"
-    hoverStyle={{ opacity: 1, color: '$color' }}
-    pressStyle={{ opacity: 0.25 }}
-    // @ts-ignore
-    tabIndex={-1}
-    w="100%"
-    // jc="flex-end"
-    {...props}
-  />
-))
+const HeadAnchor = styled(Paragraph, {
+  fontFamily: '$silkscreen',
+  px: '$3',
+  py: '$2',
+  cursor: 'pointer',
+  size: '$3',
+  color: '$color10',
+  hoverStyle: { opacity: 1, color: '$color' },
+  pressStyle: { opacity: 0.25 },
+  tabIndex: -1,
+  w: '100%',
+})

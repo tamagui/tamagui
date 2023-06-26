@@ -4,6 +4,7 @@ description: A stylable ScrollView.
 name: scrollView
 component: ScrollView
 package: scroll-view
+demoName: ScrollView
 ---
 
 # ScrollView
@@ -25,6 +26,25 @@ package: scroll-view
   ]}
 />
 
-### API
+## Usage
+
+```tsx
+import { ScrollView, YStack, ListItem } from 'tamagui'
+
+export default () => (
+  <ScrollView>
+    <YStack>
+      <ListItem>1</ListItem>
+      <ListItem>2</ListItem>
+      <ListItem>3</ListItem>
+      <ListItem>4</ListItem>
+    </YStack>
+  </ScrollView>
+)
+```
+
+## API Reference
+
+### ScrollView
 
 See [React Native ScrollView](https://reactnative.dev/docs/scrollview) and [Tamagui style props](https://tamagui.dev/docs/intro/props).

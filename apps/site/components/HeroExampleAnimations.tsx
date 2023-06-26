@@ -57,7 +57,6 @@ export function HeroExampleAnimations({ animationCode }) {
             miw="55%"
             als="center"
             mr="$-2"
-            bc="$backgroundHover"
             zi={100}
             elevation="$4"
             br="$4"
@@ -190,12 +189,12 @@ export const ExampleAnimations = memo(() => {
       <YStack
         ref={container}
         pos="relative"
-        bc="$background"
         ai="center"
         jc="center"
         width="60%"
         $sm={{ width: '100%' }}
       >
+        <YStack fullscreen zi={-1} bc="$background" o={0.5} />
         {isIntersecting ? (
           <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}
@@ -204,24 +203,19 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack f={1} theme="alt2" bc="$backgroundPress">
+        <YStack f={1} theme="alt2" bc="$color1">
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
               <ListItem
                 key={item.name}
-                {...(isActive && {
-                  bc: '$backgroundHover',
-                })}
-                theme={isActive ? 'active' : 'alt2'}
+                theme={isActive ? 'active' : null}
                 px="$4"
                 py="$2"
                 title={item.name}
+                bc={isActive ? '$color2' : '$color1'}
                 subTitle={item.description}
                 cursor="pointer"
-                hoverStyle={{
-                  bc: '$backgroundHover',
-                }}
                 onPress={() => {
                   setAnimationI(i)
                   next()

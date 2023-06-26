@@ -15,10 +15,15 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 const shouldBundle = !!process.argv.includes('--bundle')
+const shouldIncludeMjs = !!process.argv.includes('--output-mjs')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+const declarationToRoot = !!process.argv.includes('--declaration-root')
+const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
+const baseUrlIndex = process.argv.indexOf('--base-url')
+const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
@@ -118,16 +123,16 @@ async function buildTsc() {
     return
   }
 
-  if (!(await fs.pathExists(`tsconfig.json`))) {
-    throw new Error(`No tsconfig.json found`)
-  }
-
   const targetDir = 'types'
   try {
     // typescripts build cache messes up when doing declarationOnly
     await fs.remove('tsconfig.tsbuildinfo')
     await fs.ensureDir(targetDir)
-    const cmd = `tsc --baseUrl . --outDir ${targetDir} --rootDir src --emitDeclarationOnly --declarationMap`
+
+    const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
+    const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
+    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
@@ -150,6 +155,9 @@ async function buildJs() {
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
+
+  const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
+  
   const start = Date.now()
   return await Promise.all([
     pkgMain
@@ -157,7 +165,9 @@ async function buildJs() {
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
+          sourcesContent: false,
           target: 'node14',
           keepNames: false,
           format: 'cjs',
@@ -166,34 +176,18 @@ async function buildJs() {
           jsx: 'automatic',
           logLevel: 'error',
           plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-          minify: false,
+          minify: process.env.MINIFY ? true : false,
           platform: 'node',
-        })
-      : null,
-      pkgModule
-      ? esbuildWriteIfChanged({
-          entryPoints: files,
-          outdir: flatOut ? 'dist' : 'dist/esm',
-          bundle: shouldBundle,
-          sourcemap: true,
-          target: 'node16',
-          keepNames: false,
-          jsx: 'automatic',
-          allowOverwrite: true,
-          format: 'esm',
-          color: true,
-          logLevel: 'error',
-          minify: false,
-          platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
     pkgModule
       ? esbuildWriteIfChanged({
           entryPoints: files,
-          outExtension: { '.js': '.mjs' },
           outdir: flatOut ? 'dist' : 'dist/esm',
           bundle: shouldBundle,
+          external,
           sourcemap: true,
+          sourcesContent: false,
           target: 'node16',
           keepNames: false,
           jsx: 'automatic',
@@ -201,7 +195,27 @@ async function buildJs() {
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: false,
+          minify: process.env.MINIFY ? true : false,
+          platform: shouldBundle ? 'node' : 'neutral',
+        })
+      : null,
+    pkgModule && shouldIncludeMjs
+      ? esbuildWriteIfChanged({
+          entryPoints: files,
+          outExtension: { '.js': '.mjs' },
+          outdir: flatOut ? 'dist' : 'dist/esm',
+          bundle: shouldBundle,
+          external,
+          sourcemap: true,
+          sourcesContent: false,
+          target: 'node16',
+          keepNames: false,
+          jsx: 'automatic',
+          allowOverwrite: true,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: process.env.MINIFY ? true : false,
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
@@ -213,18 +227,20 @@ async function buildJs() {
           outExtension: { '.js': '.mjs' },
           entryPoints: files,
           bundle: shouldBundle,
+          external,
           sourcemap: true,
+          sourcesContent: false,
           allowOverwrite: true,
           target: 'es2020',
           keepNames: false,
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: false,
+          minify: process.env.MINIFY ? true : false,
           platform: 'neutral',
         })
       : null,
-      pkgModuleJSX
+    pkgModuleJSX
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',
@@ -232,13 +248,14 @@ async function buildJs() {
           entryPoints: files,
           bundle: shouldBundle,
           sourcemap: true,
+          sourcesContent: false,
           allowOverwrite: true,
           target: 'es2020',
           keepNames: false,
           format: 'esm',
           color: true,
           logLevel: 'error',
-          minify: false,
+          minify: process.env.MINIFY ? true : false,
           platform: 'neutral',
         })
       : null,

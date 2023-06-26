@@ -67,8 +67,8 @@ export function Test() {
 `;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn4 = \\" _bg-opktnq\\";
-const _cn3 = \\" _bg-12svx2e\\";
+"const _cn4 = \\" _bg-d0topktnq\\";
+const _cn3 = \\" _bg-d0t12svx2e\\";
 const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 const _cn = \\"  is_Stack\\";
 // debug
@@ -89,13 +89,13 @@ exports[`className + conditional styles get full base styles merged onto + short
 ._dsp-flex{display:flex;}
 ._fs-0{flex-shrink:0;}
 ._ai-stretch{align-items:stretch;}
-._bg-12svx2e{background-color:rgba(255,0,0,1.00);}
-._bg-opktnq{background-color:rgba(0,0,255,1.00);}"
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn4 = \\" _bg-opktnq\\";
-const _cn3 = \\" _bg-12svx2e\\";
+"const _cn4 = \\" _bg-d0topktnq\\";
+const _cn3 = \\" _bg-d0t12svx2e\\";
 const _cn2 = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
 const _cn = \\"  is_Stack\\";
 // debug 
@@ -116,8 +116,8 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 ._dsp-flex{display:flex;}
 ._fs-0{flex-shrink:0;}
 ._ai-stretch{align-items:stretch;}
-._bg-12svx2e{background-color:rgba(255,0,0,1.00);}
-._bg-opktnq{background-color:rgba(0,0,255,1.00);}"
+._bg-d0t12svx2e{background-color:rgba(255,0,0,1.00);}
+._bg-d0topktnq{background-color:rgba(0,0,255,1.00);}"
 `;
 
 exports[`flat transform props 1`] = `
@@ -182,10 +182,10 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"color\\": \\"rgba(255,0,0,1.00)\\",
     \\"fontFamily\\": \\"Inter\\",
+    \\"display\\": \\"flex\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
-    \\"lineHeight\\": 23,
-    \\"display\\": \\"flex\\"
+    \\"lineHeight\\": 23
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';

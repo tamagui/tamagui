@@ -1,3 +1,3 @@
-import { ResolvedOptions } from './types.js';
-export declare const test: (options: ResolvedOptions) => Promise<void>;
+import { CLIResolvedOptions } from '@tamagui/types';
+export declare const test: (options: CLIResolvedOptions) => Promise<void>;
 //# sourceMappingURL=test.d.ts.map

@@ -1,2 +1,2 @@
-import PanResponder from '../vendor/react-native/PanResponder/index.js'
+import PanResponder from '../vendor/react-native/PanResponder/index'
 export default PanResponder

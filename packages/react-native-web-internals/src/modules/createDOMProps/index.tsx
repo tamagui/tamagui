@@ -7,8 +7,8 @@
  * @noflow
  */
 
-import StyleSheet from '../../StyleSheet/index.js'
-import AccessibilityUtil from '../AccessibilityUtil/index.js'
+import StyleSheet from '../../StyleSheet/index'
+import AccessibilityUtil from '../AccessibilityUtil/index'
 
 const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
@@ -100,6 +100,7 @@ const createDOMProps = (elementType, props, options?) => {
     pointerEvents,
     style,
     testID,
+    id,
     // Rest
     ...domProps
   } = props
@@ -176,10 +177,7 @@ const createDOMProps = (elementType, props, options?) => {
   if (accessibilityInvalid != null) {
     domProps['aria-invalid'] = accessibilityInvalid
   }
-  if (
-    accessibilityKeyShortcuts != null &&
-    Array.isArray(accessibilityKeyShortcuts)
-  ) {
+  if (accessibilityKeyShortcuts != null && Array.isArray(accessibilityKeyShortcuts)) {
     domProps['aria-keyshortcuts'] = accessibilityKeyShortcuts.join(' ')
   }
   if (accessibilityLabel != null) {
@@ -334,7 +332,7 @@ const createDOMProps = (elementType, props, options?) => {
   // Resolve styles
   const [className, inlineStyle] = StyleSheet(
     [style, pointerEvents && pointerEventsStyles[pointerEvents]],
-    { writingDirection: options ? options.writingDirection : 'ltr' },
+    { writingDirection: options ? options.writingDirection : 'ltr' }
   )
   if (className) {
     domProps.className = className
@@ -350,10 +348,9 @@ const createDOMProps = (elementType, props, options?) => {
 
   // OTHER
   // Native element ID
-  if (tmgID) {
-    domProps.id = tmgID
-  } else if (nativeID != null) {
-    domProps.id = nativeID
+  const _id = tmgID || id || nativeID
+  if (_id) {
+    domProps.id = _id
   }
   // Automated test IDs
   if (testID != null) {

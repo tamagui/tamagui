@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom'
 
 import { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
-function dispatchDiscreteCustomEvent<E extends CustomEvent>(
+export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
   target: E['target'],
   event: E
 ) {
@@ -286,7 +286,9 @@ function usePointerDownOutside(
 
   return {
     // ensures we check React component tree (not just DOM tree)
-    onPointerDownCapture: () => (isPointerInsideReactTreeRef.current = true),
+    onPointerDownCapture: () => {
+      isPointerInsideReactTreeRef.current = true
+    },
   }
 }
 
@@ -312,8 +314,12 @@ function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
   }, [handleFocusOutside])
 
   return {
-    onFocusCapture: () => (isFocusInsideReactTreeRef.current = true),
-    onBlurCapture: () => (isFocusInsideReactTreeRef.current = false),
+    onFocusCapture: () => {
+      isFocusInsideReactTreeRef.current = true
+    },
+    onBlurCapture: () => {
+      isFocusInsideReactTreeRef.current = false
+    },
   }
 }
 

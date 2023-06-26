@@ -5,25 +5,29 @@
 
 import { isWeb } from '@tamagui/constants'
 
-import { getAllSelectors } from './insertStyleRule.js'
-import { names, normalizeColor } from './normalizeColor.js'
+import { getAllSelectors } from './insertStyleRule'
+import { names, normalizeColor } from './normalizeColor'
 import { normalizeStylePropKeys } from './normalizeStylePropKeys'
 
-const colorCache = {}
+const colorCache = new Map()
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  if (value in colorCache) {
-    return colorCache[value]
-  }
   if (property && property in unitlessNumbers) {
     return value
   }
   let res = value
   if (property && (property in normalizeStylePropKeys || value in names)) {
+    if (colorCache.has(value)) {
+      return colorCache.get(value)
+    }
     res = normalizeColor(value)
-    colorCache[value] = res
+    // avoid memory pressure
+    if (colorCache.size > 1000) {
+      colorCache.clear()
+    }
+    colorCache.set(value, res)
   } else if (
-    process.env.TAMAGUI_TARGET === 'web' &&
+    isWeb &&
     typeof value === 'number' &&
     (property === undefined ||
       !(property in unitlessNumbers || property in stringNumbers))
@@ -49,7 +53,6 @@ const unitlessNumbers = {
   columnCount: true,
   flex: true,
   flexGrow: true,
-  flexBasis: true,
   flexOrder: true,
   flexPositive: true,
   flexShrink: true,
@@ -83,8 +86,16 @@ const rcache = {}
 export function reverseMapClassNameToValue(key: string, className: string) {
   const selectors = getAllSelectors()
   const cssRule = selectors[className]
-  if (rcache[cssRule]) return rcache[cssRule]
+  if (rcache[cssRule]) {
+    return rcache[cssRule]
+  }
+
   if (!cssRule) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `No CSS rule found for ${key} looking for selector ".${className}", you may not be injecting extracted CSS`
+      )
+    }
     return
   }
   const cssVal = cssRule.replace(/.*:/, '').replace(/;.*/, '').trim()
@@ -102,7 +113,7 @@ export function reverseMapClassNameToValue(key: string, className: string) {
   if (process.env.NODE_ENV === 'development') {
     // ensure we are parsing properly
     if (typeof res === 'number' && isNaN(res)) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('Tamagui invalid parsed value, NaN:', {
         res,
         cssVal,

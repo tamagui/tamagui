@@ -14,13 +14,13 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -36,49 +36,11 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Path
-        d="M3 7V5a2 2 0 0 1 2-2h2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M17 3h2a2 2 0 0 1 2 2v2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M21 17v2a2 2 0 0 1-2 2h-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M7 21H5a2 2 0 0 1-2-2v-2"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="7"
-        y1="12"
-        x2="17"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M3 7V5a2 2 0 0 1 2-2h2" stroke={`${color}`} />
+      <Path d="M17 3h2a2 2 0 0 1 2 2v2" stroke={`${color}`} />
+      <Path d="M21 17v2a2 2 0 0 1-2 2h-2" stroke={`${color}`} />
+      <Path d="M7 21H5a2 2 0 0 1-2-2v-2" stroke={`${color}`} />
+      <Line x1="7" x2="17" y1="12" y2="12" stroke={`${color}`} />
     </Svg>
   )
 }

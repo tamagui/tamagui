@@ -1,11 +1,5 @@
 #!/usr/bin/env node
 
-process.on('beforeExit', () => {
-  process.stdout.write(`exiting22123??????`)
-})
+process.env.TAMAGUI_TARGET = 'web'
 
-process.on('SIGINT', () => {
-  process.stdout.write(`exiting33123??????`)
-})
-
-import './cli.js'
+require('./cli')

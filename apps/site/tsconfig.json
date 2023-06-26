@@ -20,6 +20,9 @@
       "@lib/*": [
         "./lib/*"
       ],
+      "@protected/*": [
+        "./studio/(protected)/*"
+      ],
       "@data/*": [
         "./data/*"
       ],
@@ -40,14 +43,22 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "jsx": "preserve",
+    "noImplicitThis": true,
     "resolveJsonModule": true,
-    "incremental": true
+    "incremental": true,
+    "strictNullChecks": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "tamagui.config.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

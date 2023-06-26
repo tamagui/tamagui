@@ -1,11 +1,15 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { TamaguiInternalConfig, getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
+import {
+  TamaguiInternalConfig,
+  getStylesAtomic,
+  mediaObjectToString,
+} from '@tamagui/core-node'
 import type { ViewStyle } from 'react-native'
 
-import { MEDIA_SEP } from '../constants.js'
-import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
-import { isPresent, isValidImport } from './extractHelpers.js'
+import { MEDIA_SEP } from '../constants'
+import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types'
+import { isPresent, isValidImport } from './extractHelpers'
 
 export function extractMediaStyle(
   props: TamaguiOptionsWithFileInfo,
@@ -23,7 +27,6 @@ export function extractMediaStyle(
   const { key } = mt
   const mq = tamaguiConfig.media[key]
   if (!mq) {
-    // eslint-disable-next-line no-console
     console.error(`Media query "${key}" not found: ${Object.keys(tamaguiConfig.media)}`)
     return null
   }
@@ -35,7 +38,7 @@ export function extractMediaStyle(
     getStyleObj(ternary.alternate, true),
   ].filter(isPresent)
   if (shouldPrintDebug && !styleOpts.length) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log('  media query, no styles?')
     return null
   }
@@ -46,6 +49,10 @@ export function extractMediaStyle(
     return acc
   }, {})
   let mediaStyles: StyleObject[] = []
+
+  // TODO this should NOT be here
+  // this should be done using the same logic as createMediaStyle
+
   for (const { styleObj, negate } of styleOpts) {
     const styles = getStylesAtomic(styleObj)
     const singleMediaStyles = styles.map((style) => {
@@ -60,6 +67,7 @@ export function extractMediaStyle(
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(tamaguiConfig.media[key])
+      // screen and
       const screenStr = negate ? 'not all' : 'screen'
       const mediaQuery = `${screenStr} and ${mediaSelector}`
       const precendencePrefix = mediaKeyPrecendence[key]
@@ -72,7 +80,7 @@ export function extractMediaStyle(
         // combine
         styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
       } else {
-        styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+        styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner} }`
       }
       return {
         ...style,
@@ -83,7 +91,7 @@ export function extractMediaStyle(
     })
     if (shouldPrintDebug === 'verbose') {
       // prettier-ignore
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
     }
     // add to output
@@ -156,7 +164,11 @@ function getMediaInfoFromExpression(
       bindingName: inlineMediaQuery,
     }
   }
-  if (t.isMemberExpression(test) && t.isIdentifier(test.object) && t.isIdentifier(test.property)) {
+  if (
+    t.isMemberExpression(test) &&
+    t.isIdentifier(test.object) &&
+    t.isIdentifier(test.property)
+  ) {
     const name = test.object['name']
     const key = test.property['name']
     const bindings = jsxPath.scope.getAllBindings()
@@ -171,7 +183,8 @@ function getMediaInfoFromExpression(
     const key = test.name
     const node = jsxPath.scope.getBinding(test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(props, jsxPath, node.init, sourcePath)) return false
+    if (!node.init || !isValidMediaCall(props, jsxPath, node.init, sourcePath))
+      return false
     return { key, bindingName: key }
   }
   return null

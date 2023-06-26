@@ -1,12 +1,10 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config.js'
-import { expandStyle } from './expandStyle.js'
+import { getConfig } from '../config'
+import { expandStyle } from './expandStyle'
 import { normalizeShadow } from './normalizeShadow'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { pseudoDescriptors } from './pseudoDescriptors.js'
-
-let shorthands: Record<string, string> | null = null
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { pseudoDescriptors } from './pseudoDescriptors'
 
 /**
  * This is what you want to run before Object.assign() a style onto another.
@@ -16,19 +14,17 @@ let shorthands: Record<string, string> | null = null
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
 
-export function expandStyles(style: Record<string, any>, config = getConfig()) {
+export function expandStyles(style: Record<string, any>, { shorthands } = getConfig()) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
-    shorthands = shorthands || (config ? config.shorthands : null)
-    if (shorthands) {
-      key = shorthands[key] || key
-    }
+    const valIn = style[key]
+    key = shorthands?.[key] || key
     if (key in pseudoDescriptors) {
-      res[key] = expandStyles(style[key])
+      res[key] = expandStyles(valIn)
       continue
     }
-    const val = normalizeValueWithProperty(style[key], key)
+    const val = normalizeValueWithProperty(valIn, key)
     // expand react-native shorthands
     const out = expandStyle(key, val)
     if (out) {

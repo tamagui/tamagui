@@ -4,23 +4,14 @@
  */
 
 import { StyleObject, simpleHash } from '@tamagui/helpers'
-import type { TextStyle, ViewStyle } from 'react-native'
 
-import { getConfig } from '../config.js'
-import type { TamaguiInternalConfig } from '../types.js'
-import { defaultOffset } from './defaultOffset.js'
-import { normalizeValueWithProperty } from './normalizeValueWithProperty.js'
-import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors.js'
+import { getConfig } from '../config'
+import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import { defaultOffset } from './defaultOffset'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
+import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...
-
-type ViewOrTextStyle = ViewStyle | TextStyle
-
-export type ViewStyleWithPseudos = ViewOrTextStyle & {
-  hoverStyle?: ViewOrTextStyle
-  pressStyle?: ViewOrTextStyle
-  focusStyle?: ViewOrTextStyle
-}
 
 // matching order of the below *0
 const pseudosOrdered = [
@@ -32,7 +23,7 @@ const pseudosOrdered = [
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   // performance optimization
   if (!(stylesIn.hoverStyle || stylesIn.pressStyle || stylesIn.focusStyle)) {
-    return getAtomicStyle(stylesIn)
+    return generateAtomicStyles(stylesIn)
   }
 
   // only for pseudos
@@ -42,48 +33,26 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
     if (!style) continue
     const pseudo = pseudosOrdered[index]
-    res = [...res, ...getAtomicStyle(style, pseudo)]
+    res = [...res, ...generateAtomicStyles(style, pseudo)]
   }
   return res
 }
 
-const cache = new Map()
-
-export function getAtomicStyle(
-  style: ViewOrTextStyle,
-  pseudo?: PseudoDescriptor
-): StyleObject[] {
-  if (!style) return []
-  const key = JSON.stringify(style) + (pseudo ? JSON.stringify(pseudo) : '')
-  if (cache.has(key)) {
-    return cache.get(key)
-  }
-  if (cache.size > 800) {
-    cache.clear()
-  }
-  if (process.env.NODE_ENV === 'development') {
-    if (!style || typeof style !== 'object') {
-      throw new Error(`Wrong style type: "${typeof style}": ${style}`)
-    }
-  }
-  const out = generateAtomicStyles(style, pseudo)
-  cache.set(key, out)
-  return out
-}
-
 let conf: TamaguiInternalConfig
 
-const generateAtomicStyles = (
-  styleIn: ViewStyle & TextStyle,
+export const generateAtomicStyles = (
+  styleIn: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
+  if (!styleIn) return []
+
   conf = conf || getConfig()
 
   // were converting to css styles
   const style = styleIn as Record<string, string | null | undefined>
 
   // transform
-  if (style.transform && Array.isArray(style.transform)) {
+  if ('transform' in style && Array.isArray(style.transform)) {
     style.transform = style.transform
       .map(
         // { scale: 2 } => 'scale(2)'
@@ -107,12 +76,8 @@ const generateAtomicStyles = (
   for (const key in style) {
     const value = normalizeValueWithProperty(style[key], key)
     if (value == null || value == undefined) continue
-    const hash = presetHashes[value]
-      ? value
-      : typeof value === 'string'
-      ? simpleHash(value)
-      : `${value}`.replace('.', 'dot')
 
+    const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
     const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
@@ -120,9 +85,11 @@ const generateAtomicStyles = (
     const styleObject: StyleObject = {
       property: key,
       pseudo: pseudo?.name as any,
-      value,
       identifier,
       rules,
+    }
+    if (process.env.NODE_ENV === 'test') {
+      styleObject.value = value
     }
     out.push(styleObject)
   }
@@ -130,24 +97,20 @@ const generateAtomicStyles = (
   return out
 }
 
-const presetHashes = {
-  none: true,
-}
-
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius !== undefined) {
+  if (style.shadowRadius) {
     const offset = shadowOffset || defaultOffset
-    const shadow = `${normalizeValueWithProperty(
-      offset.width
-    )} ${normalizeValueWithProperty(offset.height)} ${normalizeValueWithProperty(
-      shadowRadius
-    )} ${shadowColor}`
+    const width = normalizeValueWithProperty(offset.width)
+    const height = normalizeValueWithProperty(offset.height)
+    const radius = normalizeValueWithProperty(shadowRadius)
+    const shadow = `${width} ${height} ${radius} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     style.shadowOffset = undefined
     style.shadowRadius = undefined
     style.shadowColor = undefined
+    style.shadowOpacity = undefined
   }
 
   // text-shadow
@@ -168,12 +131,10 @@ export function styleToCSS(style: Record<string, any>) {
   }
 }
 
-function createDeclarationBlock(style: Record<string, any>, important = false) {
+function createDeclarationBlock(style: [string, any][], important = false) {
   let next = ''
-  for (const key in style) {
-    const prop = hyphenateStyleName(key)
-    const value = style[key]
-    next += `${prop}:${value}${important ? ' !important' : ''};`
+  for (const [key, value] of style) {
+    next += `${hyphenateStyleName(key)}:${value}${important ? ' !important' : ''};`
   }
   return `{${next}}`
 }
@@ -181,9 +142,9 @@ function createDeclarationBlock(style: Record<string, any>, important = false) {
 const hcache = {}
 const toHyphenLower = (match: string) => `-${match.toLowerCase()}`
 const hyphenateStyleName = (key: string) => {
-  let val = hcache[key]
-  if (val) return val
-  hcache[key] = val = key.replace(/[A-Z]/g, toHyphenLower)
+  if (key in hcache) return hcache[key]
+  const val = key.replace(/[A-Z]/g, toHyphenLower)
+  hcache[key] = val
   return val
 }
 
@@ -203,8 +164,9 @@ function createAtomicRules(
   pseudo?: PseudoDescriptor
 ): string[] {
   const selector = pseudo
-    ? `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
-    : `.${identifier}`
+    ? // adding one more :root so we always override react native web styles :/
+      `${pseudoSelectorPrefixes[pseudo.name]} .${identifier}:${pseudo.name}`
+    : `:root .${identifier}`
   const important = !!pseudo
 
   let rules: string[] = []
@@ -214,7 +176,13 @@ function createAtomicRules(
   switch (property) {
     // Equivalent to using '::placeholder'
     case 'placeholderTextColor': {
-      const block = createDeclarationBlock({ color: value, opacity: 1 }, important)
+      const block = createDeclarationBlock(
+        [
+          ['color', value],
+          ['opacity', 1],
+        ],
+        important
+      )
       rules.push(`${selector}::placeholder${block}`)
       break
     }
@@ -225,7 +193,10 @@ function createAtomicRules(
       const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`
       const webkitProperty = `Webkit${propertyCapitalized}`
       const block = createDeclarationBlock(
-        { [property]: value, [webkitProperty]: value },
+        [
+          [property, value],
+          [webkitProperty, value],
+        ],
         important
       )
       rules.push(`${selector}${block}`)
@@ -246,13 +217,13 @@ function createAtomicRules(
           rules.push(`${selector}>*${boxNone}`)
         }
       }
-      const block = createDeclarationBlock({ pointerEvents: finalValue }, true)
+      const block = createDeclarationBlock([['pointerEvents', finalValue]], true)
       rules.push(`${selector}${block}`)
       break
     }
 
     default: {
-      const block = createDeclarationBlock({ [property]: value }, important)
+      const block = createDeclarationBlock([[property, value]], important)
       rules.push(`${selector}${block}`)
       break
     }
@@ -263,12 +234,12 @@ function createAtomicRules(
   // and hardcode for hover styles, if we need to later we can
   // WEIRD SYNTAX, SEE:
   //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
-  if (pseudo && pseudo.name === 'hover') {
+  if (pseudo?.name === 'hover') {
     rules = rules.map((r) => `@media not all and (hover: none) { ${r} }`)
   }
 
   return rules
 }
 
-const boxNone = createDeclarationBlock({ pointerEvents: 'auto' }, true)
-const boxOnly = createDeclarationBlock({ pointerEvents: 'none' }, true)
+const boxNone = createDeclarationBlock([['pointerEvents', 'auto']], true)
+const boxOnly = createDeclarationBlock([['pointerEvents', 'none']], true)

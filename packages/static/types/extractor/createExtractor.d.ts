@@ -1,18 +1,18 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types.js';
-import { cleanupBeforeExit } from './getStaticBindingsForScope.js';
-import { TamaguiProjectInfo } from './loadTamagui.js';
+import type { ExtractorOptions, ExtractorParseProps, TamaguiOptions } from '../types';
+import { TamaguiProjectInfo } from './bundleConfig';
+import { cleanupBeforeExit } from './getStaticBindingsForScope';
 export type Extractor = ReturnType<typeof createExtractor>;
 type FileOrPath = NodePath<t.Program> | t.File;
 export declare function createExtractor({ logger }?: ExtractorOptions): {
     options: {
-        logger: import("../types.js").Logger;
+        logger: import("../types").Logger;
     };
     cleanupBeforeExit: typeof cleanupBeforeExit;
-    loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo>;
-    loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo;
-    getTamagui(): any;
+    loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo | null>;
+    loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo | null;
+    getTamagui(): import("@tamagui/web").TamaguiInternalConfig | undefined;
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
         styled: number;
         flattened: number;

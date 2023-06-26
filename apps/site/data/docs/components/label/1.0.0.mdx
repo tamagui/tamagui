@@ -4,6 +4,7 @@ description: A simple label component
 name: label
 component: Label
 package: label
+demoName: Label
 ---
 
 # Label
@@ -26,7 +27,7 @@ package: label
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { Label } from 'tamagui'
@@ -39,11 +40,13 @@ export default () => (
 )
 ```
 
-### Accessibility
+## Accessibility
 
 Use with Input or other form elements to automatically get correct labelling by id and aria-labelledby. You can also use the provided `useLabelContext` hook to build your own controls.
 
-### Label props
+## API Reference
+
+### Label
 
 Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
@@ -57,8 +60,9 @@ Labels extend Stack views inheriting all the [Tamagui standard props](/docs/intr
     },
     {
       name: 'unstyled',
-      type: 'boolean',
-      description: `Removes all default styles from the label.`,
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
     },
   ]}
 />

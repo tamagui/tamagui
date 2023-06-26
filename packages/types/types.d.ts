@@ -3,10 +3,22 @@ export interface TamaguiOptions {
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */
   components: string[]
+
   /**
    * your tamagui.config.ts
    */
   config?: string
+
+  /**
+   * your themes generation file
+   */
+  themes?: string
+
+  /**
+   * Emit design system related CSS during build step for usage with frameworks
+   */
+  outputCSS?: string | null | false
+
   /**
    * Tamagui can follow imports and evaluate them when parsing styles, leading to
    * higher percent of flattened / optimized views. We normalize this to be the
@@ -72,4 +84,36 @@ export interface TamaguiOptions {
   excludeProps?: Set<string>
   inlineProps?: Set<string>
   forceExtractStyleDefinitions?: boolean
+}
+
+// for cli
+
+export type CLIUserOptions = {
+  root?: string
+  host?: string
+  tsconfigPath?: string
+  tamaguiOptions: Partial<TamaguiOptions>
+  debug?: boolean | 'verbose'
+}
+
+export type CLIResolvedOptions = {
+  root: string
+  port?: number
+  host?: string
+  mode: 'development' | 'production'
+  debug?: UserOptions['debug']
+  tsconfigPath: string
+  tamaguiOptions: TamaguiOptions
+  pkgJson: {
+    name?: string
+    main?: string
+    module?: string
+    source?: string
+    exports?: Record<string, Record<string, string>>
+  }
+  paths: {
+    dotDir: string
+    conf: string
+    types: string
+  }
 }

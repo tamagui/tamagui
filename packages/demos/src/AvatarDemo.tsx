@@ -3,7 +3,7 @@ import { Avatar, XStack } from 'tamagui'
 
 export function AvatarDemo() {
   return (
-    <XStack ai="center" space="$6">
+    <XStack alignItems="center" space="$6">
       <Avatar circular size="$10">
         <Avatar.Image
           accessibilityLabel="Cam"

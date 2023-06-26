@@ -4,13 +4,14 @@ description: A simple sheet component
 name: sheet
 component: Sheet
 package: sheet
+demoName: Sheet
 ---
 
 # Sheet
 
 <Description>A bottom sheet that slides up.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <SheetDemo />
 </HeroContainer>
 
@@ -30,13 +31,13 @@ package: sheet
 ### Anatomy
 
 ```tsx
-import { Sheet } from '@tamagui/sheet' // or from 'tamagui'
+import { Sheet } from 'tamagui' // or '@tamagui/sheet'
 
 export default () => (
   <Sheet>
     <Sheet.Overlay />
+    <Sheet.Handle />
     <Sheet.Frame>
-      <Sheet.Handle />
       {/* ...inner contents */}
     </Sheet.Frame>
   </Sheet>

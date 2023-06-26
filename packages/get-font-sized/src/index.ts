@@ -8,27 +8,22 @@ import type {
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
-  { fonts, props }
+  { font, fontFamily, props }
 ) => {
-  const family = getVariableValue(props.fontFamily) || '$body'
-  const font = fonts[family] || fonts['$body']
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.warn('⚠️ no font found', {
-        family,
-        fontTokens: Object.keys(fonts),
-        sizeTokenIn,
-      })
+      console.warn(
+        `Warning: No font found. For a sized text component, you either need to set fontFamily directly, or through the "defaultFont" setting in your createTamagui config.`
+      )
     }
-    return {} as any
+    return
   }
-  const fontFamily = font.family
+
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
   const fontSize = props.fontSize || font.size[sizeToken]
-  const lineHeight = props.lineHeight || font.lineHeight[sizeToken]
-  const fontWeight = props.fontWeight || font.weight[sizeToken]
-  const letterSpacing = props.letterSpacing || font.letterSpacing[sizeToken]
+  const lineHeight = props.lineHeight || font.lineHeight?.[sizeToken]
+  const fontWeight = props.fontWeight || font.weight?.[sizeToken]
+  const letterSpacing = props.letterSpacing || font.letterSpacing?.[sizeToken]
   const fontStyle = props.fontStyle || font.style?.[sizeToken]
   const textTransform = props.textTransform || font.transform?.[sizeToken]
   const color = props.color || font.color?.[sizeToken]
@@ -43,13 +38,12 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     fontSize,
     lineHeight,
   }
+
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      // eslint-disable-next-line no-console
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log({ style, props, font })
-      // eslint-disable-next-line no-console
       console.groupEnd()
     }
   }

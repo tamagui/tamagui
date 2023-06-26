@@ -6,12 +6,15 @@ const hooks = {
   useTheme: true,
 }
 
-export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boolean | 'verbose') {
+export function removeUnusedHooks(
+  compFn: NodePath<any>,
+  shouldPrintDebug: boolean | 'verbose'
+) {
   compFn.scope.crawl()
   // check the top level statements
   let bodyStatements = compFn?.get('body')
   if (!bodyStatements) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log('no body statemnts?', compFn)
     return
   }
@@ -45,7 +48,9 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
       }
       const shouldRemove = (() => {
         const isHook =
-          t.isCallExpression(init) && t.isIdentifier(init.callee) && hooks[init.callee.name]
+          t.isCallExpression(init) &&
+          t.isIdentifier(init.callee) &&
+          hooks[init.callee.name]
         if (!isHook) {
           return false
         }
@@ -69,7 +74,7 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
-          // eslint-disable-next-line no-console
+          // rome-ignore lint/nursery/noConsoleLog: ok
           console.log(`  [🪝] removed ${id.node['name'] ?? ''}`)
         }
       }

@@ -5,8 +5,7 @@
   ],
   "compilerOptions": {
     "composite": true,
-    "esModuleInterop": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx"
   },
   "references": []
 }

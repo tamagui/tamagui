@@ -3,9 +3,11 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
-import { isWeb } from '@tamagui/constants'
+import { isAndroid, isWeb } from '@tamagui/constants'
 
-export function expandStyle(key: string, value: any) {
+import { PropMappedValue } from '../types'
+
+export function expandStyle(key: string, value: any): PropMappedValue {
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
       return [
@@ -26,9 +28,16 @@ export function expandStyle(key: string, value: any) {
     }
   }
 
-  const longKey = EXPANSIONS[key]
-  if (longKey) {
-    return longKey.map((key) => {
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    isAndroid &&
+    key === 'elevationAndroid'
+  ) {
+    return [['elevation', value]]
+  }
+
+  if (key in EXPANSIONS) {
+    return EXPANSIONS[key].map((key) => {
       return [key, value]
     })
   }

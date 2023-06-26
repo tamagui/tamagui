@@ -4,6 +4,7 @@ description: A simple select component
 name: select
 component: Select
 package: select
+demoName: Select
 ---
 
 # Select
@@ -29,7 +30,7 @@ package: select
 ### Anatomy
 
 ```tsx
-import { Select } from '@tamagui/select' // or from 'tamagui'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -38,19 +39,24 @@ export default () => (
     </Select.Trigger>
     <Select.Content>
       <Select.ScrollUpButton />
-      <Select.ViewPort>
+      <Select.Viewport>
         <Select.Group>
           <Select.Label />
           <Select.Item>
             <Select.ItemText />
           </Select.Item>
         </Select.Group>
-      </Select.ViewPort>
+      </Select.Viewport>
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>
 )
 ```
+
+<Notice>
+  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
+  See below for docs.
+</Notice>
 
 ### API
 
@@ -204,12 +210,14 @@ Extends [Paragraph](/docs/components/text). Used inside Item to provide unselect
 
 When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
 
+This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
+
 See [Sheet](/docs/components/sheet) for more props.
 
 Must use `Select.SheetContents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
 
 ```tsx
-import { Select } from '@tamagui/select' // or from 'tamagui'
+import { Select } from 'tamagui' // or '@tamagui/select'
 
 export default () => (
   <Select defaultValue="">
@@ -229,14 +237,14 @@ export default () => (
 
     <Select.Content>
       <Select.ScrollUpButton />
-      <Select.ViewPort>
+      <Select.Viewport>
         <Select.Group>
           <Select.Label />
           <Select.Item>
             <Select.ItemText />
           </Select.Item>
         </Select.Group>
-      </Select.ViewPort>
+      </Select.Viewport>
       <Select.ScrollDownButton />
     </Select.Content>
   </Select>

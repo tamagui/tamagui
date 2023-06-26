@@ -3,26 +3,30 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
+  Stack,
   StackProps,
+  View as TamaguiView,
+  createStyledContext,
   getVariableValue,
   isWeb,
   styled,
   useIsomorphicLayoutEffect,
+  useProps,
 } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
 import {
   Coords,
+  OffsetOptions,
   Placement,
   Strategy,
   UseFloatingReturn,
   arrow,
   autoUpdate,
   flip,
-  offset,
+  offset as offsetFn,
   shift,
   useFloating,
 } from '@tamagui/floating'
-import { stepTokenUpOrDown } from '@tamagui/get-size'
+import { getSpace } from '@tamagui/get-token'
 import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { Keyboard, View, useWindowDimensions } from 'react-native'
@@ -33,13 +37,6 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
 /* -------------------------------------------------------------------------------------------------
  * Popper
  * -----------------------------------------------------------------------------------------------*/
-
-const POPPER_NAME = 'Popper'
-
-type ScopedProps<P> = P & { __scopePopper?: Scope }
-const [createPopperContext, createScope] = createContextScope(POPPER_NAME)
-
-export const createPopperScope = createScope
 
 type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
@@ -52,8 +49,10 @@ type PopperContextValue = UseFloatingReturn & {
     centerOffset: number
   }
 }
-export const [PopperProvider, usePopperContext] =
-  createPopperContext<PopperContextValue>(POPPER_NAME)
+
+export const PopperContext = createStyledContext<PopperContextValue>({} as any)
+
+export const usePopperContext = () => React.useContext(PopperContext)
 
 export type PopperProps = {
   size?: SizeTokens
@@ -62,17 +61,18 @@ export type PopperProps = {
   stayInFrame?: ShiftProps | boolean
   allowFlip?: FlipProps | boolean
   strategy?: Strategy
+  offset?: OffsetOptions
 }
 
-export function Popper(props: ScopedProps<PopperProps>) {
+export function Popper(props: PopperProps) {
   const {
-    __scopePopper,
     children,
     size,
     strategy = 'absolute',
     placement = 'bottom',
     stayInFrame,
     allowFlip,
+    offset,
   } = props
 
   const [isMounted, setIsMounted] = React.useState(false)
@@ -80,10 +80,11 @@ export function Popper(props: ScopedProps<PopperProps>) {
     setIsMounted(true)
   }, [])
 
-  const anchorRef = React.useRef<any>()
+  const [anchorRef, setAnchorRef] = React.useState<any>()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
   const arrowRef = React.useRef()
+  const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
     strategy,
@@ -95,7 +96,7 @@ export function Popper(props: ScopedProps<PopperProps>) {
         : (null as any),
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
-      arrowSize ? offset(arrowSize) : (null as any),
+      typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
     ].filter(Boolean),
   })
 
@@ -104,7 +105,7 @@ export function Popper(props: ScopedProps<PopperProps>) {
   const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
 
   useIsomorphicLayoutEffect(() => {
-    floating.reference(anchorRef.current)
+    floating.refs.setReference(anchorRef)
   }, [anchorRef])
 
   if (isWeb) {
@@ -143,9 +144,8 @@ export function Popper(props: ScopedProps<PopperProps>) {
   }
 
   return (
-    <PopperProvider
-      scope={__scopePopper}
-      anchorRef={anchorRef}
+    <PopperContext.Provider
+      anchorRef={setAnchorRef}
       size={size}
       arrowRef={composedArrowRefs}
       arrowStyle={middlewareData.arrow}
@@ -154,15 +154,13 @@ export function Popper(props: ScopedProps<PopperProps>) {
       {...floating}
     >
       {children}
-    </PopperProvider>
+    </PopperContext.Provider>
   )
 }
 
 /* -------------------------------------------------------------------------------------------------
  * PopperAnchor
  * -----------------------------------------------------------------------------------------------*/
-
-const ANCHOR_NAME = 'PopperAnchor'
 
 type PopperAnchorRef = HTMLElement | View
 
@@ -172,11 +170,11 @@ export type PopperAnchorProps = YStackProps & {
 
 export const PopperAnchor = YStack.extractable(
   React.forwardRef<PopperAnchorRef, PopperAnchorProps>(function PopperAnchor(
-    props: ScopedProps<PopperAnchorProps>,
+    props: PopperAnchorProps,
     forwardedRef
   ) {
-    const { __scopePopper, virtualRef, ...anchorProps } = props
-    const { anchorRef, getReferenceProps } = usePopperContext(ANCHOR_NAME, __scopePopper)
+    const { virtualRef, ...anchorProps } = props
+    const { anchorRef, getReferenceProps } = usePopperContext()
     const ref = React.useRef<PopperAnchorRef>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
     if (virtualRef) {
@@ -187,7 +185,9 @@ export const PopperAnchor = YStack.extractable(
       ...anchorProps,
     }
     return (
-      <YStack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
+      <TamaguiView
+        {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)}
+      />
     )
   })
 )
@@ -195,8 +195,6 @@ export const PopperAnchor = YStack.extractable(
 /* -------------------------------------------------------------------------------------------------
  * PopperContent
  * -----------------------------------------------------------------------------------------------*/
-
-const CONTENT_NAME = 'PopperContent'
 
 type PopperContentElement = HTMLElement | View
 
@@ -231,11 +229,10 @@ export const PopperContentFrame = styled(ThemeableStack, {
 })
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
-  function PopperContent(props: ScopedProps<PopperContentProps>, forwardedRef) {
-    const { __scopePopper, ...contentProps } = props
-    const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
-      usePopperContext(CONTENT_NAME, __scopePopper)
-    const contentRefs = useComposedRefs<any>(floating, forwardedRef)
+  function PopperContent(props: PopperContentProps, forwardedRef) {
+    const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
+      usePopperContext()
+    const contentRefs = useComposedRefs<any>(refs.floating, forwardedRef)
 
     const contents = React.useMemo(() => {
       return (
@@ -243,11 +240,17 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           key="popper-content-frame"
           data-placement={placement}
           data-strategy={strategy}
-          size={contentProps.size || size}
-          {...contentProps}
+          size={size}
+          {...props}
         />
       )
     }, [placement, strategy, props])
+
+    useIsomorphicLayoutEffect(() => {
+      if (isMounted) {
+        update()
+      }
+    }, [isMounted])
 
     // all poppers hidden on ssr by default
     if (!isMounted) {
@@ -276,10 +279,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 /* -------------------------------------------------------------------------------------------------
  * PopperArrow
  * -----------------------------------------------------------------------------------------------*/
-
-const ARROW_NAME = 'PopperArrow'
-
-type PopperArrowElement = HTMLElement | View
 
 export type PopperArrowProps = YStackProps & {
   offset?: number
@@ -334,21 +333,19 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = PopperArrowFrame.extractable(
-  React.forwardRef<PopperArrowElement, PopperArrowProps>(function PopperArrow(
-    props: ScopedProps<PopperArrowProps>,
-    forwardedRef
-  ) {
-    const {
-      __scopePopper,
-      offset,
-      size: sizeProp,
-      borderWidth = 0,
-      ...arrowProps
-    } = props
-    const context = usePopperContext(ARROW_NAME, __scopePopper)
+export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
+  function PopperArrow(propsIn: PopperArrowProps, forwardedRef) {
+    const props = useProps(propsIn)
+    const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
+
+    const context = usePopperContext()
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(stepTokenUpOrDown('space', sizeVal, -2, [2]))
+    const sizeValResolved = getVariableValue(
+      getSpace(sizeVal, {
+        shift: -2,
+        bounds: [2],
+      })
+    )
     const size = +sizeValResolved
     const { placement } = context
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
@@ -395,25 +392,25 @@ export const PopperArrow = PopperArrowFrame.extractable(
           {...innerArrowStyle}
           rotate="45deg"
           {...(primaryPlacement === 'bottom' && {
-            borderBottomWidth: borderWidth,
-            borderRightWidth: borderWidth,
+            borderLeftWidth: borderWidth,
+            borderTopWidth: borderWidth,
           })}
           {...(primaryPlacement === 'top' && {
-            borderTopWidth: borderWidth,
-            borderLeftWidth: borderWidth,
-          })}
-          {...(primaryPlacement === 'right' && {
-            borderTopWidth: borderWidth,
+            borderBottomWidth: borderWidth,
             borderRightWidth: borderWidth,
           })}
-          {...(primaryPlacement === 'left' && {
-            borderBottomWidth: borderWidth,
+          {...(primaryPlacement === 'right' && {
             borderLeftWidth: borderWidth,
+            borderBottomWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'left' && {
+            borderTopWidth: borderWidth,
+            borderRightWidth: borderWidth,
           })}
         />
       </PopperArrowOuterFrame>
     )
-  })
+  }
 )
 
 /* -----------------------------------------------------------------------------------------------*/

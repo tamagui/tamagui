@@ -2,11 +2,9 @@ import { join } from 'path'
 
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
 import { loadTamagui as loadTamaguiStatic } from '@tamagui/static'
+import { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
-import { ViteDevServer } from 'vite'
-
-import { ResolvedOptions, UserOptions } from './types.js'
 
 export async function getOptions({
   root = process.cwd(),
@@ -14,13 +12,17 @@ export async function getOptions({
   tamaguiOptions,
   host,
   debug,
-}: Partial<UserOptions> = {}): Promise<ResolvedOptions> {
+}: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const tsConfigFilePath = join(root, tsconfigPath)
   ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
   const pkgJson = await readJSON(join(root, 'package.json'))
-
-  console.log('host', host)
+  let config = ''
+  try {
+    config = await getDefaultTamaguiConfigPath()
+  } catch {
+    // ok
+  }
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -31,7 +33,7 @@ export async function getOptions({
     tsconfigPath,
     tamaguiOptions: {
       components: ['tamagui'],
-      config: await getDefaultTamaguiConfigPath(),
+      config,
       ...tamaguiOptions,
     },
     paths: {
@@ -66,12 +68,16 @@ async function getDefaultTamaguiConfigPath() {
 let cached: TamaguiProjectInfo | null = null
 export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
-): Promise<TamaguiProjectInfo> => {
-  return (cached ??= await loadTamaguiStatic({
+): Promise<TamaguiProjectInfo | null> => {
+  const loaded = await loadTamaguiStatic({
     config: await getDefaultTamaguiConfigPath(),
     components: ['tamagui'],
     ...opts,
-  }))
+  })
+  if (loaded) {
+    cached = loaded
+  }
+  return loaded
 }
 
 const disposers = new Set<Function>()

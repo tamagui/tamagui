@@ -1,5 +1,3 @@
-import * as path from 'path'
-
 export const externalizeModules: any = ({ context, request }, callback) => {
   if (request === './cjs/react.development.js') {
     return callback(undefined, 'react')

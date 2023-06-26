@@ -4,6 +4,7 @@ description: Display aspect-fixed images with a fallback while loading
 name: avatar
 component: Avatar
 package: avatar
+demoName: Avatar
 ---
 
 # Avatar
@@ -26,7 +27,7 @@ package: avatar
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { Avatar } from 'tamagui'
@@ -39,13 +40,13 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Avatar /&gt;
+### Avatar
 
 Avatar extends [Square](/docs/components/shapes#shape-props), giving it all the [Tamagui standard props](/docs/intro/props) as well as `size` and `circular`.
 
-#### &lt;Avatar.Fallback /&gt;
+### Avatar.Fallback
 
 Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
 
@@ -60,6 +61,6 @@ Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
   ]}
 />
 
-#### &lt;Avatar.Image /&gt;
+### Avatar.Image
 
 Avatar.Fallback extends [Image](/docs/components/image).

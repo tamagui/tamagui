@@ -1,7 +1,11 @@
 export type StyleObject = {
   property: string
   pseudo?: 'hover' | 'focus' | 'active'
-  value: string
   identifier: string
   rules: string[]
+
+  // only in test mode
+  value?: any
 }
+
+export type MediaStyleObject = Omit<StyleObject, 'value'>

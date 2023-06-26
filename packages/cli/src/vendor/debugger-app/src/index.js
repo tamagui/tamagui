@@ -8,10 +8,14 @@
 
 /* eslint-env browser */
 import './index.css';
-import blueIcon from './assets/blue-icon.png';
-import grayIcon from './assets/gray-icon.png';
-import orangeIcon from './assets/orange-icon.png';
+// import blueIcon from './assets/blue-icon.png';
+// import grayIcon from './assets/gray-icon.png';
+// import orangeIcon from './assets/orange-icon.png';
 import DebuggerWorker from './debuggerWorker.js';
+
+const blueIcon = ''
+const grayIcon = ''
+const orangeIcon = ''
 
 const isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 const refreshShortcut = isMacLike ? '⌘R' : 'Ctrl R';

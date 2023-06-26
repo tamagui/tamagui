@@ -1,3 +1,4 @@
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { AlertTriangle } from '@tamagui/lucide-icons'
 import { H2, YStack } from 'tamagui'
 
@@ -9,3 +10,5 @@ export default function Custom404() {
     </YStack>
   )
 }
+
+Custom404.getLayout = getDefaultLayout

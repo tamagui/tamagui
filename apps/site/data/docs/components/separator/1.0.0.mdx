@@ -4,6 +4,7 @@ description: A simple separator component
 name: separator
 component: Separator
 package: separator
+demoName: Separator
 ---
 
 # Separator
@@ -20,7 +21,24 @@ package: separator
 
 <Highlights features={[`Supports horizontal and vertical orientation.`]} />
 
+## Usage
+
 Separator uses the `borderWidth` and `borderColor` attribute for its style, so be sure to override those when extending it.
+
+```tsx
+export default () => (
+  <XStack alignItems="center">
+    <Paragraph>Blog</Paragraph>
+    <Separator alignSelf="stretch" vertical />
+    <Paragraph>Docs</Paragraph>
+    <Separator alignSelf="stretch" vertical />
+    <Paragraph>Source</Paragraph>
+  </XStack>
+)
+
+```
+
+## API Reference
 
 ### Separator props
 

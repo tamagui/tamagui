@@ -1,12 +1,19 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
   "pipeline": {
     "build:js": {
       "cache": false
     },
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["tsconfig.json", "package.json", "src/**"],
+      "inputs": [
+        "tsconfig.json",
+        "package.json",
+        "src/**",
+        "tamagui-build.js",
+        "externalNodePlugin.js"
+      ],
       "outputs": [".next/**", "dist/**", "types/**"]
     },
     "start": {

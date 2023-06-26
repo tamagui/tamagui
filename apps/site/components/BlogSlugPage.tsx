@@ -3,7 +3,6 @@ import { components } from '@components/MDXComponents'
 import { authors } from '@data/authors'
 import { useTint } from '@tamagui/logo'
 import { ArrowLeft } from '@tamagui/lucide-icons'
-import { format, parseISO } from 'date-fns'
 import { useRouter } from 'next/router'
 import {
   Button,
@@ -71,7 +70,11 @@ function BlogArticleHeader({ frontmatter }: BlogPost) {
             <Separator vertical mx="$2" />
 
             <Paragraph o={0.4} tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
-              {format(parseISO(frontmatter.publishedAt || ''), 'MMMM yyyy')}
+              {Intl.DateTimeFormat('en-US', {
+                month: 'short',
+                year: 'numeric',
+                day: 'numeric',
+              }).format(new Date(frontmatter.publishedAt || ''))}
             </Paragraph>
 
             <Separator vertical mx="$2" />

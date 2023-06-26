@@ -5,6 +5,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Slottable,
   TamaguiElement,
+  View,
   composeEventHandlers,
   isTamaguiElement,
   isWeb,
@@ -22,6 +23,7 @@ import {
   DialogDescription,
   DialogDescriptionProps,
   DialogOverlay,
+  DialogOverlayFrame,
   DialogOverlayProps,
   DialogPortal,
   DialogPortalProps,
@@ -63,8 +65,8 @@ const TRIGGER_NAME = 'AlertDialogTrigger'
 
 interface AlertDialogTriggerProps extends DialogTriggerProps {}
 
-const NativeAlertDialogTriggerFrame = styled(YStack, {
-  name: 'DialogTrigger',
+const NativeAlertDialogTriggerFrame = styled(View, {
+  name: TRIGGER_NAME,
 })
 
 const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(
@@ -111,14 +113,20 @@ AlertDialogPortal.displayName = PORTAL_NAME
 
 const OVERLAY_NAME = 'AlertDialogOverlay'
 
+const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
+  name: OVERLAY_NAME,
+})
+
 interface AlertDialogOverlayProps extends DialogOverlayProps {}
 
-const AlertDialogOverlay = React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
-  (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
-    const { __scopeAlertDialog, ...overlayProps } = props
-    const dialogScope = useDialogScope(__scopeAlertDialog)
-    return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
-  }
+const AlertDialogOverlay = AlertDialogOverlayFrame.extractable(
+  React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
+    (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
+      const { __scopeAlertDialog, ...overlayProps } = props
+      const dialogScope = useDialogScope(__scopeAlertDialog)
+      return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
+    }
+  )
 )
 
 AlertDialogOverlay.displayName = OVERLAY_NAME
@@ -283,7 +291,6 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
         contentRef.current?.getAttribute('aria-describedby')!
       )
       if (!hasDescription) {
-        // eslint-disable-next-line no-console
         console.warn(`\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
   
         You can add a description to the \`${CONTENT_NAME}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.

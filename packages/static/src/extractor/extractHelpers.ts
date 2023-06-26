@@ -5,8 +5,8 @@ import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import findRoot from 'find-root'
 
-import { memoize } from '../helpers/memoize.js'
-import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types.js'
+import { memoize } from '../helpers/memoize'
+import type { ExtractedAttr, TamaguiOptionsWithFileInfo, Ternary } from '../types'
 
 // import { astToLiteral } from './literalToAst'
 
@@ -153,7 +153,6 @@ export function getValidComponent(
     if (!loaded) continue
     const isInModule = moduleName === '*' || moduleName.startsWith(loaded.moduleName)
     const foundComponent = loaded.nameToInfo[componentName]
-    // eslint-disable-next-line no-console
     if (isInModule && foundComponent) {
       return foundComponent
     }

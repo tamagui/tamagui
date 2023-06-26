@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/constants",
-  "version": "1.7.1",
-  "types": "./types/constants.d.ts",
-  "main": "dist/cjs/constants",
-  "module": "dist/esm/constants",
+  "version": "1.35.12",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
   "files": [
     "src",
     "types",
@@ -13,19 +13,19 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0"
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },

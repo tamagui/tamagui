@@ -4,6 +4,7 @@ description: A simple form component
 name: form
 component: Form
 package: form
+demoName: Form
 ---
 
 # Form
@@ -29,24 +30,24 @@ package: form
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Form } from '@tamagui/form' // or from 'tamagui'
+import { Form } from 'tamagui' // or '@tamagui/form'
 
 export default () => (
   <Form>
     {/* ... */}
-    <Form.Trigger>
+    <Form.Trigger asChild>
       <Button />
     </Form.Trigger>
   </Form>
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Form /&gt;
+### Form
 
 <PropsTable
   data={[
@@ -59,7 +60,7 @@ export default () => (
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### Form.Trigger
 
 Wrap this around your submitting element to make the form submit. We recommend using `asChild` to a child element of your choosing for more control.
 

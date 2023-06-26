@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/slider",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "sideEffects": [
     "*.css"
   ],
@@ -18,28 +18,36 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@tamagui/compose-refs": "1.7.1",
-    "@tamagui/core": "1.7.1",
-    "@tamagui/create-context": "1.7.1",
-    "@tamagui/get-size": "1.7.1",
-    "@tamagui/helpers": "1.7.1",
-    "@tamagui/stacks": "1.7.1",
-    "@tamagui/use-controllable-state": "1.7.1",
-    "@tamagui/use-direction": "1.7.1"
+    "@tamagui/compose-refs": "1.35.12",
+    "@tamagui/core": "1.35.12",
+    "@tamagui/create-context": "1.35.12",
+    "@tamagui/get-token": "1.35.12",
+    "@tamagui/helpers": "1.35.12",
+    "@tamagui/stacks": "1.35.12",
+    "@tamagui/use-controllable-state": "1.35.12",
+    "@tamagui/use-direction": "1.35.12"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.7"
   },
   "publishConfig": {
     "access": "public"

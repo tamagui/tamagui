@@ -1,8 +1,8 @@
 import React from 'react';
-import { DebugProp, SpaceDirection, SpaceTokens, SpacerProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent, TamaguiComponentState, TamaguiElement } from './types';
+import { DebugProp, SpaceDirection, SpaceValue, SpacerProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent, TamaguiComponentState, TamaguiElement } from './types';
 export declare const defaultComponentState: TamaguiComponentState;
 export declare const mouseUps: Set<Function>;
-export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = TamaguiElement, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
+export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = TamaguiElement, BaseProps = never>(staticConfigIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
 export declare const Unspaced: {
     (props: {
         children?: any;
@@ -13,7 +13,7 @@ export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, never
 export type SpacedChildrenProps = {
     isZStack?: boolean;
     children?: React.ReactNode;
-    space?: SpaceTokens | number | null;
+    space?: SpaceValue;
     spaceFlex?: boolean | number;
     direction?: SpaceDirection;
     separator?: React.ReactNode;

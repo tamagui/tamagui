@@ -9,7 +9,7 @@
  */
 
 import normalizeColor from './normalizeColor'
-import normalizeValueWithProperty from './normalizeValueWithProperty.js'
+import normalizeValueWithProperty from './normalizeValueWithProperty'
 
 const defaultOffset = { height: 0, width: 0 }
 

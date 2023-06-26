@@ -2,11 +2,22 @@
   <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.png" alt="Tamagui">
 </div>
 
+<br/>
+
+<div align="center">
+  <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>
+  <img alt="Discord users online" src="https://img.shields.io/github/commit-activity/m/tamagui/tamagui?label=Commits&logo=git" />
+  <img alt="Commits per month" src="https://img.shields.io/discord/909986013848412191?logo=discord&label=Discord&cacheSeconds=3600" />
+</div>
+
+<br/>
+
 <h1 align="center">
   Style React Native and Web with an optimizing compiler
 </h1>
 
-- `@tamagui/core` - Universal style system on top of React Native + Web.
+
+- `@tamagui/core` - Universal style system for both web and React Native.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
 - `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
 
@@ -33,7 +44,7 @@ yarn
 While developing, you'll want to run the build watcher in a dedicated terminal:
 
 ```
-yarn watch
+yarn watch:build
 ```
 
 It's easiest to use the `sandbox` project to test and develop things for web:
@@ -57,7 +68,7 @@ Before submitting a PR, check everything works across every combination of envir
 To do so, run the site, first in development to test if it works entirely at runtime:
 
 ```
-# Make sure you have run `yarn watch` before you execute this command.
+# Make sure you have run `yarn watch:build` before you execute this command.
 
 yarn site
 ```

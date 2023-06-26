@@ -15,8 +15,8 @@ export function ProgressDemo() {
 
   return (
     <>
-      <YStack h={60} ai="center" space>
-        <Paragraph h={30} o={0.5}>
+      <YStack height={60} alignItems="center" space>
+        <Paragraph height={30} opacity={0.5}>
           Size: {size}
         </Paragraph>
         <Progress size={sizeProp} value={progress}>
@@ -24,10 +24,17 @@ export function ProgressDemo() {
         </Progress>
       </YStack>
 
-      <XStack ai="center" space pos="absolute" b="$3" l="$4" $xxs={{ dsp: 'none' }}>
+      <XStack
+        alignItems="center"
+        space
+        position="absolute"
+        bottom="$3"
+        left="$4"
+        $xxs={{ display: 'none' }}
+      >
         <Slider
           size="$2"
-          w={130}
+          width={130}
           defaultValue={[4]}
           min={2}
           max={6}
@@ -36,7 +43,7 @@ export function ProgressDemo() {
             setSize(val)
           }}
         >
-          <Slider.Track bw={1} boc="$color5">
+          <Slider.Track borderWidth={1} borderColor="$color5">
             <Slider.TrackActive />
           </Slider.Track>
           <Slider.Thumb circular index={0} />

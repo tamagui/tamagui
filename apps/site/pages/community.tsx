@@ -1,15 +1,14 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import { format, parseISO } from 'date-fns'
+import { NextSeo } from 'next-seo'
 import { useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  EnsureFlexed,
   H1,
   H2,
   H3,
@@ -31,10 +30,12 @@ import { SocialLinksRow } from '../components/SocialLinksRow'
 export default function Community({ frontmatters }) {
   return (
     <CommunityLayout>
-      <TitleAndMetaTags
+      <NextSeo
         title="Community — Tamagui"
-        description="Tamagui latest news and discussion."
-        pathname="/community"
+        description="Tamagui's latest news and discussions."
+        openGraph={{
+          url: 'https://tamagiu.dev/community',
+        }}
       />
 
       <Spacer size="$4" />
@@ -81,6 +82,7 @@ export default function Community({ frontmatters }) {
                       >
                         {frontmatter.title}
                       </H3>
+
                       <XStack ai="center" space="$2">
                         <Paragraph
                           cursor="inherit"
@@ -89,7 +91,11 @@ export default function Community({ frontmatters }) {
                           theme="alt2"
                           fow="300"
                         >
-                          {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                          {Intl.DateTimeFormat('en-US', {
+                            month: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          }).format(new Date(frontmatter.publishedAt || ''))}
                         </Paragraph>
                         <Paragraph cursor="inherit" theme="alt2" size="$4" fow="300">
                           &nbsp;by {authors[frontmatter.by].name}
@@ -130,9 +136,11 @@ export default function Community({ frontmatters }) {
                       borderColor: '$color',
                     }}
                     o={0.5}
-                    width={1466 * 0.25}
-                    height={776 * 0.25}
-                    src={'/sponsors/design-kit.jpg'}
+                    source={{
+                      uri: '/sponsors/design-kit.jpg',
+                      width: 1466 * 0.25,
+                      height: 776 * 0.25,
+                    }}
                   />
                 </YStack>
               </NextLink>
@@ -148,150 +156,53 @@ export default function Community({ frontmatters }) {
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/srikanthkh/tamagui-cna"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-next-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by srikanthkh
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/srikanthkh/tamagui-cra"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-react-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by srikanthkh
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/criszz77/luna"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  🌘Luna template
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by criszz77
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/chen-rn/create-universal-app"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  create-universal-app
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by Chen
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/tamagui/tamagui/tree/master/apps/site"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  tamagui.dev
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by nate
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/ivopr/tamagui-expo"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Tamagui Expo
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by Ivo
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/dohomi/tamagui-kitchen-sink"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Kitchen Sink with Storybook
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by dohomi
-                </Paragraph>
-              </Card>
-              <Card
-                f={1}
-                maw={250}
-                jc="center"
-                space="$2"
-                tag="a"
-                href="https://github.com/ebg1223/t3-tamagui"
-                target="_blank"
-                p="$5"
-              >
-                <GithubIcon />
-                <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
-                  Tamagui t3
-                </H4>
-                <Paragraph cursor="pointer" theme="alt2">
-                  by ebg1223
-                </Paragraph>
-              </Card>
+              <StarterRepoCard
+                url="https://github.com/srikanthkh/tamagui-cna"
+                name="create-next-app"
+                author="srikanthkh"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/srikanthkh/tamagui-cra"
+                name="create-react-app"
+                author="srikanthkh"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/criszz77/luna"
+                name="Luna template"
+                author="criszz77"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/chen-rn/create-universal-app"
+                name="create-universal-app"
+                author="Chen"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/tamagui/tamagui/tree/master/apps/site"
+                name="tamagui.dev"
+                author="nate"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/ivopr/tamagui-expo"
+                name="Tamagui Expo"
+                author="Ivo"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/dohomi/tamagui-kitchen-sink"
+                name="Kitchen Sink with Storybook"
+                author="dohomi"
+              />
+
+              <StarterRepoCard
+                url="https://github.com/ebg1223/t3-tamagui"
+                name="Tamagui t3"
+                author="ebg1223"
+              />
             </XStack>
           </ScrollView>
         </FlatBubbleCard>
@@ -299,7 +210,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center" className="rainbow clip-text">
+          <H2 size="$9" ta="center" className="rainbow clip-text">
             Gold Sponsors
           </H2>
         </FlatBubbleCard>
@@ -317,7 +228,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center">
+          <H2 size="$9" ta="center">
             Bronze Sponsors
           </H2>
         </FlatBubbleCard>
@@ -335,7 +246,7 @@ export default function Community({ frontmatters }) {
         <Spacer />
 
         <FlatBubbleCard bw={0}>
-          <H2 size="$9" color="#fff" ta="center">
+          <H2 size="$9" ta="center">
             Indie Sponsors
           </H2>
         </FlatBubbleCard>
@@ -396,6 +307,42 @@ export default function Community({ frontmatters }) {
   )
 }
 
+const StarterRepoCard = ({
+  author,
+  name,
+  url,
+}: {
+  url: string
+  name: string
+  author: string
+}) => {
+  return (
+    <Card
+      f={1}
+      fb={0}
+      maw={300}
+      space="$2"
+      tag="a"
+      href={url}
+      target="_blank"
+      p="$5"
+      jc="space-between"
+    >
+      <YStack space="$2">
+        <GithubIcon />
+        <H4 cursor="pointer" fontFamily="$silkscreen" ls={0}>
+          {name}
+        </H4>
+      </YStack>
+      <Paragraph cursor="pointer" theme="alt2">
+        by {author}
+      </Paragraph>
+    </Card>
+  )
+}
+
+Community.getLayout = getDefaultLayout
+
 function GoldSponsor(props: {
   name: string
   link: string
@@ -418,9 +365,11 @@ function GoldSponsor(props: {
         >
           <Image
             accessibilityLabel={props.name}
-            width={props.imageWidth}
-            height={props.imageHeight}
-            src={props.image}
+            source={{
+              uri: props.image,
+              height: props.imageHeight,
+              width: props.imageWidth,
+            }}
           />
           <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
             {props.name}

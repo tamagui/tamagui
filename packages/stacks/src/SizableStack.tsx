@@ -1,7 +1,7 @@
 import { GetProps, styled } from '@tamagui/core'
 import { getButtonSized } from '@tamagui/get-button-sized'
 
-import { YStack } from './Stacks'
+import { XStack, YStack } from './Stacks'
 import {
   bordered,
   circular,
@@ -11,13 +11,20 @@ import {
   pressTheme,
 } from './variants'
 
-export const SizableStack = styled(YStack, {
+export const SizableStack = styled(XStack, {
   name: 'SizableStack',
-  backgroundColor: '$background',
-  flexDirection: 'row',
-  flexShrink: 1,
 
   variants: {
+    unstyled: {
+      true: {
+        hoverTheme: false,
+        pressTheme: false,
+        focusTheme: false,
+        elevate: false,
+        bordered: false,
+      },
+    },
+
     hoverTheme,
     pressTheme,
     focusTheme,

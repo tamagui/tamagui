@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import * as t from '@babel/types';
-import type { TamaguiOptions } from '../types.js';
-import { Extractor } from './createExtractor.js';
+import type { TamaguiOptions } from '../types';
+import { Extractor } from './createExtractor';
 export type ExtractedResponse = {
     js: string | Buffer;
     styles: string;

@@ -4,13 +4,14 @@ description: A simple dialog component
 name: dialog
 component: Dialog
 package: dialog
+demoName: Dialog
 ---
 
 # Dialog
 
 <Description>Show a modal with configurable layout and accessible actions.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <DialogDemo />
 </HeroContainer>
 
@@ -26,10 +27,10 @@ package: dialog
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Dialog } from '@tamagui/dialog' // or from 'tamagui'
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>
@@ -47,9 +48,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;Dialog /&gt;
+### Dialog
 
 Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -85,14 +86,20 @@ Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/prop
       default: 'true',
       description: `Renders into root of app instead of inline`,
     },
+    {
+      name: 'disableRemoveScroll',
+      type: 'boolean',
+      required: false,
+      description: `Used to disable the automatic removal of scrolling from the page when open.`,
+    },
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### Dialog.Trigger
 
 Just [Tamagui Props](/docs/intro/props).
 
-#### &lt;Portal /&gt;
+### Dialog.Portal
 
 Renders Dialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -104,10 +111,16 @@ Renders Dialog into appropriate container. Beyond [Tamagui Props](/docs/intro/pr
       required: false,
       description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
     },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
   ]}
 />
 
-#### &lt;Content /&gt;
+### Dialog.Content
 
 Main container for Dialog content, this is where you should apply animations.
 
@@ -121,10 +134,16 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
       required: false,
       description: `Used to force mounting when more control is needed. Useful when controlling animation with React animation libraries.`,
     },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
   ]}
 />
 
-#### &lt;Overlay /&gt;
+### Dialog.Overlay
 
 Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -139,19 +158,19 @@ Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
   ]}
 />
 
-#### &lt;Title /&gt;
+### Dialog.Title
 
 Required. Can wrap in VisuallyHidden to hide.
 
 Defaults to H2, see [Headings](/docs/components/headings).
 
-#### &lt;Description /&gt;
+### Dialog.Description
 
 Required. Can wrap in VisuallyHidden to hide.
 
 Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
-#### &lt;Close /&gt;
+### Dialog.Close
 
 Closes the Dialog, accepts the same props as YStack. Recommended to use with your own component and `asChild`.
 
@@ -167,7 +186,7 @@ Closes the Dialog, accepts the same props as YStack. Recommended to use with you
 
 Just [Tamagui Props](/docs/intro/props).
 
-#### &lt;Sheet /&gt;
+### Dialog.Sheet
 
 When used with `Adapt`, Dialog will render as a sheet when that breakpoint is active.
 
@@ -176,7 +195,7 @@ See [Sheet](/docs/components/sheet) for more props.
 Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
 
 ```tsx
-import { Dialog } from '@tamagui/dialog' // or from 'tamagui'
+import { Dialog } from 'tamagui' // or '@tamagui/dialog'
 
 export default () => (
   <Dialog>

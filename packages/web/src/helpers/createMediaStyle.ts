@@ -1,7 +1,5 @@
-import { StyleObject } from '@tamagui/helpers'
-
-import { mediaObjectToString } from '../hooks/useMedia.js'
-import type { MediaQueries, PartialStyleObject } from '../types.js'
+import { mediaObjectToString } from '../hooks/useMedia'
+import type { MediaQueries, MediaStyleObject, StyleObject } from '../types'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -15,7 +13,7 @@ export const createMediaStyle = (
   mediaKey: string,
   mediaQueries: MediaQueries,
   negate?: boolean
-): PartialStyleObject => {
+): MediaStyleObject => {
   if (!(prefixes && selectors)) {
     // TODO move this into useMedia calc once there and unify w getMediaImportance
     const mediaKeys = Object.keys(mediaQueries)
@@ -45,8 +43,9 @@ export const createMediaStyle = (
     // combine
     styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
   } else {
-    styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+    styleRule = `@media ${mediaQuery} { ${precendencePrefix}${styleInner.trim()} }`
   }
+
   return {
     property,
     rules: [styleRule],

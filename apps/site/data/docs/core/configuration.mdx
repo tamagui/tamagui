@@ -11,18 +11,21 @@ You can use `@tamagui/config` a totally complete config out of the box, the same
 
 ```tsx
 import { config } from '@tamagui/config'
-import { createTamagui, setupReactNative } from '@tamagui/core'
-import * as ReactNative from 'react-native'
+import { Text, View } from 'react-native'
+import { createTamagui, setupReactNative } from 'tamagui' // or '@tamagui/core'
 
 // if using only @tamagui/core with `react-native` components
-// if using `tamagui` this isn't necessary
-setupReactNative(ReactNative)
+// if using `tamagui` this isn't necessary as it does this setup for you (for most components)
+setupReactNative({
+  Text,
+  View,
+})
 
 const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module '@tamagui/core' {
+declare module 'tamagui' { // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
@@ -38,9 +41,9 @@ export default appConfig
 Another quick start that gives a bit more customization is using `@tamagui/shorthands` for our preset shorthands, and `@tamagui/themes` for the same themes and tokens used for this site. Then you'll just want to bring along any fonts, media queries, and animations you need.
 
 ```tsx
-import { createTamagui } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { createTamagui } from 'tamagui' // or '@tamagui/core'
 
 const appConfig = createTamagui({
   themes,
@@ -59,6 +62,18 @@ export default appConfig
 
 Depending on if you're using just `@tamagui/core`, `tamagui`, or your own custom design library, be sure the import of `createTamagui` and `declare module` type matches to the one you're using.
 
+### Customizing themes
+
+A lot of people want to use the Tamagui themes as the base, but then customize specific pieces. For this, we recommend literally installing `@tamagui/create-theme` and then [copy-pasting the source of `@tamagui/themes` somewhere near your tamagui.config.ts](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes.tsx).
+
+The file uses our `create-theme` package which isn't documented yet but has somewhat simple source you can check out and it gives you a really complete example of building out a suite of themes, sub-themes, and component themes that you can fork or change to your taste.
+
+<Notice>
+  We highly recommend you don't get bogged down in customizing themes too early. It's
+  better to get used to Tamagui with the quick start, get a feel for how themes work, and
+  then go in and customize.
+</Notice>
+
 ## Overview
 
 Let's start with an example of a complete `tamagui.config.ts` which is in the code block below. Note that keys used here can be customized to your liking, but using them in combination with [shorthands](#shorthands) give you a nice syntax like this:
@@ -67,23 +82,15 @@ Let's start with an example of a complete `tamagui.config.ts` which is in the co
 <XStack bg="$red" w="$2" h="$1" />
 ```
 
-And if you want even shorter, like this:
-
 ```tsx
-<Box bg-red w-2 h-1 />
-```
-
-You can achieve that by writing variants (see [an example at bottom of page](#example-of-shorthands-an-variants)).
-
-```tsx
-import { createFont, createTamagui, createTokens } from '@tamagui/core'
 import { createMedia } from '@tamagui/react-native-media-driver'
+import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
   // keys used for the objects you pass to `size`, `lineHeight`, `weight`
   // and `letterSpacing` should be consistent. The `createFont` function
-  // will fill-in any missing valus if `lineHeight`, `weight` or `letterSpacing`
+  // will fill-in any missing values if `lineHeight`, `weight` or `letterSpacing`
   // are subsets of `size`
   size: {
     1: 12,
@@ -167,11 +174,12 @@ const config = createTamagui({
   // optional:
 
   // add custom shorthand props
+  // note: as const is important, without it you may see breaking types
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
     w: 'width',
-  },
+  } as const,
 
   // Experimental / advanced, only for overriding the core component styles
   // Prefer to use styled() for building your own, only useful for edge cases.
@@ -200,8 +208,26 @@ The `createTamagui` function receives a configuration object:
 - `media`: Define reusable responsive [media queries](/docs/use-media).
 - `shorthands`: Define any props you want to expand to style values, keys being the shorthand and values being the expanded style prop.
 - `defaultProps`: For more advanced uses, you can override all named `styled()` components initial values. These merge downwards, so `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for `Text`.
+- `onlyAllowShorthands` when set to true will ensure that if you define shorthands, they override existing long-form style props.
 
-Note, for `tamagui`, it expects certain things on tokens. Space and size should both have 1-10 defined, as well as a value for `true` that maps to `4`.
+Note, for `tamagui` (not core), it expects you to define a `true` token that maps to your default size, this way it knows what token to use by default. So you'd do something like this:
+
+```tsx
+export const tokens = createTokens({
+  size: {
+    small: 20,
+    medium: 30,
+    true: 30, // note true = 30 just like medium, your default size token
+    large: 40,
+  },
+  space: {
+    small: 10,
+    medium: 20,
+    true: 20, // same goes for space and other token categories
+    large: 30,
+  },
+})
+```
 
 <Notice>
   The compiler will parse your tamagui.config.ts file at build-time. For this reason, we
@@ -250,7 +276,7 @@ TamaguiProvider takes a few optional properties:
       name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
+      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're setting up SSR you'll want to use getCSS() on the server instead and then turn on this setting.`,
     },
   ]}
 />
@@ -264,18 +290,28 @@ const css = Tamagui.getCSS()
 // insert into your head
 ```
 
-If using Next.js, see how to do this in the [Next.js guide](/docs/guides/next-js).
+Note that you can optimize this a bit by generating your CSS at build-time and then avoiding generating it on the client. This is covered in the Next.js Guide as it gives a good example of how to put all the pieces together properly, but you can apply it to any other framework.
+
+If using Next.js, [see the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
   `react-native-web` style tags to ensure Tamagui can override the built-in styles.
 </Notice>
 
+### Including the reset css
+
+There is an optional CSS reset that helps normalize styling, you can import it into your app like so:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
+
 ### Setup media query driver
 
 `@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
 
-```
+```sh
 yarn add @tamagui/react-native-media-driver
 ```
 
@@ -487,6 +523,7 @@ Shorthands are defined directly on your `createTamagui` call, rather than being 
 Here's an example of a partial shorthands configuration:
 
 ```tsx
+// the as const ensures types work with the optional `onlyAllowShorthands` option
 const shorthands = {
   ac: 'alignContent',
   ai: 'alignItems',
@@ -512,6 +549,11 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
 
 <PropsTable
   data={[
+    {
+      name: `defaultFont`,
+      required: false,
+      type: `Map it to the regular key of the font given to createTamgui, so "body" or "heading" make sense as valiues here. This will ensure this font is the fallback for any views that don't define it.`,
+    },
     {
       name: 'mediaQueryDefaultActive',
       required: false,
@@ -544,6 +586,20 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       type: 'number',
       default: 3,
       description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maxiumum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+    },
+    {
+      name: 'onlyAllowShorthands',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `Will remove the type for the long-form versions of any shorthands you define.`,
+    },
+    {
+      name: 'selectionStyles',
+      required: false,
+      type: '(theme) => ({ backgroundColor: Variable | string; color: Variable | string })',
+      default: false,
+      description: `On the web, will generate ::selection styles for text selection.`,
     },
   ]}
 />

@@ -1,4 +1,4 @@
-export * from './setup'
+import './setup.js'
 
 export * from '@tamagui/adapt'
 export * from '@tamagui/accordion'
@@ -7,6 +7,7 @@ export * from '@tamagui/animate-presence'
 export * from '@tamagui/avatar'
 export * from '@tamagui/button'
 export * from '@tamagui/card'
+export * from '@tamagui/checkbox'
 export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/dialog'
@@ -30,15 +31,16 @@ export * from '@tamagui/sheet'
 export * from '@tamagui/slider'
 export * from '@tamagui/stacks'
 export * from '@tamagui/switch'
-export * from '@tamagui/text'
 export * from '@tamagui/tabs'
+export * from '@tamagui/text'
+export * from '@tamagui/theme'
+export * from '@tamagui/toggle-group'
 export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
-export * from '@tamagui/checkbox'
 
 export * from './createTamagui'
 
@@ -51,7 +53,6 @@ export * from './views/Fieldset'
 export * from './views/Grid'
 export * from './views/Input'
 export * from './views/Layouts'
-// export * from './views/Skeleton'
 export * from './views/Spinner'
 export * from './views/TextArea'
 
@@ -90,6 +91,8 @@ export type {
   StackNonStyleProps,
   StaticConfig,
   StaticConfigParsed,
+  SpecificTokens,
+  ThemeTokens,
   TamaguiBaseTheme,
   TamaguiComponent,
   TamaguiComponentPropsBase,
@@ -104,12 +107,15 @@ export type {
   ThemeKeys,
   ThemeName,
   ThemeParsed,
+  Longhands,
+  StackProps,
   ThemeProps,
   Themes,
   ThemeValueFallback,
   Tokens,
   TransformStyleProps,
   VariantSpreadExtras,
+  Styleable,
   VariantSpreadFunction,
   ZIndexTokens,
 } from '@tamagui/core'
@@ -118,12 +124,14 @@ export {
   // components
   Spacer,
   Stack,
+  View,
   Text,
   Theme,
   FontLanguage,
   Unspaced,
   // context,
   TextAncestorContext,
+  AnimationDriverProvider,
   // constants
   isChrome,
   isClient,
@@ -136,16 +144,17 @@ export {
   createFont,
   createShorthands,
   createTheme,
-  addTheme,
-  updateTheme,
   createTokens,
   createVariable,
+  createStyledContext,
   getConfig,
   getAnimationDriver,
   getMedia,
   getStylesAtomic,
   getThemes,
   getTokens,
+  getToken,
+  getTokenValue,
   getVariable,
   variableToString,
   getVariableValue,
@@ -171,9 +180,12 @@ export {
   useMedia,
   useTheme,
   useThemeName,
+  useProps,
+  useMediaPropsActive,
   useSafeRef,
 } from '@tamagui/core'
 
+/** @deprecated LinearGradient has been moved to tamagui/linear-gradient as of 1.1 */
 export function LinearGradient(props: never) {
   if (process.env.NODE_ENV === 'development') {
     console.warn(`LinearGradient has been moved to tamagui/linear-gradient as of 1.1`)

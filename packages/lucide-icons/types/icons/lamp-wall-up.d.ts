@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const LampWallUp: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=lamp-wall-up.d.ts.map

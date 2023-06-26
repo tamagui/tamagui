@@ -29,6 +29,10 @@ export const SelectContent = ({
   )
   const touch = useIsTouchDevice()
 
+  if (context.shouldRenderWebNative) {
+    return <>{children}</>
+  }
+
   if (showSheet) {
     if (!context.open) {
       return null

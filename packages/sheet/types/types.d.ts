@@ -1,4 +1,4 @@
-import { AnimatedNumberStrategy } from '@tamagui/core';
+import { AnimatedNumberStrategy, AnimationProp } from '@tamagui/core';
 import type { ScopedProps } from '@tamagui/create-context';
 import type { PortalProps } from '@tamagui/portal';
 import { RemoveScroll } from '@tamagui/remove-scroll';
@@ -16,11 +16,27 @@ export type SheetProps = ScopedProps<{
     dismissOnSnapToBottom?: boolean;
     forceRemoveScrollEnabled?: boolean;
     animationConfig?: AnimatedNumberStrategy;
+    /**
+     * (experimental) Remove the children while hidden (to save some performance, but can cause issues with animations)
+     */
+    unmountChildrenWhenHidden?: boolean;
+    /**
+     * Adapts the sheet to use native sheet on the given platform (if available)
+     */
+    native?: 'ios'[] | boolean;
+    /**
+     * Pass if you're using the CSS animation driver
+     */
+    animation?: AnimationProp;
     handleDisableScroll?: boolean;
     disableDrag?: boolean;
     modal?: boolean;
     zIndex?: number;
     portalProps?: PortalProps;
+    /**
+     * Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible
+     */
+    moveOnKeyboardChange?: boolean;
 }, 'Sheet'>;
 export type PositionChangeHandler = (position: number) => void;
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;

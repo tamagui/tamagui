@@ -25,7 +25,7 @@ import {
 // add nice warning for if mis-configured next config:
 if (process.env.NODE_ENV === 'development') {
   if (FlatList?.['_isProxyWorm']) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.warn(
       `Using reanimated with excludeReactNativeWebExports including FlatList, adjust your next.config.js, reanimated currently doesn't support tree-shaking and needs *List components around.`
     )
@@ -86,7 +86,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
-    useAnimations: ({ props, style, presence, pseudos, onDidAnimate, delay }) => {
+    useAnimations: ({ props, style, presence, pseudos, onDidAnimate }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       const reanimatedOnDidAnimated = useEvent<NonNullable<typeof onDidAnimate>>(
@@ -179,22 +179,22 @@ export function createAnimations<A extends AnimationsConfig>(
           const { animation, config, shouldRepeat, repeatCount, repeatReverse } =
             getAnimation(key, animationConfig, props.animateOnly)
 
-          const { delayMs = null } = animationDelay(key, animationConfig, delay)
+          const { delay = null } = animationDelay(key, animationConfig)
 
           if (!animation) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.warn('No animation for', key, 'in', style)
             continue
           }
           if (!config) {
-            // eslint-disable-next-line no-console
+            // rome-ignore lint/nursery/noConsoleLog: ok
             console.warn('No animation config for', key, 'in', style)
             continue
           }
 
           if (key === 'transform') {
             if (!Array.isArray(value)) {
-              // eslint-disable-next-line no-console
+              // rome-ignore lint/nursery/noConsoleLog: ok
               console.error(`Invalid transform value. Needs to be an array.`)
               continue
             }
@@ -229,8 +229,8 @@ export function createAnimations<A extends AnimationsConfig>(
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
-              if (delayMs != null) {
-                final[key][innerStyleKey] = withDelay(delayMs, finalValue)
+              if (delay != null) {
+                final[key][innerStyleKey] = withDelay(delay, finalValue)
               } else {
                 final[key][innerStyleKey] = finalValue
               }
@@ -246,8 +246,8 @@ export function createAnimations<A extends AnimationsConfig>(
           if (shouldRepeat) {
             finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
           }
-          if (delayMs != null && typeof delayMs === 'number') {
-            final[key] = withDelay(delayMs, finalValue)
+          if (delay != null && typeof delay === 'number') {
+            final[key] = withDelay(delay, finalValue)
           } else {
             final[key] = finalValue
           }
@@ -306,24 +306,20 @@ function getAnimationConfig(
   }
 }
 
-function animationDelay(
-  key: string,
-  animation: AnimationConfig | undefined,
-  defaultDelay?: number
-) {
+function animationDelay(key: string, animation: AnimationConfig | undefined) {
   'worklet'
   if (
     !animation ||
     !animation[key] ||
-    animation[key].delayMs === undefined ||
-    animation[key].delayMs === null
+    animation[key].delay === undefined ||
+    animation[key].delay === null
   ) {
     return {
-      delayMs: null,
+      delay: null,
     }
   }
   return {
-    delayMs: animation[key].delayMs as TransitionConfig['delay'],
+    delay: animation[key].delay as TransitionConfig['delay'],
   }
 }
 

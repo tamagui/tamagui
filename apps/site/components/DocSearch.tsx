@@ -33,7 +33,7 @@ const docSearchCSS = `
   --docsearch-searchbox-shadow:inset 0 0 0 2px var(--docsearch-primary-color);
   --docsearch-hit-height:56px;
   --docsearch-hit-color:#444950;
-  --docsearch-hit-active-color:#fff;
+  --docsearch-hit-active-color:var(--blue10);
   --docsearch-hit-background:#fff;
   --docsearch-hit-shadow:0 1px 3px 0 #d4d9e1;
   --docsearch-key-gradient:linear-gradient(-225deg,#d5dbe4,#f8f8f8);
@@ -107,7 +107,7 @@ const docSearchCSS = `
 .DocSearch-NoResults,
 .DocSearch-Footer,
 .DocSearch-Reset {
-  color: var(--color5);
+  color: var(--color9);
 }
 
 .DocSearch-Input {

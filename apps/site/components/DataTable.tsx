@@ -1,4 +1,13 @@
-import { H3, H4, ListItem, Paragraph, ScrollView, Separator, XStack, YStack } from 'tamagui'
+import {
+  H3,
+  H4,
+  ListItem,
+  Paragraph,
+  ScrollView,
+  Separator,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { Code } from './Code'
 import { PropDef } from './PropsTable'
@@ -39,11 +48,17 @@ export function DataTable({
 
         {rows.map((items, i) => (
           <ListItem key={i} p={0}>
-            <XStack ai="center" pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>
+            <XStack
+              ai="center"
+              pos="relative"
+              py="$3"
+              px="$4"
+              $sm={{ flexDirection: 'column' }}
+            >
               {items.map((item) => (
                 <H4
                   color="$color"
-                  fow="800"
+                  fow="700"
                   key={item}
                   maw={100}
                   fontFamily="$mono"
@@ -51,7 +66,6 @@ export function DataTable({
                   ai="center"
                   jc="center"
                   textAlign="center"
-                  numberOfLines={3}
                   size="$4"
                   width={200}
                 >

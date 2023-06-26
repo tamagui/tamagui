@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1156px" height="1116px" viewBox="0 0 1156 1116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>trilemma</title>
+    <desc>Created with Sketch.</desc>
+    <g id="trilemma" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill-opacity="0.432366" fill="#FF00E0" cx="578" cy="372" r="372"></circle>
+        <circle id="Oval-Copy" fill-opacity="0.432366" fill="#FF00E0" cx="372" cy="744" r="372"></circle>
+        <circle id="Oval-Copy-2" fill-opacity="0.432366" fill="#FF00E0" cx="784" cy="744" r="372"></circle>
+        <g id="Group" transform="translate(61.000000, 166.000000)">
+            <text id="DX" font-family="Inter-Black, Inter" font-size="173" font-weight="800" line-spacing="90" letter-spacing="-7.2" fill="#FFFFFF">
+                <tspan x="260" y="168">DX</tspan>
+            </text>
+            <text id="UX" font-family="Inter-Black, Inter" font-size="173" font-weight="800" line-spacing="90" letter-spacing="-7.2" fill="#FFFFFF">
+                <tspan x="0" y="758">UX</tspan>
+            </text>
+            <text id="XP" font-family="Inter-Black, Inter" font-size="173" font-weight="800" line-spacing="90" letter-spacing="-7.2" fill="#FFFFFF">
+                <tspan x="697" y="748">XP</tspan>
+            </text>
+            <text id="loads-fast,-feels-na" opacity="0.437290737" font-family="Inter-Medium, Inter" font-size="39" font-weight="400" line-spacing="49" letter-spacing="-1.3" fill="#FFFFFF">
+                <tspan x="93.3632457" y="757">loads fast,</tspan>
+                <tspan x="83.6746449" y="806">feels native</tspan>
+            </text>
+            <text id="cross-platform-nativ" opacity="0.437290737" font-family="Inter-Medium, Inter" font-size="39" font-weight="400" line-spacing="49" letter-spacing="-1.3" fill="#FFFFFF">
+                <tspan x="702.635866" y="757">cross platform</tspan>
+                <tspan x="716.092436" y="806">native + web</tspan>
+            </text>
+            <text id="less,-better-code" opacity="0.437290737" font-family="Inter-Medium, Inter" font-size="39" font-weight="400" line-spacing="49" letter-spacing="-1.3" fill="#FFFFFF">
+                <tspan x="370.662216" y="157">less, better code</tspan>
+            </text>
+            <text id="Ship,-😍-code..-slow" font-family="Inter-Black, Inter" font-size="58" font-weight="800" line-spacing="51" letter-spacing="-1.48717949" fill="#FFFFFF">
+                <tspan x="612.168943" y="294.502841">Ship, </tspan>
+                <tspan x="616.494796" y="352.9999" font-family="AppleColorEmoji, Apple Color Emoji" font-weight="normal">😍</tspan>
+                <tspan x="618.967931" y="345.502841"> code..</tspan>
+                <tspan x="615.585865" y="396.502841">slow</tspan>
+            </text>
+            <text id="Ship-once." font-family="Inter-Black, Inter" font-size="58" font-weight="800" line-spacing="51" letter-spacing="-1.48717949" fill="#FFFFFF">
+                <tspan x="197.992206" y="336">Ship </tspan>
+                <tspan x="183" y="387">once.</tspan>
+            </text>
+            <text id="Never-actually-ship." font-family="Inter-Black, Inter" font-size="59" font-weight="800" line-spacing="49" letter-spacing="-1.451282" fill="#FFC800">
+                <tspan x="430.046799" y="423">Never </tspan>
+                <tspan x="400" y="472">actually </tspan>
+                <tspan x="443.497793" y="521">ship.</tspan>
+            </text>
+            <text id="Ship-everything-twic" font-family="Inter-Black, Inter" font-size="58" font-weight="800" line-spacing="51" letter-spacing="-1.48717949" fill="#FFFFFF">
+                <tspan x="438.582496" y="659">Ship </tspan>
+                <tspan x="349" y="710">everything</tspan>
+                <tspan x="415.518539" y="761">twice.</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

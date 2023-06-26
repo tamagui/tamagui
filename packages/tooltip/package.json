@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "sideEffects": [
     "*.css"
   ],
@@ -18,32 +18,40 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "dependencies": {
-    "@floating-ui/react": "^0.19.1",
-    "@tamagui/compose-refs": "1.7.1",
-    "@tamagui/core": "1.7.1",
-    "@tamagui/create-context": "1.7.1",
-    "@tamagui/floating": "1.7.1",
-    "@tamagui/get-size": "1.7.1",
-    "@tamagui/polyfill-dev": "1.7.1",
-    "@tamagui/popover": "1.7.1",
-    "@tamagui/popper": "1.7.1",
-    "@tamagui/stacks": "1.7.1",
-    "@tamagui/text": "1.7.1",
-    "@tamagui/use-controllable-state": "1.7.1"
+    "@floating-ui/react": "^0.24.2",
+    "@tamagui/compose-refs": "1.35.12",
+    "@tamagui/core": "1.35.12",
+    "@tamagui/create-context": "1.35.12",
+    "@tamagui/floating": "1.35.12",
+    "@tamagui/get-token": "1.35.12",
+    "@tamagui/polyfill-dev": "1.35.12",
+    "@tamagui/popover": "1.35.12",
+    "@tamagui/popper": "1.35.12",
+    "@tamagui/stacks": "1.35.12",
+    "@tamagui/text": "1.35.12",
+    "@tamagui/use-controllable-state": "1.35.12"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.7"
   },
   "publishConfig": {
     "access": "public"

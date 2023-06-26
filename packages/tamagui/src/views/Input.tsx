@@ -1,5 +1,11 @@
-import { GetProps, setupReactNative, styled } from '@tamagui/core'
-import { focusableInputHOC } from '@tamagui/focusable'
+import {
+  ColorStyleProp,
+  GetProps,
+  setupReactNative,
+  styled,
+  useTheme,
+} from '@tamagui/core'
+import { useFocusable } from '@tamagui/focusable'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
@@ -17,7 +23,6 @@ export const defaultStyles = {
   focusable: true,
   borderColor: '$borderColor',
   backgroundColor: '$background',
-  placeholderTextColor: '$placeholderColor',
 
   // this fixes a flex bug where it overflows container
   minWidth: 0,
@@ -27,9 +32,10 @@ export const defaultStyles = {
   },
 
   focusStyle: {
+    outlineColor: '$borderColorFocus',
+    outlineWidth: 2,
+    outlineStyle: 'solid',
     borderColor: '$borderColorFocus',
-    borderWidth: 2,
-    marginHorizontal: -1,
   },
 } as const
 
@@ -57,6 +63,34 @@ export const InputFrame = styled(
   }
 )
 
-export type InputProps = GetProps<typeof InputFrame>
+export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
+  placeholderTextColor?: ColorStyleProp
+  rows?: number
+}
 
-export const Input = focusableInputHOC(InputFrame)
+export const Input = InputFrame.styleable<InputProps>((propsIn, ref) => {
+  const props = useInputProps(propsIn, ref)
+  return <InputFrame {...props} />
+})
+
+export function useInputProps(props: InputProps, ref: any) {
+  const theme = useTheme()
+  const { onChangeText, ref: combinedRef } = useFocusable({
+    props,
+    ref,
+    isInput: true,
+  })
+
+  const placeholderColorProp = props.placeholderTextColor
+  const placeholderTextColor =
+    theme[placeholderColorProp as any]?.get() ??
+    placeholderColorProp ??
+    theme.placeholderColor?.get()
+
+  return {
+    ref: combinedRef,
+    ...props,
+    placeholderTextColor,
+    onChangeText,
+  }
+}

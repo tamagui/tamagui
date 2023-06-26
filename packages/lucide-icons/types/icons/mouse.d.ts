@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Mouse: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=mouse.d.ts.map

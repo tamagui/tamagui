@@ -1,25 +1,21 @@
-import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core-node';
-type NameToPaths = {
-    [key: string]: Set<string>;
-};
-export type LoadedComponents = {
-    moduleName: string;
-    nameToInfo: Record<string, {
-        staticConfig: StaticConfigParsed;
-    }>;
-};
-export type TamaguiProjectInfo = {
-    components: LoadedComponents[];
-    tamaguiConfig: TamaguiInternalConfig;
-    nameToPaths: NameToPaths;
-};
-type Props = {
-    components: string[];
-    config?: string;
-    forceExports?: boolean;
-};
-export declare function loadTamagui(props: Props): Promise<TamaguiProjectInfo>;
+import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
+import esbuild from 'esbuild';
+import { TamaguiProjectInfo } from './bundleConfig';
+export declare function loadTamagui(propsIn: TamaguiOptions): Promise<TamaguiProjectInfo | null>;
+export declare function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo;
+export declare function getOptions({ root, tsconfigPath, tamaguiOptions, host, debug, }?: Partial<CLIUserOptions>): Promise<CLIResolvedOptions>;
 export declare function resolveWebOrNativeSpecificEntry(entry: string): string;
-export declare function loadTamaguiSync(props: Props): TamaguiProjectInfo;
-export {};
+export { TamaguiProjectInfo };
+export declare function watchTamaguiConfig(tamaguiOptions: TamaguiOptions): Promise<{
+    context: esbuild.BuildContext<{
+        entryPoints: string[];
+        sourcemap: false;
+        write: false;
+        plugins: {
+            name: string;
+            setup({ onEnd }: esbuild.PluginBuild): void;
+        }[];
+    }>;
+    promise: Promise<void>;
+}>;
 //# sourceMappingURL=loadTamagui.d.ts.map

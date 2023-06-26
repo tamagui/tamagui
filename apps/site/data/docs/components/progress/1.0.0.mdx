@@ -4,13 +4,14 @@ description: Display a bar to indicate percent completion.
 name: progress
 component: Progress
 package: progress
+demoName: Progress
 ---
 
 # Progress
 
 <Description>Show percent completion with a progress bar.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <ProgressDemo />
 </HeroContainer>
 
@@ -24,12 +25,14 @@ package: progress
     'Composable component API for complete control.',
     <span>
       Adheres to the{' '}
-      <a href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">progressbar role requirements</a>
+      <a href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">
+        progressbar role requirements
+      </a>
     </span>,
   ]}
 />
 
-### Usage
+## Usage
 
 The `value` property controls the percent, but you can override it by adjusting the `x` property.
 
@@ -43,9 +46,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### Progress
+### Progress
 
 Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props), plus:
 
@@ -70,6 +73,6 @@ Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getti
   ]}
 />
 
-#### Indicator
+### Progress.Indicator
 
-Progress.Indicator extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props).
+`Progress.Indicator` extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props).

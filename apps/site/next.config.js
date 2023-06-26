@@ -4,8 +4,6 @@ process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
-// const withPreact = require('next-plugin-preact')
-
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
@@ -25,20 +23,18 @@ const plugins = [
   }),
   withTamagui({
     useReactNativeWebLite: true,
-    // enableCSSOptimizations: true,
     config: './tamagui.config.ts',
+    themes: '@tamagui/themes/src/themes-new.ts',
+    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
     disableExtraction,
   }),
-  // withPreact,
   (config) => {
     return {
       ...config,
       webpack(webpackConfig, options) {
-        // webpackConfig.optimization.minimize = false
-
         webpackConfig.resolve.alias ??= {}
 
         // https://github.com/theKashey/react-remove-scroll/pull/78
@@ -74,7 +70,9 @@ const plugins = [
   },
   (config) => {
     // for github pages
-    if (process.env.ON_GITHUB_PAGES) {
+    if (process.env.IS_TAMAGUI_PROD) {
+      config.assetPrefix = 'https://tamagui.dev'
+    } else if (process.env.ON_GITHUB_PAGES) {
       config.basePath = '/tamagui'
       config.assetPrefix = '/tamagui/'
     }
@@ -85,6 +83,7 @@ const plugins = [
 module.exports = function (name, { defaultConfig }) {
   /** @type {import('next').NextConfig} */
   let config = {
+    // output: 'export',
     // runtime: 'experimental-edge',
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
@@ -96,8 +95,17 @@ module.exports = function (name, { defaultConfig }) {
         skipDefaultConversion: true,
       },
     },
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'placekitten.com',
+          port: '',
+          pathname: '/**/**',
+        },
+      ]
+    },
     experimental: {
-      // optimizeCss: true,
       esmExternals: true,
       forceSwcTransforms: true,
       scrollRestoration: true,
@@ -109,12 +117,39 @@ module.exports = function (name, { defaultConfig }) {
     typescript: {
       ignoreBuildErrors: true,
     },
+    assetPrefix:
+      process.env.VERCEL_GIT_COMMIT_REF === 'master' ? 'https://tamagui.dev' : undefined,
+    async rewrites() {
+      return {
+        beforeFiles: [
+          {
+            source: '/:path*',
+            has: [
+              {
+                type: 'host',
+                value: 'studio.tamagui.dev',
+              },
+            ],
+            destination: '/studio-app/:path*',
+          },
+          {
+            source: '/studio-app/api/:path*',
+            destination: '/api/:path*',
+          },
+          {
+            source: '/studio-app/_next/:path*',
+            destination: '/_next/:path*',
+          },
+        ],
+      }
+    },
+
     // Next.js config
     async redirects() {
       return [
         {
           source: '/docs',
-          destination: '/docs/intro',
+          destination: '/docs/intro/introduction',
           permanent: true,
         },
       ]

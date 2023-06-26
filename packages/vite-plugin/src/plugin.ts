@@ -1,4 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static'
+import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
 
 /**
@@ -8,8 +9,11 @@ import type { Plugin } from 'vite'
 export function tamaguiPlugin(
   options: TamaguiOptions & {
     useReactNativeWebLite?: boolean
+    disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
+  const watcher = options.disableWatchTamaguiConfig ? null : watchTamaguiConfig(options)
+
   const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
   const noExternalSSR = new RegExp(
     `${components.join('|')}|react-native|expo-linear-gradient`,
@@ -19,6 +23,12 @@ export function tamaguiPlugin(
   const plugin: Plugin = {
     name: 'tamagui-base',
     enforce: 'pre',
+
+    async buildEnd() {
+      await watcher?.then((res) => {
+        res?.context.dispose()
+      })
+    },
 
     config(userConfig, env) {
       return {
@@ -32,15 +42,14 @@ export function tamaguiPlugin(
           'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
-          ...(process.env.NODE_ENV !== 'test' && {
-            'process.env.TAMAGUI_TARGET': JSON.stringify(
-              process.env.TAMAGUI_TARGET || 'web'
-            ),
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
-            'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
-            'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
-            'process.env.IS_STATIC': JSON.stringify(false),
-          }),
+          __DEV__: `${env.mode === 'development' ? true : false}`,
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
+          'process.env.TAMAGUI_TARGET': JSON.stringify(
+            process.env.TAMAGUI_TARGET || 'web'
+          ),
+          'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
+          'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
+          'process.env.IS_STATIC': JSON.stringify(false),
         },
         // build: {
         //   commonjsOptions: {

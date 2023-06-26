@@ -1,13 +1,12 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { Sheet } from '@tamagui/sheet'
-import { SheetProps } from '@tamagui/sheet/types/types'
+import { Sheet, SheetProps, useSheet } from '@tamagui/sheet'
 import { useState } from 'react'
 import { Button, H1, H2, Input, Paragraph, XStack } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(false)
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(true)
   const [innerOpen, setInnerOpen] = useState(false)
 
   return (
@@ -29,12 +28,19 @@ export const SheetDemo = () => {
         position={position}
         onPositionChange={setPosition}
         zIndex={100_000}
+        animation="bouncy"
       >
         <Sheet.Overlay />
         <Sheet.Handle />
-        <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
+        <Sheet.Frame
+          flex={1}
+          padding="$4"
+          justifyContent="center"
+          alignItems="center"
+          space="$5"
+        >
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
-          <Input w={200} />
+          <Input width={200} />
           {modal && (
             <>
               <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
@@ -43,7 +49,7 @@ export const SheetDemo = () => {
                 circular
                 icon={ChevronUp}
                 onPress={() => setInnerOpen(true)}
-              ></Button>
+              />
             </>
           )}
         </Sheet.Frame>
@@ -57,12 +63,12 @@ function InnerSheet(props: SheetProps) {
     <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
       <Sheet.Overlay />
       <Sheet.Handle />
-      <Sheet.Frame f={1} jc="center" ai="center" space="$5">
-        <Sheet.ScrollView p="$4" space>
+      <Sheet.Frame flex={1} justifyContent="center" alignItems="center" space="$5">
+        <Sheet.ScrollView padding="$4" space>
           <Button
             size="$8"
             circular
-            als="center"
+            alignSelf="center"
             icon={ChevronDown}
             onPress={() => props.onOpenChange?.(false)}
           />

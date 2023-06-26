@@ -3,17 +3,28 @@
     "enabled": true,
     "rules": {
       "correctness": {
-        "noUnnecessaryContinue": "off"
+        "noInnerDeclarations": "off",
+        "noUnnecessaryContinue": "off",
+        "noConstructorReturn": "off"
       },
       "suspicious": {
+        "noEmptyInterface": "off",
         "noExplicitAny": "off",
         "noArrayIndexKey": "off",
-        "noDoubleEquals": "off"
+        "noDoubleEquals": "off",
+        "noAssignInExpressions": "off",
+        "noRedeclare": "off"
       },
       "style": {
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off",
         "noArguments": "off",
         "noUnusedTemplateLiteral": "off",
-        "useTemplate": "off"
+        "useDefaultParameterLast": "off",
+        "useConst": "off",
+        "useEnumInitializers": "off",
+        "useTemplate": "off",
+        "useSelfClosingElements": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off",
@@ -25,6 +36,18 @@
       "complexity": {
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useMediaCaption": "off",
+        "noHeaderScope": "off",
+        "useAltText": "off"
+      },
+      "nursery": {
+        "noBannedTypes": "off",
+        "noConsoleLog": "error",
+        "useLiteralKeys": "off",
+        "useExhaustiveDependencies": "off"
       }
     }
   },

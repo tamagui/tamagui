@@ -14,13 +14,13 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -37,28 +37,15 @@ const Icon = (props) => {
       {...otherProps}
     >
       <Rect
-        x="1"
-        y="5"
-        width="22"
-        height="14"
-        rx="7"
-        ry="7"
-        fill="none"
+        width="20"
+        height="12"
+        x="2"
+        y="6"
+        rx="6"
+        ry="6"
         stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <_Circle
-        cx="16"
-        cy="12"
-        r="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <_Circle cx="16" cy="12" r="2" stroke={`${color}`} />
     </Svg>
   )
 }

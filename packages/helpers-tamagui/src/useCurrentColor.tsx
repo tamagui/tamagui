@@ -2,14 +2,14 @@ import {
   ColorTokens,
   UnionableString,
   Variable,
+  getVariable,
   useTheme,
-  variableToString,
-} from '@tamagui/core'
+} from '@tamagui/web'
 import type { TextStyle } from 'react-native'
 
 export const useCurrentColor = (colorProp: ColorProp) => {
   const theme = useTheme()
-  return variableToString(theme[colorProp as any] || colorProp || theme.color)
+  return getVariable(colorProp || theme[colorProp as any] || theme.color)
 }
 
 export type ColorProp =

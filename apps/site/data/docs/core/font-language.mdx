@@ -7,7 +7,7 @@ The `FontLanguage` component works with the Tamagui design system, allowing you 
 
 ### Rationale
 
-Before `FontLanguage`, you could get custom fonts with some effort. Simply create a `body` font, and a `body_french` font, and switch it out like so on relevant text components: `<Text fontFamily={isFrench ? '$body_french' : 'body'} />`.
+Before `FontLanguage`, you could get custom fonts with some effort. Simply create a `body` font, and a `body_french` font, and switch it out like so on relevant text components: `<Text fontFamily={isFrench ? '$body_french' : '$body'} />`.
 
 This would work, but having to update every Text component on page with a conditional would be terribly verbose and slow.
 
@@ -55,7 +55,7 @@ export default createTamagui({
 You'll then need to load the `Inter` and `Inter-CN` fonts for the platforms you support. Once you do, you'll get fully typed support for changing any `body` font to `cn` in a component:
 
 ```tsx
-import { FontLanguage, Text } from '@tamagui/core'
+import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
 
 export default (
   <FontLanguage body="cn">
@@ -71,7 +71,7 @@ The name you choose for the suffix is up to you, and Tamagui will treat any font
 To reset your font back to your base `body` font, you can use the reserved key `default`:
 
 ```tsx
-import { FontLanguage, Text } from '@tamagui/core'
+import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
 
 export default (
   <FontLanguage body="cn">

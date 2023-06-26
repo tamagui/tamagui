@@ -7,9 +7,9 @@
  * @flow
  */
 
-import { ColorValue, GenericStyleProp } from '../../types.js'
-import { TextStyle } from '../Text/types.js'
-import { ViewProps } from '../View/types.js'
+import { ColorValue, GenericStyleProp } from '../../types'
+import { TextStyle } from '../Text/types'
+import { ViewProps } from '../View/types'
 
 export type TextInputStyle = {
   caretColor?: ColorValue
@@ -25,14 +25,20 @@ export type TextInputProps = {
   blurOnSubmit?: boolean | null
   clearTextOnFocus?: boolean | null
   defaultValue?: string | null
+  rows?: number | null
+  readOnly?: boolean | null
   dir?: 'auto' | 'ltr' | 'rtl' | null
   disabled?: boolean | null
   editable?: boolean | null
+  enterKeyHint?: 'done' | 'enter' | 'next' | 'search' | 'send'
+  // react native
+  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'
   inputAccessoryViewID?: string | null
   keyboardType?:
     | 'default'
     | 'email-address'
     | 'number-pad'
+    | 'decimal-pad'
     | 'numbers-and-punctuation'
     | 'numeric'
     | 'phone-pad'

@@ -59,8 +59,14 @@ export interface PortalHostProps {
      */
     name: string;
     forwardProps?: Record<string, any>;
+    /**
+     * Useful when trying to animate children with AnimatePresence.
+     *
+     * Not a part of gorhom/react-native-portal
+     */
+    render?: (children: React.ReactNode) => React.ReactElement;
 }
-export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => JSX.Element>;
+export declare const PortalHost: React.MemoExoticComponent<(props: PortalHostProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>>>;
 export interface PortalItemProps {
     /**
      * Portal's key or name to be used as an identifier.

@@ -1,7 +1,348 @@
-- beatgig https://discord.com/channels/909986013848412191/1081351448731856977
+- studio: https://codemirror.net instead of monaco
+- document createStyledContext
+- document ThemeBuilder
 
-- @tamagui/change-animation-driver
-  - would be good for the website to show and test animations across all drivers
+- inverse not updating theme on doc site after two theme changes (see http://localhost:5005/docs/core/theme inverse demos)
+
+- #questportal how to build a button the ...size tokens.size[name] type is breaking
+
+- merge font-size and get-font-sized packages
+
+- forwardRef to icons
+
+- modal flicker https://discord.com/channels/909986013848412191/1111044987858206821
+
+- doing  <Paragraph ff={'$heading'} .. does work to make native use the font in the face prop (what's this prop for?) in $heading, but it still uses the size for $body, not $header, while web does use the correct respective sizing
+
+- add just early return hooks eslint check
+- Sheet.Close, Sheet imperative close
+
+high level:
+
+  - automate sponsors a bit better (link discord on tamagui site)
+  - private canary packages on github
+  - tiered line system for studio
+  - improve tests and docs
+  - make themes and sizing easier, simpler, better documented, more controllable
+  - headless
+  - studio
+  - takeout
+  - income:
+    - font packages + font package builder ui
+    - merch
+    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
+    - auth/account/profile drop
+    - better monorepo pro drop
+
+---
+
+via #gwun:
+
+- if you have light_blue_Button but no light_blue theme, causes update issues when you switch
+
+- defining a theme and componentName on a Stack/View should make the instantiated components inside inherit:
+
+  ```tsx
+  <Theme name=(theme}>
+    <YStack
+      theme="none"
+      componentName="GaContainer"
+      backgroundColor="$background"?
+      <GaScrollView bg="$backgroundSoft"›
+      </GaScrollView>
+    </YStack>
+  </Theme>
+  ```
+
+  After upgrading to latest, just on native, the "$background" in the
+  YStack works as expected but the child <GaScrollView
+  bg="$backgroundSoft" does not. Same applies if replaced with a
+  <Stack> or anv other component.
+
+- <Theme name="blue"><Theme reset><Button theme="orange" /></Theme></Theme>
+
+something like this i believe, where native is correct but web the button isn't orange
+
+
+---
+
+- `tamagui [clone|eject] Sheet ./packages/sheet`
+  - clones the sheet package into your repo somewhere
+
+- $web / $native / $ios / $android
+
+starter
+- feed
+- more work on profile
+- cropper on web, potentially
+- add users to github repo
+- template github action
+
+takeout
+- checkout
+- page for showing all purchased products / subscriptions
+- discord integration
+
+studio
+- templates working
+- Button.studio.tsx + run locally
+  - give it your app port and it launches electron or just gives you a new url?
+- figma export components
+- figma import tokens
+
+- we could somehow generate separate native and web potentially?
+  - basically we generate esbuild two different versions: .native.js and .web.js
+  - can flatten all TAMAGUI_TARGET then in each and maybe avoid that setup step
+  - can automatically map react-native to react-native-web (then only have to alias for -lite)
+  - should be 0-config setup
+
+- size/space/button docs
+- slow press on buttons
+- make `getButtonSized` somehow configurable by users
+- document `tokenCategories` in createPropMapper in configuration
+- document how `size` + `font` + `space` should work together to help create a cohesive design system that works with tamagui
+
+Ali todos:
+  - studio:
+    - colors:
+      - when you modify the popup in the bottom left should have a "save" option
+        - save will make it actually update the themes with the right values
+    - animations:
+      - profiling its super slow, because for some reason animation.start() taking forever: for now just make it debounce / not animation on drag
+
+  - [x] studio
+    - [ ] make it remember dark/light choice (localStorage)
+    - [ ] Themes tab
+      - [ ] if just "light" or just "dark" is selected and you toggle light/dark on the top right, make the themeId also switch (themeId = whats selected in sidebar)
+  - [ ] select: https://discord.com/channels/@me/1071157561757274193/1097795811703791646 - did some investigations on the issue, it's a safari-only issue it seems. todo: perf/virtualization of select items
+
+
+---
+
+# Backlog
+
+
+
+- if you change webpack config to alias RN to RNW (not lite) one animation test fails
+
+- cli needs a start update command just runs diff against your `~/.tamagui/tamagui`
+
+- sheet native ios snapPoints
+  - pre release 2.0 version of library
+  - https://github.com/dominicstop/react-native-ios-modal/blob/wip/example/src/examples/Test09.tsx
+
+- sheet native android - https://github.com/intergalacticspacehighway/react-native-android-bottomsheet
+
+- sorry to keep pulling on the same thread here haha, I've got it close now but I think I must still be doing something wrong, the theme works on the button text if I pass it down to CustomButtonText manually like theme={props.theme}  and use extractable, but when I update it to styleable, all the text goes white—second screenshot (probably inheriting from one of the parent themes I guess?)
+  - https://discord.com/channels/909986013848412191/974145843919716412/1100788149501833236
+
+- eventually all of getThemeCSSRules could be done at build-time
+
+
+- CI not failing on type errors in apps/site
+a package.json etc etc + zip file
+
+- export * from lucide icons in your ui package causes build error
+
+- Uniswap Button - https://discord.com/channels/909986013848412191/974145843919716412/1100156660296724482
+
+- @alt Sheet inside Popover breaks css animation:
+  - https://tamagui.dev/docs/components/popover
+
+- @ali https://discord.com/channels/909986013848412191/974145843919716412/1100115005451538503
+
+- https://discord.com/channels/909986013848412191/974145843919716412/1100099134935023668
+
+- https://discord.com/channels/909986013848412191/909986013848412194/1100077456448294942
+
+- @ali Modal doesn't re-enable pointer events until the animation fully completes (popover too?)
+  - https://github.com/tamagui/tamagui/issues/985
+
+- sheet overlay variant https://discord.com/channels/909986013848412191/1103391377615749211/1103391377615749211
+
+- Studio: drag and drop a font and you can configure the subset
+  - automatically converts to the right output formats
+  - auto generates CSS
+  - bundles it into 
+
+- [ ] bring back static-tests webpack.test.tsx (rename to web.tsx to run) "disabled for now but we really need to bring this back" showing "unknown test" for some reason
+
+- [ ] double render on new button - waiting for fernando's opinion (fernando may do low prio)
+
+- [ ] supabase local -> staging -> prod and migrations setup
+
+- `tama doctor`
+  - probably use @manypky internally
+    - https://github.com/Thinkmill/manypkg/blob/main/packages/cli/src/run.ts
+  - scan all package.json in monorepo
+  - make sure all tamagui versions match
+  - watch for non @tamagui stuff like loader
+  - auto run this whenever compiler is run as well on startup
+  - output nice message
+
+- $web / $native make them work as media queries
+
+- theme based "media queries" automatically:
+  - $dark / $light but could be any theme?
+
+- '> Child' descendent queries
+  - only with css driver it can extract to css
+  - without it uses context
+
+- <Sheet native />
+  - https://github.com/dominicstop/react-native-ios-modal
+  - we'd want expo module + snap points
+
+- <ActionSheet />
+ - plus `native` prop https://reactnative.dev/docs/actionsheetios
+
+- add test that builds site for prod + checks for header text / no errors
+
+- yarn release --canary
+
+- Popover trigger="hover"
+
+- Switch unstyled - make it so it doesn't do any theme stuff
+
+- font-family is being output to DOM on text element
+- font weights in css are generating extra variables with "undefined" value if not filled in
+- add defaultSize and defaultFontFamily to createTamagui
+  - all instances of $true can become getConfig().defaultSize
+  - all instances of $body can become getConfig().defaultFontFamily
+  - remove the validation in createTamagui that enforces the keys
+
+- relative sizing first class (and relative color)
+  - add `defaultSize`, and `defaultColor`
+  - add `relative()` helpers
+
+- bug android 
+  - I've been working on integrating our component library to mobile and ran into a snag with the android build. IOS builds seamlessly and Android throws this error when trying to use Select component:
+  - https://discord.com/channels/909986013848412191/1072289484755976312/1093994167601999912
+
+- bug: android styling is different, repro:
+  - https://github.com/lostpebble/tamagui-setup-project
+
+
+- bug: inputs rendering twice due to focusableInputHOC, if you remove that it doesnt, this is due to styled() + how it determines ComponentIn and grabs the component
+
+- document `unstyled` prop for components
+
+- docs for `@tamagui/font` and `@tamagui/theme`
+
+- https://github.com/tamagui/tamagui/pull/765 
+
+- getVariableValue(props.fontFamily) doesn't look right
+
+- slider track - light theme blends in with bg i think
+
+- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
+
+- createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
+
+- cli
+  - `tamagui doctor` command to check for version mismatch
+
+support new RN props:
+https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-accessibility-styles-and-events
+
+Ali:
+
+- [ ] moti driver
+- [ ] Studio
+  - [ ] Host on vercel
+  - [ ] plugins automatically watch and build
+    - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
+      - [ ] @tamagui/static just needs to add a call to the watch that studio.ts uses
+    - [ ] if weird or hard:
+      - [ ] `tama studio` comment out and instead
+        - [ ] `tama studio --serve` add flag and hide vite stuff behind there
+        - [ ] `tama studio` just builds once
+        - [ ] `tama studio --watch` watches
+- [ ] skipProps on getSplitStyle working with width={} but not styled()'s width:
+- [ ] https://discord.com/channels/909986013848412191/1095303038786342983/1095303038786342983
+- [ ] document keyboard avoiding view in `Sheet.mdx`
+- [ ] input bug 
+  - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
+- [ ] @tamagui/change-animation-driver document
+- [ ] Disable warning ENV + configuration.md docs
+  - [ ] (nate) make focusStyle border darker
+- [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
+- [ ] bezier on css animations
+  - [ ] disablePassBorderRadius feels like a weird thing to need by default
+    - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
+    alternatively we could have disablePassBorderRadius default to true only on Tabs.List. but then overriding it would feel awkward (having to pass disablePassBorderRadius={false})
+  - [ ] and document on styled() page
+- native component modes
+  - [ ] `RadioGroup`, `Select` native (web)
+  - [ ] `Switch` native (mobile)
+
+---
+
+# Nate
+
+### PR
+
+  - release hoverglow
+  - release use-store
+  - tabs demo
+  - animated colors demo
+  - studio preview video
+  - plus studio landing page with invite system
+  - theme inverse shows off generic themes
+
+- refactor getSplitStyles to share getSubStyle / logic with main style logic
+  - "When I place style: backgroundGradient outside of variants, it works"
+
+---
+
+- site polish: 
+  - make the text selection match the theme
+  - make the link underline match the theme
+
+- website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
+
+
+- in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
+  - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
+    - we could have a generic ComponentContext internally in createComponent
+    - we can export a createStyledContext()
+    - `const CardVariants = createStyledContext<{ size: number }>()`
+    - then in Card or any parent you can do `<CardVariants size={} />`
+    - finally, in `styled({ provider: CardVariants })`
+
+    <CardVariants.Provider size="$10">
+      <Card />
+    </CardVariants.Provider>
+
+    .for_Card.size_10 .is_Card { ... }
+
+    <Variants skeleton>
+      <Card />
+    </Variants>
+
+    variants: {
+      skeleton: {
+        true: {
+          beforeStyle: [
+            {
+              background: 'grey',
+            }
+          ]
+        }
+      }
+    }
+
+- themes: outlined, contrast
+
+
+- light/dark theme buttons bad colors (contrast + pressStyle borders)
+
+- slider track - light theme blends in with bg i think
+
+- add JSDoc help with links to docs for components
+  - also can we somehow make intellisense sort the props in a way we want by default? itd be ncie to have style props after the others
+
+- add codesandbox for most components
 
 - https://github.com/tamagui/tamagui/issues/568
 - instead of proxying we could just merge all themes on creation with their parents?
@@ -14,9 +355,13 @@
 - add Themes page in docs under Theme, change Theme => Design System
 - move packages to have unstyled
 - move packages from /core to /web
-- <YStack space="$3" $gtSm={{ space: '$6'}}> not working again
 - // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
+
+----
+
 - check why styled() of a HOC is failing:
+
+- Separator orientation="vertical" deprecate boolean `vertical`
 
 const SheetOverlay = styled(Sheet.Overlay, {
   backgroundColor: '$bgoverlay',
@@ -36,7 +381,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 1.X
 
-- // TODO could be native-only
 - Select id="" + Label focus
 - web forms events bubble
 - theme shouldn't change context ever on web, redo notify()
@@ -45,7 +389,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - vertical slider native can be janky
 - react native action sheet hooks/logic adapt
 - testing native - https://maestro.mobile.dev
-- app dir support experimental
 - styled('div')
 - tooltip auto pass down accessibilityLabel
 - accessibility keyboard navigation (Menu component potentially)
@@ -58,7 +401,6 @@ const SheetOverlay = styled(Sheet.Overlay, {
 - algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
-- canary release channel
 - improve native integration test
 - kitchen-sink in Snack demo link
 - `tamagui` cli basic version
@@ -76,6 +418,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 2.0
 
+- remove from web (can keep in core or make pluggable):
+  - themeable
+  - space
+  - can have an env setting to exclude all the theme generation stuff if you are using the pre-build: `getThemeCSSRules`
 - replace all RN stuff left in tamagui: Image, Input, Spinner, etc
 - Accessibility + RTL
 - tag="a" should get the typed props of a link
@@ -86,32 +432,10 @@ const SheetOverlay = styled(Sheet.Overlay, {
 
 ---
 
-inbox
-
-- remove defaultVariants in favor of just defaultProps
-
-- // TODO move to validStyleProps to merge
-- bundle size reductions:
-  - merge mergeSlotProps and mergeProps
-  - move to PROP whitelist rather than style whitelist maybe avoid validStyleProps altogether
-  - getStylesAtomic "all webkit prefixed rules, pointer-events"
-  - color names hardcoded potentially
-  - // ??
-  - styled(), extendStaticConfig can just merge options rather than de-structure re-structure
-  - remove mergeConfigDefaultProps
-  - ThemeManager move to functional not class
-  - move addTheme/updateTheme out of core
-  - may be able to remove proxyThemeVariables
-  - getVariantExtras looks easy to slim
-  - reverseMapClassNameToValue / unitlessNumbers
-  - normalizeColor etc
-  - createPropMapper
-
 - react native pressable in pressable
 - https://github.com/mwood23/nx-tamagui-next-repro
 - https://github.com/necolas/react-native-web/pull/2195/files
 - https://github.com/tamagui/tamagui/issues/513
-- @twaiter Has anyone used a dialog component on mobile? I havent been able to get Dialog.Closed to work (using a button). Seems like the example on the website doesnt work for mobile either (button not there)
 
 - docs search build inline
   - add shorthands to docs
@@ -193,7 +517,6 @@ inbox
 - <Select.SearchInput />
 - <Text fontSize="parent" />
 - <UL /> <LI /> <OL />
-- Text numberOfLines / context fix
 - hoverStyle={{ [XStack]: {} }}
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - <GradientText /> can work native with 
@@ -232,32 +555,102 @@ inbox
     - @react-native-menu/menu
     - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
 
+
 ---
 
-<ThemeOverride />
-<ThemeMutate />
-<Theme values={parent => ({ backgroundColor: parent.backgroundColorHover })} />
+## Descendent Styles
+
+ideas:
 
 ```tsx
-export default () => (
-  <Theme name="orange">
-    <ThemeOverride backgroundColor={-3}>
-      <MySquare />
-      <MyCircle />
-      <MyButton />
-    </ThemeOverride>
+const Child = styled(Stack, {
+  $Parent: [
+    {
+      backgroundColor: 'green'
+    },
+    {
+      when: 'small',
+      backgroundColor: 'red',
+    },
+  ],
+})
+```
 
-    <ThemeMutate
-      getNextTheme={theme => {
-        theme.background = ''
-        return theme
-      }}>
-        <MySquare />
-        <MyCircle />
-        <MyButton />
-    </ThemeMutate>
-  </Theme>
-)
+```tsx
+styled(Stack, {
+  $sm$dark$Parent: { ... }
+})
+```
+
+```tsx
+const Child = styled(Stack, {
+  $sm: { ... },
+  $dark: { ... },
+  $Parent: { ... },
+  compounds: [
+    {
+       media: '$sm',
+       theme: 'dark',
+       parent: 'Parent',
+       styles: {
+          // ...
+       }
+    }
+  ]
+});
+```
+
+
+### On the parent:
+
+```tsx
+const ButtonFrame = styled(Stack, {
+  ButtonText: {
+    color: 'red',
+  },
+
+  hoverStyle: {
+    ButtonText: {
+      color: 'green'
+    }
+  },
+
+  $small: {
+    hoverStyle: {
+      ButtonText: {
+        color: 'blue'
+      }
+    }
+  }
+})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+})
+```
+
+### On the child:
+
+```tsx
+const ButtonFrame = styled(Stack, {})
+
+const ButtonText = styled(Stack, {
+  name: 'ButtonText',
+
+  in_ButtonFrame: {
+    color: 'red',
+
+    hoverStyle: {
+      color: 'green',
+    },
+
+    $small: {
+      hoverStyle: {
+        color: 'blue'
+      }
+    }
+  },
+})
 ```
 
 ---
@@ -289,9 +682,9 @@ const Skeleton = styled(Stack, {
 
 ```tsx
 export default () => (
-  <SquareVariant skeleton>
+  <MySquare.Variant skeleton>
     <MySquare />
-  </SquareVariant>
+  </MySquare.Variant>
 )
 
 const MySquare = styled(Square, {
@@ -303,13 +696,17 @@ const MySquare = styled(Square, {
     }
   }
 })
+```
 
-const SquareVariant = createVariantProvider(MySquare)
+and if you want multiple:
+
+```tsx
+const SkeletonVariants = composeVariantProviders(MySquare)
 ```
 
 ---
 
-# Psuedo Element Styles
+# Pseudo Element Styles
 
 - beforeStyles + afterStyles array
 - display: flex
@@ -336,13 +733,4 @@ themes.dark_Button = {
 # Winamp Re-skinability
 
 Themes can completely transform the look and feel, a button could have multiple shadows/reflections in one theme, but be totally flat in another.
-
-
----
-
-quotes
-
-#stream Kezlar — Today at 3:09 PM
-yeah tamagui was definitely a rabbit hole, but once it clicked, it's incredible to use. Took me ~2weeks to migrate from native base but was 500% worth it
-
 

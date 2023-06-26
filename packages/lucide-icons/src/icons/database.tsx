@@ -14,13 +14,13 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -36,33 +36,9 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Ellipse
-        cx="12"
-        cy="5"
-        rx="9"
-        ry="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Ellipse cx="12" cy="5" rx="9" ry="3" stroke={`${color}`} />
+      <Path d="M3 5V19A9 3 0 0 0 21 19V5" stroke={`${color}`} />
+      <Path d="M3 12A9 3 0 0 0 21 12" stroke={`${color}`} />
     </Svg>
   )
 }

@@ -6,10 +6,10 @@ import * as t from '@babel/types'
 import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 
-import { FAILED_EVAL } from '../constants.js'
-import { TamaguiOptionsWithFileInfo } from '../types.js'
-import { evaluateAstNode } from './evaluateAstNode.js'
-import { isValidThemeHook } from './extractHelpers.js'
+import { FAILED_EVAL } from '../constants'
+import { TamaguiOptionsWithFileInfo } from '../types'
+import { evaluateAstNode } from './evaluateAstNode'
+import { isValidThemeHook } from './extractHelpers'
 
 export function createEvaluator({
   props,
@@ -35,7 +35,7 @@ export function createEvaluator({
     ) {
       const key = n.property.name
       if (shouldPrintDebug) {
-        // eslint-disable-next-line no-console
+        // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('    > found theme prop', key)
       }
       return createCSSVariable(key)
@@ -52,7 +52,7 @@ export function createEvaluator({
       .code.replace(/;\n$/, '')
 
     if (shouldPrintDebug) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('evaluating', code)
     }
     return vm.runInContext(code, evalContext)

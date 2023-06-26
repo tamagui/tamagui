@@ -1,4 +1,4 @@
-import { FontWeightSteps, GenericFont } from './types.js'
+import { FontWeightSteps, GenericFont } from './types'
 
 const fontWeights: FontWeightSteps[] = [
   '100',

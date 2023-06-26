@@ -1,18 +1,23 @@
-import * as React from 'react'
-import { useLayoutEffect, useState } from 'react'
+import { startTransition, useLayoutEffect, useState } from 'react'
 
-// note this only works for light being default for now...
+import { ColorScheme } from './types'
 
-export const useRootTheme = () => {
-  const [val, setVal] = useState('light')
+export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } = {}) => {
+  const [val, setVal] = useState<ColorScheme>(fallback)
 
   if (typeof document !== 'undefined') {
     useLayoutEffect(() => {
       // @ts-ignore
       const classes = [...document.documentElement.classList]
-      const isDark = classes.includes('t_dark')
-      React.startTransition(() => {
-        setVal(isDark ? 'dark' : 'light')
+
+      const val: ColorScheme = classes.includes(`t_dark`)
+        ? 'dark'
+        : classes.includes(`t_light`)
+        ? 'light'
+        : fallback
+
+      startTransition(() => {
+        setVal(val)
       })
     }, [])
   }

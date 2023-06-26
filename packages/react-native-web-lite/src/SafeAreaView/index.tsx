@@ -11,8 +11,8 @@
 import * as React from 'react'
 import { StyleSheet, canUseDOM } from 'react-native-web-internals'
 
-import type { ViewProps } from '../View/index.js'
-import View from '../View/index.js'
+import type { ViewProps } from '../View/index'
+import View from '../View/index'
 
 const cssFunction: 'constant' | 'env' = (() => {
   if (

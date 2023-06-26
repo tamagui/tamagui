@@ -1,8 +1,7 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { NextSeo } from 'next-seo'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
-import { format, parseISO } from 'date-fns'
 import { H3, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
@@ -10,7 +9,7 @@ import { ContainerLarge } from '../../components/Container'
 export default function Blog({ frontmatters }) {
   return (
     <>
-      <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
+      <NextSeo title="Blog — Tamagui" description="What's up with Tamagui." />
       <ContainerLarge mt="$6" mb="$7" space="$2">
         <YStack space="$8">
           {frontmatters.map((frontmatter) => (
@@ -27,9 +26,13 @@ export default function Blog({ frontmatters }) {
 
                 <YStack>
                   <Paragraph cursor="inherit" tag="time" size="$5" theme="alt2">
-                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+                    {Intl.DateTimeFormat('en-US', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      day: 'numeric',
+                    }).format(new Date(frontmatter.publishedAt || ''))}
                   </Paragraph>
-                  <Paragraph cursor="inherit" fow="800" theme="alt2" size="$4">
+                  <Paragraph cursor="inherit" fow="700" theme="alt2" size="$4">
                     &nbsp;by {authors[frontmatter.by].name}
                   </Paragraph>
                   {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}

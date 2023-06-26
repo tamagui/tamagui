@@ -14,13 +14,13 @@ import {
   Stop,
   Svg,
   Symbol,
-  Text,
   Use,
   Circle as _Circle,
+  Text as _Text,
 } from 'react-native-svg'
 
-import { IconProps } from '../IconProps'
-import { themed } from '../themed'
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 
 const Icon = (props) => {
   const { color = 'black', size = 24, ...otherProps } = props
@@ -36,81 +36,13 @@ const Icon = (props) => {
       strokeLinejoin="round"
       {...otherProps}
     >
-      <_Circle
-        cx="12"
-        cy="12"
-        r="10"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <_Circle
-        cx="12"
-        cy="12"
-        r="4"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="4.93"
-        y1="4.93"
-        x2="9.17"
-        y2="9.17"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="14.83"
-        y1="14.83"
-        x2="19.07"
-        y2="19.07"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="14.83"
-        y1="9.17"
-        x2="19.07"
-        y2="4.93"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="14.83"
-        y1="9.17"
-        x2="18.36"
-        y2="5.64"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Line
-        x1="4.93"
-        y1="19.07"
-        x2="9.17"
-        y2="14.83"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <_Circle cx="12" cy="12" r="10" stroke={`${color}`} />
+      <_Circle cx="12" cy="12" r="4" stroke={`${color}`} />
+      <Line x1="4.93" x2="9.17" y1="4.93" y2="9.17" stroke={`${color}`} />
+      <Line x1="14.83" x2="19.07" y1="14.83" y2="19.07" stroke={`${color}`} />
+      <Line x1="14.83" x2="19.07" y1="9.17" y2="4.93" stroke={`${color}`} />
+      <Line x1="14.83" x2="18.36" y1="9.17" y2="5.64" stroke={`${color}`} />
+      <Line x1="4.93" x2="9.17" y1="19.07" y2="14.83" stroke={`${color}`} />
     </Svg>
   )
 }

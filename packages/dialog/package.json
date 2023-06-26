@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -18,7 +18,7 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -26,36 +26,36 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
   "dependencies": {
-    "@tamagui/adapt": "1.7.1",
-    "@tamagui/animate-presence": "1.7.1",
-    "@tamagui/aria-hidden": "1.7.1",
-    "@tamagui/compose-refs": "1.7.1",
-    "@tamagui/core": "1.7.1",
-    "@tamagui/create-context": "1.7.1",
-    "@tamagui/dismissable": "1.7.1",
-    "@tamagui/focus-scope": "1.7.1",
-    "@tamagui/polyfill-dev": "1.7.1",
-    "@tamagui/popper": "1.7.1",
-    "@tamagui/portal": "1.7.1",
-    "@tamagui/remove-scroll": "1.7.1",
-    "@tamagui/sheet": "1.7.1",
-    "@tamagui/stacks": "1.7.1",
-    "@tamagui/text": "1.7.1",
-    "@tamagui/use-controllable-state": "1.7.1"
+    "@tamagui/adapt": "1.35.12",
+    "@tamagui/animate-presence": "1.35.12",
+    "@tamagui/aria-hidden": "1.35.12",
+    "@tamagui/compose-refs": "1.35.12",
+    "@tamagui/core": "1.35.12",
+    "@tamagui/create-context": "1.35.12",
+    "@tamagui/dismissable": "1.35.12",
+    "@tamagui/focus-scope": "1.35.12",
+    "@tamagui/polyfill-dev": "1.35.12",
+    "@tamagui/popper": "1.35.12",
+    "@tamagui/portal": "1.35.12",
+    "@tamagui/remove-scroll": "1.35.12",
+    "@tamagui/sheet": "1.35.12",
+    "@tamagui/stacks": "1.35.12",
+    "@tamagui/text": "1.35.12",
+    "@tamagui/use-controllable-state": "1.35.12"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0",
-    "react-native": "*"
+    "react-native": "^0.71.7"
   },
   "publishConfig": {
     "access": "public"

@@ -3,10 +3,16 @@ import { readFile } from 'fs/promises'
 import { build } from 'esbuild'
 import flowRemoveTypes from 'flow-remove-types'
 
-import { extensions } from './extensions.js'
+import { extensions } from './extensions'
 
 export async function nativePrebuild() {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`Prebuilding React Native (one time cost...)`)
+
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  console.log('note: disabling we have committed pre-built files to repo')
+  return
+
   await Promise.all([
     // react
     build({

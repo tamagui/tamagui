@@ -1,0 +1,2 @@
+export declare function useAsyncExternalStore(subscribe: (cb: Function) => () => void, getSnapshot: (state: any) => any, getServerSnapshot?: (state: any) => any): any;
+//# sourceMappingURL=useAsyncExternalStore.d.ts.map

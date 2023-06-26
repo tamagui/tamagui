@@ -3,7 +3,7 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
-import { resolveWebOrNativeSpecificEntry } from './loadTamagui.js'
+import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 
 /**
  * For internal loading of new files
@@ -21,7 +21,7 @@ function getESBuildConfig(
 ) {
   const alias = require('@tamagui/core-node').aliasPlugin
   if (process.env.DEBUG?.startsWith('tamagui')) {
-    // eslint-disable-next-line no-console
+    // rome-ignore lint/nursery/noConsoleLog: ok
     console.log(`Building`, entryPoints)
   }
   const tsconfig = join(__dirname, '..', '..', '..', 'tamagui.tsconfig.json')
@@ -39,6 +39,15 @@ function getESBuildConfig(
     jsxFactory: 'react',
     allowOverwrite: true,
     keepNames: true,
+    resolveExtensions: [
+      ...(process.env.TAMAGUI_TARGET === 'web'
+        ? ['.web.tsx', '.web.ts', '.web.jsx', '.web.js']
+        : ['.native.tsx', '.native.ts', '.native.jsx', '.native.js']),
+      '.tsx',
+      '.ts',
+      '.jsx',
+      '.js',
+    ],
     platform: 'node',
     tsconfig,
     loader: {
@@ -101,7 +110,7 @@ async function asyncLock(props: Props) {
     : new Date().getTime() - new Date(lockStat.mtime).getTime()
   if (lockedMsAgo < 500) {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log(`Waiting for existing build`, props.entryPoints)
     }
     let tries = 5

@@ -1,30 +1,45 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
 import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { GestureResponderHandlers, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
-import type { Variable } from './createVariable.js';
-import type { ResolveVariableTypes } from './helpers/createPropMapper.js';
-import type { FontLanguageProps } from './views/FontLanguage.types.js';
-import type { ThemeProviderProps } from './views/ThemeProvider.js';
+import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import type { Variable } from './createVariable';
+import type { ResolveVariableTypes } from './helpers/createPropMapper';
+import { StyledContext } from './helpers/createStyledContext';
+import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types';
+import type { ThemeProviderProps } from './views/ThemeProvider';
+export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
-export type DebugProp = boolean | 'break' | 'verbose';
+export type DebugProp = boolean | 'break' | 'verbose' | 'visualize';
+/**
+ * For static / studio
+ */
+type NameToPaths = {
+    [key: string]: Set<string>;
+};
+export type LoadedComponents = {
+    moduleName: string;
+    nameToInfo: Record<string, {
+        staticConfig: StaticConfigParsed;
+    }>;
+};
+export type TamaguiProjectInfo = {
+    components: LoadedComponents[];
+    tamaguiConfig: TamaguiInternalConfig;
+    nameToPaths: NameToPaths;
+};
+export type Role = 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'complementary' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'grid' | 'group' | 'heading' | 'img' | 'link' | 'list' | 'listitem' | 'log' | 'main' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'region' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'searchbox' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'summary' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem';
 type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export type TamaguiReactElement<P = any> = React.ReactElement<P> & {
+export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
     type: TamaguiComponent;
 };
 export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
-    asChild?: boolean;
-    space?: SpaceTokens | null;
-    spaceDirection?: SpaceDirection;
-    separator?: ReactNode;
+    asChild?: boolean | 'except-style';
     dangerouslySetInnerHTML?: {
         __html: string;
     };
-    animation?: AnimationProp | null;
-    animateOnly?: string[];
     children?: any | any[];
     debug?: DebugProp;
     disabled?: boolean;
@@ -35,7 +50,7 @@ export type TamaguiComponentPropsBase = {
     theme?: ThemeName | null;
     componentName?: string;
     tabIndex?: string | number;
-    role?: string;
+    role?: Role;
     /**
      * Forces the pseudo style state to be on
      */
@@ -57,7 +72,9 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
-export interface CreateTokens<Val extends VariableVal = VariableVal> {
+export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
+    [key: GenericKey]: Val;
+}> & {
     color: {
         [key: GenericKey]: Val;
     };
@@ -73,8 +90,10 @@ export interface CreateTokens<Val extends VariableVal = VariableVal> {
     zIndex: {
         [key: GenericKey]: Val;
     };
-}
-type Tokenify<A extends GenericTokens> = {
+};
+type Tokenify<A extends GenericTokens> = Omit<{
+    [Key in keyof A]: TokenifyRecord<A[Key]>;
+}, 'color' | 'space' | 'size' | 'radius' | 'zIndex'> & {
     color: TokenifyRecord<A['color']>;
     space: TokenifyRecord<A['space']>;
     size: TokenifyRecord<A['size']>;
@@ -127,7 +146,9 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+type OnlyAllowShorthandsSetting = boolean | undefined;
+type DefaultFontSetting = string | undefined;
+export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
     tokens: A;
@@ -139,6 +160,8 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
+    onlyAllowShorthands: G;
+    defaultFont: H;
 };
 type GetLanguagePostfix<Set> = Set extends string ? Set extends `${string}_${infer Postfix}` ? Postfix : never : never;
 type OmitLanguagePostfix<Set> = Set extends string ? Set extends `${infer Prefix}_${string}` ? Prefix : Set : never;
@@ -146,15 +169,17 @@ type RemoveLanguagePostfixes<F extends GenericFonts> = {
     [Key in OmitLanguagePostfix<keyof F>]: F[Key];
 };
 type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>;
-type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = {
+type ConfProps<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting> = {
     tokens: A;
     themes: B;
     shorthands?: C;
     media?: D;
     animations?: AnimationDriver<E>;
     fonts: F;
+    onlyAllowShorthands?: G;
+    defaultFont?: H;
 };
-export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer G, infer H> ? TamaguiInternalConfig<A, B, C, D, E, F, G, H> : unknown;
 export type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 type NonSubThemeNames<A extends string | number> = A extends `${string}_${string}` ? never : A;
 type BaseThemeDefinitions = TamaguiConfig['themes'][NonSubThemeNames<keyof TamaguiConfig['themes']>];
@@ -166,11 +191,7 @@ export type ThemeParsed = {
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {
-    size: TokenPrefixed<Tokens['size']>;
-    color: TokenPrefixed<Tokens['color']>;
-    radius: TokenPrefixed<Tokens['radius']>;
-    zIndex: TokenPrefixed<Tokens['zIndex']>;
-    space: TokenPrefixed<Tokens['space']>;
+    [Key in keyof Tokens]: TokenPrefixed<Tokens[Key]>;
 };
 type TokenPrefixed<A extends {
     [key: string]: any;
@@ -178,13 +199,7 @@ type TokenPrefixed<A extends {
     [key in Ensure$Prefix<keyof A>]: A[keyof A];
 };
 type Ensure$Prefix<A extends string | number | symbol> = A extends string ? A extends `$${string}` ? A : `$${A}` : never;
-export type TokensMerged = {
-    size: TokensParsed['size'] & Tokens['size'];
-    color: TokensParsed['color'] & Tokens['color'];
-    radius: TokensParsed['radius'] & Tokens['radius'];
-    zIndex: TokensParsed['zIndex'] & Tokens['zIndex'];
-    space: TokensParsed['space'] & Tokens['space'];
-};
+export type TokensMerged = TokensParsed & Tokens;
 export type Shorthands = TamaguiConfig['shorthands'];
 export type Media = TamaguiConfig['media'];
 export type Themes = TamaguiConfig['themes'];
@@ -198,7 +213,7 @@ export interface ThemeProps {
     componentName?: string;
     children?: any;
     reset?: boolean;
-    debug?: DebugProp;
+    debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
     shouldUpdate?: () => boolean;
@@ -206,7 +221,7 @@ export interface ThemeProps {
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 type SpacerPropsBase = {
-    size?: number | SpaceTokens | null;
+    size?: SpaceValue;
     flex?: boolean | number;
     direction?: SpaceDirection;
 };
@@ -223,6 +238,17 @@ export type CreateTamaguiProps = {
         [key: string]: {
             [key: string]: string | number | Variable;
         };
+    };
+    /**
+     * Define a default font, for better types and default font on Text
+     */
+    defaultFont?: string;
+    /**
+     * Web-only: define text-selection CSS
+     */
+    selectionStyles?: (theme: ThemeParsed) => null | {
+        backgroundColor?: ColorStyleProp;
+        color?: ColorStyleProp;
     };
     /**
      * *Advanced use case* For all CSS extracted views, this has no effect.
@@ -253,34 +279,47 @@ export type CreateTamaguiProps = {
     maxDarkLightNesting?: number;
     shouldAddPrefersColorThemes?: boolean;
     themeClassNameOnRoot?: boolean;
+    /**
+     * Only allow shorthands when enabled
+     */
+    onlyAllowShorthands?: OnlyAllowShorthandsSetting;
 };
-export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F>, 'tokens'> & {
+export type GetCSS = (opts?: {
+    separator?: string;
+    exclude?: 'themes' | 'design-system' | null;
+    sinceLastCall?: boolean;
+}) => string;
+export type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting, H extends DefaultFontSetting = DefaultFontSetting> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> & Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
     tokens: Tokenify<A>;
     tokensParsed: Tokenify<A>;
     themeConfig: any;
     fontsParsed: GenericFonts;
-    getCSS: () => string;
+    getCSS: GetCSS;
+    getNewCSS: GetCSS;
     parsed: boolean;
     inverseShorthands: Record<string, string>;
     reactNative?: any;
+    defaultFont?: H;
+    fontSizeTokens: Set<string>;
+    specificTokens: Record<string, Variable>;
 };
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations'];
 export type UnionableString = string & {};
 export type UnionableNumber = number & {};
-export type GenericFont<Key extends number | string = number | string> = {
+export type GenericFont<Key extends string | number = string | number> = {
     size: {
         [key in Key]: number | Variable;
     };
-    lineHeight: Partial<{
+    lineHeight?: Partial<{
         [key in Key]: number | Variable;
     }>;
-    letterSpacing: Partial<{
+    letterSpacing?: Partial<{
         [key in Key]: number | Variable;
     }>;
-    weight: Partial<{
+    weight?: Partial<{
         [key in Key]: number | string | Variable;
     }>;
-    family: string | Variable;
+    family?: string | Variable;
     style?: Partial<{
         [key in Key]: TextStyle['fontStyle'] | Variable;
     }>;
@@ -349,12 +388,18 @@ export type AnimationProp = AnimationKeys | {
 ];
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
-export type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
-export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
-export type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
-export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
-export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
+export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
+export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number;
+export type SpaceTokens = SpecificTokens | GetTokenString<keyof Tokens['space']> | number | boolean;
+export type ColorTokens = SpecificTokens | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
+export type ZIndexTokens = SpecificTokens | GetTokenString<keyof Tokens['zIndex']> | number;
+export type RadiusTokens = SpecificTokens | GetTokenString<keyof Tokens['radius']> | number;
+export type Token = SpecificTokens | GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
+type DefaultFont = TamaguiConfig['defaultFont'];
+export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
+export type Font = ParseFont<Fonts>;
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
+export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
 export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
@@ -363,7 +408,19 @@ export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | TextStyle['textTransform'];
-export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
+type ParseFont<A extends GenericFont> = {
+    size: TokenPrefixed<A['size']>;
+    lineHeight: TokenPrefixedIfExists<A['lineHeight']>;
+    letterSpacing: TokenPrefixedIfExists<A['letterSpacing']>;
+    weight: TokenPrefixedIfExists<A['weight']>;
+    family: TokenPrefixedIfExists<A['family']>;
+    style: TokenPrefixedIfExists<A['style']>;
+    transform: TokenPrefixedIfExists<A['transform']>;
+    color: TokenPrefixedIfExists<A['color']>;
+    face: TokenPrefixedIfExists<A['face']>;
+};
+type TokenPrefixedIfExists<A> = A extends Object ? TokenPrefixed<A> : {};
+export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<Tokens[K]> : never;
 type FontKeys = 'fontFamily';
 type FontSizeKeys = 'fontSize';
 type FontWeightKeys = 'fontWeight';
@@ -375,9 +432,13 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
     height: SpaceTokens;
 } : SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export type ThemeValueFallback = UnionableString | Variable;
+export type ColorStyleProp = ThemeValueFallback | ColorTokens;
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
 };
+type NarrowShorthands = Narrow<Shorthands>;
+export type Longhands = NarrowShorthands[keyof NarrowShorthands];
+export type OmitLonghands<R extends Record<string, any>> = TamaguiConfig['onlyAllowShorthands'] extends true ? Omit<R, Longhands> : R;
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -396,28 +457,35 @@ export type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>> & WithShorthands<WithThemeValues<A>>;
 type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 /**
  * Base style-only props (no media, pseudo):
  */
+export type SpaceValue = number | SpaceTokens | ThemeValueFallback;
 type SharedBaseExtraStyleProps = {
-    pointerEvents?: ViewProps['pointerEvents'];
-    cursor?: Properties['cursor'];
+    columnGap?: SpaceValue;
     contain?: Properties['contain'];
+    cursor?: Properties['cursor'];
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    gap?: number | SpaceTokens;
-    gapColumn?: number | SpaceTokens;
-    gapRow?: number | SpaceTokens;
-    userSelect?: Properties['userSelect'];
+    gap?: SpaceValue;
     outlineColor?: Properties['outlineColor'];
+    outlineOffset?: SpaceValue;
     outlineStyle?: Properties['outlineStyle'];
-    outlineOffset?: Properties['outlineOffset'];
-    outlineWidth?: Properties['outlineWidth'];
+    outlineWidth?: SpaceValue;
+    pointerEvents?: ViewProps['pointerEvents'];
+    rowGap?: SpaceValue;
+    space?: SpaceValue;
+    spaceDirection?: SpaceDirection;
+    separator?: ReactNode;
+    animation?: AnimationProp | null;
+    animateOnly?: string[];
+    userSelect?: Properties['userSelect'];
 };
-export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & SharedBaseExtraStyleProps;
-export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & SharedBaseExtraStyleProps & {
+type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
+export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
+export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
@@ -426,29 +494,45 @@ export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility
 };
 export interface ExtendBaseStackProps {
 }
-export interface ExtendsBaseTextProps {
+export interface ExtendBaseTextProps {
 }
+type LooseCombinedObjects<A extends Object, B extends Object> = A | B | (A & B);
 type OmitRemovedNonWebProps = 'onLayout' | keyof GestureResponderHandlers;
-export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps> & ExtendBaseStackProps & TamaguiComponentPropsBase;
+export type StackNonStyleProps = Omit<ViewProps, 'display' | 'children' | OmitRemovedNonWebProps | keyof ExtendBaseStackProps | 'style'> & ExtendBaseStackProps & TamaguiComponentPropsBase & {
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
+};
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export type StackPropsBase = StackNonStyleProps & WithThemeAndShorthands<StackStylePropsBase>;
 export type StackProps = StackNonStyleProps & StackStyleProps;
-export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNonWebProps> & ExtendsBaseTextProps & TamaguiComponentPropsBase;
+export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNonWebProps | keyof ExtendBaseTextProps | 'style'> & ExtendBaseTextProps & TamaguiComponentPropsBase & {
+    style?: StyleProp<LooseCombinedObjects<React.CSSProperties, TextStyle>>;
+};
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
-export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject;
-type StaticComponentObject = {
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfigParsed;
-    extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
+    styleable: Styleable<Props, Ref>;
 };
+export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}, ParentStaticProperties = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject<Props, Ref> & ParentStaticProperties & {
+    __baseProps: BaseProps;
+    __variantProps: VariantProps;
+};
+type StaticComponentObject<Props, Ref> = {
+    staticConfig: StaticConfigParsed;
+    /** @deprecated use `styleable` instead (same functionality, better name) */
+    extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
+    styleable: Styleable<Props, Ref>;
+};
+export type TamaguiComponentExpectingVariants<Props = {}, Variants = {}> = TamaguiComponent<Props, any, any, Variants>;
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     config: TamaguiInternalConfig;
     disableInjectCSS?: boolean;
     children?: ReactNode;
 };
-export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
+export type PropMappedValue = [string, any][] | undefined;
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: Record<string, any>, defaultProps: any, theme: any, variants: GenericVariantDefinitions, fontFamily: string, conf: TamaguiInternalConfig, returnVariablesAs: 'auto' | 'value' | 'non-color-value', staticConfig: StaticConfigParsed, parentVariantKey: string, languageContext?: LanguageContextType, avoidDefaultProps?: boolean, debug?: DebugProp) => Response;
+export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;
@@ -519,9 +603,10 @@ export type StaticConfigPublic = {
      */
     acceptsClassName?: boolean;
 };
-export type StaticConfig = StaticConfigPublic & {
-    Component?: FunctionComponent<any> & StaticComponentObject;
+type StaticConfigBase = StaticConfigPublic & {
+    Component?: FunctionComponent<any> & StaticComponentObject<any, any>;
     variants?: GenericVariantDefinitions;
+    context?: StyledContext;
     /**
      * Used for applying sub theme style
      */
@@ -559,12 +644,20 @@ export type StaticConfig = StaticConfigPublic & {
      */
     isHOC?: boolean;
 };
+export type StaticConfig = StaticConfigBase & {
+    parentStaticConfig?: StaticConfigBase;
+};
+export type ViewStyleWithPseudos = TextStyleProps | (TextStyleProps & {
+    hoverStyle?: TextStyleProps;
+    pressStyle?: TextStyleProps;
+    focusStyle?: TextStyleProps;
+});
 /**
  * --------------------------------------------
  *   variants
  * --------------------------------------------
  */
-export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export type StylableComponent = TamaguiComponent | ComponentType<any> | ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
 export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;
 export type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends TamaguiReactElement<infer Props> ? Props : A extends ComponentType<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
@@ -592,6 +685,8 @@ export type VariantSpreadExtras<Props> = {
         [key: string]: infer B;
     } ? B : unknown;
     props: Props;
+    fontFamily?: FontFamilyTokens;
+    font?: Font;
 };
 type PropLike = {
     [key: string]: any;
@@ -626,7 +721,7 @@ export type TamaguiComponentState = {
     press: boolean;
     pressIn: boolean;
     focus: boolean;
-    unmounted: boolean;
+    unmounted: boolean | 'should-enter';
     animation?: null | {
         style?: any;
         avoidClasses?: boolean;
@@ -635,7 +730,6 @@ export type TamaguiComponentState = {
 export type SplitStyleState = TamaguiComponentState & {
     mediaState?: Record<string, boolean>;
     noClassNames?: boolean;
-    dynamicStylesInline?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
@@ -678,7 +772,7 @@ export type AnimatedNumberStrategy = {
 export type UniversalAnimatedNumber<A> = {
     getInstance(): A;
     getValue(): number;
-    setValue(next: number, config?: AnimatedNumberStrategy): void;
+    setValue(next: number, config?: AnimatedNumberStrategy, onFinished?: () => void): void;
     stop(): void;
 };
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
@@ -687,7 +781,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     usePresence: () => UsePresenceResult;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
     useAnimatedNumberStyle: <V extends UniversalAnimatedNumber<any>>(val: V, getStyle: (current: any) => any) => any;
-    useAnimatedNumberReaction: (val: UniversalAnimatedNumber<any>, onValue: (current: number) => void) => void;
+    useAnimatedNumberReaction: <V extends UniversalAnimatedNumber<any>>(opts: {
+        value: V;
+        hostRef: RefObject<HTMLElement | View>;
+    }, onValue: (current: number) => void) => void;
     animations: A;
     View?: any;
     Text?: any;
@@ -700,6 +797,7 @@ export type UseAnimationHook = (props: {
     hostRef: RefObject<HTMLElement | View>;
     staticConfig: StaticConfigParsed;
     state: SplitStyleState;
+    theme: ThemeParsed;
     pseudos: PseudoProps<ViewStyle> | null;
     onDidAnimate?: any;
     delay?: number;
@@ -707,10 +805,9 @@ export type UseAnimationHook = (props: {
     style?: StackStylePropsBase | StackStylePropsBase[];
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
-export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | 'rules'>;
-export type RulesToInsert = PartialStyleObject[];
+export type RulesToInsert = StyleObject[];
 export type GetStyleResult = {
-    pseudos?: PseudoStyles;
+    pseudos?: PseudoStyles | null;
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;
@@ -735,5 +832,29 @@ export type TamaguiComponentEvents = {
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
 };
-export {};
+export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends Object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends Object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;
+/**
+ * Narrow copied from ts-toolbelt
+ * https://github.com/millsp/ts-toolbelt/blob/master/sources/Function/Narrow.ts
+ */
+export type Try<A1 extends any, A2 extends any, Catch = never> = A1 extends A2 ? A1 : Catch;
+type Narrowable = string | number | bigint | boolean;
+type NarrowRaw<A> = (A extends [] ? [] : never) | (A extends Narrowable ? A : never) | {
+    [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>;
+};
+export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>;
+export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios';
+export type NativeValue<Platform extends NativePlatform = NativePlatform> = boolean | Platform | Platform[];
+/**
+ * `StyleProp` copied from React Native:
+ *  Exported to fix https://github.com/tamagui/tamagui/issues/1258
+ */
+export type Falsy = undefined | null | false;
+export interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {
+}
+/** Keep a brand of 'T' so that calls to `StyleSheet.flatten` can take `RegisteredStyle<T>` and return `T`. */
+export type RegisteredStyle<T> = number & {
+    __registeredStyleBrand: T;
+};
+export type StyleProp<T> = T | RegisteredStyle<T> | RecursiveArray<T | RegisteredStyle<T> | Falsy> | Falsy;
 //# sourceMappingURL=types.d.ts.map

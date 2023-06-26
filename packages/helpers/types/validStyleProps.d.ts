@@ -17,6 +17,7 @@ export declare const validStylesOnBaseProps: Readonly<{
     placeholderTextColor: true;
 }>;
 export declare const stylePropsView: Readonly<{
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -89,8 +90,8 @@ export declare const stylePropsView: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -129,6 +130,15 @@ export declare const stylePropsView: Readonly<{
     shadowOpacity: true;
     shadowRadius: true;
 }>;
+export declare const stylePropsFont: Readonly<{
+    fontFamily: true;
+    fontSize: true;
+    fontStyle: true;
+    fontWeight: true;
+    letterSpacing: true;
+    lineHeight: true;
+    textTransform: true;
+}>;
 export declare const stylePropsTextOnly: Readonly<{
     whiteSpace?: true | undefined;
     wordWrap?: true | undefined;
@@ -139,13 +149,6 @@ export declare const stylePropsTextOnly: Readonly<{
     cursor?: true | undefined;
     WebkitLineClamp?: true | undefined;
     WebkitBoxOrient?: true | undefined;
-    color: true;
-    fontFamily: true;
-    fontSize: true;
-    fontStyle: true;
-    fontWeight: true;
-    letterSpacing: true;
-    lineHeight: true;
     textAlign: true;
     textDecorationLine: true;
     textDecorationStyle: true;
@@ -153,7 +156,14 @@ export declare const stylePropsTextOnly: Readonly<{
     textShadowColor: true;
     textShadowOffset: true;
     textShadowRadius: true;
+    fontFamily: true;
+    fontSize: true;
+    fontStyle: true;
+    fontWeight: true;
+    letterSpacing: true;
+    lineHeight: true;
     textTransform: true;
+    color: true;
 }>;
 export declare const stylePropsText: Readonly<{
     whiteSpace?: true | undefined;
@@ -165,13 +175,6 @@ export declare const stylePropsText: Readonly<{
     cursor?: true | undefined;
     WebkitLineClamp?: true | undefined;
     WebkitBoxOrient?: true | undefined;
-    color: true;
-    fontFamily: true;
-    fontSize: true;
-    fontStyle: true;
-    fontWeight: true;
-    letterSpacing: true;
-    lineHeight: true;
     textAlign: true;
     textDecorationLine: true;
     textDecorationStyle: true;
@@ -179,7 +182,15 @@ export declare const stylePropsText: Readonly<{
     textShadowColor: true;
     textShadowOffset: true;
     textShadowRadius: true;
+    fontFamily: true;
+    fontSize: true;
+    fontStyle: true;
+    fontWeight: true;
+    letterSpacing: true;
+    lineHeight: true;
     textTransform: true;
+    color: true;
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -250,8 +261,8 @@ export declare const stylePropsText: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -300,13 +311,6 @@ export declare const stylePropsAll: Readonly<{
     cursor?: true | undefined;
     WebkitLineClamp?: true | undefined;
     WebkitBoxOrient?: true | undefined;
-    color: true;
-    fontFamily: true;
-    fontSize: true;
-    fontStyle: true;
-    fontWeight: true;
-    letterSpacing: true;
-    lineHeight: true;
     textAlign: true;
     textDecorationLine: true;
     textDecorationStyle: true;
@@ -314,7 +318,15 @@ export declare const stylePropsAll: Readonly<{
     textShadowColor: true;
     textShadowOffset: true;
     textShadowRadius: true;
+    fontFamily: true;
+    fontSize: true;
+    fontStyle: true;
+    fontWeight: true;
+    letterSpacing: true;
+    lineHeight: true;
     textTransform: true;
+    color: true;
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -385,8 +397,8 @@ export declare const stylePropsAll: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;
@@ -433,6 +445,7 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: true;
 }>;
 export declare const validStyles: Readonly<{
+    elevationAndroid?: true | undefined;
     borderBottomStyle?: true | undefined;
     borderTopStyle?: true | undefined;
     borderLeftStyle?: true | undefined;
@@ -505,8 +518,8 @@ export declare const validStyles: Readonly<{
     flexShrink: true;
     flexWrap: true;
     gap: true;
-    gapColumn: true;
-    gapRow: true;
+    columnGap: true;
+    rowGap: true;
     height: true;
     justifyContent: true;
     left: true;

@@ -12,11 +12,13 @@
  *   - shorthands can be expanded before merging
  */
 
+import { pseudoDescriptors } from './pseudoDescriptors'
+
 type AnyRecord = Record<string, any>
 
 export const mergeProps = (
   a: Object,
-  b: Object,
+  b?: Object,
   leaveOutClassNames = false,
   inverseShorthands?: AnyRecord
 ) => {
@@ -25,8 +27,10 @@ export const mergeProps = (
   for (const key in a) {
     mergeProp(out, outCns, a, b, key, leaveOutClassNames, inverseShorthands)
   }
-  for (const key in b) {
-    mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
+  if (b) {
+    for (const key in b) {
+      mergeProp(out, outCns, b, undefined, key, leaveOutClassNames, inverseShorthands)
+    }
   }
   return [out, outCns] as const
 }
@@ -40,9 +44,16 @@ function mergeProp(
   leaveOutClassNames: boolean,
   inverseShorthands?: AnyRecord
 ) {
-  const val = a[key]
   const shorthand = inverseShorthands?.[key] || null
   if (b && (key in b || (shorthand && shorthand in b))) {
+    return
+  }
+  const val = a[key]
+  if (key in pseudoDescriptors) {
+    out[key] = {
+      ...out[key],
+      ...val,
+    }
     return
   }
   if (shorthand) {

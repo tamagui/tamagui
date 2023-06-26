@@ -5,19 +5,7 @@ declare class TamaguiManager {
         [x: string]: boolean;
         [x: number]: boolean;
     };
-    get config(): import("./types.js").TamaguiInternalConfig<import("./types.js").CreateTokens<import("./types.js").VariableVal>, {
-        [key: string]: Partial<import("./types.js").TamaguiBaseTheme> & {
-            [key: string]: import("./types.js").VariableVal;
-        };
-    }, import("./types.js").GenericShorthands, {
-        [key: string]: {
-            [key: string]: string | number;
-        };
-    }, {
-        [key: string]: string | any[] | {
-            [key: string]: any;
-        };
-    }, import("./types.js").GenericFonts>;
+    get config(): import("./types").TamaguiInternalConfig;
     get insertedRules(): string[];
     get allSelectors(): Record<string, string>;
     get allTransforms(): {};

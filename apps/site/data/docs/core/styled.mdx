@@ -6,7 +6,7 @@ description: Extend and build custom and optimizable components.
 Create a new component by extending an existing one:
 
 ```tsx
-import { GetProps, Stack, styled } from '@tamagui/core'
+import { GetProps, Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   name: 'Circle', // useful for debugging, and Component themes
@@ -25,25 +25,6 @@ Usage:
 
 Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself and don't need the following.
 
-If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file:
-
-```tsx
-import { setupReactNative, styled } from '@tamagui/core'
-import { Image } from 'react-native'
-
-// this allows tamagui to optimize for react-native components
-// it's not required. `tamagui` automatically sets this up, but core doesn't
-setupReactNative({ Image })
-
-const MyImage = styled(Image, {
-  backgroundColor: 'red'
-})
-```
-
-This requirement allows core to be light and not depend on react-native for web-only use cases.
-
-The `tamagui` package applies this polyfill automatically as it uses React Native.
-
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 
 ## Variants
@@ -51,7 +32,7 @@ You can pass any prop that is supported by the component you are extending, even
 Let's add some variants:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,
@@ -84,8 +65,8 @@ export const Circle = styled(Stack, {
 ```
 
 <Notice>
-  Please use `as const` for the variants definition until Typescript gains the ability to infer
-  generics as const .
+  Please use `as const` for the variants definition until Typescript gains the ability to
+  infer generics as const .
 </Notice>
 
 We can use these like so:
@@ -96,17 +77,173 @@ We can use these like so:
 
 To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
 
-## Compatibility
+## Using with React Native
+
+If using just `core` but passing in React Native components, be sure to run `setupReactNative` once first, typically near your entry file and give it the components you intend to decorate. This is necessary because React Native has some different behavior from a typical component that we must assume when merging events and styles.
+
+```tsx
+import { Image } from 'react-native'
+import { setupReactNative, styled } from 'tamagui' // or '@tamagui/core'
+
+// this allows tamagui to optimize for react-native components
+// it's not required. `tamagui` automatically sets this up, but core doesn't
+setupReactNative({ Image })
+
+const MyImage = styled(Image, {
+  backgroundColor: 'red',
+})
+```
+
+This requirement allows core to be light and not depend on react-native for web-only use cases. The `tamagui` package applies this polyfill automatically as it uses React Native.
+
+### Non-working React Native views
+
+You can assume all "utility" views in React Native are not supported: Pressable, TouchableOpacity, and others. They have specific logic for handling events that conflicts with Tamagui. We could support these in the future, but we don't plan on it - you can get all of Pressable functionality for the most part within Tamagui itself, and if you need something outside of it, you can use Pressable directly.
+
+## Using on the web
 
 The `styled()` function supports Tamagui views, React Native views, and any other React component that accepts a `style` prop. If you wrap an external component that Tamagui doesn't recognize, Tamagui will assume it only supports the `style` prop and not optimize it.
 
 If it does accept `className`, you can opt-in to className, CSS media queries, and compile-time optimization by adding `acceptsClassName`:
 
 ```tsx
-import { styled } from '@tamagui/core'
 import { SomeCustomComponent } from 'some-library'
+import { styled } from 'tamagui' // or '@tamagui/core'
 
 export const TamaguiCustomComponent = styled(SomeCustomComponent, {
   acceptsClassName: true,
 })
 ```
+
+### createStyledContext
+
+When building a "Composable Component API", you need a way to pass properties down to multiple related components at once.
+
+What is a Composable Component API? It looks like this:
+
+```tsx
+export default () => (
+  <Button size="$large">
+    <Button.Icon>
+      <Icon />
+    </Button.Icon>
+    <Button.Text>Lorem ipsum</Button.Text>
+  </Button>
+)
+```
+
+Note how the `size="$large"` is set on the outer Button frame. We'd expect this size property to pass down to both the Icon and Text so that our frame size always matches the icon and text size. It would be cumbersome and bug-prone to have to always pass the size to every sub-component.
+
+Tamagui solves this with `createStyledContext` which acts much like React `createContext`, except it only works with styled components and only controls their variants (for now, we're exploring if it can do more).
+
+You can set it up as follows:
+
+```tsx
+import {
+  SizeTokens,
+  Stack,
+  Text,
+  createStyledContext,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
+
+export const ButtonContext = createStyledContext<{
+  size: SizeTokens
+}>({
+  size: '$medium',
+})
+
+export const ButtonFrame = styled(Stack, {
+  name: 'Button',
+  context: ButtonContext,
+
+  variants: {
+    size: {
+      '...size': (name, { tokens }) => {
+        return {
+          height: tokens.size[name],
+          borderRadius: tokens.radius[name],
+          gap: tokens.space[name].val * 0.2,
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$medium',
+  },
+})
+
+export const ButtonText = styled(Text, {
+  name: 'ButtonText',
+  context: ButtonContext,
+
+  variants: {
+    size: {
+      '...fontSize': (name, { font }) => ({
+        fontSize: font?.size[name],
+      }),
+    },
+  } as const,
+})
+
+export const Button = withStaticProperties(ButtonFrame, {
+  Props: ButtonContext.Provider,
+  Text: ButtonText,
+})
+```
+
+A few things to note here:
+
+- ButtonContext should only be typed and given properties that work across both components. Since they both define a `size` variant, this works.
+- But note that one defines `...size` while the other defines `...fontSize`. This works in this case only if your design system has consistent naming for token sizes across `size` and `fontSize` (and is why we highy recommend this pattern).
+- You can use `<Button.Props size="$large"><Button /></Button.Props>` now to set default props for a Button from above.
+- As of today, using `context` pattern does not work with the optimizing compiler flattening functionality. So we recommend not using this for your most common components like Stacks or Text. But for Button or anything higher level it's totally fine - it will still extract CSS and remove some logic from the render function. We've mapped out how this can work with flattening eventually and it shouldn't be too much effort.
+
+### styleable
+
+<Notice>
+  This is an advanced pattern that is only needed if you are building a design system that
+  has complex components.
+</Notice>
+
+Any `styled()` component will have a helper function on it called `.styleable()`.
+
+This advanced usage is necessary if you are doing a pattern like the following:
+
+```tsx
+// 1. you create a `styled` primitive as usual
+const StyledText = styled(Text)
+
+// 2. you create a wrapper component that adds some logic
+//    but still returns a styled component that recieves the props
+const HigherOrderStyledText = (props) => <StyledText {...props} />
+
+// 3. you want that wrapper component itself to be able to use with `styled`
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // oops, variants will merge incorrectly
+  },
+})
+```
+
+So you must add a `.styleable()` around your `HigherOrderStyledText`. You'll also want to forward the ref, which happens automatically with styleable:
+
+```tsx
+const StyledText = styled(Text)
+
+const HigherOrderStyledText = StyledText.styleable((props, ref) => (
+  <StyledText ref={ref} {...props} />
+))
+
+const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
+  variants: {
+    // variants now merge correctly
+  },
+})
+```
+
+Note that `styleable` automatically wraps your component in [`themeable`](/docs/core/exports#themeable), which means it will handle the theme props for you and change the theme above your wrapped component. This means that in `HigherOrderStyledText` you can use `useTheme` and if you do something like `<HigherOrderStyledText theme="some_different_theme">`, then your `useTheme()` hook will properly get the `some_difference_theme` Theme object.
+
+Also note that you also must always pass the props given to `HigherOrderStyledText` down to `StyledText` for things to work properly.

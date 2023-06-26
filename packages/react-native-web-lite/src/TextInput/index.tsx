@@ -22,9 +22,9 @@ import {
   useResponderEvents,
 } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
-import type { PlatformMethods } from '../types.js'
-import type { TextInputProps } from './types.js'
+import createElement from '../createElement/index'
+import type { PlatformMethods } from '../types'
+import type { TextInputProps } from './types'
 
 /**
  * Determines whether a 'selection' prop differs from a node's existing
@@ -45,9 +45,7 @@ const setSelection = (node, selection) => {
     const { start, end } = selection
     try {
       node.setSelectionRange(start, end || start)
-    } catch (e) {
-      // ok
-    }
+    } catch (e) {}
   }
 }
 
@@ -79,7 +77,7 @@ const forwardPropsList = Object.assign(
     spellCheck: true,
     value: true,
     type: true,
-  },
+  }
 )
 
 const pickProps = (props) => pick(props, forwardPropsList)
@@ -105,10 +103,12 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       blurOnSubmit,
       clearTextOnFocus,
       dir,
-      editable = true,
-      keyboardType = 'default',
+      editable,
+      enterKeyHint,
+      inputMode = 'text',
+      keyboardType,
       multiline = false,
-      numberOfLines = 1,
+      numberOfLines,
       onBlur,
       onChange,
       onChangeText,
@@ -135,7 +135,9 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       onStartShouldSetResponderCapture,
       onSubmitEditing,
       placeholderTextColor,
+      readOnly = false,
       returnKeyType,
+      rows = 1,
       secureTextEntry = false,
       selection,
       selectTextOnFocus,
@@ -143,32 +145,47 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     } = props
 
     let type
-    let inputMode
+    let _inputMode
 
-    switch (keyboardType) {
-      case 'email-address':
+    if (inputMode != null) {
+      _inputMode = inputMode
+      if (inputMode === 'email') {
         type = 'email'
-        break
-      case 'number-pad':
-      case 'numeric':
-        inputMode = 'numeric'
-        break
-      // @ts-ignore
-      case 'decimal-pad':
-        inputMode = 'decimal'
-        break
-      case 'phone-pad':
+      } else if (inputMode === 'tel') {
         type = 'tel'
-        break
-      case 'search':
-      case 'web-search':
+      } else if (inputMode === 'search') {
         type = 'search'
-        break
-      case 'url':
+      } else if (inputMode === 'url') {
         type = 'url'
-        break
-      default:
+      } else {
         type = 'text'
+      }
+    } else if (keyboardType != null) {
+      warn('keyboardType', 'keyboardType is deprecated. Use inputMode.')
+      switch (keyboardType) {
+        case 'email-address':
+          type = 'email'
+          break
+        case 'number-pad':
+        case 'numeric':
+          _inputMode = 'numeric'
+          break
+        case 'decimal-pad':
+          _inputMode = 'decimal'
+          break
+        case 'phone-pad':
+          type = 'tel'
+          break
+        case 'search':
+        case 'web-search':
+          type = 'search'
+          break
+        case 'url':
+          type = 'url'
+          break
+        default:
+          type = 'text'
+      }
     }
 
     if (secureTextEntry) {
@@ -200,7 +217,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
           }
         }
       },
-      [multiline, onContentSizeChange],
+      [multiline, onContentSizeChange]
     )
 
     const imperativeRef = React.useMemo(
@@ -215,14 +232,12 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
             }
           }
           hostNode.isFocused = function () {
-            return (
-              hostNode != null && TextInputState.currentlyFocusedField() === hostNode
-            )
+            return hostNode != null && TextInputState.currentlyFocusedField() === hostNode
           }
           handleContentSizeChange(hostNode)
         }
       },
-      [handleContentSizeChange],
+      [handleContentSizeChange]
     )
 
     function handleBlur(e) {
@@ -262,7 +277,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
           if (focusTimeout != null) {
             clearTimeout(focusTimeout)
           }
-          // @ts-ignore
+          //@ts-ignore
           focusTimeout = setTimeout(() => {
             if (hostNode != null) {
               hostNode.select()
@@ -278,8 +293,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
       e.stopPropagation()
 
       const blurOnSubmitDefault = !multiline
-      const shouldBlurOnSubmit =
-        blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit
+      const shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit
 
       const nativeEvent = e.nativeEvent
       const isComposing = isEventComposing(nativeEvent)
@@ -302,7 +316,6 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
           onSubmitEditing(e)
         }
         if (shouldBlurOnSubmit && hostNode != null) {
-          hostNode.blur()
           setTimeout(() => hostNode.blur(), 0)
         }
       }
@@ -319,9 +332,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
           }
           e.nativeEvent.text = e.target.value
           onSelectionChange(e)
-        } catch (e) {
-          // ok
-        }
+        } catch (e) {}
       }
     }
 
@@ -364,15 +375,24 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     supportedProps.autoCorrect = autoCorrect ? 'on' : 'off'
     // 'auto' by default allows browsers to infer writing direction
     supportedProps.dir = dir !== undefined ? dir : 'auto'
-    supportedProps.enterKeyHint = returnKeyType
-    supportedProps.inputMode = inputMode
+    if (returnKeyType != null) {
+      warn('returnKeyType', 'returnKeyType is deprecated. Use enterKeyHint.')
+    }
+    supportedProps.enterKeyHint = enterKeyHint || returnKeyType
+    supportedProps.inputMode = _inputMode
     supportedProps.onBlur = handleBlur
     supportedProps.onChange = handleChange
     supportedProps.onFocus = handleFocus
     supportedProps.onKeyDown = handleKeyDown
     supportedProps.onSelect = handleSelectionChange
-    supportedProps.readOnly = !editable
-    supportedProps.rows = multiline ? numberOfLines : undefined
+    if (editable != null) {
+      warn('editable', 'editable is deprecated. Use readOnly.')
+    }
+    supportedProps.readOnly = readOnly === true || editable === false
+    if (numberOfLines != null) {
+      warn('numberOfLines', 'TextInput numberOfLines is deprecated. Use rows.')
+    }
+    supportedProps.rows = multiline ? (rows != null ? rows : numberOfLines) : 1
     supportedProps.spellCheck = spellCheck != null ? spellCheck : autoCorrect
     supportedProps.style = [
       { '--placeholderTextColor': placeholderTextColor },
@@ -384,12 +404,7 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
 
     const platformMethodsRef = usePlatformMethods(supportedProps)
 
-    const setRef = useMergeRefs(
-      hostRef,
-      platformMethodsRef,
-      imperativeRef,
-      forwardedRef,
-    )
+    const setRef = useMergeRefs(hostRef, platformMethodsRef, imperativeRef, forwardedRef)
 
     supportedProps.ref = setRef
 
@@ -402,11 +417,17 @@ const TextInput = React.forwardRef<HTMLElement & PlatformMethods, TextInputProps
     })
 
     return element
-  },
+  }
 )
 
+function warn(...args) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(...args)
+  }
+}
+
 TextInput.displayName = 'TextInput'
-// @ts-ignore
+//@ts-ignore
 TextInput.State = TextInputState
 
 const styles = StyleSheet.create({

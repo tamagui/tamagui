@@ -3,7 +3,7 @@ import { Checkbox, Label, SizeTokens, XStack, YStack } from 'tamagui'
 
 export function CheckboxDemo() {
   return (
-    <YStack w={300} ai="center" space="$2">
+    <YStack width={300} alignItems="center" space="$2">
       <CheckboxWithLabel size="$3" />
       <CheckboxWithLabel size="$4" defaultChecked />
       <CheckboxWithLabel size="$5" />
@@ -11,10 +11,10 @@ export function CheckboxDemo() {
   )
 }
 
-function CheckboxWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
+export function CheckboxWithLabel(props: { size: SizeTokens; defaultChecked?: boolean }) {
   const id = `checkbox-${props.size.toString().slice(1)}`
   return (
-    <XStack w={300} ai="center" space="$4">
+    <XStack width={300} alignItems="center" space="$4">
       <Checkbox id={id} size={props.size} defaultChecked={props.defaultChecked}>
         <Checkbox.Indicator>
           <CheckIcon />

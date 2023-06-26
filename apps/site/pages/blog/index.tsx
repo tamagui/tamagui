@@ -1,8 +1,8 @@
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { NextLink } from 'components/NextLink'
-import { format, parseISO } from 'date-fns'
+import { NextSeo } from 'next-seo'
 import { H2, Paragraph, Spacer, XStack } from 'tamagui'
 
 import { ContainerLarge } from '../../components/Container'
@@ -11,7 +11,7 @@ import { TamaguiCard } from '../../components/TamaguiCard'
 export default function Blog({ frontmatters }) {
   return (
     <>
-      <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
+      <NextSeo title="Blog — Tamagui" description="What's up with Tamagui." />
       <Spacer size="$7" />
       <H2 als="center" size="$8" theme="alt2" fontFamily="$silkscreen">
         Blog
@@ -24,7 +24,12 @@ export default function Blog({ frontmatters }) {
                 title={frontmatter.title}
                 subTitle={
                   <Paragraph o={0.5} cursor="inherit" theme="alt1" size="$3">
-                    {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')} by &nbsp;
+                    {Intl.DateTimeFormat('en-US', {
+                      month: 'short',
+                      year: 'numeric',
+                      day: 'numeric',
+                    }).format(new Date(frontmatter.publishedAt || ''))}{' '}
+                    by &nbsp;
                     {authors[frontmatter.by].name}
                   </Paragraph>
                 }
@@ -38,6 +43,8 @@ export default function Blog({ frontmatters }) {
     </>
   )
 }
+
+Blog.getLayout = getDefaultLayout
 
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')

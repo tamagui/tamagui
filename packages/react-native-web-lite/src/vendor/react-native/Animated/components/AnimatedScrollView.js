@@ -9,7 +9,7 @@
  */
 import * as React from 'react'
 
-import ScrollView from '../../../../ScrollView/index.js'
+import ScrollView from '../../../../ScrollView/index'
 import createAnimatedComponent from '../createAnimatedComponent'
 
 /**

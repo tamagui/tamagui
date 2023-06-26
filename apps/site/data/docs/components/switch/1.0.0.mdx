@@ -4,13 +4,14 @@ description: A simple switch component
 name: switch
 component: Switch
 package: switch
+demoName: Switch
 ---
 
 # Switch
 
 <Description>Use in forms to toggle between two states.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <SwitchDemo />
 </HeroContainer>
 
@@ -77,6 +78,12 @@ Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/int
     {
       name: 'onCheckedChange',
       type: '(checked: boolean) => void',
+    },
+    {
+      name: 'unstyled',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, remove all default tamagui styling.`,
     },
   ]}
 />

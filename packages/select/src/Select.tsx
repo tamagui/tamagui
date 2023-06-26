@@ -3,18 +3,19 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   TamaguiElement,
+  getVariableValue,
   isWeb,
   styled,
   useGet,
-  useId,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
+import { getSpace } from '@tamagui/get-token'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import { PortalHost } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { ControlledSheet, SheetController } from '@tamagui/sheet'
-import { XStack, YStack } from '@tamagui/stacks'
+import { Sheet, SheetController } from '@tamagui/sheet'
+import { ThemeableStack, XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -40,42 +41,56 @@ const TRIGGER_NAME = 'SelectTrigger'
 export type SelectTriggerProps = ListItemProps
 
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
-  (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
-    const {
-      __scopeSelect,
-      disabled = false,
-      // @ts-ignore
-      'aria-labelledby': ariaLabelledby,
-      ...triggerProps
-    } = props
+  function SelectTrigger(props: ScopedProps<SelectTriggerProps>, forwardedRef) {
+    const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
+
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setReference as any
+    )
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
-    const labelledBy = ariaLabelledby // || labelId
+    // const labelledBy = ariaLabelledby || labelId
+
+    if (context.shouldRenderWebNative) {
+      return null
+    }
 
     return (
       <ListItem
         componentName={TRIGGER_NAME}
-        backgrounded
-        radiused
-        hoverTheme
-        pressTheme
-        focusTheme
-        focusable
-        borderWidth={1}
+        unstyled={unstyled}
+        {...(!unstyled && {
+          backgrounded: true,
+          radiused: true,
+          hoverTheme: true,
+          pressTheme: true,
+          focusable: true,
+          focusStyle: {
+            outlineStyle: 'solid',
+            outlineWidth: 2,
+            outlineColor: '$borderColorFocus',
+          },
+          borderWidth: 1,
+        })}
         size={context.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
-        aria-labelledby={labelledBy}
         dir={context.dir}
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
-        ref={forwardedRef}
+        ref={composedRefs}
         {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
-          ? context.interactions.getReferenceProps()
+          ? {
+              ...context.interactions.getReferenceProps(),
+              onMouseDown() {
+                context.floatingContext?.update()
+                context.setOpen(!context.open)
+              },
+            }
           : {
               onPress() {
                 context.setOpen(!context.open)
@@ -86,15 +101,13 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
   }
 )
 
-SelectTrigger.displayName = TRIGGER_NAME
-
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
  * -----------------------------------------------------------------------------------------------*/
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(Paragraph, {
+const SelectValueFrame = styled(SizableText, {
   name: VALUE_NAME,
   userSelect: 'none',
 })
@@ -103,46 +116,49 @@ type SelectValueProps = GetProps<typeof SelectValueFrame> & {
   placeholder?: React.ReactNode
 }
 
-const SelectValue = SelectValueFrame.extractable(
-  React.forwardRef<TamaguiElement, SelectValueProps>(
-    (
-      {
-        __scopeSelect,
-        children: childrenProp,
-        placeholder,
-      }: ScopedProps<SelectValueProps>,
-      forwardedRef
-    ) => {
-      // We ignore `className` and `style` as this part shouldn't be styled.
-      const context = useSelectContext(VALUE_NAME, __scopeSelect)
-      const { onValueNodeHasChildrenChange } = context
-      const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function SelectValue(
+  {
+    __scopeSelect,
+    children: childrenProp,
+    placeholder,
+    ...props
+  }: ScopedProps<SelectValueProps>,
+  forwardedRef
+) {
+  // We ignore `className` and `style` as this part shouldn't be styled.
+  const context = useSelectContext(VALUE_NAME, __scopeSelect)
+  const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+  const children = childrenProp ?? context.selectedItem
+  const isEmptyValue = context.value == null || context.value === ''
+  const selectValueChildren = isEmptyValue ? placeholder ?? children : children
 
-      const children = childrenProp ?? context.selectedItem
-      const hasChildren = !!children
-      const isEmptyValue = context.value == null || context.value === ''
-      const selectValueChildren = isEmptyValue ? placeholder ?? children : children
-
-      useIsomorphicLayoutEffect(() => {
-        onValueNodeHasChildrenChange(hasChildren)
-      }, [onValueNodeHasChildrenChange, hasChildren])
-
-      return (
-        <SelectValueFrame
-          size={context.size}
-          ref={composedRefs}
-          // we don't want events from the portalled `SelectValue` children to bubble
-          // through the item they came from
-          pointerEvents="none"
-        >
-          {selectValueChildren}
-        </SelectValueFrame>
-      )
-    }
+  return (
+    <SelectValueFrame
+      size={context.size}
+      ref={composedRefs}
+      // we don't want events from the portalled `SelectValue` children to bubble
+      // through the item they came from
+      pointerEvents="none"
+      {...props}
+    >
+      {unwrapSelectItem(selectValueChildren)}
+    </SelectValueFrame>
   )
-)
+})
 
-SelectValue.displayName = VALUE_NAME
+function unwrapSelectItem(selectValueChildren: any) {
+  return React.Children.map(selectValueChildren, (child) => {
+    if (child) {
+      if (child.type?.staticConfig?.componentName === ITEM_TEXT_NAME) {
+        return child.props.children
+      }
+      if (child.props?.children) {
+        child.props.children = unwrapSelectItem(child.props.children)
+      }
+    }
+    return child
+  })
+}
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIcon
@@ -189,7 +205,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
-    const textId = useId()
+    const textId = React.useId()
 
     const {
       selectedIndex,
@@ -198,7 +214,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       open,
       setOpen,
       onChange,
-      setActiveIndex,
+      activeIndex,
       allowMouseUpRef,
       allowSelectRef,
       setValueAtIndex,
@@ -215,7 +231,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       }
     })
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       setValueAtIndex(index, value)
     }, [index, setValueAtIndex, value])
 
@@ -269,6 +285,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           onPress: handleSelect,
         }
 
+    const isActive = activeIndex === index
+
     return (
       <SelectItemContextProvider
         scope={__scopeSelect}
@@ -276,28 +294,30 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         textId={textId || ''}
         isSelected={isSelected}
       >
-        <ListItem
-          tag="div"
-          backgrounded
-          pressTheme
-          hoverTheme
-          cursor="default"
-          outlineWidth={0}
-          componentName={ITEM_NAME}
-          ref={composedRefs}
-          aria-labelledby={textId}
-          aria-selected={isSelected}
-          data-state={isSelected ? 'active' : 'inactive'}
-          aria-disabled={disabled || undefined}
-          data-disabled={disabled ? '' : undefined}
-          tabIndex={disabled ? undefined : -1}
-          size={context.size}
-          focusStyle={{
-            backgroundColor: '$backgroundHover',
-          }}
-          {...itemProps}
-          {...selectItemProps}
-        />
+        {context.shouldRenderWebNative ? (
+          <option value={value}>{props.children}</option>
+        ) : (
+          <ListItem
+            tag="div"
+            componentName={ITEM_NAME}
+            backgrounded
+            pressTheme
+            hoverTheme
+            focusTheme
+            cursor="default"
+            outlineWidth={0}
+            ref={composedRefs}
+            aria-labelledby={textId}
+            aria-selected={isSelected}
+            data-state={isSelected ? 'active' : 'inactive'}
+            aria-disabled={disabled || undefined}
+            data-disabled={disabled ? '' : undefined}
+            tabIndex={disabled ? undefined : -1}
+            size={context.size}
+            {...itemProps}
+            {...selectItemProps}
+          />
+        )}
       </SelectItemContextProvider>
     )
   }
@@ -313,7 +333,19 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 export const SelectItemTextFrame = styled(SizableText, {
   name: ITEM_TEXT_NAME,
-  userSelect: 'none',
+
+  variants: {
+    unstyled: {
+      false: {
+        userSelect: 'none',
+        color: '$color',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
@@ -322,11 +354,10 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
     const { __scopeSelect, className, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
+    const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const isSelected = Boolean(itemContext.isSelected && context.valueNode)
-
     const contents = React.useMemo(
       () => (
         <SelectItemTextFrame
@@ -349,6 +380,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSelected, contents])
 
+    if (context.shouldRenderWebNative) return <>{props.children}</>
     return (
       <>
         {contents}
@@ -389,7 +421,13 @@ type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
 const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
   (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
     const { __scopeSelect, ...itemIndicatorProps } = props
+    const context = useSelectContext(ITEM_INDICATOR_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
+
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
     return itemContext.isSelected ? (
       <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
     ) : null
@@ -414,14 +452,82 @@ export const SelectGroupFrame = styled(YStack, {
   width: '100%',
 })
 
+const NativeSelectTextFrame = styled(SizableText, {
+  tag: 'select',
+  backgroundColor: '$background',
+  borderColor: '$borderColor',
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+})
+
+const NativeSelectFrame = styled(ThemeableStack, {
+  name: 'NativeSelect',
+
+  bordered: true,
+  userSelect: 'none',
+  outlineWidth: 0,
+  paddingRight: 10,
+
+  variants: {
+    size: {
+      '...size': (val, extras) => {
+        const { tokens } = extras
+        const paddingHorizontal = getVariableValue(tokens.space[val])
+
+        return {
+          borderRadius: tokens.radius[val] ?? val,
+          minHeight: tokens.size[val],
+          paddingRight: paddingHorizontal + 20,
+          paddingLeft: paddingHorizontal,
+          paddingVertical: getSpace(val, {
+            shift: -3,
+          }),
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    size: '$2',
+  },
+})
+
 type SelectGroupProps = GetProps<typeof SelectGroupFrame>
 
 const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
   (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
     const { __scopeSelect, ...groupProps } = props
-    const groupId = useId()
-    return (
-      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+    const groupId = React.useId()
+
+    const context = useSelectContext(GROUP_NAME, __scopeSelect)
+    const size = context.size ?? '$true'
+    const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
+
+    const content = (function () {
+      if (context.shouldRenderWebNative) {
+        return (
+          // @ts-expect-error until we support typing based on tag
+          <NativeSelectFrame asChild size={size} value={context.value}>
+            <NativeSelectTextFrame
+              // @ts-ignore it's ok since tag="select"
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                context.onChange(event.currentTarget.value)
+              }}
+              size={size}
+              ref={nativeSelectRef}
+              style={{
+                color: 'var(--color)',
+                // @ts-ignore
+                appearance: 'none',
+              }}
+            >
+              {props.children}
+            </NativeSelectTextFrame>
+          </NativeSelectFrame>
+        )
+      }
+      return (
         <SelectGroupFrame
           // @ts-ignore
           role="group"
@@ -429,6 +535,11 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
           {...groupProps}
           ref={forwardedRef}
         />
+      )
+    })()
+    return (
+      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+        {content}
       </SelectGroupContextProvider>
     )
   }
@@ -449,6 +560,11 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
     const { __scopeSelect, ...labelProps } = props
     const context = useSelectContext(LABEL_NAME, __scopeSelect)
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
+
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
     return (
       <ListItem
         tag="div"
@@ -511,6 +627,7 @@ export const Select = withStaticProperties(
   (props: ScopedProps<SelectProps>) => {
     const {
       __scopeSelect,
+      native,
       children,
       open: openProp,
       defaultOpen,
@@ -522,7 +639,7 @@ export const Select = withStaticProperties(
       dir,
     } = props
 
-    const id = useId()
+    const id = React.useId()
     const scopeKey = __scopeSelect ? Object.keys(__scopeSelect)[0] ?? id : id
 
     const { when, AdaptProvider } = useAdaptParent({
@@ -556,12 +673,17 @@ export const Select = withStaticProperties(
     const listContentRef = React.useRef<string[]>([])
     const [selectedIndex, setSelectedIndex] = React.useState(0)
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
-    const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
 
     useIsomorphicLayoutEffect(() => {
       selectedIndexRef.current = selectedIndex
       activeIndexRef.current = activeIndex
     })
+
+    const shouldRenderWebNative =
+      isWeb &&
+      (native === true ||
+        native === 'web' ||
+        (Array.isArray(native) && native.includes('web')))
 
     return (
       <AdaptProvider>
@@ -575,8 +697,6 @@ export const Select = withStaticProperties(
           forceUpdate={forceUpdate}
           valueNode={valueNode}
           onValueNodeChange={setValueNode}
-          onValueNodeHasChildrenChange={setValueNodeHasChildren}
-          valueNodeHasChildren={valueNodeHasChildren}
           scopeKey={scopeKey}
           sheetBreakpoint={sheetBreakpoint}
           scope={__scopeSelect}
@@ -591,18 +711,24 @@ export const Select = withStaticProperties(
           setSelectedIndex={setSelectedIndex}
           value={value}
           open={open}
+          native={native}
+          shouldRenderWebNative={shouldRenderWebNative}
         >
           <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
-            <SelectImpl
-              activeIndexRef={activeIndexRef}
-              listContentRef={listContentRef}
-              selectedIndexRef={selectedIndexRef}
-              {...props}
-              open={open}
-              value={value}
-            >
-              {children}
-            </SelectImpl>
+            {shouldRenderWebNative ? (
+              children
+            ) : (
+              <SelectImpl
+                activeIndexRef={activeIndexRef}
+                listContentRef={listContentRef}
+                selectedIndexRef={selectedIndexRef}
+                {...props}
+                open={open}
+                value={value}
+              >
+                {children}
+              </SelectImpl>
+            )}
           </SelectSheetController>
         </SelectProvider>
       </AdaptProvider>
@@ -622,7 +748,7 @@ export const Select = withStaticProperties(
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
-    Sheet: ControlledSheet,
+    Sheet: Sheet.Controlled,
   }
 )
 

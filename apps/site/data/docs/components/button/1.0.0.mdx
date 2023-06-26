@@ -4,6 +4,7 @@ description: A simple button component
 name: button
 component: Button
 package: button
+demoName: Button
 ---
 
 # Button
@@ -78,17 +79,18 @@ const CustomButtonText = styled(ButtonText, {
   // ...
 })
 
-type CustomButtonProps = GetProps<typeof CustomButtonFrame>
+// to capture the custom variant types you define
+type CustomButtonFrameProps = GetProps<typeof CustomButtonFrame>
 type CustomButtonTextProps = GetProps<typeof CustomButtonText>
 
-export type ButtonProps = TamaguiButtonProps & CustomButtonProps & CustomButtonTextProps
+export type CustomButtonProps = TamaguiButtonProps &
+  CustomButtonFrameProps &
+  CustomButtonTextProps
 
-export const Button = themeable(
-  forwardRef<TamaguiElement, ButtonProps>((propsIn, ref) => {
-    const { props } = useButton(propsIn, { Text: CustomButtonText })
-    return <CustomButtonFrame {...props} ref={ref} />
-  })
-)
+export const Button = CustomButtonFrame.styleable<CustomButtonProps>((propsIn, ref) => {
+  const { props } = useButton(propsIn, { Text: CustomButtonText })
+  return <CustomButtonFrame {...props} ref={ref} />
+})
 ```
 
 ### Button props

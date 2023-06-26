@@ -8,7 +8,7 @@ type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${
 
 type Colors = {
   [key: string]: {
-    [key: string]: string
+    [subKey: string]: string
   }
 }
 
@@ -74,6 +74,8 @@ type GetSubThemes<Name extends string> =
   | `${Name}_RadioGroupIndicator`
   | `${Name}_TooltipArrow`
   | `${Name}_TooltipContent`
+  | `${Name}_ToggleGroupItem`
+  | `${Name}_Toggle`
   | `${Name}_Checkbox`
   | `${Name}_CheckboxIndicator`
 
@@ -199,6 +201,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
       [`${name}_RadioGroupIndicator`, inverted[2]],
       [`${name}_Switch`, altThemes[1][1]],
       [`${name}_SwitchThumb`, inverted[2]],
+      [`${name}_ToggleGroupItem`, altThemes[1][1]],
+      [`${name}_Toggle`, altThemes[1][1]],
       [`${name}_Checkbox`, altThemes[1][1]],
       [`${name}_CheckboxIndicator`, inverted[2]],
       [`${name}_TooltipArrow`, altThemes[2][1]],
@@ -361,6 +365,9 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     light_Switch: lightThemes.light_alt2,
     light_SwitchThumb: lightThemes.light,
     light_DrawerFrame: lightThemes.light_alt1,
+    light_ToggleGroupItem: lightThemes.light,
+    light_Toggle: lightThemes.light,
+
     light_Checkbox: lightThemes.light_alt2,
     light_CheckboxIndicator: lightThemes.light,
     light_RadioGroup: lightThemes.light_alt2,
@@ -377,6 +384,8 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     dark_Switch: darkThemes.dark_alt2,
     dark_SwitchThumb: darkThemes.dark_darker,
     dark_Button: darkThemes.dark_alt1,
+    dark_ToggleGroupItem: darkThemes.dark_darker,
+    dark_Toggle: darkThemes.dark_darker,
     dark_Checkbox: darkThemes.dark_alt2,
     dark_CheckboxIndicator: darkThemes.dark_darker,
     dark_RadioGroup: darkThemes.dark_alt2,

@@ -1,3 +1,3 @@
-import { GenericFont } from './types.js';
-export declare const createFont: <A extends GenericFont<string | number>>(font: A) => A;
+import { GenericFont } from './types';
+export declare const createFont: <A extends GenericFont>(font: A) => A;
 //# sourceMappingURL=createFont.d.ts.map

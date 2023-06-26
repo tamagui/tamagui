@@ -1,6 +1,6 @@
-import type { StyleObject } from '@tamagui/helpers'
+import { isClient } from '@tamagui/constants'
 
-import { PartialStyleObject, RulesToInsert } from '../types.js'
+import type { RulesToInsert, StyleObject } from '../types'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
@@ -17,7 +17,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
     if (process.env.NODE_ENV === 'development') {
       console.error(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
     }
-    return false
+    return
   }
   const startI = s + 'transform:'.length
   const endI = css.indexOf(';')
@@ -26,10 +26,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
     insertedTransforms[identifier] = value
     return true
   }
-  return false
 }
-
-const isClient = typeof document !== 'undefined'
 
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
@@ -42,41 +39,56 @@ const isClient = typeof document !== 'undefined'
 
 // only cache tamagui styles
 const scannedCache = new WeakMap<CSSStyleSheet, string>()
-const totalSheetSelectors = new Map<string, number>()
+const totalSelectorsInserted = new Map<string, number>()
 
 export function listenForSheetChanges() {
   if (!isClient) return
-  function handleNode(node: Node, remove = false) {
-    if (node instanceof HTMLStyleElement && node.sheet) {
-      updateSheetStyles(node.sheet, remove)
-    }
-  }
+
   const mo = new MutationObserver((entries) => {
     for (const entry of entries) {
-      entry.addedNodes.forEach((node) => handleNode(node))
-      entry.removedNodes.forEach((node) => handleNode(node, true))
+      if (
+        (entry instanceof HTMLStyleElement && entry.sheet) ||
+        (entry instanceof HTMLLinkElement && entry.href.endsWith('.css'))
+      ) {
+        scanAllSheets()
+        break
+      }
     }
   })
+
   mo.observe(document.head, {
     childList: true,
   })
 }
 
+let lastScannedSheets: Set<CSSStyleSheet> | null = null
+
 export function scanAllSheets() {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
-  const sheets = document.styleSheets
-  if (!sheets) return
-  for (let i = 0; i < sheets.length; i++) {
-    const sheet = sheets[i]
-    if (!sheet) continue
-    updateSheetStyles(sheet)
+
+  const sheets = document.styleSheets || []
+  const prev = lastScannedSheets
+  const current = new Set(sheets as any as CSSStyleSheet[])
+  if (document.styleSheets) {
+    for (const sheet of current) {
+      sheet && updateSheetStyles(sheet)
+    }
+    lastScannedSheets = current
+  }
+
+  if (prev) {
+    for (const sheet of prev) {
+      if (sheet && !current.has(sheet)) {
+        updateSheetStyles(sheet, true)
+      }
+    }
   }
 }
 
 function track(id: string, remove = false) {
-  const next = (totalSheetSelectors.get(id) || 0) + (remove ? -1 : 1)
-  totalSheetSelectors.set(id, next)
+  const next = (totalSelectorsInserted.get(id) || 0) + (remove ? -1 : 1)
+  totalSelectorsInserted.set(id, next)
   return next
 }
 
@@ -86,20 +98,18 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   let rules: CSSRuleList
   try {
     rules = sheet.cssRules
+    if (!rules) {
+      return
+    }
   } catch {
     return
   }
 
-  // not tamagui stylesheet
   const firstSelector = getTamaguiSelector(rules[0])?.[0]
-  if (!firstSelector) {
-    return
-  }
-
   const lastSelector = getTamaguiSelector(rules[rules.length - 1])?.[0]
-
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
   const lastScanned = scannedCache.get(sheet)
+
   if (!remove) {
     // avoid re-scanning
     if (lastScanned === cacheKey) {
@@ -108,11 +118,21 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   }
 
   const len = rules.length
+  let fails = 0
+
   for (let i = 0; i < len; i++) {
     const rule = rules[i]
+    if (!(rule instanceof CSSStyleRule)) continue
+
     const response = getTamaguiSelector(rule)
+
     if (!response) {
-      return
+      fails++
+      if (fails > 20) {
+        // conservatively bail out of non-tamagui sheets
+        return
+      }
+      continue
     }
 
     const [identifier, cssRule] = response
@@ -124,15 +144,13 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
       if (total === 0) {
         delete allSelectors[identifier]
       }
-    } else {
-      if (!(identifier in allSelectors)) {
-        const isTransform = identifier.startsWith('_transform')
-        const shouldInsert = isTransform
-          ? addTransform(identifier, cssRule.cssText, cssRule)
-          : true
-        if (shouldInsert) {
-          allSelectors[identifier] = cssRule.cssText
-        }
+    } else if (!(identifier in allSelectors)) {
+      const isTransform = identifier.startsWith('_transform')
+      const shouldInsert = isTransform
+        ? addTransform(identifier, cssRule.cssText, cssRule)
+        : true
+      if (shouldInsert) {
+        allSelectors[identifier] = cssRule.cssText
       }
     }
   }
@@ -170,7 +188,9 @@ const sheet = isClient
   : null
 
 export function updateRules(identifier: string, rules: string[]) {
-  if (allRules[identifier]) return false
+  if (identifier in allRules) {
+    return false
+  }
   allRules[identifier] = rules.join(' ')
   if (identifier.startsWith('_transform')) {
     return addTransform(identifier, rules[0])
@@ -179,40 +199,44 @@ export function updateRules(identifier: string, rules: string[]) {
 }
 
 export function insertStyleRules(rulesToInsert: RulesToInsert) {
-  if (!rulesToInsert.length) return
-  if (isClient && !sheet) {
-    if (process.env.NODE_ENV === 'development') throw 'impossible'
+  if (!rulesToInsert.length || !sheet) {
     return
   }
+
   for (const { identifier, rules } of rulesToInsert) {
-    if (identifier in allSelectors) continue
-    allSelectors[identifier] =
-      process.env.NODE_ENV === 'development' ? rules.join('\n') : ' '
+    if (!shouldInsertStyleRules(identifier)) {
+      continue
+    }
+
+    allSelectors[identifier] = rules.join('\n')
+    track(identifier)
     updateRules(identifier, rules)
-    if (sheet) {
-      for (const rule of rules) {
+
+    for (const rule of rules) {
+      if (process.env.NODE_ENV === 'production') {
+        sheet.insertRule(rule, sheet.cssRules.length)
+      } else {
         try {
           sheet.insertRule(rule, sheet.cssRules.length)
         } catch (err) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.groupCollapsed(
-              `Error inserting rule into CSSStyleSheet: ${String(err)}`
-            )
-            console.log({ rule, rulesToInsert })
-            console.trace()
-            console.groupEnd()
-          }
+          console.groupCollapsed(
+            `Error inserting rule into CSSStyleSheet: ${String(err)}`
+          )
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log({ rule, rulesToInsert })
+          console.trace()
+          console.groupEnd()
         }
       }
     }
   }
 }
 
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
-
-export function shouldInsertStyleRules(styleObject: PartialStyleObject) {
-  if (IS_STATIC) {
+export function shouldInsertStyleRules(identifier: string) {
+  if (process.env.IS_STATIC === 'is_static') {
     return true
   }
-  return !(styleObject.identifier in allSelectors)
+  const total = totalSelectorsInserted.get(identifier)
+  // note, -1, we are being conservative and leaving some in
+  return total === undefined || total < 2
 }

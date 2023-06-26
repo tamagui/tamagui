@@ -40,6 +40,7 @@ export function CodeDemoPreParsed({
           showsVerticalScrollIndicator={false}
         >
           <Pre f={1}>
+            {/* @ts-ignore */}
             <Code dangerouslySetInnerHTML={{ __html: source }} />
           </Pre>
         </ScrollView>

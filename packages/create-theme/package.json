@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-theme",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -8,18 +8,23 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "theme-builder"
   ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "exports": {
     "./package.json": "./package.json",
+    "./theme-builder": {
+      "import": "./dist/esm/ThemeBuilder.js",
+      "require": "./dist/cjs/ThemeBuilder.js"
+    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
@@ -27,10 +32,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.7.1"
+    "@tamagui/web": "1.35.12"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1"
+    "@tamagui/build": "1.35.12"
   },
   "publishConfig": {
     "access": "public"

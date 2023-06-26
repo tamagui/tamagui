@@ -68,10 +68,10 @@ export function getDefaultTamaguiConfig() {
   type SizeKeys = `${keyof Sizes extends `${infer K}` ? K : never}`
 
   const spaces = Object.entries(size).map(([k, v]) => {
-    return [k, sizeToSpace(v)]
+    return [k, sizeToSpace(v)] as const
   })
 
-  const spacesNegative = spaces.map(([k, v]) => [`$-${(k as string).slice(1)}`, -v])
+  const spacesNegative = spaces.slice(1).map(([k, v]) => [`$-${k.slice(1)}`, -v])
 
   const space: {
     [Key in `$-{SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
@@ -142,6 +142,10 @@ export function getDefaultTamaguiConfig() {
       background: 'dark',
       color: 'card',
     },
+    dark_blue_Card: {
+      background: 'blue',
+      color: 'white',
+    },
     dark_blue_Button: {
       background: 'blue',
       color: 'white',
@@ -153,6 +157,14 @@ export function getDefaultTamaguiConfig() {
     dark_red_alt1: {
       background: 'darkred',
       color: 'white',
+    },
+    dark_red_alt1_ListItem: {
+      background: 'red',
+      color: 'red',
+    },
+    dark_red_active_ListItem: {
+      background: 'darkred',
+      color: 'red',
     },
     dark_red_Button: {
       background: 'darkred',

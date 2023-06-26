@@ -1,28 +1,26 @@
 import { isRSC, isWeb } from '@tamagui/constants'
 
-import { configListeners, setConfig } from './config.js'
-import { createVariables, tokensKeysOrdered } from './createVariables.js'
-import { getThemeCSSRules } from './helpers/getThemeCSSRules.js'
+import { configListeners, setConfig } from './config'
+import { Variable, getVariableValue } from './createVariable'
+import { createVariables } from './createVariables'
+import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
   getAllRules,
   listenForSheetChanges,
   scanAllSheets,
-} from './helpers/insertStyleRule.js'
-import {
-  registerCSSVariable,
-  tokensValueToVariable,
-  variableToCSS,
-} from './helpers/registerCSSVariable.js'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes.js'
-import { configureMedia } from './hooks/useMedia.js'
-import { parseFont, registerFontVariables } from './insertFont.js'
-import { Tamagui } from './Tamagui.js'
+} from './helpers/insertStyleRule'
+import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
+import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
+import { configureMedia } from './hooks/useMedia'
+import { parseFont, registerFontVariables } from './insertFont'
+import { Tamagui } from './Tamagui'
 import {
   CreateTamaguiProps,
+  GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
   ThemeParsed,
-} from './types.js'
+} from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
@@ -55,13 +53,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     })
   )
 
+  let fontSizeTokens: Set<string> | null = null
+
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
-      res[`$${familyName}`] = parseFont(fontTokens[familyName])
+      const font = fontTokens[familyName]
+      const fontParsed = parseFont(font)
+      res[`$${familyName}`] = fontParsed
+      if (!fontSizeTokens && fontParsed.size) {
+        fontSizeTokens = new Set(Object.keys(fontParsed.size))
+      }
     }
     return res!
   })()
+
+  const specificTokens = {}
 
   const themeConfig = (() => {
     const themes = { ...configIn.themes }
@@ -76,9 +83,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       for (const key in configIn.tokens) {
         for (const skey in configIn.tokens[key]) {
-          const val = configIn.tokens[key][skey]
-          registerCSSVariable(val)
-          declarations.push(variableToCSS(val))
+          const variable = configIn.tokens[key][skey] as Variable
+
+          // set specific tokens (like $size.sm)
+          specificTokens[`$${key}.${skey}`] = variable
+
+          if (process.env.NODE_ENV === 'development') {
+            if (typeof variable === 'undefined') {
+              throw new Error(
+                `No value for tokens.${key}.${skey}:\n${JSON.stringify(
+                  variable,
+                  null,
+                  2
+                )}`
+              )
+            }
+          }
+
+          registerCSSVariable(variable)
+          declarations.push(variableToCSS(variable, key === 'zIndex'))
         }
       }
 
@@ -159,33 +182,33 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       existing.set(key, dedupedThemes[themeName])
     }
 
-    // then, generate CSS from de-duped
-    let themeRuleSets: string[] = []
-
-    if (isWeb || isRSC) {
-      for (const themeName in dedupedThemes) {
-        themeRuleSets = [
-          ...themeRuleSets,
-          ...getThemeCSSRules({
-            config: configIn,
-            themeName,
-            ...dedupedThemes[themeName],
-          }),
-        ]
-      }
-    }
-
     // proxy upwards to get parent variables (themes are subset going down)
     for (const themeName in themes) {
       themes[themeName] = proxyThemeToParents(themeName, themes[themeName], themes)
     }
 
-    tokensValueToVariable.clear()
-
     return {
       themes,
       cssRuleSets,
-      themeRuleSets,
+      getThemeRulesSets() {
+        // then, generate CSS from de-duped
+        let themeRuleSets: string[] = []
+
+        if (isWeb || isRSC) {
+          for (const themeName in dedupedThemes) {
+            themeRuleSets = [
+              ...themeRuleSets,
+              ...getThemeCSSRules({
+                config: configIn,
+                themeName,
+                ...dedupedThemes[themeName],
+              }),
+            ]
+          }
+        }
+
+        return themeRuleSets
+      },
     }
   })()
 
@@ -193,14 +216,53 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: any = Object.fromEntries(
     Object.entries(configIn.tokens).map(([k, v]) => {
       const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      tokensKeysOrdered.set(val, tokensKeysOrdered.get(v))
       return [k, val]
     })
   )
 
   const shorthands = configIn.shorthands || {}
 
+  let lastCSSInsertedRulesIndex = -1
+
+  const getCSS: GetCSS = ({ separator = '\n', sinceLastCall, exclude } = {}) => {
+    if (sinceLastCall && lastCSSInsertedRulesIndex >= 0) {
+      // after first run with sinceLastCall
+      const rules = getAllRules()
+      lastCSSInsertedRulesIndex = rules.length
+      return rules.slice(lastCSSInsertedRulesIndex).join(separator)
+    }
+
+    // set so next time getNewCSS will trigger only new rules
+    lastCSSInsertedRulesIndex = 0
+
+    const runtimeStyles = getAllRules().join(separator)
+
+    if (exclude === 'design-system') {
+      return runtimeStyles
+    }
+
+    const designSystem = `._ovs-contain {overscroll-behavior:contain;}
+.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
+.is_Text .is_Text {display:inline-flex;}
+._dsp_contents {display:contents;}
+${themeConfig.cssRuleSets.join(separator)}`
+
+    return `${designSystem}
+${exclude ? '' : themeConfig.getThemeRulesSets().join(separator)}
+${runtimeStyles}`
+  }
+
+  const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
+
+  const defaultFont =
+    configIn.defaultFont ||
+    // uses font named "body" if present for compat
+    ('body' in configIn.fonts ? 'body' : false) ||
+    // defaults to the first font to make life easier
+    Object.keys(configIn.fonts)[0]
+
   const config: TamaguiInternalConfig = {
+    onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,
     media: {},
@@ -208,7 +270,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // already processed by createTokens()
     tokens: configIn.tokens as any,
     // vite made this into a function if it wasn't set
-    shorthands: { ...shorthands },
+    shorthands,
     inverseShorthands: shorthands
       ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
@@ -217,16 +279,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeConfig,
     tokensParsed,
     parsed: true,
-    getCSS: (separator = '\n') => {
-      return `
-._ovs-contain {overscroll-behavior:contain;}
-.t_unmounted .t_will-mount {opacity:0;visibility:hidden;}
-.is_Text .is_Text {display:inline-flex;}
-._dsp_contents {display:contents;}
-${themeConfig.cssRuleSets.join(separator)}
-${themeConfig.themeRuleSets.join(separator)}
-${getAllRules().join(separator)}`
-    },
+    getNewCSS,
+    getCSS,
+    defaultFont,
+    fontSizeTokens: fontSizeTokens || new Set(),
+    specificTokens,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
@@ -243,7 +300,7 @@ ${getAllRules().join(separator)}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // eslint-disable-next-line no-console
+      // rome-ignore lint/nursery/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {

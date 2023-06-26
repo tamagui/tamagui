@@ -1,9 +1,9 @@
-import { setConfigFont } from './config.js'
-import { createFont } from './createFont.js'
-import { Variable } from './createVariable.js'
-import { DeepVariableObject, createVariables } from './createVariables.js'
-import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable.js'
-import { GenericFont } from './types.js'
+import { setConfigFont } from './config'
+import { createFont } from './createFont'
+import { Variable } from './createVariable'
+import { DeepVariableObject, createVariables } from './createVariables'
+import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
+import { GenericFont } from './types'
 
 /**
  * Runtime dynamic insert font
@@ -26,22 +26,24 @@ export function insertFont<A extends GenericFont>(
   return parsed
 }
 
+export const updateFont = insertFont
+
 export function parseFont<A extends GenericFont>(definition: A): DeepVariableObject<A> {
   const parsed: any = {}
   for (const attrKey in definition) {
     const attr = definition[attrKey]
     if (attrKey === 'family' || attrKey === 'face') {
       parsed[attrKey] = attr
-      continue
-    }
-    parsed[attrKey] = {}
-    for (const key in attr) {
-      let val = attr[key] as any
-      // is a theme reference
-      if (val.val?.[0] === '$') {
-        val = val.val
+    } else {
+      parsed[attrKey] = {}
+      for (const key in attr) {
+        let val = attr[key] as any
+        // is a theme reference
+        if (val.val?.[0] === '$') {
+          val = val.val
+        }
+        parsed[attrKey][`$${key}`] = val
       }
-      parsed[attrKey][`$${key}`] = val
     }
   }
   return parsed

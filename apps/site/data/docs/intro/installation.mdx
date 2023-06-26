@@ -29,7 +29,11 @@ This gives you everything pre-configured for full-stack apps with shared code.
 yarn add tamagui
 ```
 
-Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or `native`, respectively. You can usually just do this in your package.json script, swapping out the command for whichever bundler you use:
+You generally need to configure one or two things: passing the environment variable `TAMAGUI_TARGET` (set to the string `web` or `native`, respectively), and on the web, setting an alias from `react-native` to `react-native-web`.
+
+### Web
+
+To pass the ENV you add it to the beginning of your start script generally like so:
 
 ```json
 {
@@ -39,7 +43,128 @@ Be sure to set the environment variable `TAMAGUI_TARGET` to the string `web` or 
 }
 ```
 
-If you're targeting a native app and installing `tamagui` (not core), you'll need to [set up `expo-linear-gradient` first](https://github.com/expo/expo/tree/sdk-47/packages/expo-linear-gradient) as Metro will try and find it even if you don't import it.
+Tamagui has plugins that make the rest a bit simpler to set up (and also get you the optimizing compiler) which you can find in the [Compiler Install docs](/docs/intro/compiler-install).
+
+You just want to ensure two things happen: the `TAMAGUI_TARGET` environment variable is passed in, and `react-native` is aliased to `react-native-web` (only if using `tamagui` or other React Native APIs yourself, as core it doesn't have a dependency on react-native at all).
+
+#### Webpack
+
+We also recommend passing in `__DEV__` and `NODE_ENV` if using react-native:
+
+```tsx
+config.plugins.push(
+  new webpack.DefinePlugin({
+    process: {
+      env: {
+        TAMAGUI_TARGET: JSON.stringify('web'),
+        __DEV__: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    },
+  })
+)
+
+config.resolve.alias['react-native$'] = 'react-native-web'
+// or react-native-web-lite if using our more modern but less supported version
+
+// set up web extensions
+compiler.options.resolve.extensions = [
+  '.web.tsx',
+  '.web.ts',
+  '.web.js',
+  '.ts',
+  '.tsx',
+  '.js',
+]
+```
+
+#### Vite
+
+```tsx
+config.define = {
+  __DEV__: `${process.env.NODE_ENV === 'development' ? true : false}`,
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
+}
+
+config.resolve.alias['react-native'] = 'react-native-web'
+// or react-native-web-lite if using our more modern but less supported version
+
+// set up web extensions
+config.optimizeDeps.esbuildOptions = {
+  ...config.optimizeDeps.esbuildOptions,
+  resolveExtensions: [
+    '.web.js',
+    '.web.ts',
+    '.web.tsx',
+    '.js',
+    '.jsx',
+    '.json',
+    '.ts',
+    '.tsx',
+    '.mjs',
+  ],
+  loader: {
+    '.js': 'jsx',
+  },
+}
+```
+
+### Native
+
+#### Babel
+
+For native you'd do something like this:
+
+```sh
+TAMAGUI_TARGET=native react-native start
+```
+
+```sh
+TAMAGUI_TARGET=native expo start
+```
+
+You'll also need to indicate to Metro and babel to inline TAMAGUI_TARGET like so:
+
+```bash
+yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+```
+
+Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+
+```js
+// just to ensure TAMAGUI_TARGET is set
+process.env.TAMAGUI_TARGET = 'native'
+
+module.exports = {
+  plugins: [
+    ['transform-inline-environment-variables', {
+      include: ['TAMAGUI_TARGET']
+    }]
+  ]
+}
+```
+
+#### Media Queries
+
+This is also documented in Configuration, but worth noting twice.
+
+`@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
+
+```sh
+yarn add @tamagui/react-native-media-driver
+```
+
+```tsx
+import { createMedia } from '@tamagui/react-native-media-driver'
+
+export default createTamagui({
+  media: createMedia({
+    xs: { maxWidth: 660 },
+    // ...
+  }),
+})
+```
 
 ### Config file
 
@@ -89,6 +214,7 @@ Import and use the `TamaguiProvider` component as the top component in your app.
 
 ```tsx line=8-14
 // this provides some helpful reset styles to ensure a more consistent look
+// only import this from your web app, not native
 import '@tamagui/core/reset.css'
 
 import React, { Suspense } from 'react'
@@ -110,9 +236,39 @@ export default function App() {
 
 TamaguiProvider has optional props, [see the docs for them here](/docs/core/configuration#using-tamagui-provider).
 
+### Webpack, Vite and other web bundlers
+
+Each bundler has a plugin that helps automate setup. See these docs for more:
+
+- [Webpack](/docs/intro/compiler-install#webpack)
+- [Next.js](/docs/intro/compiler-install#nextjs) ([guide](/docs/guides/next-js))
+- [Vite](/docs/intro/compiler-install#vite) ([guide](/docs/guides/vite))
+- [Metro](/docs/intro/compiler-install#babel--metro)
+- [Expo](/docs/guides/expo)
+
+For a minimal install without any compiler setup, you'll just need to alias `react-native` to `react-native-web` (or `react-native-web-lite` if you're feeling adventurous and want better concurrent mode support and a more up to date RN Animated driver).
+
+For Webpack:
+
+```tsx
+config.resolve.alias['react-native$'] = require.resolve('react-native-web')
+```
+
+Or alternatively, to `react-native-web-lite`, our more experimental but modern version of react-native-web.
+
+### Other bundlers and frameworks
+
+Remember, Tamagui runs fully at runtime, so you don't need to set up the compiler to start. But because Tamagui imports `react-native` directly, for web platforms you need to configure an alias. And for CSS extraction, on some frameworks like Next.js require extra configuration.
+
+We have a few guides for the compiler that also include setup of any extras for the web:
+
+Just note: you don't need to set up the compiler!
+
+For the web you usually just need to alias `react-native` to `react-native-web` if you are using `@tamagui/core` or `tamagui`. If you are using the lowest level `@tamagui/web` package, which is basically core but without the React Native unified event APIs, you don't need anything else as it doesn't rely on `react-native` at all.
+
 ### Done!
 
-You're now ready to use Tamagui, import and use any components:
+You're ready to use Tamagui:
 
 <Preview>
   <DemoButton />

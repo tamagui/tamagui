@@ -8,10 +8,9 @@ const _ = require('lodash')
 const tmpDir = require('os').tmpdir()
 const path = require('path')
 const { join } = require('path')
-// const { viteCommonjs } = require('@originjs/vite-plugin-commonjs')
 
 async function build() {
-  // eslint-disable-next-line no-console
+  // rome-ignore lint/nursery/noConsoleLog: ok
   console.log('building core-node...')
   try {
     const outPath = path.join(tmpDir, 'core-node')

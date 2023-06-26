@@ -1,0 +1,38 @@
+name: Reproducible Bug Report
+description: Get much faster response time by **forking this repo, reproducing the bug, and then submitting it was a PR with the title "[Issue] ..."**
+labels: [Bug]
+body:
+- type: textarea
+  attributes:
+    label: Current Behavior
+    description: Describe what's happening in 1-2 sentences.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A concise description of what you expected to happen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Tamagui Version
+    render: markdown
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Reproduction
+    render: markdown
+    description: |
+      - If this is a bug with Tamagui, fork [this CodeSandbox](https://codesandbox.io/p/sandbox/github/tamagui/tamagui/tree/master/starters/next-expo-solito) to reproduce the issue.
+      - If you need a simple webpack repo to fork, try [this one](https://github.com/tamagui/issue-template-webpack) and run `yarn upgrade` to update tamagui to latest.
+      - For native-only bugs, please fork this repo and use `apps/kitchen-sink` to reproduce the bug. Once reproduced, submit a PR with the title `[Issue] ...`
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: System Info
+    render: markdown
+    description: |
+      - Output of `npx envinfo --system --npmPackages --binaries --browsers`

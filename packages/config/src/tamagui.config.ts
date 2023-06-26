@@ -9,11 +9,6 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
-const systemFamily =
-  process.env.TAMAGUI_TARGET === 'native'
-    ? 'Inter'
-    : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
   {
@@ -58,9 +53,8 @@ const headingFont = createInterFont(
 
 const bodyFont = createInterFont(
   {
-    family: systemFamily,
     weight: {
-      1: '500',
+      1: '400',
       7: '600',
     },
   },
@@ -101,6 +95,7 @@ const monoFont = createGenericFont(
 )
 
 export const config = {
+  defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
@@ -116,6 +111,15 @@ export const config = {
     silkscreen: silkscreenFont,
   },
 }
+
+// @ts-ignore
+config.selectionStyles = (theme) =>
+  theme.color5
+    ? {
+        backgroundColor: theme.color5,
+        color: theme.color11,
+      }
+    : null
 
 // @ts-ignore bad types
 config.mediaQueryDefaultActive = mediaQueryDefaultActive

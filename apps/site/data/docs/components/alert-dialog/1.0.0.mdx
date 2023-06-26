@@ -4,13 +4,14 @@ description: Show an alert prompt in a dialog
 name: alertDialog
 component: AlertDialog
 package: alert-dialog
+demoName: AlertDialog
 ---
 
 # AlertDialog
 
 <Description>Show an alert prompt in a dialog.</Description>
 
-<HeroContainer>
+<HeroContainer showAnimationDriverControl>
   <AlertDialogDemo />
 </HeroContainer>
 
@@ -26,10 +27,10 @@ package: alert-dialog
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { AlertDialog } from '@tamagui/alert-dialog' // or from 'tamagui'
+import { AlertDialog } from 'tamagui' // or '@tamagui/alert-dialog'
 
 export default () => (
   <AlertDialog>
@@ -47,9 +48,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### &lt;AlertDialog /&gt;
+### AlertDialog
 
 Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/components/dialog#api), except modal which is on by default. Adds:
 
@@ -64,11 +65,11 @@ Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/co
   ]}
 />
 
-#### &lt;Trigger /&gt;
+### AlertDialog.Trigger
 
 Just [Tamagui Props](/docs/intro/props).
 
-#### &lt;Portal /&gt;
+### AlertDialog.Portal
 
 Renders AlertDialog into appropriate container. Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -83,7 +84,7 @@ Renders AlertDialog into appropriate container. Beyond [Tamagui Props](/docs/int
   ]}
 />
 
-#### &lt;Content /&gt;
+### AlertDialog.Content
 
 Main container for AlertDialog content, this is where you should apply animations.
 
@@ -100,7 +101,7 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
   ]}
 />
 
-#### &lt;Overlay /&gt;
+### AlertDialog.Overlay
 
 Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -115,19 +116,19 @@ Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
   ]}
 />
 
-#### &lt;Title /&gt;
+### AlertDialog.Title
 
 Required. Can wrap in VisuallyHidden to hide.
 
 Defaults to H2, see [Headings](/docs/components/headings).
 
-#### &lt;Description /&gt;
+### AlertDialog.Description
 
 Required. Can wrap in VisuallyHidden to hide.
 
 Defaults to Paragraph, see [Paragraph](/docs/components/text).
 
-#### &lt;Cancel /&gt;
+### AlertDialog.Cancel
 
 Closes the AlertDialog, accepts all YStack props. Recommended to use with your own component and `asChild`.
 

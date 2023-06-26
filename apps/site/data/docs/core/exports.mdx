@@ -7,7 +7,7 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Constants
 
-[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/constants.ts):
+[Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/master/packages/constants/src/index.ts):
 
 - `isWeb` - `process.env.TAMAGUI_TARGET === 'web'`. Should be true both for SSR and Client side web targets.
 - `isWindowDefined` - `typeof window === 'undefined'`
@@ -22,10 +22,25 @@ Let's take a quick look through some of the useful other exports in `@tamagui/co
 
 ## Helpers
 
+### insertFont
+
+```tsx
+type insertFont = (
+  name: string,
+  fontIn: GenericFont
+) => ParsedFont
+```
+
+Will add a new font after initial createTamagui call. Where `GenericFont` is the same as a font passed to createTamagui, and `ParsedFont` is the font with the subkeys prefixed with `$` and turned into variable objects.
+
+### updateFont
+
+The same as insertFont, but will update an existing font.
+
 ### isTamaguiComponent
 
 ```tsx
-(component: any; name?: string) => boolean
+type isTamaguiComponent (component: any; name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui component, if name given ensures it's the specific named Tamagui component.
@@ -33,16 +48,10 @@ If no name given, true if a Tamagui component, if name given ensures it's the sp
 ### isTamaguiElement
 
 ```tsx
-(child: any; name?: string) => boolean
+type isTamaguiElement (child: any; name?: string) => boolean
 ```
 
 If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
-
-### TamaguiComponent.extractable
-
-Returned by the core components and any styled components, it's a higher order component that [hints to the compiler that the wrapped component returns a single element - itself](https://github.com/tamagui/tamagui/blob/296a71b74d3020a28e3bafd1abb748a67d535be4/packages/tamagui/src/views/Anchor.tsx#L22).
-
-This will ensure `isTamaguiElement` is true for the wrapped component elements, and the compiler will do partial optimizations with prop extraction.
 
 ### getTokens
 
@@ -50,7 +59,33 @@ This will ensure `isTamaguiElement` is true for the wrapped component elements, 
 ;() => TokensParsed
 ```
 
-Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens.
+Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens. If you are looking to get a single token value, prefer `getToken` or `getTokenValue`.
+
+### getToken
+
+```tsx
+(name: Token, group?: keyof Tokens) => any
+```
+
+Given the specific name of a token or a name + group, will return the value as either a variable on the web, or raw value on native. So if you define a size token with key `small` and value of `14`:
+
+```tsx
+getToken('$size.small') // returns on web var(--size-small), native 14
+getToken('$small', 'size') // returns on web var(--size-small), native 14
+```
+
+### getTokenValue
+
+```tsx
+(name: Token, group?: keyof Tokens) => any
+```
+
+Similar to getToken, but always returns the raw value rather than the variable name. If you define a size token with key `small` and value of `14`:
+
+```tsx
+getTokenValue('$size.small') // returns 14
+getTokenValue('$small', 'size') // returns 14
+```
 
 ### getExpandedShorthands
 
@@ -68,21 +103,47 @@ themeable<Comp extends ReactComponentLike>(component: Comp): Comp
 
 [A higher order component](https://github.com/tamagui/tamagui/blob/master/packages/core/src/helpers/themeable.tsx) that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
 
+### getVariable
+
+```tsx
+type getVariable = (value: Variable) => string
+```
+
+If given a `Variable` - which comes from a parsed theme or token returned from `createTamagui`, `useTheme` or `getTokens` (read more [on the useTheme docs](/docs/core/use-theme)).
+
+Calling `getVariable(useTheme().color)` returns `var(--color)` on the web, and `#fff` on other platforms.
+
 ---
 
 ## Hooks
 
-### useEvent
+### useProps
 
-A shim of [the upcoming React hook](https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md).
-
-### useGet
+Pass in props that include media styles and shorthands, get back a flat object of styles with the current media styles merged and shorthands expanded. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
 
 ```tsx
-useGet<A>(currentValue: A): () => A
+// if props is:
+//   { size: '$2', $sm: { size: '$4' } }
+// and $sm is active, activeProps will be:
+//   { size: '$4' }
+
+// if shorthands like m => margin, then m always expands to margin
+function MyButton(props) {
+  const activeProps = useProps(props)
+}
 ```
 
-Create a getter function that's always up to date with the given currentValue
+You can pass a second option to disable the shorthands expansion
+
+```tsx
+function MyButton(props) {
+  const activeProps = useProps(props, { disableExpandShorthands: true })
+}
+```
+
+### useThemeName
+
+Returns the string name of the current theme.
 
 ### useIsTouchDevice
 
@@ -91,25 +152,3 @@ SSR-friendly, only true on if native touchable or web touchable device (client s
 ### useDidFinishSSR
 
 SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
-
-### useThemeName
-
-Returns the string name of the current theme.
-
-### useSafeRef
-
-A concurrent-mode safe ref, exactly the same [as written in this article](https://dev.to/uhyo_/a-concurrent-mode-safe-version-of-useref-1325). Works the same as `useRef`, but returns the "old" `current` while concurrent mode hasn't committed effects.
-
-### useMediaPropsActive
-
-Pass in props that include media styles, get back a flat object of styles with the current media styles merged. This is an advanced pattern that should be used sparingly, as it will trigger updates on every media query used. Helpful for more complex components that need to pass down props they are given to children (a common example being the `size` prop, if it's controlling children that also accept size).
-
-```tsx
-// if props is:
-//   { size: '$2', $sm: { size: '$4' } }
-// and $sm is active, activeProps will be:
-//   { size: '$4' }
-function MyButton(props) {
-  const activeProps = useMediaPropsActive(props)
-}
-```

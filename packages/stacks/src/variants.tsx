@@ -52,7 +52,7 @@ export const radiused = {
 
 export const circular = {
   true: (_, { props, tokens }) => {
-    const size = tokens.size[props.size]
+    const size = tokens.size[props.size || '$true']
     return {
       width: size,
       height: size,

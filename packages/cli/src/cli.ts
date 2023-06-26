@@ -1,20 +1,23 @@
+import { join } from 'path'
+
 /* eslint-disable no-console */
-import arg, { flag } from 'arg'
+import arg from 'arg'
 import chalk from 'chalk'
 
-import { disposeAll, getOptions } from './utils.js'
+import { generatedPackageTypes } from './add.js'
+import { disposeAll, getOptions } from './utils'
 
 ;['exit', 'SIGINT'].forEach((_) => {
   process.on(_, () => {
-    process.stdout.write(`bye\n`)
     disposeAll()
+    process.exit()
   })
 })
 
 const COMMAND_MAP = {
-  build: {
-    shorthands: ['b'],
-    description: `Use to pre-build a Tamagui component directory`,
+  'generate-themes': {
+    shorthands: ['gt'],
+    description: `Use to pre-build your themes`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -22,23 +25,71 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { build } = await import('./build.js')
+      const { generateThemes } = require('@tamagui/generate-themes')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await build(options)
+      const [cmd, inPath, outPath] = _
+      if (!inPath || !outPath) {
+        throw new Error(
+          `Must supply both input and output paths, missing one (inPath: ${inPath}, outPath: ${outPath})`
+        )
+      }
+      await generateThemes({
+        ...options,
+        inPath: join(options.root, inPath),
+        outPath: join(options.root, outPath),
+      })
     },
   },
 
-  update: {
-    shorthands: [],
-    description: `Update all tamagui packages within a monorepo`,
-    flags: {},
+  add: {
+    shorthands: ['a'],
+    description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
+      ', '
+    )}`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+    },
     async run() {
-      const { update } = await import('./update.js')
-      await update()
+      const { _, ...flags } = arg(this.flags)
+      const { installGeneratedPackage } = require('./add.js')
+      const [cmd, type, path] = _
+      // const options = await getOptions({
+      //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      // })
+      await installGeneratedPackage(type, path)
     },
   },
+
+  // build: {
+  //   shorthands: ['b'],
+  //   description: `Use to pre-build a Tamagui component directory`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { build } = await import('./build')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await build(options)
+  //   },
+  // },
+  // update: {
+  //   shorthands: [],
+  //   description: `Update all tamagui packages within a monorepo`,
+  //   flags: {},
+  //   async run() {
+  //     const { update } = await import('./update')
+  //     await update()
+  //   },
+  // },
 
   dev: {
     shorthands: ['d'],
@@ -50,7 +101,7 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { dev } = await import('./dev.js')
+      const { dev } = require('./dev')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
@@ -58,19 +109,24 @@ const COMMAND_MAP = {
     },
   },
 
-  studio: {
-    shorthands: ['s'],
-    description: `Studio`,
-    flags: {},
-    async run() {
-      const { _, ...flags } = arg(this.flags)
-      const { studio } = await import('./studio.js')
-      const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      })
-      await studio(options)
-    },
-  },
+  // studio: {
+  //   shorthands: ['s'],
+  //   description: `Studio`,
+  //   flags: {
+  //     '--help': Boolean,
+  //     '--debug': Boolean,
+  //     '--verbose': Boolean,
+  //     '--local': Boolean,
+  //   },
+  //   async run() {
+  //     const { _, ...flags } = arg(this.flags)
+  //     const { studio } = await import('./studio')
+  //     const options = await getOptions({
+  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+  //     })
+  //     await studio(options, !flags['--local'])
+  //   },
+  // },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP
@@ -152,8 +208,12 @@ async function main() {
     process.exit(0)
   }
 
-  await definition.run()
-  console.log(`done`)
+  try {
+    await definition.run()
+  } catch (err: any) {
+    console.error(`Error running command: ${err.message}`)
+  }
+
   process.exit(0)
 }
 
@@ -172,7 +232,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     // build
 //     case 'b':
 //     case 'build': {
-//       const { build } = await import('./build.js')
+//       const { build } = await import('./build')
 //       break
 //     }
 
@@ -182,7 +242,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //       const { generateTamaguiConfig: generateTamgauiConfig } = await import(
 //         './tamaguiConfigUtils.js'
 //       )
-//       const { generateTypes } = await import('./generate.js')
+//       const { generateTypes } = await import('./generate')
 
 //       if (props[0] === 'types') {
 //         await generateTypes(options)
@@ -203,7 +263,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 
 //     // for now, dev === serve, eventually serve can be just prod mode
 //     case 'dev': {
-//       const { dev } = await import('./dev.js')
+//       const { dev } = await import('./dev')
 //       await dev(options)
 //       break
 //     }
@@ -211,7 +271,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     default: {
 //       if (!command || flags['--help']) {
 //       }
-//       // eslint-disable-next-line no-console
+//       // rome-ignore lint/nursery/noConsoleLog: ok
 //       console.warn(chalk.yellow(`No command found ${command}`))
 //       process.exit(1)
 //     }

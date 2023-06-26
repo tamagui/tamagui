@@ -4,6 +4,7 @@ description: A flexible card component.
 name: card
 component: Card
 package: card
+demoName: Card
 ---
 
 # Card
@@ -26,10 +27,10 @@ package: card
   ]}
 />
 
-### Anatomy
+## Anatomy
 
 ```tsx
-import { Card } from 'tamagui' // or @tamagui/card
+import { Card } from 'tamagui' // or '@tamagui/card'
 
 export default () => (
   <Card>
@@ -41,9 +42,9 @@ export default () => (
 )
 ```
 
-### API
+## API Reference
 
-#### Card
+### Card
 
 Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themeablestack), adding:
 
@@ -55,17 +56,56 @@ Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themea
       required: false,
       description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
     },
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
   ]}
 />
 
-#### Card.Header
+### Card.Header
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
 
-#### Card.Footer
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+### Card.Footer
 
-#### Card.Background
+Extends [ThemeableStack](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>
+
+### Card.Background
 
 Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below Header/Footer.
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>

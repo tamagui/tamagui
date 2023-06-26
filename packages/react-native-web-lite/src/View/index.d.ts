@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { ViewProps } from './types.js'
+import type { ViewProps } from './types'
 declare const View: React.ForwardRefExoticComponent<
   {
     children?: any

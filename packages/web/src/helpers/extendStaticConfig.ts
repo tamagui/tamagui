@@ -1,8 +1,13 @@
 import { stylePropsView } from '@tamagui/helpers'
 
-import type { StaticConfig, StaticConfigParsed, StylableComponent } from '../types.js'
-import { createPropMapper } from './createPropMapper.js'
-import { mergeProps } from './mergeProps.js'
+import type {
+  GenericVariantDefinitions,
+  StaticConfig,
+  StaticConfigParsed,
+  StylableComponent,
+} from '../types'
+import { createPropMapper } from './createPropMapper'
+import { mergeProps } from './mergeProps'
 
 export function extendStaticConfig(
   config: Partial<StaticConfig>,
@@ -12,57 +17,63 @@ export function extendStaticConfig(
     return parseStaticConfig(config)
   }
 
-  const parentStaticConf = parent.staticConfig as StaticConfig
-  const variants = {
-    ...parentStaticConf.variants,
-  }
+  const parentStaticConfig = parent.staticConfig as StaticConfig
 
   // merge variants... can we type this?
-  if (config.variants) {
-    for (const key in config.variants) {
-      if (variants[key]) {
-        variants[key] = {
-          ...variants[key],
-          ...config.variants[key],
-        }
-      } else {
-        variants[key] = config.variants[key]
-      }
-    }
-  }
+  const variants = mergeVariants(parentStaticConfig.variants, config.variants)
 
   // include our own
-  const parentNames = [...(parentStaticConf.parentNames || [])]
-  if (parentStaticConf.componentName) {
-    parentNames.push(parentStaticConf.componentName)
+  const parentNames = [...(parentStaticConfig.parentNames || [])]
+  if (parentStaticConfig.componentName) {
+    parentNames.push(parentStaticConfig.componentName)
   }
 
   const deoptProps = config.deoptProps || new Set<string>()
-  // deoptProps.add('style')
+
+  const defaultProps = mergeProps(parentStaticConfig.defaultProps, {
+    ...config.defaultProps,
+    ...config.defaultVariants,
+  })[0]
 
   return parseStaticConfig({
-    ...parentStaticConf,
+    ...parentStaticConfig,
     ...config,
+    parentStaticConfig,
     deoptProps,
     variants,
     parentNames,
     validStyles: config.validStyles
       ? {
-          ...parentStaticConf.validStyles,
+          ...parentStaticConfig.validStyles,
           ...config.validStyles,
         }
-      : parentStaticConf.validStyles || stylePropsView,
-    defaultProps: mergeProps(
-      {
-        ...parentStaticConf.defaultProps,
-        ...parentStaticConf.defaultVariants,
-      },
-      {
-        ...config.defaultProps,
-        ...config.defaultVariants,
-      }
-    )[0],
+      : parentStaticConfig.validStyles || stylePropsView,
+    defaultProps,
   })
+}
+
+export const mergeVariants = (
+  parentVariants?: GenericVariantDefinitions,
+  ourVariants?: GenericVariantDefinitions
+) => {
+  const variants = {
+    ...parentVariants,
+  }
+
+  if (ourVariants) {
+    for (const key in ourVariants) {
+      if (key in variants) {
+        variants[key] = {
+          ...variants[key],
+          ...ourVariants[key],
+        }
+      } else {
+        variants[key] = ourVariants[key]
+      }
+    }
+  }
+
+  return variants
 }
 
 export const parseStaticConfig = (config: Partial<StaticConfig>): StaticConfigParsed => {

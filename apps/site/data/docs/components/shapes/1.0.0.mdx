@@ -4,6 +4,7 @@ description: Square and Circle components
 name: shapes
 component: Square
 package: shapes
+demoName: Shapes
 ---
 
 # Shapes
@@ -19,10 +20,13 @@ package: shapes
 ```
 
 <Highlights
-  features={['Accepts size props as number or token value.', 'Sets min and max width and height.']}
+  features={[
+    'Accepts size props as number or token value.',
+    'Sets min and max width and height.',
+  ]}
 />
 
-### Usage
+## Usage
 
 Tamagui supports sizing shapes using your `size` tokens, or plain numbers.
 
@@ -39,9 +43,11 @@ export default () => (
 )
 ```
 
-### Shape props
+## API Reference
 
-Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+### Square
+
+`Square` extends Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -59,3 +65,7 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
     },
   ]}
 />
+
+### Circle
+
+`Circle` extends [Square](#square), setting `circular` to `true`.

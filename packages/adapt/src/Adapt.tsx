@@ -3,6 +3,7 @@ import {
   isTouchable,
   isWeb,
   useIsomorphicLayoutEffect,
+  useMedia,
   withStaticProperties,
 } from '@tamagui/core'
 import { createContext, createElement, useContext, useMemo, useState } from 'react'
@@ -34,7 +35,7 @@ export const AdaptContents = (props: any) => {
   return createElement(context.Contents, props)
 }
 
-AdaptContents['shouldForwardSpace'] = true
+AdaptContents.shouldForwardSpace = true
 
 export const useAdaptParent = ({
   Contents,
@@ -69,11 +70,16 @@ export const useAdaptParent = ({
 export const Adapt = withStaticProperties(
   function Adapt({ platform, when, children }: AdaptProps) {
     const context = useContext(AdaptParentContext)
+    const media = useMedia()
 
     let enabled = !platform
     if (platform === 'touch') enabled = isTouchable
     if (platform === 'native') enabled = !isWeb
     if (platform === 'web') enabled = isWeb
+
+    if (when && !media[when]) {
+      enabled = false
+    }
 
     useIsomorphicLayoutEffect(() => {
       if (!enabled) return

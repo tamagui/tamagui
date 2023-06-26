@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - test-release
-    tags:
-      - "release-*"
 
 jobs:
   release:
@@ -36,7 +34,7 @@ jobs:
 
   tagged-release:
     name: Tagged Release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     # needs: release
 
     steps:

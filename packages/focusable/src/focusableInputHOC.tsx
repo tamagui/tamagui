@@ -1,72 +1,84 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { TamaguiComponent, isTamaguiComponent, useEvent } from '@tamagui/web'
-import { forwardRef, useCallback, useEffect, useRef } from 'react'
+import { TamaguiComponent, useEvent } from '@tamagui/web'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import { registerFocusable } from './registerFocusable'
 
-export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
-  const component = Component.extractable(
-    forwardRef(
-      (
-        props: {
-          id?: string
-          onChangeText?: (val: string) => void
-          value?: string
-          defaultValue?: string
-        },
-        ref
-      ) => {
-        const isInput = isTamaguiComponent(Component) && Component.staticConfig.isInput
-        const inputValue = useRef(props.value || props.defaultValue || '')
-        const unregisterFocusable = useRef<() => void | undefined>()
+type FocusableProps = {
+  id?: string
+  onChangeText?: (val: string) => void
+  value?: string
+  defaultValue?: string
+}
 
-        const inputRef = useCallback(
-          (input) => {
-            if (!props.id) return
-            if (!input) return
-            unregisterFocusable.current?.()
-            unregisterFocusable.current = registerFocusable(props.id, {
-              focus: input.focus,
+export function useFocusable({
+  isInput,
+  props,
+  ref,
+}: {
+  isInput?: boolean
+  props: FocusableProps
+  ref?: React.MutableRefObject<any>
+}) {
+  const { id, onChangeText, value, defaultValue } = props
+  const inputValue = useRef(value || defaultValue || '')
+  const unregisterFocusable = useRef<() => void | undefined>()
 
-              ...(isInput && {
-                // react-native doesn't support programmatic .select()
-                focusAndSelect() {
-                  input.focus()
-                  if (input.setSelection && typeof inputValue.current === 'string') {
-                    input.setSelection(0, inputValue.current.length)
-                  }
-                },
-              }),
-            })
-          },
-          [isInput, props.id]
-        )
+  const inputRef = useCallback(
+    (input) => {
+      if (!id) return
+      if (!input) return
+      unregisterFocusable.current?.()
+      unregisterFocusable.current = registerFocusable(id, {
+        focus: input.focus,
 
-        const combinedRefs = composeRefs(ref, inputRef)
-
-        useEffect(() => {
-          return () => {
-            unregisterFocusable.current?.()
-          }
-        }, [])
-
-        const onChangeText = useEvent((value) => {
-          inputValue.current = value
-          props.onChangeText?.(value)
-        })
-
-        const finalProps = isInput
-          ? {
-              ...props,
-              onChangeText,
+        ...(isInput && {
+          // react-native doesn't support programmatic .select()
+          focusAndSelect() {
+            input.focus()
+            if (input.setSelection && typeof inputValue.current === 'string') {
+              input.setSelection(0, inputValue.current.length)
             }
-          : props
+          },
+        }),
+      })
+    },
+    [isInput, id]
+  )
 
-        // @ts-expect-error
-        return <Component ref={combinedRefs} {...finalProps} />
-      }
-    )
-  ) as any
+  const combinedRefs = composeRefs(ref, inputRef)
 
-  return component
+  useEffect(() => {
+    return () => {
+      unregisterFocusable.current?.()
+    }
+  }, [])
+
+  return {
+    ref: combinedRefs,
+    onChangeText: useEvent((value) => {
+      inputValue.current = value
+      onChangeText?.(value)
+    }),
+  }
+}
+
+export function focusableInputHOC<A extends TamaguiComponent>(Component: A): A {
+  return Component.styleable((props: FocusableProps, ref) => {
+    const isInput = Component.staticConfig?.isInput
+    const { ref: combinedRef, onChangeText } = useFocusable({
+      ref,
+      props,
+      isInput,
+    })
+    const finalProps = isInput
+      ? {
+          ...props,
+          onChangeText,
+        }
+      : props
+
+    // @ts-expect-error
+    return <Component ref={combinedRef} {...finalProps} />
+  }) as any
 }

@@ -1,4 +1,5 @@
 // flat transform props
+import { isAndroid } from '@tamagui/constants'
 export const stylePropsTransform = Object.freeze({
   x: true,
   y: true,
@@ -62,8 +63,8 @@ export const stylePropsView = Object.freeze({
   flexShrink: true,
   flexWrap: true,
   gap: true,
-  gapColumn: true,
-  gapRow: true,
+  columnGap: true,
+  rowGap: true,
   height: true,
   justifyContent: true,
   left: true,
@@ -105,6 +106,7 @@ export const stylePropsView = Object.freeze({
   ...stylePropsTransform,
 
   // allow a few web only ones
+
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     // RN doesn't support specific border styles per-edge
     borderBottomStyle: true,
@@ -125,16 +127,22 @@ export const stylePropsView = Object.freeze({
     outlineOffset: true,
     outlineWidth: true,
   }),
+  ...(isAndroid ? { elevationAndroid: true } : {}),
 })
 
-export const stylePropsTextOnly = Object.freeze({
-  color: true,
+export const stylePropsFont = Object.freeze({
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
   fontWeight: true,
   letterSpacing: true,
   lineHeight: true,
+  textTransform: true,
+})
+
+export const stylePropsTextOnly = Object.freeze({
+  color: true,
+  ...stylePropsFont,
   textAlign: true,
   textDecorationLine: true,
   textDecorationStyle: true,
@@ -142,7 +150,6 @@ export const stylePropsTextOnly = Object.freeze({
   textShadowColor: true,
   textShadowOffset: true,
   textShadowRadius: true,
-  textTransform: true,
 
   // allow some web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {

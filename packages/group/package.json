@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.7.1",
+  "version": "1.35.12",
   "sideEffects": [
     "*.css"
   ],
@@ -18,22 +18,22 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply-suggested src",
+    "lint:fix": "../../node_modules/.bin/rome check --apply src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.7.1",
-    "@tamagui/create-context": "1.7.1",
-    "@tamagui/stacks": "1.7.1",
-    "@tamagui/use-controllable-state": "1.7.1",
+    "@tamagui/core": "1.35.12",
+    "@tamagui/create-context": "1.35.12",
+    "@tamagui/stacks": "1.35.12",
+    "@tamagui/use-controllable-state": "1.35.12",
     "reforest": "^0.12.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.7.1",
+    "@tamagui/build": "1.35.12",
     "react": "^18.2.0"
   },
   "publishConfig": {

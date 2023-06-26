@@ -45,12 +45,18 @@ export function PropsTable({
       {data.map(({ name, type, required, default: defaultValue, description }, i) => (
         <ListItem key={`${name}-${i}`} p={0}>
           <YStack width="100%">
-            <XStack pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>
+            <XStack
+              pos="relative"
+              py="$2"
+              bc="$backgroundStrong"
+              px="$4"
+              $sm={{ flexDirection: 'column' }}
+            >
               <YStack fullscreen backgroundColor="$background" zi={-1} o={0.5} />
               <XStack miw="30%" ai="center" space>
                 <H4
                   color="$color"
-                  fow="800"
+                  fow="700"
                   fontFamily="$mono"
                   textTransform="none"
                   size="$4"
@@ -68,40 +74,52 @@ export function PropsTable({
                 </H4>
               </XStack>
 
-              <Separator als="stretch" vertical mx="$4" my="$2" />
+              {!!type && (
+                <>
+                  <Separator als="stretch" vertical mx="$4" my="$2" />
 
-              <XStack
-                f={2}
-                miw="30%"
-                ai="center"
-                separator={<Separator als="stretch" vertical mx="$4" my="$2" />}
-                $xs={{
-                  flexDirection: 'column',
-                  ai: 'flex-start',
-                }}
-              >
-                <Paragraph size="$3" o={0.8} fontFamily="$mono" overflow="hidden" ellipse mr="auto">
-                  {type}
-                </Paragraph>
+                  <XStack
+                    f={2}
+                    miw="30%"
+                    ai="center"
+                    separator={<Separator als="stretch" vertical mx="$4" my="$2" />}
+                    $xs={{
+                      flexDirection: 'column',
+                      ai: 'flex-start',
+                    }}
+                  >
+                    <Paragraph
+                      size="$3"
+                      o={0.8}
+                      fontFamily="$mono"
+                      overflow="hidden"
+                      ellipse
+                      mr="auto"
+                    >
+                      {type}
+                    </Paragraph>
 
-                <XStack ai="center">
-                  {Boolean(defaultValue) ? (
-                    <>
-                      <Paragraph o={0.5} size="$2">
-                        Default:&nbsp;
-                      </Paragraph>
-                      <Code my="$-1" bc="$backgroundPress">
-                        {defaultValue}
-                      </Code>
-                    </>
-                  ) : null}
-                </XStack>
-              </XStack>
+                    <XStack ai="center">
+                      {Boolean(defaultValue) ? (
+                        <>
+                          <Paragraph o={0.5} size="$2">
+                            Default:&nbsp;
+                          </Paragraph>
+                          {/* @ts-ignore */}
+                          <Code my="$-1" bc="$backgroundPress">
+                            {defaultValue}
+                          </Code>
+                        </>
+                      ) : null}
+                    </XStack>
+                  </XStack>
+                </>
+              )}
             </XStack>
 
             {!!description && (
               <YStack py="$2" px="$4">
-                <Paragraph size="$2" o={0.65}>
+                <Paragraph size="$3" o={0.65}>
                   {description}
                 </Paragraph>
               </YStack>

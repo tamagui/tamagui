@@ -5,11 +5,9 @@ import {
   ChevronUp,
   Circle,
 } from '@tamagui/lucide-icons'
-import React from 'react'
 import {
   Button,
   Paragraph,
-  Theme,
   Tooltip,
   TooltipGroup,
   TooltipProps,
@@ -20,7 +18,7 @@ import {
 export function TooltipDemo() {
   return (
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
-      <YStack space="$2" als="center">
+      <YStack space="$2" alignSelf="center">
         <XStack space="$2">
           <Demo groupId="0" placement="top-end" Icon={Circle} />
           <Demo groupId="1" placement="top" Icon={ChevronUp} />
@@ -28,7 +26,7 @@ export function TooltipDemo() {
         </XStack>
         <XStack space="$2">
           <Demo groupId="3" placement="left" Icon={ChevronLeft} />
-          <YStack f={1} />
+          <YStack flex={1} />
           <Demo groupId="4" placement="right" Icon={ChevronRight} />
         </XStack>
         <XStack space="$2">
@@ -41,35 +39,33 @@ export function TooltipDemo() {
   )
 }
 
-export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
+function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
       <Tooltip.Trigger>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>
-      <Theme inverse>
-        <Tooltip.Content
-          enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}
-          scale={1}
-          x={0}
-          y={0}
-          o={1}
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
+      <Tooltip.Content
+        enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+        exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+        scale={1}
+        x={0}
+        y={0}
+        opacity={1}
+        animation={[
+          'quick',
+          {
+            opacity: {
+              overshootClamping: true,
             },
-          ]}
-        >
-          <Tooltip.Arrow />
-          <Paragraph size="$2" lineHeight="$1">
-            Hello world
-          </Paragraph>
-        </Tooltip.Content>
-      </Theme>
+          },
+        ]}
+      >
+        <Tooltip.Arrow />
+        <Paragraph size="$2" lineHeight="$1">
+          Hello world
+        </Paragraph>
+      </Tooltip.Content>
     </Tooltip>
   )
 }

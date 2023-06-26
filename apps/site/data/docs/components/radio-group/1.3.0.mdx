@@ -4,6 +4,7 @@ description: A group of radio buttons
 name: radio-group
 component: RadioGroup
 package: radio-group
+demoName: RadioGroup
 ---
 
 # RadioGroup
@@ -26,23 +27,26 @@ package: radio-group
   ]}
 />
 
-### Usage
+## Usage
 
 ```tsx
 import { RadioGroup } from 'tamagui'
+
 export default () => (
-  <RadioGroup size="$4" value="foo" space="$1">
-    <RadioGroup.Item id="dummy" value="foo">
+  <RadioGroup value="foo" size="$4" space="$2">
+    <RadioGroup.Item value="foo" id="foo-radio-item">
       <RadioGroup.Indicator />
     </RadioGroup.Item>
-    <RadioGroup.Item id="other" value="bar">
+    <RadioGroup.Item value="bar" id="bar-radio-item">
       <RadioGroup.Indicator />
     </RadioGroup.Item>
   </RadioGroup>
 )
 ```
 
-### RadioGroup props
+## API Reference
+
+### RadioGroup
 
 RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
@@ -86,7 +90,7 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
   ]}
 />
 
-### RadioGroup.Item props
+### RadioGroup.Item
 
 <PropsTable
   data={[
@@ -125,6 +129,17 @@ RadioGroup extend Stack views inheriting all the [Tamagui standard props](/docs/
   ]}
 />
 
-### RadioGroup.Indicator props
+### RadioGroup.Indicator
 
-RadioGroup.Indicator extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props). It appears only when the parent Item is checked.
+RadioGroup.Indicator appears only when the parent Item is checked. it extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props) adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'unstyled',
+      required: false,
+      type: `boolean`,
+      description: `Removes all default Tamagui styles.`,
+    },
+  ]}
+/>

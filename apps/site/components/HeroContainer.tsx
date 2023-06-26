@@ -1,18 +1,32 @@
 import { ThemeTint } from '@tamagui/logo'
+import { Timer, Waves } from '@tamagui/lucide-icons'
+import {
+  AnimationDriverTogglerContextProvider,
+  useAnimationDriverToggler,
+} from 'hooks/useAnimationDriverToggler'
 import React from 'react'
-import { Theme, XStack, YStack, styled } from 'tamagui'
+import {
+  AnimationDriverProvider,
+  Switch,
+  Theme,
+  TooltipSimple,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 import { ErrorBoundary } from './ErrorBoundary'
 
 export function HeroContainer({
   children,
-  demoMultiple,
+  demoMultiple = false,
   smaller,
   noPad,
   noScroll,
   alignItems,
   minimal,
   tinted,
+  showAnimationDriverControl = false,
 }: {
   minimal?: boolean
   demoMultiple?: boolean
@@ -22,7 +36,12 @@ export function HeroContainer({
   noScroll?: boolean
   alignItems?: any
   tinted?: boolean
+  showAnimationDriverControl?: boolean
 }) {
+  const demo = (
+    <HeroContainerInner demoMultiple={demoMultiple}>{children}</HeroContainerInner>
+  )
+
   const contents = (
     <YStack
       className={(minimal ? '' : 'hero-gradient') + (noScroll ? '' : ' hero-scroll')}
@@ -37,6 +56,7 @@ export function HeroContainer({
       py={70}
       pos="relative"
       minHeight={300}
+      contain="paint layout"
       y={0}
       borderRadius="$4"
       {...(noPad && {
@@ -46,37 +66,39 @@ export function HeroContainer({
         mx: smaller ? 0 : '$-4',
       }}
     >
-      <ErrorBoundary>
+      <AnimationDriverTogglerContextProvider>
         {demoMultiple ? (
-          <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-            <XStack space="$3" px="$8">
-              <Theme reset>
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="blue">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="red">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="pink">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="orange">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="green">
-                <Card>{children}</Card>
-              </Theme>
-              <Theme name="yellow">
-                <Card>{children}</Card>
-              </Theme>
-            </XStack>
+          <XStack
+            mah="100%"
+            maw="100%"
+            miw="100%"
+            // @ts-expect-error
+            position="unset"
+            justifyContent="flex-start"
+          >
+            {demo}
           </XStack>
         ) : (
-          children
+          demo
         )}
-      </ErrorBoundary>
+
+        {showAnimationDriverControl && (
+          <XStack
+            position="absolute"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="space-between"
+            top={16}
+            l="$3"
+            $xxs={{ display: 'none' }}
+            $gtMd={{
+              l: '$4',
+            }}
+          >
+            <AnimationControl />
+          </XStack>
+        )}
+      </AnimationDriverTogglerContextProvider>
     </YStack>
   )
 
@@ -98,3 +120,74 @@ const Card = styled(YStack, {
   minHeight: 220,
   br: '$4',
 })
+
+const niceNames = {
+  'react-native': 'React Native',
+  css: 'css',
+}
+
+const AnimationControl = () => {
+  const animationDriverToggler = useAnimationDriverToggler()
+
+  return (
+    <TooltipSimple
+      placement="top"
+      label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
+    >
+      <XStack zIndex={100000000} space="$2" ai="center">
+        <Timer size={14} opacity={0.6} />
+        <Switch
+          size="$1"
+          checked={animationDriverToggler.driverName === 'react-native'}
+          onCheckedChange={(val) =>
+            animationDriverToggler.setDriverName(val ? 'react-native' : 'css')
+          }
+        >
+          <Switch.Thumb animation="quick" />
+        </Switch>
+        <Waves size={14} opacity={0.6} />
+      </XStack>
+    </TooltipSimple>
+  )
+}
+
+const HeroContainerInner = ({
+  children,
+  demoMultiple,
+}: {
+  children: React.ReactNode
+  demoMultiple: boolean
+}) => {
+  const { driver, driverName } = useAnimationDriverToggler()
+
+  return (
+    <AnimationDriverProvider driver={driver} key={driverName}>
+      <ErrorBoundary>
+        {demoMultiple ? (
+          <XStack space="$3" px="$8">
+            <Theme name="blue">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="red">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="pink">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="orange">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="green">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="yellow">
+              <Card>{children}</Card>
+            </Theme>
+          </XStack>
+        ) : (
+          children
+        )}
+      </ErrorBoundary>
+    </AnimationDriverProvider>
+  )
+}

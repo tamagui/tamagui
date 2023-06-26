@@ -1,16 +1,22 @@
 import { components } from '@components/MDXComponents'
 import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
 import { listeners } from '../../../hooks/setTinted'
+
+const getPathFragment = (path: string) => {
+  const [_, fragment] = path.split('#')
+  return fragment
+}
 
 type Doc = {
   frontmatter: Frontmatter
@@ -33,7 +39,10 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   }, [])
 
   useEffect(() => {
-    let pathWithVersion = `${router.pathname}/${frontmatter.version}`
+    const fragment = getPathFragment(router.asPath)
+    let pathWithVersion = `${router.pathname}/${frontmatter.version}${
+      fragment ? `#${fragment}` : ''
+    }`
     if (Array.isArray(router.query.slug)) {
       pathWithVersion = pathWithVersion.replace('[...slug]', router.query.slug[0])
     }
@@ -42,10 +51,24 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
 
   return (
     <>
-      <TitleAndMetaTags
+      <NextSeo
         title={`${frontmatter.title} — Tamagui — React Native Universal UI`}
         description={frontmatter.description}
-        image={frontmatter.image}
+        openGraph={{
+          images: [
+            {
+              url:
+                frontmatter.image ??
+                getOgUrl('component', {
+                  title: frontmatter.title,
+                  demoName: frontmatter.demoName ?? undefined,
+                  description: frontmatter.description ?? '',
+                }),
+              width: 1200,
+              height: 630,
+            },
+          ],
+        }}
       />
       {/* {frontmatter.version !== frontmatter.versions?.[0] && (
         <OldVersionNote
@@ -63,7 +86,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocComponentsPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
+DocComponentsPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/components')

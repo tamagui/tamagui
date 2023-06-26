@@ -1,0 +1,28 @@
+/// <reference types="react" />
+import { View } from 'react-native';
+export declare const SheetImplementationCustom: (props: Omit<{
+    open?: boolean | undefined;
+    defaultOpen?: boolean | undefined;
+    onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;
+    position?: number | undefined;
+    defaultPosition?: number | undefined;
+    snapPoints?: number[] | undefined;
+    onPositionChange?: import("./types").PositionChangeHandler | undefined;
+    children?: import("react").ReactNode;
+    dismissOnOverlayPress?: boolean | undefined;
+    dismissOnSnapToBottom?: boolean | undefined;
+    forceRemoveScrollEnabled?: boolean | undefined;
+    animationConfig?: import("@tamagui/core").AnimatedNumberStrategy | undefined;
+    unmountChildrenWhenHidden?: boolean | undefined;
+    native?: boolean | "ios"[] | undefined;
+    animation?: import("@tamagui/core").AnimationProp | undefined;
+    handleDisableScroll?: boolean | undefined;
+    disableDrag?: boolean | undefined;
+    modal?: boolean | undefined;
+    zIndex?: number | undefined;
+    portalProps?: import("@tamagui/portal").PortalProps | undefined;
+    moveOnKeyboardChange?: boolean | undefined;
+} & {
+    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+} & import("react").RefAttributes<View>, "theme" | "themeInverse"> & import("@tamagui/core").ThemeableProps) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>> | null;
+//# sourceMappingURL=SheetImplementationCustom.d.ts.map

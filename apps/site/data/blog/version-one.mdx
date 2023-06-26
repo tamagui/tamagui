@@ -79,7 +79,7 @@ One novel feature is **deterministic, easy to reason about style merging**. Core
 Here's an example of the `styled` function with a few variants:
 
 ```tsx
-import { Stack, styled } from '@tamagui/core'
+import { Stack, styled } from 'tamagui' // or '@tamagui/core'
 
 export const Circle = styled(Stack, {
   // access your tokens and theme values easily with $ props
@@ -127,7 +127,7 @@ It works with well-optimized and easy to use hooks like [useMedia](/docs/core/us
 Here's a stripped down configuration:
 
 ```tsx
-import { createFont, createTamagui, createTokens } from '@tamagui/core'
+import { createFont, createTamagui, createTokens } from 'tamagui' // or '@tamagui/core'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
@@ -162,7 +162,7 @@ export default createTamagui({
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
-  },
+  } as const,
 })
 ```
 
@@ -261,7 +261,7 @@ export const config = createTamagui({
 Then you can change the family to Mandarin at any point in your React tree, with types working as expected:
 
 ```tsx
-import { FontLanguage, Text } from '@tamagui/core'
+import { FontLanguage, Text } from 'tamagui' // or '@tamagui/core'
 
 export default () => (
   <FontLanguage body="mandarin">
@@ -297,7 +297,7 @@ This hook is useful for authoring your own custom components built on Tamagui. T
 The `useMediaPropsActive` is an important part of that functionality, making it easy to properly access the "currently active" set of styles given the current screen size. Here's an example:
 
 ```tsx
-import { Stack, StackProps, useMediaPropsActive } from '@tamagui/core'
+import { Stack, StackProps, useMediaPropsActive } from 'tamagui' // or '@tamagui/core'
 
 const CustomWidget = (props: StackProps) => {
   const activeProps = useMediaPropsActive(props)
@@ -360,7 +360,7 @@ Tamagui now fully works [with Vite 3 and 4](/docs/guides/vite), both with the co
 
 ```tsx
 import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
 const tamaguiCompilerConfig = {
@@ -372,10 +372,7 @@ const tamaguiCompilerConfig = {
 export default defineConfig({
   clearScreen: false,
   plugins: [
-    react({
-      fastRefresh: true,
-      jsxPure: true,
-    }),
+    react(),
     tamaguiPlugin(tamaguiCompilerConfig),
     tamaguiExtractPlugin(tamaguiCompilerConfig),
   ],

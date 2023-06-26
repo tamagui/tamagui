@@ -32,10 +32,17 @@ export function AnimationsPresenceDemo() {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   return (
-    <XStack ov="hidden" bc="#000" pos="relative" h={300} w="100%" ai="center">
+    <XStack
+      overflow="hidden"
+      backgroundColor="#000"
+      position="relative"
+      height={300}
+      width="100%"
+      alignItems="center"
+    >
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} o={1}>
-          <Image src={images[imageIndex]} width={780} height={300} />
+        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
+          <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </YStackEnterable>
       </AnimatePresence>
 
@@ -43,8 +50,8 @@ export function AnimationsPresenceDemo() {
         accessibilityLabel="Carousel left"
         icon={ArrowLeft}
         size="$5"
-        pos="absolute"
-        l="$4"
+        position="absolute"
+        left="$4"
         circular
         elevate
         onPress={() => paginate(-1)}
@@ -53,8 +60,8 @@ export function AnimationsPresenceDemo() {
         accessibilityLabel="Carousel right"
         icon={ArrowRight}
         size="$5"
-        pos="absolute"
-        r="$4"
+        position="absolute"
+        right="$4"
         circular
         elevate
         onPress={() => paginate(1)}

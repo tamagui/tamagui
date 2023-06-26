@@ -1,4 +1,12 @@
-import { ConfigListener, TamaguiInternalConfig, TokensMerged } from './types.js'
+import { isWeb } from '@tamagui/constants'
+
+import {
+  ConfigListener,
+  TamaguiInternalConfig,
+  Token,
+  Tokens,
+  TokensMerged,
+} from './types'
 
 let conf: TamaguiInternalConfig | null
 
@@ -27,6 +35,7 @@ export const getConfig = () => {
 }
 
 let cached: TokensMerged
+
 export const getTokens = ({
   prefixed,
 }: {
@@ -35,37 +44,36 @@ export const getTokens = ({
    */
   prefixed?: boolean
 } = {}): TokensMerged => {
-  if (!conf) throw new Error(`never called createTamagui`)
-  if (prefixed === false) return conf.tokens
-  if (prefixed === true) return conf.tokensParsed
-  return (cached ??= Object.freeze({
-    size: {
-      ...conf.tokens['size'],
-      ...conf.tokensParsed['size'],
-    },
-    space: {
-      ...conf.tokens['space'],
-      ...conf.tokensParsed['space'],
-    },
-    radius: {
-      ...conf.tokens['radius'],
-      ...conf.tokensParsed['radius'],
-    },
-    zIndex: {
-      ...conf.tokens['zIndex'],
-      ...conf.tokensParsed['zIndex'],
-    },
-    color: {
-      ...conf.tokens['color'],
-      ...conf.tokensParsed['color'],
-    },
-  }) as any)
+  if (process.env.NODE_ENV === 'development') {
+    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+  }
+  const { tokens, tokensParsed } = conf!
+  if (prefixed === false) return tokens
+  if (prefixed === true) return tokensParsed
+  if (cached) return cached
+  cached = Object.fromEntries(
+    Object.entries(tokens).map(([k, v]) => [k, { ...v, ...tokensParsed[k] }])
+  ) as any
+  return cached
+}
+
+export const getToken = (value: Token, group?: keyof Tokens, useVariable = isWeb) => {
+  const tokens = getTokens()
+  const token =
+    value in conf!.specificTokens
+      ? conf!.specificTokens[value]
+      : (tokens[group as any]?.[value] as any)
+  return useVariable ? token?.variable : token?.val
+}
+
+export const getTokenValue = (value: Token, group?: keyof Tokens) => {
+  return getToken(value, group, false)
 }
 
 /**
  * Note: this is the same as `getTokens`
  */
-export const useTokens = () => getTokens()
+export const useTokens = getTokens
 
 export const getThemes = () => conf!.themes
 
@@ -80,7 +88,8 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 }
 
 export const updateConfig = (key: string, value: any) => {
-  Object.assign(key, value)
+  // for usage internally only
+  Object.assign(conf![key], value)
 }
 
 // searches by value name or token name

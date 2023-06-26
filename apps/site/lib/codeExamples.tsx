@@ -81,7 +81,7 @@ import { Heading } from './Heading'
 
 const App = (props) => (
   <Stack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum dolor.</Heading>
+    <Heading size={props.big ? 'large' : 'small'}>Lorem ipsum.</Heading>
   </Stack>
 )`,
         },
@@ -132,10 +132,9 @@ export const Heading = styled(Text, {
       examples: [
         {
           name: 'app.js',
-          code: `import { SandboxHeading, Stack } from '@tamagui/core'
-export const CodeExamplesInput = props => <div className={_cn}>
+          code: `export const App = props => <div className={_cn}>
     <h1 className={_cn2 + (_cn3 + (props.big ? _cn4 : _cn5))}>
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </h1>
   </div>
   
@@ -160,8 +159,8 @@ const _cn = "  is_Stack _fd-column _miw-0px _mih-0px _pos-relative _bxs-border-b
 ._w-550px{width:550px;}
 ._pr-1aj148u{padding-right:var(--space-3);}
 ._pl-1aj148u{padding-left:var(--space-3);}
-@media screen and (min-width: 801px) { :root:root ._pr-_gtSm_1aj14ca{padding-right:var(--space-7);} }
-@media screen and (min-width: 801px) { :root:root ._pl-_gtSm_1aj14ca{padding-left:var(--space-7);} }
+@media (min-width: 801px) { :root:root ._pr-_gtSm_1aj14ca{padding-right:var(--space-7);} }
+@media (min-width: 801px) { :root:root ._pl-_gtSm_1aj14ca{padding-left:var(--space-7);} }
 ._ml-0px{margin-left:0px;}
 ._mb-0px{margin-bottom:0px;}
 ._mr-0px{margin-right:0px;}
@@ -201,7 +200,7 @@ const App = (props) => (
     })}
   >
     <Paragraph size="$2">
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </Paragraph>
   </YStack>
 )
@@ -224,7 +223,7 @@ import { Paragraph, YStack } from 'tamagui'
 
 const App = props => <div className={_cn + (props.big ? _cn2 : _cn3 + (" " + (props.colorful ? _cn4 : " ")))}>
     <span className={_cn5}>
-      Lorem ipsum dolor.
+      Lorem ipsum.
     </span>
   </div>
 `,
@@ -308,9 +307,9 @@ const App = (props) => <div className={_cn + (props.shrinks ? ' _bc-_gtSm_abc123
 ._fd-eqz5dr{flex-direction:column;}
 ._fs-1q142lx{flex-shrink:0;}
 @media not all and (hover: none) { :root  ._bc--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
-@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
-@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }
-@media screen and (min-width: 861px) { :root:root ._bc-_gtSm_abc1234{background-color:rgba(0,128,0,1.00);} }`,
+@media (min-width: 861px) { :root:root ._bc-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
+@media (min-width: 861px) { :root:root ._bc-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }
+@media (min-width: 861px) { :root:root ._bc-_gtSm_abc1234{background-color:rgba(0,128,0,1.00);} }`,
           language: 'css',
         },
       ],
@@ -364,11 +363,11 @@ const App = () => {
           code: `._d-6koalj{display:flex;}
 ._fd-eqz5dr{flex-direction:column;}
 ._fs-1q142lx{flex-shrink:0;}
-@media screen and (max-width: 860px) { :root:root ._t-_sm_1exagq{transform:translateY(10px);} }
+@media (max-width: 860px) { :root:root ._t-_sm_1exagq{transform:translateY(10px);} }
 @media not all and (max-width: 860px) { :root:root ._t-_sm0_1wpzndr{transform:translateY(0px);} }
-@media screen and (min-width: 1120px) { :root:root:root ._bc-_lg_no4z4g{background-color:var(--red);} }
+@media (min-width: 1120px) { :root:root:root ._bc-_lg_no4z4g{background-color:var(--red);} }
 @media not all and (min-width: 1120px) { :root:root:root ._bc-_lg0_1qoifqd{background-color:var(--blue);} }
-@media screen and (min-width: 1280px) { :root:root:root:root ._t-_xl_gqa6p0{transform:translateY(var(--space2));} }`,
+@media (min-width: 1280px) { :root:root:root:root ._t-_xl_gqa6p0{transform:translateY(var(--space2));} }`,
           language: 'css',
         },
       ],

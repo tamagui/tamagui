@@ -58,8 +58,7 @@ const Transitions = Object.freeze({
 })
 
 const isActiveSignal = (signal) =>
-  signal === RESPONDER_ACTIVE_PRESS_START ||
-  signal === RESPONDER_ACTIVE_LONG_PRESS_START
+  signal === RESPONDER_ACTIVE_PRESS_START || signal === RESPONDER_ACTIVE_LONG_PRESS_START
 
 const isButtonRole = (element) => element.getAttribute('role') === 'button'
 
@@ -215,7 +214,7 @@ export default class PressResponder {
       const delayPressStart = normalizeDelay(
         this._config.delayPressStart,
         0,
-        DEFAULT_PRESS_DELAY_MS,
+        DEFAULT_PRESS_DELAY_MS
       )
 
       if (shouldDelay !== false && delayPressStart > 0) {
@@ -229,7 +228,7 @@ export default class PressResponder {
       const delayLongPress = normalizeDelay(
         this._config.delayLongPress,
         10,
-        DEFAULT_LONG_PRESS_DELAY_MS,
+        DEFAULT_LONG_PRESS_DELAY_MS
       )
       this._longPressDelayTimeout = setTimeout(() => {
         this._handleLongPress(event)
@@ -388,11 +387,7 @@ export default class PressResponder {
         const onLongPress = _this$_config3.onLongPress
 
         if (!disabled) {
-          if (
-            onLongPress != null &&
-            this._isPointerTouch &&
-            !event.defaultPrevented
-          ) {
+          if (onLongPress != null && this._isPointerTouch && !event.defaultPrevented) {
             event.preventDefault()
             event.stopPropagation()
           }
@@ -422,9 +417,8 @@ export default class PressResponder {
     }
 
     if (nextState == null || nextState === ERROR) {
-      // eslint-disable-next-line no-console
       console.error(
-        `PressResponder: Invalid signal ${signal} for state ${prevState} on responder`,
+        `PressResponder: Invalid signal ${signal} for state ${prevState} on responder`
       )
     } else if (prevState !== nextState) {
       this._performTransitionSideEffects(prevState, nextState, signal, event)

@@ -17,7 +17,7 @@ export const DocsMenuContents = React.memo(() => {
             if (section.type === 'hr') {
               return (
                 <YStack key={`sep${i}`} mx="$4">
-                  {!!section.title ? (
+                  {section.title ? (
                     <XStack
                       ai="center"
                       space="$6"

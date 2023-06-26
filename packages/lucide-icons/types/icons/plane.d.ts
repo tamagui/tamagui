@@ -1,4 +1,4 @@
 import React from 'react';
-import { IconProps } from '../IconProps';
+import type { IconProps } from '@tamagui/helpers-icon';
 export declare const Plane: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=plane.d.ts.map

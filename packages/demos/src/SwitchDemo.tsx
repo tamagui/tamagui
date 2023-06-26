@@ -2,7 +2,7 @@ import { Label, Separator, SizeTokens, Switch, XStack, YStack, styled } from 'ta
 
 export function SwitchDemo() {
   return (
-    <YStack w={200} ai="center" space="$3">
+    <YStack width={200} alignItems="center" space="$3">
       <SwitchWithLabel size="$2" />
       <SwitchWithLabel size="$3" />
       <SwitchWithLabel size="$4" />
@@ -11,14 +11,20 @@ export function SwitchDemo() {
   )
 }
 
-function SwitchWithLabel(props: { size: SizeTokens }) {
+export function SwitchWithLabel(props: { size: SizeTokens }) {
   const id = `switch-${props.size.toString().slice(1)}`
   return (
-    <XStack w={200} ai="center" space="$4">
-      <Label pr="$0" miw={90} jc="flex-end" size={props.size} htmlFor={id}>
+    <XStack width={200} alignItems="center" space="$4">
+      <Label
+        paddingRight="$0"
+        minWidth={90}
+        justifyContent="flex-end"
+        size={props.size}
+        htmlFor={id}
+      >
         Dark mode
       </Label>
-      <Separator mih={20} vertical />
+      <Separator minHeight={20} vertical />
       <Switch id={id} size={props.size}>
         <Switch.Thumb animation="quick" />
       </Switch>

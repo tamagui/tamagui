@@ -11,10 +11,10 @@ import * as React from 'react'
 import { forwardRef } from 'react'
 import { StyleSheet } from 'react-native-web-internals'
 
-import type { ImageProps } from '../Image/index.js'
-import Image from '../Image/index.js'
-import type { ViewProps } from '../View/index.js'
-import View from '../View/index.js'
+import type { ImageProps } from '../Image/index'
+import Image from '../Image/index'
+import type { ViewProps } from '../View/index'
+import View from '../View/index'
 
 type ImageBackgroundProps = ImageProps & {
   imageRef?: any

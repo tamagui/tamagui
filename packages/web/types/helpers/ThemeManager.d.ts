@@ -1,5 +1,5 @@
-import { ThemeParsed, ThemeProps } from '../types.js';
-type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
+import { ThemeParsed, ThemeProps } from '../types';
+type ThemeListener = (name: string | null, themeManager: ThemeManager, forced: boolean) => void;
 export type SetActiveThemeProps = {
     className?: string;
     parentManager?: ThemeManager | null;
@@ -12,25 +12,30 @@ export type ThemeManagerState = {
     theme?: ThemeParsed | null;
     className?: string;
     parentName?: string;
+    componentName?: string;
 };
-export declare function hasNoThemeUpdatingProps(props: ThemeProps): boolean;
+export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
     props: ThemeProps;
+    id: number;
+    isComponent: boolean;
     themeListeners: Set<ThemeListener>;
     parentManager: ThemeManager | null;
     state: ThemeManagerState;
-    constructor(props?: ThemeProps, parentManager?: ThemeManager | 'root' | null | undefined);
+    scheme: 'light' | 'dark' | null;
+    constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
     updateState(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, notify?: boolean): ThemeManagerState | undefined;
+    }, shouldNotify?: boolean): ThemeManagerState | undefined;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): string | number | import("../createVariable.js").Variable<any> | undefined;
-    notify(): void;
-    onChangeTheme(cb: ThemeListener): () => void;
+    getValue(key: string, state?: ThemeManagerState): string | number | import("..").Variable<any> | undefined;
+    notify(forced?: boolean): void;
+    onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }
+export declare function getNonComponentParentManager(themeManager?: ThemeManager | null): readonly [ThemeManager | null, string[]];
 export {};
 //# sourceMappingURL=ThemeManager.d.ts.map

@@ -1,13 +1,14 @@
 import { components } from '@components/MDXComponents'
 import { QuickNav } from '@components/QuickNav'
-import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { getOgUrl } from '@lib/og'
 import { ThemeTint } from '@tamagui/logo'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { NextSeo } from 'next-seo'
 import React from 'react'
 import { Spacer } from 'tamagui'
 
-import { DocsPage } from '../../../components/DocsPage'
 import { HomeH1 } from '../../../components/HomeH2'
 import { SubTitle } from '../../../components/SubTitle'
 import type { Frontmatter } from '../../../frontmatter'
@@ -24,7 +25,22 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
     <>
-      <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Guides`} />
+      <NextSeo
+        title={`${frontmatter.title} — Tamagui Guides`}
+        description={frontmatter.description}
+        openGraph={{
+          images: [
+            {
+              url: getOgUrl('default', {
+                title: frontmatter.title,
+                description: frontmatter.description ?? '',
+                category: 'Guide',
+                demoName: frontmatter.demoName,
+              }),
+            },
+          ],
+        }}
+      />
       <HomeH1>{frontmatter.title}</HomeH1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
@@ -36,7 +52,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   )
 }
 
-DocGuidesPage.getLayout = (page) => <DocsPage>{page}</DocsPage>
+DocGuidesPage.getLayout = getDefaultLayout
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('docs/guides')

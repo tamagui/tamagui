@@ -49,27 +49,25 @@ const FormTriggerFrame = styled(Stack, {
 
 export interface FormTriggerProps extends StackProps {}
 
-export const FormTrigger = FormTriggerFrame.extractable(
-  forwardRef<TamaguiElement, FormTriggerProps>(
-    (props: ScopedProps<FormTriggerProps>, forwardedRef) => {
-      const { __scopeForm, children, ...triggerProps } = props
-      const context = useFormContext(TRIGGER_NAME, __scopeForm)
+export const FormTrigger = FormTriggerFrame.styleable(
+  (props: ScopedProps<FormTriggerProps>, forwardedRef) => {
+    const { __scopeForm, children, ...triggerProps } = props
+    const context = useFormContext(TRIGGER_NAME, __scopeForm)
 
-      return (
-        <FormTriggerFrame
-          tag="button"
-          {...triggerProps}
-          children={
-            triggerProps.asChild
-              ? cloneElement(children, { disabled: triggerProps.disabled })
-              : children
-          }
-          ref={forwardedRef}
-          onPress={composeEventHandlers(props.onPress as any, context.onSubmit)}
-        />
-      )
-    }
-  )
+    return (
+      <FormTriggerFrame
+        tag="button"
+        {...triggerProps}
+        children={
+          triggerProps.asChild
+            ? cloneElement(children, { disabled: triggerProps.disabled })
+            : children
+        }
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onSubmit)}
+      />
+    )
+  }
 )
 
 /* -------------------------------------------------------------------------------------------------

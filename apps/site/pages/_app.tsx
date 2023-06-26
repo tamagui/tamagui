@@ -2,42 +2,34 @@ import '@tamagui/core/reset.css'
 
 // import '../lib/wdyr'
 import '../app.css'
-import '../public/fonts/fonts.css'
 
-import { Footer } from '@components/Footer'
-import { ThemeTint, setTintFamily } from '@tamagui/logo'
-import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
+import { GetLayout } from '@lib/getDefaultLayout'
+import {
+  ColorScheme,
+  NextThemeProvider,
+  useRootTheme,
+  useThemeSetting,
+} from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import NextHead from 'next/head'
 import { useRouter } from 'next/router'
-import Script from 'next/script'
-import { Suspense, startTransition, useMemo } from 'react'
-import { TamaguiProvider, isClient } from 'tamagui'
+import { useEffect, useMemo, useState } from 'react'
+import { TamaguiProvider } from 'tamagui'
 
-import { Header } from '../components/Header'
-import { SearchProvider } from '../components/Search'
+import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
+
+if (process.env.NODE_ENV === 'production') {
+  require('../public/tamagui.css')
+}
 
 // for auto mode
 // // santa mode
 // if (isClient) {
 //   const goXmas = setTimeout(() => {
 //     setTintFamily('xmas')
-//     window.removeEventListener('scroll', onScroll)
 //   }, 2500)
-
-//   // dont activate santa mode if they scroll down, a bit confusing right?
-//   const onScroll = (e: Event) => {
-//     if ((document.scrollingElement?.scrollTop || 0) > 100) {
-//       clearTimeout(goXmas)
-//       window.removeEventListener('scroll', onScroll)
-//     }
-//   }
-
-//   window.addEventListener('scroll', onScroll)
-// }
 
 // prevent next.js from prefetching stuff
 if (typeof navigator !== 'undefined') {
@@ -54,7 +46,53 @@ if (typeof navigator !== 'undefined') {
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
-  // useMemo below to avoid re-render on dark/light change
+  // set up NextThemeProvider above AppContents so it can useThemeSetting
+
+  return (
+    <>
+      <NextThemeProvider
+        onChangeTheme={(next) => {
+          setTheme(next as any)
+        }}
+      >
+        <AppContents {...props} theme={theme} setTheme={setTheme} />
+      </NextThemeProvider>
+    </>
+  )
+}
+
+function AppContents(
+  props: AppProps & {
+    theme: ColorScheme
+    setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
+  }
+) {
+  const [theme, setTheme] = useRootTheme()
+  const [didInteract, setDidInteract] = useState(false)
+  const themeSetting = useThemeSetting()!
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.pathname === '/takeout' && theme !== 'dark') {
+      themeSetting.set('dark')
+      setTheme('dark')
+    }
+  }, [router.pathname, theme])
+
+  useEffect(() => {
+    const onDown = () => {
+      setDidInteract(true)
+      unlisten()
+    }
+    const unlisten = () => {
+      document.removeEventListener('mousedown', onDown, { capture: true })
+      document.removeEventListener('keydown', onDown, { capture: true })
+    }
+    document.addEventListener('mousedown', onDown, { capture: true })
+    document.addEventListener('keydown', onDown, { capture: true })
+    return unlisten
+  }, [])
+
   return (
     <>
       <script
@@ -66,11 +104,18 @@ export default function App(props: AppProps) {
         }}
       />
 
+      {/* this will lazy load the font for /studio and /takeout pages */}
+      {didInteract && (
+        <>
+          <LoadInter900 />
+          <LoadGlusp />
+          <LoadMunro />
+        </>
+      )}
+
       <NextThemeProvider
         onChangeTheme={(next) => {
-          startTransition(() => {
-            setTheme(next)
-          })
+          setTheme(next as any)
         }}
       >
         <TamaguiProvider
@@ -79,13 +124,7 @@ export default function App(props: AppProps) {
           disableRootThemeClass
           defaultTheme={theme}
         >
-          <SearchProvider>
-            <Suspense fallback={null}>
-              {useMemo(() => {
-                return <ContentInner {...props} />
-              }, [props])}
-            </Suspense>
-          </SearchProvider>
+          <ContentInner {...props} />
         </TamaguiProvider>
       </NextThemeProvider>
     </>
@@ -93,24 +132,11 @@ export default function App(props: AppProps) {
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
+  const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
   const router = useRouter()
-  const isResponsiveDemo = router.pathname.startsWith('/responsive-demo')
-  const isHome = router.pathname === '/'
-  const isDocs = router.pathname.startsWith('/docs')
-  const isBlog = router.pathname.startsWith('/blog')
-  const isStudio = router.pathname.startsWith('/studio')
-  const isDemo = router.pathname.startsWith('/responsive-demo')
-  const isTest = router.pathname.startsWith('/test')
-  // @ts-ignore
-  const getLayout = Component.getLayout || ((page) => page)
+  const path = router.asPath
 
-  const disableNew = isHome || isBlog
-
-  return getLayout(
-    <>
-      {!isTest && !isResponsiveDemo && <Header disableNew={isHome || isBlog} />}
-      <Component {...pageProps} />
-      {!isTest && !isDocs && !isDemo && !isStudio && <Footer />}
-    </>
-  )
+  return useMemo(() => {
+    return getLayout(<Component {...pageProps} />, pageProps, path)
+  }, [pageProps])
 }

@@ -1,9 +1,9 @@
 import { simpleHash } from '@tamagui/helpers'
 
-import { THEME_CLASSNAME_PREFIX } from '../constants/constants.js'
-import { Variable, variableToString } from '../createVariable.js'
-import type { CreateTamaguiProps, ThemeParsed } from '../types.js'
-import { tokensValueToVariable } from './registerCSSVariable.js'
+import { THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import { Variable, variableToString } from '../createVariable'
+import type { CreateTamaguiProps, ThemeParsed } from '../types'
+import { tokensValueToVariable } from './registerCSSVariable'
 
 export function getThemeCSSRules({
   config,
@@ -28,9 +28,7 @@ export function getThemeCSSRules({
   for (const themeKey in theme) {
     const variable = theme[themeKey] as Variable
     let value: any = null
-    // if (varToValMap) {
-    //   varToValMap[variable.variable] = variable.val
-    // }
+
     if (!tokensValueToVariable.has(variable.val)) {
       value = variable.val
     } else {
@@ -41,20 +39,18 @@ export function getThemeCSSRules({
   }
 
   const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-  const selectorsSet = new Set(
-    names.map((name) => {
-      return `${CNP}${name}`
-    })
-  )
+  const baseSelectors = names.map((name) => `${CNP}${name}`)
+  const selectorsSet = new Set(baseSelectors)
 
   // since we dont specify dark/light in classnames we have to do an awkward specificity war
   // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
   if (hasDarkLight) {
     for (const subName of names) {
       const isDark = themeName === 'dark' || subName.startsWith('dark_')
+      const isLight = themeName === 'light' || themeName.startsWith('light_')
       const maxDepth = config.maxDarkLightNesting ?? 3
 
-      if (!(isDark || subName.startsWith('light_'))) {
+      if (!(isDark || isLight)) {
         // neither light nor dark subtheme, just generate one selector with :root:root which
         // will override all :root light/dark selectors generated below
         selectorsSet.add(`:root:root ${CNP}${subName}`)
@@ -120,24 +116,48 @@ export function getThemeCSSRules({
   cssRuleSets.push(css)
 
   if (config.shouldAddPrefersColorThemes) {
-    const bgString = variableToString(theme.background)
-    const fgString = variableToString(theme.color)
-    const bodyRules = `body{background:${bgString};color:${fgString};}`
+    const bgString = theme.background
+      ? `background:${variableToString(theme.background)};`
+      : ''
+    const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
+
+    const bodyRules = `body{${bgString}${fgString}}`
     const isDark = themeName.startsWith('dark')
     const baseName = isDark ? 'dark' : 'light'
     const lessSpecificSelectors = selectors
       .map((x) => {
         if (x == darkSelector || x === lightSelector) return `:root`
+        if (
+          (isDark && x.startsWith(lightSelector)) ||
+          (!isDark && x.startsWith(darkSelector))
+        ) {
+          return
+        }
         return x.replace(/^\.t_(dark|light) /, '').trim()
       })
       .filter(Boolean)
       .join(', ')
+
     const themeRules = `${lessSpecificSelectors} {${vars}}`
     const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
   ${bodyRules}
   ${themeRules}
 }`
     cssRuleSets.push(prefersMediaSelectors)
+  }
+
+  if (config.selectionStyles) {
+    const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
+    const rules = config.selectionStyles(theme)
+    if (rules) {
+      const styles = Object.entries(rules)
+        .flatMap(([k, v]) =>
+          v ? `${k === 'backgroundColor' ? 'background' : k}:${variableToString(v)}` : []
+        )
+        .join(';')
+      const css = `${selectionSelectors} {${styles}}`
+      cssRuleSets.push(css)
+    }
   }
 
   return cssRuleSets

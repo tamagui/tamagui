@@ -1,13 +1,13 @@
 import * as Config from '@tamagui/config'
+import { addTheme, updateTheme } from '@tamagui/theme'
 import React, { useState } from 'react'
 import {
   Button,
   Square,
   Theme,
+  XStack,
   YStack,
-  addTheme,
   getVariableValue,
-  updateTheme,
   useForceUpdate,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
@@ -25,16 +25,19 @@ export function UpdateThemeDemo() {
       insertCSS: true,
       theme: {
         color: 'red',
+        color2: 'blue',
       },
     })
     setTheme('custom')
   }, [])
 
   return (
-    <YStack ai="center" space>
-      <Theme name={theme ?? null}>
-        <Square borderRadius="$8" size={100} backgroundColor="$color" />
-      </Theme>
+    <YStack alignItems="center" space>
+      <XStack gap={'$5'}>
+        <Theme name={theme ?? null}>
+          <Square borderRadius="$8" size={100} backgroundColor="$color" />
+        </Theme>
+      </XStack>
 
       <Button
         onPress={() => {

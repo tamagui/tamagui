@@ -1,4 +1,4 @@
-import type { Text as TextView } from 'react-native';
-import { TextProps, TextPropsBase } from '../types.js';
-export declare const Text: import("../types.js").TamaguiComponent<TextProps, TextView, TextPropsBase, {}>;
+/// <reference types="react" />
+import { TextProps, TextPropsBase } from '../types';
+export declare const Text: import("../types").TamaguiComponent<TextProps, import("react").Component<TextProps, {}, any>, TextPropsBase, {}>;
 //# sourceMappingURL=Text.d.ts.map

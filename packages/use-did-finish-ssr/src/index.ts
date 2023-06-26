@@ -17,3 +17,22 @@ export function useDidFinishSSR() {
 
   return did
 }
+
+type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
+
+export function useClientValue<Value extends any>(
+  value?: Value
+): FunctionOrValue<Value> | undefined {
+  if (isServer || isRSC) {
+    return undefined
+  }
+
+  const [v, setV] = useState<FunctionOrValue<Value> | undefined>(undefined)
+
+  useIsomorphicLayoutEffect(() => {
+    // @ts-expect-error (this works with a function)
+    setV(value)
+  }, [])
+
+  return v
+}

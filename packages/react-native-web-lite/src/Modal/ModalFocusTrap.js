@@ -10,7 +10,7 @@
 import * as React from 'react'
 import { StyleSheet, UIManager, canUseDOM } from 'react-native-web-internals'
 
-import createElement from '../createElement/index.js'
+import createElement from '../createElement/index'
 import View from '../View'
 
 /**

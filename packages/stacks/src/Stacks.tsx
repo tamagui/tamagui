@@ -1,6 +1,6 @@
 import { GetProps, Stack, styled } from '@tamagui/core'
 
-import { getElevation } from './getElevation.js'
+import { getElevation } from './getElevation'
 
 export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = YStackProps
@@ -25,20 +25,17 @@ const variants = {
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
-  name: 'YStack',
   variants,
 })
 
 export const XStack = styled(Stack, {
   flexDirection: 'row',
-  name: 'XStack',
   variants,
 })
 
 export const ZStack = styled(
   YStack,
   {
-    name: 'ZStack',
     position: 'relative',
   },
   {

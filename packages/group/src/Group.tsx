@@ -11,7 +11,7 @@ import {
   mergeProps,
   spacedChildren,
   styled,
-  useMediaPropsActive,
+  useProps,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
@@ -64,8 +64,11 @@ export const GroupFrame = styled(ThemeableStack, {
 })
 
 export type GroupProps = GetProps<typeof GroupFrame> & {
+  /**
+   * @deprecated use `orientation` instead
+   */
   axis?: 'horizontal' | 'vertical'
-
+  orientation?: 'horizontal' | 'vertical'
   scrollable?: boolean
   /**
    * @default false
@@ -82,7 +85,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
     forwardRef<TamaguiElement, ScopedProps<GroupProps>>((props, ref) => {
-      const activeProps = useMediaPropsActive(props)
+      const activeProps = useProps(props)
 
       const {
         __scopeGroup,
@@ -93,6 +96,7 @@ function createGroup(verticalDefault: boolean) {
         separator,
         scrollable,
         axis = verticalDefault ? 'vertical' : 'horizontal',
+        orientation = axis,
         disabled: disabledProp,
         disablePassBorderRadius: disablePassBorderRadiusProp,
         borderRadius,
@@ -100,11 +104,11 @@ function createGroup(verticalDefault: boolean) {
         ...restProps
       } = getExpandedShorthands(activeProps)
 
-      const vertical = axis === 'vertical'
+      const vertical = orientation === 'vertical'
       const [itemChildrenCount, setItemChildrenCount] = useControllableState({
         defaultProp: forceUseItem ? 1 : 0,
       })
-      const isUsingItems = true // itemChildrenCount > 0
+      const isUsingItems = itemChildrenCount > 0
 
       // 1 off given border to adjust for border radius? This should be user controllable
       const radius =
@@ -114,10 +118,9 @@ function createGroup(verticalDefault: boolean) {
       const hasRadius = radius !== undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? !hasRadius
 
-      if (!isUsingItems) console.log('screw up!')
       const childrenArray = Children.toArray(childrenProp)
       const children = isUsingItems
-        ? childrenProp
+        ? Children.toArray(childrenProp).filter(isValidElement)
         : childrenArray.map((child, i) => {
             if (!isValidElement(child)) {
               return child
@@ -149,6 +152,7 @@ function createGroup(verticalDefault: boolean) {
         spacedChildren({
           direction: spaceDirection,
           separator,
+          // @ts-ignore
           space,
           children,
         })
@@ -166,7 +170,7 @@ function createGroup(verticalDefault: boolean) {
       return (
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
-          vertical={axis === 'vertical'}
+          vertical={orientation === 'vertical'}
           radius={radius}
           disabled={disabledProp}
           onItemMount={onItemMount}
@@ -176,11 +180,11 @@ function createGroup(verticalDefault: boolean) {
           <GroupFrame
             ref={ref}
             size={size}
-            flexDirection={axis === 'horizontal' ? 'row' : 'column'}
+            flexDirection={orientation === 'horizontal' ? 'row' : 'column'}
             borderRadius={borderRadius}
             {...restProps}
           >
-            {wrapScroll({ ...activeProps, axis }, indexedChildren)}
+            {wrapScroll({ ...activeProps, orientation }, indexedChildren)}
           </GroupFrame>
         </GroupProvider>
       )
@@ -259,16 +263,16 @@ export const YGroup = Group
 export const XGroup = createGroup(false)
 
 const wrapScroll = (
-  { scrollable, axis, showScrollIndicator = false }: GroupProps,
+  { scrollable, orientation, showScrollIndicator = false }: GroupProps,
   children: any
 ) => {
   if (scrollable)
     return (
       <ScrollView
-        {...(axis === 'vertical' && {
+        {...(orientation === 'vertical' && {
           showsVerticalScrollIndicator: showScrollIndicator,
         })}
-        {...(axis === 'horizontal' && {
+        {...(orientation === 'horizontal' && {
           horizontal: true,
           showsHorizontalScrollIndicator: showScrollIndicator,
         })}

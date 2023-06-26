@@ -1,7 +1,12 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Stack, composeEventHandlers, isWeb, useEvent, withStaticProperties } from '@tamagui/core'
-import { useId } from '@tamagui/core'
+import {
+  Stack,
+  composeEventHandlers,
+  isWeb,
+  useEvent,
+  withStaticProperties,
+} from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -121,7 +126,10 @@ const RovingFocusGroupImpl = React.forwardRef<
 
           isClickFocusRef.current = false
         })}
-        onBlur={composeEventHandlers((props as any).onBlur, () => setIsTabbingBackOut(false))}
+        // @ts-ignore
+        onBlur={composeEventHandlers((props as any).onBlur, () =>
+          setIsTabbingBackOut(false)
+        )}
       />
     </RovingFocusProvider>
   )
@@ -152,7 +160,7 @@ const RovingFocusGroupItem = React.forwardRef<
     tabStopId,
     ...itemProps
   } = props
-  const autoId = useId()
+  const autoId = React.useId()
   const id = tabStopId || autoId
   const context = useRovingFocusContext(ITEM_NAME, __scopeRovingFocusGroup)
   const isCurrentTabStop = context.currentTabStopId === id

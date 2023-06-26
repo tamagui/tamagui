@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { ResolvedOptions } from './types.js';
-export declare function generateTypes(options: ResolvedOptions): Promise<void>;
-export declare function getTypes(options: ResolvedOptions): Promise<{
+import { CLIResolvedOptions } from '@tamagui/types';
+export declare function generateTypes(options: CLIResolvedOptions): Promise<void>;
+export declare function getTypes(options: CLIResolvedOptions): Promise<{
     [k: string]: (string | undefined)[][];
 }>;
 //# sourceMappingURL=generate.d.ts.map

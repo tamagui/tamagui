@@ -1,5 +1,5 @@
 import { FloatingFocusManager } from '@floating-ui/react'
-import { TamaguiElement, isWeb } from '@tamagui/core'
+import { TamaguiElement, composeRefs, isWeb } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -43,6 +43,14 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
+    const composedRefs = composeRefs(
+      forwardedRef,
+      context.floatingContext?.refs.setFloating
+    )
+    if (context.shouldRenderWebNative) {
+      return <>{children}</>
+    }
+
     if (breakpointActive || !isWeb) {
       return (
         <PortalItem hostName={`${context.scopeKey}SheetContents`}>
@@ -56,7 +64,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     }
 
     if (!context.open) {
-      return children
+      return <>{children}</>
     }
 
     const {
@@ -79,7 +87,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             // @ts-ignore
             role="presentation"
             {...viewportProps}
-            ref={forwardedRef}
+            ref={composedRefs}
             {...floatingProps}
             {...restStyle}
             overflow={disableScroll ? undefined : overflow ?? 'scroll'}

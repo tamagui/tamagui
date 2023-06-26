@@ -16,8 +16,8 @@ import { forwardRef, memo, useMemo, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native-web-internals'
 import { useHover, useMergeRefs } from 'react-native-web-internals'
 
-import type { ViewProps } from '../View/index.js'
-import View from '../View/index.js'
+import type { ViewProps } from '../View/index'
+import View from '../View/index'
 
 type HoverEventsConfig = any
 
