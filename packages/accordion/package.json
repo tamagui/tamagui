@@ -19,6 +19,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/collapsible": "1.36.3",
     "@tamagui/collection": "1.36.3",
     "@tamagui/compose-refs": "1.36.3",
     "@tamagui/core": "1.36.3",
