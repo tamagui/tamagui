@@ -99,13 +99,19 @@ interface CollapsibleTriggerProps extends StackProps {
 
 const CollapsibleTriggerFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
-  hoverTheme: true,
-  focusTheme: true,
-  pressTheme: true,
-  padded: true,
-  backgrounded: true,
-  bordered: true,
-  cursor: 'pointer',
+  variants: {
+    unstyled: {
+      false: {
+        hoverTheme: true,
+        focusTheme: true,
+        pressTheme: true,
+        padded: true,
+        backgrounded: true,
+        bordered: true,
+        cursor: 'pointer',
+      },
+    },
+  },
 })
 
 const CollapsibleTrigger = React.forwardRef<
