@@ -196,7 +196,7 @@ export function isValidMediaCall(
   init: t.Expression,
   sourcePath: string
 ) {
-  if (!t.isCallExpression(init)) return false
+  if (!init || !t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false
   // TODO could support renaming useMedia by looking up import first
   if (init.callee.name !== 'useMedia') return false

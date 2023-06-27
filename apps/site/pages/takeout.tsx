@@ -5,18 +5,17 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
-import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ArrowLeft, ArrowRight, Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
+import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
-import { NextSeo, ProductJsonLd } from 'next-seo'
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import Image, { ImageProps } from 'next/image'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
 import Stripe from 'stripe'
 import {
@@ -48,6 +47,8 @@ import {
   TabsProps,
   TabsTabProps,
   Theme,
+  ThemeName,
+  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -64,6 +65,66 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadGlusp, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
+const androidImages = [
+  require('public/takeout/starter-screenshots/android-001.jpg'),
+  require('public/takeout/starter-screenshots/android-002.jpg'),
+  require('public/takeout/starter-screenshots/android-003.jpg'),
+  require('public/takeout/starter-screenshots/android-004.jpg'),
+  require('public/takeout/starter-screenshots/android-005.jpg'),
+  require('public/takeout/starter-screenshots/android-006.jpg'),
+  require('public/takeout/starter-screenshots/android-007.jpg'),
+  require('public/takeout/starter-screenshots/android-008.jpg'),
+  require('public/takeout/starter-screenshots/android-009.jpg'),
+  require('public/takeout/starter-screenshots/android-010.jpg'),
+  require('public/takeout/starter-screenshots/android-011.jpg'),
+  require('public/takeout/starter-screenshots/android-012.jpg'),
+  require('public/takeout/starter-screenshots/android-013.jpg'),
+  require('public/takeout/starter-screenshots/android-014.jpg'),
+]
+
+const iosImages = [
+  require('public/takeout/starter-screenshots/ios-001.jpg'),
+  require('public/takeout/starter-screenshots/ios-002.jpg'),
+  require('public/takeout/starter-screenshots/ios-003.jpg'),
+  require('public/takeout/starter-screenshots/ios-004.jpg'),
+  require('public/takeout/starter-screenshots/ios-005.jpg'),
+  require('public/takeout/starter-screenshots/ios-006.jpg'),
+  require('public/takeout/starter-screenshots/ios-007.jpg'),
+  require('public/takeout/starter-screenshots/ios-008.jpg'),
+  require('public/takeout/starter-screenshots/ios-009.jpg'),
+  require('public/takeout/starter-screenshots/ios-010.jpg'),
+  require('public/takeout/starter-screenshots/ios-011.jpg'),
+  require('public/takeout/starter-screenshots/ios-012.jpg'),
+  require('public/takeout/starter-screenshots/ios-013.jpg'),
+  require('public/takeout/starter-screenshots/ios-014.jpg'),
+]
+
+const webImages = [
+  require('public/takeout/starter-screenshots/web-001.jpg'),
+  require('public/takeout/starter-screenshots/web-002.jpg'),
+  require('public/takeout/starter-screenshots/web-003.jpg'),
+  require('public/takeout/starter-screenshots/web-004.jpg'),
+  require('public/takeout/starter-screenshots/web-005.jpg'),
+  require('public/takeout/starter-screenshots/web-006.jpg'),
+  require('public/takeout/starter-screenshots/web-007.jpg'),
+  require('public/takeout/starter-screenshots/web-008.jpg'),
+  require('public/takeout/starter-screenshots/web-009.jpg'),
+]
+
+const takeoutImages = [
+  ...androidImages.map((src, idx) => ({
+    src,
+    alt: `Android screenshot #${idx + 1}`,
+  })),
+  ...iosImages.map((src, idx) => ({
+    src,
+    alt: `iOS screenshot #${idx + 1}`,
+  })),
+  ...webImages.map((src, idx) => ({
+    src,
+    alt: `Web screenshot #${idx + 1}`,
+  })),
+]
 const points = {
   monorepo: [
     'Well-isolated configuration.',
@@ -409,58 +470,43 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </YStack>
       </YStack>
 
-      <XStack my={21} gap={125} f={1} jc="space-between" className="mix-blend">
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-module-21.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+      <XStack my={21} gap={64} f={1} jc="space-between" className="mix-blend">
+        <FeatureIcon
+          themeIndex={0}
+          title="Monorepo"
+          icon="retro-icons/coding-apps-websites-module-21.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={1}
+          title="Design"
+          icon="retro-icons/design-color-painting-palette-25.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-database-60.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={2}
+          title="Deploy"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-bucket-brush-63.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={4}
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
+        />
 
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-palette-sample-26.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
+        <FeatureIcon
+          themeIndex={5}
+          title="Assets"
+          icon="retro-icons/coding-apps-websites-plugin-33.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={6}
+          title="& More"
+          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+        />
       </XStack>
-
       <YStack
         position="absolute"
         top={360}
@@ -594,7 +640,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }} zi={-1}>
             <XStack
               f={1}
               p="$10"
@@ -907,55 +953,22 @@ export default function TakeoutPage({
                   Gallery
                 </Paragraph>
 
+                <ImageGallery />
+
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
+                  {takeoutImages.map((image, index) => (
+                    <YStack pos="relative" overflow="hidden">
+                      <TakeoutImage
+                        key={index}
+                        alt={image.alt}
+                        src={image.src}
+                        style={{ objectFit: 'cover' }}
+                        width={200}
+                        height={200}
+                        index={index}
+                      />
+                    </YStack>
+                  ))}
                 </XStack>
 
                 <Spacer />
@@ -1042,19 +1055,26 @@ export default function TakeoutPage({
   )
 }
 
-const TakeoutImage = (props: any) => (
-  <XStack
-    animation="quick"
-    br="$10"
-    ov="hidden"
-    elevation="$2"
-    hoverStyle={{ scale: 1.025 }}
-    pressStyle={{ scale: 0.975 }}
-    cursor="pointer"
-  >
-    <Image {...props} />
-  </XStack>
-)
+const TakeoutImage = (props: ImageProps & { index: number }) => {
+  const store = useTakeoutStore()
+  return (
+    <XStack
+      onPress={() => {
+        store.galleryOpen = true
+        store.galleryImageIdx = props.index
+      }}
+      animation="quick"
+      br="$10"
+      ov="hidden"
+      elevation="$2"
+      hoverStyle={{ scale: 1.025 }}
+      pressStyle={{ scale: 0.975 }}
+      cursor="pointer"
+    >
+      <Image {...props} />
+    </XStack>
+  )
+}
 
 const Bullet = ({
   size = '$6',
@@ -1148,6 +1168,17 @@ class TakeoutStore extends Store {
   showPurchase = false
   showFaq = false
   showAgreement = false
+  galleryOpen = false
+  galleryImageIdx = 0
+  galleryDirection = 0
+  paginateGallery(newDirection: number) {
+    this.galleryImageIdx = wrap(
+      0,
+      takeoutImages.length,
+      this.galleryImageIdx + newDirection
+    )
+    this.galleryDirection = newDirection
+  }
 }
 
 function formatPrice(amount: number, currency: string) {
@@ -2305,4 +2336,185 @@ const DiscountText = ({
       </YStack>
     </ThemeTint>
   )
+}
+
+const FeatureIcon = ({
+  themeIndex,
+  title,
+  icon,
+}: {
+  themeIndex: number
+  icon: string
+  title: string
+}) => {
+  const Tint = useTint()
+  const theme = Tint.tints[themeIndex] as ThemeName
+  const active = Tint.tint === theme
+
+  return (
+    <YStack>
+      <Theme name={theme}>
+        <TooltipSimple label={title} delay={{ open: 100 }}>
+          <IconFrame
+            hoverStyle={{
+              scale: 1.2,
+            }}
+            scale={1}
+            animation="quick"
+            onMouseEnter={() => Tint.setTintIndex(themeIndex)}
+            backgroundColor={active ? '$color6' : '$color1'}
+          >
+            <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
+          </IconFrame>
+        </TooltipSimple>
+      </Theme>
+    </YStack>
+  )
+}
+const ImageGallery = () => {
+  const store = useTakeoutStore()
+
+  return (
+    <Dialog
+      modal
+      open={store.galleryOpen}
+      onOpenChange={(open) => {
+        store.galleryOpen = open
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          opacity={0.1}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+
+        <Dialog.Content
+          bordered
+          elevate
+          key="content"
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ x: 0, opacity: 0 }}
+          exitStyle={{ x: 0, opacity: 0 }}
+          space
+        >
+          <ImagesCarousel />
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$4"
+                right="$6"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog>
+  )
+}
+
+const YStackEnterable = styled(YStack, {
+  variants: {
+    isLeft: { true: { x: -300, opacity: 0 } },
+    isRight: { true: { x: 300, opacity: 0 } },
+  } as const,
+})
+
+const ImagesCarousel = () => {
+  const store = useTakeoutStore()
+
+  useEffect(() => {
+    const eventHandler = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowLeft') {
+        store.paginateGallery(-1)
+      } else if (event.code === 'ArrowRight') {
+        store.paginateGallery(1)
+      }
+    }
+
+    document.addEventListener('keydown', eventHandler)
+    return () => {
+      document.removeEventListener('keydown', eventHandler)
+    }
+  }, [store.galleryOpen])
+
+  const enterVariant =
+    store.galleryDirection === 1 || store.galleryDirection === 0 ? 'isRight' : 'isLeft'
+  const exitVariant = store.galleryDirection === 1 ? 'isLeft' : 'isRight'
+
+  const currentImage = takeoutImages[store.galleryImageIdx]
+  return (
+    <XStack
+      overflow="hidden"
+      backgroundColor="#00000000"
+      position="relative"
+      height="100vh"
+      width="100vw"
+      alignItems="center"
+    >
+      <AnimatePresence
+        enterVariant={enterVariant}
+        exitVariant={exitVariant}
+        exitBeforeEnter
+      >
+        <YStackEnterable
+          key={store.galleryImageIdx}
+          animation="100ms"
+          x={0}
+          opacity={1}
+          width="100vw"
+          height="100vh"
+        >
+          <Image
+            key={store.galleryImageIdx}
+            src={currentImage.src}
+            alt={currentImage.alt}
+            fill
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+        </YStackEnterable>
+      </AnimatePresence>
+
+      <Button
+        accessibilityLabel="Carousel left"
+        icon={ArrowLeft}
+        size="$5"
+        position="absolute"
+        left="$4"
+        circular
+        elevate
+        onPress={() => store.paginateGallery(-1)}
+      />
+      <Button
+        accessibilityLabel="Carousel right"
+        icon={ArrowRight}
+        size="$5"
+        position="absolute"
+        right="$4"
+        circular
+        elevate
+        onPress={() => store.paginateGallery(1)}
+      />
+    </XStack>
+  )
+}
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }

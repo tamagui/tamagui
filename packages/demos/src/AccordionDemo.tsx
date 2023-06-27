@@ -4,7 +4,7 @@ import { Accordion, Paragraph, Square, useAccordion } from 'tamagui'
 export function AccordionDemo() {
   const { control, selecteds } = useAccordion()
   return (
-    <Accordion control={control} overflow="hidden" width="$20" type="single">
+    <Accordion control={control} overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
         <Accordion.Trigger
           focusStyle={{

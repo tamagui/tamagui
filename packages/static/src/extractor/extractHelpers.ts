@@ -109,7 +109,7 @@ export function isValidThemeHook(
   if (!binding?.path) return false
   if (!binding.path.isVariableDeclarator()) return false
   const init = binding.path.node.init
-  if (!t.isCallExpression(init)) return false
+  if (!init || !t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false
   // TODO could support renaming useTheme by looking up import first
   if (init.callee.name !== 'useTheme') return false
