@@ -116,7 +116,7 @@
     "esbuild-loader": "^3.0.1",
     "next-remote-watch": "^2.0.0",
     "react-refresh": "^0.14.0",
-    "supabase": "^1.64.8",
+    "supabase": "^1.74.0",
     "tamagui-loader": "1.36.3",
     "webpack-stats-plugin": "^1.1.0"
   }

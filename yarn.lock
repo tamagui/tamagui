@@ -5873,7 +5873,7 @@ __metadata:
     seamless-scroll-polyfill: ^1.2.3
     sharp: ^0.32.0
     stripe: ^9.1.0
-    supabase: ^1.64.8
+    supabase: ^1.74.0
     swr: ^2.1.5
     tamagui: 1.36.3
     tamagui-loader: 1.36.3
@@ -22360,16 +22360,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supabase@npm:^1.64.8":
-  version: 1.66.0
-  resolution: "supabase@npm:1.66.0"
+"supabase@npm:^1.74.0":
+  version: 1.75.0
+  resolution: "supabase@npm:1.75.0"
   dependencies:
     bin-links: ^4.0.1
     node-fetch: ^3.2.10
     tar: 6.1.15
   bin:
     supabase: bin/supabase
-  checksum: 649d892ca10807e890b6362faedc620de49f440256ce2d60686174aeb2e4bc28fd6a104c5206475e49f02075f8cd2d0621890734dac3dfec738c800b6e9ac9a4
+  checksum: 3f83182fa73375c48cc30b8e287fe6f88e40311a203b1baca499902b7825818850445c72cbe55a02f6ae9af0d329078fb4eb9e226bc887ca8540987607b8ebf1
   languageName: node
   linkType: hard
 
