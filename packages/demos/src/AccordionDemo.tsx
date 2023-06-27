@@ -10,13 +10,7 @@ export function AccordionDemo() {
   return (
     <Accordion control={control} overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
-        <Accordion.Trigger
-          focusStyle={{
-            borderColor: '#fdfdfd',
-          }}
-          flexDirection="row"
-          justifyContent="space-between"
-        >
+        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
           {({ open }) => (
             <>
               <Paragraph size="$5">1. Take a cold shower</Paragraph>
@@ -35,13 +29,7 @@ export function AccordionDemo() {
       </Accordion.Item>
 
       <Accordion.Item value="a2">
-        <Accordion.Trigger
-          focusStyle={{
-            borderColor: '#fdfdfd',
-          }}
-          flexDirection="row"
-          justifyContent="space-between"
-        >
+        <Accordion.Trigger flexDirection="row" justifyContent="space-between">
           <>
             <Paragraph size="$5">2. Eat 4 eggs</Paragraph>
             <Square
