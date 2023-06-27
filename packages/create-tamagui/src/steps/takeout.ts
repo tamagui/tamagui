@@ -1,5 +1,7 @@
 import { execSync } from 'child_process'
+import { existsSync, readFileSync, readSync, renameSync } from 'fs'
 import fs from 'fs/promises'
+import path from 'path'
 
 import chalk from 'chalk'
 import prompts from 'prompts'
@@ -13,7 +15,7 @@ const useYarn = packageManager === 'yarn'
 const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
-const main: ExtraSteps = async ({ isFullClone, projectName }) => {
+const main: ExtraSteps = async ({ isFullClone, projectName, projectPath }) => {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`
 ${tamaguiRainbowAsciiArt
@@ -56,15 +58,26 @@ ${takeoutAsciiArt}
             'Do you want us to add the local env variables for you? This will create a file called .env.local.',
           initial: true,
         })
+
         if (setUpSupabaseEnv) {
-          await fs.writeFile(
-            './.env.local',
-            `NEXT_PUBLIC_SUPABASE_PROJECT_ID=default
-            NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
-            NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
-            SUPABASE_SERVICE_ROLE=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
-            `
-          )
+          const envs = getEnvFromSupabaseStatus(execSync('yarn supa status').toString())
+          const newEnvContent = Object.entries(envs)
+            .map(([key, value]) => `${key}=${value}`)
+            .join('\n')
+
+          if (existsSync(path.join(projectPath, '.env.local'))) {
+            if (
+              readFileSync(path.join(projectPath, '.env.local')).toString() !==
+              newEnvContent
+            ) {
+              renameSync(
+                path.join(projectPath, '.env.local'),
+                path.join(projectPath, `.env.local.old-${Number(new Date())}`)
+              )
+            }
+          }
+
+          await fs.writeFile(path.join(projectPath, './.env.local'), newEnvContent)
         }
       }
     }
@@ -188,5 +201,16 @@ async function linkSupabase() {
       )
       return false
     }
+  }
+}
+
+function getEnvFromSupabaseStatus(status: string) {
+  return {
+    NEXT_PUBLIC_SUPABASE_URL: status.match(/API URL: (.*)/)?.[1],
+    NEXT_PUBLIC_SUPABASE_GRAPHQL_URL: status.match(/GraphQL URL: (.*)/)?.[1],
+    SUPABASE_DB_URL: status.match(/DB URL: (.*)/)?.[1],
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: status.match(/anon key: (.*)/)?.[1],
+    SUPABASE_SERVICE_ROLE: status.match(/service_role key: (.*)/)?.[1],
+    SUPABASE_JWT_SECRET: status.match(/JWT secret: (.*)/)?.[1],
   }
 }
