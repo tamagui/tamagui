@@ -55,11 +55,7 @@ function Demo({
   ...props
 }: TooltipProps & { Icon?: any; follow: boolean }) {
   return (
-    <Tooltip
-      followMouse
-      // followMouse={follow}
-      {...props}
-    >
+    <Tooltip offset={{ mainAxis: 10 }} followMouse={follow} {...props}>
       <Tooltip.Trigger>
         <Button icon={Icon} circular />
       </Tooltip.Trigger>

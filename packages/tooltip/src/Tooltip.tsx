@@ -139,11 +139,6 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       open,
       onOpenChange,
     })
-    const clientPoint = useClientPoint(floating.context, {
-      enabled: followMouse,
-    })
-
-    console.log('clientPoint', clientPoint, followMouse)
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
       useHover(floating.context, { delay, restMs }),
@@ -151,7 +146,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       useRole(floating.context, { role: 'tooltip' }),
       useDismiss(floating.context),
       useDelayGroup(floating.context, { id }),
-      clientPoint,
+      useClientPoint(floating.context, {
+        enabled: followMouse,
+      }),
     ])
 
     return {
