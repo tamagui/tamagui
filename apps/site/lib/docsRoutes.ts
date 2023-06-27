@@ -114,6 +114,7 @@ export const docsRoutes = [
   {
     label: 'Content',
     pages: [
+      { title: 'Accordion', route: '/docs/components/accordion' },
       { title: 'Avatar', route: '/docs/components/avatar' },
       { title: 'Card', route: '/docs/components/card' },
       { title: 'Image', route: '/docs/components/image' },

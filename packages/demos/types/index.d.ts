@@ -45,4 +45,5 @@ export * from './TabsDemo';
 export * from './TabsAdvancedDemo';
 export * from './ToggleGroupDemo';
 export * from './useOnIntersecting';
+export * from './AccordionDemo';
 //# sourceMappingURL=index.d.ts.map
