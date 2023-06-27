@@ -1,6 +1,4 @@
-import { AccordionDemo } from '@tamagui/demos'
-import { Moon } from '@tamagui/lucide-icons'
-import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagui'
+import { YStack } from 'tamagui'
 
 // TODO this is a great test: media + animation + space (test without animation too)
 // <Stack
@@ -22,5 +20,5 @@ import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagu
 //     </Stack>
 
 export const Sandbox = () => {
-  return <AccordionDemo />
+  return <YStack backgroundColor="red" />
 }
