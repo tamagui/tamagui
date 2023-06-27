@@ -1,22 +1,33 @@
-import { createCollapsibleScope } from '@tamagui/collapsible'
-import { Collapsible } from '@tamagui/collapsible'
+import { Collapsible, createCollapsibleScope } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import {
   Stack,
   composeEventHandlers,
   useComposedRefs,
   withStaticProperties,
-} from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
+} from '@tamagui/web'
 import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
 import { YStack } from '@tamagui/stacks'
+import { H1, H3 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
-import { H1, H3 } from 'tamagui'
 
 type Direction = 'ltr' | 'rtl'
 
+function useAccordion() {
+  const [selected, setSelected] = React.useState<string | string[]>([])
+
+  const control = React.useCallback((value: string | string[]) => {
+    setSelected(value)
+  }, [])
+
+  return {
+    selected,
+    control,
+  }
+}
 /* -------------------------------------------------------------------------------------------------
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
@@ -48,7 +59,7 @@ interface AccordionMultipleProps extends AccordionImplMultipleProps {
   type: 'multiple'
 }
 
-const _Accordion = React.forwardRef<
+const AccordionComponent = React.forwardRef<
   AccordionElement,
   AccordionSingleProps | AccordionMultipleProps
 >((props: ScopedProps<AccordionSingleProps | AccordionMultipleProps>, forwardedRef) => {
@@ -67,9 +78,9 @@ const _Accordion = React.forwardRef<
   )
 })
 
-_Accordion.displayName = ACCORDION_NAME
+AccordionComponent.displayName = ACCORDION_NAME
 
-_Accordion.propTypes = {
+AccordionComponent.propTypes = {
   type(props) {
     const value = props.value || props.defaultValue
     if (props.type && !['single', 'multiple'].includes(props.type)) {
@@ -557,6 +568,7 @@ interface AccordionContentProps extends CollapsibleContentProps {}
  */
 const AccordionContent = React.forwardRef<AccordionContentElement, AccordionContentProps>(
   (props: ScopedProps<AccordionContentProps>, forwardedRef) => {
+    return null
     const { __scopeAccordion, ...contentProps } = props
     const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
     const itemContext = useAccordionItemContext(CONTENT_NAME, __scopeAccordion)
@@ -583,40 +595,20 @@ AccordionContent.displayName = CONTENT_NAME
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
-const Accordion = withStaticProperties(_Accordion, {
+const Accordion = withStaticProperties(AccordionComponent, {
   Trigger: AccordionTrigger,
   Header: AccordionHeader,
   Content: AccordionContent,
   Item: AccordionItem,
 })
 
-export function useAccordion() {
-  const [selected, setSelected] = React.useState<string | string[]>([])
-
-  const control = React.useCallback((value: string | string[]) => {
-    setSelected(value)
-  }, [])
-
-  return {
-    selected,
-    control,
-  }
-}
-
-export {
-  Accordion,
-  createAccordionScope,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionHeader,
-  AccordionContent,
-}
+export { Accordion, createAccordionScope, useAccordion }
 
 export type {
-  AccordionSingleProps,
-  AccordionMultipleProps,
-  AccordionItemProps,
-  AccordionHeaderProps,
-  AccordionTriggerProps,
   AccordionContentProps,
+  AccordionHeaderProps,
+  AccordionItemProps,
+  AccordionMultipleProps,
+  AccordionSingleProps,
+  AccordionTriggerProps,
 }
