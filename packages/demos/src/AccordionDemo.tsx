@@ -2,7 +2,11 @@ import { ChevronDown } from '@tamagui/lucide-icons'
 import { Accordion, Paragraph, Square, useAccordion } from 'tamagui'
 
 export function AccordionDemo() {
-  const { control, selecteds } = useAccordion()
+  // the useAccordion hook is optional for when you need more control
+  // if you leave it out, Accordion will work in "uncontrolled" mode
+  // where it handles all the state internally
+  const { control, selected } = useAccordion()
+
   return (
     <Accordion control={control} overflow="hidden" width="$20" type="multiple">
       <Accordion.Item value="a1">
@@ -15,9 +19,9 @@ export function AccordionDemo() {
         >
           {({ open }) => (
             <>
-              <Paragraph>1. Take a cold shower</Paragraph>
+              <Paragraph size="$5">1. Take a cold shower</Paragraph>
               <Square animation={'quick'} rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown />
+                <ChevronDown size="$1" />
               </Square>
             </>
           )}
@@ -39,12 +43,12 @@ export function AccordionDemo() {
           justifyContent="space-between"
         >
           <>
-            <Paragraph>2. Eat 4 eggs</Paragraph>
+            <Paragraph size="$5">2. Eat 4 eggs</Paragraph>
             <Square
               animation={'quick'}
-              rotate={selecteds.includes('a2') ? '180deg' : '0deg'}
+              rotate={selected.includes('a2') ? '180deg' : '0deg'}
             >
-              <ChevronDown />
+              <ChevronDown size="$1" />
             </Square>
           </>
         </Accordion.Trigger>

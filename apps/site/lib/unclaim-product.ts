@@ -29,6 +29,7 @@ export async function unclaimProduct(
 
   switch (data.claim_type) {
     case 'repo_access':
+      // @ts-ignore
       unclaimRepoAccess({ data, claim, user })
       break
     default:

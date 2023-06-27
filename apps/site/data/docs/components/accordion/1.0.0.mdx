@@ -6,7 +6,7 @@ component: Accordion
 package: accordion
 ---
 
-# Accordion
+# Accordion <Beta />
 
 <Description>
   A vertically stacked set of interactive headings that each reveal an associated section
@@ -44,7 +44,7 @@ Import all parts and piece them together.
 ```jsx
 import { Accordion } from 'tamagui';
 
-() => (
+export default () => (
   <Accordion>
     <Accordion.Item>
       <Accordion.Header>
@@ -53,7 +53,7 @@ import { Accordion } from 'tamagui';
       <Accordion.Content />
     </Accordion.Item>
   </Accordion>
-);
+)
 ```
 
 ## API Reference

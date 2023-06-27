@@ -273,9 +273,9 @@ interface AccordionImplProps extends PrimitiveDivProps {
   dir?: Direction
   /**
    *  The callback that fires when the state of the accordion changes. for use with `useAccordion`
-   * @param selecteds - The values of the accordion items whose contents are expanded.
+   * @param selected - The values of the accordion items whose contents are expanded.
    */
-  control?(selecteds: string[]): void
+  control?(selected: string[]): void
 }
 
 const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>(
@@ -591,14 +591,14 @@ const Accordion = withStaticProperties(_Accordion, {
 })
 
 export function useAccordion() {
-  const [selecteds, setSelecteds] = React.useState<string | string[]>([])
+  const [selected, setSelected] = React.useState<string | string[]>([])
 
   const control = React.useCallback((value: string | string[]) => {
-    setSelecteds(value)
+    setSelected(value)
   }, [])
 
   return {
-    selecteds,
+    selected,
     control,
   }
 }

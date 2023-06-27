@@ -106,6 +106,7 @@ export const docsRoutes = [
   {
     label: 'Organize',
     pages: [
+      { title: 'Accordion', route: '/docs/components/accordion' },
       { title: 'Group', route: '/docs/components/group' },
       { title: 'Tabs', route: '/docs/components/tabs' },
     ],
@@ -114,7 +115,6 @@ export const docsRoutes = [
   {
     label: 'Content',
     pages: [
-      { title: 'Accordion', route: '/docs/components/accordion' },
       { title: 'Avatar', route: '/docs/components/avatar' },
       { title: 'Card', route: '/docs/components/card' },
       { title: 'Image', route: '/docs/components/image' },
