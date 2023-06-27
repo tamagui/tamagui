@@ -3,10 +3,8 @@ import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import {
   Stack,
-  StackProps,
   composeEventHandlers,
   useComposedRefs,
-  useEvent,
   withStaticProperties,
 } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
@@ -137,6 +135,7 @@ const AccordionImplSingle = React.forwardRef<
   const {
     value: valueProp,
     defaultValue,
+    control,
     onValueChange = () => {},
     collapsible = false,
     ...accordionSingleProps
@@ -148,6 +147,12 @@ const AccordionImplSingle = React.forwardRef<
     defaultProp: defaultValue,
     onChange: onValueChange,
   })
+
+  React.useEffect(() => {
+    if (value && control) {
+      control([value])
+    }
+  }, [value])
 
   return (
     <AccordionValueProvider
@@ -194,16 +199,23 @@ const AccordionImplMultiple = React.forwardRef<
   const {
     value: valueProp,
     defaultValue,
+    control,
     onValueChange = () => {},
     ...accordionMultipleProps
   } = props
 
-  const [value = [], setValue] = useControllableState({
+  const [value, setValue] = useControllableState({
     prop: valueProp,
     //@ts-ignore
     defaultProp: defaultValue,
     onChange: onValueChange,
   })
+
+  React.useEffect(() => {
+    if (value && control) {
+      control(value)
+    }
+  }, [value])
 
   const handleItemOpen = React.useCallback(
     (itemValue: string) => setValue((prevValue = []) => [...prevValue, itemValue]),
@@ -219,7 +231,7 @@ const AccordionImplMultiple = React.forwardRef<
   return (
     <AccordionValueProvider
       scope={props.__scopeAccordion}
-      value={value}
+      value={value || []}
       onItemOpen={handleItemOpen}
       onItemClose={handleItemClose}
     >
@@ -259,6 +271,11 @@ interface AccordionImplProps extends PrimitiveDivProps {
    * The language read direction.
    */
   dir?: Direction
+  /**
+   *  The callback that fires when the state of the accordion changes. for use with `useAccordion`
+   * @param selecteds - The values of the accordion items whose contents are expanded.
+   */
+  control?(selecteds: string[]): void
 }
 
 const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>(
@@ -572,6 +589,19 @@ const Accordion = withStaticProperties(_Accordion, {
   Content: AccordionContent,
   Item: AccordionItem,
 })
+
+export function useAccordion() {
+  const [selecteds, setSelecteds] = React.useState<string | string[]>([])
+
+  const control = React.useCallback((value: string | string[]) => {
+    setSelecteds(value)
+  }, [])
+
+  return {
+    selecteds,
+    control,
+  }
+}
 
 export {
   Accordion,

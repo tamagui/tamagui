@@ -62,6 +62,11 @@ interface AccordionImplProps extends PrimitiveDivProps {
      * The language read direction.
      */
     dir?: Direction;
+    /**
+     *  The callback that fires when the state of the accordion changes. for use with `useAccordion`
+     * @param selecteds - The values of the accordion items whose contents are expanded.
+     */
+    control?(selecteds: string[]): void;
 }
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>;
 interface AccordionItemProps extends Omit<CollapsibleProps, 'open' | 'defaultOpen' | 'onOpenChange'> {
@@ -108,6 +113,10 @@ declare const Accordion: React.ForwardRefExoticComponent<(AccordionSingleProps |
     Header: React.ForwardRefExoticComponent<AccordionHeaderProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
     Content: React.ForwardRefExoticComponent<AccordionContentProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
     Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<import("tamagui").TamaguiElement>>;
+};
+export declare function useAccordion(): {
+    selecteds: string | string[];
+    control: (value: string | string[]) => void;
 };
 export { Accordion, createAccordionScope, AccordionItem, AccordionTrigger, AccordionHeader, AccordionContent, };
 export type { AccordionSingleProps, AccordionMultipleProps, AccordionItemProps, AccordionHeaderProps, AccordionTriggerProps, AccordionContentProps, };
