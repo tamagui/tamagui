@@ -14,6 +14,7 @@ interface CollapsibleTriggerProps extends StackProps {
     children: ReactNode | ((props: {
         open: boolean;
     }) => ReactNode);
+    unstyled?: boolean;
 }
 declare const CollapsibleTrigger: React.ForwardRefExoticComponent<CollapsibleTriggerProps & React.RefAttributes<TamaguiElement>>;
 interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
@@ -22,6 +23,7 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
      * controlling animation with React animation libraries.
      */
     forceMount?: true;
+    unstyled?: boolean;
 }
 declare const CollapsibleContent: React.ForwardRefExoticComponent<CollapsibleContentProps & React.RefAttributes<TamaguiElement>>;
 declare const Collapsible: React.ForwardRefExoticComponent<CollapsibleProps & React.RefAttributes<TamaguiElement>> & {

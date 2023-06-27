@@ -95,6 +95,7 @@ const TRIGGER_NAME = 'CollapsibleTrigger'
 type CollapsibleTriggerElement = TamaguiElement
 interface CollapsibleTriggerProps extends StackProps {
   children: ReactNode | ((props: { open: boolean }) => ReactNode)
+  unstyled?: boolean
 }
 
 const CollapsibleTriggerFrame = styled(ThemeableStack, {
@@ -118,7 +119,7 @@ const CollapsibleTrigger = React.forwardRef<
   CollapsibleTriggerElement,
   CollapsibleTriggerProps
 >((props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
-  const { __scopeCollapsible, children, ...triggerProps } = props
+  const { __scopeCollapsible, children, unstyled, ...triggerProps } = props
   const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
 
   return (
@@ -129,6 +130,7 @@ const CollapsibleTrigger = React.forwardRef<
       data-state={getState(context.open)}
       data-disabled={context.disabled ? '' : undefined}
       disabled={context.disabled}
+      unstyled={!!unstyled}
       {...triggerProps}
       ref={forwardedRef}
       onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
@@ -152,30 +154,40 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
    * controlling animation with React animation libraries.
    */
   forceMount?: true
+  unstyled?: boolean
 }
 
 const CONTENT_NAME = 'CollapsibleContent'
 
 const CollapsibleContentFrame = styled(ThemeableStack, {
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  flexDirection: 'column',
   name: CONTENT_NAME,
-  padded: true,
-  focusable: true,
+  variants: {
+    unstyled: {
+      false: {
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'column',
+        padded: true,
+        focusable: true,
+      },
+    },
+  },
 })
 
 const CollapsibleContent = React.forwardRef<
   CollapsibleContentElement,
   CollapsibleContentProps
 >((props: ScopedProps<CollapsibleContentProps>, forwardedRef) => {
-  const { forceMount, children, __scopeCollapsible, ...contentProps } = props
+  const { forceMount, children, __scopeCollapsible, unstyled, ...contentProps } = props
   const context = useCollapsibleContext(CONTENT_NAME, __scopeCollapsible)
 
   return (
     <AnimatePresence {...contentProps}>
       {forceMount || context.open ? (
-        <CollapsibleContentFrame {...contentProps}>{children}</CollapsibleContentFrame>
+        // @ts-ignore TODO: fix this type error unstyled is an unknown prop
+        <CollapsibleContentFrame unstyled={!!unstyled} {...contentProps}>
+          {children}
+        </CollapsibleContentFrame>
       ) : null}
     </AnimatePresence>
   )
