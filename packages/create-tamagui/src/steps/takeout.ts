@@ -175,7 +175,7 @@ async function linkSupabase() {
     message: "Enter your supabase project's ID (e.g. abcdefghijklmnopqrst)",
     initial: true,
   })
-  const cmd = `yarn supa link-project ${supabaseRefId.trim()}`
+  const cmd = `npx supabase link --project-ref ${supabaseRefId.trim()}`
 
   try {
     execSync(cmd, {
