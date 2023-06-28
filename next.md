@@ -1,3 +1,9 @@
+- being able to limit fallback value better:
+  - only number | `${string}%` | SpaceToken
+  - right now its either allowing random strings or not allowing % strings, both which we don't want
+  - eventually could also make "color-like" strings easier:
+    - `#${string}` | `rgb(${string})` | `rgba(${string})` | `hsl(${string})` | `hsla(${string})` | NamedColors | 'transparent'
+
 - Popover.Close inside Sheet
 
 - studio: https://codemirror.net instead of monaco
