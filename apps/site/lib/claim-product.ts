@@ -38,7 +38,7 @@ type ClaimFunction = (args: {
   product: Database['public']['Tables']['products']['Row']
   user: User
   metadata: {
-    [key: string]: Json
+    [key: string]: Json | undefined
   }
 }) => Promise<{
   /**
