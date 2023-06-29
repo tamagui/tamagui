@@ -618,7 +618,7 @@ export const getSplitStyles: StyleSplitter = (
       isMediaOrPseudo = isMedia || isPseudo
 
       if (!isMediaOrPseudo && key in usedKeys) {
-        if (process.env.NODE_ENV === 'developmnet' && debug === 'verbose') {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(`Used media/pseudo ${key}`)
         }
