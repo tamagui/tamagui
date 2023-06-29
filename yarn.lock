@@ -1819,6 +1819,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dominicstop/ts-event-emitter@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@dominicstop/ts-event-emitter@npm:1.1.0"
+  checksum: fcecf835de9049f58faf013d0a5b940b8b4b1c6c9293d98ab18c90fa800ca55407fcaf7d4cc148fbdc361aba5d4af64ae0fde813f8958c0903df3aa2b09e4325
+  languageName: node
+  linkType: hard
+
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -5283,7 +5290,7 @@ __metadata:
     react-dom: ^18.2.0
     react-native: ^0.71.7
     react-native-gesture-handler: ^2.8.0
-    react-native-ios-modal: ^0.1.8
+    react-native-ios-modal: 2.0.0-3
     react-native-safe-area-context: 4.5.0
     react-native-screens: ^3.18.2
     react-native-svg: 13.4.0
@@ -19903,13 +19910,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ios-modal@npm:^0.1.8":
-  version: 0.1.8
-  resolution: "react-native-ios-modal@npm:0.1.8"
+"react-native-ios-modal@npm:2.0.0-3":
+  version: 2.0.0-3
+  resolution: "react-native-ios-modal@npm:2.0.0-3"
+  dependencies:
+    "@dominicstop/ts-event-emitter": ^1.1.0
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 18407e5aa5a4b734dee71d0f23d08e97fb6043df0e1cfe15cfdcfa8ea9a0d9e9de6ae21fe7ea9d952815e10d831893c58440edd188f6fd8f8e185f5bcfdadda6
+  checksum: c4bc1431057b52f23c3c0db9085f63118b583fccc6127ae44f0ff26e4dab1f639894743d92b35f3e35c284795614c1d2bb51e2ff47aa89d81d12b5e389d71b87
   languageName: node
   linkType: hard
 

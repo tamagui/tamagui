@@ -10,8 +10,9 @@
     "start:tamagui": "tama dev",
     "start:android": "yarn start --android",
     "start:clean": "watchman watch-del-all & rm -r $TMPDIR/metro-cache & yarn start -c",
+    "pod": "./pod-install.sh",
     "android": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:android",
-    "ios": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
+    "ios": "yarn pod && EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
     "web": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=web yarn expo start --web",
     "eject": "EXPO_NO_TELEMETRY=true expo eject",
     "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
@@ -50,7 +51,7 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.7",
     "react-native-gesture-handler": "^2.8.0",
-    "react-native-ios-modal": "^0.1.8",
+    "react-native-ios-modal": "2.0.0-3",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "^3.18.2",
     "react-native-svg": "13.4.0",
@@ -58,6 +59,7 @@
     "solito": "^4.0.0-alpha.4"
   },
   "devDependencies": {
+    "pod-install": "^0.1.38",
     "@babel/core": "^7.21.8",
     "@playwright/test": "^1.29.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
