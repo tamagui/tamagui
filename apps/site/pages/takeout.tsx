@@ -733,6 +733,12 @@ export default function TakeoutPage({
                   stores via Expo EAS.
                 </Paragraph>
 
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  Get 2 new themes, +150 icon sets and +1500 font package. It's as easy as
+                  running `tamagui add icon` and `tamagui add font` to get a fully
+                  configured package installed right into your monorepo.
+                </Paragraph>
+
                 <Spacer size="$6" />
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
