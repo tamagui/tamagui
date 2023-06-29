@@ -6,7 +6,16 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { ArrowLeft, ArrowRight, Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Dot,
+  Hammer,
+  Moon,
+  Star,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -640,7 +649,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }} zi={-1}>
+          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
@@ -722,6 +731,12 @@ export default function TakeoutPage({
                   best universal UI system ever created. Within an hour you'll be
                   deploying your app on the web to Vercel and to iOS and Android app
                   stores via Expo EAS.
+                </Paragraph>
+
+                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  Get 2 new themes, +150 icon sets and +1500 font package. It's as easy as
+                  running `tamagui add icon` and `tamagui add font` to get a fully
+                  configured package installed right into your monorepo.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -923,10 +938,13 @@ export default function TakeoutPage({
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     We're working on bringing many nice new features that you can pick and
-                    choose from, some of which are already in progress:
+                    choose from, some of which are already in progress. We create
+                    automatic PRs to your repos when they're ready.
                   </Paragraph>
 
-                  <Separator />
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                    Coming Soon:
+                  </Paragraph>
 
                   <XStack tag="ul" fw="wrap" gap="$4" my="$4">
                     <Bullet inProgress>Maestro native integration tests</Bullet>
@@ -956,10 +974,9 @@ export default function TakeoutPage({
                 <ImageGallery />
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.map((image, index) => (
-                    <YStack pos="relative" overflow="hidden">
+                  {takeoutImages.slice(0, 7).map((image, index) => (
+                    <YStack key={index} pos="relative" overflow="hidden">
                       <TakeoutImage
-                        key={index}
                         alt={image.alt}
                         src={image.src}
                         style={{ objectFit: 'cover' }}
@@ -969,6 +986,26 @@ export default function TakeoutPage({
                       />
                     </YStack>
                   ))}
+                  <YStack pos="relative" overflow="hidden">
+                    <YStack
+                      onPress={() => {
+                        store.galleryOpen = true
+                      }}
+                      width={200}
+                      bc="$color12"
+                      br="$10"
+                      ov="hidden"
+                      elevation="$2"
+                      cursor="pointer"
+                      height={200}
+                      ai="center"
+                      jc="center"
+                    >
+                      <H1 fontFamily="$munro" color="black">
+                        +{takeoutImages.length - 7}
+                      </H1>
+                    </YStack>
+                  </YStack>
                 </XStack>
 
                 <Spacer />
@@ -1067,9 +1104,9 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       br="$10"
       ov="hidden"
       elevation="$2"
+      cursor="pointer"
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
-      cursor="pointer"
     >
       <Image {...props} />
     </XStack>
@@ -2409,12 +2446,33 @@ const ImageGallery = () => {
         >
           <ImagesCarousel />
           <Unspaced>
+            <YStack pos="absolute" right="$6" bottom="$8" zi="$4">
+            <Paragraph
+              textShadowColor="black"
+              textShadowOffset={{ height: 1, width: 1 }}
+              textShadowRadius={4}
+              fontFamily="$munro"
+            >
+              {store.galleryImageIdx + 1} / {takeoutImages.length}
+            </Paragraph>
+          </YStack>
+
+          <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
+            <Paragraph
+              textShadowColor="black"
+              textShadowOffset={{ height: 1, width: 1 }}
+              textShadowRadius={4}
+              fontFamily="$munro"
+            >
+              {takeoutImages[store.galleryImageIdx].alt}
+            </Paragraph>
+          </YStack>
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$4"
+                top="$5"
                 right="$6"
-                size="$2"
+                size="$3"
                 circular
                 icon={X}
               />
