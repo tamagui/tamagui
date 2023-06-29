@@ -938,10 +938,13 @@ export default function TakeoutPage({
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     We're working on bringing many nice new features that you can pick and
-                    choose from, some of which are already in progress:
+                    choose from, some of which are already in progress. We create
+                    automatic PRs to your repos when they're ready.
                   </Paragraph>
 
-                  <Separator />
+                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                    Coming Soon:
+                  </Paragraph>
 
                   <XStack tag="ul" fw="wrap" gap="$4" my="$4">
                     <Bullet inProgress>Maestro native integration tests</Bullet>
@@ -971,7 +974,7 @@ export default function TakeoutPage({
                 <ImageGallery />
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.map((image, index) => (
+                  {takeoutImages.slice(0, 7).map((image, index) => (
                     <YStack key={index} pos="relative" overflow="hidden">
                       <TakeoutImage
                         alt={image.alt}
@@ -983,6 +986,26 @@ export default function TakeoutPage({
                       />
                     </YStack>
                   ))}
+                  <YStack pos="relative" overflow="hidden">
+                    <YStack
+                      onPress={() => {
+                        store.galleryOpen = true
+                      }}
+                      width={200}
+                      bc="$color12"
+                      br="$10"
+                      ov="hidden"
+                      elevation="$2"
+                      cursor="pointer"
+                      height={200}
+                      ai="center"
+                      jc="center"
+                    >
+                      <H1 fontFamily="$munro" color="black">
+                        +{takeoutImages.length - 7}
+                      </H1>
+                    </YStack>
+                  </YStack>
                 </XStack>
 
                 <Spacer />
@@ -1081,9 +1104,9 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       br="$10"
       ov="hidden"
       elevation="$2"
+      cursor="pointer"
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
-      cursor="pointer"
     >
       <Image {...props} />
     </XStack>
@@ -2423,12 +2446,33 @@ const ImageGallery = () => {
         >
           <ImagesCarousel />
           <Unspaced>
+            <YStack pos="absolute" right="$6" bottom="$8" zi="$4">
+            <Paragraph
+              textShadowColor="black"
+              textShadowOffset={{ height: 1, width: 1 }}
+              textShadowRadius={4}
+              fontFamily="$munro"
+            >
+              {store.galleryImageIdx + 1} / {takeoutImages.length}
+            </Paragraph>
+          </YStack>
+
+          <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
+            <Paragraph
+              textShadowColor="black"
+              textShadowOffset={{ height: 1, width: 1 }}
+              textShadowRadius={4}
+              fontFamily="$munro"
+            >
+              {takeoutImages[store.galleryImageIdx].alt}
+            </Paragraph>
+          </YStack>
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$4"
+                top="$5"
                 right="$6"
-                size="$2"
+                size="$3"
                 circular
                 icon={X}
               />
