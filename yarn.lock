@@ -5286,6 +5286,7 @@ __metadata:
     html-webpack-plugin: ^5.5.0
     metro-runtime: "*"
     mini-css-extract-plugin: ^2.7.6
+    pod-install: ^0.1.38
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: ^0.71.7
@@ -19184,6 +19185,15 @@ __metadata:
   version: 5.0.0
   resolution: "pngjs@npm:5.0.0"
   checksum: 04e912cc45fb9601564e2284efaf0c5d20d131d9b596244f8a6789fc6cdb6b18d2975a6bbf7a001858d7e159d5c5c5dd7b11592e97629b7137f7f5cef05904c8
+  languageName: node
+  linkType: hard
+
+"pod-install@npm:^0.1.38":
+  version: 0.1.38
+  resolution: "pod-install@npm:0.1.38"
+  bin:
+    pod-install: build/index.js
+  checksum: 9ff3e8f50dba2cee1c174deeb394312d6a950096f39c5a413a9dbf9acf4acb890440a9c316381799c8e125858c4c84d2c4f0c3d7ef2ceb056ea820a417004fd7
   languageName: node
   linkType: hard
 
