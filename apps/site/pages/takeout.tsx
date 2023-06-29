@@ -649,7 +649,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }} zi={-1}>
+          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
