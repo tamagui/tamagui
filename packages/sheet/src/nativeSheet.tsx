@@ -1,5 +1,6 @@
 import { YStack } from '@tamagui/stacks'
 import { FunctionComponent, useEffect, useRef } from 'react'
+import { View } from 'react-native'
 
 import { SheetProvider } from './SheetContext'
 import { SheetProps } from './types'
@@ -45,7 +46,7 @@ export function setupNativeSheet(platform: SheetNativePlatforms, Implementation:
         <>
           <SheetProvider {...providerProps} onlyShowFrame>
             <Implementation ref={ref} onModalDismiss={() => setOpen(false)}>
-              {props.children}
+              <View style={{ flex: 1 }}>{props.children}</View>
             </Implementation>
 
             {/* for some reason select triggers wont show on native if this isn't inside the actual tree not inside implementation... */}
