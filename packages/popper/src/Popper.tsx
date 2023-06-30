@@ -3,7 +3,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
-  Stack,
   StackProps,
   View as TamaguiView,
   createStyledContext,
@@ -83,7 +82,6 @@ export function Popper(props: PopperProps) {
   const [anchorRef, setAnchorRef] = React.useState<any>()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
-  const arrowRef = React.useRef()
   const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
@@ -101,8 +99,6 @@ export function Popper(props: PopperProps) {
   })
 
   const { refs, middlewareData } = floating
-
-  const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
 
   useIsomorphicLayoutEffect(() => {
     floating.refs.setReference(anchorRef)
@@ -147,7 +143,7 @@ export function Popper(props: PopperProps) {
     <PopperContext.Provider
       anchorRef={setAnchorRef}
       size={size}
-      arrowRef={composedArrowRefs}
+      arrowRef={setArrow}
       arrowStyle={middlewareData.arrow}
       onArrowSize={setArrowSize}
       isMounted={isMounted}
@@ -232,7 +228,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
   function PopperContent(props: PopperContentProps, forwardedRef) {
     const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
       usePopperContext()
-    const contentRefs = useComposedRefs<any>(refs.floating, forwardedRef)
+    const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
     const contents = React.useMemo(() => {
       return (

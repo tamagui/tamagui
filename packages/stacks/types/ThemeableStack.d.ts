@@ -150,6 +150,7 @@ export declare const themeableVariants: {
             tabIndex?: string | number | import("@tamagui/core").Variable<any> | undefined;
             forceStyle?: import("@tamagui/core").Variable<any> | "hover" | "press" | "focus" | undefined;
             onPress?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+            onLongPress?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
             onPressIn?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
             onPressOut?: import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
             onHoverIn?: import("@tamagui/core").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;

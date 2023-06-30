@@ -149,7 +149,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onPress?: (((event: import("react-native").GestureResponderEvent) => void) & ((event: import("react-native").GestureResponderEvent) => void)) | undefined;
     onPressIn?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
     onPressOut?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").NativeTouchEvent>) => void) | undefined;
-    onLongPress?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+    onLongPress?: (((event: import("react-native").GestureResponderEvent) => void) & ((event: import("react-native").GestureResponderEvent) => void)) | undefined;
     testID?: string | undefined;
     nativeID?: string | undefined;
     maxFontSizeMultiplier?: number | null | undefined;

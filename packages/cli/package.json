@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "1.35.12",
+  "version": "1.36.6",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist",
@@ -27,12 +27,12 @@
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
-    "@tamagui/build": "1.35.12",
-    "@tamagui/create-theme": "1.35.12",
-    "@tamagui/generate-themes": "1.35.12",
-    "@tamagui/static": "1.35.12",
-    "@tamagui/types": "1.35.12",
-    "@tamagui/vite-plugin": "1.35.12",
+    "@tamagui/build": "1.36.6",
+    "@tamagui/create-theme": "1.36.6",
+    "@tamagui/generate-themes": "1.36.6",
+    "@tamagui/static": "1.36.6",
+    "@tamagui/types": "1.36.6",
+    "@tamagui/vite-plugin": "1.36.6",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
     "@vitejs/plugin-react-swc": "^3.3.0",
@@ -54,6 +54,8 @@
     "graphology": "^0.24.1",
     "kill-port": "^2.0.1",
     "lodash.debounce": "^4.0.8",
+    "marked": "^5.1.0",
+    "marked-terminal": "^5.2.0",
     "metro-inspector-proxy": "^0.71.0",
     "morgan": "^1.10.0",
     "open": "^8.4.0",
@@ -67,5 +69,8 @@
     "vite": "^4.3.0",
     "ws": "^8.7.0",
     "zx": "^7.1.1"
+  },
+  "devDependencies": {
+    "@types/marked": "^5.0.0"
   }
 }

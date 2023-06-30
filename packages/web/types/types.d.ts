@@ -56,6 +56,7 @@ export type TamaguiComponentPropsBase = {
      */
     forceStyle?: 'hover' | 'press' | 'focus';
     onPress?: PressableProps['onPress'];
+    onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
     onPressOut?: PressableProps['onPress'];
     onHoverIn?: DivAttributes['onMouseEnter'];
@@ -828,6 +829,7 @@ export type TamaguiComponentEvents = {
     minPressDuration?: number | undefined;
     onPressIn: ((e: any) => void) | undefined;
     onPress: ((e: any) => void) | undefined;
+    onLongPress: ((e: any) => void) | undefined;
     onMouseEnter?: ((e: any) => void) | undefined;
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
