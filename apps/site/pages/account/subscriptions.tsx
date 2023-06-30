@@ -324,9 +324,15 @@ const SubscriptionItem = ({
           >
             {claimLabel}
           </Button>
-          {hasGithubApp && (
-            <ButtonLink href="/api/github/install-bot" size="$2" themeInverse>
-              Install App
+          {hasGithubApp && item.id && (
+            <ButtonLink
+              href={`/api/github/install-bot?${new URLSearchParams({
+                subscription_item_id: item.id.toString(),
+              })}`}
+              size="$2"
+              themeInverse
+            >
+              Install GitHub App
             </ButtonLink>
           )}
           {/* {!!productSlug && ( */}
