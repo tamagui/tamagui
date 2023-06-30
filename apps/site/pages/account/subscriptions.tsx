@@ -325,11 +325,7 @@ const SubscriptionItem = ({
             {claimLabel}
           </Button>
           {hasGithubApp && (
-            <ButtonLink
-              href="/api/github/install-bot"
-              size="$2"
-              themeInverse
-            >
+            <ButtonLink href="/api/github/install-bot" size="$2" themeInverse>
               Install App
             </ButtonLink>
           )}
