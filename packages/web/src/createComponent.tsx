@@ -242,15 +242,18 @@ export function createComponent<
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
 
     // after we get states mount we need to turn off isAnimated for server side
-    const hasAnimationProp =
+    const hasAnimationProp = Boolean(
       props.animation || (props.style && hasAnimatedStyleValue(props.style))
+    )
+
     const willBeAnimated = (() => {
       if (isServer) return false
+      const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
-      if (next && !stateRef.current.hasAnimated) {
-        stateRef.current.hasAnimated = true
+      if (next && !curState.hasAnimated) {
+        curState.hasAnimated = true
       }
-      return next || stateRef.current.hasAnimated
+      return next || curState.hasAnimated
     })()
 
     const usePresence = animationsConfig?.usePresence
@@ -279,10 +282,10 @@ export function createComponent<
 
     let isAnimated = willBeAnimated
 
-    // presence avoids ssr stuff
-    if (presence && hasHydrated) {
-      // no
-    } else {
+    // TODO this is for AnimatePresence SSR support but it shouldn't be setting isAnimated = false for presence?
+    // // presence avoids ssr stuff
+    const hasPresenceIsHydrated = presence && hasHydrated
+    if (!hasPresenceIsHydrated) {
       if (isAnimated && (isServer || state.unmounted === true)) {
         isAnimated = false
       }
@@ -359,7 +362,7 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    const isExiting = presence?.[0] === false
+    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
@@ -390,16 +393,9 @@ export function createComponent<
               state.hover ? 'HOVERED ' : ''
             }${state.focus ? 'FOCUSED' : ' '}`
           )
+          // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({
-            props,
-            state,
-            staticConfig,
-            elementType,
-            themeStateProps,
-            themeState,
-            styledContext: { contextProps: styledContextProps, overriddenContextProps },
-          })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
           console.groupEnd()
         }
       }

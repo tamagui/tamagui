@@ -40,6 +40,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     theme,
     propsIn,
     state,
+    fontFamily,
     languageContext,
     avoidDefaultProps = false,
     debug
@@ -55,13 +56,13 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     const props = state.fallbackProps || propsIn
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
-    // handled here because we need to resolve this off tokens, its the only one-off like this
-    let fontFamily =
-      props[conf.inverseShorthands.fontFamily] ||
-      props.fontFamily ||
-      defaultProps.fontFamily ||
-      propsIn.fontFamily ||
-      `$${conf.defaultFont}`
+    // // handled here because we need to resolve this off tokens, its the only one-off like this
+    // let fontFamily =
+    //   props[conf.inverseShorthands.fontFamily] ||
+    //   props.fontFamily ||
+    //   defaultProps.fontFamily ||
+    //   propsIn.fontFamily ||
+    //   `$${conf.defaultFont}`
 
     if (
       process.env.NODE_ENV === 'development' &&

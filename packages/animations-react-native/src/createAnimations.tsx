@@ -364,7 +364,7 @@ export function createAnimations<A extends AnimationsConfig>(
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`Returning animated`, res)
+          console.log(`Returning animated`, res, 'given style', style)
         }
       }
 

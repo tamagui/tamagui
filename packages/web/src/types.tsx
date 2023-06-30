@@ -1034,7 +1034,7 @@ export type StyleResolver<Response = PropMappedValue> = (
   defaultProps: any,
   theme: any,
   variants: GenericVariantDefinitions,
-  fontFamily: string,
+  fontFamily: string | undefined,
   conf: TamaguiInternalConfig,
   returnVariablesAs: 'auto' | 'value' | 'non-color-value',
   staticConfig: StaticConfigParsed,
@@ -1050,6 +1050,7 @@ export type PropMapper = (
   theme: ThemeParsed,
   props: Record<string, any>,
   state: Partial<SplitStyleState>,
+  fontFamily?: string,
   languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
@@ -1742,7 +1743,7 @@ export type GetStyleResult = {
   viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
   space?: any // SpaceTokens?
-  hasMedia: boolean | 'space'
+  hasMedia: boolean | string[]
 }
 
 export type ClassNamesObject = Record<string, string>
