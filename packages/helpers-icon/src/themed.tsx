@@ -1,5 +1,6 @@
 import { getTokenValue, getVariable, useProps, useTheme } from '@tamagui/core'
 import React from 'react'
+import { SvgProps } from 'react-native-svg'
 
 import { IconProps } from './IconProps'
 
@@ -10,7 +11,7 @@ type ThemedOptions = {
 }
 
 export function themed(
-  Component: React.FC<IconProps>,
+  Component: React.FC<SvgProps>,
   opts: ThemedOptions = {
     defaultThemeColor: 'black',
     defaultStrokeWidth: 2,
@@ -37,7 +38,15 @@ export function themed(
         ? getTokenValue(props.strokeWidth, 'size')
         : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
 
-    return <Component {...props} color={color} size={size} strokeWidth={strokeWidth} />
+    return (
+      <Component
+        {...props}
+        color={color}
+        width={size}
+        height={size}
+        strokeWidth={strokeWidth}
+      />
+    )
   }
 
   return wrapped

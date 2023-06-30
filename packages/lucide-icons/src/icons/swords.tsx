@@ -1,3 +1,5 @@
+import type { IconProps } from '@tamagui/helpers-icon'
+import { themed } from '@tamagui/helpers-icon'
 import PropTypes from 'prop-types'
 import React, { memo } from 'react'
 import {
@@ -13,37 +15,35 @@ import {
   Rect,
   Stop,
   Svg,
+  SvgProps,
   Symbol,
   Use,
   Circle as _Circle,
   Text as _Text,
 } from 'react-native-svg'
 
-import type { IconProps } from '@tamagui/helpers-icon'
-import { themed } from '@tamagui/helpers-icon'
-
-const Icon = (props) => {
-  const { color = 'black', size = 24, ...otherProps } = props
+const Icon = (props: SvgProps) => {
+  const { color = 'black', width = 24, height = 24, ...otherProps } = props
   return (
     <Svg
-      width={size}
-      height={size}
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={`${color}`}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       {...otherProps}
     >
-      <Polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" stroke={`${color}`} />
-      <Line x1="13" x2="19" y1="19" y2="13" stroke={`${color}`} />
-      <Line x1="16" x2="20" y1="16" y2="20" stroke={`${color}`} />
-      <Line x1="19" x2="21" y1="21" y2="19" stroke={`${color}`} />
-      <Polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" stroke={`${color}`} />
-      <Line x1="5" x2="9" y1="14" y2="18" stroke={`${color}`} />
-      <Line x1="7" x2="4" y1="17" y2="20" stroke={`${color}`} />
-      <Line x1="3" x2="5" y1="19" y2="21" stroke={`${color}`} />
+      <Polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" stroke={color} />
+      <Line x1="13" x2="19" y1="19" y2="13" stroke={color} />
+      <Line x1="16" x2="20" y1="16" y2="20" stroke={color} />
+      <Line x1="19" x2="21" y1="21" y2="19" stroke={color} />
+      <Polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" stroke={color} />
+      <Line x1="5" x2="9" y1="14" y2="18" stroke={color} />
+      <Line x1="7" x2="4" y1="17" y2="20" stroke={color} />
+      <Line x1="3" x2="5" y1="19" y2="21" stroke={color} />
     </Svg>
   )
 }

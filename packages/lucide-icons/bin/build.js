@@ -78,20 +78,21 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
         Text as _Text,
         Use,
         Defs,
-        Stop
+        Stop,
+        SvgProps
       } from 'react-native-svg'
       import { themed } from '@tamagui/helpers-icon'
 
-      const Icon = (props) => {
-        const { color = 'black', size = 24, ...otherProps } = props
+      const Icon = (props: SvgProps) => {
+        const { color = 'black', width = 24, height = 24, ...otherProps } = props
         return (
           ${$('svg')
             .toString()
             .replace(/ class=\"[^\"]+\"/g, '')
             .replace(/ version=\"[^\"]+\"/g, '')
-            .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={`${color}`}')
-            .replace('width="24"', 'width={size}')
-            .replace('height="24"', 'height={size}')
+            .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={color}')
+            .replace('width="24"', 'width={width}')
+            .replace('height="24"', 'height={height}')
             .replace('otherProps="..."', '{...otherProps}')
             .replace('<svg', '<Svg')
             .replace('</svg', '</Svg')
