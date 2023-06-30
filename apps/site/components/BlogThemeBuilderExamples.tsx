@@ -23,7 +23,7 @@ const PaletteExample = ({
       <XStack br="$5" ov="hidden">
         {new Array(12).fill(0).map((_, i) => (
           <Paragraph f={1} ta="center" key={i}>
-            {11 - i}
+            -{11 - i}
           </Paragraph>
         ))}
       </XStack>
@@ -47,10 +47,12 @@ const PaletteExample = ({
 
 export const ExamplePalette = ({
   showIndices,
+  showNegativeIndices,
   showLabels,
   theme,
 }: {
   showIndices?: boolean
+  showNegativeIndices?: boolean
   showLabels?: boolean
   theme?: string
 }) => {
@@ -66,7 +68,11 @@ export const ExamplePalette = ({
           </Paragraph>
         </XStack>
       )}
-      <PaletteExample showIndices={showIndices} theme={theme} />
+      <PaletteExample
+        showIndices={showIndices}
+        showNegativeIndices={showNegativeIndices}
+        theme={theme}
+      />
     </YStack>
   )
 }

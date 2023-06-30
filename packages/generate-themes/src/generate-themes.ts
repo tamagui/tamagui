@@ -16,7 +16,7 @@ export async function generateThemes(inputFile: string) {
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
-    if (id === '@tamagui/create-theme/theme-builder') {
+    if (id === '@tamagui/create-theme/theme-builder' || id === '@tamagui/theme-builder') {
       if (!promise) {
         let resolve: Function
         promise = new Promise((res) => {
