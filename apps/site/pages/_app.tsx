@@ -12,7 +12,7 @@ import {
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
 import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
@@ -45,17 +45,22 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+  const router = useRouter()
 
-  // set up NextThemeProvider above AppContents so it can useThemeSetting
+  const inner = useMemo(
+    () => <AppContents {...props} theme={theme} setTheme={setTheme} />,
+    [theme, props]
+  )
 
   return (
     <>
       <NextThemeProvider
-        onChangeTheme={(next) => {
-          setTheme(next as any)
-        }}
+        onChangeTheme={setTheme as any}
+        {...(router.pathname === '/takeout' && {
+          forcedTheme: 'dark',
+        })}
       >
-        <AppContents {...props} theme={theme} setTheme={setTheme} />
+        {inner}
       </NextThemeProvider>
     </>
   )

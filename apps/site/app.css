@@ -750,6 +750,13 @@ input, textarea {
 }
 
 .font-outlined {
+  text-shadow: 8px 8px var(--color),
+    -8px -8px var(--color),
+    -8px 8px var(--color),
+    8px -8px var(--color);
+}
+
+.font-outlined-sm {
   text-shadow: 1px 1px var(--color),
     -1px -1px var(--color),
     -1px 1px var(--color),

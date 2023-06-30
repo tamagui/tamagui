@@ -395,14 +395,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </ThemeTint>
       </YStack>
       {coupon && (
-        <YStack
-          className="mix-blend"
-          position="absolute"
-          left={0}
-          right={0}
-          top={-10}
-          zIndex="$5"
-        >
+        <YStack position="absolute" right="10%" bottom="10%" zIndex="$5">
           <DiscountText coupon={coupon} />
         </YStack>
       )}
@@ -479,7 +472,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </YStack>
       </YStack>
 
-      <XStack my={21} gap={64} f={1} jc="space-between" className="mix-blend">
+      <XStack my={21} gap={60} f={1} jc="space-between" className="mix-blend">
         <FeatureIcon
           themeIndex={0}
           title="Monorepo"
@@ -496,6 +489,12 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           themeIndex={2}
           title="Deploy"
           icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={3}
+          title="Themes"
+          icon="retro-icons/design-color-bucket-brush-63.svg"
         />
 
         <FeatureIcon
@@ -591,7 +590,7 @@ export default function TakeoutPage({
         y={20}
       >
         <TAKEOUT
-          className={`font-outlined theme-shadow`}
+          className={`font-outlined-sm theme-shadow`}
           fontSize={150 * 3.5}
           lineHeight={110 * 3.5}
           color="#000"
@@ -2348,30 +2347,36 @@ const DiscountText = ({
 }: {
   coupon: NonNullable<TakeoutPageProps['coupon']>
 }) => {
+  const text = coupon.amount_off
+    ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
+    : coupon.percent_off
+    ? `${coupon.percent_off}% ${coupon.name}`
+    : ''
   return (
-    <ThemeTint>
-      <YStack
-        style={{
-          clipPath:
-            'polygon(0% 6px, 6px 6px, 6px 0%, calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px))',
-        }}
-        m="auto"
-        px="$3"
-        py="$1"
-        backgroundColor="$color5"
-        theme="alt2"
-        scale={1}
-        $sm={{ scale: 1.5 }}
-      >
-        <Paragraph color="white" textAlign="center" fontFamily="$munro" size="$8">
-          {coupon.amount_off
-            ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-            : coupon.percent_off
-            ? `${coupon.percent_off}% ${coupon.name}`
-            : ''}
-        </Paragraph>
+    <ThemeTintAlt>
+      <YStack m="auto" scale={1} $sm={{ scale: 1.5 }} rotate="10deg">
+        <YStack
+          fullscreen
+          shadowColor="rgba(0,0,0,0.5)"
+          shadowRadius={10}
+          shadowOffset={{ height: 5, width: 0 }}
+          scale={0.95}
+        />
+        <YStack
+          px="$4"
+          py="$1"
+          backgroundColor="$color8"
+          style={{
+            clipPath:
+              'polygon(0% 5px, 5px 5px, 5px 0%, calc(100% - 5px) 0%, calc(100% - 5px) 5px, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 5px calc(100% - 5px), 0% calc(100% - 5px))',
+          }}
+        >
+          <MunroP color="white" textAlign="center" size="$9">
+            {text.trim()}
+          </MunroP>
+        </YStack>
       </YStack>
-    </ThemeTint>
+    </ThemeTintAlt>
   )
 }
 
@@ -2391,7 +2396,7 @@ const FeatureIcon = ({
   return (
     <YStack>
       <Theme name={theme}>
-        <TooltipSimple label={title} delay={{ open: 100 }}>
+        <TooltipSimple open={active} label={title} delay={{ open: 100 }}>
           <IconFrame
             hoverStyle={{
               scale: 1.2,
@@ -2408,6 +2413,7 @@ const FeatureIcon = ({
     </YStack>
   )
 }
+
 const ImageGallery = () => {
   const store = useTakeoutStore()
 
@@ -2447,26 +2453,26 @@ const ImageGallery = () => {
           <ImagesCarousel />
           <Unspaced>
             <YStack pos="absolute" right="$6" bottom="$8" zi="$4">
-            <Paragraph
-              textShadowColor="black"
-              textShadowOffset={{ height: 1, width: 1 }}
-              textShadowRadius={4}
-              fontFamily="$munro"
-            >
-              {store.galleryImageIdx + 1} / {takeoutImages.length}
-            </Paragraph>
-          </YStack>
+              <Paragraph
+                textShadowColor="black"
+                textShadowOffset={{ height: 1, width: 1 }}
+                textShadowRadius={4}
+                fontFamily="$munro"
+              >
+                {store.galleryImageIdx + 1} / {takeoutImages.length}
+              </Paragraph>
+            </YStack>
 
-          <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
-            <Paragraph
-              textShadowColor="black"
-              textShadowOffset={{ height: 1, width: 1 }}
-              textShadowRadius={4}
-              fontFamily="$munro"
-            >
-              {takeoutImages[store.galleryImageIdx].alt}
-            </Paragraph>
-          </YStack>
+            <YStack pos="absolute" left="$6" bottom="$8" zi="$4">
+              <Paragraph
+                textShadowColor="black"
+                textShadowOffset={{ height: 1, width: 1 }}
+                textShadowRadius={4}
+                fontFamily="$munro"
+              >
+                {takeoutImages[store.galleryImageIdx].alt}
+              </Paragraph>
+            </YStack>
             <Dialog.Close asChild>
               <Button
                 position="absolute"
