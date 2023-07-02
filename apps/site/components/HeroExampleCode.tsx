@@ -109,13 +109,13 @@ export function HeroExampleCode({
             right={0}
             ai="center"
             jc="center"
-            top={95}
+            top="55%"
             theme="alt2"
             zIndex={1000}
             pe="none"
           >
-            <IconStack als="center" p="$3" mb={0}>
-              <FastForward color="var(--colorHover)" size={22} />
+            <IconStack als="center" p="$2.5" mb={0} elevation="$2">
+              <FastForward color="var(--colorHover)" size="$1" />
             </IconStack>
           </YStack>
           <YStack

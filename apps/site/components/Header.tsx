@@ -366,6 +366,7 @@ const SmallMenu = React.memo(() => {
             },
           },
         ]}
+        animateOnly={['transform', 'opacity']}
         p={0}
         maxHeight="80vh"
         elevate

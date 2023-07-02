@@ -172,6 +172,8 @@ export const getSplitStyles: StyleSplitter = (
     console.groupEnd()
   }
 
+  // handle before the loop so we can mark usedKeys in className
+  // since the compiler will optimize to className we just treat className as the more powerful
   if (props.className) {
     for (const cn of props.className.split(' ')) {
       if (cn[0] === '_') {
@@ -210,13 +212,6 @@ export const getSplitStyles: StyleSplitter = (
       keyInit = shorthands[keyInit]
     }
 
-    // edge-case: given we have `role="A"`, without this check, `accessibilityRole="B"` doesn't overwrite `role` and the value remains "A"
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      if (keyInit === 'accessibilityRole') {
-        keyInit = 'role'
-      }
-    }
-
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (!isAndroid) {
         // only works in android
@@ -227,7 +222,17 @@ export const getSplitStyles: StyleSplitter = (
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
-      } else if (keyInit.startsWith('aria-') || keyInit === 'role') {
+      } else if (keyInit === 'role') {
+        if (valInit === 'list') {
+          // role = "list"
+          viewProps[keyInit] = valInit
+        } else if (accessibilityWebRoleToNativeRole[valInit]) {
+          viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+            valInit
+          ] as GetStyleResult['viewProps']['AccessibilityRole']
+        }
+        continue
+      } else if (keyInit.startsWith('aria-')) {
         if (webToNativeAccessibilityDirectMap[keyInit]) {
           const nativeA11yProp = webToNativeAccessibilityDirectMap[keyInit]
           if (keyInit === 'aria-hidden') {
@@ -254,16 +259,6 @@ export const getSplitStyles: StyleSplitter = (
               [field]: valInit,
             }
           }
-        } else if (keyInit === 'role') {
-          if (valInit === 'list') {
-            // role = "list"
-            viewProps[keyInit] = valInit
-          } else if (accessibilityWebRoleToNativeRole[valInit]) {
-            viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
-              valInit
-            ] as GetStyleResult['viewProps']['AccessibilityRole']
-          }
-          continue
         }
         continue
       } else if (keyInit.startsWith('data-')) {
@@ -341,45 +336,46 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const shouldPassProp = !isStyleProp
+    const shouldPassProp =
+      !isStyleProp &&
+      // accessibility is now handled inside the expanded inner loop because we want it to be handled in variants/etc
+      !accessibilityDirectMap[keyInit] &&
+      keyInit !== 'accessibilityRole'
 
-    const isHOCShouldPassThrough =
+    const isHOCShouldPassThrough = Boolean(
       staticConfig.isHOC &&
-      (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+        (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+    )
+
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (shouldPassThrough) {
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         console.groupCollapsed(`  🔹 pass through ${keyInit}`)
+        // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({
-          valInit,
-          variants,
-          variant: variants?.[keyInit],
-          isVariant,
-          shouldPassProp,
-          isHOCShouldPassThrough,
-        })
+        console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough })
         console.groupEnd()
       }
 
-      if (isPseudo) {
-        // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
-        // like our own variants that aren't in parent
-        const pseudoStyleObject = getSubStyle(
-          styleState,
-          keyInit,
-          valInit,
-          fontFamily,
-          true,
-          state.noClassNames
-        )
-        const descriptor = pseudoDescriptors[keyInit]
-        for (const key in pseudoStyleObject) {
-          const fullKey = `${key}${PROP_SPLIT}${descriptor.name}`
-          console.warn('TODO')
-        }
-      }
+      // TODO bring this back but probably improve it?
+      // if (isPseudo) {
+      //   // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
+      //   // like our own variants that aren't in parent
+      //   const pseudoStyleObject = getSubStyle(
+      //     styleState,
+      //     keyInit,
+      //     valInit,
+      //     fontFamily,
+      //     true,
+      //     state.noClassNames
+      //   )
+      //   const descriptor = pseudoDescriptors[keyInit]
+      //   for (const key in pseudoStyleObject) {
+      //     const fullKey = `${key}${PROP_SPLIT}${descriptor.name}`
+      //     console.warn('TODO')
+      //   }
+      // }
 
       passDownProp(viewProps, keyInit, valInit, isMediaOrPseudo)
 
@@ -412,17 +408,9 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
+      // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({
-        expanded,
-        state: { ...state },
-        isVariant,
-        variant: variants?.[keyInit],
-        shouldPassProp,
-        isHOCShouldPassThrough,
-        theme,
-        usedKeys: { ...usedKeys },
-      })
+      console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys } })
       if (!isServer && isDevTools) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
@@ -435,7 +423,7 @@ export const getSplitStyles: StyleSplitter = (
     if (!expanded) continue
 
     for (const [key, val] of expanded) {
-      if (val === undefined) continue
+      if (val == null) continue
 
       if (process.env.TAMAGUI_TARGET === 'web') {
         /**
@@ -443,7 +431,7 @@ export const getSplitStyles: StyleSplitter = (
          * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
          */
 
-        if (keyInit === 'disabled' && valInit === true) {
+        if (key === 'disabled' && valInit === true) {
           viewProps['aria-disabled'] = true
           // Enhance with native semantics
           if (
@@ -460,12 +448,12 @@ export const getSplitStyles: StyleSplitter = (
           }
         }
 
-        if (keyInit === 'testID') {
+        if (key === 'testID') {
           viewProps[isReactNative ? 'testId' : 'data-testid'] = valInit
           continue
         }
 
-        if (keyInit === 'id' || keyInit === 'nativeID') {
+        if (key === 'id' || key === 'nativeID') {
           if (isReactNative) {
             viewProps.nativeID = valInit
           } else {
@@ -478,17 +466,18 @@ export const getSplitStyles: StyleSplitter = (
 
         if (isReactNative) {
           // pass along to react-native-web
-          if (accessibilityDirectMap[keyInit] || keyInit.startsWith('accessibility')) {
-            viewProps[keyInit] = valInit
+          if (key in accessibilityDirectMap || key.startsWith('accessibility')) {
+            viewProps[key] = valInit
             continue
           }
         } else {
           didUseKeyInit = true
 
-          if (keyInit in accessibilityDirectMap) {
-            viewProps[accessibilityDirectMap[keyInit]] = valInit
+          if (key in accessibilityDirectMap) {
+            viewProps[accessibilityDirectMap[key]] = valInit
+            continue
           } else {
-            switch (keyInit) {
+            switch (key) {
               case 'accessibilityRole': {
                 if (valInit === 'none') {
                   viewProps.role = 'presentation'
@@ -501,7 +490,7 @@ export const getSplitStyles: StyleSplitter = (
               case 'accessibilityFlowTo':
               case 'accessibilityControls':
               case 'accessibilityDescribedBy': {
-                viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
+                viewProps[`aria-${key.replace('accessibility', '').toLowerCase()}`] =
                   processIDRefList(valInit)
                 continue
               }
@@ -553,18 +542,18 @@ export const getSplitStyles: StyleSplitter = (
         if (valInit && valInit[0] === '_') {
           // if valid style key (or pseudo like color-hover):
           // this conditional and esp the pseudo check rarely runs so not a perf issue
-          const isValidClassName = keyInit in validStyles
+          const isValidClassName = key in validStyles
           const isMediaOrPseudo =
             !isValidClassName &&
-            keyInit.includes(PROP_SPLIT) &&
-            validStyles[keyInit.split(PROP_SPLIT)[0]]
+            key.includes(PROP_SPLIT) &&
+            validStyles[key.split(PROP_SPLIT)[0]]
 
           if (isValidClassName || isMediaOrPseudo) {
             if (process.env.NODE_ENV === 'development' && debug) {
               // rome-ignore lint/nursery/noConsoleLog: ok
-              console.log('tamagui classname props', keyInit, valInit)
+              console.log('tamagui classname props', key, valInit)
             }
-            mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+            mergeClassName(transforms, classNames, key, valInit, isMediaOrPseudo)
             continue
           }
         }
@@ -675,7 +664,7 @@ export const getSplitStyles: StyleSplitter = (
           if (!isDisabled) {
             // mark usedKeys based not on pseudoStyleObject
             for (const key in val) {
-              usedKeys[key] = Math.max(importance, usedKeys[key] || 0)
+              usedKeys[shorthands[key] || key] = Math.max(importance, usedKeys[key] || 0)
             }
           }
 

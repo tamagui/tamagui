@@ -1086,6 +1086,8 @@ export function createExtractor(
                 defaultTheme,
                 staticConfig.defaultProps,
                 { resolveVariablesAs: 'auto' },
+                // TODO fontFamily?
+                undefined,
                 undefined,
                 undefined,
                 shouldPrintDebug
@@ -1753,6 +1755,8 @@ export function createExtractor(
                         defaultTheme,
                         completeProps,
                         { ...state, resolveVariablesAs: 'auto' },
+                        // TODO fontFamily?
+                        undefined,
                         undefined,
                         undefined,
                         shouldPrintDebug

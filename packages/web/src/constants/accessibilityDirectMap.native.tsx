@@ -5,6 +5,7 @@ export const webToNativeAccessibilityDirectMap = {
   'aria-modal': 'accessibilityViewIsModal',
   'aria-hidden': 'accessibilityElementsHidden',
 }
+
 export const nativeAccessibilityValue = {
   'aria-valuemin': 'min',
   'aria-valuemax': 'max',
