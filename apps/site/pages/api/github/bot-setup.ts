@@ -65,7 +65,11 @@ const handler: NextApiHandler = async (req, res) => {
     throw error
   }
 
-  res.redirect('/account/subscriptions')
+  res.redirect(
+    `/account/subscriptions?${new URLSearchParams({
+      github_app_installed: '1',
+    })}`
+  )
 }
 
 export default handler
