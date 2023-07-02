@@ -396,7 +396,7 @@ export function createComponent<
           )
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), curDefaultPropsOrder: Object.keys(curDefaultProps) })
           console.groupEnd()
         }
       }
@@ -801,6 +801,10 @@ export function createComponent<
           minPressDuration: 0,
         })
       }
+    }
+
+    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      console.log(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native

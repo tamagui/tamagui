@@ -238,8 +238,9 @@ export function useMediaPropsActive<A extends Object>(
     const next = {} as A
     const importancesUsed = {}
     const propNames = Object.keys(props)
+    const len = propNames.length
 
-    for (let i = propNames.length - 1; i >= 0; i--) {
+    for (let i = 0; i < len; i++) {
       let key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {

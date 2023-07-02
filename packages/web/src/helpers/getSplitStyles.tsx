@@ -102,6 +102,7 @@ type StyleSplitter = (
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
+let defaultFontVariable = ''
 
 // loop props backwards
 //   track used keys:
@@ -145,6 +146,7 @@ export const getSplitStyles: StyleSplitter = (
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
+
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
 
@@ -339,8 +341,8 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassProp =
       !isStyleProp &&
       // accessibility is now handled inside the expanded inner loop because we want it to be handled in variants/etc
-      !accessibilityDirectMap[keyInit] &&
-      keyInit !== 'accessibilityRole'
+      // i know this is a bit of a perf hit, not sure whats best maybe a[0] type checks before?
+      !keyInit.startsWith('accessibility')
 
     const isHOCShouldPassThrough = Boolean(
       staticConfig.isHOC &&
@@ -387,6 +389,12 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
     }
+
+    // default font family
+    // is this great? no, but backwards compat until we add tests and make better
+    defaultFontVariable ||= `$${conf.defaultFont}`
+    fontFamily ||=
+      props[conf.inverseShorthands.fontFamily] || props.fontFamily || defaultFontVariable
 
     const expanded = isMediaOrPseudo
       ? [[keyInit, valInit]]
@@ -612,7 +620,6 @@ export const getSplitStyles: StyleSplitter = (
         if (!shouldDoClasses || IS_STATIC) {
           pseudos ||= {}
           pseudos[key] ||= {}
-          Object.assign(pseudos[key], pseudoStyleObject)
         }
 
         if (shouldDoClasses && !isEnter && !isExit) {
@@ -648,7 +655,10 @@ export const getSplitStyles: StyleSplitter = (
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('pseudo', keyInit, pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
+            console.groupCollapsed('pseudo', keyInit, !isDisabled)
+            // prettier-ignore
+            console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
+            console.groupEnd()
           }
 
           // if (!isDisabled) {
@@ -664,7 +674,8 @@ export const getSplitStyles: StyleSplitter = (
           if (!isDisabled) {
             // mark usedKeys based not on pseudoStyleObject
             for (const key in val) {
-              usedKeys[shorthands[key] || key] = Math.max(importance, usedKeys[key] || 0)
+              const k = shorthands[key] || key
+              usedKeys[k] = Math.max(importance, usedKeys[k] || 0)
             }
           }
 
@@ -673,8 +684,10 @@ export const getSplitStyles: StyleSplitter = (
             // when disabled ensure the default value is set for future animations to align
             if (isDisabled) {
               if (pkey in animatableDefaults) {
-                const defaultVal = animatableDefaults[pkey]
-                mergeStyle(styleState, flatTransforms, pkey, defaultVal)
+                if (!(pkey in usedKeys)) {
+                  const defaultVal = animatableDefaults[pkey]
+                  mergeStyle(styleState, flatTransforms, pkey, defaultVal)
+                }
               }
             } else {
               const curImportance = usedKeys[importance] || 0

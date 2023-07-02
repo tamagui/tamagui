@@ -56,14 +56,6 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     const props = state.fallbackProps || propsIn
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
-    // // handled here because we need to resolve this off tokens, its the only one-off like this
-    // let fontFamily =
-    //   props[conf.inverseShorthands.fontFamily] ||
-    //   props.fontFamily ||
-    //   defaultProps.fontFamily ||
-    //   propsIn.fontFamily ||
-    //   `$${conf.defaultFont}`
-
     if (
       process.env.NODE_ENV === 'development' &&
       fontFamily &&
@@ -98,7 +90,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       return variantValue
     }
 
-    let shouldReturn = value !== undefined && value !== null
+    let shouldReturn = value != null
 
     // handle shorthands
     if (key in conf.shorthands) {

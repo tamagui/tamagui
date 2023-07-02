@@ -1,10 +1,13 @@
 import { forwardRef } from 'react'
 import {
   GetProps,
+  Paragraph,
+  Separator,
   Stack,
   TamaguiElement,
   Text,
   XStack,
+  YStack,
   createStyledContext,
   styled,
   useProps,
@@ -41,11 +44,13 @@ const Frame = styled(Stack, {
   variants: {
     isError: {
       true: {
+        borderColor: '$red10',
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         borderBottomWidth: 0,
 
         hoverStyle: {
+          borderColor: '$red10',
           borderBottomWidth: 0,
         },
       },
@@ -53,11 +58,11 @@ const Frame = styled(Stack, {
 
     isInvalid: {
       true: {
-        borderColor: '$red10',
+        borderColor: '$yellow10',
         borderWidth: 5,
 
         hoverStyle: {
-          borderColor: '$red10',
+          borderColor: '$yellow10',
           borderWidth: 5,
         },
       },
@@ -97,49 +102,58 @@ export function ComplexVariants() {
         [true, false, false],
         [false, true, false],
         [false, false, true],
+        [true, true, true],
       ].map(([isFocus, isInvalid, isError], index) => (
-        <XStack key={index}>
-          <Stack>
+        <YStack mt="$8" key={index}>
+          <Separator />
+          <XStack space>
+            <Paragraph col="#fff" fow="800" bg={isFocus ? '$green10' : '$red10'}>
+              isFocus
+            </Paragraph>
+            <Paragraph col="#fff" fow="800" bg={isInvalid ? '$green10' : '$red10'}>
+              isInvalid
+            </Paragraph>
+            <Paragraph col="#fff" fow="800" bg={isError ? '$green10' : '$red10'}>
+              isError
+            </Paragraph>
+          </XStack>
+          <>
             <Text>With Styled Context</Text>
             <StyledContext.Provider
               isFocused={isFocus}
-              isInvalid={isInvalid || isError}
+              isInvalid={isInvalid}
               isError={isError}
             >
-              <Stack>
+              <XStack>
                 <FrameContainer />
                 <ContainerWithStaticProperty />
                 <Frame />
                 <ForwardRefContainer />
-              </Stack>
+              </XStack>
             </StyledContext.Provider>
-          </Stack>
+          </>
           <Stack>
             <Text>Without Styled Context</Text>
-            <Stack>
+            <XStack>
               <FrameContainer
                 isFocused={isFocus}
-                isInvalid={isInvalid || isError}
+                isInvalid={isInvalid}
                 isError={isError}
               />
               <ContainerWithStaticProperty
                 isFocused={isFocus}
-                isInvalid={isInvalid || isError}
+                isInvalid={isInvalid}
                 isError={isError}
               />
-              <Frame
-                isFocused={isFocus}
-                isInvalid={isInvalid || isError}
-                isError={isError}
-              />
+              <Frame isFocused={isFocus} isInvalid={isInvalid} isError={isError} />
               <ForwardRefContainer
                 isFocused={isFocus}
-                isInvalid={isInvalid || isError}
+                isInvalid={isInvalid}
                 isError={isError}
               />
-            </Stack>
+            </XStack>
           </Stack>
-        </XStack>
+        </YStack>
       ))}
     </Stack>
   )

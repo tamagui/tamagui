@@ -4,14 +4,14 @@ exports[`flatten-tests > flattened media queries 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
-    \\"flexShrink\\": 0,
     \\"alignItems\\": \\"stretch\\",
+    \\"flexShrink\\": 0,
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
       \\"translateY\\": 10
     }, {
