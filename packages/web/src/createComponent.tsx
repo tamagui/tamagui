@@ -253,11 +253,11 @@ export function createComponent<
       if (next && !curState.hasAnimated) {
         curState.hasAnimated = true
       }
-      return next || curState.hasAnimated
+      return Boolean(next || curState.hasAnimated)
     })()
 
     const usePresence = animationsConfig?.usePresence
-    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
+    const presence = (!isRSC && willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
@@ -340,6 +340,7 @@ export function createComponent<
       !isWeb ||
       !!(isAnimated && avoidClassesWhileAnimating) ||
       !staticConfig.acceptsClassName
+
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -488,7 +489,9 @@ export function createComponent<
     if (!isRSC && willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
-        style: splitStylesStyle,
+        // if hydrating, send empty style
+        style: isAnimated ? splitStylesStyle : {},
+        // style: splitStylesStyle,
         presence,
         state,
         theme: themeState.theme,
@@ -944,7 +947,6 @@ export function createComponent<
       defaultTag = defaultPropsIn.tag
     }
 
-    const noClassNames = !staticConfig.acceptsClassName
     const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
 
     defaultProps = restProps
@@ -963,7 +965,6 @@ export function createComponent<
           defaultProps,
           defaultPropsKeyOrder: Object.keys(defaultProps),
           defaultTag,
-          noClassNames,
         })
       }
     }

@@ -897,9 +897,12 @@ export const getSplitStyles: StyleSplitter = (
         // avoid re-processing for rnw
       } else {
         const atomic = getStylesAtomic(style)
+
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
           if (props.animateOnly && props.animateOnly.includes(key)) {
+            // TODO we need a new state value to pass in like "isAnmated" (different from noClassNames)
+            // due to usage of `animateOnly` *without* animation prop causing issues
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
