@@ -902,9 +902,7 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (props.animateOnly && props.animateOnly.includes(key)) {
-            // TODO we need a new state value to pass in like "isAnmated" (different from noClassNames)
-            // due to usage of `animateOnly` *without* animation prop causing issues
+          if (state.isAnimated && props.animateOnly && props.animateOnly.includes(key)) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)

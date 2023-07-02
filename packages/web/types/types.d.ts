@@ -734,6 +734,7 @@ export type SplitStyleState = TamaguiComponentState & {
     resolveVariablesAs?: ResolveVariableTypes;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
+    isAnimated: boolean;
     isExiting?: boolean;
     exitVariant?: string;
     enterVariant?: string;

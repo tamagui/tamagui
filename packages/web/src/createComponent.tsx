@@ -419,6 +419,7 @@ export function createComponent<
         hasTextAncestor,
         resolveVariablesAs,
         isExiting,
+        isAnimated,
       },
       null,
       languageContext || undefined,
