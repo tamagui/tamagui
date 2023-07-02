@@ -50,6 +50,7 @@ const colorStyleKey = {
   borderTopColor: true,
   borderBottomColor: true,
 }
+
 // these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
 const costlyToAnimateStyleKey = {
   borderRadius: true,
@@ -189,7 +190,9 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         >()
       )
-      const animateOnly = props.animateOnly || []
+
+      const animateOnly = (props.animateOnly as string[]) || []
+      const hasAnimateOnly = !!props.animateOnly
 
       const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
 
@@ -198,8 +201,8 @@ export function createAnimations<A extends AnimationsConfig>(
         if (isWeb) return true
 
         return Object.keys(style).some((key) => {
-          if (animateOnly.length) {
-            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          if (hasAnimateOnly) {
+            return !animatedStyleKey[key] && animateOnly.includes(key)
           } else {
             return !animatedStyleKey[key]
           }
@@ -217,7 +220,7 @@ export function createAnimations<A extends AnimationsConfig>(
             nonAnimatedStyle[key] = val
             continue
           }
-          if (animateOnly.length && animateOnly.indexOf(key) === -1) {
+          if (hasAnimateOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
