@@ -196,19 +196,6 @@ export function createAnimations<A extends AnimationsConfig>(
 
       const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
 
-      // check if there is any style that is not supported by native driver
-      const isThereNoNativeStyleKeys = useMemo(() => {
-        if (isWeb) return true
-
-        return Object.keys(style).some((key) => {
-          if (hasAnimateOnly) {
-            return !animatedStyleKey[key] && animateOnly.includes(key)
-          } else {
-            return !animatedStyleKey[key]
-          }
-        })
-      }, args)
-
       const res = useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
@@ -318,7 +305,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
+                  useNativeDriver: !isWeb || !(key in costlyToAnimateStyleKey),
                   ...animationConfig,
                 })
               }
