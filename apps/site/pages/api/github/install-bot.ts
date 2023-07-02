@@ -31,8 +31,8 @@ const handler: NextApiHandler = async (req, res) => {
     .select('*')
     .single()
 
-  if (data?.id) {
-    res.redirect(`https://github.com/apps/tamaguibot/installations/new?state=${data.id}`)
+  if (data?.subscription_item_id) {
+    res.redirect(`https://github.com/apps/tamaguibot/installations/new?state=${data.subscription_item_id}`)
   }
 }
 
