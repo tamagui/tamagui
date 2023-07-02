@@ -320,6 +320,13 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       }
 
       out[themeName] = applyMask(parent, maskFunction as any, options)
+      console.log(
+        'making',
+        themeName,
+        parentName,
+        out[themeName].background,
+        parent.background
+      )
     }
 
     return out as any

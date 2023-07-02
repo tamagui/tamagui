@@ -15,6 +15,9 @@ export function createTheme<
   [key in keyof Definition | keyof Extras]: string
 } {
   const cacheKey = JSON.stringify([palette, definition, options])
+
+  console.log('making', cacheKey)
+
   if (identityCache.has(cacheKey)) {
     return identityCache.get(cacheKey)
   }

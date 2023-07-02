@@ -81,7 +81,7 @@ export const componentThemeDefinitions = {
   },
 
   SliderTrackActive: {
-    mask: 'inverse',
+    mask: 'inverseSoften',
     ...maskOptions.component,
   },
 

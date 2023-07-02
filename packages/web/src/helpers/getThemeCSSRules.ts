@@ -57,7 +57,7 @@ export function getThemeCSSRules({
         continue
       }
 
-      const childSelector = `${CNP}${subName.replace(isDark ? 'dark_' : 'light_', '')}`
+      const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
 
       const [altLightDark, altSubTheme] = [
         isDark ? ['dark', 'light'] : ['light', 'dark'],
@@ -96,6 +96,9 @@ export function getThemeCSSRules({
 
           // for light/dark/light:
           selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          // selectorsSet.add(
+          //   `${parentSelectors.join(' ')} ${nextChildSelector}.t_sub_theme`.trim()
+          // )
         }
       }
     }

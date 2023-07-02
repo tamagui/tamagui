@@ -2403,6 +2403,26 @@ export const light_SwitchThumb = {
 
 export const dark_red_SwitchThumb = light_SwitchThumb as Theme
 export const light_SliderTrackActive = {
+    background: 'hsl(358, 85.3%, 64.0%)',
+    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
+    backgroundPress: 'hsl(358, 65.0%, 40.4%)',
+    backgroundFocus: 'hsl(356, 55.2%, 25.9%)',
+    backgroundStrong: 'hsl(358, 100%, 69.5%)',
+    backgroundTransparent: 'hsl(351, 89.0%, 96.0%)',
+    color: 'hsl(353, 23.0%, 9.8%)',
+    colorHover: 'hsl(357, 34.4%, 12.0%)',
+    colorPress: 'hsl(353, 23.0%, 9.8%)',
+    colorFocus: 'hsl(357, 34.4%, 12.0%)',
+    colorTransparent: 'hsl(357, 34.4%, 12.0%)',
+    borderColor: 'hsl(356, 55.2%, 25.9%)',
+    borderColorHover: 'hsl(356, 51.1%, 21.9%)',
+    borderColorFocus: 'hsl(358, 65.0%, 40.4%)',
+    borderColorPress: 'hsl(356, 55.2%, 25.9%)',
+    placeholderColor: 'hsl(356, 55.2%, 25.9%)'
+} as Theme
+
+export const dark_red_SliderTrackActive = light_SliderTrackActive as Theme
+export const light_SliderThumb = {
     background: 'hsl(0, 0%, 42.5%)',
     backgroundHover: 'hsl(0, 0%, 50.3%)',
     backgroundPress: 'hsl(0, 0%, 56.1%)',
@@ -2421,9 +2441,8 @@ export const light_SliderTrackActive = {
     placeholderColor: 'hsl(0, 0%, 95.1%)'
 } as Theme
 
-export const light_SliderThumb = light_SliderTrackActive as Theme
-export const light_Tooltip = light_SliderTrackActive as Theme
-export const light_ProgressIndicator = light_SliderTrackActive as Theme
+export const light_Tooltip = light_SliderThumb as Theme
+export const light_ProgressIndicator = light_SliderThumb as Theme
 export const light_Input = {
     background: '#fff',
     backgroundHover: '#f9f9f9',
@@ -2555,6 +2574,24 @@ export const dark_SwitchThumb = {
     placeholderColor: '#151515'
 } as Theme
 export const dark_SliderTrackActive = {
+    background: '#545454',
+    backgroundHover: '#494949',
+    backgroundPress: '#424242',
+    backgroundFocus: '#323232',
+    backgroundStrong: '#626262',
+    backgroundTransparent: '#a5a5a5',
+    color: '#050505',
+    colorHover: '#151515',
+    colorPress: '#050505',
+    colorFocus: '#151515',
+    colorTransparent: '#151515',
+    borderColor: '#323232',
+    borderColorHover: '#282828',
+    borderColorFocus: '#424242',
+    borderColorPress: '#323232',
+    placeholderColor: '#323232'
+} as Theme
+export const dark_SliderThumb = {
     background: '#a5a5a5',
     backgroundHover: '#626262',
     backgroundPress: '#545454',
@@ -2573,9 +2610,8 @@ export const dark_SliderTrackActive = {
     placeholderColor: '#232323'
 } as Theme
 
-export const dark_SliderThumb = dark_SliderTrackActive as Theme
-export const dark_Tooltip = dark_SliderTrackActive as Theme
-export const dark_ProgressIndicator = dark_SliderTrackActive as Theme
+export const dark_Tooltip = dark_SliderThumb as Theme
+export const dark_ProgressIndicator = dark_SliderThumb as Theme
 export const dark_Input = {
     background: '#151515',
     backgroundHover: '#191919',
@@ -2702,6 +2738,31 @@ export const light_purple_SwitchThumb = light_orange_SwitchThumb as Theme
 export const light_pink_SwitchThumb = light_orange_SwitchThumb as Theme
 export const light_red_SwitchThumb = light_orange_SwitchThumb as Theme
 export const light_orange_SliderTrackActive = {
+    background: 'hsl(358, 69.4%, 55.2%)',
+    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
+    backgroundPress: 'hsl(359, 69.5%, 74.3%)',
+    backgroundFocus: 'hsl(360, 81.7%, 87.8%)',
+    backgroundStrong: 'hsl(358, 65.0%, 48.7%)',
+    backgroundTransparent: 'hsl(354, 50.0%, 14.6%)',
+    color: 'hsl(359, 100%, 99.4%)',
+    colorHover: 'hsl(359, 100%, 98.6%)',
+    colorPress: 'hsl(359, 100%, 99.4%)',
+    colorFocus: 'hsl(359, 100%, 98.6%)',
+    colorTransparent: 'hsl(359, 100%, 98.6%)',
+    borderColor: 'hsl(359, 69.5%, 74.3%)',
+    borderColorHover: 'hsl(360, 81.7%, 87.8%)',
+    borderColorFocus: 'hsl(359, 69.5%, 74.3%)',
+    borderColorPress: 'hsl(359, 69.5%, 74.3%)',
+    placeholderColor: 'hsl(360, 81.7%, 87.8%)'
+} as Theme
+
+export const light_yellow_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_green_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_blue_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_purple_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_pink_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_red_SliderTrackActive = light_orange_SliderTrackActive as Theme
+export const light_orange_SliderThumb = {
     background: 'hsl(15, 60.0%, 17.0%)',
     backgroundHover: 'hsl(24, 100%, 37.0%)',
     backgroundPress: 'hsl(24, 100%, 46.5%)',
@@ -2720,9 +2781,8 @@ export const light_orange_SliderTrackActive = {
     placeholderColor: 'hsl(25, 100%, 92.2%)'
 } as Theme
 
-export const light_orange_SliderThumb = light_orange_SliderTrackActive as Theme
-export const light_orange_Tooltip = light_orange_SliderTrackActive as Theme
-export const light_orange_ProgressIndicator = light_orange_SliderTrackActive as Theme
+export const light_orange_Tooltip = light_orange_SliderThumb as Theme
+export const light_orange_ProgressIndicator = light_orange_SliderThumb as Theme
 export const light_orange_Input = {
     background: 'hsl(24, 70.0%, 99.0%)',
     backgroundHover: 'hsl(24, 83.3%, 97.6%)',
@@ -2823,7 +2883,7 @@ export const light_yellow_Checkbox = {
 export const light_yellow_Switch = light_yellow_Checkbox as Theme
 export const light_yellow_TooltipContent = light_yellow_Checkbox as Theme
 export const light_yellow_SliderTrack = light_yellow_Checkbox as Theme
-export const light_yellow_SliderTrackActive = {
+export const light_yellow_SliderThumb = {
     background: 'hsl(40, 55.0%, 13.5%)',
     backgroundHover: 'hsl(42, 100%, 29.0%)',
     backgroundPress: 'hsl(50, 100%, 48.5%)',
@@ -2842,9 +2902,8 @@ export const light_yellow_SliderTrackActive = {
     placeholderColor: 'hsl(54, 100%, 86.6%)'
 } as Theme
 
-export const light_yellow_SliderThumb = light_yellow_SliderTrackActive as Theme
-export const light_yellow_Tooltip = light_yellow_SliderTrackActive as Theme
-export const light_yellow_ProgressIndicator = light_yellow_SliderTrackActive as Theme
+export const light_yellow_Tooltip = light_yellow_SliderThumb as Theme
+export const light_yellow_ProgressIndicator = light_yellow_SliderThumb as Theme
 export const light_yellow_Input = {
     background: 'hsl(60, 54.0%, 98.5%)',
     backgroundHover: 'hsl(52, 100%, 95.5%)',
@@ -2945,7 +3004,7 @@ export const light_green_Checkbox = {
 export const light_green_Switch = light_green_Checkbox as Theme
 export const light_green_TooltipContent = light_green_Checkbox as Theme
 export const light_green_SliderTrack = light_green_Checkbox as Theme
-export const light_green_SliderTrackActive = {
+export const light_green_SliderThumb = {
     background: 'hsl(155, 40.0%, 14.0%)',
     backgroundHover: 'hsl(153, 67.0%, 28.5%)',
     backgroundPress: 'hsl(152, 57.5%, 37.6%)',
@@ -2964,9 +3023,8 @@ export const light_green_SliderTrackActive = {
     placeholderColor: 'hsl(140, 48.7%, 91.0%)'
 } as Theme
 
-export const light_green_SliderThumb = light_green_SliderTrackActive as Theme
-export const light_green_Tooltip = light_green_SliderTrackActive as Theme
-export const light_green_ProgressIndicator = light_green_SliderTrackActive as Theme
+export const light_green_Tooltip = light_green_SliderThumb as Theme
+export const light_green_ProgressIndicator = light_green_SliderThumb as Theme
 export const light_green_Input = {
     background: 'hsl(136, 50.0%, 98.9%)',
     backgroundHover: 'hsl(138, 62.5%, 96.9%)',
@@ -3067,7 +3125,7 @@ export const light_blue_Checkbox = {
 export const light_blue_Switch = light_blue_Checkbox as Theme
 export const light_blue_TooltipContent = light_blue_Checkbox as Theme
 export const light_blue_SliderTrack = light_blue_Checkbox as Theme
-export const light_blue_SliderTrackActive = {
+export const light_blue_SliderThumb = {
     background: 'hsl(211, 100%, 15.0%)',
     backgroundHover: 'hsl(211, 100%, 43.2%)',
     backgroundPress: 'hsl(208, 100%, 47.3%)',
@@ -3086,9 +3144,8 @@ export const light_blue_SliderTrackActive = {
     placeholderColor: 'hsl(210, 98.8%, 94.0%)'
 } as Theme
 
-export const light_blue_SliderThumb = light_blue_SliderTrackActive as Theme
-export const light_blue_Tooltip = light_blue_SliderTrackActive as Theme
-export const light_blue_ProgressIndicator = light_blue_SliderTrackActive as Theme
+export const light_blue_Tooltip = light_blue_SliderThumb as Theme
+export const light_blue_ProgressIndicator = light_blue_SliderThumb as Theme
 export const light_blue_Input = {
     background: 'hsl(206, 100%, 99.2%)',
     backgroundHover: 'hsl(210, 100%, 98.0%)',
@@ -3189,7 +3246,7 @@ export const light_purple_Checkbox = {
 export const light_purple_Switch = light_purple_Checkbox as Theme
 export const light_purple_TooltipContent = light_purple_Checkbox as Theme
 export const light_purple_SliderTrack = light_purple_Checkbox as Theme
-export const light_purple_SliderTrackActive = {
+export const light_purple_SliderThumb = {
     background: 'hsl(272, 66.0%, 16.0%)',
     backgroundHover: 'hsl(272, 50.0%, 45.8%)',
     backgroundPress: 'hsl(272, 46.8%, 50.3%)',
@@ -3208,9 +3265,8 @@ export const light_purple_SliderTrackActive = {
     placeholderColor: 'hsl(275, 76.4%, 94.7%)'
 } as Theme
 
-export const light_purple_SliderThumb = light_purple_SliderTrackActive as Theme
-export const light_purple_Tooltip = light_purple_SliderTrackActive as Theme
-export const light_purple_ProgressIndicator = light_purple_SliderTrackActive as Theme
+export const light_purple_Tooltip = light_purple_SliderThumb as Theme
+export const light_purple_ProgressIndicator = light_purple_SliderThumb as Theme
 export const light_purple_Input = {
     background: 'hsl(280, 65.0%, 99.4%)',
     backgroundHover: 'hsl(276, 100%, 99.0%)',
@@ -3311,7 +3367,7 @@ export const light_pink_Checkbox = {
 export const light_pink_Switch = light_pink_Checkbox as Theme
 export const light_pink_TooltipContent = light_pink_Checkbox as Theme
 export const light_pink_SliderTrack = light_pink_Checkbox as Theme
-export const light_pink_SliderTrackActive = {
+export const light_pink_SliderThumb = {
     background: 'hsl(320, 70.0%, 13.5%)',
     backgroundHover: 'hsl(322, 75.0%, 46.0%)',
     backgroundPress: 'hsl(322, 63.9%, 50.7%)',
@@ -3330,9 +3386,8 @@ export const light_pink_SliderTrackActive = {
     placeholderColor: 'hsl(323, 78.7%, 94.2%)'
 } as Theme
 
-export const light_pink_SliderThumb = light_pink_SliderTrackActive as Theme
-export const light_pink_Tooltip = light_pink_SliderTrackActive as Theme
-export const light_pink_ProgressIndicator = light_pink_SliderTrackActive as Theme
+export const light_pink_Tooltip = light_pink_SliderThumb as Theme
+export const light_pink_ProgressIndicator = light_pink_SliderThumb as Theme
 export const light_pink_Input = {
     background: 'hsl(322, 100%, 99.4%)',
     backgroundHover: 'hsl(323, 100%, 98.4%)',
@@ -3433,7 +3488,7 @@ export const light_red_Checkbox = {
 export const light_red_Switch = light_red_Checkbox as Theme
 export const light_red_TooltipContent = light_red_Checkbox as Theme
 export const light_red_SliderTrack = light_red_Checkbox as Theme
-export const light_red_SliderTrackActive = {
+export const light_red_SliderThumb = {
     background: 'hsl(354, 50.0%, 14.6%)',
     backgroundHover: 'hsl(358, 65.0%, 48.7%)',
     backgroundPress: 'hsl(358, 69.4%, 55.2%)',
@@ -3452,9 +3507,8 @@ export const light_red_SliderTrackActive = {
     placeholderColor: 'hsl(360, 97.9%, 94.8%)'
 } as Theme
 
-export const light_red_SliderThumb = light_red_SliderTrackActive as Theme
-export const light_red_Tooltip = light_red_SliderTrackActive as Theme
-export const light_red_ProgressIndicator = light_red_SliderTrackActive as Theme
+export const light_red_Tooltip = light_red_SliderThumb as Theme
+export const light_red_ProgressIndicator = light_red_SliderThumb as Theme
 export const light_red_Input = {
     background: 'hsl(359, 100%, 99.4%)',
     backgroundHover: 'hsl(359, 100%, 98.6%)',
@@ -3556,6 +3610,24 @@ export const dark_orange_SwitchThumb = {
     placeholderColor: 'hsl(28, 100%, 8.4%)'
 } as Theme
 export const dark_orange_SliderTrackActive = {
+    background: 'hsl(24, 100%, 58.5%)',
+    backgroundHover: 'hsl(24, 94.0%, 50.0%)',
+    backgroundPress: 'hsl(25, 100%, 29.0%)',
+    backgroundFocus: 'hsl(24, 88.6%, 19.8%)',
+    backgroundStrong: 'hsl(24, 100%, 62.2%)',
+    backgroundTransparent: 'hsl(24, 97.0%, 93.2%)',
+    color: 'hsl(30, 70.0%, 7.2%)',
+    colorHover: 'hsl(28, 100%, 8.4%)',
+    colorPress: 'hsl(30, 70.0%, 7.2%)',
+    colorFocus: 'hsl(28, 100%, 8.4%)',
+    colorTransparent: 'hsl(28, 100%, 8.4%)',
+    borderColor: 'hsl(24, 88.6%, 19.8%)',
+    borderColorHover: 'hsl(24, 87.6%, 16.6%)',
+    borderColorFocus: 'hsl(25, 100%, 29.0%)',
+    borderColorPress: 'hsl(24, 88.6%, 19.8%)',
+    placeholderColor: 'hsl(24, 88.6%, 19.8%)'
+} as Theme
+export const dark_orange_SliderThumb = {
     background: 'hsl(24, 97.0%, 93.2%)',
     backgroundHover: 'hsl(24, 100%, 62.2%)',
     backgroundPress: 'hsl(24, 100%, 58.5%)',
@@ -3574,9 +3646,8 @@ export const dark_orange_SliderTrackActive = {
     placeholderColor: 'hsl(25, 88.3%, 14.1%)'
 } as Theme
 
-export const dark_orange_SliderThumb = dark_orange_SliderTrackActive as Theme
-export const dark_orange_Tooltip = dark_orange_SliderTrackActive as Theme
-export const dark_orange_ProgressIndicator = dark_orange_SliderTrackActive as Theme
+export const dark_orange_Tooltip = dark_orange_SliderThumb as Theme
+export const dark_orange_ProgressIndicator = dark_orange_SliderThumb as Theme
 export const dark_orange_Input = {
     background: 'hsl(28, 100%, 8.4%)',
     backgroundHover: 'hsl(26, 91.1%, 11.6%)',
@@ -3678,6 +3749,24 @@ export const dark_yellow_SwitchThumb = {
     placeholderColor: 'hsl(46, 100%, 6.7%)'
 } as Theme
 export const dark_yellow_SliderTrackActive = {
+    background: 'hsl(54, 100%, 68.0%)',
+    backgroundHover: 'hsl(53, 92.0%, 50.0%)',
+    backgroundPress: 'hsl(50, 100%, 22.0%)',
+    backgroundFocus: 'hsl(49, 100%, 14.3%)',
+    backgroundStrong: 'hsl(48, 100%, 47.0%)',
+    backgroundTransparent: 'hsl(53, 100%, 91.0%)',
+    color: 'hsl(45, 100%, 5.5%)',
+    colorHover: 'hsl(46, 100%, 6.7%)',
+    colorPress: 'hsl(45, 100%, 5.5%)',
+    colorFocus: 'hsl(46, 100%, 6.7%)',
+    colorTransparent: 'hsl(46, 100%, 6.7%)',
+    borderColor: 'hsl(49, 100%, 14.3%)',
+    borderColorHover: 'hsl(47, 100%, 12.1%)',
+    borderColorFocus: 'hsl(50, 100%, 22.0%)',
+    borderColorPress: 'hsl(49, 100%, 14.3%)',
+    placeholderColor: 'hsl(49, 100%, 14.3%)'
+} as Theme
+export const dark_yellow_SliderThumb = {
     background: 'hsl(53, 100%, 91.0%)',
     backgroundHover: 'hsl(48, 100%, 47.0%)',
     backgroundPress: 'hsl(54, 100%, 68.0%)',
@@ -3696,9 +3785,8 @@ export const dark_yellow_SliderTrackActive = {
     placeholderColor: 'hsl(45, 100%, 10.4%)'
 } as Theme
 
-export const dark_yellow_SliderThumb = dark_yellow_SliderTrackActive as Theme
-export const dark_yellow_Tooltip = dark_yellow_SliderTrackActive as Theme
-export const dark_yellow_ProgressIndicator = dark_yellow_SliderTrackActive as Theme
+export const dark_yellow_Tooltip = dark_yellow_SliderThumb as Theme
+export const dark_yellow_ProgressIndicator = dark_yellow_SliderThumb as Theme
 export const dark_yellow_Input = {
     background: 'hsl(46, 100%, 6.7%)',
     backgroundHover: 'hsl(45, 100%, 8.7%)',
@@ -3800,6 +3888,24 @@ export const dark_green_SwitchThumb = {
     placeholderColor: 'hsl(155, 44.2%, 8.4%)'
 } as Theme
 export const dark_green_SliderTrackActive = {
+    background: 'hsl(151, 49.3%, 46.5%)',
+    backgroundHover: 'hsl(151, 55.0%, 41.5%)',
+    backgroundPress: 'hsl(151, 51.7%, 28.4%)',
+    backgroundFocus: 'hsl(154, 50.9%, 17.6%)',
+    backgroundStrong: 'hsl(151, 50.0%, 53.2%)',
+    backgroundTransparent: 'hsl(137, 72.0%, 94.0%)',
+    color: 'hsl(146, 30.0%, 7.4%)',
+    colorHover: 'hsl(155, 44.2%, 8.4%)',
+    colorPress: 'hsl(146, 30.0%, 7.4%)',
+    colorFocus: 'hsl(155, 44.2%, 8.4%)',
+    colorTransparent: 'hsl(155, 44.2%, 8.4%)',
+    borderColor: 'hsl(154, 50.9%, 17.6%)',
+    borderColorHover: 'hsl(154, 49.7%, 14.9%)',
+    borderColorFocus: 'hsl(151, 51.7%, 28.4%)',
+    borderColorPress: 'hsl(154, 50.9%, 17.6%)',
+    placeholderColor: 'hsl(154, 50.9%, 17.6%)'
+} as Theme
+export const dark_green_SliderThumb = {
     background: 'hsl(137, 72.0%, 94.0%)',
     backgroundHover: 'hsl(151, 50.0%, 53.2%)',
     backgroundPress: 'hsl(151, 49.3%, 46.5%)',
@@ -3818,9 +3924,8 @@ export const dark_green_SliderTrackActive = {
     placeholderColor: 'hsl(154, 48.4%, 12.9%)'
 } as Theme
 
-export const dark_green_SliderThumb = dark_green_SliderTrackActive as Theme
-export const dark_green_Tooltip = dark_green_SliderTrackActive as Theme
-export const dark_green_ProgressIndicator = dark_green_SliderTrackActive as Theme
+export const dark_green_Tooltip = dark_green_SliderThumb as Theme
+export const dark_green_ProgressIndicator = dark_green_SliderThumb as Theme
 export const dark_green_Input = {
     background: 'hsl(155, 44.2%, 8.4%)',
     backgroundHover: 'hsl(155, 46.7%, 10.9%)',
@@ -3922,6 +4027,24 @@ export const dark_blue_SwitchThumb = {
     placeholderColor: 'hsl(216, 50.0%, 11.8%)'
 } as Theme
 export const dark_blue_SliderTrackActive = {
+    background: 'hsl(209, 100%, 60.6%)',
+    backgroundHover: 'hsl(206, 100%, 50.0%)',
+    backgroundPress: 'hsl(211, 89.7%, 34.1%)',
+    backgroundFocus: 'hsl(212, 77.4%, 23.1%)',
+    backgroundStrong: 'hsl(210, 100%, 66.1%)',
+    backgroundTransparent: 'hsl(206, 98.0%, 95.8%)',
+    color: 'hsl(212, 35.0%, 9.2%)',
+    colorHover: 'hsl(216, 50.0%, 11.8%)',
+    colorPress: 'hsl(212, 35.0%, 9.2%)',
+    colorFocus: 'hsl(216, 50.0%, 11.8%)',
+    colorTransparent: 'hsl(216, 50.0%, 11.8%)',
+    borderColor: 'hsl(212, 77.4%, 23.1%)',
+    borderColorHover: 'hsl(213, 71.2%, 20.2%)',
+    borderColorFocus: 'hsl(211, 89.7%, 34.1%)',
+    borderColorPress: 'hsl(212, 77.4%, 23.1%)',
+    placeholderColor: 'hsl(212, 77.4%, 23.1%)'
+} as Theme
+export const dark_blue_SliderThumb = {
     background: 'hsl(206, 98.0%, 95.8%)',
     backgroundHover: 'hsl(210, 100%, 66.1%)',
     backgroundPress: 'hsl(209, 100%, 60.6%)',
@@ -3940,9 +4063,8 @@ export const dark_blue_SliderTrackActive = {
     placeholderColor: 'hsl(214, 65.8%, 17.9%)'
 } as Theme
 
-export const dark_blue_SliderThumb = dark_blue_SliderTrackActive as Theme
-export const dark_blue_Tooltip = dark_blue_SliderTrackActive as Theme
-export const dark_blue_ProgressIndicator = dark_blue_SliderTrackActive as Theme
+export const dark_blue_Tooltip = dark_blue_SliderThumb as Theme
+export const dark_blue_ProgressIndicator = dark_blue_SliderThumb as Theme
 export const dark_blue_Input = {
     background: 'hsl(216, 50.0%, 11.8%)',
     backgroundHover: 'hsl(214, 59.4%, 15.3%)',
@@ -4044,6 +4166,24 @@ export const dark_purple_SwitchThumb = {
     placeholderColor: 'hsl(283, 30.0%, 11.8%)'
 } as Theme
 export const dark_purple_SliderTrackActive = {
+    background: 'hsl(273, 57.3%, 59.1%)',
+    backgroundHover: 'hsl(272, 51.0%, 54.0%)',
+    backgroundPress: 'hsl(272, 52.1%, 45.9%)',
+    backgroundFocus: 'hsl(277, 46.4%, 27.5%)',
+    backgroundStrong: 'hsl(275, 80.0%, 71.0%)',
+    backgroundTransparent: 'hsl(279, 75.0%, 95.7%)',
+    color: 'hsl(284, 20.0%, 9.6%)',
+    colorHover: 'hsl(283, 30.0%, 11.8%)',
+    colorPress: 'hsl(284, 20.0%, 9.6%)',
+    colorFocus: 'hsl(283, 30.0%, 11.8%)',
+    colorTransparent: 'hsl(283, 30.0%, 11.8%)',
+    borderColor: 'hsl(277, 46.4%, 27.5%)',
+    borderColorHover: 'hsl(279, 43.8%, 23.3%)',
+    borderColorFocus: 'hsl(272, 52.1%, 45.9%)',
+    borderColorPress: 'hsl(277, 46.4%, 27.5%)',
+    placeholderColor: 'hsl(277, 46.4%, 27.5%)'
+} as Theme
+export const dark_purple_SliderThumb = {
     background: 'hsl(279, 75.0%, 95.7%)',
     backgroundHover: 'hsl(275, 80.0%, 71.0%)',
     backgroundPress: 'hsl(273, 57.3%, 59.1%)',
@@ -4062,9 +4202,8 @@ export const dark_purple_SliderTrackActive = {
     placeholderColor: 'hsl(280, 41.2%, 20.0%)'
 } as Theme
 
-export const dark_purple_SliderThumb = dark_purple_SliderTrackActive as Theme
-export const dark_purple_Tooltip = dark_purple_SliderTrackActive as Theme
-export const dark_purple_ProgressIndicator = dark_purple_SliderTrackActive as Theme
+export const dark_purple_Tooltip = dark_purple_SliderThumb as Theme
+export const dark_purple_ProgressIndicator = dark_purple_SliderThumb as Theme
 export const dark_purple_Input = {
     background: 'hsl(283, 30.0%, 11.8%)',
     backgroundHover: 'hsl(281, 37.5%, 16.5%)',
@@ -4166,6 +4305,24 @@ export const dark_pink_SwitchThumb = {
     placeholderColor: 'hsl(319, 32.2%, 11.6%)'
 } as Theme
 export const dark_pink_SliderTrackActive = {
+    background: 'hsl(323, 72.8%, 59.2%)',
+    backgroundHover: 'hsl(322, 65.0%, 54.5%)',
+    backgroundPress: 'hsl(322, 74.9%, 37.5%)',
+    backgroundFocus: 'hsl(321, 53.6%, 24.4%)',
+    backgroundStrong: 'hsl(325, 90.0%, 66.4%)',
+    backgroundTransparent: 'hsl(322, 90.0%, 95.8%)',
+    color: 'hsl(318, 25.0%, 9.6%)',
+    colorHover: 'hsl(319, 32.2%, 11.6%)',
+    colorPress: 'hsl(318, 25.0%, 9.6%)',
+    colorFocus: 'hsl(319, 32.2%, 11.6%)',
+    colorTransparent: 'hsl(319, 32.2%, 11.6%)',
+    borderColor: 'hsl(321, 53.6%, 24.4%)',
+    borderColorHover: 'hsl(320, 49.0%, 21.1%)',
+    borderColorFocus: 'hsl(322, 74.9%, 37.5%)',
+    borderColorPress: 'hsl(321, 53.6%, 24.4%)',
+    placeholderColor: 'hsl(321, 53.6%, 24.4%)'
+} as Theme
+export const dark_pink_SliderThumb = {
     background: 'hsl(322, 90.0%, 95.8%)',
     backgroundHover: 'hsl(325, 90.0%, 66.4%)',
     backgroundPress: 'hsl(323, 72.8%, 59.2%)',
@@ -4184,9 +4341,8 @@ export const dark_pink_SliderTrackActive = {
     placeholderColor: 'hsl(320, 45.4%, 18.7%)'
 } as Theme
 
-export const dark_pink_SliderThumb = dark_pink_SliderTrackActive as Theme
-export const dark_pink_Tooltip = dark_pink_SliderTrackActive as Theme
-export const dark_pink_ProgressIndicator = dark_pink_SliderTrackActive as Theme
+export const dark_pink_Tooltip = dark_pink_SliderThumb as Theme
+export const dark_pink_ProgressIndicator = dark_pink_SliderThumb as Theme
 export const dark_pink_Input = {
     background: 'hsl(319, 32.2%, 11.6%)',
     backgroundHover: 'hsl(319, 41.0%, 16.0%)',
@@ -4269,7 +4425,7 @@ export const dark_red_Checkbox = {
 export const dark_red_Switch = dark_red_Checkbox as Theme
 export const dark_red_TooltipContent = dark_red_Checkbox as Theme
 export const dark_red_SliderTrack = dark_red_Checkbox as Theme
-export const dark_red_SliderTrackActive = {
+export const dark_red_SliderThumb = {
     background: 'hsl(351, 89.0%, 96.0%)',
     backgroundHover: 'hsl(358, 100%, 69.5%)',
     backgroundPress: 'hsl(358, 85.3%, 64.0%)',
@@ -4288,9 +4444,8 @@ export const dark_red_SliderTrackActive = {
     placeholderColor: 'hsl(356, 47.6%, 19.2%)'
 } as Theme
 
-export const dark_red_SliderThumb = dark_red_SliderTrackActive as Theme
-export const dark_red_Tooltip = dark_red_SliderTrackActive as Theme
-export const dark_red_ProgressIndicator = dark_red_SliderTrackActive as Theme
+export const dark_red_Tooltip = dark_red_SliderThumb as Theme
+export const dark_red_ProgressIndicator = dark_red_SliderThumb as Theme
 export const dark_red_Input = {
     background: 'hsl(357, 34.4%, 12.0%)',
     backgroundHover: 'hsl(356, 43.4%, 16.4%)',

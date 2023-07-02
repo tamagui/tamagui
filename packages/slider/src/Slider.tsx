@@ -285,6 +285,7 @@ const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         size={context.size}
+        debug="verbose"
         {...rangeProps}
         ref={composedRefs}
         {...{
@@ -393,6 +394,27 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
       }
     }, [thumb, context.thumbs])
 
+    const positionalStyles =
+      context.orientation === 'horizontal'
+        ? {
+            x: thumbInBoundsOffset - size / 2,
+            y: -size / 2,
+            top: '50%',
+            ...(size === 0 && {
+              top: 'auto',
+              bottom: 'auto',
+            }),
+          }
+        : {
+            x: -size / 2,
+            y: size / 2,
+            left: '50%',
+            ...(size === 0 && {
+              left: 'auto',
+              right: 'auto',
+            }),
+          }
+
     return (
       <SliderThumbFrame
         ref={composedRefs}
@@ -407,26 +429,8 @@ const SliderThumb = React.forwardRef<View, SliderThumbProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         tabIndex={context.disabled ? undefined : 0}
-        animateOnly={['transform', 'left', 'right', 'top', 'bottom']}
-        {...(context.orientation === 'horizontal'
-          ? {
-              x: thumbInBoundsOffset - size / 2,
-              y: -size / 2,
-              top: '50%',
-              ...(size === 0 && {
-                top: 'auto',
-                bottom: 'auto',
-              }),
-            }
-          : {
-              x: -size / 2,
-              y: size / 2,
-              left: '50%',
-              ...(size === 0 && {
-                left: 'auto',
-                right: 'auto',
-              }),
-            })}
+        animateOnly={['transform']}
+        {...positionalStyles}
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}
