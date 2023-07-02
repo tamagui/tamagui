@@ -1,4 +1,4 @@
-import { SelectDemo } from '@tamagui/demos'
+import { H1 } from 'tamagui'
 
 // TODO this is a great test: media + animation + space (test without animation too)
 // <Stack
@@ -20,5 +20,5 @@ import { SelectDemo } from '@tamagui/demos'
 //     </Stack>
 
 export const Sandbox = () => {
-  return <SelectDemo />
+  return <H1>test things here</H1>
 }

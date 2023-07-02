@@ -1,3 +1,5 @@
+export const accessibilityDirectMap = {}
+
 export const webToNativeAccessibilityDirectMap = {
   'aria-label': 'accessibilityLabel',
   'aria-labelledby': 'accessibilityLabelledBy',
