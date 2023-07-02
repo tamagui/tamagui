@@ -49,11 +49,6 @@ export const componentThemeDefinitions = {
     ...maskOptions.component,
   },
 
-  SliderTrackActive: {
-    mask: 'soften2',
-    ...maskOptions.component,
-  },
-
   Switch: {
     mask: 'soften2',
     ...maskOptions.component,
@@ -85,8 +80,13 @@ export const componentThemeDefinitions = {
     ...maskOptions.component,
   },
 
+  SliderTrackActive: {
+    mask: 'inverse',
+    ...maskOptions.component,
+  },
+
   SliderTrack: {
-    mask: 'soften',
+    mask: 'soften2',
     ...maskOptions.component,
   },
 
