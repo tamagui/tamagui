@@ -166,7 +166,7 @@ export const getSplitStyles: StyleSplitter = (
     languageContext,
   }
 
-  if (process.env.NODE_ENV === 'development' && debug) {
+  if (process.env.NODE_ENV === 'development' && debug && isClient) {
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
@@ -551,7 +551,7 @@ export const getSplitStyles: StyleSplitter = (
       fontFamily = getPropMappedFontFamily(expanded)
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose' && isClient) {
       console.groupCollapsed('  🔹 styles', keyInit, valInit)
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
