@@ -362,7 +362,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </Paragraph>
 
       {/* animated borders shine */}
-      <YStack pos="absolute" y={-38}>
+      <YStack pos="absolute" y={10}>
         <ThemeTint>
           <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
         </ThemeTint>
@@ -371,7 +371,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         className="mix-blend"
-        y={-35}
+        y={10}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
@@ -384,7 +384,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         className="mix-blend"
-        y={-35}
+        y={10}
         scale={0.975}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
@@ -401,6 +401,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       )}
 
       <YStack
+        mt={0}
         className="mix-blend"
         style={{
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
@@ -471,50 +472,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           <TAKEOUT color="$background" className="" />
         </YStack>
       </YStack>
-
-      <XStack my={21} gap={60} f={1} jc="space-between" className="mix-blend">
-        <FeatureIcon
-          themeIndex={0}
-          title="Monorepo"
-          icon="retro-icons/coding-apps-websites-module-21.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={1}
-          title="Design"
-          icon="retro-icons/design-color-painting-palette-25.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={2}
-          title="Deploy"
-          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={3}
-          title="Themes"
-          icon="retro-icons/design-color-bucket-brush-63.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={4}
-          title="Screens"
-          icon="retro-icons/coding-app-website-ui-62.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={5}
-          title="Assets"
-          icon="retro-icons/coding-apps-websites-plugin-33.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={6}
-          title="& More"
-          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-        />
-      </XStack>
       <YStack
         position="absolute"
         top={360}
@@ -615,6 +572,81 @@ export default function TakeoutPage({
             <TakeoutHero coupon={coupon} />
           </YStack>
 
+          <XStack
+            zi={100000}
+            my={21}
+            top={heroHeight - 200}
+            gap={60}
+            f={1}
+            alignSelf="center"
+            jc="space-between"
+            className="mix-blend"
+            $xxs={{
+              scale: 0.5,
+              gap: 30,
+              top: heroHeight - 480,
+            }}
+            $xs={{
+              scale: 0.5,
+              top: heroHeight - 400,
+            }}
+            $sm={{
+              scale: 0.8,
+              top: heroHeight - 380,
+            }}
+            $md={{
+              scale: 0.9,
+              top: heroHeight - 350,
+            }}
+            $lg={{
+              scale: 1,
+              gap: 50,
+              top: heroHeight - 320,
+            }}
+          >
+            <FeatureIcon
+              themeIndex={0}
+              title="Monorepo"
+              icon="retro-icons/coding-apps-websites-module-21.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={1}
+              title="Design"
+              icon="retro-icons/design-color-painting-palette-25.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={2}
+              title="Deploy"
+              icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={3}
+              title="Themes"
+              icon="retro-icons/design-color-bucket-brush-63.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={4}
+              title="Screens"
+              icon="retro-icons/coding-app-website-ui-62.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={5}
+              title="Assets"
+              icon="retro-icons/coding-apps-websites-plugin-33.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={6}
+              title="& More"
+              icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+            />
+          </XStack>
+
           <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
             <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
@@ -648,7 +680,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
