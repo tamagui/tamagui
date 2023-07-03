@@ -369,7 +369,12 @@ const GithubAppMessage = () => {
   const router = useRouter()
   const githubAppInstalled = !!router.query.github_app_installed
   if (!githubAppInstalled) return null
-  return <Paragraph theme="green_alt2">GitHub App installed successfully.</Paragraph>
+  return (
+    <Paragraph theme="green_alt2">
+      GitHub App installed successfully. We will create PRs to your fork as we ship new
+      updates.
+    </Paragraph>
+  )
 }
 
 Page.getLayout = getDefaultLayout
