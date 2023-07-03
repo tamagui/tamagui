@@ -644,6 +644,7 @@ type StaticConfigBase = StaticConfigPublic & {
      * Used internally for knowing how to handle when a HOC is in-between styled()
      */
     isHOC?: boolean;
+    isStyledHOC?: boolean;
 };
 export type StaticConfig = StaticConfigBase & {
     parentStaticConfig?: StaticConfigBase;

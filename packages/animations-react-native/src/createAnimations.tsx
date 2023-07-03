@@ -278,13 +278,6 @@ export function createAnimations<A extends AnimationsConfig>(
           const value = animated || new Animated.Value(val)
           const curInterpolation = animationsState.current.get(value)
 
-          // @ts-expect-error
-          const curVal = getValue(curInterpolation?.current)[0]
-          if (curVal === val) {
-            // danger??? i've seen this cause issues with AnimatePresence, testing...
-            return value
-          }
-
           let interpolateArgs: any
           if (type) {
             interpolateArgs = getInterpolated(
@@ -351,7 +344,7 @@ export function createAnimations<A extends AnimationsConfig>(
             if (props['debug'] === 'verbose') {
               // prettier-ignore
               // rome-ignore lint/nursery/noConsoleLog: ok
-              console.log(' 💠 animate',key,`from ${curVal} (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
+              console.log(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
           return value

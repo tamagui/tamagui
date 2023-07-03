@@ -214,7 +214,6 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
-    if (keyInit in skipProps) continue
 
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (typeof valInit === 'string' && valInit[0] === '_') {
@@ -479,24 +478,28 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const shouldPassProp = !isStyleProp && !(keyInit in handledProps)
+    const shouldPassProp = !isStyleProp
 
     const isHOCShouldPassThrough = Boolean(
       staticConfig.isHOC &&
-        (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+        (isMediaOrPseudo ||
+          staticConfig.parentStaticConfig?.variants?.[keyInit] ||
+          keyInit in skipProps)
     )
 
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
-    if (shouldPassThrough) {
-      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        console.groupCollapsed(`  🔹 pass through ${keyInit}`)
-        // prettier-ignore
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough })
-        console.groupEnd()
-      }
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed(
+        `  🔹 prop ${keyInit} ${shouldPassThrough ? 'pass through' : ''}`
+      )
+      // prettier-ignore
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough })
+      console.groupEnd()
+    }
 
+    if (shouldPassThrough) {
       // // TODO bring this back but probably improve it?
       // if (isPseudo) {
       //   // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
@@ -526,6 +529,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
+    // after shouldPassThrough
+    if (keyInit in skipProps) continue
+
     // default font family
     // is this great? no, but backwards compat until we add tests and make better
     defaultFontVariable ||= `$${conf.defaultFont}`
@@ -550,12 +556,12 @@ export const getSplitStyles: StyleSplitter = (
       fontFamily = getPropMappedFontFamily(expanded)
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose' && isClient) {
-      console.groupCollapsed('  🔹 styles', keyInit, valInit)
-      // prettier-ignore
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys } })
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('  🔹 expanded', keyInit, valInit)
       if (!isServer && isDevTools) {
+        // prettier-ignore
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys } })
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
           ...style,
@@ -568,7 +574,6 @@ export const getSplitStyles: StyleSplitter = (
 
     for (const [key, val] of expanded) {
       if (val == null) continue
-
       if (key in usedKeys) continue
 
       isMedia = isMediaKey(key)
@@ -635,6 +640,16 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldDoClasses && !isEnter && !isExit) {
           const pseudoStyles = generateAtomicStyles(pseudoStyleObject, descriptor)
+
+          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+            // prettier-ignore
+            console.groupCollapsed('pseudo (classes)', key)
+            // prettier-ignore
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log({ pseudoStyleObject, pseudoStyles })
+            console.groupEnd()
+          }
+
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
@@ -665,7 +680,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed('pseudo', keyInit, !isDisabled)
+            console.groupCollapsed('pseudo', key, !isDisabled)
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
@@ -835,7 +850,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       // pass to view props
-      if (!isVariant && !(key in skipProps)) {
+      if (!isVariant) {
         viewProps[key] = val
       }
     }
@@ -1122,7 +1137,7 @@ function mergeStyle(
   key: string,
   val: any
 ) {
-  if (val && val[0] === '_') {
+  if (val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
   } else if (key in stylePropsTransform) {
@@ -1270,10 +1285,6 @@ const skipProps = {
   debug: true,
   componentName: true,
   tag: true,
-}
-
-const handledProps = {
-  role: true,
 }
 
 if (process.env.NODE_ENV === 'test') {

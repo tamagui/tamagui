@@ -103,10 +103,13 @@ export function styled<
       } = options
 
       if (parentStaticConfig) {
-        defaultProps = {
-          ...parentStaticConfig.defaultProps,
-          ...defaultProps,
-          ...defaultVariants,
+        const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
+        if (!avoid) {
+          defaultProps = {
+            ...parentStaticConfig.defaultProps,
+            ...defaultProps,
+            ...defaultVariants,
+          }
         }
       }
 
@@ -149,6 +152,7 @@ export function styled<
         acceptsClassName,
         context,
         ...nativeConf,
+        isStyledHOC: Boolean(parentStaticConfig?.isHOC),
       }
 
       // bail on non className views as well
