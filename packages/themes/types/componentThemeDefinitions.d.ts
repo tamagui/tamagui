@@ -38,7 +38,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];
@@ -75,7 +74,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     Button: {
@@ -113,7 +111,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     Checkbox: {
@@ -149,7 +146,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     Switch: {
@@ -185,7 +181,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     SwitchThumb: {
@@ -222,7 +217,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     TooltipContent: {
@@ -258,7 +252,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     DrawerFrame: {
@@ -294,7 +287,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     Progress: {
@@ -330,7 +322,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     TooltipArrow: {
@@ -366,7 +357,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     SliderTrackActive: {
@@ -402,7 +392,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     SliderTrack: {
@@ -438,7 +427,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     SliderThumb: {
@@ -474,7 +462,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     Tooltip: {
@@ -510,7 +497,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     ProgressIndicator: {
@@ -546,7 +532,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         mask: string;
     };
     SheetOverlay: {
@@ -600,7 +585,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];
@@ -637,7 +621,6 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];

@@ -93,7 +93,6 @@ export declare const templates: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
     };
     alt: {
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
@@ -102,7 +101,6 @@ export declare const templates: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
     };
     button: {
         override: {
@@ -139,7 +137,6 @@ export declare const templates: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parentName?: string | undefined;
     };
 };
 //# sourceMappingURL=templates.d.ts.map
