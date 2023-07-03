@@ -316,7 +316,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb || !(key in costlyToAnimateStyleKey),
+                  useNativeDriver: !isWeb && !(key in costlyToAnimateStyleKey),
                   ...animationConfig,
                 })
               }
