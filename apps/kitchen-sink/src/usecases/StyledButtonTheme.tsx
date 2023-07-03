@@ -47,7 +47,8 @@ export type CustomButtonProps2 = TamaguiButtonProps &
 export const CustomButton2 = CustomButtonFrame.styleable<CustomButtonProps>(
   (propsIn, ref) => {
     const { props } = useButton(propsIn, { Text: CustomButtonText2 })
-    return <CustomButtonFrame2 {...props} ref={ref} />
+    console.log('passing', props, Object.keys(props))
+    return <CustomButtonFrame2 debug="verbose" {...props} ref={ref} />
   }
 )
 

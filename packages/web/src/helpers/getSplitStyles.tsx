@@ -207,11 +207,34 @@ export const getSplitStyles: StyleSplitter = (
     let keyInit = propKeys[i]
     let valInit = props[keyInit]
 
-    if (keyInit === 'className') continue // handled above
-
     // normalize shorthands up front
     if (keyInit in shorthands) {
       keyInit = shorthands[keyInit]
+    }
+
+    if (keyInit === 'className') continue // handled above
+    if (keyInit in usedKeys) continue
+    if (keyInit in skipProps) continue
+
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (typeof valInit === 'string' && valInit[0] === '_') {
+        if (keyInit in validStyleProps || keyInit.includes('-')) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log(`Adding compiled style ${keyInit}: ${valInit}`)
+          }
+
+          usedKeys[keyInit] ||= 1
+          if (shouldDoClasses) {
+            classNames[keyInit] = valInit
+            delete style[keyInit]
+          } else {
+            style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+            delete className[keyInit]
+          }
+          continue
+        }
+      }
     }
 
     if (process.env.TAMAGUI_TARGET === 'native') {
@@ -278,24 +301,9 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit in usedKeys) {
-      continue
-    }
-
-    if (typeof valInit === 'string' && valInit[0] === '_') {
-      if (keyInit in validStyleProps || keyInit.includes('-')) {
-        if (shouldDoClasses) {
-          classNames[keyInit] = valInit
-        } else {
-          style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
-        }
-        continue
-      }
-    }
-
     if (keyInit === 'dataSet') {
-      for (const key in valInit) {
-        viewProps[`data-${hyphenate(key)}`] = valInit[key]
+      for (const keyInit in valInit) {
+        viewProps[`data-${hyphenate(keyInit)}`] = valInit[keyInit]
       }
       continue
     }
@@ -319,6 +327,140 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      /**
+       * Copying in the accessibility/prop handling from react-native-web here
+       * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
+       */
+
+      if (keyInit === 'disabled' && valInit === true) {
+        viewProps['aria-disabled'] = true
+        // Enhance with native semantics
+        if (
+          elementType === 'button' ||
+          elementType === 'form' ||
+          elementType === 'input' ||
+          elementType === 'select' ||
+          elementType === 'textarea'
+        ) {
+          viewProps.disabled = true
+        }
+        if (!variants?.disabled) {
+          continue
+        }
+      }
+
+      if (keyInit === 'testID') {
+        viewProps[isReactNative ? 'testId' : 'data-testid'] = valInit
+        continue
+      }
+
+      if (keyInit === 'id' || keyInit === 'nativeID') {
+        if (isReactNative) {
+          viewProps.nativeID = valInit
+        } else {
+          viewProps.id = valInit
+        }
+        continue
+      }
+
+      let didUseKeyInit = false
+
+      if (isReactNative) {
+        // pass along to react-native-web
+        if (keyInit in accessibilityDirectMap || keyInit.startsWith('accessibility')) {
+          viewProps[keyInit] = valInit
+          continue
+        }
+      } else {
+        didUseKeyInit = true
+
+        if (keyInit in accessibilityDirectMap) {
+          viewProps[accessibilityDirectMap[keyInit]] = valInit
+          continue
+        } else {
+          switch (keyInit) {
+            case 'accessibilityRole': {
+              if (valInit === 'none') {
+                viewProps.role = 'presentation'
+              } else {
+                viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
+              }
+              continue
+            }
+            case 'accessibilityLabelledBy':
+            case 'accessibilityFlowTo':
+            case 'accessibilityControls':
+            case 'accessibilityDescribedBy': {
+              viewProps[`aria-${keyInit.replace('accessibility', '').toLowerCase()}`] =
+                processIDRefList(valInit)
+              continue
+            }
+            case 'accessibilityKeyShortcuts': {
+              if (Array.isArray(valInit)) {
+                viewProps['aria-keyshortcuts'] = valInit.join(' ')
+              }
+              continue
+            }
+            case 'accessibilityLiveRegion': {
+              viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
+              continue
+            }
+            case 'accessibilityReadOnly': {
+              viewProps['aria-readonly'] = valInit
+              // Enhance with native semantics
+              if (
+                elementType === 'input' ||
+                elementType === 'select' ||
+                elementType === 'textarea'
+              ) {
+                viewProps.readOnly = true
+              }
+              continue
+            }
+            case 'accessibilityRequired': {
+              viewProps['aria-required'] = valInit
+              // Enhance with native semantics
+              if (
+                elementType === 'input' ||
+                elementType === 'select' ||
+                elementType === 'textarea'
+              ) {
+                viewProps.required = valInit
+              }
+              continue
+            }
+            default: {
+              didUseKeyInit = false
+            }
+          }
+        }
+      }
+
+      if (didUseKeyInit) {
+        continue
+      }
+
+      if (valInit && valInit[0] === '_') {
+        // if valid style key (or pseudo like color-hover):
+        // this conditional and esp the pseudo check rarely runs so not a perf issue
+        const isValidClassName = keyInit in validStyles
+        const isMediaOrPseudo =
+          !isValidClassName &&
+          keyInit.includes(PROP_SPLIT) &&
+          validStyles[keyInit.split(PROP_SPLIT)[0]]
+
+        if (isValidClassName || isMediaOrPseudo) {
+          if (process.env.NODE_ENV === 'development' && debug) {
+            // rome-ignore lint/nursery/noConsoleLog: ok
+            console.log('tamagui classname props', keyInit, valInit)
+          }
+          mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+          continue
+        }
+      }
+    }
+
     /**
      * There's (some) reason to this madness: we want to allow returning media/pseudo from variants
      * Say you have a variant hoverable: { true: { hoverStyle: {} } }
@@ -330,7 +472,7 @@ export const getSplitStyles: StyleSplitter = (
     let isPseudo = keyInit in validPseudoKeys
     let isMediaOrPseudo = isMedia || isPseudo
 
-    const isVariant = variants && keyInit in variants
+    let isVariant = variants && keyInit in variants
     const isStyleProp =
       isMediaOrPseudo || isVariant || keyInit in validStyleProps || keyInit in shorthands
 
@@ -338,11 +480,7 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const shouldPassProp =
-      !isStyleProp &&
-      // accessibility is now handled inside the expanded inner loop because we want it to be handled in variants/etc
-      // i know this is a bit of a perf hit, not sure whats best maybe a[0] type checks before?
-      !keyInit.startsWith('accessibility')
+    const shouldPassProp = !isStyleProp && !(keyInit in handledProps)
 
     const isHOCShouldPassThrough = Boolean(
       staticConfig.isHOC &&
@@ -360,7 +498,7 @@ export const getSplitStyles: StyleSplitter = (
         console.groupEnd()
       }
 
-      // TODO bring this back but probably improve it?
+      // // TODO bring this back but probably improve it?
       // if (isPseudo) {
       //   // this is a lot... but we need to track sub-keys so we don't override them in future things that aren't passed down
       //   // like our own variants that aren't in parent
@@ -374,8 +512,7 @@ export const getSplitStyles: StyleSplitter = (
       //   )
       //   const descriptor = pseudoDescriptors[keyInit]
       //   for (const key in pseudoStyleObject) {
-      //     const fullKey = `${key}${PROP_SPLIT}${descriptor.name}`
-      //     console.warn('TODO')
+      //     debugger
       //   }
       // }
 
@@ -433,139 +570,7 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val == null) continue
 
-      if (process.env.TAMAGUI_TARGET === 'web') {
-        /**
-         * Copying in the accessibility/prop handling from react-native-web here
-         * Keeps it in a single loop, avoids dup de-structuring to avoid bundle size
-         */
-
-        if (key === 'disabled' && valInit === true) {
-          viewProps['aria-disabled'] = true
-          // Enhance with native semantics
-          if (
-            elementType === 'button' ||
-            elementType === 'form' ||
-            elementType === 'input' ||
-            elementType === 'select' ||
-            elementType === 'textarea'
-          ) {
-            viewProps.disabled = true
-          }
-          if (!variants?.disabled) {
-            continue
-          }
-        }
-
-        if (key === 'testID') {
-          viewProps[isReactNative ? 'testId' : 'data-testid'] = valInit
-          continue
-        }
-
-        if (key === 'id' || key === 'nativeID') {
-          if (isReactNative) {
-            viewProps.nativeID = valInit
-          } else {
-            viewProps.id = valInit
-          }
-          continue
-        }
-
-        let didUseKeyInit = false
-
-        if (isReactNative) {
-          // pass along to react-native-web
-          if (key in accessibilityDirectMap || key.startsWith('accessibility')) {
-            viewProps[key] = valInit
-            continue
-          }
-        } else {
-          didUseKeyInit = true
-
-          if (key in accessibilityDirectMap) {
-            viewProps[accessibilityDirectMap[key]] = valInit
-            continue
-          } else {
-            switch (key) {
-              case 'accessibilityRole': {
-                if (valInit === 'none') {
-                  viewProps.role = 'presentation'
-                } else {
-                  viewProps.role = accessibilityRoleToWebRole[valInit] || valInit
-                }
-                continue
-              }
-              case 'accessibilityLabelledBy':
-              case 'accessibilityFlowTo':
-              case 'accessibilityControls':
-              case 'accessibilityDescribedBy': {
-                viewProps[`aria-${key.replace('accessibility', '').toLowerCase()}`] =
-                  processIDRefList(valInit)
-                continue
-              }
-              case 'accessibilityKeyShortcuts': {
-                if (Array.isArray(valInit)) {
-                  viewProps['aria-keyshortcuts'] = valInit.join(' ')
-                }
-                continue
-              }
-              case 'accessibilityLiveRegion': {
-                viewProps['aria-live'] = valInit === 'none' ? 'off' : valInit
-                continue
-              }
-              case 'accessibilityReadOnly': {
-                viewProps['aria-readonly'] = valInit
-                // Enhance with native semantics
-                if (
-                  elementType === 'input' ||
-                  elementType === 'select' ||
-                  elementType === 'textarea'
-                ) {
-                  viewProps.readOnly = true
-                }
-                continue
-              }
-              case 'accessibilityRequired': {
-                viewProps['aria-required'] = valInit
-                // Enhance with native semantics
-                if (
-                  elementType === 'input' ||
-                  elementType === 'select' ||
-                  elementType === 'textarea'
-                ) {
-                  viewProps.required = valInit
-                }
-                continue
-              }
-              default: {
-                didUseKeyInit = false
-              }
-            }
-          }
-        }
-
-        if (didUseKeyInit) {
-          continue
-        }
-
-        if (valInit && valInit[0] === '_') {
-          // if valid style key (or pseudo like color-hover):
-          // this conditional and esp the pseudo check rarely runs so not a perf issue
-          const isValidClassName = key in validStyles
-          const isMediaOrPseudo =
-            !isValidClassName &&
-            key.includes(PROP_SPLIT) &&
-            validStyles[key.split(PROP_SPLIT)[0]]
-
-          if (isValidClassName || isMediaOrPseudo) {
-            if (process.env.NODE_ENV === 'development' && debug) {
-              // rome-ignore lint/nursery/noConsoleLog: ok
-              console.log('tamagui classname props', key, valInit)
-            }
-            mergeClassName(transforms, classNames, key, valInit, isMediaOrPseudo)
-            continue
-          }
-        }
-      }
+      if (key in usedKeys) continue
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
@@ -581,7 +586,14 @@ export const getSplitStyles: StyleSplitter = (
         (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
 
       if (isHOCShouldPassThrough) {
-        passDownProp(viewProps, key, val)
+        isVariant = variants && key in variants
+        passDownProp(viewProps, key, val, isMediaOrPseudo)
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.groupCollapsed(` - passing down prop ${key}`)
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log({ val, after: { ...viewProps[key] } })
+          console.groupEnd()
+        }
         // if its also a variant here, pass down but also keep it
         if (!isVariant) {
           continue
@@ -654,9 +666,9 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.groupCollapsed('pseudo', keyInit, !isDisabled)
             // prettier-ignore
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
             console.groupEnd()
           }
@@ -981,21 +993,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // now we need to reverse viewProps because order is important for wrapped tamagui children:
-  // techcnically we could just do this when it is HOC/has parentStaticConfig I think... but safer this way
-  const nextViewProps = {}
-  const ks = Object.keys(viewProps)
-  const l = ks.length
-  for (let i = l - 1; i >= 0; i--) {
-    const key = ks[i]
-    nextViewProps[key] = viewProps[key]
-  }
-
   const result: GetStyleResult = {
     space,
     hasMedia,
     fontFamily,
-    viewProps: nextViewProps,
+    viewProps,
     // @ts-expect-error
     style,
     pseudos,
@@ -1009,9 +1011,9 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
-      console.groupCollapsed('  🔹 =>')
+      console.groupCollapsed('  🔹 ===>')
       // prettier-ignore
-      const logs = { ...result, state, etc: { transforms, viewProps, rulesToInsert, parentSplitStyles, flatTransforms } }
+      const logs = { ...result, state, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles, flatTransforms }
       for (const key in logs) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(key, logs[key])
@@ -1116,13 +1118,14 @@ function getSubStyleProps(
 }
 
 function mergeStyle(
-  { classNames, viewProps, style }: GetStyleState,
+  { classNames, viewProps, style, usedKeys }: GetStyleState,
   flatTransforms: FlatTransforms,
   key: string,
   val: any
 ) {
   if (val && val[0] === '_') {
     classNames[key] = val
+    usedKeys[key] ||= 1
   } else if (key in stylePropsTransform) {
     flatTransforms ||= {}
     flatTransforms[key] = val
@@ -1268,6 +1271,10 @@ const skipProps = {
   tag: true,
 }
 
+const handledProps = {
+  role: true,
+}
+
 if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = true
 }
@@ -1309,15 +1316,16 @@ function passDownProp(
   viewProps: Object,
   key: string,
   val: any,
-  shouldMergeObject = key in pseudoDescriptors
+  shouldMergeObject = false
 ) {
   if (shouldMergeObject) {
-    viewProps[key] ||= {}
-    // we are going backwards to apply in front
-    viewProps[key] = {
-      ...val,
+    const next = {
       ...viewProps[key],
+      ...val,
     }
+    // need to re-insert it at current position
+    delete viewProps[key]
+    viewProps[key] = next
   } else {
     viewProps[key] = val
   }

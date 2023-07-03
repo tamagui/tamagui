@@ -2383,45 +2383,41 @@ export const light_Switch = light_Checkbox as Theme
 export const light_TooltipContent = light_Checkbox as Theme
 export const light_SliderTrack = light_Checkbox as Theme
 export const light_SwitchThumb = {
-    background: '#fff',
-    backgroundHover: '#fff',
-    backgroundPress: 'hsl(351, 89.0%, 96.0%)',
-    backgroundFocus: 'hsl(358, 100%, 69.5%)',
-    backgroundStrong: '#fff',
-    backgroundTransparent: '#fff',
-    color: 'hsl(353, 23.0%, 9.8%)',
-    colorHover: 'hsl(357, 34.4%, 12.0%)',
-    colorPress: 'hsl(353, 23.0%, 9.8%)',
-    colorFocus: 'hsl(357, 34.4%, 12.0%)',
-    colorTransparent: 'hsl(353, 23.0%, 9.8%)',
-    borderColor: 'hsl(358, 100%, 69.5%)',
-    borderColorHover: 'hsl(358, 85.3%, 64.0%)',
-    borderColorFocus: 'hsl(351, 89.0%, 96.0%)',
-    borderColorPress: 'hsl(358, 100%, 69.5%)',
-    placeholderColor: 'hsl(357, 34.4%, 12.0%)'
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(0, 0%, 42.5%)',
+    backgroundFocus: 'hsl(0, 0%, 50.3%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: '#fff',
+    colorHover: '#f9f9f9',
+    colorPress: '#fff',
+    colorFocus: '#f9f9f9',
+    colorTransparent: '#fff',
+    borderColor: 'hsl(0, 0%, 50.3%)',
+    borderColorHover: 'hsl(0, 0%, 56.1%)',
+    borderColorFocus: 'hsl(0, 0%, 42.5%)',
+    borderColorPress: 'hsl(0, 0%, 50.3%)',
+    placeholderColor: '#f9f9f9'
 } as Theme
-
-export const dark_red_SwitchThumb = light_SwitchThumb as Theme
 export const light_SliderTrackActive = {
-    background: 'hsl(358, 85.3%, 64.0%)',
-    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
-    backgroundPress: 'hsl(358, 65.0%, 40.4%)',
-    backgroundFocus: 'hsl(356, 55.2%, 25.9%)',
-    backgroundStrong: 'hsl(358, 100%, 69.5%)',
-    backgroundTransparent: 'hsl(351, 89.0%, 96.0%)',
-    color: 'hsl(353, 23.0%, 9.8%)',
-    colorHover: 'hsl(357, 34.4%, 12.0%)',
-    colorPress: 'hsl(353, 23.0%, 9.8%)',
-    colorFocus: 'hsl(357, 34.4%, 12.0%)',
-    colorTransparent: 'hsl(357, 34.4%, 12.0%)',
-    borderColor: 'hsl(356, 55.2%, 25.9%)',
-    borderColorHover: 'hsl(356, 51.1%, 21.9%)',
-    borderColorFocus: 'hsl(358, 65.0%, 40.4%)',
-    borderColorPress: 'hsl(356, 55.2%, 25.9%)',
-    placeholderColor: 'hsl(356, 55.2%, 25.9%)'
+    background: 'hsl(0, 0%, 56.1%)',
+    backgroundHover: 'hsl(0, 0%, 81.0%)',
+    backgroundPress: 'hsl(0, 0%, 89.5%)',
+    backgroundFocus: 'hsl(0, 0%, 92.0%)',
+    backgroundStrong: 'hsl(0, 0%, 50.3%)',
+    backgroundTransparent: 'hsl(0, 0%, 42.5%)',
+    color: '#fff',
+    colorHover: '#f9f9f9',
+    colorPress: '#fff',
+    colorFocus: '#f9f9f9',
+    colorTransparent: '#f9f9f9',
+    borderColor: 'hsl(0, 0%, 92.0%)',
+    borderColorHover: 'hsl(0, 0%, 94.0%)',
+    borderColorFocus: 'hsl(0, 0%, 89.5%)',
+    borderColorPress: 'hsl(0, 0%, 92.0%)',
+    placeholderColor: 'hsl(0, 0%, 92.0%)'
 } as Theme
-
-export const dark_red_SliderTrackActive = light_SliderTrackActive as Theme
 export const light_SliderThumb = {
     background: 'hsl(0, 0%, 42.5%)',
     backgroundHover: 'hsl(0, 0%, 50.3%)',
@@ -2715,53 +2711,39 @@ export const light_orange_SliderTrack = light_orange_Checkbox as Theme
 export const light_orange_SwitchThumb = {
     background: 'hsl(0, 0%, 9.0%)',
     backgroundHover: 'hsl(0, 0%, 9.0%)',
-    backgroundPress: 'hsl(354, 50.0%, 14.6%)',
-    backgroundFocus: 'hsl(358, 65.0%, 48.7%)',
+    backgroundPress: 'hsl(15, 60.0%, 17.0%)',
+    backgroundFocus: 'hsl(24, 100%, 37.0%)',
     backgroundStrong: 'hsl(0, 0%, 9.0%)',
     backgroundTransparent: 'hsl(0, 0%, 9.0%)',
-    color: 'hsl(359, 100%, 99.4%)',
-    colorHover: 'hsl(359, 100%, 98.6%)',
-    colorPress: 'hsl(359, 100%, 99.4%)',
-    colorFocus: 'hsl(359, 100%, 98.6%)',
-    colorTransparent: 'hsl(359, 100%, 99.4%)',
-    borderColor: 'hsl(354, 50.0%, 14.6%)',
-    borderColorHover: 'hsl(358, 65.0%, 48.7%)',
-    borderColorFocus: 'hsl(354, 50.0%, 14.6%)',
-    borderColorPress: 'hsl(354, 50.0%, 14.6%)',
-    placeholderColor: 'hsl(359, 100%, 98.6%)'
+    color: 'hsl(24, 70.0%, 99.0%)',
+    colorHover: 'hsl(24, 83.3%, 97.6%)',
+    colorPress: 'hsl(24, 70.0%, 99.0%)',
+    colorFocus: 'hsl(24, 83.3%, 97.6%)',
+    colorTransparent: 'hsl(24, 70.0%, 99.0%)',
+    borderColor: 'hsl(15, 60.0%, 17.0%)',
+    borderColorHover: 'hsl(24, 100%, 37.0%)',
+    borderColorFocus: 'hsl(15, 60.0%, 17.0%)',
+    borderColorPress: 'hsl(15, 60.0%, 17.0%)',
+    placeholderColor: 'hsl(24, 83.3%, 97.6%)'
 } as Theme
-
-export const light_yellow_SwitchThumb = light_orange_SwitchThumb as Theme
-export const light_green_SwitchThumb = light_orange_SwitchThumb as Theme
-export const light_blue_SwitchThumb = light_orange_SwitchThumb as Theme
-export const light_purple_SwitchThumb = light_orange_SwitchThumb as Theme
-export const light_pink_SwitchThumb = light_orange_SwitchThumb as Theme
-export const light_red_SwitchThumb = light_orange_SwitchThumb as Theme
 export const light_orange_SliderTrackActive = {
-    background: 'hsl(358, 69.4%, 55.2%)',
-    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
-    backgroundPress: 'hsl(359, 69.5%, 74.3%)',
-    backgroundFocus: 'hsl(360, 81.7%, 87.8%)',
-    backgroundStrong: 'hsl(358, 65.0%, 48.7%)',
-    backgroundTransparent: 'hsl(354, 50.0%, 14.6%)',
-    color: 'hsl(359, 100%, 99.4%)',
-    colorHover: 'hsl(359, 100%, 98.6%)',
-    colorPress: 'hsl(359, 100%, 99.4%)',
-    colorFocus: 'hsl(359, 100%, 98.6%)',
-    colorTransparent: 'hsl(359, 100%, 98.6%)',
-    borderColor: 'hsl(359, 69.5%, 74.3%)',
-    borderColorHover: 'hsl(360, 81.7%, 87.8%)',
-    borderColorFocus: 'hsl(359, 69.5%, 74.3%)',
-    borderColorPress: 'hsl(359, 69.5%, 74.3%)',
-    placeholderColor: 'hsl(360, 81.7%, 87.8%)'
+    background: 'hsl(24, 100%, 46.5%)',
+    backgroundHover: 'hsl(24, 94.0%, 50.0%)',
+    backgroundPress: 'hsl(24, 94.5%, 64.3%)',
+    backgroundFocus: 'hsl(25, 100%, 82.8%)',
+    backgroundStrong: 'hsl(24, 100%, 37.0%)',
+    backgroundTransparent: 'hsl(15, 60.0%, 17.0%)',
+    color: 'hsl(24, 70.0%, 99.0%)',
+    colorHover: 'hsl(24, 83.3%, 97.6%)',
+    colorPress: 'hsl(24, 70.0%, 99.0%)',
+    colorFocus: 'hsl(24, 83.3%, 97.6%)',
+    colorTransparent: 'hsl(24, 83.3%, 97.6%)',
+    borderColor: 'hsl(24, 94.5%, 64.3%)',
+    borderColorHover: 'hsl(25, 100%, 82.8%)',
+    borderColorFocus: 'hsl(24, 94.5%, 64.3%)',
+    borderColorPress: 'hsl(24, 94.5%, 64.3%)',
+    placeholderColor: 'hsl(25, 100%, 82.8%)'
 } as Theme
-
-export const light_yellow_SliderTrackActive = light_orange_SliderTrackActive as Theme
-export const light_green_SliderTrackActive = light_orange_SliderTrackActive as Theme
-export const light_blue_SliderTrackActive = light_orange_SliderTrackActive as Theme
-export const light_purple_SliderTrackActive = light_orange_SliderTrackActive as Theme
-export const light_pink_SliderTrackActive = light_orange_SliderTrackActive as Theme
-export const light_red_SliderTrackActive = light_orange_SliderTrackActive as Theme
 export const light_orange_SliderThumb = {
     background: 'hsl(15, 60.0%, 17.0%)',
     backgroundHover: 'hsl(24, 100%, 37.0%)',
@@ -2883,6 +2865,42 @@ export const light_yellow_Checkbox = {
 export const light_yellow_Switch = light_yellow_Checkbox as Theme
 export const light_yellow_TooltipContent = light_yellow_Checkbox as Theme
 export const light_yellow_SliderTrack = light_yellow_Checkbox as Theme
+export const light_yellow_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(40, 55.0%, 13.5%)',
+    backgroundFocus: 'hsl(42, 100%, 29.0%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(60, 54.0%, 98.5%)',
+    colorHover: 'hsl(52, 100%, 95.5%)',
+    colorPress: 'hsl(60, 54.0%, 98.5%)',
+    colorFocus: 'hsl(52, 100%, 95.5%)',
+    colorTransparent: 'hsl(60, 54.0%, 98.5%)',
+    borderColor: 'hsl(40, 55.0%, 13.5%)',
+    borderColorHover: 'hsl(42, 100%, 29.0%)',
+    borderColorFocus: 'hsl(40, 55.0%, 13.5%)',
+    borderColorPress: 'hsl(40, 55.0%, 13.5%)',
+    placeholderColor: 'hsl(52, 100%, 95.5%)'
+} as Theme
+export const light_yellow_SliderTrackActive = {
+    background: 'hsl(50, 100%, 48.5%)',
+    backgroundHover: 'hsl(53, 92.0%, 50.0%)',
+    backgroundPress: 'hsl(48, 100%, 46.1%)',
+    backgroundFocus: 'hsl(50, 89.4%, 76.1%)',
+    backgroundStrong: 'hsl(42, 100%, 29.0%)',
+    backgroundTransparent: 'hsl(40, 55.0%, 13.5%)',
+    color: 'hsl(60, 54.0%, 98.5%)',
+    colorHover: 'hsl(52, 100%, 95.5%)',
+    colorPress: 'hsl(60, 54.0%, 98.5%)',
+    colorFocus: 'hsl(52, 100%, 95.5%)',
+    colorTransparent: 'hsl(52, 100%, 95.5%)',
+    borderColor: 'hsl(48, 100%, 46.1%)',
+    borderColorHover: 'hsl(50, 89.4%, 76.1%)',
+    borderColorFocus: 'hsl(48, 100%, 46.1%)',
+    borderColorPress: 'hsl(48, 100%, 46.1%)',
+    placeholderColor: 'hsl(50, 89.4%, 76.1%)'
+} as Theme
 export const light_yellow_SliderThumb = {
     background: 'hsl(40, 55.0%, 13.5%)',
     backgroundHover: 'hsl(42, 100%, 29.0%)',
@@ -3004,6 +3022,42 @@ export const light_green_Checkbox = {
 export const light_green_Switch = light_green_Checkbox as Theme
 export const light_green_TooltipContent = light_green_Checkbox as Theme
 export const light_green_SliderTrack = light_green_Checkbox as Theme
+export const light_green_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(155, 40.0%, 14.0%)',
+    backgroundFocus: 'hsl(153, 67.0%, 28.5%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(136, 50.0%, 98.9%)',
+    colorHover: 'hsl(138, 62.5%, 96.9%)',
+    colorPress: 'hsl(136, 50.0%, 98.9%)',
+    colorFocus: 'hsl(138, 62.5%, 96.9%)',
+    colorTransparent: 'hsl(136, 50.0%, 98.9%)',
+    borderColor: 'hsl(155, 40.0%, 14.0%)',
+    borderColorHover: 'hsl(153, 67.0%, 28.5%)',
+    borderColorFocus: 'hsl(155, 40.0%, 14.0%)',
+    borderColorPress: 'hsl(155, 40.0%, 14.0%)',
+    placeholderColor: 'hsl(138, 62.5%, 96.9%)'
+} as Theme
+export const light_green_SliderTrackActive = {
+    background: 'hsl(152, 57.5%, 37.6%)',
+    backgroundHover: 'hsl(151, 55.0%, 41.5%)',
+    backgroundPress: 'hsl(151, 40.2%, 54.1%)',
+    backgroundFocus: 'hsl(143, 40.3%, 79.0%)',
+    backgroundStrong: 'hsl(153, 67.0%, 28.5%)',
+    backgroundTransparent: 'hsl(155, 40.0%, 14.0%)',
+    color: 'hsl(136, 50.0%, 98.9%)',
+    colorHover: 'hsl(138, 62.5%, 96.9%)',
+    colorPress: 'hsl(136, 50.0%, 98.9%)',
+    colorFocus: 'hsl(138, 62.5%, 96.9%)',
+    colorTransparent: 'hsl(138, 62.5%, 96.9%)',
+    borderColor: 'hsl(151, 40.2%, 54.1%)',
+    borderColorHover: 'hsl(143, 40.3%, 79.0%)',
+    borderColorFocus: 'hsl(151, 40.2%, 54.1%)',
+    borderColorPress: 'hsl(151, 40.2%, 54.1%)',
+    placeholderColor: 'hsl(143, 40.3%, 79.0%)'
+} as Theme
 export const light_green_SliderThumb = {
     background: 'hsl(155, 40.0%, 14.0%)',
     backgroundHover: 'hsl(153, 67.0%, 28.5%)',
@@ -3125,6 +3179,42 @@ export const light_blue_Checkbox = {
 export const light_blue_Switch = light_blue_Checkbox as Theme
 export const light_blue_TooltipContent = light_blue_Checkbox as Theme
 export const light_blue_SliderTrack = light_blue_Checkbox as Theme
+export const light_blue_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(211, 100%, 15.0%)',
+    backgroundFocus: 'hsl(211, 100%, 43.2%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(206, 100%, 99.2%)',
+    colorHover: 'hsl(210, 100%, 98.0%)',
+    colorPress: 'hsl(206, 100%, 99.2%)',
+    colorFocus: 'hsl(210, 100%, 98.0%)',
+    colorTransparent: 'hsl(206, 100%, 99.2%)',
+    borderColor: 'hsl(211, 100%, 15.0%)',
+    borderColorHover: 'hsl(211, 100%, 43.2%)',
+    borderColorFocus: 'hsl(211, 100%, 15.0%)',
+    borderColorPress: 'hsl(211, 100%, 15.0%)',
+    placeholderColor: 'hsl(210, 100%, 98.0%)'
+} as Theme
+export const light_blue_SliderTrackActive = {
+    background: 'hsl(208, 100%, 47.3%)',
+    backgroundHover: 'hsl(206, 100%, 50.0%)',
+    backgroundPress: 'hsl(206, 81.9%, 65.3%)',
+    backgroundFocus: 'hsl(209, 81.2%, 84.5%)',
+    backgroundStrong: 'hsl(211, 100%, 43.2%)',
+    backgroundTransparent: 'hsl(211, 100%, 15.0%)',
+    color: 'hsl(206, 100%, 99.2%)',
+    colorHover: 'hsl(210, 100%, 98.0%)',
+    colorPress: 'hsl(206, 100%, 99.2%)',
+    colorFocus: 'hsl(210, 100%, 98.0%)',
+    colorTransparent: 'hsl(210, 100%, 98.0%)',
+    borderColor: 'hsl(206, 81.9%, 65.3%)',
+    borderColorHover: 'hsl(209, 81.2%, 84.5%)',
+    borderColorFocus: 'hsl(206, 81.9%, 65.3%)',
+    borderColorPress: 'hsl(206, 81.9%, 65.3%)',
+    placeholderColor: 'hsl(209, 81.2%, 84.5%)'
+} as Theme
 export const light_blue_SliderThumb = {
     background: 'hsl(211, 100%, 15.0%)',
     backgroundHover: 'hsl(211, 100%, 43.2%)',
@@ -3246,6 +3336,42 @@ export const light_purple_Checkbox = {
 export const light_purple_Switch = light_purple_Checkbox as Theme
 export const light_purple_TooltipContent = light_purple_Checkbox as Theme
 export const light_purple_SliderTrack = light_purple_Checkbox as Theme
+export const light_purple_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(272, 66.0%, 16.0%)',
+    backgroundFocus: 'hsl(272, 50.0%, 45.8%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(280, 65.0%, 99.4%)',
+    colorHover: 'hsl(276, 100%, 99.0%)',
+    colorPress: 'hsl(280, 65.0%, 99.4%)',
+    colorFocus: 'hsl(276, 100%, 99.0%)',
+    colorTransparent: 'hsl(280, 65.0%, 99.4%)',
+    borderColor: 'hsl(272, 66.0%, 16.0%)',
+    borderColorHover: 'hsl(272, 50.0%, 45.8%)',
+    borderColorFocus: 'hsl(272, 66.0%, 16.0%)',
+    borderColorPress: 'hsl(272, 66.0%, 16.0%)',
+    placeholderColor: 'hsl(276, 100%, 99.0%)'
+} as Theme
+export const light_purple_SliderTrackActive = {
+    background: 'hsl(272, 46.8%, 50.3%)',
+    backgroundHover: 'hsl(272, 51.0%, 54.0%)',
+    backgroundPress: 'hsl(272, 60.0%, 73.5%)',
+    backgroundFocus: 'hsl(274, 65.4%, 87.8%)',
+    backgroundStrong: 'hsl(272, 50.0%, 45.8%)',
+    backgroundTransparent: 'hsl(272, 66.0%, 16.0%)',
+    color: 'hsl(280, 65.0%, 99.4%)',
+    colorHover: 'hsl(276, 100%, 99.0%)',
+    colorPress: 'hsl(280, 65.0%, 99.4%)',
+    colorFocus: 'hsl(276, 100%, 99.0%)',
+    colorTransparent: 'hsl(276, 100%, 99.0%)',
+    borderColor: 'hsl(272, 60.0%, 73.5%)',
+    borderColorHover: 'hsl(274, 65.4%, 87.8%)',
+    borderColorFocus: 'hsl(272, 60.0%, 73.5%)',
+    borderColorPress: 'hsl(272, 60.0%, 73.5%)',
+    placeholderColor: 'hsl(274, 65.4%, 87.8%)'
+} as Theme
 export const light_purple_SliderThumb = {
     background: 'hsl(272, 66.0%, 16.0%)',
     backgroundHover: 'hsl(272, 50.0%, 45.8%)',
@@ -3367,6 +3493,42 @@ export const light_pink_Checkbox = {
 export const light_pink_Switch = light_pink_Checkbox as Theme
 export const light_pink_TooltipContent = light_pink_Checkbox as Theme
 export const light_pink_SliderTrack = light_pink_Checkbox as Theme
+export const light_pink_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(320, 70.0%, 13.5%)',
+    backgroundFocus: 'hsl(322, 75.0%, 46.0%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(322, 100%, 99.4%)',
+    colorHover: 'hsl(323, 100%, 98.4%)',
+    colorPress: 'hsl(322, 100%, 99.4%)',
+    colorFocus: 'hsl(323, 100%, 98.4%)',
+    colorTransparent: 'hsl(322, 100%, 99.4%)',
+    borderColor: 'hsl(320, 70.0%, 13.5%)',
+    borderColorHover: 'hsl(322, 75.0%, 46.0%)',
+    borderColorFocus: 'hsl(320, 70.0%, 13.5%)',
+    borderColorPress: 'hsl(320, 70.0%, 13.5%)',
+    placeholderColor: 'hsl(323, 100%, 98.4%)'
+} as Theme
+export const light_pink_SliderTrackActive = {
+    background: 'hsl(322, 63.9%, 50.7%)',
+    backgroundHover: 'hsl(322, 65.0%, 54.5%)',
+    backgroundPress: 'hsl(323, 60.3%, 72.4%)',
+    backgroundFocus: 'hsl(323, 66.3%, 86.6%)',
+    backgroundStrong: 'hsl(322, 75.0%, 46.0%)',
+    backgroundTransparent: 'hsl(320, 70.0%, 13.5%)',
+    color: 'hsl(322, 100%, 99.4%)',
+    colorHover: 'hsl(323, 100%, 98.4%)',
+    colorPress: 'hsl(322, 100%, 99.4%)',
+    colorFocus: 'hsl(323, 100%, 98.4%)',
+    colorTransparent: 'hsl(323, 100%, 98.4%)',
+    borderColor: 'hsl(323, 60.3%, 72.4%)',
+    borderColorHover: 'hsl(323, 66.3%, 86.6%)',
+    borderColorFocus: 'hsl(323, 60.3%, 72.4%)',
+    borderColorPress: 'hsl(323, 60.3%, 72.4%)',
+    placeholderColor: 'hsl(323, 66.3%, 86.6%)'
+} as Theme
 export const light_pink_SliderThumb = {
     background: 'hsl(320, 70.0%, 13.5%)',
     backgroundHover: 'hsl(322, 75.0%, 46.0%)',
@@ -3488,6 +3650,42 @@ export const light_red_Checkbox = {
 export const light_red_Switch = light_red_Checkbox as Theme
 export const light_red_TooltipContent = light_red_Checkbox as Theme
 export const light_red_SliderTrack = light_red_Checkbox as Theme
+export const light_red_SwitchThumb = {
+    background: 'hsl(0, 0%, 9.0%)',
+    backgroundHover: 'hsl(0, 0%, 9.0%)',
+    backgroundPress: 'hsl(354, 50.0%, 14.6%)',
+    backgroundFocus: 'hsl(358, 65.0%, 48.7%)',
+    backgroundStrong: 'hsl(0, 0%, 9.0%)',
+    backgroundTransparent: 'hsl(0, 0%, 9.0%)',
+    color: 'hsl(359, 100%, 99.4%)',
+    colorHover: 'hsl(359, 100%, 98.6%)',
+    colorPress: 'hsl(359, 100%, 99.4%)',
+    colorFocus: 'hsl(359, 100%, 98.6%)',
+    colorTransparent: 'hsl(359, 100%, 99.4%)',
+    borderColor: 'hsl(354, 50.0%, 14.6%)',
+    borderColorHover: 'hsl(358, 65.0%, 48.7%)',
+    borderColorFocus: 'hsl(354, 50.0%, 14.6%)',
+    borderColorPress: 'hsl(354, 50.0%, 14.6%)',
+    placeholderColor: 'hsl(359, 100%, 98.6%)'
+} as Theme
+export const light_red_SliderTrackActive = {
+    background: 'hsl(358, 69.4%, 55.2%)',
+    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
+    backgroundPress: 'hsl(359, 69.5%, 74.3%)',
+    backgroundFocus: 'hsl(360, 81.7%, 87.8%)',
+    backgroundStrong: 'hsl(358, 65.0%, 48.7%)',
+    backgroundTransparent: 'hsl(354, 50.0%, 14.6%)',
+    color: 'hsl(359, 100%, 99.4%)',
+    colorHover: 'hsl(359, 100%, 98.6%)',
+    colorPress: 'hsl(359, 100%, 99.4%)',
+    colorFocus: 'hsl(359, 100%, 98.6%)',
+    colorTransparent: 'hsl(359, 100%, 98.6%)',
+    borderColor: 'hsl(359, 69.5%, 74.3%)',
+    borderColorHover: 'hsl(360, 81.7%, 87.8%)',
+    borderColorFocus: 'hsl(359, 69.5%, 74.3%)',
+    borderColorPress: 'hsl(359, 69.5%, 74.3%)',
+    placeholderColor: 'hsl(360, 81.7%, 87.8%)'
+} as Theme
 export const light_red_SliderThumb = {
     background: 'hsl(354, 50.0%, 14.6%)',
     backgroundHover: 'hsl(358, 65.0%, 48.7%)',
@@ -4425,6 +4623,42 @@ export const dark_red_Checkbox = {
 export const dark_red_Switch = dark_red_Checkbox as Theme
 export const dark_red_TooltipContent = dark_red_Checkbox as Theme
 export const dark_red_SliderTrack = dark_red_Checkbox as Theme
+export const dark_red_SwitchThumb = {
+    background: '#fff',
+    backgroundHover: '#fff',
+    backgroundPress: 'hsl(351, 89.0%, 96.0%)',
+    backgroundFocus: 'hsl(358, 100%, 69.5%)',
+    backgroundStrong: '#fff',
+    backgroundTransparent: '#fff',
+    color: 'hsl(353, 23.0%, 9.8%)',
+    colorHover: 'hsl(357, 34.4%, 12.0%)',
+    colorPress: 'hsl(353, 23.0%, 9.8%)',
+    colorFocus: 'hsl(357, 34.4%, 12.0%)',
+    colorTransparent: 'hsl(353, 23.0%, 9.8%)',
+    borderColor: 'hsl(358, 100%, 69.5%)',
+    borderColorHover: 'hsl(358, 85.3%, 64.0%)',
+    borderColorFocus: 'hsl(351, 89.0%, 96.0%)',
+    borderColorPress: 'hsl(358, 100%, 69.5%)',
+    placeholderColor: 'hsl(357, 34.4%, 12.0%)'
+} as Theme
+export const dark_red_SliderTrackActive = {
+    background: 'hsl(358, 85.3%, 64.0%)',
+    backgroundHover: 'hsl(358, 75.0%, 59.0%)',
+    backgroundPress: 'hsl(358, 65.0%, 40.4%)',
+    backgroundFocus: 'hsl(356, 55.2%, 25.9%)',
+    backgroundStrong: 'hsl(358, 100%, 69.5%)',
+    backgroundTransparent: 'hsl(351, 89.0%, 96.0%)',
+    color: 'hsl(353, 23.0%, 9.8%)',
+    colorHover: 'hsl(357, 34.4%, 12.0%)',
+    colorPress: 'hsl(353, 23.0%, 9.8%)',
+    colorFocus: 'hsl(357, 34.4%, 12.0%)',
+    colorTransparent: 'hsl(357, 34.4%, 12.0%)',
+    borderColor: 'hsl(356, 55.2%, 25.9%)',
+    borderColorHover: 'hsl(356, 51.1%, 21.9%)',
+    borderColorFocus: 'hsl(358, 65.0%, 40.4%)',
+    borderColorPress: 'hsl(356, 55.2%, 25.9%)',
+    placeholderColor: 'hsl(356, 55.2%, 25.9%)'
+} as Theme
 export const dark_red_SliderThumb = {
     background: 'hsl(351, 89.0%, 96.0%)',
     backgroundHover: 'hsl(358, 100%, 69.5%)',

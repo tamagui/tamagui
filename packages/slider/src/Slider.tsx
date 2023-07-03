@@ -285,7 +285,6 @@ const SliderTrackActive = React.forwardRef<View, SliderTrackActiveProps>(
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         size={context.size}
-        debug="verbose"
         {...rangeProps}
         ref={composedRefs}
         {...{

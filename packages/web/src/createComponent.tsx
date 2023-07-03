@@ -396,7 +396,7 @@ export function createComponent<
           )
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), curDefaultPropsOrder: Object.keys(curDefaultProps) })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props), curDefaultPropsOrder: Object.keys(curDefaultProps) })
           console.groupEnd()
         }
       }
@@ -494,7 +494,10 @@ export function createComponent<
         style: isAnimated ? splitStylesStyle : {},
         // style: splitStylesStyle,
         presence,
-        state,
+        state: {
+          ...state,
+          isAnimated,
+        },
         theme: themeState.theme,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
@@ -805,6 +808,7 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`events`, { events, isHoverable, attachPress })
     }
 
@@ -888,10 +892,14 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> with props`, viewProps)
+        console.groupCollapsed(`render <${element} /> with props`)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('viewProps', viewProps)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('viewPropsOrder', Object.keys(viewProps))
         for (const key in viewProps) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(key, viewProps[key])
+          console.log(' - ', key, viewProps[key])
         }
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('children', content)
@@ -1245,6 +1253,7 @@ function mergeConfigDefaultProps(
   if (ourDefaultsMerged) {
     return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
   }
+
   return props
 }
 

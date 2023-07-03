@@ -147,7 +147,7 @@ const resolveVariants: StyleResolver = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log('resolve variant', { key, value, variantValue })
+    console.log(' - resolve variant', { key, value, variantValue })
   }
 
   if (!variantValue) {
@@ -444,7 +444,7 @@ const getToken = (
   if (value in theme) {
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(`Getting theme value for ${key} from ${value} = ${theme[value].val}`)
+      console.log(` - getting theme value for ${key} from ${value} = ${theme[value].val}`)
     }
     valOrVar = theme[value]
     hasSet = true

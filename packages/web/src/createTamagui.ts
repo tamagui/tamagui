@@ -210,14 +210,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
               themeName,
               ...dedupedThemes[themeName],
             })
-            if (dedupedThemes[themeName].names.includes('light_SliderTrackActive')) {
-              console.log(
-                'next rules are',
-                themeName,
-                dedupedThemes[themeName],
-                nextRules
-              )
-            }
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
         }
