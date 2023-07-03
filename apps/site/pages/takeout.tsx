@@ -974,7 +974,7 @@ export default function TakeoutPage({
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
                   {takeoutImages.slice(0, 7).map((image, index) => (
-                    <YStack key={index} pos="relative" >
+                    <YStack key={index} pos="relative">
                       <TakeoutImage
                         alt={image.alt}
                         src={image.src}
@@ -1107,7 +1107,7 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
     >
-      <Image  {...props} />
+      <Image {...props} />
     </XStack>
   )
 }
@@ -2390,6 +2390,13 @@ const FeatureIcon = ({
   title: string
 }) => {
   const Tint = useTint()
+  useEffect(() => {
+    const id = setTimeout(() => {
+      Tint.setNextTint()
+    }, 30_000)
+
+    return () => clearTimeout(id)
+  }, [Tint.tint])
   const theme = Tint.tints[themeIndex] as ThemeName
   const active = Tint.tint === theme
 
