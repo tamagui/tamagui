@@ -60,11 +60,15 @@ const ChangeEmailForm = () => {
   const email = user?.session.user.email
   const [newEmail, setNewEmail] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const supabase = useSupabaseClient()
   const handleUpdateEmail = async () => {
+    if (loading) return
+    setLoading(true)
     if (!newEmail) {
       setErrorMessage('Enter your new email first.')
+      setLoading(false)
       return
     }
     setErrorMessage('')
@@ -75,14 +79,16 @@ const ChangeEmailForm = () => {
 
     if (error) {
       setErrorMessage(error.message)
+      setLoading(false)
       return
     }
     // await updateUserSwr()
+    setLoading(false)
     alert("We've sent your new email a confirmation.")
   }
 
   return (
-    <Form gap="$4" onSubmit={handleUpdateEmail} minWidth={400}>
+    <Form gap="$4" onSubmit={handleUpdateEmail} width={400}>
       <Fieldset>
         <Label htmlFor="current-email">Current Email</Label>
         <Input id="current-email" disabled value={email} />
@@ -100,7 +106,9 @@ const ChangeEmailForm = () => {
       {errorMessage && <Paragraph theme="red_alt2">{errorMessage}</Paragraph>}
 
       <Form.Trigger>
-        <Button themeInverse>Submit</Button>
+        <Button themeInverse disabled={loading}>
+          Submit
+        </Button>
       </Form.Trigger>
     </Form>
   )
