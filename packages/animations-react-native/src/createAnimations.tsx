@@ -179,6 +179,7 @@ export function createAnimations<A extends AnimationsConfig>(
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
+      const animatedUseNativeState = useSafeRef<Record<string, boolean>>({})
       const animationsState = useSafeRef(
         new WeakMap<
           Animated.Value,
@@ -195,6 +196,18 @@ export function createAnimations<A extends AnimationsConfig>(
       const hasAnimateOnly = !!props.animateOnly
 
       const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
+
+      // check if there is any style that is not supported by native driver
+      const isThereNoNativeStyleKeys = useMemo(() => {
+        if (isWeb) return true
+        return Object.keys(style).some((key) => {
+          if (animateOnly.length) {
+            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
+          } else {
+            return !animatedStyleKey[key]
+          }
+        })
+      }, args)
 
       const res = useMemo(() => {
         const runners: Function[] = []
@@ -263,7 +276,6 @@ export function createAnimations<A extends AnimationsConfig>(
           const [val, type] = isColorStyleKey ? [0, undefined] : getValue(valIn)
           let animateToValue = val
           const value = animated || new Animated.Value(val)
-
           const curInterpolation = animationsState.current.get(value)
 
           // @ts-expect-error
@@ -316,7 +328,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb && !(key in costlyToAnimateStyleKey),
+                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
                   ...animationConfig,
                 })
               }
