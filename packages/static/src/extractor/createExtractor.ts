@@ -32,6 +32,7 @@ import {
   attrStr,
   findComponentName,
   getValidComponent,
+  getValidComponentsPaths,
   getValidImport,
   isPresent,
   isValidImport,
@@ -338,7 +339,9 @@ export function createExtractor(
           logger.info(
             ` - import ${isValidComponent ? '✅' : '⇣'} - ${names.join(
               ', '
-            )} from '${moduleName}'`
+            )} from '${moduleName}' - (valid: ${JSON.stringify(
+              getValidComponentsPaths(propsWithFileInfo)
+            )})`
           )
         }
         if (isValidComponent) {
@@ -587,7 +590,7 @@ export function createExtractor(
         }
 
         // // add in the style object as classnames
-        // const atomics = getStylesAtomic(out.style)
+        // const atomics = getPropsAtomic(out.style)
         // for (const atomic of atomics) {
         //   out.rulesToInsert = out.rulesToInsert || []
         //   out.rulesToInsert.push(atomic)
@@ -1931,9 +1934,9 @@ export function createExtractor(
           }
 
           // post process
-          const getStyles = (props: Object | null, debugName = '') => {
+          const getProps = (props: Object | null, debugName = '') => {
             if (!props) {
-              if (shouldPrintDebug) logger.info([' getStyles() no props'].join(' '))
+              if (shouldPrintDebug) logger.info([' getProps() no props'].join(' '))
               return {}
             }
             if (excludeProps?.size) {
@@ -1960,27 +1963,28 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )
 
-              const outStyle = {
+              const outProps = {
+                ...out.viewProps,
                 ...out.style,
                 ...out.pseudos,
               }
 
               if (shouldPrintDebug) {
                 // prettier-ignore
-                logger.info(`\n       getStyles (props in): ${logLines(objToStr(props))}`)
+                logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`\n       getStyles (outStyle): ${logLines(objToStr(outStyle))}`)
+                logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
               }
 
-              return outStyle
+              return outProps
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))
               return {}
             }
           }
 
-          // used to ensure we pass the entire prop bundle to getStyles
-          const completeStyles = getStyles(completeProps, 'completeStyles')
+          // used to ensure we pass the entire prop bundle to getProps
+          const completeStyles = getProps(completeProps, 'completeStyles')
 
           if (!completeStyles) {
             throw new Error(`Impossible, no styles`)
@@ -1993,8 +1997,8 @@ export function createExtractor(
             try {
               switch (attr.type) {
                 case 'ternary': {
-                  const a = getStyles(attr.value.alternate, 'ternary.alternate')
-                  const c = getStyles(attr.value.consequent, 'ternary.consequent')
+                  const a = getProps(attr.value.alternate, 'ternary.alternate')
+                  const c = getProps(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug)
@@ -2003,7 +2007,7 @@ export function createExtractor(
                 }
                 case 'style': {
                   // expand variants and such
-                  const styles = getStyles(attr.value, 'style')
+                  const styles = getProps(attr.value, 'style')
                   if (styles) {
                     attr.value = styles
                   }
@@ -2012,6 +2016,31 @@ export function createExtractor(
                   // prettier-ignore
                   if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
                   continue
+                }
+                case 'attr': {
+                  if (shouldFlatten && t.isJSXAttribute(attr.value)) {
+                    // we know all attributes are static
+                    // this only does one at a time but it should really do the whole group together...
+                    // also awkward to be doing it using jsxAttributes...
+                    const key = attr.value.name.name as string
+                    // undefined = boolean true
+                    const value = attemptEvalSafe(
+                      attr.value.value || t.booleanLiteral(true)
+                    )
+                    const outProps = getProps({ [key]: value }, `attr.${key}`)
+                    const outKey = Object.keys(outProps)[0]
+                    if (outKey) {
+                      const outVal = outProps[outKey]
+                      attr.value = t.jsxAttribute(
+                        t.jsxIdentifier(outKey),
+                        t.jsxExpressionContainer(
+                          typeof outVal === 'string'
+                            ? t.stringLiteral(outVal)
+                            : literalToAst(outVal)
+                        )
+                      )
+                    }
+                  }
                 }
               }
             } catch (err) {
