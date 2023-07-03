@@ -1,5 +1,10 @@
 import { FloatingFocusManager } from '@floating-ui/react'
-import { TamaguiElement, composeRefs, isWeb } from '@tamagui/core'
+import {
+  TamaguiElement,
+  composeRefs,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
 import { styled } from '@tamagui/core'
 import { PortalItem } from '@tamagui/portal'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -42,6 +47,12 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
+
+    useIsomorphicLayoutEffect(() => {
+      if (context.update) {
+        context.update()
+      }
+    }, [breakpointActive])
 
     const composedRefs = composeRefs(
       forwardedRef,
