@@ -84,7 +84,7 @@ const ChangeEmailForm = () => {
     }
     // await updateUserSwr()
     setLoading(false)
-    alert("We've sent your new email a confirmation.")
+    alert("We've sent your new email a confirmation. Make sure to check spam.")
   }
 
   return (
