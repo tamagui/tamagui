@@ -177,10 +177,7 @@ const ProfileContent = () => {
   const { data } = useUser()
 
   if (!data) return null
-  const {
-    session: { user },
-    userDetails,
-  } = data
+  const { user, userDetails } = data
 
   return (
     <XStack space="$4" separator={<Separator vertical />}>

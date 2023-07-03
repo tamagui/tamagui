@@ -56,8 +56,9 @@ const ChangeEmail = () => {
 }
 
 const ChangeEmailForm = () => {
-  const { data: user, mutate: updateUserSwr } = useUser()
-  const email = user?.session.user.email
+  const { data: userData, mutate: updateUserSwr } = useUser()
+
+  const email = userData?.user.email
   const [newEmail, setNewEmail] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
