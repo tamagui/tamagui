@@ -1167,7 +1167,9 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
     >
-      <Image {...props} />
+      <YStack style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.6)' }} fullscreen />
+        <Image {...props} />
+      
     </XStack>
   )
 }
