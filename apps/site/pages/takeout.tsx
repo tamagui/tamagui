@@ -40,6 +40,7 @@ import {
   H3,
   H4,
   H5,
+  H6,
   Input,
   Label,
   Paragraph,
@@ -1018,14 +1019,28 @@ export default function TakeoutPage({
                 <ImageGallery />
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.slice(0, 7).map((image, index) => (
+                  {takeoutImages.slice(0, 4).map((image, index) => (
                     <YStack key={index} pos="relative">
                       <TakeoutImage
                         alt={image.alt}
                         src={image.src}
                         style={{ objectFit: 'cover' }}
-                        width={200}
-                        height={200}
+                        width={220}
+                        height={220}
+                        index={index}
+                      />
+                    </YStack>
+                  ))}
+                </XStack>
+                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
+                  {takeoutImages.slice(4, 17).map((image, index) => (
+                    <YStack key={index} pos="relative">
+                      <TakeoutImage
+                        alt={image.alt}
+                        src={image.src}
+                        style={{ objectFit: 'cover' }}
+                        width={50}
+                        height={50}
                         index={index}
                       />
                     </YStack>
@@ -1035,19 +1050,19 @@ export default function TakeoutPage({
                       onPress={() => {
                         store.galleryOpen = true
                       }}
-                      width={200}
+                      width={50}
+                      height={50}
                       bc="$color12"
-                      br="$10"
+                      br="$6"
                       ov="hidden"
                       elevation="$2"
                       cursor="pointer"
-                      height={200}
                       ai="center"
                       jc="center"
                     >
-                      <H1 fontFamily="$munro" color="black">
-                        +{takeoutImages.length - 7}
-                      </H1>
+                      <H6 fontFamily="$munro" color="black">
+                        +{takeoutImages.length - 17}
+                      </H6>
                     </YStack>
                   </YStack>
                 </XStack>
@@ -1144,7 +1159,7 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      br="$10"
+      br="$6"
       ov="hidden"
       elevation="$2"
       cursor="pointer"
