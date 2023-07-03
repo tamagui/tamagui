@@ -201,16 +201,19 @@ export function createAnimations<A extends AnimationsConfig>(
         const completions: Promise<void>[] = []
 
         const nonAnimatedStyle = {}
+
         for (const key in style) {
           const val = style[key]
-          if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
+          if (animatedStyleKey[key] == null && !costlyToAnimateStyleKey[key]) {
             nonAnimatedStyle[key] = val
             continue
           }
+
           if (hasAnimateOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
+
           if (key !== 'transform') {
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
             continue
@@ -262,6 +265,14 @@ export function createAnimations<A extends AnimationsConfig>(
           const value = animated || new Animated.Value(val)
 
           const curInterpolation = animationsState.current.get(value)
+
+          // @ts-expect-error
+          const curVal = getValue(curInterpolation?.current)[0]
+          if (curVal === val) {
+            // danger??? i've seen this cause issues with AnimatePresence, testing...
+            return value
+          }
+
           let interpolateArgs: any
           if (type) {
             interpolateArgs = getInterpolated(
@@ -326,9 +337,9 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
-              // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
-              console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
+              // rome-ignore lint/nursery/noConsoleLog: ok
+              console.log(' 💠 animate',key,`from ${curVal} (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
           return value
