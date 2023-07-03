@@ -974,7 +974,7 @@ export default function TakeoutPage({
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
                   {takeoutImages.slice(0, 7).map((image, index) => (
-                    <YStack key={index} pos="relative" overflow="hidden">
+                    <YStack key={index} pos="relative" >
                       <TakeoutImage
                         alt={image.alt}
                         src={image.src}
@@ -1099,15 +1099,15 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      animation="quick"
       br="$10"
       ov="hidden"
       elevation="$2"
       cursor="pointer"
+      animation="100ms"
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
     >
-      <Image {...props} />
+      <Image  {...props} />
     </XStack>
   )
 }
