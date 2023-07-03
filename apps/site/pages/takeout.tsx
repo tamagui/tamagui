@@ -40,6 +40,7 @@ import {
   H3,
   H4,
   H5,
+  H6,
   Input,
   Label,
   Paragraph,
@@ -57,6 +58,7 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
+  TooltipProps,
   TooltipSimple,
   Unspaced,
   XStack,
@@ -68,6 +70,7 @@ import {
   styled,
   useMedia,
 } from 'tamagui'
+import { Tooltip } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useHoverGlow } from '../components/HoverGlow'
@@ -362,7 +365,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </Paragraph>
 
       {/* animated borders shine */}
-      <YStack pos="absolute" y={-38}>
+      <YStack pos="absolute" y={10}>
         <ThemeTint>
           <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
         </ThemeTint>
@@ -371,7 +374,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         className="mix-blend"
-        y={-35}
+        y={10}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
@@ -384,7 +387,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         className="mix-blend"
-        y={-35}
+        y={10}
         scale={0.975}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
@@ -401,6 +404,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       )}
 
       <YStack
+        mt={0}
         className="mix-blend"
         style={{
           clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
@@ -471,50 +475,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           <TAKEOUT color="$background" className="" />
         </YStack>
       </YStack>
-
-      <XStack my={21} gap={60} f={1} jc="space-between" className="mix-blend">
-        <FeatureIcon
-          themeIndex={0}
-          title="Monorepo"
-          icon="retro-icons/coding-apps-websites-module-21.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={1}
-          title="Design"
-          icon="retro-icons/design-color-painting-palette-25.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={2}
-          title="Deploy"
-          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={3}
-          title="Themes"
-          icon="retro-icons/design-color-bucket-brush-63.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={4}
-          title="Screens"
-          icon="retro-icons/coding-app-website-ui-62.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={5}
-          title="Assets"
-          icon="retro-icons/coding-apps-websites-plugin-33.svg"
-        />
-
-        <FeatureIcon
-          themeIndex={6}
-          title="& More"
-          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-        />
-      </XStack>
       <YStack
         position="absolute"
         top={360}
@@ -576,6 +536,17 @@ export default function TakeoutPage({
       <FaqModal />
       <AgreementModal />
 
+      {/* gradient on the end of the page */}
+      <ThemeTint>
+        <YStack
+          zi={-1}
+          fullscreen
+          style={{
+            background: `linear-gradient(to bottom, transparent, transparent, var(--color3))`,
+          }}
+        />
+      </ThemeTint>
+
       {/* big background outlined font */}
       <YStack
         pos="absolute"
@@ -615,6 +586,81 @@ export default function TakeoutPage({
             <TakeoutHero coupon={coupon} />
           </YStack>
 
+          <XStack
+            zi={100000}
+            my={21}
+            top={heroHeight - 200}
+            gap={60}
+            f={1}
+            alignSelf="center"
+            jc="space-between"
+            className="mix-blend"
+            $xxs={{
+              scale: 0.5,
+              gap: 30,
+              top: heroHeight - 480,
+            }}
+            $xs={{
+              scale: 0.5,
+              top: heroHeight - 400,
+            }}
+            $sm={{
+              scale: 0.8,
+              top: heroHeight - 380,
+            }}
+            $md={{
+              scale: 0.9,
+              top: heroHeight - 350,
+            }}
+            $lg={{
+              scale: 1,
+              gap: 50,
+              top: heroHeight - 320,
+            }}
+          >
+            <FeatureIcon
+              themeIndex={0}
+              title="Monorepo"
+              icon="retro-icons/coding-apps-websites-module-21.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={1}
+              title="Design"
+              icon="retro-icons/design-color-painting-palette-25.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={2}
+              title="Deploy"
+              icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={3}
+              title="Themes"
+              icon="retro-icons/design-color-bucket-brush-63.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={4}
+              title="Screens"
+              icon="retro-icons/coding-app-website-ui-62.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={5}
+              title="Assets"
+              icon="retro-icons/coding-apps-websites-plugin-33.svg"
+            />
+
+            <FeatureIcon
+              themeIndex={6}
+              title="& More"
+              icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+            />
+          </XStack>
+
           <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
             <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
@@ -648,7 +694,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
@@ -973,14 +1019,28 @@ export default function TakeoutPage({
                 <ImageGallery />
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.slice(0, 7).map((image, index) => (
-                    <YStack key={index} pos="relative" overflow="hidden">
+                  {takeoutImages.slice(0, 4).map((image, index) => (
+                    <YStack key={index} pos="relative">
                       <TakeoutImage
                         alt={image.alt}
                         src={image.src}
                         style={{ objectFit: 'cover' }}
-                        width={200}
-                        height={200}
+                        width={220}
+                        height={220}
+                        index={index}
+                      />
+                    </YStack>
+                  ))}
+                </XStack>
+                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
+                  {takeoutImages.slice(4, 17).map((image, index) => (
+                    <YStack key={index} pos="relative">
+                      <TakeoutImage
+                        alt={image.alt}
+                        src={image.src}
+                        style={{ objectFit: 'cover' }}
+                        width={50}
+                        height={50}
                         index={index}
                       />
                     </YStack>
@@ -990,19 +1050,19 @@ export default function TakeoutPage({
                       onPress={() => {
                         store.galleryOpen = true
                       }}
-                      width={200}
+                      width={50}
+                      height={50}
                       bc="$color12"
-                      br="$10"
+                      br="$6"
                       ov="hidden"
                       elevation="$2"
                       cursor="pointer"
-                      height={200}
                       ai="center"
                       jc="center"
                     >
-                      <H1 fontFamily="$munro" color="black">
-                        +{takeoutImages.length - 7}
-                      </H1>
+                      <H6 fontFamily="$munro" color="black">
+                        +{takeoutImages.length - 17}
+                      </H6>
                     </YStack>
                   </YStack>
                 </XStack>
@@ -1099,15 +1159,17 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      animation="quick"
-      br="$10"
+      br="$6"
       ov="hidden"
       elevation="$2"
       cursor="pointer"
+      animation="100ms"
       hoverStyle={{ scale: 1.025 }}
       pressStyle={{ scale: 0.975 }}
     >
-      <Image {...props} />
+      <YStack style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.6)' }} fullscreen />
+        <Image {...props} />
+      
     </XStack>
   )
 }
@@ -2390,13 +2452,20 @@ const FeatureIcon = ({
   title: string
 }) => {
   const Tint = useTint()
+  useEffect(() => {
+    const id = setTimeout(() => {
+      Tint.setNextTint()
+    }, 30_000)
+
+    return () => clearTimeout(id)
+  }, [Tint.tint])
   const theme = Tint.tints[themeIndex] as ThemeName
   const active = Tint.tint === theme
 
   return (
     <YStack>
       <Theme name={theme}>
-        <TooltipSimple open={active} label={title} delay={{ open: 100 }}>
+        <PixelTooltip open={active} label={title} delay={{ open: 100 }}>
           <IconFrame
             hoverStyle={{
               scale: 1.2,
@@ -2408,7 +2477,7 @@ const FeatureIcon = ({
           >
             <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
           </IconFrame>
-        </TooltipSimple>
+        </PixelTooltip>
       </Theme>
     </YStack>
   )
@@ -2581,4 +2650,40 @@ const ImagesCarousel = () => {
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+const PixelTooltip = ({
+  children,
+  label,
+  ...props
+}: TooltipProps & { label: string }) => {
+  return (
+    <Tooltip {...props}>
+      <Tooltip.Trigger>{children}</Tooltip.Trigger>
+      <Theme inverse>
+        <Tooltip.Content
+          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+          scale={1}
+          x={0}
+          y={0}
+          px="$2"
+          py="$0"
+          opacity={1}
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        >
+          <Paragraph color="$color12" fontFamily="$munro" size="$4">
+            {label}
+          </Paragraph>
+        </Tooltip.Content>
+      </Theme>
+    </Tooltip>
+  )
 }
