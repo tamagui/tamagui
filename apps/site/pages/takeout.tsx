@@ -57,6 +57,7 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
+  TooltipProps,
   TooltipSimple,
   Unspaced,
   XStack,
@@ -68,6 +69,7 @@ import {
   styled,
   useMedia,
 } from 'tamagui'
+import { Tooltip } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useHoverGlow } from '../components/HoverGlow'
@@ -2435,7 +2437,7 @@ const FeatureIcon = ({
   return (
     <YStack>
       <Theme name={theme}>
-        <TooltipSimple open={active} label={title} delay={{ open: 100 }}>
+        <PixelTooltip open={active} label={title} delay={{ open: 100 }}>
           <IconFrame
             hoverStyle={{
               scale: 1.2,
@@ -2447,7 +2449,7 @@ const FeatureIcon = ({
           >
             <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
           </IconFrame>
-        </TooltipSimple>
+        </PixelTooltip>
       </Theme>
     </YStack>
   )
@@ -2620,4 +2622,40 @@ const ImagesCarousel = () => {
 const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+const PixelTooltip = ({
+  children,
+  label,
+  ...props
+}: TooltipProps & { label: string }) => {
+  return (
+    <Tooltip {...props}>
+      <Tooltip.Trigger>{children}</Tooltip.Trigger>
+      <Theme inverse>
+        <Tooltip.Content
+          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+          scale={1}
+          x={0}
+          y={0}
+          px="$2"
+          py="$0"
+          opacity={1}
+          animation={[
+            'quick',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        >
+          <Paragraph color="$color12" fontFamily="$munro" size="$4">
+            {label}
+          </Paragraph>
+        </Tooltip.Content>
+      </Theme>
+    </Tooltip>
+  )
 }
