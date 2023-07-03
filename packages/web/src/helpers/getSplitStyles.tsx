@@ -694,12 +694,11 @@ export const getSplitStyles: StyleSplitter = (
           for (const pkey in pseudoStyleObject) {
             const val = pseudoStyleObject[pkey]
             // when disabled ensure the default value is set for future animations to align
+
             if (isDisabled) {
-              if (pkey in animatableDefaults) {
-                if (!(pkey in usedKeys)) {
-                  const defaultVal = animatableDefaults[pkey]
-                  mergeStyle(styleState, flatTransforms, pkey, defaultVal)
-                }
+              if (pkey in animatableDefaults && !(pkey in usedKeys)) {
+                const defaultVal = animatableDefaults[pkey]
+                mergeStyle(styleState, flatTransforms, pkey, defaultVal)
               }
             } else {
               const curImportance = usedKeys[importance] || 0
@@ -710,6 +709,7 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
                 mergeStyle(styleState, flatTransforms, pkey, val)
+                usedKeys[pkey] ||= 1
               }
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 // prettier-ignore
@@ -1217,6 +1217,8 @@ const animatableDefaults = {
   rotate: '0deg',
   rotateY: '0deg',
   rotateX: '0deg',
+  x: 0,
+  y: 0,
 }
 
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`

@@ -181,11 +181,13 @@ const resolveVariants: StyleResolver = (
 
     if (process.env.NODE_ENV === 'development') {
       if (debug === 'verbose') {
+        console.groupCollapsed('expanded functional variant', key)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('expanded functional variant', {
+        console.log({
           variant: fn,
           response: variantValue,
         })
+        console.groupEnd()
       }
     }
   }
