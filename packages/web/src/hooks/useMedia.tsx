@@ -111,6 +111,7 @@ export function setupMediaListeners() {
       const next = !!getMatch().matches
       if (next === mediaState[key]) return
       mediaState = { ...mediaState, [key]: next }
+      initState = { ...initState, [key]: next }
       updateCurrentState()
     }
   }
