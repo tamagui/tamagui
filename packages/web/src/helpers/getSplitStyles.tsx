@@ -176,7 +176,7 @@ export const getSplitStyles: StyleSplitter = (
 
   // handle before the loop so we can mark usedKeys in className
   // since the compiler will optimize to className we just treat className as the more powerful
-  if (props.className) {
+  if (typeof props.className === 'string') {
     for (const cn of props.className.split(' ')) {
       if (cn[0] === '_') {
         // tamagui, merge it expanded on key, eventually this will go away with better compiler
@@ -224,7 +224,6 @@ export const getSplitStyles: StyleSplitter = (
             console.log(`Adding compiled style ${keyInit}: ${valInit}`)
           }
 
-          usedKeys[keyInit] ||= 1
           if (shouldDoClasses) {
             classNames[keyInit] = valInit
             delete style[keyInit]
