@@ -535,6 +535,17 @@ export default function TakeoutPage({
       <FaqModal />
       <AgreementModal />
 
+      {/* gradient on the end of the page */}
+      <ThemeTint>
+        <YStack
+          zi={-1}
+          fullscreen
+          style={{
+            background: `linear-gradient(to bottom, transparent, transparent, var(--color3))`,
+          }}
+        />
+      </ThemeTint>
+
       {/* big background outlined font */}
       <YStack
         pos="absolute"
