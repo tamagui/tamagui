@@ -74,7 +74,7 @@
   "resolutions": {
     "react-native-svg": "13.4.0",
     "@types/node": "16.11.9",
-    "react-native-reanimated": "2.14.4",
+    "react-native-reanimated": "3.3.0",
     "react-native": "0.71.7",
     "react": "18.2.0",
     "react-dom": "18.2.0"

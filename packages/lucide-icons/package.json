@@ -38,7 +38,7 @@
     "prettier-plugin-import-sort": "^0.0.7",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
-    "react-native-svg": "13.4.0",
+    "react-native-svg": "^13.9.0",
     "uppercamelcase": "^3.0.0"
   },
   "publishConfig": {

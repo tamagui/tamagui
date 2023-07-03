@@ -52,7 +52,7 @@
     "@tamagui/build": "1.37.0",
     "burnt": "^0.10.0",
     "react": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.1"
   },
   "publishConfig": {
     "access": "public"
