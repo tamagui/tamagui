@@ -5,26 +5,24 @@ export const Tag = styled(Text, {
   fontFamily: 'inherit',
   fontSize: 'inherit',
   borderRadius: '$2',
-  px: '$1',
-  mx: '$-1',
   cursor: 'pointer',
   color: '$color',
-  bc: '$color2',
+  backgroundColor: '$color2',
 
   hoverStyle: {
     color: '$color',
-    bc: '$color3',
+    backgroundColor: '$color3',
   },
 
   variants: {
     active: {
       true: {
         color: '$color10',
-        bc: '$color5',
+        backgroundColor: '$color5',
 
         hoverStyle: {
           color: '$color12',
-          bc: '$color5',
+          backgroundColor: '$color5',
         },
       },
     },

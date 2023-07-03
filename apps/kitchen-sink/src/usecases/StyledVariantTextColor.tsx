@@ -1,4 +1,3 @@
-// debug-verbose
 import { Tag, Theme } from '@tamagui/sandbox-ui'
 
 // test with flattening and without!
