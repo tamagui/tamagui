@@ -255,6 +255,9 @@ export const components = {
         className={'intro-paragraph' + (large ? ' large' : '')}
         my="$4"
         fow={large ? '200' : '300'}
+        $sm={{
+          size: '$8',
+        }}
         {...props}
       >
         {disableUnwrapText ? children : unwrapText(children)}
