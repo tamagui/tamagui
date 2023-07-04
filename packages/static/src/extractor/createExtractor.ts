@@ -2027,18 +2027,20 @@ export function createExtractor(
                     const value = attemptEvalSafe(
                       attr.value.value || t.booleanLiteral(true)
                     )
-                    const outProps = getProps({ [key]: value }, `attr.${key}`)
-                    const outKey = Object.keys(outProps)[0]
-                    if (outKey) {
-                      const outVal = outProps[outKey]
-                      attr.value = t.jsxAttribute(
-                        t.jsxIdentifier(outKey),
-                        t.jsxExpressionContainer(
-                          typeof outVal === 'string'
-                            ? t.stringLiteral(outVal)
-                            : literalToAst(outVal)
+                    if (value !== FAILED_EVAL) {
+                      const outProps = getProps({ [key]: value }, `attr.${key}`)
+                      const outKey = Object.keys(outProps)[0]
+                      if (outKey) {
+                        const outVal = outProps[outKey]
+                        attr.value = t.jsxAttribute(
+                          t.jsxIdentifier(outKey),
+                          t.jsxExpressionContainer(
+                            typeof outVal === 'string'
+                              ? t.stringLiteral(outVal)
+                              : literalToAst(outVal)
+                          )
                         )
-                      )
+                      }
                     }
                   }
                 }

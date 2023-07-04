@@ -1,3 +1,4 @@
+// debug
 import { H1, Square, YStack } from 'tamagui'
 
 // TODO this is a great test: media + animation + space (test without animation too)
@@ -23,7 +24,7 @@ export const Sandbox = () => {
   return (
     <>
       {[1, 2, 3].map((i) => (
-        <YStack debug="verbose" key={i}>
+        <YStack key={i}>
           <Square size={100} bc="red" />
         </YStack>
       ))}
