@@ -46,6 +46,14 @@ if (typeof navigator !== 'undefined') {
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
   const router = useRouter()
+  const themeSetting = useThemeSetting()!
+
+  useEffect(() => {
+    if (router.pathname === '/takeout' && theme !== 'dark') {
+      themeSetting.set('dark')
+      setTheme('dark')
+    }
+  }, [router.pathname, theme])
 
   const inner = useMemo(
     () => <AppContents {...props} theme={theme} setTheme={setTheme} />,
@@ -58,6 +66,8 @@ export default function App(props: AppProps) {
         onChangeTheme={setTheme as any}
         {...(router.pathname === '/takeout' && {
           forcedTheme: 'dark',
+          enableSystem: false,
+          defaultTheme: 'dark',
         })}
       >
         {inner}
@@ -72,17 +82,7 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
-  const [theme, setTheme] = useRootTheme()
   const [didInteract, setDidInteract] = useState(false)
-  const themeSetting = useThemeSetting()!
-  const router = useRouter()
-
-  useEffect(() => {
-    if (router.pathname === '/takeout' && theme !== 'dark') {
-      themeSetting.set('dark')
-      setTheme('dark')
-    }
-  }, [router.pathname, theme])
 
   useEffect(() => {
     const onDown = () => {
@@ -117,21 +117,14 @@ function AppContents(
           <LoadMunro />
         </>
       )}
-
-      <NextThemeProvider
-        onChangeTheme={(next) => {
-          setTheme(next as any)
-        }}
+      <TamaguiProvider
+        config={config}
+        disableInjectCSS
+        disableRootThemeClass
+        defaultTheme={props.theme}
       >
-        <TamaguiProvider
-          config={config}
-          disableInjectCSS
-          disableRootThemeClass
-          defaultTheme={theme}
-        >
-          <ContentInner {...props} />
-        </TamaguiProvider>
-      </NextThemeProvider>
+        <ContentInner {...props} />
+      </TamaguiProvider>
     </>
   )
 }
