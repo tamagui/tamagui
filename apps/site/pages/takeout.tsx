@@ -728,8 +728,8 @@ export default function TakeoutPage({
                 <MunroP size="$10" fow="400" $sm={{ size: '$8' }}>
                   We can't promise the <Moon size="$3" style={{ marginBottom: -6 }} /> or
                   the <Star size="$3" style={{ marginBottom: -6 }} />s - success is up to
-                  you. But if you want a cheat code to shipping a stunning web + native
-                  app fast, you've found it.
+                  you. But, if you want a cheat code to shipping stunning web and native
+                  apps fast, you've found it.
                 </MunroP>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
@@ -740,15 +740,14 @@ export default function TakeoutPage({
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                   And of course it's powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />, the
-                  best universal UI system ever created. Within an hour you'll be
-                  deploying your app on the web to Vercel and to iOS and Android app
-                  stores via Expo EAS.
+                  best universal UI system ever. Within an hour you'll be deploying your
+                  app on the web to Vercel and to iOS and Android app stores via Expo EAS.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Get 2 new themes, +150 icon sets and +1500 font package. It's as easy as
-                  running `tamagui add icon` and `tamagui add font` to get a fully
-                  configured package installed right into your monorepo.
+                  Get 2 new themes, 150 icon sets and 1500 font packages as easy as
+                  `tamagui add icon` or `tamagui add font`, fully configured and installed
+                  into your monorepo.
                 </Paragraph>
 
                 <Spacer size="$6" />
