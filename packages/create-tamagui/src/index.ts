@@ -9,6 +9,7 @@ import { cwd } from 'process'
 
 import chalk from 'chalk'
 import Commander from 'commander'
+import { existsSync, readFileSync, writeFileSync } from 'fs-extra'
 import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
@@ -135,6 +136,9 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
       process.exit(1)
     }
 
+    // change root package.json's name to project name
+    await updatePackageJsonName(projectName, resolvedProjectPath)
+
     console.log('Installing packages. This might take a couple of minutes.')
     console.log()
 
@@ -159,6 +163,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
         console.error('[tamagui] Failed to create initial commit.\n\n', e.message)
       }
     }
+
     await template.extraSteps({ isFullClone: true, projectName, projectPath })
   } else {
     await template.extraSteps({
@@ -173,3 +178,14 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 }
 
 run()
+
+function updatePackageJsonName(projectName: string, dir: string) {
+  const packageJsonPath = path.join(dir, 'package.json')
+  if (existsSync(packageJsonPath)) {
+    const content = readFileSync(packageJsonPath).toString()
+    writeFileSync(
+      packageJsonPath,
+      content.replace(/("name": ")(.*)(",)/, `$1${projectName}$3`)
+    )
+  }
+}

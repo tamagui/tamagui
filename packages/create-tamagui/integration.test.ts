@@ -4,7 +4,7 @@ import { platform, tmpdir } from 'os'
 import { join } from 'path'
 
 import { expect, test } from '@playwright/test'
-import { existsSync, remove } from 'fs-extra'
+import { existsSync, readFile, remove } from 'fs-extra'
 import waitPort from 'wait-port'
 import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 
@@ -35,18 +35,24 @@ test.beforeAll(async () => {
     test.setTimeout(oneMinute * 15)
 
     const tamaguiBin = join(PACKAGE_ROOT, `dist`, `index.js`)
+    const projectName = `test-app`
 
     console.log(`Making test app in`, dir)
-
     // clear it from old tests
     await fs.remove(dir)
     await fs.ensureDir(dir)
 
     cd(dir)
 
-    await $`node ${tamaguiBin} test-app --template next-expo-solito`
+    await $`node ${tamaguiBin} ${projectName} --template next-expo-solito`
 
-    cd(`test-app`)
+    cd(projectName)
+
+    // test if create-tamagui changes the root package.json to be the project name
+    const packageJsonData = JSON.parse(
+      (await readFile(join(dir, projectName, 'package.json'))).toString()
+    )
+    expect(packageJsonData.name).toEqual(projectName)
 
     server = $`yarn web:extract`
 
