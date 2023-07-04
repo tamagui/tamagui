@@ -179,16 +179,11 @@ const resolveVariants: StyleResolver = (
       )
     )
 
-    if (process.env.NODE_ENV === 'development') {
-      if (debug === 'verbose') {
-        console.groupCollapsed('expanded functional variant', key)
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({
-          variant: fn,
-          response: variantValue,
-        })
-        console.groupEnd()
-      }
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('expanded functional variant', key)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({ fn, variantValue })
+      console.groupEnd()
     }
   }
 
@@ -221,7 +216,16 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const next = Object.entries(expandStyles(variantValue))
+    const expanded = expandStyles(variantValue)
+
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('completing variant', key)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({ expanded })
+      console.groupEnd()
+    }
+
+    const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
     if (fontFamilyResult && fontFamilyResult[0] === '$') {
@@ -288,6 +292,12 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   debug
 ) => {
   const res = {}
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(`   - resolveTokensAndVariants`, key, value)
+  }
+
   for (const rKey in value) {
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
@@ -327,6 +337,11 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
             }
           }
         }
+
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log('  - variantOut', { fKey, variantOut, res: { ...res } })
+        }
       }
       continue
     }
@@ -355,27 +370,31 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isObj(val)) {
+      const subObject = resolveTokensAndVariants(
+        fKey,
+        val,
+        props,
+        defaultProps,
+        theme,
+        variants,
+        fontFamily,
+        conf,
+        returnVariablesAs,
+        staticConfig,
+        key,
+        languageContext,
+        avoidDefaultProps,
+        debug
+      )
+
+      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(`object`, fKey, subObject)
+      }
+
       // sub-objects: media queries, pseudos, shadowOffset
       res[fKey] ??= {}
-      Object.assign(
-        res[fKey],
-        resolveTokensAndVariants(
-          fKey,
-          val,
-          props,
-          defaultProps,
-          theme,
-          variants,
-          fontFamily,
-          conf,
-          returnVariablesAs,
-          staticConfig,
-          key,
-          languageContext,
-          avoidDefaultProps,
-          debug
-        )
-      )
+      Object.assign(res[fKey], subObject)
     } else {
       // nullish values cant be tokens, need no extra parsing
       res[fKey] = val
@@ -500,21 +519,7 @@ const getToken = (
 
   if (hasSet) {
     const out = resolveVariableValue(key, valOrVar, resolveAs)
-
-    if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
-      console.groupCollapsed('  ﹒ propMap', key, out)
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
-      console.groupEnd()
-    }
-
     return out
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    if (value && value[0] === '$') {
-      return
-    }
   }
 
   if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {

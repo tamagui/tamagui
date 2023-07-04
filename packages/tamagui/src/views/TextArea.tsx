@@ -16,8 +16,8 @@ export const TextAreaFrame = styled(InputFrame, {
   variants: {
     unstyled: {
       false: {
-        ...defaultStyles,
         height: 'auto',
+        ...defaultStyles,
       },
     },
 

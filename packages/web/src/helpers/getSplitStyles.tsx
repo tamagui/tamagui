@@ -854,6 +854,15 @@ export const getSplitStyles: StyleSplitter = (
         viewProps[key] = val
       }
     }
+
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed(` ✔️ expand complete`, keyInit)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log('style', { ...style })
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log('viewProps', { ...viewProps })
+      console.groupEnd()
+    }
   }
 
   // default to default font
