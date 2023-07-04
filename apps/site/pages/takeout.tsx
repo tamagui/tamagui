@@ -73,7 +73,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useHoverGlow } from '../components/HoverGlow'
-import { LoadGlusp, LoadMunro } from '../components/LoadFont'
+import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
 const androidImages = [
@@ -323,11 +323,12 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
   return (
     <YStack
-      y={heroHeight / 2 - 360}
+      y={heroHeight / 2 - 380}
       ai="center"
       jc="center"
       className="ease-in ms300 all"
       pos="relative"
+      scale={1.1}
       $xxs={{
         scale: 0.3,
       }}
@@ -335,33 +336,19 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         scale: 0.5,
       }}
       $sm={{
-        scale: 0.58,
+        scale: 0.6,
       }}
       $md={{
-        scale: 0.65,
+        scale: 0.8,
       }}
       $lg={{
-        scale: 0.85,
+        scale: 0.9,
       }}
       // ref={glow.parentRef as any}
     >
       {/* <ThemeTint>
         <glow.Component />
       </ThemeTint> */}
-
-      <Paragraph
-        color="$color"
-        size="$1"
-        fontSize={12}
-        ls={135}
-        o={0.1}
-        fontFamily="$silkscreen"
-        pe="none"
-        h={40}
-        userSelect="none"
-      >
-        TAMAGUI
-      </Paragraph>
 
       {/* animated borders shine */}
       <YStack pos="absolute" y={10}>
@@ -372,7 +359,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
       <YStack
         pos="absolute"
-        className="mix-blend"
         y={10}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
@@ -383,19 +369,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         </ThemeTint>
       </YStack>
 
-      <YStack
-        pos="absolute"
-        className="mix-blend"
-        y={10}
-        scale={0.975}
-        style={{
-          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
-        }}
-      >
-        <ThemeTint>
-          <TAKEOUT className="" zi={1000} color="$color10" />
-        </ThemeTint>
-      </YStack>
       {coupon && (
         <YStack position="absolute" right="10%" bottom="10%" zIndex="$5">
           <DiscountText coupon={coupon} />
@@ -454,7 +427,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           ai="center"
           jc="center"
           y={30}
-          scaleX={0.9}
+          scaleX={0.95}
         >
           <TAKEOUT className="bg-dot-grid clip-text" />
         </YStack>
@@ -476,8 +449,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </YStack>
       <YStack
         position="absolute"
-        top={360}
-        r="-10%"
+        top={300}
+        r="-0%"
         $sm={{ r: '-180%' }}
         $md={{ r: '-50%' }}
         $lg={{ r: '-35%' }}
@@ -519,7 +492,8 @@ export default function TakeoutPage({
           description="Tamagui Takeout React Native Bootstrap Starter Kit"
         />
         <Head>
-          <LoadGlusp />
+          <LoadCherryBomb />
+          <LoadCherryBomb />
           <LoadMunro />
         </Head>
       </>
@@ -557,15 +531,9 @@ export default function TakeoutPage({
         jc="center"
         ov="hidden"
         contain="paint layout"
-        y={20}
+        y={-200}
       >
-        <TAKEOUT
-          className={`font-outlined-sm theme-shadow`}
-          fontSize={150 * 3.5}
-          lineHeight={110 * 3.5}
-          color="#000"
-          o={0.1}
-        />
+        <TAKEOUT className={`font-outlined-sm theme-shadow`} fontSize={850} o={0.125} />
       </YStack>
 
       <YStack>
@@ -954,7 +922,7 @@ export default function TakeoutPage({
                   </YStack>
 
                   <Paragraph
-                    fontFamily="$glusp"
+                    fontFamily="$cherryBomb"
                     size="$4"
                     ls={-1}
                     $sm={{ size: '$3' }}
@@ -1011,7 +979,7 @@ export default function TakeoutPage({
                 <Separator />
                 <Spacer />
 
-                <Paragraph als="center" fontFamily="$glusp" size="$1" scale={0.75}>
+                <Paragraph als="center" fontFamily="$cherryBomb" size="$1" scale={0.75}>
                   Gallery
                 </Paragraph>
 
@@ -1891,15 +1859,14 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
+const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => (
   <H1
     className="mix-blend font-outlined"
     userSelect="none"
     color="$backgroundStrong"
-    fontFamily="$glusp"
+    fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    mt={40}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"
@@ -1907,7 +1874,7 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
   >
     Take
     <br />
-    out
+    <span style={{ display: 'inline-flex', transform: 'translateY(-65px)' }}>out</span>
   </H1>
 )
 
@@ -2477,15 +2444,10 @@ const FeatureIcon = ({
   return (
     <YStack>
       <Theme name={theme}>
-        <PixelTooltip open={active} label={title} delay={{ open: 100 }}>
+        <PixelTooltip active={active} label={title}>
           <IconFrame
-            hoverStyle={{
-              scale: 1.2,
-            }}
-            scale={1}
-            animation="quick"
             onMouseEnter={() => Tint.setTintIndex(themeIndex)}
-            backgroundColor={active ? '$color6' : '$color1'}
+            backgroundColor={active ? '$color9' : '$color3'}
           >
             <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
           </IconFrame>
@@ -2667,36 +2629,25 @@ const wrap = (min: number, max: number, v: number) => {
 const PixelTooltip = ({
   children,
   label,
-  ...props
-}: TooltipProps & { label: string }) => {
+  active,
+}: {
+  label: string
+  children?: any
+  active?: boolean
+}) => {
   return (
-    <Tooltip {...props}>
-      <Tooltip.Trigger>{children}</Tooltip.Trigger>
-      <Theme inverse>
-        <Tooltip.Content
-          enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
-          exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
-          scale={1}
-          x={0}
-          y={0}
-          px="$2"
-          py="$0"
-          opacity={1}
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-        >
-          <Paragraph color="$color12" fontFamily="$munro" size="$4">
-            {label}
-          </Paragraph>
-        </Tooltip.Content>
-      </Theme>
-    </Tooltip>
+    <YStack
+      ai="center"
+      jc="center"
+      {...(active && {
+        scale: 1.1,
+      })}
+    >
+      <Paragraph color="$color12" fontFamily="$munro" size="$4">
+        {label}
+      </Paragraph>
+      {children}
+    </YStack>
   )
 }
 

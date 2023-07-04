@@ -79,7 +79,7 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
       colorLog(
         Color.FgYellow,
         `
-      ➡ [tamagui] Generated themes:`
+    ➡ [tamagui] Generated themes:`
       )
       colorLog(
         Color.Dim,

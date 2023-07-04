@@ -16,8 +16,8 @@ let frameCount = 0
 export default (props) => (
   <Canvas
     style={{
-      width: 620,
-      height: 620,
+      width: 680,
+      height: 680,
     }}
     gl={{ preserveDrawingBuffer: true }}
     shadows
@@ -45,7 +45,7 @@ function TakeoutBox3D(props) {
     const isSlow = frameCount > 40
 
     // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 2)
+    ref.current!.rotation.y += delta * (isSlow ? 0.05 : 1)
 
     // effect to spin faster on first entering
     if (frameCount <= 40) {
@@ -56,7 +56,7 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage shadows="accumulative" scale={1} adjustCamera={1.2} intensity={1}>
+      <Stage shadows="accumulative" scale={1} adjustCamera={1.2} intensity={2}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
             geometry={nodes.pack.geometry}

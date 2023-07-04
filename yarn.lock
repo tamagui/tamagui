@@ -5021,6 +5021,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb"
+  dependencies:
+    "@tamagui/build": 1.38.2
+    "@tamagui/core": 1.38.2
+    subset-font: ^1.6.1
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/font-fira-mono@1.38.2, @tamagui/font-fira-mono@workspace:packages/font-fira-mono":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-fira-mono@workspace:packages/font-fira-mono"

@@ -776,12 +776,11 @@ input, textarea {
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
   mask-size: 50% 50%;
-  mask-clip: border-box;
-  animation: clip-fade2 70s infinite alternate;
+  /* animation: clip-fade2 70s infinite alternate; */
 }
 
 .slice-alt {
-  mask-size: 100% 100%;
+  mask-size: 400% 400%;
 }
 
 .animate-fade2 {
@@ -790,33 +789,31 @@ input, textarea {
 
 .masked2 {
   -webkit-mask-image: url(/retro-icons/computers-devices-electronicsmicrochip-board-52.svg);
-  -webkit-mask-clip: border-box;
   mask-image: url(/retro-icons/computers-devices-electronicsmicrochip-board-52.svg);
-  mask-size: 120% 120%;
-  mask-clip: border-box;
-  animation: clip-fade 60s infinite;
+  mask-size: 20% 20%;
+  /* animation: clip-fade 60s infinite; */
 }
 
 @keyframes clip-fade {
   0% {
-    mask-position: left;
-    -webkit-mask-position: left;
+    mask-position: bottom left;
+    -webkit-mask-position: bottom left;
   }
   
   100% {
-    mask-position: right;
-    -webkit-mask-position: right;
+    mask-position: bottom right;
+    -webkit-mask-position: bottom right;
   }
 }
 
 @keyframes clip-fade2 {
   0% {
-    mask-position: right;
+    mask-position: bottom right;
     -webkit-mask-position: right;
   }
   
   100% {
-    mask-position: left;
+    mask-position: bottom left;
     -webkit-mask-position: left;
   }
 }

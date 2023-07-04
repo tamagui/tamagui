@@ -12,10 +12,10 @@ import {
 } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { TamaguiProvider } from 'tamagui'
 
-import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
+import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -113,8 +113,8 @@ function AppContents(
       {didInteract && (
         <>
           <LoadInter900 />
-          <LoadGlusp />
           <LoadMunro />
+          <LoadCherryBomb />
         </>
       )}
       <TamaguiProvider
