@@ -58,8 +58,8 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
+  Tooltip,
   TooltipProps,
-  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -70,7 +70,6 @@ import {
   styled,
   useMedia,
 } from 'tamagui'
-import { Tooltip } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useHoverGlow } from '../components/HoverGlow'
@@ -1168,8 +1167,7 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       pressStyle={{ scale: 0.975 }}
     >
       <YStack style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.6)' }} fullscreen />
-        <Image {...props} />
-      
+      <Image {...props} />
     </XStack>
   )
 }
@@ -1269,6 +1267,9 @@ class TakeoutStore extends Store {
   galleryOpen = false
   galleryImageIdx = 0
   galleryDirection = 0
+  promoInputIsOpen = false
+  appliedCoupon: Stripe.Coupon | null = null
+  appliedPromoCode: string | null = null
   paginateGallery(newDirection: number) {
     this.galleryImageIdx = wrap(
       0,
@@ -1333,10 +1334,15 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
 
   // with discount applied
   const finalPrice = useMemo(() => {
-    if (coupon?.amount_off) return sum - coupon.amount_off
-    if (coupon?.percent_off) return (sum * (100 - coupon.percent_off)) / 100
+    const appliedCoupon = store.appliedCoupon ?? coupon
+    if (appliedCoupon) {
+      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
+      if (appliedCoupon.percent_off)
+        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    }
+
     return sum
-  }, [sum])
+  }, [sum, store.appliedCoupon, coupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
@@ -1555,6 +1561,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                       )}
                     </XStack>
+                    <PromotionInput />
 
                     <Separator />
 
@@ -1570,9 +1577,14 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                             params.append('product_id', productId)
                           }
                           params.append(`price-${starter.id}`, starterPriceId)
-                          if (coupon) {
+                          if (store.appliedPromoCode) {
+                            // the coupon user applied
+                            params.append(`coupon`, store.appliedPromoCode)
+                          } else if (coupon) {
+                            // the coupon that's applied by default (special event, etc.)
                             params.append(`coupon`, coupon.id)
                           }
+
                           return params.toString()
                         })()}`}
                       >
@@ -2685,5 +2697,119 @@ const PixelTooltip = ({
         </Tooltip.Content>
       </Theme>
     </Tooltip>
+  )
+}
+
+const PromotionInput = () => {
+  const store = useTakeoutStore()
+
+  const [localCode, setLocalCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const applyCoupon = (promoCode: string, coupon: Stripe.Coupon) => {
+    store.appliedCoupon = coupon
+    store.appliedPromoCode = promoCode
+  }
+
+  const removeCoupon = () => {
+    setLocalCode('')
+    store.appliedCoupon = null
+    store.appliedPromoCode = null
+  }
+
+  const closeField = () => {
+    setLocalCode('')
+    store.promoInputIsOpen = false
+  }
+
+  const checkPromotion = async () => {
+    setIsLoading(true)
+    try {
+      const res = await fetch(
+        `/api/check-promo-code?${new URLSearchParams({ code: localCode })}`
+      )
+      if (res.status === 200) {
+        const json = (await res.json()) as Stripe.Coupon
+        applyCoupon(localCode, json)
+      } else {
+        const json = await res.json()
+        if (json.message) {
+          alert(json.message)
+        }
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <AnimatePresence exitBeforeEnter>
+      {store.promoInputIsOpen ? (
+        <XStack
+          key="is-open"
+          animation="100ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+          opacity={1}
+          gap="$2"
+          jc="center"
+          ai="center"
+        >
+          {store.appliedPromoCode ? (
+            <>
+              <Paragraph theme="green_alt2">
+                Coupon {store.appliedPromoCode} applied.
+              </Paragraph>
+              <Button chromeless size="$2" onPress={removeCoupon}>
+                Remove Coupon
+              </Button>
+            </>
+          ) : (
+            <>
+              {!store.appliedPromoCode && (
+                <Button disabled={isLoading} size="$2" chromeless onPress={closeField}>
+                  Cancel
+                </Button>
+              )}
+              <Input
+                disabled={!!store.appliedPromoCode}
+                value={store.appliedPromoCode ?? localCode}
+                onChangeText={(text) => {
+                  setLocalCode(text)
+                }}
+                placeholder="Enter the code"
+                size="$2"
+              />
+              <Button
+                disabled={isLoading}
+                themeInverse
+                size="$2"
+                onPress={checkPromotion}
+              >
+                Submit
+              </Button>
+            </>
+          )}
+        </XStack>
+      ) : (
+        <Paragraph
+          key="is-not-open"
+          animation="100ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+          opacity={1}
+          ta="center"
+          textDecorationLine="underline"
+          cursor="pointer"
+          theme="alt2"
+          size="$2"
+          onPress={() => {
+            store.promoInputIsOpen = true
+          }}
+        >
+          Have a coupon code?
+        </Paragraph>
+      )}
+    </AnimatePresence>
   )
 }
