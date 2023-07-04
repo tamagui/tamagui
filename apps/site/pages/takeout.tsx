@@ -327,6 +327,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       ai="center"
       jc="center"
       className="ease-in ms300 all"
+      pe="none"
       pos="relative"
       scale={1.1}
       $xxs={{
@@ -691,7 +692,7 @@ export default function TakeoutPage({
               <YStack f={1} space="$6">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-230}
+                  mt={-250}
                   mb={-20}
                   size="$7"
                   ls={4}
@@ -706,48 +707,46 @@ export default function TakeoutPage({
                 <ThemeTint>
                   <H2
                     className="clip-text mix-blend"
-                    size="$13"
+                    ff="$cherryBomb"
+                    size="$12"
                     color="$color10"
                     style={{
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
                     }}
                     $lg={{
-                      size: '$11',
+                      size: '$9',
                     }}
                     $sm={{
-                      size: '$10',
+                      size: '$8',
                     }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time&nbsp;than&nbsp;ever.
                   </H2>
                 </ThemeTint>
 
-                <HeartsRow />
-
                 <MunroP size="$10" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the <Moon size="$3" style={{ marginBottom: -6 }} /> or
-                  the <Star size="$3" style={{ marginBottom: -6 }} />s - success is up to
-                  you. But, if you want a cheat code to shipping stunning web and native
-                  apps fast, you've found it.
+                  We can't promise everything (success is up to you), but we can say
+                  you've found the cheat code to shipping stunning web + native apps fast.
                 </MunroP>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                <HeartsRow />
+
+                <Paragraph size="$9" $sm={{ size: '$8' }} fow="400">
                   Takeout 🥡 is a bootstrap that delivers on years of effort putting
-                  together a better unified React Native + web stack for startups.
+                  together a better unified React Native + web stack.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  And of course it's powered by{' '}
-                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />, the
-                  best universal UI system ever. Within an hour you'll be deploying your
-                  app on the web to Vercel and to iOS and Android app stores via Expo EAS.
+                  Powered by{' '}
+                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
+                  within an hour you'll be deploying on the web to Vercel and to
+                  iOS/Android app stores via Expo EAS.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Get 2 new themes, 150 icon sets and 1500 font packages as easy as
-                  `tamagui add icon` or `tamagui add font`, fully configured and installed
-                  into your monorepo.
+                  With all new themes, 150 icon sets, and 1500 font packages as easily as
+                  `tamagui add icon` to automatically install to your monorepo.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -899,7 +898,7 @@ export default function TakeoutPage({
                       <Paragraph
                         color="$color9"
                         fontFamily="$munro"
-                        size="$11"
+                        size="$9"
                         $sm={{ size: '$8' }}
                         fow="800"
                         ta="center"
@@ -920,15 +919,20 @@ export default function TakeoutPage({
                     </Paragraph>
                   </YStack>
 
-                  <Paragraph
-                    fontFamily="$cherryBomb"
-                    size="$4"
-                    ls={-1}
-                    $sm={{ size: '$3' }}
-                    fow="400"
-                  >
-                    It's not just about shipping fast.
-                  </Paragraph>
+                  <ThemeTint>
+                    <Paragraph
+                      fontFamily="$cherryBomb"
+                      size="$10"
+                      color="$color9"
+                      className=" callout"
+                      ls={-1}
+                      $sm={{ size: '$6' }}
+                      fow="400"
+                      mb="$4"
+                    >
+                      It's not just about shipping fast.
+                    </Paragraph>
+                  </ThemeTint>
 
                   <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
                     Takeout is a template repo *and a bot* that's designed with pluggable,
@@ -936,24 +940,24 @@ export default function TakeoutPage({
                     trigger the TakeoutBot to send over a PR.
                   </Paragraph>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400" color="$yellow10">
+                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400" color="$yellow10">
                     That means you get constant improvements to your codebase.
                   </Paragraph>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                     It's why we've set up pricing the way we have: lifetime rights, one
                     year of updates. Forever pricing wouldn't incentivize us to keep
                     innovating, and we want to make the Takeout stack the best stack,
                     period.
                   </Paragraph>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                     We're working on bringing many nice new features that you can pick and
                     choose from, some of which are already in progress. We create
                     automatic PRs to your repos when they're ready.
                   </Paragraph>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                     Coming Soon:
                   </Paragraph>
 
@@ -970,6 +974,8 @@ export default function TakeoutPage({
                     <Bullet>Premium font add-ons</Bullet>
                     <Bullet>Unified RN and web testing tools</Bullet>
                     <Bullet>Improved CI/CD caching</Bullet>
+                    <Bullet>Tamagui CLI: Doctor</Bullet>
+                    <Bullet>Tamagui CLI: Upgrade</Bullet>
                   </XStack>
 
                   <Spacer />
@@ -978,7 +984,7 @@ export default function TakeoutPage({
                 <Separator />
                 <Spacer />
 
-                <Paragraph als="center" fontFamily="$cherryBomb" size="$1" scale={0.75}>
+                <Paragraph als="center" fontFamily="$cherryBomb" size="$10">
                   Gallery
                 </Paragraph>
 
@@ -1125,15 +1131,20 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      br="$6"
+      br="$10"
       ov="hidden"
-      elevation="$2"
+      elevation="$3"
       cursor="pointer"
       animation="100ms"
-      hoverStyle={{ scale: 1.025 }}
+      hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
     >
-      <YStack style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.6)' }} fullscreen />
+      <YStack
+        style={{
+          boxShadow: `inset 0 0 ${+(props.width || 100) / 2.5}px rgba(0, 0, 0, 0.6)`,
+        }}
+        fullscreen
+      />
       <Image {...props} />
     </XStack>
   )

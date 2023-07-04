@@ -39,22 +39,24 @@ export const createCherryBombFont = <
   })
 }
 
+const scale = 1.6
+
 const defaultSizes = {
-  1: 11,
-  2: 12,
-  3: 13,
-  4: 14,
-  true: 14,
-  5: 16,
-  6: 18,
-  7: 20,
-  8: 23,
-  9: 30,
-  10: 46,
-  11: 55,
-  12: 62,
-  13: 72,
-  14: 92,
-  15: 114,
-  16: 134,
+  1: scale * 11,
+  2: scale * 12,
+  3: scale * 13,
+  4: scale * 14,
+  true: scale * 14,
+  5: scale * 16,
+  6: scale * 18,
+  7: scale * 20,
+  8: scale * 23,
+  9: scale * 30,
+  10: scale * 46,
+  11: scale * 55,
+  12: scale * 62,
+  13: scale * 72,
+  14: scale * 92,
+  15: scale * 114,
+  16: scale * 134,
 } as const
