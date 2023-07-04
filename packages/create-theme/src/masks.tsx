@@ -1,7 +1,7 @@
 import { createTheme } from './createTheme'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
-import { getThemeInfo, setThemeInfo } from './themeInfo'
+import { ThemeInfo, getThemeInfo, setThemeInfo } from './themeInfo'
 import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types'
 
 export const createMask = <C extends CreateMask | MaskFunction>(
@@ -15,11 +15,15 @@ export const combineMasks = (...masks: CreateMask[]) => {
   const mask: CreateMask = {
     name: 'combine-mask',
     mask: (template, opts) => {
-      let current = template
+      let current = getThemeInfo(template, opts.parentName)
+      let theme: any
       for (const mask of masks) {
-        current = applyMask(current, mask, opts)
+        if (!current) throw `❌`
+        const next = applyMaskStateless(current, mask, opts)
+        current = next
+        theme = next.theme
       }
-      return current
+      return theme
     },
   }
   return mask
@@ -111,21 +115,14 @@ export const createStrengthenMask = (defaultOptions?: MaskOptions): CreateMask =
   mask: createShiftMask({ inverse: true }, defaultOptions).mask,
 })
 
-export function applyMask<Theme extends GenericTheme | ThemeMask>(
-  theme: Theme,
+export function applyMaskStateless<Theme extends GenericTheme | ThemeMask>(
+  info: ThemeInfo,
   mask: CreateMask,
-  options: MaskOptions = {}
-): Theme {
-  const info = getThemeInfo(theme)
-
-  if (!info) {
-    throw new Error(
-      process.env.NODE_ENV !== 'production'
-        ? `No info found for theme, you must pass the theme created by createThemeFromPalette directly to extendTheme`
-        : `❌ Err2`
-    )
-  }
-
+  options: MaskOptions = {},
+  parentName?: string
+): ThemeInfo & {
+  theme: Theme
+} {
   const skip = {
     ...options.skip,
   }
@@ -138,18 +135,47 @@ export function applyMask<Theme extends GenericTheme | ThemeMask>(
   }
 
   // convert theme back to template first
-  const template = mask.mask(info.definition, {
+  const maskOptions = {
+    parentName,
     palette: info.palette,
     ...options,
     skip,
-  })
+  }
 
-  const next = createTheme(info.palette, template) as Theme
+  const template = mask.mask(info.definition, maskOptions)
+  const theme = createTheme(info.palette, template) as Theme
 
-  setThemeInfo(next, {
+  return {
+    ...info,
+    cache: new Map(),
     definition: template,
+    theme,
+  }
+}
+
+export function applyMask<Theme extends GenericTheme | ThemeMask>(
+  theme: Theme,
+  mask: CreateMask,
+  options: MaskOptions = {},
+  parentName?: string,
+  nextName?: string
+): Theme {
+  const info = getThemeInfo(theme, parentName)
+  if (!info) {
+    throw new Error(
+      process.env.NODE_ENV !== 'production'
+        ? `No info found for theme, you must pass the theme created by createThemeFromPalette directly to extendTheme`
+        : `❌ Err2`
+    )
+  }
+
+  const next = applyMaskStateless(info, mask, options, parentName)
+
+  setThemeInfo(next.theme, {
+    definition: next.definition,
     palette: info.palette,
+    name: nextName,
   })
 
-  return next
+  return next.theme as Theme
 }

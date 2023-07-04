@@ -18,9 +18,16 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
+  if (typeof req.query.subscription_item_id !== 'string') {
+    res.status(400).json({ message: `subscription_item_id is not provided` })
+    return
+  }
+
+  const subscriptionItemId = req.query.subscription_item_id
+
   const { data } = await supabaseAdmin
     .from('app_installations')
-    .insert({ user_id: user.id })
+    .insert({ subscription_item_id: subscriptionItemId })
     .select('*')
     .single()
 

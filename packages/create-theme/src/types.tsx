@@ -11,6 +11,7 @@ export type MaskOptions = {
   strength?: number
   max?: number
   min?: number
+  parentName?: string
 }
 
 export type GenericTheme = { [key: string]: string | Variable }

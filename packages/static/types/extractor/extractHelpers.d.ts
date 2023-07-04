@@ -21,4 +21,8 @@ export declare const getValidImport: (props: TamaguiOptionsWithFileInfo, moduleN
     staticConfig: import("@tamagui/web").StaticConfigParsed;
 } | null;
 export declare const isValidImport: (props: TamaguiOptionsWithFileInfo, moduleName: string, componentName?: string) => any;
+export declare const getValidComponentsPaths: {
+    (...args: any[]): any;
+    cache: Map<any, any>;
+};
 //# sourceMappingURL=extractHelpers.d.ts.map

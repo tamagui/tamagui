@@ -1,4 +1,4 @@
-import { basename, dirname, extname, join, resolve } from 'path'
+import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
@@ -36,6 +36,9 @@ export async function loadTamagui(
 ): Promise<TamaguiProjectInfo | null> {
   const options = getFilledOptions(propsIn)
 
+  // this affects the bundled config so run it first
+  await generateThemesAndLog(options)
+
   const bundleInfo = await getBundledConfig(options)
   if (!bundleInfo) {
     console.warn(
@@ -48,6 +51,9 @@ export async function loadTamagui(
     return bundleInfo
   }
 
+  await generateTamaguiStudioConfig(options, bundleInfo)
+
+  // this depends on the config so run it after
   if (bundleInfo) {
     // init core-node
     const config = createTamagui(bundleInfo.tamaguiConfig)
@@ -58,12 +64,23 @@ export async function loadTamagui(
     }
   }
 
-  await Promise.all([
-    generateTamaguiStudioConfig(options, bundleInfo),
-    generateTamaguiThemes(options),
-  ])
-
   return bundleInfo
+}
+
+async function generateThemesAndLog(options: TamaguiOptions) {
+  if (options.themeBuilder) {
+    await generateTamaguiThemes(options)
+    colorLog(
+      Color.FgYellow,
+      `
+      ➡ [tamagui] Generated themes:`
+    )
+    colorLog(
+      Color.Dim,
+      `
+          ${relative(process.cwd(), options.themeBuilder.output)}`
+    )
+  }
 }
 
 // loads in-process using esbuild-register
@@ -224,15 +241,32 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     throw new Error(`No config`)
   }
 
-  // only after it ran once because it triggers immediately and we already build in `loadTamagui`
+  const disposeConfigWatcher = await esbuildWatchFiles(
+    options.tamaguiOptions.config,
+    () => {
+      void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+    }
+  )
+
+  const disposeThemesWatcher = options.tamaguiOptions.themeBuilder
+    ? await esbuildWatchFiles(options.tamaguiOptions.themeBuilder.input, () => {
+        void generateThemesAndLog(options.tamaguiOptions)
+      })
+    : null
+
+  return {
+    dispose() {
+      disposeConfigWatcher()
+      disposeThemesWatcher?.()
+    },
+  }
+}
+
+async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   let hasRunOnce = false
-
   const context = await esbuild.context({
-    entryPoints: [options.tamaguiOptions.config],
-    sourcemap: false,
-    // dont output just use esbuild as a watcher
+    entryPoints: [entry],
     write: false,
-
     plugins: [
       {
         name: `on-rebuild`,
@@ -240,9 +274,8 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
           onEnd(() => {
             if (!hasRunOnce) {
               hasRunOnce = true
-              return
             } else {
-              void generateTamaguiStudioConfig(options.tamaguiOptions, null, true)
+              onChanged()
             }
           })
         },
@@ -250,10 +283,10 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     ],
   })
 
-  const promise = context.watch()
+  // just returns after dispose is called i think
+  void context.watch()
 
-  return {
-    context,
-    promise,
+  return () => {
+    context.dispose()
   }
 }

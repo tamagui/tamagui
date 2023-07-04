@@ -5,6 +5,7 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ButtonLink } from 'studio/Link'
 import { useSWRConfig } from 'swr'
@@ -19,7 +20,6 @@ import {
   Spinner,
   XStack,
   YStack,
-  useTheme,
 } from 'tamagui'
 
 export default function Page() {
@@ -48,6 +48,7 @@ const Subscriptions = () => {
   if (!subscriptions) return null
   return (
     <Container f={1} py="$8" gap="$8">
+      <GithubAppMessage />
       <H2>Subscriptions</H2>
       <YStack gap="$8">
         {subscriptions.length === 0 && (
@@ -324,13 +325,15 @@ const SubscriptionItem = ({
           >
             {claimLabel}
           </Button>
-          {hasGithubApp && (
+          {hasGithubApp && item.id && (
             <ButtonLink
-              href="/api/github/install-bot"
+              href={`/api/github/install-bot?${new URLSearchParams({
+                subscription_item_id: item.id.toString(),
+              })}`}
               size="$2"
               themeInverse
             >
-              Install App
+              Install GitHub App
             </ButtonLink>
           )}
           {/* {!!productSlug && ( */}
@@ -359,6 +362,18 @@ const SubscriptionItem = ({
         )}
       </YStack>
     </YStack>
+  )
+}
+
+const GithubAppMessage = () => {
+  const router = useRouter()
+  const githubAppInstalled = !!router.query.github_app_installed
+  if (!githubAppInstalled) return null
+  return (
+    <Paragraph theme="green_alt2">
+      GitHub App installed successfully. We will create PRs to your fork as we ship new
+      updates.
+    </Paragraph>
   )
 }
 

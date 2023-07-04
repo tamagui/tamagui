@@ -494,7 +494,7 @@ const Hero = memo(() => {
 
         <XStack space ai="center">
           <SizableText o={0.5} size="$3">
-            Launching June 2023
+            Launching Summer 2023
           </SizableText>
 
           <NextLink href="/login">

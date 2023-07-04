@@ -4,6 +4,8 @@ const StyledButton = styled(Button, {
   variants: {
     reddish: {
       true: {
+        backgroundColor: 'yellow',
+
         pressStyle: {
           backgroundColor: 'red',
         },

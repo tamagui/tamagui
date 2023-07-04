@@ -41,7 +41,7 @@ export async function unclaimProduct(
 
 type UnclaimFunction = (args: {
   data: {
-    [key: string]: Json
+    [key: string]: Json | undefined
   }
   user: User
   claim: Database['public']['Tables']['claims']['Row']

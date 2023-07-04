@@ -345,6 +345,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       downArrowRef={downArrowRef}
       selectTimeoutRef={selectTimeoutRef}
       allowSelectRef={allowSelectRef}
+      update={update}
     >
       {children}
       {/* {isFormControl ? (

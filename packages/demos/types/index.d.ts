@@ -7,6 +7,7 @@ export * from './AnimationsPresenceDemo';
 export * from './AvatarDemo';
 export * from './ButtonDemo';
 export * from './BuildAButtonDemo';
+export * from './ThemeBuilderDemo';
 export * from './CardDemo';
 export * from './DialogDemo';
 export * from './AddThemeDemo';

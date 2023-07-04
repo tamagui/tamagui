@@ -242,19 +242,22 @@ export function createComponent<
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
 
     // after we get states mount we need to turn off isAnimated for server side
-    const hasAnimationProp =
+    const hasAnimationProp = Boolean(
       props.animation || (props.style && hasAnimatedStyleValue(props.style))
+    )
+
     const willBeAnimated = (() => {
       if (isServer) return false
+      const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
-      if (next && !stateRef.current.hasAnimated) {
-        stateRef.current.hasAnimated = true
+      if (next && !curState.hasAnimated) {
+        curState.hasAnimated = true
       }
-      return next || stateRef.current.hasAnimated
+      return Boolean(next || curState.hasAnimated)
     })()
 
     const usePresence = animationsConfig?.usePresence
-    const presence = !isRSC && willBeAnimated && usePresence ? usePresence() : null
+    const presence = (!isRSC && willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
@@ -279,10 +282,10 @@ export function createComponent<
 
     let isAnimated = willBeAnimated
 
-    // presence avoids ssr stuff
-    if (presence && hasHydrated) {
-      // no
-    } else {
+    // TODO this is for AnimatePresence SSR support but it shouldn't be setting isAnimated = false for presence?
+    // // presence avoids ssr stuff
+    const hasPresenceIsHydrated = presence && hasHydrated
+    if (!hasPresenceIsHydrated) {
       if (isAnimated && (isServer || state.unmounted === true)) {
         isAnimated = false
       }
@@ -337,6 +340,7 @@ export function createComponent<
       !isWeb ||
       !!(isAnimated && avoidClassesWhileAnimating) ||
       !staticConfig.acceptsClassName
+
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
 
@@ -359,7 +363,7 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    const isExiting = presence?.[0] === false
+    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
@@ -390,16 +394,9 @@ export function createComponent<
               state.hover ? 'HOVERED ' : ''
             }${state.focus ? 'FOCUSED' : ' '}`
           )
+          // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({
-            props,
-            state,
-            staticConfig,
-            elementType,
-            themeStateProps,
-            themeState,
-            styledContext: { contextProps: styledContextProps, overriddenContextProps },
-          })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props), curDefaultPropsOrder: Object.keys(curDefaultProps) })
           console.groupEnd()
         }
       }
@@ -422,6 +419,7 @@ export function createComponent<
         hasTextAncestor,
         resolveVariablesAs,
         isExiting,
+        isAnimated,
       },
       null,
       languageContext || undefined,
@@ -492,9 +490,14 @@ export function createComponent<
     if (!isRSC && willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
-        style: splitStylesStyle,
+        // if hydrating, send empty style
+        style: isAnimated ? splitStylesStyle : {},
+        // style: splitStylesStyle,
         presence,
-        state,
+        state: {
+          ...state,
+          isAnimated,
+        },
         theme: themeState.theme,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
@@ -512,6 +515,7 @@ export function createComponent<
       asChild,
       children,
       onPress,
+      onLongPress,
       onPressIn,
       onPressOut,
       onHoverIn,
@@ -696,7 +700,7 @@ export function createComponent<
 
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const attachPress = Boolean(
-      runtimePressStyle || onPress || onPressOut || onPressIn || onClick
+      runtimePressStyle || onPress || onPressOut || onPressIn || onLongPress || onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
@@ -778,6 +782,12 @@ export function createComponent<
                   onPress?.(e)
                 }
               : undefined,
+            onLongPress: attachPress
+              ? (e) => {
+                  unPress()
+                  onLongPress?.(e)
+                }
+              : undefined,
           }
         : null
 
@@ -795,6 +805,11 @@ export function createComponent<
           minPressDuration: 0,
         })
       }
+    }
+
+    if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native
@@ -822,6 +837,7 @@ export function createComponent<
       viewProps = {
         ...viewProps,
         onPress,
+        onLongPress,
         onPressIn,
         onPressOut,
       }
@@ -876,10 +892,14 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> with props`, viewProps)
+        console.groupCollapsed(`render <${element} /> with props`)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('viewProps', viewProps)
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('viewPropsOrder', Object.keys(viewProps))
         for (const key in viewProps) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(key, viewProps[key])
+          console.log(' - ', key, viewProps[key])
         }
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('children', content)
@@ -917,6 +937,7 @@ export function createComponent<
       }
     }
 
+    // HOC doesn't use defaultProps those already come in below
     let defaultPropsIn = staticConfig.defaultProps || {}
 
     // because we run createTamagui after styled() defs, have to do some work here
@@ -940,7 +961,6 @@ export function createComponent<
       defaultTag = defaultPropsIn.tag
     }
 
-    const noClassNames = !staticConfig.acceptsClassName
     const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
 
     defaultProps = restProps
@@ -959,7 +979,6 @@ export function createComponent<
           defaultProps,
           defaultPropsKeyOrder: Object.keys(defaultProps),
           defaultTag,
-          noClassNames,
         })
       }
     }
@@ -1235,6 +1254,7 @@ function mergeConfigDefaultProps(
   if (ourDefaultsMerged) {
     return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
   }
+
   return props
 }
 

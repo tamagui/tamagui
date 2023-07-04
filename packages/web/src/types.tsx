@@ -157,6 +157,7 @@ export type TamaguiComponentPropsBase = {
    */
   forceStyle?: 'hover' | 'press' | 'focus'
   onPress?: PressableProps['onPress']
+  onLongPress?: PressableProps['onLongPress']
   onPressIn?: PressableProps['onPress']
   onPressOut?: PressableProps['onPress']
 
@@ -1033,7 +1034,7 @@ export type StyleResolver<Response = PropMappedValue> = (
   defaultProps: any,
   theme: any,
   variants: GenericVariantDefinitions,
-  fontFamily: string,
+  fontFamily: string | undefined,
   conf: TamaguiInternalConfig,
   returnVariablesAs: 'auto' | 'value' | 'non-color-value',
   staticConfig: StaticConfigParsed,
@@ -1049,6 +1050,7 @@ export type PropMapper = (
   theme: ThemeParsed,
   props: Record<string, any>,
   state: Partial<SplitStyleState>,
+  fontFamily?: string,
   languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
@@ -1182,6 +1184,9 @@ type StaticConfigBase = StaticConfigPublic & {
    * Used internally for knowing how to handle when a HOC is in-between styled()
    */
   isHOC?: boolean
+
+  // insanity, for styled(styled(styleable(styled())))
+  isStyledHOC?: boolean
 }
 
 export type StaticConfig = StaticConfigBase & {
@@ -1630,6 +1635,7 @@ export type SplitStyleState = TamaguiComponentState & {
   hasTextAncestor?: boolean
 
   // for animations
+  isAnimated: boolean
   isExiting?: boolean
   exitVariant?: string
   enterVariant?: string
@@ -1741,7 +1747,7 @@ export type GetStyleResult = {
   viewProps: StackProps & Record<string, any>
   fontFamily: string | undefined
   space?: any // SpaceTokens?
-  hasMedia: boolean | 'space'
+  hasMedia: boolean | string[]
 }
 
 export type ClassNamesObject = Record<string, string>
@@ -1757,6 +1763,7 @@ export type TamaguiComponentEvents = {
   minPressDuration?: number | undefined
   onPressIn: ((e: any) => void) | undefined
   onPress: ((e: any) => void) | undefined
+  onLongPress: ((e: any) => void) | undefined
   onMouseEnter?: ((e: any) => void) | undefined
   onMouseLeave?: ((e: any) => void) | undefined
   onPressOut: ((e: any) => void) | undefined

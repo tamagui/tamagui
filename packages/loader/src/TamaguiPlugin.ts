@@ -25,8 +25,8 @@ export class TamaguiPlugin {
     if (this.options.enableStudio && !this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
-        compiler.hooks.afterDone.tap(this.pluginName, () => {
-          watcher.context.dispose()
+        process.once('exit', () => {
+          watcher.dispose()
         })
       })
     }

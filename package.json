@@ -27,6 +27,8 @@
     "fix": "yarn manypkg fix",
     "format": "node -r esbuild-register ./scripts/format.ts",
     "git-crypt-unlock": "./scripts/git-crypt-unlock.sh",
+    "kitchen-sink:build:android": "yarn workspace @tamagui/kitchen-sink android",
+    "kitchen-sink:build:ios": "yarn workspace @tamagui/kitchen-sink ios",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:clean": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",

@@ -50,8 +50,10 @@ export const getMediaKeyImportance = (key: string) => {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     throw new Error('use short key')
   }
-  // + 2 because we set base usedKeys=1 in getSplitStyles and all media go above 1
-  return mediaKeysOrdered.indexOf(key) + 2
+  // + 100 because we set base usedKeys=1, psuedos are 2-N (however many we have)
+  // all media go above all pseudos so we need to pad it based on that
+  // right now theres 5 pseudos but in the future could be a few more
+  return mediaKeysOrdered.indexOf(key) + 100
 }
 
 const dispose = new Set<Function>()
@@ -235,8 +237,9 @@ export function useMediaPropsActive<A extends Object>(
     const next = {} as A
     const importancesUsed = {}
     const propNames = Object.keys(props)
+    const len = propNames.length
 
-    for (let i = propNames.length - 1; i >= 0; i--) {
+    for (let i = 0; i < len; i++) {
       let key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {

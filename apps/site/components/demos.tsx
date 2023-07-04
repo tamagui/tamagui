@@ -38,6 +38,11 @@ export const BuildAButtonDemo = lazyDemo(
   import('@tamagui/demos/demo/BuildAButtonDemo').then((x) => x.BuildAButtonDemo)
 )
 
+export const ThemeBuilderDemo = lazyDemo(
+  // @ts-ignore
+  import('@tamagui/demos/demo/ThemeBuilderDemo').then((x) => x.ThemeBuilderDemo)
+)
+
 export const StacksDemo = lazyDemo(
   // @ts-ignore
   import('@tamagui/demos/demo/StacksDemo').then((x) => x.StacksDemo)

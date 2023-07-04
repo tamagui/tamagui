@@ -31,6 +31,7 @@ import {
   PopperProps,
   usePopperContext,
 } from '@tamagui/popper'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
 const TooltipContent = PopperContentFrame.extractable(
@@ -66,6 +67,7 @@ const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
 })
 
 export type TooltipProps = PopperProps & {
+  open?: boolean
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
   followMouse?: boolean
@@ -115,21 +117,25 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     onOpenChange: onOpenChangeProp,
     focus,
     followMouse,
+    open: openProp,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
   const delay = delayProp ?? delayGroup
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: false,
+    onChange: onOpenChangeProp,
+  })
   const id = props.groupId
 
   const onOpenChange = useEvent((open) => {
-    setOpen(open)
     if (open) {
       setCurrentId(id)
     }
-    onOpenChangeProp?.(open)
+    setOpen(open)
   })
 
   const useFloatingFn: UseFloatingFn = (props) => {

@@ -153,7 +153,7 @@ function unwrapSelectItem(selectValueChildren: any) {
         return child.props.children
       }
       if (child.props?.children) {
-        child.props.children = unwrapSelectItem(child.props.children)
+        return unwrapSelectItem(child.props.children)
       }
     }
     return child

@@ -51,6 +51,11 @@ const handler: NextApiHandler = async (req, res) => {
       )
     }
   }
+  let coupon: string | undefined
+
+  if (req.query.coupon && typeof req.query.coupon === 'string') {
+    coupon = req.query.coupon
+  }
   // priceId =
   //   typeof product.default_price === 'string'
   //     ? product.default_price
@@ -86,6 +91,7 @@ const handler: NextApiHandler = async (req, res) => {
     }),
     customer: stripeCustomerId,
     mode: 'subscription',
+    discounts: coupon ? [{ coupon }] : undefined,
     success_url: `${getURL()}/account/subscriptions`,
     cancel_url: `${getURL()}/takeout`,
   })

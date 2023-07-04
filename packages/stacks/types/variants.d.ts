@@ -90,6 +90,7 @@ export declare const elevate: {
         tabIndex?: string | number | import("@tamagui/web").Variable<any> | undefined;
         forceStyle?: import("@tamagui/web").Variable<any> | "hover" | "press" | "focus" | undefined;
         onPress?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onLongPress?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressIn?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onPressOut?: import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onHoverIn?: import("@tamagui/web").Variable<any> | import("react").MouseEventHandler<HTMLDivElement> | undefined;

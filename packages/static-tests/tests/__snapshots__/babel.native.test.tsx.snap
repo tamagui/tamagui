@@ -4,14 +4,14 @@ exports[`basic conditional extraction 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
+    \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
-    \\"alignItems\\": \\"stretch\\"
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
     \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
@@ -20,14 +20,14 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
   },
   \\"3\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
+    \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
-    \\"alignItems\\": \\"stretch\\"
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\"
   },
   \\"4\\": {
     \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
@@ -48,15 +48,15 @@ exports[`basic extraction 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\",
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
+    \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
-    \\"alignItems\\": \\"stretch\\"
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\",
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -66,70 +66,18 @@ export function Test() {
 }"
 `;
 
-exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = \\" _bg-d0t1494150182\\";
-const _cn2 = \\" _bg-d0t1948734170\\";
-const _cn = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
-// debug
-import { Stack } from '@tamagui/core';
-export function Test(props) {
-  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3) + (props.className ? \\" \\" + props.className : \\"\\")))} />;
-}
-import { concatClassName } from \\"@tamagui/helpers\\";"
-`;
-
-exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._w-10{width:10;}
-:root ._fd-column{flex-direction:column;}
-:root ._miw-0{min-width:0;}
-:root ._mih-0{min-height:0;}
-:root ._pos-relative{position:relative;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._dsp-flex{display:flex;}
-:root ._fs-0{flex-shrink:0;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
-:root ._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
-`;
-
-exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = \\" _bg-d0t1494150182\\";
-const _cn2 = \\" _bg-d0t1948734170\\";
-const _cn = \\" _w-10 _fd-column _miw-0 _mih-0 _pos-relative _fb-auto _dsp-flex _fs-0 _ai-stretch  \\";
-// debug 
-import { Stack } from '@tamagui/core';
-export function Test(props) {
-  return <div className={concatClassName(\\"\\" + (_cn + (props.green ? _cn2 : _cn3)))} />;
-}
-import { concatClassName } from \\"@tamagui/helpers\\";"
-`;
-
-exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._w-10{width:10;}
-:root ._fd-column{flex-direction:column;}
-:root ._miw-0{min-width:0;}
-:root ._mih-0{min-height:0;}
-:root ._pos-relative{position:relative;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._dsp-flex{display:flex;}
-:root ._fs-0{flex-shrink:0;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._bg-d0t1948734170{background-color:rgba(255,0,0,1.00);}
-:root ._bg-d0t1494150182{background-color:rgba(0,0,255,1.00);}"
-`;
-
 exports[`flat transform props 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
+    \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
-    \\"alignItems\\": \\"stretch\\"
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\"
   },
   \\"1\\": {
     \\"transform\\": [{
@@ -143,9 +91,9 @@ const _sheet = ReactNativeStyleSheet.create({
   },
   \\"3\\": {
     \\"transform\\": [{
-      \\"translateX\\": 10
-    }, {
       \\"translateY\\": 20
+    }, {
+      \\"translateX\\": 10
     }, {
       \\"rotate\\": \\"10deg\\"
     }]
@@ -178,9 +126,9 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
-    \\"color\\": \\"rgba(255,0,0,1.00)\\",
     \\"fontFamily\\": \\"Inter\\",
     \\"display\\": \\"flex\\",
+    \\"color\\": \\"rgba(255,0,0,1.00)\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
     \\"lineHeight\\": 23

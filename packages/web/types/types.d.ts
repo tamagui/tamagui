@@ -56,6 +56,7 @@ export type TamaguiComponentPropsBase = {
      */
     forceStyle?: 'hover' | 'press' | 'focus';
     onPress?: PressableProps['onPress'];
+    onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
     onPressOut?: PressableProps['onPress'];
     onHoverIn?: DivAttributes['onMouseEnter'];
@@ -531,8 +532,8 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
     children?: ReactNode;
 };
 export type PropMappedValue = [string, any][] | undefined;
-export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: Record<string, any>, defaultProps: any, theme: any, variants: GenericVariantDefinitions, fontFamily: string, conf: TamaguiInternalConfig, returnVariablesAs: 'auto' | 'value' | 'non-color-value', staticConfig: StaticConfigParsed, parentVariantKey: string, languageContext?: LanguageContextType, avoidDefaultProps?: boolean, debug?: DebugProp) => Response;
-export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => PropMappedValue;
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: Record<string, any>, defaultProps: any, theme: any, variants: GenericVariantDefinitions, fontFamily: string | undefined, conf: TamaguiInternalConfig, returnVariablesAs: 'auto' | 'value' | 'non-color-value', staticConfig: StaticConfigParsed, parentVariantKey: string, languageContext?: LanguageContextType, avoidDefaultProps?: boolean, debug?: DebugProp) => Response;
+export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, fontFamily?: string, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;
@@ -643,6 +644,7 @@ type StaticConfigBase = StaticConfigPublic & {
      * Used internally for knowing how to handle when a HOC is in-between styled()
      */
     isHOC?: boolean;
+    isStyledHOC?: boolean;
 };
 export type StaticConfig = StaticConfigBase & {
     parentStaticConfig?: StaticConfigBase;
@@ -733,6 +735,7 @@ export type SplitStyleState = TamaguiComponentState & {
     resolveVariablesAs?: ResolveVariableTypes;
     fallbackProps?: Record<string, any>;
     hasTextAncestor?: boolean;
+    isAnimated: boolean;
     isExiting?: boolean;
     exitVariant?: string;
     enterVariant?: string;
@@ -814,7 +817,7 @@ export type GetStyleResult = {
     viewProps: StackProps & Record<string, any>;
     fontFamily: string | undefined;
     space?: any;
-    hasMedia: boolean | 'space';
+    hasMedia: boolean | string[];
 };
 export type ClassNamesObject = Record<string, string>;
 export type TamaguiComponentEvents = {
@@ -828,6 +831,7 @@ export type TamaguiComponentEvents = {
     minPressDuration?: number | undefined;
     onPressIn: ((e: any) => void) | undefined;
     onPress: ((e: any) => void) | undefined;
+    onLongPress: ((e: any) => void) | undefined;
     onMouseEnter?: ((e: any) => void) | undefined;
     onMouseLeave?: ((e: any) => void) | undefined;
     onPressOut: ((e: any) => void) | undefined;
