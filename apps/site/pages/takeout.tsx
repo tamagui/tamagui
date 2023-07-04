@@ -352,14 +352,15 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </ThemeTint> */}
 
       {/* animated borders shine */}
-      <YStack pos="absolute" y={10}>
-        <ThemeTint>
+      <YStack pos="absolute" y={5}>
+        <ThemeTintAlt>
           <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
-        </ThemeTint>
+        </ThemeTintAlt>
       </YStack>
 
       <YStack
         pos="absolute"
+        className="mix-blend-multiply"
         y={10}
         style={{
           clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
@@ -371,7 +372,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </YStack>
 
       {coupon && (
-        <YStack position="absolute" right="10%" bottom="10%" zIndex="$5">
+        <YStack position="absolute" right="10%" top="10%" zIndex="$5">
           <DiscountText coupon={coupon} />
         </YStack>
       )}
@@ -545,7 +546,7 @@ export default function TakeoutPage({
                 onPress={() => {
                   store.showPurchase = true
                 }}
-                size="$3"
+                size="$4"
               >
                 Purchase
               </PurchaseButton>
@@ -2422,7 +2423,7 @@ const DiscountText = ({
               'polygon(0% 5px, 5px 5px, 5px 0%, calc(100% - 5px) 0%, calc(100% - 5px) 5px, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 5px calc(100% - 5px), 0% calc(100% - 5px))',
           }}
         >
-          <MunroP color="white" textAlign="center" size="$9">
+          <MunroP color="white" textAlign="center" size="$7">
             {text.trim()}
           </MunroP>
         </YStack>

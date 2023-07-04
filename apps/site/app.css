@@ -704,10 +704,6 @@ input, textarea {
   opacity: 0.6;
 }
 
-.theme-shadow {
-  -webkit-text-stroke: 1px var(--color10);
-}
-
 .callout {
   text-shadow:
     1px 1px 0 var(--orange10),
@@ -775,8 +771,8 @@ input, textarea {
 
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
-  mask-size: 50% 50%;
-  /* animation: clip-fade2 70s infinite alternate; */
+  mask-size: 40% 40%;
+  animation: clip-fade2 80s infinite alternate;
 }
 
 .slice-alt {
@@ -790,8 +786,8 @@ input, textarea {
 .masked2 {
   -webkit-mask-image: url(/retro-icons/computers-devices-electronicsmicrochip-board-52.svg);
   mask-image: url(/retro-icons/computers-devices-electronicsmicrochip-board-52.svg);
-  mask-size: 20% 20%;
-  /* animation: clip-fade 60s infinite; */
+  mask-size: 40% 40%;
+  animation: clip-fade 90s infinite;
 }
 
 @keyframes clip-fade {
@@ -816,4 +812,9 @@ input, textarea {
     mask-position: bottom left;
     -webkit-mask-position: left;
   }
+}
+
+.theme-shadow {
+  -webkit-text-stroke: 2px var(--color10);
+  animation: clip-fade 150s infinite;
 }
