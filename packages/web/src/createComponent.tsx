@@ -937,6 +937,7 @@ export function createComponent<
       }
     }
 
+    // HOC doesn't use defaultProps those already come in below
     let defaultPropsIn = staticConfig.defaultProps || {}
 
     // because we run createTamagui after styled() defs, have to do some work here

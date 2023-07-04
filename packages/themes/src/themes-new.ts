@@ -1,4 +1,4 @@
-import { createThemeBuilder } from '@tamagui/create-theme/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 
 import { componentThemeDefinitions } from './componentThemeDefinitions'
 import { masks } from './masks'

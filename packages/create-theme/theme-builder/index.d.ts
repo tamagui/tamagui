@@ -1,1 +1,1 @@
-export * from '../types/ThemeBuilder'
+export * from '../src/ThemeBuilder'

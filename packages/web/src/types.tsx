@@ -911,19 +911,27 @@ type OverrideRNStyleProps =
   | 'columnGap'
   | 'rowGap'
 
-export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> &
+export type StackStylePropsBase = Omit<
+  ViewStyle,
+  OverrideRNStyleProps | keyof SharedBaseExtraStyleProps
+> &
   TransformStyleProps &
   SharedBaseExtraStyleProps
 
-export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> &
+type SharedBaseExtraStylePropsText = SharedBaseExtraStyleProps & {
+  ellipse?: boolean
+  textDecorationDistance?: number
+  textOverflow?: Properties['textOverflow']
+  whiteSpace?: Properties['whiteSpace']
+  wordWrap?: Properties['wordWrap']
+}
+
+export type TextStylePropsBase = Omit<
+  TextStyle,
+  OverrideRNStyleProps | keyof SharedBaseExtraStylePropsText
+> &
   TransformStyleProps &
-  SharedBaseExtraStyleProps & {
-    ellipse?: boolean
-    textDecorationDistance?: number
-    textOverflow?: Properties['textOverflow']
-    whiteSpace?: Properties['whiteSpace']
-    wordWrap?: Properties['wordWrap']
-  }
+  SharedBaseExtraStylePropsText
 
 export interface ExtendBaseStackProps {}
 export interface ExtendBaseTextProps {}
@@ -1184,6 +1192,9 @@ type StaticConfigBase = StaticConfigPublic & {
    * Used internally for knowing how to handle when a HOC is in-between styled()
    */
   isHOC?: boolean
+
+  // insanity, for styled(styled(styleable(styled())))
+  isStyledHOC?: boolean
 }
 
 export type StaticConfig = StaticConfigBase & {

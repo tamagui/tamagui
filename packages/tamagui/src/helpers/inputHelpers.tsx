@@ -34,9 +34,9 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
   const { props } = extras
   const buttonStyles = getButtonSized(val, extras)
   const fontStyle = getFontSized(val, extras)!
-  const height = props.numberOfLines
-    ? (props.numberOfLines || 1) * getVariableValue(fontStyle.lineHeight)
-    : 'auto'
+  const lines = props.rows ?? props.numberOfLines
+  const height =
+    typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'
   const paddingVertical = getSpace(val, {
     shift: -2,
     bounds: [2],
