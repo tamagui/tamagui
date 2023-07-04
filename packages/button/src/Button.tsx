@@ -194,8 +194,8 @@ const Button = withStaticProperties(ButtonComponent, {
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
-function useButton(
-  propsIn: ButtonProps,
+function useButton<Props extends ButtonProps>(
+  propsIn: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   // careful not to desctructure and re-order props, order is important
@@ -225,7 +225,7 @@ function useButton(
   } = propsIn
 
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn)
+  const propsActive = useProps(propsIn) as any as ButtonProps
   const size = propsActive.size || '$true'
   const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
@@ -280,7 +280,7 @@ function useButton(
     ) : (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
-  }
+  } as Props
 
   return {
     spaceSize,

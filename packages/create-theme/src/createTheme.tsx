@@ -1,6 +1,11 @@
+import {
+  CreateThemeOptions,
+  CreateThemePalette,
+  GenericTheme,
+  ThemeMask,
+} from './createThemeTypes'
 import { isMinusZero } from './isMinusZero'
 import { setThemeInfo } from './themeInfo'
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 const identityCache = new Map()
 

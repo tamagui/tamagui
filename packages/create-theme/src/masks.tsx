@@ -1,8 +1,14 @@
 import { createTheme } from './createTheme'
+import {
+  CreateMask,
+  GenericTheme,
+  MaskFunction,
+  MaskOptions,
+  ThemeMask,
+} from './createThemeTypes'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
 import { ThemeInfo, getThemeInfo, setThemeInfo } from './themeInfo'
-import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types'
 
 export const createMask = <C extends CreateMask | MaskFunction>(
   createMask: C

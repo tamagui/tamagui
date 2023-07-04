@@ -21,6 +21,7 @@ const ButtonStyled = styled(Button, {})
 export const ButtonCustom = Frame.styleable<ButtonProps>((props, ref) => {
   // @ts-ignore
   const { props: buttonProps } = useButton(props, { Text })
+
   return (
     <>
       <Frame ref={ref} {...buttonProps} />

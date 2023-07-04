@@ -1,3 +1,3 @@
-export function isMinusZero(value) {
+export function isMinusZero(value: number) {
   return 1 / value === -Infinity
 }

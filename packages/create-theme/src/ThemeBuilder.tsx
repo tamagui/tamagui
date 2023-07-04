@@ -1,9 +1,9 @@
-import { Narrow } from '@tamagui/web'
+import type { Narrow } from '@tamagui/web'
 
 import { createTheme } from './createTheme'
+import { CreateMask, CreateThemeOptions, MaskOptions } from './createThemeTypes'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
 import { applyMask, createMask } from './masks'
-import { CreateMask, CreateThemeOptions, MaskOptions } from './types'
 
 export type Palette = string[]
 

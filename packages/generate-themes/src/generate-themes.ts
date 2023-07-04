@@ -1,6 +1,6 @@
 import Module from 'module'
 
-import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
+import type { ThemeBuilder } from '@tamagui/theme-builder'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
