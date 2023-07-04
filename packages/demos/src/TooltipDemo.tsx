@@ -66,6 +66,7 @@ function Demo({
         x={0}
         y={0}
         opacity={1}
+        animateOnly={['transform', 'opacity']}
         animation={[
           'quick',
           {
@@ -76,7 +77,7 @@ function Demo({
         ]}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="$1">
+        <Paragraph size="$2" lineHeight="$0">
           Hello world
         </Paragraph>
       </Tooltip.Content>

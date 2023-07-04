@@ -46,7 +46,7 @@ class AnimatedStyle extends AnimatedWithChildren {
 
   _walkStyleAndGetValues(style) {
     var updatedStyle = {}
-
+    
     for (var key in style) {
       var value = style[key]
 

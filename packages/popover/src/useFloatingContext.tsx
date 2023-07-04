@@ -12,8 +12,6 @@ export const useFloatingContext = ({ open, setOpen, breakpointActive }) =>
         onOpenChange: setOpen,
       }) as any
 
-      console.log('wtf')
-
       const { getReferenceProps, getFloatingProps } = useInteractions([
         // useFocus(floating.context, {
         //   enabled: !breakpointActive,

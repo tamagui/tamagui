@@ -370,8 +370,6 @@ export const PopperArrow = PopperArrowFrame.styleable<PopperArrowProps>(
       context.onArrowSize?.(size)
     }, [size, context.onArrowSize])
 
-    console.log('arrow', size, arrowProps, innerArrowStyle, arrowStyle)
-
     // outer frame to cut off for ability to have nicer shadows/borders
     return (
       <PopperArrowOuterFrame ref={refs} {...arrowStyle}>

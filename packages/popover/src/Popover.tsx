@@ -447,7 +447,6 @@ export const Popover = withStaticProperties(
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
 
     const floatingContext = useFloatingContext({ open, setOpen, breakpointActive }) as any
-    console.log('render popover...')
 
     const popoverContext = {
       id,

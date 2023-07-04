@@ -147,14 +147,14 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     })
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
+      useClientPoint(floating.context, {
+        enabled: followMouse,
+      }),
       useHover(floating.context, { delay, restMs }),
       useFocus(floating.context, focus),
       useRole(floating.context, { role: 'tooltip' }),
       useDismiss(floating.context),
       useDelayGroup(floating.context, { id }),
-      useClientPoint(floating.context, {
-        enabled: followMouse,
-      }),
     ])
 
     return {
