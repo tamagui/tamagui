@@ -5021,7 +5021,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb":
+"@tamagui/font-cherry-bomb@1.38.2, @tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-cherry-bomb@workspace:packages/font-cherry-bomb"
   dependencies:
@@ -5792,6 +5792,7 @@ __metadata:
     "@tamagui/animations-react-native": 1.38.2
     "@tamagui/build": 1.38.2
     "@tamagui/colors": 1.38.2
+    "@tamagui/font-cherry-bomb": 1.38.2
     "@tamagui/font-glusp": 1.38.2
     "@tamagui/font-inter": 1.38.2
     "@tamagui/font-silkscreen": 1.38.2
