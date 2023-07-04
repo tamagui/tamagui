@@ -3156,10 +3156,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@next/env@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/env@npm:13.3.1"
-  checksum: 3bf01e62b7de1de9de0cf7a5904364a2e807ad4f0a6cabfbb288225696a0750163bee23669bd45bfbec17dcf1fe66512212bdfa5be0a341ad187270a3cc27943
+"@next/env@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/env@npm:13.4.8"
+  checksum: 24e8966c9963879e7f9bab09248bebb89d8615b740dad286e0eb5f92909dddfc30e80ef9df29da757dbf50dcdf483037e65521fc9ea68582fb78d752273d4ba6
   languageName: node
   linkType: hard
 
@@ -3172,65 +3172,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-darwin-arm64@npm:13.3.1"
+"@next/swc-darwin-arm64@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-darwin-arm64@npm:13.4.8"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-darwin-x64@npm:13.3.1"
+"@next/swc-darwin-x64@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-darwin-x64@npm:13.4.8"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-linux-arm64-gnu@npm:13.3.1"
+"@next/swc-linux-arm64-gnu@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-linux-arm64-gnu@npm:13.4.8"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-linux-arm64-musl@npm:13.3.1"
+"@next/swc-linux-arm64-musl@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-linux-arm64-musl@npm:13.4.8"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-linux-x64-gnu@npm:13.3.1"
+"@next/swc-linux-x64-gnu@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-linux-x64-gnu@npm:13.4.8"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-linux-x64-musl@npm:13.3.1"
+"@next/swc-linux-x64-musl@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-linux-x64-musl@npm:13.4.8"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-win32-arm64-msvc@npm:13.3.1"
+"@next/swc-win32-arm64-msvc@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-win32-arm64-msvc@npm:13.4.8"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-win32-ia32-msvc@npm:13.3.1"
+"@next/swc-win32-ia32-msvc@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-win32-ia32-msvc@npm:13.4.8"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:13.3.1":
-  version: 13.3.1
-  resolution: "@next/swc-win32-x64-msvc@npm:13.3.1"
+"@next/swc-win32-x64-msvc@npm:13.4.8":
+  version: 13.4.8
+  resolution: "@next/swc-win32-x64-msvc@npm:13.4.8"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3855,12 +3855,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/helpers@npm:0.5.0":
-  version: 0.5.0
-  resolution: "@swc/helpers@npm:0.5.0"
+"@swc/helpers@npm:0.5.1":
+  version: 0.5.1
+  resolution: "@swc/helpers@npm:0.5.1"
   dependencies:
     tslib: ^2.4.0
-  checksum: 61c9c7dddb707deb58b85328cfe9d211887145f1311ae6a6e6c0fa9f781fb29916a8669a7d479e46e26a32a89d6ef4f293a22dee4925e009c84051e9dd10e8b7
+  checksum: 71e0e27234590435e4c62b97ef5e796f88e786841a38c7116a5e27a3eafa7b9ead7cdec5249b32165902076de78446945311c973e59bddf77c1e24f33a8f272a
   languageName: node
   linkType: hard
 
@@ -10833,7 +10833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-to-regexp@npm:0.4.1":
+"glob-to-regexp@npm:0.4.1, glob-to-regexp@npm:^0.4.1":
   version: 0.4.1
   resolution: "glob-to-regexp@npm:0.4.1"
   checksum: e795f4e8f06d2a15e86f76e4d92751cf8bbfcf0157cea5c2f0f35678a8195a750b34096b1256e436f0cebc1883b5ff0888c47348443e69546a5a87f9e1eb1167
@@ -11037,7 +11037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.1.5, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.1.5, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
@@ -14371,7 +14371,7 @@ __metadata:
     "@types/node": ^18.6.4
     app: 0.0.0
     eslint-config-next: ^13.0.4
-    next: ^13.2.4
+    next: ^13.4.8
     raf: ^3.4.1
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -14397,29 +14397,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"next@npm:^13.2.4":
-  version: 13.3.1
-  resolution: "next@npm:13.3.1"
+"next@npm:^13.4.8":
+  version: 13.4.8
+  resolution: "next@npm:13.4.8"
   dependencies:
-    "@next/env": 13.3.1
-    "@next/swc-darwin-arm64": 13.3.1
-    "@next/swc-darwin-x64": 13.3.1
-    "@next/swc-linux-arm64-gnu": 13.3.1
-    "@next/swc-linux-arm64-musl": 13.3.1
-    "@next/swc-linux-x64-gnu": 13.3.1
-    "@next/swc-linux-x64-musl": 13.3.1
-    "@next/swc-win32-arm64-msvc": 13.3.1
-    "@next/swc-win32-ia32-msvc": 13.3.1
-    "@next/swc-win32-x64-msvc": 13.3.1
-    "@swc/helpers": 0.5.0
+    "@next/env": 13.4.8
+    "@next/swc-darwin-arm64": 13.4.8
+    "@next/swc-darwin-x64": 13.4.8
+    "@next/swc-linux-arm64-gnu": 13.4.8
+    "@next/swc-linux-arm64-musl": 13.4.8
+    "@next/swc-linux-x64-gnu": 13.4.8
+    "@next/swc-linux-x64-musl": 13.4.8
+    "@next/swc-win32-arm64-msvc": 13.4.8
+    "@next/swc-win32-ia32-msvc": 13.4.8
+    "@next/swc-win32-x64-msvc": 13.4.8
+    "@swc/helpers": 0.5.1
     busboy: 1.6.0
     caniuse-lite: ^1.0.30001406
     postcss: 8.4.14
     styled-jsx: 5.1.1
+    watchpack: 2.4.0
+    zod: 3.21.4
   peerDependencies:
     "@opentelemetry/api": ^1.1.0
     fibers: ">= 3.1.0"
-    node-sass: ^6.0.0 || ^7.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     sass: ^1.3.0
@@ -14447,13 +14448,11 @@ __metadata:
       optional: true
     fibers:
       optional: true
-    node-sass:
-      optional: true
     sass:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: a685abbcfe028940f8e3c86f6712fadcba1ca92c68b4dddfd1192d93a4ebac2d0947cd62d8cecf530afbd8163b2ef6dfe338b1fe7b699d78bc7123624a7622db
+  checksum: 9af39db490707b93f7354457400997423655c59af3888f4a2db15a562711adadd83c17fba562f56341e4e020b43569d86b0a5630c0811c1a97c68f01b647dfc6
   languageName: node
   linkType: hard
 
@@ -19327,6 +19326,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"watchpack@npm:2.4.0":
+  version: 2.4.0
+  resolution: "watchpack@npm:2.4.0"
+  dependencies:
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.1.2
+  checksum: 23d4bc58634dbe13b86093e01c6a68d8096028b664ab7139d58f0c37d962d549a940e98f2f201cecdabd6f9c340338dc73ef8bf094a2249ef582f35183d1a131
+  languageName: node
+  linkType: hard
+
 "wcwidth@npm:^1.0.1":
   version: 1.0.1
   resolution: "wcwidth@npm:1.0.1"
@@ -19757,6 +19766,13 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"zod@npm:3.21.4":
+  version: 3.21.4
+  resolution: "zod@npm:3.21.4"
+  checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
   languageName: node
   linkType: hard
 
