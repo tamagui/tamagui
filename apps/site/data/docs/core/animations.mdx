@@ -101,16 +101,16 @@ export default createTamagui({
   other views reanimated expects, change that config to fix errors.
 </Notice>
 
-To install it add to your package.json:
+To install it add to your package.json. We use [Moti](https://moti.fyi) as the driver, which is a very light layer above reanimated:
 
 ```bash
-yarn add @tamagui/animations-reanimated react-native-reanimated
+yarn add @tamagui/animations-moti react-native-reanimated
 ```
 
 Then add it to your [config](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-reanimated'
+import { createAnimations } from '@tamagui/animations-moti'
 import { createTamagui } from 'tamagui'
 
 export default createTamagui({
