@@ -68,17 +68,19 @@ export async function loadTamagui(
 }
 
 async function generateThemesAndLog(options: TamaguiOptions) {
-  await generateTamaguiThemes(options)
-  colorLog(
-    Color.FgYellow,
-    `
-    ➡ [tamagui] Generated themes:`
-  )
-  colorLog(
-    Color.Dim,
-    `
-        ${relative(process.cwd(), options.themeBuilder!.output)}`
-  )
+  if (options.themeBuilder) {
+    await generateTamaguiThemes(options)
+    colorLog(
+      Color.FgYellow,
+      `
+      ➡ [tamagui] Generated themes:`
+    )
+    colorLog(
+      Color.Dim,
+      `
+          ${relative(process.cwd(), options.themeBuilder.output)}`
+    )
+  }
 }
 
 // loads in-process using esbuild-register
