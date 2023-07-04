@@ -155,6 +155,13 @@ export default withPlugins([
 
     // Advanced:
 
+    // Watches a file that uses @tamagui/theme-builder
+    // See the "Creating Themes" guide
+    themeBuilder: {
+      input: './themes-input.tsx',
+      output: './themes.tsx',
+    },
+
     // adds mini-css-extract and css-minimizer-plugin, can fix issues with unique configurations
     enableCSSOptimizations: false,
     // disable tamagui config to make fonts easier to import

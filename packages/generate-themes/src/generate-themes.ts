@@ -1,13 +1,12 @@
 import Module from 'module'
 
 import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
-import fs from 'fs-extra'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
-export async function generateThemes(options: { inPath: string; outPath: string }) {
+export async function generateThemes(inputFile: string) {
   require('esbuild-register/dist/node').register()
 
   let promise: Promise<null | ThemeBuilder<any>> | null = null as any
@@ -17,7 +16,7 @@ export async function generateThemes(options: { inPath: string; outPath: string 
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
-    if (id === '@tamagui/create-theme/theme-builder') {
+    if (id === '@tamagui/create-theme/theme-builder' || id === '@tamagui/theme-builder') {
       if (!promise) {
         let resolve: Function
         promise = new Promise((res) => {
@@ -34,21 +33,14 @@ export async function generateThemes(options: { inPath: string; outPath: string 
   }
 
   try {
-    const requiredThemes = require(options.inPath)
+    const requiredThemes = require(inputFile)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
-
     const themeBuilder = promise ? await promise : null
-
-    await Promise.all([
-      fs.writeFile(options.outPath, generatedThemes),
-      themeBuilder?.state
-        ? fs.writeFile(
-            `${options.outPath}.theme-builder.json`,
-            JSON.stringify(themeBuilder?.state)
-          )
-        : null,
-    ])
+    return {
+      generated: generatedThemes,
+      state: themeBuilder?.state,
+    }
   } finally {
     Module.prototype.require = ogRequire
   }

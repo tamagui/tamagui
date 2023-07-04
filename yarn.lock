@@ -6118,6 +6118,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/theme-builder@workspace:packages/theme-builder":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/theme-builder@workspace:packages/theme-builder"
+  dependencies:
+    "@tamagui/build": 1.37.3
+    "@tamagui/create-theme": 1.37.3
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/theme@1.37.3, @tamagui/theme@workspace:packages/theme":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme@workspace:packages/theme"

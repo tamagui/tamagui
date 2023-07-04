@@ -1,15 +1,14 @@
 {
-  "name": "@tamagui/create-theme",
+  "name": "@tamagui/theme-builder",
   "version": "1.37.3",
+  "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "sideEffects": false,
   "files": [
     "src",
     "types",
-    "dist",
-    "theme-builder"
+    "dist"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -21,11 +20,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./theme-builder": {
-      "types": "./types/ThemeBuilder.d.ts",
-      "import": "./dist/esm/ThemeBuilder.js",
-      "require": "./dist/cjs/ThemeBuilder.js"
-    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
@@ -33,7 +27,7 @@
     }
   },
   "dependencies": {
-    "@tamagui/web": "1.37.3"
+    "@tamagui/create-theme": "1.37.3"
   },
   "devDependencies": {
     "@tamagui/build": "1.37.3"

@@ -138,23 +138,20 @@ export async function bundleConfig(props: TamaguiOptions) {
       }),
     ])
 
-    if (!loggedOutputInfo) {
-      loggedOutputInfo = true
-      colorLog(
-        Color.FgYellow,
-        `
+    colorLog(
+      Color.FgYellow,
+      `
     ➡ [tamagui] (${Date.now() - start}ms):`
-      )
-      colorLog(
-        Color.Dim,
-        `
+    )
+    colorLog(
+      Color.Dim,
+      `
           Config     .${sep}${relative(process.cwd(), configOutPath)}
           Components ${[
             ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
           ].join('\n             ')}
           `
-      )
-    }
+    )
 
     // get around node.js's module cache to get the new config...
     delete require.cache[path.resolve(configOutPath)]
