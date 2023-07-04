@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.38.2",
-    "react-native-reanimated": "^2.14.4"
+    "react-native-reanimated": "^3.3.0"
   },
   "scripts": {
     "build": "tamagui-build",

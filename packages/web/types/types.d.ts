@@ -485,14 +485,15 @@ type SharedBaseExtraStyleProps = {
     userSelect?: Properties['userSelect'];
 };
 type OverrideRNStyleProps = 'display' | 'backfaceVisibility' | 'elevation' | 'gap' | 'columnGap' | 'rowGap';
-export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
-export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps & {
+export type StackStylePropsBase = Omit<ViewStyle, OverrideRNStyleProps | keyof SharedBaseExtraStyleProps> & TransformStyleProps & SharedBaseExtraStyleProps;
+type SharedBaseExtraStylePropsText = SharedBaseExtraStyleProps & {
     ellipse?: boolean;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
 };
+export type TextStylePropsBase = Omit<TextStyle, OverrideRNStyleProps | keyof SharedBaseExtraStylePropsText> & TransformStyleProps & SharedBaseExtraStylePropsText;
 export interface ExtendBaseStackProps {
 }
 export interface ExtendBaseTextProps {

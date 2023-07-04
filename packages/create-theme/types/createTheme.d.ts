@@ -1,4 +1,4 @@
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types';
+import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './createThemeTypes';
 export declare function createTheme<Definition extends ThemeMask, Extras extends GenericTheme = {}>(palette: CreateThemePalette, definition: Definition, options?: CreateThemeOptions, name?: string, skipCache?: boolean): {
     [key in keyof Definition | keyof Extras]: string;
 };

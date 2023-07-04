@@ -1,4 +1,9 @@
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types'
+import {
+  CreateThemeOptions,
+  CreateThemePalette,
+  GenericTheme,
+  ThemeMask,
+} from './createThemeTypes'
 
 export type ThemeInfo = {
   palette: CreateThemePalette
