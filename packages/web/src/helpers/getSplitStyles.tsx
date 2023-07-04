@@ -538,19 +538,20 @@ export const getSplitStyles: StyleSplitter = (
     fontFamily ||=
       props[conf.inverseShorthands.fontFamily] || props.fontFamily || defaultFontVariable
 
-    const expanded = isMediaOrPseudo
-      ? [[keyInit, valInit]]
-      : propMapper(
-          keyInit,
-          valInit,
-          theme,
-          props,
-          state,
-          fontFamily,
-          languageContext,
-          undefined,
-          debug
-        )
+    const expanded =
+      isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
+        ? [[keyInit, valInit]]
+        : propMapper(
+            keyInit,
+            valInit,
+            theme,
+            props,
+            state,
+            fontFamily,
+            languageContext,
+            undefined,
+            debug
+          )
 
     if (!fontFamily) {
       fontFamily = getPropMappedFontFamily(expanded)
