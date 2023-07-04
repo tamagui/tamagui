@@ -159,7 +159,7 @@ export const docsRoutes = [
   {
     pages: [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
-      { title: 'Creating Themes', route: '/docs/guides/theme-builder' },
+      { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       { title: 'How to Build a Button', route: '/docs/guides/how-to-build-a-button' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
