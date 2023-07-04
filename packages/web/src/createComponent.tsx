@@ -585,7 +585,7 @@ export function createComponent<
 
     const shouldSetMounted = needsMount && state.unmounted
 
-    // combinined two effects into one for performance so be careful with logic
+    // combined two effects into one for performance so be careful with logic
     // because no need for mouseUp removal effect if its not even mounted yet
     useIsomorphicLayoutEffect(() => {
       if (!shouldSetMounted) {
