@@ -67,6 +67,23 @@ const themesBuilder = createThemeBuilder()
 export const themes = themesBuilder.build()
 ```
 
+And then to set up your compiler to automatically build and watch your themes, add the following to your compiler config. For example with Next.js:
+
+```tsx
+withTamagui({
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+
+  // input is the file that imports @tamagui/theme-builder
+  // and has an `export const themes`
+  // output is then the file you import and use with your `createTamagui`
+  themeBuilder: {
+    input: './themes-input.tsx',
+    output: './themes.tsx',
+  },
+})
+```
+
 ---
 
 ### The Concepts
