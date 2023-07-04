@@ -38,6 +38,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];
@@ -74,6 +75,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     Button: {
@@ -111,6 +113,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     Checkbox: {
@@ -146,41 +149,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
-    };
-    SliderTrackActive: {
-        override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
-            shadowColor: number;
-            shadowColorHover: number;
-            shadowColorPress: number;
-            shadowColorFocus: number;
-        };
-        skip: {
-            color1: number;
-            color2: number;
-            color3: number;
-            color4: number;
-            color5: number;
-            color6: number;
-            color7: number;
-            color8: number;
-            color9: number;
-            color10: number;
-            color11: number;
-            color12: number;
-            shadowColor: number;
-            shadowColorHover: number;
-            shadowColorPress: number;
-            shadowColorFocus: number;
-        };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
-        strength?: number | undefined;
-        max?: number | undefined;
-        min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     Switch: {
@@ -216,6 +185,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     SwitchThumb: {
@@ -252,6 +222,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     TooltipContent: {
@@ -287,6 +258,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     DrawerFrame: {
@@ -322,6 +294,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     Progress: {
@@ -357,6 +330,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     TooltipArrow: {
@@ -392,6 +366,43 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
+        mask: string;
+    };
+    SliderTrackActive: {
+        override: {
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     SliderTrack: {
@@ -427,6 +438,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     SliderThumb: {
@@ -462,6 +474,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     Tooltip: {
@@ -497,6 +510,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     ProgressIndicator: {
@@ -532,6 +546,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         mask: string;
     };
     SheetOverlay: {
@@ -585,6 +600,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];
@@ -621,6 +637,7 @@ export declare const componentThemeDefinitions: {
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         parent: string;
         mask: string;
     }[];

@@ -10,197 +10,204 @@ import { ValueObject } from './types'
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect'
 import { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 
-export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
-  forcedTheme,
-  disableTransitionOnChange = true,
-  enableSystem = true,
-  enableColorScheme = true,
-  storageKey = 'theme',
-  themes = colorSchemes,
-  defaultTheme = enableSystem ? 'system' : 'light',
-  attribute = 'class',
-  skipNextHead,
-  onChangeTheme,
-  value = {
-    dark: 't_dark',
-    light: 't_light',
-  },
-  children,
-}) => {
-  const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
-  const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
-  // const resolvedTheme = React.useDeferredValue(resolvedThemeFast)
-  const attrs = !value ? themes : Object.values(value)
+export const NextThemeProvider = memo(
+  ({
+    forcedTheme,
+    disableTransitionOnChange = true,
+    enableSystem = true,
+    enableColorScheme = true,
+    storageKey = 'theme',
+    themes = colorSchemes,
+    defaultTheme = enableSystem ? 'system' : 'light',
+    attribute = 'class',
+    skipNextHead,
+    onChangeTheme,
+    value = {
+      dark: 't_dark',
+      light: 't_light',
+    },
+    children,
+  }: ThemeProviderProps) => {
+    const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
+    const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
+    // const resolvedTheme = React.useDeferredValue(resolvedThemeFast)
+    const attrs = !value ? themes : Object.values(value)
 
-  const handleMediaQuery = useEvent((e?) => {
-    const systemTheme = getSystemTheme(e)
-    React.startTransition(() => {
-      setResolvedTheme(systemTheme)
+    const handleMediaQuery = useEvent((e?) => {
+      const systemTheme = getSystemTheme(e)
+      React.startTransition(() => {
+        setResolvedTheme(systemTheme)
+      })
+      if (theme === 'system' && !forcedTheme) {
+        handleChangeTheme(systemTheme, false)
+      }
     })
-    if (theme === 'system' && !forcedTheme) {
-      handleChangeTheme(systemTheme, false)
-    }
-  })
 
-  // Ref hack to avoid adding handleMediaQuery as a dep
-  const mediaListener = useRef(handleMediaQuery)
-  mediaListener.current = handleMediaQuery
+    // Ref hack to avoid adding handleMediaQuery as a dep
+    const mediaListener = useRef(handleMediaQuery)
+    mediaListener.current = handleMediaQuery
 
-  const handleChangeTheme = useEvent((theme, updateStorage = true, updateDOM = true) => {
-    let name = value?.[theme] || theme
+    const handleChangeTheme = useEvent(
+      (theme, updateStorage = true, updateDOM = true) => {
+        let name = value?.[theme] || theme
 
-    if (updateStorage) {
-      try {
-        localStorage.setItem(storageKey, theme)
-      } catch (e) {
-        // Unsupported
+        if (updateStorage) {
+          try {
+            localStorage.setItem(storageKey, theme)
+          } catch (e) {
+            // Unsupported
+          }
+        }
+
+        if (theme === 'system' && enableSystem) {
+          const resolved = getSystemTheme()
+          name = value?.[resolved] || resolved
+        }
+
+        onChangeTheme?.(name.replace('t_', ''))
+
+        if (updateDOM) {
+          const d = document.documentElement
+          if (attribute === 'class') {
+            d.classList.remove(...attrs)
+            d.classList.add(name)
+          } else {
+            d.setAttribute(attribute, name)
+          }
+        }
       }
-    }
+    )
 
-    if (theme === 'system' && enableSystem) {
-      const resolved = getSystemTheme()
-      name = value?.[resolved] || resolved
-    }
+    useIsomorphicLayoutEffect(() => {
+      const handler = (...args: any) => mediaListener.current(...args)
+      // Always listen to System preference
+      const media = window.matchMedia(MEDIA)
+      // Intentionally use deprecated listener methods to support iOS & old browsers
+      media.addListener(handler)
+      handler(media)
+      return () => {
+        media.removeListener(handler)
+      }
+    }, [])
 
-    onChangeTheme?.(name.replace('t_', ''))
-
-    if (updateDOM) {
-      const d = document.documentElement
-      if (attribute === 'class') {
-        d.classList.remove(...attrs)
-        d.classList.add(name)
+    const set = useEvent((newTheme) => {
+      if (forcedTheme) {
+        handleChangeTheme(newTheme, true, false)
       } else {
-        d.setAttribute(attribute, name)
+        handleChangeTheme(newTheme)
       }
-    }
-  })
+      setThemeState(newTheme)
+    })
 
-  useIsomorphicLayoutEffect(() => {
-    const handler = (...args: any) => mediaListener.current(...args)
-    // Always listen to System preference
-    const media = window.matchMedia(MEDIA)
-    // Intentionally use deprecated listener methods to support iOS & old browsers
-    media.addListener(handler)
-    handler(media)
-    return () => {
-      media.removeListener(handler)
-    }
-  }, [])
-
-  const set = useEvent((newTheme) => {
-    if (forcedTheme) {
-      handleChangeTheme(newTheme, true, false)
-    } else {
-      handleChangeTheme(newTheme)
-    }
-    setThemeState(newTheme)
-  })
-
-  // localStorage event handling
-  useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key !== storageKey) {
-        return
+    // localStorage event handling
+    useEffect(() => {
+      const handleStorage = (e: StorageEvent) => {
+        if (e.key !== storageKey) {
+          return
+        }
+        // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
+        const theme = e.newValue || defaultTheme
+        set(theme)
       }
-      // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-      const theme = e.newValue || defaultTheme
-      set(theme)
-    }
-    window.addEventListener('storage', handleStorage)
-    return () => {
-      window.removeEventListener('storage', handleStorage)
-    }
-  }, [defaultTheme, set, storageKey])
+      window.addEventListener('storage', handleStorage)
+      return () => {
+        window.removeEventListener('storage', handleStorage)
+      }
+    }, [defaultTheme, set, storageKey])
 
-  // color-scheme handling
-  useIsomorphicLayoutEffect(() => {
-    if (!enableColorScheme) return
+    // color-scheme handling
+    useIsomorphicLayoutEffect(() => {
+      if (!enableColorScheme) return
 
-    const colorScheme =
-      // If theme is forced to light or dark, use that
-      forcedTheme && colorSchemes.includes(forcedTheme)
-        ? forcedTheme
-        : // If regular theme is light or dark
-        theme && colorSchemes.includes(theme)
-        ? theme
-        : // If theme is system, use the resolved version
-        theme === 'system'
-        ? resolvedTheme || null
-        : null
+      const colorScheme =
+        // If theme is forced to light or dark, use that
+        forcedTheme && colorSchemes.includes(forcedTheme)
+          ? forcedTheme
+          : // If regular theme is light or dark
+          theme && colorSchemes.includes(theme)
+          ? theme
+          : // If theme is system, use the resolved version
+          theme === 'system'
+          ? resolvedTheme || null
+          : null
 
-    // color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
-    // if color-scheme is null, this will remove the property
-    const userPrefers =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
+      // color-scheme tells browser how to render built-in elements like forms, scrollbars, etc.
+      // if color-scheme is null, this will remove the property
+      const userPrefers =
+        typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
 
-    const wePrefer = colorScheme || 'light'
+      const wePrefer = colorScheme || 'light'
 
-    // avoid running this because it causes full page reflow
-    if (userPrefers !== wePrefer || wePrefer === 'dark') {
-      document.documentElement.style.setProperty('color-scheme', colorScheme)
-    }
-  }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
+      // avoid running this because it causes full page reflow
+      if (userPrefers !== wePrefer || wePrefer === 'dark') {
+        document.documentElement.style.setProperty('color-scheme', colorScheme)
+      }
+    }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
 
-  const toggle = useEvent(() => {
-    const order =
-      resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
-    const next = order[(order.indexOf(theme) + 1) % order.length]
-    set(next)
-  })
+    const toggle = useEvent(() => {
+      const order =
+        resolvedTheme === 'dark'
+          ? ['system', 'light', 'dark']
+          : ['system', 'dark', 'light']
+      const next = order[(order.indexOf(theme) + 1) % order.length]
+      set(next)
+    })
 
-  const contextResolvedTheme = theme === 'system' ? resolvedTheme : theme
-  const systemTheme = (enableSystem ? resolvedTheme : undefined) as
-    | 'light'
-    | 'dark'
-    | undefined
+    const contextResolvedTheme = theme === 'system' ? resolvedTheme : theme
+    const systemTheme = (enableSystem ? resolvedTheme : undefined) as
+      | 'light'
+      | 'dark'
+      | undefined
 
-  const contextValue = useMemo(() => {
-    const value: UseThemeProps = {
+    const contextValue = useMemo(() => {
+      const value: UseThemeProps = {
+        theme,
+        current: theme,
+        set,
+        toggle,
+        forcedTheme,
+        resolvedTheme: contextResolvedTheme,
+        themes: enableSystem ? [...themes, 'system'] : themes,
+        systemTheme,
+      } as const
+      return value
+    }, [
       theme,
-      current: theme,
       set,
       toggle,
       forcedTheme,
-      resolvedTheme: contextResolvedTheme,
-      themes: enableSystem ? [...themes, 'system'] : themes,
+      contextResolvedTheme,
+      enableSystem,
+      themes,
       systemTheme,
-    } as const
-    return value
-  }, [
-    theme,
-    set,
-    toggle,
-    forcedTheme,
-    contextResolvedTheme,
-    enableSystem,
-    themes,
-    systemTheme,
-  ])
+    ])
 
-  return (
-    <ThemeSettingContext.Provider value={contextValue}>
-      <ThemeScript
-        {...{
-          forcedTheme,
-          storageKey,
-          systemTheme: resolvedTheme,
-          attribute,
-          value,
-          enableSystem,
-          defaultTheme,
-          attrs,
-          skipNextHead,
-        }}
-      />
-      {/* because on SSR we re-run and can avoid whole tree re-render */}
-      {useMemo(() => children, [children])}
-    </ThemeSettingContext.Provider>
-  )
-}
+    return (
+      <ThemeSettingContext.Provider value={contextValue}>
+        <ThemeScript
+          {...{
+            forcedTheme,
+            storageKey,
+            systemTheme: resolvedTheme,
+            attribute,
+            value,
+            enableSystem,
+            defaultTheme,
+            attrs,
+            skipNextHead,
+          }}
+        />
+        {/* because on SSR we re-run and can avoid whole tree re-render */}
+        {useMemo(() => children, [children])}
+      </ThemeSettingContext.Provider>
+    )
+  }
+)
+
 const ThemeScript = memo(
   ({
     forcedTheme,

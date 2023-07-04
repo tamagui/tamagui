@@ -202,7 +202,7 @@ const getValidComponentPackages = memoize((props: TamaguiOptionsWithFileInfo) =>
   return [...new Set(['@tamagui/core', 'tamagui', ...props.components])]
 })
 
-const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {
+export const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {
   return getValidComponentPackages(props).map((pkg) => {
     const root = findRoot(pkg)
     return basename(root)

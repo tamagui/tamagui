@@ -77,21 +77,13 @@ const SandboxFrame = (props: { children: any }) => {
 
       <Theme name={screenshot ? 'blue' : undefined}>
         <XStack w="100%" h="100%" fullscreen>
-          <YStack ai="center" jc="center" f={1} h="100%">
-            {props.children}
-          </YStack>
+          <YStack f={1}>{props.children}</YStack>
 
           {splitView ? (
             <>
               <Separator vertical />
               <Theme name="dark">
-                <YStack
-                  ai="center"
-                  jc="center"
-                  f={1}
-                  h="100%"
-                  bg={screenshot ? 'transparent' : '$background'}
-                >
+                <YStack f={1} bg={screenshot ? 'transparent' : '$background'}>
                   {props.children}
                 </YStack>
               </Theme>

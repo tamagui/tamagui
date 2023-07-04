@@ -30,10 +30,14 @@ export function extendStaticConfig(
 
   const deoptProps = config.deoptProps || new Set<string>()
 
-  const defaultProps = mergeProps(parentStaticConfig.defaultProps, {
+  const merged = {
     ...config.defaultProps,
     ...config.defaultVariants,
-  })[0]
+  }
+
+  const defaultProps = parentStaticConfig.isHOC
+    ? merged
+    : mergeProps(parentStaticConfig.defaultProps, merged)[0]
 
   return parseStaticConfig({
     ...parentStaticConfig,

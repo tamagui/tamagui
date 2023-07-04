@@ -299,7 +299,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
 
-        out[themeName] = createTheme(palette, template, options)
+        out[themeName] = createTheme(palette, template, options, themeName)
       }
     }
 
@@ -319,7 +319,13 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         throw new Error(`No mask ${maskFunction}`)
       }
 
-      out[themeName] = applyMask(parent, maskFunction as any, options)
+      out[themeName] = applyMask(
+        parent,
+        maskFunction as any,
+        options,
+        parentName,
+        themeName
+      )
     }
 
     return out as any

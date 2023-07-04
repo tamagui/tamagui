@@ -38,6 +38,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
         y={0}
         elevation="$1"
         opacity={1}
+        animateOnly={['transform', 'opacity']}
         animation={[
           'quick',
           {

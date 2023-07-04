@@ -1,5 +1,4 @@
-import { Moon } from '@tamagui/lucide-icons'
-import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagui'
+import { H1, Square, YStack } from 'tamagui'
 
 // TODO this is a great test: media + animation + space (test without animation too)
 // <Stack
@@ -21,6 +20,14 @@ import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagu
 //     </Stack>
 
 export const Sandbox = () => {
-  console.log('wtf', getTokens({ prefixed: true }))
+  return (
+    <>
+      {[1, 2, 3].map((i) => (
+        <YStack debug="verbose" key={i}>
+          <Square size={100} bc="red" />
+        </YStack>
+      ))}
+    </>
+  )
   return <H1>test things here</H1>
 }
