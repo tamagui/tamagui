@@ -87,7 +87,7 @@ const TabsTriggerFrame = styled(ThemeableStack, {
   flexDirection: 'row',
   cursor: 'pointer',
   focusable: true,
-  userSelect: "none",
+  userSelect: 'none',
 
   variants: {
     size: {
