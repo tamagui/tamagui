@@ -1,4 +1,4 @@
-import { createGluspFont } from '@tamagui/font-glusp'
+import { createCherryBombFont } from '@tamagui/font-cherry-bomb'
 import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
@@ -11,7 +11,7 @@ import { media, mediaQueryDefaultActive } from './media'
 
 export * from './animations'
 
-export const gluspFont = createGluspFont()
+export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()
 
 const silkscreenFont = createSilkscreenFont()
@@ -113,8 +113,8 @@ export const config = {
     body: bodyFont,
     mono: monoFont,
     silkscreen: silkscreenFont,
-    glusp: gluspFont,
     munro: munroFont,
+    cherryBomb: cherryBombFont,
   },
 }
 

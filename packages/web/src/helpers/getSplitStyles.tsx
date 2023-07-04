@@ -215,6 +215,7 @@ export const getSplitStyles: StyleSplitter = (
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
 
+    // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
       if (typeof valInit === 'string' && valInit[0] === '_') {
         if (keyInit in validStyleProps || keyInit.includes('-')) {
@@ -291,11 +292,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (!staticConfig.isHOC) {
       if (keyInit in skipProps) {
-        if (process.env.NODE_ENV === 'development' && debug && keyInit === 'debug') {
-          // pass through debug
-        } else {
-          continue
-        }
+        continue
       }
     }
 
@@ -451,9 +448,16 @@ export const getSplitStyles: StyleSplitter = (
         if (isValidClassName || isMediaOrPseudo) {
           if (process.env.NODE_ENV === 'development' && debug) {
             // rome-ignore lint/nursery/noConsoleLog: ok
-            console.log('tamagui classname props', keyInit, valInit)
+            console.log('tamagui classname prop', keyInit, valInit)
           }
-          mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+
+          if (shouldDoClasses) {
+            mergeClassName(transforms, classNames, keyInit, valInit, isMediaOrPseudo)
+            delete style[keyInit]
+          } else {
+            style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+            delete className[keyInit]
+          }
           continue
         }
       }
@@ -490,9 +494,7 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed(
-        `  🔹 prop ${keyInit} ${shouldPassThrough ? 'pass through' : ''}`
-      )
+      console.groupCollapsed(`  🔹 prop ${keyInit} ${shouldPassThrough ? '(pass)' : ''}`)
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough })
@@ -653,6 +655,7 @@ export const getSplitStyles: StyleSplitter = (
 
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
+            if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
             mergeClassName(
               transforms,
@@ -798,6 +801,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
+            if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true)
           }

@@ -1,6 +1,7 @@
 ---
-title: Creating Themes
+title: Creating Themes with createThemeBuilder
 description: Learn how to create a suite of themes for a Tamagui app.
+demoName: ThemeBuilder
 ---
 
 <HeroContainer noScroll>
@@ -8,20 +9,18 @@ description: Learn how to create a suite of themes for a Tamagui app.
 </HeroContainer>
 
 <IntroParagraph>
-  The new ThemeBuilder API allows for intuitively creating entire suites of themes for use
-  with your design system on Tamagui with a simple syntax.
+  The new @tamagui/theme-builder package makes creating entire suites of themes for
+  Tamagui much easier, with some performance benefits as well.
 </IntroParagraph>
 
-The Tamagui theme system is likely too powerful for its own good. In the past, that complexity and a relative lack of documentation meant that rolling your own themes was too much of a bother for most.
+The Tamagui theme system is powerful - but in the past, too hard to fully leverage. With version 1.37 Tamagui released two new things to help make authoring theme suites much easier:
 
-With version 1.37 Tamagui is releasing two new things to help make authoring themes go from a burden to (hopefully) a delight:
-
-- The new `createThemeBuilder` from `@tamagui/theme-builder`.
-- A corresponding compile-time `themeBuilder` option to pre-generate themes.
+- A new `createThemeBuilder` chainable API exported from `@tamagui/theme-builder`.
+- A corresponding compile-time `themeBuilder` option to help pre-generate themes.
 
 The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhile the `themeBuilder` option automates pre-generating themes, which means you can avoid the cost of generating themes at runtime as well as the extra bundle size of the `@tamagui/theme-builder` package.
 
-This guide goes into the why and how of `createThemeBuilder`. If you want to [skip to the API, check here](#createThemeBuilder), or you can just copy-paste [a complete example here](#complete-example).
+This guide goes into the why and how of `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
 
 <Notice>
   Note that you don't need to create your own theme suite. You can use our built-in
@@ -67,7 +66,7 @@ const themesBuilder = createThemeBuilder()
 export const themes = themesBuilder.build()
 ```
 
-And then to set up your compiler to automatically build and watch your themes, add the following to your compiler config. For example with Next.js:
+And to set up your compiler to automatically watch and build your themes, add the following to your compiler config (for example with Next.js):
 
 ```tsx
 withTamagui({
@@ -83,6 +82,8 @@ withTamagui({
   },
 })
 ```
+
+You can also use the new `@tamagui/cli` package to enable `npx tamagui generate-themes ./src/themes-in.ts ./src/themes-out.ts`.
 
 ---
 
@@ -357,7 +358,7 @@ shiftRightMask({
 
 Is is useful? Not really, but it explains what they do.
 
-To understand their utility we can revisit component themes. Let's build it up again. We start with our base theme, `dark_blue`. It uses a template with background `0` and color `-0`, which gives us a nice dark background and bright color.
+To understand their utility we can revisit component themes. Let's build it up again. We start with our base theme, `dark_blue`. It uses a template with background `0` and color `11`, which gives us a nice dark background and bright color.
 
 Now we want to theme a `dark_blue_Button`. We want our Button to stand out from the `dark_blue` theme, so we want to shift our background from `0` to be something above it: maybe 1, or 2. We can create a new mask function called `strengthenBackground` that is defined somewhat like this.
 
@@ -532,7 +533,7 @@ const themesBuilder = createThemeBuilder()
 export const themes = themesBuilder.build()
 ```
 
-This is the full API, minus a variety of options that each of these can take. Calling `themesBuilder.build()` will generate the following:
+This is the full API, minus some optional extra props that each function takes. Calling `themesBuilder.build()` will generate the following:
 
 ```tsx
 {
@@ -557,7 +558,7 @@ This is the full API, minus a variety of options that each of these can take. Ca
 
 #### Complete Example
 
-Moving further, we can read [the source for the `@tamagui/themes` package](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes-new.ts), which this site uses, makes for a much fuller example. It handles a variety of more complex things:
+To get a better idea of a complete theme suite, check out [the source for the `@tamagui/themes` package](https://github.com/tamagui/tamagui/blob/master/packages/themes/src/themes-new.ts). This is the code that produces the themes for this site. It handles a variety of more complex use cases:
 
 - Adding multiple levels of themes, like `light_orange`, `light_subtle`, and `light_orange_subtle`.
 - Adding component themes like `light_Button`, `light_orange_Button`, and `light_orange_subtle_Button`.

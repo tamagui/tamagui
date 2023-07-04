@@ -187,7 +187,7 @@ export function createComponent<
           defaultProps[key] ||
           defaultProps[inverseShorthands[key]]
         // if not set, use context
-        if (propVal == null) {
+        if (propVal === undefined) {
           if (contextValue) {
             const isValidValue = key in validStyles || key in variants
             if (isValidValue) {

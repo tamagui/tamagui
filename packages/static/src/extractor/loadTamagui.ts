@@ -6,7 +6,7 @@ import { createTamagui } from '@tamagui/core-node'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import fs, { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
+import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire } from '../require'
@@ -67,19 +67,28 @@ export async function loadTamagui(
   return bundleInfo
 }
 
-async function generateThemesAndLog(options: TamaguiOptions) {
-  if (options.themeBuilder) {
-    await generateTamaguiThemes(options)
-    colorLog(
-      Color.FgYellow,
-      `
-      ➡ [tamagui] Generated themes:`
-    )
-    colorLog(
-      Color.Dim,
-      `
-          ${relative(process.cwd(), options.themeBuilder.output)}`
-    )
+// debounce a bit
+let waiting = false
+const generateThemesAndLog = async (options: TamaguiOptions) => {
+  if (waiting) return
+  try {
+    waiting = true
+    await new Promise((res) => setTimeout(res, 30))
+    if (options.themeBuilder) {
+      await generateTamaguiThemes(options)
+      colorLog(
+        Color.FgYellow,
+        `
+    ➡ [tamagui] Generated themes:`
+      )
+      colorLog(
+        Color.Dim,
+        `
+            ${relative(process.cwd(), options.themeBuilder.output)}`
+      )
+    }
+  } finally {
+    waiting = false
   }
 }
 
