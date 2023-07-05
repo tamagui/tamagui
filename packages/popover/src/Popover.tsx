@@ -206,13 +206,16 @@ export const PopoverContent = PopperContentFrame.extractable(
   )
 )
 
-function PopoverRepropagateContext(props: { children: any }) {
-  const context = usePopoverContext()
-  const popperContext = usePopperContext()
-
+function PopoverRepropagateContext(props: {
+  children: any
+  context: any
+  popperContext: any
+}) {
   return (
-    <PopperContext.Provider {...popperContext}>
-      <PopoverContext.Provider {...context}>{props.children}</PopoverContext.Provider>
+    <PopperContext.Provider {...props.popperContext}>
+      <PopoverContext.Provider {...props.context}>
+        {props.children}
+      </PopoverContext.Provider>
     </PopperContext.Provider>
   )
 }
@@ -220,12 +223,17 @@ function PopoverRepropagateContext(props: { children: any }) {
 function PopoverContentPortal(props: PopoverContentTypeProps) {
   const themeName = useThemeName()
   const context = usePopoverContext()
+  const popperContext = usePopperContext()
 
   // on android we have to re-pass context
   let contents = props.children
 
-  if (Platform.OS === 'android') {
-    contents = <PopoverRepropagateContext>{props.children}</PopoverRepropagateContext>
+  if (Platform.OS === 'android' || Platform.OS === 'ios') {
+    contents = (
+      <PopoverRepropagateContext popperContext={popperContext} context={context}>
+        {props.children}
+      </PopoverRepropagateContext>
+    )
   }
 
   const zIndex = props.zIndex ?? 150_000
@@ -292,6 +300,7 @@ const PopoverContentImpl = React.forwardRef<
     ...contentProps
   } = props
   const context = usePopoverContext()
+  const popperContext = usePopperContext()
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   if (context.breakpointActive) {
@@ -306,10 +315,14 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
+    const Wrapper =
+      Platform.OS === 'android' || Platform.OS === 'ios'
+        ? PopperContext.Provider
+        : React.Fragment
     // doesn't show as popover yet on native, must use as sheet
     return (
       <PortalItem hostName={`${context.id}PopoverContents`}>
-        {childrenWithoutScrollView}
+        <Wrapper {...popperContext}>{childrenWithoutScrollView}</Wrapper>
       </PortalItem>
     )
   }
