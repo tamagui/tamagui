@@ -1560,7 +1560,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                             params.append(`promotion_code`, store.appliedPromoCode)
                           } else if (coupon) {
                             // the coupon that's applied by default (special event, etc.)
-                            params.append(`coupon`, coupon.id)
+                            params.append(`coupon_id`, coupon.id)
                           }
 
                           return params.toString()
