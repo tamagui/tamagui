@@ -23,6 +23,7 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(404).json({
       message: "promo code doesn't exist"
     })
+    return
   }
   res.json(promo.coupon)
 }

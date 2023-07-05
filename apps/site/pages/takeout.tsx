@@ -1557,7 +1557,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           params.append(`price-${starter.id}`, starterPriceId)
                           if (store.appliedPromoCode) {
                             // the coupon user applied
-                            params.append(`coupon`, store.appliedPromoCode)
+                            params.append(`promotion_code`, store.appliedPromoCode)
                           } else if (coupon) {
                             // the coupon that's applied by default (special event, etc.)
                             params.append(`coupon`, coupon.id)
