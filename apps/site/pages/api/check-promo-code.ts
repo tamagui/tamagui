@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const promo = promoList.data[0]
 
-  if (!promo) {
+  if (!promo || !promo?.coupon) {
     res.status(404).json({
       message: "promo code doesn't exist"
     })
