@@ -1,4 +1,5 @@
 import Module from 'module'
+import { join } from 'path'
 
 import type { ThemeBuilder } from '@tamagui/theme-builder'
 
@@ -33,7 +34,7 @@ export async function generateThemes(inputFile: string) {
   }
 
   try {
-    const requiredThemes = require(inputFile)
+    const requiredThemes = require(join(process.cwd(), inputFile))
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
     const themeBuilder = promise ? await promise : null
