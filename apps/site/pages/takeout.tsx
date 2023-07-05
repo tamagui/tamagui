@@ -2115,7 +2115,11 @@ const Points = () => (
 )
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const couponPromise = stripe.coupons.list()
+  const promoListPromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code site are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
   const productPromises = [
     supabaseAdmin
       .from('products')
@@ -2133,20 +2137,16 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .eq('metadata->>slug', 'font-packs')
       .single(),
   ]
-  const promises = [couponPromise, ...productPromises]
+  const promises = [promoListPromise, ...productPromises]
   const queries = await Promise.all(promises)
 
   const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof couponPromise>
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>
 
   let coupon: Stripe.Coupon | null = null
 
   if (couponsList.data.length > 0) {
-    for (const _coupon of couponsList.data) {
-      if (_coupon.metadata?.show_on_site) {
-        coupon = _coupon
-      }
-    }
+    coupon = couponsList.data[0].coupon
   }
 
   for (const product of products) {
