@@ -171,6 +171,7 @@ function createGroup(verticalDefault: boolean) {
         <GroupProvider
           disablePassBorderRadius={disablePassBorderRadius}
           vertical={orientation === 'vertical'}
+          // @ts-ignore this just popped up since new version expo 49
           radius={radius}
           disabled={disabledProp}
           onItemMount={onItemMount}

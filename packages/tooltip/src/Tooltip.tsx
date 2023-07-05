@@ -41,11 +41,15 @@ const TooltipContent = PopperContentFrame.extractable(
     ) => {
       const popper = usePopperContext()
       const padding =
-        props.size ||
-        popper.size ||
-        getSize('$true', {
-          shift: -2,
-        })
+        props.padding ??
+        (props.unstyled
+          ? null
+          : props.size ??
+            popper.size ??
+            getSize('$true', {
+              shift: -2,
+            }))
+
       return (
         <PopoverContent
           componentName="Tooltip"
@@ -67,6 +71,7 @@ const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
 
 export type TooltipProps = PopperProps & {
   open?: boolean
+  unstyled?: boolean
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
   focus?: {
@@ -160,15 +165,17 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = getSize('$true', {
-    shift: -2,
-    bounds: [0],
-  })
+  const smallerSize = props.unstyled
+    ? null
+    : getSize('$true', {
+        shift: -2,
+        bounds: [0],
+      })
 
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper size={smallerSize.key as SizeTokens} allowFlip stayInFrame {...restProps}>
+      <Popper size={smallerSize?.key as SizeTokens} allowFlip stayInFrame {...restProps}>
         <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}
