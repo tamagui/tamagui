@@ -34,7 +34,9 @@ export async function generateThemes(inputFile: string) {
   }
 
   try {
-    const requiredThemes = require(join(process.cwd(), inputFile))
+    const inputFilePath =
+      inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+    const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
     const themeBuilder = promise ? await promise : null
