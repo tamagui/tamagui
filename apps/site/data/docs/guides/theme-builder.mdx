@@ -9,14 +9,14 @@ demoName: ThemeBuilder
 </HeroContainer>
 
 <IntroParagraph>
-  The new @tamagui/theme-builder package makes creating entire suites of themes for
-  Tamagui much easier, with some performance benefits as well.
+  The new theme-builder package makes creating suites of themes for Tamagui far easier,
+  with some performance benefits to boot.
 </IntroParagraph>
 
-The Tamagui theme system is powerful - but in the past, too hard to fully leverage. With version 1.37 Tamagui released two new things to help make authoring theme suites much easier:
+The Tamagui theme system is extremely powerful, but in the past, way too hard to work with. With version 1.37 Tamagui has released two new things to help make authoring themes much easier:
 
-- A new `createThemeBuilder` chainable API exported from `@tamagui/theme-builder`.
-- A corresponding compile-time `themeBuilder` option to help pre-generate themes.
+- `createThemeBuilder` - a chainable API for generating themes, exported from `@tamagui/theme-builder`.
+- `themeBuilder` - an option for the Tamagui compiler that watches and generates themes at compile-time.
 
 The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhile the `themeBuilder` option automates pre-generating themes, which means you can avoid the cost of generating themes at runtime as well as the extra bundle size of the `@tamagui/theme-builder` package.
 
@@ -143,7 +143,7 @@ We can refer to a single color in the pallete by 0-index:
 
 In this case 0 is the background, and 11 is the foreground.
 
-Within Tamagui you can define your palettes to have as many of few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent (and for being able to use our built-in masks, which we'll get into shortly).
+Within Tamagui you can define your palettes to have as many or few colors as you like. You also technically don't _have_ to go from background to foreground, but we recommend it if only for being consistent (and for being able to use our built-in masks, which we'll get into shortly).
 
 The offical `@tamagui/themes` theme suite that this websites uses adds one more layer to this equation - the 0-index color is actually a "background transparent", leaving the 1st index as the actual background, and correspondingly, the 12th index is the strongest foreground, while the 13th is "foreground transparent".
 
