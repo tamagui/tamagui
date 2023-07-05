@@ -73,7 +73,12 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   const result = await prompts({
     name: 'packageName',
     type: 'autocomplete',
-    message: `Pick a ${type}:`,
+    message:
+      type === 'icon'
+        ? `Pick an icon pack:`
+        : type === 'font'
+        ? `Pick a font:`
+        : `Pick one:`,
 
     choices: Object.entries<any>(meta).map(([slug, data]) => ({
       title:
