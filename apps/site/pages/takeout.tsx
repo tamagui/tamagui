@@ -565,13 +565,10 @@ export default function TakeoutPage({
             jc="space-between"
             className="mix-blend"
             $xxs={{
-              scale: 0.5,
-              gap: 30,
-              top: heroHeight - 480,
+              display: 'none',
             }}
             $xs={{
-              scale: 0.5,
-              top: heroHeight - 400,
+              display: 'none',
             }}
             $sm={{
               scale: 0.8,
@@ -1676,7 +1673,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           shadowOffset={{ height: 20, width: 0 }}
           shadowColor="#000"
           x={-100}
-          y={0}
+          y={50}
           mah="calc(min(85vh, 800px))"
           $md={{
             x: -20,
@@ -1685,7 +1682,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mah: 'auto',
             w: '100%',
             maw: '100%',
-            mt: 10,
+            mt: 100,
           }}
         >
           <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
