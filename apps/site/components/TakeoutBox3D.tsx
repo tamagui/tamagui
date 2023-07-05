@@ -16,8 +16,8 @@ let frameCount = 0
 export default (props) => (
   <Canvas
     style={{
-      width: 680,
-      height: 680,
+      width: 730,
+      height: 730,
     }}
     gl={{ preserveDrawingBuffer: true }}
     shadows

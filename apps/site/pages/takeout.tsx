@@ -329,21 +329,21 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       className="ease-in ms300 all"
       pe="none"
       pos="relative"
-      scale={1.1}
+      scale={1.15}
       $xxs={{
-        scale: 0.3,
+        scale: 0.35,
       }}
       $xs={{
-        scale: 0.5,
+        scale: 0.55,
       }}
       $sm={{
-        scale: 0.6,
+        scale: 0.65,
       }}
       $md={{
-        scale: 0.8,
+        scale: 0.85,
       }}
       $lg={{
-        scale: 0.9,
+        scale: 0.95,
       }}
       // ref={glow.parentRef as any}
     >
@@ -370,12 +370,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           <TAKEOUT className="" zi={1000} color="$color10" />
         </ThemeTint>
       </YStack>
-
-      {coupon && (
-        <YStack position="absolute" right="10%" top="10%" zIndex="$5">
-          <DiscountText coupon={coupon} />
-        </YStack>
-      )}
 
       <YStack
         mt={0}
@@ -552,6 +546,12 @@ export default function TakeoutPage({
               </PurchaseButton>
             </YStack>
 
+            {coupon && (
+              <YStack position="absolute" right="5%" top={150} zIndex="$5">
+                <DiscountText coupon={coupon} />
+              </YStack>
+            )}
+
             <TakeoutHero coupon={coupon} />
           </YStack>
 
@@ -726,9 +726,11 @@ export default function TakeoutPage({
                   </H2>
                 </ThemeTint>
 
-                <MunroP size="$10" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise everything (success is up to you), but we can say
-                  you've found the cheat code to shipping stunning web + native apps fast.
+                <MunroP size="$11">We can't promise everything.</MunroP>
+
+                <MunroP size="$9" fow="400" $sm={{ size: '$8' }}>
+                  Success is up to you.. but we can say you've found the cheat code to
+                  shipping a top-tier web + native app as fast as possible.
                 </MunroP>
 
                 <HeartsRow />
@@ -1674,7 +1676,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           shadowOffset={{ height: 20, width: 0 }}
           shadowColor="#000"
           x={-100}
-          y={100}
+          y={0}
           mah="calc(min(85vh, 800px))"
           $md={{
             x: -20,
@@ -1683,7 +1685,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mah: 'auto',
             w: '100%',
             maw: '100%',
-            mt: 160,
+            mt: 10,
           }}
         >
           <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
@@ -2432,6 +2434,8 @@ const DiscountText = ({
   )
 }
 
+let keepCycling = true
+
 const FeatureIcon = ({
   themeIndex,
   title,
@@ -2443,9 +2447,11 @@ const FeatureIcon = ({
 }) => {
   const Tint = useTint()
   useEffect(() => {
+    if (!keepCycling) return
+
     const id = setTimeout(() => {
       Tint.setNextTint()
-    }, 30_000)
+    }, 10_000)
 
     return () => clearTimeout(id)
   }, [Tint.tint])
@@ -2457,7 +2463,10 @@ const FeatureIcon = ({
       <Theme name={theme}>
         <PixelTooltip active={active} label={title}>
           <IconFrame
-            onMouseEnter={() => Tint.setTintIndex(themeIndex)}
+            onMouseEnter={() => {
+              keepCycling = false
+              Tint.setTintIndex(themeIndex)
+            }}
             backgroundColor={active ? '$color9' : '$color3'}
           >
             <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
