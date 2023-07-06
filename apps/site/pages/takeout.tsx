@@ -674,7 +674,7 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column', mt: 0 }}>
+          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
@@ -689,7 +689,7 @@ export default function TakeoutPage({
                 p: '$4',
               }}
             >
-              <YStack mt={-500} $md={{mt: 0}} ml={20} mr={-20}>
+              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={-20}>
                 <StarterCard product={starter} />
               </YStack>
               {/* <YStack
@@ -940,9 +940,9 @@ export default function TakeoutPage({
                       fontFamily="$cherryBomb"
                       size="$10"
                       color="$color9"
-                      className=" callout"
+                      className="callout"
                       ls={-1}
-                      $sm={{ size: '$6' }}
+                      $sm={{ size: '$8' }}
                       fow="400"
                       mb="$4"
                     >
@@ -1020,7 +1020,7 @@ export default function TakeoutPage({
                     </YStack>
                   ))}
                 </XStack>
-                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
+                <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
                   {takeoutImages.slice(4, 17).map((image, index) => (
                     <YStack key={index} pos="relative">
                       <TakeoutImage
@@ -1120,7 +1120,7 @@ export default function TakeoutPage({
               </YStack>
             </XStack>
 
-            <YStack mt={200} w={3} mih={500} h="100%" />
+            <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} />
           </XStack>
 
           <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.045} zi={-2}>
@@ -1702,7 +1702,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           $md={{
             x: -20,
             y: 0,
-            mb: 280,
+            // mb: 280,
             mah: 'auto',
             w: '100%',
             maw: '100%',
@@ -2429,7 +2429,7 @@ const DiscountText = ({
     : ''
   return (
     <ThemeTintAlt>
-      <YStack m="auto" scale={1} $xs={{ scale: 1.5, rotate: '0deg' }} rotate="10deg">
+      <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="10deg">
         <YStack
           fullscreen
           shadowColor="rgba(0,0,0,0.5)"
