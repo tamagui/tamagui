@@ -612,7 +612,7 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
     },
     {
-      name: `allowedStyleValues`,
+      name: `autocompleteSpecificTokens`,
       required: false,
       type: `boolean | 'except-special'`,
       description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
@@ -653,7 +653,7 @@ type AllowedStyleValuesSetting =
     }
 ```
 
-_AutocompleteSpecificTokensSetting_:
+_autocompleteSpecificTokens_:
 
 The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
 If true this setting removes the specific token from types for the defined categories.
