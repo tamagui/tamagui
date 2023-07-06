@@ -25,7 +25,8 @@ const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module 'tamagui' { // or '@tamagui/core'
+declare module 'tamagui' {
+  // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
@@ -411,22 +412,12 @@ const App = () => (
 
 One final note: using tokens with themes. Tokens are considered a "fallback" to themes, so any values you define in your theme will override the token. The next section will explain this further.
 
-### Strict tokens
+### Configuring tokens
 
-If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your existing `tamagui.config.ts` like so:
+You have a few options on the configuration object that control how strict your style values are allowed to be.
 
-```tsx
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends AppConfig {}
-
-  // add this:
-  interface ThemeValueFallback {
-    value: never
-  }
-}
-```
-
-This will change all special style properties that map to token/theme values to not accept strings or numbers. If you want to make exceptions, you can then add back in any general types by overriding one of the following: `SizeTokens`, `FontTokens`, `FontSizeTokens`, `FontLineHeightTokens`, `FontWeightTokens`, `FontLetterSpacingTokens`, `FontStyleTokens`, `FontTransformTokens`, `SpaceTokens`, `ColorTokens`, and `ZIndexTokens`.
+- ``
+- ``
 
 ### Themes
 
@@ -601,5 +592,84 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       default: false,
       description: `On the web, will generate ::selection styles for text selection.`,
     },
+    {
+      name: 'settings',
+      required: false,
+      type: 'TamaguiSettings',
+      description: `See Settings section below.`,
+    },
   ]}
 />
+
+#### Settings
+
+<PropsTable
+  data={[
+    {
+      name: `allowedStyleValues`,
+      required: false,
+      type: 'TamaguiAllowedStyleValueSettings',
+      description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
+    },
+    {
+      name: `allowedStyleValues`,
+      required: false,
+      type: 'TamaguiAllowedStyleValueSettings',
+      description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
+    },
+  ]}
+/>
+
+_TamaguiAllowedStyleValueSettings_:
+
+Defaults to false:
+
+- "strict" - only allows tokens for any token-enabled properties
+- "somewhat-strict" - allow tokens or:
+  - for space/size: string% or numbers
+  - for radius: number
+  - for zIndex: number
+  - for color: named colors or rgba/hsla strings
+- boolean - allows any string (or number for styles that accept numbers)
+
+```tsx
+type AllowedStyleValueSettingBase = boolean | 'strict' | 'somewhat-strict'
+
+type AllowedStyleValuesSettingSize = AllowedStyleValueSettingBase | 'number' | 'percent'
+type AllowedStyleValuesSettingZIndex = AllowedStyleValueSettingBase | 'number'
+type AllowedStyleValuesSettingRadius = AllowedStyleValueSettingBase | 'number'
+type AllowedStyleValuesSettingColor = AllowedStyleValueSettingBase | 'named'
+
+type AllowedStyleValuesSettingPerCategory = {
+  space?: AllowedStyleValuesSettingSize
+  size?: AllowedStyleValuesSettingSize
+  radius?: AllowedStyleValuesSettingRadius
+  zIndex?: AllowedStyleValuesSettingZIndex
+  color?: AllowedStyleValuesSettingColor
+}
+
+type AllowedStyleValuesSetting =
+  | AllowedStyleValueSettingBase
+  | AllowedStyleValuesSettingPerCategory
+```
+
+_AutocompleteSpecificTokensSetting_:
+
+The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
+If true this setting removes the specific token from types for the defined categories.
+
+If set to "except-special", specific tokens will autocomplete only if they don't normally use
+one of the special token groups: space, size, radius, zIndex, color.
+
+```tsx
+type AutocompleteSpecificTokensSetting =
+  | boolean
+  | 'except-special'
+  | {
+      space?: boolean
+      size?: boolean
+      radius?: boolean
+      zIndex?: boolean
+      color?: boolean
+    }
+```

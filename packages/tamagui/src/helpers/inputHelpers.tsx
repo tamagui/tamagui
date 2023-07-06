@@ -15,7 +15,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
     shift: -1,
     bounds: [2],
   })
-  const fontStyle = getFontSized(val, extras)
+  const fontStyle = getFontSized(val as any, extras)
   // lineHeight messes up input on native
   if (!isWeb && fontStyle) {
     delete fontStyle['lineHeight']
@@ -33,7 +33,7 @@ export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
 ) => {
   const { props } = extras
   const buttonStyles = getButtonSized(val, extras)
-  const fontStyle = getFontSized(val, extras)!
+  const fontStyle = getFontSized(val as any, extras)!
   const lines = props.rows ?? props.numberOfLines
   const height =
     typeof lines === 'number' ? lines * getVariableValue(fontStyle.lineHeight) : 'auto'

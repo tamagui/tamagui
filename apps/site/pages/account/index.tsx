@@ -19,11 +19,14 @@ import { ButtonLink } from 'studio/Link'
 import {
   Avatar,
   Button,
+  FontWeightTokens,
   H3,
   Paragraph,
   Separator,
   SizableText,
   Spinner,
+  TamaguiConfig,
+  TamaguiCustomConfig,
   XStack,
   YStack,
 } from 'tamagui'
@@ -371,6 +374,8 @@ const ConnectionsContent = () => {
     </YStack>
   )
 }
+
+type x = FontWeightTokens
 
 const Table = ({ data }: { data: Record<string, any> }) => {
   return (

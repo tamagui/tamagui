@@ -1,3 +1,10 @@
+import {
+  ColorTokens,
+  SpecificTokensSpecial,
+  TamaguiSettings,
+  ThemeValueFallbackColor,
+} from '@tamagui/core'
+import { SomewhatSpecificColorValue } from '@tamagui/core'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
@@ -21,6 +28,8 @@ import { DiscordIcon } from './DiscordIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
+
+type test = TamaguiSettings['allowedStyleValues']
 
 // function useAlwaysConcurrent() {
 //   const inputRef = useRef<HTMLInputElement>(null)
@@ -70,6 +79,7 @@ const HeroContents = memo(() => {
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
+        // @ts-ignore
         top="auto"
         height={521}
         left={-1000}
@@ -271,6 +281,13 @@ const HeroContents = memo(() => {
   )
 })
 
+type a = TamaguiSettings['autocompleteSpecificTokens']
+type x = ColorTokens
+type y = SpecificTokensSpecial
+
+const abc: SomewhatSpecificColorValue = 'abc'
+const bbb: ThemeValueFallbackColor = 'transparent'
+
 const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
@@ -295,7 +312,9 @@ const Subtitle = styled(Paragraph, {
 
 const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
+  // @ts-ignore
   fontFamily: 'inherit',
+  // @ts-ignore
   fontSize: 'inherit',
   borderRadius: '$2',
   px: '$1',

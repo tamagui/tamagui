@@ -34,6 +34,7 @@ import {
   Checkbox,
   Circle,
   Dialog,
+  FontSizeTokens,
   GetProps,
   H1,
   H2,
@@ -56,6 +57,7 @@ import {
   Tabs,
   TabsProps,
   TabsTabProps,
+  TamaguiConfig,
   Theme,
   ThemeName,
   Tooltip,
@@ -215,15 +217,15 @@ const TakeoutCard2Frame = styled(YStack, {
     size: {
       '...size': (val) => ({
         elevation: val,
-        p: val,
-        br: val,
+        p: val as any,
+        br: val as any,
       }),
     },
   } as const,
 
-  defaultVariants: {
-    size: '$6',
-  },
+  // defaultVariants: {
+  //   size: '$6',
+  // },
 })
 
 type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
@@ -1159,7 +1161,7 @@ const Bullet = ({
 }: XStackProps & {
   children: any
   subtitle?: any
-  size?: SizeTokens
+  size?: FontSizeTokens
   inProgress?: boolean
 }) => {
   return (
@@ -1203,7 +1205,7 @@ const Point = ({
 }: XStackProps & {
   children: any
   subtitle?: any
-  size?: SizeTokens
+  size?: FontSizeTokens
 }) => {
   return (
     <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
