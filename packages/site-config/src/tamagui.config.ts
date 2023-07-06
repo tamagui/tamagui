@@ -4,6 +4,7 @@ import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
@@ -69,6 +70,8 @@ const bodyFont = createInterFont(
   }
 )
 
+type x = (typeof bodyFont)['size']
+
 const monoFont = createGenericFont(
   `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`,
   {
@@ -108,6 +111,10 @@ export const config = {
   media,
   shorthands,
   tokens,
+  settings: {
+    allowedStyleValues: 'somewhat-strict',
+    autocompleteSpecificTokens: 'except-special',
+  },
   fonts: {
     heading: headingFont,
     body: bodyFont,
@@ -116,7 +123,7 @@ export const config = {
     munro: munroFont,
     cherryBomb: cherryBombFont,
   },
-}
+} satisfies CreateTamaguiProps
 
 // @ts-ignore
 config.selectionStyles = (theme) => ({

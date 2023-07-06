@@ -296,7 +296,8 @@ export type CreateTamaguiConfig<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
-  H extends DefaultFontSetting = DefaultFontSetting
+  H extends DefaultFontSetting = DefaultFontSetting,
+  I extends GenericTamaguiSettings = GenericTamaguiSettings
 > = {
   fonts: RemoveLanguagePostfixes<F>
   fontLanguages: GetLanguagePostfixes<F> extends never
@@ -314,6 +315,7 @@ export type CreateTamaguiConfig<
   animations: AnimationDriver<E>
   onlyAllowShorthands: G
   defaultFont: H
+  settings: I
 }
 
 type GetLanguagePostfix<Set> = Set extends string
@@ -348,7 +350,8 @@ type ConfProps<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
-  H extends DefaultFontSetting = DefaultFontSetting
+  H extends DefaultFontSetting = DefaultFontSetting,
+  I extends GenericTamaguiSettings = GenericTamaguiSettings
 > = {
   tokens: A
   themes: B
@@ -358,6 +361,7 @@ type ConfProps<
   fonts: F
   onlyAllowShorthands?: G
   defaultFont?: H
+  settings?: I
 }
 
 export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
@@ -368,9 +372,10 @@ export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
   infer E,
   infer F,
   infer G,
-  infer H
+  infer H,
+  infer I
 >
-  ? TamaguiInternalConfig<A, B, C, D, E, F, G, H>
+  ? TamaguiInternalConfig<A, B, C, D, E, F, G, H, I>
   : unknown
 
 // for use in creation functions so it doesnt get overwritten
@@ -463,6 +468,67 @@ export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> &
   //
   SpacerOwnProps
 
+type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict'
+
+type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent'
+type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number'
+type AllowedStyleValuesSettingRadius = AllowedValueSettingBase | 'number'
+type AllowedStyleValuesSettingColor = AllowedValueSettingBase | 'named'
+
+type AllowedStyleValuesSettingPerCategory = {
+  space?: AllowedStyleValuesSettingSize
+  size?: AllowedStyleValuesSettingSize
+  radius?: AllowedStyleValuesSettingRadius
+  zIndex?: AllowedStyleValuesSettingZIndex
+  color?: AllowedStyleValuesSettingColor
+}
+
+type AllowedStyleValuesSetting =
+  | AllowedValueSettingBase
+  | AllowedStyleValuesSettingPerCategory
+
+type AutocompleteSpecificTokensSetting =
+  | boolean
+  | 'except-special'
+  | {
+      space?: boolean
+      size?: boolean
+      radius?: boolean
+      zIndex?: boolean
+      color?: boolean
+    }
+
+type GenericTamaguiSettings = {
+  /**
+   * Set up allowed values on style props, this is only a type-level validation.
+   *
+   * "strict" - only allows tokens for any token-enabled properties
+   * "somewhat-strict" - allow tokens or:
+   *     for space/size: string% or numbers
+   *     for radius: number
+   *     for zIndex: number
+   *     for color: named colors or rgba/hsla strings
+   *
+   * @default false - allows any string (or number for styles that accept numbers)
+   *
+   */
+  allowedStyleValues?: AllowedStyleValuesSetting
+
+  /**
+   * Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed.
+   * The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
+   * If true this setting removes the specific token from types for the defined categories.
+   *
+   * If set to "except-special", specific tokens will autocomplete only if they don't normally use
+   * one of the special token groups: space, size, radius, zIndex, color.
+   *
+   * @default except-special
+   */
+  autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
+}
+
+export type TamaguiSettings = TamaguiConfig['settings']
+
 export type CreateTamaguiProps = {
   reactNative?: any
   shorthands?: CreateShorthands
@@ -475,6 +541,8 @@ export type CreateTamaguiProps = {
       [key: string]: string | number | Variable
     }
   }
+
+  settings?: GenericTamaguiSettings
 
   /**
    * Define a default font, for better types and default font on Text
@@ -559,9 +627,10 @@ export type TamaguiInternalConfig<
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts,
   G extends OnlyAllowShorthandsSetting = OnlyAllowShorthandsSetting,
-  H extends DefaultFontSetting = DefaultFontSetting
+  H extends DefaultFontSetting = DefaultFontSetting,
+  I extends GenericTamaguiSettings = GenericTamaguiSettings
 > = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
-  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G>, 'tokens'> & {
+  Omit<CreateTamaguiConfig<A, B, C, D, E, F, G, H, I>, 'tokens'> & {
     // TODO need to make it this but this breaks types, revisit
     // animations: E //AnimationDriver<E>
     // with $ prefixes for fast lookups (one time cost at startup vs every render)
@@ -577,6 +646,7 @@ export type TamaguiInternalConfig<
     defaultFont?: H
     fontSizeTokens: Set<string>
     specificTokens: Record<string, Variable>
+    settings: I
   }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']
@@ -585,7 +655,9 @@ export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animatio
 export type UnionableString = string & {}
 export type UnionableNumber = number & {}
 
-export type GenericFont<Key extends string | number = string | number> = {
+type GenericFontKey = string | number | symbol
+
+export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
   size: { [key in Key]: number | Variable }
   lineHeight?: Partial<{ [key in Key]: number | Variable }>
   letterSpacing?: Partial<{ [key in Key]: number | Variable }>
@@ -667,6 +739,162 @@ export type AnimationProp =
       }
     ]
 
+/**
+ * Tokens
+ */
+
+type PercentString = `${string}%` & {}
+
+type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber
+type SomewhatSpecificSpaceValue = PercentString | UnionableNumber
+
+export type SomewhatSpecificColorValue =
+  | CSSColorNames
+  | 'transparent'
+  | (`rgba(${string})` & {})
+  | (`rgb(${string})` & {})
+  | (`hsl(${string})` & {})
+  | (`hsla(${string})` & {})
+  | (`#${string}` & {})
+
+type UserAllowedStyleValuesSetting = Exclude<
+  TamaguiSettings['allowedStyleValues'],
+  undefined
+>
+
+type GetThemeValueSettingForCategory<
+  Cat extends keyof AllowedStyleValuesSettingPerCategory
+> = UserAllowedStyleValuesSetting extends AllowedValueSettingBase | undefined
+  ? UserAllowedStyleValuesSetting
+  : UserAllowedStyleValuesSetting extends AllowedStyleValuesSettingPerCategory
+  ? UserAllowedStyleValuesSetting[Cat]
+  : true
+
+type GetThemeValueFallbackFor<Setting, StrictValue, SomewhatStrictValue, LooseValue> =
+  Setting extends 'strict'
+    ? StrictValue
+    : Setting extends 'somewhat-strict'
+    ? SomewhatStrictValue
+    : LooseValue
+
+// the most generic fallback for anything not covered by special values
+export type ThemeValueFallback =
+  // for backwards compat with overriding the type we make this either UnionableString
+  // or never if they define any UserAllowedStyleValuesSetting
+  | (TamaguiSettings['allowedStyleValues'] extends undefined ? UnionableString : never)
+  | Variable
+
+type AllowedValueSettingSpace = GetThemeValueSettingForCategory<'space'>
+type AllowedValueSettingSize = GetThemeValueSettingForCategory<'size'>
+type AllowedValueSettingColor = GetThemeValueSettingForCategory<'color'>
+type AllowedValueSettingZIndex = GetThemeValueSettingForCategory<'zIndex'>
+type AllowedValueSettingRadius = GetThemeValueSettingForCategory<'radius'>
+
+export type ThemeValueFallbackSpace =
+  | ThemeValueFallback
+  | GetThemeValueFallbackFor<
+      AllowedValueSettingSpace,
+      never,
+      SomewhatSpecificSpaceValue,
+      UnionableString | UnionableNumber
+    >
+
+export type ThemeValueFallbackSize = GetThemeValueFallbackFor<
+  AllowedValueSettingSize,
+  never,
+  SomewhatSpecificSizeValue,
+  UnionableString | UnionableNumber
+>
+
+export type ThemeValueFallbackColor =
+  | ThemeValueFallback
+  | GetThemeValueFallbackFor<
+      AllowedValueSettingColor,
+      never,
+      SomewhatSpecificColorValue,
+      UnionableString | UnionableNumber
+    >
+
+export type ThemeValueFallbackRadius =
+  | ThemeValueFallback
+  | GetThemeValueFallbackFor<
+      AllowedValueSettingRadius,
+      never,
+      UnionableNumber,
+      UnionableNumber
+    >
+
+export type ThemeValueFallbackZIndex =
+  | ThemeValueFallback
+  | GetThemeValueFallbackFor<
+      AllowedValueSettingZIndex,
+      never,
+      UnionableNumber,
+      UnionableNumber
+    >
+
+type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
+
+export type SpecificTokens<
+  Record = Tokens,
+  RK extends keyof Record = keyof Record
+> = RK extends string
+  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
+  : never
+
+export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends
+  | false
+  | 'except-special'
+  ? never
+  : SpecificTokens
+
+export type SizeTokens =
+  | SpecificTokensSpecial
+  | ThemeValueFallbackSize
+  | GetTokenString<keyof Tokens['size']>
+
+export type SpaceTokens =
+  | SpecificTokensSpecial
+  | GetTokenString<keyof Tokens['space']>
+  | ThemeValueFallbackSpace
+  // TODO can remove / refactor but need to verify
+  | boolean
+
+export type ColorTokens =
+  | SpecificTokensSpecial
+  | GetTokenString<keyof Tokens['color']>
+  | GetTokenString<keyof ThemeParsed>
+  | CSSColorNames
+
+export type ZIndexTokens =
+  | SpecificTokensSpecial
+  | GetTokenString<keyof Tokens['zIndex']>
+  | number
+
+export type RadiusTokens =
+  | SpecificTokensSpecial
+  | GetTokenString<keyof Tokens['radius']>
+  | number
+
+export type Token =
+  | (TamaguiSettings['autocompleteSpecificTokens'] extends false ? never : SpecificTokens)
+  | GetTokenString<keyof Tokens['radius']>
+  | GetTokenString<keyof Tokens['zIndex']>
+  | GetTokenString<keyof Tokens['color']>
+  | GetTokenString<keyof Tokens['space']>
+  | GetTokenString<keyof Tokens['size']>
+
+export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens
+
+// fonts
+type DefaultFont = TamaguiConfig['defaultFont']
+
+export type Fonts = DefaultFont extends string
+  ? TamaguiConfig['fonts'][DefaultFont]
+  : never
+
+export type Font = ParseFont<Fonts>
+
 type GetTokenFontKeysFor<
   A extends
     | 'size'
@@ -679,55 +907,6 @@ type GetTokenFontKeysFor<
     | 'color'
 > = keyof TamaguiConfig['fonts']['body'][A]
 
-type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
-
-// export type SpecificTokens<K extends keyof Tokens = keyof Tokens> =
-//   `${K}.${keyof Tokens[K] extends string ? keyof Tokens[K] : never}`
-
-export type SpecificTokens<
-  Record = Tokens,
-  RK extends keyof Record = keyof Record
-> = RK extends string
-  ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
-  : never
-
-// base tokens
-export type SizeTokens = SpecificTokens | GetTokenString<keyof Tokens['size']> | number
-export type SpaceTokens =
-  | SpecificTokens
-  | GetTokenString<keyof Tokens['space']>
-  | number
-  | boolean
-
-export type ColorTokens =
-  | SpecificTokens
-  | GetTokenString<keyof Tokens['color']>
-  | GetTokenString<keyof ThemeParsed>
-  | CSSColorNames
-export type ZIndexTokens =
-  | SpecificTokens
-  | GetTokenString<keyof Tokens['zIndex']>
-  | number
-export type RadiusTokens =
-  | SpecificTokens
-  | GetTokenString<keyof Tokens['radius']>
-  | number
-
-export type Token =
-  | SpecificTokens
-  | GetTokenString<keyof Tokens['radius']>
-  | GetTokenString<keyof Tokens['zIndex']>
-  | GetTokenString<keyof Tokens['color']>
-  | GetTokenString<keyof Tokens['space']>
-  | GetTokenString<keyof Tokens['size']>
-
-// fonts
-type DefaultFont = TamaguiConfig['defaultFont']
-
-export type Fonts = DefaultFont extends string
-  ? TamaguiConfig['fonts'][DefaultFont]
-  : never
-export type Font = ParseFont<Fonts>
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
@@ -794,21 +973,21 @@ type ZIndexKeys = 'zIndex'
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
   : K extends SizeKeys
-  ? SizeTokens
+  ? SizeTokens | ThemeValueFallbackSize
   : K extends FontKeys
   ? FontTokens
   : K extends FontSizeKeys
   ? FontSizeTokens
   : K extends `${`border${string | ''}Radius`}`
-  ? RadiusTokens
+  ? RadiusTokens | ThemeValueFallbackRadius
   : K extends SpaceKeys
   ? K extends 'shadowOffset'
     ? { width: SpaceTokens; height: SpaceTokens }
-    : SpaceTokens
+    : SpaceTokens | ThemeValueFallbackSpace
   : K extends ColorKeys
-  ? ColorTokens
+  ? ColorTokens | ThemeValueFallbackColor
   : K extends ZIndexKeys
-  ? ZIndexTokens
+  ? ZIndexTokens | ThemeValueFallbackZIndex
   : K extends LineHeightKeys
   ? FontLineHeightTokens
   : K extends FontWeightKeys
@@ -817,14 +996,16 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   ? FontLetterSpacingTokens
   : never
 
-export type ThemeValueFallback = UnionableString | Variable
-
-export type ColorStyleProp = ThemeValueFallback | ColorTokens
-
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValueGet<K> extends never
     ? T[K]
-    : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback
+    :
+        | ThemeValueGet<K>
+        | Exclude<T[K], string>
+        | ThemeValueFallback
+        | (TamaguiSettings['autocompleteSpecificTokens'] extends 'except-special'
+            ? SpecificTokens
+            : never)
 }
 
 type NarrowShorthands = Narrow<Shorthands>
@@ -1427,6 +1608,9 @@ type ColorKeys =
   | 'borderRightColor'
   | 'shadowColor'
   | 'textShadowColor'
+  | 'borderBlockColor'
+  | 'borderBlockEndColor'
+  | 'borderBlockStartColor'
 
 type SpaceKeys =
   | 'space'
@@ -1827,3 +2011,29 @@ export type StyleProp<T> =
   | RegisteredStyle<T>
   | RecursiveArray<T | RegisteredStyle<T> | Falsy>
   | Falsy
+
+export type FillInFont<A extends GenericFont, DefaultKeys extends string | number> = {
+  family: string
+  lineHeight: FillInFontValues<A, 'lineHeight', DefaultKeys>
+  weight: FillInFontValues<A, 'weight', DefaultKeys>
+  letterSpacing: FillInFontValues<A, 'letterSpacing', DefaultKeys>
+  size: FillInFontValues<A, 'size', DefaultKeys>
+  style: FillInFontValues<A, 'style', DefaultKeys>
+  transform: FillInFontValues<A, 'transform', DefaultKeys>
+  color: FillInFontValues<A, 'color', DefaultKeys>
+  face: A['face']
+}
+
+type FillInFontValues<
+  A extends GenericFont,
+  K extends keyof A,
+  DefaultKeys extends string | number
+> = keyof A[K] extends GenericFontKey
+  ? {
+      [Key in DefaultKeys]: A[K][any]
+    }
+  : {
+      [Key in keyof A[K] | DefaultKeys]: Key extends keyof A[K]
+        ? Exclude<A[K][Key], Variable>
+        : any
+    }

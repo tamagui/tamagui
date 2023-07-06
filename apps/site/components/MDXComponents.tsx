@@ -338,6 +338,7 @@ export const components = {
         {/* @ts-ignore */}
         <Paragraph
           tag="span"
+          // @ts-ignore
           fontSize="inherit"
           display="inline"
           cursor="pointer"
@@ -347,7 +348,13 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
+              <Text
+                // @ts-ignore
+                fontSize="inherit"
+                display="inline-flex"
+                y={2}
+                ml={-1}
+              >
                 <ExternalIcon />
               </Text>
             </>
@@ -479,7 +486,6 @@ export const components = {
           size="$8"
           lh="$9"
           fow="300"
-          ls="$0"
           color="$color"
           opacity={0.65}
         >

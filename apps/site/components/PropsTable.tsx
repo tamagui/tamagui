@@ -64,7 +64,12 @@ export function PropsTable({
                 >
                   {name}
                   {required ? (
-                    <Paragraph tag="span" fontSize="inherit" o={0.5}>
+                    <Paragraph
+                      tag="span"
+                      // @ts-ignore
+                      fontSize="inherit"
+                      o={0.5}
+                    >
                       {' '}
                       <Paragraph tag="span" fontWeight="300">
                         (required)

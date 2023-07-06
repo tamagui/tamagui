@@ -269,6 +269,7 @@ ${runtimeStyles}`
     Object.keys(configIn.fonts)[0]
 
   const config: TamaguiInternalConfig = {
+    settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,

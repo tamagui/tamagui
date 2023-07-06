@@ -208,6 +208,7 @@ const AnimatedHeading = memo(
           $sm={{
             pr: 0,
           }}
+          // @ts-ignore
           fontFamily={`$${family}`}
           textShadowColor="$shadowColorFocus"
           textShadowRadius={3}
