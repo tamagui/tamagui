@@ -492,16 +492,7 @@ type AllowedStyleValuesSetting =
   | AllowedValueSettingBase
   | AllowedStyleValuesSettingPerCategory
 
-type AutocompleteSpecificTokensSetting =
-  | boolean
-  | 'except-special'
-  | {
-      space?: boolean
-      size?: boolean
-      radius?: boolean
-      zIndex?: boolean
-      color?: boolean
-    }
+type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 type GenericTamaguiSettings = {
   /**
@@ -882,11 +873,11 @@ export type SpecificTokens<
   ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
   : never
 
-export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends
-  | false
-  | 'except-special'
-  ? never
-  : SpecificTokens
+export type SpecificTokensSpecial =
+  TamaguiSettings['autocompleteSpecificTokens'] extends // defaults to except-special
+  undefined | 'except-special'
+    ? never
+    : SpecificTokens
 
 export type SizeTokens =
   | SpecificTokensSpecial
