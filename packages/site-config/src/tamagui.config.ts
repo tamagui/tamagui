@@ -112,7 +112,7 @@ export const config = {
   shorthands,
   tokens,
   settings: {
-    allowedStyleValues: 'somewhat-strict',
+    allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
   },
   fonts: {
