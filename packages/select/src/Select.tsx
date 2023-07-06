@@ -1,6 +1,7 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
+  FontSizeTokens,
   GetProps,
   TamaguiElement,
   getVariableValue,
@@ -134,7 +135,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 
   return (
     <SelectValueFrame
-      size={context.size}
+      size={context.size as any}
       ref={composedRefs}
       // we don't want events from the portalled `SelectValue` children to bubble
       // through the item they came from
@@ -362,7 +363,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       () => (
         <SelectItemTextFrame
           className={className}
-          size={context.size}
+          size={context.size as any}
           id={itemContext.textId}
           {...itemTextProps}
           ref={composedRefs}
@@ -514,7 +515,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 context.onChange(event.currentTarget.value)
               }}
-              size={size}
+              size={size as FontSizeTokens}
               ref={nativeSelectRef}
               style={{
                 color: 'var(--color)',

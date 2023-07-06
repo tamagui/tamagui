@@ -235,9 +235,9 @@ export declare function useInputProps(props: InputProps, ref: any): {
     textTransform?: "none" | "capitalize" | "lowercase" | "uppercase" | undefined;
     fontVariant?: import("react-native").FontVariant[] | undefined;
     writingDirection?: "auto" | "ltr" | "rtl" | undefined;
-    borderBlockColor?: import("react-native").ColorValue | undefined;
-    borderBlockEndColor?: import("react-native").ColorValue | undefined;
-    borderBlockStartColor?: import("react-native").ColorValue | undefined;
+    borderBlockColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    borderBlockEndColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
+    borderBlockStartColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     borderBottomColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     borderBottomEndRadius?: number | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;
     borderBottomStartRadius?: number | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableNumber | undefined;

@@ -1565,7 +1565,7 @@ export type VariantSpreadFunction<Props extends PropLike, Val = any> = (
   config: VariantSpreadExtras<Props>
 ) =>
   | {
-      [Key in keyof Props]: Props[Key] | Variable
+      [Key in keyof Props]: Props[Key] | Variable | VariableVal
     }
   | null
   | undefined

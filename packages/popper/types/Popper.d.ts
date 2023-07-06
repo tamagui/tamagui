@@ -249,13 +249,13 @@ export declare const PopperArrow: import("@tamagui/core").ReactComponentWithRef<
     columnGap?: import("@tamagui/core").SpaceValue | undefined;
     contain?: import("csstype").Property.Contain | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
-    display?: "none" | "flex" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+    display?: "inherit" | "none" | "flex" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     gap?: import("@tamagui/core").SpaceValue | undefined;
     outlineColor?: import("csstype").Property.OutlineColor | undefined;
     outlineOffset?: import("@tamagui/core").SpaceValue | undefined;
     outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
     outlineWidth?: import("@tamagui/core").SpaceValue | undefined;
-    pointerEvents?: "none" | "box-none" | "box-only" | "auto" | undefined;
+    pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
     rowGap?: import("@tamagui/core").SpaceValue | undefined;
     space?: import("@tamagui/core").SpaceValue | undefined;
     spaceDirection?: import("@tamagui/core").SpaceDirection | undefined;

@@ -10,6 +10,8 @@ import {
 } from '@tamagui/text'
 import {
   ButtonNestingContext,
+  FontSizeTokens,
+  Fonts,
   GetProps,
   SizeTokens,
   ThemeableProps,
@@ -158,8 +160,10 @@ const ButtonText = styled(SizableText, {
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
   const { size, color } = useContext(ButtonContext)
-  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const iconSize =
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
+    scaleIcon
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   return getThemedIcon(children)
 }
 
@@ -227,8 +231,10 @@ function useButton<Props extends ButtonProps>(
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn) as any as ButtonProps
   const size = propsActive.size || '$true'
-  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const iconSize =
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
+    scaleIcon
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(

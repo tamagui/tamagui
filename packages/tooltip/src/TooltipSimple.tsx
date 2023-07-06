@@ -50,7 +50,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
         {...contentProps}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="$0">
+        <Paragraph size="$2" lineHeight={0}>
           {label}
         </Paragraph>
       </Tooltip.Content>

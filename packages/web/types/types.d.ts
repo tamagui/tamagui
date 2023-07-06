@@ -774,7 +774,7 @@ type PropLike = {
     [key: string]: any;
 };
 export type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => {
-    [Key in keyof Props]: Props[Key] | Variable;
+    [Key in keyof Props]: Props[Key] | Variable | VariableVal;
 } | null | undefined;
 export type VariantTypeKeys = ':string' | ':boolean' | ':number';
 export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key;

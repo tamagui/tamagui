@@ -2,7 +2,9 @@ import { Text, styled } from 'tamagui'
 
 export const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
+  // @ts-ignore
   fontFamily: 'inherit',
+  // @ts-ignore
   fontSize: 'inherit',
   borderRadius: '$2',
   cursor: 'pointer',
