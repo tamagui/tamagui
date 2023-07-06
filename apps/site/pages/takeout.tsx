@@ -336,7 +336,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         scale: 0.35,
       }}
       $xs={{
-        scale: 0.55,
+        scale: 0.45,
       }}
       $sm={{
         scale: 0.65,
@@ -549,7 +549,19 @@ export default function TakeoutPage({
             </YStack>
 
             {coupon && (
-              <YStack position="absolute" right="5%" top={150} zIndex="$5">
+              <YStack
+                position="absolute"
+                $gtXs={{
+                  right: '5%',
+                  top: 150,
+                }}
+                $xs={{
+                  top: '75vh',
+                  left: '50%',
+                  x: '-50%',
+                }}
+                zIndex="$5"
+              >
                 <DiscountText coupon={coupon} />
               </YStack>
             )}
@@ -662,13 +674,13 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column', mt: 0 }}>
             <XStack
               f={1}
               p="$10"
               mt={20}
               $md={{
-                flexDirection: 'column',
+                flexDirection: 'column-reverse',
               }}
               $lg={{
                 p: '$6',
@@ -677,7 +689,7 @@ export default function TakeoutPage({
                 p: '$4',
               }}
             >
-              <YStack mt={-500} ml={20} mr={-20}>
+              <YStack mt={-500} $md={{mt: 0}} ml={20} mr={-20}>
                 <StarterCard product={starter} />
               </YStack>
               {/* <YStack
@@ -714,18 +726,20 @@ export default function TakeoutPage({
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
                     }}
+                    $gtLg={{
+                      mr: 100,
+                    }}
                     $lg={{
                       size: '$9',
                     }}
-                    $sm={{
-                      size: '$8',
-                    }}
                   >
-                    From idea to shipped in less time&nbsp;than&nbsp;ever.
+                    From idea to shipped in less time than ever.
                   </H2>
                 </ThemeTint>
 
-                <MunroP size="$11">We can't promise everything.</MunroP>
+                <MunroP size="$11" $sm={{ size: '$9' }}>
+                  We can't promise everything.
+                </MunroP>
 
                 <MunroP size="$9" fow="400" $sm={{ size: '$8' }}>
                   Success is up to you.. but we can say you've found the cheat code to
@@ -1171,7 +1185,7 @@ const Bullet = ({
       space
       f={1}
       {...props}
-      // w="100%"
+      w="100%"
       $gtSm={{ w: 'calc(50% - 10px)' }}
     >
       <YStack y={-1}>
@@ -2415,7 +2429,7 @@ const DiscountText = ({
     : ''
   return (
     <ThemeTintAlt>
-      <YStack m="auto" scale={1} $sm={{ scale: 1.5 }} rotate="10deg">
+      <YStack m="auto" scale={1} $xs={{ scale: 1.5, rotate: '0deg' }} rotate="10deg">
         <YStack
           fullscreen
           shadowColor="rgba(0,0,0,0.5)"
