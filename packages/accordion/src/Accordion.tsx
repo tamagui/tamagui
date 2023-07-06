@@ -568,7 +568,6 @@ interface AccordionContentProps extends CollapsibleContentProps {}
  */
 const AccordionContent = React.forwardRef<AccordionContentElement, AccordionContentProps>(
   (props: ScopedProps<AccordionContentProps>, forwardedRef) => {
-    return null
     const { __scopeAccordion, ...contentProps } = props
     const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
     const itemContext = useAccordionItemContext(CONTENT_NAME, __scopeAccordion)
