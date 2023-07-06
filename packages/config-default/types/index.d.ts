@@ -354,12 +354,6 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
         zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
         color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
     }) | undefined;
-    autocompleteSpecificTokens?: (boolean | "except-special" | {
-        space?: boolean | undefined;
-        size?: boolean | undefined;
-        radius?: boolean | undefined;
-        zIndex?: boolean | undefined;
-        color?: boolean | undefined;
-    }) | undefined;
+    autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
 }>;
 //# sourceMappingURL=index.d.ts.map

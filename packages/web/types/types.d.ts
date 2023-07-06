@@ -243,13 +243,7 @@ type AllowedStyleValuesSettingPerCategory = {
     color?: AllowedStyleValuesSettingColor;
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
-type AutocompleteSpecificTokensSetting = boolean | 'except-special' | {
-    space?: boolean;
-    size?: boolean;
-    radius?: boolean;
-    zIndex?: boolean;
-    color?: boolean;
-};
+type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 type GenericTamaguiSettings = {
     /**
      * Set up allowed values on style props, this is only a type-level validation.
@@ -468,7 +462,8 @@ export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbac
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
-export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends false | 'except-special' ? never : SpecificTokens;
+export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends // defaults to except-special
+undefined | 'except-special' ? never : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | boolean;
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
