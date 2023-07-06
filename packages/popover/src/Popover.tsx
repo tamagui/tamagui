@@ -315,16 +315,18 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
-    const Wrapper =
-      Platform.OS === 'android' || Platform.OS === 'ios'
-        ? PopperContext.Provider
-        : React.Fragment
+    let content = childrenWithoutScrollView as any
+
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      content = (
+        <PopperContext.Provider {...popperContext}>
+          {childrenWithoutScrollView}
+        </PopperContext.Provider>
+      )
+    }
+
     // doesn't show as popover yet on native, must use as sheet
-    return (
-      <PortalItem hostName={`${context.id}PopoverContents`}>
-        <Wrapper {...popperContext}>{childrenWithoutScrollView}</Wrapper>
-      </PortalItem>
-    )
+    return <PortalItem hostName={`${context.id}PopoverContents`}>{content}</PortalItem>
   }
 
   if (context.open && isFullyHidden) {
