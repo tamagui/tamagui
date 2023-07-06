@@ -1165,7 +1165,15 @@ const Bullet = ({
   inProgress?: boolean
 }) => {
   return (
-    <XStack tag="li" ai="flex-start" space f={1} {...props} w="calc(50% - 10px)">
+    <XStack
+      tag="li"
+      ai="flex-start"
+      space
+      f={1}
+      {...props}
+      w="100%"
+      $gtSm={{ w: 'calc(50% - 10px)' }}
+    >
       <YStack y={-1}>
         <Circle size={42} my={-6} boc="$borderColor" bw={1}>
           {inProgress ? (
