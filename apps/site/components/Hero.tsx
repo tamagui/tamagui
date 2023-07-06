@@ -1,6 +1,8 @@
 import {
+  ColorStyleProp,
   ColorTokens,
   SpecificTokensSpecial,
+  StackProps,
   TamaguiSettings,
   ThemeValueFallbackColor,
 } from '@tamagui/core'
@@ -281,13 +283,6 @@ const HeroContents = memo(() => {
   )
 })
 
-type a = TamaguiSettings['autocompleteSpecificTokens']
-type x = ColorTokens
-type y = SpecificTokensSpecial
-
-const abc: SomewhatSpecificColorValue = 'abc'
-const bbb: ThemeValueFallbackColor = 'transparent'
-
 const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
@@ -312,10 +307,8 @@ const Subtitle = styled(Paragraph, {
 
 const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
-  // @ts-ignore
-  fontFamily: 'inherit',
-  // @ts-ignore
-  fontSize: 'inherit',
+  fontFamily: 'inherit' as any,
+  fontSize: 'inherit' as any,
   borderRadius: '$2',
   px: '$1',
   mx: '$-1',
@@ -340,5 +333,5 @@ const Tag = styled(Text, {
         },
       },
     },
-  },
+  } as const,
 })

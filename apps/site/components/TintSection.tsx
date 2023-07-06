@@ -136,11 +136,11 @@ export const SectionTinted = ({
         className="all ease-in ms1000"
         zi={-1}
         o={0.4}
-        bc={gradient ? `$${tint}2` : null}
+        bc={gradient ? (`$${tint}2` as any) : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,
-          boc: `$${tint}3`,
+          boc: `$${tint}3` as any,
         })}
       />
       {childrenMemo}

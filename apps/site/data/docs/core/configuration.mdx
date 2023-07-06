@@ -608,49 +608,49 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
     {
       name: `allowedStyleValues`,
       required: false,
-      type: 'TamaguiAllowedStyleValueSettings',
+      type: 'AllowedStyleValuesSetting',
       description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
     },
     {
       name: `allowedStyleValues`,
       required: false,
-      type: 'TamaguiAllowedStyleValueSettings',
+      type: `boolean | 'except-special'`,
       description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
     },
   ]}
 />
 
-_TamaguiAllowedStyleValueSettings_:
+_AllowedStyleValuesSetting_:
 
 Defaults to false:
 
 - "strict" - only allows tokens for any token-enabled properties
+- "strict-web" - same as strict but allows for web-specific tokens like auto/inherit
 - "somewhat-strict" - allow tokens or:
   - for space/size: string% or numbers
   - for radius: number
   - for zIndex: number
   - for color: named colors or rgba/hsla strings
-- boolean - allows any string (or number for styles that accept numbers)
+- "somewhat-strict-web" - same as somewhat-strict but allows for web-specific tokens
+- false (default) - allows any string (or number for styles that accept numbers)
 
 ```tsx
-type AllowedStyleValueSettingBase = boolean | 'strict' | 'somewhat-strict'
-
-type AllowedStyleValuesSettingSize = AllowedStyleValueSettingBase | 'number' | 'percent'
-type AllowedStyleValuesSettingZIndex = AllowedStyleValueSettingBase | 'number'
-type AllowedStyleValuesSettingRadius = AllowedStyleValueSettingBase | 'number'
-type AllowedStyleValuesSettingColor = AllowedStyleValueSettingBase | 'named'
-
-type AllowedStyleValuesSettingPerCategory = {
-  space?: AllowedStyleValuesSettingSize
-  size?: AllowedStyleValuesSettingSize
-  radius?: AllowedStyleValuesSettingRadius
-  zIndex?: AllowedStyleValuesSettingZIndex
-  color?: AllowedStyleValuesSettingColor
-}
+type AllowedValueSetting =
+  | boolean
+  | 'strict'
+  | 'somewhat-strict'
+  | 'strict-web'
+  | 'somewhat-strict-web'
 
 type AllowedStyleValuesSetting =
-  | AllowedStyleValueSettingBase
-  | AllowedStyleValuesSettingPerCategory
+  | AllowedValueSetting
+  | {
+      space?: AllowedValueSetting
+      size?: AllowedValueSetting
+      radius?: AllowedValueSetting
+      zIndex?: AllowedValueSetting
+      color?: AllowedValueSetting
+    }
 ```
 
 _AutocompleteSpecificTokensSetting_:
@@ -660,16 +660,3 @@ If true this setting removes the specific token from types for the defined categ
 
 If set to "except-special", specific tokens will autocomplete only if they don't normally use
 one of the special token groups: space, size, radius, zIndex, color.
-
-```tsx
-type AutocompleteSpecificTokensSetting =
-  | boolean
-  | 'except-special'
-  | {
-      space?: boolean
-      size?: boolean
-      radius?: boolean
-      zIndex?: boolean
-      color?: boolean
-    }
-```

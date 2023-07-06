@@ -230,7 +230,7 @@ type SpacerPropsBase = {
 };
 type SpacerOwnProps = SpacerPropsBase & WithThemeShorthandsPseudosMediaAnimation<SpacerPropsBase>;
 export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & SpacerOwnProps;
-type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict';
+type AllowedValueSettingBase = boolean | 'strict' | 'somewhat-strict' | 'strict-web' | 'somewhat-strict-web';
 type AllowedStyleValuesSettingSize = AllowedValueSettingBase | 'number' | 'percent';
 type AllowedStyleValuesSettingZIndex = AllowedValueSettingBase | 'number';
 type AllowedStyleValuesSettingRadius = AllowedValueSettingBase | 'number';
@@ -255,11 +255,13 @@ type GenericTamaguiSettings = {
      * Set up allowed values on style props, this is only a type-level validation.
      *
      * "strict" - only allows tokens for any token-enabled properties
+     * "strict-web" - same as strict but allows for web-specific tokens like auto/inherit
      * "somewhat-strict" - allow tokens or:
      *     for space/size: string% or numbers
      *     for radius: number
      *     for zIndex: number
      *     for color: named colors or rgba/hsla strings
+     * "somewhat-strict-web" - same as somewhat-strict but allows for web-specific tokens
      *
      * @default false - allows any string (or number for styles that accept numbers)
      *
@@ -446,21 +448,24 @@ export type AnimationProp = AnimationKeys | {
 type PercentString = `${string}%` & {};
 type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber;
 type SomewhatSpecificSpaceValue = PercentString | UnionableNumber;
+type VariableString = `var(${string})`;
 export type SomewhatSpecificColorValue = CSSColorNames | 'transparent' | (`rgba(${string})` & {}) | (`rgb(${string})` & {}) | (`hsl(${string})` & {}) | (`hsla(${string})` & {}) | (`#${string}` & {});
+type WebOnlySizeValue = `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
 type UserAllowedStyleValuesSetting = Exclude<TamaguiSettings['allowedStyleValues'], undefined>;
 type GetThemeValueSettingForCategory<Cat extends keyof AllowedStyleValuesSettingPerCategory> = UserAllowedStyleValuesSetting extends AllowedValueSettingBase | undefined ? UserAllowedStyleValuesSetting : UserAllowedStyleValuesSetting extends AllowedStyleValuesSettingPerCategory ? UserAllowedStyleValuesSetting[Cat] : true;
-type GetThemeValueFallbackFor<Setting, StrictValue, SomewhatStrictValue, LooseValue> = Setting extends 'strict' ? StrictValue : Setting extends 'somewhat-strict' ? SomewhatStrictValue : LooseValue;
+type GetThemeValueFallbackFor<Setting, StrictValue, SomewhatStrictValue, LooseValue, WebOnlyValue> = Setting extends 'strict' ? StrictValue : Setting extends 'strict-web' ? StrictValue | WebOnlyValue : Setting extends 'somewhat-strict' ? SomewhatStrictValue : Setting extends 'somewhat-strict-web' ? SomewhatStrictValue | WebOnlyValue : LooseValue;
 export type ThemeValueFallback = (TamaguiSettings['allowedStyleValues'] extends undefined ? UnionableString : never) | Variable;
 type AllowedValueSettingSpace = GetThemeValueSettingForCategory<'space'>;
 type AllowedValueSettingSize = GetThemeValueSettingForCategory<'size'>;
 type AllowedValueSettingColor = GetThemeValueSettingForCategory<'color'>;
 type AllowedValueSettingZIndex = GetThemeValueSettingForCategory<'zIndex'>;
 type AllowedValueSettingRadius = GetThemeValueSettingForCategory<'radius'>;
-export type ThemeValueFallbackSpace = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingSpace, never, SomewhatSpecificSpaceValue, UnionableString | UnionableNumber>;
-export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettingSize, never, SomewhatSpecificSizeValue, UnionableString | UnionableNumber>;
-export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber>;
-export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber>;
-export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber>;
+type WebStyleValueUniversal = 'unset' | 'inherit' | VariableString;
+export type ThemeValueFallbackSpace = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingSpace, never, SomewhatSpecificSpaceValue, UnionableString | UnionableNumber, 'auto' | WebStyleValueUniversal | WebOnlySizeValue>;
+export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettingSize, never, SomewhatSpecificSizeValue, UnionableString | UnionableNumber, 'auto' | WebStyleValueUniversal | WebOnlySizeValue>;
+export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
+export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
+export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
 export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends false | 'except-special' ? never : SpecificTokens;
@@ -509,7 +514,7 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
     height: SpaceTokens;
 } : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings['autocompleteSpecificTokens'] extends 'except-special' ? SpecificTokens : never);
+    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings['autocompleteSpecificTokens'] extends true | undefined ? SpecificTokens : never);
 };
 type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];

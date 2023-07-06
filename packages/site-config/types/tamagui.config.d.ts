@@ -783,7 +783,7 @@ export declare const config: {
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
     settings: {
-        allowedStyleValues: "somewhat-strict";
+        allowedStyleValues: "somewhat-strict-web";
         autocompleteSpecificTokens: "except-special";
     };
     fonts: {
