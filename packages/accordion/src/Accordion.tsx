@@ -1,17 +1,23 @@
-import { Collapsible, createCollapsibleScope } from '@tamagui/collapsible'
-import { createCollection } from '@tamagui/collection'
 import {
-  Stack,
-  composeEventHandlers,
-  useComposedRefs,
-  withStaticProperties,
-} from '@tamagui/web'
+  Collapsible,
+  CollapsibleContentFrame,
+  createCollapsibleScope,
+} from '@tamagui/collapsible'
+import { createCollection } from '@tamagui/collection'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { YStack } from '@tamagui/stacks'
 import { H1, H3 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
+import {
+  Stack,
+  TamaguiElement,
+  composeEventHandlers,
+  isWeb,
+  useComposedRefs,
+  withStaticProperties,
+} from '@tamagui/web'
 import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
@@ -35,19 +41,13 @@ function useAccordion() {
 const ACCORDION_NAME = 'Accordion'
 const ACCORDION_KEYS = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight']
 
-// TODO add types
 const [Collection, useCollection, createCollectionScope] =
-  //@ts-ignore
   createCollection<AccordionTriggerElement>(ACCORDION_NAME)
 
 type ScopedProps<P> = P & { __scopeAccordion?: Scope }
 const [createAccordionContext, createAccordionScope] = createContextScope(
   ACCORDION_NAME,
-  [
-    //@ts-ignore
-    createCollectionScope,
-    createCollapsibleScope,
-  ]
+  [createCollectionScope, createCollapsibleScope]
 )
 
 const useCollapsibleScope = createCollapsibleScope()
@@ -154,8 +154,7 @@ const AccordionImplSingle = React.forwardRef<
 
   const [value, setValue] = useControllableState({
     prop: valueProp,
-    //@ts-ignore
-    defaultProp: defaultValue,
+    defaultProp: defaultValue || '',
     onChange: onValueChange,
   })
 
@@ -217,8 +216,7 @@ const AccordionImplMultiple = React.forwardRef<
 
   const [value, setValue] = useControllableState({
     prop: valueProp,
-    //@ts-ignore
-    defaultProp: defaultValue,
+    defaultProp: defaultValue || [],
     onChange: onValueChange,
   })
 
@@ -264,7 +262,7 @@ type AccordionImplContextValue = {
 const [AccordionImplProvider, useAccordionContext] =
   createAccordionContext<AccordionImplContextValue>(ACCORDION_NAME)
 
-type AccordionImplElement = React.ElementRef<typeof Stack>
+type AccordionImplElement = TamaguiElement
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Stack>
 interface AccordionImplProps extends PrimitiveDivProps {
   /**
@@ -304,85 +302,84 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
     const getItems = useCollection(__scopeAccordion)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
+    const handleKeyDown = composeEventHandlers(
+      (props as any).onKeyDown,
+      (event: KeyboardEvent) => {
+        if (!ACCORDION_KEYS.includes(event.key)) return
+        const target = event.target as HTMLElement
+        const triggerCollection = getItems().filter((item) => {
+          const el = item.ref.current as { disabled?: boolean } | null
+          return !el?.disabled
+        })
+        const triggerIndex = triggerCollection.findIndex(
+          (item) => item.ref.current === target
+        )
+        const triggerCount = triggerCollection.length
 
-    //@ts-ignore
-    const handleKeyDown = composeEventHandlers(props.onKeyDown, (event) => {
-      //@ts-ignore
-      if (!ACCORDION_KEYS.includes(event.key)) return
-      //@ts-ignore
-      const target = event.target as HTMLElement
-      //@ts-ignore
-      const triggerCollection = getItems().filter((item) => !item.ref.current?.disabled)
-      const triggerIndex = triggerCollection.findIndex(
-        (item) => item.ref.current === target
-      )
-      const triggerCount = triggerCollection.length
+        if (triggerIndex === -1) return
 
-      if (triggerIndex === -1) return
+        // Prevents page scroll while user is navigating
+        event.preventDefault()
 
-      // Prevents page scroll while user is navigating
-      //@ts-ignore
-      event.preventDefault()
+        let nextIndex = triggerIndex
+        const homeIndex = 0
+        const endIndex = triggerCount - 1
 
-      let nextIndex = triggerIndex
-      const homeIndex = 0
-      const endIndex = triggerCount - 1
-
-      const moveNext = () => {
-        nextIndex = triggerIndex + 1
-        if (nextIndex > endIndex) {
-          nextIndex = homeIndex
+        const moveNext = () => {
+          nextIndex = triggerIndex + 1
+          if (nextIndex > endIndex) {
+            nextIndex = homeIndex
+          }
         }
-      }
 
-      const movePrev = () => {
-        nextIndex = triggerIndex - 1
-        if (nextIndex < homeIndex) {
-          nextIndex = endIndex
+        const movePrev = () => {
+          nextIndex = triggerIndex - 1
+          if (nextIndex < homeIndex) {
+            nextIndex = endIndex
+          }
         }
-      }
 
-      //@ts-ignore
-      switch (event.key) {
-        case 'Home':
-          nextIndex = homeIndex
-          break
-        case 'End':
-          nextIndex = endIndex
-          break
-        case 'ArrowRight':
-          if (orientation === 'horizontal') {
-            if (isDirectionLTR) {
-              moveNext()
-            } else {
-              movePrev()
+        switch (event.key) {
+          case 'Home':
+            nextIndex = homeIndex
+            break
+          case 'End':
+            nextIndex = endIndex
+            break
+          case 'ArrowRight':
+            if (orientation === 'horizontal') {
+              if (isDirectionLTR) {
+                moveNext()
+              } else {
+                movePrev()
+              }
             }
-          }
-          break
-        case 'ArrowDown':
-          if (orientation === 'vertical') {
-            moveNext()
-          }
-          break
-        case 'ArrowLeft':
-          if (orientation === 'horizontal') {
-            if (isDirectionLTR) {
-              movePrev()
-            } else {
+            break
+          case 'ArrowDown':
+            if (orientation === 'vertical') {
               moveNext()
             }
-          }
-          break
-        case 'ArrowUp':
-          if (orientation === 'vertical') {
-            movePrev()
-          }
-          break
-      }
+            break
+          case 'ArrowLeft':
+            if (orientation === 'horizontal') {
+              if (isDirectionLTR) {
+                movePrev()
+              } else {
+                moveNext()
+              }
+            }
+            break
+          case 'ArrowUp':
+            if (orientation === 'vertical') {
+              movePrev()
+            }
+            break
+        }
 
-      const clampedIndex = nextIndex % triggerCount
-      triggerCollection[clampedIndex].ref.current?.focus()
-    })
+        const clampedIndex = nextIndex % triggerCount
+        triggerCollection[clampedIndex].ref.current?.focus()
+      }
+    )
 
     return (
       <AccordionImplProvider
@@ -393,12 +390,12 @@ const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>
       >
         <Collection.Slot scope={__scopeAccordion}>
           <YStack
-            {...accordionProps}
             data-orientation={orientation}
             ref={composedRef}
-            // web only
-            //@ts-ignore
-            onKeyDown={handleKeyDown}
+            {...accordionProps}
+            {...(isWeb && {
+              onKeyDown: handleKeyDown,
+            })}
           />
         </Collection.Slot>
       </AccordionImplProvider>
@@ -416,7 +413,6 @@ type AccordionItemContextValue = { open?: boolean; disabled?: boolean; triggerId
 const [AccordionItemProvider, useAccordionItemContext] =
   createAccordionContext<AccordionItemContextValue>(ITEM_NAME)
 type AccordionItemElement = React.ElementRef<typeof Collapsible>
-// TODO: here the radix import ComponentPropsWithoutRef from radix not React
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>
 interface AccordionItemProps
   extends Omit<CollapsibleProps, 'open' | 'defaultOpen' | 'onOpenChange'> {
@@ -484,8 +480,7 @@ const HEADER_NAME = 'AccordionHeader'
 
 type AccordionHeaderElement = React.ElementRef<typeof H3>
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H3>
-//@ts-ignore
-interface AccordionHeaderProps extends PrimitiveHeading3Props {}
+type AccordionHeaderProps = PrimitiveHeading3Props
 
 /**
  * `AccordionHeader` contains the content for the parts of an `AccordionItem` that will be visible
@@ -559,33 +554,32 @@ AccordionTrigger.displayName = TRIGGER_NAME
 
 const CONTENT_NAME = 'AccordionContent'
 
-type AccordionContentElement = React.ElementRef<typeof Collapsible.Content>
 type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof Collapsible.Content>
 interface AccordionContentProps extends CollapsibleContentProps {}
 
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-const AccordionContent = React.forwardRef<AccordionContentElement, AccordionContentProps>(
-  (props: ScopedProps<AccordionContentProps>, forwardedRef) => {
-    const { __scopeAccordion, ...contentProps } = props
-    const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-    const itemContext = useAccordionItemContext(CONTENT_NAME, __scopeAccordion)
-    const collapsibleScope = useCollapsibleScope(__scopeAccordion)
-    return (
-      <Collapsible.Content
-        role="region"
-        aria-labelledby={itemContext.triggerId}
-        data-orientation={accordionContext.orientation}
-        {...collapsibleScope}
-        {...contentProps}
-        ref={forwardedRef}
-        // there were some default styles that's been removed
-        style={props.style}
-      />
-    )
-  }
-)
+const AccordionContent = CollapsibleContentFrame.styleable<
+  ScopedProps<AccordionContentProps>
+>((props, forwardedRef) => {
+  const { __scopeAccordion, ...contentProps } = props
+  const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
+  const itemContext = useAccordionItemContext(CONTENT_NAME, __scopeAccordion)
+  const collapsibleScope = useCollapsibleScope(__scopeAccordion)
+  return (
+    <Collapsible.Content
+      role="region"
+      aria-labelledby={itemContext.triggerId}
+      data-orientation={accordionContext.orientation}
+      {...collapsibleScope}
+      {...contentProps}
+      ref={forwardedRef}
+      // there were some default styles that's been removed
+      style={props.style}
+    />
+  )
+})
 
 AccordionContent.displayName = CONTENT_NAME
 

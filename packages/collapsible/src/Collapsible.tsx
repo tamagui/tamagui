@@ -1,19 +1,17 @@
 import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types'
+import type { Scope } from '@tamagui/create-context'
+import { createContextScope } from '@tamagui/create-context'
+import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import {
   Stack,
   StackProps,
-  TamaguiElement,
   composeEventHandlers,
   styled,
-  useComposedRefs,
   withStaticProperties,
-} from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
-import type { Scope } from '@tamagui/create-context'
-import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
-import { useControllableState } from '@tamagui/use-controllable-state'
-import * as React from 'react'
+} from '@tamagui/web'
 import type { ReactNode } from 'react'
+import * as React from 'react'
 import { AnimatePresence } from 'tamagui'
 
 /* -------------------------------------------------------------------------------------------------
@@ -36,7 +34,6 @@ type CollapsibleContextValue = {
 const [CollapsibleProvider, useCollapsibleContext] =
   createCollapsibleContext<CollapsibleContextValue>(COLLAPSIBLE_NAME)
 
-type CollapsibleElement = TamaguiElement
 interface CollapsibleProps extends StackProps {
   defaultOpen?: boolean
   open?: boolean
@@ -44,45 +41,42 @@ interface CollapsibleProps extends StackProps {
   onOpenChange?(open: boolean): void
 }
 
-const _Collapsible = React.forwardRef<CollapsibleElement, CollapsibleProps>(
-  (props: ScopedProps<CollapsibleProps>, forwardedRef) => {
-    const {
-      __scopeCollapsible,
-      open: openProp,
-      defaultOpen,
-      disabled,
-      onOpenChange,
-      ...collapsibleProps
-    } = props
+const _Collapsible = React.forwardRef<
+  React.Component<StackProps>,
+  ScopedProps<CollapsibleProps>
+>((props, forwardedRef) => {
+  const {
+    __scopeCollapsible,
+    open: openProp,
+    defaultOpen,
+    disabled,
+    onOpenChange,
+    ...collapsibleProps
+  } = props
 
-    const [open = false, setOpen] = useControllableState({
-      prop: openProp,
-      defaultProp: defaultOpen!,
-      onChange: onOpenChange,
-    })
+  const [open = false, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen!,
+    onChange: onOpenChange,
+  })
 
-    return (
-      <CollapsibleProvider
-        scope={__scopeCollapsible}
-        disabled={disabled}
-        contentId={React.useId()}
-        open={open}
-        onOpenToggle={React.useCallback(
-          () => setOpen((prevOpen) => !prevOpen),
-          [setOpen]
-        )}
-      >
-        <Stack
-          data-state={getState(open)}
-          data-disabled={disabled ? '' : undefined}
-          {...collapsibleProps}
-          // @ts-ignore
-          ref={forwardedRef}
-        />
-      </CollapsibleProvider>
-    )
-  }
-)
+  return (
+    <CollapsibleProvider
+      scope={__scopeCollapsible}
+      disabled={disabled}
+      contentId={React.useId()}
+      open={open}
+      onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
+    >
+      <Stack
+        data-state={getState(open)}
+        data-disabled={disabled ? '' : undefined}
+        {...collapsibleProps}
+        ref={forwardedRef}
+      />
+    </CollapsibleProvider>
+  )
+})
 
 _Collapsible.displayName = COLLAPSIBLE_NAME
 
@@ -92,7 +86,6 @@ _Collapsible.displayName = COLLAPSIBLE_NAME
 
 const TRIGGER_NAME = 'CollapsibleTrigger'
 
-type CollapsibleTriggerElement = TamaguiElement
 interface CollapsibleTriggerProps extends StackProps {
   children: ReactNode | ((props: { open: boolean }) => ReactNode)
   unstyled?: boolean
@@ -100,6 +93,7 @@ interface CollapsibleTriggerProps extends StackProps {
 
 const CollapsibleTriggerFrame = styled(ThemeableStack, {
   name: TRIGGER_NAME,
+  tag: 'button',
   variants: {
     unstyled: {
       false: {
@@ -112,19 +106,17 @@ const CollapsibleTriggerFrame = styled(ThemeableStack, {
         cursor: 'pointer',
       },
     },
-  },
+  } as const,
 })
 
-const CollapsibleTrigger = React.forwardRef<
-  CollapsibleTriggerElement,
-  CollapsibleTriggerProps
->((props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
+const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<
+  ScopedProps<CollapsibleTriggerProps>
+>((props, forwardedRef) => {
   const { __scopeCollapsible, children, unstyled, ...triggerProps } = props
   const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
 
   return (
     <CollapsibleTriggerFrame
-      tag="button"
       aria-controls={context.contentId}
       aria-expanded={context.open || false}
       data-state={getState(context.open)}
@@ -146,8 +138,6 @@ CollapsibleTrigger.displayName = TRIGGER_NAME
  * CollapsibleContent
  * -----------------------------------------------------------------------------------------------*/
 
-// TODO: there might be something wrong with these two types
-type CollapsibleContentElement = TamaguiElement
 interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackProps {
   /**
    * Used to force mounting when more control is needed. Useful when
@@ -171,21 +161,23 @@ const CollapsibleContentFrame = styled(ThemeableStack, {
         focusable: true,
       },
     },
-  },
+  } as const,
 })
 
-const CollapsibleContent = React.forwardRef<
-  CollapsibleContentElement,
-  CollapsibleContentProps
->((props: ScopedProps<CollapsibleContentProps>, forwardedRef) => {
+const CollapsibleContent = CollapsibleContentFrame.styleable<
+  ScopedProps<CollapsibleContentProps>
+>((props, forwardedRef) => {
   const { forceMount, children, __scopeCollapsible, unstyled, ...contentProps } = props
   const context = useCollapsibleContext(CONTENT_NAME, __scopeCollapsible)
 
   return (
     <AnimatePresence {...contentProps}>
       {forceMount || context.open ? (
-        // @ts-ignore TODO: fix this type error unstyled is an unknown prop
-        <CollapsibleContentFrame unstyled={!!unstyled} {...contentProps}>
+        <CollapsibleContentFrame
+          ref={forwardedRef}
+          unstyled={!!unstyled}
+          {...contentProps}
+        >
           {children}
         </CollapsibleContentFrame>
       ) : null}
@@ -205,5 +197,12 @@ const Collapsible = withStaticProperties(_Collapsible, {
   Content: CollapsibleContent,
 })
 
-export { Collapsible, CollapsibleContent, CollapsibleTrigger, createCollapsibleScope }
-export type { CollapsibleProps, CollapsibleContentProps, CollapsibleTriggerProps }
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleContentFrame,
+  CollapsibleTrigger,
+  CollapsibleTriggerFrame,
+  createCollapsibleScope,
+}
+export type { CollapsibleContentProps, CollapsibleProps, CollapsibleTriggerProps }
