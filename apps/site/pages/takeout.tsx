@@ -223,9 +223,9 @@ const TakeoutCard2Frame = styled(YStack, {
     },
   } as const,
 
-  // defaultVariants: {
-  //   size: '$6',
-  // },
+  defaultVariants: {
+    size: '$6',
+  },
 })
 
 type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
@@ -1171,7 +1171,7 @@ const Bullet = ({
       space
       f={1}
       {...props}
-      w="100%"
+      // w="100%"
       $gtSm={{ w: 'calc(50% - 10px)' }}
     >
       <YStack y={-1}>
