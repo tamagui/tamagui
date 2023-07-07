@@ -1,6 +1,5 @@
 import {
   SideObject,
-  autoUpdate,
   flip,
   inner,
   offset,
@@ -259,6 +258,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setInnerOffset(0)
       setFallback(false)
       setBlockSelection(false)
+    }
+  }, [open])
+
+  useIsomorphicLayoutEffect(() => {
+    if (!open && state.current.isMouseOutside) {
+      state.current.isMouseOutside = false
     }
   }, [open])
 
