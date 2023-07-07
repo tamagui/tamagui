@@ -16,6 +16,7 @@ import React, {
   useCallback,
   useContext,
   useId,
+  useMemo,
   useRef,
 } from 'react'
 
@@ -38,7 +39,6 @@ import { hooks } from './setupHooks'
 import {
   DebugProp,
   SpaceDirection,
-  SpaceTokens,
   SpaceValue,
   SpacerProps,
   StaticConfig,
@@ -820,17 +820,23 @@ export function createComponent<
       stateRef.current.themeShallow = true
     }
 
-    let content =
-      !children || asChild
+    const direction = props.spaceDirection || 'both'
+
+    // since we re-render without changing children often for animations or on mount
+    // we memo children here. tested this on the site homepage which has hundreds of components
+    // and i see no difference in startup performance, but i do see it memoing often
+    let content = useMemo(() => {
+      return !children || asChild
         ? children
         : spacedChildren({
             separator,
             children,
             space,
-            direction: props.spaceDirection || 'both',
+            direction,
             isZStack,
             debug: debugProp,
           })
+    }, [children, asChild, separator, space, direction, debugProp, isZStack])
 
     if (asChild) {
       elementType = Slot
