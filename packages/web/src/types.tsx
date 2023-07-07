@@ -2,18 +2,22 @@
 
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
-import type {
+import {
+  Component,
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
+  JSXElementConstructor,
   ReactNode,
+  Ref,
   RefAttributes,
   RefObject,
 } from 'react'
 import type {
   GestureResponderHandlers,
   PressableProps,
+  Text as RNText,
   TextProps as ReactTextProps,
   TextStyle,
   View,
@@ -24,7 +28,9 @@ import type {
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import { StyledContext } from './helpers/createStyledContext'
+import { styled } from './styled'
 import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
+import { Text } from './views/Text'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -32,6 +38,7 @@ export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
+export type TamaguiTextElement = HTMLElement | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize'
 
@@ -873,11 +880,11 @@ export type SpecificTokens<
   ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
   : never
 
-export type SpecificTokensSpecial =
-  TamaguiSettings['autocompleteSpecificTokens'] extends // defaults to except-special
-  undefined | 'except-special'
-    ? never
-    : SpecificTokens
+export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends  // defaults to except-special
+  | undefined
+  | 'except-special'
+  ? never
+  : SpecificTokens
 
 export type SizeTokens =
   | SpecificTokensSpecial
@@ -2068,3 +2075,22 @@ type FillInFontValues<
         ? Exclude<A[K][Key], Variable>
         : any
     }
+
+// gets the ref type of any type of react component
+export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
+  ? Ref
+  : C extends new (props: any) => Component
+  ? C
+  : C extends abstract new (...args: any) => any
+  ? InstanceType<C>
+  : C extends Component
+  ? C
+  : (
+      C extends JSXElementConstructor<{ ref?: infer R }>
+        ? R
+        : C extends keyof JSX.IntrinsicElements
+        ? JSX.IntrinsicElements[C]['ref']
+        : unknown
+    ) extends Ref<infer T> | string | undefined
+  ? T
+  : unknown

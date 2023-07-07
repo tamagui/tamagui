@@ -15,7 +15,7 @@ export declare const SizableText: import("@tamagui/web").TamaguiComponent<Omit<i
 } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
-}>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 }, {

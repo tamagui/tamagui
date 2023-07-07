@@ -216,7 +216,7 @@ export declare const ListItemText: import("@tamagui/web").TamaguiComponent<Omit<
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
@@ -261,7 +261,7 @@ export declare const ListItemSubtitle: import("@tamagui/web").TamaguiComponent<O
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
@@ -329,7 +329,7 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
     readonly unstyled?: boolean | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
@@ -999,7 +999,7 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
         readonly size?: FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-    }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+    }>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {
@@ -1044,7 +1044,7 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: SizeTokens | undefined;
-    }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+    }>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {

@@ -173,7 +173,7 @@ declare const ButtonText: import("@tamagui/web").TamaguiComponent<Omit<import("r
     readonly size?: FontSizeTokens | undefined;
 }, "unstyled"> & {
     readonly unstyled?: boolean | undefined;
-}>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {
@@ -448,7 +448,7 @@ declare const Button: import("@tamagui/web").ReactComponentWithRef<Omit<TextPare
         readonly size?: FontSizeTokens | undefined;
     }, "unstyled"> & {
         readonly unstyled?: boolean | undefined;
-    }>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+    }>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
         readonly unstyled?: boolean | undefined;
         readonly size?: FontSizeTokens | undefined;
     } & {

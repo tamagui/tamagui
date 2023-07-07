@@ -36,7 +36,7 @@ export declare const Paragraph: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({

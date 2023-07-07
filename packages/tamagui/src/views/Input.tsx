@@ -1,11 +1,13 @@
 import {
   ColorStyleProp,
   GetProps,
+  GetRef,
   setupReactNative,
   styled,
   useTheme,
 } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
+import React, { useRef } from 'react'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'

@@ -2,9 +2,9 @@ import type { GenericVariantDefinitions, StaticConfig, StaticConfigParsed, Styla
 export declare function extendStaticConfig(config: Partial<StaticConfig>, parent?: StylableComponent): StaticConfigParsed;
 export declare const mergeVariants: (parentVariants?: GenericVariantDefinitions, ourVariants?: GenericVariantDefinitions) => {
     [x: string]: {
-        [key: string]: {
+        [key: string]: ((a: any, b: any) => any) | {
             [key: string]: any;
-        } | ((a: any, b: any) => any);
+        };
     };
 };
 export declare const parseStaticConfig: (config: Partial<StaticConfig>) => StaticConfigParsed;

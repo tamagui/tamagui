@@ -4,6 +4,7 @@ import {
   FontSizeTokens,
   GetProps,
   TamaguiElement,
+  TamaguiTextElement,
   getVariableValue,
   isWeb,
   isWebTouchable,
@@ -366,11 +367,11 @@ export const SelectItemTextFrame = styled(SizableText, {
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
 
-const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
+const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>(
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
     const { __scopeSelect, className, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    const ref = React.useRef<TamaguiElement | null>(null)
+    const ref = React.useRef<TamaguiTextElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const isSelected = Boolean(itemContext.isSelected && context.valueNode)
