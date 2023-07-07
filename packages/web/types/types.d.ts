@@ -1,7 +1,7 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import type { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
-import type { GestureResponderHandlers, PressableProps, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import { Component, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, JSXElementConstructor, ReactNode, Ref, RefAttributes, RefObject } from 'react';
+import type { GestureResponderHandlers, PressableProps, Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import { StyledContext } from './helpers/createStyledContext';
@@ -10,6 +10,7 @@ import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
+export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize';
 /**
  * For static / studio
@@ -462,8 +463,7 @@ export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbac
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
-export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends // defaults to except-special
-undefined | 'except-special' ? never : SpecificTokens;
+export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends undefined | 'except-special' ? never : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | boolean;
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
@@ -952,4 +952,7 @@ type FillInFontValues<A extends GenericFont, K extends keyof A, DefaultKeys exte
 } : {
     [Key in keyof A[K] | DefaultKeys]: Key extends keyof A[K] ? Exclude<A[K][Key], Variable> : any;
 };
+export type GetRef<C> = C extends abstract new (...args: any) => any ? InstanceType<C> : C extends Component ? C : C extends new (props: any) => Component ? C : (C extends JSXElementConstructor<{
+    ref?: infer R;
+}> ? R : C extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[C]['ref'] : unknown) extends Ref<infer T> | string | undefined ? T : unknown;
 //# sourceMappingURL=types.d.ts.map
