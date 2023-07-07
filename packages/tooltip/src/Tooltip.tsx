@@ -42,21 +42,20 @@ const TooltipContent = PopperContentFrame.extractable(
       const popper = usePopperContext()
       const padding =
         props.padding ??
-        (props.unstyled
-          ? null
-          : props.size ??
-            popper.size ??
-            getSize('$true', {
-              shift: -2,
-            }))
+        props.size ??
+        popper.size ??
+        getSize('$true', {
+          shift: -2,
+        })
 
       return (
         <PopoverContent
           componentName="Tooltip"
           disableRemoveScroll
           trapFocus={false}
-          padding={padding}
-          pointerEvents="none"
+          {...(!props.unstyled && {
+            padding,
+          })}
           ref={ref}
           {...props}
         />
