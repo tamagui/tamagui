@@ -25,7 +25,7 @@ export declare const LabelFrame: import("@tamagui/web").TamaguiComponent<Omit<im
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
-}>>, import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, {
+}>>, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, {
     readonly unstyled?: boolean | undefined;
     readonly size?: FontSizeTokens | undefined;
 } & {

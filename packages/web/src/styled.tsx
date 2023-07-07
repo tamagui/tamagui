@@ -6,6 +6,7 @@ import { mergeVariants } from './helpers/extendStaticConfig'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
+  GetRef,
   GetVariantValues,
   MediaProps,
   PseudoProps,
@@ -197,7 +198,7 @@ export function styled<
 
   type StyledComponent = TamaguiComponent<
     Props,
-    TamaguiElement,
+    GetRef<ParentComponent>,
     ParentPropsBase,
     ParentVariants & OurVariantProps,
     ParentStaticProperties

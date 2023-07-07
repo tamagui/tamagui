@@ -1,4 +1,4 @@
-import { GetProps, StackProps, TamaguiElement } from '@tamagui/core';
+import { GetProps, StackProps, TamaguiElement, TamaguiTextElement } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
@@ -1310,7 +1310,7 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ((({
+}>>), TamaguiTextElement, import("@tamagui/core").TextPropsBase, ((({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
@@ -2272,7 +2272,7 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>, "ref">) & React.RefAttributes<TamaguiElement>>;
+}>>, "ref">) & React.RefAttributes<TamaguiTextElement>>;
 declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "style" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
@@ -2381,7 +2381,7 @@ declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), TamaguiElement, import("@tamagui/core").TextPropsBase, ({
+}>>), TamaguiTextElement, import("@tamagui/core").TextPropsBase, ({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
 } | ({
@@ -2522,7 +2522,7 @@ declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>, "ref">) & React.RefAttributes<TamaguiElement>>;
+}>>, "ref">) & React.RefAttributes<TamaguiTextElement>>;
 declare const DialogCloseFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "style" | "children" | "display" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "unstyled"> & {
@@ -3502,7 +3502,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>>, "ref">) & React.RefAttributes<TamaguiElement>>;
+    }>>, "ref">) & React.RefAttributes<TamaguiTextElement>>;
     Description: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "style" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
@@ -3611,7 +3611,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
-    }>>, "ref">) & React.RefAttributes<TamaguiElement>>;
+    }>>, "ref">) & React.RefAttributes<TamaguiTextElement>>;
     Close: import("@tamagui/core").ReactComponentWithRef<Omit<import("react-native").ViewProps, "style" | "children" | "display" | ("onLayout" | keyof import("react-native").GestureResponderHandlers)> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "unstyled"> & {
@@ -3795,7 +3795,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & React.RefAttributes<TamaguiElement>>;
+        }>> & React.RefAttributes<typeof import("react-native").ScrollView>>;
     };
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {

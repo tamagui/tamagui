@@ -1,10 +1,6 @@
 import { createComponent } from '../createComponent'
-import type { StackProps, StackPropsBase } from '../types'
+import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
 
-export const View = createComponent<
-  StackProps,
-  React.Component<StackProps>,
-  StackPropsBase
->({
+export const View = createComponent<StackProps, TamaguiElement, StackPropsBase>({
   acceptsClassName: true,
 })

@@ -108,7 +108,7 @@ export declare const Heading: import("@tamagui/web").TamaguiComponent<(Omit<impo
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, ({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, ({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -436,7 +436,7 @@ export declare const H1: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -783,7 +783,7 @@ export declare const H2: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -1130,7 +1130,7 @@ export declare const H3: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -1477,7 +1477,7 @@ export declare const H4: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -1824,7 +1824,7 @@ export declare const H5: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({
@@ -2171,7 +2171,7 @@ export declare const H6: import("@tamagui/web").TamaguiComponent<(Omit<import("r
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
-}>>), import("@tamagui/web").TamaguiElement, import("@tamagui/web").TextPropsBase, (({
+}>>), import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextPropsBase, (({
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/web").FontSizeTokens | undefined;
 } | ({

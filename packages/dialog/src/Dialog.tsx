@@ -4,8 +4,10 @@ import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  GetRef,
   StackProps,
   TamaguiElement,
+  TamaguiTextElement,
   Theme,
   View,
   composeEventHandlers,
@@ -616,7 +618,7 @@ const DialogTitleFrame = styled(H2, {
 
 type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = React.forwardRef<TamaguiElement, DialogTitleProps>(
+const DialogTitle = React.forwardRef<TamaguiTextElement, DialogTitleProps>(
   (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
     const { __scopeDialog, ...titleProps } = props
     const context = useDialogContext(TITLE_NAME, __scopeDialog)
@@ -638,19 +640,20 @@ type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
 const DESCRIPTION_NAME = 'DialogDescription'
 
-const DialogDescription = React.forwardRef<TamaguiElement, DialogDescriptionProps>(
-  (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
-    const { __scopeDialog, ...descriptionProps } = props
-    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
-    return (
-      <DialogDescriptionFrame
-        id={context.descriptionId}
-        {...descriptionProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const DialogDescription = React.forwardRef<
+  GetRef<typeof DialogDescriptionFrame>,
+  DialogDescriptionProps
+>((props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
+  const { __scopeDialog, ...descriptionProps } = props
+  const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
+  return (
+    <DialogDescriptionFrame
+      id={context.descriptionId}
+      {...descriptionProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 DialogDescription.displayName = DESCRIPTION_NAME
 
