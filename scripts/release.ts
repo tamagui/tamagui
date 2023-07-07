@@ -174,11 +174,13 @@ async function run() {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('run checks')
 
-      if (!skipTest && !finish) {
-        await spawnify(`yarn fix`)
-        await spawnify(`yarn lint`)
-        await spawnify(`yarn check`)
-        await spawnify(`yarn test`)
+      if (!finish) {
+        if (!skipTest) {
+          await spawnify(`yarn fix`)
+          await spawnify(`yarn lint`)
+          await spawnify(`yarn check`)
+          await spawnify(`yarn test`)
+        }
       }
 
       if (!dirty && !dryRun && !rePublish) {
@@ -352,8 +354,10 @@ async function run() {
     }
 
     // then git tag, commit, push
-    await spawnify(`yarn fix`)
-    await spawnify(`yarn install`)
+    if (!finish) {
+      await spawnify(`yarn fix`)
+      await spawnify(`yarn install`)
+    }
 
     if (!finish) {
       await sleep(4 * 1000)
