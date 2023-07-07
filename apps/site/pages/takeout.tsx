@@ -856,13 +856,23 @@ export default function TakeoutPage({
                   </TakeoutCard>
                 </XStack>
 
-                <YStack marginTop={-300} marginBottom={-550} x={200} zi={-1}>
-                  <Image
-                    alt="iPhone screenshot of Tamagui"
-                    src="/iphone.png"
-                    width={863}
-                    height={928}
-                  />
+                <YStack marginTop={-460} marginBottom={-590} x={700} zi={-1}>
+                  <div
+                    style={{
+                      transform: 'rotateX(41deg) rotateZ(33deg)',
+                      transformStyle: 'preserve-3d',
+                      width: 715 * 0.75,
+                      borderRadius: 78,
+                      boxShadow: '0 0 30px 40px rgba(0,0,0,1)',
+                    }}
+                  >
+                    <Image
+                      alt="iPhone screenshot of Tamagui"
+                      src="/tama-phone.svg"
+                      width={715 * 0.75}
+                      height={1467 * 0.75}
+                    />
+                  </div>
                 </YStack>
 
                 <Separator className="mix-blend" boc="#fff" o={0.25} my="$8" mx="$8" />
