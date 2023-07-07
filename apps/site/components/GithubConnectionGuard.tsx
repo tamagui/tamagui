@@ -1,5 +1,5 @@
 import { StudioQueueCard } from '@components/StudioQueueCard'
-import { isLocal } from '@protected/studio/constants'
+import { isLocal } from 'studio/constants'
 import { Lock } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'

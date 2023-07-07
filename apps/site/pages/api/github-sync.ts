@@ -1,7 +1,7 @@
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { checkForSponsorship } from '@protected/_utils/github'
-import { siteRootDir } from '@protected/studio/constants'
+import { siteRootDir } from 'studio/constants'
 import { Session, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 

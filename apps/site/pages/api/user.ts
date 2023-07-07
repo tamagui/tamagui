@@ -1,7 +1,7 @@
 import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { tiersPriority } from '@protected/_utils/sponsorship'
+import { tiersPriority } from 'studio/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { NextApiHandler } from 'next'
