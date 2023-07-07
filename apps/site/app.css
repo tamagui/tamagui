@@ -706,14 +706,13 @@ input, textarea {
 
 .callout {
   text-shadow:
-    1px 1px 0 var(--orange10),
-    2px 2px 0 var(--yellow10),
-    3px 3px 0 var(--green10),
-    4px 4px 0 var(--blue10),
-    5px 5px 0 var(--purple10),
-    6px 6px 0 var(--pink10),
-    7px 7px 0 var(--red10),
-    0 0 50px rgba(0,0,0,1),
+    1px 1px 0 var(--orange8),
+    2px 2px 0 var(--yellow8),
+    3px 3px 0 var(--green8),
+    4px 4px 0 var(--blue8),
+    5px 5px 0 var(--purple8),
+    6px 6px 0 var(--pink8),
+    7px 7px 0 var(--red8),
     0 0 50px rgba(0,0,0,1);
 }
 

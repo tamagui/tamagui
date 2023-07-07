@@ -188,7 +188,7 @@ const isSafariMobile = (() => {
 
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
-const heroHeight = 850
+const heroHeight = 890
 
 type TakeoutPageProps = {
   starter: Database['public']['Tables']['products']['Row'] & {
@@ -235,16 +235,16 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
-    resist: 50,
-    size: 450,
+    resist: 40,
+    size: 250,
     strategy: 'blur',
     blurPct: 100,
     // inverse: true,
     color: 'var(--color10)',
-    opacity: 0.2,
+    opacity: 0.5,
     background: 'transparent',
     style: {
-      transition: `all ease-out 500ms`,
+      transition: `all ease-out 300ms`,
     },
   })
 
@@ -253,7 +253,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     size: 200,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--color12)',
+    color: 'var(--color11)',
     opacity: 1,
     background: 'transparent',
   })
@@ -363,9 +363,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         className="mix-blend-multiply"
-        y={10}
         style={{
-          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
       >
         <ThemeTint>
@@ -439,10 +438,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           ai="center"
           jc="center"
           y={-20}
-          o={0.75}
-          scale={1.05}
         >
-          <TAKEOUT color="$background" className="" />
+          <TAKEOUT color="$color3" className="" />
         </YStack>
       </YStack>
       <YStack
@@ -518,22 +515,6 @@ export default function TakeoutPage({
         />
       </ThemeTint>
 
-      {/* big background outlined font */}
-      <YStack
-        pos="absolute"
-        fullscreen
-        b="auto"
-        zi={-2}
-        pe="none"
-        ai="center"
-        jc="center"
-        ov="hidden"
-        contain="paint layout"
-        y={-200}
-      >
-        <TAKEOUT className={`font-outlined-sm theme-shadow`} fontSize={850} o={0.125} />
-      </YStack>
-
       <YStack>
         <ContainerXL>
           <YStack h={0} mah={0}>
@@ -556,7 +537,7 @@ export default function TakeoutPage({
                   top: 150,
                 }}
                 $xs={{
-                  top: '75vh',
+                  top: '60vh',
                   left: '50%',
                   x: '-50%',
                 }}
@@ -732,8 +713,11 @@ export default function TakeoutPage({
                     $lg={{
                       size: '$9',
                     }}
+                    $sm={{
+                      size: '$8',
+                    }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time than ever
                   </H2>
                 </ThemeTint>
 
@@ -748,19 +732,19 @@ export default function TakeoutPage({
 
                 <HeartsRow />
 
-                <Paragraph size="$9" $sm={{ size: '$8' }} fow="400">
+                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
                   Takeout 🥡 is a bootstrap that delivers on years of effort putting
                   together a better unified React Native + web stack.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
                   Powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
                   iOS/Android app stores via Expo EAS.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
                   With all new themes, 150 icon sets, and 1500 font packages as easily as
                   `tamagui add icon` to automatically install to your monorepo.
                 </Paragraph>
@@ -977,21 +961,21 @@ export default function TakeoutPage({
                     Coming Soon:
                   </Paragraph>
 
-                  <XStack tag="ul" fw="wrap" gap="$4" my="$4">
+                  <XStack tag="ul" fw="wrap" gap="$5" my="$4">
                     <Bullet inProgress>Maestro native integration tests</Bullet>
                     <Bullet inProgress>Playwright integration tests</Bullet>
                     <Bullet inProgress>Reanimated + reanimated modules</Bullet>
                     <Bullet inProgress>Simple state management system</Bullet>
                     <Bullet inProgress>Layout animations</Bullet>
                     <Bullet inProgress>Storybook</Bullet>
+                    <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
+                    <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
                     <Bullet>Notifications</Bullet>
                     <Bullet>Alternative deployment targets</Bullet>
                     <Bullet>Simple data fetching library</Bullet>
                     <Bullet>Premium font add-ons</Bullet>
                     <Bullet>Unified RN and web testing tools</Bullet>
                     <Bullet>Improved CI/CD caching</Bullet>
-                    <Bullet>Tamagui CLI: Doctor</Bullet>
-                    <Bullet>Tamagui CLI: Upgrade</Bullet>
                   </XStack>
 
                   <Spacer />
@@ -1020,7 +1004,7 @@ export default function TakeoutPage({
                     </YStack>
                   ))}
                 </XStack>
-                <XStack fw="wrap" gap="$4" mx="$1" ai="center" jc="center">
+                <XStack fw="wrap" gap="$3" mx="$1" ai="center" jc="center">
                   {takeoutImages.slice(4, 17).map((image, index) => (
                     <YStack key={index} pos="relative">
                       <TakeoutImage
@@ -1100,14 +1084,14 @@ export default function TakeoutPage({
                   />
                 </XStack>
 
-                <MunroP size="$10">
+                <MunroP size="$10" $sm={{ size: '$9' }}>
                   A reference design for a building a truly high quality app - that keeps
                   improving.
                 </MunroP>
 
                 <HeartsRow />
 
-                <MunroP size="$10" color="$yellow10">
+                <MunroP size="$10" $sm={{ size: '$9' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
 
@@ -1186,7 +1170,7 @@ const Bullet = ({
       f={1}
       {...props}
       w="100%"
-      $gtSm={{ w: 'calc(50% - 10px)' }}
+      $gtSm={{ w: 'calc(50% - 20px)' }}
     >
       <YStack y={-1}>
         <Circle size={42} my={-6} boc="$borderColor" bw={1}>
@@ -1258,7 +1242,7 @@ const Point = ({
 
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
-  p: '$4',
+  p: '$2',
   bc: 'rgba(255, 255, 255, 0.035)',
 })
 
@@ -1709,7 +1693,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
             mt: 100,
           }}
         >
-          <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
+          <YStack zi={-1} fullscreen bc="$color5" o={0.5} />
 
           <LinearGradient
             pos="absolute"
@@ -2443,7 +2427,7 @@ const DiscountText = ({
           backgroundColor="$color8"
           style={{
             clipPath:
-              'polygon(0% 5px, 5px 5px, 5px 0%, calc(100% - 5px) 0%, calc(100% - 5px) 5px, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 5px calc(100% - 5px), 0% calc(100% - 5px))',
+              'polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px))',
           }}
         >
           <MunroP color="white" textAlign="center" size="$7">
