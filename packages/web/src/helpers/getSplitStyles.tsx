@@ -1260,6 +1260,9 @@ const mergeTransform = (
   val: any,
   backwards = false
 ) => {
+  if (typeof obj.transform === 'string') {
+    return
+  }
   obj.transform ||= []
   obj.transform[backwards ? 'unshift' : 'push']({
     [mapTransformKeys[key] || key]: val,
