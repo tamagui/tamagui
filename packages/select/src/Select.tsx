@@ -6,6 +6,7 @@ import {
   TamaguiElement,
   getVariableValue,
   isWeb,
+  isWebTouchable,
   styled,
   useGet,
   useIsomorphicLayoutEffect,
@@ -244,10 +245,24 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
 
     const selectItemProps = context.interactions
       ? context.interactions.getItemProps({
-          onTouchStart() {
-            allowSelectRef!.current = true
-            allowMouseUpRef!.current = false
-          },
+          ...(isWebTouchable
+            ? {
+                onTouchStart() {
+                  allowSelectRef!.current = true
+                  allowMouseUpRef!.current = false
+                },
+              }
+            : {
+                onTouchMove() {
+                  allowSelectRef!.current = true
+                  allowMouseUpRef!.current = false
+                },
+                onTouchEnd() {
+                  allowSelectRef!.current = false
+                  allowMouseUpRef!.current = true
+                },
+              }),
+
           onKeyDown(event) {
             if (
               event.key === 'Enter' ||
