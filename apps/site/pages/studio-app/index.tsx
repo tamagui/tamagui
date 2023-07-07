@@ -5,7 +5,7 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
-import { isLocal, siteRootDir } from '@protected/studio/constants'
+import { isLocal, siteRootDir } from 'studio/constants'
 import LoadPage from '@protected/studio/load/page'
 import { rootStore } from '@protected/studio/state/RootStore'
 import { themesStore } from '@protected/studio/state/ThemesStore'

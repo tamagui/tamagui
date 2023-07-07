@@ -1,6 +1,6 @@
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { sponsorshipDateMap } from '@protected/_utils/sponsorship'
+import { sponsorshipDateMap } from 'studio/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
