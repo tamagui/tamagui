@@ -1,5 +1,4 @@
-// debug
-import { H1, Square, YStack } from 'tamagui'
+import { H1 } from 'tamagui'
 
 // TODO this is a great test: media + animation + space (test without animation too)
 // <Stack
@@ -21,14 +20,5 @@ import { H1, Square, YStack } from 'tamagui'
 //     </Stack>
 
 export const Sandbox = () => {
-  return (
-    <>
-      {[1, 2, 3].map((i) => (
-        <YStack key={i}>
-          <Square size={100} bc="red" />
-        </YStack>
-      ))}
-    </>
-  )
   return <H1>test things here</H1>
 }

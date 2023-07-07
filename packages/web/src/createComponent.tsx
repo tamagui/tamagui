@@ -318,8 +318,6 @@ export function createComponent<
       ? (isAnimated ? AnimatedText : null) || BaseTextComponent
       : (isAnimated ? AnimatedView : null) || BaseViewComponent
 
-    const avoidClassesWhileAnimating = animationsConfig?.isReactNative
-
     // set enter/exit variants onto our new props object
     if (isAnimated && presence) {
       const presenceState = presence[2]
@@ -333,7 +331,9 @@ export function createComponent<
       }
     }
 
-    const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
+    const isReactNativeAnimated = animationsConfig?.isReactNative
+    const avoidClassesWhileAnimating = isReactNativeAnimated
+    const isAnimatedReactNative = isAnimated && isReactNativeAnimated
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
 
     const shouldAvoidClasses =

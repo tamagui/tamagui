@@ -1,6 +1,6 @@
 import { StaticConfig } from './types'
 
-export const ReactNativeStaticConfigs = new WeakMap<any, Partial<StaticConfig> | null>()
+const ReactNativeStaticConfigs = new WeakMap<any, Partial<StaticConfig> | null>()
 
 export function getReactNativeConfig(Component: any) {
   return ReactNativeStaticConfigs.get(Component)

@@ -3,7 +3,7 @@ import { stylePropsAll } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/extendStaticConfig'
-import { ReactNativeStaticConfigs } from './setupReactNative'
+import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
   GetVariantValues,
@@ -84,11 +84,12 @@ export function styled<
     ? ComponentIn
     : parentStaticConfig?.Component || ComponentIn
 
+  const reactNativeConfig = getReactNativeConfig(Component)
   const isReactNative = Boolean(
-    ReactNativeStaticConfigs.has(Component) ||
+    reactNativeConfig ||
       staticExtractionOptions?.isReactNative ||
-      ReactNativeStaticConfigs.has(parentStaticConfig?.Component) ||
-      parentStaticConfig?.isReactNative
+      parentStaticConfig?.isReactNative ||
+      getReactNativeConfig(parentStaticConfig?.Component)
   )
 
   const staticConfigProps = (() => {
@@ -124,9 +125,6 @@ export function styled<
         variants = mergeVariants(parentStaticConfig.variants, variants)
       }
 
-      const nativeConf =
-        (isReactNative && ReactNativeStaticConfigs.get(Component)) || null
-
       const isText = Boolean(
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
@@ -151,7 +149,7 @@ export function styled<
         isText,
         acceptsClassName,
         context,
-        ...nativeConf,
+        ...reactNativeConfig,
         isStyledHOC: Boolean(parentStaticConfig?.isHOC),
       }
 

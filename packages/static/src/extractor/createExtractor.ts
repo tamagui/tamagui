@@ -1540,6 +1540,9 @@ export function createExtractor(
               !shouldDeopt &&
               canFlattenProps &&
               !hasSpread &&
+              !staticConfig.isStyledHOC &&
+              !staticConfig.isHOC &&
+              !staticConfig.isReactNative &&
               staticConfig.neverFlatten !== true &&
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
