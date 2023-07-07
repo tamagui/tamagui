@@ -12,7 +12,7 @@ type ThemedOptions = {
 export function themed(
   Component: React.FC<IconProps>,
   opts: ThemedOptions = {
-    defaultThemeColor: 'black',
+    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
   }
