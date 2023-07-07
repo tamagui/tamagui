@@ -167,39 +167,45 @@ export const PopoverContent = PopperContentFrame.extractable(
       const themeName = useThemeName()
       return (
         <PopoverContentPortal zIndex={zIndex}>
-          <Theme name={themeName}>
-            <PopoverContentImpl
-              {...contentImplProps}
-              disableRemoveScroll={disableRemoveScroll}
-              ref={composedRefs}
-              // we make sure we're not trapping once it's been closed
-              // (closed !== unmounted when animating out)
-              trapFocus={trapFocus ?? context.open}
-              disableOutsidePointerEvents
-              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-                event.preventDefault()
-                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-              })}
-              onPointerDownOutside={composeEventHandlers(
-                props.onPointerDownOutside,
-                (event) => {
-                  const originalEvent = event.detail.originalEvent
-                  const ctrlLeftClick =
-                    originalEvent.button === 0 && originalEvent.ctrlKey === true
-                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                  isRightClickOutsideRef.current = isRightClick
-                },
-                { checkDefaultPrevented: false }
-              )}
-              // When focus is trapped, a `focusout` event may still happen.
-              // We make sure we don't trigger our `onDismiss` in such case.
-              onFocusOutside={composeEventHandlers(
-                props.onFocusOutside,
-                (event) => event.preventDefault(),
-                { checkDefaultPrevented: false }
-              )}
-            />
-          </Theme>
+          <Stack pointerEvents={context.open ? 'auto' : 'none'}>
+            <Theme name={themeName}>
+              <PopoverContentImpl
+                {...contentImplProps}
+                disableRemoveScroll={disableRemoveScroll}
+                ref={composedRefs}
+                // we make sure we're not trapping once it's been closed
+                // (closed !== unmounted when animating out)
+                trapFocus={trapFocus ?? context.open}
+                disableOutsidePointerEvents
+                onCloseAutoFocus={composeEventHandlers(
+                  props.onCloseAutoFocus,
+                  (event) => {
+                    event.preventDefault()
+                    if (!isRightClickOutsideRef.current)
+                      context.triggerRef.current?.focus()
+                  }
+                )}
+                onPointerDownOutside={composeEventHandlers(
+                  props.onPointerDownOutside,
+                  (event) => {
+                    const originalEvent = event.detail.originalEvent
+                    const ctrlLeftClick =
+                      originalEvent.button === 0 && originalEvent.ctrlKey === true
+                    const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                    isRightClickOutsideRef.current = isRightClick
+                  },
+                  { checkDefaultPrevented: false }
+                )}
+                // When focus is trapped, a `focusout` event may still happen.
+                // We make sure we don't trigger our `onDismiss` in such case.
+                onFocusOutside={composeEventHandlers(
+                  props.onFocusOutside,
+                  (event) => event.preventDefault(),
+                  { checkDefaultPrevented: false }
+                )}
+              />
+            </Theme>
+          </Stack>
         </PopoverContentPortal>
       )
     }
@@ -360,7 +366,6 @@ const PopoverContentImpl = React.forwardRef<
           key={context.contentId}
           data-state={getState(context.open)}
           id={context.contentId}
-          pointerEvents="auto"
           ref={forwardedRef}
           {...contentProps}
         >
