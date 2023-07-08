@@ -152,3 +152,34 @@ SSR-friendly, only true on if native touchable or web touchable device (client s
 ### useDidFinishSSR
 
 SSR-friendly, returns true if SSR has completed on the client, false before hydration done. On server it's always false.
+
+---
+
+## Type Helpers
+
+### GetProps
+
+Fetches the type of props for a Tamagui component:
+
+```tsx
+import { Stack, GetProps, styled } from '@tamagui/core'
+
+const X = styled(Stack, {})
+
+type XProps = GetProps<typeof X>
+```
+
+### GetRef
+
+Fetches the type of a ref for a Tamagui component, or any React component:
+
+```tsx
+import { Stack, GetRef, styled } from '@tamagui/core'
+
+const X = styled(Stack, {})
+
+const MyComponent = () => {
+  const ref = useRef<GetRef<typeof X>>()
+  return <X ref={ref} />
+}
+```
