@@ -236,7 +236,7 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
     resist: 40,
-    size: 250,
+    size: 150,
     strategy: 'blur',
     blurPct: 100,
     // inverse: true,
@@ -721,14 +721,27 @@ export default function TakeoutPage({
                   </H2>
                 </ThemeTint>
 
-                <MunroP size="$11" $sm={{ size: '$9' }}>
-                  We can't promise everything.
-                </MunroP>
+                <ThemeTint>
+                  <MunroP
+                    style={{ textShadow: '0 2px 2px var(--color9)' }}
+                    size="$11"
+                    $sm={{ size: '$9' }}
+                  >
+                    We can't promise everything...
+                  </MunroP>
+                </ThemeTint>
 
-                <MunroP size="$9" fow="400" $sm={{ size: '$8' }}>
-                  Success is up to you.. but we can say you've found the cheat code to
-                  shipping a top-tier web + native app as fast as possible.
-                </MunroP>
+                <ThemeTint>
+                  <MunroP
+                    style={{ textShadow: '0 1px 1px var(--color9)' }}
+                    size="$9"
+                    fow="400"
+                    $sm={{ size: '$8' }}
+                  >
+                    Success is up to you. But we can say you've found the ultimate cheat
+                    code to shipping a gorgeous web and native app as fast as possible.
+                  </MunroP>
+                </ThemeTint>
 
                 <HeartsRow />
 
@@ -741,12 +754,8 @@ export default function TakeoutPage({
                   Powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
-                  iOS/Android app stores via Expo EAS.
-                </Paragraph>
-
-                <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
-                  With all new themes, 150 icon sets, and 1500 font packages as easily as
-                  `tamagui add icon` to automatically install to your monorepo.
+                  iOS/Android app stores via Expo EAS. Featuring all new themes, 150 new
+                  icon packs, and 1,500 new fonts.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -875,32 +884,47 @@ export default function TakeoutPage({
                   </div>
                 </YStack>
 
-                <YStack
-                  p="$6"
-                  px="$8"
-                  space="$6"
-                  elevation="$6"
-                  br="$10"
-                  $sm={{
-                    px: '$4',
-                    mx: '$-4',
-                  }}
-                >
-                  <YStack br="$10" zi={-1} fullscreen bc="$background" o={0.3} />
-                  <YStack br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
-
+                <ThemeTint>
                   <YStack
-                    bc="#000"
-                    rotate="-2deg"
-                    mt={-130}
-                    mb={20}
-                    px="$6"
-                    py="$2"
-                    elevation="$4"
-                    als="center"
-                    br="$5"
+                    p="$6"
+                    className="blur-medium"
+                    px="$8"
+                    space="$6"
+                    elevation="$6"
+                    ov="hidden"
+                    br="$10"
+                    $sm={{
+                      px: '$4',
+                      mx: '$-4',
+                    }}
                   >
-                    <ThemeTint>
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color6" o={0.2} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
+                    <YStack
+                      pos="absolute"
+                      t={-400}
+                      o={0.2}
+                      r={-400}
+                      pe="none"
+                      w={1000}
+                      h={1000}
+                      scale={1.5}
+                      style={{
+                        background: 'radial-gradient(var(--color9), transparent 70%)',
+                      }}
+                    />
+
+                    <YStack
+                      bc="#000"
+                      rotate="-2deg"
+                      mt={-130}
+                      mb={20}
+                      px="$6"
+                      py="$2"
+                      elevation="$4"
+                      als="center"
+                      br="$5"
+                    >
                       <Paragraph
                         color="$color9"
                         fontFamily="$munro"
@@ -911,21 +935,19 @@ export default function TakeoutPage({
                       >
                         Speedrun from 0-to-100 🥡
                       </Paragraph>
-                    </ThemeTint>
-                    <Paragraph
-                      color="$color9"
-                      fontFamily="$munro"
-                      size="$8"
-                      mt={-10}
-                      $sm={{ dsp: 'none' }}
-                      fow="800"
-                      ta="center"
-                    >
-                      (...but don't forget the long run)
-                    </Paragraph>
-                  </YStack>
+                      <Paragraph
+                        color="$color9"
+                        fontFamily="$munro"
+                        size="$8"
+                        mt={-10}
+                        $sm={{ dsp: 'none' }}
+                        fow="800"
+                        ta="center"
+                      >
+                        (...but don't forget the long run)
+                      </Paragraph>
+                    </YStack>
 
-                  <ThemeTint>
                     <Paragraph
                       fontFamily="$cherryBomb"
                       size="$10"
@@ -938,54 +960,57 @@ export default function TakeoutPage({
                     >
                       It's not just about shipping fast.
                     </Paragraph>
-                  </ThemeTint>
 
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    Takeout is a template repo *and a bot* that's designed with pluggable,
-                    well-isolated features. Whenever we make significant updates, we
-                    trigger the TakeoutBot to send over a PR.
-                  </Paragraph>
+                    <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                      Takeout is a template repo *and a bot* that's designed with
+                      pluggable, well-isolated features. Whenever we make significant
+                      updates, we trigger the TakeoutBot to send over a PR.
+                    </Paragraph>
 
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400" color="$yellow10">
-                    That means you get constant improvements to your codebase.
-                  </Paragraph>
+                    <ThemeTintAlt>
+                      <Paragraph size="$7" $sm={{ size: '$6' }} fow="400" color="$color9">
+                        That means you get constant improvements to your codebase.
+                      </Paragraph>
+                    </ThemeTintAlt>
 
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    It's why we've set up pricing the way we have: lifetime rights, one
-                    year of updates. Forever pricing wouldn't incentivize us to keep
-                    innovating, and we want to make the Takeout stack the best stack,
-                    period.
-                  </Paragraph>
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      It's why we've set up pricing the way we have: lifetime rights,
+                      1-year of updates. Each year renewal is only 50% of the original
+                      purchase price.
+                    </Paragraph>
 
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    We're working on bringing many nice new features that you can pick and
-                    choose from, some of which are already in progress. We create
-                    automatic PRs to your repos when they're ready.
-                  </Paragraph>
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      Forever pricing wouldn't incentivize us to keep innovating, and we
+                      have big plans to make Takeout the best stack, period.
+                    </Paragraph>
 
-                  <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                    Coming Soon:
-                  </Paragraph>
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      There's a lot of nice stuff coming soon as a nice and easy to merge
+                      PR sent right to your repo:
+                    </Paragraph>
 
-                  <XStack tag="ul" fw="wrap" gap="$5" my="$4">
-                    <Bullet inProgress>Maestro native integration tests</Bullet>
-                    <Bullet inProgress>Playwright integration tests</Bullet>
-                    <Bullet inProgress>Reanimated + reanimated modules</Bullet>
-                    <Bullet inProgress>Simple state management system</Bullet>
-                    <Bullet inProgress>Layout animations</Bullet>
-                    <Bullet inProgress>Storybook</Bullet>
-                    <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
-                    <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
-                    <Bullet>Notifications</Bullet>
-                    <Bullet>Alternative deployment targets</Bullet>
-                    <Bullet>Simple data fetching library</Bullet>
-                    <Bullet>Premium font add-ons</Bullet>
-                    <Bullet>Unified RN and web testing tools</Bullet>
-                    <Bullet>Improved CI/CD caching</Bullet>
-                  </XStack>
+                    <ThemeTintAlt>
+                      <XStack tag="ul" fw="wrap" gap="$5" my="$4">
+                        <Bullet inProgress>Maestro native integration tests</Bullet>
+                        <Bullet inProgress>Playwright integration tests</Bullet>
+                        <Bullet inProgress>Reanimated + reanimated modules</Bullet>
+                        <Bullet inProgress>Simple state management system</Bullet>
+                        <Bullet inProgress>Layout animations</Bullet>
+                        <Bullet inProgress>Storybook</Bullet>
+                        <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
+                        <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
+                        <Bullet>Notifications</Bullet>
+                        <Bullet>Alternative deployment targets</Bullet>
+                        <Bullet>Simple data fetching library</Bullet>
+                        <Bullet>Premium font add-ons</Bullet>
+                        <Bullet>Unified RN and web testing tools</Bullet>
+                        <Bullet>Improved CI/CD caching</Bullet>
+                      </XStack>
+                    </ThemeTintAlt>
 
-                  <Spacer />
-                </YStack>
+                    <Spacer />
+                  </YStack>
+                </ThemeTint>
 
                 <Spacer />
 
@@ -1102,9 +1127,9 @@ export default function TakeoutPage({
 
                 <MunroP size="$3" o={0.3}>
                   These statements have not been approved by the FDA. Talk to your doctor
-                  about Tamagui Takeout. Side effects may include spending way too much
-                  time tweaking color palettes when you should be just shipping your damn
-                  app.
+                  before trying Tamagui Takeout. Side effects may include spending way too
+                  much time tweaking color palettes when you should be just shipping your
+                  damn app.
                 </MunroP>
               </YStack>
             </XStack>
@@ -1136,7 +1161,7 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
         store.galleryOpen = true
         store.galleryImageIdx = props.index
       }}
-      br="$10"
+      br="$5"
       ov="hidden"
       elevation="$3"
       cursor="pointer"
@@ -1724,7 +1749,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <MunroP size="$3" o={0.12} mt={-5}>
+              <MunroP size="$3" o={0.04} mt={-5} mb={-5}>
                 Drop 0001
               </MunroP>
 
@@ -1857,10 +1882,11 @@ const Row = (props: { title: any; description: any; after: any }) => {
       }}
     >
       <YStack f={1} py="$3" space="$1">
-        <MunroP size="$7">{props.title}</MunroP>
+        <Paragraph fontFamily="$cherryBomb" size="$4">
+          {props.title}
+        </Paragraph>
         <Paragraph
           size="$3"
-          lh={18}
           color="$color10"
           $md={{
             display: showDetail ? 'flex' : 'none',
