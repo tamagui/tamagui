@@ -694,7 +694,7 @@ export default function TakeoutPage({
                     size: '$4',
                   }}
                 >
-                  Jumpstarting startups since '23
+                  Universal React Native + Web Starter Kit
                 </MunroP>
 
                 <ThemeTint>
@@ -875,16 +875,12 @@ export default function TakeoutPage({
                   </div>
                 </YStack>
 
-                <Separator className="mix-blend" boc="#fff" o={0.25} my="$8" mx="$8" />
-
                 <YStack
                   p="$6"
                   px="$8"
-                  className="blur-medium"
                   space="$6"
                   elevation="$6"
                   br="$10"
-                  mt={-100}
                   $sm={{
                     px: '$4',
                     mx: '$-4',
@@ -991,7 +987,6 @@ export default function TakeoutPage({
                   <Spacer />
                 </YStack>
 
-                <Separator />
                 <Spacer />
 
                 <Paragraph als="center" fontFamily="$cherryBomb" size="$10">

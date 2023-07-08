@@ -6,8 +6,6 @@ import {
   CenterProps,
   ContactShadows,
   ContactShadowsProps,
-  Environment,
-  EnvironmentProps,
   RandomizedLight,
   RandomizedLightProps,
   useBounds,
@@ -148,7 +146,7 @@ export function Stage({
         // observe
         {...props}
       >
-        <Refit radius={radius} adjustCamera={adjustCamera} />
+        {/* <Refit radius={radius} adjustCamera={adjustCamera} /> */}
         {/* @ts-ignore */}
         <Center {...center} position={[0, shadowOffset / 2, 0]} onCentered={onCentered}>
           {children}
