@@ -127,7 +127,6 @@ export function styled<
 
         // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
         if (name) {
-          delete defaultProps.name
           // @ts-ignore
           defaultProps.componentName = name
         }
