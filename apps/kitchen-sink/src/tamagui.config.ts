@@ -41,6 +41,11 @@ config.themes = {
     ...config.themes.light_green_Button,
     background: 'green',
   },
+
+  // @ts-ignore
+  light_MyLabel: {
+    color: 'red',
+  },
 }
 
 const tamaConf = createTamagui({
