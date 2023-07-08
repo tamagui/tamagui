@@ -124,6 +124,13 @@ export function styled<
 
       if (parentStaticConfig?.isHOC) {
         variants = mergeVariants(parentStaticConfig.variants, variants)
+
+        // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
+        if (name) {
+          delete defaultProps.name
+          // @ts-ignore
+          defaultProps.componentName = name
+        }
       }
 
       const isText = Boolean(
