@@ -293,7 +293,19 @@ const css = Tamagui.getCSS()
 
 Note that you can optimize this a bit by generating your CSS at build-time and then avoiding generating it on the client. This is covered in the Next.js Guide as it gives a good example of how to put all the pieces together properly, but you can apply it to any other framework.
 
-If using Next.js, [see the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
+To do this you would do something like this:
+
+```tsx
+Tamagui.getCSS({
+  // if you are using "outputCSS" option, you should use this "exclude"
+  // if not, then you can leave the option out
+  exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+})
+```
+
+And then you'll want to set `outputCSS` as documented in the [Compiler docs](/docs/intro/compiler) and import the CSS that the Tamagui compiler emits somewhere from your app.
+
+[See the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
