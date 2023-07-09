@@ -6,6 +6,7 @@ import { themes, tokens } from '@tamagui/themes'
 import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
+import { TamaguiConfig } from '@tamagui/web'
 
 export * from './animations'
 
@@ -110,7 +111,7 @@ export const config = {
     mono: monoFont,
     silkscreen: silkscreenFont,
   },
-}
+} satisfies TamaguiConfig
 
 // @ts-ignore
 config.selectionStyles = (theme) =>
