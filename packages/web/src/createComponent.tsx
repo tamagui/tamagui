@@ -358,20 +358,6 @@ export function createComponent<
       shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
       debug: debugProp,
     }
-    const themeState = useThemeWithState(themeStateProps)!
-
-    elementType = Component || elementType
-    const isStringElement = typeof elementType === 'string'
-
-    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
-    const mediaState = useMedia(
-      // @ts-ignore, we just pass a stable object so we can get it later with
-      // should match to the one used in `setMediaShouldUpdate` below
-      stateRef,
-      debugProp ? { props, staticConfig } : null
-    )
-
-    setDidGetVariableValue(false)
 
     if (process.env.NODE_ENV === 'development') {
       const id = useId()
@@ -396,11 +382,26 @@ export function createComponent<
           )
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ props, state, staticConfig, elementType, themeStateProps, themeState, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props), curDefaultPropsOrder: Object.keys(curDefaultProps) })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props), curDefaultPropsOrder: Object.keys(curDefaultProps) })
           console.groupEnd()
         }
       }
     }
+
+    const themeState = useThemeWithState(themeStateProps)!
+
+    elementType = Component || elementType
+    const isStringElement = typeof elementType === 'string'
+
+    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
+    const mediaState = useMedia(
+      // @ts-ignore, we just pass a stable object so we can get it later with
+      // should match to the one used in `setMediaShouldUpdate` below
+      stateRef,
+      debugProp ? { props, staticConfig } : null
+    )
+
+    setDidGetVariableValue(false)
 
     const resolveVariablesAs =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child

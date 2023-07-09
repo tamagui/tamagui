@@ -68,7 +68,7 @@ const themesBuilder = createThemeBuilder()
     },
   })
   .addChildThemes(componentThemeDefinitions, {
-    avoidNestingWithin: ['alt1', 'alt2', 'active'],
+    avoidNestingWithin: ['alt1', 'alt2'],
   })
 
 export const themes = themesBuilder.build()

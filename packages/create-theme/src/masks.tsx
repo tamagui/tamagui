@@ -77,7 +77,8 @@ export const createShiftMask = (
         out[key] = clamped
       }
 
-      return skipMask.mask(out, opts) as typeof template
+      const skipped = skipMask.mask(out, opts) as typeof template
+      return skipped
     },
   }
   return mask
