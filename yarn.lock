@@ -4949,6 +4949,7 @@ __metadata:
     "@tamagui/create-theme": 1.39.5
     "@tamagui/generate-themes": 1.39.5
     "@tamagui/static": 1.39.5
+    "@tamagui/studio": 1.39.5
     "@tamagui/types": 1.39.5
     "@tamagui/vite-plugin": 1.39.5
     "@types/compression": ^1.7.2
@@ -6369,6 +6370,18 @@ __metadata:
     typescript: ^5.1.3
     vitest: ^0.26.3
     webpack: ^5.83.1
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/studio@1.39.5, @tamagui/studio@workspace:apps/studio":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/studio@workspace:apps/studio"
+  dependencies:
+    "@tamagui/cli": 1.39.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native-web: ^0.18.10
+    vite: ^4.3.0
   languageName: unknown
   linkType: soft
 
@@ -10478,6 +10491,16 @@ __metadata:
     globby: ^9.2.0
     nested-error-stacks: ^2.1.0
   checksum: 2066808a22292a2c27c22bd60a63eb29ff2a6284f8d591306a7c86b028a468ea116f297a7ba83929d78b76d973559a0c49a3b188a48c797d342759abacd3c4e0
+  languageName: node
+  linkType: hard
+
+"create-react-class@npm:^15.7.0":
+  version: 15.7.0
+  resolution: "create-react-class@npm:15.7.0"
+  dependencies:
+    loose-envify: ^1.3.1
+    object-assign: ^4.1.1
+  checksum: 0c5f43da705fa9f67ec289051dd5780792652d440dfa17cd2c7d8423c1f604609596f895dabf46fda1960ddd93ee96fe1b61ef4d55a94fc4271b07d515486714
   languageName: node
   linkType: hard
 
@@ -16499,7 +16522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -18542,6 +18565,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"normalize-css-color@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "normalize-css-color@npm:1.0.2"
+  checksum: 7433dc995a8d27c9384059ef0b52ceef47f4fab1bab55f1f085058b27e7472466ce321f46391fc85b6851db5212b9bd2bf55f5dc361da01a8a8cf4c360f69dab
+  languageName: node
+  linkType: hard
+
 "normalize-package-data@npm:^2.3.2":
   version: 2.5.0
   resolution: "normalize-package-data@npm:2.5.0"
@@ -20451,6 +20481,24 @@ __metadata:
     react-dom: "*"
   languageName: unknown
   linkType: soft
+
+"react-native-web@npm:^0.18.10":
+  version: 0.18.12
+  resolution: "react-native-web@npm:0.18.12"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    create-react-class: ^15.7.0
+    fbjs: ^3.0.4
+    inline-style-prefixer: ^6.0.1
+    normalize-css-color: ^1.0.2
+    postcss-value-parser: ^4.2.0
+    styleq: ^0.1.2
+  peerDependencies:
+    react: ^17.0.2 || ^18.0.0
+    react-dom: ^17.0.2 || ^18.0.0
+  checksum: 69f0ebafafc4b04b845105646d0efc0cee10ed378377c621ac67a487d5508bb0dbd1c0ff3ea8d17f5cff0c0fb8d6355916f52f19ad3dad842b99b75c65ff4973
+  languageName: node
+  linkType: hard
 
 "react-native-web@npm:^0.19.6":
   version: 0.19.6
@@ -22759,7 +22807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styleq@npm:^0.1.3":
+"styleq@npm:^0.1.2, styleq@npm:^0.1.3":
   version: 0.1.3
   resolution: "styleq@npm:0.1.3"
   checksum: 14a8d23abd914166a9b4bd04ed753bd91363f0e029ee4a94ec2c7dc37d3213fe01fceee22dc655288da3ae89f5dc01cec42d5e2b58478b0dea33bf5bdf509be1

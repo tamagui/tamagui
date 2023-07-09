@@ -5,24 +5,14 @@ import ConfigPage from '@protected/studio/(loaded)/(sponsor-protected)/config/pa
 import { PreviewPage } from '@protected/studio/(loaded)/(sponsor-protected)/preview/page'
 import ThemesPage from '@protected/studio/(loaded)/(sponsor-protected)/themes/page'
 import TokensPage from '@protected/studio/(loaded)/(sponsor-protected)/tokens/page'
-import { isLocal, siteRootDir } from 'studio/constants'
 import LoadPage from '@protected/studio/load/page'
 import { rootStore } from '@protected/studio/state/RootStore'
 import { themesStore } from '@protected/studio/state/ThemesStore'
 import { Tab } from '@protected/studio/state/types'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSelector } from '@tamagui/use-store'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import React, {
-  Suspense,
-  memo,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  useTransition,
-} from 'react'
+import React, { Suspense, memo, useEffect, useMemo, useState, useTransition } from 'react'
+import { isLocal } from 'studio/constants'
 import { YStack, useDidFinishSSR, useIsomorphicLayoutEffect, useThemeName } from 'tamagui'
 
 export default function Page() {

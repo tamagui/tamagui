@@ -31,6 +31,7 @@
     "@tamagui/create-theme": "1.39.5",
     "@tamagui/generate-themes": "1.39.5",
     "@tamagui/static": "1.39.5",
+    "@tamagui/studio": "1.39.5",
     "@tamagui/types": "1.39.5",
     "@tamagui/vite-plugin": "1.39.5",
     "@types/compression": "^1.7.2",

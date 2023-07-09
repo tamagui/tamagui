@@ -15,7 +15,7 @@ import { createServer } from 'vite'
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
-export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
+export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
   process.env.TAMAGUI_TARGET = 'web'
 
   await ensureDir(options.paths.dotDir)
@@ -30,9 +30,10 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
         process.exit(0)
       }
     })
+
     const { default: getPort } = await import('get-port')
     const { paths } = options
-    const root = dirname(resolve('@takeout/studio/entry'))
+    const root = dirname(resolve('@tamagui/studio'))
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
@@ -73,6 +74,12 @@ export const studio = async (options: CLIResolvedOptions, isRemote = true) => {
     app.get('/conf.json', async (req, res) => {
       const conf = await fs.readJSON(paths.conf)
       res.status(200).json(conf)
+    })
+
+    app.get('/pingz', async (req, res) => {
+      res.status(200).json({
+        hi: true,
+      })
     })
 
     app.use('/', proxy(`${info.address}:${vitePort}`))
