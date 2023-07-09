@@ -6,16 +6,7 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Dot,
-  Hammer,
-  Moon,
-  Star,
-  X,
-} from '@tamagui/lucide-icons'
+import { ArrowLeft, ArrowRight, Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -50,18 +41,14 @@ import {
   Separator,
   Sheet,
   SizableText,
-  SizeTokens,
   Spacer,
   Stack,
   TabLayout,
   Tabs,
   TabsProps,
   TabsTabProps,
-  TamaguiConfig,
   Theme,
   ThemeName,
-  Tooltip,
-  TooltipProps,
   Unspaced,
   XStack,
   XStackProps,
