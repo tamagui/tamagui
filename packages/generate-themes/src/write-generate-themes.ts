@@ -10,6 +10,7 @@ export async function writeGeneratedThemes(
   generatedOutput: Awaited<ReturnType<typeof generateThemes>>
 ) {
   const { generated, state } = generatedOutput
+  const tamaguiDotDirExists = await fs.pathExists(tamaguiDotDir)
   const themeBuilderStatePath = join(tamaguiDotDir, `theme-builder.json`)
 
   if (process.env.DEBUG === 'tamagui') {
@@ -21,6 +22,8 @@ export async function writeGeneratedThemes(
 
   await Promise.all([
     fs.writeFile(outPath, generated),
-    state ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state)) : null,
+    state && tamaguiDotDirExists
+      ? fs.writeFile(themeBuilderStatePath, JSON.stringify(state))
+      : null,
   ])
 }

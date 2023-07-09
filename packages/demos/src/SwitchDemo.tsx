@@ -3,9 +3,9 @@ import { Label, Separator, SizeTokens, Switch, XStack, YStack, styled } from 'ta
 export function SwitchDemo() {
   return (
     <YStack width={200} alignItems="center" space="$3">
-      <SwitchWithLabel size="$2" />
+      {/* <SwitchWithLabel size="$2" />
       <SwitchWithLabel size="$3" />
-      <SwitchWithLabel size="$4" />
+      <SwitchWithLabel size="$4" /> */}
       <SwitchWithLabel size="$5" />
     </YStack>
   )
