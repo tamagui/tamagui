@@ -11,6 +11,7 @@ import express from 'express'
 import proxy from 'express-http-proxy'
 import fs, { ensureDir } from 'fs-extra'
 import { createServer } from 'vite'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
@@ -33,7 +34,8 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
 
     const { default: getPort } = await import('get-port')
     const { paths } = options
-    const root = dirname(resolve('@tamagui/studio'))
+    const root = dirname(dirname(dirname(resolve('@tamagui/studio'))))
+    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
@@ -57,6 +59,7 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
           components: ['tamagui'],
         }),
         viteReactPlugin(),
+        viteTsConfigPaths(),
       ],
     })
 
