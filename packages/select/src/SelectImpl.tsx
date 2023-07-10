@@ -112,7 +112,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const { x, y, strategy, context, refs, update } = useFloating({
     open,
-    onOpenChange: setOpen,
     placement: 'bottom-start',
     middleware: fallback
       ? [
