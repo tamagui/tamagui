@@ -13,6 +13,8 @@ import {
   Button,
   H2,
   H3,
+  H5,
+  H6,
   Image,
   Paragraph,
   Separator,
@@ -356,9 +358,10 @@ const SubscriptionItem = ({
         <H3>{product.name}</H3>
         <Paragraph theme="alt1">{product.description}</Paragraph>
         {installInstructions && (
-          <Paragraph mt="$2" theme="alt1">
-            {installInstructions}
-          </Paragraph>
+          <YStack mt="$3">
+            <H5>How to use</H5>
+            <Paragraph mt="$2">{installInstructions}</Paragraph>
+          </YStack>
         )}
       </YStack>
     </YStack>
