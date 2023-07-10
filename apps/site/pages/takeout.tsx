@@ -113,10 +113,6 @@ const webImages = [
 ]
 
 const takeoutImages = [
-  ...androidImages.map((src, idx) => ({
-    src,
-    alt: `Android screenshot #${idx + 1}`,
-  })),
   ...iosImages.map((src, idx) => ({
     src,
     alt: `iOS screenshot #${idx + 1}`,
@@ -124,6 +120,10 @@ const takeoutImages = [
   ...webImages.map((src, idx) => ({
     src,
     alt: `Web screenshot #${idx + 1}`,
+  })),
+  ...androidImages.map((src, idx) => ({
+    src,
+    alt: `Android screenshot #${idx + 1}`,
   })),
 ]
 const points = {
