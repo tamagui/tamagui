@@ -1,6 +1,6 @@
 import { createRequire } from 'module'
 import { AddressInfo } from 'net'
-import { dirname } from 'path'
+import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
@@ -11,6 +11,7 @@ import express from 'express'
 import proxy from 'express-http-proxy'
 import fs, { ensureDir } from 'fs-extra'
 import { createServer } from 'vite'
+import vitePluginSSR from 'vite-plugin-ssr/plugin'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
@@ -83,6 +84,26 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
       res.status(200).json({
         hi: true,
       })
+    })
+
+    app.get('/api/tamagui.config.json', async (req, res) => {
+      try {
+        res.status(200).json(await fs.readJSON(paths.conf))
+      } catch (err) {
+        res.status(500).json({
+          error: `${(err as any).message}`,
+        })
+      }
+    })
+
+    app.get('/api/tamagui.themes.json', async (req, res) => {
+      try {
+        res.status(200).json(await fs.readJSON(join(paths.dotDir, 'tamagui.themes.json')))
+      } catch (err) {
+        res.status(500).json({
+          error: `${(err as any).message}`,
+        })
+      }
     })
 
     app.use('/', proxy(`${info.address}:${vitePort}`))
