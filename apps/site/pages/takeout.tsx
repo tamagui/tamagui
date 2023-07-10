@@ -2243,7 +2243,9 @@ const FaqModal = () => {
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -2275,9 +2277,9 @@ const FaqModal = () => {
           w="90%"
           maw={900}
         >
-          <YStack h="100%">
-            <ScrollView>
-              <H1 ta="center">Frequently Asked Questions</H1>
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '80vh' }}>
+              <H1 $sm={{ size: '$8' }}>Frequently Asked Questions</H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5>Can I still ues the starter after my subscription has ended?</H5>
@@ -2348,7 +2350,7 @@ const FaqModal = () => {
                 </YStack>
                 {/* 
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>
+                  <H5 >
                     Can I get auto-updates if I have my repository on a git server that
                     doesn't support GitHub bots?
                   </H5>
@@ -2359,8 +2361,21 @@ const FaqModal = () => {
                   </Paragraph>
                 </YStack> */}
               </XStack>
-            </ScrollView>
-          </YStack>
+
+              <Unspaced>
+                <Dialog.Close asChild>
+                  <Button
+                    position="absolute"
+                    top="$1"
+                    right="$1"
+                    size="$2"
+                    circular
+                    icon={X}
+                  />
+                </Dialog.Close>
+              </Unspaced>
+            </YStack>
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2380,7 +2395,9 @@ const AgreementModal = () => {
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -2412,121 +2429,136 @@ const AgreementModal = () => {
           w="90%"
           maw={900}
         >
-          <YStack h="100%" space>
-            <H1>License Agreement</H1>
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '80vh' }} space>
+              <H1 $sm={{ size: '$8' }}>License Agreement</H1>
 
-            <Paragraph>
-              Tamagui Takeout License grants you a non-exclusive license and permission to
-              use the Takout products based on the number of purchased licenses.
-            </Paragraph>
+              <Paragraph>
+                Tamagui Takeout License grants you a non-exclusive license and permission
+                to use the Takout products based on the number of purchased licenses.
+              </Paragraph>
 
-            <Paragraph>
-              Tamagui Takeout License grants the same permissions to all Employees and
-              Contractors of the Licensee to access and use the Takeout stack up to the
-              number of seats purchased.
-            </Paragraph>
+              <Paragraph>
+                Tamagui Takeout License grants the same permissions to all Employees and
+                Contractors of the Licensee to access and use the Takeout stack up to the
+                number of seats purchased.
+              </Paragraph>
 
-            <Paragraph>
-              Seats only apply to the subscription - if the number of Employees and
-              Contractors who modify the Takeout stack for the the duration of the license
-              purchase exceeds your seat limit, you must upgrade or cancel your
-              subscription.
-            </Paragraph>
+              <Paragraph>
+                Seats only apply to the subscription - if the number of Employees and
+                Contractors who modify the Takeout stack for the the duration of the
+                license purchase exceeds your seat limit, you must upgrade or cancel your
+                subscription.
+              </Paragraph>
 
-            <Paragraph>You can:</Paragraph>
+              <Paragraph>You can:</Paragraph>
 
-            <Paragraph>
-              <ul>
-                <li>
-                  Use all Takeout stack deliverables within a single code repository for a
-                  single public product.
-                </li>
-                <li>
-                  Use the Takeout stack deliverables for unlimited private projects
-                  available to only licensees.
-                </li>
-                <li>
-                  Deploy all Takeout stack deliverables to one public domain, and one
-                  public app within each of the iOS and Android app stores.
-                </li>
-                <li>
-                  Deliver a product that is commercial in nature with the Takeout stack.
-                </li>
-                <li>
-                  Re-use all Takeout stack deliverables for a new project after a previous
-                  project has been shut down to users.
-                </li>
-              </ul>
-            </Paragraph>
+              <Paragraph>
+                <ul>
+                  <li>
+                    Use all Takeout stack deliverables within a single code repository for
+                    a single public product.
+                  </li>
+                  <li>
+                    Use the Takeout stack deliverables for unlimited private projects
+                    available to only licensees.
+                  </li>
+                  <li>
+                    Deploy all Takeout stack deliverables to one public domain, and one
+                    public app within each of the iOS and Android app stores.
+                  </li>
+                  <li>
+                    Deliver a product that is commercial in nature with the Takeout stack.
+                  </li>
+                  <li>
+                    Re-use all Takeout stack deliverables for a new project after a
+                    previous project has been shut down to users.
+                  </li>
+                </ul>
+              </Paragraph>
 
-            <Paragraph>You cannot:</Paragraph>
+              <Paragraph>You cannot:</Paragraph>
 
-            <Paragraph>
-              <ul>
-                <li>
-                  Re-sell or distribute the Takeout stack available for users to read for
-                  any purpose, even with modification.
-                </li>
-                <li>
-                  Create a service which allows for users to use the Takeout stack to
-                  build their own publicly available products.
-                </li>
-                <li>
-                  Create a code template, UI kit, or starter kit based on the Takeout
-                  stack available to users.
-                </li>
-                <li>
-                  Use the Takeout stack for more than one public domain per license
-                  purchase.
-                </li>
-              </ul>
-            </Paragraph>
+              <Paragraph>
+                <ul>
+                  <li>
+                    Re-sell or distribute the Takeout stack available for users to read
+                    for any purpose, even with modification.
+                  </li>
+                  <li>
+                    Create a service which allows for users to use the Takeout stack to
+                    build their own publicly available products.
+                  </li>
+                  <li>
+                    Create a code template, UI kit, or starter kit based on the Takeout
+                    stack available to users.
+                  </li>
+                  <li>
+                    Use the Takeout stack for more than one public domain per license
+                    purchase.
+                  </li>
+                </ul>
+              </Paragraph>
 
-            <H3>License Definitions</H3>
+              <H3>License Definitions</H3>
 
-            <Paragraph>
-              <ul>
-                <li>
-                  Licensee is a person or a business entity who has purchased a License.
-                </li>
-                <li>
-                  Takeout stack is the code and assets made available to the Licensee
-                  after purchasing a Tamagui license.
-                </li>
-                <li>
-                  Product is any artifact produced that incorporates the Takeout stack.
-                </li>
-                <li>User is any person not licensed to use the Takeout stack.</li>
-                <li>Employee is a full-time or part-time employee of the Licensee.</li>
-                <li>
-                  Contractor is an individual or business entity contracted to perform
-                  services for the Licensee.
-                </li>
-                <li>
-                  Client is an individual or entity receiving custom professional services
-                  directly from the Licensee, produced specifically for that individual or
-                  entity.
-                </li>
-              </ul>
-            </Paragraph>
+              <Paragraph>
+                <ul>
+                  <li>
+                    Licensee is a person or a business entity who has purchased a License.
+                  </li>
+                  <li>
+                    Takeout stack is the code and assets made available to the Licensee
+                    after purchasing a Tamagui license.
+                  </li>
+                  <li>
+                    Product is any artifact produced that incorporates the Takeout stack.
+                  </li>
+                  <li>User is any person not licensed to use the Takeout stack.</li>
+                  <li>Employee is a full-time or part-time employee of the Licensee.</li>
+                  <li>
+                    Contractor is an individual or business entity contracted to perform
+                    services for the Licensee.
+                  </li>
+                  <li>
+                    Client is an individual or entity receiving custom professional
+                    services directly from the Licensee, produced specifically for that
+                    individual or entity.
+                  </li>
+                </ul>
+              </Paragraph>
 
-            <H3>Liability</H3>
+              <H3>Liability</H3>
 
-            <Paragraph>
-              Tamagui's liability to you for costs, damages, or other losses arising from
-              your use of the Takeout stack — including third-party claims against you —
-              is limited to a refund of your license fee. Tamagui may not be held liable
-              for any consequential damages related to your use of the Takeout stack. The
-              ownership of the Takeout stack remains with the Tamagui development team.
-              You are required to abide by the licensing terms to avoid termination in
-              case of non-compliance with the agreed terms.
-            </Paragraph>
+              <Paragraph>
+                Tamagui's liability to you for costs, damages, or other losses arising
+                from your use of the Takeout stack — including third-party claims against
+                you — is limited to a refund of your license fee. Tamagui may not be held
+                liable for any consequential damages related to your use of the Takeout
+                stack. The ownership of the Takeout stack remains with the Tamagui
+                development team. You are required to abide by the licensing terms to
+                avoid termination in case of non-compliance with the agreed terms.
+              </Paragraph>
 
-            <Paragraph>
-              Got any further questions?{' '}
-              <a href="mailto:support@tamagui.dev">Send us an email</a>
-            </Paragraph>
-          </YStack>
+              <Paragraph>
+                Got any further questions?{' '}
+                <a href="mailto:support@tamagui.dev">Send us an email</a>
+              </Paragraph>
+
+              <Unspaced>
+                <Dialog.Close asChild>
+                  <Button
+                    position="absolute"
+                    top="$1"
+                    right="$1"
+                    size="$2"
+                    circular
+                    icon={X}
+                  />
+                </Dialog.Close>
+              </Unspaced>
+            </YStack>
+          </ScrollView>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2673,6 +2705,7 @@ const ImageGallery = () => {
                 {takeoutImages[store.galleryImageIdx].alt}
               </Paragraph>
             </YStack>
+
             <Dialog.Close asChild>
               <Button
                 position="absolute"
