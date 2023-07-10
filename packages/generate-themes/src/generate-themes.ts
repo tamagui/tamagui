@@ -49,18 +49,32 @@ export async function generateThemes(inputFile: string) {
   }
 }
 
+/**
+ * value -> name of variable
+ */
+const dedupedTokens = new Map<string, string>()
+
 function generatedThemesToTypescript(themes: Record<string, any>) {
-  const deduped = new Map<string, Object>()
-  const dedupedToNames = new Map<string, string[]>()
+  const dedupedThemes = new Map<string, Object>()
+  const dedupedThemeToNames = new Map<string, string[]>()
 
   for (const name in themes) {
-    const theme = themes[name]
+    const theme: Record<string, string> = themes[name]
+
+    // go through all tokens in current theme and add the new values to dedupedTokens map
+    for (const [key, value] of Object.entries(theme)) {
+      const uniqueKey = `${name}_${key}`
+      if (!dedupedTokens.has(value)) {
+        dedupedTokens.set(value, uniqueKey)
+      }
+    }
+
     const key = JSON.stringify(theme)
-    if (deduped.has(key)) {
-      dedupedToNames.set(key, [...dedupedToNames.get(key)!, name])
+    if (dedupedThemes.has(key)) {
+      dedupedThemeToNames.set(key, [...dedupedThemeToNames.get(key)!, name])
     } else {
-      deduped.set(key, theme)
-      dedupedToNames.set(key, [name])
+      dedupedThemes.set(key, theme)
+      dedupedThemeToNames.set(key, [name])
     }
   }
 
@@ -74,9 +88,16 @@ ${Object.entries(themes.light || themes[Object.keys(themes)[0]])
 
   let themesString = `${baseTypeString}\n`
 
-  deduped.forEach((theme) => {
+  // add all token variables
+
+  dedupedTokens.forEach((names, value) => {
+    themesString += `const ${names} = '${value}'\n`
+  })
+  themesString += '\n'
+
+  dedupedThemes.forEach((theme) => {
     const key = JSON.stringify(theme)
-    const [baseName, ...restNames] = dedupedToNames.get(key)!
+    const [baseName, ...restNames] = dedupedThemeToNames.get(key)!
     const baseTheme = `export const ${baseName} = ${objectToJsString(theme)} as Theme`
     themesString += `\n${baseTheme}`
 
@@ -95,7 +116,10 @@ function objectToJsString(obj: Object, indent = 4) {
   const whitespace = new Array(indent).fill(' ').join('')
   return `{
 ${Object.entries(obj)
-  .map(([k, v]) => `${whitespace}${k}: '${v}'`)
+  .map(([k, v]) => {
+    const variableName = dedupedTokens.get(v)
+    return `${whitespace}${k}: ${variableName}`
+  })
   .join(',\n')}
 }`
 }
