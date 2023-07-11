@@ -1092,27 +1092,75 @@ export const light_pink_ModalOverlay = light_SheetOverlay as Theme
 export const light_red_SheetOverlay = light_SheetOverlay as Theme
 export const light_red_DialogOverlay = light_SheetOverlay as Theme
 export const light_red_ModalOverlay = light_SheetOverlay as Theme
+export const light_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_orange_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_orange_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_orange_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_orange_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_orange_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_orange_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_orange_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_orange_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_orange_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_yellow_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_yellow_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_yellow_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_yellow_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_green_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_green_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_green_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_green_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_green_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_green_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_green_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_green_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_green_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_blue_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_blue_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_blue_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_blue_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_blue_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_blue_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_blue_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_blue_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_blue_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_purple_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_purple_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_purple_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_purple_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_purple_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_purple_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_purple_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_purple_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_purple_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_pink_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_pink_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_pink_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_pink_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_pink_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_pink_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_pink_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_pink_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_pink_active_ModalOverlay = light_SheetOverlay as Theme
+export const light_red_alt1_SheetOverlay = light_SheetOverlay as Theme
+export const light_red_alt1_DialogOverlay = light_SheetOverlay as Theme
+export const light_red_alt1_ModalOverlay = light_SheetOverlay as Theme
+export const light_red_alt2_SheetOverlay = light_SheetOverlay as Theme
+export const light_red_alt2_DialogOverlay = light_SheetOverlay as Theme
+export const light_red_alt2_ModalOverlay = light_SheetOverlay as Theme
 export const light_red_active_SheetOverlay = light_SheetOverlay as Theme
 export const light_red_active_DialogOverlay = light_SheetOverlay as Theme
 export const light_red_active_ModalOverlay = light_SheetOverlay as Theme
@@ -1143,27 +1191,75 @@ export const dark_pink_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_red_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_red_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_red_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_orange_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_orange_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_orange_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_orange_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_yellow_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_yellow_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_yellow_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_yellow_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_green_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_green_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_green_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_green_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_blue_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_blue_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_blue_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_blue_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_purple_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_purple_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_purple_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_purple_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_pink_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_pink_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_pink_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_pink_active_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt1_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt1_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt1_ModalOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt2_SheetOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt2_DialogOverlay = dark_SheetOverlay as Theme
+export const dark_red_alt2_ModalOverlay = dark_SheetOverlay as Theme
 export const dark_red_active_SheetOverlay = dark_SheetOverlay as Theme
 export const dark_red_active_DialogOverlay = dark_SheetOverlay as Theme
 export const dark_red_active_ModalOverlay = dark_SheetOverlay as Theme
@@ -1286,6 +1382,8 @@ export const dark_alt1 = {
     borderColorPress: dark_color6,
     placeholderColor: dark_color8
 } as Theme
+
+export const dark_alt1_ListItem = dark_alt1 as Theme
 export const dark_alt2 = {
     color1: dark_color3,
     color2: dark_color4,
@@ -1316,6 +1414,8 @@ export const dark_alt2 = {
     borderColorPress: dark_color7,
     placeholderColor: dark_color7
 } as Theme
+
+export const dark_alt2_ListItem = dark_alt2 as Theme
 export const dark_active = {
     color1: dark_color4,
     color2: dark_color5,
@@ -2000,6 +2100,8 @@ export const dark_orange_alt1 = {
     borderColorPress: dark_orange6,
     placeholderColor: light_orange9
 } as Theme
+
+export const dark_orange_alt1_ListItem = dark_orange_alt1 as Theme
 export const dark_orange_alt2 = {
     color1: dark_orange3,
     color2: dark_orange4,
@@ -2030,6 +2132,8 @@ export const dark_orange_alt2 = {
     borderColorPress: dark_orange8,
     placeholderColor: dark_orange8
 } as Theme
+
+export const dark_orange_alt2_ListItem = dark_orange_alt2 as Theme
 export const dark_orange_active = {
     color1: dark_orange4,
     color2: dark_orange5,
@@ -2091,6 +2195,8 @@ export const dark_yellow_alt1 = {
     borderColorPress: dark_yellow6,
     placeholderColor: light_yellow9
 } as Theme
+
+export const dark_yellow_alt1_ListItem = dark_yellow_alt1 as Theme
 export const dark_yellow_alt2 = {
     color1: dark_yellow3,
     color2: dark_yellow4,
@@ -2121,6 +2227,8 @@ export const dark_yellow_alt2 = {
     borderColorPress: dark_yellow8,
     placeholderColor: dark_yellow8
 } as Theme
+
+export const dark_yellow_alt2_ListItem = dark_yellow_alt2 as Theme
 export const dark_yellow_active = {
     color1: dark_yellow4,
     color2: dark_yellow5,
@@ -2182,6 +2290,8 @@ export const dark_green_alt1 = {
     borderColorPress: dark_green6,
     placeholderColor: light_green9
 } as Theme
+
+export const dark_green_alt1_ListItem = dark_green_alt1 as Theme
 export const dark_green_alt2 = {
     color1: dark_green3,
     color2: dark_green4,
@@ -2212,6 +2322,8 @@ export const dark_green_alt2 = {
     borderColorPress: dark_green8,
     placeholderColor: dark_green8
 } as Theme
+
+export const dark_green_alt2_ListItem = dark_green_alt2 as Theme
 export const dark_green_active = {
     color1: dark_green4,
     color2: dark_green5,
@@ -2273,6 +2385,8 @@ export const dark_blue_alt1 = {
     borderColorPress: dark_blue6,
     placeholderColor: light_blue9
 } as Theme
+
+export const dark_blue_alt1_ListItem = dark_blue_alt1 as Theme
 export const dark_blue_alt2 = {
     color1: dark_blue3,
     color2: dark_blue4,
@@ -2303,6 +2417,8 @@ export const dark_blue_alt2 = {
     borderColorPress: dark_blue8,
     placeholderColor: dark_blue8
 } as Theme
+
+export const dark_blue_alt2_ListItem = dark_blue_alt2 as Theme
 export const dark_blue_active = {
     color1: dark_blue4,
     color2: dark_blue5,
@@ -2364,6 +2480,8 @@ export const dark_purple_alt1 = {
     borderColorPress: dark_purple6,
     placeholderColor: light_purple9
 } as Theme
+
+export const dark_purple_alt1_ListItem = dark_purple_alt1 as Theme
 export const dark_purple_alt2 = {
     color1: dark_purple3,
     color2: dark_purple4,
@@ -2394,6 +2512,8 @@ export const dark_purple_alt2 = {
     borderColorPress: dark_purple8,
     placeholderColor: dark_purple8
 } as Theme
+
+export const dark_purple_alt2_ListItem = dark_purple_alt2 as Theme
 export const dark_purple_active = {
     color1: dark_purple4,
     color2: dark_purple5,
@@ -2455,6 +2575,8 @@ export const dark_pink_alt1 = {
     borderColorPress: dark_pink6,
     placeholderColor: light_pink9
 } as Theme
+
+export const dark_pink_alt1_ListItem = dark_pink_alt1 as Theme
 export const dark_pink_alt2 = {
     color1: dark_pink3,
     color2: dark_pink4,
@@ -2485,6 +2607,8 @@ export const dark_pink_alt2 = {
     borderColorPress: dark_pink8,
     placeholderColor: dark_pink8
 } as Theme
+
+export const dark_pink_alt2_ListItem = dark_pink_alt2 as Theme
 export const dark_pink_active = {
     color1: dark_pink4,
     color2: dark_pink5,
@@ -2546,6 +2670,8 @@ export const dark_red_alt1 = {
     borderColorPress: dark_red6,
     placeholderColor: light_red9
 } as Theme
+
+export const dark_red_alt1_ListItem = dark_red_alt1 as Theme
 export const dark_red_alt2 = {
     color1: dark_red3,
     color2: dark_red4,
@@ -2576,6 +2702,8 @@ export const dark_red_alt2 = {
     borderColorPress: dark_red8,
     placeholderColor: dark_red8
 } as Theme
+
+export const dark_red_alt2_ListItem = dark_red_alt2 as Theme
 export const dark_red_active = {
     color1: dark_red4,
     color2: dark_red5,
@@ -5005,6 +5133,320 @@ export const dark_red_Input = {
 } as Theme
 
 export const dark_red_TextArea = dark_red_Input as Theme
+export const light_alt1_ListItem = {
+    background: light_color2,
+    backgroundHover: light_color3,
+    backgroundPress: light_color4,
+    backgroundFocus: light_color5,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color12,
+    borderColor: light_color5,
+    borderColorHover: light_color6,
+    borderColorFocus: light_color4,
+    borderColorPress: light_color5,
+    placeholderColor: light_color9
+} as Theme
+export const light_alt1_Card = {
+    background: light_color4,
+    backgroundHover: light_color5,
+    backgroundPress: light_color6,
+    backgroundFocus: light_color7,
+    backgroundStrong: light_color3,
+    backgroundTransparent: light_color2,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color11,
+    borderColor: light_color7,
+    borderColorHover: light_color8,
+    borderColorFocus: light_color6,
+    borderColorPress: light_color7,
+    placeholderColor: light_color7
+} as Theme
+
+export const light_alt1_DrawerFrame = light_alt1_Card as Theme
+export const light_alt1_Progress = light_alt1_Card as Theme
+export const light_alt1_TooltipArrow = light_alt1_Card as Theme
+export const light_alt1_Button = {
+    background: light_color5,
+    backgroundHover: light_color6,
+    backgroundPress: light_color7,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color4,
+    backgroundTransparent: light_color3,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color8,
+    placeholderColor: light_color6
+} as Theme
+export const light_alt1_Checkbox = {
+    background: light_color5,
+    backgroundHover: light_color6,
+    backgroundPress: light_color7,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color4,
+    backgroundTransparent: light_color3,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color10,
+    borderColor: light_color8,
+    borderColorHover: light_color9,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color8,
+    placeholderColor: light_color6
+} as Theme
+
+export const light_alt1_Switch = light_alt1_Checkbox as Theme
+export const light_alt1_TooltipContent = light_alt1_Checkbox as Theme
+export const light_alt1_SliderTrack = light_alt1_Checkbox as Theme
+export const light_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color11,
+    backgroundPress: light_color10,
+    backgroundFocus: light_color9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_color2,
+    colorHover: light_color3,
+    colorPress: light_color2,
+    colorFocus: light_color3,
+    colorTransparent: light_color1,
+    borderColor: light_color9,
+    borderColorHover: light_color8,
+    borderColorFocus: light_color10,
+    borderColorPress: light_color9,
+    placeholderColor: light_color3
+} as Theme
+export const light_alt1_SliderTrackActive = {
+    background: light_color8,
+    backgroundHover: light_color7,
+    backgroundPress: light_color6,
+    backgroundFocus: light_color5,
+    backgroundStrong: light_color9,
+    backgroundTransparent: light_color10,
+    color: light_color2,
+    colorHover: light_color3,
+    colorPress: light_color2,
+    colorFocus: light_color3,
+    colorTransparent: light_color3,
+    borderColor: light_color5,
+    borderColorHover: light_color4,
+    borderColorFocus: light_color6,
+    borderColorPress: light_color5,
+    placeholderColor: light_color7
+} as Theme
+export const light_alt1_SliderThumb = {
+    background: light_color10,
+    backgroundHover: light_color9,
+    backgroundPress: light_color8,
+    backgroundFocus: light_color7,
+    backgroundStrong: light_color11,
+    backgroundTransparent: light_color12,
+    color: light_color2,
+    colorHover: light_color3,
+    colorPress: light_color2,
+    colorFocus: light_color3,
+    colorTransparent: light_color1,
+    borderColor: light_color7,
+    borderColorHover: light_color6,
+    borderColorFocus: light_color8,
+    borderColorPress: light_color7,
+    placeholderColor: light_color5
+} as Theme
+
+export const light_alt1_Tooltip = light_alt1_SliderThumb as Theme
+export const light_alt1_ProgressIndicator = light_alt1_SliderThumb as Theme
+export const light_alt1_Input = {
+    background: light_color2,
+    backgroundHover: light_color3,
+    backgroundPress: light_color4,
+    backgroundFocus: light_color5,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color12,
+    borderColor: light_color7,
+    borderColorHover: light_color8,
+    borderColorFocus: light_color6,
+    borderColorPress: light_color7,
+    placeholderColor: light_color9
+} as Theme
+
+export const light_alt1_TextArea = light_alt1_Input as Theme
+export const light_alt2_ListItem = {
+    background: light_color3,
+    backgroundHover: light_color4,
+    backgroundPress: light_color5,
+    backgroundFocus: light_color6,
+    backgroundStrong: light_color2,
+    backgroundTransparent: light_color1,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color12,
+    borderColor: light_color6,
+    borderColorHover: light_color7,
+    borderColorFocus: light_color5,
+    borderColorPress: light_color6,
+    placeholderColor: light_color8
+} as Theme
+export const light_alt2_Card = {
+    background: light_color5,
+    backgroundHover: light_color6,
+    backgroundPress: light_color7,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color4,
+    backgroundTransparent: light_color3,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color10,
+    borderColor: light_color8,
+    borderColorHover: light_color9,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color8,
+    placeholderColor: light_color6
+} as Theme
+
+export const light_alt2_DrawerFrame = light_alt2_Card as Theme
+export const light_alt2_Progress = light_alt2_Card as Theme
+export const light_alt2_TooltipArrow = light_alt2_Card as Theme
+export const light_alt2_Button = {
+    background: light_color6,
+    backgroundHover: light_color7,
+    backgroundPress: light_color8,
+    backgroundFocus: light_color9,
+    backgroundStrong: light_color5,
+    backgroundTransparent: light_color4,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color9,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_color8,
+    borderColorPress: light_color9,
+    placeholderColor: light_color5
+} as Theme
+export const light_alt2_Checkbox = {
+    background: light_color6,
+    backgroundHover: light_color7,
+    backgroundPress: light_color8,
+    backgroundFocus: light_color9,
+    backgroundStrong: light_color5,
+    backgroundTransparent: light_color4,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color9,
+    borderColor: light_color9,
+    borderColorHover: light_color10,
+    borderColorFocus: light_color8,
+    borderColorPress: light_color9,
+    placeholderColor: light_color5
+} as Theme
+
+export const light_alt2_Switch = light_alt2_Checkbox as Theme
+export const light_alt2_TooltipContent = light_alt2_Checkbox as Theme
+export const light_alt2_SliderTrack = light_alt2_Checkbox as Theme
+export const light_alt2_SwitchThumb = {
+    background: light_color11,
+    backgroundHover: light_color10,
+    backgroundPress: light_color9,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_color3,
+    colorHover: light_color4,
+    colorPress: light_color3,
+    colorFocus: light_color4,
+    colorTransparent: light_color1,
+    borderColor: light_color8,
+    borderColorHover: light_color7,
+    borderColorFocus: light_color9,
+    borderColorPress: light_color8,
+    placeholderColor: light_color4
+} as Theme
+export const light_alt2_SliderTrackActive = {
+    background: light_color7,
+    backgroundHover: light_color6,
+    backgroundPress: light_color5,
+    backgroundFocus: light_color4,
+    backgroundStrong: light_color8,
+    backgroundTransparent: light_color9,
+    color: light_color3,
+    colorHover: light_color4,
+    colorPress: light_color3,
+    colorFocus: light_color4,
+    colorTransparent: light_color4,
+    borderColor: light_color4,
+    borderColorHover: light_color3,
+    borderColorFocus: light_color5,
+    borderColorPress: light_color4,
+    placeholderColor: light_color8
+} as Theme
+export const light_alt2_SliderThumb = {
+    background: light_color9,
+    backgroundHover: light_color8,
+    backgroundPress: light_color7,
+    backgroundFocus: light_color6,
+    backgroundStrong: light_color10,
+    backgroundTransparent: light_color11,
+    color: light_color3,
+    colorHover: light_color4,
+    colorPress: light_color3,
+    colorFocus: light_color4,
+    colorTransparent: light_color2,
+    borderColor: light_color6,
+    borderColorHover: light_color5,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color6,
+    placeholderColor: light_color6
+} as Theme
+
+export const light_alt2_Tooltip = light_alt2_SliderThumb as Theme
+export const light_alt2_ProgressIndicator = light_alt2_SliderThumb as Theme
+export const light_alt2_Input = {
+    background: light_color3,
+    backgroundHover: light_color4,
+    backgroundPress: light_color5,
+    backgroundFocus: light_color6,
+    backgroundStrong: light_color2,
+    backgroundTransparent: light_color1,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color12,
+    borderColor: light_color8,
+    borderColorHover: light_color9,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color8,
+    placeholderColor: light_color8
+} as Theme
+
+export const light_alt2_TextArea = light_alt2_Input as Theme
 export const light_active_ListItem = {
     background: light_color4,
     backgroundHover: light_color5,
@@ -5154,6 +5596,284 @@ export const light_active_Input = {
 } as Theme
 
 export const light_active_TextArea = light_active_Input as Theme
+export const dark_alt1_Card = {
+    background: dark_color4,
+    backgroundHover: dark_color5,
+    backgroundPress: dark_color6,
+    backgroundFocus: dark_color7,
+    backgroundStrong: dark_color3,
+    backgroundTransparent: dark_color2,
+    color: dark_color11,
+    colorHover: dark_color10,
+    colorPress: dark_color11,
+    colorFocus: dark_color10,
+    colorTransparent: dark_color11,
+    borderColor: dark_color7,
+    borderColorHover: dark_color8,
+    borderColorFocus: dark_color6,
+    borderColorPress: dark_color7,
+    placeholderColor: dark_color7
+} as Theme
+
+export const dark_alt1_DrawerFrame = dark_alt1_Card as Theme
+export const dark_alt1_Progress = dark_alt1_Card as Theme
+export const dark_alt1_TooltipArrow = dark_alt1_Card as Theme
+export const dark_alt1_Button = {
+    background: dark_color5,
+    backgroundHover: dark_color6,
+    backgroundPress: dark_color7,
+    backgroundFocus: dark_color8,
+    backgroundStrong: dark_color4,
+    backgroundTransparent: dark_color3,
+    color: dark_color11,
+    colorHover: dark_color10,
+    colorPress: dark_color11,
+    colorFocus: dark_color10,
+    colorTransparent: dark_color10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color6
+} as Theme
+export const dark_alt1_Checkbox = {
+    background: dark_color5,
+    backgroundHover: dark_color6,
+    backgroundPress: dark_color7,
+    backgroundFocus: dark_color8,
+    backgroundStrong: dark_color4,
+    backgroundTransparent: dark_color3,
+    color: dark_color11,
+    colorHover: dark_color10,
+    colorPress: dark_color11,
+    colorFocus: dark_color10,
+    colorTransparent: dark_color10,
+    borderColor: dark_color8,
+    borderColorHover: dark_color9,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color6
+} as Theme
+
+export const dark_alt1_Switch = dark_alt1_Checkbox as Theme
+export const dark_alt1_TooltipContent = dark_alt1_Checkbox as Theme
+export const dark_alt1_SliderTrack = dark_alt1_Checkbox as Theme
+export const dark_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_color11,
+    backgroundPress: dark_color10,
+    backgroundFocus: dark_color9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_color2,
+    colorHover: dark_color3,
+    colorPress: dark_color2,
+    colorFocus: dark_color3,
+    colorTransparent: dark_color1,
+    borderColor: dark_color9,
+    borderColorHover: dark_color8,
+    borderColorFocus: dark_color10,
+    borderColorPress: dark_color9,
+    placeholderColor: dark_color3
+} as Theme
+export const dark_alt1_SliderTrackActive = {
+    background: dark_color8,
+    backgroundHover: dark_color7,
+    backgroundPress: dark_color6,
+    backgroundFocus: dark_color5,
+    backgroundStrong: dark_color9,
+    backgroundTransparent: dark_color10,
+    color: dark_color2,
+    colorHover: dark_color3,
+    colorPress: dark_color2,
+    colorFocus: dark_color3,
+    colorTransparent: dark_color3,
+    borderColor: dark_color5,
+    borderColorHover: dark_color4,
+    borderColorFocus: dark_color6,
+    borderColorPress: dark_color5,
+    placeholderColor: dark_color7
+} as Theme
+export const dark_alt1_SliderThumb = {
+    background: dark_color10,
+    backgroundHover: dark_color9,
+    backgroundPress: dark_color8,
+    backgroundFocus: dark_color7,
+    backgroundStrong: dark_color11,
+    backgroundTransparent: light_color1,
+    color: dark_color2,
+    colorHover: dark_color3,
+    colorPress: dark_color2,
+    colorFocus: dark_color3,
+    colorTransparent: dark_color1,
+    borderColor: dark_color7,
+    borderColorHover: dark_color6,
+    borderColorFocus: dark_color8,
+    borderColorPress: dark_color7,
+    placeholderColor: dark_color5
+} as Theme
+
+export const dark_alt1_Tooltip = dark_alt1_SliderThumb as Theme
+export const dark_alt1_ProgressIndicator = dark_alt1_SliderThumb as Theme
+export const dark_alt1_Input = {
+    background: dark_color3,
+    backgroundHover: dark_color4,
+    backgroundPress: dark_color5,
+    backgroundFocus: dark_color6,
+    backgroundStrong: dark_color2,
+    backgroundTransparent: dark_color1,
+    color: dark_color11,
+    colorHover: dark_color10,
+    colorPress: dark_color11,
+    colorFocus: dark_color10,
+    colorTransparent: light_color1,
+    borderColor: dark_color7,
+    borderColorHover: dark_color8,
+    borderColorFocus: dark_color6,
+    borderColorPress: dark_color7,
+    placeholderColor: dark_color8
+} as Theme
+
+export const dark_alt1_TextArea = dark_alt1_Input as Theme
+export const dark_alt2_Card = {
+    background: dark_color5,
+    backgroundHover: dark_color6,
+    backgroundPress: dark_color7,
+    backgroundFocus: dark_color8,
+    backgroundStrong: dark_color4,
+    backgroundTransparent: dark_color3,
+    color: dark_color10,
+    colorHover: dark_color9,
+    colorPress: dark_color10,
+    colorFocus: dark_color9,
+    colorTransparent: dark_color10,
+    borderColor: dark_color8,
+    borderColorHover: dark_color9,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color6
+} as Theme
+
+export const dark_alt2_DrawerFrame = dark_alt2_Card as Theme
+export const dark_alt2_Progress = dark_alt2_Card as Theme
+export const dark_alt2_TooltipArrow = dark_alt2_Card as Theme
+export const dark_alt2_Button = {
+    background: dark_color6,
+    backgroundHover: dark_color7,
+    backgroundPress: dark_color8,
+    backgroundFocus: dark_color9,
+    backgroundStrong: dark_color5,
+    backgroundTransparent: dark_color4,
+    color: dark_color10,
+    colorHover: dark_color9,
+    colorPress: dark_color10,
+    colorFocus: dark_color9,
+    colorTransparent: dark_color9,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_color8,
+    borderColorPress: dark_color9,
+    placeholderColor: dark_color5
+} as Theme
+export const dark_alt2_Checkbox = {
+    background: dark_color6,
+    backgroundHover: dark_color7,
+    backgroundPress: dark_color8,
+    backgroundFocus: dark_color9,
+    backgroundStrong: dark_color5,
+    backgroundTransparent: dark_color4,
+    color: dark_color10,
+    colorHover: dark_color9,
+    colorPress: dark_color10,
+    colorFocus: dark_color9,
+    colorTransparent: dark_color9,
+    borderColor: dark_color9,
+    borderColorHover: dark_color10,
+    borderColorFocus: dark_color8,
+    borderColorPress: dark_color9,
+    placeholderColor: dark_color5
+} as Theme
+
+export const dark_alt2_Switch = dark_alt2_Checkbox as Theme
+export const dark_alt2_TooltipContent = dark_alt2_Checkbox as Theme
+export const dark_alt2_SliderTrack = dark_alt2_Checkbox as Theme
+export const dark_alt2_SwitchThumb = {
+    background: dark_color11,
+    backgroundHover: dark_color10,
+    backgroundPress: dark_color9,
+    backgroundFocus: dark_color8,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_color3,
+    colorHover: dark_color4,
+    colorPress: dark_color3,
+    colorFocus: dark_color4,
+    colorTransparent: dark_color1,
+    borderColor: dark_color8,
+    borderColorHover: dark_color7,
+    borderColorFocus: dark_color9,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color4
+} as Theme
+export const dark_alt2_SliderTrackActive = {
+    background: dark_color7,
+    backgroundHover: dark_color6,
+    backgroundPress: dark_color5,
+    backgroundFocus: dark_color4,
+    backgroundStrong: dark_color8,
+    backgroundTransparent: dark_color9,
+    color: dark_color3,
+    colorHover: dark_color4,
+    colorPress: dark_color3,
+    colorFocus: dark_color4,
+    colorTransparent: dark_color4,
+    borderColor: dark_color4,
+    borderColorHover: dark_color3,
+    borderColorFocus: dark_color5,
+    borderColorPress: dark_color4,
+    placeholderColor: dark_color8
+} as Theme
+export const dark_alt2_SliderThumb = {
+    background: dark_color9,
+    backgroundHover: dark_color8,
+    backgroundPress: dark_color7,
+    backgroundFocus: dark_color6,
+    backgroundStrong: dark_color10,
+    backgroundTransparent: dark_color11,
+    color: dark_color3,
+    colorHover: dark_color4,
+    colorPress: dark_color3,
+    colorFocus: dark_color4,
+    colorTransparent: dark_color2,
+    borderColor: dark_color6,
+    borderColorHover: dark_color5,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color6,
+    placeholderColor: dark_color6
+} as Theme
+
+export const dark_alt2_Tooltip = dark_alt2_SliderThumb as Theme
+export const dark_alt2_ProgressIndicator = dark_alt2_SliderThumb as Theme
+export const dark_alt2_Input = {
+    background: dark_color4,
+    backgroundHover: dark_color5,
+    backgroundPress: dark_color6,
+    backgroundFocus: dark_color7,
+    backgroundStrong: dark_color3,
+    backgroundTransparent: dark_color2,
+    color: dark_color10,
+    colorHover: dark_color9,
+    colorPress: dark_color10,
+    colorFocus: dark_color9,
+    colorTransparent: dark_color11,
+    borderColor: dark_color8,
+    borderColorHover: dark_color9,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color7
+} as Theme
+
+export const dark_alt2_TextArea = dark_alt2_Input as Theme
 export const dark_active_Card = {
     background: dark_color6,
     backgroundHover: dark_color7,
@@ -5286,6 +6006,320 @@ export const dark_active_Input = {
 } as Theme
 
 export const dark_active_TextArea = dark_active_Input as Theme
+export const light_orange_alt1_ListItem = {
+    background: light_orange2,
+    backgroundHover: light_orange3,
+    backgroundPress: light_orange4,
+    backgroundFocus: light_orange5,
+    backgroundStrong: light_orange1,
+    backgroundTransparent: light_orange1,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_color12,
+    borderColor: light_orange4,
+    borderColorHover: light_orange5,
+    borderColorFocus: light_orange4,
+    borderColorPress: light_orange4,
+    placeholderColor: light_orange10
+} as Theme
+export const light_orange_alt1_Card = {
+    background: light_orange4,
+    backgroundHover: light_orange5,
+    backgroundPress: light_orange6,
+    backgroundFocus: light_orange8,
+    backgroundStrong: light_orange3,
+    backgroundTransparent: light_orange2,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_orange12,
+    borderColor: light_orange6,
+    borderColorHover: light_orange8,
+    borderColorFocus: light_orange6,
+    borderColorPress: light_orange6,
+    placeholderColor: light_orange8
+} as Theme
+
+export const light_orange_alt1_DrawerFrame = light_orange_alt1_Card as Theme
+export const light_orange_alt1_Progress = light_orange_alt1_Card as Theme
+export const light_orange_alt1_TooltipArrow = light_orange_alt1_Card as Theme
+export const light_orange_alt1_Button = {
+    background: light_orange5,
+    backgroundHover: light_orange6,
+    backgroundPress: light_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_orange4,
+    backgroundTransparent: light_orange3,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_orange11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange6
+} as Theme
+export const light_orange_alt1_Checkbox = {
+    background: light_orange5,
+    backgroundHover: light_orange6,
+    backgroundPress: light_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_orange4,
+    backgroundTransparent: light_orange3,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_orange11,
+    borderColor: light_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange6
+} as Theme
+
+export const light_orange_alt1_Switch = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_TooltipContent = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_SliderTrack = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_orange12,
+    backgroundPress: light_orange11,
+    backgroundFocus: light_orange10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_orange2,
+    colorHover: light_orange3,
+    colorPress: light_orange2,
+    colorFocus: light_orange3,
+    colorTransparent: light_orange1,
+    borderColor: light_orange11,
+    borderColorHover: light_orange10,
+    borderColorFocus: light_orange11,
+    borderColorPress: light_orange11,
+    placeholderColor: light_orange3
+} as Theme
+export const light_orange_alt1_SliderTrackActive = {
+    background: light_orange9,
+    backgroundHover: light_orange8,
+    backgroundPress: light_orange6,
+    backgroundFocus: light_orange5,
+    backgroundStrong: light_orange10,
+    backgroundTransparent: light_orange11,
+    color: light_orange2,
+    colorHover: light_orange3,
+    colorPress: light_orange2,
+    colorFocus: light_orange3,
+    colorTransparent: light_orange3,
+    borderColor: light_orange6,
+    borderColorHover: light_orange5,
+    borderColorFocus: light_orange6,
+    borderColorPress: light_orange6,
+    placeholderColor: light_orange8
+} as Theme
+export const light_orange_alt1_SliderThumb = {
+    background: light_orange11,
+    backgroundHover: light_orange10,
+    backgroundPress: light_orange9,
+    backgroundFocus: light_orange8,
+    backgroundStrong: light_orange12,
+    backgroundTransparent: light_color12,
+    color: light_orange2,
+    colorHover: light_orange3,
+    colorPress: light_orange2,
+    colorFocus: light_orange3,
+    colorTransparent: light_orange1,
+    borderColor: light_orange9,
+    borderColorHover: light_orange8,
+    borderColorFocus: light_orange9,
+    borderColorPress: light_orange9,
+    placeholderColor: light_orange5
+} as Theme
+
+export const light_orange_alt1_Tooltip = light_orange_alt1_SliderThumb as Theme
+export const light_orange_alt1_ProgressIndicator = light_orange_alt1_SliderThumb as Theme
+export const light_orange_alt1_Input = {
+    background: light_orange2,
+    backgroundHover: light_orange3,
+    backgroundPress: light_orange4,
+    backgroundFocus: light_orange5,
+    backgroundStrong: light_orange1,
+    backgroundTransparent: light_orange1,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_color12,
+    borderColor: light_orange6,
+    borderColorHover: light_orange8,
+    borderColorFocus: light_orange6,
+    borderColorPress: light_orange6,
+    placeholderColor: light_orange10
+} as Theme
+
+export const light_orange_alt1_TextArea = light_orange_alt1_Input as Theme
+export const light_orange_alt2_ListItem = {
+    background: light_orange3,
+    backgroundHover: light_orange4,
+    backgroundPress: light_orange5,
+    backgroundFocus: light_orange6,
+    backgroundStrong: light_orange2,
+    backgroundTransparent: light_orange1,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_color12,
+    borderColor: light_orange5,
+    borderColorHover: light_orange6,
+    borderColorFocus: light_orange5,
+    borderColorPress: light_orange5,
+    placeholderColor: light_orange9
+} as Theme
+export const light_orange_alt2_Card = {
+    background: light_orange5,
+    backgroundHover: light_orange6,
+    backgroundPress: light_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_orange4,
+    backgroundTransparent: light_orange3,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_orange11,
+    borderColor: light_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange6
+} as Theme
+
+export const light_orange_alt2_DrawerFrame = light_orange_alt2_Card as Theme
+export const light_orange_alt2_Progress = light_orange_alt2_Card as Theme
+export const light_orange_alt2_TooltipArrow = light_orange_alt2_Card as Theme
+export const light_orange_alt2_Button = {
+    background: light_orange6,
+    backgroundHover: light_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: light_orange10,
+    backgroundStrong: light_orange5,
+    backgroundTransparent: light_orange4,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_orange10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_orange9,
+    borderColorPress: light_orange9,
+    placeholderColor: light_orange5
+} as Theme
+export const light_orange_alt2_Checkbox = {
+    background: light_orange6,
+    backgroundHover: light_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: light_orange10,
+    backgroundStrong: light_orange5,
+    backgroundTransparent: light_orange4,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_orange10,
+    borderColor: light_orange9,
+    borderColorHover: light_orange10,
+    borderColorFocus: light_orange9,
+    borderColorPress: light_orange9,
+    placeholderColor: light_orange5
+} as Theme
+
+export const light_orange_alt2_Switch = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_TooltipContent = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_SliderTrack = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_SwitchThumb = {
+    background: light_orange12,
+    backgroundHover: light_orange11,
+    backgroundPress: light_orange10,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_orange3,
+    colorHover: light_orange4,
+    colorPress: light_orange3,
+    colorFocus: light_orange4,
+    colorTransparent: light_orange1,
+    borderColor: light_orange10,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange10,
+    borderColorPress: light_orange10,
+    placeholderColor: light_orange4
+} as Theme
+export const light_orange_alt2_SliderTrackActive = {
+    background: light_orange8,
+    backgroundHover: light_orange6,
+    backgroundPress: light_orange5,
+    backgroundFocus: light_orange4,
+    backgroundStrong: light_orange9,
+    backgroundTransparent: light_orange10,
+    color: light_orange3,
+    colorHover: light_orange4,
+    colorPress: light_orange3,
+    colorFocus: light_orange4,
+    colorTransparent: light_orange4,
+    borderColor: light_orange5,
+    borderColorHover: light_orange4,
+    borderColorFocus: light_orange5,
+    borderColorPress: light_orange5,
+    placeholderColor: light_orange9
+} as Theme
+export const light_orange_alt2_SliderThumb = {
+    background: light_orange10,
+    backgroundHover: light_orange9,
+    backgroundPress: light_orange8,
+    backgroundFocus: light_orange6,
+    backgroundStrong: light_orange11,
+    backgroundTransparent: light_orange12,
+    color: light_orange3,
+    colorHover: light_orange4,
+    colorPress: light_orange3,
+    colorFocus: light_orange4,
+    colorTransparent: light_orange2,
+    borderColor: light_orange8,
+    borderColorHover: light_orange6,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange6
+} as Theme
+
+export const light_orange_alt2_Tooltip = light_orange_alt2_SliderThumb as Theme
+export const light_orange_alt2_ProgressIndicator = light_orange_alt2_SliderThumb as Theme
+export const light_orange_alt2_Input = {
+    background: light_orange3,
+    backgroundHover: light_orange4,
+    backgroundPress: light_orange5,
+    backgroundFocus: light_orange6,
+    backgroundStrong: light_orange2,
+    backgroundTransparent: light_orange1,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_color12,
+    borderColor: light_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange9
+} as Theme
+
+export const light_orange_alt2_TextArea = light_orange_alt2_Input as Theme
 export const light_orange_active_ListItem = {
     background: light_orange4,
     backgroundHover: light_orange5,
@@ -5435,6 +6469,320 @@ export const light_orange_active_Input = {
 } as Theme
 
 export const light_orange_active_TextArea = light_orange_active_Input as Theme
+export const light_yellow_alt1_ListItem = {
+    background: light_yellow2,
+    backgroundHover: light_yellow3,
+    backgroundPress: light_yellow4,
+    backgroundFocus: light_yellow5,
+    backgroundStrong: light_yellow1,
+    backgroundTransparent: light_yellow1,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_color12,
+    borderColor: light_yellow4,
+    borderColorHover: light_yellow5,
+    borderColorFocus: light_yellow4,
+    borderColorPress: light_yellow4,
+    placeholderColor: light_yellow10
+} as Theme
+export const light_yellow_alt1_Card = {
+    background: light_yellow4,
+    backgroundHover: light_yellow5,
+    backgroundPress: light_yellow6,
+    backgroundFocus: light_yellow8,
+    backgroundStrong: light_yellow3,
+    backgroundTransparent: light_yellow2,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_yellow12,
+    borderColor: light_yellow6,
+    borderColorHover: light_yellow8,
+    borderColorFocus: light_yellow6,
+    borderColorPress: light_yellow6,
+    placeholderColor: light_yellow8
+} as Theme
+
+export const light_yellow_alt1_DrawerFrame = light_yellow_alt1_Card as Theme
+export const light_yellow_alt1_Progress = light_yellow_alt1_Card as Theme
+export const light_yellow_alt1_TooltipArrow = light_yellow_alt1_Card as Theme
+export const light_yellow_alt1_Button = {
+    background: light_yellow5,
+    backgroundHover: light_yellow6,
+    backgroundPress: light_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_yellow4,
+    backgroundTransparent: light_yellow3,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_yellow11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow6
+} as Theme
+export const light_yellow_alt1_Checkbox = {
+    background: light_yellow5,
+    backgroundHover: light_yellow6,
+    backgroundPress: light_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_yellow4,
+    backgroundTransparent: light_yellow3,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_yellow11,
+    borderColor: light_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow6
+} as Theme
+
+export const light_yellow_alt1_Switch = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_TooltipContent = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_SliderTrack = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_yellow12,
+    backgroundPress: light_yellow11,
+    backgroundFocus: light_yellow10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_yellow2,
+    colorHover: light_yellow3,
+    colorPress: light_yellow2,
+    colorFocus: light_yellow3,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow11,
+    borderColorHover: light_yellow10,
+    borderColorFocus: light_yellow11,
+    borderColorPress: light_yellow11,
+    placeholderColor: light_yellow3
+} as Theme
+export const light_yellow_alt1_SliderTrackActive = {
+    background: light_yellow9,
+    backgroundHover: light_yellow8,
+    backgroundPress: light_yellow6,
+    backgroundFocus: light_yellow5,
+    backgroundStrong: light_yellow10,
+    backgroundTransparent: light_yellow11,
+    color: light_yellow2,
+    colorHover: light_yellow3,
+    colorPress: light_yellow2,
+    colorFocus: light_yellow3,
+    colorTransparent: light_yellow3,
+    borderColor: light_yellow6,
+    borderColorHover: light_yellow5,
+    borderColorFocus: light_yellow6,
+    borderColorPress: light_yellow6,
+    placeholderColor: light_yellow8
+} as Theme
+export const light_yellow_alt1_SliderThumb = {
+    background: light_yellow11,
+    backgroundHover: light_yellow10,
+    backgroundPress: light_yellow9,
+    backgroundFocus: light_yellow8,
+    backgroundStrong: light_yellow12,
+    backgroundTransparent: light_color12,
+    color: light_yellow2,
+    colorHover: light_yellow3,
+    colorPress: light_yellow2,
+    colorFocus: light_yellow3,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow9,
+    borderColorHover: light_yellow8,
+    borderColorFocus: light_yellow9,
+    borderColorPress: light_yellow9,
+    placeholderColor: light_yellow5
+} as Theme
+
+export const light_yellow_alt1_Tooltip = light_yellow_alt1_SliderThumb as Theme
+export const light_yellow_alt1_ProgressIndicator = light_yellow_alt1_SliderThumb as Theme
+export const light_yellow_alt1_Input = {
+    background: light_yellow2,
+    backgroundHover: light_yellow3,
+    backgroundPress: light_yellow4,
+    backgroundFocus: light_yellow5,
+    backgroundStrong: light_yellow1,
+    backgroundTransparent: light_yellow1,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_color12,
+    borderColor: light_yellow6,
+    borderColorHover: light_yellow8,
+    borderColorFocus: light_yellow6,
+    borderColorPress: light_yellow6,
+    placeholderColor: light_yellow10
+} as Theme
+
+export const light_yellow_alt1_TextArea = light_yellow_alt1_Input as Theme
+export const light_yellow_alt2_ListItem = {
+    background: light_yellow3,
+    backgroundHover: light_yellow4,
+    backgroundPress: light_yellow5,
+    backgroundFocus: light_yellow6,
+    backgroundStrong: light_yellow2,
+    backgroundTransparent: light_yellow1,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_color12,
+    borderColor: light_yellow5,
+    borderColorHover: light_yellow6,
+    borderColorFocus: light_yellow5,
+    borderColorPress: light_yellow5,
+    placeholderColor: light_yellow9
+} as Theme
+export const light_yellow_alt2_Card = {
+    background: light_yellow5,
+    backgroundHover: light_yellow6,
+    backgroundPress: light_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_yellow4,
+    backgroundTransparent: light_yellow3,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_yellow11,
+    borderColor: light_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow6
+} as Theme
+
+export const light_yellow_alt2_DrawerFrame = light_yellow_alt2_Card as Theme
+export const light_yellow_alt2_Progress = light_yellow_alt2_Card as Theme
+export const light_yellow_alt2_TooltipArrow = light_yellow_alt2_Card as Theme
+export const light_yellow_alt2_Button = {
+    background: light_yellow6,
+    backgroundHover: light_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: light_yellow10,
+    backgroundStrong: light_yellow5,
+    backgroundTransparent: light_yellow4,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_yellow10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_yellow9,
+    borderColorPress: light_yellow9,
+    placeholderColor: light_yellow5
+} as Theme
+export const light_yellow_alt2_Checkbox = {
+    background: light_yellow6,
+    backgroundHover: light_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: light_yellow10,
+    backgroundStrong: light_yellow5,
+    backgroundTransparent: light_yellow4,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_yellow10,
+    borderColor: light_yellow9,
+    borderColorHover: light_yellow10,
+    borderColorFocus: light_yellow9,
+    borderColorPress: light_yellow9,
+    placeholderColor: light_yellow5
+} as Theme
+
+export const light_yellow_alt2_Switch = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_TooltipContent = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_SliderTrack = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_SwitchThumb = {
+    background: light_yellow12,
+    backgroundHover: light_yellow11,
+    backgroundPress: light_yellow10,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_yellow3,
+    colorHover: light_yellow4,
+    colorPress: light_yellow3,
+    colorFocus: light_yellow4,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow10,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow10,
+    borderColorPress: light_yellow10,
+    placeholderColor: light_yellow4
+} as Theme
+export const light_yellow_alt2_SliderTrackActive = {
+    background: light_yellow8,
+    backgroundHover: light_yellow6,
+    backgroundPress: light_yellow5,
+    backgroundFocus: light_yellow4,
+    backgroundStrong: light_yellow9,
+    backgroundTransparent: light_yellow10,
+    color: light_yellow3,
+    colorHover: light_yellow4,
+    colorPress: light_yellow3,
+    colorFocus: light_yellow4,
+    colorTransparent: light_yellow4,
+    borderColor: light_yellow5,
+    borderColorHover: light_yellow4,
+    borderColorFocus: light_yellow5,
+    borderColorPress: light_yellow5,
+    placeholderColor: light_yellow9
+} as Theme
+export const light_yellow_alt2_SliderThumb = {
+    background: light_yellow10,
+    backgroundHover: light_yellow9,
+    backgroundPress: light_yellow8,
+    backgroundFocus: light_yellow6,
+    backgroundStrong: light_yellow11,
+    backgroundTransparent: light_yellow12,
+    color: light_yellow3,
+    colorHover: light_yellow4,
+    colorPress: light_yellow3,
+    colorFocus: light_yellow4,
+    colorTransparent: light_yellow2,
+    borderColor: light_yellow8,
+    borderColorHover: light_yellow6,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow6
+} as Theme
+
+export const light_yellow_alt2_Tooltip = light_yellow_alt2_SliderThumb as Theme
+export const light_yellow_alt2_ProgressIndicator = light_yellow_alt2_SliderThumb as Theme
+export const light_yellow_alt2_Input = {
+    background: light_yellow3,
+    backgroundHover: light_yellow4,
+    backgroundPress: light_yellow5,
+    backgroundFocus: light_yellow6,
+    backgroundStrong: light_yellow2,
+    backgroundTransparent: light_yellow1,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_color12,
+    borderColor: light_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow9
+} as Theme
+
+export const light_yellow_alt2_TextArea = light_yellow_alt2_Input as Theme
 export const light_yellow_active_ListItem = {
     background: light_yellow4,
     backgroundHover: light_yellow5,
@@ -5584,6 +6932,320 @@ export const light_yellow_active_Input = {
 } as Theme
 
 export const light_yellow_active_TextArea = light_yellow_active_Input as Theme
+export const light_green_alt1_ListItem = {
+    background: light_green2,
+    backgroundHover: light_green3,
+    backgroundPress: light_green4,
+    backgroundFocus: light_green5,
+    backgroundStrong: light_green1,
+    backgroundTransparent: light_green1,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_color12,
+    borderColor: light_green4,
+    borderColorHover: light_green5,
+    borderColorFocus: light_green4,
+    borderColorPress: light_green4,
+    placeholderColor: light_green10
+} as Theme
+export const light_green_alt1_Card = {
+    background: light_green4,
+    backgroundHover: light_green5,
+    backgroundPress: light_green6,
+    backgroundFocus: light_green8,
+    backgroundStrong: light_green3,
+    backgroundTransparent: light_green2,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_green12,
+    borderColor: light_green6,
+    borderColorHover: light_green8,
+    borderColorFocus: light_green6,
+    borderColorPress: light_green6,
+    placeholderColor: light_green8
+} as Theme
+
+export const light_green_alt1_DrawerFrame = light_green_alt1_Card as Theme
+export const light_green_alt1_Progress = light_green_alt1_Card as Theme
+export const light_green_alt1_TooltipArrow = light_green_alt1_Card as Theme
+export const light_green_alt1_Button = {
+    background: light_green5,
+    backgroundHover: light_green6,
+    backgroundPress: light_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_green4,
+    backgroundTransparent: light_green3,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_green11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green6
+} as Theme
+export const light_green_alt1_Checkbox = {
+    background: light_green5,
+    backgroundHover: light_green6,
+    backgroundPress: light_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_green4,
+    backgroundTransparent: light_green3,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_green11,
+    borderColor: light_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green6
+} as Theme
+
+export const light_green_alt1_Switch = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_TooltipContent = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_SliderTrack = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_green12,
+    backgroundPress: light_green11,
+    backgroundFocus: light_green10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_green2,
+    colorHover: light_green3,
+    colorPress: light_green2,
+    colorFocus: light_green3,
+    colorTransparent: light_green1,
+    borderColor: light_green11,
+    borderColorHover: light_green10,
+    borderColorFocus: light_green11,
+    borderColorPress: light_green11,
+    placeholderColor: light_green3
+} as Theme
+export const light_green_alt1_SliderTrackActive = {
+    background: light_green9,
+    backgroundHover: light_green8,
+    backgroundPress: light_green6,
+    backgroundFocus: light_green5,
+    backgroundStrong: light_green10,
+    backgroundTransparent: light_green11,
+    color: light_green2,
+    colorHover: light_green3,
+    colorPress: light_green2,
+    colorFocus: light_green3,
+    colorTransparent: light_green3,
+    borderColor: light_green6,
+    borderColorHover: light_green5,
+    borderColorFocus: light_green6,
+    borderColorPress: light_green6,
+    placeholderColor: light_green8
+} as Theme
+export const light_green_alt1_SliderThumb = {
+    background: light_green11,
+    backgroundHover: light_green10,
+    backgroundPress: light_green9,
+    backgroundFocus: light_green8,
+    backgroundStrong: light_green12,
+    backgroundTransparent: light_color12,
+    color: light_green2,
+    colorHover: light_green3,
+    colorPress: light_green2,
+    colorFocus: light_green3,
+    colorTransparent: light_green1,
+    borderColor: light_green9,
+    borderColorHover: light_green8,
+    borderColorFocus: light_green9,
+    borderColorPress: light_green9,
+    placeholderColor: light_green5
+} as Theme
+
+export const light_green_alt1_Tooltip = light_green_alt1_SliderThumb as Theme
+export const light_green_alt1_ProgressIndicator = light_green_alt1_SliderThumb as Theme
+export const light_green_alt1_Input = {
+    background: light_green2,
+    backgroundHover: light_green3,
+    backgroundPress: light_green4,
+    backgroundFocus: light_green5,
+    backgroundStrong: light_green1,
+    backgroundTransparent: light_green1,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_color12,
+    borderColor: light_green6,
+    borderColorHover: light_green8,
+    borderColorFocus: light_green6,
+    borderColorPress: light_green6,
+    placeholderColor: light_green10
+} as Theme
+
+export const light_green_alt1_TextArea = light_green_alt1_Input as Theme
+export const light_green_alt2_ListItem = {
+    background: light_green3,
+    backgroundHover: light_green4,
+    backgroundPress: light_green5,
+    backgroundFocus: light_green6,
+    backgroundStrong: light_green2,
+    backgroundTransparent: light_green1,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_color12,
+    borderColor: light_green5,
+    borderColorHover: light_green6,
+    borderColorFocus: light_green5,
+    borderColorPress: light_green5,
+    placeholderColor: light_green9
+} as Theme
+export const light_green_alt2_Card = {
+    background: light_green5,
+    backgroundHover: light_green6,
+    backgroundPress: light_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_green4,
+    backgroundTransparent: light_green3,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_green11,
+    borderColor: light_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green6
+} as Theme
+
+export const light_green_alt2_DrawerFrame = light_green_alt2_Card as Theme
+export const light_green_alt2_Progress = light_green_alt2_Card as Theme
+export const light_green_alt2_TooltipArrow = light_green_alt2_Card as Theme
+export const light_green_alt2_Button = {
+    background: light_green6,
+    backgroundHover: light_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: light_green10,
+    backgroundStrong: light_green5,
+    backgroundTransparent: light_green4,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_green10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_green9,
+    borderColorPress: light_green9,
+    placeholderColor: light_green5
+} as Theme
+export const light_green_alt2_Checkbox = {
+    background: light_green6,
+    backgroundHover: light_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: light_green10,
+    backgroundStrong: light_green5,
+    backgroundTransparent: light_green4,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_green10,
+    borderColor: light_green9,
+    borderColorHover: light_green10,
+    borderColorFocus: light_green9,
+    borderColorPress: light_green9,
+    placeholderColor: light_green5
+} as Theme
+
+export const light_green_alt2_Switch = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_TooltipContent = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_SliderTrack = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_SwitchThumb = {
+    background: light_green12,
+    backgroundHover: light_green11,
+    backgroundPress: light_green10,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_green3,
+    colorHover: light_green4,
+    colorPress: light_green3,
+    colorFocus: light_green4,
+    colorTransparent: light_green1,
+    borderColor: light_green10,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green10,
+    borderColorPress: light_green10,
+    placeholderColor: light_green4
+} as Theme
+export const light_green_alt2_SliderTrackActive = {
+    background: light_green8,
+    backgroundHover: light_green6,
+    backgroundPress: light_green5,
+    backgroundFocus: light_green4,
+    backgroundStrong: light_green9,
+    backgroundTransparent: light_green10,
+    color: light_green3,
+    colorHover: light_green4,
+    colorPress: light_green3,
+    colorFocus: light_green4,
+    colorTransparent: light_green4,
+    borderColor: light_green5,
+    borderColorHover: light_green4,
+    borderColorFocus: light_green5,
+    borderColorPress: light_green5,
+    placeholderColor: light_green9
+} as Theme
+export const light_green_alt2_SliderThumb = {
+    background: light_green10,
+    backgroundHover: light_green9,
+    backgroundPress: light_green8,
+    backgroundFocus: light_green6,
+    backgroundStrong: light_green11,
+    backgroundTransparent: light_green12,
+    color: light_green3,
+    colorHover: light_green4,
+    colorPress: light_green3,
+    colorFocus: light_green4,
+    colorTransparent: light_green2,
+    borderColor: light_green8,
+    borderColorHover: light_green6,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green6
+} as Theme
+
+export const light_green_alt2_Tooltip = light_green_alt2_SliderThumb as Theme
+export const light_green_alt2_ProgressIndicator = light_green_alt2_SliderThumb as Theme
+export const light_green_alt2_Input = {
+    background: light_green3,
+    backgroundHover: light_green4,
+    backgroundPress: light_green5,
+    backgroundFocus: light_green6,
+    backgroundStrong: light_green2,
+    backgroundTransparent: light_green1,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_color12,
+    borderColor: light_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green9
+} as Theme
+
+export const light_green_alt2_TextArea = light_green_alt2_Input as Theme
 export const light_green_active_ListItem = {
     background: light_green4,
     backgroundHover: light_green5,
@@ -5733,6 +7395,320 @@ export const light_green_active_Input = {
 } as Theme
 
 export const light_green_active_TextArea = light_green_active_Input as Theme
+export const light_blue_alt1_ListItem = {
+    background: light_blue2,
+    backgroundHover: light_blue3,
+    backgroundPress: light_blue4,
+    backgroundFocus: light_blue5,
+    backgroundStrong: light_blue1,
+    backgroundTransparent: light_blue1,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_color12,
+    borderColor: light_blue4,
+    borderColorHover: light_blue5,
+    borderColorFocus: light_blue4,
+    borderColorPress: light_blue4,
+    placeholderColor: light_blue10
+} as Theme
+export const light_blue_alt1_Card = {
+    background: light_blue4,
+    backgroundHover: light_blue5,
+    backgroundPress: light_blue6,
+    backgroundFocus: light_blue8,
+    backgroundStrong: light_blue3,
+    backgroundTransparent: light_blue2,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_blue12,
+    borderColor: light_blue6,
+    borderColorHover: light_blue8,
+    borderColorFocus: light_blue6,
+    borderColorPress: light_blue6,
+    placeholderColor: light_blue8
+} as Theme
+
+export const light_blue_alt1_DrawerFrame = light_blue_alt1_Card as Theme
+export const light_blue_alt1_Progress = light_blue_alt1_Card as Theme
+export const light_blue_alt1_TooltipArrow = light_blue_alt1_Card as Theme
+export const light_blue_alt1_Button = {
+    background: light_blue5,
+    backgroundHover: light_blue6,
+    backgroundPress: light_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_blue4,
+    backgroundTransparent: light_blue3,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_blue11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue6
+} as Theme
+export const light_blue_alt1_Checkbox = {
+    background: light_blue5,
+    backgroundHover: light_blue6,
+    backgroundPress: light_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_blue4,
+    backgroundTransparent: light_blue3,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_blue11,
+    borderColor: light_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue6
+} as Theme
+
+export const light_blue_alt1_Switch = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_TooltipContent = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_SliderTrack = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_blue12,
+    backgroundPress: light_blue11,
+    backgroundFocus: light_blue10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_blue2,
+    colorHover: light_blue3,
+    colorPress: light_blue2,
+    colorFocus: light_blue3,
+    colorTransparent: light_blue1,
+    borderColor: light_blue11,
+    borderColorHover: light_blue10,
+    borderColorFocus: light_blue11,
+    borderColorPress: light_blue11,
+    placeholderColor: light_blue3
+} as Theme
+export const light_blue_alt1_SliderTrackActive = {
+    background: light_blue9,
+    backgroundHover: light_blue8,
+    backgroundPress: light_blue6,
+    backgroundFocus: light_blue5,
+    backgroundStrong: light_blue10,
+    backgroundTransparent: light_blue11,
+    color: light_blue2,
+    colorHover: light_blue3,
+    colorPress: light_blue2,
+    colorFocus: light_blue3,
+    colorTransparent: light_blue3,
+    borderColor: light_blue6,
+    borderColorHover: light_blue5,
+    borderColorFocus: light_blue6,
+    borderColorPress: light_blue6,
+    placeholderColor: light_blue8
+} as Theme
+export const light_blue_alt1_SliderThumb = {
+    background: light_blue11,
+    backgroundHover: light_blue10,
+    backgroundPress: light_blue9,
+    backgroundFocus: light_blue8,
+    backgroundStrong: light_blue12,
+    backgroundTransparent: light_color12,
+    color: light_blue2,
+    colorHover: light_blue3,
+    colorPress: light_blue2,
+    colorFocus: light_blue3,
+    colorTransparent: light_blue1,
+    borderColor: light_blue9,
+    borderColorHover: light_blue8,
+    borderColorFocus: light_blue9,
+    borderColorPress: light_blue9,
+    placeholderColor: light_blue5
+} as Theme
+
+export const light_blue_alt1_Tooltip = light_blue_alt1_SliderThumb as Theme
+export const light_blue_alt1_ProgressIndicator = light_blue_alt1_SliderThumb as Theme
+export const light_blue_alt1_Input = {
+    background: light_blue2,
+    backgroundHover: light_blue3,
+    backgroundPress: light_blue4,
+    backgroundFocus: light_blue5,
+    backgroundStrong: light_blue1,
+    backgroundTransparent: light_blue1,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_color12,
+    borderColor: light_blue6,
+    borderColorHover: light_blue8,
+    borderColorFocus: light_blue6,
+    borderColorPress: light_blue6,
+    placeholderColor: light_blue10
+} as Theme
+
+export const light_blue_alt1_TextArea = light_blue_alt1_Input as Theme
+export const light_blue_alt2_ListItem = {
+    background: light_blue3,
+    backgroundHover: light_blue4,
+    backgroundPress: light_blue5,
+    backgroundFocus: light_blue6,
+    backgroundStrong: light_blue2,
+    backgroundTransparent: light_blue1,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_color12,
+    borderColor: light_blue5,
+    borderColorHover: light_blue6,
+    borderColorFocus: light_blue5,
+    borderColorPress: light_blue5,
+    placeholderColor: light_blue9
+} as Theme
+export const light_blue_alt2_Card = {
+    background: light_blue5,
+    backgroundHover: light_blue6,
+    backgroundPress: light_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_blue4,
+    backgroundTransparent: light_blue3,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_blue11,
+    borderColor: light_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue6
+} as Theme
+
+export const light_blue_alt2_DrawerFrame = light_blue_alt2_Card as Theme
+export const light_blue_alt2_Progress = light_blue_alt2_Card as Theme
+export const light_blue_alt2_TooltipArrow = light_blue_alt2_Card as Theme
+export const light_blue_alt2_Button = {
+    background: light_blue6,
+    backgroundHover: light_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: light_blue10,
+    backgroundStrong: light_blue5,
+    backgroundTransparent: light_blue4,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_blue10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_blue9,
+    borderColorPress: light_blue9,
+    placeholderColor: light_blue5
+} as Theme
+export const light_blue_alt2_Checkbox = {
+    background: light_blue6,
+    backgroundHover: light_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: light_blue10,
+    backgroundStrong: light_blue5,
+    backgroundTransparent: light_blue4,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_blue10,
+    borderColor: light_blue9,
+    borderColorHover: light_blue10,
+    borderColorFocus: light_blue9,
+    borderColorPress: light_blue9,
+    placeholderColor: light_blue5
+} as Theme
+
+export const light_blue_alt2_Switch = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_TooltipContent = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_SliderTrack = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_SwitchThumb = {
+    background: light_blue12,
+    backgroundHover: light_blue11,
+    backgroundPress: light_blue10,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_blue3,
+    colorHover: light_blue4,
+    colorPress: light_blue3,
+    colorFocus: light_blue4,
+    colorTransparent: light_blue1,
+    borderColor: light_blue10,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue10,
+    borderColorPress: light_blue10,
+    placeholderColor: light_blue4
+} as Theme
+export const light_blue_alt2_SliderTrackActive = {
+    background: light_blue8,
+    backgroundHover: light_blue6,
+    backgroundPress: light_blue5,
+    backgroundFocus: light_blue4,
+    backgroundStrong: light_blue9,
+    backgroundTransparent: light_blue10,
+    color: light_blue3,
+    colorHover: light_blue4,
+    colorPress: light_blue3,
+    colorFocus: light_blue4,
+    colorTransparent: light_blue4,
+    borderColor: light_blue5,
+    borderColorHover: light_blue4,
+    borderColorFocus: light_blue5,
+    borderColorPress: light_blue5,
+    placeholderColor: light_blue9
+} as Theme
+export const light_blue_alt2_SliderThumb = {
+    background: light_blue10,
+    backgroundHover: light_blue9,
+    backgroundPress: light_blue8,
+    backgroundFocus: light_blue6,
+    backgroundStrong: light_blue11,
+    backgroundTransparent: light_blue12,
+    color: light_blue3,
+    colorHover: light_blue4,
+    colorPress: light_blue3,
+    colorFocus: light_blue4,
+    colorTransparent: light_blue2,
+    borderColor: light_blue8,
+    borderColorHover: light_blue6,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue6
+} as Theme
+
+export const light_blue_alt2_Tooltip = light_blue_alt2_SliderThumb as Theme
+export const light_blue_alt2_ProgressIndicator = light_blue_alt2_SliderThumb as Theme
+export const light_blue_alt2_Input = {
+    background: light_blue3,
+    backgroundHover: light_blue4,
+    backgroundPress: light_blue5,
+    backgroundFocus: light_blue6,
+    backgroundStrong: light_blue2,
+    backgroundTransparent: light_blue1,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_color12,
+    borderColor: light_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue9
+} as Theme
+
+export const light_blue_alt2_TextArea = light_blue_alt2_Input as Theme
 export const light_blue_active_ListItem = {
     background: light_blue4,
     backgroundHover: light_blue5,
@@ -5882,6 +7858,320 @@ export const light_blue_active_Input = {
 } as Theme
 
 export const light_blue_active_TextArea = light_blue_active_Input as Theme
+export const light_purple_alt1_ListItem = {
+    background: light_purple2,
+    backgroundHover: light_purple3,
+    backgroundPress: light_purple4,
+    backgroundFocus: light_purple5,
+    backgroundStrong: light_purple1,
+    backgroundTransparent: light_purple1,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_color12,
+    borderColor: light_purple4,
+    borderColorHover: light_purple5,
+    borderColorFocus: light_purple4,
+    borderColorPress: light_purple4,
+    placeholderColor: light_purple10
+} as Theme
+export const light_purple_alt1_Card = {
+    background: light_purple4,
+    backgroundHover: light_purple5,
+    backgroundPress: light_purple6,
+    backgroundFocus: light_purple8,
+    backgroundStrong: light_purple3,
+    backgroundTransparent: light_purple2,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_purple12,
+    borderColor: light_purple6,
+    borderColorHover: light_purple8,
+    borderColorFocus: light_purple6,
+    borderColorPress: light_purple6,
+    placeholderColor: light_purple8
+} as Theme
+
+export const light_purple_alt1_DrawerFrame = light_purple_alt1_Card as Theme
+export const light_purple_alt1_Progress = light_purple_alt1_Card as Theme
+export const light_purple_alt1_TooltipArrow = light_purple_alt1_Card as Theme
+export const light_purple_alt1_Button = {
+    background: light_purple5,
+    backgroundHover: light_purple6,
+    backgroundPress: light_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_purple4,
+    backgroundTransparent: light_purple3,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_purple11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple6
+} as Theme
+export const light_purple_alt1_Checkbox = {
+    background: light_purple5,
+    backgroundHover: light_purple6,
+    backgroundPress: light_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_purple4,
+    backgroundTransparent: light_purple3,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_purple11,
+    borderColor: light_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple6
+} as Theme
+
+export const light_purple_alt1_Switch = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_TooltipContent = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_SliderTrack = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_purple12,
+    backgroundPress: light_purple11,
+    backgroundFocus: light_purple10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_purple2,
+    colorHover: light_purple3,
+    colorPress: light_purple2,
+    colorFocus: light_purple3,
+    colorTransparent: light_purple1,
+    borderColor: light_purple11,
+    borderColorHover: light_purple10,
+    borderColorFocus: light_purple11,
+    borderColorPress: light_purple11,
+    placeholderColor: light_purple3
+} as Theme
+export const light_purple_alt1_SliderTrackActive = {
+    background: light_purple9,
+    backgroundHover: light_purple8,
+    backgroundPress: light_purple6,
+    backgroundFocus: light_purple5,
+    backgroundStrong: light_purple10,
+    backgroundTransparent: light_purple11,
+    color: light_purple2,
+    colorHover: light_purple3,
+    colorPress: light_purple2,
+    colorFocus: light_purple3,
+    colorTransparent: light_purple3,
+    borderColor: light_purple6,
+    borderColorHover: light_purple5,
+    borderColorFocus: light_purple6,
+    borderColorPress: light_purple6,
+    placeholderColor: light_purple8
+} as Theme
+export const light_purple_alt1_SliderThumb = {
+    background: light_purple11,
+    backgroundHover: light_purple10,
+    backgroundPress: light_purple9,
+    backgroundFocus: light_purple8,
+    backgroundStrong: light_purple12,
+    backgroundTransparent: light_color12,
+    color: light_purple2,
+    colorHover: light_purple3,
+    colorPress: light_purple2,
+    colorFocus: light_purple3,
+    colorTransparent: light_purple1,
+    borderColor: light_purple9,
+    borderColorHover: light_purple8,
+    borderColorFocus: light_purple9,
+    borderColorPress: light_purple9,
+    placeholderColor: light_purple5
+} as Theme
+
+export const light_purple_alt1_Tooltip = light_purple_alt1_SliderThumb as Theme
+export const light_purple_alt1_ProgressIndicator = light_purple_alt1_SliderThumb as Theme
+export const light_purple_alt1_Input = {
+    background: light_purple2,
+    backgroundHover: light_purple3,
+    backgroundPress: light_purple4,
+    backgroundFocus: light_purple5,
+    backgroundStrong: light_purple1,
+    backgroundTransparent: light_purple1,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_color12,
+    borderColor: light_purple6,
+    borderColorHover: light_purple8,
+    borderColorFocus: light_purple6,
+    borderColorPress: light_purple6,
+    placeholderColor: light_purple10
+} as Theme
+
+export const light_purple_alt1_TextArea = light_purple_alt1_Input as Theme
+export const light_purple_alt2_ListItem = {
+    background: light_purple3,
+    backgroundHover: light_purple4,
+    backgroundPress: light_purple5,
+    backgroundFocus: light_purple6,
+    backgroundStrong: light_purple2,
+    backgroundTransparent: light_purple1,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_color12,
+    borderColor: light_purple5,
+    borderColorHover: light_purple6,
+    borderColorFocus: light_purple5,
+    borderColorPress: light_purple5,
+    placeholderColor: light_purple9
+} as Theme
+export const light_purple_alt2_Card = {
+    background: light_purple5,
+    backgroundHover: light_purple6,
+    backgroundPress: light_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_purple4,
+    backgroundTransparent: light_purple3,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_purple11,
+    borderColor: light_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple6
+} as Theme
+
+export const light_purple_alt2_DrawerFrame = light_purple_alt2_Card as Theme
+export const light_purple_alt2_Progress = light_purple_alt2_Card as Theme
+export const light_purple_alt2_TooltipArrow = light_purple_alt2_Card as Theme
+export const light_purple_alt2_Button = {
+    background: light_purple6,
+    backgroundHover: light_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: light_purple10,
+    backgroundStrong: light_purple5,
+    backgroundTransparent: light_purple4,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_purple10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_purple9,
+    borderColorPress: light_purple9,
+    placeholderColor: light_purple5
+} as Theme
+export const light_purple_alt2_Checkbox = {
+    background: light_purple6,
+    backgroundHover: light_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: light_purple10,
+    backgroundStrong: light_purple5,
+    backgroundTransparent: light_purple4,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_purple10,
+    borderColor: light_purple9,
+    borderColorHover: light_purple10,
+    borderColorFocus: light_purple9,
+    borderColorPress: light_purple9,
+    placeholderColor: light_purple5
+} as Theme
+
+export const light_purple_alt2_Switch = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_TooltipContent = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_SliderTrack = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_SwitchThumb = {
+    background: light_purple12,
+    backgroundHover: light_purple11,
+    backgroundPress: light_purple10,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_purple3,
+    colorHover: light_purple4,
+    colorPress: light_purple3,
+    colorFocus: light_purple4,
+    colorTransparent: light_purple1,
+    borderColor: light_purple10,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple10,
+    borderColorPress: light_purple10,
+    placeholderColor: light_purple4
+} as Theme
+export const light_purple_alt2_SliderTrackActive = {
+    background: light_purple8,
+    backgroundHover: light_purple6,
+    backgroundPress: light_purple5,
+    backgroundFocus: light_purple4,
+    backgroundStrong: light_purple9,
+    backgroundTransparent: light_purple10,
+    color: light_purple3,
+    colorHover: light_purple4,
+    colorPress: light_purple3,
+    colorFocus: light_purple4,
+    colorTransparent: light_purple4,
+    borderColor: light_purple5,
+    borderColorHover: light_purple4,
+    borderColorFocus: light_purple5,
+    borderColorPress: light_purple5,
+    placeholderColor: light_purple9
+} as Theme
+export const light_purple_alt2_SliderThumb = {
+    background: light_purple10,
+    backgroundHover: light_purple9,
+    backgroundPress: light_purple8,
+    backgroundFocus: light_purple6,
+    backgroundStrong: light_purple11,
+    backgroundTransparent: light_purple12,
+    color: light_purple3,
+    colorHover: light_purple4,
+    colorPress: light_purple3,
+    colorFocus: light_purple4,
+    colorTransparent: light_purple2,
+    borderColor: light_purple8,
+    borderColorHover: light_purple6,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple6
+} as Theme
+
+export const light_purple_alt2_Tooltip = light_purple_alt2_SliderThumb as Theme
+export const light_purple_alt2_ProgressIndicator = light_purple_alt2_SliderThumb as Theme
+export const light_purple_alt2_Input = {
+    background: light_purple3,
+    backgroundHover: light_purple4,
+    backgroundPress: light_purple5,
+    backgroundFocus: light_purple6,
+    backgroundStrong: light_purple2,
+    backgroundTransparent: light_purple1,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_color12,
+    borderColor: light_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple9
+} as Theme
+
+export const light_purple_alt2_TextArea = light_purple_alt2_Input as Theme
 export const light_purple_active_ListItem = {
     background: light_purple4,
     backgroundHover: light_purple5,
@@ -6031,6 +8321,320 @@ export const light_purple_active_Input = {
 } as Theme
 
 export const light_purple_active_TextArea = light_purple_active_Input as Theme
+export const light_pink_alt1_ListItem = {
+    background: light_pink2,
+    backgroundHover: light_pink3,
+    backgroundPress: light_pink4,
+    backgroundFocus: light_pink5,
+    backgroundStrong: light_pink1,
+    backgroundTransparent: light_pink1,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_color12,
+    borderColor: light_pink4,
+    borderColorHover: light_pink5,
+    borderColorFocus: light_pink4,
+    borderColorPress: light_pink4,
+    placeholderColor: light_pink10
+} as Theme
+export const light_pink_alt1_Card = {
+    background: light_pink4,
+    backgroundHover: light_pink5,
+    backgroundPress: light_pink6,
+    backgroundFocus: light_pink8,
+    backgroundStrong: light_pink3,
+    backgroundTransparent: light_pink2,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_pink12,
+    borderColor: light_pink6,
+    borderColorHover: light_pink8,
+    borderColorFocus: light_pink6,
+    borderColorPress: light_pink6,
+    placeholderColor: light_pink8
+} as Theme
+
+export const light_pink_alt1_DrawerFrame = light_pink_alt1_Card as Theme
+export const light_pink_alt1_Progress = light_pink_alt1_Card as Theme
+export const light_pink_alt1_TooltipArrow = light_pink_alt1_Card as Theme
+export const light_pink_alt1_Button = {
+    background: light_pink5,
+    backgroundHover: light_pink6,
+    backgroundPress: light_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_pink4,
+    backgroundTransparent: light_pink3,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_pink11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink6
+} as Theme
+export const light_pink_alt1_Checkbox = {
+    background: light_pink5,
+    backgroundHover: light_pink6,
+    backgroundPress: light_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_pink4,
+    backgroundTransparent: light_pink3,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_pink11,
+    borderColor: light_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink6
+} as Theme
+
+export const light_pink_alt1_Switch = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_TooltipContent = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_SliderTrack = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_pink12,
+    backgroundPress: light_pink11,
+    backgroundFocus: light_pink10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_pink2,
+    colorHover: light_pink3,
+    colorPress: light_pink2,
+    colorFocus: light_pink3,
+    colorTransparent: light_pink1,
+    borderColor: light_pink11,
+    borderColorHover: light_pink10,
+    borderColorFocus: light_pink11,
+    borderColorPress: light_pink11,
+    placeholderColor: light_pink3
+} as Theme
+export const light_pink_alt1_SliderTrackActive = {
+    background: light_pink9,
+    backgroundHover: light_pink8,
+    backgroundPress: light_pink6,
+    backgroundFocus: light_pink5,
+    backgroundStrong: light_pink10,
+    backgroundTransparent: light_pink11,
+    color: light_pink2,
+    colorHover: light_pink3,
+    colorPress: light_pink2,
+    colorFocus: light_pink3,
+    colorTransparent: light_pink3,
+    borderColor: light_pink6,
+    borderColorHover: light_pink5,
+    borderColorFocus: light_pink6,
+    borderColorPress: light_pink6,
+    placeholderColor: light_pink8
+} as Theme
+export const light_pink_alt1_SliderThumb = {
+    background: light_pink11,
+    backgroundHover: light_pink10,
+    backgroundPress: light_pink9,
+    backgroundFocus: light_pink8,
+    backgroundStrong: light_pink12,
+    backgroundTransparent: light_color12,
+    color: light_pink2,
+    colorHover: light_pink3,
+    colorPress: light_pink2,
+    colorFocus: light_pink3,
+    colorTransparent: light_pink1,
+    borderColor: light_pink9,
+    borderColorHover: light_pink8,
+    borderColorFocus: light_pink9,
+    borderColorPress: light_pink9,
+    placeholderColor: light_pink5
+} as Theme
+
+export const light_pink_alt1_Tooltip = light_pink_alt1_SliderThumb as Theme
+export const light_pink_alt1_ProgressIndicator = light_pink_alt1_SliderThumb as Theme
+export const light_pink_alt1_Input = {
+    background: light_pink2,
+    backgroundHover: light_pink3,
+    backgroundPress: light_pink4,
+    backgroundFocus: light_pink5,
+    backgroundStrong: light_pink1,
+    backgroundTransparent: light_pink1,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_color12,
+    borderColor: light_pink6,
+    borderColorHover: light_pink8,
+    borderColorFocus: light_pink6,
+    borderColorPress: light_pink6,
+    placeholderColor: light_pink10
+} as Theme
+
+export const light_pink_alt1_TextArea = light_pink_alt1_Input as Theme
+export const light_pink_alt2_ListItem = {
+    background: light_pink3,
+    backgroundHover: light_pink4,
+    backgroundPress: light_pink5,
+    backgroundFocus: light_pink6,
+    backgroundStrong: light_pink2,
+    backgroundTransparent: light_pink1,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_color12,
+    borderColor: light_pink5,
+    borderColorHover: light_pink6,
+    borderColorFocus: light_pink5,
+    borderColorPress: light_pink5,
+    placeholderColor: light_pink9
+} as Theme
+export const light_pink_alt2_Card = {
+    background: light_pink5,
+    backgroundHover: light_pink6,
+    backgroundPress: light_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_pink4,
+    backgroundTransparent: light_pink3,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_pink11,
+    borderColor: light_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink6
+} as Theme
+
+export const light_pink_alt2_DrawerFrame = light_pink_alt2_Card as Theme
+export const light_pink_alt2_Progress = light_pink_alt2_Card as Theme
+export const light_pink_alt2_TooltipArrow = light_pink_alt2_Card as Theme
+export const light_pink_alt2_Button = {
+    background: light_pink6,
+    backgroundHover: light_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: light_pink10,
+    backgroundStrong: light_pink5,
+    backgroundTransparent: light_pink4,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_pink10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_pink9,
+    borderColorPress: light_pink9,
+    placeholderColor: light_pink5
+} as Theme
+export const light_pink_alt2_Checkbox = {
+    background: light_pink6,
+    backgroundHover: light_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: light_pink10,
+    backgroundStrong: light_pink5,
+    backgroundTransparent: light_pink4,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_pink10,
+    borderColor: light_pink9,
+    borderColorHover: light_pink10,
+    borderColorFocus: light_pink9,
+    borderColorPress: light_pink9,
+    placeholderColor: light_pink5
+} as Theme
+
+export const light_pink_alt2_Switch = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_TooltipContent = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_SliderTrack = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_SwitchThumb = {
+    background: light_pink12,
+    backgroundHover: light_pink11,
+    backgroundPress: light_pink10,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_pink3,
+    colorHover: light_pink4,
+    colorPress: light_pink3,
+    colorFocus: light_pink4,
+    colorTransparent: light_pink1,
+    borderColor: light_pink10,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink10,
+    borderColorPress: light_pink10,
+    placeholderColor: light_pink4
+} as Theme
+export const light_pink_alt2_SliderTrackActive = {
+    background: light_pink8,
+    backgroundHover: light_pink6,
+    backgroundPress: light_pink5,
+    backgroundFocus: light_pink4,
+    backgroundStrong: light_pink9,
+    backgroundTransparent: light_pink10,
+    color: light_pink3,
+    colorHover: light_pink4,
+    colorPress: light_pink3,
+    colorFocus: light_pink4,
+    colorTransparent: light_pink4,
+    borderColor: light_pink5,
+    borderColorHover: light_pink4,
+    borderColorFocus: light_pink5,
+    borderColorPress: light_pink5,
+    placeholderColor: light_pink9
+} as Theme
+export const light_pink_alt2_SliderThumb = {
+    background: light_pink10,
+    backgroundHover: light_pink9,
+    backgroundPress: light_pink8,
+    backgroundFocus: light_pink6,
+    backgroundStrong: light_pink11,
+    backgroundTransparent: light_pink12,
+    color: light_pink3,
+    colorHover: light_pink4,
+    colorPress: light_pink3,
+    colorFocus: light_pink4,
+    colorTransparent: light_pink2,
+    borderColor: light_pink8,
+    borderColorHover: light_pink6,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink6
+} as Theme
+
+export const light_pink_alt2_Tooltip = light_pink_alt2_SliderThumb as Theme
+export const light_pink_alt2_ProgressIndicator = light_pink_alt2_SliderThumb as Theme
+export const light_pink_alt2_Input = {
+    background: light_pink3,
+    backgroundHover: light_pink4,
+    backgroundPress: light_pink5,
+    backgroundFocus: light_pink6,
+    backgroundStrong: light_pink2,
+    backgroundTransparent: light_pink1,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_color12,
+    borderColor: light_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink9
+} as Theme
+
+export const light_pink_alt2_TextArea = light_pink_alt2_Input as Theme
 export const light_pink_active_ListItem = {
     background: light_pink4,
     backgroundHover: light_pink5,
@@ -6180,6 +8784,320 @@ export const light_pink_active_Input = {
 } as Theme
 
 export const light_pink_active_TextArea = light_pink_active_Input as Theme
+export const light_red_alt1_ListItem = {
+    background: light_red2,
+    backgroundHover: light_red3,
+    backgroundPress: light_red4,
+    backgroundFocus: light_red5,
+    backgroundStrong: light_red1,
+    backgroundTransparent: light_red1,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_color12,
+    borderColor: light_red4,
+    borderColorHover: light_red5,
+    borderColorFocus: light_red4,
+    borderColorPress: light_red4,
+    placeholderColor: light_red10
+} as Theme
+export const light_red_alt1_Card = {
+    background: light_red4,
+    backgroundHover: light_red5,
+    backgroundPress: light_red6,
+    backgroundFocus: light_red8,
+    backgroundStrong: light_red3,
+    backgroundTransparent: light_red2,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_red12,
+    borderColor: light_red6,
+    borderColorHover: light_red8,
+    borderColorFocus: light_red6,
+    borderColorPress: light_red6,
+    placeholderColor: light_red8
+} as Theme
+
+export const light_red_alt1_DrawerFrame = light_red_alt1_Card as Theme
+export const light_red_alt1_Progress = light_red_alt1_Card as Theme
+export const light_red_alt1_TooltipArrow = light_red_alt1_Card as Theme
+export const light_red_alt1_Button = {
+    background: light_red5,
+    backgroundHover: light_red6,
+    backgroundPress: light_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_red4,
+    backgroundTransparent: light_red3,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_red11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red6
+} as Theme
+export const light_red_alt1_Checkbox = {
+    background: light_red5,
+    backgroundHover: light_red6,
+    backgroundPress: light_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_red4,
+    backgroundTransparent: light_red3,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_red11,
+    borderColor: light_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red6
+} as Theme
+
+export const light_red_alt1_Switch = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_TooltipContent = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_SliderTrack = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_red12,
+    backgroundPress: light_red11,
+    backgroundFocus: light_red10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_red2,
+    colorHover: light_red3,
+    colorPress: light_red2,
+    colorFocus: light_red3,
+    colorTransparent: light_red1,
+    borderColor: light_red11,
+    borderColorHover: light_red10,
+    borderColorFocus: light_red11,
+    borderColorPress: light_red11,
+    placeholderColor: light_red3
+} as Theme
+export const light_red_alt1_SliderTrackActive = {
+    background: light_red9,
+    backgroundHover: light_red8,
+    backgroundPress: light_red6,
+    backgroundFocus: light_red5,
+    backgroundStrong: light_red10,
+    backgroundTransparent: light_red11,
+    color: light_red2,
+    colorHover: light_red3,
+    colorPress: light_red2,
+    colorFocus: light_red3,
+    colorTransparent: light_red3,
+    borderColor: light_red6,
+    borderColorHover: light_red5,
+    borderColorFocus: light_red6,
+    borderColorPress: light_red6,
+    placeholderColor: light_red8
+} as Theme
+export const light_red_alt1_SliderThumb = {
+    background: light_red11,
+    backgroundHover: light_red10,
+    backgroundPress: light_red9,
+    backgroundFocus: light_red8,
+    backgroundStrong: light_red12,
+    backgroundTransparent: light_color12,
+    color: light_red2,
+    colorHover: light_red3,
+    colorPress: light_red2,
+    colorFocus: light_red3,
+    colorTransparent: light_red1,
+    borderColor: light_red9,
+    borderColorHover: light_red8,
+    borderColorFocus: light_red9,
+    borderColorPress: light_red9,
+    placeholderColor: light_red5
+} as Theme
+
+export const light_red_alt1_Tooltip = light_red_alt1_SliderThumb as Theme
+export const light_red_alt1_ProgressIndicator = light_red_alt1_SliderThumb as Theme
+export const light_red_alt1_Input = {
+    background: light_red2,
+    backgroundHover: light_red3,
+    backgroundPress: light_red4,
+    backgroundFocus: light_red5,
+    backgroundStrong: light_red1,
+    backgroundTransparent: light_red1,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_color12,
+    borderColor: light_red6,
+    borderColorHover: light_red8,
+    borderColorFocus: light_red6,
+    borderColorPress: light_red6,
+    placeholderColor: light_red10
+} as Theme
+
+export const light_red_alt1_TextArea = light_red_alt1_Input as Theme
+export const light_red_alt2_ListItem = {
+    background: light_red3,
+    backgroundHover: light_red4,
+    backgroundPress: light_red5,
+    backgroundFocus: light_red6,
+    backgroundStrong: light_red2,
+    backgroundTransparent: light_red1,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_color12,
+    borderColor: light_red5,
+    borderColorHover: light_red6,
+    borderColorFocus: light_red5,
+    borderColorPress: light_red5,
+    placeholderColor: light_red9
+} as Theme
+export const light_red_alt2_Card = {
+    background: light_red5,
+    backgroundHover: light_red6,
+    backgroundPress: light_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_red4,
+    backgroundTransparent: light_red3,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_red11,
+    borderColor: light_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red6
+} as Theme
+
+export const light_red_alt2_DrawerFrame = light_red_alt2_Card as Theme
+export const light_red_alt2_Progress = light_red_alt2_Card as Theme
+export const light_red_alt2_TooltipArrow = light_red_alt2_Card as Theme
+export const light_red_alt2_Button = {
+    background: light_red6,
+    backgroundHover: light_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: light_red10,
+    backgroundStrong: light_red5,
+    backgroundTransparent: light_red4,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_red10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_red9,
+    borderColorPress: light_red9,
+    placeholderColor: light_red5
+} as Theme
+export const light_red_alt2_Checkbox = {
+    background: light_red6,
+    backgroundHover: light_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: light_red10,
+    backgroundStrong: light_red5,
+    backgroundTransparent: light_red4,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_red10,
+    borderColor: light_red9,
+    borderColorHover: light_red10,
+    borderColorFocus: light_red9,
+    borderColorPress: light_red9,
+    placeholderColor: light_red5
+} as Theme
+
+export const light_red_alt2_Switch = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_TooltipContent = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_SliderTrack = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_SwitchThumb = {
+    background: light_red12,
+    backgroundHover: light_red11,
+    backgroundPress: light_red10,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_red3,
+    colorHover: light_red4,
+    colorPress: light_red3,
+    colorFocus: light_red4,
+    colorTransparent: light_red1,
+    borderColor: light_red10,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red10,
+    borderColorPress: light_red10,
+    placeholderColor: light_red4
+} as Theme
+export const light_red_alt2_SliderTrackActive = {
+    background: light_red8,
+    backgroundHover: light_red6,
+    backgroundPress: light_red5,
+    backgroundFocus: light_red4,
+    backgroundStrong: light_red9,
+    backgroundTransparent: light_red10,
+    color: light_red3,
+    colorHover: light_red4,
+    colorPress: light_red3,
+    colorFocus: light_red4,
+    colorTransparent: light_red4,
+    borderColor: light_red5,
+    borderColorHover: light_red4,
+    borderColorFocus: light_red5,
+    borderColorPress: light_red5,
+    placeholderColor: light_red9
+} as Theme
+export const light_red_alt2_SliderThumb = {
+    background: light_red10,
+    backgroundHover: light_red9,
+    backgroundPress: light_red8,
+    backgroundFocus: light_red6,
+    backgroundStrong: light_red11,
+    backgroundTransparent: light_red12,
+    color: light_red3,
+    colorHover: light_red4,
+    colorPress: light_red3,
+    colorFocus: light_red4,
+    colorTransparent: light_red2,
+    borderColor: light_red8,
+    borderColorHover: light_red6,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red6
+} as Theme
+
+export const light_red_alt2_Tooltip = light_red_alt2_SliderThumb as Theme
+export const light_red_alt2_ProgressIndicator = light_red_alt2_SliderThumb as Theme
+export const light_red_alt2_Input = {
+    background: light_red3,
+    backgroundHover: light_red4,
+    backgroundPress: light_red5,
+    backgroundFocus: light_red6,
+    backgroundStrong: light_red2,
+    backgroundTransparent: light_red1,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_color12,
+    borderColor: light_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red9
+} as Theme
+
+export const light_red_alt2_TextArea = light_red_alt2_Input as Theme
 export const light_red_active_ListItem = {
     background: light_red4,
     backgroundHover: light_red5,
@@ -6329,6 +9247,284 @@ export const light_red_active_Input = {
 } as Theme
 
 export const light_red_active_TextArea = light_red_active_Input as Theme
+export const dark_orange_alt1_Card = {
+    background: dark_orange4,
+    backgroundHover: dark_orange5,
+    backgroundPress: dark_orange6,
+    backgroundFocus: dark_orange8,
+    backgroundStrong: dark_orange3,
+    backgroundTransparent: dark_orange2,
+    color: dark_orange12,
+    colorHover: dark_orange11,
+    colorPress: dark_orange12,
+    colorFocus: dark_orange11,
+    colorTransparent: dark_orange12,
+    borderColor: dark_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: dark_orange6,
+    borderColorPress: dark_orange8,
+    placeholderColor: dark_orange8
+} as Theme
+
+export const dark_orange_alt1_DrawerFrame = dark_orange_alt1_Card as Theme
+export const dark_orange_alt1_Progress = dark_orange_alt1_Card as Theme
+export const dark_orange_alt1_TooltipArrow = dark_orange_alt1_Card as Theme
+export const dark_orange_alt1_Button = {
+    background: dark_orange5,
+    backgroundHover: dark_orange6,
+    backgroundPress: dark_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: dark_orange4,
+    backgroundTransparent: dark_orange3,
+    color: dark_orange12,
+    colorHover: dark_orange11,
+    colorPress: dark_orange12,
+    colorFocus: dark_orange11,
+    colorTransparent: dark_orange11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_orange8,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange6
+} as Theme
+export const dark_orange_alt1_Checkbox = {
+    background: dark_orange5,
+    backgroundHover: dark_orange6,
+    backgroundPress: dark_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: dark_orange4,
+    backgroundTransparent: dark_orange3,
+    color: dark_orange12,
+    colorHover: dark_orange11,
+    colorPress: dark_orange12,
+    colorFocus: dark_orange11,
+    colorTransparent: dark_orange11,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange10,
+    borderColorFocus: dark_orange8,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange6
+} as Theme
+
+export const dark_orange_alt1_Switch = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_TooltipContent = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_SliderTrack = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_orange12,
+    backgroundPress: dark_orange11,
+    backgroundFocus: dark_orange10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_orange2,
+    colorHover: dark_orange3,
+    colorPress: dark_orange2,
+    colorFocus: dark_orange3,
+    colorTransparent: dark_orange1,
+    borderColor: dark_orange10,
+    borderColorHover: light_orange9,
+    borderColorFocus: dark_orange11,
+    borderColorPress: dark_orange10,
+    placeholderColor: dark_orange3
+} as Theme
+export const dark_orange_alt1_SliderTrackActive = {
+    background: light_orange9,
+    backgroundHover: dark_orange8,
+    backgroundPress: dark_orange6,
+    backgroundFocus: dark_orange5,
+    backgroundStrong: dark_orange10,
+    backgroundTransparent: dark_orange11,
+    color: dark_orange2,
+    colorHover: dark_orange3,
+    colorPress: dark_orange2,
+    colorFocus: dark_orange3,
+    colorTransparent: dark_orange3,
+    borderColor: dark_orange5,
+    borderColorHover: dark_orange4,
+    borderColorFocus: dark_orange6,
+    borderColorPress: dark_orange5,
+    placeholderColor: dark_orange8
+} as Theme
+export const dark_orange_alt1_SliderThumb = {
+    background: dark_orange11,
+    backgroundHover: dark_orange10,
+    backgroundPress: light_orange9,
+    backgroundFocus: dark_orange8,
+    backgroundStrong: dark_orange12,
+    backgroundTransparent: light_color1,
+    color: dark_orange2,
+    colorHover: dark_orange3,
+    colorPress: dark_orange2,
+    colorFocus: dark_orange3,
+    colorTransparent: dark_orange1,
+    borderColor: dark_orange8,
+    borderColorHover: dark_orange6,
+    borderColorFocus: light_orange9,
+    borderColorPress: dark_orange8,
+    placeholderColor: dark_orange5
+} as Theme
+
+export const dark_orange_alt1_Tooltip = dark_orange_alt1_SliderThumb as Theme
+export const dark_orange_alt1_ProgressIndicator = dark_orange_alt1_SliderThumb as Theme
+export const dark_orange_alt1_Input = {
+    background: dark_orange3,
+    backgroundHover: dark_orange4,
+    backgroundPress: dark_orange5,
+    backgroundFocus: dark_orange6,
+    backgroundStrong: dark_orange2,
+    backgroundTransparent: dark_orange1,
+    color: dark_orange12,
+    colorHover: dark_orange11,
+    colorPress: dark_orange12,
+    colorFocus: dark_orange11,
+    colorTransparent: light_color1,
+    borderColor: dark_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: dark_orange6,
+    borderColorPress: dark_orange8,
+    placeholderColor: light_orange9
+} as Theme
+
+export const dark_orange_alt1_TextArea = dark_orange_alt1_Input as Theme
+export const dark_orange_alt2_Card = {
+    background: dark_orange5,
+    backgroundHover: dark_orange6,
+    backgroundPress: dark_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: dark_orange4,
+    backgroundTransparent: dark_orange3,
+    color: dark_orange11,
+    colorHover: dark_orange10,
+    colorPress: dark_orange11,
+    colorFocus: dark_orange10,
+    colorTransparent: dark_orange11,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange10,
+    borderColorFocus: dark_orange8,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange6
+} as Theme
+
+export const dark_orange_alt2_DrawerFrame = dark_orange_alt2_Card as Theme
+export const dark_orange_alt2_Progress = dark_orange_alt2_Card as Theme
+export const dark_orange_alt2_TooltipArrow = dark_orange_alt2_Card as Theme
+export const dark_orange_alt2_Button = {
+    background: dark_orange6,
+    backgroundHover: dark_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: dark_orange10,
+    backgroundStrong: dark_orange5,
+    backgroundTransparent: dark_orange4,
+    color: dark_orange11,
+    colorHover: dark_orange10,
+    colorPress: dark_orange11,
+    colorFocus: dark_orange10,
+    colorTransparent: dark_orange10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_orange9,
+    borderColorPress: dark_orange10,
+    placeholderColor: dark_orange5
+} as Theme
+export const dark_orange_alt2_Checkbox = {
+    background: dark_orange6,
+    backgroundHover: dark_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: dark_orange10,
+    backgroundStrong: dark_orange5,
+    backgroundTransparent: dark_orange4,
+    color: dark_orange11,
+    colorHover: dark_orange10,
+    colorPress: dark_orange11,
+    colorFocus: dark_orange10,
+    colorTransparent: dark_orange10,
+    borderColor: dark_orange10,
+    borderColorHover: dark_orange11,
+    borderColorFocus: light_orange9,
+    borderColorPress: dark_orange10,
+    placeholderColor: dark_orange5
+} as Theme
+
+export const dark_orange_alt2_Switch = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_TooltipContent = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_SliderTrack = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_SwitchThumb = {
+    background: dark_orange12,
+    backgroundHover: dark_orange11,
+    backgroundPress: dark_orange10,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_orange3,
+    colorHover: dark_orange4,
+    colorPress: dark_orange3,
+    colorFocus: dark_orange4,
+    colorTransparent: dark_orange1,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange8,
+    borderColorFocus: dark_orange10,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange4
+} as Theme
+export const dark_orange_alt2_SliderTrackActive = {
+    background: dark_orange8,
+    backgroundHover: dark_orange6,
+    backgroundPress: dark_orange5,
+    backgroundFocus: dark_orange4,
+    backgroundStrong: light_orange9,
+    backgroundTransparent: dark_orange10,
+    color: dark_orange3,
+    colorHover: dark_orange4,
+    colorPress: dark_orange3,
+    colorFocus: dark_orange4,
+    colorTransparent: dark_orange4,
+    borderColor: dark_orange4,
+    borderColorHover: dark_orange3,
+    borderColorFocus: dark_orange5,
+    borderColorPress: dark_orange4,
+    placeholderColor: light_orange9
+} as Theme
+export const dark_orange_alt2_SliderThumb = {
+    background: dark_orange10,
+    backgroundHover: light_orange9,
+    backgroundPress: dark_orange8,
+    backgroundFocus: dark_orange6,
+    backgroundStrong: dark_orange11,
+    backgroundTransparent: dark_orange12,
+    color: dark_orange3,
+    colorHover: dark_orange4,
+    colorPress: dark_orange3,
+    colorFocus: dark_orange4,
+    colorTransparent: dark_orange2,
+    borderColor: dark_orange6,
+    borderColorHover: dark_orange5,
+    borderColorFocus: dark_orange8,
+    borderColorPress: dark_orange6,
+    placeholderColor: dark_orange6
+} as Theme
+
+export const dark_orange_alt2_Tooltip = dark_orange_alt2_SliderThumb as Theme
+export const dark_orange_alt2_ProgressIndicator = dark_orange_alt2_SliderThumb as Theme
+export const dark_orange_alt2_Input = {
+    background: dark_orange4,
+    backgroundHover: dark_orange5,
+    backgroundPress: dark_orange6,
+    backgroundFocus: dark_orange8,
+    backgroundStrong: dark_orange3,
+    backgroundTransparent: dark_orange2,
+    color: dark_orange11,
+    colorHover: dark_orange10,
+    colorPress: dark_orange11,
+    colorFocus: dark_orange10,
+    colorTransparent: dark_orange12,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange10,
+    borderColorFocus: dark_orange8,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange8
+} as Theme
+
+export const dark_orange_alt2_TextArea = dark_orange_alt2_Input as Theme
 export const dark_orange_active_Card = {
     background: dark_orange6,
     backgroundHover: dark_orange8,
@@ -6461,6 +9657,284 @@ export const dark_orange_active_Input = {
 } as Theme
 
 export const dark_orange_active_TextArea = dark_orange_active_Input as Theme
+export const dark_yellow_alt1_Card = {
+    background: dark_yellow4,
+    backgroundHover: dark_yellow5,
+    backgroundPress: dark_yellow6,
+    backgroundFocus: dark_yellow8,
+    backgroundStrong: dark_yellow3,
+    backgroundTransparent: dark_yellow2,
+    color: dark_yellow12,
+    colorHover: dark_yellow11,
+    colorPress: dark_yellow12,
+    colorFocus: dark_yellow11,
+    colorTransparent: dark_yellow12,
+    borderColor: dark_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: dark_yellow6,
+    borderColorPress: dark_yellow8,
+    placeholderColor: dark_yellow8
+} as Theme
+
+export const dark_yellow_alt1_DrawerFrame = dark_yellow_alt1_Card as Theme
+export const dark_yellow_alt1_Progress = dark_yellow_alt1_Card as Theme
+export const dark_yellow_alt1_TooltipArrow = dark_yellow_alt1_Card as Theme
+export const dark_yellow_alt1_Button = {
+    background: dark_yellow5,
+    backgroundHover: dark_yellow6,
+    backgroundPress: dark_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: dark_yellow4,
+    backgroundTransparent: dark_yellow3,
+    color: dark_yellow12,
+    colorHover: dark_yellow11,
+    colorPress: dark_yellow12,
+    colorFocus: dark_yellow11,
+    colorTransparent: dark_yellow11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow6
+} as Theme
+export const dark_yellow_alt1_Checkbox = {
+    background: dark_yellow5,
+    backgroundHover: dark_yellow6,
+    backgroundPress: dark_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: dark_yellow4,
+    backgroundTransparent: dark_yellow3,
+    color: dark_yellow12,
+    colorHover: dark_yellow11,
+    colorPress: dark_yellow12,
+    colorFocus: dark_yellow11,
+    colorTransparent: dark_yellow11,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow10,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow6
+} as Theme
+
+export const dark_yellow_alt1_Switch = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_TooltipContent = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_SliderTrack = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_yellow12,
+    backgroundPress: dark_yellow11,
+    backgroundFocus: dark_yellow10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_yellow2,
+    colorHover: dark_yellow3,
+    colorPress: dark_yellow2,
+    colorFocus: dark_yellow3,
+    colorTransparent: dark_yellow1,
+    borderColor: dark_yellow10,
+    borderColorHover: light_yellow9,
+    borderColorFocus: dark_yellow11,
+    borderColorPress: dark_yellow10,
+    placeholderColor: dark_yellow3
+} as Theme
+export const dark_yellow_alt1_SliderTrackActive = {
+    background: light_yellow9,
+    backgroundHover: dark_yellow8,
+    backgroundPress: dark_yellow6,
+    backgroundFocus: dark_yellow5,
+    backgroundStrong: dark_yellow10,
+    backgroundTransparent: dark_yellow11,
+    color: dark_yellow2,
+    colorHover: dark_yellow3,
+    colorPress: dark_yellow2,
+    colorFocus: dark_yellow3,
+    colorTransparent: dark_yellow3,
+    borderColor: dark_yellow5,
+    borderColorHover: dark_yellow4,
+    borderColorFocus: dark_yellow6,
+    borderColorPress: dark_yellow5,
+    placeholderColor: dark_yellow8
+} as Theme
+export const dark_yellow_alt1_SliderThumb = {
+    background: dark_yellow11,
+    backgroundHover: dark_yellow10,
+    backgroundPress: light_yellow9,
+    backgroundFocus: dark_yellow8,
+    backgroundStrong: dark_yellow12,
+    backgroundTransparent: light_color1,
+    color: dark_yellow2,
+    colorHover: dark_yellow3,
+    colorPress: dark_yellow2,
+    colorFocus: dark_yellow3,
+    colorTransparent: dark_yellow1,
+    borderColor: dark_yellow8,
+    borderColorHover: dark_yellow6,
+    borderColorFocus: light_yellow9,
+    borderColorPress: dark_yellow8,
+    placeholderColor: dark_yellow5
+} as Theme
+
+export const dark_yellow_alt1_Tooltip = dark_yellow_alt1_SliderThumb as Theme
+export const dark_yellow_alt1_ProgressIndicator = dark_yellow_alt1_SliderThumb as Theme
+export const dark_yellow_alt1_Input = {
+    background: dark_yellow3,
+    backgroundHover: dark_yellow4,
+    backgroundPress: dark_yellow5,
+    backgroundFocus: dark_yellow6,
+    backgroundStrong: dark_yellow2,
+    backgroundTransparent: dark_yellow1,
+    color: dark_yellow12,
+    colorHover: dark_yellow11,
+    colorPress: dark_yellow12,
+    colorFocus: dark_yellow11,
+    colorTransparent: light_color1,
+    borderColor: dark_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: dark_yellow6,
+    borderColorPress: dark_yellow8,
+    placeholderColor: light_yellow9
+} as Theme
+
+export const dark_yellow_alt1_TextArea = dark_yellow_alt1_Input as Theme
+export const dark_yellow_alt2_Card = {
+    background: dark_yellow5,
+    backgroundHover: dark_yellow6,
+    backgroundPress: dark_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: dark_yellow4,
+    backgroundTransparent: dark_yellow3,
+    color: dark_yellow11,
+    colorHover: dark_yellow10,
+    colorPress: dark_yellow11,
+    colorFocus: dark_yellow10,
+    colorTransparent: dark_yellow11,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow10,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow6
+} as Theme
+
+export const dark_yellow_alt2_DrawerFrame = dark_yellow_alt2_Card as Theme
+export const dark_yellow_alt2_Progress = dark_yellow_alt2_Card as Theme
+export const dark_yellow_alt2_TooltipArrow = dark_yellow_alt2_Card as Theme
+export const dark_yellow_alt2_Button = {
+    background: dark_yellow6,
+    backgroundHover: dark_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: dark_yellow10,
+    backgroundStrong: dark_yellow5,
+    backgroundTransparent: dark_yellow4,
+    color: dark_yellow11,
+    colorHover: dark_yellow10,
+    colorPress: dark_yellow11,
+    colorFocus: dark_yellow10,
+    colorTransparent: dark_yellow10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_yellow9,
+    borderColorPress: dark_yellow10,
+    placeholderColor: dark_yellow5
+} as Theme
+export const dark_yellow_alt2_Checkbox = {
+    background: dark_yellow6,
+    backgroundHover: dark_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: dark_yellow10,
+    backgroundStrong: dark_yellow5,
+    backgroundTransparent: dark_yellow4,
+    color: dark_yellow11,
+    colorHover: dark_yellow10,
+    colorPress: dark_yellow11,
+    colorFocus: dark_yellow10,
+    colorTransparent: dark_yellow10,
+    borderColor: dark_yellow10,
+    borderColorHover: dark_yellow11,
+    borderColorFocus: light_yellow9,
+    borderColorPress: dark_yellow10,
+    placeholderColor: dark_yellow5
+} as Theme
+
+export const dark_yellow_alt2_Switch = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_TooltipContent = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_SliderTrack = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_SwitchThumb = {
+    background: dark_yellow12,
+    backgroundHover: dark_yellow11,
+    backgroundPress: dark_yellow10,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_yellow3,
+    colorHover: dark_yellow4,
+    colorPress: dark_yellow3,
+    colorFocus: dark_yellow4,
+    colorTransparent: dark_yellow1,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow8,
+    borderColorFocus: dark_yellow10,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow4
+} as Theme
+export const dark_yellow_alt2_SliderTrackActive = {
+    background: dark_yellow8,
+    backgroundHover: dark_yellow6,
+    backgroundPress: dark_yellow5,
+    backgroundFocus: dark_yellow4,
+    backgroundStrong: light_yellow9,
+    backgroundTransparent: dark_yellow10,
+    color: dark_yellow3,
+    colorHover: dark_yellow4,
+    colorPress: dark_yellow3,
+    colorFocus: dark_yellow4,
+    colorTransparent: dark_yellow4,
+    borderColor: dark_yellow4,
+    borderColorHover: dark_yellow3,
+    borderColorFocus: dark_yellow5,
+    borderColorPress: dark_yellow4,
+    placeholderColor: light_yellow9
+} as Theme
+export const dark_yellow_alt2_SliderThumb = {
+    background: dark_yellow10,
+    backgroundHover: light_yellow9,
+    backgroundPress: dark_yellow8,
+    backgroundFocus: dark_yellow6,
+    backgroundStrong: dark_yellow11,
+    backgroundTransparent: dark_yellow12,
+    color: dark_yellow3,
+    colorHover: dark_yellow4,
+    colorPress: dark_yellow3,
+    colorFocus: dark_yellow4,
+    colorTransparent: dark_yellow2,
+    borderColor: dark_yellow6,
+    borderColorHover: dark_yellow5,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: dark_yellow6,
+    placeholderColor: dark_yellow6
+} as Theme
+
+export const dark_yellow_alt2_Tooltip = dark_yellow_alt2_SliderThumb as Theme
+export const dark_yellow_alt2_ProgressIndicator = dark_yellow_alt2_SliderThumb as Theme
+export const dark_yellow_alt2_Input = {
+    background: dark_yellow4,
+    backgroundHover: dark_yellow5,
+    backgroundPress: dark_yellow6,
+    backgroundFocus: dark_yellow8,
+    backgroundStrong: dark_yellow3,
+    backgroundTransparent: dark_yellow2,
+    color: dark_yellow11,
+    colorHover: dark_yellow10,
+    colorPress: dark_yellow11,
+    colorFocus: dark_yellow10,
+    colorTransparent: dark_yellow12,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow10,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow8
+} as Theme
+
+export const dark_yellow_alt2_TextArea = dark_yellow_alt2_Input as Theme
 export const dark_yellow_active_Card = {
     background: dark_yellow6,
     backgroundHover: dark_yellow8,
@@ -6593,6 +10067,284 @@ export const dark_yellow_active_Input = {
 } as Theme
 
 export const dark_yellow_active_TextArea = dark_yellow_active_Input as Theme
+export const dark_green_alt1_Card = {
+    background: dark_green4,
+    backgroundHover: dark_green5,
+    backgroundPress: dark_green6,
+    backgroundFocus: dark_green8,
+    backgroundStrong: dark_green3,
+    backgroundTransparent: dark_green2,
+    color: dark_green12,
+    colorHover: dark_green11,
+    colorPress: dark_green12,
+    colorFocus: dark_green11,
+    colorTransparent: dark_green12,
+    borderColor: dark_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: dark_green6,
+    borderColorPress: dark_green8,
+    placeholderColor: dark_green8
+} as Theme
+
+export const dark_green_alt1_DrawerFrame = dark_green_alt1_Card as Theme
+export const dark_green_alt1_Progress = dark_green_alt1_Card as Theme
+export const dark_green_alt1_TooltipArrow = dark_green_alt1_Card as Theme
+export const dark_green_alt1_Button = {
+    background: dark_green5,
+    backgroundHover: dark_green6,
+    backgroundPress: dark_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: dark_green4,
+    backgroundTransparent: dark_green3,
+    color: dark_green12,
+    colorHover: dark_green11,
+    colorPress: dark_green12,
+    colorFocus: dark_green11,
+    colorTransparent: dark_green11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_green8,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green6
+} as Theme
+export const dark_green_alt1_Checkbox = {
+    background: dark_green5,
+    backgroundHover: dark_green6,
+    backgroundPress: dark_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: dark_green4,
+    backgroundTransparent: dark_green3,
+    color: dark_green12,
+    colorHover: dark_green11,
+    colorPress: dark_green12,
+    colorFocus: dark_green11,
+    colorTransparent: dark_green11,
+    borderColor: light_green9,
+    borderColorHover: dark_green10,
+    borderColorFocus: dark_green8,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green6
+} as Theme
+
+export const dark_green_alt1_Switch = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_TooltipContent = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_SliderTrack = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_green12,
+    backgroundPress: dark_green11,
+    backgroundFocus: dark_green10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_green2,
+    colorHover: dark_green3,
+    colorPress: dark_green2,
+    colorFocus: dark_green3,
+    colorTransparent: dark_green1,
+    borderColor: dark_green10,
+    borderColorHover: light_green9,
+    borderColorFocus: dark_green11,
+    borderColorPress: dark_green10,
+    placeholderColor: dark_green3
+} as Theme
+export const dark_green_alt1_SliderTrackActive = {
+    background: light_green9,
+    backgroundHover: dark_green8,
+    backgroundPress: dark_green6,
+    backgroundFocus: dark_green5,
+    backgroundStrong: dark_green10,
+    backgroundTransparent: dark_green11,
+    color: dark_green2,
+    colorHover: dark_green3,
+    colorPress: dark_green2,
+    colorFocus: dark_green3,
+    colorTransparent: dark_green3,
+    borderColor: dark_green5,
+    borderColorHover: dark_green4,
+    borderColorFocus: dark_green6,
+    borderColorPress: dark_green5,
+    placeholderColor: dark_green8
+} as Theme
+export const dark_green_alt1_SliderThumb = {
+    background: dark_green11,
+    backgroundHover: dark_green10,
+    backgroundPress: light_green9,
+    backgroundFocus: dark_green8,
+    backgroundStrong: dark_green12,
+    backgroundTransparent: light_color1,
+    color: dark_green2,
+    colorHover: dark_green3,
+    colorPress: dark_green2,
+    colorFocus: dark_green3,
+    colorTransparent: dark_green1,
+    borderColor: dark_green8,
+    borderColorHover: dark_green6,
+    borderColorFocus: light_green9,
+    borderColorPress: dark_green8,
+    placeholderColor: dark_green5
+} as Theme
+
+export const dark_green_alt1_Tooltip = dark_green_alt1_SliderThumb as Theme
+export const dark_green_alt1_ProgressIndicator = dark_green_alt1_SliderThumb as Theme
+export const dark_green_alt1_Input = {
+    background: dark_green3,
+    backgroundHover: dark_green4,
+    backgroundPress: dark_green5,
+    backgroundFocus: dark_green6,
+    backgroundStrong: dark_green2,
+    backgroundTransparent: dark_green1,
+    color: dark_green12,
+    colorHover: dark_green11,
+    colorPress: dark_green12,
+    colorFocus: dark_green11,
+    colorTransparent: light_color1,
+    borderColor: dark_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: dark_green6,
+    borderColorPress: dark_green8,
+    placeholderColor: light_green9
+} as Theme
+
+export const dark_green_alt1_TextArea = dark_green_alt1_Input as Theme
+export const dark_green_alt2_Card = {
+    background: dark_green5,
+    backgroundHover: dark_green6,
+    backgroundPress: dark_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: dark_green4,
+    backgroundTransparent: dark_green3,
+    color: dark_green11,
+    colorHover: dark_green10,
+    colorPress: dark_green11,
+    colorFocus: dark_green10,
+    colorTransparent: dark_green11,
+    borderColor: light_green9,
+    borderColorHover: dark_green10,
+    borderColorFocus: dark_green8,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green6
+} as Theme
+
+export const dark_green_alt2_DrawerFrame = dark_green_alt2_Card as Theme
+export const dark_green_alt2_Progress = dark_green_alt2_Card as Theme
+export const dark_green_alt2_TooltipArrow = dark_green_alt2_Card as Theme
+export const dark_green_alt2_Button = {
+    background: dark_green6,
+    backgroundHover: dark_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: dark_green10,
+    backgroundStrong: dark_green5,
+    backgroundTransparent: dark_green4,
+    color: dark_green11,
+    colorHover: dark_green10,
+    colorPress: dark_green11,
+    colorFocus: dark_green10,
+    colorTransparent: dark_green10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_green9,
+    borderColorPress: dark_green10,
+    placeholderColor: dark_green5
+} as Theme
+export const dark_green_alt2_Checkbox = {
+    background: dark_green6,
+    backgroundHover: dark_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: dark_green10,
+    backgroundStrong: dark_green5,
+    backgroundTransparent: dark_green4,
+    color: dark_green11,
+    colorHover: dark_green10,
+    colorPress: dark_green11,
+    colorFocus: dark_green10,
+    colorTransparent: dark_green10,
+    borderColor: dark_green10,
+    borderColorHover: dark_green11,
+    borderColorFocus: light_green9,
+    borderColorPress: dark_green10,
+    placeholderColor: dark_green5
+} as Theme
+
+export const dark_green_alt2_Switch = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_TooltipContent = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_SliderTrack = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_SwitchThumb = {
+    background: dark_green12,
+    backgroundHover: dark_green11,
+    backgroundPress: dark_green10,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_green3,
+    colorHover: dark_green4,
+    colorPress: dark_green3,
+    colorFocus: dark_green4,
+    colorTransparent: dark_green1,
+    borderColor: light_green9,
+    borderColorHover: dark_green8,
+    borderColorFocus: dark_green10,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green4
+} as Theme
+export const dark_green_alt2_SliderTrackActive = {
+    background: dark_green8,
+    backgroundHover: dark_green6,
+    backgroundPress: dark_green5,
+    backgroundFocus: dark_green4,
+    backgroundStrong: light_green9,
+    backgroundTransparent: dark_green10,
+    color: dark_green3,
+    colorHover: dark_green4,
+    colorPress: dark_green3,
+    colorFocus: dark_green4,
+    colorTransparent: dark_green4,
+    borderColor: dark_green4,
+    borderColorHover: dark_green3,
+    borderColorFocus: dark_green5,
+    borderColorPress: dark_green4,
+    placeholderColor: light_green9
+} as Theme
+export const dark_green_alt2_SliderThumb = {
+    background: dark_green10,
+    backgroundHover: light_green9,
+    backgroundPress: dark_green8,
+    backgroundFocus: dark_green6,
+    backgroundStrong: dark_green11,
+    backgroundTransparent: dark_green12,
+    color: dark_green3,
+    colorHover: dark_green4,
+    colorPress: dark_green3,
+    colorFocus: dark_green4,
+    colorTransparent: dark_green2,
+    borderColor: dark_green6,
+    borderColorHover: dark_green5,
+    borderColorFocus: dark_green8,
+    borderColorPress: dark_green6,
+    placeholderColor: dark_green6
+} as Theme
+
+export const dark_green_alt2_Tooltip = dark_green_alt2_SliderThumb as Theme
+export const dark_green_alt2_ProgressIndicator = dark_green_alt2_SliderThumb as Theme
+export const dark_green_alt2_Input = {
+    background: dark_green4,
+    backgroundHover: dark_green5,
+    backgroundPress: dark_green6,
+    backgroundFocus: dark_green8,
+    backgroundStrong: dark_green3,
+    backgroundTransparent: dark_green2,
+    color: dark_green11,
+    colorHover: dark_green10,
+    colorPress: dark_green11,
+    colorFocus: dark_green10,
+    colorTransparent: dark_green12,
+    borderColor: light_green9,
+    borderColorHover: dark_green10,
+    borderColorFocus: dark_green8,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green8
+} as Theme
+
+export const dark_green_alt2_TextArea = dark_green_alt2_Input as Theme
 export const dark_green_active_Card = {
     background: dark_green6,
     backgroundHover: dark_green8,
@@ -6725,6 +10477,284 @@ export const dark_green_active_Input = {
 } as Theme
 
 export const dark_green_active_TextArea = dark_green_active_Input as Theme
+export const dark_blue_alt1_Card = {
+    background: dark_blue4,
+    backgroundHover: dark_blue5,
+    backgroundPress: dark_blue6,
+    backgroundFocus: dark_blue8,
+    backgroundStrong: dark_blue3,
+    backgroundTransparent: dark_blue2,
+    color: dark_blue12,
+    colorHover: dark_blue11,
+    colorPress: dark_blue12,
+    colorFocus: dark_blue11,
+    colorTransparent: dark_blue12,
+    borderColor: dark_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: dark_blue6,
+    borderColorPress: dark_blue8,
+    placeholderColor: dark_blue8
+} as Theme
+
+export const dark_blue_alt1_DrawerFrame = dark_blue_alt1_Card as Theme
+export const dark_blue_alt1_Progress = dark_blue_alt1_Card as Theme
+export const dark_blue_alt1_TooltipArrow = dark_blue_alt1_Card as Theme
+export const dark_blue_alt1_Button = {
+    background: dark_blue5,
+    backgroundHover: dark_blue6,
+    backgroundPress: dark_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: dark_blue4,
+    backgroundTransparent: dark_blue3,
+    color: dark_blue12,
+    colorHover: dark_blue11,
+    colorPress: dark_blue12,
+    colorFocus: dark_blue11,
+    colorTransparent: dark_blue11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_blue8,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue6
+} as Theme
+export const dark_blue_alt1_Checkbox = {
+    background: dark_blue5,
+    backgroundHover: dark_blue6,
+    backgroundPress: dark_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: dark_blue4,
+    backgroundTransparent: dark_blue3,
+    color: dark_blue12,
+    colorHover: dark_blue11,
+    colorPress: dark_blue12,
+    colorFocus: dark_blue11,
+    colorTransparent: dark_blue11,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue10,
+    borderColorFocus: dark_blue8,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue6
+} as Theme
+
+export const dark_blue_alt1_Switch = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_TooltipContent = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_SliderTrack = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_blue12,
+    backgroundPress: dark_blue11,
+    backgroundFocus: dark_blue10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_blue2,
+    colorHover: dark_blue3,
+    colorPress: dark_blue2,
+    colorFocus: dark_blue3,
+    colorTransparent: dark_blue1,
+    borderColor: dark_blue10,
+    borderColorHover: light_blue9,
+    borderColorFocus: dark_blue11,
+    borderColorPress: dark_blue10,
+    placeholderColor: dark_blue3
+} as Theme
+export const dark_blue_alt1_SliderTrackActive = {
+    background: light_blue9,
+    backgroundHover: dark_blue8,
+    backgroundPress: dark_blue6,
+    backgroundFocus: dark_blue5,
+    backgroundStrong: dark_blue10,
+    backgroundTransparent: dark_blue11,
+    color: dark_blue2,
+    colorHover: dark_blue3,
+    colorPress: dark_blue2,
+    colorFocus: dark_blue3,
+    colorTransparent: dark_blue3,
+    borderColor: dark_blue5,
+    borderColorHover: dark_blue4,
+    borderColorFocus: dark_blue6,
+    borderColorPress: dark_blue5,
+    placeholderColor: dark_blue8
+} as Theme
+export const dark_blue_alt1_SliderThumb = {
+    background: dark_blue11,
+    backgroundHover: dark_blue10,
+    backgroundPress: light_blue9,
+    backgroundFocus: dark_blue8,
+    backgroundStrong: dark_blue12,
+    backgroundTransparent: light_color1,
+    color: dark_blue2,
+    colorHover: dark_blue3,
+    colorPress: dark_blue2,
+    colorFocus: dark_blue3,
+    colorTransparent: dark_blue1,
+    borderColor: dark_blue8,
+    borderColorHover: dark_blue6,
+    borderColorFocus: light_blue9,
+    borderColorPress: dark_blue8,
+    placeholderColor: dark_blue5
+} as Theme
+
+export const dark_blue_alt1_Tooltip = dark_blue_alt1_SliderThumb as Theme
+export const dark_blue_alt1_ProgressIndicator = dark_blue_alt1_SliderThumb as Theme
+export const dark_blue_alt1_Input = {
+    background: dark_blue3,
+    backgroundHover: dark_blue4,
+    backgroundPress: dark_blue5,
+    backgroundFocus: dark_blue6,
+    backgroundStrong: dark_blue2,
+    backgroundTransparent: dark_blue1,
+    color: dark_blue12,
+    colorHover: dark_blue11,
+    colorPress: dark_blue12,
+    colorFocus: dark_blue11,
+    colorTransparent: light_color1,
+    borderColor: dark_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: dark_blue6,
+    borderColorPress: dark_blue8,
+    placeholderColor: light_blue9
+} as Theme
+
+export const dark_blue_alt1_TextArea = dark_blue_alt1_Input as Theme
+export const dark_blue_alt2_Card = {
+    background: dark_blue5,
+    backgroundHover: dark_blue6,
+    backgroundPress: dark_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: dark_blue4,
+    backgroundTransparent: dark_blue3,
+    color: dark_blue11,
+    colorHover: dark_blue10,
+    colorPress: dark_blue11,
+    colorFocus: dark_blue10,
+    colorTransparent: dark_blue11,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue10,
+    borderColorFocus: dark_blue8,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue6
+} as Theme
+
+export const dark_blue_alt2_DrawerFrame = dark_blue_alt2_Card as Theme
+export const dark_blue_alt2_Progress = dark_blue_alt2_Card as Theme
+export const dark_blue_alt2_TooltipArrow = dark_blue_alt2_Card as Theme
+export const dark_blue_alt2_Button = {
+    background: dark_blue6,
+    backgroundHover: dark_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: dark_blue10,
+    backgroundStrong: dark_blue5,
+    backgroundTransparent: dark_blue4,
+    color: dark_blue11,
+    colorHover: dark_blue10,
+    colorPress: dark_blue11,
+    colorFocus: dark_blue10,
+    colorTransparent: dark_blue10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_blue9,
+    borderColorPress: dark_blue10,
+    placeholderColor: dark_blue5
+} as Theme
+export const dark_blue_alt2_Checkbox = {
+    background: dark_blue6,
+    backgroundHover: dark_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: dark_blue10,
+    backgroundStrong: dark_blue5,
+    backgroundTransparent: dark_blue4,
+    color: dark_blue11,
+    colorHover: dark_blue10,
+    colorPress: dark_blue11,
+    colorFocus: dark_blue10,
+    colorTransparent: dark_blue10,
+    borderColor: dark_blue10,
+    borderColorHover: dark_blue11,
+    borderColorFocus: light_blue9,
+    borderColorPress: dark_blue10,
+    placeholderColor: dark_blue5
+} as Theme
+
+export const dark_blue_alt2_Switch = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_TooltipContent = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_SliderTrack = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_SwitchThumb = {
+    background: dark_blue12,
+    backgroundHover: dark_blue11,
+    backgroundPress: dark_blue10,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_blue3,
+    colorHover: dark_blue4,
+    colorPress: dark_blue3,
+    colorFocus: dark_blue4,
+    colorTransparent: dark_blue1,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue8,
+    borderColorFocus: dark_blue10,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue4
+} as Theme
+export const dark_blue_alt2_SliderTrackActive = {
+    background: dark_blue8,
+    backgroundHover: dark_blue6,
+    backgroundPress: dark_blue5,
+    backgroundFocus: dark_blue4,
+    backgroundStrong: light_blue9,
+    backgroundTransparent: dark_blue10,
+    color: dark_blue3,
+    colorHover: dark_blue4,
+    colorPress: dark_blue3,
+    colorFocus: dark_blue4,
+    colorTransparent: dark_blue4,
+    borderColor: dark_blue4,
+    borderColorHover: dark_blue3,
+    borderColorFocus: dark_blue5,
+    borderColorPress: dark_blue4,
+    placeholderColor: light_blue9
+} as Theme
+export const dark_blue_alt2_SliderThumb = {
+    background: dark_blue10,
+    backgroundHover: light_blue9,
+    backgroundPress: dark_blue8,
+    backgroundFocus: dark_blue6,
+    backgroundStrong: dark_blue11,
+    backgroundTransparent: dark_blue12,
+    color: dark_blue3,
+    colorHover: dark_blue4,
+    colorPress: dark_blue3,
+    colorFocus: dark_blue4,
+    colorTransparent: dark_blue2,
+    borderColor: dark_blue6,
+    borderColorHover: dark_blue5,
+    borderColorFocus: dark_blue8,
+    borderColorPress: dark_blue6,
+    placeholderColor: dark_blue6
+} as Theme
+
+export const dark_blue_alt2_Tooltip = dark_blue_alt2_SliderThumb as Theme
+export const dark_blue_alt2_ProgressIndicator = dark_blue_alt2_SliderThumb as Theme
+export const dark_blue_alt2_Input = {
+    background: dark_blue4,
+    backgroundHover: dark_blue5,
+    backgroundPress: dark_blue6,
+    backgroundFocus: dark_blue8,
+    backgroundStrong: dark_blue3,
+    backgroundTransparent: dark_blue2,
+    color: dark_blue11,
+    colorHover: dark_blue10,
+    colorPress: dark_blue11,
+    colorFocus: dark_blue10,
+    colorTransparent: dark_blue12,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue10,
+    borderColorFocus: dark_blue8,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue8
+} as Theme
+
+export const dark_blue_alt2_TextArea = dark_blue_alt2_Input as Theme
 export const dark_blue_active_Card = {
     background: dark_blue6,
     backgroundHover: dark_blue8,
@@ -6857,6 +10887,284 @@ export const dark_blue_active_Input = {
 } as Theme
 
 export const dark_blue_active_TextArea = dark_blue_active_Input as Theme
+export const dark_purple_alt1_Card = {
+    background: dark_purple4,
+    backgroundHover: dark_purple5,
+    backgroundPress: dark_purple6,
+    backgroundFocus: dark_purple8,
+    backgroundStrong: dark_purple3,
+    backgroundTransparent: dark_purple2,
+    color: dark_purple12,
+    colorHover: dark_purple11,
+    colorPress: dark_purple12,
+    colorFocus: dark_purple11,
+    colorTransparent: dark_purple12,
+    borderColor: dark_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: dark_purple6,
+    borderColorPress: dark_purple8,
+    placeholderColor: dark_purple8
+} as Theme
+
+export const dark_purple_alt1_DrawerFrame = dark_purple_alt1_Card as Theme
+export const dark_purple_alt1_Progress = dark_purple_alt1_Card as Theme
+export const dark_purple_alt1_TooltipArrow = dark_purple_alt1_Card as Theme
+export const dark_purple_alt1_Button = {
+    background: dark_purple5,
+    backgroundHover: dark_purple6,
+    backgroundPress: dark_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: dark_purple4,
+    backgroundTransparent: dark_purple3,
+    color: dark_purple12,
+    colorHover: dark_purple11,
+    colorPress: dark_purple12,
+    colorFocus: dark_purple11,
+    colorTransparent: dark_purple11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_purple8,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple6
+} as Theme
+export const dark_purple_alt1_Checkbox = {
+    background: dark_purple5,
+    backgroundHover: dark_purple6,
+    backgroundPress: dark_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: dark_purple4,
+    backgroundTransparent: dark_purple3,
+    color: dark_purple12,
+    colorHover: dark_purple11,
+    colorPress: dark_purple12,
+    colorFocus: dark_purple11,
+    colorTransparent: dark_purple11,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple10,
+    borderColorFocus: dark_purple8,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple6
+} as Theme
+
+export const dark_purple_alt1_Switch = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_TooltipContent = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_SliderTrack = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_purple12,
+    backgroundPress: dark_purple11,
+    backgroundFocus: dark_purple10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_purple2,
+    colorHover: dark_purple3,
+    colorPress: dark_purple2,
+    colorFocus: dark_purple3,
+    colorTransparent: dark_purple1,
+    borderColor: dark_purple10,
+    borderColorHover: light_purple9,
+    borderColorFocus: dark_purple11,
+    borderColorPress: dark_purple10,
+    placeholderColor: dark_purple3
+} as Theme
+export const dark_purple_alt1_SliderTrackActive = {
+    background: light_purple9,
+    backgroundHover: dark_purple8,
+    backgroundPress: dark_purple6,
+    backgroundFocus: dark_purple5,
+    backgroundStrong: dark_purple10,
+    backgroundTransparent: dark_purple11,
+    color: dark_purple2,
+    colorHover: dark_purple3,
+    colorPress: dark_purple2,
+    colorFocus: dark_purple3,
+    colorTransparent: dark_purple3,
+    borderColor: dark_purple5,
+    borderColorHover: dark_purple4,
+    borderColorFocus: dark_purple6,
+    borderColorPress: dark_purple5,
+    placeholderColor: dark_purple8
+} as Theme
+export const dark_purple_alt1_SliderThumb = {
+    background: dark_purple11,
+    backgroundHover: dark_purple10,
+    backgroundPress: light_purple9,
+    backgroundFocus: dark_purple8,
+    backgroundStrong: dark_purple12,
+    backgroundTransparent: light_color1,
+    color: dark_purple2,
+    colorHover: dark_purple3,
+    colorPress: dark_purple2,
+    colorFocus: dark_purple3,
+    colorTransparent: dark_purple1,
+    borderColor: dark_purple8,
+    borderColorHover: dark_purple6,
+    borderColorFocus: light_purple9,
+    borderColorPress: dark_purple8,
+    placeholderColor: dark_purple5
+} as Theme
+
+export const dark_purple_alt1_Tooltip = dark_purple_alt1_SliderThumb as Theme
+export const dark_purple_alt1_ProgressIndicator = dark_purple_alt1_SliderThumb as Theme
+export const dark_purple_alt1_Input = {
+    background: dark_purple3,
+    backgroundHover: dark_purple4,
+    backgroundPress: dark_purple5,
+    backgroundFocus: dark_purple6,
+    backgroundStrong: dark_purple2,
+    backgroundTransparent: dark_purple1,
+    color: dark_purple12,
+    colorHover: dark_purple11,
+    colorPress: dark_purple12,
+    colorFocus: dark_purple11,
+    colorTransparent: light_color1,
+    borderColor: dark_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: dark_purple6,
+    borderColorPress: dark_purple8,
+    placeholderColor: light_purple9
+} as Theme
+
+export const dark_purple_alt1_TextArea = dark_purple_alt1_Input as Theme
+export const dark_purple_alt2_Card = {
+    background: dark_purple5,
+    backgroundHover: dark_purple6,
+    backgroundPress: dark_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: dark_purple4,
+    backgroundTransparent: dark_purple3,
+    color: dark_purple11,
+    colorHover: dark_purple10,
+    colorPress: dark_purple11,
+    colorFocus: dark_purple10,
+    colorTransparent: dark_purple11,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple10,
+    borderColorFocus: dark_purple8,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple6
+} as Theme
+
+export const dark_purple_alt2_DrawerFrame = dark_purple_alt2_Card as Theme
+export const dark_purple_alt2_Progress = dark_purple_alt2_Card as Theme
+export const dark_purple_alt2_TooltipArrow = dark_purple_alt2_Card as Theme
+export const dark_purple_alt2_Button = {
+    background: dark_purple6,
+    backgroundHover: dark_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: dark_purple10,
+    backgroundStrong: dark_purple5,
+    backgroundTransparent: dark_purple4,
+    color: dark_purple11,
+    colorHover: dark_purple10,
+    colorPress: dark_purple11,
+    colorFocus: dark_purple10,
+    colorTransparent: dark_purple10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_purple9,
+    borderColorPress: dark_purple10,
+    placeholderColor: dark_purple5
+} as Theme
+export const dark_purple_alt2_Checkbox = {
+    background: dark_purple6,
+    backgroundHover: dark_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: dark_purple10,
+    backgroundStrong: dark_purple5,
+    backgroundTransparent: dark_purple4,
+    color: dark_purple11,
+    colorHover: dark_purple10,
+    colorPress: dark_purple11,
+    colorFocus: dark_purple10,
+    colorTransparent: dark_purple10,
+    borderColor: dark_purple10,
+    borderColorHover: dark_purple11,
+    borderColorFocus: light_purple9,
+    borderColorPress: dark_purple10,
+    placeholderColor: dark_purple5
+} as Theme
+
+export const dark_purple_alt2_Switch = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_TooltipContent = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_SliderTrack = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_SwitchThumb = {
+    background: dark_purple12,
+    backgroundHover: dark_purple11,
+    backgroundPress: dark_purple10,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_purple3,
+    colorHover: dark_purple4,
+    colorPress: dark_purple3,
+    colorFocus: dark_purple4,
+    colorTransparent: dark_purple1,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple8,
+    borderColorFocus: dark_purple10,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple4
+} as Theme
+export const dark_purple_alt2_SliderTrackActive = {
+    background: dark_purple8,
+    backgroundHover: dark_purple6,
+    backgroundPress: dark_purple5,
+    backgroundFocus: dark_purple4,
+    backgroundStrong: light_purple9,
+    backgroundTransparent: dark_purple10,
+    color: dark_purple3,
+    colorHover: dark_purple4,
+    colorPress: dark_purple3,
+    colorFocus: dark_purple4,
+    colorTransparent: dark_purple4,
+    borderColor: dark_purple4,
+    borderColorHover: dark_purple3,
+    borderColorFocus: dark_purple5,
+    borderColorPress: dark_purple4,
+    placeholderColor: light_purple9
+} as Theme
+export const dark_purple_alt2_SliderThumb = {
+    background: dark_purple10,
+    backgroundHover: light_purple9,
+    backgroundPress: dark_purple8,
+    backgroundFocus: dark_purple6,
+    backgroundStrong: dark_purple11,
+    backgroundTransparent: dark_purple12,
+    color: dark_purple3,
+    colorHover: dark_purple4,
+    colorPress: dark_purple3,
+    colorFocus: dark_purple4,
+    colorTransparent: dark_purple2,
+    borderColor: dark_purple6,
+    borderColorHover: dark_purple5,
+    borderColorFocus: dark_purple8,
+    borderColorPress: dark_purple6,
+    placeholderColor: dark_purple6
+} as Theme
+
+export const dark_purple_alt2_Tooltip = dark_purple_alt2_SliderThumb as Theme
+export const dark_purple_alt2_ProgressIndicator = dark_purple_alt2_SliderThumb as Theme
+export const dark_purple_alt2_Input = {
+    background: dark_purple4,
+    backgroundHover: dark_purple5,
+    backgroundPress: dark_purple6,
+    backgroundFocus: dark_purple8,
+    backgroundStrong: dark_purple3,
+    backgroundTransparent: dark_purple2,
+    color: dark_purple11,
+    colorHover: dark_purple10,
+    colorPress: dark_purple11,
+    colorFocus: dark_purple10,
+    colorTransparent: dark_purple12,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple10,
+    borderColorFocus: dark_purple8,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple8
+} as Theme
+
+export const dark_purple_alt2_TextArea = dark_purple_alt2_Input as Theme
 export const dark_purple_active_Card = {
     background: dark_purple6,
     backgroundHover: dark_purple8,
@@ -6989,6 +11297,284 @@ export const dark_purple_active_Input = {
 } as Theme
 
 export const dark_purple_active_TextArea = dark_purple_active_Input as Theme
+export const dark_pink_alt1_Card = {
+    background: dark_pink4,
+    backgroundHover: dark_pink5,
+    backgroundPress: dark_pink6,
+    backgroundFocus: dark_pink8,
+    backgroundStrong: dark_pink3,
+    backgroundTransparent: dark_pink2,
+    color: dark_pink12,
+    colorHover: dark_pink11,
+    colorPress: dark_pink12,
+    colorFocus: dark_pink11,
+    colorTransparent: dark_pink12,
+    borderColor: dark_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: dark_pink6,
+    borderColorPress: dark_pink8,
+    placeholderColor: dark_pink8
+} as Theme
+
+export const dark_pink_alt1_DrawerFrame = dark_pink_alt1_Card as Theme
+export const dark_pink_alt1_Progress = dark_pink_alt1_Card as Theme
+export const dark_pink_alt1_TooltipArrow = dark_pink_alt1_Card as Theme
+export const dark_pink_alt1_Button = {
+    background: dark_pink5,
+    backgroundHover: dark_pink6,
+    backgroundPress: dark_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: dark_pink4,
+    backgroundTransparent: dark_pink3,
+    color: dark_pink12,
+    colorHover: dark_pink11,
+    colorPress: dark_pink12,
+    colorFocus: dark_pink11,
+    colorTransparent: dark_pink11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_pink8,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink6
+} as Theme
+export const dark_pink_alt1_Checkbox = {
+    background: dark_pink5,
+    backgroundHover: dark_pink6,
+    backgroundPress: dark_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: dark_pink4,
+    backgroundTransparent: dark_pink3,
+    color: dark_pink12,
+    colorHover: dark_pink11,
+    colorPress: dark_pink12,
+    colorFocus: dark_pink11,
+    colorTransparent: dark_pink11,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink10,
+    borderColorFocus: dark_pink8,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink6
+} as Theme
+
+export const dark_pink_alt1_Switch = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_TooltipContent = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_SliderTrack = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_pink12,
+    backgroundPress: dark_pink11,
+    backgroundFocus: dark_pink10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_pink2,
+    colorHover: dark_pink3,
+    colorPress: dark_pink2,
+    colorFocus: dark_pink3,
+    colorTransparent: dark_pink1,
+    borderColor: dark_pink10,
+    borderColorHover: light_pink9,
+    borderColorFocus: dark_pink11,
+    borderColorPress: dark_pink10,
+    placeholderColor: dark_pink3
+} as Theme
+export const dark_pink_alt1_SliderTrackActive = {
+    background: light_pink9,
+    backgroundHover: dark_pink8,
+    backgroundPress: dark_pink6,
+    backgroundFocus: dark_pink5,
+    backgroundStrong: dark_pink10,
+    backgroundTransparent: dark_pink11,
+    color: dark_pink2,
+    colorHover: dark_pink3,
+    colorPress: dark_pink2,
+    colorFocus: dark_pink3,
+    colorTransparent: dark_pink3,
+    borderColor: dark_pink5,
+    borderColorHover: dark_pink4,
+    borderColorFocus: dark_pink6,
+    borderColorPress: dark_pink5,
+    placeholderColor: dark_pink8
+} as Theme
+export const dark_pink_alt1_SliderThumb = {
+    background: dark_pink11,
+    backgroundHover: dark_pink10,
+    backgroundPress: light_pink9,
+    backgroundFocus: dark_pink8,
+    backgroundStrong: dark_pink12,
+    backgroundTransparent: light_color1,
+    color: dark_pink2,
+    colorHover: dark_pink3,
+    colorPress: dark_pink2,
+    colorFocus: dark_pink3,
+    colorTransparent: dark_pink1,
+    borderColor: dark_pink8,
+    borderColorHover: dark_pink6,
+    borderColorFocus: light_pink9,
+    borderColorPress: dark_pink8,
+    placeholderColor: dark_pink5
+} as Theme
+
+export const dark_pink_alt1_Tooltip = dark_pink_alt1_SliderThumb as Theme
+export const dark_pink_alt1_ProgressIndicator = dark_pink_alt1_SliderThumb as Theme
+export const dark_pink_alt1_Input = {
+    background: dark_pink3,
+    backgroundHover: dark_pink4,
+    backgroundPress: dark_pink5,
+    backgroundFocus: dark_pink6,
+    backgroundStrong: dark_pink2,
+    backgroundTransparent: dark_pink1,
+    color: dark_pink12,
+    colorHover: dark_pink11,
+    colorPress: dark_pink12,
+    colorFocus: dark_pink11,
+    colorTransparent: light_color1,
+    borderColor: dark_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: dark_pink6,
+    borderColorPress: dark_pink8,
+    placeholderColor: light_pink9
+} as Theme
+
+export const dark_pink_alt1_TextArea = dark_pink_alt1_Input as Theme
+export const dark_pink_alt2_Card = {
+    background: dark_pink5,
+    backgroundHover: dark_pink6,
+    backgroundPress: dark_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: dark_pink4,
+    backgroundTransparent: dark_pink3,
+    color: dark_pink11,
+    colorHover: dark_pink10,
+    colorPress: dark_pink11,
+    colorFocus: dark_pink10,
+    colorTransparent: dark_pink11,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink10,
+    borderColorFocus: dark_pink8,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink6
+} as Theme
+
+export const dark_pink_alt2_DrawerFrame = dark_pink_alt2_Card as Theme
+export const dark_pink_alt2_Progress = dark_pink_alt2_Card as Theme
+export const dark_pink_alt2_TooltipArrow = dark_pink_alt2_Card as Theme
+export const dark_pink_alt2_Button = {
+    background: dark_pink6,
+    backgroundHover: dark_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: dark_pink10,
+    backgroundStrong: dark_pink5,
+    backgroundTransparent: dark_pink4,
+    color: dark_pink11,
+    colorHover: dark_pink10,
+    colorPress: dark_pink11,
+    colorFocus: dark_pink10,
+    colorTransparent: dark_pink10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_pink9,
+    borderColorPress: dark_pink10,
+    placeholderColor: dark_pink5
+} as Theme
+export const dark_pink_alt2_Checkbox = {
+    background: dark_pink6,
+    backgroundHover: dark_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: dark_pink10,
+    backgroundStrong: dark_pink5,
+    backgroundTransparent: dark_pink4,
+    color: dark_pink11,
+    colorHover: dark_pink10,
+    colorPress: dark_pink11,
+    colorFocus: dark_pink10,
+    colorTransparent: dark_pink10,
+    borderColor: dark_pink10,
+    borderColorHover: dark_pink11,
+    borderColorFocus: light_pink9,
+    borderColorPress: dark_pink10,
+    placeholderColor: dark_pink5
+} as Theme
+
+export const dark_pink_alt2_Switch = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_TooltipContent = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_SliderTrack = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_SwitchThumb = {
+    background: dark_pink12,
+    backgroundHover: dark_pink11,
+    backgroundPress: dark_pink10,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_pink3,
+    colorHover: dark_pink4,
+    colorPress: dark_pink3,
+    colorFocus: dark_pink4,
+    colorTransparent: dark_pink1,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink8,
+    borderColorFocus: dark_pink10,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink4
+} as Theme
+export const dark_pink_alt2_SliderTrackActive = {
+    background: dark_pink8,
+    backgroundHover: dark_pink6,
+    backgroundPress: dark_pink5,
+    backgroundFocus: dark_pink4,
+    backgroundStrong: light_pink9,
+    backgroundTransparent: dark_pink10,
+    color: dark_pink3,
+    colorHover: dark_pink4,
+    colorPress: dark_pink3,
+    colorFocus: dark_pink4,
+    colorTransparent: dark_pink4,
+    borderColor: dark_pink4,
+    borderColorHover: dark_pink3,
+    borderColorFocus: dark_pink5,
+    borderColorPress: dark_pink4,
+    placeholderColor: light_pink9
+} as Theme
+export const dark_pink_alt2_SliderThumb = {
+    background: dark_pink10,
+    backgroundHover: light_pink9,
+    backgroundPress: dark_pink8,
+    backgroundFocus: dark_pink6,
+    backgroundStrong: dark_pink11,
+    backgroundTransparent: dark_pink12,
+    color: dark_pink3,
+    colorHover: dark_pink4,
+    colorPress: dark_pink3,
+    colorFocus: dark_pink4,
+    colorTransparent: dark_pink2,
+    borderColor: dark_pink6,
+    borderColorHover: dark_pink5,
+    borderColorFocus: dark_pink8,
+    borderColorPress: dark_pink6,
+    placeholderColor: dark_pink6
+} as Theme
+
+export const dark_pink_alt2_Tooltip = dark_pink_alt2_SliderThumb as Theme
+export const dark_pink_alt2_ProgressIndicator = dark_pink_alt2_SliderThumb as Theme
+export const dark_pink_alt2_Input = {
+    background: dark_pink4,
+    backgroundHover: dark_pink5,
+    backgroundPress: dark_pink6,
+    backgroundFocus: dark_pink8,
+    backgroundStrong: dark_pink3,
+    backgroundTransparent: dark_pink2,
+    color: dark_pink11,
+    colorHover: dark_pink10,
+    colorPress: dark_pink11,
+    colorFocus: dark_pink10,
+    colorTransparent: dark_pink12,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink10,
+    borderColorFocus: dark_pink8,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink8
+} as Theme
+
+export const dark_pink_alt2_TextArea = dark_pink_alt2_Input as Theme
 export const dark_pink_active_Card = {
     background: dark_pink6,
     backgroundHover: dark_pink8,
@@ -7121,6 +11707,284 @@ export const dark_pink_active_Input = {
 } as Theme
 
 export const dark_pink_active_TextArea = dark_pink_active_Input as Theme
+export const dark_red_alt1_Card = {
+    background: dark_red4,
+    backgroundHover: dark_red5,
+    backgroundPress: dark_red6,
+    backgroundFocus: dark_red8,
+    backgroundStrong: dark_red3,
+    backgroundTransparent: dark_red2,
+    color: dark_red12,
+    colorHover: dark_red11,
+    colorPress: dark_red12,
+    colorFocus: dark_red11,
+    colorTransparent: dark_red12,
+    borderColor: dark_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: dark_red6,
+    borderColorPress: dark_red8,
+    placeholderColor: dark_red8
+} as Theme
+
+export const dark_red_alt1_DrawerFrame = dark_red_alt1_Card as Theme
+export const dark_red_alt1_Progress = dark_red_alt1_Card as Theme
+export const dark_red_alt1_TooltipArrow = dark_red_alt1_Card as Theme
+export const dark_red_alt1_Button = {
+    background: dark_red5,
+    backgroundHover: dark_red6,
+    backgroundPress: dark_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: dark_red4,
+    backgroundTransparent: dark_red3,
+    color: dark_red12,
+    colorHover: dark_red11,
+    colorPress: dark_red12,
+    colorFocus: dark_red11,
+    colorTransparent: dark_red11,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: dark_red8,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red6
+} as Theme
+export const dark_red_alt1_Checkbox = {
+    background: dark_red5,
+    backgroundHover: dark_red6,
+    backgroundPress: dark_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: dark_red4,
+    backgroundTransparent: dark_red3,
+    color: dark_red12,
+    colorHover: dark_red11,
+    colorPress: dark_red12,
+    colorFocus: dark_red11,
+    colorTransparent: dark_red11,
+    borderColor: light_red9,
+    borderColorHover: dark_red10,
+    borderColorFocus: dark_red8,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red6
+} as Theme
+
+export const dark_red_alt1_Switch = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_TooltipContent = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_SliderTrack = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_red12,
+    backgroundPress: dark_red11,
+    backgroundFocus: dark_red10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_red2,
+    colorHover: dark_red3,
+    colorPress: dark_red2,
+    colorFocus: dark_red3,
+    colorTransparent: dark_red1,
+    borderColor: dark_red10,
+    borderColorHover: light_red9,
+    borderColorFocus: dark_red11,
+    borderColorPress: dark_red10,
+    placeholderColor: dark_red3
+} as Theme
+export const dark_red_alt1_SliderTrackActive = {
+    background: light_red9,
+    backgroundHover: dark_red8,
+    backgroundPress: dark_red6,
+    backgroundFocus: dark_red5,
+    backgroundStrong: dark_red10,
+    backgroundTransparent: dark_red11,
+    color: dark_red2,
+    colorHover: dark_red3,
+    colorPress: dark_red2,
+    colorFocus: dark_red3,
+    colorTransparent: dark_red3,
+    borderColor: dark_red5,
+    borderColorHover: dark_red4,
+    borderColorFocus: dark_red6,
+    borderColorPress: dark_red5,
+    placeholderColor: dark_red8
+} as Theme
+export const dark_red_alt1_SliderThumb = {
+    background: dark_red11,
+    backgroundHover: dark_red10,
+    backgroundPress: light_red9,
+    backgroundFocus: dark_red8,
+    backgroundStrong: dark_red12,
+    backgroundTransparent: light_color1,
+    color: dark_red2,
+    colorHover: dark_red3,
+    colorPress: dark_red2,
+    colorFocus: dark_red3,
+    colorTransparent: dark_red1,
+    borderColor: dark_red8,
+    borderColorHover: dark_red6,
+    borderColorFocus: light_red9,
+    borderColorPress: dark_red8,
+    placeholderColor: dark_red5
+} as Theme
+
+export const dark_red_alt1_Tooltip = dark_red_alt1_SliderThumb as Theme
+export const dark_red_alt1_ProgressIndicator = dark_red_alt1_SliderThumb as Theme
+export const dark_red_alt1_Input = {
+    background: dark_red3,
+    backgroundHover: dark_red4,
+    backgroundPress: dark_red5,
+    backgroundFocus: dark_red6,
+    backgroundStrong: dark_red2,
+    backgroundTransparent: dark_red1,
+    color: dark_red12,
+    colorHover: dark_red11,
+    colorPress: dark_red12,
+    colorFocus: dark_red11,
+    colorTransparent: light_color1,
+    borderColor: dark_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: dark_red6,
+    borderColorPress: dark_red8,
+    placeholderColor: light_red9
+} as Theme
+
+export const dark_red_alt1_TextArea = dark_red_alt1_Input as Theme
+export const dark_red_alt2_Card = {
+    background: dark_red5,
+    backgroundHover: dark_red6,
+    backgroundPress: dark_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: dark_red4,
+    backgroundTransparent: dark_red3,
+    color: dark_red11,
+    colorHover: dark_red10,
+    colorPress: dark_red11,
+    colorFocus: dark_red10,
+    colorTransparent: dark_red11,
+    borderColor: light_red9,
+    borderColorHover: dark_red10,
+    borderColorFocus: dark_red8,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red6
+} as Theme
+
+export const dark_red_alt2_DrawerFrame = dark_red_alt2_Card as Theme
+export const dark_red_alt2_Progress = dark_red_alt2_Card as Theme
+export const dark_red_alt2_TooltipArrow = dark_red_alt2_Card as Theme
+export const dark_red_alt2_Button = {
+    background: dark_red6,
+    backgroundHover: dark_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: dark_red10,
+    backgroundStrong: dark_red5,
+    backgroundTransparent: dark_red4,
+    color: dark_red11,
+    colorHover: dark_red10,
+    colorPress: dark_red11,
+    colorFocus: dark_red10,
+    colorTransparent: dark_red10,
+    borderColor: light_Button_borderColor,
+    borderColorHover: light_Button_borderColor,
+    borderColorFocus: light_red9,
+    borderColorPress: dark_red10,
+    placeholderColor: dark_red5
+} as Theme
+export const dark_red_alt2_Checkbox = {
+    background: dark_red6,
+    backgroundHover: dark_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: dark_red10,
+    backgroundStrong: dark_red5,
+    backgroundTransparent: dark_red4,
+    color: dark_red11,
+    colorHover: dark_red10,
+    colorPress: dark_red11,
+    colorFocus: dark_red10,
+    colorTransparent: dark_red10,
+    borderColor: dark_red10,
+    borderColorHover: dark_red11,
+    borderColorFocus: light_red9,
+    borderColorPress: dark_red10,
+    placeholderColor: dark_red5
+} as Theme
+
+export const dark_red_alt2_Switch = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_TooltipContent = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_SliderTrack = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_SwitchThumb = {
+    background: dark_red12,
+    backgroundHover: dark_red11,
+    backgroundPress: dark_red10,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_red3,
+    colorHover: dark_red4,
+    colorPress: dark_red3,
+    colorFocus: dark_red4,
+    colorTransparent: dark_red1,
+    borderColor: light_red9,
+    borderColorHover: dark_red8,
+    borderColorFocus: dark_red10,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red4
+} as Theme
+export const dark_red_alt2_SliderTrackActive = {
+    background: dark_red8,
+    backgroundHover: dark_red6,
+    backgroundPress: dark_red5,
+    backgroundFocus: dark_red4,
+    backgroundStrong: light_red9,
+    backgroundTransparent: dark_red10,
+    color: dark_red3,
+    colorHover: dark_red4,
+    colorPress: dark_red3,
+    colorFocus: dark_red4,
+    colorTransparent: dark_red4,
+    borderColor: dark_red4,
+    borderColorHover: dark_red3,
+    borderColorFocus: dark_red5,
+    borderColorPress: dark_red4,
+    placeholderColor: light_red9
+} as Theme
+export const dark_red_alt2_SliderThumb = {
+    background: dark_red10,
+    backgroundHover: light_red9,
+    backgroundPress: dark_red8,
+    backgroundFocus: dark_red6,
+    backgroundStrong: dark_red11,
+    backgroundTransparent: dark_red12,
+    color: dark_red3,
+    colorHover: dark_red4,
+    colorPress: dark_red3,
+    colorFocus: dark_red4,
+    colorTransparent: dark_red2,
+    borderColor: dark_red6,
+    borderColorHover: dark_red5,
+    borderColorFocus: dark_red8,
+    borderColorPress: dark_red6,
+    placeholderColor: dark_red6
+} as Theme
+
+export const dark_red_alt2_Tooltip = dark_red_alt2_SliderThumb as Theme
+export const dark_red_alt2_ProgressIndicator = dark_red_alt2_SliderThumb as Theme
+export const dark_red_alt2_Input = {
+    background: dark_red4,
+    backgroundHover: dark_red5,
+    backgroundPress: dark_red6,
+    backgroundFocus: dark_red8,
+    backgroundStrong: dark_red3,
+    backgroundTransparent: dark_red2,
+    color: dark_red11,
+    colorHover: dark_red10,
+    colorPress: dark_red11,
+    colorFocus: dark_red10,
+    colorTransparent: dark_red12,
+    borderColor: light_red9,
+    borderColorHover: dark_red10,
+    borderColorFocus: dark_red8,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red8
+} as Theme
+
+export const dark_red_alt2_TextArea = dark_red_alt2_Input as Theme
 export const dark_red_active_Card = {
     background: dark_red6,
     backgroundHover: dark_red8,
