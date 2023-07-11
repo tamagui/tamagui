@@ -1546,7 +1546,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                                 </Paragraph>
                                 <Paragraph theme="alt1" size="$2">
                                   {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                                  annual renewal (cancel any time)
+                                  annual renewal (cancel anytime)
                                 </Paragraph>
                               </YStack>
                             </Label>
