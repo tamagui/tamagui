@@ -20,7 +20,7 @@ const modelUrl = `${
     : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
 }/takeout.gltf`
 
-let frameCount = 0
+let frameCount = 2
 const Box = dynamic(() => Promise.resolve(BoxComponent), { ssr: false })
 
 const BoxComponent = (props) => (
@@ -39,7 +39,7 @@ const BoxComponent = (props) => (
   </Canvas>
 )
 
-let num = 100
+let num = 1
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
   const router = useRouter()
@@ -53,7 +53,9 @@ function TakeoutBox3D(props) {
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
-    ref.current!.rotation.y += (delta * 500) / (frameCount + 1)
+    const rotate = (delta * 30) / (frameCount * (frameCount / 50))
+    console.log(rotate)
+    ref.current!.rotation.y += rotate > 0.001 ? rotate : 0
     num = (num * num) / 120 + 0.5
     // const isSlow = frameCount > 40
     frameCount++
