@@ -50,7 +50,7 @@ const handler: NextApiHandler = async (req, res) => {
     subscriptions,
     teams: {
       all: userTeams,
-      personal: getPersonalTeam(userTeams),
+      personal: getPersonalTeam(userTeams, user.id),
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
     },
@@ -88,8 +88,8 @@ const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   }))
 }
 
-function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
-  return getSingle(teams?.filter((team) => team.is_personal))
+function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>, userId: string) {
+  return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
 }
 
 function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
