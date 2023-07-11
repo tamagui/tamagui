@@ -2613,7 +2613,10 @@ const FeatureIcon = ({
   title: string
 }) => {
   const Tint = useTint()
+  const store = useTakeoutStore()
+  
   useEffect(() => {
+    if (store.showPurchase) return
     if (!keepCycling) return
 
     const id = setTimeout(() => {
@@ -2621,7 +2624,7 @@ const FeatureIcon = ({
     }, 10_000)
 
     return () => clearTimeout(id)
-  }, [Tint.tint])
+  }, [Tint.tint, store.showPurchase])
   const theme = Tint.tints[themeIndex] as ThemeName
   const active = Tint.tint === theme
 
