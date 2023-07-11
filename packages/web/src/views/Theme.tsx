@@ -36,6 +36,8 @@ export function Theme(props: ThemeProps) {
   return useThemedChildren(themeState, children, props, isRoot)
 }
 
+Theme.avoidForwardRef = true
+
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,

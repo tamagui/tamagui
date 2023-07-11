@@ -16,11 +16,16 @@ export const Slot = forwardRef<any, SlotProps>(function Slot(props, forwardedRef
   const { children, ...slotProps } = props
 
   if (isValidElement(children)) {
-    const childProps = {
-      ...mergeSlotProps(children, slotProps),
-      ref: composeRefs(forwardedRef, (children as any).ref),
-    }
-    return cloneElement(children, childProps)
+    const mergedProps = mergeSlotProps(children, slotProps)
+    return cloneElement(
+      children,
+      children.type['avoidForwardRef']
+        ? mergedProps
+        : {
+            ...mergedProps,
+            ref: composeRefs(forwardedRef, (children as any).ref),
+          }
+    )
   }
 
   return Children.count(children) > 1 ? Children.only(null) : null
