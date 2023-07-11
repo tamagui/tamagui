@@ -434,7 +434,8 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         position="absolute"
         top={300}
         r="-0%"
-        $sm={{ r: '-180%' }}
+        $xs={{ r: '-120%' }}
+        $sm={{ r: '-75%' }}
         $md={{ r: '-50%' }}
         $lg={{ r: '-35%' }}
         zIndex={-1}
@@ -525,9 +526,11 @@ export default function TakeoutPage({
                   top: 150,
                 }}
                 $xs={{
-                  top: '60vh',
-                  left: '50%',
-                  x: '-50%',
+                  top: '65vh',
+                  left: 0,
+                  right: 0,
+                  ai: 'center',
+                  jc: 'center',
                 }}
                 zIndex="$5"
               >
@@ -2614,7 +2617,7 @@ const FeatureIcon = ({
 }) => {
   const Tint = useTint()
   const store = useTakeoutStore()
-  
+
   useEffect(() => {
     if (store.showPurchase) return
     if (!keepCycling) return
