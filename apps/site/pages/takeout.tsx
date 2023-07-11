@@ -1399,11 +1399,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           w="90%"
           maw={900}
         >
-          <ScrollView>
-            <YStack h="100%" space>
+          <ScrollView $gtSm={{ maxHeight: '90vh' }}>
+            <YStack space>
               <XStack ai="center" jc="space-between" gap="$6" mx="$8">
                 <Separator />
-                <Dialog.Title size="$9" $sm={{ size: '$8' }} my="$3" als="center">
+                <Dialog.Title size="$8" $sm={{ size: '$7' }} my="$1" als="center">
                   Purchase 🥡
                 </Dialog.Title>
                 <Separator />
@@ -1503,7 +1503,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   </YStack>
                 </ScrollView>
 
-                <YStack f={1} space="$4" mt="$8">
+                <YStack f={1} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
@@ -1540,11 +1540,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph theme="alt1" size="$2">
+                                <Paragraph theme="alt1">
                                   {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
-                                  year of updates &mdash;{' '}
+                                  year of updates
+                                </Paragraph>
+                                <Paragraph theme="alt1" size="$2">
                                   {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
-                                  annual renewal
+                                  annual renewal (cancel any time)
                                 </Paragraph>
                               </YStack>
                             </Label>
@@ -1554,7 +1556,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     </RadioGroup>
                   </YStack>
 
-                  <Spacer f={100} />
+                  <Spacer size="$1" />
 
                   <YStack space>
                     <XStack ai="flex-end" jc="flex-end" gap="$2">
@@ -1569,7 +1571,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                       )}
                     </XStack>
-                    <PromotionInput />
+                    <Unspaced>
+                      <YStack mt="$2">
+                        <PromotionInput />
+                      </YStack>
+                    </Unspaced>
 
                     <Separator />
 
@@ -1641,21 +1647,20 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   </YStack>
                 </YStack>
               </XStack>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button
-                    position="absolute"
-                    top="$1"
-                    right="$1"
-                    size="$2"
-                    circular
-                    icon={X}
-                  />
-                </Dialog.Close>
-              </Unspaced>
             </YStack>
           </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2281,7 +2286,7 @@ const FaqModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '80vh' }}>
+            <YStack $gtSm={{ maxHeight: '90vh' }}>
               <H1 $sm={{ size: '$8' }}>Frequently Asked Questions</H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
@@ -2364,21 +2369,20 @@ const FaqModal = () => {
                   </Paragraph>
                 </YStack> */}
               </XStack>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button
-                    position="absolute"
-                    top="$1"
-                    right="$1"
-                    size="$2"
-                    circular
-                    icon={X}
-                  />
-                </Dialog.Close>
-              </Unspaced>
             </YStack>
           </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2433,7 +2437,7 @@ const AgreementModal = () => {
           maw={900}
         >
           <ScrollView>
-            <YStack $gtSm={{ maxHeight: '80vh' }} space>
+            <YStack $gtSm={{ maxHeight: '90vh' }} space>
               <H1 $sm={{ size: '$8' }}>License Agreement</H1>
 
               <Paragraph>
@@ -2547,21 +2551,20 @@ const AgreementModal = () => {
                 Got any further questions?{' '}
                 <a href="mailto:support@tamagui.dev">Send us an email</a>
               </Paragraph>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button
-                    position="absolute"
-                    top="$1"
-                    right="$1"
-                    size="$2"
-                    circular
-                    icon={X}
-                  />
-                </Dialog.Close>
-              </Unspaced>
             </YStack>
           </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2934,7 +2937,7 @@ const PromotionInput = () => {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
           opacity={1}
-          ta="center"
+          ta="right"
           textDecorationLine="underline"
           cursor="pointer"
           theme="alt2"
