@@ -1540,8 +1540,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph theme="alt1" ellipse>
-                                  {formatPrice(price.unit_amount! / 100, 'usd')}
+                                <Paragraph theme="alt1" size="$2" ellipse>
+                                  {formatPrice(price.unit_amount! / 100, 'usd')} base + 1y updates
+                                  </Paragraph>
+                                <Paragraph theme="alt1" size="$2" ellipse>
+                                  {formatPrice(price.unit_amount! / 2 * 100, 'usd')} subscription renewal
                                 </Paragraph>
                               </YStack>
                             </Label>
@@ -2589,10 +2592,7 @@ const DiscountText = ({
           px="$4"
           py="$1"
           backgroundColor="$color8"
-          style={{
-            clipPath:
-              'polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px))',
-          }}
+          className='corner-cut'
         >
           <MunroP color="white" textAlign="center" size="$7">
             {text.trim()}
