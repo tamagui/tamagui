@@ -1,3 +1,12 @@
+import { useGLTF } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
+import BezierEasing from 'bezier-easing'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { Suspense, useEffect, useRef } from 'react'
+
+import { Stage } from '../../../components/Stage'
+
 export default function DemoComponentsPage(props) {
   return (
     <div style={{ backgroundColor: '#04F404' }}>
@@ -5,14 +14,6 @@ export default function DemoComponentsPage(props) {
     </div>
   )
 }
-
-import { useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
-import { Suspense, useEffect, useRef } from 'react'
-
-import { Stage } from '../../../components/Stage'
 
 const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
@@ -39,7 +40,8 @@ const BoxComponent = (props) => (
   </Canvas>
 )
 
-let num = 1
+const easing = BezierEasing(0.02, 0.02, 0, 0.15)
+
 function TakeoutBox3D(props) {
   const ref = useRef<any>()
   const router = useRouter()
@@ -53,21 +55,10 @@ function TakeoutBox3D(props) {
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
-    const rotate = (delta * 30) / (frameCount * (frameCount / 50))
-    console.log(rotate)
-    ref.current!.rotation.y += rotate > 0.001 ? rotate : 0
-    num = (num * num) / 120 + 0.5
-    // const isSlow = frameCount > 40
+    const bezierValue = easing(1 - (frameCount > 100 ? 1 : frameCount / 100))
+    ref.current!.rotation.y += delta * 15 * bezierValue
+
     frameCount++
-
-    // // ref.current!.rotation.z += delta * 0.1
-    // ref.current!.rotation.y += delta * (isSlow ? 0.05 : 1)
-
-    // // effect to spin faster on first entering
-    // if (frameCount <= 40) {
-    //   frameCount++
-    // }
-    // ref.current!.rotation.x += delta * 0.1
   })
 
   return (

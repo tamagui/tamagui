@@ -6180,6 +6180,7 @@ __metadata:
     "@types/wicg-file-system-access": ^2020.9.6
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-polyfill: ^6.26.0
+    bezier-easing: ^2.1.0
     color2k: ^1.2.4
     compare-versions: ^4.1.3
     d3-scale: ^3.3.0
@@ -9103,6 +9104,13 @@ __metadata:
   dependencies:
     open: ^8.0.4
   checksum: 1471552fa7f733561e7f49e812be074b421153006ca744de985fb6d38939807959fc5fe9cb819cf09f864782e294704fd3b31711ea14c115baf3330a2f1135de
+  languageName: node
+  linkType: hard
+
+"bezier-easing@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "bezier-easing@npm:2.1.0"
+  checksum: ec22666b5385979b3e7a63eaf2631395b1be5beb3aed4f14cc70ae9eb09032082584f7e3eec045e4c122466987ed7e159f5b39f82b8a9870cd55e75b0d55a7d5
   languageName: node
   linkType: hard
 
