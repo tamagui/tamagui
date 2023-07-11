@@ -77,6 +77,7 @@ const handler: NextApiHandler = async (req, res) => {
         github_id: githubStatus.personal.meta.id,
         name: githubLogin,
         is_personal: true,
+        owner_id: user.id,
         tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
         is_active: githubStatus.personal.isSponsoring,
       })
