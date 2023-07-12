@@ -100,7 +100,6 @@ export function styled<
         defaultVariants,
         acceptsClassName: acceptsClassNameProp,
         context,
-        parentNames,
         ...defaultProps
       } = options
 
@@ -116,11 +115,6 @@ export function styled<
 
         if (parentStaticConfig.variants) {
           variants = mergeVariants(parentStaticConfig.variants, variants)
-        }
-
-        if (options.name) {
-          parentNames = [...(parentStaticConfig.parentNames || [])]
-          parentNames.push(options.name)
         }
       }
 
@@ -171,7 +165,6 @@ export function styled<
         isText,
         acceptsClassName,
         context,
-        parentNames,
         ...reactNativeConfig,
         isStyledHOC: Boolean(parentStaticConfig?.isHOC),
       }
