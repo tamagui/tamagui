@@ -16,7 +16,6 @@ export {
   getConfig,
   getThemes,
   getTokens,
-  onConfiguredOnce,
   updateConfig,
   getToken,
   getTokenValue,

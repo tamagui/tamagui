@@ -15,7 +15,6 @@ export type HeadingProps = GetProps<typeof Heading>
 
 export const H1 = styled(Heading, {
   name: 'H1',
-  debug: 'verbose',
   tag: 'h1',
   size: '$10',
 })
