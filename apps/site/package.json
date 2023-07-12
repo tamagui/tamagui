@@ -17,7 +17,7 @@
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start --port 3333",
     "watch:site-data": "next-remote-watch ./data",
-    "env:pull": "vercel env pull .env.local",
+    "env:pull": "vc env pull .env.local",
     "supabase:generate": "npx supabase gen types typescript --local > lib/supabase-types.ts",
     "stripe:listen": "stripe listen --forward-to localhost:5005/api/stripe/webhook"
   },

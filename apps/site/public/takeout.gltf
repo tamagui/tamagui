@@ -20,7 +20,7 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"pack_pivot.005",
+			"name":"pack",
 			"rotation":[
 				0,
 				0.7071068286895752,
@@ -30,7 +30,7 @@
 		},
 		{
 			"mesh":1,
-			"name":"handle_pivot.003",
+			"name":"handle",
 			"rotation":[
 				0,
 				0.7071068286895752,
