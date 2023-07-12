@@ -478,6 +478,6 @@ declare function useButton<Props extends ButtonProps>(propsIn: Props, { Text }?:
     isNested: boolean;
     props: Props;
 };
-export { Button, ButtonFrame, ButtonText, ButtonIcon, useButton, buttonStaticConfig, };
+export { Button, ButtonFrame, ButtonIcon, ButtonText, buttonStaticConfig, useButton, };
 export type { ButtonProps };
 //# sourceMappingURL=Button.d.ts.map

@@ -6,7 +6,7 @@ import {
   isWeb,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
-import { stylePropsView, validStyles } from '@tamagui/helpers'
+import { validStyles } from '@tamagui/helpers'
 import React, {
   Children,
   Fragment,
@@ -25,9 +25,9 @@ import { stackDefaultStyles } from './constants/constants'
 import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
-import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
+import { parseStaticConfig } from './helpers/parseStaticConfig'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
 import { useShallowSetState } from './helpers/useShallowSetState'
@@ -43,7 +43,6 @@ import {
   SpacerProps,
   StaticConfig,
   StaticConfigParsed,
-  StylableComponent,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
@@ -121,19 +120,8 @@ export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = TamaguiElement,
   BaseProps = never
->(
-  staticConfigIn: Partial<StaticConfig> | StaticConfigParsed,
-  ParentComponent?: StylableComponent
-) {
-  const staticConfig = (() => {
-    const next = extendStaticConfig(staticConfigIn, ParentComponent)
-
-    if ('parsed' in next) {
-      return next
-    } else {
-      return parseStaticConfig(next)
-    }
-  })()
+>(staticConfigIn: Partial<StaticConfig> | StaticConfigParsed) {
+  const staticConfig = parseStaticConfig(staticConfigIn)
 
   const {
     Component,
@@ -947,37 +935,21 @@ export function createComponent<
     // HOC doesn't use defaultProps those already come in below
     let defaultPropsIn = staticConfig.defaultProps || {}
 
-    // because we run createTamagui after styled() defs, have to do some work here
-    // gather defaults props one time and merge downwards
-    // find last unprocessed and process
-    const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
-
-    if (tamaguiConfig.defaultProps && parentNames && staticConfig.componentName) {
-      defaultPropsIn = mergeConfigDefaultProps(
-        staticConfig.componentName,
-        defaultPropsIn,
-        tamaguiConfig.defaultProps,
-        parentNames,
-        tamaguiConfig
-      )
-    }
-
-    const debug = defaultPropsIn['debug']
-
     if (defaultPropsIn.tag) {
       defaultTag = defaultPropsIn.tag
     }
 
+    // TODO we can remove this right?
     const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
-
     defaultProps = restProps
 
+    // TODO and this??
     if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
       defaultProps.fontFamily = `$${conf.defaultFont}`
     }
 
     // add debug logs
-    if (process.env.NODE_ENV === 'development' && debug) {
+    if (process.env.NODE_ENV === 'development' && defaultPropsIn['debug']) {
       if (process.env.IS_STATIC !== 'is_static') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
@@ -995,25 +967,18 @@ export function createComponent<
 
   let res: ComponentType = component as any
 
-  if (staticConfigIn.memo) {
+  if (staticConfig.memo) {
     res = memo(res) as any
   }
 
-  // is this necessary?
-  res.staticConfig = {
-    validStyles: staticConfig.validStyles || stylePropsView,
-    ...staticConfig,
-  }
+  res.staticConfig = staticConfig
 
   function extendStyledConfig() {
-    return extendStaticConfig(
-      {
-        ...staticConfig,
-        neverFlatten: true,
-        isHOC: true,
-      },
-      res
-    )
+    return {
+      ...staticConfig,
+      neverFlatten: true,
+      isHOC: true,
+    }
   }
 
   function extractable(Component: any) {
@@ -1227,43 +1192,6 @@ function isUnspaced(child: React.ReactNode) {
 }
 
 const DefaultProps = new Map()
-
-function mergeConfigDefaultProps(
-  name: string,
-  props: Record<string, any>,
-  configDefaults: Record<string, Object>,
-  parentNames: (string | undefined)[],
-  conf: TamaguiInternalConfig
-) {
-  const len = parentNames.length
-  let prev
-
-  for (let i = 0; i < len; i++) {
-    const n = parentNames[i]
-    if (!n) continue
-    if (DefaultProps.has(n)) {
-      prev = DefaultProps.get(n)
-      continue
-    }
-    const props = configDefaults[n]
-    if (!props) {
-      if (prev) {
-        DefaultProps.set(n, prev)
-      }
-      continue
-    }
-    prev = mergeProps(prev || {}, props, false, conf.inverseShorthands)[0]
-    DefaultProps.set(n, prev)
-  }
-
-  // overwrite the user defined defaults on top of internal defined defaults
-  const ourDefaultsMerged = DefaultProps.get(name)
-  if (ourDefaultsMerged) {
-    return mergeProps(props, ourDefaultsMerged, false, conf.inverseShorthands)[0]
-  }
-
-  return props
-}
 
 const AbsoluteFill: any = createComponent({
   defaultProps: {
