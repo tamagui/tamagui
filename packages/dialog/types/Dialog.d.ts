@@ -3795,7 +3795,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & React.RefAttributes<typeof import("react-native").ScrollView>>;
+        }>> & React.RefAttributes<import("react-native").ScrollView>>;
     };
     Adapt: (({ platform, when, children }: import("@tamagui/adapt").AdaptProps) => any) & {
         Contents: {
