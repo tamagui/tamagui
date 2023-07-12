@@ -123,6 +123,24 @@ export function createComponent<
 >(staticConfigIn: Partial<StaticConfig> | StaticConfigParsed) {
   const staticConfig = parseStaticConfig(staticConfigIn)
 
+  onConfiguredOnce((conf) => {
+    // one time only setup
+    if (!tamaguiConfig) {
+      tamaguiConfig = conf
+
+      if (!initialTheme) {
+        const next = conf.themes[Object.keys(conf.themes)[0]]
+        initialTheme = proxyThemeVariables(next)
+        if (process.env.NODE_ENV === 'development') {
+          if (!initialTheme) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log('Warning: Missing theme')
+          }
+        }
+      }
+    }
+  })
+
   const {
     Component,
     isText,
@@ -133,10 +151,19 @@ export function createComponent<
   } = staticConfig
 
   const defaultComponentClassName = `is_${staticConfig.componentName}`
-  let defaultProps: any
-  let defaultTag: string | undefined
+  const defaultProps = staticConfig.defaultProps
 
-  // see onConfiguredOnce below which attaches a name then to this component
+  if (process.env.NODE_ENV === 'development' && staticConfigIn.defaultProps?.['debug']) {
+    if (process.env.IS_STATIC !== 'is_static') {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+        staticConfig,
+        defaultProps,
+        defaultPropsKeyOrder: Object.keys(defaultProps),
+      })
+    }
+  }
+
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
@@ -290,11 +317,7 @@ export function createComponent<
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
-    const element = isWeb
-      ? isTaggable
-        ? props.tag || defaultTag || Component
-        : Component
-      : Component
+    const element = isWeb ? (isTaggable ? props.tag || Component : Component) : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -914,54 +937,6 @@ export function createComponent<
   if (staticConfig.componentName) {
     component.displayName = staticConfig.componentName
   }
-
-  onConfiguredOnce((conf) => {
-    // one time only setup
-    if (!tamaguiConfig) {
-      tamaguiConfig = conf
-
-      if (!initialTheme) {
-        const next = conf.themes[Object.keys(conf.themes)[0]]
-        initialTheme = proxyThemeVariables(next)
-        if (process.env.NODE_ENV === 'development') {
-          if (!initialTheme) {
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('Warning: Missing theme')
-          }
-        }
-      }
-    }
-
-    // HOC doesn't use defaultProps those already come in below
-    let defaultPropsIn = staticConfig.defaultProps || {}
-
-    if (defaultPropsIn.tag) {
-      defaultTag = defaultPropsIn.tag
-    }
-
-    // TODO we can remove this right?
-    const { name, variants, defaultVariants, ...restProps } = defaultPropsIn
-    defaultProps = restProps
-
-    // TODO and this??
-    if (staticConfig.isText && !defaultProps.fontFamily && conf.defaultFont) {
-      defaultProps.fontFamily = `$${conf.defaultFont}`
-    }
-
-    // add debug logs
-    if (process.env.NODE_ENV === 'development' && defaultPropsIn['debug']) {
-      if (process.env.IS_STATIC !== 'is_static') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
-          staticConfig,
-          defaultPropsIn,
-          defaultProps,
-          defaultPropsKeyOrder: Object.keys(defaultProps),
-          defaultTag,
-        })
-      }
-    }
-  })
 
   type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
 
