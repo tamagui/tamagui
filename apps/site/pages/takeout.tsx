@@ -434,10 +434,10 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         position="absolute"
         top={300}
         r="-0%"
-        $xs={{ r: '-120%' }}
-        $sm={{ r: '-75%' }}
-        $md={{ r: '-50%' }}
-        $lg={{ r: '-35%' }}
+        $xs={{ r: '-140%' }}
+        $sm={{ r: '-100%' }}
+        $md={{ r: '-70%' }}
+        $lg={{ r: '-45%' }}
         zIndex={-1}
       >
         {enable3d && (
@@ -751,6 +751,25 @@ export default function TakeoutPage({
 
                 <Spacer size="$6" />
 
+                <YStack marginTop={-260} marginBottom={-890} x={700} zi={-1}>
+                  <div
+                    style={{
+                      transform: 'rotateX(41deg) rotateZ(33deg)',
+                      transformStyle: 'preserve-3d',
+                      width: 715 * 0.75,
+                      borderRadius: 78,
+                      boxShadow: '0 0 30px 40px rgba(0,0,0,1)',
+                    }}
+                  >
+                    <Image
+                      alt="iPhone screenshot of Tamagui"
+                      src="/tama-phone.svg"
+                      width={715 * 0.75}
+                      height={1467 * 0.75}
+                    />
+                  </div>
+                </YStack>
+
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
@@ -856,28 +875,10 @@ export default function TakeoutPage({
                   </TakeoutCard>
                 </XStack>
 
-                <YStack marginTop={-460} marginBottom={-590} x={700} zi={-1}>
-                  <div
-                    style={{
-                      transform: 'rotateX(41deg) rotateZ(33deg)',
-                      transformStyle: 'preserve-3d',
-                      width: 715 * 0.75,
-                      borderRadius: 78,
-                      boxShadow: '0 0 30px 40px rgba(0,0,0,1)',
-                    }}
-                  >
-                    <Image
-                      alt="iPhone screenshot of Tamagui"
-                      src="/tama-phone.svg"
-                      width={715 * 0.75}
-                      height={1467 * 0.75}
-                    />
-                  </div>
-                </YStack>
-
                 <ThemeTint>
                   <YStack
                     p="$6"
+                    mt="$8"
                     className="blur-medium"
                     px="$8"
                     space="$6"
@@ -1007,7 +1008,7 @@ export default function TakeoutPage({
                 <Spacer />
 
                 <Paragraph als="center" fontFamily="$cherryBomb" size="$10">
-                  Gallery
+                  Take a peek
                 </Paragraph>
 
                 <ImageGallery />
