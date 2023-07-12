@@ -294,7 +294,7 @@ export declare const Popover: React.FC<PopoverProps> & {
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<ScrollViewProps & Omit<StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & React.RefAttributes<typeof ScrollView>>;
+        }>> & React.RefAttributes<ScrollView>>;
     };
 };
 export {};

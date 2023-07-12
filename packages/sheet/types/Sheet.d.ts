@@ -336,7 +336,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & import("react").RefAttributes<typeof import("react-native").ScrollView>>;
+        }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
     };
     Frame: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "style" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -456,7 +456,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         readonly fullscreen?: boolean | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
-    }>> & import("react").RefAttributes<typeof import("react-native").ScrollView>>;
+    }>> & import("react").RefAttributes<import("react-native").ScrollView>>;
 };
 /** @deprecated use Overlay instead  */
 export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "style" | "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {

@@ -28,9 +28,7 @@ import type {
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import { StyledContext } from './helpers/createStyledContext'
-import { styled } from './styled'
 import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
-import { Text } from './views/Text'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -2080,7 +2078,7 @@ type FillInFontValues<
 export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
   ? Ref
   : C extends new (props: any) => Component
-  ? C
+  ? InstanceType<C>
   : C extends abstract new (...args: any) => any
   ? InstanceType<C>
   : C extends Component
