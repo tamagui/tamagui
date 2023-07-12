@@ -11,7 +11,6 @@ import {
 import {
   ButtonNestingContext,
   FontSizeTokens,
-  Fonts,
   GetProps,
   SizeTokens,
   ThemeableProps,
@@ -298,11 +297,10 @@ function useButton<Props extends ButtonProps>(
 export {
   Button,
   ButtonFrame,
-  ButtonText,
   ButtonIcon,
-
+  ButtonText,
+  buttonStaticConfig,
   // legacy
   useButton,
-  buttonStaticConfig,
 }
 export type { ButtonProps }
