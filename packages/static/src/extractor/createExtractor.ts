@@ -1986,13 +1986,6 @@ export function createExtractor(
             }
           }
 
-          // used to ensure we pass the entire prop bundle to getProps
-          const completeStyles = getProps(completeProps, 'completeStyles')
-
-          if (!completeStyles) {
-            throw new Error(`Impossible, no styles`)
-          }
-
           let getStyleError: any = null
 
           // fix up ternaries, combine final style values
@@ -2052,6 +2045,14 @@ export function createExtractor(
               // any error de-opt
               getStyleError = err
             }
+          }
+
+          // add default props
+          if (shouldFlatten) {
+            attrs.unshift({
+              type: 'style',
+              value: getProps(staticConfig.defaultProps),
+            })
           }
 
           if (shouldPrintDebug) {
