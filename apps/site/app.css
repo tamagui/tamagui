@@ -591,11 +591,6 @@ input, textarea {
   overflow-x: auto;
 }
 
-.font_silkscreen {
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .font-smooth {
   -webkit-font-smoothing: auto;
 }
@@ -762,10 +757,17 @@ input, textarea {
   filter: invert(100%);
 }
 
-.pixelate {
-  image-rendering: pixelated;
-  font-smooth: none;
-  -webkit-font-smoothing: none;
+@media (min-resolution: 160dpi) {
+  .pixelate {
+    image-rendering: pixelated;
+    font-smooth: none;
+    -webkit-font-smoothing: none;
+  }
+
+  .font_silkscreen {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 .clip-slice {
