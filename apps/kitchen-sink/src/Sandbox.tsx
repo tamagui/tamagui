@@ -1,24 +1,10 @@
-import { H1 } from 'tamagui'
-
-// TODO this is a great test: media + animation + space (test without animation too)
-// <Stack
-//       animation="bouncy"
-//       space="$4"
-//       debug="verbose"
-//       backgroundColor="blue"
-//       $sm={{
-//         backgroundColor: 'yellow',
-//       }}
-//       $md={{
-//         space: '$5',
-//         backgroundColor: 'red',
-//       }}
-//     >
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//     </Stack>
+// debug
+import { Adapt, Button, H1, Input, Label, Popover, XStack, YStack } from 'tamagui'
 
 export const Sandbox = () => {
-  return <H1>test things here</H1>
+  return (
+    <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
+      abc
+    </XStack>
+  )
 }

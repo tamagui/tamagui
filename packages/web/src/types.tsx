@@ -28,9 +28,7 @@ import type {
 import type { Variable } from './createVariable'
 import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import { StyledContext } from './helpers/createStyledContext'
-import { styled } from './styled'
 import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
-import { Text } from './views/Text'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -1391,11 +1389,6 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * Used insternally to attach default props to names
-   */
-  parentNames?: string[]
-
-  /**
    * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
@@ -2080,7 +2073,7 @@ type FillInFontValues<
 export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
   ? Ref
   : C extends new (props: any) => Component
-  ? C
+  ? InstanceType<C>
   : C extends abstract new (...args: any) => any
   ? InstanceType<C>
   : C extends Component

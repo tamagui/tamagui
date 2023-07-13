@@ -334,6 +334,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name: string | null
+          owner_id: string | null
           studio_queued_at: string
           tier: string | null
         }
@@ -344,6 +345,7 @@ export interface Database {
           is_active: boolean
           is_personal: boolean
           name?: string | null
+          owner_id?: string | null
           studio_queued_at?: string
           tier?: string | null
         }
@@ -354,10 +356,18 @@ export interface Database {
           is_active?: boolean
           is_personal?: boolean
           name?: string | null
+          owner_id?: string | null
           studio_queued_at?: string
           tier?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "teams_owner_id_fkey"
+            columns: ["owner_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users: {
         Row: {
@@ -543,12 +553,6 @@ export interface Database {
             foreignKeyName: "objects_bucketId_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "objects_owner_fkey"
-            columns: ["owner"]
-            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]

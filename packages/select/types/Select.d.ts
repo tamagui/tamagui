@@ -935,7 +935,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/core").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & React.RefAttributes<typeof import("react-native").ScrollView>>;
+        }>> & React.RefAttributes<import("react-native").ScrollView>>;
     };
 };
 export {};

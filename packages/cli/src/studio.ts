@@ -11,7 +11,6 @@ import express from 'express'
 import proxy from 'express-http-proxy'
 import fs, { ensureDir } from 'fs-extra'
 import { createServer } from 'vite'
-import vitePluginSSR from 'vite-plugin-ssr/plugin'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
@@ -98,7 +97,7 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
 
     app.get('/api/tamagui.themes.json', async (req, res) => {
       try {
-        res.status(200).json(await fs.readJSON(join(paths.dotDir, 'tamagui.themes.json')))
+        res.status(200).json(await fs.readJSON(join(paths.dotDir, 'theme-builder.json')))
       } catch (err) {
         res.status(500).json({
           error: `${(err as any).message}`,

@@ -702,10 +702,6 @@ type StaticConfigBase = StaticConfigPublic & {
      */
     memo?: boolean;
     /**
-     * Used insternally to attach default props to names
-     */
-    parentNames?: string[];
-    /**
      * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
      * it will assume the passed in component only accepts style={} for react-native compatibility.
      * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
@@ -952,7 +948,7 @@ type FillInFontValues<A extends GenericFont, K extends keyof A, DefaultKeys exte
 } : {
     [Key in keyof A[K] | DefaultKeys]: Key extends keyof A[K] ? Exclude<A[K][Key], Variable> : any;
 };
-export type GetRef<C> = C extends TamaguiComponent<any, infer Ref> ? Ref : C extends new (props: any) => Component ? C : C extends abstract new (...args: any) => any ? InstanceType<C> : C extends Component ? C : (C extends JSXElementConstructor<{
+export type GetRef<C> = C extends TamaguiComponent<any, infer Ref> ? Ref : C extends new (props: any) => Component ? InstanceType<C> : C extends abstract new (...args: any) => any ? InstanceType<C> : C extends Component ? C : (C extends JSXElementConstructor<{
     ref?: infer R;
 }> ? R : C extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[C]['ref'] : unknown) extends Ref<infer T> | string | undefined ? T : unknown;
 //# sourceMappingURL=types.d.ts.map

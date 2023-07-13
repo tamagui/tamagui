@@ -10,6 +10,7 @@ export async function writeGeneratedThemes(
   generatedOutput: Awaited<ReturnType<typeof generateThemes>>
 ) {
   const { generated, state } = generatedOutput
+
   const tamaguiDotDirExists = await fs.pathExists(tamaguiDotDir)
   const themeBuilderStatePath = join(tamaguiDotDir, `theme-builder.json`)
 

@@ -2,7 +2,7 @@ import { stylePropsAll } from '@tamagui/helpers'
 
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
-import { mergeVariants } from './helpers/extendStaticConfig'
+import { mergeVariants } from './helpers/mergeVariants'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
@@ -13,7 +13,6 @@ import type {
   StaticConfig,
   StylableComponent,
   TamaguiComponent,
-  TamaguiElement,
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
@@ -74,8 +73,7 @@ export function styled<
     }
   }
 
-  const parentStaticConfig =
-    'staticConfig' in ComponentIn ? (ComponentIn.staticConfig as StaticConfig) : null
+  const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
 
   const isPlainStyledComponent =
     !!parentStaticConfig &&
@@ -113,6 +111,10 @@ export function styled<
             ...defaultVariants,
           }
         }
+
+        if (parentStaticConfig.variants) {
+          variants = mergeVariants(parentStaticConfig.variants, variants)
+        }
       }
 
       if (defaultVariants) {
@@ -123,8 +125,6 @@ export function styled<
       }
 
       if (parentStaticConfig?.isHOC) {
-        variants = mergeVariants(parentStaticConfig.variants, variants)
-
         // if HOC we map name => componentName as we have a difference in how we name prop vs styled() there
         if (name) {
           // @ts-ignore
@@ -135,13 +135,22 @@ export function styled<
       const isText = Boolean(
         staticExtractionOptions?.isText || parentStaticConfig?.isText
       )
+
       const acceptsClassName =
         acceptsClassNameProp ??
         (isPlainStyledComponent ||
           isReactNative ||
           (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
+      if (process.env.NODE_ENV === 'development') {
+        // dont inherit the debug prop so we can debug specific styled() more accurately
+        if (parentStaticConfig?.defaultProps?.debug && !options.debug) {
+          delete defaultProps.debug
+        }
+      }
+
       const conf: Partial<StaticConfig> = {
+        ...parentStaticConfig,
         ...staticExtractionOptions,
         ...(!isPlainStyledComponent && {
           Component,
@@ -169,7 +178,7 @@ export function styled<
     }
   })()
 
-  const component = createComponent(staticConfigProps || {}, Component)
+  const component = createComponent(staticConfigProps || {})
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   // get parent props without pseudos and medias so we can rebuild both with new variants
