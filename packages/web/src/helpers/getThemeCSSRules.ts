@@ -104,7 +104,7 @@ export function getThemeCSSRules({
     }
   }
 
-  const selectors = [...selectorsSet]
+  const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
 
   // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
   // this isBaseTheme logic could probably be done more efficiently above
