@@ -379,10 +379,8 @@ export function createComponent<
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
-        const parentsLog = (conf: StaticConfig) =>
-          conf.parentNames ? ` (${conf.parentNames?.join(' > ')})` : ''
         console.group(
-          `%c ${banner}${parentsLog(staticConfig)} (unmounted: ${state.unmounted})`,
+          `%c ${banner} (unmounted: ${state.unmounted})`,
           'background: yellow;'
         )
         if (!isServer) {

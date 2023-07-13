@@ -1389,11 +1389,6 @@ type StaticConfigBase = StaticConfigPublic & {
   memo?: boolean
 
   /**
-   * Used insternally to attach default props to names
-   */
-  parentNames?: string[]
-
-  /**
    * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
    * it will assume the passed in component only accepts style={} for react-native compatibility.
    * Setting `acceptsClassName: true` indicates Tamagui can pass in className props.
