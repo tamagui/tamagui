@@ -73,8 +73,7 @@ export function styled<
     }
   }
 
-  const parentStaticConfig =
-    'staticConfig' in ComponentIn ? (ComponentIn.staticConfig as StaticConfig) : null
+  const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
 
   const isPlainStyledComponent =
     !!parentStaticConfig &&
@@ -151,6 +150,7 @@ export function styled<
       }
 
       const conf: Partial<StaticConfig> = {
+        ...parentStaticConfig,
         ...staticExtractionOptions,
         ...(!isPlainStyledComponent && {
           Component,
