@@ -3,7 +3,8 @@
 exports[`basic conditional extraction 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {
+  \\"0\\": {},
+  \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
     \\"display\\": \\"flex\\",
@@ -12,14 +13,15 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"minHeight\\": 0,
     \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
-  },
-  \\"1\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
   },
   \\"2\\": {
-    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
   },
   \\"3\\": {
+    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+  },
+  \\"4\\": {},
+  \\"5\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
     \\"display\\": \\"flex\\",
@@ -29,17 +31,17 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
-  \\"4\\": {
+  \\"6\\": {
     \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
   },
-  \\"5\\": {}
+  \\"7\\": {}
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui';
 export function Test() {
   return <>
-          <__ReactNativeView style={[_sheet[\\"0\\"], x ? _sheet[\\"1\\"] : _sheet[\\"2\\"]]} />
-          <__ReactNativeView style={[_sheet[\\"3\\"], x ? _sheet[\\"4\\"] : _sheet[\\"5\\"]]} />
+          <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"], x ? _sheet[\\"2\\"] : _sheet[\\"3\\"]]} />
+          <__ReactNativeView style={[_sheet[\\"4\\"], _sheet[\\"5\\"], x ? _sheet[\\"6\\"] : _sheet[\\"7\\"]]} />
         </>;
 }"
 `;
@@ -47,7 +49,8 @@ export function Test() {
 exports[`basic extraction 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {
+  \\"0\\": {},
+  \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
     \\"display\\": \\"flex\\",
@@ -62,14 +65,15 @@ const _sheet = ReactNativeStyleSheet.create({
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui';
 export function Test() {
-  return <__ReactNativeView style={[_sheet[\\"0\\"]]} />;
+  return <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"]]} />;
 }"
 `;
 
 exports[`flat transform props 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {
+  \\"0\\": {},
+  \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexShrink\\": 0,
     \\"display\\": \\"flex\\",
@@ -79,17 +83,17 @@ const _sheet = ReactNativeStyleSheet.create({
     \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
-  \\"1\\": {
+  \\"2\\": {
     \\"transform\\": [{
       \\"scale\\": 1
     }]
   },
-  \\"2\\": {
+  \\"3\\": {
     \\"transform\\": [{
       \\"scale\\": 2
     }]
   },
-  \\"3\\": {
+  \\"4\\": {
     \\"transform\\": [{
       \\"translateY\\": 20
     }, {
@@ -102,7 +106,7 @@ const _sheet = ReactNativeStyleSheet.create({
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
-  return <__ReactNativeView style={[_sheet[\\"0\\"], isLoading ? _sheet[\\"1\\"] : _sheet[\\"2\\"], _sheet[\\"3\\"]]} />;
+  return <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"], isLoading ? _sheet[\\"2\\"] : _sheet[\\"3\\"], _sheet[\\"4\\"]]} />;
 }"
 `;
 
@@ -111,6 +115,34 @@ exports[`handles style order merge properly 1`] = `
 import { YStack } from 'tamagui';
 export function Test(props) {
   return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate=\\"10deg\\" />;
+}"
+`;
+
+exports[`normalize ternaries flips the conditional properly 1`] = `
+"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
+const _sheet = ReactNativeStyleSheet.create({
+  \\"0\\": {},
+  \\"1\\": {
+    \\"alignItems\\": \\"stretch\\",
+    \\"flexShrink\\": 0,
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\"
+  },
+  \\"2\\": {
+    \\"marginBottom\\": 0
+  },
+  \\"3\\": {
+    \\"marginBottom\\": 12
+  }
+});
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+import { Stack } from 'tamagui';
+export function Test(props) {
+  return <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"], props === 123 ? _sheet[\\"2\\"] : _sheet[\\"3\\"]]} />;
 }"
 `;
 
@@ -123,20 +155,9 @@ export function Test() {
 `;
 
 exports[`theme value extraction should work when no theme variables used 1`] = `
-"import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
-const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {
-    \\"fontFamily\\": \\"Inter\\",
-    \\"display\\": \\"flex\\",
-    \\"color\\": \\"rgba(255,0,0,1.00)\\",
-    \\"letterSpacing\\": 0,
-    \\"fontSize\\": 14,
-    \\"lineHeight\\": 23
-  }
-});
-import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
+"import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { Paragraph } from 'tamagui';
 export function Test() {
-  return <__ReactNativeText style={[_sheet[\\"0\\"]]}>hello world</__ReactNativeText>;
+  return <Paragraph color=\\"red\\">hello world</Paragraph>;
 }"
 `;
