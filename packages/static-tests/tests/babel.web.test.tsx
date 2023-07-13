@@ -8,8 +8,6 @@ process.env.IS_STATIC = ''
 window['React'] = React
 
 test('conditional styles get full base styles merged onto + shorthand', async () => {
-  console.log('RUN')
-
   // one sanity check debug output test
   const output = await extractForWeb(
     `
