@@ -1,8 +1,9 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, isValidElement } from 'react'
+import React, { Children, cloneElement, isValidElement, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
+import { useMemoDebug } from '../hooks/useMemoDebug'
 import { useServerRef } from '../hooks/useServerHooks'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
 import type { DebugProp, ThemeProps } from '../types'
@@ -57,8 +58,10 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
+  const childrenMemo = useMemo(() => children, [children])
+
   if (!shouldRenderChildrenWithTheme) {
-    return children
+    return childrenMemo
   }
 
   // be sure to memoize shouldReset to avoid reparenting
@@ -81,7 +84,7 @@ export function useThemedChildren(
 
   const elementsWithContext = (
     <ThemeManagerContext.Provider value={themeManager}>
-      {children}
+      {childrenMemo}
     </ThemeManagerContext.Provider>
   )
 
