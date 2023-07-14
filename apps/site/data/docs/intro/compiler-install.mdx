@@ -328,3 +328,21 @@ The way it works is, when the compiler detects a styled() expression outside one
 You may see why this is experimental. It's very convenient as a developer, but has a variety of edge cases that can be confusing or breaking, and we want to avoid installation woes. Though it does continue on error and work generally, it outputs warnings in Webpack currently due to our plugin not properly indicating to Webpack about the new files (a fixable bug), which causes big yellow warning output and a cache de-opt.
 
 We're leaving this feature under the environment variable while it matures. Let us know if you find it useful.
+
+### Disabling the compiler
+
+You can disable the compiler optimizations for an entire file with a comment at the top of your file:
+
+```tsx
+// tamagui-ignore
+```
+
+You can disable the compiler optimization for a single component with the boolean property `disableOptimization`:
+
+```tsx
+import { Stack } from '@tamagui/core'
+
+export default () => (
+  <Stack disableOptimization />
+)
+```
