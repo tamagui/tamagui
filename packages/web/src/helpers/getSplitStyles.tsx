@@ -214,6 +214,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
+    if (keyInit in skipProps && !staticConfig.isHOC) continue
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -286,12 +287,6 @@ export const getSplitStyles: StyleSplitter = (
         }
         continue
       } else if (keyInit.startsWith('data-')) {
-        continue
-      }
-    }
-
-    if (!staticConfig.isHOC) {
-      if (keyInit in skipProps) {
         continue
       }
     }
@@ -624,6 +619,20 @@ export const getSplitStyles: StyleSplitter = (
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = descriptor.name === 'enter'
         const isExit = descriptor.name === 'exit'
+
+        // dev-time warning that helps clear confusion around need for animation  when using enter/exit style
+        if (
+          process.env.NODE_ENV === 'development' &&
+          !state.isAnimated &&
+          !state.unmounted &&
+          (isEnter || isExit)
+        ) {
+          console.warn(
+            `No animation prop given to component ${
+              staticConfig.componentName || ''
+            } with enterStyle / exitStyle, these styles will be ignore.`
+          )
+        }
 
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
         if (!descriptor || (isExit && !state.isExiting)) {
@@ -1053,40 +1062,6 @@ export const getSplitStyles: StyleSplitter = (
   return result
 }
 
-// not ever hitting cache?
-// const cache = createChainedWeakCache()
-// export const getSplitStyles: StyleSplitter = (
-//   props,
-//   staticConfig,
-//   theme,
-//   state,
-//   parentSplitStyles,
-//   languageContext,
-//   elementType,
-//   debug
-// ) => {
-//   const cacheProps = [props, theme, state]
-//   const cached = cache.get(cacheProps)
-//   if (cached) {
-//     return cached as any
-//   }
-
-//   const res = getSplitStylesWithoutMemo(
-//     props,
-//     staticConfig,
-//     theme,
-//     state,
-//     parentSplitStyles,
-//     languageContext,
-//     elementType,
-//     debug
-//   )
-
-//   cache.set(cacheProps, res)
-
-//   return res
-// }
-
 function mergeClassName(
   transforms: Record<string, any[]>,
   classNames: Record<string, string>,
@@ -1296,16 +1271,17 @@ const mapTransformKeys = {
 }
 
 const skipProps = {
-  animation: true,
-  space: true,
-  animateOnly: true,
-  debug: true,
-  componentName: true,
-  tag: true,
+  animation: 1,
+  space: 1,
+  animateOnly: 1,
+  debug: 1,
+  componentName: 1,
+  disableOptimization: 1,
+  tag: 1,
 }
 
 if (process.env.NODE_ENV === 'test') {
-  skipProps['data-test-renders'] = true
+  skipProps['data-test-renders'] = 1
 }
 
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -1313,22 +1289,22 @@ const IS_STATIC = process.env.IS_STATIC === 'is_static'
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    contain: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-    outlineColor: true,
+    whiteSpace: 1,
+    wordWrap: 1,
+    textOverflow: 1,
+    textDecorationDistance: 1,
+    cursor: 1,
+    contain: 1,
+    boxSizing: 1,
+    boxShadow: 1,
+    outlineStyle: 1,
+    outlineOffset: 1,
+    outlineWidth: 1,
+    outlineColor: 1,
   })
 } else {
   Object.assign(skipProps, {
-    elevationAndroid: true,
+    elevationAndroid: 1,
   })
 }
 

@@ -158,6 +158,11 @@ export type TamaguiComponentPropsBase = {
   role?: Role
 
   /**
+   * Disable all compiler optimization
+   */
+  disableOptimization?: boolean
+
+  /**
    * Forces the pseudo style state to be on
    */
   forceStyle?: 'hover' | 'press' | 'focus'
