@@ -42,7 +42,7 @@ import { ToastViewport, ToastViewportProps } from './ToastViewport'
 
 const TITLE_NAME = 'ToastTitle'
 
-const ToastTitleFrame = styled(SizableText, {
+const ToastTitle = styled(SizableText, {
   name: TITLE_NAME,
   variants: {
     unstyled: {
@@ -57,15 +57,7 @@ const ToastTitleFrame = styled(SizableText, {
   },
 })
 
-type PrimitiveDivProps = GetProps<typeof ToastTitleFrame>
-type ToastTitleProps = PrimitiveDivProps & {}
-
-const ToastTitle = React.forwardRef<TamaguiElement, ToastTitleProps>(
-  (props: ScopedProps<ToastTitleProps>, forwardedRef) => {
-    const { __scopeToast, ...titleProps } = props
-    return <ToastTitleFrame {...titleProps} ref={forwardedRef} />
-  }
-)
+type ToastTitleProps = GetProps<typeof ToastTitle>
 
 ToastTitle.displayName = TITLE_NAME
 
@@ -75,7 +67,7 @@ ToastTitle.displayName = TITLE_NAME
 
 const DESCRIPTION_NAME = 'ToastDescription'
 
-const ToastDescriptionFrame = styled(SizableText, {
+const ToastDescription = styled(SizableText, {
   name: DESCRIPTION_NAME,
 
   variants: {
@@ -92,15 +84,7 @@ const ToastDescriptionFrame = styled(SizableText, {
   },
 })
 
-type ToastDescriptionFrameProps = GetProps<typeof ToastDescriptionFrame>
-type ToastDescriptionProps = ToastDescriptionFrameProps & {}
-
-const ToastDescription = React.forwardRef<TamaguiElement, ToastDescriptionProps>(
-  (props: ScopedProps<ToastDescriptionProps>, forwardedRef) => {
-    const { __scopeToast, ...descriptionProps } = props
-    return <ToastDescriptionFrame {...descriptionProps} ref={forwardedRef} />
-  }
-)
+type ToastDescriptionProps = GetProps<typeof ToastDescription>
 
 ToastDescription.displayName = DESCRIPTION_NAME
 
@@ -240,16 +224,16 @@ export {
   useToastState,
 }
 export type {
+  // imperative
+  CustomData,
   ToastActionProps,
   ToastCloseProps,
   ToastDescriptionProps,
+  NativePlatform as ToastNativePlatform,
+  // backwards
+  NativeValue as ToastNativeValue,
   ToastProps,
   ToastProviderProps,
   ToastTitleProps,
   ToastViewportProps,
-  // imperative
-  CustomData,
-  // backwards
-  NativeValue as ToastNativeValue,
-  NativePlatform as ToastNativePlatform,
 }

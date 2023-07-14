@@ -8,6 +8,7 @@ import { RovingFocusGroup, createRovingFocusGroupScope } from '@tamagui/roving-f
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import {
+  FontSizeTokens,
   GetProps,
   SizeTokens,
   getVariableValue,
@@ -86,7 +87,9 @@ const ToggleGroupItem = ToggleFrame.extractable(
         }
       }
 
-      const iconSize = (typeof size === 'number' ? size * 0.7 : getFontSize(size)) * 1.2
+      const iconSize =
+        (typeof size === 'number' ? size * 0.7 : getFontSize(size as FontSizeTokens)) *
+        1.2
 
       const theme = useTheme()
       const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })

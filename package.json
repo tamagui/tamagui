@@ -72,10 +72,10 @@
     "watch": "npm-run-all --parallel watch:ts watch:build"
   },
   "resolutions": {
-    "react-native-svg": "13.4.0",
+    "react-native-svg": "13.9.0",
     "@types/node": "16.11.9",
-    "react-native-reanimated": "2.14.4",
-    "react-native": "0.71.7",
+    "react-native-reanimated": "3.3.0",
+    "react-native": "0.72.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -87,7 +87,7 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.1",
-    "@vercel/og": "^0.5.4",
+    "@vercel/og": "^0.5.8",
     "check-dependency-version-consistency": "^3.0.3",
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",

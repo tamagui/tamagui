@@ -1,3 +1,5 @@
+export const accessibilityDirectMap = {}
+
 export const webToNativeAccessibilityDirectMap = {
   'aria-label': 'accessibilityLabel',
   'aria-labelledby': 'accessibilityLabelledBy',
@@ -5,6 +7,7 @@ export const webToNativeAccessibilityDirectMap = {
   'aria-modal': 'accessibilityViewIsModal',
   'aria-hidden': 'accessibilityElementsHidden',
 }
+
 export const nativeAccessibilityValue = {
   'aria-valuemin': 'min',
   'aria-valuemax': 'max',

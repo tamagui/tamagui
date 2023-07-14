@@ -1,7 +1,7 @@
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { checkForSponsorship } from '@protected/_utils/github'
-import { siteRootDir } from '@protected/studio/constants'
+import { siteRootDir } from 'studio/constants'
 import { Session, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
@@ -77,6 +77,7 @@ const handler: NextApiHandler = async (req, res) => {
         github_id: githubStatus.personal.meta.id,
         name: githubLogin,
         is_personal: true,
+        owner_id: user.id,
         tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
         is_active: githubStatus.personal.isSponsoring,
       })

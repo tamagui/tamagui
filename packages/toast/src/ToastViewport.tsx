@@ -218,6 +218,7 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
             // If we're back tabbing after jumping to the viewport then we simply
             // proxy focus out to the preceding document
             if (targetIsViewport && isTabbingBackwards) {
+              // @ts-ignore ali TODO type
               headFocusProxyRef.current?.focus()
               return
             }
@@ -234,8 +235,10 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
               // proxy to the corresponding exit point and let the browser handle
               // tab/shift+tab keypress and implicitly pass focus to the next valid element in the document
               isTabbingBackwards
-                ? headFocusProxyRef.current?.focus()
-                : tailFocusProxyRef.current?.focus()
+                ? // @ts-ignore ali TODO type
+                  headFocusProxyRef.current?.focus()
+                : // @ts-ignore ali TODO type
+                  tailFocusProxyRef.current?.focus()
             }
           }
         }
@@ -274,7 +277,11 @@ const ToastViewport = React.forwardRef<HTMLDivElement, ToastViewportProps>(
          * the list instead of the viewport so it announces number of items remaining.
          */}
         <Collection.Slot scope={__scopeToast}>
-          <ToastViewportFrame focusable={context.toastCount > 0} ref={composedRefs} {...viewportProps}>
+          <ToastViewportFrame
+            focusable={context.toastCount > 0}
+            ref={composedRefs}
+            {...viewportProps}
+          >
             <PortalHost
               render={(children) => (
                 <AnimatePresence exitBeforeEnter={!multipleToasts}>

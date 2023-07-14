@@ -9,8 +9,8 @@ export const Heading = styled(Text, {
       myVariant: {
         fontFamily: '$body',
         fontSize: 20,
-        lh: '$24',
-        fow: '$bold',
+        lh: '$10',
+        fow: '$2',
       },
     },
   } as const,

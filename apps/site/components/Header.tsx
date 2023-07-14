@@ -92,7 +92,7 @@ export function Header(props: HeaderProps) {
             },
           })}
         >
-          <YStack o={isScrolled ? 0.5 : 0} fullscreen bc="$background" />
+          <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
           <ContainerLarge>
             <ThemeTint>
               {React.useMemo(
@@ -366,6 +366,7 @@ const SmallMenu = React.memo(() => {
             },
           },
         ]}
+        animateOnly={['transform', 'opacity']}
         p={0}
         maxHeight="80vh"
         elevate

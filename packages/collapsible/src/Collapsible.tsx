@@ -1,16 +1,16 @@
 import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { ThemeableStack, ThemeableStackProps } from '@tamagui/stacks'
+import { ThemeableStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
+  GetProps,
   Stack,
   StackProps,
   composeEventHandlers,
   styled,
   withStaticProperties,
 } from '@tamagui/web'
-import type { ReactNode } from 'react'
 import * as React from 'react'
 import { AnimatePresence } from 'tamagui'
 
@@ -41,42 +41,44 @@ interface CollapsibleProps extends StackProps {
   onOpenChange?(open: boolean): void
 }
 
-const _Collapsible = React.forwardRef<
-  React.Component<StackProps>,
-  ScopedProps<CollapsibleProps>
->((props, forwardedRef) => {
-  const {
-    __scopeCollapsible,
-    open: openProp,
-    defaultOpen,
-    disabled,
-    onOpenChange,
-    ...collapsibleProps
-  } = props
+const _Collapsible = React.forwardRef<Stack, ScopedProps<CollapsibleProps>>(
+  (props, forwardedRef) => {
+    const {
+      __scopeCollapsible,
+      open: openProp,
+      defaultOpen,
+      disabled,
+      onOpenChange,
+      ...collapsibleProps
+    } = props
 
-  const [open = false, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen!,
-    onChange: onOpenChange,
-  })
+    const [open = false, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen!,
+      onChange: onOpenChange,
+    })
 
-  return (
-    <CollapsibleProvider
-      scope={__scopeCollapsible}
-      disabled={disabled}
-      contentId={React.useId()}
-      open={open}
-      onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
-    >
-      <Stack
-        data-state={getState(open)}
-        data-disabled={disabled ? '' : undefined}
-        {...collapsibleProps}
-        ref={forwardedRef}
-      />
-    </CollapsibleProvider>
-  )
-})
+    return (
+      <CollapsibleProvider
+        scope={__scopeCollapsible}
+        disabled={disabled}
+        contentId={React.useId()}
+        open={open}
+        onOpenToggle={React.useCallback(
+          () => setOpen((prevOpen) => !prevOpen),
+          [setOpen]
+        )}
+      >
+        <Stack
+          data-state={getState(open)}
+          data-disabled={disabled ? '' : undefined}
+          {...collapsibleProps}
+          ref={forwardedRef}
+        />
+      </CollapsibleProvider>
+    )
+  }
+)
 
 _Collapsible.displayName = COLLAPSIBLE_NAME
 
@@ -86,51 +88,34 @@ _Collapsible.displayName = COLLAPSIBLE_NAME
 
 const TRIGGER_NAME = 'CollapsibleTrigger'
 
-interface CollapsibleTriggerProps extends StackProps {
-  children: ReactNode | ((props: { open: boolean }) => ReactNode)
-  unstyled?: boolean
-}
+type CollapsibleTriggerProps = GetProps<typeof Stack>
 
-const CollapsibleTriggerFrame = styled(ThemeableStack, {
+const CollapsibleTriggerFrame = styled(Stack, {
   name: TRIGGER_NAME,
   tag: 'button',
-  variants: {
-    unstyled: {
-      false: {
-        hoverTheme: true,
-        focusTheme: true,
-        pressTheme: true,
-        padded: true,
-        backgrounded: true,
-        bordered: true,
-        cursor: 'pointer',
-      },
-    },
-  } as const,
 })
 
-const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<
-  ScopedProps<CollapsibleTriggerProps>
->((props, forwardedRef) => {
-  const { __scopeCollapsible, children, unstyled, ...triggerProps } = props
-  const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
+const CollapsibleTrigger = CollapsibleTriggerFrame.styleable<CollapsibleTriggerProps>(
+  (props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
+    const { __scopeCollapsible, children, ...triggerProps } = props
+    const context = useCollapsibleContext(TRIGGER_NAME, __scopeCollapsible)
 
-  return (
-    <CollapsibleTriggerFrame
-      aria-controls={context.contentId}
-      aria-expanded={context.open || false}
-      data-state={getState(context.open)}
-      data-disabled={context.disabled ? '' : undefined}
-      disabled={context.disabled}
-      unstyled={!!unstyled}
-      {...triggerProps}
-      ref={forwardedRef}
-      onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-    >
-      {typeof children === 'function' ? children({ open: context.open }) : children}
-    </CollapsibleTriggerFrame>
-  )
-})
+    return (
+      <CollapsibleTriggerFrame
+        aria-controls={context.contentId}
+        aria-expanded={context.open || false}
+        data-state={getState(context.open)}
+        data-disabled={context.disabled ? '' : undefined}
+        disabled={context.disabled}
+        {...triggerProps}
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+      >
+        {typeof children === 'function' ? children({ open: context.open }) : children}
+      </CollapsibleTriggerFrame>
+    )
+  }
+)
 
 CollapsibleTrigger.displayName = TRIGGER_NAME
 
@@ -144,40 +129,24 @@ interface CollapsibleContentProps extends AnimatePresenceProps, ThemeableStackPr
    * controlling animation with React animation libraries.
    */
   forceMount?: true
-  unstyled?: boolean
 }
 
 const CONTENT_NAME = 'CollapsibleContent'
 
-const CollapsibleContentFrame = styled(ThemeableStack, {
+const CollapsibleContentFrame = styled(Stack, {
   name: CONTENT_NAME,
-  variants: {
-    unstyled: {
-      false: {
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        flexDirection: 'column',
-        padded: true,
-        focusable: true,
-      },
-    },
-  } as const,
 })
 
 const CollapsibleContent = CollapsibleContentFrame.styleable<
   ScopedProps<CollapsibleContentProps>
 >((props, forwardedRef) => {
-  const { forceMount, children, __scopeCollapsible, unstyled, ...contentProps } = props
+  const { forceMount, children, __scopeCollapsible, ...contentProps } = props
   const context = useCollapsibleContext(CONTENT_NAME, __scopeCollapsible)
 
   return (
     <AnimatePresence {...contentProps}>
       {forceMount || context.open ? (
-        <CollapsibleContentFrame
-          ref={forwardedRef}
-          unstyled={!!unstyled}
-          {...contentProps}
-        >
+        <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
           {children}
         </CollapsibleContentFrame>
       ) : null}

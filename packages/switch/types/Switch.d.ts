@@ -170,7 +170,7 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
 }, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
-}>> & React.RefAttributes<HTMLSpanElement>>;
+}>> & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
 export declare const SwitchFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -322,7 +322,7 @@ export declare const Switch: React.ForwardRefExoticComponent<Omit<import("react-
     }, "size" | "unstyled"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: SizeTokens | undefined;
-    }>> & React.RefAttributes<HTMLSpanElement>>;
+    }>> & React.RefAttributes<import("@tamagui/core").TamaguiElement>>;
 };
 export {};
 //# sourceMappingURL=Switch.d.ts.map

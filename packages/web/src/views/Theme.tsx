@@ -1,5 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, isValidElement } from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement, useMemo } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
@@ -8,7 +8,7 @@ import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
 import type { DebugProp, ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-export function Theme(props: ThemeProps) {
+export const Theme = forwardRef((props: ThemeProps, ref) => {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
@@ -23,6 +23,15 @@ export function Theme(props: ThemeProps) {
       )
     : props.children
 
+  if (ref) {
+    try {
+      React.Children.only(children)
+      children = cloneElement(children, { ref })
+    } catch {
+      //ok
+    }
+  }
+
   if (process.env.NODE_ENV === 'development') {
     if (props.debug === 'visualize') {
       children = (
@@ -34,7 +43,7 @@ export function Theme(props: ThemeProps) {
   }
 
   return useThemedChildren(themeState, children, props, isRoot)
-}
+})
 
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
@@ -57,8 +66,10 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
+  const childrenMemo = useMemo(() => children, [children])
+
   if (!shouldRenderChildrenWithTheme) {
-    return children
+    return childrenMemo
   }
 
   // be sure to memoize shouldReset to avoid reparenting
@@ -81,7 +92,7 @@ export function useThemedChildren(
 
   const elementsWithContext = (
     <ThemeManagerContext.Provider value={themeManager}>
-      {children}
+      {childrenMemo}
     </ThemeManagerContext.Provider>
   )
 

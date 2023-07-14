@@ -7,5 +7,5 @@ export type BaseIconProps = {
     disableTheme?: boolean;
     style?: any;
 };
-export type IconProps = Omit<SvgProps, keyof BaseIconProps> & BaseIconProps;
+export type IconProps = SvgProps & Omit<SvgProps, keyof BaseIconProps> & BaseIconProps;
 //# sourceMappingURL=IconProps.d.ts.map

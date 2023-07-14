@@ -3,6 +3,8 @@ import type {
   StackProps,
   StackPropsBase,
   TamaguiComponent,
+  TamaguiElement,
+  TamaguiTextElement,
   TextProps,
   TextPropsBase,
 } from '@tamagui/web'
@@ -15,7 +17,6 @@ import {
   setupHooks,
 } from '@tamagui/web'
 import type { RefObject } from 'react'
-import type { Text as RNText, View as RNView } from 'react-native'
 
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
@@ -30,13 +31,13 @@ export * from '@tamagui/web'
 
 export const Stack = WebStack as TamaguiComponent<
   StackProps & RNViewProps,
-  RNView,
+  TamaguiElement,
   StackPropsBase & RNViewProps
 >
 
 export const Text = WebText as TamaguiComponent<
   TextProps & RNTextProps,
-  RNText,
+  TamaguiTextElement,
   TextPropsBase & RNTextProps
 >
 

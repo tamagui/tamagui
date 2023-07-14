@@ -167,52 +167,61 @@ export const PopoverContent = PopperContentFrame.extractable(
       const themeName = useThemeName()
       return (
         <PopoverContentPortal zIndex={zIndex}>
-          <Theme name={themeName}>
-            <PopoverContentImpl
-              {...contentImplProps}
-              disableRemoveScroll={disableRemoveScroll}
-              ref={composedRefs}
-              // we make sure we're not trapping once it's been closed
-              // (closed !== unmounted when animating out)
-              trapFocus={trapFocus ?? context.open}
-              disableOutsidePointerEvents
-              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-                event.preventDefault()
-                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-              })}
-              onPointerDownOutside={composeEventHandlers(
-                props.onPointerDownOutside,
-                (event) => {
-                  const originalEvent = event.detail.originalEvent
-                  const ctrlLeftClick =
-                    originalEvent.button === 0 && originalEvent.ctrlKey === true
-                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                  isRightClickOutsideRef.current = isRightClick
-                },
-                { checkDefaultPrevented: false }
-              )}
-              // When focus is trapped, a `focusout` event may still happen.
-              // We make sure we don't trigger our `onDismiss` in such case.
-              onFocusOutside={composeEventHandlers(
-                props.onFocusOutside,
-                (event) => event.preventDefault(),
-                { checkDefaultPrevented: false }
-              )}
-            />
-          </Theme>
+          <Stack pointerEvents={context.open ? 'auto' : 'none'}>
+            <Theme name={themeName}>
+              <PopoverContentImpl
+                {...contentImplProps}
+                disableRemoveScroll={disableRemoveScroll}
+                ref={composedRefs}
+                // we make sure we're not trapping once it's been closed
+                // (closed !== unmounted when animating out)
+                trapFocus={trapFocus ?? context.open}
+                disableOutsidePointerEvents
+                onCloseAutoFocus={composeEventHandlers(
+                  props.onCloseAutoFocus,
+                  (event) => {
+                    event.preventDefault()
+                    if (!isRightClickOutsideRef.current)
+                      context.triggerRef.current?.focus()
+                  }
+                )}
+                onPointerDownOutside={composeEventHandlers(
+                  props.onPointerDownOutside,
+                  (event) => {
+                    const originalEvent = event.detail.originalEvent
+                    const ctrlLeftClick =
+                      originalEvent.button === 0 && originalEvent.ctrlKey === true
+                    const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                    isRightClickOutsideRef.current = isRightClick
+                  },
+                  { checkDefaultPrevented: false }
+                )}
+                // When focus is trapped, a `focusout` event may still happen.
+                // We make sure we don't trigger our `onDismiss` in such case.
+                onFocusOutside={composeEventHandlers(
+                  props.onFocusOutside,
+                  (event) => event.preventDefault(),
+                  { checkDefaultPrevented: false }
+                )}
+              />
+            </Theme>
+          </Stack>
         </PopoverContentPortal>
       )
     }
   )
 )
 
-function PopoverRepropagateContext(props: { children: any }) {
-  const context = usePopoverContext()
-  const popperContext = usePopperContext()
-
+function PopoverRepropagateContext(props: {
+  children: any
+  context: any
+  popperContext: any
+}) {
   return (
-    <PopperContext.Provider {...popperContext}>
-      <PopoverContext.Provider {...context}>{props.children}</PopoverContext.Provider>
+    <PopperContext.Provider {...props.popperContext}>
+      <PopoverContext.Provider {...props.context}>
+        {props.children}
+      </PopoverContext.Provider>
     </PopperContext.Provider>
   )
 }
@@ -220,12 +229,17 @@ function PopoverRepropagateContext(props: { children: any }) {
 function PopoverContentPortal(props: PopoverContentTypeProps) {
   const themeName = useThemeName()
   const context = usePopoverContext()
+  const popperContext = usePopperContext()
 
   // on android we have to re-pass context
   let contents = props.children
 
-  if (Platform.OS === 'android') {
-    contents = <PopoverRepropagateContext>{props.children}</PopoverRepropagateContext>
+  if (Platform.OS === 'android' || Platform.OS === 'ios') {
+    contents = (
+      <PopoverRepropagateContext popperContext={popperContext} context={context}>
+        {props.children}
+      </PopoverRepropagateContext>
+    )
   }
 
   const zIndex = props.zIndex ?? 150_000
@@ -292,6 +306,7 @@ const PopoverContentImpl = React.forwardRef<
     ...contentProps
   } = props
   const context = usePopoverContext()
+  const popperContext = usePopperContext()
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
   if (context.breakpointActive) {
@@ -306,12 +321,18 @@ const PopoverContentImpl = React.forwardRef<
       return child
     })
 
+    let content = childrenWithoutScrollView as any
+
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      content = (
+        <PopperContext.Provider {...popperContext}>
+          {childrenWithoutScrollView}
+        </PopperContext.Provider>
+      )
+    }
+
     // doesn't show as popover yet on native, must use as sheet
-    return (
-      <PortalItem hostName={`${context.id}PopoverContents`}>
-        {childrenWithoutScrollView}
-      </PortalItem>
-    )
+    return <PortalItem hostName={`${context.id}PopoverContents`}>{content}</PortalItem>
   }
 
   if (context.open && isFullyHidden) {
@@ -345,7 +366,6 @@ const PopoverContentImpl = React.forwardRef<
           key={context.contentId}
           data-state={getState(context.open)}
           id={context.contentId}
-          pointerEvents="auto"
           ref={forwardedRef}
           {...contentProps}
         >

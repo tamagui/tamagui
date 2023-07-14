@@ -57,6 +57,7 @@ function DialogInstance() {
           bordered
           elevate
           key="content"
+          animateOnly={['transform', 'opacity']}
           animation={[
             'quick',
             {

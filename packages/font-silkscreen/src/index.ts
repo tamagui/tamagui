@@ -1,8 +1,8 @@
-import { GenericFont, createFont, isWeb } from '@tamagui/core'
+import { FillInFont, GenericFont, createFont, isWeb } from '@tamagui/core'
 
-export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
+export const createSilkscreenFont = <A extends GenericFont>(
   font: Partial<A> = {}
-): A => {
+): FillInFont<A, keyof typeof size> => {
   return createFont({
     family: isWeb
       ? 'Silkscreen, Fira Code, Monaco, Consolas, Ubuntu Mono, monospace'

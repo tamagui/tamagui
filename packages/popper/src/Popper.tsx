@@ -262,10 +262,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 
     // outer frame because we explicitly dont want animation to apply to this
     return (
-      <YStack
-        animateOnly={['transform']}
-        {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
-      >
+      <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
         {contents}
       </YStack>
     )

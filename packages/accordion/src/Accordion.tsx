@@ -1,8 +1,4 @@
-import {
-  Collapsible,
-  CollapsibleContentFrame,
-  createCollapsibleScope,
-} from '@tamagui/collapsible'
+import { Collapsible, createCollapsibleScope } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
@@ -11,10 +7,13 @@ import { H1, H3 } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import {
+  GetProps,
+  GetRef,
   Stack,
   TamaguiElement,
   composeEventHandlers,
   isWeb,
+  styled,
   useComposedRefs,
   withStaticProperties,
 } from '@tamagui/web'
@@ -22,18 +21,6 @@ import * as React from 'react'
 
 type Direction = 'ltr' | 'rtl'
 
-function useAccordion() {
-  const [selected, setSelected] = React.useState<string | string[]>([])
-
-  const control = React.useCallback((value: string | string[]) => {
-    setSelected(value)
-  }, [])
-
-  return {
-    selected,
-    control,
-  }
-}
 /* -------------------------------------------------------------------------------------------------
  * Accordion
  * -----------------------------------------------------------------------------------------------*/
@@ -42,7 +29,7 @@ const ACCORDION_NAME = 'Accordion'
 const ACCORDION_KEYS = ['Home', 'End', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight']
 
 const [Collection, useCollection, createCollectionScope] =
-  createCollection<AccordionTriggerElement>(ACCORDION_NAME)
+  createCollection<AccordionTrigger>(ACCORDION_NAME)
 
 type ScopedProps<P> = P & { __scopeAccordion?: Scope }
 const [createAccordionContext, createAccordionScope] = createContextScope(
@@ -158,12 +145,6 @@ const AccordionImplSingle = React.forwardRef<
     onChange: onValueChange,
   })
 
-  React.useEffect(() => {
-    if (value && control) {
-      control([value])
-    }
-  }, [value])
-
   return (
     <AccordionValueProvider
       scope={props.__scopeAccordion}
@@ -209,7 +190,6 @@ const AccordionImplMultiple = React.forwardRef<
   const {
     value: valueProp,
     defaultValue,
-    control,
     onValueChange = () => {},
     ...accordionMultipleProps
   } = props
@@ -219,12 +199,6 @@ const AccordionImplMultiple = React.forwardRef<
     defaultProp: defaultValue || [],
     onChange: onValueChange,
   })
-
-  React.useEffect(() => {
-    if (value && control) {
-      control(value)
-    }
-  }, [value])
 
   const handleItemOpen = React.useCallback(
     (itemValue: string) => setValue((prevValue = []) => [...prevValue, itemValue]),
@@ -509,66 +483,102 @@ AccordionHeader.displayName = HEADER_NAME
  * AccordionTrigger
  * -----------------------------------------------------------------------------------------------*/
 
+const AccordionTriggerFrame = styled(Collapsible.Trigger, {
+  variants: {
+    unstyled: {
+      false: {
+        cursor: 'pointer',
+        backgroundColor: '$background',
+        borderColor: '$borderColor',
+        borderWidth: 1,
+        padding: '$true',
+
+        hoverStyle: {
+          backgroundColor: '$backgroundHover',
+        },
+
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
+        },
+
+        pressStyle: {
+          backgroundColor: '$backgroundPress',
+        },
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
+})
+
 const TRIGGER_NAME = 'AccordionTrigger'
 
-type AccordionTriggerElement = React.ElementRef<typeof Collapsible.Trigger>
-type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<typeof Collapsible.Trigger>
-interface AccordionTriggerProps extends CollapsibleTriggerProps {}
+type AccordionTrigger = GetRef<typeof AccordionTriggerFrame>
+type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>
 
 /**
  * `AccordionTrigger` is the trigger that toggles the collapsed state of an `AccordionItem`. It
  * should always be nested inside of an `AccordionHeader`.
  */
-const AccordionTrigger = React.forwardRef<AccordionTriggerElement, AccordionTriggerProps>(
-  (props: ScopedProps<AccordionTriggerProps>, forwardedRef) => {
-    const { __scopeAccordion, ...triggerProps } = props
-    const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-    const itemContext = useAccordionItemContext(TRIGGER_NAME, __scopeAccordion)
-    const collapsibleContext = useAccordionCollapsibleContext(
-      TRIGGER_NAME,
-      __scopeAccordion
-    )
-    const collapsibleScope = useCollapsibleScope(__scopeAccordion)
-    return (
-      <Collection.ItemSlot scope={__scopeAccordion}>
-        <Collapsible.Trigger
-          aria-disabled={
-            (itemContext.open && !collapsibleContext.collapsible) || undefined
-          }
-          data-orientation={accordionContext.orientation}
-          id={itemContext.triggerId}
-          {...collapsibleScope}
-          {...triggerProps}
-          ref={forwardedRef}
-        />
-      </Collection.ItemSlot>
-    )
-  }
-)
+const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigger(
+  props: ScopedProps<AccordionTriggerProps>,
+  forwardedRef
+) {
+  const { __scopeAccordion, ...triggerProps } = props
+  const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
+  const itemContext = useAccordionItemContext(TRIGGER_NAME, __scopeAccordion)
+  const collapsibleContext = useAccordionCollapsibleContext(
+    TRIGGER_NAME,
+    __scopeAccordion
+  )
+  const collapsibleScope = useCollapsibleScope(__scopeAccordion)
 
-AccordionTrigger.displayName = TRIGGER_NAME
+  return (
+    <Collection.ItemSlot scope={__scopeAccordion}>
+      <AccordionTriggerFrame
+        aria-disabled={(itemContext.open && !collapsibleContext.collapsible) || undefined}
+        data-orientation={accordionContext.orientation}
+        id={itemContext.triggerId}
+        {...collapsibleScope}
+        {...triggerProps}
+        ref={forwardedRef}
+      />
+    </Collection.ItemSlot>
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * AccordionContent
  * -----------------------------------------------------------------------------------------------*/
 
-const CONTENT_NAME = 'AccordionContent'
+const AccordionContentFrame = styled(Collapsible.Content, {
+  variants: {
+    unstyled: {
+      false: {
+        padding: '$true',
+        backgroundColor: '$background',
+      },
+    },
+  },
+})
 
-type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof Collapsible.Content>
-interface AccordionContentProps extends CollapsibleContentProps {}
+type AccordionContentProps = GetProps<typeof AccordionContentFrame>
 
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-const AccordionContent = CollapsibleContentFrame.styleable<
-  ScopedProps<AccordionContentProps>
->((props, forwardedRef) => {
+const AccordionContent = AccordionContentFrame.styleable(function AccordionContent(
+  props: ScopedProps<AccordionContentProps>,
+  forwardedRef
+) {
   const { __scopeAccordion, ...contentProps } = props
   const accordionContext = useAccordionContext(ACCORDION_NAME, __scopeAccordion)
-  const itemContext = useAccordionItemContext(CONTENT_NAME, __scopeAccordion)
+  const itemContext = useAccordionItemContext('AccordionContent', __scopeAccordion)
   const collapsibleScope = useCollapsibleScope(__scopeAccordion)
   return (
-    <Collapsible.Content
+    <AccordionContentFrame
       role="region"
       aria-labelledby={itemContext.triggerId}
       data-orientation={accordionContext.orientation}
@@ -580,8 +590,6 @@ const AccordionContent = CollapsibleContentFrame.styleable<
     />
   )
 })
-
-AccordionContent.displayName = CONTENT_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -595,7 +603,7 @@ const Accordion = withStaticProperties(AccordionComponent, {
   Item: AccordionItem,
 })
 
-export { Accordion, createAccordionScope, useAccordion }
+export { Accordion, createAccordionScope }
 
 export type {
   AccordionContentProps,

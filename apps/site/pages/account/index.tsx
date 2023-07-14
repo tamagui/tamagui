@@ -1,5 +1,6 @@
 import { Container } from '@components/Container'
 import { GithubIcon } from '@components/GithubIcon'
+import { NextLink } from '@components/NextLink'
 import { Notice } from '@components/Notice'
 import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
@@ -18,11 +19,14 @@ import { ButtonLink } from 'studio/Link'
 import {
   Avatar,
   Button,
+  FontWeightTokens,
   H3,
   Paragraph,
   Separator,
   SizableText,
   Spinner,
+  TamaguiConfig,
+  TamaguiCustomConfig,
   XStack,
   YStack,
 } from 'tamagui'
@@ -176,17 +180,19 @@ const ProfileContent = () => {
   const { data } = useUser()
 
   if (!data) return null
-  const {
-    session: { user },
-    userDetails,
-  } = data
+  const { user, userDetails } = data
 
   return (
     <XStack space="$4" separator={<Separator vertical />}>
       {!!userDetails?.full_name && (
         <Paragraph theme="alt1">{userDetails?.full_name}</Paragraph>
       )}
-      <Paragraph theme="alt1">{user?.email}</Paragraph>
+      <Paragraph theme="alt1">
+        {user?.email}{' '}
+        <NextLink href="/account/change-email">
+          <Paragraph textDecorationLine="underline">(Change)</Paragraph>
+        </NextLink>
+      </Paragraph>
     </XStack>
   )
 }
@@ -368,6 +374,8 @@ const ConnectionsContent = () => {
     </YStack>
   )
 }
+
+type x = FontWeightTokens
 
 const Table = ({ data }: { data: Record<string, any> }) => {
   return (

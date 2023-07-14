@@ -21,7 +21,7 @@ type StyleSplitter = (props: {
 }, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: GetStyleResult | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => GetStyleResult;
 export declare const PROP_SPLIT = "-";
 export declare const getSplitStyles: StyleSplitter;
-export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, avoidDefaultProps?: boolean, avoidMergeTransform?: boolean) => TextStyleProps;
+export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, fontFamily?: string, avoidDefaultProps?: boolean, avoidMergeTransform?: boolean) => TextStyleProps;
 export declare const useSplitStyles: StyleSplitter;
 export type FlatTransforms = Record<string, any>;
 export {};

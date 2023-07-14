@@ -157,7 +157,7 @@ export const ListItemSubtitle = styled(ListItemText, {
           shift: -1,
           excludeHalfSteps: true,
         })
-        const fontStyle = getFontSized(oneSmaller.key as SizeTokens, extras)
+        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras)
         return fontStyle
       },
     },
@@ -217,8 +217,8 @@ export const useListItem = (
     ...props,
   })
   const size = mediaActiveProps.size || '$true'
-  const iconSize = getFontSize(size) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const iconSize = getFontSize(size as any) * scaleIcon
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize =
     getVariableValue(getTokens().space[mediaActiveProps.space as any] ?? iconSize) *

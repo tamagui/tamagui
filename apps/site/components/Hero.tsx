@@ -1,3 +1,12 @@
+import {
+  ColorStyleProp,
+  ColorTokens,
+  SpecificTokensSpecial,
+  StackProps,
+  TamaguiSettings,
+  ThemeValueFallbackColor,
+} from '@tamagui/core'
+import { SomewhatSpecificColorValue } from '@tamagui/core'
 import { useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import { memo } from 'react'
@@ -21,6 +30,8 @@ import { DiscordIcon } from './DiscordIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
+
+type test = TamaguiSettings['allowedStyleValues']
 
 // function useAlwaysConcurrent() {
 //   const inputRef = useRef<HTMLInputElement>(null)
@@ -70,6 +81,7 @@ const HeroContents = memo(() => {
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
+        // @ts-ignore
         top="auto"
         height={521}
         left={-1000}
@@ -295,8 +307,8 @@ const Subtitle = styled(Paragraph, {
 
 const Tag = styled(Text, {
   className: 'hero-tag text-decoration-none',
-  fontFamily: 'inherit',
-  fontSize: 'inherit',
+  fontFamily: 'inherit' as any,
+  fontSize: 'inherit' as any,
   borderRadius: '$2',
   px: '$1',
   mx: '$-1',
@@ -321,5 +333,5 @@ const Tag = styled(Text, {
         },
       },
     },
-  },
+  } as const,
 })

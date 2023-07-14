@@ -57,7 +57,7 @@ export function getThemeCSSRules({
         continue
       }
 
-      const childSelector = `${CNP}${subName.replace(isDark ? 'dark_' : 'light_', '')}`
+      const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
 
       const [altLightDark, altSubTheme] = [
         isDark ? ['dark', 'light'] : ['light', 'dark'],
@@ -96,12 +96,15 @@ export function getThemeCSSRules({
 
           // for light/dark/light:
           selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          // selectorsSet.add(
+          //   `${parentSelectors.join(' ')} ${nextChildSelector}.t_sub_theme`.trim()
+          // )
         }
       }
     }
   }
 
-  const selectors = [...selectorsSet]
+  const selectors = [...selectorsSet].sort((a, b) => a.localeCompare(b))
 
   // only do our :root attach if it's not light/dark - not support sub themes on root saves a lot of effort/size
   // this isBaseTheme logic could probably be done more efficiently above

@@ -763,8 +763,49 @@ export declare const config: {
         };
     }, "size" | "color" | "space" | "radius" | "zIndex">;
     fonts: {
-        heading: import("@tamagui/web").GenericFont;
-        body: import("@tamagui/web").GenericFont;
+        heading: import("@tamagui/web").FillInFont<{
+            size: {
+                5: number;
+                6: number;
+                9: number;
+                10: number;
+            };
+            transform: {
+                6: "uppercase";
+                7: "none";
+            };
+            weight: {
+                6: string;
+                7: string;
+            };
+            color: {
+                6: string;
+                7: string;
+            };
+            letterSpacing: {
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                12: number;
+                14: number;
+                15: number;
+            };
+            face: {
+                700: {
+                    normal: string;
+                };
+                800: {
+                    normal: string;
+                };
+                900: {
+                    normal: string;
+                };
+            };
+        }, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -788,7 +829,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

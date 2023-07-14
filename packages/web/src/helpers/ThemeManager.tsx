@@ -189,7 +189,7 @@ export class ThemeManager {
   }
 }
 
-function getNextThemeClassName(name: string, props: ThemeProps) {
+function getNextThemeClassName(name: string) {
   const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
   return next.replace('light_', '').replace('dark_', '')
 }
@@ -324,7 +324,7 @@ function getState(
       result = {
         name: found,
         theme: getThemeUnwrapped(themes[found]),
-        className: getNextThemeClassName(found, props),
+        className: getNextThemeClassName(found),
         parentName,
         componentName,
       }

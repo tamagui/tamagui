@@ -25,7 +25,26 @@ export default () => (
 )
 ```
 
-Or use them [with styled](/docs/core/styled) to create your own base level design system:
+We encourage you to use inline styles. Combined with [shorthands](/docs/core/configuration#shorthands) they can lead to really easy styling, and the Tamagui optimizing compiler will take care of optimizing everything for you so you little to no extra cost in performance:
+
+```tsx
+import { Stack, Text } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <Stack mx="$sm" scale={1.2}>
+    <Text c="$color">Hello</Text>
+  </Stack>
+)
+```
+
+<Notice>
+  One really important and useful thing to note about Tamagui style properties: the order
+  is important! [Read more here](/docs/core/styled#order-is-important)
+</Notice>
+
+### With styled()
+
+You can also use them [with styled](/docs/core/styled) to create your own lower level views that are mean to be re-usable:
 
 ```tsx
 import { Stack, styled } from 'tamagui' // or '@tamagui/core'

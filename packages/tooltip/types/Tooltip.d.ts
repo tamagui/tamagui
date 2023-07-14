@@ -3,6 +3,8 @@ import { SizeTokens } from '@tamagui/core';
 import { PopperProps } from '@tamagui/popper';
 import * as React from 'react';
 export type TooltipProps = PopperProps & {
+    open?: boolean;
+    unstyled?: boolean;
     children?: React.ReactNode;
     onOpenChange?: (open: boolean) => void;
     focus?: {
@@ -25,6 +27,8 @@ export declare const TooltipGroup: ({ children, delay }: {
     delay: Delay;
 }) => JSX.Element;
 export declare const Tooltip: React.ForwardRefExoticComponent<PopperProps & {
+    open?: boolean | undefined;
+    unstyled?: boolean | undefined;
     children?: React.ReactNode;
     onOpenChange?: ((open: boolean) => void) | undefined;
     focus?: {

@@ -1,4 +1,4 @@
-import { createAnimations } from '@tamagui/animations-reanimated'
+import { createAnimations } from '@tamagui/animations-moti'
 
 export const animations = createAnimations({
   bouncy: {

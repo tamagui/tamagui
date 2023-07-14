@@ -144,7 +144,7 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
       const iconSize =
         (typeof styledContext.size === 'number'
           ? styledContext.size * 0.65
-          : getFontSize(styledContext.size)) * styledContext.scaleIcon
+          : getFontSize(styledContext.size as any)) * styledContext.scaleIcon
       const theme = useTheme()
       const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
 

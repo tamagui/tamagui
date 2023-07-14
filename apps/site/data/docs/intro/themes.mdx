@@ -9,6 +9,12 @@ All themes must be of the same type: all objects share the same set of keys and 
 
 If you just want to dive in and copy a complete theme, check out the [Quick Start](#quick-start).
 
+<Notice>
+  This document introduces how themes work, but as of version 1.37 we've introduced a new
+  way to create your themes that makes generating a full suite of themes much easier.
+  [Read the guide](/docs/guides/theme-builder).
+</Notice>
+
 You make a theme with `createTheme`, like so:
 
 ```tsx
@@ -227,7 +233,7 @@ export const App = () => (
 )
 ```
 
-In this example we've set up darkRed and lightRed variables and a a dark and light theme that use those variables. Tamagui will handle defining:
+In this example we've set up darkRed and lightRed variables and a dark and light theme that use those variables. Tamagui will handle defining:
 
 ```css
 :root {

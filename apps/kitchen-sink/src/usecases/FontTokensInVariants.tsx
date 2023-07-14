@@ -7,7 +7,7 @@ export const FontTokensInVariants = styled(TamaguiText, {
     type: {
       H1: {
         fontFamily: '$mono',
-        fontSize: '1.43rem',
+        fontSize: '$1',
       },
       // semiBold: {
       //   fontFamily: '"Comic Sans"',

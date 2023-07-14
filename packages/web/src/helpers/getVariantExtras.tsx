@@ -31,7 +31,7 @@ export function getVariantExtras(
     theme,
 
     get fontFamily() {
-      return getVariableValue(props.fontFamily || fontFamily)
+      return getVariableValue(fontFamily || props.fontFamily)
     },
 
     get font() {

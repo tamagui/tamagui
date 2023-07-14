@@ -1,14 +1,15 @@
 import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { tiersPriority } from '@protected/_utils/sponsorship'
+import { tiersPriority } from 'studio/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { Session, SupabaseClient } from '@supabase/supabase-js'
+import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { NextApiHandler } from 'next'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
   session: Session
+  user: User
   userDetails?: Awaited<ReturnType<typeof getUserDetails>> | null
   teams: {
     all?: Database['public']['Tables']['teams']['Row'][] | null
@@ -20,13 +21,16 @@ export type UserContextType = {
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })
-  
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
 
-  if (!user) {
+  const [
+    {
+      data: { session },
+    },
+    userRes,
+  ] = await Promise.all([supabase.auth.getSession(), supabase.auth.getUser()])
+
+  const user = userRes.data.user
+  if (!user || !session) {
     res.status(401).json({
       error: 'The user is not authenticated',
     })
@@ -41,11 +45,12 @@ const handler: NextApiHandler = async (req, res) => {
 
   res.json({
     session,
+    user,
     userDetails,
     subscriptions,
     teams: {
       all: userTeams,
-      personal: getPersonalTeam(userTeams),
+      personal: getPersonalTeam(userTeams, user.id),
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
     },
@@ -83,8 +88,8 @@ const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   }))
 }
 
-function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
-  return getSingle(teams?.filter((team) => team.is_personal))
+function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>, userId: string) {
+  return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
 }
 
 function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {

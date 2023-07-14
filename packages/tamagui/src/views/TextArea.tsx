@@ -10,12 +10,14 @@ import { InputFrame, InputProps, defaultStyles, useInputProps } from './Input'
 export const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
   multiline: true,
+  // this attribute fixes firefox newline issue
+  whiteSpace: 'pre-wrap',
 
   variants: {
     unstyled: {
       false: {
-        ...defaultStyles,
         height: 'auto',
+        ...defaultStyles,
       },
     },
 

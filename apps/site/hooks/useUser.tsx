@@ -1,4 +1,4 @@
-import { siteRootDir } from '@protected/studio/constants'
+import { siteRootDir } from 'studio/constants'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import useSWR from 'swr'

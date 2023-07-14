@@ -1,13 +1,13 @@
 import Module from 'module'
+import { join } from 'path'
 
-import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
-import fs from 'fs-extra'
+import type { ThemeBuilder } from '@tamagui/theme-builder'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
-export async function generateThemes(options: { inPath: string; outPath: string }) {
+export async function generateThemes(inputFile: string) {
   require('esbuild-register/dist/node').register()
 
   let promise: Promise<null | ThemeBuilder<any>> | null = null as any
@@ -17,7 +17,7 @@ export async function generateThemes(options: { inPath: string; outPath: string 
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
-    if (id === '@tamagui/create-theme/theme-builder') {
+    if (id === '@tamagui/create-theme/theme-builder' || id === '@tamagui/theme-builder') {
       if (!promise) {
         let resolve: Function
         promise = new Promise((res) => {
@@ -34,38 +34,47 @@ export async function generateThemes(options: { inPath: string; outPath: string 
   }
 
   try {
-    const requiredThemes = require(options.inPath)
+    const inputFilePath =
+      inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+    const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
-
     const themeBuilder = promise ? await promise : null
-
-    await Promise.all([
-      fs.writeFile(options.outPath, generatedThemes),
-      themeBuilder?.state
-        ? fs.writeFile(
-            `${options.outPath}.theme-builder.json`,
-            JSON.stringify(themeBuilder?.state)
-          )
-        : null,
-    ])
+    return {
+      generated: generatedThemes,
+      state: themeBuilder?.state,
+    }
   } finally {
     Module.prototype.require = ogRequire
   }
 }
 
+/**
+ * value -> name of variable
+ */
+const dedupedTokens = new Map<string, string>()
+
 function generatedThemesToTypescript(themes: Record<string, any>) {
-  const deduped = new Map<string, Object>()
-  const dedupedToNames = new Map<string, string[]>()
+  const dedupedThemes = new Map<string, Object>()
+  const dedupedThemeToNames = new Map<string, string[]>()
 
   for (const name in themes) {
-    const theme = themes[name]
+    const theme: Record<string, string> = themes[name]
+
+    // go through all tokens in current theme and add the new values to dedupedTokens map
+    for (const [key, value] of Object.entries(theme)) {
+      const uniqueKey = `${name}_${key}`
+      if (!dedupedTokens.has(value)) {
+        dedupedTokens.set(value, uniqueKey)
+      }
+    }
+
     const key = JSON.stringify(theme)
-    if (deduped.has(key)) {
-      dedupedToNames.set(key, [...dedupedToNames.get(key)!, name])
+    if (dedupedThemes.has(key)) {
+      dedupedThemeToNames.set(key, [...dedupedThemeToNames.get(key)!, name])
     } else {
-      deduped.set(key, theme)
-      dedupedToNames.set(key, [name])
+      dedupedThemes.set(key, theme)
+      dedupedThemeToNames.set(key, [name])
     }
   }
 
@@ -79,9 +88,16 @@ ${Object.entries(themes.light || themes[Object.keys(themes)[0]])
 
   let themesString = `${baseTypeString}\n`
 
-  deduped.forEach((theme) => {
+  // add all token variables
+
+  dedupedTokens.forEach((names, value) => {
+    themesString += `const ${names} = '${value}'\n`
+  })
+  themesString += '\n'
+
+  dedupedThemes.forEach((theme) => {
     const key = JSON.stringify(theme)
-    const [baseName, ...restNames] = dedupedToNames.get(key)!
+    const [baseName, ...restNames] = dedupedThemeToNames.get(key)!
     const baseTheme = `export const ${baseName} = ${objectToJsString(theme)} as Theme`
     themesString += `\n${baseTheme}`
 
@@ -100,7 +116,10 @@ function objectToJsString(obj: Object, indent = 4) {
   const whitespace = new Array(indent).fill(' ').join('')
   return `{
 ${Object.entries(obj)
-  .map(([k, v]) => `${whitespace}${k}: '${v}'`)
+  .map(([k, v]) => {
+    const variableName = dedupedTokens.get(v)
+    return `${whitespace}${k}: ${variableName}`
+  })
   .join(',\n')}
 }`
 }

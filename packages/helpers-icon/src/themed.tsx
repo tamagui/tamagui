@@ -12,7 +12,7 @@ type ThemedOptions = {
 export function themed(
   Component: React.FC<IconProps>,
   opts: ThemedOptions = {
-    defaultThemeColor: 'black',
+    defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
     defaultStrokeWidth: 2,
     fallbackColor: '#000',
   }
@@ -30,11 +30,13 @@ export function themed(
     )
 
     const size =
-      typeof props.size === 'string' ? getTokenValue(props.size, 'size') : props.size
+      typeof props.size === 'string'
+        ? getTokenValue(props.size as any, 'size')
+        : props.size
 
     const strokeWidth =
       typeof props.strokeWidth === 'string'
-        ? getTokenValue(props.strokeWidth, 'size')
+        ? getTokenValue(props.strokeWidth as any, 'size')
         : props.strokeWidth ?? `${opts.defaultStrokeWidth}`
 
     return <Component {...props} color={color} size={size} strokeWidth={strokeWidth} />

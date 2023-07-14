@@ -68,16 +68,6 @@ export const useThemeWithState = (props: ThemeProps) => {
 
   const { themeManager, theme, name, className } = changedTheme
 
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', name)
-    const logs = { ...props, name, className, ...(isDevTools && { theme }) }
-    for (const key in logs) {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('  ', key, logs[key])
-    }
-    console.groupEnd()
-  }
-
   if (!changedTheme.theme) {
     if (process.env.NODE_ENV === 'development') {
       console.warn('No theme found', name, props, themeManager)
@@ -89,10 +79,24 @@ export const useThemeWithState = (props: ThemeProps) => {
     return getThemeProxied(changedTheme as any, keys.current)
   }, [theme, name, className, themeManager])
 
-  return {
+  const result = {
     ...changedTheme,
     theme: proxiedTheme,
   }
+
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed('  🔹 useTheme =>', name)
+    const logs = { props, changedTheme, ...(isDevTools && { theme }) }
+    for (const key in logs) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(' · ', key, logs[key])
+    }
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log('returning state', result)
+    console.groupEnd()
+  }
+
+  return result
 }
 
 export function getThemeProxied(

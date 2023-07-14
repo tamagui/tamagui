@@ -1,10 +1,11 @@
-import { createComponent } from '../createComponent'
-import type { StackProps, StackPropsBase } from '../types'
+import { validStyles } from '@tamagui/helpers'
 
-export const View = createComponent<
-  StackProps,
-  React.Component<StackProps>,
-  StackPropsBase
->({
+import { createComponent } from '../createComponent'
+import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
+
+export type View = TamaguiElement
+
+export const View = createComponent<StackProps, View, StackPropsBase>({
   acceptsClassName: true,
+  validStyles,
 })

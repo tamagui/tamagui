@@ -38,6 +38,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
         y={0}
         elevation="$1"
         opacity={1}
+        animateOnly={['transform', 'opacity']}
         animation={[
           'quick',
           {
@@ -49,9 +50,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
         {...contentProps}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2" lineHeight="$0">
-          {label}
-        </Paragraph>
+        <Paragraph size="$2">{label}</Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )

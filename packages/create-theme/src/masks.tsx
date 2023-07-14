@@ -1,8 +1,6 @@
-import { createTheme } from './createTheme'
+import { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes'
 import { objectEntries, objectFromEntries } from './helpers'
 import { isMinusZero } from './isMinusZero'
-import { getThemeInfo, setThemeInfo } from './themeInfo'
-import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types'
 
 export const createMask = <C extends CreateMask | MaskFunction>(
   createMask: C
@@ -10,20 +8,6 @@ export const createMask = <C extends CreateMask | MaskFunction>(
   typeof createMask === 'function'
     ? { name: createMask.name || 'unnamed', mask: createMask }
     : createMask
-
-export const combineMasks = (...masks: CreateMask[]) => {
-  const mask: CreateMask = {
-    name: 'combine-mask',
-    mask: (template, opts) => {
-      let current = template
-      for (const mask of masks) {
-        current = applyMask(current, mask, opts)
-      }
-      return current
-    },
-  }
-  return mask
-}
 
 export const skipMask: CreateMask = {
   name: 'skip-mask',
@@ -93,7 +77,8 @@ export const createShiftMask = (
         out[key] = clamped
       }
 
-      return skipMask.mask(out, opts) as typeof template
+      const skipped = skipMask.mask(out, opts) as typeof template
+      return skipped
     },
   }
   return mask
@@ -110,46 +95,3 @@ export const createStrengthenMask = (defaultOptions?: MaskOptions): CreateMask =
   name: 'strengthen-mask',
   mask: createShiftMask({ inverse: true }, defaultOptions).mask,
 })
-
-export function applyMask<Theme extends GenericTheme | ThemeMask>(
-  theme: Theme,
-  mask: CreateMask,
-  options: MaskOptions = {}
-): Theme {
-  const info = getThemeInfo(theme)
-
-  if (!info) {
-    throw new Error(
-      process.env.NODE_ENV !== 'production'
-        ? `No info found for theme, you must pass the theme created by createThemeFromPalette directly to extendTheme`
-        : `❌ Err2`
-    )
-  }
-
-  const skip = {
-    ...options.skip,
-  }
-
-  // skip nonInheritedValues from parent theme
-  if (info.options?.nonInheritedValues) {
-    for (const key in info.options.nonInheritedValues) {
-      skip[key] = 1
-    }
-  }
-
-  // convert theme back to template first
-  const template = mask.mask(info.definition, {
-    palette: info.palette,
-    ...options,
-    skip,
-  })
-
-  const next = createTheme(info.palette, template) as Theme
-
-  setThemeInfo(next, {
-    definition: template,
-    palette: info.palette,
-  })
-
-  return next
-}

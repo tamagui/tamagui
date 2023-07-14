@@ -1,11 +1,11 @@
 import { themes } from '@tamagui/themes';
 export * from './animations';
-export declare const gluspFont: import("@tamagui/web").GenericFont;
+export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/web").GenericFont;
 export declare const config: {
     defaultFont: string;
-    shouldAddPrefersColorThemes: boolean;
-    themeClassNameOnRoot: boolean;
+    shouldAddPrefersColorThemes: true;
+    themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
             type: "timing";
@@ -782,9 +782,55 @@ export declare const config: {
             lg: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
+    settings: {
+        allowedStyleValues: "somewhat-strict-web";
+        autocompleteSpecificTokens: "except-special";
+    };
     fonts: {
-        heading: import("@tamagui/web").GenericFont;
-        body: import("@tamagui/web").GenericFont;
+        heading: import("@tamagui/web").FillInFont<{
+            size: {
+                5: number;
+                6: number;
+                9: number;
+                10: number;
+            };
+            transform: {
+                6: "uppercase";
+                7: "none";
+            };
+            weight: {
+                6: string;
+                7: string;
+            };
+            color: {
+                6: string;
+                7: string;
+            };
+            letterSpacing: {
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                11: number;
+                12: number;
+                14: number;
+                15: number;
+            };
+            face: {
+                700: {
+                    normal: string;
+                };
+                800: {
+                    normal: string;
+                };
+                900: {
+                    normal: string;
+                };
+            };
+        }, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -808,9 +854,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        glusp: import("@tamagui/web").GenericFont;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
         munro: import("@tamagui/web").GenericFont;
+        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map
