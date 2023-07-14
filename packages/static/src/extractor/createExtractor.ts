@@ -781,8 +781,14 @@ export function createExtractor(
           ])
 
           const deoptProps = new Set([
-            // always de-opt animation
+            // always de-opt animation these
             'animation',
+            'disableOptimization',
+
+            // for now we can also disable for animated things:
+            'enterStyle',
+            'exitStyle',
+
             ...(restProps.deoptProps || []),
             ...(staticConfig.deoptProps || []),
           ])
