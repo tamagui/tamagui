@@ -1,4 +1,5 @@
 import { FloatingFocusManager } from '@floating-ui/react'
+import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   TamaguiElement,
   composeRefs,
@@ -21,13 +22,19 @@ import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
 export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
-  backgroundColor: '$background',
-  elevate: true,
-  bordered: true,
-  userSelect: 'none',
-  outlineWidth: 0,
 
   variants: {
+    unstyled: {
+      false: {
+        size: '$2',
+        backgroundColor: '$background',
+        elevate: true,
+        bordered: true,
+        userSelect: 'none',
+        outlineWidth: 0,
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
@@ -38,12 +45,12 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$2',
+    unstyled: false,
   },
 })
 
-export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
-  (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
+export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>(
+  function SelectViewport(props: ScopedProps<SelectViewportProps>, forwardedRef) {
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
@@ -58,6 +65,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
       forwardedRef,
       context.floatingContext?.refs.setFloating
     )
+
     if (context.shouldRenderWebNative) {
       return <>{children}</>
     }
@@ -70,14 +78,6 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
       )
     }
 
-    if (!context.floatingContext) {
-      return null
-    }
-
-    if (!context.open) {
-      return <>{children}</>
-    }
-
     const {
       style: { scrollbarWidth, listStyleType, overflow, ...restStyle },
       ...floatingProps
@@ -85,33 +85,41 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
 
     return (
       <>
-        {!disableScroll && (
+        {!disableScroll && !props.unstyled && (
           <style
             dangerouslySetInnerHTML={{
               __html: selectViewportCSS,
             }}
           />
         )}
-        <FloatingFocusManager context={context.floatingContext}>
-          <SelectViewportFrame
-            size={context.size}
-            // @ts-ignore
-            role="presentation"
-            {...viewportProps}
-            ref={composedRefs}
-            {...floatingProps}
-            {...restStyle}
-            overflow={disableScroll ? undefined : overflow ?? 'scroll'}
-          >
-            {children}
-          </SelectViewportFrame>
+        <FloatingFocusManager context={context.floatingContext!}>
+          <AnimatePresence>
+            {context.open ? (
+              <SelectViewportFrame
+                key="select-viewport"
+                size={context.size}
+                // @ts-ignore
+                role="presentation"
+                {...viewportProps}
+                ref={composedRefs}
+                {...floatingProps}
+                {...restStyle}
+                {...(!props.unstyled && {
+                  overflow: disableScroll ? undefined : overflow ?? 'scroll',
+                })}
+              >
+                {children}
+              </SelectViewportFrame>
+            ) : null}
+          </AnimatePresence>
         </FloatingFocusManager>
+
+        {/* keep in dom to allow for portal to the trigger... very hacky! we should fix */}
+        {!context.open && <div style={{ display: 'none' }}>{props.children}</div>}
       </>
     )
   }
 )
-
-SelectViewport.displayName = VIEWPORT_NAME
 
 const selectViewportCSS = `
 .is_SelectViewport {
