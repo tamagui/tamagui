@@ -370,6 +370,8 @@ export function createComponent<
       debug: debugProp,
     }
 
+    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
+
     if (process.env.NODE_ENV === 'development') {
       const id = useId()
 
@@ -380,7 +382,9 @@ export function createComponent<
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         console.group(
-          `%c ${banner} (unmounted: ${state.unmounted})`,
+          `%c ${banner} (unmounted: ${state.unmounted})${
+            presence ? ` (presence: ${presence[0]})` : ''
+          }`,
           'background: yellow;'
         )
         if (!isServer) {
@@ -402,7 +406,6 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
