@@ -196,7 +196,7 @@ export interface SelectItemProps extends ListItemProps {
   textValue?: string
 }
 
-export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
+export const SelectItem = ListItem.styleable<SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const {
       __scopeSelect,
@@ -275,12 +275,14 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
               allowSelectRef!.current = true
             }
           },
+
           onClick() {
             if (allowSelectRef!.current) {
               setSelectedIndex(index)
               setOpen(false)
             }
           },
+
           onMouseUp() {
             if (!allowMouseUpRef!.current) {
               return
@@ -303,6 +305,12 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         }
 
     const isActive = activeIndex === index
+
+    React.useEffect(() => {
+      if (isActive) {
+        listRef?.current[index]?.focus()
+      }
+    }, [isActive])
 
     return (
       <SelectItemContextProvider
@@ -333,6 +341,9 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             size={context.size}
             {...itemProps}
             {...selectItemProps}
+            {...(isActive && {
+              theme: 'active',
+            })}
           />
         )}
       </SelectItemContextProvider>
@@ -401,12 +412,6 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
     return (
       <>
         {contents}
-
-        {/* Portal the select item text into the trigger value node */}
-        {/* this needs some extra stability between renders */}
-        {/* {isWeb && isSelected
-          ? ReactDOM.createPortal(itemTextProps.children, context.valueNode!)
-          : null} */}
 
         {/* Portal an option in the bubble select */}
         {/* {context.bubbleSelect
