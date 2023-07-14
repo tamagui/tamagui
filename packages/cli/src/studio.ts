@@ -8,8 +8,13 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
-import proxy from 'express-http-proxy'
 import fs, { ensureDir } from 'fs-extra'
+import {
+  Filter,
+  Options,
+  RequestHandler,
+  createProxyMiddleware,
+} from 'http-proxy-middleware'
 import { createServer } from 'vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
@@ -105,7 +110,15 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
       }
     })
 
-    app.use('/', proxy(`${info.address}:${vitePort}`))
+    const target = `http://${info.address}:${vitePort}`
+    console.log('target', target)
+    app.use(
+      '/',
+      createProxyMiddleware({
+        target,
+        ws: true,
+      })
+    )
 
     const appServer = app.listen(serverPort)
 

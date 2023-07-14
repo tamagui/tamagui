@@ -4990,7 +4990,6 @@ __metadata:
     esbuild: ^0.17.17
     execa: ^5.0.0
     express: ^4.18.1
-    express-http-proxy: ^1.6.3
     fast-glob: ^3.2.11
     fastify: ^3.29.0
     fastify-favicon: ^3.2.0
@@ -4998,6 +4997,7 @@ __metadata:
     fs-extra: ^11.1.0
     get-port: ^6.1.2
     graphology: ^0.24.1
+    http-proxy-middleware: ^2.0.6
     kill-port: ^2.0.1
     lodash.debounce: ^4.0.8
     marked: ^5.1.0
@@ -10912,7 +10912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.0.1, debug@npm:^3.1.0, debug@npm:^3.2.7":
+"debug@npm:^3.1.0, debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -11776,13 +11776,6 @@ __metadata:
     es5-ext: ^0.10.35
     es6-symbol: ^3.1.1
   checksum: 6e48b1c2d962c21dee604b3d9f0bc3889f11ed5a8b33689155a2065d20e3107e2a69cc63a71bd125aeee3a589182f8bbcb5c8a05b6a8f38fa4205671b6d09697
-  languageName: node
-  linkType: hard
-
-"es6-promise@npm:^4.1.1":
-  version: 4.2.8
-  resolution: "es6-promise@npm:4.2.8"
-  checksum: 95614a88873611cb9165a85d36afa7268af5c03a378b35ca7bda9508e1d4f1f6f19a788d4bc755b3fd37c8ebba40782018e02034564ff24c9d6fa37e959ad57d
   languageName: node
   linkType: hard
 
@@ -12745,17 +12738,6 @@ __metadata:
   bin:
     expo: bin/cli
   checksum: 3faec8e30d78151b173fb2956bf9e01ef5c21266805f3785bf50ddd366e3f523535b516804719e4660b88bffa86ff3d234464289b44e686763a80ba8e811cb50
-  languageName: node
-  linkType: hard
-
-"express-http-proxy@npm:^1.6.3":
-  version: 1.6.3
-  resolution: "express-http-proxy@npm:1.6.3"
-  dependencies:
-    debug: ^3.0.1
-    es6-promise: ^4.1.1
-    raw-body: ^2.3.0
-  checksum: 67fa357a29404e22778cfa59e60cdf410d876caeeaab7d34946d40ac6555cfcc666a0fd28fc087149b1f9bbb8349b057ad575485331126b1b99b696ab2528488
   languageName: node
   linkType: hard
 
@@ -14657,7 +14639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:^2.0.3":
+"http-proxy-middleware@npm:^2.0.3, http-proxy-middleware@npm:^2.0.6":
   version: 2.0.6
   resolution: "http-proxy-middleware@npm:2.0.6"
   dependencies:
@@ -20262,7 +20244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"raw-body@npm:2.5.2, raw-body@npm:^2.3.0":
+"raw-body@npm:2.5.2":
   version: 2.5.2
   resolution: "raw-body@npm:2.5.2"
   dependencies:
