@@ -69,23 +69,30 @@ export async function loadTamagui(
 
 // debounce a bit
 let waiting = false
+let hasLoggedOnce = false
+
 const generateThemesAndLog = async (options: TamaguiOptions) => {
   if (waiting) return
   try {
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
     if (options.themeBuilder) {
-      await generateTamaguiThemes(options)
-      colorLog(
-        Color.FgYellow,
-        `
-    ➡ [tamagui] Generated themes:`
-      )
-      colorLog(
-        Color.Dim,
-        `
-            ${relative(process.cwd(), options.themeBuilder.output)}`
-      )
+      const didGenerate = await generateTamaguiThemes(options)
+      if (!hasLoggedOnce || didGenerate) {
+        hasLoggedOnce = true
+
+        // only logs when changed
+        colorLog(
+          Color.FgYellow,
+          `
+      ➡ [tamagui] Generated themes:`
+        )
+        colorLog(
+          Color.Dim,
+          `
+              ${relative(process.cwd(), options.themeBuilder.output)}`
+        )
+      }
     }
   } finally {
     waiting = false

@@ -49,10 +49,10 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
   // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
   const hasChanged = await (async () => {
     try {
-      if (generatedOutput.generated === (await readFile(outPath, 'uft-8'))) {
-        return false
-      }
-    } catch {
+      const next = generatedOutput.generated
+      const current = await readFile(outPath, 'utf-8')
+      return next !== current
+    } catch (err) {
       // ok
     }
     return true
