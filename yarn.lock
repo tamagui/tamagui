@@ -7879,14 +7879,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/og@npm:^0.5.4":
-  version: 0.5.4
-  resolution: "@vercel/og@npm:0.5.4"
+"@vercel/og@npm:^0.5.8":
+  version: 0.5.8
+  resolution: "@vercel/og@npm:0.5.8"
   dependencies:
     "@resvg/resvg-wasm": 2.4.1
-    satori: 0.7.2
+    satori: 0.10.1
     yoga-wasm-web: 0.3.3
-  checksum: e66b43da7c56cb3f0a7cc22fa2bf7e9fde53822b875aa4513bfc414c9f382ee6bedfaf26f922827618fdf2e7afcccf42e1d1487c4bfebb4bec94d8bf856559f8
+  checksum: 23d7cf8506fa2edec59d44ecbaef692e3b9efffa56243aa7f42295279e0ca688b5863ee97892b20a0ad1969ac82b48a64dd037c522aed5de7e23b2ffa5175c44
   languageName: node
   linkType: hard
 
@@ -11865,7 +11865,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-html@npm:~1.0.3":
+"escape-html@npm:^1.0.3, escape-html@npm:~1.0.3":
   version: 1.0.3
   resolution: "escape-html@npm:1.0.3"
   checksum: 6213ca9ae00d0ab8bccb6d8d4e0a98e76237b2410302cf7df70aaa6591d509a2a37ce8998008cbecae8fc8ffaadf3fb0229535e6a145f3ce0b211d060decbb24
@@ -21526,20 +21526,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:0.7.2":
-  version: 0.7.2
-  resolution: "satori@npm:0.7.2"
+"satori@npm:0.10.1":
+  version: 0.10.1
+  resolution: "satori@npm:0.10.1"
   dependencies:
     "@shuding/opentype.js": 1.4.0-beta.0
     css-background-parser: ^0.1.0
     css-box-shadow: 1.0.0-3
     css-to-react-native: ^3.0.0
     emoji-regex: ^10.2.1
+    escape-html: ^1.0.3
     linebreak: ^1.1.0
     parse-css-color: ^0.2.1
     postcss-value-parser: ^4.2.0
     yoga-wasm-web: ^0.3.3
-  checksum: bb624f7b3257a66d17a6ea096866eb52605c6c7b1861a8decf96c032140cc2d0afc3462373072263e83f8a4a844184340b767fdf85601a9a3b78811e3ff70023
+  checksum: fd6df0f80002bb1387bbec413f0d07414c1c1d6825abecf79a59f17283ca87db88c6928898ff494230946b9ee4773e389e71e6c4ed8ce5964323ef3baf2ed884
   languageName: node
   linkType: hard
 
@@ -22960,7 +22961,7 @@ __metadata:
   resolution: "tamagui-monorepo@workspace:."
   dependencies:
     "@manypkg/cli": ^0.19.1
-    "@vercel/og": ^0.5.4
+    "@vercel/og": ^0.5.8
     check-dependency-version-consistency: ^3.0.3
     import-sort-style-module: ^6.0.0
     npm-run-all: ^4.1.5
