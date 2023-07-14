@@ -53,6 +53,10 @@ export type TamaguiComponentPropsBase = {
     tabIndex?: string | number;
     role?: Role;
     /**
+     * Disable all compiler optimization
+     */
+    disableOptimization?: boolean;
+    /**
      * Forces the pseudo style state to be on
      */
     forceStyle?: 'hover' | 'press' | 'focus';
@@ -701,10 +705,6 @@ type StaticConfigBase = StaticConfigPublic & {
      * Memoize the component
      */
     memo?: boolean;
-    /**
-     * Used insternally to attach default props to names
-     */
-    parentNames?: string[];
     /**
      * By default if styled() doesn't recognize a parent Tamagui compoent or specific react-native views,
      * it will assume the passed in component only accepts style={} for react-native compatibility.
