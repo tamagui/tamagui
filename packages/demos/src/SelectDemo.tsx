@@ -74,7 +74,7 @@ export function SelectDemoItem(props: SelectProps) {
 
         <Select.Viewport
           animation="quick"
-          key="stable"
+          animateOnly={['transform', 'opacity']}
           minWidth={200}
           enterStyle={{ o: 0, y: -10 }}
           exitStyle={{ o: 0, y: 10 }}
