@@ -108,7 +108,6 @@ export function styled<
           defaultProps = {
             ...parentStaticConfig.defaultProps,
             ...defaultProps,
-            ...defaultVariants,
           }
         }
 
