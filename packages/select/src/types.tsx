@@ -86,6 +86,7 @@ export interface SelectContextValue {
 export type SelectViewportProps = ThemeableStackProps & {
   size?: SizeTokens
   disableScroll?: boolean
+  unstyled?: boolean
 }
 
 export type SelectContentProps = ScopedProps<{
