@@ -561,6 +561,10 @@ const AccordionContentFrame = styled(Collapsible.Content, {
         backgroundColor: '$background',
       },
     },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
   },
 })
 
