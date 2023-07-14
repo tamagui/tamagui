@@ -31,11 +31,12 @@
     }
   },
   "dependencies": {
-    "@floating-ui/react": "^0.24.3",
+    "@floating-ui/react": "^0.24.7",
     "@floating-ui/react-dom": "^2.0.1",
     "@floating-ui/react-native": "^0.10.1",
     "@radix-ui/react-use-previous": "^1.0.0",
     "@tamagui/adapt": "1.39.9",
+    "@tamagui/animate-presence": "1.39.9",
     "@tamagui/compose-refs": "1.39.9",
     "@tamagui/core": "1.39.9",
     "@tamagui/create-context": "1.39.9",
