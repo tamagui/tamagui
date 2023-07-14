@@ -148,6 +148,7 @@ export declare const themeableVariants: {
             theme?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | null | undefined;
             componentName?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | undefined;
             tabIndex?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | undefined;
+            disableOptimization?: boolean | import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | undefined;
             forceStyle?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | undefined;
             onPress?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
             onLongPress?: import("@tamagui/core").VariableVal | import("@tamagui/core").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;

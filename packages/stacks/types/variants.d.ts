@@ -88,6 +88,7 @@ export declare const elevate: {
         theme?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | null | undefined;
         componentName?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | undefined;
         tabIndex?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | undefined;
+        disableOptimization?: boolean | import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | undefined;
         forceStyle?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | undefined;
         onPress?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
         onLongPress?: import("@tamagui/web").VariableVal | import("@tamagui/web").Variable<any> | ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
