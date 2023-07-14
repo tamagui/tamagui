@@ -785,9 +785,10 @@ export function createExtractor(
             'animation',
             'disableOptimization',
 
-            // for now we can also disable for animated things:
-            'enterStyle',
-            'exitStyle',
+            // when using a non-CSS driver, de-opt on enterStyle/exitStyle
+            ...(tamaguiConfig?.animations.isReactNative
+              ? ['enterStyle', 'exitStyle']
+              : []),
 
             ...(restProps.deoptProps || []),
             ...(staticConfig.deoptProps || []),
