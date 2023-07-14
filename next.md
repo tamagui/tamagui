@@ -1,3 +1,5 @@
+- sheet snappoints not consistent on mobile web vs other platforms (maybe dvh or maybe just different?)
+- sheet feature to have it snap to content size
 - node memory leak causing slowdowns
 - sheet breakpoints esp on mobile web
 
