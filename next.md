@@ -2,10 +2,8 @@
 - sheet feature to have it snap to content size
 - node memory leak causing slowdowns
 - sheet breakpoints esp on mobile web
-
 - move simple-web to themeBuilder
 - add themeBuilder to compile time options in starters
-
 - make it so specific tokens can be omitted from types where theres a default token category
 
 - being able to limit fallback value better:
