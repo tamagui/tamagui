@@ -1,3 +1,6 @@
+- node memory leak causing slowdowns
+- sheet breakpoints esp on mobile web
+
 - move simple-web to themeBuilder
 - add themeBuilder to compile time options in starters
 
