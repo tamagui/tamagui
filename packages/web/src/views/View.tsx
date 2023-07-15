@@ -3,7 +3,9 @@ import { validStyles } from '@tamagui/helpers'
 import { createComponent } from '../createComponent'
 import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
 
-export const View = createComponent<StackProps, TamaguiElement, StackPropsBase>({
+export type View = TamaguiElement
+
+export const View = createComponent<StackProps, View, StackPropsBase>({
   acceptsClassName: true,
   validStyles,
 })

@@ -4,7 +4,9 @@ import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
 import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
 
-export const Stack = createComponent<StackProps, TamaguiElement, StackPropsBase>({
+export type Stack = TamaguiElement
+
+export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
   acceptsClassName: true,
   defaultProps: {
     ...stackDefaultStyles,

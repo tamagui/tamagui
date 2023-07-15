@@ -28,6 +28,14 @@ demoName: Sheet
   ]}
 />
 
+## Installation
+
+Sheet is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/sheet
+```
+
 ## Anatomy
 
 ```tsx
@@ -53,17 +61,17 @@ Using the `createSheet` export, you can create a fully custom sheet without usin
 Here's an example:
 
 ```tsx
-import { styled, Stack } from '@tamagui/core'
+import { Stack, styled } from '@tamagui/core'
 import { createSheet } from '@tamagui/sheet'
 
 const Handle = styled(Stack, {
   variants: {
     open: {
       true: {
-        opacity: 0.35
+        opacity: 0.35,
       },
       false: {
-        opacity: 0.5
+        opacity: 0.5,
       },
     },
   } as const,
