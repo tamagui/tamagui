@@ -6,13 +6,20 @@ import { AnimatePresence, H1, Square, XStack } from 'tamagui'
 export const Sandbox = () => {
   return (
     <Square
-      bc="red"
+      backgroundColor="red"
       size={100}
+      animation="quick"
+      hoverStyle={{
+        scale: 2,
+      }}
       $theme-dark={{
-        bg: 'green',
+        backgroundColor: 'green',
+        hoverStyle: {
+          scale: 2,
+        },
       }}
       $platform-web={{
-        bg: 'blue',
+        backgroundColor: 'blue',
       }}
     />
   )

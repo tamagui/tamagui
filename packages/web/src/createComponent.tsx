@@ -243,7 +243,7 @@ export function createComponent<
       undefined as any as {
         hasAnimated?: boolean
         themeShallow?: boolean
-        didAccessThemeVariableValue?: boolean
+        isListeningToTheme?: boolean
       }
     )
     stateRef.current ||= {}
@@ -366,7 +366,10 @@ export function createComponent<
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
-      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+      shouldUpdate: () => {
+        // only forces when defined
+        return stateRef.current.isListeningToTheme
+      },
       debug: debugProp,
     }
 
@@ -439,6 +442,8 @@ export function createComponent<
       elementType,
       debugProp
     )
+
+    stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints

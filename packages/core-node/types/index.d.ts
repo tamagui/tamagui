@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import type { TamaguiComponent, TamaguiElement, TamaguiTextElement } from '@tamagui/web';
-import type { RNTextProps, RNViewProps } from './reactNativeTypes';
+import { RNTextProps, RNViewProps } from './reactNativeTypes';
 export * from '@tamagui/web';
 export declare const Stack: TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers) | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;

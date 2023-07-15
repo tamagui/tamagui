@@ -355,5 +355,6 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
         color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
     }) | undefined;
     autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
+    mediaPropOrder?: boolean | undefined;
 }>;
 //# sourceMappingURL=index.d.ts.map

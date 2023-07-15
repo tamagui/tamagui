@@ -42,7 +42,7 @@ export const ButtonContext = createStyledContext<
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
+type ButtonProps = TextParentStyles &
   GetProps<typeof ButtonFrame> &
   ThemeableProps & {
     /**
@@ -68,7 +68,7 @@ type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
      */
     scaleSpace?: number
     /**
-     *
+     * remove default styles
      */
     unstyled?: boolean
   }
@@ -97,10 +97,6 @@ const ButtonFrame = styled(ThemeableStack, {
         borderWidth: 1,
         borderColor: '$borderColor',
 
-        pressStyle: {
-          borderColor: '$borderColorPress',
-        },
-
         focusStyle: {
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
@@ -111,14 +107,6 @@ const ButtonFrame = styled(ThemeableStack, {
 
     size: {
       '...size': getButtonSized,
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
     },
 
     disabled: {

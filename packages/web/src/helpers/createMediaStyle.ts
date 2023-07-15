@@ -37,12 +37,17 @@ export const createMediaStyle = (
 
     if (isThemeMedia) {
       const key = mediaKey.split('-')[1]
-      const [selector, rule] = styleInner.replace(':root ', ' ').split('{')
+      const selectorStart = styleInner.indexOf(':root')
+      const selectorEnd = styleInner.lastIndexOf('{')
+      const selector = styleInner.slice(selectorStart, selectorEnd)
       const precedenceSpace = conf.themeClassNameOnRoot ? '' : ' '
-      const nextSelector = `${precedencePrefix}${precedenceSpace}.t_${key} ${selector}`
+      const nextSelector = `:root${precedencePrefix}${precedenceSpace}.t_${key} ${selector.replace(
+        ':root',
+        ''
+      )}`
       const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
-      styleRule = `${selectors} {${rule}`
+      styleRule = styleInner.replace(selector, nextSelector)
     } else {
       styleRule = `${precedencePrefix}${styleInner}`
     }
@@ -85,7 +90,7 @@ export const createMediaStyle = (
       // combine
       styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
     } else {
-      styleRule = `@media ${mediaQuery} { ${precedencePrefix} ${styleInner} }`
+      styleRule = `@media ${mediaQuery}{${precedencePrefix}${styleInner}}`
     }
   }
 

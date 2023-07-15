@@ -124,29 +124,7 @@ function AppContents(
         disableRootThemeClass
         defaultTheme={props.theme}
       >
-        <Square
-          width={39}
-          height={50}
-          backgroundColor={'blue'}
-          $md={{
-            width: 50,
-          }}
-          hoverStyle={{
-            height: 100,
-          }}
-          $platform-web={{
-            backgroundColor: 'yellow',
-          }}
-          $theme-dark={{
-            width: 100,
-            height: 200,
-            backgroundColor: 'red',
-          }}
-        />
-
-        <ThemeToggle />
-
-        {/* <ContentInner {...props} /> */}
+        <ContentInner {...props} />
       </TamaguiProvider>
     </>
   )

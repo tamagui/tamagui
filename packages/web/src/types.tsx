@@ -444,10 +444,6 @@ export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
   : string
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
-type ThemeMediaProps<A> = {
-  [key in `$theme-${keyof Themes}`]?: A
-}
-
 export interface ThemeProps {
   className?: string
   name?: Exclude<ThemeName, number> | null
@@ -458,8 +454,8 @@ export interface ThemeProps {
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
-  // allows for disabling the auto-update behavior
-  shouldUpdate?: () => boolean
+  // allows for forcing the auto-update behavior
+  shouldUpdate?: () => boolean | undefined
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -699,9 +695,16 @@ export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
+
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
+  `$theme-${TK extends `${string}_${string}` ? never : TK}`
+
+export type PlatformMediaKeys = `$platform-${AllPlatforms}`
+
 export type MediaProps<A> = {
-  [key in MediaPropKeys]?: A
+  [key in MediaPropKeys | ThemeMediaKeys | PlatformMediaKeys]?: A
 }
+
 export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
 }
@@ -1097,10 +1100,6 @@ export type PseudoStyles = {
 
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 
-type PlatformMediaProps<A> = {
-  [key in `$platform-${AllPlatforms}`]?: A
-}
-
 //
 // add both theme and shorthands
 //
@@ -1117,10 +1116,7 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 // ... media queries and animations
 //
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
-  WithThemeShorthandsAndPseudos<A> &
-    MediaProps<WithThemeShorthandsAndPseudos<A>> &
-    PlatformMediaProps<WithThemeShorthandsAndPseudos<A>> &
-    ThemeMediaProps<WithThemeShorthandsAndPseudos<A>>
+  WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>
 
 /**
  * Base style-only props (no media, pseudo):
@@ -1999,6 +1995,7 @@ export type GetStyleResult = {
   fontFamily: string | undefined
   space?: any // SpaceTokens?
   hasMedia: boolean | string[]
+  dynamicThemeAccess?: boolean
 }
 
 export type ClassNamesObject = Record<string, string>

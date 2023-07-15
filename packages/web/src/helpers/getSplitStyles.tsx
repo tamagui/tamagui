@@ -139,6 +139,7 @@ export const getSplitStyles: StyleSplitter = (
   const numProps = propKeys.length
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
+  let dynamicThemeAccess: boolean | undefined
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -849,6 +850,9 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           if (isThemeMedia) {
+            // needed to get updates when theme changes
+            dynamicThemeAccess = true
+
             const mediaThemeName = mediaKeyShort.slice(6)
             if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
               continue
@@ -1082,6 +1086,7 @@ export const getSplitStyles: StyleSplitter = (
     pseudos,
     classNames,
     rulesToInsert,
+    dynamicThemeAccess,
   }
 
   if (className) {

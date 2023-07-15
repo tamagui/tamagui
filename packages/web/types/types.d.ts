@@ -215,9 +215,6 @@ export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>;
 export type ThemeTokens = `$${ThemeKeys}`;
 export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<infer Config> ? keyof Config : string;
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>;
-type ThemeMediaProps<A> = {
-    [key in `$theme-${keyof Themes}`]?: A;
-};
 export interface ThemeProps {
     className?: string;
     name?: Exclude<ThemeName, number> | null;
@@ -227,7 +224,7 @@ export interface ThemeProps {
     debug?: DebugProp | any;
     inverse?: boolean;
     forceClassName?: boolean;
-    shouldUpdate?: () => boolean;
+    shouldUpdate?: () => boolean | undefined;
 }
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
@@ -411,8 +408,10 @@ export type MediaPropKeys = `$${MediaQueryKey}`;
 export type MediaQueryState = {
     [key in MediaQueryKey]: boolean;
 };
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = `$theme-${TK extends `${string}_${string}` ? never : TK}`;
+export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
 export type MediaProps<A> = {
-    [key in MediaPropKeys]?: A;
+    [key in MediaPropKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
 };
 export type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
@@ -549,12 +548,9 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-type PlatformMediaProps<A> = {
-    [key in `$platform-${AllPlatforms}`]?: A;
-};
 type WithThemeAndShorthands<A extends object> = WithThemeValues<OmitLonghands<A>> & WithShorthands<WithThemeValues<A>>;
 type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
-type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>> & PlatformMediaProps<WithThemeShorthandsAndPseudos<A>> & ThemeMediaProps<WithThemeShorthandsAndPseudos<A>>;
+type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 /**
  * Base style-only props (no media, pseudo):
  */
@@ -909,6 +905,7 @@ export type GetStyleResult = {
     fontFamily: string | undefined;
     space?: any;
     hasMedia: boolean | string[];
+    dynamicThemeAccess?: boolean;
 };
 export type ClassNamesObject = Record<string, string>;
 export type TamaguiComponentEvents = {
