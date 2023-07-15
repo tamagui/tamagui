@@ -589,8 +589,6 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
       {...collapsibleScope}
       {...contentProps}
       ref={forwardedRef}
-      // there were some default styles that's been removed
-      style={props.style}
     />
   )
 })
