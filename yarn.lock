@@ -4774,7 +4774,7 @@ __metadata:
     "@tamagui/build": 1.41.0
     "@tamagui/use-presence": 1.41.0
     "@tamagui/web": 1.41.0
-    moti: ^0.25.1
+    moti: ^0.25.3
     react-native-reanimated: ^3.3.0
   languageName: unknown
   linkType: soft
@@ -18074,14 +18074,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moti@npm:^0.25.1":
-  version: 0.25.1
-  resolution: "moti@npm:0.25.1"
+"moti@npm:^0.25.3":
+  version: 0.25.3
+  resolution: "moti@npm:0.25.3"
   dependencies:
     framer-motion: ^6.5.1
   peerDependencies:
     react-native-reanimated: "*"
-  checksum: 804b111f17a1a1d80324566016853bdfca6d81bad76735446fbb4dbd49b4480640681c5209e8785683a1a285fadbd0ea68f005adc8a77de058f09dc372aaf1c2
+  checksum: 13b013f7c8aca8720f4d85abd3706a8b8d7f835be33fecb627e1b919ec3635fee18895ffdf69f16706f48b468db847bbee8d28b8d3af4b57e7f5f5e19671d33a
   languageName: node
   linkType: hard
 
