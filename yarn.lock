@@ -4696,6 +4696,7 @@ __metadata:
   resolution: "@tamagui/accordion@workspace:packages/accordion"
   dependencies:
     "@tamagui/build": 1.41.0
+    "@tamagui/collapsible": 1.41.0
     "@tamagui/collection": 1.41.0
     "@tamagui/compose-refs": 1.41.0
     "@tamagui/core": 1.41.0
@@ -5012,7 +5013,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/collapsible@workspace:packages/collapsible":
+"@tamagui/collapsible@1.41.0, @tamagui/collapsible@workspace:packages/collapsible":
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@workspace:packages/collapsible"
   dependencies:
