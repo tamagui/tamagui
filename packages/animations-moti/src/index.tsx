@@ -1,3 +1,3 @@
 import './polyfill'
 
-export * from './create-animations'
+export * from './createAnimations'

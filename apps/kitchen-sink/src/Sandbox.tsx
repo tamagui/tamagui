@@ -22,7 +22,7 @@ export const Sandbox = () => {
         return (
           <AnimatePresence exitBeforeEnter key={i}>
             <H1
-              animation="100ms"
+              animation="quick"
               enterStyle={{
                 y: -30,
                 o: 0,

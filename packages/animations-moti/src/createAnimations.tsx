@@ -77,26 +77,30 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         : props.animation
 
       let animate = style
-      const nonAnimatedStyle: object | undefined = { ...style }
 
+      const nonAnimatedStyle: object | undefined = { ...style }
       const animateOnly = props.animateOnly ?? ['opacity', 'transform']
 
       animate = {}
       animateOnly.forEach((nonAnimatedKey) => {
-        if (!style[nonAnimatedKey]) return
+        if (typeof style[nonAnimatedKey] === 'undefined') return
         animate[nonAnimatedKey] = style[nonAnimatedKey]
         delete style[nonAnimatedKey]
       })
 
       const animateStr = JSON.stringify(animate)
+      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+      const isExiting = presence?.[1]
+
       const moti = useMotify({
         // without this, the driver breaks on native
         // stringifying -> parsing fixes that
-        animate: useMemo(() => JSON.parse(animateStr), [animateStr]),
+        animate: isExiting ? undefined : styles,
         transition: animations[animationKey as keyof typeof animations],
         onDidAnimate,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
+        exit: isExiting ? styles : undefined,
       })
 
       return {
