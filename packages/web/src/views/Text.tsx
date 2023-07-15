@@ -10,7 +10,9 @@ const ellipseStyle = {
   whiteSpace: 'nowrap',
 }
 
-export const Text = createComponent<TextProps, TamaguiTextElement, TextPropsBase>({
+export type Text = TamaguiTextElement
+
+export const Text = createComponent<TextProps, Text, TextPropsBase>({
   acceptsClassName: true,
   isText: true,
 

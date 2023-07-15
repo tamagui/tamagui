@@ -47,7 +47,7 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
   // We use forEach here instead of map as map mutates the component key by preprending `.$`
   Children.forEach(children, (child, index) => {
     if (isValidElement(child)) {
-      if (!child.key) {
+      if (!child.key && Children.count(children) > 1) {
         if (process.env.NODE_ENV === 'development') {
           console.warn('No key given to AnimatePresence child, assigning index as key')
         }

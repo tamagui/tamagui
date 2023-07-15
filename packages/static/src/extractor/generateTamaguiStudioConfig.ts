@@ -3,7 +3,7 @@ import { join } from 'path'
 import { getVariableValue } from '@tamagui/core-node'
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
-import fs from 'fs-extra'
+import fs, { readFile, readJSON } from 'fs-extra'
 
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
@@ -45,7 +45,24 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
   const outPath = resolveRelativePath(output)
 
   const generatedOutput = await generateThemes(inPath)
-  await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)
+
+  // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
+  const hasChanged = await (async () => {
+    try {
+      const next = generatedOutput.generated
+      const current = await readFile(outPath, 'utf-8')
+      return next !== current
+    } catch (err) {
+      // ok
+    }
+    return true
+  })()
+
+  if (hasChanged) {
+    await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)
+  }
+
+  return hasChanged
 }
 
 const resolveRelativePath = (inputPath: string) =>

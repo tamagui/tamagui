@@ -31,7 +31,10 @@ export const getAllFrontmatter = (fromPath: string) => {
         readingTime: readingTime(content),
       } as Frontmatter
     })
-    .sort((a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || '')))
+    .sort(
+      (a, b) =>
+        Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
+    )
 }
 
 export const getMdxBySlug = async (basePath, slug) => {

@@ -18,6 +18,7 @@ export const claimProductAccess = async (
   // check the product claim type and call the related claim function
   switch (metadata.claim_type) {
     case 'repo_access':
+      // @ts-ignore
       claimData = await claimRepositoryAccess({ subscription, product, user, metadata })
       break
     default:
@@ -60,8 +61,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
     .single()
 
   if (userPrivateRes.error) {
-    if (userPrivateRes.error.message.includes("rows returned")) {
-      throw new Error("No GitHub connection found. Try logging out and logging in with GitHub again.")
+    if (userPrivateRes.error.message.includes('rows returned')) {
+      throw new Error(
+        'No GitHub connection found. Try logging out and logging in with GitHub again.'
+      )
     }
     throw userPrivateRes.error
   }

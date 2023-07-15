@@ -4691,11 +4691,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/accordion@workspace:packages/accordion":
+"@tamagui/accordion@1.40.0, @tamagui/accordion@workspace:packages/accordion":
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
   dependencies:
     "@tamagui/build": 1.40.0
+    "@tamagui/collection": 1.40.0
     "@tamagui/compose-refs": 1.40.0
     "@tamagui/core": 1.40.0
     "@tamagui/create-context": 1.40.0
@@ -22981,6 +22982,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+    "@tamagui/accordion": 1.40.0
     "@tamagui/adapt": 1.40.0
     "@tamagui/alert-dialog": 1.40.0
     "@tamagui/animate-presence": 1.40.0
