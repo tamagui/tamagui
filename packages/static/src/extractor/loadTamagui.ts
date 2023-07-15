@@ -78,19 +78,14 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
     await new Promise((res) => setTimeout(res, 30))
     if (options.themeBuilder) {
       const didGenerate = await generateTamaguiThemes(options)
+      // only logs when changed
       if (!hasLoggedOnce || didGenerate) {
         hasLoggedOnce = true
-
-        // only logs when changed
-        colorLog(
-          Color.FgYellow,
-          `
-      ➡ [tamagui] Generated themes:`
-        )
+        const whitespaceBefore = `    `
+        colorLog(Color.FgYellow, `${whitespaceBefore}➡ [tamagui] Generated themes:`)
         colorLog(
           Color.Dim,
-          `
-              ${relative(process.cwd(), options.themeBuilder.output)}`
+          `\n${whitespaceBefore}${relative(process.cwd(), options.themeBuilder.output)}`
         )
       }
     }
