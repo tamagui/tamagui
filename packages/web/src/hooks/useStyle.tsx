@@ -12,7 +12,7 @@ import {
   TextNonStyleProps,
 } from '../types'
 import { useMedia } from './useMedia'
-import { useTheme } from './useTheme'
+import { useThemeWithState } from './useTheme'
 
 export function useStyle<
   Component extends TamaguiComponent,
@@ -25,12 +25,12 @@ export function useStyle<
   const isText = base.staticConfig.isText
   const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
   const languageContext = isRSC ? null : useContext(FontLanguageContext)
-  const theme = useTheme()
+  const themeState = useThemeWithState({})
   const media = useMedia()
   const out = useSplitStyles(
     style as any,
     base.staticConfig,
-    theme,
+    themeState!,
     {
       ...(options as any),
       mediaState: media,

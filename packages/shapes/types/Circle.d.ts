@@ -17,8 +17,7 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "circular"> & {
-    readonly circular?: boolean | undefined;
+}, "size"> & {
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 } & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -37,8 +36,7 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "circular"> & {
-    readonly circular?: boolean | undefined;
+}, "size"> & {
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }>> & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -57,8 +55,7 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "circular"> & {
-    readonly circular?: boolean | undefined;
+}, "size"> & {
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
     style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;
@@ -78,7 +75,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
@@ -100,7 +96,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
@@ -122,7 +117,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 }, string | number> & {
     [x: string]: undefined;
@@ -144,7 +138,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
 } & {
-    readonly circular?: boolean | undefined;
     readonly size?: import("@tamagui/web").SizeTokens | undefined;
 } & ({} | {
     [x: string]: undefined;
@@ -174,7 +167,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<(Omit<impor
         readonly transparent?: boolean | undefined;
         readonly chromeless?: boolean | "all" | undefined;
     } & {
-        readonly circular?: boolean | undefined;
         readonly size?: import("@tamagui/web").SizeTokens | undefined;
     };
 }>;

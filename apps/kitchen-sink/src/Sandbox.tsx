@@ -1,9 +1,24 @@
 // import './wdyr'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, H1, XStack } from 'tamagui'
+import { AnimatePresence, H1, Square, XStack } from 'tamagui'
 
 export const Sandbox = () => {
+  return (
+    <Square
+      bc="red"
+      size={100}
+      $theme-dark={{
+        bg: 'green',
+      }}
+      $platform-web={{
+        bg: 'blue',
+      }}
+    />
+  )
+}
+
+const NumberTicker = () => {
   const [numbers, setNumbers] = useState([0, 5, 2, 3])
 
   useEffect(() => {

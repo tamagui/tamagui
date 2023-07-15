@@ -114,6 +114,7 @@ export const config = {
   settings: {
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
+    mediaPropOrder: true,
   },
   fonts: {
     heading: headingFont,

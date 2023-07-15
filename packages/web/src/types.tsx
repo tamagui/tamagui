@@ -444,6 +444,10 @@ export type AnimationKeys = TamaguiConfig['animations'] extends AnimationDriver<
   : string
 export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
 
+type ThemeMediaProps<A> = {
+  [key in `$theme-${keyof Themes}`]?: A
+}
+
 export interface ThemeProps {
   className?: string
   name?: Exclude<ThemeName, number> | null
@@ -533,6 +537,16 @@ type GenericTamaguiSettings = {
    * @default except-special
    */
   autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
+
+  /**
+   * Will change the behavior of media styles. By default they have a fixed specificity: they
+   * always override any $theme- or $platform- styles. With this enabled, media styles will have
+   * the same precedence as the theme and platform styles, meaning that the order of the props
+   * determines if they override.
+   *
+   * @default false
+   */
+  mediaPropOrder?: boolean
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1081,6 +1095,12 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
+
+type PlatformMediaProps<A> = {
+  [key in `$platform-${AllPlatforms}`]?: A
+}
+
 //
 // add both theme and shorthands
 //
@@ -1097,7 +1117,10 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 // ... media queries and animations
 //
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> =
-  WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>
+  WithThemeShorthandsAndPseudos<A> &
+    MediaProps<WithThemeShorthandsAndPseudos<A>> &
+    PlatformMediaProps<WithThemeShorthandsAndPseudos<A>> &
+    ThemeMediaProps<WithThemeShorthandsAndPseudos<A>>
 
 /**
  * Base style-only props (no media, pseudo):

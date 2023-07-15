@@ -405,6 +405,10 @@ export function createExtractor(
       found: 0,
     }
 
+    const themeState =
+      // TODO
+      { theme: defaultTheme, name: '' }
+
     callTraverse({
       // @ts-ignore
       Program: {
@@ -569,7 +573,7 @@ export function createExtractor(
         const out = getSplitStyles(
           styles,
           Component.staticConfig,
-          defaultTheme,
+          themeState,
           {
             focus: false,
             hover: false,
@@ -1962,7 +1966,7 @@ export function createExtractor(
               const out = getSplitStyles(
                 props,
                 staticConfig,
-                defaultTheme,
+                themeState,
                 {
                   ...state,
                   fallbackProps: completeProps,

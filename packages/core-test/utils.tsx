@@ -8,6 +8,7 @@ const state = {
   focus: false,
   unmounted: true,
   mediaState: undefined,
+  isAnimated: false,
 }
 
 export function simplifiedGetSplitStyles(
@@ -21,7 +22,7 @@ export function simplifiedGetSplitStyles(
   return getSplitStyles(
     props,
     component.staticConfig,
-    emptyObj,
+    { theme: emptyObj, name: '' },
     state,
     emptyObj,
     emptyObj,

@@ -1,4 +1,5 @@
 import {
+  currentPlatform,
   isAndroid,
   isClient,
   isRSC,
@@ -92,7 +93,10 @@ let conf: TamaguiInternalConfig
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeParsed,
+  themeState: {
+    theme: ThemeParsed
+    name: string
+  },
   state: SplitStyleState,
   parentSplitStyles?: GetStyleResult | null,
   languageContext?: LanguageContextType,
@@ -114,7 +118,7 @@ let defaultFontVariable = ''
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
-  theme,
+  themeState,
   state,
   parentSplitStyles,
   languageContext,
@@ -123,6 +127,7 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const { shorthands } = conf
+  const { theme, name: themeName } = themeState
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
     staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
@@ -149,6 +154,7 @@ export const getSplitStyles: StyleSplitter = (
 
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
+  let mediaStylesSeen = 0
 
   /**
    * Not the biggest fan of creating this object but it is a nice API
@@ -754,6 +760,14 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         if (!val) continue
 
+        const isPlatformMedia = key.startsWith('$platform-')
+        if (isPlatformMedia) {
+          const platform = key.slice(10)
+          if (platform !== currentPlatform) {
+            continue
+          }
+        }
+
         hasMedia ||= true
 
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
@@ -791,7 +805,8 @@ export const getSplitStyles: StyleSplitter = (
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
-                usedKeys
+                usedKeys,
+                true
               )
               if (importance) {
                 space = val['space']
@@ -807,19 +822,45 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyles = getStylesAtomic(mediaStyle)
+          const priority = mediaStylesSeen
+          mediaStylesSeen += 1
+
           for (const style of mediaStyles) {
-            const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
+            const out = createMediaStyle(
+              style,
+              mediaKeyShort,
+              mediaQueryConfig,
+              false,
+              priority
+            )
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true)
           }
-        } else if (mediaState[mediaKeyShort]) {
+        } else {
+          const isThemeMedia = mediaKeyShort.startsWith('theme-')
+          const isPlatformMedia = mediaKeyShort.startsWith('platform-')
+
+          if (!isThemeMedia && !isPlatformMedia) {
+            if (!mediaState[mediaKeyShort]) {
+              continue
+            }
+          }
+
+          if (isThemeMedia) {
+            const mediaThemeName = mediaKeyShort.slice(6)
+            if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
+              continue
+            }
+          }
+
           for (const subKey in mediaStyle) {
             const importance = getMediaImportanceIfMoreImportant(
               mediaKeyShort,
               subKey,
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (importance === null) continue
             if (subKey === 'space') {
@@ -831,7 +872,8 @@ export const getSplitStyles: StyleSplitter = (
               mediaKeyShort,
               subKey,
               mediaStyle[subKey],
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (key === 'fontFamily') {
               fontFamily = mediaStyle.fontFamily as string

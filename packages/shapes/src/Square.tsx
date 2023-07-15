@@ -9,12 +9,6 @@ export const Square = styled(ThemeableStack, {
   justifyContent: 'center',
 
   variants: {
-    circular: {
-      true: {
-        borderRadius: 100_000,
-      },
-    },
-
     size: {
       '...size': getShapeSize,
     },

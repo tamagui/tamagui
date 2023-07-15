@@ -13,9 +13,10 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { Square, TamaguiProvider } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
+import { ThemeToggle } from '../components/ThemeToggle'
 import config from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
@@ -123,7 +124,29 @@ function AppContents(
         disableRootThemeClass
         defaultTheme={props.theme}
       >
-        <ContentInner {...props} />
+        <Square
+          width={39}
+          height={50}
+          backgroundColor={'blue'}
+          $md={{
+            width: 50,
+          }}
+          hoverStyle={{
+            height: 100,
+          }}
+          $platform-web={{
+            backgroundColor: 'yellow',
+          }}
+          $theme-dark={{
+            width: 100,
+            height: 200,
+            backgroundColor: 'red',
+          }}
+        />
+
+        <ThemeToggle />
+
+        {/* <ContentInner {...props} /> */}
       </TamaguiProvider>
     </>
   )
