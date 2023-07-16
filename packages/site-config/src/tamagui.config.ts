@@ -10,7 +10,7 @@ import { animations } from './animations.reanimated'
 import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
 
-export * from './animations.reanimated'
+export { animations } from './animations.reanimated'
 
 export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()

@@ -29,7 +29,9 @@
   "dependencies": {
     "@tamagui/animations-css": "1.42.1",
     "@tamagui/animations-react-native": "1.42.1",
+    "@tamagui/animations-reanimated": "1.42.1",
     "@tamagui/colors": "1.42.1",
+    "@tamagui/config": "1.42.1",
     "@tamagui/font-cherry-bomb": "1.42.1",
     "@tamagui/font-glusp": "1.42.1",
     "@tamagui/font-inter": "1.42.1",
