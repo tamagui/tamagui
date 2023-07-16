@@ -16,6 +16,7 @@ import {
   View,
   composeEventHandlers,
   createStyledContext,
+  isClient,
   isWeb,
   useEvent,
   useGet,
@@ -309,6 +310,14 @@ const PopoverContentImpl = React.forwardRef<
   const popperContext = usePopperContext()
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
+  if (context.open && isFullyHidden) {
+    setIsFullyHidden(false)
+  }
+
+  if (isFullyHidden) {
+    return null
+  }
+
   if (context.breakpointActive) {
     // unwrap the PopoverScrollView if used, as it will use the SheetScrollView if that exists
     // TODO this should be disabled through context
@@ -333,14 +342,6 @@ const PopoverContentImpl = React.forwardRef<
 
     // doesn't show as popover yet on native, must use as sheet
     return <PortalItem hostName={`${context.id}PopoverContents`}>{content}</PortalItem>
-  }
-
-  if (context.open && isFullyHidden) {
-    setIsFullyHidden(false)
-  }
-
-  if (isFullyHidden) {
-    return null
   }
 
   // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{

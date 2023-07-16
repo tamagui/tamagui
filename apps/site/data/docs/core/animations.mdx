@@ -262,7 +262,7 @@ export const MyComponent = ({ isVisible }) => (
         exitStyle={{
           opacity: 0,
           y: -10,
-          scale: 0.9
+          scale: 0.9,
         }}
       />
     )}
@@ -345,7 +345,3 @@ The animation hooks are heavy, which initially meant we either had to choose gre
 ```
 
 Note that because of this constraint, you also will see an error if you add the `animation` prop to a component in dev mode during an HMR. Simple reloading the page or triggering another HMR will fix it.
-
-#### AnimatePresence and optimization
-
-If you're using a non-CSS driver + AnimatePresence + have the compiler turned on + are using variant animations like in the carousel demo above (you don't have to worry about `enterStyle` / `exitStyle`, the compiler is smart enough to recognize them and avoid problems), you'll want to add the `disableOptimization` boolean prop to your component to ensure it doesn't flatten during optimization and break your animations.
