@@ -1,39 +1,10 @@
-export * from './media';
-export * from './createGenericFont';
-export declare const config: {
-    animations: import("@tamagui/web").AnimationDriver<{
-        '100ms': {
-            type: "timing";
-            duration: number;
-        };
-        bouncy: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        lazy: {
-            damping: number;
-            stiffness: number;
-        };
-        slow: {
-            damping: number;
-            stiffness: number;
-        };
-        quick: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-        tooltip: {
-            damping: number;
-            mass: number;
-            stiffness: number;
-        };
-    }>;
+import { themes } from '@tamagui/themes';
+export * from './animations';
+export declare const configWithoutAnimations: {
     defaultFont: string;
     shouldAddPrefersColorThemes: boolean;
     themeClassNameOnRoot: boolean;
-    themes: typeof import("@tamagui/themes/types/generated-new");
+    themes: typeof themes;
     media: {
         xl: {
             maxWidth: number;
@@ -839,4 +810,4 @@ export declare const config: {
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
-//# sourceMappingURL=index.d.ts.map
+//# sourceMappingURL=config.d.ts.map
