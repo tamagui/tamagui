@@ -5017,6 +5017,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@workspace:packages/collapsible"
   dependencies:
+    "@tamagui/animate-presence": 1.41.1
     "@tamagui/build": 1.41.1
     "@tamagui/compose-refs": 1.41.1
     "@tamagui/core": 1.41.1

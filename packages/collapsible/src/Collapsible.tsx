@@ -1,4 +1,4 @@
-import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types'
+import { AnimatePresence, AnimatePresenceProps } from '@tamagui/animate-presence'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { ThemeableStackProps } from '@tamagui/stacks'
@@ -12,7 +12,6 @@ import {
   withStaticProperties,
 } from '@tamagui/web'
 import * as React from 'react'
-import { AnimatePresence } from 'tamagui'
 
 /* -------------------------------------------------------------------------------------------------
  * Collapsible

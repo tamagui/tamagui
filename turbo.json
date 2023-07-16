@@ -25,10 +25,12 @@
       "outputs": []
     },
     "clean": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "cache": false
     },
     "clean:build": {
-      "outputs": []
+      "outputs": [],
+      "cache": false
     },
     "lint": {
       "outputs": []

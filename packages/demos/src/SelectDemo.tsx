@@ -73,9 +73,14 @@ export function SelectDemoItem(props: SelectProps) {
         </Select.ScrollUpButton>
 
         <Select.Viewport
+<<<<<<< HEAD
           // to do animations:
           // animation="quick"
           // animateOnly={['transform', 'opacity']}
+=======
+          animation="quick"
+          animateOnly={['transform', 'opacity']}
+>>>>>>> master
           minWidth={200}
           enterStyle={{ o: 0, y: -10 }}
           exitStyle={{ o: 0, y: 10 }}

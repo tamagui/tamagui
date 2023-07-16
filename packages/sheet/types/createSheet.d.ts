@@ -48,9 +48,13 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
             readonly fullscreen?: boolean | undefined;
         }>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
+<<<<<<< HEAD
         } & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
         }>>>> & RefAttributes<import("react-native").ScrollView>>;
+=======
+        }>> & RefAttributes<import("react-native").ScrollView>>;
+>>>>>>> master
     };
     Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
         disableHideBottomOverflow?: boolean | undefined;
@@ -63,9 +67,13 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
         readonly fullscreen?: boolean | undefined;
     }>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
+<<<<<<< HEAD
     } & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
     }>>>> & RefAttributes<import("react-native").ScrollView>>;
+=======
+    }>> & RefAttributes<import("react-native").ScrollView>>;
+>>>>>>> master
 };
 export {};
 //# sourceMappingURL=createSheet.d.ts.map
