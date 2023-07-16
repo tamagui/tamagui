@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/themes",
-  "version": "1.41.1",
+  "version": "1.42.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -34,14 +34,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/colors": "1.41.1",
-    "@tamagui/create-theme": "1.41.1",
-    "@tamagui/theme-builder": "1.41.1",
-    "@tamagui/web": "1.41.1"
+    "@tamagui/colors": "1.42.0",
+    "@tamagui/create-theme": "1.42.0",
+    "@tamagui/theme-builder": "1.42.0",
+    "@tamagui/web": "1.42.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.41.1",
-    "@tamagui/cli": "1.41.1",
+    "@tamagui/build": "1.42.0",
+    "@tamagui/cli": "1.42.0",
     "vitest": "^0.26.3"
   },
   "publishConfig": {
