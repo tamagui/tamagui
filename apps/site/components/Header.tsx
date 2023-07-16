@@ -322,7 +322,13 @@ const SmallMenu = React.memo(() => {
   const { open, setOpen } = useDocsMenu()
 
   return (
-    <Popover open={open} onOpenChange={setOpen} size="$5" stayInFrame={{ padding: 20 }}>
+    <Popover
+      keepChildrenMounted
+      open={open}
+      onOpenChange={setOpen}
+      size="$5"
+      stayInFrame={{ padding: 20 }}
+    >
       <Popover.Trigger asChild>
         <Button
           size="$3"

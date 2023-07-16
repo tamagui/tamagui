@@ -4757,6 +4757,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/animate@1.42.1, @tamagui/animate@workspace:packages/animate":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animate@workspace:packages/animate"
+  dependencies:
+    "@tamagui/animate-presence": 1.42.1
+    "@tamagui/build": 1.42.1
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animations-css@1.42.1, @tamagui/animations-css@workspace:packages/animations-css":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
@@ -5801,7 +5810,7 @@ __metadata:
   dependencies:
     "@floating-ui/react": ^0.24.7
     "@tamagui/adapt": 1.42.1
-    "@tamagui/animate-presence": 1.42.1
+    "@tamagui/animate": 1.42.1
     "@tamagui/aria-hidden": 1.42.1
     "@tamagui/build": 1.42.1
     "@tamagui/compose-refs": 1.42.1
