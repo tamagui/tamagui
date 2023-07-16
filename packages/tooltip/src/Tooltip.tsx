@@ -185,6 +185,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
           hasCustomAnchor={hasCustomAnchor}
           onCustomAnchorAdd={onCustomAnchorAdd}
           onCustomAnchorRemove={onCustomAnchorRemove}
+          keepChildrenMounted
         >
           {children}
         </PopoverContext.Provider>

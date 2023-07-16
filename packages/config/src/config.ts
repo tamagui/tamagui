@@ -4,6 +4,8 @@ import { themes, tokens } from '@tamagui/themes'
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
+export * from './animations'
+
 export const configWithoutAnimations = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
