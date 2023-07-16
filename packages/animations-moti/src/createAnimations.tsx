@@ -76,35 +76,55 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         ? props.animation[0]
         : props.animation
 
-      let animate = style
+      let animate: Object | undefined
+      let dontAnimate: Object | undefined
 
-      const nonAnimatedStyle: object | undefined = { ...style }
-      const animateOnly = props.animateOnly ?? ['opacity', 'transform']
+      const animateOnly = props.animateOnly
+      if (animateOnly) {
+        animate = {}
+        dontAnimate = { ...style }
 
-      animate = {}
-      animateOnly.forEach((nonAnimatedKey) => {
-        if (typeof style[nonAnimatedKey] === 'undefined') return
-        animate[nonAnimatedKey] = style[nonAnimatedKey]
-        delete style[nonAnimatedKey]
-      })
+        for (const key of animateOnly) {
+          if (!(key in style)) continue
+          animate[key] = style[key]
+          delete dontAnimate[key]
+        }
+      } else {
+        animate = { ...style }
+        dontAnimate = {}
+      }
 
+      // without this, the driver breaks on native
+      // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+
       const isExiting = presence?.[1]
+      const transition = animations[animationKey as keyof typeof animations]
 
       const moti = useMotify({
-        // without this, the driver breaks on native
-        // stringifying -> parsing fixes that
         animate: isExiting ? undefined : styles,
-        transition: animations[animationKey as keyof typeof animations],
+        transition,
         onDidAnimate,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
       })
 
+      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(`Moti animation:`, {
+          animate,
+          transition,
+          styles,
+          moti,
+          dontAnimate,
+          isExiting,
+        })
+      }
+
       return {
-        style: [nonAnimatedStyle, moti.style],
+        style: [dontAnimate, moti.style],
       }
     },
   }

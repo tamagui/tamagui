@@ -20,7 +20,6 @@ export function AnimationsDemo(props) {
       <Square
         animation={props.animation || 'bouncy'}
         animateOnly={['transform']}
-        debug="verbose"
         onPress={onPress}
         size={104}
         borderColor="$borderColor"
@@ -28,7 +27,7 @@ export function AnimationsDemo(props) {
         borderRadius="$9"
         backgroundColor="$color9"
         hoverStyle={{
-          scale: 1.4,
+          scale: 1.5,
         }}
         pressStyle={{
           scale: 0.9,
