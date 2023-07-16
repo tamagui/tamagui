@@ -155,6 +155,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     ])
     return {
       ...floating,
+      open,
       getReferenceProps,
       getFloatingProps,
     } as any
