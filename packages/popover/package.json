@@ -33,7 +33,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.24.7",
     "@tamagui/adapt": "1.42.1",
-    "@tamagui/animate-presence": "1.42.1",
+    "@tamagui/animate": "1.42.1",
     "@tamagui/aria-hidden": "1.42.1",
     "@tamagui/compose-refs": "1.42.1",
     "@tamagui/core": "1.42.1",

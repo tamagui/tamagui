@@ -11,6 +11,7 @@ export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
+    keepChildrenMounted?: boolean;
 };
 type PopoverContextValue = {
     id: string;
@@ -25,6 +26,7 @@ type PopoverContextValue = {
     size?: SizeTokens;
     sheetBreakpoint: any;
     breakpointActive?: boolean;
+    keepChildrenMounted?: boolean;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: () => PopoverContextValue;

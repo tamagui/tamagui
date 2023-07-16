@@ -3,7 +3,7 @@
 import '@tamagui/polyfill-dev'
 
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
-import { AnimatePresence } from '@tamagui/animate-presence'
+import { Animate } from '@tamagui/animate'
 import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
@@ -53,6 +53,7 @@ export type PopoverProps = PopperProps & {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  keepChildrenMounted?: boolean
 }
 
 type PopoverContextValue = {
@@ -68,6 +69,7 @@ type PopoverContextValue = {
   size?: SizeTokens
   sheetBreakpoint: any
   breakpointActive?: boolean
+  keepChildrenMounted?: boolean
 }
 
 export const PopoverContext = createStyledContext<PopoverContextValue>({} as any)
@@ -314,8 +316,10 @@ const PopoverContentImpl = React.forwardRef<
     setIsFullyHidden(false)
   }
 
-  if (isFullyHidden) {
-    return null
+  if (!context.keepChildrenMounted) {
+    if (isFullyHidden) {
+      return null
+    }
   }
 
   if (context.breakpointActive) {
@@ -357,44 +361,45 @@ const PopoverContentImpl = React.forwardRef<
   //   >
 
   return (
-    <AnimatePresence
+    <Animate
+      type="presence"
+      present={Boolean(context.open)}
+      keepChildrenMounted={context.keepChildrenMounted}
       onExitComplete={() => {
         setIsFullyHidden(true)
       }}
     >
-      {!!context.open && (
-        <PopperContent
-          key={context.contentId}
-          data-state={getState(context.open)}
-          id={context.contentId}
-          ref={forwardedRef}
-          {...contentProps}
+      <PopperContent
+        key={context.contentId}
+        data-state={getState(context.open)}
+        id={context.contentId}
+        ref={forwardedRef}
+        {...contentProps}
+      >
+        <RemoveScroll
+          enabled={disableRemoveScroll ? false : context.open}
+          allowPinchZoom
+          // causes lots of bugs on touch web on site
+          removeScrollBar={false}
+          style={{
+            display: 'contents',
+          }}
         >
-          <RemoveScroll
-            enabled={disableRemoveScroll ? false : context.open}
-            allowPinchZoom
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-            style={{
-              display: 'contents',
-            }}
-          >
-            {trapFocus === false ? (
-              children
-            ) : (
-              <FocusScope
-                loop
-                trapped={trapFocus ?? context.open}
-                onMountAutoFocus={onOpenAutoFocus}
-                onUnmountAutoFocus={onCloseAutoFocus}
-              >
-                {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
-              </FocusScope>
-            )}
-          </RemoveScroll>
-        </PopperContent>
-      )}
-    </AnimatePresence>
+          {trapFocus === false ? (
+            children
+          ) : (
+            <FocusScope
+              loop
+              trapped={trapFocus ?? context.open}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={onCloseAutoFocus}
+            >
+              {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
+            </FocusScope>
+          )}
+        </RemoveScroll>
+      </PopperContent>
+    </Animate>
   )
 })
 
@@ -446,7 +451,14 @@ const PopoverScrollView = React.forwardRef<ScrollView, ScrollViewProps>((props, 
 
 export const Popover = withStaticProperties(
   function Popover(props: PopoverProps) {
-    const { children, open: openProp, defaultOpen, onOpenChange, ...restProps } = props
+    const {
+      children,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      keepChildrenMounted,
+      ...restProps
+    } = props
 
     const id = React.useId()
     const { when, AdaptProvider } = useAdaptParent({
@@ -486,6 +498,7 @@ export const Popover = withStaticProperties(
       hasCustomAnchor,
       onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
       onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
+      keepChildrenMounted,
     }
 
     // debug if changing too often
