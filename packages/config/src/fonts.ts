@@ -1,15 +1,10 @@
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
-import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
 
-import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
-import { media, mediaQueryDefaultActive } from './media'
-
-export * from './animations'
 
 const silkscreenFont = createSilkscreenFont()
+
 const headingFont = createInterFont(
   {
     size: {
@@ -94,32 +89,10 @@ const monoFont = createGenericFont(
   }
 )
 
-export const config = {
-  defaultFont: 'body',
-  shouldAddPrefersColorThemes: true,
-  themeClassNameOnRoot: true,
-  animations,
-  themes,
-  media,
-  shorthands,
-  tokens,
-  fonts: {
-    // noto: notoFont as any,
-    heading: headingFont,
-    body: bodyFont,
-    mono: monoFont,
-    silkscreen: silkscreenFont,
-  },
+export const fonts = {
+  // noto: notoFont as any,
+  heading: headingFont,
+  body: bodyFont,
+  mono: monoFont,
+  silkscreen: silkscreenFont,
 }
-
-// @ts-ignore
-config.selectionStyles = (theme) =>
-  theme.color5
-    ? {
-        backgroundColor: theme.color5,
-        color: theme.color11,
-      }
-    : null
-
-// @ts-ignore bad types
-config.mediaQueryDefaultActive = mediaQueryDefaultActive

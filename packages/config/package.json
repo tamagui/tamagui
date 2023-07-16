@@ -24,6 +24,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./reanimated": {
+      "types": "./types/index.reanimated.d.ts",
+      "import": "./dist/esm/index.reanimated.js",
+      "require": "./dist/cjs/index.reanimated.js"
     }
   },
   "dependencies": {
