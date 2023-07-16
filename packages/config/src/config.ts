@@ -4,8 +4,6 @@ import { themes, tokens } from '@tamagui/themes'
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
 
-export * from './animations'
-
 export const configWithoutAnimations = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
@@ -18,7 +16,7 @@ export const configWithoutAnimations = {
 }
 
 // @ts-ignore
-config.selectionStyles = (theme) =>
+configWithoutAnimations.selectionStyles = (theme) =>
   theme.color5
     ? {
         backgroundColor: theme.color5,
@@ -27,4 +25,4 @@ config.selectionStyles = (theme) =>
     : null
 
 // @ts-ignore bad types
-config.mediaQueryDefaultActive = mediaQueryDefaultActive
+configWithoutAnimations.mediaQueryDefaultActive = mediaQueryDefaultActive

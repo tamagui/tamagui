@@ -35,7 +35,6 @@
   "dependencies": {
     "@tamagui/avatar": "1.42.1",
     "@tamagui/button": "1.42.1",
-    "@tamagui/config": "1.42.1",
     "@tamagui/core": "1.42.1",
     "@tamagui/list-item": "1.42.1",
     "@tamagui/logo": "1.42.1",
@@ -45,6 +44,7 @@
     "@tamagui/radio-group": "1.42.1",
     "@tamagui/select": "1.42.1",
     "@tamagui/sheet": "1.42.1",
+    "@tamagui/site-config": "1.42.1",
     "@tamagui/slider": "1.42.1",
     "@tamagui/stacks": "1.42.1",
     "@tamagui/toast": "1.42.1",

@@ -34,7 +34,6 @@ export const animations = createAnimations({
     stiffness: 100,
   },
   quicker: {
-    type: 'spring',
     damping: 20,
     mass: 1,
     stiffness: 250,

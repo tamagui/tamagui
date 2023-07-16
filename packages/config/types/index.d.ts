@@ -1,5 +1,6 @@
 export * from './media';
 export * from './createGenericFont';
+export * from './animations';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {

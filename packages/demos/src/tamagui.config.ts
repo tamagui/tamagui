@@ -1,6 +1,6 @@
-import { config } from '@tamagui/config'
+import { config } from '@tamagui/site-config'
 
-export { config } from '@tamagui/config'
+export { config } from '@tamagui/site-config'
 export default config
 
 export type Conf = typeof config
