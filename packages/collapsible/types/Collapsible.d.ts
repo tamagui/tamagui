@@ -1,4 +1,4 @@
-import { AnimatePresenceProps } from '@tamagui/animate-presence/types/types';
+import { AnimatePresenceProps } from '@tamagui/animate-presence';
 import type { Scope } from '@tamagui/create-context';
 import { ThemeableStackProps } from '@tamagui/stacks';
 import { GetProps, Stack, StackProps } from '@tamagui/web';

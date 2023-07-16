@@ -1,7 +1,6 @@
 // import './wdyr'
 
 import { useEffect, useState } from 'react'
-<<<<<<< HEAD
 import { AnimatePresence, H1, Square, XStack } from 'tamagui'
 
 export const Sandbox = () => {
@@ -27,11 +26,6 @@ export const Sandbox = () => {
 }
 
 const NumberTicker = () => {
-=======
-import { AnimatePresence, H1, XStack } from 'tamagui'
-
-export const Sandbox = () => {
->>>>>>> master
   const [numbers, setNumbers] = useState([0, 5, 2, 3])
 
   useEffect(() => {
