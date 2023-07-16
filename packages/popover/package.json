@@ -47,7 +47,8 @@
     "@tamagui/scroll-view": "1.43.1",
     "@tamagui/sheet": "1.43.1",
     "@tamagui/stacks": "1.43.1",
-    "@tamagui/use-controllable-state": "1.43.1"
+    "@tamagui/use-controllable-state": "1.43.1",
+    "react-freeze": "^1.0.3"
   },
   "peerDependencies": {
     "react": "*",

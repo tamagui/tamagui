@@ -1,5 +1,3 @@
-// adapted from radix-ui popover
-
 import '@tamagui/polyfill-dev'
 
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
@@ -45,9 +43,11 @@ import { Sheet, SheetController } from '@tamagui/sheet'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { Freeze } from 'react-freeze'
 import { Platform, ScrollView, ScrollViewProps } from 'react-native'
 
 import { useFloatingContext } from './useFloatingContext'
+// adapted from radix-ui popover
 
 export type PopoverProps = PopperProps & {
   open?: boolean
@@ -369,36 +369,38 @@ const PopoverContentImpl = React.forwardRef<
         setIsFullyHidden(true)
       }}
     >
-      <PopperContent
-        key={context.contentId}
-        data-state={getState(context.open)}
-        id={context.contentId}
-        ref={forwardedRef}
-        {...contentProps}
-      >
-        <RemoveScroll
-          enabled={disableRemoveScroll ? false : context.open}
-          allowPinchZoom
-          // causes lots of bugs on touch web on site
-          removeScrollBar={false}
-          style={{
-            display: 'contents',
-          }}
+      <Freeze freeze={isFullyHidden}>
+        <PopperContent
+          key={context.contentId}
+          data-state={getState(context.open)}
+          id={context.contentId}
+          ref={forwardedRef}
+          {...contentProps}
         >
-          {trapFocus === false ? (
-            children
-          ) : (
-            <FocusScope
-              loop
-              trapped={trapFocus ?? context.open}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
-            </FocusScope>
-          )}
-        </RemoveScroll>
-      </PopperContent>
+          <RemoveScroll
+            enabled={disableRemoveScroll ? false : context.open}
+            allowPinchZoom
+            // causes lots of bugs on touch web on site
+            removeScrollBar={false}
+            style={{
+              display: 'contents',
+            }}
+          >
+            {trapFocus === false ? (
+              children
+            ) : (
+              <FocusScope
+                loop
+                trapped={trapFocus ?? context.open}
+                onMountAutoFocus={onOpenAutoFocus}
+                onUnmountAutoFocus={onCloseAutoFocus}
+              >
+                {isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children}
+              </FocusScope>
+            )}
+          </RemoveScroll>
+        </PopperContent>
+      </Freeze>
     </Animate>
   )
 })
