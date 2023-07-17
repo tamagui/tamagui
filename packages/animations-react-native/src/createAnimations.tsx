@@ -179,7 +179,6 @@ export function createAnimations<A extends AnimationsConfig>(
       /** store Animated value of each key e.g: color: AnimatedValue */
       const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-      const animatedUseNativeState = useSafeRef<Record<string, boolean>>({})
       const animationsState = useSafeRef(
         new WeakMap<
           Animated.Value,

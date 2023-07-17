@@ -1886,6 +1886,7 @@ export type SplitStyleState = TamaguiComponentState & {
   isExiting?: boolean
   exitVariant?: string
   enterVariant?: string
+  willBeAnimated?: boolean
 }
 
 // Presence

@@ -287,7 +287,7 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     // cheat code
-    let hasHydrated = true
+    let hasHydrated = false
     numRenderedOfType[componentName] ??= 0
     if (willBeAnimated) {
       if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
@@ -436,6 +436,7 @@ export function createComponent<
         resolveVariablesAs,
         isExiting,
         isAnimated,
+        willBeAnimated,
       },
       null,
       languageContext || undefined,
@@ -509,7 +510,7 @@ export function createComponent<
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
-        style: isAnimated ? splitStylesStyle : {},
+        style: splitStylesStyle,
         // style: splitStylesStyle,
         presence,
         state: {
@@ -522,6 +523,7 @@ export function createComponent<
         hostRef,
         staticConfig,
       })
+
       if (isAnimated) {
         if (animations) {
           animationStyles = animations.style

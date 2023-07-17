@@ -98,7 +98,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       // stringifying -> parsing fixes that
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
-
       const isExiting = Boolean(presence?.[1])
       const transition = animations[animationKey as keyof typeof animations]
 
@@ -110,8 +109,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
       }
-
-      const moti = useMotify(!state.isAnimated ? {} : motiProps)
+      const moti = useMotify(motiProps)
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -122,7 +120,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           moti,
           dontAnimate,
           isExiting,
-          motiProps,
         })
       }
 

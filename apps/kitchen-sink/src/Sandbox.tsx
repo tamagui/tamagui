@@ -22,7 +22,8 @@ export const Sandbox = () => {
             animation="lazy"
             size={200}
             bc="red"
-            enterStyle={{ o: 0 }}
+            enterStyle={{ o: 0.5 }}
+            o={1}
             exitStyle={{ o: 0 }}
           />
         )}
