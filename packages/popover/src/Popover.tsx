@@ -34,6 +34,7 @@ import {
   PopperContentFrame,
   PopperContentProps,
   PopperContext,
+  PopperContextValue,
   PopperProps,
   usePopperContext,
 } from '@tamagui/popper'
@@ -238,22 +239,34 @@ function PopoverRepropagateContext(props: {
 
 function PopoverContentPortal(props: PopoverContentTypeProps) {
   const zIndex = props.zIndex ?? 150_000
+  const context = usePopoverContext()
+  const popperContext = usePopperContext()
 
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
     <Portal zIndex={zIndex}>
-      <PopoverContentPortalContents {...props} />
+      <PopoverContentPortalContents
+        popperContext={popperContext}
+        context={context}
+        {...props}
+      />
     </Portal>
   )
 }
 
-const PopoverContentPortalContents = (props: PopoverContentTypeProps) => {
+const PopoverContentPortalContents = ({
+  context,
+  popperContext,
+  ...props
+}: PopoverContentTypeProps & {
+  context: PopoverContextValue
+  popperContext: PopperContextValue
+}) => {
   const themeName = useThemeName()
-  const popperContext = usePopperContext()
 
-  // on android we have to re-pass context
-  let contents = props.children
+  let contents = React.useMemo(() => props.children, [props.children])
 
+  // native doesnt support portals
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
     contents = (
       <PopoverRepropagateContext popperContext={popperContext} context={context}>
