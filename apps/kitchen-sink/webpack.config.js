@@ -21,7 +21,7 @@ const tamaguiOptions = {
   config: './src/tamagui.config.ts',
   components: ['tamagui', '@tamagui/sandbox-ui'],
   importsWhitelist: ['constants.js'],
-  // disableExtraction,
+  disableExtraction,
   // disableExtractFoundComponents: true,
 }
 

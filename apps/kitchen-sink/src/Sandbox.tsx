@@ -4,10 +4,30 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, H1, Square, XStack, YStack } from 'tamagui'
 
 export const Sandbox = () => {
+  const [x, setx] = useState(false)
+
   return (
-    <YStack opacity={0.65} hoverStyle={{ opacity: 1 }}>
-      hello
-    </YStack>
+    <>
+      <button
+        onClick={() => {
+          setx((x) => !x)
+        }}
+      >
+        sadsadsa
+      </button>
+
+      <AnimatePresence>
+        {x && (
+          <Square
+            animation="lazy"
+            size={200}
+            bc="red"
+            enterStyle={{ o: 0 }}
+            exitStyle={{ o: 0 }}
+          />
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 

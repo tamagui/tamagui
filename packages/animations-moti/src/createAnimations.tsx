@@ -71,7 +71,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }, [val, getStyle])
     },
 
-    useAnimations: ({ props, presence, style, onDidAnimate }) => {
+    useAnimations: ({ props, presence, style, state, onDidAnimate }) => {
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -99,17 +99,19 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
 
-      const isExiting = presence?.[1]
+      const isExiting = Boolean(presence?.[1])
       const transition = animations[animationKey as keyof typeof animations]
 
-      const moti = useMotify({
+      const motiProps = {
         animate: isExiting ? undefined : styles,
         transition,
         onDidAnimate,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
-      })
+      }
+
+      const moti = useMotify(!state.isAnimated ? {} : motiProps)
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -120,6 +122,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           moti,
           dontAnimate,
           isExiting,
+          motiProps,
         })
       }
 
