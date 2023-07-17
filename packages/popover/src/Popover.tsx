@@ -250,7 +250,6 @@ function PopoverContentPortal(props: PopoverContentTypeProps) {
 const PopoverContentPortalContents = (props: PopoverContentTypeProps) => {
   const themeName = useThemeName()
   const popperContext = usePopperContext()
-  const context = usePopoverContext()
 
   // on android we have to re-pass context
   let contents = props.children

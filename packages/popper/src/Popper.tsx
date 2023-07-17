@@ -37,7 +37,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * Popper
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContextValue = UseFloatingReturn & {
+export type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
   anchorRef: any
   size?: SizeTokens

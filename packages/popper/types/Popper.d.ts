@@ -5,7 +5,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
-type PopperContextValue = UseFloatingReturn & {
+export type PopperContextValue = UseFloatingReturn & {
     isMounted: boolean;
     anchorRef: any;
     size?: SizeTokens;
