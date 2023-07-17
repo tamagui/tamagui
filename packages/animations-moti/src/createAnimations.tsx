@@ -40,7 +40,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           },
           setValue(next, config = { type: 'spring' }) {
             'worklet'
-            console.log('setting', next, config, val)
             if (config.type === 'direct') {
               val.value = next
             } else if (config.type === 'spring') {
