@@ -5245,28 +5245,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/demos@workspace:packages/demos"
   dependencies:
-<<<<<<< HEAD
-    "@tamagui/build": 1.43.0
-    "@tamagui/button": 1.43.0
-    "@tamagui/config": 1.43.0
-    "@tamagui/core": 1.43.0
-    "@tamagui/list-item": 1.43.0
-    "@tamagui/logo": 1.43.0
-    "@tamagui/menu": 1.43.0
-    "@tamagui/popover": 1.43.0
-    "@tamagui/progress": 1.43.0
-    "@tamagui/radio-group": 1.43.0
-    "@tamagui/select": 1.43.0
-    "@tamagui/sheet": 1.43.0
-    "@tamagui/site-config": 1.43.0
-    "@tamagui/slider": 1.43.0
-    "@tamagui/stacks": 1.43.0
-    "@tamagui/toast": 1.43.0
-=======
     "@tamagui/avatar": 1.43.8
     "@tamagui/build": 1.43.8
     "@tamagui/button": 1.43.8
-    "@tamagui/config": 1.43.8
     "@tamagui/core": 1.43.8
     "@tamagui/list-item": 1.43.8
     "@tamagui/logo": 1.43.8
@@ -5276,10 +5257,10 @@ __metadata:
     "@tamagui/radio-group": 1.43.8
     "@tamagui/select": 1.43.8
     "@tamagui/sheet": 1.43.8
+    "@tamagui/site-config": 1.43.8
     "@tamagui/slider": 1.43.8
     "@tamagui/stacks": 1.43.8
     "@tamagui/toast": 1.43.8
->>>>>>> master
     react: ^18.2.0
     react-dom: ^18.2.0
     tamagui: 1.43.8
@@ -6149,23 +6130,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site-config@workspace:packages/site-config"
   dependencies:
-<<<<<<< HEAD
-    "@tamagui/animations-css": 1.43.0
-    "@tamagui/animations-react-native": 1.43.0
-    "@tamagui/animations-reanimated": 1.43.0
-    "@tamagui/build": 1.43.0
-    "@tamagui/colors": 1.43.0
-    "@tamagui/font-cherry-bomb": 1.43.0
-    "@tamagui/font-glusp": 1.43.0
-    "@tamagui/font-inter": 1.43.0
-    "@tamagui/font-silkscreen": 1.43.0
-    "@tamagui/react-native-media-driver": 1.43.0
-    "@tamagui/shorthands": 1.43.0
-    "@tamagui/themes": 1.43.0
-    "@tamagui/web": 1.43.0
-=======
-    "@tamagui/animations-css": 1.43.8
     "@tamagui/animations-react-native": 1.43.8
+    "@tamagui/animations-reanimated": 1.43.8
     "@tamagui/build": 1.43.8
     "@tamagui/colors": 1.43.8
     "@tamagui/font-cherry-bomb": 1.43.8
@@ -6176,7 +6142,6 @@ __metadata:
     "@tamagui/shorthands": 1.43.8
     "@tamagui/themes": 1.43.8
     "@tamagui/web": 1.43.8
->>>>>>> master
   languageName: unknown
   linkType: soft
 
