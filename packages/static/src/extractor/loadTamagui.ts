@@ -56,7 +56,7 @@ export async function loadTamagui(
   // this depends on the config so run it after
   if (bundleInfo) {
     // init core-node
-    const config = createTamagui(bundleInfo.tamaguiConfig)
+    const config = createTamagui(bundleInfo.tamaguiConfig) as any
 
     if (options.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)

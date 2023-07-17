@@ -82,6 +82,9 @@ type GetStyleState = {
   avoidMergeTransform?: boolean
 }
 
+// bugfix for some reason it gets reset
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
+
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
@@ -177,7 +180,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
+    console.log({ props, staticConfig, shouldDoClasses, state, propKeys, styleState, theme: { ...theme } })
     console.groupEnd()
   }
 
@@ -655,6 +658,10 @@ export const getSplitStyles: StyleSplitter = (
         if (!shouldDoClasses || IS_STATIC) {
           pseudos ||= {}
           pseudos[key] ||= {}
+
+          if (IS_STATIC) {
+            Object.assign(pseudos[key], pseudoStyleObject)
+          }
         }
 
         if (shouldDoClasses && !isEnter && !isExit) {
@@ -672,6 +679,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
+
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
             mergeClassName(
               transforms,
@@ -1330,8 +1338,6 @@ const skipProps = {
 if (process.env.NODE_ENV === 'test') {
   skipProps['data-test-renders'] = 1
 }
-
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {

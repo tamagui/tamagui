@@ -2,7 +2,7 @@
   "name": "@tamagui/core-node",
   "version": "1.43.4",
   "main": "./src/index.js",
-  "types": "./types/static.d.ts",
+  "types": "./types/index.d.ts",
   "files": [
     "src",
     "types",

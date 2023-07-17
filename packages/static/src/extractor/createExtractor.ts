@@ -582,6 +582,7 @@ export function createExtractor(
             pressIn: false,
             resolveVariablesAs: 'variable',
             noClassNames: false,
+            isAnimated: false,
           },
           undefined,
           undefined,
@@ -1684,6 +1685,7 @@ export function createExtractor(
             unmounted: false, // TODO match logic in createComponent
             press: false,
             pressIn: false,
+            isAnimated: false,
           }
 
           function mergeToEnd(obj: Object, key: string, val: any) {
@@ -2016,6 +2018,7 @@ export function createExtractor(
                   // expand variants and such
                   const styles = getProps(attr.value, 'style')
                   if (styles) {
+                    // @ts-ignore
                     attr.value = styles
                   }
                   // prettier-ignore
@@ -2062,7 +2065,7 @@ export function createExtractor(
           if (shouldFlatten) {
             attrs.unshift({
               type: 'style',
-              value: getProps(staticConfig.defaultProps),
+              value: getProps(staticConfig.defaultProps) as any,
             })
           }
 
@@ -2178,7 +2181,7 @@ export function createExtractor(
             node,
             lineNumbers,
             filePath,
-            config: tamaguiConfig,
+            config: tamaguiConfig!,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
