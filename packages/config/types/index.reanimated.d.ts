@@ -1,6 +1,5 @@
 export * from './media';
 export * from './createGenericFont';
-<<<<<<< HEAD
 export * from './animations.reanimated';
 export declare const config: {
     animations: import("@tamagui/web").AnimationDriver<{
@@ -8,10 +7,6 @@ export declare const config: {
             type: "timing";
             duration: number;
         };
-=======
-export declare const config: {
-    animations: import("@tamagui/web").AnimationDriver<{
->>>>>>> master
         bouncy: {
             type: "spring";
             damping: number;
