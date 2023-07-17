@@ -42,6 +42,7 @@ export function useFocusScope(
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
     forceUnmount,
+    children,
     ...scopeProps
   } = props
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
@@ -89,6 +90,7 @@ export function useFocusScope(
   }, [trapped, forceUnmount, container, focusScope.paused])
 
   React.useEffect(() => {
+    if (!trapped) return
     if (!container) return
     if (forceUnmount) return
     focusScopesStack.add(focusScope)

@@ -388,7 +388,9 @@ const DialogContent = DialogContentFrame.extractable(
           // causes lots of bugs on touch web on site
           removeScrollBar={false}
         >
-          <div className="_dsp_contents">{contents}</div>
+          <div data-remove-scroll-container className="_dsp_contents">
+            {contents}
+          </div>
         </RemoveScroll>
       )
     }
@@ -574,7 +576,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       <>
         <FocusScope
           loop
-          trapped={trapFocus}
+          trapped={context.open && trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
           forceUnmount={!context.open}
           onUnmountAutoFocus={onCloseAutoFocus}

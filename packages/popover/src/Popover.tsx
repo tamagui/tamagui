@@ -242,9 +242,7 @@ function PopoverContentPortal(props: PopoverContentTypeProps) {
   // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
     <Portal zIndex={zIndex}>
-      {React.useMemo(() => {
-        return <PopoverContentPortalContents {...props} />
-      }, [props])}
+      <PopoverContentPortalContents {...props} />
     </Portal>
   )
 }
