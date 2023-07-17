@@ -32,7 +32,6 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         stiffness: number;
     };
     quicker: {
-        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;

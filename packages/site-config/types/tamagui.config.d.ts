@@ -1,6 +1,6 @@
 import { themes } from '@tamagui/themes';
-export * from './animations';
-export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+export { animations } from './animations.reanimated';
+export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/web").GenericFont;
 export declare const config: {
     defaultFont: string;
@@ -12,29 +12,35 @@ export declare const config: {
             duration: number;
         };
         superBouncy: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         slow: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -829,8 +835,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -854,9 +860,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
         munro: import("@tamagui/web").GenericFont;
-        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

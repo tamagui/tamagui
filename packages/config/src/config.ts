@@ -18,7 +18,7 @@ export const configWithoutAnimations = {
 }
 
 // @ts-ignore
-config.selectionStyles = (theme) =>
+configWithoutAnimations.selectionStyles = (theme) =>
   theme.color5
     ? {
         backgroundColor: theme.color5,
@@ -27,4 +27,4 @@ config.selectionStyles = (theme) =>
     : null
 
 // @ts-ignore bad types
-config.mediaQueryDefaultActive = mediaQueryDefaultActive
+configWithoutAnimations.mediaQueryDefaultActive = mediaQueryDefaultActive

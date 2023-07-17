@@ -48,10 +48,14 @@ config.themes = {
   },
 }
 
+console.warn(
+  `Warning: testing reanimated driver (TODO make this a ?animations=reanimated query)`
+)
+
 const tamaConf = createTamagui({
   ...config,
   // test reanimated
-  // animations,
+  animations,
   themeClassNameOnRoot: false,
 })
 

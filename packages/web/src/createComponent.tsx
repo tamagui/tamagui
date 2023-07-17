@@ -287,7 +287,7 @@ export function createComponent<
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     // cheat code
-    let hasHydrated = false
+    let hasHydrated = true
     numRenderedOfType[componentName] ??= 0
     if (willBeAnimated) {
       if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {

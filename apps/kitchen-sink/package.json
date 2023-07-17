@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev:web": "DISABLE_EXTRACTION=true TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
+    "dev:web:prod": "TAMAGUI_TARGET=web NODE_ENV=production webpack serve",
+    "dev:web:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native expo start --dev-client --offline",
     "start:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 TAMAGUI_TARGET=native yarn start",
     "start:tamagui": "tama dev",
@@ -19,7 +21,6 @@
     "test:native": "maestro test ./flows --exclude-tags=util",
     "test:web": "node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "yarn test:web --debug",
-    "dev:web:extract": "DISABLE_EXTRACTION=false TAMAGUI_TARGET=web NODE_ENV=development webpack serve",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "yarn test:web"
   },
@@ -72,7 +73,7 @@
     "metro-runtime": "*",
     "mini-css-extract-plugin": "^2.7.6",
     "pod-install": "^0.1.38",
-    "webpack": "^5.83.1",
+    "webpack": "^5.88.1",
     "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
