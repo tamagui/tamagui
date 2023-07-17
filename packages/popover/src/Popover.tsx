@@ -339,6 +339,10 @@ const PopoverContentImpl = React.forwardRef<
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
   const [hasShownOnce, setHasShownOnce] = React.useState(false)
 
+  const contents = React.useMemo(() => {
+    return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
+  }, [children])
+
   React.useEffect(() => {
     if (!open) {
       setHasShownOnce(true)
@@ -392,10 +396,6 @@ const PopoverContentImpl = React.forwardRef<
   //     // onFocusOutside={onFocusOutside}
   //     onDismiss={handleDismiss}
   //   >
-
-  const contents = React.useMemo(() => {
-    return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
-  }, [children])
 
   const freeze = isFullyHidden && (hasShownOnce || !keepChildrenMounted)
 
