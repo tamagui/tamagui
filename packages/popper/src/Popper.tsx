@@ -37,7 +37,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * Popper
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContextValue = UseFloatingReturn & {
+export type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
   anchorRef: any
   size?: SizeTokens
@@ -98,7 +98,12 @@ export function Popper(props: PopperProps) {
     ].filter(Boolean),
   })
 
-  const { refs, middlewareData } = floating
+  const {
+    refs,
+    middlewareData,
+    // @ts-expect-error this comes from Tooltip for example
+    open,
+  } = floating
 
   useIsomorphicLayoutEffect(() => {
     floating.refs.setReference(anchorRef)
@@ -106,12 +111,13 @@ export function Popper(props: PopperProps) {
 
   if (isWeb) {
     React.useEffect(() => {
+      if (open === false) return
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-    }, [floating.update, refs.floating, refs.reference])
+    }, [open, floating.update, refs.floating, refs.reference])
   } else {
     // On Native there's no autoupdate so we call update() when necessary
 

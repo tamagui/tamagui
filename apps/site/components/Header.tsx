@@ -1,18 +1,13 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { Menu, User } from '@tamagui/lucide-icons'
+import { User } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import {
-  Adapt,
   Avatar,
-  Button,
-  Paragraph,
-  Popover,
-  Separator,
   Text,
   TooltipGroup,
   TooltipSimple,
@@ -21,19 +16,18 @@ import {
   XStack,
   YStack,
   isClient,
-  styled,
 } from 'tamagui'
 
 import { ColorToggleButton } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import { DocsMenuContents } from './DocsMenuContents'
 import { GithubIcon } from './GithubIcon'
+import { HeaderLinks } from './HeaderLinks'
+import { HeaderMenu } from './HeaderMenu'
 import { HeaderProps } from './HeaderProps'
 import { NextLink } from './NextLink'
 import { SearchButton } from './SearchButton'
 import { SeasonToggleButton } from './SeasonToggleButton'
 import { SponsorButton } from './SponsorButton'
-import { useDocsMenu } from './useDocsMenu'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -238,176 +232,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
             </NextLink>
           )}
 
-          <SmallMenu />
+          <HeaderMenu />
         </XStack>
       </XStack>
     </XStack>
   )
-})
-
-const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
-  const userSwr = useUser()
-  // there is user context and supabase setup in the current page
-  return (
-    <>
-      <NextLink prefetch={false} href="/docs/intro/installation">
-        <HeadAnchor
-          $sm={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          Docs
-        </HeadAnchor>
-      </NextLink>
-
-      <NextLink prefetch={false} href="/studio">
-        <HeadAnchor
-          $md={{
-            display: forceShowAllLinks ? 'flex' : 'none',
-          }}
-        >
-          Studio
-        </HeadAnchor>
-      </NextLink>
-
-      {showAuth && !userSwr.data?.session?.user && (
-        <NextLink prefetch={false} href="/login">
-          <HeadAnchor
-            $md={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            Login
-          </HeadAnchor>
-        </NextLink>
-      )}
-
-      {process.env.NODE_ENV === 'development' && (
-        <NextLink prefetch={false} href="/takeout">
-          <TooltipSimple delay={0} restMs={25} label="Takeout">
-            <HeadAnchor
-              size="$8"
-              $sm={{
-                display: forceShowAllLinks ? 'flex' : 'none',
-              }}
-            >
-              🥡
-            </HeadAnchor>
-          </TooltipSimple>
-        </NextLink>
-      )}
-
-      {forceShowAllLinks && (
-        <NextLink prefetch={false} href="/blog">
-          <HeadAnchor>Blog</HeadAnchor>
-        </NextLink>
-      )}
-
-      {forceShowAllLinks && (
-        <NextLink prefetch={false} href="/community">
-          <HeadAnchor>Community</HeadAnchor>
-        </NextLink>
-      )}
-
-      {showExtra && (
-        <NextLink prefetch={false} href="/studio">
-          <HeadAnchor>Studio</HeadAnchor>
-        </NextLink>
-      )}
-    </>
-  )
-}
-
-const SmallMenu = React.memo(() => {
-  const { open, setOpen } = useDocsMenu()
-
-  return (
-    <Popover
-      keepChildrenMounted
-      open={open}
-      onOpenChange={setOpen}
-      size="$5"
-      stayInFrame={{ padding: 20 }}
-    >
-      <Popover.Trigger asChild>
-        <Button
-          size="$3"
-          chromeless
-          circular
-          hoverStyle={{
-            bc: 'transparent',
-          }}
-          noTextWrap
-          onPress={() => setOpen(!open)}
-          theme={open ? 'alt1' : undefined}
-        >
-          <Menu size={16} color="var(--color)" />
-        </Button>
-      </Popover.Trigger>
-
-      <Adapt platform="touch" when="sm">
-        <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
-          <Popover.Sheet.Frame>
-            <Popover.Sheet.ScrollView>
-              <Adapt.Contents />
-            </Popover.Sheet.ScrollView>
-          </Popover.Sheet.Frame>
-          <Popover.Sheet.Overlay zIndex={100} />
-        </Popover.Sheet>
-      </Adapt>
-
-      <Popover.Content
-        bw={1}
-        boc="$borderColor"
-        enterStyle={{ x: 0, y: -10, o: 0 }}
-        exitStyle={{ x: 0, y: -10, o: 0 }}
-        x={0}
-        y={0}
-        o={1}
-        animation={[
-          'quick',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
-        animateOnly={['transform', 'opacity']}
-        p={0}
-        maxHeight="80vh"
-        elevate
-        zIndex={100000000}
-      >
-        <Popover.Arrow borderWidth={1} boc="$borderColor" />
-
-        <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-          <YStack
-            miw={230}
-            p="$3"
-            ai="flex-end"
-            // display={open ? 'flex' : 'none'}
-          >
-            <HeaderLinks forceShowAllLinks />
-            <Separator my="$4" w="100%" />
-            <SponsorButton />
-            <Separator my="$4" w="100%" />
-            <DocsMenuContents />
-          </YStack>
-        </Popover.ScrollView>
-      </Popover.Content>
-    </Popover>
-  )
-})
-
-const HeadAnchor = styled(Paragraph, {
-  fontFamily: '$silkscreen',
-  px: '$3',
-  py: '$2',
-  cursor: 'pointer',
-  size: '$3',
-  color: '$color10',
-  hoverStyle: { opacity: 1, color: '$color' },
-  pressStyle: { opacity: 0.25 },
-  tabIndex: -1,
-  w: '100%',
 })

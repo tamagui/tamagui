@@ -172,7 +172,7 @@ export async function extractToClassNames({
       const addStyles = (style: ViewStyle | null): StyleObject[] => {
         if (!style) return []
         const styleWithPrev = ensureNeededPrevStyle(style)
-        const res = getStylesAtomic(styleWithPrev)
+        const res = getStylesAtomic(styleWithPrev as any)
         if (res.length) {
           finalStyles = [...finalStyles, ...res]
         }
@@ -185,7 +185,7 @@ export async function extractToClassNames({
         switch (attr.type) {
           case 'style': {
             if (!isFlattened) {
-              const styles = getStylesAtomic(attr.value)
+              const styles = getStylesAtomic(attr.value as any)
 
               finalStyles = [...finalStyles, ...styles]
 

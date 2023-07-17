@@ -332,6 +332,7 @@ export function createAnimations<A extends AnimationsConfig>(
                     getAnimation(),
                   ])
                 : getAnimation()
+
               animation.start(({ finished }) => {
                 if (finished) {
                   resolve()

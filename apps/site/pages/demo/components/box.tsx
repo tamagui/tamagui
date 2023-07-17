@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, Object3DNode, useFrame } from '@react-three/fiber'
 import BezierEasing from 'bezier-easing'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -19,7 +19,7 @@ const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
-}/takeout.gltf`
+}/takeout.glb`
 
 let frameCount = 2
 const Box = dynamic(() => Promise.resolve(BoxComponent), { ssr: false })
@@ -40,11 +40,14 @@ const BoxComponent = (props) => (
   </Canvas>
 )
 
-const easing = BezierEasing(0.02, 0.02, 0, 0.15)
+const easing = BezierEasing(0.18, 0.12, 0.25, 1)
+
+const frames = 30
 
 function TakeoutBox3D(props) {
-  const ref = useRef<any>()
+  const ref = useRef<Object3DNode<any, any>>()
   const router = useRouter()
+
   useEffect(() => {
     function resetFrameCount() {
       frameCount = 0
@@ -52,10 +55,11 @@ function TakeoutBox3D(props) {
     router.events.on('routeChangeComplete', resetFrameCount)
     return () => router.events.off('routeChangeComplete', resetFrameCount)
   }, [])
+
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
-    const bezierValue = easing(1 - (frameCount > 100 ? 1 : frameCount / 100))
+    const bezierValue = easing(frameCount > frames * 3 ? 0 : frameCount / frames)
     ref.current!.rotation.y += delta * 15 * bezierValue
 
     frameCount++
@@ -63,26 +67,21 @@ function TakeoutBox3D(props) {
 
   return (
     <>
-      <Stage
-        shadows="accumulative"
-        scale={1}
-        adjustCamera={1.55}
-        preset="portrait"
-        intensity={2}
-      >
+      <Stage scale={1} adjustCamera={1.55} preset="portrait" intensity={2}>
         <group ref={ref} dispose={null} {...props}>
           <mesh
+            castShadow
+            receiveShadow
             geometry={nodes.pack.geometry}
-            material={materials.Chinese_Takeout_Box_chinese}
-            position={[0.13, 0.01, 0.23]}
-            rotation={[-Math.PI, 0, -Math.PI]}
-            scale={0.1}
+            material={materials['Chinese_Takeout_Box_chinese.002']}
+            rotation={[0, 1.571, 0]}
           />
           <mesh
+            castShadow
+            receiveShadow
             geometry={nodes.handle.geometry}
-            material={materials.Material}
-            position={[-0.26, 0.08, 0.06]}
-            scale={0.1}
+            material={materials['Chinese_Takeout_Box_chinese.002']}
+            rotation={[0, 1.571, 0]}
           />
         </group>
       </Stage>

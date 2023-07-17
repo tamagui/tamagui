@@ -117,6 +117,10 @@ export function wrapThemeElements({
   children?: React.ReactNode
   themeState: ChangedThemeResponse
 }) {
+  if (!themeState.isNewTheme) {
+    return <span className="_dsp_contents is_Theme">{children}</span>
+  }
+
   // in order to provide currentColor, set color by default
   const themeColor =
     themeState.theme && themeState.isNewTheme
