@@ -119,6 +119,7 @@ export const SheetImplementationCustom = themeable(
         hostRef: sheetRef,
       },
       (value) => {
+        'worklet'
         if (!driver.isReactNative) return
         at.current = value
         scrollBridge.paneY = value
@@ -138,8 +139,7 @@ export const SheetImplementationCustom = themeable(
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
-      let toValue =
-         isHidden || position === -1 ? screenSize : positions[position]
+      let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
       at.current = toValue

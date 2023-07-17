@@ -3,11 +3,17 @@ import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
 import { useContext, useMemo } from 'react'
 import Animated, {
+  SharedValue,
+  cancelAnimation,
   runOnJS,
   useAnimatedReaction,
   useDerivedValue,
   useSharedValue,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated'
+
+type ReanimatedAnimatedNumber = SharedValue<number>
 
 export function createAnimations<A extends Record<string, MotiTransition>>(
   animations: A
@@ -19,25 +25,33 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     animations,
     usePresence,
 
-    useAnimatedNumber(initial): UniversalAnimatedNumber<number> {
+    useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const val = useSharedValue(initial)
 
       return useMemo(
         () => ({
           getInstance() {
             'worklet'
-            return val.value
+            return val
           },
           getValue() {
             'worklet'
             return val.value
           },
-          setValue(next) {
+          setValue(next, config = { type: 'spring' }) {
             'worklet'
-            val.value = next
+            console.log('setting', next, config, val)
+            if (config.type === 'direct') {
+              val.value = next
+            } else if (config.type === 'spring') {
+              val.value = withSpring(next, config)
+            } else {
+              val.value = withTiming(next, config)
+            }
           },
           stop() {
             'worklet'
+            cancelAnimation(val)
           },
         }),
         [val]
