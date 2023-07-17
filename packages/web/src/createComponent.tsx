@@ -436,7 +436,7 @@ export function createComponent<
         resolveVariablesAs,
         isExiting,
         isAnimated,
-        willBeAnimated,
+        // willBeAnimated,
       },
       null,
       languageContext || undefined,
