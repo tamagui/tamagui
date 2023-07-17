@@ -26,6 +26,10 @@ export interface FocusScopeProps {
      * If unmount is animated, you want to force re-focus at start of animation not after
      */
     forceUnmount?: boolean;
-    children?: React.ReactNode;
+    children?: React.ReactNode | ((props: {
+        onKeyDown: (event: React.KeyboardEvent) => void;
+        tabIndex: number;
+        ref: React.ForwardedRef<any>;
+    }) => React.ReactNode);
 }
 //# sourceMappingURL=FocusScopeProps.d.ts.map

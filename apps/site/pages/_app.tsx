@@ -1,6 +1,5 @@
 import '@tamagui/core/reset.css'
 
-// import '../lib/wdyr'
 import '../app.css'
 
 import { GetLayout } from '@lib/getDefaultLayout'
@@ -13,11 +12,12 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { Square, TamaguiProvider } from 'tamagui'
+import { TamaguiProvider, useDebounceValue } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
-import { ThemeToggle } from '../components/ThemeToggle'
 import config from '../tamagui.config'
+
+// import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
 
@@ -84,6 +84,7 @@ function AppContents(
   }
 ) {
   const [didInteract, setDidInteract] = useState(false)
+  const didInteraceDelayed = useDebounceValue(didInteract, 100)
 
   useEffect(() => {
     const onDown = () => {
@@ -111,7 +112,8 @@ function AppContents(
       />
 
       {/* this will lazy load the font for /studio and /takeout pages */}
-      {didInteract && (
+      {/* load it after first interaction to avoid clogging the first click even */}
+      {didInteraceDelayed && (
         <>
           <LoadInter900 />
           <LoadMunro />

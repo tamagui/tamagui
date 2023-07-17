@@ -6,7 +6,7 @@ import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { NavHeading } from './NavHeading'
 import { useDocsMenu } from './useDocsMenu'
 
-export const DocsMenuContents = React.memo(() => {
+export const DocsMenuContents = React.memo(function DocsMenuContents() {
   const { currentPath } = useDocsMenu()
 
   return React.useMemo(() => {

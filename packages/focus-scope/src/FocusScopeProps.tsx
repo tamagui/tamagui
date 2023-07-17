@@ -32,5 +32,11 @@ export interface FocusScopeProps {
    */
   forceUnmount?: boolean
 
-  children?: React.ReactNode
+  children?:
+    | React.ReactNode
+    | ((props: {
+        onKeyDown: (event: React.KeyboardEvent) => void
+        tabIndex: number
+        ref: React.ForwardedRef<any>
+      }) => React.ReactNode)
 }
