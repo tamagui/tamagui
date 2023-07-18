@@ -2,8 +2,8 @@ import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
-import { tiersPriority } from '@tamagui/studio/constants'
 import { NextApiHandler } from 'next'
+import { tiersPriority } from 'protected/constants'
 
 export type UserContextType = {
   subscriptions?: Awaited<ReturnType<typeof getSubscriptions>> | null
