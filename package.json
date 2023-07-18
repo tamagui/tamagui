@@ -58,7 +58,7 @@
     "starter:prod": "yarn workspace @tamagui/starter web:prod && yarn workspace @tamagui/starter web:prod:serve",
     "starter": "yarn workspace @tamagui/starter web",
     "starters:sync": "node ./starters/sync-next-expo-solito.js",
-    "studio": "yarn workspace @tamagui/site studio",
+    "studio": "yarn workspace @tamagui/studio dev",
     "tamastack": "yarn workspace @tamagui/stack dev",
     "test:ci": "turbo test --concurrency=1",
     "test:demos": "yarn workspace @tamagui/demos test",

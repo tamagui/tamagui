@@ -2,8 +2,8 @@ import { themes } from '@tamagui/themes';
 export * from './animations';
 export declare const configWithoutAnimations: {
     defaultFont: string;
-    shouldAddPrefersColorThemes: boolean;
-    themeClassNameOnRoot: boolean;
+    shouldAddPrefersColorThemes: true;
+    themeClassNameOnRoot: true;
     themes: typeof themes;
     media: {
         xl: {

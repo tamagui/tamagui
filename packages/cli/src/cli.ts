@@ -109,24 +109,24 @@ const COMMAND_MAP = {
     },
   },
 
-  // studio: {
-  //   shorthands: ['s'],
-  //   description: `Studio`,
-  //   flags: {
-  //     '--help': Boolean,
-  //     '--debug': Boolean,
-  //     '--verbose': Boolean,
-  //     '--local': Boolean,
-  //   },
-  //   async run() {
-  //     const { _, ...flags } = arg(this.flags)
-  //     const { studio } = await import('./studio')
-  //     const options = await getOptions({
-  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-  //     })
-  //     await studio(options, !flags['--local'])
-  //   },
-  // },
+  studio: {
+    shorthands: ['s'],
+    description: `Studio`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--remote': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { studio } = require('./studio')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await studio(options, flags['--remote'])
+    },
+  },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP

@@ -1,3 +1,4 @@
+export * from './animations';
 export declare const fonts: {
     heading: import("@tamagui/web").FillInFont<{
         size: {

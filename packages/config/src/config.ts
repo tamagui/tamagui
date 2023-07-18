@@ -1,5 +1,6 @@
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/themes'
+import { CreateTamaguiProps } from '@tamagui/web'
 
 import { fonts } from './fonts'
 import { media, mediaQueryDefaultActive } from './media'
@@ -15,7 +16,7 @@ export const configWithoutAnimations = {
   shorthands,
   tokens,
   fonts,
-}
+} satisfies CreateTamaguiProps
 
 // @ts-ignore
 configWithoutAnimations.selectionStyles = (theme) =>

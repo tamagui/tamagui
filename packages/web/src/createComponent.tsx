@@ -764,37 +764,29 @@ export function createComponent<
                   onMouseUp?.(e)
                 }
               : undefined,
-            ...(isHoverable && {
-              onMouseEnter: isHoverable
-                ? (e) => {
-                    const next: Partial<typeof state> = {}
-                    if (isHoverable) {
-                      next.hover = true
-                    }
-                    if (state.pressIn) {
-                      next.press = true
-                    }
-                    setStateShallow(next)
-                    onHoverIn?.(e)
-                    onMouseEnter?.(e)
-                  }
-                : undefined,
-              onMouseLeave: isHoverable
-                ? (e) => {
-                    const next: Partial<typeof state> = {}
-                    mouseUps.add(unPress)
-                    if (isHoverable) {
-                      next.hover = false
-                    }
-                    if (state.pressIn) {
-                      next.press = false
-                      next.pressIn = false
-                    }
-                    setStateShallow(next)
-                    onHoverOut?.(e)
-                    onMouseLeave?.(e)
-                  }
-                : undefined,
+            ...((isHoverable || attachPress) && {
+              onMouseEnter: (e) => {
+                const next: Partial<typeof state> = {}
+                next.hover = true
+                if (state.pressIn) {
+                  next.press = true
+                }
+                setStateShallow(next)
+                onHoverIn?.(e)
+                onMouseEnter?.(e)
+              },
+              onMouseLeave: (e) => {
+                const next: Partial<typeof state> = {}
+                mouseUps.add(unPress)
+                next.hover = false
+                if (state.pressIn) {
+                  next.press = false
+                  next.pressIn = false
+                }
+                setStateShallow(next)
+                onHoverOut?.(e)
+                onMouseLeave?.(e)
+              },
             }),
             onPressIn: attachPress
               ? (e) => {

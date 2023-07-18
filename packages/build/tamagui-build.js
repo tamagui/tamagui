@@ -71,6 +71,12 @@ if (shouldWatch) {
   process.env.DISABLE_AUTORUN = true
   const rebuild = debounce(build, 100)
   const chokidar = require('chokidar')
+
+  // do one js build but not types
+  build({
+    skipTypes: true
+  })
+  
   chokidar
     // prevent infinite loop but cause race condition if you just build directly
     .watch('src', {

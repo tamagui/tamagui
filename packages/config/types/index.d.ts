@@ -32,8 +32,8 @@ export declare const config: {
         };
     }>;
     defaultFont: string;
-    shouldAddPrefersColorThemes: boolean;
-    themeClassNameOnRoot: boolean;
+    shouldAddPrefersColorThemes: true;
+    themeClassNameOnRoot: true;
     themes: typeof import("@tamagui/themes/types/generated-new");
     media: {
         xl: {
