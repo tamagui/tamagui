@@ -137,21 +137,17 @@ export function wrapThemeElements({
   const parentScheme = themeState.themeManager?.parentManager?.scheme
   const scheme = themeState.themeManager?.scheme
   const isInversing = scheme && parentScheme && scheme !== parentScheme
+  const className = themeState.className || ''
 
   let themedChildren = (
-    <span
-      className={`${themeState.className || ''} _dsp_contents is_Theme`}
-      style={colorStyle}
-    >
+    <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
       {children}
     </span>
   )
 
   if (isInversing) {
     themedChildren = (
-      <span className={`t_${scheme} _dsp_contents is_Theme is_inversed`}>
-        {themedChildren}
-      </span>
+      <span className={`t_${scheme} _dsp_contents is_inversed`}>{themedChildren}</span>
     )
   }
 
