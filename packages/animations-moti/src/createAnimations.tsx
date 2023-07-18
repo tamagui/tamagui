@@ -7,6 +7,7 @@ import Animated, {
   cancelAnimation,
   runOnJS,
   useAnimatedReaction,
+  useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withSpring,
@@ -22,45 +23,47 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     View: Animated.View,
     Text: Animated.Text,
     isReactNative: true,
+    supportsCSSVariables: true,
     animations,
     usePresence,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
-      const val = useSharedValue(initial)
+      const sharedValue = useSharedValue(initial)
 
       return useMemo(
         () => ({
           getInstance() {
             'worklet'
-            return val
+            return sharedValue
           },
           getValue() {
             'worklet'
-            return val.value
+            return sharedValue.value
           },
           setValue(next, config = { type: 'spring' }) {
             'worklet'
             if (config.type === 'direct') {
-              val.value = next
+              sharedValue.value = next
             } else if (config.type === 'spring') {
-              val.value = withSpring(next, config)
+              sharedValue.value = withSpring(next, config)
             } else {
-              val.value = withTiming(next, config)
+              sharedValue.value = withTiming(next, config)
             }
           },
           stop() {
             'worklet'
-            cancelAnimation(val)
+            cancelAnimation(sharedValue)
           },
         }),
-        [val]
+        [sharedValue]
       )
     },
 
     useAnimatedNumberReaction({ value }, onValue) {
+      const instance = value.getInstance()
       return useAnimatedReaction(
         () => {
-          return value.getValue()
+          return instance.value
         },
         (next, prev) => {
           if (prev !== next) {
@@ -70,7 +73,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           }
         },
         // dependency array is very important here
-        [value, onValue]
+        [onValue, instance]
       )
     },
 
@@ -78,10 +81,18 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
      * `getStyle` must be a worklet
      */
     useAnimatedNumberStyle(val, getStyle) {
-      return useDerivedValue(() => {
-        return getStyle(val.getValue())
+      const instance = val.getInstance()
+
+      // this seems wrong but it works
+      const derivedValue = useDerivedValue(() => {
+        return instance.value
         // dependency array is very important here
-      }, [val, getStyle])
+      }, [instance])
+
+      return useAnimatedStyle(() => {
+        return getStyle(derivedValue.value)
+        // dependency array is very important here
+      }, [val, getStyle, derivedValue])
     },
 
     useAnimations: ({ props, presence, style, state, onDidAnimate }) => {
@@ -122,6 +133,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
       }
+
       const moti = useMotify(motiProps)
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
