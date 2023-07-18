@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.43.10",
+  "version": "1.43.11",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -28,16 +28,16 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/react-native-use-pressable": "1.43.10",
-    "@tamagui/react-native-use-responder-events": "1.43.10",
-    "@tamagui/use-event": "1.43.10",
-    "@tamagui/web": "1.43.10"
+    "@tamagui/react-native-use-pressable": "1.43.11",
+    "@tamagui/react-native-use-responder-events": "1.43.11",
+    "@tamagui/use-event": "1.43.11",
+    "@tamagui/web": "1.43.11"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.43.10",
+    "@tamagui/build": "1.43.11",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
