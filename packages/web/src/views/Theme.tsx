@@ -68,10 +68,8 @@ export function useThemedChildren(
   const shouldRenderChildrenWithTheme =
     isNewTheme || hasEverThemed.current || forceClassName || isRoot
 
-  const childrenMemo = useMemo(() => children, [children])
-
   if (!shouldRenderChildrenWithTheme) {
-    return childrenMemo
+    return children
   }
 
   // be sure to memoize shouldReset to avoid reparenting
@@ -94,7 +92,7 @@ export function useThemedChildren(
 
   const elementsWithContext = (
     <ThemeManagerContext.Provider value={themeManager}>
-      {childrenMemo}
+      {children}
     </ThemeManagerContext.Provider>
   )
 

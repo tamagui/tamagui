@@ -853,8 +853,8 @@ export function createComponent<
     // since we re-render without changing children often for animations or on mount
     // we memo children here. tested this on the site homepage which has hundreds of components
     // and i see no difference in startup performance, but i do see it memoing often
-    let content = useMemo(() => {
-      return !children || asChild
+    let content =
+      !children || asChild
         ? children
         : spacedChildren({
             separator,
@@ -864,7 +864,6 @@ export function createComponent<
             isZStack,
             debug: debugProp,
           })
-    }, [children, asChild, separator, space, direction, debugProp, isZStack])
 
     if (asChild) {
       elementType = Slot
