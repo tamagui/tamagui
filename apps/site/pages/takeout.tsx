@@ -2370,10 +2370,12 @@ const FaqModal = () => {
         >
           <ScrollView>
             <YStack $gtSm={{ maxHeight: '90vh' }}>
-              <H1 $sm={{ size: '$8' }}>Frequently Asked Questions</H1>
+              <H1 px="$4" $sm={{ size: '$8' }}>
+                Frequently Asked Questions
+              </H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Can I still ues the starter after my subscription has ended?</H5>
+                  <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
                     Of course! the subscription is only for the bot updates. If you cancel
                     your subscription you will stop receiving updates but can still use
@@ -2402,8 +2404,21 @@ const FaqModal = () => {
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5>Is there a refund policy?</H5>
                   <Paragraph>
-                    No. Since that would allow folks to just purchase the starter, fork
-                    and refund. We don't offer a refund to prevent abuse of our product.
+                    No, to prevent abuse we have a no refund policy, but reach out to us
+                    if you are non-profit or a student with a .edu email address if you
+                    would like a discount.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>
+                    Can I use some of the features? What about merge conflicts with the
+                    bot?
+                  </H5>
+                  <Paragraph>
+                    Yes. We've designed the repo to be as well isolated as possible. We
+                    are working on settings for takeout.json that let you configure which
+                    types of updates you'd like to receive.
                   </Paragraph>
                 </YStack>
 
@@ -2414,6 +2429,15 @@ const FaqModal = () => {
                     send update PRs to all the repositories that have the bot installed
                     and have an active subscription. You may tweak the changes on the PR
                     and merge, or just disable it if you want to.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How often does the bot trigger updates?</H5>
+                  <Paragraph>
+                    We do this manually to avoid constant PRs and try to schedule them at
+                    most once a week. We're also working on a UI for users to manually
+                    trigger older updates in case they've missed them.
                   </Paragraph>
                 </YStack>
 
@@ -2439,6 +2463,20 @@ const FaqModal = () => {
                     font` and follow the steps to install the packages.
                   </Paragraph>
                 </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How many projects can I use this for?</H5>
+                  <Paragraph
+                    cursor="pointer"
+                    textDecorationLine="underline"
+                    onPress={() => {
+                      store.showAgreement = true
+                    }}
+                  >
+                    See License
+                  </Paragraph>
+                </YStack>
+
                 {/* 
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5 >
@@ -2471,6 +2509,21 @@ const FaqModal = () => {
     </Dialog>
   )
 }
+
+const Ul = styled(YStack, {
+  name: 'ul',
+  tag: 'ul',
+  paddingLeft: 20
+})
+
+const Li = styled(YStack, {
+  name: 'li',
+  tag: 'li',
+  // @ts-ignore˝
+  display: "list-item",
+  
+})
+
 
 const AgreementModal = () => {
   const store = useTakeoutStore()
@@ -2544,78 +2597,78 @@ const AgreementModal = () => {
               <Paragraph>You can:</Paragraph>
 
               <Paragraph>
-                <ul>
-                  <li>
+                <Ul>
+                  <Li>
                     Use all Takeout stack deliverables within a single code repository for
                     a single public product.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Use the Takeout stack deliverables for unlimited private projects
                     available to only licensees.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Deploy all Takeout stack deliverables to one public domain, and one
                     public app within each of the iOS and Android app stores.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Deliver a product that is commercial in nature with the Takeout stack.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Re-use all Takeout stack deliverables for a new project after a
                     previous project has been shut down to users.
-                  </li>
-                </ul>
+                  </Li>
+                </Ul>
               </Paragraph>
 
               <Paragraph>You cannot:</Paragraph>
 
               <Paragraph>
-                <ul>
-                  <li>
+                <Ul>
+                  <Li>
                     Re-sell or distribute the Takeout stack available for users to read
                     for any purpose, even with modification.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Create a service which allows for users to use the Takeout stack to
                     build their own publicly available products.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Create a code template, UI kit, or starter kit based on the Takeout
                     stack available to users.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Use the Takeout stack for more than one public domain per license
                     purchase.
-                  </li>
-                </ul>
+                  </Li>
+                </Ul>
               </Paragraph>
 
               <H3>License Definitions</H3>
 
               <Paragraph>
-                <ul>
-                  <li>
+                <Ul>
+                  <Li>
                     Licensee is a person or a business entity who has purchased a License.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Takeout stack is the code and assets made available to the Licensee
                     after purchasing a Tamagui license.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Product is any artifact produced that incorporates the Takeout stack.
-                  </li>
-                  <li>User is any person not licensed to use the Takeout stack.</li>
-                  <li>Employee is a full-time or part-time employee of the Licensee.</li>
-                  <li>
+                  </Li>
+                  <Li>User is any person not licensed to use the Takeout stack.</Li>
+                  <Li>Employee is a full-time or part-time employee of the Licensee.</Li>
+                  <Li>
                     Contractor is an individual or business entity contracted to perform
                     services for the Licensee.
-                  </li>
-                  <li>
+                  </Li>
+                  <Li>
                     Client is an individual or entity receiving custom professional
                     services directly from the Licensee, produced specifically for that
                     individual or entity.
-                  </li>
-                </ul>
+                  </Li>
+                </Ul>
               </Paragraph>
 
               <H3>Liability</H3>
