@@ -280,7 +280,10 @@ export function createComponent<
     const presence = (!isRSC && willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
-    const supportsCSSVariables = animationsConfig?.supportsCSSVariables
+
+    // disable for now still ssr issues
+    const supportsCSSVariables = false // ?? animationsConfig?.supportsCSSVariables
+
     const needsMount = Boolean(
       (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
     )
