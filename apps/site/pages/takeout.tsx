@@ -705,12 +705,11 @@ export default function TakeoutPage({
                     }}
                     $lg={{
                       size: '$9',
-                      lh: "$8",
+                      lh: '$8',
                     }}
                     $sm={{
                       size: '$8',
-                      lh: "$7",
-
+                      lh: '$7',
                     }}
                   >
                     From idea to shipped in less time&nbsp;than&nbsp;ever
@@ -1019,22 +1018,52 @@ export default function TakeoutPage({
 
                 <ImageGallery />
 
-                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  {takeoutImages.slice(0, 4).map((image, index) => (
-                    <YStack key={index} pos="relative">
-                      <TakeoutImage
-                        alt={image.alt}
-                        src={image.src}
-                        style={{ objectFit: 'cover' }}
-                        width={220}
-                        height={220}
-                        index={index}
-                      />
-                    </YStack>
-                  ))}
+                <XStack mx="$-8" ai="center" jc="center" gap="$2">
+                  <YStack
+                    flexGrow={1}
+                    position="relative"
+                    height={400}
+                    borderRadius="$6"
+                    overflow="hidden"
+                  >
+                    <Image
+                      fill
+                      src={require('public/takeout/starter-screenshots/android.jpg')}
+                      alt="Android screenshot"
+                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    />
+                  </YStack>
+                  <YStack
+                    flexGrow={2}
+                    position="relative"
+                    height={400}
+                    borderRadius="$6"
+                    overflow="hidden"
+                  >
+                    <Image
+                      fill
+                      src={require('public/takeout/starter-screenshots/web.jpg')}
+                      alt="Web screenshot"
+                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    />
+                  </YStack>
+                  <YStack
+                    flexGrow={1}
+                    position="relative"
+                    height={400}
+                    borderRadius="$6"
+                    overflow="hidden"
+                  >
+                    <Image
+                      fill
+                      src={require('public/takeout/starter-screenshots/ios.jpg')}
+                      alt="iOS screenshot"
+                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    />
+                  </YStack>
                 </XStack>
                 <XStack fw="wrap" gap="$3" mx="$1" ai="center" jc="center">
-                  {takeoutImages.slice(4, 17).map((image, index) => (
+                  {takeoutImages.slice(0, 12).map((image, index) => (
                     <YStack key={index} pos="relative">
                       <TakeoutImage
                         alt={image.alt}
@@ -1062,7 +1091,7 @@ export default function TakeoutPage({
                       jc="center"
                     >
                       <H6 fontFamily="$munro" color="black">
-                        +{takeoutImages.length - 17}
+                        +{takeoutImages.length - 12}
                       </H6>
                     </YStack>
                   </YStack>
