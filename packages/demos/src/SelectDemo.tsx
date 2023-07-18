@@ -72,7 +72,14 @@ export function SelectDemoItem(props: SelectProps) {
           />
         </Select.ScrollUpButton>
 
-        <Select.Viewport minWidth={200}>
+        <Select.Viewport
+          // to do animations:
+          // animation="quick"
+          // animateOnly={['transform', 'opacity']}
+          minWidth={200}
+          enterStyle={{ o: 0, y: -10 }}
+          exitStyle={{ o: 0, y: 10 }}
+        >
           <XStack>
             <Select.Group space="$0">
               <Select.Label>Fruits</Select.Label>

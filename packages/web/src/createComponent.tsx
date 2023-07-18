@@ -83,6 +83,11 @@ const defaultComponentStateMounted: TamaguiComponentState = {
   unmounted: false,
 }
 
+const defaultComponentStateShouldEnter: TamaguiComponentState = {
+  ...defaultComponentState,
+  unmounted: 'should-enter',
+}
+
 const HYDRATION_CUTOFF = process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
   ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
   : 5
@@ -243,7 +248,7 @@ export function createComponent<
       undefined as any as {
         hasAnimated?: boolean
         themeShallow?: boolean
-        didAccessThemeVariableValue?: boolean
+        isListeningToTheme?: boolean
       }
     )
     stateRef.current ||= {}
@@ -275,34 +280,44 @@ export function createComponent<
     const presence = (!isRSC && willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
-    const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
 
-    const states = useServerState<TamaguiComponentState>(
-      needsMount ? defaultComponentState! : defaultComponentStateMounted!
+    // disable for now still ssr issues
+    const supportsCSSVariables = false // ?? animationsConfig?.supportsCSSVariables
+
+    const needsMount = Boolean(
+      (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
     )
+
+    const initialState = needsMount
+      ? supportsCSSVariables
+        ? defaultComponentStateShouldEnter!
+        : defaultComponentState!
+      : defaultComponentStateMounted!
+    const states = useServerState<TamaguiComponentState>(initialState)
+
     const state = propsIn.forceStyle
       ? { ...states[0], [propsIn.forceStyle]: true }
       : states[0]
     const setState = states[1]
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    // cheat code
-    let hasHydrated = false
-    numRenderedOfType[componentName] ??= 0
-    if (willBeAnimated) {
-      if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
-        hasHydrated = true
-      }
-    }
-
     let isAnimated = willBeAnimated
 
-    // TODO this is for AnimatePresence SSR support but it shouldn't be setting isAnimated = false for presence?
-    // // presence avoids ssr stuff
-    const hasPresenceIsHydrated = presence && hasHydrated
-    if (!hasPresenceIsHydrated) {
-      if (isAnimated && (isServer || state.unmounted === true)) {
-        isAnimated = false
+    if (willBeAnimated && !supportsCSSVariables) {
+      // cheat code to not always pay the cost of triple rendering,
+      // after a bit we consider this component hydrated
+      let hasHydrated = false
+      numRenderedOfType[componentName] ??= 0
+      if (willBeAnimated) {
+        if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
+          hasHydrated = true
+        }
+      }
+      const hasPresenceIsHydrated = presence && hasHydrated
+      if (!hasPresenceIsHydrated) {
+        if (isAnimated && (isServer || state.unmounted === true)) {
+          isAnimated = false
+        }
       }
     }
 
@@ -366,9 +381,14 @@ export function createComponent<
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
-      shouldUpdate: () => !!stateRef.current.didAccessThemeVariableValue,
+      shouldUpdate: () => {
+        // only forces when defined
+        return stateRef.current.isListeningToTheme
+      },
       debug: debugProp,
     }
+
+    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
 
     if (process.env.NODE_ENV === 'development') {
       const id = useId()
@@ -380,7 +400,9 @@ export function createComponent<
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
         console.group(
-          `%c ${banner} (unmounted: ${state.unmounted})`,
+          `%c ${banner} (unmounted: ${state.unmounted})${
+            presence ? ` (presence: ${presence[0]})` : ''
+          }`,
           'background: yellow;'
         )
         if (!isServer) {
@@ -402,7 +424,6 @@ export function createComponent<
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
@@ -421,7 +442,7 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      themeState.theme,
+      themeState,
       {
         ...state,
         mediaState,
@@ -430,12 +451,16 @@ export function createComponent<
         resolveVariablesAs,
         isExiting,
         isAnimated,
+        // temp: once we fix above we can disable this
+        willBeAnimated: willBeAnimated && animationsConfig?.supportsCSSVariables,
       },
       null,
       languageContext || undefined,
       elementType,
       debugProp
     )
+
+    stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
@@ -501,7 +526,7 @@ export function createComponent<
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
-        style: isAnimated ? splitStylesStyle : {},
+        style: splitStylesStyle,
         // style: splitStylesStyle,
         presence,
         state: {
@@ -514,6 +539,7 @@ export function createComponent<
         hostRef,
         staticConfig,
       })
+
       if (isAnimated) {
         if (animations) {
           animationStyles = animations.style

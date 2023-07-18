@@ -2,7 +2,7 @@ import { getElevation } from './getElevation'
 
 export const elevate = {
   true: (_: boolean, extras: any) => {
-    return getElevation(extras.props['size'], extras)
+    return getElevation(extras.props['size'], extras) as any
   },
 }
 

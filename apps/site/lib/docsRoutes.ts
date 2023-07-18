@@ -106,6 +106,7 @@ export const docsRoutes = [
   {
     label: 'Organize',
     pages: [
+      { title: 'Accordion', route: '/docs/components/accordion' },
       { title: 'Group', route: '/docs/components/group' },
       { title: 'Tabs', route: '/docs/components/tabs' },
     ],

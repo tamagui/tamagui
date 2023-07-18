@@ -74,6 +74,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
   return {
     isReactNative: true,
+    supportsCSSVariables: true,
     animations,
     View: AnimatedView,
     Text: AnimatedText,

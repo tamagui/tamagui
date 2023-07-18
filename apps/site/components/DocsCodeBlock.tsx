@@ -34,9 +34,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   // const frontmatter = useContext(FrontmatterContext)
 
+  const isPreVisible = !isCollapsed || !isCollapsible;
+
   useEffect(() => {
     try {
-      if (preRef.current) {
+      if (preRef.current && isPreVisible) {
         const codeElement = preRef.current.querySelector('code')
         if (codeElement) {
           // remove double line breaks
@@ -49,7 +51,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     } catch {
       // ok
     }
-  }, [preRef])
+  }, [preRef, isPreVisible])
 
   return (
     <YStack
@@ -96,7 +98,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           </XStack>
         )}
 
-        {(!isCollapsed || !isCollapsible) && (
+        {isPreVisible && (
           <YStack
             position="relative"
             {...(isCutoff && {

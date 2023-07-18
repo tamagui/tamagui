@@ -54,7 +54,7 @@ export function extractMediaStyle(
   // this should be done using the same logic as createMediaStyle
 
   for (const { styleObj, negate } of styleOpts) {
-    const styles = getStylesAtomic(styleObj)
+    const styles = getStylesAtomic(styleObj as any)
     const singleMediaStyles = styles.map((style) => {
       const negKey = negate ? '0' : ''
       const ogPrefix = style.identifier.slice(0, style.identifier.indexOf('-') + 1)

@@ -28,8 +28,6 @@ export default (props) => (
   </Canvas>
 )
 
-let ogScale = 0
-
 function TakeoutBox3D(props) {
   const ref = useRef<Object3DNode<any, any>>()
   const router = useRouter()

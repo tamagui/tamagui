@@ -16,7 +16,7 @@ export async function writeGeneratedThemes(
 
   if (process.env.DEBUG === 'tamagui') {
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log(`Generated themes:`, JSON.stringify({ generated, state }, null, 2))
+    console.log(`Generated themes:`, JSON.stringify(generatedOutput, null, 2))
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log(`Writing themes to`, { outPath, themeBuilderStatePath })
   }

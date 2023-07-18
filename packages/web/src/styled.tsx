@@ -108,7 +108,6 @@ export function styled<
           defaultProps = {
             ...parentStaticConfig.defaultProps,
             ...defaultProps,
-            ...defaultVariants,
           }
         }
 
@@ -188,16 +187,15 @@ export function styled<
   type OurVariantProps = Variants extends void ? {} : GetVariantAcceptedValues<Variants>
 
   type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
-  type OurPropsBase = ParentPropsBase & VariantProps
+  type OurPropsBaseBase = ParentPropsBase & VariantProps
+  type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
 
   type Props = Variants extends void
     ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBase &
         // add in media (+ pseudos nested)
-        MediaProps<Partial<OurPropsBase>> &
-        // add in pseudos
-        PseudoProps<Partial<OurPropsBase>>
+        MediaProps<Partial<OurPropsBase>>
 
   type ParentStaticProperties = {
     [Key in Exclude<

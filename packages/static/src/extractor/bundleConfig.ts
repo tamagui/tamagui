@@ -155,11 +155,11 @@ export async function bundleConfig(props: TamaguiOptions) {
     colorLog(
       Color.Dim,
       `
-          Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${[
-            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-          ].join('\n             ')}
-          `
+        Config     .${sep}${relative(process.cwd(), configOutPath)}
+        Components ${[
+          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+        ].join('\n             ')}
+        `
     )
 
     // get around node.js's module cache to get the new config...

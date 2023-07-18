@@ -23,6 +23,7 @@ export const useFloatingContext = ({ open, setOpen, breakpointActive }) =>
       ])
       return {
         ...floating,
+        open,
         getReferenceProps,
         getFloatingProps,
       }

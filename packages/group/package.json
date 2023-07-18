@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/group",
-  "version": "1.39.8",
+  "version": "1.43.10",
   "sideEffects": [
     "*.css"
   ],
@@ -23,17 +23,17 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.39.8",
-    "@tamagui/create-context": "1.39.8",
-    "@tamagui/stacks": "1.39.8",
-    "@tamagui/use-controllable-state": "1.39.8",
+    "@tamagui/core": "1.43.10",
+    "@tamagui/create-context": "1.43.10",
+    "@tamagui/stacks": "1.43.10",
+    "@tamagui/use-controllable-state": "1.43.10",
     "reforest": "^0.12.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.39.8",
+    "@tamagui/build": "1.43.10",
     "react": "^18.2.0"
   },
   "publishConfig": {

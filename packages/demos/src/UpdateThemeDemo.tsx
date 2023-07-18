@@ -1,4 +1,4 @@
-import * as Config from '@tamagui/config'
+import * as Config from '@tamagui/site-config'
 import { addTheme, updateTheme } from '@tamagui/theme'
 import React, { useState } from 'react'
 import {

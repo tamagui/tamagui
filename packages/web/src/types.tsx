@@ -158,6 +158,11 @@ export type TamaguiComponentPropsBase = {
   role?: Role
 
   /**
+   * Disable all compiler optimization
+   */
+  disableOptimization?: boolean
+
+  /**
    * Forces the pseudo style state to be on
    */
   forceStyle?: 'hover' | 'press' | 'focus'
@@ -449,8 +454,8 @@ export interface ThemeProps {
   inverse?: boolean
   // on the web, for portals we need to re-insert className
   forceClassName?: boolean
-  // allows for disabling the auto-update behavior
-  shouldUpdate?: () => boolean
+  // allows for forcing the auto-update behavior
+  shouldUpdate?: () => boolean | undefined
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -528,6 +533,16 @@ type GenericTamaguiSettings = {
    * @default except-special
    */
   autocompleteSpecificTokens?: AutocompleteSpecificTokensSetting
+
+  /**
+   * Will change the behavior of media styles. By default they have a fixed specificity: they
+   * always override any $theme- or $platform- styles. With this enabled, media styles will have
+   * the same precedence as the theme and platform styles, meaning that the order of the props
+   * determines if they override.
+   *
+   * @default false
+   */
+  mediaPropOrder?: boolean
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -680,9 +695,16 @@ export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
+
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
+  `$theme-${TK extends `${string}_${string}` ? never : TK}`
+
+export type PlatformMediaKeys = `$platform-${AllPlatforms}`
+
 export type MediaProps<A> = {
-  [key in MediaPropKeys]?: A
+  [key in MediaPropKeys | ThemeMediaKeys | PlatformMediaKeys]?: A
 }
+
 export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
 }
@@ -1075,6 +1097,8 @@ export type PseudoStyles = {
   enterStyle?: ViewStyle
   exitStyle?: ViewStyle
 }
+
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 
 //
 // add both theme and shorthands
@@ -1862,6 +1886,7 @@ export type SplitStyleState = TamaguiComponentState & {
   isExiting?: boolean
   exitVariant?: string
   enterVariant?: string
+  willBeAnimated?: boolean
 }
 
 // Presence
@@ -1917,6 +1942,7 @@ export type UniversalAnimatedNumber<A> = {
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
+  supportsCSSVariables?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>
@@ -1971,6 +1997,7 @@ export type GetStyleResult = {
   fontFamily: string | undefined
   space?: any // SpaceTokens?
   hasMedia: boolean | string[]
+  dynamicThemeAccess?: boolean
 }
 
 export type ClassNamesObject = Record<string, string>

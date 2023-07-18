@@ -1,4 +1,5 @@
 import {
+  currentPlatform,
   isAndroid,
   isClient,
   isRSC,
@@ -81,6 +82,9 @@ type GetStyleState = {
   avoidMergeTransform?: boolean
 }
 
+// bugfix for some reason it gets reset
+const IS_STATIC = process.env.IS_STATIC === 'is_static'
+
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
@@ -92,7 +96,10 @@ let conf: TamaguiInternalConfig
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeParsed,
+  themeState: {
+    theme: ThemeParsed
+    name: string
+  },
   state: SplitStyleState,
   parentSplitStyles?: GetStyleResult | null,
   languageContext?: LanguageContextType,
@@ -114,7 +121,7 @@ let defaultFontVariable = ''
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
-  theme,
+  themeState,
   state,
   parentSplitStyles,
   languageContext,
@@ -123,6 +130,7 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const { shorthands } = conf
+  const { theme, name: themeName } = themeState
   const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
     staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
@@ -134,6 +142,7 @@ export const getSplitStyles: StyleSplitter = (
   const numProps = propKeys.length
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
+  let dynamicThemeAccess: boolean | undefined
 
   const shouldDoClasses =
     staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
@@ -149,6 +158,7 @@ export const getSplitStyles: StyleSplitter = (
 
   // fontFamily is our special baby, ensure we grab the latest set one always
   let fontFamily: string | undefined
+  let mediaStylesSeen = 0
 
   /**
    * Not the biggest fan of creating this object but it is a nice API
@@ -170,7 +180,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ props, staticConfig, shouldDoClasses, state, IS_STATIC, propKeys, styleState, theme: { ...theme } })
+    console.log({ props, staticConfig, shouldDoClasses, state, propKeys, styleState, theme: { ...theme } })
     console.groupEnd()
   }
 
@@ -214,6 +224,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
+    if (keyInit in skipProps && !staticConfig.isHOC) continue
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -286,12 +297,6 @@ export const getSplitStyles: StyleSplitter = (
         }
         continue
       } else if (keyInit.startsWith('data-')) {
-        continue
-      }
-    }
-
-    if (!staticConfig.isHOC) {
-      if (keyInit in skipProps) {
         continue
       }
     }
@@ -625,6 +630,20 @@ export const getSplitStyles: StyleSplitter = (
         const isEnter = descriptor.name === 'enter'
         const isExit = descriptor.name === 'exit'
 
+        // dev-time warning that helps clear confusion around need for animation  when using enter/exit style
+        if (
+          process.env.NODE_ENV === 'development' &&
+          !state.isAnimated &&
+          !state.unmounted &&
+          (isEnter || isExit)
+        ) {
+          console.warn(
+            `No animation prop given to component ${
+              staticConfig.componentName || ''
+            } with enterStyle / exitStyle, these styles will be ignore.`
+          )
+        }
+
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
         if (!descriptor || (isExit && !state.isExiting)) {
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -639,6 +658,10 @@ export const getSplitStyles: StyleSplitter = (
         if (!shouldDoClasses || IS_STATIC) {
           pseudos ||= {}
           pseudos[key] ||= {}
+
+          if (IS_STATIC) {
+            Object.assign(pseudos[key], pseudoStyleObject)
+          }
         }
 
         if (shouldDoClasses && !isEnter && !isExit) {
@@ -656,6 +679,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const psuedoStyle of pseudoStyles) {
             const fullKey = `${psuedoStyle.property}${PROP_SPLIT}${descriptor.name}`
             if (fullKey in usedKeys) continue
+
             addStyleToInsertRules(rulesToInsert, psuedoStyle)
             mergeClassName(
               transforms,
@@ -745,6 +769,14 @@ export const getSplitStyles: StyleSplitter = (
       if (isMedia) {
         if (!val) continue
 
+        const isPlatformMedia = key.startsWith('$platform-')
+        if (isPlatformMedia) {
+          const platform = key.slice(10)
+          if (platform !== currentPlatform) {
+            continue
+          }
+        }
+
         hasMedia ||= true
 
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
@@ -782,7 +814,8 @@ export const getSplitStyles: StyleSplitter = (
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
                 'space',
-                usedKeys
+                usedKeys,
+                true
               )
               if (importance) {
                 space = val['space']
@@ -798,19 +831,48 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const mediaStyles = getStylesAtomic(mediaStyle)
+          const priority = mediaStylesSeen
+          mediaStylesSeen += 1
+
           for (const style of mediaStyles) {
-            const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
+            const out = createMediaStyle(
+              style,
+              mediaKeyShort,
+              mediaQueryConfig,
+              false,
+              priority
+            )
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
             mergeClassName(transforms, classNames, fullKey, out.identifier, true)
           }
-        } else if (mediaState[mediaKeyShort]) {
+        } else {
+          const isThemeMedia = mediaKeyShort.startsWith('theme-')
+          const isPlatformMedia = mediaKeyShort.startsWith('platform-')
+
+          if (!isThemeMedia && !isPlatformMedia) {
+            if (!mediaState[mediaKeyShort]) {
+              continue
+            }
+          }
+
+          if (isThemeMedia) {
+            // needed to get updates when theme changes
+            dynamicThemeAccess = true
+
+            const mediaThemeName = mediaKeyShort.slice(6)
+            if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
+              continue
+            }
+          }
+
           for (const subKey in mediaStyle) {
             const importance = getMediaImportanceIfMoreImportant(
               mediaKeyShort,
               subKey,
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (importance === null) continue
             if (subKey === 'space') {
@@ -822,7 +884,8 @@ export const getSplitStyles: StyleSplitter = (
               mediaKeyShort,
               subKey,
               mediaStyle[subKey],
-              usedKeys
+              usedKeys,
+              mediaState[mediaKeyShort]
             )
             if (key === 'fontFamily') {
               fontFamily = mediaStyle.fontFamily as string
@@ -949,7 +1012,7 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, key, atomicStyle.identifier)
           }
         }
-        if (!IS_STATIC) {
+        if (!IS_STATIC && !state.willBeAnimated) {
           style = retainedStyles
         }
       }
@@ -1031,6 +1094,7 @@ export const getSplitStyles: StyleSplitter = (
     pseudos,
     classNames,
     rulesToInsert,
+    dynamicThemeAccess,
   }
 
   if (className) {
@@ -1052,40 +1116,6 @@ export const getSplitStyles: StyleSplitter = (
 
   return result
 }
-
-// not ever hitting cache?
-// const cache = createChainedWeakCache()
-// export const getSplitStyles: StyleSplitter = (
-//   props,
-//   staticConfig,
-//   theme,
-//   state,
-//   parentSplitStyles,
-//   languageContext,
-//   elementType,
-//   debug
-// ) => {
-//   const cacheProps = [props, theme, state]
-//   const cached = cache.get(cacheProps)
-//   if (cached) {
-//     return cached as any
-//   }
-
-//   const res = getSplitStylesWithoutMemo(
-//     props,
-//     staticConfig,
-//     theme,
-//     state,
-//     parentSplitStyles,
-//     languageContext,
-//     elementType,
-//     debug
-//   )
-
-//   cache.set(cacheProps, res)
-
-//   return res
-// }
 
 function mergeClassName(
   transforms: Record<string, any[]>,
@@ -1296,39 +1326,38 @@ const mapTransformKeys = {
 }
 
 const skipProps = {
-  animation: true,
-  space: true,
-  animateOnly: true,
-  debug: true,
-  componentName: true,
-  tag: true,
+  animation: 1,
+  space: 1,
+  animateOnly: 1,
+  debug: 1,
+  componentName: 1,
+  disableOptimization: 1,
+  tag: 1,
 }
 
 if (process.env.NODE_ENV === 'test') {
-  skipProps['data-test-renders'] = true
+  skipProps['data-test-renders'] = 1
 }
-
-const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
 // native only skips
 if (process.env.TAMAGUI_TARGET === 'native') {
   Object.assign(skipProps, {
-    whiteSpace: true,
-    wordWrap: true,
-    textOverflow: true,
-    textDecorationDistance: true,
-    cursor: true,
-    contain: true,
-    boxSizing: true,
-    boxShadow: true,
-    outlineStyle: true,
-    outlineOffset: true,
-    outlineWidth: true,
-    outlineColor: true,
+    whiteSpace: 1,
+    wordWrap: 1,
+    textOverflow: 1,
+    textDecorationDistance: 1,
+    cursor: 1,
+    contain: 1,
+    boxSizing: 1,
+    boxShadow: 1,
+    outlineStyle: 1,
+    outlineOffset: 1,
+    outlineWidth: 1,
+    outlineColor: 1,
   })
 } else {
   Object.assign(skipProps, {
-    elevationAndroid: true,
+    elevationAndroid: 1,
   })
 }
 

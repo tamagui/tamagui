@@ -27,6 +27,11 @@ Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like s
 
 You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
 
+<Notice>
+  One really important and useful thing to note about Tamagui style properties: the order
+  is important! [Read more below](#order-is-important)
+</Notice>
+
 ## Variants
 
 Let's add some variants:
@@ -146,7 +151,7 @@ import {
   createStyledContext,
   styled,
   withStaticProperties,
-} from '@tamagui/web'
+} from 'tamagui' // or @tamagui/core
 
 export const ButtonContext = createStyledContext<{
   size: SizeTokens
@@ -200,6 +205,57 @@ A few things to note here:
 - But note that one defines `...size` while the other defines `...fontSize`. This works in this case only if your design system has consistent naming for token sizes across `size` and `fontSize` (and is why we highy recommend this pattern).
 - You can use `<Button.Props size="$large"><Button /></Button.Props>` now to set default props for a Button from above.
 - As of today, using `context` pattern does not work with the optimizing compiler flattening functionality. So we recommend not using this for your most common components like Stacks or Text. But for Button or anything higher level it's totally fine - it will still extract CSS and remove some logic from the render function. We've mapped out how this can work with flattening eventually and it shouldn't be too much effort.
+
+### Order is important
+
+Finally, it's important to note that the order of style properties is significant. This is really important for two reasons:
+
+1. You want to control which styles are overridden.
+2. You have a variant that expands into multiple style properties, and you need to control it.
+
+Lets see how it lets us control overriding styles:
+
+```tsx
+import { Stack, StackProps } from 'tamagui' // or @tamagui/core
+
+export default (props: StackProps) => (
+  <Stack
+    background="red"
+    {...props}
+    width={200}
+  />
+)
+```
+
+In this case we set a default `background` to red, but it can be overridden by props. But we set `width` _after_ the prop spread, so width is _always_ going to be set to 200.
+
+It also is necessary for variants to make sense. Say we have a variant `huge` that sets `scale` to 2 and `borderRadius` to 100:
+
+```tsx
+// this will be scale = 3
+export default (props: StackProps) => (
+  <MyStack
+    huge
+    scale={3}
+  />
+)
+
+// this will be scale = 2
+export default (props: StackProps) => (
+  <MyStack
+    scale={3}
+    huge
+  />
+)
+```
+
+If order wasn't important, how would you expect these two different usages to work? You'd have to make order important _somewhere_. If you do it in the `styled()` helper somewhere, you end up having no flexibility and would end up with boilerplate. Making the prop order important gives us maximum expressiveness and is easy to understand.
+
+---
+
+## Advanced
+
+You can skip this section unless you're building out very rich components that are nested multiple levels and need variants at each level.
 
 ### styleable
 

@@ -25,7 +25,10 @@ function getSplitStylesStack(props: Record<string, any>, tag?: string) {
   return getSplitStyles(
     props,
     Stack.staticConfig,
-    {} as any,
+    {
+      theme: {} as any,
+      name: '',
+    },
     {
       hover: false,
       press: false,

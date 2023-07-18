@@ -405,6 +405,10 @@ export function createExtractor(
       found: 0,
     }
 
+    const themeState =
+      // TODO
+      { theme: defaultTheme, name: '' }
+
     callTraverse({
       // @ts-ignore
       Program: {
@@ -569,7 +573,7 @@ export function createExtractor(
         const out = getSplitStyles(
           styles,
           Component.staticConfig,
-          defaultTheme,
+          themeState,
           {
             focus: false,
             hover: false,
@@ -578,6 +582,7 @@ export function createExtractor(
             pressIn: false,
             resolveVariablesAs: 'variable',
             noClassNames: false,
+            isAnimated: false,
           },
           undefined,
           undefined,
@@ -781,8 +786,15 @@ export function createExtractor(
           ])
 
           const deoptProps = new Set([
-            // always de-opt animation
+            // always de-opt animation these
             'animation',
+            'disableOptimization',
+
+            // when using a non-CSS driver, de-opt on enterStyle/exitStyle
+            ...(tamaguiConfig?.animations.isReactNative
+              ? ['enterStyle', 'exitStyle']
+              : []),
+
             ...(restProps.deoptProps || []),
             ...(staticConfig.deoptProps || []),
           ])
@@ -1673,6 +1685,7 @@ export function createExtractor(
             unmounted: false, // TODO match logic in createComponent
             press: false,
             pressIn: false,
+            isAnimated: false,
           }
 
           function mergeToEnd(obj: Object, key: string, val: any) {
@@ -1955,7 +1968,7 @@ export function createExtractor(
               const out = getSplitStyles(
                 props,
                 staticConfig,
-                defaultTheme,
+                themeState,
                 {
                   ...state,
                   fallbackProps: completeProps,
@@ -2005,6 +2018,7 @@ export function createExtractor(
                   // expand variants and such
                   const styles = getProps(attr.value, 'style')
                   if (styles) {
+                    // @ts-ignore
                     attr.value = styles
                   }
                   // prettier-ignore
@@ -2051,7 +2065,7 @@ export function createExtractor(
           if (shouldFlatten) {
             attrs.unshift({
               type: 'style',
-              value: getProps(staticConfig.defaultProps),
+              value: getProps(staticConfig.defaultProps) as any,
             })
           }
 
@@ -2167,7 +2181,7 @@ export function createExtractor(
             node,
             lineNumbers,
             filePath,
-            config: tamaguiConfig,
+            config: tamaguiConfig!,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,

@@ -39,16 +39,21 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
           t={0}
           b={0}
           r={0}
-          w={1}
+          br="$2"
+          w={3}
           bc={active ? '$color' : '$backgroundHover'}
         />
         <SizableText
-          className="name"
           size="$4"
+          lh="$3"
           userSelect="none"
           opacity={0.65}
           theme={active ? null : 'alt1'}
           ta="right"
+          w="100%"
+          hoverStyle={{
+            o: 0.85,
+          }}
           {...(active && {
             fow: '700',
             opacity: 1,

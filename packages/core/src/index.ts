@@ -21,7 +21,7 @@ import type { RefObject } from 'react'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import type { RNTextProps, RNViewProps } from './reactNativeTypes'
+import { RNTextProps, RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks

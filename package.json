@@ -44,7 +44,8 @@
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
-    "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
+    "sandbox:extract": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
+    "sandbox:prod": "yarn workspace @tamagui/kitchen-sink dev:web:prod",
     "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
@@ -87,7 +88,7 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.1",
-    "@vercel/og": "^0.5.4",
+    "@vercel/og": "^0.5.8",
     "check-dependency-version-consistency": "^3.0.3",
     "import-sort-style-module": "^6.0.0",
     "npm-run-all": "^4.1.5",

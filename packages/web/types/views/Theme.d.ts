@@ -1,10 +1,7 @@
 import React from 'react';
 import { ChangedThemeResponse } from '../hooks/useTheme';
 import type { DebugProp, ThemeProps } from '../types';
-export declare function Theme(props: ThemeProps): any;
-export declare namespace Theme {
-    var avoidForwardRef: boolean;
-}
+export declare const Theme: React.ForwardRefExoticComponent<ThemeProps & React.RefAttributes<unknown>>;
 export declare function useThemedChildren(themeState: ChangedThemeResponse, children: any, props: {
     forceClassName?: boolean;
     shallow?: boolean;
