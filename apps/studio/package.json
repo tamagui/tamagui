@@ -1,0 +1,37 @@
+{
+  "name": "@tamagui/studio",
+  "version": "1.43.10",
+  "private": true,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./constants": {
+      "types": "./types/constants.d.ts",
+      "import": "./dist/esm/constants.js",
+      "require": "./dist/cjs/constants.js"
+    }
+  },
+  "scripts": {
+    "dev": "../../node_modules/.bin/tama studio",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-web": "^0.19.6",
+    "react-router-dom": "^6.14.1"
+  },
+  "devDependencies": {
+    "@tamagui/build": "1.43.10",
+    "vite": "^4.3.0"
+  }
+}
