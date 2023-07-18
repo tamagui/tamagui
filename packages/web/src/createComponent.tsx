@@ -451,7 +451,8 @@ export function createComponent<
         resolveVariablesAs,
         isExiting,
         isAnimated,
-        // willBeAnimated,
+        // temp: once we fix above we can disable this
+        willBeAnimated: willBeAnimated && animationsConfig?.supportsCSSVariables,
       },
       null,
       languageContext || undefined,
