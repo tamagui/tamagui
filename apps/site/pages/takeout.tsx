@@ -705,9 +705,12 @@ export default function TakeoutPage({
                     }}
                     $lg={{
                       size: '$9',
+                      lh: "$8",
                     }}
                     $sm={{
                       size: '$8',
+                      lh: "$7",
+
                     }}
                   >
                     From idea to shipped in less time&nbsp;than&nbsp;ever
