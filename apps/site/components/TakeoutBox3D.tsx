@@ -2,6 +2,7 @@ import { useGLTF } from '@react-three/drei'
 import { Canvas, Object3DNode, useFrame } from '@react-three/fiber'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useRef } from 'react'
+import { useMedia } from 'tamagui'
 
 import { Stage } from '../components/Stage'
 
@@ -31,6 +32,7 @@ export default (props) => (
 function TakeoutBox3D(props) {
   const ref = useRef<Object3DNode<any, any>>()
   const router = useRouter()
+  const media = useMedia()
 
   useEffect(() => {
     function resetFrameCount() {
@@ -43,10 +45,12 @@ function TakeoutBox3D(props) {
   const { nodes, materials } = useGLTF(modelUrl) as any
 
   useFrame((state, delta) => {
+    if (!ref.current) return
+
     const isSlow = frameCount > 40
 
     // ref.current!.rotation.z += delta * 0.1
-    ref.current!.rotation.y += delta * (isSlow ? 0.1 : 0.8)
+    ref.current.rotation.y += delta * (isSlow ? 0.1 : 0.8)
 
     // effect to spin faster on first entering
     if (frameCount <= 40) {
@@ -54,6 +58,10 @@ function TakeoutBox3D(props) {
     }
     // ref.current!.rotation.x += delta * 0.1
   })
+
+  if (media.sm) {
+    return null
+  }
 
   return (
     <>

@@ -1,4 +1,3 @@
-import { siteRootDir } from 'studio/constants'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import useSWR from 'swr'
@@ -6,6 +5,8 @@ import { Spinner, YStack } from 'tamagui'
 
 import type { UserContextType } from '../pages/api/user'
 import { useOfflineMode } from './useOfflineMode'
+
+const siteRootDir = process.env.NODE_ENV === 'development' ? '' : 'https://tamagui.dev'
 
 export const useUser = () => {
   return useSWR<UserContextType>('user', {

@@ -1,9 +1,8 @@
-import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { tiersPriority } from 'studio/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
+import { tiersPriority } from '@tamagui/studio/constants'
 import { NextApiHandler } from 'next'
 
 export type UserContextType = {
@@ -88,7 +87,10 @@ const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   }))
 }
 
-function getPersonalTeam(teams: Awaited<ReturnType<typeof getUserTeams>>, userId: string) {
+function getPersonalTeam(
+  teams: Awaited<ReturnType<typeof getUserTeams>>,
+  userId: string
+) {
   return getSingle(teams?.filter((team) => team.is_personal && team.owner_id === userId))
 }
 

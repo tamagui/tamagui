@@ -352,7 +352,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         pos="absolute"
         className="mix-blend-multiply"
         style={{
-          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 80% 0, 20% 100%)`,
         }}
       >
         <ThemeTint>
@@ -364,7 +364,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 80% 0, 20% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -395,7 +395,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
             <ThemeTintAlt offset={1}>
               <TAKEOUT
-                className="clip-slice mix-blend animate-fade2"
+                className="clip-wave mix-blend"
                 pos="absolute"
                 color="$color8"
                 scale={1}
@@ -693,7 +693,9 @@ export default function TakeoutPage({
                     className="clip-text mix-blend"
                     ff="$cherryBomb"
                     size="$12"
+                    lh="$11"
                     color="$color10"
+                    mb="$4"
                     style={{
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
@@ -708,14 +710,14 @@ export default function TakeoutPage({
                       size: '$8',
                     }}
                   >
-                    From idea to shipped in less time than ever
+                    From idea to shipped in less time&nbsp;than&nbsp;ever
                   </H2>
                 </ThemeTint>
 
                 <ThemeTint>
                   <MunroP
-                    style={{ textShadow: '0 2px 2px var(--color9)' }}
-                    size="$11"
+                    style={{ textShadow: '-4px -4px 0 var(--color9)' }}
+                    size="$10"
                     $sm={{ size: '$9' }}
                   >
                     We can't promise everything...
@@ -736,9 +738,9 @@ export default function TakeoutPage({
 
                 <HeartsRow />
 
-                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
+                <Paragraph size="$10" $sm={{ size: '$9' }} $xs={{ size: '$8' }} fow="400">
                   Takeout 🥡 is a bootstrap that delivers on years of effort putting
-                  together a better unified React Native + web stack.
+                  together a better React Native & web stack.
                 </Paragraph>
 
                 <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
@@ -746,7 +748,7 @@ export default function TakeoutPage({
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
                   iOS/Android app stores via Expo EAS. Featuring all new themes, 150 new
-                  icon packs, and 1,500 new fonts.
+                  icon packs, 1,500 new fonts, and much more.
                 </Paragraph>
 
                 <Spacer size="$6" />
@@ -998,6 +1000,7 @@ export default function TakeoutPage({
                         <Bullet>Unified RN and web testing tools</Bullet>
                         <Bullet>Improved CI/CD and caching</Bullet>
                         <Bullet>MDX support via tamagui.dev config</Bullet>
+                        <Bullet>Replicache integration</Bullet>
                       </XStack>
                     </ThemeTintAlt>
 
