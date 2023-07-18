@@ -891,7 +891,11 @@ export default function TakeoutPage({
                   </TakeoutCard>
                 </XStack>
 
+                <Spacer />
+
                 <PromoVideo />
+
+                <Spacer />
 
                 <ThemeTint>
                   <YStack
@@ -2512,17 +2516,15 @@ const FaqModal = () => {
 const Ul = styled(YStack, {
   name: 'ul',
   tag: 'ul',
-  paddingLeft: 20
+  paddingLeft: 20,
 })
 
 const Li = styled(YStack, {
   name: 'li',
   tag: 'li',
   // @ts-ignore˝
-  display: "list-item",
-  
+  display: 'list-item',
 })
-
 
 const AgreementModal = () => {
   const store = useTakeoutStore()
@@ -3093,14 +3095,16 @@ const PromotionInput = () => {
 
 const PromoVideo = () => {
   return (
-    <iframe
-      width="100%"
-      height="400"
-      src="https://www.youtube-nocookie.com/embed/fg4zJncNMr0?color=white" // or modestbranding=true - we can use only one of them
-      title="YouTube video player"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-    ></iframe>
+    <YStack bw={1} boc="$borderColor">
+      <iframe
+        width="100%"
+        height="480"
+        src="https://www.youtube-nocookie.com/embed/Guwa1oPBvmU?color=white&modestbranding=1&showinfo=0" // or modestbranding=true - we can use only one of them
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      ></iframe>
+    </YStack>
   )
 }
