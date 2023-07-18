@@ -118,12 +118,11 @@ export const SheetImplementationCustom = themeable(
         value: animatedNumber,
         hostRef: sheetRef,
       },
-      (value) => {
-        'worklet'
+      useCallback((value) => {
         if (!driver.isReactNative) return
         at.current = value
         scrollBridge.paneY = value
-      }
+      }, [])
     )
 
     function stopSpring() {
