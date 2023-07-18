@@ -43,6 +43,7 @@ import {
   SizableText,
   Spacer,
   Stack,
+  StackProps,
   TabLayout,
   Tabs,
   TabsProps,
@@ -113,19 +114,31 @@ const webImages = [
 ]
 
 const takeoutImages = [
+  { src: require('public/takeout/starter-screenshots/ios.jpg'), alt: 'iOS mockup' },
   ...iosImages.map((src, idx) => ({
     src,
     alt: `iOS screenshot #${idx + 1}`,
   })),
+  { src: require('public/takeout/starter-screenshots/web.jpg'), alt: 'Web mockup' },
+
   ...webImages.map((src, idx) => ({
     src,
     alt: `Web screenshot #${idx + 1}`,
   })),
+  {
+    src: require('public/takeout/starter-screenshots/android.jpg'),
+    alt: 'Android mockup',
+  },
   ...androidImages.map((src, idx) => ({
     src,
     alt: `Android screenshot #${idx + 1}`,
   })),
 ]
+
+const takeoutIosImageIdx = 0
+const takeoutWebImageIdx = takeoutIosImageIdx + iosImages.length + 1
+const takeoutAndroidImageIdx = takeoutWebImageIdx + webImages.length + 1
+
 const points = {
   monorepo: [
     'Well-isolated configuration.',
@@ -1020,52 +1033,77 @@ export default function TakeoutPage({
 
                 <ImageGallery />
 
-                <XStack mx="$-8" ai="center" jc="center" gap="$2">
-                  <YStack
-                    flexGrow={1}
-                    position="relative"
-                    height={400}
-                    borderRadius="$6"
-                    overflow="hidden"
-                  >
-                    <Image
-                      fill
-                      src={require('public/takeout/starter-screenshots/android.jpg')}
-                      alt="Android screenshot"
-                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                    />
-                  </YStack>
-                  <YStack
-                    flexGrow={2}
-                    position="relative"
-                    height={400}
-                    borderRadius="$6"
-                    overflow="hidden"
-                  >
-                    <Image
-                      fill
-                      src={require('public/takeout/starter-screenshots/web.jpg')}
-                      alt="Web screenshot"
-                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                    />
-                  </YStack>
-                  <YStack
-                    flexGrow={1}
-                    position="relative"
-                    height={400}
-                    borderRadius="$6"
-                    overflow="hidden"
-                  >
-                    <Image
-                      fill
-                      src={require('public/takeout/starter-screenshots/ios.jpg')}
-                      alt="iOS screenshot"
-                      style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                    />
-                  </YStack>
+                <XStack
+                  mx="$-8"
+                  ai="center"
+                  jc="center"
+                  gap="$2"
+                  $md={{
+                    flexDirection: 'column',
+                  }}
+                >
+                  <TakeoutImage
+                    index={takeoutIosImageIdx}
+                    fill
+                    src={takeoutImages[takeoutIosImageIdx].src}
+                    alt={takeoutImages[takeoutIosImageIdx].alt}
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    wrapperProps={{
+                      flexGrow: 1,
+                      position: 'relative',
+                      height: 400,
+
+                      borderRadius: '$6',
+                      overflow: 'hidden',
+                      $md: {
+                        flexGrow: 1,
+                        width: '100%',
+                      },
+                    }}
+                  />
+
+                  <TakeoutImage
+                    index={takeoutWebImageIdx}
+                    fill
+                    src={takeoutImages[takeoutWebImageIdx].src}
+                    alt={takeoutImages[takeoutWebImageIdx].alt}
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    wrapperProps={{
+                      flexGrow: 2,
+                      position: 'relative',
+                      height: 400,
+
+                      borderRadius: '$6',
+                      overflow: 'hidden',
+                      $md: {
+                        flexGrow: 1,
+                        width: '100%',
+                      },
+                    }}
+                  />
+
+                  <TakeoutImage
+                    index={takeoutAndroidImageIdx}
+                    fill
+                    src={takeoutImages[takeoutAndroidImageIdx].src}
+                    alt={takeoutImages[takeoutAndroidImageIdx].alt}
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    wrapperProps={{
+                      flexGrow: 1,
+                      position: 'relative',
+                      height: 400,
+
+                      borderRadius: '$6',
+                      overflow: 'hidden',
+                      $md: {
+                        flexGrow: 1,
+                        width: '100%',
+                      },
+                    }}
+                  />
                 </XStack>
                 <XStack fw="wrap" gap="$3" mx="$1" ai="center" jc="center">
-                  {takeoutImages.slice(0, 12).map((image, index) => (
+                  {takeoutImages.slice(1, 12).map((image, index) => (
                     <YStack key={index} pos="relative">
                       <TakeoutImage
                         alt={image.alt}
@@ -1093,7 +1131,7 @@ export default function TakeoutPage({
                       jc="center"
                     >
                       <H6 fontFamily="$munro" color="black">
-                        +{takeoutImages.length - 12}
+                        +{takeoutImages.length - 11}
                       </H6>
                     </YStack>
                   </YStack>
@@ -1183,7 +1221,10 @@ export default function TakeoutPage({
   )
 }
 
-const TakeoutImage = (props: ImageProps & { index: number }) => {
+const TakeoutImage = ({
+  wrapperProps,
+  ...props
+}: ImageProps & { index: number; wrapperProps?: StackProps }) => {
   const store = useTakeoutStore()
   return (
     <XStack
@@ -1198,6 +1239,7 @@ const TakeoutImage = (props: ImageProps & { index: number }) => {
       animation="100ms"
       hoverStyle={{ scale: 1.015 }}
       pressStyle={{ scale: 0.975 }}
+      {...wrapperProps}
     >
       <YStack
         style={{
