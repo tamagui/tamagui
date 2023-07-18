@@ -357,15 +357,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       {/* animated borders shine */}
       <YStack pos="absolute" y={5}>
         <ThemeTintAlt>
-          <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
+          <TAKEOUT className="theme-shadow clip-slice" zi={100} color="transparent" />
         </ThemeTintAlt>
       </YStack>
 
       <YStack
         pos="absolute"
-        className="mix-blend-multiply"
         style={{
-          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 80% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
         }}
       >
         <ThemeTint>
@@ -377,7 +376,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 80% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
