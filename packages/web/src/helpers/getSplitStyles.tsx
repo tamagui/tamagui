@@ -1012,7 +1012,7 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, key, atomicStyle.identifier)
           }
         }
-        if (!IS_STATIC && !state.willBeAnimated) {
+        if (!IS_STATIC && !state.keepStyleSSR) {
           style = retainedStyles
         }
       }

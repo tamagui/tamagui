@@ -826,7 +826,7 @@ export type SplitStyleState = TamaguiComponentState & {
     isExiting?: boolean;
     exitVariant?: string;
     enterVariant?: string;
-    willBeAnimated?: boolean;
+    keepStyleSSR?: boolean;
 };
 export interface PresenceContextProps {
     id: string;
@@ -868,7 +868,7 @@ export type UniversalAnimatedNumber<A> = {
 };
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
-    supportsCSSVariables?: boolean;
+    keepStyleSSR?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;

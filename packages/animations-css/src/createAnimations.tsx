@@ -12,7 +12,6 @@ import { useMemo, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
-    supportsCSSVariables: true,
     View: Stack,
     Text: Text,
     animations,

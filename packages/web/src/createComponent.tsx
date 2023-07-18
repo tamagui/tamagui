@@ -452,7 +452,7 @@ export function createComponent<
         isExiting,
         isAnimated,
         // temp: once we fix above we can disable this
-        willBeAnimated: willBeAnimated && animationsConfig?.supportsCSSVariables,
+        keepStyleSSR: willBeAnimated && animationsConfig?.keepStyleSSR,
       },
       null,
       languageContext || undefined,
