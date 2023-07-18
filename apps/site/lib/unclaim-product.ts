@@ -1,5 +1,5 @@
-import { removeCollaboratorFromRepo } from '@protected/_utils/github'
 import { User } from '@supabase/supabase-js'
+import { removeCollaboratorFromRepo } from 'protected/_utils/github'
 
 import { Database, Json } from './supabase-types'
 import { supabaseAdmin } from './supabaseAdmin'

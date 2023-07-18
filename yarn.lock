@@ -4886,25 +4886,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@npm:1.39.5":
-  version: 1.39.5
-  resolution: "@tamagui/build@npm:1.39.5"
-  dependencies:
-    "@types/fs-extra": ^9.0.13
-    chokidar: ^3.5.2
-    esbuild: ^0.17.17
-    execa: ^5.0.0
-    fast-glob: ^3.2.11
-    fs-extra: ^11.1.0
-    get-tsconfig: ^4.5.0
-    lodash.debounce: ^4.0.8
-    typescript: ^5.1.3
-  bin:
-    tamagui-build: tamagui-build.js
-  checksum: 949214c2248e59ce2eb437421ed7009e886d555b91c0f37fa8e8476b4a1ca0a1566cc31791af34685f9672f6f22cdb316ba3da2e1d97478dfd6fd2382077b7a2
-  languageName: node
-  linkType: hard
-
 "@tamagui/button@1.43.10, @tamagui/button@workspace:packages/button":
   version: 0.0.0-use.local
   resolution: "@tamagui/button@workspace:packages/button"
@@ -4986,7 +4967,7 @@ __metadata:
     "@tamagui/create-theme": 1.43.10
     "@tamagui/generate-themes": 1.43.10
     "@tamagui/static": 1.43.10
-    "@tamagui/studio": 1.39.8
+    "@tamagui/studio": 1.43.10
     "@tamagui/types": 1.43.10
     "@tamagui/vite-plugin": 1.43.10
     "@types/compression": ^1.7.2
@@ -6211,6 +6192,7 @@ __metadata:
     "@tamagui/shorthands": 1.43.10
     "@tamagui/site-config": 1.43.10
     "@tamagui/static": 1.43.10
+    "@tamagui/studio": 1.43.10
     "@tamagui/themes": 1.43.10
     "@tamagui/toast": 1.43.10
     "@tamagui/use-store": 1.43.10
@@ -6415,11 +6397,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/studio@1.39.8, @tamagui/studio@workspace:apps/studio":
+"@tamagui/studio@1.43.10, @tamagui/studio@workspace:apps/studio":
   version: 0.0.0-use.local
   resolution: "@tamagui/studio@workspace:apps/studio"
   dependencies:
-    "@tamagui/build": 1.39.5
+    "@tamagui/build": 1.43.10
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.19.6

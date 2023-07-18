@@ -1,7 +1,7 @@
 import { Database, Json } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { inviteCollaboratorToRepo } from '@protected/_utils/github'
 import { User } from '@supabase/auth-helpers-nextjs'
+import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
 export const claimProductAccess = async (
   subscription: Database['public']['Tables']['subscriptions']['Row'],

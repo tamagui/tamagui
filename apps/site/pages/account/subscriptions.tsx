@@ -3,11 +3,11 @@ import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { ArrowUpRight } from '@tamagui/lucide-icons'
+import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { ButtonLink } from 'studio/Link'
 import { useSWRConfig } from 'swr'
 import {
   Button,

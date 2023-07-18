@@ -51,6 +51,7 @@
     "@tamagui/remove-scroll": "1.43.10",
     "@tamagui/shorthands": "1.43.10",
     "@tamagui/site-config": "1.43.10",
+    "@tamagui/studio": "1.43.10",
     "@tamagui/themes": "1.43.10",
     "@tamagui/toast": "1.43.10",
     "@tamagui/use-store": "1.43.10",
