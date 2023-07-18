@@ -738,8 +738,7 @@ export default function TakeoutPage({
                   </MunroP>
                 </ThemeTint>
 
-                {/* <HeartsRow /> */}
-                <PromoVideo />
+                <HeartsRow />
 
                 <Paragraph size="$10" $sm={{ size: '$9' }} $xs={{ size: '$8' }} fow="400">
                   Takeout 🥡 is a bootstrap that delivers on years of effort putting
@@ -879,6 +878,8 @@ export default function TakeoutPage({
                     </YStack>
                   </TakeoutCard>
                 </XStack>
+
+                <PromoVideo />
 
                 <ThemeTint>
                   <YStack
@@ -3001,7 +3002,7 @@ const PromoVideo = () => {
     <iframe
       width="100%"
       height="400"
-      src="https://www.youtube-nocookie.com/embed/fg4zJncNMr0"
+      src="https://www.youtube-nocookie.com/embed/fg4zJncNMr0?color=white" // or modestbranding=true - we can use only one of them
       title="YouTube video player"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
