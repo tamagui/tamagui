@@ -773,13 +773,13 @@ input, textarea {
 .clip-slice {
   mask-image: url(./public/slice-mask.svg);
   mask-size: 20% 20%;
-  animation: clip-fade2 80s infinite;
+  animation: clip-fade2 40s infinite alternate;
 }
 
 .clip-wave {
   mask-image: url(./public/takeout/geometric.svg);
   mask-size: 80% 80%;
-  animation: clip-fade3 80s infinite;
+  animation: clip-fade3 40s infinite alternate;
 }
 
 .slice-alt {
