@@ -366,14 +366,6 @@ iframe {
 
 @media (prefer-color-scheme: dark) {
   .bg-grid { opacity: 0.125; }
-
-  .tamagui-icon {
-    filter: invert(100%);
-  }
-}
-
-.t_dark .tamagui-icon {
-  filter: invert(100%);
 }
 
 .mask-gradient-both {

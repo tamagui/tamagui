@@ -7,8 +7,9 @@ import {
   ThemeValueFallbackColor,
 } from '@tamagui/core'
 import { SomewhatSpecificColorValue } from '@tamagui/core'
-import { useTint } from '@tamagui/logo'
+import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
+import Link from 'next/link'
 import { memo } from 'react'
 import {
   Button,
@@ -30,8 +31,6 @@ import { DiscordIcon } from './DiscordIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
-
-type test = TamaguiSettings['allowedStyleValues']
 
 // function useAlwaysConcurrent() {
 //   const inputRef = useRef<HTMLInputElement>(null)
@@ -94,7 +93,7 @@ const HeroContents = memo(() => {
         ov="hidden"
         space="$3"
         position="relative"
-        pt="$13"
+        pt="$14"
         mb="$4"
         $sm={{
           maxWidth: '100%',
@@ -102,6 +101,19 @@ const HeroContents = memo(() => {
           pb: '$4',
         }}
       >
+        {/* <XStack pos="absolute" als="center" y={-80}>
+          <Link href="/takeout">
+            <ThemeTintAlt>
+              <Button br="$10" elevate fontFamily="$silkscreen">
+                Introducing Takeout 🥡
+                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
+                  our new pro starter kit
+                </Text>
+              </Button>
+            </ThemeTintAlt>
+          </Link>
+        </XStack> */}
+
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
           <H1
             ta="left"

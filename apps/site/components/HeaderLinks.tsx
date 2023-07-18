@@ -59,12 +59,14 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         <NextLink prefetch={false} href="/takeout">
           <TooltipSimple delay={0} restMs={25} label="Takeout">
             <HeadAnchor
-              size="$8"
+              {...(!forceShowAllLinks && {
+                size: '$8',
+              })}
               $sm={{
                 display: forceShowAllLinks ? 'flex' : 'none',
               }}
             >
-              🥡
+              {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
             </HeadAnchor>
           </TooltipSimple>
         </NextLink>

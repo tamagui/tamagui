@@ -1,7 +1,6 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
-import { User } from '@tamagui/lucide-icons'
 import { useUser } from 'hooks/useUser'
 // import { useUser } from 'hooks/useUser'
 import { useRouter } from 'next/router'
