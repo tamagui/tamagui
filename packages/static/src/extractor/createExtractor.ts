@@ -2040,7 +2040,7 @@ export function createExtractor(
                     const key = attr.value.name.name as string
 
                     // dont process style/className can just stay attrs
-                    if (key === 'style' || key === 'className') {
+                    if (key === 'style' || key === 'className' || key === 'tag') {
                       continue
                     }
 

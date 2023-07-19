@@ -131,8 +131,14 @@ export const getSplitStyles: StyleSplitter = (
   conf = conf || getConfig()
   const { shorthands } = conf
   const { theme, name: themeName } = themeState
-  const { variants, propMapper, isReactNative, inlineProps, inlineWhenUnflattened } =
-    staticConfig
+  const {
+    isHOC,
+    variants,
+    propMapper,
+    isReactNative,
+    inlineProps,
+    inlineWhenUnflattened,
+  } = staticConfig
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   let pseudos: PseudoStyles | null = null
@@ -224,7 +230,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
-    if (keyInit in skipProps && !staticConfig.isHOC) continue
+    if (keyInit in skipProps && !isHOC) continue
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -487,10 +493,15 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const shouldPassProp = !isStyleProp
+    const shouldPassProp =
+      !isStyleProp ||
+      // is in parent variants
+      (isHOC &&
+        staticConfig.parentStaticConfig?.variants &&
+        keyInit in staticConfig.parentStaticConfig.variants)
 
     const isHOCShouldPassThrough = Boolean(
-      staticConfig.isHOC &&
+      isHOC &&
         (isMediaOrPseudo ||
           staticConfig.parentStaticConfig?.variants?.[keyInit] ||
           keyInit in skipProps)
@@ -594,8 +605,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here
       const isHOCShouldPassThrough =
-        staticConfig.isHOC &&
-        (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+        isHOC && (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
 
       if (isHOCShouldPassThrough) {
         isVariant = variants && key in variants

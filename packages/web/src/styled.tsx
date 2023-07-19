@@ -79,9 +79,12 @@ export function styled<
     !!parentStaticConfig &&
     !(parentStaticConfig.isReactNative || parentStaticConfig.isHOC)
 
-  let Component: any = isPlainStyledComponent
-    ? ComponentIn
-    : parentStaticConfig?.Component || ComponentIn
+  const isNonStyledHOC = parentStaticConfig?.isHOC && !parentStaticConfig?.isStyledHOC
+
+  let Component: any =
+    isNonStyledHOC || isPlainStyledComponent
+      ? ComponentIn
+      : parentStaticConfig?.Component || ComponentIn
 
   const reactNativeConfig = getReactNativeConfig(Component)
   const isReactNative = Boolean(
@@ -166,6 +169,7 @@ export function styled<
         context,
         ...reactNativeConfig,
         isStyledHOC: Boolean(parentStaticConfig?.isHOC),
+        parentStaticConfig,
       }
 
       // bail on non className views as well

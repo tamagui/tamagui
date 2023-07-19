@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/?test=ButtonCircular')
 })
 
-test(`circular prop works`, async ({ page }) => {
+test(`tag button + circular prop works`, async ({ page }) => {
   const styles = await page.locator('button#circular').evaluate((el) => {
     return window.getComputedStyle(el)
   })

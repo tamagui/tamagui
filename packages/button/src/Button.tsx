@@ -266,7 +266,9 @@ function useButton<Props extends ButtonProps>(
         borderColor: '$background',
       },
     }),
-    tag,
+    ...(tag && {
+      tag,
+    }),
     ...rest,
     children: isRSC ? (
       inner
