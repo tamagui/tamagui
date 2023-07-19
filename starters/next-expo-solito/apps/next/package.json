@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tamagui/next-theme": "latest",
+    "@tamagui/next-theme": "^1.43.12",
     "app": "0.0.0",
     "next": "13.4.4",
     "raf": "^3.4.1",
@@ -18,11 +18,11 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.71.4",
     "react-native-web": "^0.18.12",
-    "react-native-web-lite": "latest",
+    "react-native-web-lite": "^1.43.12",
     "vercel": "latest"
   },
   "devDependencies": {
-    "@tamagui/next-plugin": "latest",
+    "@tamagui/next-plugin": "^1.43.12",
     "@types/node": "^18.6.4",
     "eslint-config-next": "^13.0.4"
   }
