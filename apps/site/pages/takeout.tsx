@@ -206,7 +206,7 @@ const isSafariMobile = (() => {
 
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
-const heroHeight = 900
+const heroHeight = 1000
 
 type TakeoutPageProps = {
   starter: Database['public']['Tables']['products']['Row'] & {
@@ -343,7 +343,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
   return (
     <YStack
-      y={heroHeight / 2 - 380}
+      y={heroHeight / 2 - 480}
       ai="center"
       jc="center"
       className="ease-in ms300 all"
@@ -471,6 +471,61 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           </Suspense>
         )}
       </YStack>
+
+      <XStack
+        zi={1000}
+        my={21}
+        bottom={-100}
+        pos="absolute"
+        gap={60}
+        f={1}
+        alignSelf="center"
+        jc="space-between"
+        className="mix-blend"
+        pe="auto"
+      >
+        <FeatureIcon
+          themeIndex={0}
+          title="Monorepo"
+          icon="retro-icons/coding-apps-websites-module-21.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={1}
+          title="Design"
+          icon="retro-icons/design-color-painting-palette-25.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={2}
+          title="Deploy"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={3}
+          title="Themes"
+          icon="retro-icons/design-color-bucket-brush-63.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={4}
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={5}
+          title="Assets"
+          icon="retro-icons/coding-apps-websites-plugin-33.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={6}
+          title="& More"
+          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+        />
+      </XStack>
     </YStack>
   )
 }
@@ -568,78 +623,6 @@ export default function TakeoutPage({
             <TakeoutHero coupon={coupon} />
           </YStack>
 
-          <XStack
-            zi="$5"
-            my={21}
-            top={heroHeight - 200}
-            gap={60}
-            f={1}
-            alignSelf="center"
-            jc="space-between"
-            className="mix-blend"
-            $xxs={{
-              display: 'none',
-            }}
-            $xs={{
-              display: 'none',
-            }}
-            $sm={{
-              scale: 0.8,
-              top: heroHeight - 380,
-            }}
-            $md={{
-              scale: 0.9,
-              top: heroHeight - 350,
-            }}
-            $lg={{
-              scale: 1,
-              gap: 50,
-              top: heroHeight - 320,
-            }}
-          >
-            <FeatureIcon
-              themeIndex={0}
-              title="Monorepo"
-              icon="retro-icons/coding-apps-websites-module-21.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={1}
-              title="Design"
-              icon="retro-icons/design-color-painting-palette-25.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={2}
-              title="Deploy"
-              icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={3}
-              title="Themes"
-              icon="retro-icons/design-color-bucket-brush-63.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={4}
-              title="Screens"
-              icon="retro-icons/coding-app-website-ui-62.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={5}
-              title="Assets"
-              icon="retro-icons/coding-apps-websites-plugin-33.svg"
-            />
-
-            <FeatureIcon
-              themeIndex={6}
-              title="& More"
-              icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
-            />
-          </XStack>
-
           <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
             <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
@@ -688,7 +671,7 @@ export default function TakeoutPage({
                 p: '$4',
               }}
             >
-              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={-20}>
+              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={20}>
                 <StarterCard product={starter} />
               </YStack>
               {/* <YStack
@@ -700,10 +683,10 @@ export default function TakeoutPage({
                 o={0.24}
               /> */}
 
-              <YStack f={1} space="$6">
+              <YStack f={1} space="$5">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-250}
+                  mt={-340}
                   mb={-20}
                   size="$7"
                   ls={4}
@@ -1053,14 +1036,16 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <Paragraph
-                  className="text-3d"
-                  als="center"
-                  fontFamily="$cherryBomb"
-                  size="$10"
-                >
-                  Take a peek
-                </Paragraph>
+                <ThemeTint>
+                  <Paragraph
+                    className="text-3d"
+                    als="center"
+                    fontFamily="$cherryBomb"
+                    size="$10"
+                  >
+                    Take a peek
+                  </Paragraph>
+                </ThemeTint>
 
                 <ImageGallery />
 
@@ -1068,7 +1053,7 @@ export default function TakeoutPage({
                   mx="$-8"
                   ai="center"
                   jc="center"
-                  gap="$2"
+                  gap="$4"
                   $md={{
                     flexDirection: 'column',
                   }}
@@ -1515,15 +1500,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
         >
           <ScrollView $gtSm={{ maxHeight: '90vh' }}>
             <YStack space>
-              <XStack ai="center" jc="space-between" gap="$6" mx="$8">
-                <Separator />
-                <Dialog.Title size="$8" $sm={{ size: '$7' }} my="$1" als="center">
+              <XStack ai="center" jc="center" gap="$6" mx="$8">
+                <Dialog.Title py="$2" size="$9" $sm={{ size: '$7' }} my="$1" als="center">
                   Purchase 🥡
                 </Dialog.Title>
-                <Separator />
               </XStack>
 
-              <YStack>
+              <YStack my="$2">
                 <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
                   {products.map((product) => {
                     const active = selectedProductsIds.includes(product.id)
@@ -1736,7 +1719,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               store.showFaq = true
                             }}
                             style={{ textDecorationLine: 'underline' }}
-                            size="$1"
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
                           >
                             FAQ
                           </SizableText>
@@ -1748,7 +1734,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               store.showAgreement = true
                             }}
                             style={{ textDecorationLine: 'underline' }}
-                            size="$1"
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
                           >
                             License Agreement
                           </SizableText>
@@ -1767,8 +1756,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
             <Dialog.Close asChild>
               <Button
                 position="absolute"
-                top="$2"
-                right="$2"
+                top="$4"
+                right="$4"
                 size="$2"
                 circular
                 icon={X}
@@ -1821,7 +1810,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
           shadowColor="#000"
-          x={-100}
+          x={-50}
           y={50}
           mah="calc(min(85vh, 800px))"
           $md={{
@@ -1860,12 +1849,12 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <MunroP size="$3" o={0.04} mt={-5} mb={-5}>
+              <MunroP size="$3" o={0.1} mt={-5} mb={-5}>
                 Drop 0001
               </MunroP>
 
               <ThemeTintAlt>
-                <MunroP color="$color9" size="$11" ls={2}>
+                <MunroP className="callout" color="$color9" size="$11" ls={2}>
                   The Stack
                 </MunroP>
               </ThemeTintAlt>
