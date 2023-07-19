@@ -569,7 +569,7 @@ export default function TakeoutPage({
           </YStack>
 
           <XStack
-            zi={100000}
+            zi="$5"
             my={21}
             top={heroHeight - 200}
             gap={60}
