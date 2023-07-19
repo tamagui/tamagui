@@ -3112,6 +3112,16 @@ const PromoVideo = () => {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
+  useEffect(() => {
+    if (isClient) {
+      ;(window.requestIdleCallback || setTimeout)(() => {
+        setTimeout(() => {
+          setLoaded(true)
+        }, 500)
+      })
+    }
+  }, [])
+
   return (
     <YStack
       className="all ease-in ms300"
@@ -3133,13 +3143,6 @@ const PromoVideo = () => {
       cursor="pointer"
       onPress={() => {
         setOpen(true)
-      }}
-      ref={() => {
-        ;(requestIdleCallback || setTimeout)(() => {
-          setTimeout(() => {
-            setLoaded(true)
-          }, 500)
-        })
       }}
     >
       {open && (
