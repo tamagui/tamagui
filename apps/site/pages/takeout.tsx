@@ -915,7 +915,6 @@ export default function TakeoutPage({
                     <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
                     <YStack
                       pos="absolute"
-                      disableOptimization
                       t={-400}
                       o={0.2}
                       r={-400}
@@ -3114,7 +3113,6 @@ const PromoVideo = () => {
   return (
     <YStack
       className="all ease-in ms300"
-      disableOptimization
       pos="absolute"
       t={200}
       l={-300}

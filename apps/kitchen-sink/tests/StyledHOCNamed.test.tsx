@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/?test=StyledHOCNamed')
 })
 
-test.only(`styled() name works on HOC`, async ({ page }) => {
+test(`styled() name works on HOC`, async ({ page }) => {
   const textStyles = await getStyles(page.getByTestId('text-named').first())
   expect(textStyles.color).toBe(`rgb(255, 0, 0)`)
 
