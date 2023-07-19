@@ -349,6 +349,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       className="ease-in ms300 all"
       pe="none"
       pos="relative"
+      scale={1.15}
       $xxs={{
         scale: 0.35,
       }}
@@ -477,12 +478,15 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         my={21}
         bottom={-100}
         pos="absolute"
-        gap={60}
+        gap={50}
         f={1}
         alignSelf="center"
         jc="space-between"
         className="mix-blend"
         pe="auto"
+        $sm={{
+          dsp: 'none',
+        }}
       >
         <FeatureIcon
           themeIndex={0}
@@ -686,7 +690,7 @@ export default function TakeoutPage({
               <YStack f={1} space="$5">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-340}
+                  mt={-300}
                   mb={-20}
                   size="$7"
                   ls={4}
@@ -2318,7 +2322,7 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
 }
 
 const HeartsRow = () => (
-  <XStack space="$12" als="center" spaceDirection="horizontal">
+  <XStack space="$12" my="$4" als="center" spaceDirection="horizontal">
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
@@ -3113,6 +3117,7 @@ const PromoVideo = () => {
   return (
     <YStack
       className="all ease-in ms300"
+      disableOptimization
       pos="absolute"
       t={200}
       l={-300}
