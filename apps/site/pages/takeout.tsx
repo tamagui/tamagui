@@ -25,7 +25,15 @@ import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image, { ImageProps } from 'next/image'
-import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
+import React, {
+  RefObject,
+  Suspense,
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import Stripe from 'stripe'
 import {
   AnimatePresence,
@@ -198,7 +206,7 @@ const isSafariMobile = (() => {
 
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
-const heroHeight = 890
+const heroHeight = 900
 
 type TakeoutPageProps = {
   starter: Database['public']['Tables']['products']['Row'] & {
@@ -756,19 +764,25 @@ export default function TakeoutPage({
                     fow="400"
                     $sm={{ size: '$8' }}
                   >
-                    Success is up to you. But we can say you've found the ultimate cheat
-                    code to shipping a gorgeous web and native app as fast as possible.
+                    Success is up to you. But we can say you've found the cheat code to
+                    shipping top quality web and native apps as fast as possible.
                   </MunroP>
                 </ThemeTint>
 
                 <HeartsRow />
 
-                <Paragraph size="$10" $sm={{ size: '$9' }} $xs={{ size: '$8' }} fow="400">
-                  Takeout 🥡 is a bootstrap that delivers on years of effort putting
-                  together a better React Native & web stack.
+                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
+                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
+                  together a better React Native and web stack.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
+                <Paragraph
+                  theme="alt1"
+                  size="$8"
+                  $sm={{ size: '$7' }}
+                  $xs={{ size: '$6' }}
+                  fow="400"
+                >
                   Powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
@@ -973,9 +987,9 @@ export default function TakeoutPage({
 
                     <Paragraph
                       fontFamily="$cherryBomb"
-                      size="$10"
-                      color="$color9"
-                      className="callout"
+                      size="$9"
+                      color="$color10"
+                      className="text-3d"
                       ls={-1}
                       $sm={{ size: '$8' }}
                       fow="400"
@@ -1039,7 +1053,12 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <Paragraph als="center" fontFamily="$cherryBomb" size="$10">
+                <Paragraph
+                  className="text-3d"
+                  als="center"
+                  fontFamily="$cherryBomb"
+                  size="$10"
+                >
                   Take a peek
                 </Paragraph>
 
@@ -1845,9 +1864,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </MunroP>
 
-              <MunroP size="$11" ls={2}>
-                The Stack
-              </MunroP>
+              <ThemeTintAlt>
+                <MunroP color="$color9" size="$11" ls={2}>
+                  The Stack
+                </MunroP>
+              </ThemeTintAlt>
 
               <YStack>
                 <Row
@@ -3104,6 +3125,7 @@ const PromotionInput = () => {
 
 const PromoVideo = () => {
   const [open, setOpen] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   return (
     <YStack
@@ -3111,16 +3133,28 @@ const PromoVideo = () => {
       pos="absolute"
       t={200}
       l={-300}
-      scale={0.22}
+      scale={!loaded ? 1 : 0.22}
+      pe={!loaded ? 'none' : 'auto'}
       zi={1000}
+      o={loaded ? 1 : 0}
+      $sm={{
+        dsp: 'none',
+      }}
       {...(open && {
         scale: 1,
-        x: 550,
-        y: -140,
+        x: 600,
+        y: -120,
       })}
       cursor="pointer"
       onPress={() => {
         setOpen(true)
+      }}
+      ref={() => {
+        ;(requestIdleCallback || setTimeout)(() => {
+          setTimeout(() => {
+            setLoaded(true)
+          }, 500)
+        })
       }}
     >
       {open && (
@@ -3142,16 +3176,14 @@ const PromoVideo = () => {
         br="$10"
         ov="hidden"
         elevation="$10"
-        w={900}
+        w={840}
         h={480}
         bc="$color3"
-        ai="center"
-        jc="center"
-        bw={1}
+        bw={3}
         boc="$borderColor"
       >
         {!open && (
-          <>
+          <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
             <PlayCircle size={150} color="red" />
             <Paragraph
               size="$15"
@@ -3162,19 +3194,24 @@ const PromoVideo = () => {
             >
               WATCH THE VIDEO
             </Paragraph>
-          </>
+          </YStack>
         )}
-        {open && (
-          <iframe
-            width="900"
-            height="480"
-            src="https://www.youtube-nocookie.com/embed/Guwa1oPBvmU?color=white&modestbranding=1&showinfo=0&autoplay=1" // or modestbranding=true - we can use only one of them
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        )}
+        <iframe
+          width="840"
+          height="480"
+          style={{
+            width: 840,
+            height: 480,
+            // transform: 'scale(0.75) translateX(-25%) translateY(-25%)',
+          }}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&showinfo=0&autoplay=${
+            open ? 1 : 0
+          }`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
       </YStack>
     </YStack>
   )
