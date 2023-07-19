@@ -6,7 +6,16 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { ArrowLeft, ArrowRight, Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Dot,
+  Hammer,
+  Play,
+  PlayCircle,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -16,7 +25,15 @@ import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image, { ImageProps } from 'next/image'
-import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
+import React, {
+  RefObject,
+  Suspense,
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import Stripe from 'stripe'
 import {
   AnimatePresence,
@@ -189,7 +206,7 @@ const isSafariMobile = (() => {
 
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
 
-const heroHeight = 890
+const heroHeight = 900
 
 type TakeoutPageProps = {
   starter: Database['public']['Tables']['products']['Row'] & {
@@ -332,7 +349,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       className="ease-in ms300 all"
       pe="none"
       pos="relative"
-      scale={1.15}
       $xxs={{
         scale: 0.35,
       }}
@@ -344,9 +360,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       }}
       $md={{
         scale: 0.85,
-      }}
-      $lg={{
-        scale: 0.95,
       }}
       // ref={glow.parentRef as any}
     >
@@ -364,11 +377,11 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         style={{
-          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <ThemeTint>
-          <TAKEOUT className="" zi={1000} color="$color10" />
+          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
         </ThemeTint>
       </YStack>
 
@@ -376,7 +389,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -444,12 +457,12 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </YStack>
       <YStack
         position="absolute"
+        pe="none"
         top={300}
-        r="-0%"
-        $xs={{ r: '-140%' }}
-        $sm={{ r: '-100%' }}
-        $md={{ r: '-70%' }}
-        $lg={{ r: '-45%' }}
+        r="-5%"
+        $lg={{ r: '-15%' }}
+        $md={{ r: '-50%' }}
+        $sm={{ r: '-90%' }}
         zIndex={-1}
       >
         {enable3d && (
@@ -549,6 +562,8 @@ export default function TakeoutPage({
                 <DiscountText coupon={coupon} />
               </YStack>
             )}
+
+            <PromoVideo />
 
             <TakeoutHero coupon={coupon} />
           </YStack>
@@ -745,19 +760,25 @@ export default function TakeoutPage({
                     fow="400"
                     $sm={{ size: '$8' }}
                   >
-                    Success is up to you. But we can say you've found the ultimate cheat
-                    code to shipping a gorgeous web and native app as fast as possible.
+                    Success is up to you. But we can say you've found the cheat code to
+                    shipping a top quality web and native apps as fast as possible.
                   </MunroP>
                 </ThemeTint>
 
                 <HeartsRow />
 
-                <Paragraph size="$10" $sm={{ size: '$9' }} $xs={{ size: '$8' }} fow="400">
-                  Takeout 🥡 is a bootstrap that delivers on years of effort putting
-                  together a better React Native & web stack.
+                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
+                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
+                  together a better React Native and web stack.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} $xs={{ size: '$6' }} fow="400">
+                <Paragraph
+                  theme="alt1"
+                  size="$8"
+                  $sm={{ size: '$7' }}
+                  $xs={{ size: '$6' }}
+                  fow="400"
+                >
                   Powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
@@ -893,19 +914,14 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <PromoVideo />
-
-                <Spacer />
-
                 <ThemeTint>
                   <YStack
                     p="$6"
                     mt="$8"
                     className="blur-medium"
                     px="$8"
-                    space="$6"
+                    space="$5"
                     elevation="$6"
-                    ov="hidden"
                     br="$10"
                     $sm={{
                       px: '$4',
@@ -916,6 +932,7 @@ export default function TakeoutPage({
                     <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
                     <YStack
                       pos="absolute"
+                      disableOptimization
                       t={-400}
                       o={0.2}
                       r={-400}
@@ -964,9 +981,9 @@ export default function TakeoutPage({
 
                     <Paragraph
                       fontFamily="$cherryBomb"
-                      size="$10"
-                      color="$color9"
-                      className="callout"
+                      size="$9"
+                      color="$color11"
+                      className="text-3d"
                       ls={-1}
                       $sm={{ size: '$8' }}
                       fow="400"
@@ -982,7 +999,13 @@ export default function TakeoutPage({
                     </Paragraph>
 
                     <ThemeTintAlt>
-                      <Paragraph size="$7" $sm={{ size: '$6' }} fow="400" color="$color9">
+                      <Paragraph
+                        className="text-shadow"
+                        size="$7"
+                        $sm={{ size: '$6' }}
+                        fow="400"
+                        color="$color9"
+                      >
                         That means you get constant improvements to your codebase.
                       </Paragraph>
                     </ThemeTintAlt>
@@ -1030,7 +1053,12 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <Paragraph als="center" fontFamily="$cherryBomb" size="$10">
+                <Paragraph
+                  className="text-3d"
+                  als="center"
+                  fontFamily="$cherryBomb"
+                  size="$10"
+                >
                   Take a peek
                 </Paragraph>
 
@@ -1788,7 +1816,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <TakeoutCardFrame
           className="blur-medium"
           zi={1000}
-          maw={340}
+          maw={320}
           als="center"
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
@@ -1836,9 +1864,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                 Drop 0001
               </MunroP>
 
-              <MunroP size="$11" ls={2}>
-                The Stack
-              </MunroP>
+              <ThemeTintAlt>
+                <MunroP color="$color9" size="$11" ls={2}>
+                  The Stack
+                </MunroP>
+              </ThemeTintAlt>
 
               <YStack>
                 <Row
@@ -2296,21 +2326,6 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       prices: getArray(products[2].data!.prices!).filter((p) => p.active),
     },
     coupon,
-  }
-}
-
-export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
-  try {
-    const props = await getTakeoutProducts()
-    return {
-      revalidate: 60,
-      props,
-    }
-  } catch (err) {
-    console.error(`Error getting props`, err)
-    return {
-      notFound: true,
-    }
   }
 }
 
@@ -3094,17 +3109,115 @@ const PromotionInput = () => {
 }
 
 const PromoVideo = () => {
+  const [open, setOpen] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (isClient) {
+      ;(window.requestIdleCallback || setTimeout)(() => {
+        setTimeout(() => {
+          setLoaded(true)
+        }, 500)
+      })
+    }
+  }, [])
+
   return (
-    <YStack bw={1} boc="$borderColor">
-      <iframe
-        width="100%"
-        height="480"
-        src="https://www.youtube-nocookie.com/embed/Guwa1oPBvmU?color=white&modestbranding=1&showinfo=0" // or modestbranding=true - we can use only one of them
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
+    <YStack
+      className="all ease-in ms300"
+      disableOptimization
+      pos="absolute"
+      t={200}
+      l={-300}
+      pe={!loaded ? 'none' : 'auto'}
+      zi={1000}
+      o={loaded ? 1 : 0}
+      scale={!loaded ? 1 : 0.22}
+      rotate="-5deg"
+      $sm={{
+        dsp: 'none',
+      }}
+      {...(open && {
+        scale: 1,
+        rotate: '0deg',
+        x: 600,
+        y: -120,
+      })}
+      cursor="pointer"
+      onPress={() => {
+        setOpen(true)
+      }}
+    >
+      {open && (
+        <Button
+          pos="absolute"
+          t={-20}
+          r={-20}
+          elevation="$4"
+          zi={100}
+          circular
+          icon={X}
+          onPress={(e) => {
+            e.stopPropagation()
+            setOpen(false)
+          }}
+        ></Button>
+      )}
+      <YStack
+        br="$10"
+        ov="hidden"
+        elevation="$10"
+        w={840}
+        h={480}
+        bc="$color3"
+        bw={3}
+        boc="$borderColor"
+      >
+        {!open && (
+          <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
+            <PlayCircle size={150} color="red" />
+            <Paragraph
+              size="$15"
+              pos="absolute"
+              rotate="-10deg"
+              ta="center"
+              ff="$silkscreen"
+            >
+              WATCH THE VIDEO
+            </Paragraph>
+          </YStack>
+        )}
+        <iframe
+          width="840"
+          height="480"
+          style={{
+            width: 840,
+            height: 480,
+          }}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
+            open ? 1 : 0
+          }`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
+      </YStack>
     </YStack>
   )
+}
+
+export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
+  try {
+    const props = await getTakeoutProducts()
+    return {
+      revalidate: 60,
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      notFound: true,
+    }
+  }
 }

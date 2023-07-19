@@ -19,6 +19,7 @@ import {
   Spacer,
   Text,
   Theme,
+  TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
@@ -28,6 +29,7 @@ import {
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
+import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
@@ -57,7 +59,7 @@ export function Hero() {
       <div className={`${name}-season _dsp-contents`}>
         {/* {element} */}
         <YStack
-          o={0.5}
+          o={0.75}
           zi={-1}
           pos="absolute"
           t={0}
@@ -101,12 +103,19 @@ const HeroContents = memo(() => {
           pb: '$4',
         }}
       >
-        {/* <XStack pos="absolute" als="center" y={-80}>
+        {/* <XStack pos="absolute" als="center" y={-70}>
           <Link href="/takeout">
             <ThemeTintAlt>
-              <Button br="$10" elevate fontFamily="$silkscreen">
+              <Button
+                bw={2}
+                boc="$color5"
+                size="$3"
+                br="$10"
+                elevation="$1"
+                fontFamily="$silkscreen"
+              >
                 Introducing Takeout 🥡
-                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
+                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
                   our new pro starter kit
                 </Text>
               </Button>
@@ -204,12 +213,14 @@ const HeroContents = memo(() => {
 
         <XStack ai="center" jc="center" $xxs={{ ai: 'center', fw: 'wrap' }}>
           <NextLink target="_blank" href="https://twitter.com/tamagui_js">
-            <YStack p="$6" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
-              <VisuallyHidden>
-                <Text>Twitter</Text>
-              </VisuallyHidden>
-              <TwitterIcon width={23} />
-            </YStack>
+            <TooltipSimple placement="top" delay={0} restMs={25} label="Twitter">
+              <YStack p="$5" $sm={{ p: '$3' }} opacity={0.65} hoverStyle={{ opacity: 1 }}>
+                <VisuallyHidden>
+                  <Text>Twitter</Text>
+                </VisuallyHidden>
+                <TwitterIcon width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
 
           <XStack
@@ -274,18 +285,20 @@ const HeroContents = memo(() => {
           </XStack>
 
           <NextLink target="_blank" href="https://discord.gg/4qh6tdcVDa">
-            <YStack
-              p="$6"
-              $sm={{ p: '$3' }}
-              ml="$-2"
-              opacity={0.65}
-              hoverStyle={{ opacity: 1 }}
-            >
-              <VisuallyHidden>
-                <Text>Discord</Text>
-              </VisuallyHidden>
-              <DiscordIcon plain width={23} />
-            </YStack>
+            <TooltipSimple placement="top" delay={0} restMs={25} label="Discord">
+              <YStack
+                p="$5"
+                $sm={{ p: '$3' }}
+                ml="$-2"
+                opacity={0.65}
+                hoverStyle={{ opacity: 1 }}
+              >
+                <VisuallyHidden>
+                  <Text>Discord</Text>
+                </VisuallyHidden>
+                <DiscordIcon plain width={23} />
+              </YStack>
+            </TooltipSimple>
           </NextLink>
         </XStack>
       </YStack>

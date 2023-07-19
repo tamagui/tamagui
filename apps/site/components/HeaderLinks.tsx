@@ -55,22 +55,20 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {process.env.NODE_ENV === 'development' && (
-        <NextLink prefetch={false} href="/takeout">
-          <TooltipSimple delay={0} restMs={25} label="Takeout">
-            <HeadAnchor
-              {...(!forceShowAllLinks && {
-                size: '$8',
-              })}
-              $sm={{
-                display: forceShowAllLinks ? 'flex' : 'none',
-              }}
-            >
-              {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
-            </HeadAnchor>
-          </TooltipSimple>
-        </NextLink>
-      )}
+      <NextLink prefetch={false} href="/takeout">
+        <TooltipSimple delay={0} restMs={25} label="Takeout">
+          <HeadAnchor
+            {...(!forceShowAllLinks && {
+              size: '$8',
+            })}
+            $sm={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
+          </HeadAnchor>
+        </TooltipSimple>
+      </NextLink>
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">

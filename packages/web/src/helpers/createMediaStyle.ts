@@ -45,7 +45,7 @@ export const createMediaStyle = (
         ':root',
         ''
       )}`
-      const selectors = `${nextSelector}, :root${nextSelector}`
+      // const selectors = `${nextSelector}, :root${nextSelector}`
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {

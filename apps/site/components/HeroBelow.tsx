@@ -1,10 +1,12 @@
-import { ChevronRight, Code, Cpu, Layers } from '@tamagui/lucide-icons'
+import { ChevronRight, Code, Cpu, Layers, Star } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
+import Link from 'next/link'
 import { memo } from 'react'
-import { H3, Paragraph, XStack, YStack, YStackProps } from 'tamagui'
+import { Button, H3, Paragraph, Theme, XStack, YStack, YStackProps } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
+import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { IconStack } from './IconStack'
 
@@ -36,6 +38,25 @@ export const HeroBelow = memo(() => {
     <>
       <YStack pos="relative" zi={1000} elevation="$4" py="$4" pt="$6" pb="$10">
         <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
+
+        <XStack pos="absolute" als="center" y={-45}>
+          <Link target="_blank" href="https://github.com/tamagui/tamagui">
+            <Theme reset>
+              <Button
+                icon={<GithubIcon width={16} />}
+                iconAfter={Star}
+                br="$10"
+                size="$3"
+                elevate
+                fontFamily="$silkscreen"
+                space="$3"
+              >
+                Star plz
+              </Button>
+            </Theme>
+          </Link>
+        </XStack>
+
         <HeroBelowContent />
       </YStack>
     </>

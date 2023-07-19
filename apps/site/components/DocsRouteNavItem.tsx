@@ -26,7 +26,7 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
         pressStyle={{
           backgroundColor: '$background',
         }}
-        pointerEvents={pending ? 'none' : 'auto'}
+        pointerEvents={pending ? 'none' : ('inherit' as any)}
         pos="relative"
         $sm={{
           py: '$1',
