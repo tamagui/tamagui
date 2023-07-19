@@ -6,7 +6,16 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { ArrowLeft, ArrowRight, Check, Dot, Hammer, X } from '@tamagui/lucide-icons'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Dot,
+  Hammer,
+  Play,
+  PlayCircle,
+  X,
+} from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -364,11 +373,11 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       <YStack
         pos="absolute"
         style={{
-          clipPath: `polygon(0% 0, 0% 0%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <ThemeTint>
-          <TAKEOUT className="" zi={1000} color="$color10" />
+          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
         </ThemeTint>
       </YStack>
 
@@ -376,7 +385,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -549,6 +558,8 @@ export default function TakeoutPage({
                 <DiscountText coupon={coupon} />
               </YStack>
             )}
+
+            <PromoVideo />
 
             <TakeoutHero coupon={coupon} />
           </YStack>
@@ -892,8 +903,6 @@ export default function TakeoutPage({
                 </XStack>
 
                 <Spacer />
-
-                <PromoVideo />
 
                 <Spacer />
 
@@ -3094,17 +3103,79 @@ const PromotionInput = () => {
 }
 
 const PromoVideo = () => {
+  const [open, setOpen] = useState(false)
+
   return (
-    <YStack bw={1} boc="$borderColor">
-      <iframe
-        width="100%"
-        height="480"
-        src="https://www.youtube-nocookie.com/embed/Guwa1oPBvmU?color=white&modestbranding=1&showinfo=0" // or modestbranding=true - we can use only one of them
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
+    <YStack
+      className="all ease-in ms300"
+      pos="absolute"
+      t={200}
+      l={-300}
+      scale={0.22}
+      zi={1000}
+      {...(open && {
+        scale: 1,
+        x: 550,
+        y: -140,
+      })}
+      cursor="pointer"
+      onPress={() => {
+        setOpen(true)
+      }}
+    >
+      {open && (
+        <Button
+          pos="absolute"
+          t={-20}
+          r={-20}
+          elevation="$4"
+          zi={100}
+          circular
+          icon={X}
+          onPress={(e) => {
+            e.stopPropagation()
+            setOpen(false)
+          }}
+        ></Button>
+      )}
+      <YStack
+        br="$10"
+        ov="hidden"
+        elevation="$10"
+        w={900}
+        h={480}
+        bc="$color3"
+        ai="center"
+        jc="center"
+        bw={1}
+        boc="$borderColor"
+      >
+        {!open && (
+          <>
+            <PlayCircle size={150} color="red" />
+            <Paragraph
+              size="$15"
+              pos="absolute"
+              rotate="-10deg"
+              ta="center"
+              ff="$silkscreen"
+            >
+              WATCH THE VIDEO
+            </Paragraph>
+          </>
+        )}
+        {open && (
+          <iframe
+            width="900"
+            height="480"
+            src="https://www.youtube-nocookie.com/embed/Guwa1oPBvmU?color=white&modestbranding=1&showinfo=0&autoplay=1" // or modestbranding=true - we can use only one of them
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+        )}
+      </YStack>
     </YStack>
   )
 }

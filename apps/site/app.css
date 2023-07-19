@@ -152,7 +152,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 
 .hero-blur {
   background: radial-gradient(
-    var(--color3) 0%,
+    var(--color2) 0%,
     transparent 72%
   );
 }
@@ -560,7 +560,7 @@ input, textarea {
 }
 
 .t_dark .docs-paragraph {
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 .custom-scroll ::-webkit-scrollbar{
@@ -763,23 +763,20 @@ input, textarea {
 }
 
 .clip-slice {
-  mask-image: url(./public/slice-mask.svg);
+  mask-image: url(./public/heart.svg);
   mask-size: 20% 20%;
   animation: clip-fade2 60s infinite alternate;
 }
 
 .clip-wave {
   mask-image: url(./public/takeout/geometric.svg);
-  mask-size: 80% 80%;
-  animation: clip-fade3 60s infinite alternate;
+  mask-size: 50% 50%;
+  animation: clip-fade2 80s infinite alternate;
 }
 
 .slice-alt {
-  mask-size: 400% 400%;
-}
-
-.animate-fade2 {
-  animation: clip-fade 120s infinite alternate;
+  mask-size: 50% 50%;
+  animation: clip-fade2 60s infinite alternate-reverse;
 }
 
 @keyframes clip-fade {
@@ -803,16 +800,6 @@ input, textarea {
   100% {
     mask-position: bottom left;
     -webkit-mask-position: left;
-  }
-}
-
-@keyframes clip-fade3 {
-  0% {
-    mask-position: top right;
-  }
-  
-  100% {
-    mask-position: bottom left;
   }
 }
 
