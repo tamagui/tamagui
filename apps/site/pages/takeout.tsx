@@ -2329,21 +2329,6 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   }
 }
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
-  try {
-    const props = await getTakeoutProducts()
-    return {
-      revalidate: 60,
-      props,
-    }
-  } catch (err) {
-    console.error(`Error getting props`, err)
-    return {
-      notFound: true,
-    }
-  }
-}
-
 const HeartsRow = () => (
   <XStack space="$12" als="center" spaceDirection="horizontal">
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
@@ -3215,4 +3200,19 @@ const PromoVideo = () => {
       </YStack>
     </YStack>
   )
+}
+
+export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
+  try {
+    const props = await getTakeoutProducts()
+    return {
+      revalidate: 60,
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      notFound: true,
+    }
+  }
 }
