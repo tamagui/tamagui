@@ -109,12 +109,13 @@ const HeroContents = memo(() => {
               <Button
                 bw={2}
                 boc="$color5"
+                size="$4"
                 br="$10"
                 elevation="$1"
                 fontFamily="$silkscreen"
               >
                 Introducing Takeout 🥡
-                <Text ff="$body" fontSize="$4" color="$color10" $sm={{ dsp: 'none' }}>
+                <Text ff="$body" fontSize="$3" color="$color10" $sm={{ dsp: 'none' }}>
                   our new pro starter kit
                 </Text>
               </Button>
