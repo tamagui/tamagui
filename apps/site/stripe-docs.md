@@ -1,5 +1,9 @@
 We rely on metadata to handle custom features with Stripe. You can search for the mentioned key and values to see them used across the codebase. Here are some docs on all the metadata we use:
 
+# Important Note
+
+We apply a `TAKEOUT_RENEWAL_COUPON_ID` env var is set, it'll be applied to ALL subscriptions as the renewal coupon. We use this to handle 50% off on Takeout renewals
+
 ## Metadata
 
 ### Product metadata
@@ -21,12 +25,6 @@ A text that'll be shown under the product on subscriptions page on how to instal
 #### `slug`
 
 A URL friendly text that may be used for querying. e.g. starter-pack, icon-packs.
-
-### Price metadata
-
-`is_one_time`
-
-May be set to `1` to apply automatic 100% discount after the first payment for subsequent invoices.
 
 ## Special Promotion Code
 
