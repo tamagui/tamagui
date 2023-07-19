@@ -3198,9 +3198,8 @@ const PromoVideo = () => {
           style={{
             width: 840,
             height: 480,
-            // transform: 'scale(0.75) translateX(-25%) translateY(-25%)',
           }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&showinfo=0&autoplay=${
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
             open ? 1 : 0
           }`}
           title="YouTube video player"
