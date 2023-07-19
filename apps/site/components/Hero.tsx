@@ -103,13 +103,13 @@ const HeroContents = memo(() => {
           pb: '$4',
         }}
       >
-        <XStack pos="absolute" als="center" y={-85}>
+        <XStack pos="absolute" als="center" y={-70}>
           <Link href="/takeout">
             <ThemeTintAlt>
               <Button
                 bw={2}
                 boc="$color5"
-                size="$4"
+                size="$3"
                 br="$10"
                 elevation="$1"
                 fontFamily="$silkscreen"

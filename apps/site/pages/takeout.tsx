@@ -349,7 +349,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       className="ease-in ms300 all"
       pe="none"
       pos="relative"
-      scale={1.15}
       $xxs={{
         scale: 0.35,
       }}
@@ -361,9 +360,6 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       }}
       $md={{
         scale: 0.85,
-      }}
-      $lg={{
-        scale: 0.95,
       }}
       // ref={glow.parentRef as any}
     >
@@ -461,12 +457,12 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </YStack>
       <YStack
         position="absolute"
+        pe="none"
         top={300}
-        r="-0%"
-        $xs={{ r: '-140%' }}
-        $sm={{ r: '-100%' }}
-        $md={{ r: '-70%' }}
-        $lg={{ r: '-45%' }}
+        r="-5%"
+        $lg={{ r: '-15%' }}
+        $md={{ r: '-50%' }}
+        $sm={{ r: '-90%' }}
         zIndex={-1}
       >
         {enable3d && (
@@ -765,7 +761,7 @@ export default function TakeoutPage({
                     $sm={{ size: '$8' }}
                   >
                     Success is up to you. But we can say you've found the cheat code to
-                    shipping top quality web and native apps as fast as possible.
+                    shipping a top quality web and native apps as fast as possible.
                   </MunroP>
                 </ThemeTint>
 
@@ -936,6 +932,7 @@ export default function TakeoutPage({
                     <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
                     <YStack
                       pos="absolute"
+                      disableOptimization
                       t={-400}
                       o={0.2}
                       r={-400}
@@ -1819,7 +1816,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <TakeoutCardFrame
           className="blur-medium"
           zi={1000}
-          maw={340}
+          maw={320}
           als="center"
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
@@ -3128,13 +3125,14 @@ const PromoVideo = () => {
   return (
     <YStack
       className="all ease-in ms300"
+      disableOptimization
       pos="absolute"
       t={200}
       l={-300}
-      scale={!loaded ? 1 : 0.22}
       pe={!loaded ? 'none' : 'auto'}
       zi={1000}
       o={loaded ? 1 : 0}
+      scale={!loaded ? 1 : 0.22}
       rotate="-5deg"
       $sm={{
         dsp: 'none',

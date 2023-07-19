@@ -39,7 +39,7 @@ export const HeroBelow = memo(() => {
       <YStack pos="relative" zi={1000} elevation="$4" py="$4" pt="$6" pb="$10">
         <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
 
-        <XStack pos="absolute" als="center" y={-40}>
+        <XStack pos="absolute" als="center" y={-45}>
           <Link target="_blank" href="https://github.com/tamagui/tamagui">
             <Theme reset>
               <Button
