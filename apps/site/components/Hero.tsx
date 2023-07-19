@@ -103,7 +103,7 @@ const HeroContents = memo(() => {
           pb: '$4',
         }}
       >
-        {/* <XStack pos="absolute" als="center" y={-70}>
+        <XStack pos="absolute" als="center" y={-70}>
           <Link href="/takeout">
             <ThemeTintAlt>
               <Button
@@ -121,7 +121,7 @@ const HeroContents = memo(() => {
               </Button>
             </ThemeTintAlt>
           </Link>
-        </XStack> */}
+        </XStack>
 
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$2">
           <H1
