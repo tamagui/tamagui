@@ -2004,6 +2004,11 @@ export function createExtractor(
           // fix up ternaries, combine final style values
           for (const attr of attrs) {
             try {
+              if (shouldPrintDebug) {
+                // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                console.log(`  Processing ${attr.type}:`)
+              }
+
               switch (attr.type) {
                 case 'ternary': {
                   const a = getProps(attr.value.alternate, 'ternary.alternate')
@@ -2033,6 +2038,12 @@ export function createExtractor(
                     // this only does one at a time but it should really do the whole group together...
                     // also awkward to be doing it using jsxAttributes...
                     const key = attr.value.name.name as string
+
+                    // dont process style/className can just stay attrs
+                    if (key === 'style' || key === 'className') {
+                      continue
+                    }
+
                     // undefined = boolean true
                     const value = attemptEvalSafe(
                       attr.value.value || t.booleanLiteral(true)
