@@ -926,7 +926,7 @@ export default function TakeoutPage({
                     mt="$8"
                     className="blur-medium"
                     px="$8"
-                    space="$6"
+                    space="$5"
                     elevation="$6"
                     ov="hidden"
                     br="$10"
@@ -988,7 +988,7 @@ export default function TakeoutPage({
                     <Paragraph
                       fontFamily="$cherryBomb"
                       size="$9"
-                      color="$color10"
+                      color="$color11"
                       className="text-3d"
                       ls={-1}
                       $sm={{ size: '$8' }}
@@ -1005,7 +1005,13 @@ export default function TakeoutPage({
                     </Paragraph>
 
                     <ThemeTintAlt>
-                      <Paragraph size="$7" $sm={{ size: '$6' }} fow="400" color="$color9">
+                      <Paragraph
+                        className="text-shadow"
+                        size="$7"
+                        $sm={{ size: '$6' }}
+                        fow="400"
+                        color="$color9"
+                      >
                         That means you get constant improvements to your codebase.
                       </Paragraph>
                     </ThemeTintAlt>
@@ -3132,11 +3138,13 @@ const PromoVideo = () => {
       pe={!loaded ? 'none' : 'auto'}
       zi={1000}
       o={loaded ? 1 : 0}
+      rotate="-5deg"
       $sm={{
         dsp: 'none',
       }}
       {...(open && {
         scale: 1,
+        rotate: '0deg',
         x: 600,
         y: -120,
       })}
