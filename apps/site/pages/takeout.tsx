@@ -1905,11 +1905,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                   after="03"
                 />
 
-                <Row
+                {/* <Row
                   title="CI / CD"
                   description="Lint, fix, tests, and deploys - all set up from day 1."
                   after="05"
-                />
+                /> */}
 
                 <Row
                   title="Native"
