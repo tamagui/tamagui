@@ -9,12 +9,7 @@ import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
 import fs, { ensureDir } from 'fs-extra'
-import {
-  Filter,
-  Options,
-  RequestHandler,
-  createProxyMiddleware,
-} from 'http-proxy-middleware'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import { createServer } from 'vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
@@ -40,7 +35,6 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
     const { default: getPort } = await import('get-port')
     const { paths } = options
     const root = dirname(dirname(dirname(resolve('@tamagui/studio'))))
-    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({

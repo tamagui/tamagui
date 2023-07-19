@@ -4967,7 +4967,6 @@ __metadata:
     "@tamagui/create-theme": 1.43.12
     "@tamagui/generate-themes": 1.43.12
     "@tamagui/static": 1.43.12
-    "@tamagui/studio": 1.43.12
     "@tamagui/types": 1.43.12
     "@tamagui/vite-plugin": 1.43.12
     "@types/compression": ^1.7.2
