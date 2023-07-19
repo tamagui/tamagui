@@ -918,8 +918,6 @@ export default function TakeoutPage({
 
                 <Spacer />
 
-                <Spacer />
-
                 <ThemeTint>
                   <YStack
                     p="$6"
@@ -928,7 +926,6 @@ export default function TakeoutPage({
                     px="$8"
                     space="$5"
                     elevation="$6"
-                    ov="hidden"
                     br="$10"
                     $sm={{
                       px: '$4',
