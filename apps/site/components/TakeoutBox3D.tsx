@@ -10,7 +10,7 @@ const modelUrl = `${
   process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : `http://localhost:${process.env.NODE_ENV === 'production' ? '3333' : '5005'}`
-}/takeout.glb`
+}/takeout-compressed.glb`
 
 let frameCount = 0
 

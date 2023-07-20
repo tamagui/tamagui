@@ -765,12 +765,12 @@ input, textarea {
 .clip-slice {
   mask-image: url(./public/heart.svg);
   mask-size: 20% 20%;
-  animation: clip-fade2 60s infinite alternate;
+  animation: clip-fade2 90s infinite alternate;
 }
 
 .clip-wave {
   mask-image: url(./public/takeout/geometric.svg);
-  mask-size: 60% 60%;
+  mask-size: 50% 50%;
   animation: clip-fade 80s infinite alternate;
 }
 
