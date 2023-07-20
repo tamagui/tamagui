@@ -1619,7 +1619,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Themes"
-                  description="Two all new theme - Pastel and Neon - that bring a muted or more bright feel."
+                  description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
                   after="03"
                 />
 
