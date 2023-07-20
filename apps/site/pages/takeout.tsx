@@ -280,11 +280,11 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </ThemeTint> */}
 
       {/* animated borders shine */}
-      <YStack pos="absolute" y={5}>
+      {/* <YStack pos="absolute" y={5}>
         <ThemeTintAlt>
           <TAKEOUT className="theme-shadow clip-slice" zi={100} color="transparent" />
         </ThemeTintAlt>
-      </YStack>
+      </YStack> */}
 
       <YStack
         pos="absolute"
