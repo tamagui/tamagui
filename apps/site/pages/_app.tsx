@@ -12,7 +12,7 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, useDebounceValue } from 'tamagui'
+import { TamaguiProvider, Text, useDebounceValue } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
