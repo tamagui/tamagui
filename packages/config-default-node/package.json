@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default-node",
-  "version": "1.43.13",
+  "version": "1.43.14",
   "source": "src/index.ts",
   "main": "dist",
   "types": "./types/index.d.ts",
@@ -15,10 +15,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/shorthands": "1.43.13"
+    "@tamagui/shorthands": "1.43.14"
   },
   "devDependencies": {
-    "@tamagui/build": "1.43.13"
+    "@tamagui/build": "1.43.14"
   },
   "publishConfig": {
     "access": "public"
