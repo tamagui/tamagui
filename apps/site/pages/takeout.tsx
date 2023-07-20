@@ -964,9 +964,9 @@ export default function TakeoutPage({
                 <Spacer />
 
                 <YStack mih={530}>
-                <Lazy>
-                  <TakeoutGallery />
-                </Lazy>
+                  <Lazy>
+                    <TakeoutGallery />
+                  </Lazy>
                 </YStack>
 
                 <Spacer />
@@ -2757,7 +2757,6 @@ export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () =
   try {
     const props = await getTakeoutProducts()
     return {
-      revalidate: 60,
       props,
     }
   } catch (err) {
