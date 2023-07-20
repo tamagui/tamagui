@@ -71,7 +71,8 @@ export function createAnimations<A extends AnimationsConfig>(
 yarn remove @tamagui/animations-reanimated
 yarn add @tamagui/animations-moti
 
-...and then edit your source code to use @tamagui/animations-moti in place of Reanimated.`)
+...and then edit your source code to use @tamagui/animations-moti in place of  @tamagui/animations-reanimated`)
+  
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
 
