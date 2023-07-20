@@ -330,14 +330,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
             {/* alt color slices */}
 
-            <ThemeTintAlt offset={1}>
+            {/* <ThemeTintAlt offset={1}>
               <TAKEOUT
                 className="clip-wave mix-blend"
                 pos="absolute"
                 color="$color8"
                 scale={1}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
           </ThemeTint>
         )}
 
