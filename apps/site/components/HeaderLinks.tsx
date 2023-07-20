@@ -55,7 +55,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </NextLink>
       )}
 
-      {/* <NextLink prefetch={false} href="/takeout">
+      <NextLink prefetch={false} href="/takeout">
         <TooltipSimple delay={0} restMs={25} label="Takeout">
           <HeadAnchor
             {...(!forceShowAllLinks && {
@@ -68,7 +68,7 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
             {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
           </HeadAnchor>
         </TooltipSimple>
-      </NextLink> */}
+      </NextLink>
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
