@@ -65,6 +65,22 @@ module.exports = function (api) {
 
 ```
 
+Finally you're going to want to update Metro so that it can play well with tamagui:
+```ts
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config');
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+});
+
+config.resolver.sourceExts.push('mjs'); // <-- New Addition
+
+module.exports = config;
+```
+
 ### Setup Tamagui configuration / theme
 
 ```bash
