@@ -599,7 +599,7 @@ export const getSplitStyles: StyleSplitter = (
       isPseudo = key in validPseudoKeys
       isMediaOrPseudo = isMedia || isPseudo
 
-      if (inlineProps?.has(key) || inlineWhenUnflattened?.has(key)) {
+      if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
         viewProps[key] = props[key] ?? val
       }
 

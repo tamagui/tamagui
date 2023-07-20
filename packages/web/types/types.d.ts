@@ -394,7 +394,7 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
         [key in Key]: string | Variable;
     }>;
     face?: Partial<{
-        [key in FontWeightSteps]: {
+        [key in FontWeightValues]: {
             normal?: string;
             italic?: string;
         };
@@ -494,8 +494,8 @@ export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
-export type FontWeightSteps = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
-export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightSteps;
+export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
+export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];

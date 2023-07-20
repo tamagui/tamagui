@@ -66,7 +66,7 @@ const tamaConf = createTamagui({
   ...config,
   // test reanimated
   animations:
-    typeof window !== 'undefined' && window.location.search.includes('driver=css')
+    typeof window !== 'undefined' && globalThis.location?.search.includes('driver=css')
       ? animationsCSS
       : animations,
   themeClassNameOnRoot: false,

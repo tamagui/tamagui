@@ -1,35 +1,10 @@
 // import './wdyr'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, H1, Square, XStack, YStack } from 'tamagui'
+import { AnimatePresence, H1, Square, Text, XStack, YStack } from 'tamagui'
 
 export const Sandbox = () => {
-  const [x, setx] = useState(false)
-
-  return (
-    <>
-      <button
-        onClick={() => {
-          setx((x) => !x)
-        }}
-      >
-        sadsadsa
-      </button>
-
-      <AnimatePresence>
-        {x && (
-          <Square
-            animation="lazy"
-            size={200}
-            bc="red"
-            enterStyle={{ o: 0.5 }}
-            o={1}
-            exitStyle={{ o: 0 }}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  )
+  return <>{/*  */}</>
 }
 
 // const NumberTicker = () => {
