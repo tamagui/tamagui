@@ -159,7 +159,11 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
         console.error('[tamagui] Failed to create initial commit.\n\n', e.message)
       }
     }
-    await template.extraSteps({ isFullClone: true, projectName, projectPath })
+    await template.extraSteps({
+      isFullClone: true,
+      projectName,
+      projectPath: resolvedProjectPath,
+    })
   } else {
     await template.extraSteps({
       isFullClone: false,
