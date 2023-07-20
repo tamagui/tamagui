@@ -963,9 +963,11 @@ export default function TakeoutPage({
 
                 <Spacer />
 
+                <YStack mih={530}>
                 <Lazy>
                   <TakeoutGallery />
                 </Lazy>
+                </YStack>
 
                 <Spacer />
                 <Separator />
