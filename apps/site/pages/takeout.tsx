@@ -1,3 +1,4 @@
+import { ErrorBoundary } from '@components/ErrorBoundary'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { stripe } from '@lib/stripe'
@@ -379,7 +380,9 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       >
         {enable3d && (
           <Suspense fallback={null}>
-            <TakeoutBox3D />
+            <ErrorBoundary noMessage>
+              <TakeoutBox3D />
+            </ErrorBoundary>
           </Suspense>
         )}
       </YStack>
