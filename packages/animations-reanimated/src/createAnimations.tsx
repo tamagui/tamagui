@@ -66,6 +66,12 @@ const animatedStyleKey = {
 export function createAnimations<A extends AnimationsConfig>(
   animations: A
 ): AnimationDriver<A> {
+  console.error(`@tamagui/animations-reanimated is deprecated. Please swap it out for @tamagui/animations-moti:
+  
+yarn remove @tamagui/animations-reanimated
+yarn add @tamagui/animations-moti
+
+...and then edit your source code to use @tamagui/animations-moti in place of Reanimated.`)
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
 
