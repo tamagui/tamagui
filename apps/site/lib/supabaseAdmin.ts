@@ -5,7 +5,6 @@ import { Price, Product } from 'types'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import { Database } from './supabase-types'
-
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
 export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -132,7 +131,7 @@ export const manageSubscriptionStatusChange = async (
   if (noCustomerError) throw noCustomerError
 
   const { id: uuid } = customerData || {}
-
+  // sendTakeoutWelcomeEmail()
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['default_payment_method'],
   })
