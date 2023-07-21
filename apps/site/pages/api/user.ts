@@ -1,5 +1,6 @@
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
+import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { NextApiHandler } from 'next'
@@ -15,6 +16,10 @@ export type UserContextType = {
     orgs?: Database['public']['Tables']['teams']['Row'][] | null
     personal?: Database['public']['Tables']['teams']['Row'] | null
     main?: Database['public']['Tables']['teams']['Row'] | null
+  }
+  connections: {
+    github: boolean
+    discord: boolean
   }
 }
 
@@ -36,10 +41,11 @@ const handler: NextApiHandler = async (req, res) => {
     return
   }
 
-  const [userTeams, userDetails, subscriptions] = await Promise.all([
+  const [userTeams, userDetails, subscriptions, privateInfo] = await Promise.all([
     getUserTeams(supabase),
     getUserDetails(supabase),
     getSubscriptions(supabase),
+    getUserPrivateInfo(user.id),
   ])
 
   res.json({
@@ -53,6 +59,10 @@ const handler: NextApiHandler = async (req, res) => {
       orgs: getOrgTeams(userTeams),
       main: getMainTeam(userTeams),
     },
+    connections: {
+      discord: !!privateInfo.discord_token,
+      github: !!privateInfo.github_token,
+    },
   } satisfies UserContextType)
 }
 
@@ -60,6 +70,17 @@ export default handler
 
 const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()
+  if (result.error) throw new Error(result.error.message)
+  return result.data
+}
+
+const getUserPrivateInfo = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('users_private')
+    .upsert({ id: userId })
+    .select('*')
+    .single()
+
   if (result.error) throw new Error(result.error.message)
   return result.data
 }

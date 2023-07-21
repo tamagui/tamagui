@@ -402,15 +402,18 @@ export interface Database {
       }
       users_private: {
         Row: {
-          github_token: string
+          discord_token: string | null
+          github_token: string | null
           id: string
         }
         Insert: {
-          github_token: string
+          discord_token?: string | null
+          github_token?: string | null
           id: string
         }
         Update: {
-          github_token?: string
+          discord_token?: string | null
+          github_token?: string | null
           id?: string
         }
         Relationships: [

@@ -22,6 +22,7 @@
     "stripe:listen": "stripe listen --forward-to localhost:5005/api/stripe/webhook"
   },
   "dependencies": {
+    "@discordjs/core": "^0.6.0",
     "@docsearch/react": "^3.0.0",
     "@github/mini-throttle": "^2.1.0",
     "@monaco-editor/react": "^4.2.2",

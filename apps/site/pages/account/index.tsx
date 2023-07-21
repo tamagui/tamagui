@@ -1,4 +1,5 @@
 import { Container } from '@components/Container'
+import { DiscordIcon } from '@components/DiscordIcon'
 import { GithubIcon } from '@components/GithubIcon'
 import { NextLink } from '@components/NextLink'
 import { Notice } from '@components/Notice'
@@ -287,7 +288,7 @@ const SyncSponsorshipButton = () => {
   const [loading, setLoading] = useState(false)
   const syncWithGithub = async () => {
     setLoading(true)
-    await fetch('/api/github-sync', { method: 'POST' })
+    await fetch('/api/account-sync', { method: 'POST' })
       .then(() => {
         location.reload()
       })
@@ -308,9 +309,22 @@ const SyncSponsorshipButton = () => {
 }
 
 const ConnectionsContent = () => {
+  return (
+    <YStack>
+      <Table
+        data={{
+          GitHub: <GithubConnection />,
+          Discord: <DiscordConnection />,
+        }}
+      />
+    </YStack>
+  )
+}
+
+const GithubConnection = () => {
   const { data } = useUser()
   if (!data) return null
-
+  const connectedGithub = data.connections.github
   const {
     session: { user },
   } = data
@@ -323,7 +337,7 @@ const ConnectionsContent = () => {
   const supabaseClient = useSupabaseClient()
 
   const handleOAuthSignIn = async (provider: Provider) => {
-    if (user?.app_metadata.provider === 'github') {
+    if (connectedGithub) {
       router.push(
         `https://github.com/settings/connections/applications/${process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID}`
       )
@@ -342,40 +356,80 @@ const ConnectionsContent = () => {
     }
     setLoading(false)
   }
-  return (
-    <YStack>
-      {message.content && (
-        <Notice>
-          <Paragraph>{message.content}</Paragraph>
-        </Notice>
-      )}
-      <Table
-        data={{
-          GitHub: (
-            <XStack gap="$2">
-              <Button
-                theme="dark"
-                disabled={loading}
-                onPress={() => handleOAuthSignIn('github')}
-                size="$3"
-                icon={GithubIcon}
-                iconAfter={CheckCircle}
-              >
-                {user?.app_metadata.provider === 'github'
-                  ? 'Connected'
-                  : 'Connect GitHub'}
-              </Button>
 
-              <SyncSponsorshipButton />
-            </XStack>
-          ),
-        }}
-      />
-    </YStack>
+  if (message.content)
+    <Notice>
+      <Paragraph>{message.content}</Paragraph>
+    </Notice>
+
+  return (
+    <XStack gap="$2">
+      <Button
+        theme="dark"
+        disabled={loading}
+        onPress={() => handleOAuthSignIn('github')}
+        size="$3"
+        icon={GithubIcon}
+        iconAfter={connectedGithub ? CheckCircle : null}
+      >
+        {connectedGithub ? 'Connected' : 'Connect GitHub'}
+      </Button>
+
+      <SyncSponsorshipButton />
+    </XStack>
   )
 }
 
-type x = FontWeightTokens
+const DiscordConnection = () => {
+  const { data } = useUser()
+  if (!data) return null
+  const connectedDiscord = data.connections.discord
+  const {
+    session: { user },
+  } = data
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<{ type?: string; content?: string }>({
+    content: '',
+    type: '',
+  })
+  const supabaseClient = useSupabaseClient()
+
+  const handleOAuthSignIn = async (provider: Provider) => {
+    setLoading(true)
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}/account`,
+        scopes: 'read:org',
+      },
+    })
+    if (error) {
+      setMessage({ type: 'error', content: error.message })
+    }
+    setLoading(false)
+  }
+
+  if (message.content)
+    <Notice>
+      <Paragraph>{message.content}</Paragraph>
+    </Notice>
+
+  return (
+    <XStack gap="$2">
+      <Button
+        theme="dark"
+        disabled={loading}
+        onPress={() => handleOAuthSignIn('discord')}
+        size="$3"
+        icon={DiscordIcon}
+        iconAfter={connectedDiscord ? CheckCircle : null}
+      >
+        {connectedDiscord ? 'Connected' : 'Connect Discord'}
+      </Button>
+    </XStack>
+  )
+}
 
 const Table = ({ data }: { data: Record<string, any> }) => {
   return (

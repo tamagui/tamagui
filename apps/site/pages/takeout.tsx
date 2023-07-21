@@ -1626,11 +1626,11 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
                   after="03"
                 />
 
-                {/* <Row
-                  title="CI / CD"
-                  description="Lint, fix, tests, and deploys - all set up from day 1."
+                <Row
+                  title="Deploy"
+                  description="Vercel and Expo EAS configured for you to ship as fast as possible."
                   after="05"
-                /> */}
+                />
 
                 <Row
                   title="Native"
@@ -2111,15 +2111,6 @@ const FaqModal = () => {
                     Of course! the subscription is only for the bot updates. If you cancel
                     your subscription you will stop receiving updates but can still use
                     your starter.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Do I have to annually pay for the icon and font packages?</H5>
-                  <Paragraph>
-                    No. Technically the icon and font packages are offered as a
-                    subscription but the renewal will be free so you pay only once. We
-                    apply a 100% coupon right after your checkout.
                   </Paragraph>
                 </YStack>
 
