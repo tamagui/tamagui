@@ -95,49 +95,51 @@ export class TamaguiPlugin {
       },
     }
 
-    const tamaguiLoader = {
-      loader: require.resolve('tamagui-loader'),
-      options: {
-        ...this.options,
-      },
-    }
-
-    if (nextJsRules === -1) {
-      existing.push({
-        test: /\/jsx\/.*\.m?[jt]sx?$/,
-        exclude: this.options.exclude,
-        resolve: {
-          fullySpecified: false,
+    if (!this.options.disable) {
+      const tamaguiLoader = {
+        loader: require.resolve('tamagui-loader'),
+        options: {
+          ...this.options,
         },
-        use: [esbuildLoader],
-      })
+      }
 
-      // app dir or not next.js
-      existing.push({
-        test: this.options.test ?? /\.m?[jt]sx?$/,
-        exclude: this.options.exclude,
-        resolve: {
-          fullySpecified: false,
-        },
-        use: [tamaguiLoader],
-      })
-    } else if (!this.options.disableEsbuildLoader) {
-      const startIndex = nextJsRules ? nextJsRules + 1 : 0
-      const existingLoader = nextJsRules ? rules[startIndex] : undefined
+      if (nextJsRules === -1) {
+        existing.push({
+          test: /\/jsx\/.*\.m?[jt]sx?$/,
+          exclude: this.options.exclude,
+          resolve: {
+            fullySpecified: false,
+          },
+          use: [esbuildLoader],
+        })
 
-      rules.splice(startIndex, 0, {
-        test: this.options.test ?? /\.m?[jt]sx?$/,
-        exclude: this.options.exclude,
-        resolve: {
-          fullySpecified: false,
-        },
-        use: [
-          ...(jsLoader ? [jsLoader] : []),
-          ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
-          ...(!(jsLoader || existingLoader) ? [esbuildLoader] : []),
-          tamaguiLoader,
-        ],
-      })
+        // app dir or not next.js
+        existing.push({
+          test: this.options.test ?? /\.m?[jt]sx?$/,
+          exclude: this.options.exclude,
+          resolve: {
+            fullySpecified: false,
+          },
+          use: [tamaguiLoader],
+        })
+      } else if (!this.options.disableEsbuildLoader) {
+        const startIndex = nextJsRules ? nextJsRules + 1 : 0
+        const existingLoader = nextJsRules ? rules[startIndex] : undefined
+
+        rules.splice(startIndex, 0, {
+          test: this.options.test ?? /\.m?[jt]sx?$/,
+          exclude: this.options.exclude,
+          resolve: {
+            fullySpecified: false,
+          },
+          use: [
+            ...(jsLoader ? [jsLoader] : []),
+            ...(existingLoader && nextJsRules ? [].concat(existingLoader.use) : []),
+            ...(!(jsLoader || existingLoader) ? [esbuildLoader] : []),
+            tamaguiLoader,
+          ],
+        })
+      }
     }
   }
 }
