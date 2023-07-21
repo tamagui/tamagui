@@ -39,7 +39,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
+        readonly chromeless?: boolean | "all" | undefined; /**
+         * The value of the items that are pressed when initially rendered. Use
+         * `defaultValue` if you do not need to control the state of a toggle group.
+         */
     }, "unstyled" | "active" | "orientation"> & {
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;
@@ -60,7 +63,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
+        readonly chromeless?: boolean | "all" | undefined; /**
+         * The value of the items that are pressed when initially rendered. Use
+         * `defaultValue` if you do not need to control the state of a toggle group.
+         */
     }, "unstyled" | "active" | "orientation"> & {
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;
@@ -81,7 +87,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
+        readonly chromeless?: boolean | "all" | undefined; /**
+         * The value of the items that are pressed when initially rendered. Use
+         * `defaultValue` if you do not need to control the state of a toggle group.
+         */
     }, "unstyled" | "active" | "orientation"> & {
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;
@@ -102,7 +111,10 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<(Omit<ToggleGroupSing
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;
         readonly transparent?: boolean | undefined;
-        readonly chromeless?: boolean | "all" | undefined;
+        readonly chromeless?: boolean | "all" | undefined; /**
+         * The value of the items that are pressed when initially rendered. Use
+         * `defaultValue` if you do not need to control the state of a toggle group.
+         */
     }, "unstyled" | "active" | "orientation"> & {
         readonly unstyled?: boolean | undefined;
         readonly active?: boolean | undefined;

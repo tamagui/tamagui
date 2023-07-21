@@ -1,17 +1,16 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
   DebugProp,
+  GetStyleState,
   PropMapper,
   StaticConfigParsed,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
-import type { LanguageContextType } from '../views/FontLanguage.types'
 import { expandStyle } from './expandStyle'
 import { expandStyles } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
@@ -27,33 +26,30 @@ export type ResolveVariableTypes =
   | 'non-color-value'
 
 export const createPropMapper = (staticConfig: StaticConfigParsed) => {
-  const variants = staticConfig.variants || {}
-
   // temp remove classnames
   const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, false)[0]
-
-  let conf: TamaguiInternalConfig
 
   const mapper: PropMapper = (
     key,
     value,
-    theme,
     propsIn,
-    state,
-    fontFamily,
-    languageContext,
-    avoidDefaultProps = false,
-    debug
+    styleStateIn,
+    avoidDefaultProps = false
   ) => {
-    conf ||= getConfig()
-
     if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
       if (key === 'elevationAndroid') {
         return
       }
     }
 
-    const props = state.fallbackProps || propsIn
+    // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
+    const styleState = {
+      ...styleStateIn,
+      // awkward bit thanks for static
+      props: styleStateIn.state.fallbackProps || propsIn,
+    }
+
+    const { conf, state, fontFamily } = styleState
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
     if (
@@ -72,18 +68,11 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     const variantValue = resolveVariants(
       key,
       value,
-      props,
+      styleState,
       defaultProps,
-      theme,
-      variants,
-      fontFamily,
-      conf,
       returnVariablesAs,
-      staticConfig,
       '',
-      languageContext,
-      avoidDefaultProps,
-      debug
+      avoidDefaultProps
     )
 
     if (variantValue) {
@@ -100,16 +89,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
 
     if (value) {
       if (value[0] === '$') {
-        value = getToken(
-          key,
-          value,
-          conf,
-          theme,
-          fontFamily,
-          languageContext,
-          returnVariablesAs,
-          debug
-        )
+        value = getToken(key, value, styleState, returnVariablesAs)
       } else if (isVariable(value)) {
         value = resolveVariableValue(key, value, returnVariablesAs)
       }
@@ -126,20 +106,16 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
 const resolveVariants: StyleResolver = (
   key,
   value,
-  props,
+  styleState,
   defaultProps,
-  theme,
-  variants,
-  fontFamily,
-  conf,
   returnVariablesAs,
-  staticConfig,
   parentVariantKey,
-  languageContext,
-  avoidDefaultProps = false,
-  debug
+  avoidDefaultProps = false
 ) => {
-  if (!(key in variants) || value === undefined) {
+  const { staticConfig, fontFamily, conf, debug } = styleState
+  const { variants } = staticConfig
+
+  if (!variants || !(key in variants) || value === undefined) {
     return
   }
 
@@ -169,14 +145,7 @@ const resolveVariants: StyleResolver = (
     const fn = variantValue as VariantSpreadFunction<any>
     variantValue = fn(
       value,
-      getVariantExtras(
-        props,
-        languageContext,
-        theme,
-        defaultProps,
-        avoidDefaultProps,
-        fontFamily
-      )
+      getVariantExtras(styleState, defaultProps, avoidDefaultProps)
     )
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -194,24 +163,17 @@ const resolveVariants: StyleResolver = (
       variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
 
     if (fontFamilyUpdate) {
-      fontFamilyResult = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
+      styleState.fontFamily = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
     }
 
     variantValue = resolveTokensAndVariants(
       key,
       variantValue,
-      props,
+      styleState,
       defaultProps,
-      theme,
-      variants,
-      fontFamilyResult || fontFamily,
-      conf,
       returnVariablesAs,
-      staticConfig,
       parentVariantKey,
-      languageContext,
-      avoidDefaultProps,
-      debug
+      avoidDefaultProps
     )
   }
 
@@ -278,19 +240,14 @@ export const getPropMappedFontFamily = (expanded?: any) => {
 const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
-  props,
+  styleState,
   defaultProps,
-  theme,
-  variants,
-  fontFamily,
-  conf,
   returnVariablesAs,
-  staticConfig,
   parentVariantKey,
-  languageContext,
-  avoidDefaultProps,
-  debug
+  avoidDefaultProps
 ) => {
+  const { conf, staticConfig, debug, theme } = styleState
+  const { variants } = staticConfig
   const res = {}
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -302,7 +259,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     const fKey = conf.shorthands[rKey] || rKey
     const val = value[rKey]
 
-    if (fKey in variants) {
+    if (variants && fKey in variants) {
       // avoids infinite loop if variant is matching a style prop
       // eg: { variants: { flex: { true: { flex: 2 } } } }
       if (parentVariantKey && parentVariantKey === key) {
@@ -311,18 +268,11 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
         const variantOut = resolveVariants(
           fKey,
           val,
-          props,
+          styleState,
           defaultProps,
-          theme,
-          variants,
-          fontFamily,
-          conf,
           returnVariablesAs,
-          staticConfig,
           key,
-          languageContext,
-          avoidDefaultProps,
-          debug
+          avoidDefaultProps
         )
 
         // apply, merging sub-styles
@@ -353,18 +303,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (typeof val === 'string') {
       const fVal =
-        val[0] === '$'
-          ? getToken(
-              fKey,
-              val,
-              conf,
-              theme,
-              fontFamily,
-              languageContext,
-              returnVariablesAs,
-              debug
-            )
-          : val
+        val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
       res[fKey] = fVal
       continue
     }
@@ -373,18 +312,11 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const subObject = resolveTokensAndVariants(
         fKey,
         val,
-        props,
+        styleState,
         defaultProps,
-        theme,
-        variants,
-        fontFamily,
-        conf,
         returnVariablesAs,
-        staticConfig,
         key,
-        languageContext,
-        avoidDefaultProps,
-        debug
+        avoidDefaultProps
       )
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -452,13 +384,12 @@ const fontShorthand = {
 const getToken = (
   key: string,
   value: string,
-  conf: TamaguiInternalConfig,
-  theme: any,
-  fontFamily: string | undefined,
-  languageContext?: LanguageContextType,
+  styleState: GetStyleState,
   resolveAs?: ResolveVariableTypes,
   debug?: DebugProp
 ) => {
+  const { theme, conf, languageContext, fontFamily } = styleState
+
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false

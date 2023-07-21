@@ -36,6 +36,7 @@ import type {
   ClassNamesObject,
   DebugProp,
   GetStyleResult,
+  GetStyleState,
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
@@ -66,21 +67,6 @@ import {
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
-
-type GetStyleState = {
-  style: TextStyleProps
-  usedKeys: Record<string, number>
-  classNames: ClassNamesObject
-  staticConfig: StaticConfigParsed
-  theme: ThemeParsed
-  props: Record<string, any>
-  viewProps: Record<string, any>
-  state: SplitStyleState
-  conf: TamaguiInternalConfig
-  languageContext?: FontLanguageProps
-  avoidDefaultProps?: boolean
-  avoidMergeTransform?: boolean
-}
 
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
@@ -162,14 +148,14 @@ export const getSplitStyles: StyleSplitter = (
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
-  // fontFamily is our special baby, ensure we grab the latest set one always
-  let fontFamily: string | undefined
   let mediaStylesSeen = 0
 
   /**
    * Not the biggest fan of creating this object but it is a nice API
    */
   const styleState: GetStyleState = {
+    // fontFamily is our special baby, ensure we grab the latest set one always
+    fontFamily: undefined,
     classNames,
     conf,
     props,
@@ -180,6 +166,7 @@ export const getSplitStyles: StyleSplitter = (
     usedKeys,
     viewProps,
     languageContext,
+    debug,
   }
 
   if (process.env.NODE_ENV === 'development' && debug && isClient) {
@@ -553,26 +540,16 @@ export const getSplitStyles: StyleSplitter = (
     // default font family
     // is this great? no, but backwards compat until we add tests and make better
     defaultFontVariable ||= `$${conf.defaultFont}`
-    fontFamily ||=
+    styleState.fontFamily ||=
       props[conf.inverseShorthands.fontFamily] || props.fontFamily || defaultFontVariable
 
     const expanded =
       isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
         ? [[keyInit, valInit]]
-        : propMapper(
-            keyInit,
-            valInit,
-            theme,
-            props,
-            state,
-            fontFamily,
-            languageContext,
-            undefined,
-            debug
-          )
+        : propMapper(keyInit, valInit, styleState.props, styleState)
 
-    if (!fontFamily) {
-      fontFamily = getPropMappedFontFamily(expanded)
+    if (!styleState.fontFamily) {
+      styleState.fontFamily = getPropMappedFontFamily(expanded)
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -631,7 +608,6 @@ export const getSplitStyles: StyleSplitter = (
           styleState,
           key,
           val,
-          fontFamily,
           true,
           state.noClassNames
         )
@@ -796,7 +772,6 @@ export const getSplitStyles: StyleSplitter = (
           styleState,
           key,
           val,
-          fontFamily,
           // TODO try true like pseudo
           false
         )
@@ -898,7 +873,7 @@ export const getSplitStyles: StyleSplitter = (
               mediaState[mediaKeyShort]
             )
             if (key === 'fontFamily') {
-              fontFamily = mediaStyle.fontFamily as string
+              styleState.fontFamily = mediaStyle.fontFamily as string
             }
           }
         }
@@ -912,10 +887,10 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
 
-      if (key === 'fontFamily' && !fontFamily && valInit && val) {
+      if (key === 'fontFamily' && !styleState.fontFamily && valInit && val) {
         const fam = valInit[0] === '$' ? valInit : val
         if (fam in conf.fontsParsed) {
-          fontFamily = fam
+          styleState.fontFamily = fam
         }
       }
 
@@ -944,7 +919,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   // default to default font
-  fontFamily ||= conf.defaultFont
+  styleState.fontFamily ||= conf.defaultFont
 
   fixStyles(style)
   if (isWeb) {
@@ -960,7 +935,7 @@ export const getSplitStyles: StyleSplitter = (
           faceInfo[style.fontWeight as string]?.[style.fontStyle || 'normal']?.val
         if (overrideFace) {
           style.fontFamily = overrideFace
-          fontFamily = overrideFace
+          styleState.fontFamily = overrideFace
           delete style.fontWeight
           delete style.fontStyle
         }
@@ -1097,7 +1072,7 @@ export const getSplitStyles: StyleSplitter = (
   const result: GetStyleResult = {
     space,
     hasMedia,
-    fontFamily,
+    fontFamily: styleState.fontFamily,
     viewProps,
     // @ts-expect-error
     style,
@@ -1211,7 +1186,6 @@ export const getSubStyle = (
   styleState: GetStyleState,
   subKey: string,
   styleIn: Object,
-  fontFamily?: string,
   avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
 ): TextStyleProps => {
@@ -1224,11 +1198,8 @@ export const getSubStyle = (
     const expanded = staticConfig.propMapper(
       key,
       val,
-      theme,
       getSubStyleProps(staticConfig.defaultProps, props, props[subKey]),
-      state,
-      fontFamily,
-      languageContext,
+      styleState,
       avoidDefaultProps
     )
     if (!expanded || (!staticConfig.isHOC && key in skipProps)) {

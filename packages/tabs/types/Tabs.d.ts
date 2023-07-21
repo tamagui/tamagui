@@ -167,7 +167,6 @@ declare const TabsContentFrame: import("@tamagui/web").TamaguiComponent<(Omit<im
     readonly elevation?: SizeTokens | undefined;
 }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
     readonly backgrounded?: boolean | undefined;
-    /** Used for making custom indicators when trigger interacted with */
     readonly radiused?: boolean | undefined;
     readonly hoverTheme?: boolean | undefined;
     readonly pressTheme?: boolean | undefined;
@@ -996,7 +995,6 @@ export declare const Tabs: React.ForwardRefExoticComponent<((Omit<import("react-
         readonly elevation?: SizeTokens | undefined;
     }, "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
         readonly backgrounded?: boolean | undefined;
-        /** Used for making custom indicators when trigger interacted with */
         readonly radiused?: boolean | undefined;
         readonly hoverTheme?: boolean | undefined;
         readonly pressTheme?: boolean | undefined;

@@ -1279,33 +1279,39 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 
 export type PropMappedValue = [string, any][] | undefined
 
+export type GetStyleState = {
+  style: TextStyleProps
+  usedKeys: Record<string, number>
+  classNames: ClassNamesObject
+  staticConfig: StaticConfigParsed
+  theme: ThemeParsed
+  props: Record<string, any>
+  viewProps: Record<string, any>
+  state: SplitStyleState
+  conf: TamaguiInternalConfig
+  languageContext?: FontLanguageProps
+  avoidDefaultProps?: boolean
+  avoidMergeTransform?: boolean
+  fontFamily?: string
+  debug?: DebugProp
+}
+
 export type StyleResolver<Response = PropMappedValue> = (
   key: string,
   value: any,
-  props: Record<string, any>,
+  state: GetStyleState,
   defaultProps: any,
-  theme: any,
-  variants: GenericVariantDefinitions,
-  fontFamily: string | undefined,
-  conf: TamaguiInternalConfig,
   returnVariablesAs: 'auto' | 'value' | 'non-color-value',
-  staticConfig: StaticConfigParsed,
   parentVariantKey: string,
-  languageContext?: LanguageContextType,
-  avoidDefaultProps?: boolean,
-  debug?: DebugProp
+  avoidDefaultProps?: boolean
 ) => Response
 
 export type PropMapper = (
   key: string,
   value: any,
-  theme: ThemeParsed,
   props: Record<string, any>,
-  state: Partial<SplitStyleState>,
-  fontFamily?: string,
-  languageContext?: FontLanguageProps,
-  avoidDefaultProps?: boolean,
-  debug?: DebugProp
+  state: GetStyleState,
+  avoidDefaultProps?: boolean
 ) => PropMappedValue
 
 export type StaticConfigParsed = StaticConfig & {
