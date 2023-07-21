@@ -267,7 +267,7 @@ const RadioGroupItem = RadioGroupItemFrame.extractable(
           ) : (
             <>
               <RadioGroupItemFrame
-                // theme={checked ? 'active' : undefined}
+                theme={checked ? 'active' : null}
                 data-state={getState(checked)}
                 data-disabled={isDisabled ? '' : undefined}
                 role="radio"
