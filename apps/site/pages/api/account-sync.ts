@@ -46,7 +46,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const [userGithubToken, usetDiscordToken] = await Promise.all([
     githubTokenSync(session),
-    githubTokenSync(session),
+    discordTokenSync(session),
   ])
 
   const githubLogin =

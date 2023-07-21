@@ -7,6 +7,7 @@ import { StudioQueueCard } from '@components/StudioQueueCard'
 import { getDefaultAvatarImage } from '@lib/avatar'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database } from '@lib/supabase-types'
+import { withSupabase } from '@lib/withSupabase'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { ThemeTint } from '@tamagui/logo'
@@ -357,10 +358,13 @@ const GithubConnection = () => {
     setLoading(false)
   }
 
-  if (message.content)
-    <Notice>
-      <Paragraph>{message.content}</Paragraph>
-    </Notice>
+  if (message.content) {
+    return (
+      <Notice>
+        <Paragraph>{message.content}</Paragraph>
+      </Notice>
+    )
+  }
 
   return (
     <XStack gap="$2">
@@ -384,10 +388,6 @@ const DiscordConnection = () => {
   const { data } = useUser()
   if (!data) return null
   const connectedDiscord = data.connections.discord
-  const {
-    session: { user },
-  } = data
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type?: string; content?: string }>({
     content: '',
@@ -410,10 +410,13 @@ const DiscordConnection = () => {
     setLoading(false)
   }
 
-  if (message.content)
-    <Notice>
-      <Paragraph>{message.content}</Paragraph>
-    </Notice>
+  if (message.content) {
+    return (
+      <Notice>
+        <Paragraph>{message.content}</Paragraph>
+      </Notice>
+    )
+  }
 
   return (
     <XStack gap="$2">
@@ -465,4 +468,5 @@ const SponsorButton = () => {
   )
 }
 
-Page.getLayout = getDefaultLayout
+Page.getLayout = (page, pageProps, path) =>
+  withSupabase(getDefaultLayout(page, pageProps, path), pageProps)
