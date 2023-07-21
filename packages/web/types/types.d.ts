@@ -5,7 +5,7 @@ import type { GestureResponderHandlers, PressableProps, Text as RNText, TextProp
 import type { Variable } from './createVariable';
 import type { ResolveVariableTypes } from './helpers/createPropMapper';
 import { StyledContext } from './helpers/createStyledContext';
-import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types';
+import type { FontLanguageProps } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
@@ -623,8 +623,24 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
     children?: ReactNode;
 };
 export type PropMappedValue = [string, any][] | undefined;
-export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: Record<string, any>, defaultProps: any, theme: any, variants: GenericVariantDefinitions, fontFamily: string | undefined, conf: TamaguiInternalConfig, returnVariablesAs: 'auto' | 'value' | 'non-color-value', staticConfig: StaticConfigParsed, parentVariantKey: string, languageContext?: LanguageContextType, avoidDefaultProps?: boolean, debug?: DebugProp) => Response;
-export type PropMapper = (key: string, value: any, theme: ThemeParsed, props: Record<string, any>, state: Partial<SplitStyleState>, fontFamily?: string, languageContext?: FontLanguageProps, avoidDefaultProps?: boolean, debug?: DebugProp) => PropMappedValue;
+export type GetStyleState = {
+    style: TextStyleProps;
+    usedKeys: Record<string, number>;
+    classNames: ClassNamesObject;
+    staticConfig: StaticConfigParsed;
+    theme: ThemeParsed;
+    props: Record<string, any>;
+    viewProps: Record<string, any>;
+    state: SplitStyleState;
+    conf: TamaguiInternalConfig;
+    languageContext?: FontLanguageProps;
+    avoidDefaultProps?: boolean;
+    avoidMergeTransform?: boolean;
+    fontFamily?: string;
+    debug?: DebugProp;
+};
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, state: GetStyleState, defaultProps: any, returnVariablesAs: 'auto' | 'value' | 'non-color-value', parentVariantKey: string, avoidDefaultProps?: boolean) => Response;
+export type PropMapper = (key: string, value: any, props: Record<string, any>, state: GetStyleState, avoidDefaultProps?: boolean) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;

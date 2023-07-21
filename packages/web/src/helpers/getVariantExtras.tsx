@@ -1,20 +1,17 @@
-import { getConfig } from '../config'
 import { getVariableValue } from '../createVariable'
-import { GenericFonts } from '../types'
+import { GenericFonts, GetStyleState } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 import { createProxy } from './createProxy'
 
 const extrasCache = new WeakMap()
 
 export function getVariantExtras(
-  props: any,
-  languageContext?: LanguageContextType,
-  theme?: any,
+  styleState: GetStyleState,
   defaultProps?: any,
   avoidDefaultProps = false,
   fontFamily?: string
 ) {
-  const conf = getConfig()
+  const { props, conf, languageContext, theme } = styleState
 
   if (extrasCache.has(props)) {
     return extrasCache.get(props)
