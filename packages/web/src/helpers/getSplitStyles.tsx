@@ -1368,6 +1368,8 @@ if (process.env.TAMAGUI_TARGET === 'native') {
 } else {
   Object.assign(skipProps, {
     elevationAndroid: 1,
+    allowFontScaling: true,
+    adjustsFontSizeToFit: true,
   })
 }
 
