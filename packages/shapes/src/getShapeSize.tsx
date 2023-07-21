@@ -3,10 +3,10 @@ import { SizeVariantSpreadFunction } from '@tamagui/web'
 
 export const getShapeSize: SizeVariantSpreadFunction<SizableStackProps> = (
   size,
-  { tokens }
+  { tokens, props }
 ) => {
-  const width = tokens.size[size] ?? size
-  const height = tokens.size[size] ?? size
+  const width = props.width ?? tokens.size[size] ?? size
+  const height = props.height ?? tokens.size[size] ?? size
   return {
     width,
     height,

@@ -1,10 +1,14 @@
 // import './wdyr'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, H1, Square, Text, XStack, YStack } from 'tamagui'
+import { AnimatePresence, Circle, H1, Square, Text, XStack, YStack } from 'tamagui'
 
 export const Sandbox = () => {
-  return <>{/*  */}</>
+  return (
+    <>
+      <Circle width={100} height={100} bc="red" />
+    </>
+  )
 }
 
 // const NumberTicker = () => {
