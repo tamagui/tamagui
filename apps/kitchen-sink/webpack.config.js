@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude, TamaguiPlugin } = require('tamagui-loader')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -16,14 +16,6 @@ const boolVals = {
 }
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
-
-const tamaguiOptions = {
-  config: './src/tamagui.config.ts',
-  components: ['tamagui', '@tamagui/sandbox-ui'],
-  importsWhitelist: ['constants.js'],
-  disableExtraction,
-  // disableExtractFoundComponents: true,
-}
 
 /** @type { import('webpack').Configuration } */
 module.exports = {
@@ -40,9 +32,6 @@ module.exports = {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     alias: {
       'react-native$': 'react-native-web-lite',
-      // 'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
-      'react-native-reanimated': require.resolve('react-native-reanimated'),
-      'react-native-reanimated$': require.resolve('react-native-reanimated'),
       'react-native-svg': '@tamagui/react-native-svg',
     },
   },
@@ -112,7 +101,14 @@ module.exports = {
     ],
   },
   plugins: [
-    new TamaguiPlugin(tamaguiOptions),
+    new TamaguiPlugin({
+      config: './src/tamagui.config.ts',
+      components: ['tamagui', '@tamagui/sandbox-ui'],
+      importsWhitelist: ['constants.js'],
+      disableExtraction,
+      // disable: true,
+      // disableExtractFoundComponents: true,
+    }),
     // new BundleAnalyzerPlugin(),
     new MiniCSSExtractPlugin({
       filename: 'static/css/[name].[contenthash].css',
