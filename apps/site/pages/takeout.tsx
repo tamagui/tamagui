@@ -478,6 +478,15 @@ export default function TakeoutPage({
           <LoadCherryBomb />
           <LoadMunro />
           <script src='https://cdn.paritydeals.com/banner.js' />
+          <style dangerouslySetInnerHTML={{__html: `
+.parity-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+`}} />
         </Head>
       </>
 
