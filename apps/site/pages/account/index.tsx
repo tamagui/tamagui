@@ -401,7 +401,6 @@ const DiscordConnection = () => {
       provider,
       options: {
         redirectTo: `${window.location.origin}/account`,
-        scopes: 'read:org',
       },
     })
     if (error) {
