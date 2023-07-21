@@ -44,6 +44,9 @@ export declare const themeableVariants: {
             props: any;
             tokens: any;
         }) => {
+            borderRadius: number;
+            padding: number;
+        } | {
             width: any;
             height: any;
             maxWidth: any;

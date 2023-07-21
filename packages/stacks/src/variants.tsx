@@ -50,18 +50,25 @@ export const radiused = {
   },
 }
 
+const circularStyle = {
+  borderRadius: 100_000,
+  padding: 0,
+}
+
 export const circular = {
   true: (_, { props, tokens }) => {
-    const size = tokens.size[props.size || '$true']
+    if (!('size' in props)) {
+      return circularStyle
+    }
+    const size = tokens.size[props.size]
     return {
+      ...circularStyle,
       width: size,
       height: size,
       maxWidth: size,
       maxHeight: size,
       minWidth: size,
       minHeight: size,
-      borderRadius: 100_000,
-      padding: 0,
     }
   },
 }

@@ -19,6 +19,9 @@ export declare const circular: {
         props: any;
         tokens: any;
     }) => {
+        borderRadius: number;
+        padding: number;
+    } | {
         width: any;
         height: any;
         maxWidth: any;
