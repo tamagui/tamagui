@@ -141,6 +141,10 @@ module.exports = {
     ['transform-inline-environment-variables', {
       include: ['TAMAGUI_TARGET']
     }]
+    [
+      "@tamagui/babel-plugin",
+      { components: ["tamagui"], config: "./tamagui.config.ts" },
+     ],
   ]
 }
 ```
