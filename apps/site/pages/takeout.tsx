@@ -477,6 +477,7 @@ export default function TakeoutPage({
           <LoadCherryBomb />
           <LoadCherryBomb />
           <LoadMunro />
+          <script src='https://cdn.paritydeals.com/banner.js' />
         </Head>
       </>
 
