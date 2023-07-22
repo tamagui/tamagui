@@ -191,6 +191,8 @@ See the [Next.js Guide](/docs/guides/next-js) for more details on setting up you
 
 #### Babel / Metro
 
+Note that the `@tamagui/babel-plugin` is completely optional, and on native Tamagui doesn't optimize as much as on web, so leaving it out is actually recommended. If much later on you feel the need for a bit more speed, you can try adding it. But the `babel-plugin-transform-inline-environment-variables` is necessary so that the `TAMAGUI_TARGET` environment variable gets properly set.
+
 ```bash
 yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
 ```
@@ -203,6 +205,7 @@ process.env.TAMAGUI_TARGET = 'native'
 
 module.exports = {
   plugins: [
+    // optional:
     [
       '@tamagui/babel-plugin',
       {
@@ -213,15 +216,11 @@ module.exports = {
         disableExtraction: process.env.NODE_ENV === 'development',
       }
     ],
-    // be sure to set TAMAGUI_TARGET
-    ['transform-inline-environment-variables', {
-      include: ['TAMAGUI_TARGET']
-    }]
+    // be sure TAMAGUI_TARGET environment variable is set
+    'transform-inline-environment-variables'
   ]
 }
 ```
-
-We've noticed some issues with `@types/react-native` version `0.65.5`, you'll want to upgrade to at least `0.66.6`.
 
 #### Expo
 

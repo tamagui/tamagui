@@ -25,12 +25,14 @@ To support dark mode, update your app.json to app.config.ts and set "userInterfa
 
 ### Update Babel / Metro
 
+Note that the Tamagui babel plugin is optional for native.
+
 ```bash
 yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
 npx expo install react-native-reanimated
 ```
 
-Update your `babel.config.js` to include the `@tamagui/babel-plugin`, `transform-inline-environment-variables` and `react-native-reanimated` plugins:
+Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`, and the necessary `transform-inline-environment-variables` and `react-native-reanimated` (if using reanimated animations) plugins:
 
 ```js
 // Don't forget to specify your TAMAGUI_TARGET here or ideally in the command to run / .env files
@@ -44,6 +46,7 @@ module.exports = function (api) {
       // NOTE: this is required to pass the right environment
       [
         "transform-inline-environment-variables",
+        // NOTE: include is optional, you can leave this part out
         {
           include: ["TAMAGUI_TARGET", "EXPO_ROUTER_APP_ROOT"],
         },
@@ -66,6 +69,7 @@ module.exports = function (api) {
 ```
 
 Finally you're going to want to update Metro so that it can play well with tamagui:
+
 ```ts
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
@@ -228,6 +232,7 @@ Your `package.json` scripts should look something like this:
   }
 }
 ```
+
 If you are targeting both web and mobile with Expo only (no Next.js), be sure to start two metro bundlers on different ports: one for native (8081) and another one for web (8082).
 
 <Image
