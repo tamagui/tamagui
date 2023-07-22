@@ -1286,6 +1286,7 @@ export type GetStyleState = {
   staticConfig: StaticConfigParsed
   theme: ThemeParsed
   props: Record<string, any>
+  curProps: Record<string, any>
   viewProps: Record<string, any>
   state: SplitStyleState
   conf: TamaguiInternalConfig
@@ -1309,8 +1310,8 @@ export type StyleResolver<Response = PropMappedValue> = (
 export type PropMapper = (
   key: string,
   value: any,
-  props: Record<string, any>,
   state: GetStyleState,
+  subProps?: Record<string, any>,
   avoidDefaultProps?: boolean
 ) => PropMappedValue
 
