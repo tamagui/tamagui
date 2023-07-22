@@ -1,7 +1,3 @@
-- correctness:
-  - we probably need to accumulate curProps in getSplitStyles as we expand variants so we can pass the right "props" to the variant functions extras... that functionality is turning out to be tricky/expensive
-    - but if we do this we can get rid of the whole proxy/ thing here:
-      "// TODO do this in splitstlye"
 
 
 - sheet snappoints not consistent on mobile web vs other platforms (maybe dvh or maybe just different?)

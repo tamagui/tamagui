@@ -630,6 +630,7 @@ export type GetStyleState = {
     staticConfig: StaticConfigParsed;
     theme: ThemeParsed;
     props: Record<string, any>;
+    curProps: Record<string, any>;
     viewProps: Record<string, any>;
     state: SplitStyleState;
     conf: TamaguiInternalConfig;
@@ -640,7 +641,7 @@ export type GetStyleState = {
     debug?: DebugProp;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, state: GetStyleState, defaultProps: any, returnVariablesAs: 'auto' | 'value' | 'non-color-value', parentVariantKey: string, avoidDefaultProps?: boolean) => Response;
-export type PropMapper = (key: string, value: any, props: Record<string, any>, state: GetStyleState, avoidDefaultProps?: boolean) => PropMappedValue;
+export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>, avoidDefaultProps?: boolean) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;

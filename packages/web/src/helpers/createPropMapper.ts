@@ -32,37 +32,32 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   const mapper: PropMapper = (
     key,
     value,
-    propsIn,
     styleStateIn,
+    subPropsIn,
     avoidDefaultProps = false
   ) => {
     if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
-      if (key === 'elevationAndroid') {
-        return
-      }
+      if (key === 'elevationAndroid') return
     }
 
     // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
-    const styleState = {
-      ...styleStateIn,
-      // awkward bit thanks for static
-      props: styleStateIn.state.fallbackProps || propsIn,
-    }
+    // fallbackProps is awkward thanks to static
+    // also we need to override the props here because subStyles pass in a sub-style props object
+    const subProps = styleStateIn.state.fallbackProps || subPropsIn
+    const styleState = subProps
+      ? {
+          ...styleStateIn,
+          curProps: subProps,
+        }
+      : styleStateIn
 
     const { conf, state, fontFamily } = styleState
     const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
-    if (
-      process.env.NODE_ENV === 'development' &&
-      fontFamily &&
-      fontFamily[0] === '$' &&
-      !(fontFamily in conf.fontsParsed)
-    ) {
-      console.warn(
-        `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(
-          conf.fontsParsed
-        ).join(', ')}`
-      )
+    // prettier-ignore
+    if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
+      // prettier-ignore
+      console.warn(`Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(', ')}`)
     }
 
     const variantValue = resolveVariants(
@@ -79,7 +74,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       return variantValue
     }
 
-    let shouldReturn = value != null
+    let shouldReturn = false
 
     // handle shorthands
     if (key in conf.shorthands) {
@@ -95,7 +90,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       }
     }
 
-    if (shouldReturn) {
+    if (shouldReturn || value != null) {
       return expandStyle(key, value) || [[key, value]]
     }
   }
@@ -112,10 +107,10 @@ const resolveVariants: StyleResolver = (
   parentVariantKey,
   avoidDefaultProps = false
 ) => {
-  const { staticConfig, fontFamily, conf, debug } = styleState
+  const { staticConfig, conf, debug } = styleState
   const { variants } = staticConfig
 
-  if (!variants || !(key in variants) || value === undefined) {
+  if (!variants || !(key in variants) || value == null) {
     return
   }
 
@@ -154,6 +149,12 @@ const resolveVariants: StyleResolver = (
       console.log({ fn, variantValue })
       console.groupEnd()
     }
+  }
+
+  // update curProps for variants expanded:
+  styleState.curProps = {
+    ...styleState.curProps,
+    ...variantValue,
   }
 
   let fontFamilyResult: any

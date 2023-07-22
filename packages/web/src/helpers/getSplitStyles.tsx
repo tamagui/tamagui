@@ -154,8 +154,7 @@ export const getSplitStyles: StyleSplitter = (
    * Not the biggest fan of creating this object but it is a nice API
    */
   const styleState: GetStyleState = {
-    // fontFamily is our special baby, ensure we grab the latest set one always
-    fontFamily: undefined,
+    curProps: props,
     classNames,
     conf,
     props,
@@ -546,7 +545,7 @@ export const getSplitStyles: StyleSplitter = (
     const expanded =
       isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
         ? [[keyInit, valInit]]
-        : propMapper(keyInit, valInit, styleState.props, styleState)
+        : propMapper(keyInit, valInit, styleState)
 
     if (!styleState.fontFamily) {
       styleState.fontFamily = getPropMappedFontFamily(expanded)
@@ -1189,7 +1188,7 @@ export const getSubStyle = (
   avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
 ): TextStyleProps => {
-  const { staticConfig, theme, props, state, conf, languageContext } = styleState
+  const { staticConfig, props, conf } = styleState
   const styleOut: TextStyleProps = {}
 
   for (let key in styleIn) {
@@ -1198,8 +1197,8 @@ export const getSubStyle = (
     const expanded = staticConfig.propMapper(
       key,
       val,
-      getSubStyleProps(staticConfig.defaultProps, props, props[subKey]),
       styleState,
+      getSubStyleProps(staticConfig.defaultProps, props, props[subKey]),
       avoidDefaultProps
     )
     if (!expanded || (!staticConfig.isHOC && key in skipProps)) {
