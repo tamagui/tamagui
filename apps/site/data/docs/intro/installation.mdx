@@ -127,10 +127,10 @@ TAMAGUI_TARGET=native expo start
 You'll also need to indicate to Metro and babel to inline TAMAGUI_TARGET like so:
 
 ```bash
-yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+yarn add babel-plugin-transform-inline-environment-variables
 ```
 
-Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+Add `transform-inline-environment-variables` to your `babel.config.js` plugins:
 
 ```js
 // just to ensure TAMAGUI_TARGET is set
@@ -138,9 +138,7 @@ process.env.TAMAGUI_TARGET = 'native'
 
 module.exports = {
   plugins: [
-    ['transform-inline-environment-variables', {
-      include: ['TAMAGUI_TARGET']
-    }]
+    'transform-inline-environment-variables'
   ]
 }
 ```
