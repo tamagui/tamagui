@@ -10,14 +10,13 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
+import type { GetStyleState, PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import type {
   ExtractedAttr,
-  ExtractedAttrAttr,
   ExtractedAttrStyle,
   ExtractorOptions,
   ExtractorParseProps,
@@ -65,6 +64,17 @@ const INLINE_EXTRACTABLE = {
     onPressOut: 'onMouseUp',
   }),
 }
+
+const defaultComponentState = {
+  focus: false,
+  hover: false,
+  unmounted: true,
+  press: false,
+  pressIn: false,
+  resolveVariablesAs: 'variable',
+  noClassNames: false,
+  isAnimated: false,
+} as const
 
 const validHooks = {
   useMedia: true,
@@ -574,16 +584,7 @@ export function createExtractor(
           styles,
           Component.staticConfig,
           themeState,
-          {
-            focus: false,
-            hover: false,
-            unmounted: true,
-            press: false,
-            pressIn: false,
-            resolveVariablesAs: 'variable',
-            noClassNames: false,
-            isAnimated: false,
-          },
+          defaultComponentState,
           undefined,
           undefined,
           undefined,
@@ -861,6 +862,23 @@ export function createExtractor(
           // => {...media.sm && x && { color: 'red' }}
           // => {...media.sm && !x && { color: 'blue' }}
 
+          const propMapperStyleState: GetStyleState = {
+            staticConfig,
+            usedKeys: {},
+            classNames: {},
+            style: {},
+            theme: defaultTheme,
+            viewProps: staticConfig.defaultProps,
+            conf: tamaguiConfig!,
+            curProps: staticConfig.defaultProps,
+            props: staticConfig.defaultProps,
+            state: {
+              ...defaultComponentState,
+              resolveVariablesAs: 'auto',
+            },
+            debug: shouldPrintDebug,
+          }
+
           attrs = traversePath
             .get('openingElement')
             .get('attributes')
@@ -1095,18 +1113,7 @@ export function createExtractor(
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = staticConfig.propMapper(
-                name,
-                styleValue,
-                defaultTheme,
-                staticConfig.defaultProps,
-                { resolveVariablesAs: 'auto' },
-                // TODO fontFamily?
-                undefined,
-                undefined,
-                undefined,
-                shouldPrintDebug
-              )
+              out = staticConfig.propMapper(name, styleValue, propMapperStyleState)
 
               if (out) {
                 if (!Array.isArray(out)) {
@@ -1767,18 +1774,17 @@ export function createExtractor(
 
                   // if flattening, expand variants
                   if (variants[name] && variantValues.has(name)) {
+                    const styleState = {
+                      ...propMapperStyleState,
+                      props: completeProps,
+                      curProps: completeProps,
+                    }
+
                     let out = Object.fromEntries(
                       staticConfig.propMapper(
                         name,
                         variantValues.get(name),
-                        defaultTheme,
-                        completeProps,
-                        { ...state, resolveVariablesAs: 'auto' },
-                        // TODO fontFamily?
-                        undefined,
-                        undefined,
-                        undefined,
-                        shouldPrintDebug
+                        styleState
                       ) || []
                     )
                     if (out && isTargetingHTML) {

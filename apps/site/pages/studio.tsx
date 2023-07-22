@@ -284,7 +284,7 @@ const Hero = memo(() => {
     strategy: 'blur',
     blurPct: 100,
     color: 'var(--color10)',
-    opacity: isLight ? 0.4 : 0.285,
+    opacity: isLight ? 0.325 : 0.285,
     background: 'transparent',
     style: {
       transition: `all ease-out 500ms`,

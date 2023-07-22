@@ -4,6 +4,7 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
+  getTokens,
   getVariableValue,
   getVariantExtras,
   styled,
@@ -46,9 +47,12 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
-    const extras = getVariantExtras(props)
     const shapeSize = getVariableValue(
-      getShapeSize(context.size, extras)?.width
+      getShapeSize(
+        context.size,
+        // @ts-expect-error
+        { tokens: getTokens() }
+      )?.width
     ) as number
 
     React.useEffect(() => {

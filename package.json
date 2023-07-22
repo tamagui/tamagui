@@ -46,7 +46,7 @@
     "release": "node -r esbuild-register ./scripts/release.ts",
     "sandbox:extract": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "sandbox:prod": "yarn workspace @tamagui/kitchen-sink dev:web:prod",
-    "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web",
+    "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "setup": "node -r esbuild-register ./scripts/setup.ts",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",

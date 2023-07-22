@@ -810,12 +810,13 @@ export function createComponent<
                   onPress?.(e)
                 }
               : undefined,
-            onLongPress: attachPress
-              ? (e) => {
-                  unPress()
-                  onLongPress?.(e)
-                }
-              : undefined,
+            onLongPress:
+              attachPress && onLongPress
+                ? (e) => {
+                    unPress()
+                    onLongPress?.(e)
+                  }
+                : undefined,
           }
         : null
 

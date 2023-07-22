@@ -552,11 +552,11 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed('  🔹 expanded', keyInit, valInit)
+      console.groupCollapsed('  💠 expanded', keyInit, valInit)
       if (!isServer && isDevTools) {
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys } })
+        console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys }, curProps: { ...styleState.curProps } })
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
           ...style,

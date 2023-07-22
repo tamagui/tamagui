@@ -1,13 +1,5 @@
-import {
-  ColorStyleProp,
-  ColorTokens,
-  SpecificTokensSpecial,
-  StackProps,
-  TamaguiSettings,
-  ThemeValueFallbackColor,
-} from '@tamagui/core'
-import { SomewhatSpecificColorValue } from '@tamagui/core'
-import { ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+// debug
+import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -24,12 +16,10 @@ import {
   XStack,
   YStack,
   styled,
-  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
-import { GithubIcon } from './GithubIcon'
 import { useHeroHovered } from './heroState'
 import { InstallInput } from './InstallInput'
 import { TwitterIcon } from './TwitterIcon'
