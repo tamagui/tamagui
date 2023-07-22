@@ -18,17 +18,6 @@ async function githubTokenSync(session: Session) {
   return token
 }
 
-async function discordTokenSync(session: Session) {
-  const token = session?.user?.user_metadata.discord_token
-  if (token) {
-    await supabaseAdmin
-      .from('users_private')
-      .upsert({ id: session.user.id, discord_token: token })
-  }
-
-  return token
-}
-
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res })
   const {
@@ -44,9 +33,8 @@ const handler: NextApiHandler = async (req, res) => {
     })
   }
 
-  const [userGithubToken, usetDiscordToken] = await Promise.all([
+  const [userGithubToken] = await Promise.all([
     githubTokenSync(session),
-    discordTokenSync(session),
   ])
 
   const githubLogin =

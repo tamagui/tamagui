@@ -1,5 +1,4 @@
 import { Container } from '@components/Container'
-import { DiscordIcon } from '@components/DiscordIcon'
 import { GithubIcon } from '@components/GithubIcon'
 import { NextLink } from '@components/NextLink'
 import { Notice } from '@components/Notice'
@@ -21,14 +20,11 @@ import { useState } from 'react'
 import {
   Avatar,
   Button,
-  FontWeightTokens,
   H3,
   Paragraph,
   Separator,
   SizableText,
   Spinner,
-  TamaguiConfig,
-  TamaguiCustomConfig,
   XStack,
   YStack,
 } from 'tamagui'
@@ -315,7 +311,6 @@ const ConnectionsContent = () => {
       <Table
         data={{
           GitHub: <GithubConnection />,
-          Discord: <DiscordConnection />,
         }}
       />
     </YStack>
@@ -380,56 +375,6 @@ const GithubConnection = () => {
       </Button>
 
       <SyncSponsorshipButton />
-    </XStack>
-  )
-}
-
-const DiscordConnection = () => {
-  const { data } = useUser()
-  if (!data) return null
-  const connectedDiscord = data.connections.discord
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<{ type?: string; content?: string }>({
-    content: '',
-    type: '',
-  })
-  const supabaseClient = useSupabaseClient()
-
-  const handleOAuthSignIn = async (provider: Provider) => {
-    setLoading(true)
-    const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/account`,
-      },
-    })
-    if (error) {
-      setMessage({ type: 'error', content: error.message })
-    }
-    setLoading(false)
-  }
-
-
-  if (message.content) {
-    return (
-      <Notice>
-        <Paragraph>{message.content}</Paragraph>
-      </Notice>
-    )
-  }
-
-  return (
-    <XStack gap="$2">
-      <Button
-        theme="dark"
-        disabled={loading}
-        onPress={() => handleOAuthSignIn('discord')}
-        size="$3"
-        icon={DiscordIcon}
-        iconAfter={connectedDiscord ? CheckCircle : null}
-      >
-        {connectedDiscord ? 'Connected' : 'Connect Discord'}
-      </Button>
     </XStack>
   )
 }
