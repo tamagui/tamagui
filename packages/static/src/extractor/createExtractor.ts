@@ -4,7 +4,7 @@ import { basename, relative } from 'path'
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  expandStyles,
+  expandStylesAndRemoveNullishValues,
   getSplitStyles,
   mediaQueryConfig,
   proxyThemeVariables,
@@ -1703,13 +1703,13 @@ export function createExtractor(
           }
 
           // preserves order
-          function expandStylesWithoutVariants(style: any) {
+          function expandStylesAndRemoveNullishValuesWithoutVariants(style: any) {
             let res = {}
             for (const key in style) {
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStyles({ [key]: style[key] })
+                const expanded = expandStylesAndRemoveNullishValues({ [key]: style[key] })
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1726,7 +1726,9 @@ export function createExtractor(
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              const expanded = expandStylesWithoutVariants(cur.value)
+              const expanded = expandStylesAndRemoveNullishValuesWithoutVariants(
+                cur.value
+              )
               // preserve order
               for (const key in expanded) {
                 mergeToEnd(foundStaticProps, key, expanded[key])

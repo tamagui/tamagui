@@ -12,7 +12,7 @@ import type {
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle } from './expandStyle'
-import { expandStyles } from './expandStyles'
+import { expandStylesAndRemoveNullishValues } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
@@ -179,7 +179,7 @@ const resolveVariants: StyleResolver = (
   }
 
   if (variantValue) {
-    const expanded = expandStyles(variantValue)
+    const expanded = expandStylesAndRemoveNullishValues(variantValue)
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('completing variant', key)

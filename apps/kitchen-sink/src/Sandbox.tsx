@@ -1,8 +1,7 @@
 // debug
 // import './wdyr'
 
-import { useEffect, useState } from 'react'
-import { AnimatePresence, Circle, H1, Square, Text, XStack, YStack } from 'tamagui'
+import { Circle } from 'tamagui'
 
 export const Sandbox = () => {
   return (

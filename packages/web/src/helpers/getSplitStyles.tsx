@@ -50,7 +50,7 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
+import type { LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
