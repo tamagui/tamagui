@@ -195,10 +195,10 @@ export const useChangeThemeEffect = (
     prevState: ThemeManagerState = state,
     forceShouldChange = false
   ) {
-    if (forceShouldChange) return
     const forceUpdate = shouldUpdate?.()
-    if (forceUpdate === false) return
+    if (!forceShouldChange && forceUpdate === false) return
     const next = nextState || manager.getState(props, parentManager)
+    if (forceShouldChange) return next
     if (!next) return
     if (forceUpdate !== true) {
       if (!manager.getStateShouldChange(next, prevState)) return
