@@ -409,8 +409,6 @@ const DiscordConnection = () => {
     setLoading(false)
   }
 
-  // temp
-  return null
 
   if (message.content) {
     return (
