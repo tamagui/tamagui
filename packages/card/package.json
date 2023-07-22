@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "1.43.16",
+  "version": "1.43.17",
   "sideEffects": [
     "*.css"
   ],
@@ -31,16 +31,16 @@
     }
   },
   "dependencies": {
-    "@tamagui/create-context": "1.43.16",
-    "@tamagui/stacks": "1.43.16",
-    "@tamagui/web": "1.43.16"
+    "@tamagui/create-context": "1.43.17",
+    "@tamagui/stacks": "1.43.17",
+    "@tamagui/web": "1.43.17"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.43.16",
+    "@tamagui/build": "1.43.17",
     "react": "^18.2.0",
     "react-native": "^0.72.1"
   },

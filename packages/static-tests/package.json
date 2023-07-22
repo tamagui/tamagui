@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.43.16",
+  "version": "1.43.17",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
-    "@tamagui/test-design-system": "1.43.16",
+    "@tamagui/test-design-system": "1.43.17",
     "@testing-library/react": "^13.4.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
