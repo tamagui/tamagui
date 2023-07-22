@@ -19,7 +19,7 @@ async function githubTokenSync(session: Session) {
 }
 
 async function discordTokenSync(session: Session) {
-  const token = session?.provider_token ?? session?.user?.user_metadata.discord_token
+  const token = session?.user?.user_metadata.discord_token
   if (token) {
     await supabaseAdmin
       .from('users_private')
@@ -31,10 +31,10 @@ async function discordTokenSync(session: Session) {
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient({ req, res })
-
   const {
     data: { session },
   } = await supabase.auth.getSession()
+  console.log(session)
   const user = session?.user
 
   if (!user) {
