@@ -105,6 +105,13 @@ export function styled<
         ...defaultProps
       } = options
 
+      if (defaultVariants) {
+        defaultProps = {
+          ...defaultVariants,
+          ...defaultProps,
+        }
+      }
+
       if (parentStaticConfig) {
         const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
         if (!avoid) {
@@ -116,13 +123,6 @@ export function styled<
 
         if (parentStaticConfig.variants) {
           variants = mergeVariants(parentStaticConfig.variants, variants)
-        }
-      }
-
-      if (defaultVariants) {
-        defaultProps = {
-          ...defaultProps,
-          ...defaultVariants,
         }
       }
 

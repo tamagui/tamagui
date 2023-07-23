@@ -1,7 +1,7 @@
 // debug-verbose
 // import './wdyr'
 
-import { Circle } from 'tamagui'
+import { Button, Circle, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
