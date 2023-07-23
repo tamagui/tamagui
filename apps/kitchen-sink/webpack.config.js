@@ -106,6 +106,10 @@ module.exports = {
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
       disableExtraction,
+      themeBuilder: {
+        input: '@tamagui/themes/src/themes-new.ts',
+        output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
+      }
       // disable: true,
       // disableExtractFoundComponents: true,
     }),
