@@ -162,9 +162,6 @@ export async function bundleConfig(props: TamaguiOptions) {
         `
     )
 
-    // get around node.js's module cache to get the new config...
-    delete require.cache[path.resolve(configOutPath)]
-
     let out
     const unregister = registerRequire()
     try {

@@ -1,3 +1,4 @@
+// debug-verbose
 // import './wdyr'
 
 import { Circle } from 'tamagui'
@@ -5,7 +6,7 @@ import { Circle } from 'tamagui'
 export const Sandbox = () => {
   return (
     <>
-      <Circle width={100} height={100} bc="red" />
+      <Circle width={100} height={100} bc={'red'} />
     </>
   )
 }
