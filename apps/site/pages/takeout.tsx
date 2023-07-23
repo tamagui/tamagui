@@ -672,7 +672,7 @@ export default function TakeoutPage({
                     $sm={{ size: '$8' }}
                   >
                     Success is up to you. But we can say you've found the cheat code to
-                    shipping a top quality web and native apps as fast as possible.
+                    shipping top quality web and native apps as fast as possible.
                   </MunroP>
                 </ThemeTint>
 
