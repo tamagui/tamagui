@@ -34,11 +34,11 @@ export type Theme<Masks = string> =
   | ThemeUsingTemplate
   | ThemeUsingMask<Masks>
 
-type ThemeWithParent<Masks = string> = Theme<Masks> & {
+export type ThemeWithParent<Masks = string> = Theme<Masks> & {
   parent: string
 }
 
-type PaletteDefinitions = {
+export type PaletteDefinitions = {
   [key: string]: Palette
 }
 
@@ -48,15 +48,15 @@ export type ThemeDefinition<Masks extends string = string> =
 
 type UnionableString = string & {}
 
-type ThemeDefinitions<Masks extends string = string> = {
+export type ThemeDefinitions<Masks extends string = string> = {
   [key: string]: ThemeDefinition<Masks | UnionableString>
 }
 
-type TemplateDefinitions = {
+export type TemplateDefinitions = {
   [key: string]: Template
 }
 
-type MaskDefinitions = {
+export type MaskDefinitions = {
   [key: string]: CreateMask | CreateMask['mask']
 }
 
