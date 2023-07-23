@@ -1,4 +1,3 @@
-// debug
 import { ThemeTintAlt, useTint } from '@tamagui/logo'
 import { NextLink } from 'components/NextLink'
 import Link from 'next/link'

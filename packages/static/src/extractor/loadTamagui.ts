@@ -73,21 +73,20 @@ let hasLoggedOnce = false
 
 const generateThemesAndLog = async (options: TamaguiOptions) => {
   if (waiting) return
+  if (!options.themeBuilder) return
   try {
     waiting = true
     await new Promise((res) => setTimeout(res, 30))
-    if (options.themeBuilder) {
-      const didGenerate = await generateTamaguiThemes(options)
-      // only logs when changed
-      if (!hasLoggedOnce || didGenerate) {
-        hasLoggedOnce = true
-        const whitespaceBefore = `    `
-        colorLog(Color.FgYellow, `${whitespaceBefore}➡ [tamagui] Generated themes:`)
-        colorLog(
-          Color.Dim,
-          `\n${whitespaceBefore}${relative(process.cwd(), options.themeBuilder.output)}`
-        )
-      }
+    const didGenerate = await generateTamaguiThemes(options)
+    // only logs when changed
+    if (!hasLoggedOnce || didGenerate) {
+      hasLoggedOnce = true
+      const whitespaceBefore = `    `
+      colorLog(Color.FgYellow, `${whitespaceBefore}➡ [tamagui] Generated themes:`)
+      colorLog(
+        Color.Dim,
+        `\n${whitespaceBefore}${relative(process.cwd(), options.themeBuilder.output)}`
+      )
     }
   } finally {
     waiting = false
@@ -259,8 +258,9 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     }
   )
 
-  const disposeThemesWatcher = options.tamaguiOptions.themeBuilder
-    ? await esbuildWatchFiles(options.tamaguiOptions.themeBuilder.input, () => {
+  const themeBuilderInput = options.tamaguiOptions.themeBuilder?.input
+  const disposeThemesWatcher = themeBuilderInput
+    ? await esbuildWatchFiles(require.resolve(themeBuilderInput), () => {
         void generateThemesAndLog(options.tamaguiOptions)
       })
     : null
@@ -275,8 +275,17 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
 
 async function esbuildWatchFiles(entry: string, onChanged: () => void) {
   let hasRunOnce = false
+
+  /**
+   * We're just (ab)using this as a file watcher, so bundle = true to follow paths
+   * and then write: false and logLevel silent to avoid all errors
+   */
+
   const context = await esbuild.context({
+    bundle: true,
     entryPoints: [entry],
+    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
+    logLevel: 'silent',
     write: false,
     plugins: [
       {

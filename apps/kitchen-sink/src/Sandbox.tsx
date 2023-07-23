@@ -1,4 +1,3 @@
-// debug
 // import './wdyr'
 
 import { Circle } from 'tamagui'
