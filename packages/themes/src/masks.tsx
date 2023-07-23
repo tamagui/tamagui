@@ -7,6 +7,7 @@ import {
   createStrengthenMask,
   skipMask,
 } from '@tamagui/create-theme'
+import { MaskDefinitions } from '@tamagui/theme-builder'
 
 export const masks = {
   identity: createIdentityMask(),
@@ -42,4 +43,15 @@ export const masks = {
       borderColorFocus: softer.borderColorFocus,
     }
   }),
-}
+  softenBorder2: createMask((template, options) => {
+    const plain = skipMask.mask(template, options)
+    const softer = createSoftenMask({ strength: 2 }).mask(template, options)
+    return {
+      ...plain,
+      borderColor: softer.borderColor,
+      borderColorHover: softer.borderColorHover,
+      borderColorPress: softer.borderColorPress,
+      borderColorFocus: softer.borderColorFocus,
+    }
+  }),
+} satisfies MaskDefinitions

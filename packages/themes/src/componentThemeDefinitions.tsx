@@ -1,4 +1,9 @@
+import { ThemeDefinitions } from '@tamagui/theme-builder'
+
+import { masks } from './masks'
 import { maskOptions } from './templates'
+
+type Masks = typeof masks
 
 const overlayThemes = {
   light: {
@@ -57,7 +62,6 @@ export const componentThemeDefinitions = {
   SwitchThumb: {
     mask: 'inverseStrengthen2',
     ...maskOptions.component,
-    debug: true,
   },
 
   TooltipContent: {
@@ -72,6 +76,11 @@ export const componentThemeDefinitions = {
 
   Progress: {
     mask: 'soften',
+    ...maskOptions.component,
+  },
+
+  RadioGroupItem: {
+    mask: 'softenBorder2',
     ...maskOptions.component,
   },
 
@@ -109,29 +118,13 @@ export const componentThemeDefinitions = {
   DialogOverlay: overlayThemeDefinitions,
   ModalOverlay: overlayThemeDefinitions,
 
-  Input: [
-    {
-      parent: 'light',
-      mask: 'strengthenButSoftenBorder',
-      ...maskOptions.component,
-    },
-    {
-      parent: 'dark',
-      mask: 'softenBorder',
-      ...maskOptions.component,
-    },
-  ],
+  Input: {
+    mask: 'softenBorder2',
+    ...maskOptions.component,
+  },
 
-  TextArea: [
-    {
-      parent: 'light',
-      mask: 'strengthenButSoftenBorder',
-      ...maskOptions.component,
-    },
-    {
-      parent: 'dark',
-      mask: 'softenBorder',
-      ...maskOptions.component,
-    },
-  ],
-}
+  TextArea: {
+    mask: 'softenBorder2',
+    ...maskOptions.component,
+  },
+} satisfies ThemeDefinitions<keyof Masks>
