@@ -64,12 +64,17 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
   const dedupedThemes = new Map<string, Object>()
   const dedupedThemeToNames = new Map<string, string[]>()
 
+  let i = 0
   for (const name in themes) {
+    i++
+
     const theme: Record<string, string> = themes[name]
 
     // go through all tokens in current theme and add the new values to dedupedTokens map
+    let j = 0
     for (const [key, value] of Object.entries(theme)) {
-      const uniqueKey = `${name}_${key}`
+      i++
+      const uniqueKey = `t${i}${j}`
       if (!dedupedTokens.has(value)) {
         dedupedTokens.set(value, uniqueKey)
       }
@@ -84,50 +89,81 @@ function generatedThemesToTypescript(themes: Record<string, any>) {
     }
   }
 
+  const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
+    string,
+    string
+  ][]
+
   const baseTypeString = `type Theme = {
-${Object.entries(themes.light || themes[Object.keys(themes)[0]])
+${baseKeys
   .map(([k]) => {
     return `  ${k}: string;\n`
   })
   .join('')}
 }`
 
-  let themesString = `${baseTypeString}\n`
+  let out = `${baseTypeString}\n`
+
+  // add in the helper function to generate a theme:
+  out += `
+function t(a) {
+  let res = {}
+  for (const [ki, vi] of a) {
+    res[ks[ki]] = vs[vi]
+  }
+  return res
+}
+`
 
   // add all token variables
-
-  dedupedTokens.forEach((names, value) => {
-    themesString += `const ${names} = '${value}'\n`
+  out += `const vs = [\n`
+  let index = 0
+  const valueToIndex = {}
+  dedupedTokens.forEach((name, value) => {
+    valueToIndex[value] = index
+    index++
+    out += `  '${value}',\n`
   })
-  themesString += '\n'
+  out += ']\n\n'
 
+  // add all keys array
+  const keys = baseKeys.map(([k]) => k)
+  out += `const ks = [\n`
+  out += keys.map((k) => `'${k}'`).join(',\n')
+  out += `]\n\n`
+
+  // add all themes
+  let nameI = 0
   dedupedThemes.forEach((theme) => {
+    nameI++
     const key = JSON.stringify(theme)
-    const [baseName, ...restNames] = dedupedThemeToNames.get(key)!
-    const baseTheme = `export const ${baseName} = ${objectToJsString(theme)} as Theme`
-    themesString += `\n${baseTheme}`
-
-    if (restNames.length) {
-      const duplicateThemes = restNames.map(
-        (name) => `export const ${name} = ${baseName} as Theme`
-      )
-      themesString += `\n\n` + duplicateThemes.join('\n')
-    }
+    const names = dedupedThemeToNames.get(key)!
+    const name = `n${nameI}`
+    const baseTheme = `export const ${name} = ${objectToJsString(
+      theme,
+      keys,
+      valueToIndex
+    )} as Theme`
+    out += `\n${baseTheme}`
+    const duplicateThemes = names.map((n) => `export const ${n} = ${name} as Theme`)
+    out += `\n\n` + duplicateThemes.join('\n')
   })
 
-  return themesString
+  return out
 }
 
-function objectToJsString(obj: Object, indent = 4) {
-  const whitespace = new Array(indent).fill(' ').join('')
-  return `{
-${Object.entries(obj)
-  .map(([k, v]) => {
-    const variableName = dedupedTokens.get(v)
-    return `${whitespace}${k}: ${variableName}`
-  })
-  .join(',\n')}
-}`
+function objectToJsString(
+  obj: Object,
+  keys: string[],
+  valueToIndex: Record<string, number>
+) {
+  let arrItems: string[] = []
+  for (const key in obj) {
+    const ki = keys.indexOf(key)
+    const vi = valueToIndex[obj[key]]
+    arrItems.push(`[${ki}, ${vi}]`)
+  }
+  return `t([${arrItems.join(',')}])`
 }
 
 function createThemeIntercept(
