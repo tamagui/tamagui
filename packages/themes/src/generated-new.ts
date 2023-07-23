@@ -2794,46 +2794,6 @@ export const light_Button = {
     placeholderColor: light_color7
 } as Theme
 export const light_Checkbox = {
-    background: light_color4,
-    backgroundHover: light_color5,
-    backgroundPress: light_color6,
-    backgroundFocus: light_color7,
-    backgroundStrong: light_color3,
-    backgroundTransparent: light_color2,
-    color: light_color12,
-    colorHover: light_color11,
-    colorPress: light_color12,
-    colorFocus: light_color11,
-    colorTransparent: light_color11,
-    borderColor: light_color7,
-    borderColorHover: light_color8,
-    borderColorFocus: light_color6,
-    borderColorPress: light_color7,
-    placeholderColor: light_color7
-} as Theme
-
-export const light_Switch = light_Checkbox as Theme
-export const light_TooltipContent = light_Checkbox as Theme
-export const light_SliderTrack = light_Checkbox as Theme
-export const light_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_color11,
-    backgroundFocus: light_color10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_color1,
-    colorHover: light_color2,
-    colorPress: light_color1,
-    colorFocus: light_color2,
-    colorTransparent: light_color1,
-    borderColor: light_color10,
-    borderColorHover: light_color9,
-    borderColorFocus: light_color11,
-    borderColorPress: light_color10,
-    placeholderColor: light_color2
-} as Theme
-export const light_RadioGroupItem = {
     background: light_color2,
     backgroundHover: light_color3,
     backgroundPress: light_color4,
@@ -2852,8 +2812,48 @@ export const light_RadioGroupItem = {
     placeholderColor: light_color9
 } as Theme
 
-export const light_Input = light_RadioGroupItem as Theme
-export const light_TextArea = light_RadioGroupItem as Theme
+export const light_RadioGroupItem = light_Checkbox as Theme
+export const light_Input = light_Checkbox as Theme
+export const light_TextArea = light_Checkbox as Theme
+export const light_Switch = {
+    background: light_color4,
+    backgroundHover: light_color5,
+    backgroundPress: light_color6,
+    backgroundFocus: light_color7,
+    backgroundStrong: light_color3,
+    backgroundTransparent: light_color2,
+    color: light_color12,
+    colorHover: light_color11,
+    colorPress: light_color12,
+    colorFocus: light_color11,
+    colorTransparent: light_color11,
+    borderColor: light_color7,
+    borderColorHover: light_color8,
+    borderColorFocus: light_color6,
+    borderColorPress: light_color7,
+    placeholderColor: light_color7
+} as Theme
+
+export const light_TooltipContent = light_Switch as Theme
+export const light_SliderTrack = light_Switch as Theme
+export const light_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_color11,
+    backgroundFocus: light_color10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_color1,
+    colorHover: light_color2,
+    colorPress: light_color1,
+    colorFocus: light_color2,
+    colorTransparent: light_color1,
+    borderColor: light_color10,
+    borderColorHover: light_color9,
+    borderColorFocus: light_color11,
+    borderColorPress: light_color10,
+    placeholderColor: light_color2
+} as Theme
 export const light_SliderTrackActive = {
     background: light_color9,
     backgroundHover: light_color8,
@@ -2964,46 +2964,6 @@ export const dark_Button = {
     placeholderColor: dark_color7
 } as Theme
 export const dark_Checkbox = {
-    background: dark_color4,
-    backgroundHover: dark_color5,
-    backgroundPress: dark_color6,
-    backgroundFocus: dark_color7,
-    backgroundStrong: dark_color3,
-    backgroundTransparent: dark_color2,
-    color: light_color1,
-    colorHover: dark_color11,
-    colorPress: light_color1,
-    colorFocus: dark_color11,
-    colorTransparent: dark_color11,
-    borderColor: dark_color7,
-    borderColorHover: dark_color8,
-    borderColorFocus: dark_color6,
-    borderColorPress: dark_color7,
-    placeholderColor: dark_color7
-} as Theme
-
-export const dark_Switch = dark_Checkbox as Theme
-export const dark_TooltipContent = dark_Checkbox as Theme
-export const dark_SliderTrack = dark_Checkbox as Theme
-export const dark_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_color11,
-    backgroundFocus: dark_color10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_color1,
-    colorHover: dark_color2,
-    colorPress: dark_color1,
-    colorFocus: dark_color2,
-    colorTransparent: dark_color1,
-    borderColor: dark_color10,
-    borderColorHover: dark_color9,
-    borderColorFocus: dark_color11,
-    borderColorPress: dark_color10,
-    placeholderColor: dark_color2
-} as Theme
-export const dark_RadioGroupItem = {
     background: dark_color2,
     backgroundHover: dark_color3,
     backgroundPress: dark_color4,
@@ -3022,8 +2982,48 @@ export const dark_RadioGroupItem = {
     placeholderColor: dark_color9
 } as Theme
 
-export const dark_Input = dark_RadioGroupItem as Theme
-export const dark_TextArea = dark_RadioGroupItem as Theme
+export const dark_RadioGroupItem = dark_Checkbox as Theme
+export const dark_Input = dark_Checkbox as Theme
+export const dark_TextArea = dark_Checkbox as Theme
+export const dark_Switch = {
+    background: dark_color4,
+    backgroundHover: dark_color5,
+    backgroundPress: dark_color6,
+    backgroundFocus: dark_color7,
+    backgroundStrong: dark_color3,
+    backgroundTransparent: dark_color2,
+    color: light_color1,
+    colorHover: dark_color11,
+    colorPress: light_color1,
+    colorFocus: dark_color11,
+    colorTransparent: dark_color11,
+    borderColor: dark_color7,
+    borderColorHover: dark_color8,
+    borderColorFocus: dark_color6,
+    borderColorPress: dark_color7,
+    placeholderColor: dark_color7
+} as Theme
+
+export const dark_TooltipContent = dark_Switch as Theme
+export const dark_SliderTrack = dark_Switch as Theme
+export const dark_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_color11,
+    backgroundFocus: dark_color10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_color1,
+    colorHover: dark_color2,
+    colorPress: dark_color1,
+    colorFocus: dark_color2,
+    colorTransparent: dark_color1,
+    borderColor: dark_color10,
+    borderColorHover: dark_color9,
+    borderColorFocus: dark_color11,
+    borderColorPress: dark_color10,
+    placeholderColor: dark_color2
+} as Theme
 export const dark_SliderTrackActive = {
     background: dark_color9,
     backgroundHover: dark_color8,
@@ -3122,46 +3122,6 @@ export const light_orange_Button = {
     placeholderColor: light_orange8
 } as Theme
 export const light_orange_Checkbox = {
-    background: light_orange4,
-    backgroundHover: light_orange5,
-    backgroundPress: light_orange6,
-    backgroundFocus: light_orange8,
-    backgroundStrong: light_orange3,
-    backgroundTransparent: light_orange2,
-    color: light_color12,
-    colorHover: light_orange12,
-    colorPress: light_color12,
-    colorFocus: light_orange12,
-    colorTransparent: light_orange12,
-    borderColor: light_orange6,
-    borderColorHover: light_orange8,
-    borderColorFocus: light_orange6,
-    borderColorPress: light_orange6,
-    placeholderColor: light_orange8
-} as Theme
-
-export const light_orange_Switch = light_orange_Checkbox as Theme
-export const light_orange_TooltipContent = light_orange_Checkbox as Theme
-export const light_orange_SliderTrack = light_orange_Checkbox as Theme
-export const light_orange_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_orange12,
-    backgroundFocus: light_orange11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_orange1,
-    colorHover: light_orange2,
-    colorPress: light_orange1,
-    colorFocus: light_orange2,
-    colorTransparent: light_orange1,
-    borderColor: light_orange12,
-    borderColorHover: light_orange11,
-    borderColorFocus: light_orange12,
-    borderColorPress: light_orange12,
-    placeholderColor: light_orange2
-} as Theme
-export const light_orange_RadioGroupItem = {
     background: light_orange2,
     backgroundHover: light_orange3,
     backgroundPress: light_orange4,
@@ -3180,8 +3140,48 @@ export const light_orange_RadioGroupItem = {
     placeholderColor: light_orange10
 } as Theme
 
-export const light_orange_Input = light_orange_RadioGroupItem as Theme
-export const light_orange_TextArea = light_orange_RadioGroupItem as Theme
+export const light_orange_RadioGroupItem = light_orange_Checkbox as Theme
+export const light_orange_Input = light_orange_Checkbox as Theme
+export const light_orange_TextArea = light_orange_Checkbox as Theme
+export const light_orange_Switch = {
+    background: light_orange4,
+    backgroundHover: light_orange5,
+    backgroundPress: light_orange6,
+    backgroundFocus: light_orange8,
+    backgroundStrong: light_orange3,
+    backgroundTransparent: light_orange2,
+    color: light_color12,
+    colorHover: light_orange12,
+    colorPress: light_color12,
+    colorFocus: light_orange12,
+    colorTransparent: light_orange12,
+    borderColor: light_orange6,
+    borderColorHover: light_orange8,
+    borderColorFocus: light_orange6,
+    borderColorPress: light_orange6,
+    placeholderColor: light_orange8
+} as Theme
+
+export const light_orange_TooltipContent = light_orange_Switch as Theme
+export const light_orange_SliderTrack = light_orange_Switch as Theme
+export const light_orange_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_orange12,
+    backgroundFocus: light_orange11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_orange1,
+    colorHover: light_orange2,
+    colorPress: light_orange1,
+    colorFocus: light_orange2,
+    colorTransparent: light_orange1,
+    borderColor: light_orange12,
+    borderColorHover: light_orange11,
+    borderColorFocus: light_orange12,
+    borderColorPress: light_orange12,
+    placeholderColor: light_orange2
+} as Theme
 export const light_orange_SliderTrackActive = {
     background: light_orange10,
     backgroundHover: light_orange9,
@@ -3280,46 +3280,6 @@ export const light_yellow_Button = {
     placeholderColor: light_yellow8
 } as Theme
 export const light_yellow_Checkbox = {
-    background: light_yellow4,
-    backgroundHover: light_yellow5,
-    backgroundPress: light_yellow6,
-    backgroundFocus: light_yellow8,
-    backgroundStrong: light_yellow3,
-    backgroundTransparent: light_yellow2,
-    color: light_color12,
-    colorHover: light_yellow12,
-    colorPress: light_color12,
-    colorFocus: light_yellow12,
-    colorTransparent: light_yellow12,
-    borderColor: light_yellow6,
-    borderColorHover: light_yellow8,
-    borderColorFocus: light_yellow6,
-    borderColorPress: light_yellow6,
-    placeholderColor: light_yellow8
-} as Theme
-
-export const light_yellow_Switch = light_yellow_Checkbox as Theme
-export const light_yellow_TooltipContent = light_yellow_Checkbox as Theme
-export const light_yellow_SliderTrack = light_yellow_Checkbox as Theme
-export const light_yellow_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_yellow12,
-    backgroundFocus: light_yellow11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_yellow1,
-    colorHover: light_yellow2,
-    colorPress: light_yellow1,
-    colorFocus: light_yellow2,
-    colorTransparent: light_yellow1,
-    borderColor: light_yellow12,
-    borderColorHover: light_yellow11,
-    borderColorFocus: light_yellow12,
-    borderColorPress: light_yellow12,
-    placeholderColor: light_yellow2
-} as Theme
-export const light_yellow_RadioGroupItem = {
     background: light_yellow2,
     backgroundHover: light_yellow3,
     backgroundPress: light_yellow4,
@@ -3338,8 +3298,48 @@ export const light_yellow_RadioGroupItem = {
     placeholderColor: light_yellow10
 } as Theme
 
-export const light_yellow_Input = light_yellow_RadioGroupItem as Theme
-export const light_yellow_TextArea = light_yellow_RadioGroupItem as Theme
+export const light_yellow_RadioGroupItem = light_yellow_Checkbox as Theme
+export const light_yellow_Input = light_yellow_Checkbox as Theme
+export const light_yellow_TextArea = light_yellow_Checkbox as Theme
+export const light_yellow_Switch = {
+    background: light_yellow4,
+    backgroundHover: light_yellow5,
+    backgroundPress: light_yellow6,
+    backgroundFocus: light_yellow8,
+    backgroundStrong: light_yellow3,
+    backgroundTransparent: light_yellow2,
+    color: light_color12,
+    colorHover: light_yellow12,
+    colorPress: light_color12,
+    colorFocus: light_yellow12,
+    colorTransparent: light_yellow12,
+    borderColor: light_yellow6,
+    borderColorHover: light_yellow8,
+    borderColorFocus: light_yellow6,
+    borderColorPress: light_yellow6,
+    placeholderColor: light_yellow8
+} as Theme
+
+export const light_yellow_TooltipContent = light_yellow_Switch as Theme
+export const light_yellow_SliderTrack = light_yellow_Switch as Theme
+export const light_yellow_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_yellow12,
+    backgroundFocus: light_yellow11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_yellow1,
+    colorHover: light_yellow2,
+    colorPress: light_yellow1,
+    colorFocus: light_yellow2,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow12,
+    borderColorHover: light_yellow11,
+    borderColorFocus: light_yellow12,
+    borderColorPress: light_yellow12,
+    placeholderColor: light_yellow2
+} as Theme
 export const light_yellow_SliderTrackActive = {
     background: light_yellow10,
     backgroundHover: light_yellow9,
@@ -3438,46 +3438,6 @@ export const light_green_Button = {
     placeholderColor: light_green8
 } as Theme
 export const light_green_Checkbox = {
-    background: light_green4,
-    backgroundHover: light_green5,
-    backgroundPress: light_green6,
-    backgroundFocus: light_green8,
-    backgroundStrong: light_green3,
-    backgroundTransparent: light_green2,
-    color: light_color12,
-    colorHover: light_green12,
-    colorPress: light_color12,
-    colorFocus: light_green12,
-    colorTransparent: light_green12,
-    borderColor: light_green6,
-    borderColorHover: light_green8,
-    borderColorFocus: light_green6,
-    borderColorPress: light_green6,
-    placeholderColor: light_green8
-} as Theme
-
-export const light_green_Switch = light_green_Checkbox as Theme
-export const light_green_TooltipContent = light_green_Checkbox as Theme
-export const light_green_SliderTrack = light_green_Checkbox as Theme
-export const light_green_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_green12,
-    backgroundFocus: light_green11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_green1,
-    colorHover: light_green2,
-    colorPress: light_green1,
-    colorFocus: light_green2,
-    colorTransparent: light_green1,
-    borderColor: light_green12,
-    borderColorHover: light_green11,
-    borderColorFocus: light_green12,
-    borderColorPress: light_green12,
-    placeholderColor: light_green2
-} as Theme
-export const light_green_RadioGroupItem = {
     background: light_green2,
     backgroundHover: light_green3,
     backgroundPress: light_green4,
@@ -3496,8 +3456,48 @@ export const light_green_RadioGroupItem = {
     placeholderColor: light_green10
 } as Theme
 
-export const light_green_Input = light_green_RadioGroupItem as Theme
-export const light_green_TextArea = light_green_RadioGroupItem as Theme
+export const light_green_RadioGroupItem = light_green_Checkbox as Theme
+export const light_green_Input = light_green_Checkbox as Theme
+export const light_green_TextArea = light_green_Checkbox as Theme
+export const light_green_Switch = {
+    background: light_green4,
+    backgroundHover: light_green5,
+    backgroundPress: light_green6,
+    backgroundFocus: light_green8,
+    backgroundStrong: light_green3,
+    backgroundTransparent: light_green2,
+    color: light_color12,
+    colorHover: light_green12,
+    colorPress: light_color12,
+    colorFocus: light_green12,
+    colorTransparent: light_green12,
+    borderColor: light_green6,
+    borderColorHover: light_green8,
+    borderColorFocus: light_green6,
+    borderColorPress: light_green6,
+    placeholderColor: light_green8
+} as Theme
+
+export const light_green_TooltipContent = light_green_Switch as Theme
+export const light_green_SliderTrack = light_green_Switch as Theme
+export const light_green_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_green12,
+    backgroundFocus: light_green11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_green1,
+    colorHover: light_green2,
+    colorPress: light_green1,
+    colorFocus: light_green2,
+    colorTransparent: light_green1,
+    borderColor: light_green12,
+    borderColorHover: light_green11,
+    borderColorFocus: light_green12,
+    borderColorPress: light_green12,
+    placeholderColor: light_green2
+} as Theme
 export const light_green_SliderTrackActive = {
     background: light_green10,
     backgroundHover: light_green9,
@@ -3596,46 +3596,6 @@ export const light_blue_Button = {
     placeholderColor: light_blue8
 } as Theme
 export const light_blue_Checkbox = {
-    background: light_blue4,
-    backgroundHover: light_blue5,
-    backgroundPress: light_blue6,
-    backgroundFocus: light_blue8,
-    backgroundStrong: light_blue3,
-    backgroundTransparent: light_blue2,
-    color: light_color12,
-    colorHover: light_blue12,
-    colorPress: light_color12,
-    colorFocus: light_blue12,
-    colorTransparent: light_blue12,
-    borderColor: light_blue6,
-    borderColorHover: light_blue8,
-    borderColorFocus: light_blue6,
-    borderColorPress: light_blue6,
-    placeholderColor: light_blue8
-} as Theme
-
-export const light_blue_Switch = light_blue_Checkbox as Theme
-export const light_blue_TooltipContent = light_blue_Checkbox as Theme
-export const light_blue_SliderTrack = light_blue_Checkbox as Theme
-export const light_blue_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_blue12,
-    backgroundFocus: light_blue11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_blue1,
-    colorHover: light_blue2,
-    colorPress: light_blue1,
-    colorFocus: light_blue2,
-    colorTransparent: light_blue1,
-    borderColor: light_blue12,
-    borderColorHover: light_blue11,
-    borderColorFocus: light_blue12,
-    borderColorPress: light_blue12,
-    placeholderColor: light_blue2
-} as Theme
-export const light_blue_RadioGroupItem = {
     background: light_blue2,
     backgroundHover: light_blue3,
     backgroundPress: light_blue4,
@@ -3654,8 +3614,48 @@ export const light_blue_RadioGroupItem = {
     placeholderColor: light_blue10
 } as Theme
 
-export const light_blue_Input = light_blue_RadioGroupItem as Theme
-export const light_blue_TextArea = light_blue_RadioGroupItem as Theme
+export const light_blue_RadioGroupItem = light_blue_Checkbox as Theme
+export const light_blue_Input = light_blue_Checkbox as Theme
+export const light_blue_TextArea = light_blue_Checkbox as Theme
+export const light_blue_Switch = {
+    background: light_blue4,
+    backgroundHover: light_blue5,
+    backgroundPress: light_blue6,
+    backgroundFocus: light_blue8,
+    backgroundStrong: light_blue3,
+    backgroundTransparent: light_blue2,
+    color: light_color12,
+    colorHover: light_blue12,
+    colorPress: light_color12,
+    colorFocus: light_blue12,
+    colorTransparent: light_blue12,
+    borderColor: light_blue6,
+    borderColorHover: light_blue8,
+    borderColorFocus: light_blue6,
+    borderColorPress: light_blue6,
+    placeholderColor: light_blue8
+} as Theme
+
+export const light_blue_TooltipContent = light_blue_Switch as Theme
+export const light_blue_SliderTrack = light_blue_Switch as Theme
+export const light_blue_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_blue12,
+    backgroundFocus: light_blue11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_blue1,
+    colorHover: light_blue2,
+    colorPress: light_blue1,
+    colorFocus: light_blue2,
+    colorTransparent: light_blue1,
+    borderColor: light_blue12,
+    borderColorHover: light_blue11,
+    borderColorFocus: light_blue12,
+    borderColorPress: light_blue12,
+    placeholderColor: light_blue2
+} as Theme
 export const light_blue_SliderTrackActive = {
     background: light_blue10,
     backgroundHover: light_blue9,
@@ -3754,46 +3754,6 @@ export const light_purple_Button = {
     placeholderColor: light_purple8
 } as Theme
 export const light_purple_Checkbox = {
-    background: light_purple4,
-    backgroundHover: light_purple5,
-    backgroundPress: light_purple6,
-    backgroundFocus: light_purple8,
-    backgroundStrong: light_purple3,
-    backgroundTransparent: light_purple2,
-    color: light_color12,
-    colorHover: light_purple12,
-    colorPress: light_color12,
-    colorFocus: light_purple12,
-    colorTransparent: light_purple12,
-    borderColor: light_purple6,
-    borderColorHover: light_purple8,
-    borderColorFocus: light_purple6,
-    borderColorPress: light_purple6,
-    placeholderColor: light_purple8
-} as Theme
-
-export const light_purple_Switch = light_purple_Checkbox as Theme
-export const light_purple_TooltipContent = light_purple_Checkbox as Theme
-export const light_purple_SliderTrack = light_purple_Checkbox as Theme
-export const light_purple_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_purple12,
-    backgroundFocus: light_purple11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_purple1,
-    colorHover: light_purple2,
-    colorPress: light_purple1,
-    colorFocus: light_purple2,
-    colorTransparent: light_purple1,
-    borderColor: light_purple12,
-    borderColorHover: light_purple11,
-    borderColorFocus: light_purple12,
-    borderColorPress: light_purple12,
-    placeholderColor: light_purple2
-} as Theme
-export const light_purple_RadioGroupItem = {
     background: light_purple2,
     backgroundHover: light_purple3,
     backgroundPress: light_purple4,
@@ -3812,8 +3772,48 @@ export const light_purple_RadioGroupItem = {
     placeholderColor: light_purple10
 } as Theme
 
-export const light_purple_Input = light_purple_RadioGroupItem as Theme
-export const light_purple_TextArea = light_purple_RadioGroupItem as Theme
+export const light_purple_RadioGroupItem = light_purple_Checkbox as Theme
+export const light_purple_Input = light_purple_Checkbox as Theme
+export const light_purple_TextArea = light_purple_Checkbox as Theme
+export const light_purple_Switch = {
+    background: light_purple4,
+    backgroundHover: light_purple5,
+    backgroundPress: light_purple6,
+    backgroundFocus: light_purple8,
+    backgroundStrong: light_purple3,
+    backgroundTransparent: light_purple2,
+    color: light_color12,
+    colorHover: light_purple12,
+    colorPress: light_color12,
+    colorFocus: light_purple12,
+    colorTransparent: light_purple12,
+    borderColor: light_purple6,
+    borderColorHover: light_purple8,
+    borderColorFocus: light_purple6,
+    borderColorPress: light_purple6,
+    placeholderColor: light_purple8
+} as Theme
+
+export const light_purple_TooltipContent = light_purple_Switch as Theme
+export const light_purple_SliderTrack = light_purple_Switch as Theme
+export const light_purple_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_purple12,
+    backgroundFocus: light_purple11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_purple1,
+    colorHover: light_purple2,
+    colorPress: light_purple1,
+    colorFocus: light_purple2,
+    colorTransparent: light_purple1,
+    borderColor: light_purple12,
+    borderColorHover: light_purple11,
+    borderColorFocus: light_purple12,
+    borderColorPress: light_purple12,
+    placeholderColor: light_purple2
+} as Theme
 export const light_purple_SliderTrackActive = {
     background: light_purple10,
     backgroundHover: light_purple9,
@@ -3912,46 +3912,6 @@ export const light_pink_Button = {
     placeholderColor: light_pink8
 } as Theme
 export const light_pink_Checkbox = {
-    background: light_pink4,
-    backgroundHover: light_pink5,
-    backgroundPress: light_pink6,
-    backgroundFocus: light_pink8,
-    backgroundStrong: light_pink3,
-    backgroundTransparent: light_pink2,
-    color: light_color12,
-    colorHover: light_pink12,
-    colorPress: light_color12,
-    colorFocus: light_pink12,
-    colorTransparent: light_pink12,
-    borderColor: light_pink6,
-    borderColorHover: light_pink8,
-    borderColorFocus: light_pink6,
-    borderColorPress: light_pink6,
-    placeholderColor: light_pink8
-} as Theme
-
-export const light_pink_Switch = light_pink_Checkbox as Theme
-export const light_pink_TooltipContent = light_pink_Checkbox as Theme
-export const light_pink_SliderTrack = light_pink_Checkbox as Theme
-export const light_pink_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_pink12,
-    backgroundFocus: light_pink11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_pink1,
-    colorHover: light_pink2,
-    colorPress: light_pink1,
-    colorFocus: light_pink2,
-    colorTransparent: light_pink1,
-    borderColor: light_pink12,
-    borderColorHover: light_pink11,
-    borderColorFocus: light_pink12,
-    borderColorPress: light_pink12,
-    placeholderColor: light_pink2
-} as Theme
-export const light_pink_RadioGroupItem = {
     background: light_pink2,
     backgroundHover: light_pink3,
     backgroundPress: light_pink4,
@@ -3970,8 +3930,48 @@ export const light_pink_RadioGroupItem = {
     placeholderColor: light_pink10
 } as Theme
 
-export const light_pink_Input = light_pink_RadioGroupItem as Theme
-export const light_pink_TextArea = light_pink_RadioGroupItem as Theme
+export const light_pink_RadioGroupItem = light_pink_Checkbox as Theme
+export const light_pink_Input = light_pink_Checkbox as Theme
+export const light_pink_TextArea = light_pink_Checkbox as Theme
+export const light_pink_Switch = {
+    background: light_pink4,
+    backgroundHover: light_pink5,
+    backgroundPress: light_pink6,
+    backgroundFocus: light_pink8,
+    backgroundStrong: light_pink3,
+    backgroundTransparent: light_pink2,
+    color: light_color12,
+    colorHover: light_pink12,
+    colorPress: light_color12,
+    colorFocus: light_pink12,
+    colorTransparent: light_pink12,
+    borderColor: light_pink6,
+    borderColorHover: light_pink8,
+    borderColorFocus: light_pink6,
+    borderColorPress: light_pink6,
+    placeholderColor: light_pink8
+} as Theme
+
+export const light_pink_TooltipContent = light_pink_Switch as Theme
+export const light_pink_SliderTrack = light_pink_Switch as Theme
+export const light_pink_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_pink12,
+    backgroundFocus: light_pink11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_pink1,
+    colorHover: light_pink2,
+    colorPress: light_pink1,
+    colorFocus: light_pink2,
+    colorTransparent: light_pink1,
+    borderColor: light_pink12,
+    borderColorHover: light_pink11,
+    borderColorFocus: light_pink12,
+    borderColorPress: light_pink12,
+    placeholderColor: light_pink2
+} as Theme
 export const light_pink_SliderTrackActive = {
     background: light_pink10,
     backgroundHover: light_pink9,
@@ -4070,46 +4070,6 @@ export const light_red_Button = {
     placeholderColor: light_red8
 } as Theme
 export const light_red_Checkbox = {
-    background: light_red4,
-    backgroundHover: light_red5,
-    backgroundPress: light_red6,
-    backgroundFocus: light_red8,
-    backgroundStrong: light_red3,
-    backgroundTransparent: light_red2,
-    color: light_color12,
-    colorHover: light_red12,
-    colorPress: light_color12,
-    colorFocus: light_red12,
-    colorTransparent: light_red12,
-    borderColor: light_red6,
-    borderColorHover: light_red8,
-    borderColorFocus: light_red6,
-    borderColorPress: light_red6,
-    placeholderColor: light_red8
-} as Theme
-
-export const light_red_Switch = light_red_Checkbox as Theme
-export const light_red_TooltipContent = light_red_Checkbox as Theme
-export const light_red_SliderTrack = light_red_Checkbox as Theme
-export const light_red_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color12,
-    backgroundPress: light_red12,
-    backgroundFocus: light_red11,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_red1,
-    colorHover: light_red2,
-    colorPress: light_red1,
-    colorFocus: light_red2,
-    colorTransparent: light_red1,
-    borderColor: light_red12,
-    borderColorHover: light_red11,
-    borderColorFocus: light_red12,
-    borderColorPress: light_red12,
-    placeholderColor: light_red2
-} as Theme
-export const light_red_RadioGroupItem = {
     background: light_red2,
     backgroundHover: light_red3,
     backgroundPress: light_red4,
@@ -4128,8 +4088,48 @@ export const light_red_RadioGroupItem = {
     placeholderColor: light_red10
 } as Theme
 
-export const light_red_Input = light_red_RadioGroupItem as Theme
-export const light_red_TextArea = light_red_RadioGroupItem as Theme
+export const light_red_RadioGroupItem = light_red_Checkbox as Theme
+export const light_red_Input = light_red_Checkbox as Theme
+export const light_red_TextArea = light_red_Checkbox as Theme
+export const light_red_Switch = {
+    background: light_red4,
+    backgroundHover: light_red5,
+    backgroundPress: light_red6,
+    backgroundFocus: light_red8,
+    backgroundStrong: light_red3,
+    backgroundTransparent: light_red2,
+    color: light_color12,
+    colorHover: light_red12,
+    colorPress: light_color12,
+    colorFocus: light_red12,
+    colorTransparent: light_red12,
+    borderColor: light_red6,
+    borderColorHover: light_red8,
+    borderColorFocus: light_red6,
+    borderColorPress: light_red6,
+    placeholderColor: light_red8
+} as Theme
+
+export const light_red_TooltipContent = light_red_Switch as Theme
+export const light_red_SliderTrack = light_red_Switch as Theme
+export const light_red_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color12,
+    backgroundPress: light_red12,
+    backgroundFocus: light_red11,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_red1,
+    colorHover: light_red2,
+    colorPress: light_red1,
+    colorFocus: light_red2,
+    colorTransparent: light_red1,
+    borderColor: light_red12,
+    borderColorHover: light_red11,
+    borderColorFocus: light_red12,
+    borderColorPress: light_red12,
+    placeholderColor: light_red2
+} as Theme
 export const light_red_SliderTrackActive = {
     background: light_red10,
     backgroundHover: light_red9,
@@ -4210,46 +4210,6 @@ export const dark_orange_Button = {
     placeholderColor: dark_orange8
 } as Theme
 export const dark_orange_Checkbox = {
-    background: dark_orange4,
-    backgroundHover: dark_orange5,
-    backgroundPress: dark_orange6,
-    backgroundFocus: dark_orange8,
-    backgroundStrong: dark_orange3,
-    backgroundTransparent: dark_orange2,
-    color: light_color1,
-    colorHover: dark_orange12,
-    colorPress: light_color1,
-    colorFocus: dark_orange12,
-    colorTransparent: dark_orange12,
-    borderColor: dark_orange8,
-    borderColorHover: light_orange9,
-    borderColorFocus: dark_orange6,
-    borderColorPress: dark_orange8,
-    placeholderColor: dark_orange8
-} as Theme
-
-export const dark_orange_Switch = dark_orange_Checkbox as Theme
-export const dark_orange_TooltipContent = dark_orange_Checkbox as Theme
-export const dark_orange_SliderTrack = dark_orange_Checkbox as Theme
-export const dark_orange_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_orange12,
-    backgroundFocus: dark_orange11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_orange1,
-    colorHover: dark_orange2,
-    colorPress: dark_orange1,
-    colorFocus: dark_orange2,
-    colorTransparent: dark_orange1,
-    borderColor: dark_orange11,
-    borderColorHover: dark_orange10,
-    borderColorFocus: dark_orange12,
-    borderColorPress: dark_orange11,
-    placeholderColor: dark_orange2
-} as Theme
-export const dark_orange_RadioGroupItem = {
     background: dark_orange2,
     backgroundHover: dark_orange3,
     backgroundPress: dark_orange4,
@@ -4268,8 +4228,48 @@ export const dark_orange_RadioGroupItem = {
     placeholderColor: dark_orange10
 } as Theme
 
-export const dark_orange_Input = dark_orange_RadioGroupItem as Theme
-export const dark_orange_TextArea = dark_orange_RadioGroupItem as Theme
+export const dark_orange_RadioGroupItem = dark_orange_Checkbox as Theme
+export const dark_orange_Input = dark_orange_Checkbox as Theme
+export const dark_orange_TextArea = dark_orange_Checkbox as Theme
+export const dark_orange_Switch = {
+    background: dark_orange4,
+    backgroundHover: dark_orange5,
+    backgroundPress: dark_orange6,
+    backgroundFocus: dark_orange8,
+    backgroundStrong: dark_orange3,
+    backgroundTransparent: dark_orange2,
+    color: light_color1,
+    colorHover: dark_orange12,
+    colorPress: light_color1,
+    colorFocus: dark_orange12,
+    colorTransparent: dark_orange12,
+    borderColor: dark_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: dark_orange6,
+    borderColorPress: dark_orange8,
+    placeholderColor: dark_orange8
+} as Theme
+
+export const dark_orange_TooltipContent = dark_orange_Switch as Theme
+export const dark_orange_SliderTrack = dark_orange_Switch as Theme
+export const dark_orange_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_orange12,
+    backgroundFocus: dark_orange11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_orange1,
+    colorHover: dark_orange2,
+    colorPress: dark_orange1,
+    colorFocus: dark_orange2,
+    colorTransparent: dark_orange1,
+    borderColor: dark_orange11,
+    borderColorHover: dark_orange10,
+    borderColorFocus: dark_orange12,
+    borderColorPress: dark_orange11,
+    placeholderColor: dark_orange2
+} as Theme
 export const dark_orange_SliderTrackActive = {
     background: dark_orange10,
     backgroundHover: light_orange9,
@@ -4350,46 +4350,6 @@ export const dark_yellow_Button = {
     placeholderColor: dark_yellow8
 } as Theme
 export const dark_yellow_Checkbox = {
-    background: dark_yellow4,
-    backgroundHover: dark_yellow5,
-    backgroundPress: dark_yellow6,
-    backgroundFocus: dark_yellow8,
-    backgroundStrong: dark_yellow3,
-    backgroundTransparent: dark_yellow2,
-    color: light_color1,
-    colorHover: dark_yellow12,
-    colorPress: light_color1,
-    colorFocus: dark_yellow12,
-    colorTransparent: dark_yellow12,
-    borderColor: dark_yellow8,
-    borderColorHover: light_yellow9,
-    borderColorFocus: dark_yellow6,
-    borderColorPress: dark_yellow8,
-    placeholderColor: dark_yellow8
-} as Theme
-
-export const dark_yellow_Switch = dark_yellow_Checkbox as Theme
-export const dark_yellow_TooltipContent = dark_yellow_Checkbox as Theme
-export const dark_yellow_SliderTrack = dark_yellow_Checkbox as Theme
-export const dark_yellow_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_yellow12,
-    backgroundFocus: dark_yellow11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_yellow1,
-    colorHover: dark_yellow2,
-    colorPress: dark_yellow1,
-    colorFocus: dark_yellow2,
-    colorTransparent: dark_yellow1,
-    borderColor: dark_yellow11,
-    borderColorHover: dark_yellow10,
-    borderColorFocus: dark_yellow12,
-    borderColorPress: dark_yellow11,
-    placeholderColor: dark_yellow2
-} as Theme
-export const dark_yellow_RadioGroupItem = {
     background: dark_yellow2,
     backgroundHover: dark_yellow3,
     backgroundPress: dark_yellow4,
@@ -4408,8 +4368,48 @@ export const dark_yellow_RadioGroupItem = {
     placeholderColor: dark_yellow10
 } as Theme
 
-export const dark_yellow_Input = dark_yellow_RadioGroupItem as Theme
-export const dark_yellow_TextArea = dark_yellow_RadioGroupItem as Theme
+export const dark_yellow_RadioGroupItem = dark_yellow_Checkbox as Theme
+export const dark_yellow_Input = dark_yellow_Checkbox as Theme
+export const dark_yellow_TextArea = dark_yellow_Checkbox as Theme
+export const dark_yellow_Switch = {
+    background: dark_yellow4,
+    backgroundHover: dark_yellow5,
+    backgroundPress: dark_yellow6,
+    backgroundFocus: dark_yellow8,
+    backgroundStrong: dark_yellow3,
+    backgroundTransparent: dark_yellow2,
+    color: light_color1,
+    colorHover: dark_yellow12,
+    colorPress: light_color1,
+    colorFocus: dark_yellow12,
+    colorTransparent: dark_yellow12,
+    borderColor: dark_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: dark_yellow6,
+    borderColorPress: dark_yellow8,
+    placeholderColor: dark_yellow8
+} as Theme
+
+export const dark_yellow_TooltipContent = dark_yellow_Switch as Theme
+export const dark_yellow_SliderTrack = dark_yellow_Switch as Theme
+export const dark_yellow_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_yellow12,
+    backgroundFocus: dark_yellow11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_yellow1,
+    colorHover: dark_yellow2,
+    colorPress: dark_yellow1,
+    colorFocus: dark_yellow2,
+    colorTransparent: dark_yellow1,
+    borderColor: dark_yellow11,
+    borderColorHover: dark_yellow10,
+    borderColorFocus: dark_yellow12,
+    borderColorPress: dark_yellow11,
+    placeholderColor: dark_yellow2
+} as Theme
 export const dark_yellow_SliderTrackActive = {
     background: dark_yellow10,
     backgroundHover: light_yellow9,
@@ -4490,46 +4490,6 @@ export const dark_green_Button = {
     placeholderColor: dark_green8
 } as Theme
 export const dark_green_Checkbox = {
-    background: dark_green4,
-    backgroundHover: dark_green5,
-    backgroundPress: dark_green6,
-    backgroundFocus: dark_green8,
-    backgroundStrong: dark_green3,
-    backgroundTransparent: dark_green2,
-    color: light_color1,
-    colorHover: dark_green12,
-    colorPress: light_color1,
-    colorFocus: dark_green12,
-    colorTransparent: dark_green12,
-    borderColor: dark_green8,
-    borderColorHover: light_green9,
-    borderColorFocus: dark_green6,
-    borderColorPress: dark_green8,
-    placeholderColor: dark_green8
-} as Theme
-
-export const dark_green_Switch = dark_green_Checkbox as Theme
-export const dark_green_TooltipContent = dark_green_Checkbox as Theme
-export const dark_green_SliderTrack = dark_green_Checkbox as Theme
-export const dark_green_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_green12,
-    backgroundFocus: dark_green11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_green1,
-    colorHover: dark_green2,
-    colorPress: dark_green1,
-    colorFocus: dark_green2,
-    colorTransparent: dark_green1,
-    borderColor: dark_green11,
-    borderColorHover: dark_green10,
-    borderColorFocus: dark_green12,
-    borderColorPress: dark_green11,
-    placeholderColor: dark_green2
-} as Theme
-export const dark_green_RadioGroupItem = {
     background: dark_green2,
     backgroundHover: dark_green3,
     backgroundPress: dark_green4,
@@ -4548,8 +4508,48 @@ export const dark_green_RadioGroupItem = {
     placeholderColor: dark_green10
 } as Theme
 
-export const dark_green_Input = dark_green_RadioGroupItem as Theme
-export const dark_green_TextArea = dark_green_RadioGroupItem as Theme
+export const dark_green_RadioGroupItem = dark_green_Checkbox as Theme
+export const dark_green_Input = dark_green_Checkbox as Theme
+export const dark_green_TextArea = dark_green_Checkbox as Theme
+export const dark_green_Switch = {
+    background: dark_green4,
+    backgroundHover: dark_green5,
+    backgroundPress: dark_green6,
+    backgroundFocus: dark_green8,
+    backgroundStrong: dark_green3,
+    backgroundTransparent: dark_green2,
+    color: light_color1,
+    colorHover: dark_green12,
+    colorPress: light_color1,
+    colorFocus: dark_green12,
+    colorTransparent: dark_green12,
+    borderColor: dark_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: dark_green6,
+    borderColorPress: dark_green8,
+    placeholderColor: dark_green8
+} as Theme
+
+export const dark_green_TooltipContent = dark_green_Switch as Theme
+export const dark_green_SliderTrack = dark_green_Switch as Theme
+export const dark_green_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_green12,
+    backgroundFocus: dark_green11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_green1,
+    colorHover: dark_green2,
+    colorPress: dark_green1,
+    colorFocus: dark_green2,
+    colorTransparent: dark_green1,
+    borderColor: dark_green11,
+    borderColorHover: dark_green10,
+    borderColorFocus: dark_green12,
+    borderColorPress: dark_green11,
+    placeholderColor: dark_green2
+} as Theme
 export const dark_green_SliderTrackActive = {
     background: dark_green10,
     backgroundHover: light_green9,
@@ -4630,46 +4630,6 @@ export const dark_blue_Button = {
     placeholderColor: dark_blue8
 } as Theme
 export const dark_blue_Checkbox = {
-    background: dark_blue4,
-    backgroundHover: dark_blue5,
-    backgroundPress: dark_blue6,
-    backgroundFocus: dark_blue8,
-    backgroundStrong: dark_blue3,
-    backgroundTransparent: dark_blue2,
-    color: light_color1,
-    colorHover: dark_blue12,
-    colorPress: light_color1,
-    colorFocus: dark_blue12,
-    colorTransparent: dark_blue12,
-    borderColor: dark_blue8,
-    borderColorHover: light_blue9,
-    borderColorFocus: dark_blue6,
-    borderColorPress: dark_blue8,
-    placeholderColor: dark_blue8
-} as Theme
-
-export const dark_blue_Switch = dark_blue_Checkbox as Theme
-export const dark_blue_TooltipContent = dark_blue_Checkbox as Theme
-export const dark_blue_SliderTrack = dark_blue_Checkbox as Theme
-export const dark_blue_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_blue12,
-    backgroundFocus: dark_blue11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_blue1,
-    colorHover: dark_blue2,
-    colorPress: dark_blue1,
-    colorFocus: dark_blue2,
-    colorTransparent: dark_blue1,
-    borderColor: dark_blue11,
-    borderColorHover: dark_blue10,
-    borderColorFocus: dark_blue12,
-    borderColorPress: dark_blue11,
-    placeholderColor: dark_blue2
-} as Theme
-export const dark_blue_RadioGroupItem = {
     background: dark_blue2,
     backgroundHover: dark_blue3,
     backgroundPress: dark_blue4,
@@ -4688,8 +4648,48 @@ export const dark_blue_RadioGroupItem = {
     placeholderColor: dark_blue10
 } as Theme
 
-export const dark_blue_Input = dark_blue_RadioGroupItem as Theme
-export const dark_blue_TextArea = dark_blue_RadioGroupItem as Theme
+export const dark_blue_RadioGroupItem = dark_blue_Checkbox as Theme
+export const dark_blue_Input = dark_blue_Checkbox as Theme
+export const dark_blue_TextArea = dark_blue_Checkbox as Theme
+export const dark_blue_Switch = {
+    background: dark_blue4,
+    backgroundHover: dark_blue5,
+    backgroundPress: dark_blue6,
+    backgroundFocus: dark_blue8,
+    backgroundStrong: dark_blue3,
+    backgroundTransparent: dark_blue2,
+    color: light_color1,
+    colorHover: dark_blue12,
+    colorPress: light_color1,
+    colorFocus: dark_blue12,
+    colorTransparent: dark_blue12,
+    borderColor: dark_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: dark_blue6,
+    borderColorPress: dark_blue8,
+    placeholderColor: dark_blue8
+} as Theme
+
+export const dark_blue_TooltipContent = dark_blue_Switch as Theme
+export const dark_blue_SliderTrack = dark_blue_Switch as Theme
+export const dark_blue_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_blue12,
+    backgroundFocus: dark_blue11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_blue1,
+    colorHover: dark_blue2,
+    colorPress: dark_blue1,
+    colorFocus: dark_blue2,
+    colorTransparent: dark_blue1,
+    borderColor: dark_blue11,
+    borderColorHover: dark_blue10,
+    borderColorFocus: dark_blue12,
+    borderColorPress: dark_blue11,
+    placeholderColor: dark_blue2
+} as Theme
 export const dark_blue_SliderTrackActive = {
     background: dark_blue10,
     backgroundHover: light_blue9,
@@ -4770,46 +4770,6 @@ export const dark_purple_Button = {
     placeholderColor: dark_purple8
 } as Theme
 export const dark_purple_Checkbox = {
-    background: dark_purple4,
-    backgroundHover: dark_purple5,
-    backgroundPress: dark_purple6,
-    backgroundFocus: dark_purple8,
-    backgroundStrong: dark_purple3,
-    backgroundTransparent: dark_purple2,
-    color: light_color1,
-    colorHover: dark_purple12,
-    colorPress: light_color1,
-    colorFocus: dark_purple12,
-    colorTransparent: dark_purple12,
-    borderColor: dark_purple8,
-    borderColorHover: light_purple9,
-    borderColorFocus: dark_purple6,
-    borderColorPress: dark_purple8,
-    placeholderColor: dark_purple8
-} as Theme
-
-export const dark_purple_Switch = dark_purple_Checkbox as Theme
-export const dark_purple_TooltipContent = dark_purple_Checkbox as Theme
-export const dark_purple_SliderTrack = dark_purple_Checkbox as Theme
-export const dark_purple_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_purple12,
-    backgroundFocus: dark_purple11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_purple1,
-    colorHover: dark_purple2,
-    colorPress: dark_purple1,
-    colorFocus: dark_purple2,
-    colorTransparent: dark_purple1,
-    borderColor: dark_purple11,
-    borderColorHover: dark_purple10,
-    borderColorFocus: dark_purple12,
-    borderColorPress: dark_purple11,
-    placeholderColor: dark_purple2
-} as Theme
-export const dark_purple_RadioGroupItem = {
     background: dark_purple2,
     backgroundHover: dark_purple3,
     backgroundPress: dark_purple4,
@@ -4828,8 +4788,48 @@ export const dark_purple_RadioGroupItem = {
     placeholderColor: dark_purple10
 } as Theme
 
-export const dark_purple_Input = dark_purple_RadioGroupItem as Theme
-export const dark_purple_TextArea = dark_purple_RadioGroupItem as Theme
+export const dark_purple_RadioGroupItem = dark_purple_Checkbox as Theme
+export const dark_purple_Input = dark_purple_Checkbox as Theme
+export const dark_purple_TextArea = dark_purple_Checkbox as Theme
+export const dark_purple_Switch = {
+    background: dark_purple4,
+    backgroundHover: dark_purple5,
+    backgroundPress: dark_purple6,
+    backgroundFocus: dark_purple8,
+    backgroundStrong: dark_purple3,
+    backgroundTransparent: dark_purple2,
+    color: light_color1,
+    colorHover: dark_purple12,
+    colorPress: light_color1,
+    colorFocus: dark_purple12,
+    colorTransparent: dark_purple12,
+    borderColor: dark_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: dark_purple6,
+    borderColorPress: dark_purple8,
+    placeholderColor: dark_purple8
+} as Theme
+
+export const dark_purple_TooltipContent = dark_purple_Switch as Theme
+export const dark_purple_SliderTrack = dark_purple_Switch as Theme
+export const dark_purple_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_purple12,
+    backgroundFocus: dark_purple11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_purple1,
+    colorHover: dark_purple2,
+    colorPress: dark_purple1,
+    colorFocus: dark_purple2,
+    colorTransparent: dark_purple1,
+    borderColor: dark_purple11,
+    borderColorHover: dark_purple10,
+    borderColorFocus: dark_purple12,
+    borderColorPress: dark_purple11,
+    placeholderColor: dark_purple2
+} as Theme
 export const dark_purple_SliderTrackActive = {
     background: dark_purple10,
     backgroundHover: light_purple9,
@@ -4910,46 +4910,6 @@ export const dark_pink_Button = {
     placeholderColor: dark_pink8
 } as Theme
 export const dark_pink_Checkbox = {
-    background: dark_pink4,
-    backgroundHover: dark_pink5,
-    backgroundPress: dark_pink6,
-    backgroundFocus: dark_pink8,
-    backgroundStrong: dark_pink3,
-    backgroundTransparent: dark_pink2,
-    color: light_color1,
-    colorHover: dark_pink12,
-    colorPress: light_color1,
-    colorFocus: dark_pink12,
-    colorTransparent: dark_pink12,
-    borderColor: dark_pink8,
-    borderColorHover: light_pink9,
-    borderColorFocus: dark_pink6,
-    borderColorPress: dark_pink8,
-    placeholderColor: dark_pink8
-} as Theme
-
-export const dark_pink_Switch = dark_pink_Checkbox as Theme
-export const dark_pink_TooltipContent = dark_pink_Checkbox as Theme
-export const dark_pink_SliderTrack = dark_pink_Checkbox as Theme
-export const dark_pink_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_pink12,
-    backgroundFocus: dark_pink11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_pink1,
-    colorHover: dark_pink2,
-    colorPress: dark_pink1,
-    colorFocus: dark_pink2,
-    colorTransparent: dark_pink1,
-    borderColor: dark_pink11,
-    borderColorHover: dark_pink10,
-    borderColorFocus: dark_pink12,
-    borderColorPress: dark_pink11,
-    placeholderColor: dark_pink2
-} as Theme
-export const dark_pink_RadioGroupItem = {
     background: dark_pink2,
     backgroundHover: dark_pink3,
     backgroundPress: dark_pink4,
@@ -4968,8 +4928,48 @@ export const dark_pink_RadioGroupItem = {
     placeholderColor: dark_pink10
 } as Theme
 
-export const dark_pink_Input = dark_pink_RadioGroupItem as Theme
-export const dark_pink_TextArea = dark_pink_RadioGroupItem as Theme
+export const dark_pink_RadioGroupItem = dark_pink_Checkbox as Theme
+export const dark_pink_Input = dark_pink_Checkbox as Theme
+export const dark_pink_TextArea = dark_pink_Checkbox as Theme
+export const dark_pink_Switch = {
+    background: dark_pink4,
+    backgroundHover: dark_pink5,
+    backgroundPress: dark_pink6,
+    backgroundFocus: dark_pink8,
+    backgroundStrong: dark_pink3,
+    backgroundTransparent: dark_pink2,
+    color: light_color1,
+    colorHover: dark_pink12,
+    colorPress: light_color1,
+    colorFocus: dark_pink12,
+    colorTransparent: dark_pink12,
+    borderColor: dark_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: dark_pink6,
+    borderColorPress: dark_pink8,
+    placeholderColor: dark_pink8
+} as Theme
+
+export const dark_pink_TooltipContent = dark_pink_Switch as Theme
+export const dark_pink_SliderTrack = dark_pink_Switch as Theme
+export const dark_pink_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_pink12,
+    backgroundFocus: dark_pink11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_pink1,
+    colorHover: dark_pink2,
+    colorPress: dark_pink1,
+    colorFocus: dark_pink2,
+    colorTransparent: dark_pink1,
+    borderColor: dark_pink11,
+    borderColorHover: dark_pink10,
+    borderColorFocus: dark_pink12,
+    borderColorPress: dark_pink11,
+    placeholderColor: dark_pink2
+} as Theme
 export const dark_pink_SliderTrackActive = {
     background: dark_pink10,
     backgroundHover: light_pink9,
@@ -5050,46 +5050,6 @@ export const dark_red_Button = {
     placeholderColor: dark_red8
 } as Theme
 export const dark_red_Checkbox = {
-    background: dark_red4,
-    backgroundHover: dark_red5,
-    backgroundPress: dark_red6,
-    backgroundFocus: dark_red8,
-    backgroundStrong: dark_red3,
-    backgroundTransparent: dark_red2,
-    color: light_color1,
-    colorHover: dark_red12,
-    colorPress: light_color1,
-    colorFocus: dark_red12,
-    colorTransparent: dark_red12,
-    borderColor: dark_red8,
-    borderColorHover: light_red9,
-    borderColorFocus: dark_red6,
-    borderColorPress: dark_red8,
-    placeholderColor: dark_red8
-} as Theme
-
-export const dark_red_Switch = dark_red_Checkbox as Theme
-export const dark_red_TooltipContent = dark_red_Checkbox as Theme
-export const dark_red_SliderTrack = dark_red_Checkbox as Theme
-export const dark_red_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: light_color1,
-    backgroundPress: dark_red12,
-    backgroundFocus: dark_red11,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_red1,
-    colorHover: dark_red2,
-    colorPress: dark_red1,
-    colorFocus: dark_red2,
-    colorTransparent: dark_red1,
-    borderColor: dark_red11,
-    borderColorHover: dark_red10,
-    borderColorFocus: dark_red12,
-    borderColorPress: dark_red11,
-    placeholderColor: dark_red2
-} as Theme
-export const dark_red_RadioGroupItem = {
     background: dark_red2,
     backgroundHover: dark_red3,
     backgroundPress: dark_red4,
@@ -5108,8 +5068,48 @@ export const dark_red_RadioGroupItem = {
     placeholderColor: dark_red10
 } as Theme
 
-export const dark_red_Input = dark_red_RadioGroupItem as Theme
-export const dark_red_TextArea = dark_red_RadioGroupItem as Theme
+export const dark_red_RadioGroupItem = dark_red_Checkbox as Theme
+export const dark_red_Input = dark_red_Checkbox as Theme
+export const dark_red_TextArea = dark_red_Checkbox as Theme
+export const dark_red_Switch = {
+    background: dark_red4,
+    backgroundHover: dark_red5,
+    backgroundPress: dark_red6,
+    backgroundFocus: dark_red8,
+    backgroundStrong: dark_red3,
+    backgroundTransparent: dark_red2,
+    color: light_color1,
+    colorHover: dark_red12,
+    colorPress: light_color1,
+    colorFocus: dark_red12,
+    colorTransparent: dark_red12,
+    borderColor: dark_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: dark_red6,
+    borderColorPress: dark_red8,
+    placeholderColor: dark_red8
+} as Theme
+
+export const dark_red_TooltipContent = dark_red_Switch as Theme
+export const dark_red_SliderTrack = dark_red_Switch as Theme
+export const dark_red_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: light_color1,
+    backgroundPress: dark_red12,
+    backgroundFocus: dark_red11,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_red1,
+    colorHover: dark_red2,
+    colorPress: dark_red1,
+    colorFocus: dark_red2,
+    colorTransparent: dark_red1,
+    borderColor: dark_red11,
+    borderColorHover: dark_red10,
+    borderColorFocus: dark_red12,
+    borderColorPress: dark_red11,
+    placeholderColor: dark_red2
+} as Theme
 export const dark_red_SliderTrackActive = {
     background: dark_red10,
     backgroundHover: light_red9,
@@ -5208,46 +5208,6 @@ export const light_alt1_Button = {
     placeholderColor: light_color6
 } as Theme
 export const light_alt1_Checkbox = {
-    background: light_color5,
-    backgroundHover: light_color6,
-    backgroundPress: light_color7,
-    backgroundFocus: light_color8,
-    backgroundStrong: light_color4,
-    backgroundTransparent: light_color3,
-    color: light_color11,
-    colorHover: light_color10,
-    colorPress: light_color11,
-    colorFocus: light_color10,
-    colorTransparent: light_color10,
-    borderColor: light_color8,
-    borderColorHover: light_color9,
-    borderColorFocus: light_color7,
-    borderColorPress: light_color8,
-    placeholderColor: light_color6
-} as Theme
-
-export const light_alt1_Switch = light_alt1_Checkbox as Theme
-export const light_alt1_TooltipContent = light_alt1_Checkbox as Theme
-export const light_alt1_SliderTrack = light_alt1_Checkbox as Theme
-export const light_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_color11,
-    backgroundPress: light_color10,
-    backgroundFocus: light_color9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_color2,
-    colorHover: light_color3,
-    colorPress: light_color2,
-    colorFocus: light_color3,
-    colorTransparent: light_color1,
-    borderColor: light_color9,
-    borderColorHover: light_color8,
-    borderColorFocus: light_color10,
-    borderColorPress: light_color9,
-    placeholderColor: light_color3
-} as Theme
-export const light_alt1_RadioGroupItem = {
     background: light_color3,
     backgroundHover: light_color4,
     backgroundPress: light_color5,
@@ -5266,8 +5226,48 @@ export const light_alt1_RadioGroupItem = {
     placeholderColor: light_color8
 } as Theme
 
-export const light_alt1_Input = light_alt1_RadioGroupItem as Theme
-export const light_alt1_TextArea = light_alt1_RadioGroupItem as Theme
+export const light_alt1_RadioGroupItem = light_alt1_Checkbox as Theme
+export const light_alt1_Input = light_alt1_Checkbox as Theme
+export const light_alt1_TextArea = light_alt1_Checkbox as Theme
+export const light_alt1_Switch = {
+    background: light_color5,
+    backgroundHover: light_color6,
+    backgroundPress: light_color7,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color4,
+    backgroundTransparent: light_color3,
+    color: light_color11,
+    colorHover: light_color10,
+    colorPress: light_color11,
+    colorFocus: light_color10,
+    colorTransparent: light_color10,
+    borderColor: light_color8,
+    borderColorHover: light_color9,
+    borderColorFocus: light_color7,
+    borderColorPress: light_color8,
+    placeholderColor: light_color6
+} as Theme
+
+export const light_alt1_TooltipContent = light_alt1_Switch as Theme
+export const light_alt1_SliderTrack = light_alt1_Switch as Theme
+export const light_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_color11,
+    backgroundPress: light_color10,
+    backgroundFocus: light_color9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_color2,
+    colorHover: light_color3,
+    colorPress: light_color2,
+    colorFocus: light_color3,
+    colorTransparent: light_color1,
+    borderColor: light_color9,
+    borderColorHover: light_color8,
+    borderColorFocus: light_color10,
+    borderColorPress: light_color9,
+    placeholderColor: light_color3
+} as Theme
 export const light_alt1_SliderTrackActive = {
     background: light_color8,
     backgroundHover: light_color7,
@@ -5366,46 +5366,6 @@ export const light_alt2_Button = {
     placeholderColor: light_color5
 } as Theme
 export const light_alt2_Checkbox = {
-    background: light_color6,
-    backgroundHover: light_color7,
-    backgroundPress: light_color8,
-    backgroundFocus: light_color9,
-    backgroundStrong: light_color5,
-    backgroundTransparent: light_color4,
-    color: light_color10,
-    colorHover: light_color9,
-    colorPress: light_color10,
-    colorFocus: light_color9,
-    colorTransparent: light_color9,
-    borderColor: light_color9,
-    borderColorHover: light_color10,
-    borderColorFocus: light_color8,
-    borderColorPress: light_color9,
-    placeholderColor: light_color5
-} as Theme
-
-export const light_alt2_Switch = light_alt2_Checkbox as Theme
-export const light_alt2_TooltipContent = light_alt2_Checkbox as Theme
-export const light_alt2_SliderTrack = light_alt2_Checkbox as Theme
-export const light_alt2_SwitchThumb = {
-    background: light_color11,
-    backgroundHover: light_color10,
-    backgroundPress: light_color9,
-    backgroundFocus: light_color8,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_color3,
-    colorHover: light_color4,
-    colorPress: light_color3,
-    colorFocus: light_color4,
-    colorTransparent: light_color1,
-    borderColor: light_color8,
-    borderColorHover: light_color7,
-    borderColorFocus: light_color9,
-    borderColorPress: light_color8,
-    placeholderColor: light_color4
-} as Theme
-export const light_alt2_RadioGroupItem = {
     background: light_color4,
     backgroundHover: light_color5,
     backgroundPress: light_color6,
@@ -5424,8 +5384,48 @@ export const light_alt2_RadioGroupItem = {
     placeholderColor: light_color7
 } as Theme
 
-export const light_alt2_Input = light_alt2_RadioGroupItem as Theme
-export const light_alt2_TextArea = light_alt2_RadioGroupItem as Theme
+export const light_alt2_RadioGroupItem = light_alt2_Checkbox as Theme
+export const light_alt2_Input = light_alt2_Checkbox as Theme
+export const light_alt2_TextArea = light_alt2_Checkbox as Theme
+export const light_alt2_Switch = {
+    background: light_color6,
+    backgroundHover: light_color7,
+    backgroundPress: light_color8,
+    backgroundFocus: light_color9,
+    backgroundStrong: light_color5,
+    backgroundTransparent: light_color4,
+    color: light_color10,
+    colorHover: light_color9,
+    colorPress: light_color10,
+    colorFocus: light_color9,
+    colorTransparent: light_color9,
+    borderColor: light_color9,
+    borderColorHover: light_color10,
+    borderColorFocus: light_color8,
+    borderColorPress: light_color9,
+    placeholderColor: light_color5
+} as Theme
+
+export const light_alt2_TooltipContent = light_alt2_Switch as Theme
+export const light_alt2_SliderTrack = light_alt2_Switch as Theme
+export const light_alt2_SwitchThumb = {
+    background: light_color11,
+    backgroundHover: light_color10,
+    backgroundPress: light_color9,
+    backgroundFocus: light_color8,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_color3,
+    colorHover: light_color4,
+    colorPress: light_color3,
+    colorFocus: light_color4,
+    colorTransparent: light_color1,
+    borderColor: light_color8,
+    borderColorHover: light_color7,
+    borderColorFocus: light_color9,
+    borderColorPress: light_color8,
+    placeholderColor: light_color4
+} as Theme
 export const light_alt2_SliderTrackActive = {
     background: light_color7,
     backgroundHover: light_color6,
@@ -5521,44 +5521,6 @@ export const light_active_Button = {
     placeholderColor: light_color4
 } as Theme
 export const light_active_Checkbox = {
-    background: light_color7,
-    backgroundHover: light_color8,
-    backgroundPress: light_color9,
-    backgroundFocus: light_color10,
-    backgroundStrong: light_color6,
-    backgroundTransparent: light_color5,
-    colorHover: light_color8,
-    colorPress: light_color9,
-    colorFocus: light_color8,
-    colorTransparent: light_color8,
-    borderColor: light_color10,
-    borderColorHover: light_color11,
-    borderColorFocus: light_color9,
-    borderColorPress: light_color10,
-    placeholderColor: light_color4
-} as Theme
-
-export const light_active_Switch = light_active_Checkbox as Theme
-export const light_active_TooltipContent = light_active_Checkbox as Theme
-export const light_active_SliderTrack = light_active_Checkbox as Theme
-export const light_active_SwitchThumb = {
-    background: light_color10,
-    backgroundHover: light_color9,
-    backgroundPress: light_color8,
-    backgroundFocus: light_color7,
-    backgroundStrong: light_color11,
-    backgroundTransparent: light_color12,
-    colorHover: light_color5,
-    colorPress: light_color4,
-    colorFocus: light_color5,
-    colorTransparent: light_color1,
-    borderColor: light_color7,
-    borderColorHover: light_color6,
-    borderColorFocus: light_color8,
-    borderColorPress: light_color7,
-    placeholderColor: light_color5
-} as Theme
-export const light_active_RadioGroupItem = {
     background: light_color5,
     backgroundHover: light_color6,
     backgroundPress: light_color7,
@@ -5576,8 +5538,46 @@ export const light_active_RadioGroupItem = {
     placeholderColor: light_color6
 } as Theme
 
-export const light_active_Input = light_active_RadioGroupItem as Theme
-export const light_active_TextArea = light_active_RadioGroupItem as Theme
+export const light_active_RadioGroupItem = light_active_Checkbox as Theme
+export const light_active_Input = light_active_Checkbox as Theme
+export const light_active_TextArea = light_active_Checkbox as Theme
+export const light_active_Switch = {
+    background: light_color7,
+    backgroundHover: light_color8,
+    backgroundPress: light_color9,
+    backgroundFocus: light_color10,
+    backgroundStrong: light_color6,
+    backgroundTransparent: light_color5,
+    colorHover: light_color8,
+    colorPress: light_color9,
+    colorFocus: light_color8,
+    colorTransparent: light_color8,
+    borderColor: light_color10,
+    borderColorHover: light_color11,
+    borderColorFocus: light_color9,
+    borderColorPress: light_color10,
+    placeholderColor: light_color4
+} as Theme
+
+export const light_active_TooltipContent = light_active_Switch as Theme
+export const light_active_SliderTrack = light_active_Switch as Theme
+export const light_active_SwitchThumb = {
+    background: light_color10,
+    backgroundHover: light_color9,
+    backgroundPress: light_color8,
+    backgroundFocus: light_color7,
+    backgroundStrong: light_color11,
+    backgroundTransparent: light_color12,
+    colorHover: light_color5,
+    colorPress: light_color4,
+    colorFocus: light_color5,
+    colorTransparent: light_color1,
+    borderColor: light_color7,
+    borderColorHover: light_color6,
+    borderColorFocus: light_color8,
+    borderColorPress: light_color7,
+    placeholderColor: light_color5
+} as Theme
 export const light_active_SliderTrackActive = {
     background: light_color6,
     backgroundHover: light_color5,
@@ -5656,46 +5656,6 @@ export const dark_alt1_Button = {
     placeholderColor: dark_color6
 } as Theme
 export const dark_alt1_Checkbox = {
-    background: dark_color5,
-    backgroundHover: dark_color6,
-    backgroundPress: dark_color7,
-    backgroundFocus: dark_color8,
-    backgroundStrong: dark_color4,
-    backgroundTransparent: dark_color3,
-    color: dark_color11,
-    colorHover: dark_color10,
-    colorPress: dark_color11,
-    colorFocus: dark_color10,
-    colorTransparent: dark_color10,
-    borderColor: dark_color8,
-    borderColorHover: dark_color9,
-    borderColorFocus: dark_color7,
-    borderColorPress: dark_color8,
-    placeholderColor: dark_color6
-} as Theme
-
-export const dark_alt1_Switch = dark_alt1_Checkbox as Theme
-export const dark_alt1_TooltipContent = dark_alt1_Checkbox as Theme
-export const dark_alt1_SliderTrack = dark_alt1_Checkbox as Theme
-export const dark_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_color11,
-    backgroundPress: dark_color10,
-    backgroundFocus: dark_color9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_color2,
-    colorHover: dark_color3,
-    colorPress: dark_color2,
-    colorFocus: dark_color3,
-    colorTransparent: dark_color1,
-    borderColor: dark_color9,
-    borderColorHover: dark_color8,
-    borderColorFocus: dark_color10,
-    borderColorPress: dark_color9,
-    placeholderColor: dark_color3
-} as Theme
-export const dark_alt1_RadioGroupItem = {
     background: dark_color3,
     backgroundHover: dark_color4,
     backgroundPress: dark_color5,
@@ -5714,8 +5674,48 @@ export const dark_alt1_RadioGroupItem = {
     placeholderColor: dark_color8
 } as Theme
 
-export const dark_alt1_Input = dark_alt1_RadioGroupItem as Theme
-export const dark_alt1_TextArea = dark_alt1_RadioGroupItem as Theme
+export const dark_alt1_RadioGroupItem = dark_alt1_Checkbox as Theme
+export const dark_alt1_Input = dark_alt1_Checkbox as Theme
+export const dark_alt1_TextArea = dark_alt1_Checkbox as Theme
+export const dark_alt1_Switch = {
+    background: dark_color5,
+    backgroundHover: dark_color6,
+    backgroundPress: dark_color7,
+    backgroundFocus: dark_color8,
+    backgroundStrong: dark_color4,
+    backgroundTransparent: dark_color3,
+    color: dark_color11,
+    colorHover: dark_color10,
+    colorPress: dark_color11,
+    colorFocus: dark_color10,
+    colorTransparent: dark_color10,
+    borderColor: dark_color8,
+    borderColorHover: dark_color9,
+    borderColorFocus: dark_color7,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color6
+} as Theme
+
+export const dark_alt1_TooltipContent = dark_alt1_Switch as Theme
+export const dark_alt1_SliderTrack = dark_alt1_Switch as Theme
+export const dark_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_color11,
+    backgroundPress: dark_color10,
+    backgroundFocus: dark_color9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_color2,
+    colorHover: dark_color3,
+    colorPress: dark_color2,
+    colorFocus: dark_color3,
+    colorTransparent: dark_color1,
+    borderColor: dark_color9,
+    borderColorHover: dark_color8,
+    borderColorFocus: dark_color10,
+    borderColorPress: dark_color9,
+    placeholderColor: dark_color3
+} as Theme
 export const dark_alt1_SliderTrackActive = {
     background: dark_color8,
     backgroundHover: dark_color7,
@@ -5796,46 +5796,6 @@ export const dark_alt2_Button = {
     placeholderColor: dark_color5
 } as Theme
 export const dark_alt2_Checkbox = {
-    background: dark_color6,
-    backgroundHover: dark_color7,
-    backgroundPress: dark_color8,
-    backgroundFocus: dark_color9,
-    backgroundStrong: dark_color5,
-    backgroundTransparent: dark_color4,
-    color: dark_color10,
-    colorHover: dark_color9,
-    colorPress: dark_color10,
-    colorFocus: dark_color9,
-    colorTransparent: dark_color9,
-    borderColor: dark_color9,
-    borderColorHover: dark_color10,
-    borderColorFocus: dark_color8,
-    borderColorPress: dark_color9,
-    placeholderColor: dark_color5
-} as Theme
-
-export const dark_alt2_Switch = dark_alt2_Checkbox as Theme
-export const dark_alt2_TooltipContent = dark_alt2_Checkbox as Theme
-export const dark_alt2_SliderTrack = dark_alt2_Checkbox as Theme
-export const dark_alt2_SwitchThumb = {
-    background: dark_color11,
-    backgroundHover: dark_color10,
-    backgroundPress: dark_color9,
-    backgroundFocus: dark_color8,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_color3,
-    colorHover: dark_color4,
-    colorPress: dark_color3,
-    colorFocus: dark_color4,
-    colorTransparent: dark_color1,
-    borderColor: dark_color8,
-    borderColorHover: dark_color7,
-    borderColorFocus: dark_color9,
-    borderColorPress: dark_color8,
-    placeholderColor: dark_color4
-} as Theme
-export const dark_alt2_RadioGroupItem = {
     background: dark_color4,
     backgroundHover: dark_color5,
     backgroundPress: dark_color6,
@@ -5854,8 +5814,48 @@ export const dark_alt2_RadioGroupItem = {
     placeholderColor: dark_color7
 } as Theme
 
-export const dark_alt2_Input = dark_alt2_RadioGroupItem as Theme
-export const dark_alt2_TextArea = dark_alt2_RadioGroupItem as Theme
+export const dark_alt2_RadioGroupItem = dark_alt2_Checkbox as Theme
+export const dark_alt2_Input = dark_alt2_Checkbox as Theme
+export const dark_alt2_TextArea = dark_alt2_Checkbox as Theme
+export const dark_alt2_Switch = {
+    background: dark_color6,
+    backgroundHover: dark_color7,
+    backgroundPress: dark_color8,
+    backgroundFocus: dark_color9,
+    backgroundStrong: dark_color5,
+    backgroundTransparent: dark_color4,
+    color: dark_color10,
+    colorHover: dark_color9,
+    colorPress: dark_color10,
+    colorFocus: dark_color9,
+    colorTransparent: dark_color9,
+    borderColor: dark_color9,
+    borderColorHover: dark_color10,
+    borderColorFocus: dark_color8,
+    borderColorPress: dark_color9,
+    placeholderColor: dark_color5
+} as Theme
+
+export const dark_alt2_TooltipContent = dark_alt2_Switch as Theme
+export const dark_alt2_SliderTrack = dark_alt2_Switch as Theme
+export const dark_alt2_SwitchThumb = {
+    background: dark_color11,
+    backgroundHover: dark_color10,
+    backgroundPress: dark_color9,
+    backgroundFocus: dark_color8,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_color3,
+    colorHover: dark_color4,
+    colorPress: dark_color3,
+    colorFocus: dark_color4,
+    colorTransparent: dark_color1,
+    borderColor: dark_color8,
+    borderColorHover: dark_color7,
+    borderColorFocus: dark_color9,
+    borderColorPress: dark_color8,
+    placeholderColor: dark_color4
+} as Theme
 export const dark_alt2_SliderTrackActive = {
     background: dark_color7,
     backgroundHover: dark_color6,
@@ -5934,44 +5934,6 @@ export const dark_active_Button = {
     placeholderColor: dark_color4
 } as Theme
 export const dark_active_Checkbox = {
-    background: dark_color7,
-    backgroundHover: dark_color8,
-    backgroundPress: dark_color9,
-    backgroundFocus: dark_color10,
-    backgroundStrong: dark_color6,
-    backgroundTransparent: dark_color5,
-    colorHover: dark_color8,
-    colorPress: dark_color9,
-    colorFocus: dark_color8,
-    colorTransparent: dark_color8,
-    borderColor: dark_color10,
-    borderColorHover: dark_color11,
-    borderColorFocus: dark_color9,
-    borderColorPress: dark_color10,
-    placeholderColor: dark_color4
-} as Theme
-
-export const dark_active_Switch = dark_active_Checkbox as Theme
-export const dark_active_TooltipContent = dark_active_Checkbox as Theme
-export const dark_active_SliderTrack = dark_active_Checkbox as Theme
-export const dark_active_SwitchThumb = {
-    background: dark_color10,
-    backgroundHover: dark_color9,
-    backgroundPress: dark_color8,
-    backgroundFocus: dark_color7,
-    backgroundStrong: dark_color11,
-    backgroundTransparent: light_color1,
-    colorHover: dark_color5,
-    colorPress: dark_color4,
-    colorFocus: dark_color5,
-    colorTransparent: dark_color1,
-    borderColor: dark_color7,
-    borderColorHover: dark_color6,
-    borderColorFocus: dark_color8,
-    borderColorPress: dark_color7,
-    placeholderColor: dark_color5
-} as Theme
-export const dark_active_RadioGroupItem = {
     background: dark_color5,
     backgroundHover: dark_color6,
     backgroundPress: dark_color7,
@@ -5989,8 +5951,46 @@ export const dark_active_RadioGroupItem = {
     placeholderColor: dark_color6
 } as Theme
 
-export const dark_active_Input = dark_active_RadioGroupItem as Theme
-export const dark_active_TextArea = dark_active_RadioGroupItem as Theme
+export const dark_active_RadioGroupItem = dark_active_Checkbox as Theme
+export const dark_active_Input = dark_active_Checkbox as Theme
+export const dark_active_TextArea = dark_active_Checkbox as Theme
+export const dark_active_Switch = {
+    background: dark_color7,
+    backgroundHover: dark_color8,
+    backgroundPress: dark_color9,
+    backgroundFocus: dark_color10,
+    backgroundStrong: dark_color6,
+    backgroundTransparent: dark_color5,
+    colorHover: dark_color8,
+    colorPress: dark_color9,
+    colorFocus: dark_color8,
+    colorTransparent: dark_color8,
+    borderColor: dark_color10,
+    borderColorHover: dark_color11,
+    borderColorFocus: dark_color9,
+    borderColorPress: dark_color10,
+    placeholderColor: dark_color4
+} as Theme
+
+export const dark_active_TooltipContent = dark_active_Switch as Theme
+export const dark_active_SliderTrack = dark_active_Switch as Theme
+export const dark_active_SwitchThumb = {
+    background: dark_color10,
+    backgroundHover: dark_color9,
+    backgroundPress: dark_color8,
+    backgroundFocus: dark_color7,
+    backgroundStrong: dark_color11,
+    backgroundTransparent: light_color1,
+    colorHover: dark_color5,
+    colorPress: dark_color4,
+    colorFocus: dark_color5,
+    colorTransparent: dark_color1,
+    borderColor: dark_color7,
+    borderColorHover: dark_color6,
+    borderColorFocus: dark_color8,
+    borderColorPress: dark_color7,
+    placeholderColor: dark_color5
+} as Theme
 export const dark_active_SliderTrackActive = {
     background: dark_color6,
     backgroundHover: dark_color5,
@@ -6087,46 +6087,6 @@ export const light_orange_alt1_Button = {
     placeholderColor: light_orange6
 } as Theme
 export const light_orange_alt1_Checkbox = {
-    background: light_orange5,
-    backgroundHover: light_orange6,
-    backgroundPress: light_orange8,
-    backgroundFocus: light_orange9,
-    backgroundStrong: light_orange4,
-    backgroundTransparent: light_orange3,
-    color: light_orange12,
-    colorHover: light_orange11,
-    colorPress: light_orange12,
-    colorFocus: light_orange11,
-    colorTransparent: light_orange11,
-    borderColor: light_orange8,
-    borderColorHover: light_orange9,
-    borderColorFocus: light_orange8,
-    borderColorPress: light_orange8,
-    placeholderColor: light_orange6
-} as Theme
-
-export const light_orange_alt1_Switch = light_orange_alt1_Checkbox as Theme
-export const light_orange_alt1_TooltipContent = light_orange_alt1_Checkbox as Theme
-export const light_orange_alt1_SliderTrack = light_orange_alt1_Checkbox as Theme
-export const light_orange_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_orange12,
-    backgroundPress: light_orange11,
-    backgroundFocus: light_orange10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_orange2,
-    colorHover: light_orange3,
-    colorPress: light_orange2,
-    colorFocus: light_orange3,
-    colorTransparent: light_orange1,
-    borderColor: light_orange11,
-    borderColorHover: light_orange10,
-    borderColorFocus: light_orange11,
-    borderColorPress: light_orange11,
-    placeholderColor: light_orange3
-} as Theme
-export const light_orange_alt1_RadioGroupItem = {
     background: light_orange3,
     backgroundHover: light_orange4,
     backgroundPress: light_orange5,
@@ -6145,8 +6105,48 @@ export const light_orange_alt1_RadioGroupItem = {
     placeholderColor: light_orange9
 } as Theme
 
-export const light_orange_alt1_Input = light_orange_alt1_RadioGroupItem as Theme
-export const light_orange_alt1_TextArea = light_orange_alt1_RadioGroupItem as Theme
+export const light_orange_alt1_RadioGroupItem = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_Input = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_TextArea = light_orange_alt1_Checkbox as Theme
+export const light_orange_alt1_Switch = {
+    background: light_orange5,
+    backgroundHover: light_orange6,
+    backgroundPress: light_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_orange4,
+    backgroundTransparent: light_orange3,
+    color: light_orange12,
+    colorHover: light_orange11,
+    colorPress: light_orange12,
+    colorFocus: light_orange11,
+    colorTransparent: light_orange11,
+    borderColor: light_orange8,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange8,
+    borderColorPress: light_orange8,
+    placeholderColor: light_orange6
+} as Theme
+
+export const light_orange_alt1_TooltipContent = light_orange_alt1_Switch as Theme
+export const light_orange_alt1_SliderTrack = light_orange_alt1_Switch as Theme
+export const light_orange_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_orange12,
+    backgroundPress: light_orange11,
+    backgroundFocus: light_orange10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_orange2,
+    colorHover: light_orange3,
+    colorPress: light_orange2,
+    colorFocus: light_orange3,
+    colorTransparent: light_orange1,
+    borderColor: light_orange11,
+    borderColorHover: light_orange10,
+    borderColorFocus: light_orange11,
+    borderColorPress: light_orange11,
+    placeholderColor: light_orange3
+} as Theme
 export const light_orange_alt1_SliderTrackActive = {
     background: light_orange9,
     backgroundHover: light_orange8,
@@ -6245,46 +6245,6 @@ export const light_orange_alt2_Button = {
     placeholderColor: light_orange5
 } as Theme
 export const light_orange_alt2_Checkbox = {
-    background: light_orange6,
-    backgroundHover: light_orange8,
-    backgroundPress: light_orange9,
-    backgroundFocus: light_orange10,
-    backgroundStrong: light_orange5,
-    backgroundTransparent: light_orange4,
-    color: light_orange11,
-    colorHover: light_orange10,
-    colorPress: light_orange11,
-    colorFocus: light_orange10,
-    colorTransparent: light_orange10,
-    borderColor: light_orange9,
-    borderColorHover: light_orange10,
-    borderColorFocus: light_orange9,
-    borderColorPress: light_orange9,
-    placeholderColor: light_orange5
-} as Theme
-
-export const light_orange_alt2_Switch = light_orange_alt2_Checkbox as Theme
-export const light_orange_alt2_TooltipContent = light_orange_alt2_Checkbox as Theme
-export const light_orange_alt2_SliderTrack = light_orange_alt2_Checkbox as Theme
-export const light_orange_alt2_SwitchThumb = {
-    background: light_orange12,
-    backgroundHover: light_orange11,
-    backgroundPress: light_orange10,
-    backgroundFocus: light_orange9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_orange3,
-    colorHover: light_orange4,
-    colorPress: light_orange3,
-    colorFocus: light_orange4,
-    colorTransparent: light_orange1,
-    borderColor: light_orange10,
-    borderColorHover: light_orange9,
-    borderColorFocus: light_orange10,
-    borderColorPress: light_orange10,
-    placeholderColor: light_orange4
-} as Theme
-export const light_orange_alt2_RadioGroupItem = {
     background: light_orange4,
     backgroundHover: light_orange5,
     backgroundPress: light_orange6,
@@ -6303,8 +6263,48 @@ export const light_orange_alt2_RadioGroupItem = {
     placeholderColor: light_orange8
 } as Theme
 
-export const light_orange_alt2_Input = light_orange_alt2_RadioGroupItem as Theme
-export const light_orange_alt2_TextArea = light_orange_alt2_RadioGroupItem as Theme
+export const light_orange_alt2_RadioGroupItem = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_Input = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_TextArea = light_orange_alt2_Checkbox as Theme
+export const light_orange_alt2_Switch = {
+    background: light_orange6,
+    backgroundHover: light_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: light_orange10,
+    backgroundStrong: light_orange5,
+    backgroundTransparent: light_orange4,
+    color: light_orange11,
+    colorHover: light_orange10,
+    colorPress: light_orange11,
+    colorFocus: light_orange10,
+    colorTransparent: light_orange10,
+    borderColor: light_orange9,
+    borderColorHover: light_orange10,
+    borderColorFocus: light_orange9,
+    borderColorPress: light_orange9,
+    placeholderColor: light_orange5
+} as Theme
+
+export const light_orange_alt2_TooltipContent = light_orange_alt2_Switch as Theme
+export const light_orange_alt2_SliderTrack = light_orange_alt2_Switch as Theme
+export const light_orange_alt2_SwitchThumb = {
+    background: light_orange12,
+    backgroundHover: light_orange11,
+    backgroundPress: light_orange10,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_orange3,
+    colorHover: light_orange4,
+    colorPress: light_orange3,
+    colorFocus: light_orange4,
+    colorTransparent: light_orange1,
+    borderColor: light_orange10,
+    borderColorHover: light_orange9,
+    borderColorFocus: light_orange10,
+    borderColorPress: light_orange10,
+    placeholderColor: light_orange4
+} as Theme
 export const light_orange_alt2_SliderTrackActive = {
     background: light_orange8,
     backgroundHover: light_orange6,
@@ -6400,44 +6400,6 @@ export const light_orange_active_Button = {
     placeholderColor: light_orange4
 } as Theme
 export const light_orange_active_Checkbox = {
-    background: light_orange8,
-    backgroundHover: light_orange9,
-    backgroundPress: light_orange10,
-    backgroundFocus: light_orange11,
-    backgroundStrong: light_orange6,
-    backgroundTransparent: light_orange5,
-    colorHover: light_orange9,
-    colorPress: light_orange10,
-    colorFocus: light_orange9,
-    colorTransparent: light_orange9,
-    borderColor: light_orange10,
-    borderColorHover: light_orange11,
-    borderColorFocus: light_orange10,
-    borderColorPress: light_orange10,
-    placeholderColor: light_orange4
-} as Theme
-
-export const light_orange_active_Switch = light_orange_active_Checkbox as Theme
-export const light_orange_active_TooltipContent = light_orange_active_Checkbox as Theme
-export const light_orange_active_SliderTrack = light_orange_active_Checkbox as Theme
-export const light_orange_active_SwitchThumb = {
-    background: light_orange11,
-    backgroundHover: light_orange10,
-    backgroundPress: light_orange9,
-    backgroundFocus: light_orange8,
-    backgroundStrong: light_orange12,
-    backgroundTransparent: light_color12,
-    colorHover: light_orange5,
-    colorPress: light_orange4,
-    colorFocus: light_orange5,
-    colorTransparent: light_orange1,
-    borderColor: light_orange9,
-    borderColorHover: light_orange8,
-    borderColorFocus: light_orange9,
-    borderColorPress: light_orange9,
-    placeholderColor: light_orange5
-} as Theme
-export const light_orange_active_RadioGroupItem = {
     background: light_orange5,
     backgroundHover: light_orange6,
     backgroundPress: light_orange8,
@@ -6455,8 +6417,46 @@ export const light_orange_active_RadioGroupItem = {
     placeholderColor: light_orange6
 } as Theme
 
-export const light_orange_active_Input = light_orange_active_RadioGroupItem as Theme
-export const light_orange_active_TextArea = light_orange_active_RadioGroupItem as Theme
+export const light_orange_active_RadioGroupItem = light_orange_active_Checkbox as Theme
+export const light_orange_active_Input = light_orange_active_Checkbox as Theme
+export const light_orange_active_TextArea = light_orange_active_Checkbox as Theme
+export const light_orange_active_Switch = {
+    background: light_orange8,
+    backgroundHover: light_orange9,
+    backgroundPress: light_orange10,
+    backgroundFocus: light_orange11,
+    backgroundStrong: light_orange6,
+    backgroundTransparent: light_orange5,
+    colorHover: light_orange9,
+    colorPress: light_orange10,
+    colorFocus: light_orange9,
+    colorTransparent: light_orange9,
+    borderColor: light_orange10,
+    borderColorHover: light_orange11,
+    borderColorFocus: light_orange10,
+    borderColorPress: light_orange10,
+    placeholderColor: light_orange4
+} as Theme
+
+export const light_orange_active_TooltipContent = light_orange_active_Switch as Theme
+export const light_orange_active_SliderTrack = light_orange_active_Switch as Theme
+export const light_orange_active_SwitchThumb = {
+    background: light_orange11,
+    backgroundHover: light_orange10,
+    backgroundPress: light_orange9,
+    backgroundFocus: light_orange8,
+    backgroundStrong: light_orange12,
+    backgroundTransparent: light_color12,
+    colorHover: light_orange5,
+    colorPress: light_orange4,
+    colorFocus: light_orange5,
+    colorTransparent: light_orange1,
+    borderColor: light_orange9,
+    borderColorHover: light_orange8,
+    borderColorFocus: light_orange9,
+    borderColorPress: light_orange9,
+    placeholderColor: light_orange5
+} as Theme
 export const light_orange_active_SliderTrackActive = {
     background: light_orange6,
     backgroundHover: light_orange5,
@@ -6553,46 +6553,6 @@ export const light_yellow_alt1_Button = {
     placeholderColor: light_yellow6
 } as Theme
 export const light_yellow_alt1_Checkbox = {
-    background: light_yellow5,
-    backgroundHover: light_yellow6,
-    backgroundPress: light_yellow8,
-    backgroundFocus: light_yellow9,
-    backgroundStrong: light_yellow4,
-    backgroundTransparent: light_yellow3,
-    color: light_yellow12,
-    colorHover: light_yellow11,
-    colorPress: light_yellow12,
-    colorFocus: light_yellow11,
-    colorTransparent: light_yellow11,
-    borderColor: light_yellow8,
-    borderColorHover: light_yellow9,
-    borderColorFocus: light_yellow8,
-    borderColorPress: light_yellow8,
-    placeholderColor: light_yellow6
-} as Theme
-
-export const light_yellow_alt1_Switch = light_yellow_alt1_Checkbox as Theme
-export const light_yellow_alt1_TooltipContent = light_yellow_alt1_Checkbox as Theme
-export const light_yellow_alt1_SliderTrack = light_yellow_alt1_Checkbox as Theme
-export const light_yellow_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_yellow12,
-    backgroundPress: light_yellow11,
-    backgroundFocus: light_yellow10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_yellow2,
-    colorHover: light_yellow3,
-    colorPress: light_yellow2,
-    colorFocus: light_yellow3,
-    colorTransparent: light_yellow1,
-    borderColor: light_yellow11,
-    borderColorHover: light_yellow10,
-    borderColorFocus: light_yellow11,
-    borderColorPress: light_yellow11,
-    placeholderColor: light_yellow3
-} as Theme
-export const light_yellow_alt1_RadioGroupItem = {
     background: light_yellow3,
     backgroundHover: light_yellow4,
     backgroundPress: light_yellow5,
@@ -6611,8 +6571,48 @@ export const light_yellow_alt1_RadioGroupItem = {
     placeholderColor: light_yellow9
 } as Theme
 
-export const light_yellow_alt1_Input = light_yellow_alt1_RadioGroupItem as Theme
-export const light_yellow_alt1_TextArea = light_yellow_alt1_RadioGroupItem as Theme
+export const light_yellow_alt1_RadioGroupItem = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_Input = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_TextArea = light_yellow_alt1_Checkbox as Theme
+export const light_yellow_alt1_Switch = {
+    background: light_yellow5,
+    backgroundHover: light_yellow6,
+    backgroundPress: light_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_yellow4,
+    backgroundTransparent: light_yellow3,
+    color: light_yellow12,
+    colorHover: light_yellow11,
+    colorPress: light_yellow12,
+    colorFocus: light_yellow11,
+    colorTransparent: light_yellow11,
+    borderColor: light_yellow8,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow8,
+    borderColorPress: light_yellow8,
+    placeholderColor: light_yellow6
+} as Theme
+
+export const light_yellow_alt1_TooltipContent = light_yellow_alt1_Switch as Theme
+export const light_yellow_alt1_SliderTrack = light_yellow_alt1_Switch as Theme
+export const light_yellow_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_yellow12,
+    backgroundPress: light_yellow11,
+    backgroundFocus: light_yellow10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_yellow2,
+    colorHover: light_yellow3,
+    colorPress: light_yellow2,
+    colorFocus: light_yellow3,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow11,
+    borderColorHover: light_yellow10,
+    borderColorFocus: light_yellow11,
+    borderColorPress: light_yellow11,
+    placeholderColor: light_yellow3
+} as Theme
 export const light_yellow_alt1_SliderTrackActive = {
     background: light_yellow9,
     backgroundHover: light_yellow8,
@@ -6711,46 +6711,6 @@ export const light_yellow_alt2_Button = {
     placeholderColor: light_yellow5
 } as Theme
 export const light_yellow_alt2_Checkbox = {
-    background: light_yellow6,
-    backgroundHover: light_yellow8,
-    backgroundPress: light_yellow9,
-    backgroundFocus: light_yellow10,
-    backgroundStrong: light_yellow5,
-    backgroundTransparent: light_yellow4,
-    color: light_yellow11,
-    colorHover: light_yellow10,
-    colorPress: light_yellow11,
-    colorFocus: light_yellow10,
-    colorTransparent: light_yellow10,
-    borderColor: light_yellow9,
-    borderColorHover: light_yellow10,
-    borderColorFocus: light_yellow9,
-    borderColorPress: light_yellow9,
-    placeholderColor: light_yellow5
-} as Theme
-
-export const light_yellow_alt2_Switch = light_yellow_alt2_Checkbox as Theme
-export const light_yellow_alt2_TooltipContent = light_yellow_alt2_Checkbox as Theme
-export const light_yellow_alt2_SliderTrack = light_yellow_alt2_Checkbox as Theme
-export const light_yellow_alt2_SwitchThumb = {
-    background: light_yellow12,
-    backgroundHover: light_yellow11,
-    backgroundPress: light_yellow10,
-    backgroundFocus: light_yellow9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_yellow3,
-    colorHover: light_yellow4,
-    colorPress: light_yellow3,
-    colorFocus: light_yellow4,
-    colorTransparent: light_yellow1,
-    borderColor: light_yellow10,
-    borderColorHover: light_yellow9,
-    borderColorFocus: light_yellow10,
-    borderColorPress: light_yellow10,
-    placeholderColor: light_yellow4
-} as Theme
-export const light_yellow_alt2_RadioGroupItem = {
     background: light_yellow4,
     backgroundHover: light_yellow5,
     backgroundPress: light_yellow6,
@@ -6769,8 +6729,48 @@ export const light_yellow_alt2_RadioGroupItem = {
     placeholderColor: light_yellow8
 } as Theme
 
-export const light_yellow_alt2_Input = light_yellow_alt2_RadioGroupItem as Theme
-export const light_yellow_alt2_TextArea = light_yellow_alt2_RadioGroupItem as Theme
+export const light_yellow_alt2_RadioGroupItem = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_Input = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_TextArea = light_yellow_alt2_Checkbox as Theme
+export const light_yellow_alt2_Switch = {
+    background: light_yellow6,
+    backgroundHover: light_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: light_yellow10,
+    backgroundStrong: light_yellow5,
+    backgroundTransparent: light_yellow4,
+    color: light_yellow11,
+    colorHover: light_yellow10,
+    colorPress: light_yellow11,
+    colorFocus: light_yellow10,
+    colorTransparent: light_yellow10,
+    borderColor: light_yellow9,
+    borderColorHover: light_yellow10,
+    borderColorFocus: light_yellow9,
+    borderColorPress: light_yellow9,
+    placeholderColor: light_yellow5
+} as Theme
+
+export const light_yellow_alt2_TooltipContent = light_yellow_alt2_Switch as Theme
+export const light_yellow_alt2_SliderTrack = light_yellow_alt2_Switch as Theme
+export const light_yellow_alt2_SwitchThumb = {
+    background: light_yellow12,
+    backgroundHover: light_yellow11,
+    backgroundPress: light_yellow10,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_yellow3,
+    colorHover: light_yellow4,
+    colorPress: light_yellow3,
+    colorFocus: light_yellow4,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow10,
+    borderColorHover: light_yellow9,
+    borderColorFocus: light_yellow10,
+    borderColorPress: light_yellow10,
+    placeholderColor: light_yellow4
+} as Theme
 export const light_yellow_alt2_SliderTrackActive = {
     background: light_yellow8,
     backgroundHover: light_yellow6,
@@ -6866,44 +6866,6 @@ export const light_yellow_active_Button = {
     placeholderColor: light_yellow4
 } as Theme
 export const light_yellow_active_Checkbox = {
-    background: light_yellow8,
-    backgroundHover: light_yellow9,
-    backgroundPress: light_yellow10,
-    backgroundFocus: light_yellow11,
-    backgroundStrong: light_yellow6,
-    backgroundTransparent: light_yellow5,
-    colorHover: light_yellow9,
-    colorPress: light_yellow10,
-    colorFocus: light_yellow9,
-    colorTransparent: light_yellow9,
-    borderColor: light_yellow10,
-    borderColorHover: light_yellow11,
-    borderColorFocus: light_yellow10,
-    borderColorPress: light_yellow10,
-    placeholderColor: light_yellow4
-} as Theme
-
-export const light_yellow_active_Switch = light_yellow_active_Checkbox as Theme
-export const light_yellow_active_TooltipContent = light_yellow_active_Checkbox as Theme
-export const light_yellow_active_SliderTrack = light_yellow_active_Checkbox as Theme
-export const light_yellow_active_SwitchThumb = {
-    background: light_yellow11,
-    backgroundHover: light_yellow10,
-    backgroundPress: light_yellow9,
-    backgroundFocus: light_yellow8,
-    backgroundStrong: light_yellow12,
-    backgroundTransparent: light_color12,
-    colorHover: light_yellow5,
-    colorPress: light_yellow4,
-    colorFocus: light_yellow5,
-    colorTransparent: light_yellow1,
-    borderColor: light_yellow9,
-    borderColorHover: light_yellow8,
-    borderColorFocus: light_yellow9,
-    borderColorPress: light_yellow9,
-    placeholderColor: light_yellow5
-} as Theme
-export const light_yellow_active_RadioGroupItem = {
     background: light_yellow5,
     backgroundHover: light_yellow6,
     backgroundPress: light_yellow8,
@@ -6921,8 +6883,46 @@ export const light_yellow_active_RadioGroupItem = {
     placeholderColor: light_yellow6
 } as Theme
 
-export const light_yellow_active_Input = light_yellow_active_RadioGroupItem as Theme
-export const light_yellow_active_TextArea = light_yellow_active_RadioGroupItem as Theme
+export const light_yellow_active_RadioGroupItem = light_yellow_active_Checkbox as Theme
+export const light_yellow_active_Input = light_yellow_active_Checkbox as Theme
+export const light_yellow_active_TextArea = light_yellow_active_Checkbox as Theme
+export const light_yellow_active_Switch = {
+    background: light_yellow8,
+    backgroundHover: light_yellow9,
+    backgroundPress: light_yellow10,
+    backgroundFocus: light_yellow11,
+    backgroundStrong: light_yellow6,
+    backgroundTransparent: light_yellow5,
+    colorHover: light_yellow9,
+    colorPress: light_yellow10,
+    colorFocus: light_yellow9,
+    colorTransparent: light_yellow9,
+    borderColor: light_yellow10,
+    borderColorHover: light_yellow11,
+    borderColorFocus: light_yellow10,
+    borderColorPress: light_yellow10,
+    placeholderColor: light_yellow4
+} as Theme
+
+export const light_yellow_active_TooltipContent = light_yellow_active_Switch as Theme
+export const light_yellow_active_SliderTrack = light_yellow_active_Switch as Theme
+export const light_yellow_active_SwitchThumb = {
+    background: light_yellow11,
+    backgroundHover: light_yellow10,
+    backgroundPress: light_yellow9,
+    backgroundFocus: light_yellow8,
+    backgroundStrong: light_yellow12,
+    backgroundTransparent: light_color12,
+    colorHover: light_yellow5,
+    colorPress: light_yellow4,
+    colorFocus: light_yellow5,
+    colorTransparent: light_yellow1,
+    borderColor: light_yellow9,
+    borderColorHover: light_yellow8,
+    borderColorFocus: light_yellow9,
+    borderColorPress: light_yellow9,
+    placeholderColor: light_yellow5
+} as Theme
 export const light_yellow_active_SliderTrackActive = {
     background: light_yellow6,
     backgroundHover: light_yellow5,
@@ -7019,46 +7019,6 @@ export const light_green_alt1_Button = {
     placeholderColor: light_green6
 } as Theme
 export const light_green_alt1_Checkbox = {
-    background: light_green5,
-    backgroundHover: light_green6,
-    backgroundPress: light_green8,
-    backgroundFocus: light_green9,
-    backgroundStrong: light_green4,
-    backgroundTransparent: light_green3,
-    color: light_green12,
-    colorHover: light_green11,
-    colorPress: light_green12,
-    colorFocus: light_green11,
-    colorTransparent: light_green11,
-    borderColor: light_green8,
-    borderColorHover: light_green9,
-    borderColorFocus: light_green8,
-    borderColorPress: light_green8,
-    placeholderColor: light_green6
-} as Theme
-
-export const light_green_alt1_Switch = light_green_alt1_Checkbox as Theme
-export const light_green_alt1_TooltipContent = light_green_alt1_Checkbox as Theme
-export const light_green_alt1_SliderTrack = light_green_alt1_Checkbox as Theme
-export const light_green_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_green12,
-    backgroundPress: light_green11,
-    backgroundFocus: light_green10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_green2,
-    colorHover: light_green3,
-    colorPress: light_green2,
-    colorFocus: light_green3,
-    colorTransparent: light_green1,
-    borderColor: light_green11,
-    borderColorHover: light_green10,
-    borderColorFocus: light_green11,
-    borderColorPress: light_green11,
-    placeholderColor: light_green3
-} as Theme
-export const light_green_alt1_RadioGroupItem = {
     background: light_green3,
     backgroundHover: light_green4,
     backgroundPress: light_green5,
@@ -7077,8 +7037,48 @@ export const light_green_alt1_RadioGroupItem = {
     placeholderColor: light_green9
 } as Theme
 
-export const light_green_alt1_Input = light_green_alt1_RadioGroupItem as Theme
-export const light_green_alt1_TextArea = light_green_alt1_RadioGroupItem as Theme
+export const light_green_alt1_RadioGroupItem = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_Input = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_TextArea = light_green_alt1_Checkbox as Theme
+export const light_green_alt1_Switch = {
+    background: light_green5,
+    backgroundHover: light_green6,
+    backgroundPress: light_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_green4,
+    backgroundTransparent: light_green3,
+    color: light_green12,
+    colorHover: light_green11,
+    colorPress: light_green12,
+    colorFocus: light_green11,
+    colorTransparent: light_green11,
+    borderColor: light_green8,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green8,
+    borderColorPress: light_green8,
+    placeholderColor: light_green6
+} as Theme
+
+export const light_green_alt1_TooltipContent = light_green_alt1_Switch as Theme
+export const light_green_alt1_SliderTrack = light_green_alt1_Switch as Theme
+export const light_green_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_green12,
+    backgroundPress: light_green11,
+    backgroundFocus: light_green10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_green2,
+    colorHover: light_green3,
+    colorPress: light_green2,
+    colorFocus: light_green3,
+    colorTransparent: light_green1,
+    borderColor: light_green11,
+    borderColorHover: light_green10,
+    borderColorFocus: light_green11,
+    borderColorPress: light_green11,
+    placeholderColor: light_green3
+} as Theme
 export const light_green_alt1_SliderTrackActive = {
     background: light_green9,
     backgroundHover: light_green8,
@@ -7177,46 +7177,6 @@ export const light_green_alt2_Button = {
     placeholderColor: light_green5
 } as Theme
 export const light_green_alt2_Checkbox = {
-    background: light_green6,
-    backgroundHover: light_green8,
-    backgroundPress: light_green9,
-    backgroundFocus: light_green10,
-    backgroundStrong: light_green5,
-    backgroundTransparent: light_green4,
-    color: light_green11,
-    colorHover: light_green10,
-    colorPress: light_green11,
-    colorFocus: light_green10,
-    colorTransparent: light_green10,
-    borderColor: light_green9,
-    borderColorHover: light_green10,
-    borderColorFocus: light_green9,
-    borderColorPress: light_green9,
-    placeholderColor: light_green5
-} as Theme
-
-export const light_green_alt2_Switch = light_green_alt2_Checkbox as Theme
-export const light_green_alt2_TooltipContent = light_green_alt2_Checkbox as Theme
-export const light_green_alt2_SliderTrack = light_green_alt2_Checkbox as Theme
-export const light_green_alt2_SwitchThumb = {
-    background: light_green12,
-    backgroundHover: light_green11,
-    backgroundPress: light_green10,
-    backgroundFocus: light_green9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_green3,
-    colorHover: light_green4,
-    colorPress: light_green3,
-    colorFocus: light_green4,
-    colorTransparent: light_green1,
-    borderColor: light_green10,
-    borderColorHover: light_green9,
-    borderColorFocus: light_green10,
-    borderColorPress: light_green10,
-    placeholderColor: light_green4
-} as Theme
-export const light_green_alt2_RadioGroupItem = {
     background: light_green4,
     backgroundHover: light_green5,
     backgroundPress: light_green6,
@@ -7235,8 +7195,48 @@ export const light_green_alt2_RadioGroupItem = {
     placeholderColor: light_green8
 } as Theme
 
-export const light_green_alt2_Input = light_green_alt2_RadioGroupItem as Theme
-export const light_green_alt2_TextArea = light_green_alt2_RadioGroupItem as Theme
+export const light_green_alt2_RadioGroupItem = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_Input = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_TextArea = light_green_alt2_Checkbox as Theme
+export const light_green_alt2_Switch = {
+    background: light_green6,
+    backgroundHover: light_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: light_green10,
+    backgroundStrong: light_green5,
+    backgroundTransparent: light_green4,
+    color: light_green11,
+    colorHover: light_green10,
+    colorPress: light_green11,
+    colorFocus: light_green10,
+    colorTransparent: light_green10,
+    borderColor: light_green9,
+    borderColorHover: light_green10,
+    borderColorFocus: light_green9,
+    borderColorPress: light_green9,
+    placeholderColor: light_green5
+} as Theme
+
+export const light_green_alt2_TooltipContent = light_green_alt2_Switch as Theme
+export const light_green_alt2_SliderTrack = light_green_alt2_Switch as Theme
+export const light_green_alt2_SwitchThumb = {
+    background: light_green12,
+    backgroundHover: light_green11,
+    backgroundPress: light_green10,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_green3,
+    colorHover: light_green4,
+    colorPress: light_green3,
+    colorFocus: light_green4,
+    colorTransparent: light_green1,
+    borderColor: light_green10,
+    borderColorHover: light_green9,
+    borderColorFocus: light_green10,
+    borderColorPress: light_green10,
+    placeholderColor: light_green4
+} as Theme
 export const light_green_alt2_SliderTrackActive = {
     background: light_green8,
     backgroundHover: light_green6,
@@ -7332,44 +7332,6 @@ export const light_green_active_Button = {
     placeholderColor: light_green4
 } as Theme
 export const light_green_active_Checkbox = {
-    background: light_green8,
-    backgroundHover: light_green9,
-    backgroundPress: light_green10,
-    backgroundFocus: light_green11,
-    backgroundStrong: light_green6,
-    backgroundTransparent: light_green5,
-    colorHover: light_green9,
-    colorPress: light_green10,
-    colorFocus: light_green9,
-    colorTransparent: light_green9,
-    borderColor: light_green10,
-    borderColorHover: light_green11,
-    borderColorFocus: light_green10,
-    borderColorPress: light_green10,
-    placeholderColor: light_green4
-} as Theme
-
-export const light_green_active_Switch = light_green_active_Checkbox as Theme
-export const light_green_active_TooltipContent = light_green_active_Checkbox as Theme
-export const light_green_active_SliderTrack = light_green_active_Checkbox as Theme
-export const light_green_active_SwitchThumb = {
-    background: light_green11,
-    backgroundHover: light_green10,
-    backgroundPress: light_green9,
-    backgroundFocus: light_green8,
-    backgroundStrong: light_green12,
-    backgroundTransparent: light_color12,
-    colorHover: light_green5,
-    colorPress: light_green4,
-    colorFocus: light_green5,
-    colorTransparent: light_green1,
-    borderColor: light_green9,
-    borderColorHover: light_green8,
-    borderColorFocus: light_green9,
-    borderColorPress: light_green9,
-    placeholderColor: light_green5
-} as Theme
-export const light_green_active_RadioGroupItem = {
     background: light_green5,
     backgroundHover: light_green6,
     backgroundPress: light_green8,
@@ -7387,8 +7349,46 @@ export const light_green_active_RadioGroupItem = {
     placeholderColor: light_green6
 } as Theme
 
-export const light_green_active_Input = light_green_active_RadioGroupItem as Theme
-export const light_green_active_TextArea = light_green_active_RadioGroupItem as Theme
+export const light_green_active_RadioGroupItem = light_green_active_Checkbox as Theme
+export const light_green_active_Input = light_green_active_Checkbox as Theme
+export const light_green_active_TextArea = light_green_active_Checkbox as Theme
+export const light_green_active_Switch = {
+    background: light_green8,
+    backgroundHover: light_green9,
+    backgroundPress: light_green10,
+    backgroundFocus: light_green11,
+    backgroundStrong: light_green6,
+    backgroundTransparent: light_green5,
+    colorHover: light_green9,
+    colorPress: light_green10,
+    colorFocus: light_green9,
+    colorTransparent: light_green9,
+    borderColor: light_green10,
+    borderColorHover: light_green11,
+    borderColorFocus: light_green10,
+    borderColorPress: light_green10,
+    placeholderColor: light_green4
+} as Theme
+
+export const light_green_active_TooltipContent = light_green_active_Switch as Theme
+export const light_green_active_SliderTrack = light_green_active_Switch as Theme
+export const light_green_active_SwitchThumb = {
+    background: light_green11,
+    backgroundHover: light_green10,
+    backgroundPress: light_green9,
+    backgroundFocus: light_green8,
+    backgroundStrong: light_green12,
+    backgroundTransparent: light_color12,
+    colorHover: light_green5,
+    colorPress: light_green4,
+    colorFocus: light_green5,
+    colorTransparent: light_green1,
+    borderColor: light_green9,
+    borderColorHover: light_green8,
+    borderColorFocus: light_green9,
+    borderColorPress: light_green9,
+    placeholderColor: light_green5
+} as Theme
 export const light_green_active_SliderTrackActive = {
     background: light_green6,
     backgroundHover: light_green5,
@@ -7485,46 +7485,6 @@ export const light_blue_alt1_Button = {
     placeholderColor: light_blue6
 } as Theme
 export const light_blue_alt1_Checkbox = {
-    background: light_blue5,
-    backgroundHover: light_blue6,
-    backgroundPress: light_blue8,
-    backgroundFocus: light_blue9,
-    backgroundStrong: light_blue4,
-    backgroundTransparent: light_blue3,
-    color: light_blue12,
-    colorHover: light_blue11,
-    colorPress: light_blue12,
-    colorFocus: light_blue11,
-    colorTransparent: light_blue11,
-    borderColor: light_blue8,
-    borderColorHover: light_blue9,
-    borderColorFocus: light_blue8,
-    borderColorPress: light_blue8,
-    placeholderColor: light_blue6
-} as Theme
-
-export const light_blue_alt1_Switch = light_blue_alt1_Checkbox as Theme
-export const light_blue_alt1_TooltipContent = light_blue_alt1_Checkbox as Theme
-export const light_blue_alt1_SliderTrack = light_blue_alt1_Checkbox as Theme
-export const light_blue_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_blue12,
-    backgroundPress: light_blue11,
-    backgroundFocus: light_blue10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_blue2,
-    colorHover: light_blue3,
-    colorPress: light_blue2,
-    colorFocus: light_blue3,
-    colorTransparent: light_blue1,
-    borderColor: light_blue11,
-    borderColorHover: light_blue10,
-    borderColorFocus: light_blue11,
-    borderColorPress: light_blue11,
-    placeholderColor: light_blue3
-} as Theme
-export const light_blue_alt1_RadioGroupItem = {
     background: light_blue3,
     backgroundHover: light_blue4,
     backgroundPress: light_blue5,
@@ -7543,8 +7503,48 @@ export const light_blue_alt1_RadioGroupItem = {
     placeholderColor: light_blue9
 } as Theme
 
-export const light_blue_alt1_Input = light_blue_alt1_RadioGroupItem as Theme
-export const light_blue_alt1_TextArea = light_blue_alt1_RadioGroupItem as Theme
+export const light_blue_alt1_RadioGroupItem = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_Input = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_TextArea = light_blue_alt1_Checkbox as Theme
+export const light_blue_alt1_Switch = {
+    background: light_blue5,
+    backgroundHover: light_blue6,
+    backgroundPress: light_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_blue4,
+    backgroundTransparent: light_blue3,
+    color: light_blue12,
+    colorHover: light_blue11,
+    colorPress: light_blue12,
+    colorFocus: light_blue11,
+    colorTransparent: light_blue11,
+    borderColor: light_blue8,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue8,
+    borderColorPress: light_blue8,
+    placeholderColor: light_blue6
+} as Theme
+
+export const light_blue_alt1_TooltipContent = light_blue_alt1_Switch as Theme
+export const light_blue_alt1_SliderTrack = light_blue_alt1_Switch as Theme
+export const light_blue_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_blue12,
+    backgroundPress: light_blue11,
+    backgroundFocus: light_blue10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_blue2,
+    colorHover: light_blue3,
+    colorPress: light_blue2,
+    colorFocus: light_blue3,
+    colorTransparent: light_blue1,
+    borderColor: light_blue11,
+    borderColorHover: light_blue10,
+    borderColorFocus: light_blue11,
+    borderColorPress: light_blue11,
+    placeholderColor: light_blue3
+} as Theme
 export const light_blue_alt1_SliderTrackActive = {
     background: light_blue9,
     backgroundHover: light_blue8,
@@ -7643,46 +7643,6 @@ export const light_blue_alt2_Button = {
     placeholderColor: light_blue5
 } as Theme
 export const light_blue_alt2_Checkbox = {
-    background: light_blue6,
-    backgroundHover: light_blue8,
-    backgroundPress: light_blue9,
-    backgroundFocus: light_blue10,
-    backgroundStrong: light_blue5,
-    backgroundTransparent: light_blue4,
-    color: light_blue11,
-    colorHover: light_blue10,
-    colorPress: light_blue11,
-    colorFocus: light_blue10,
-    colorTransparent: light_blue10,
-    borderColor: light_blue9,
-    borderColorHover: light_blue10,
-    borderColorFocus: light_blue9,
-    borderColorPress: light_blue9,
-    placeholderColor: light_blue5
-} as Theme
-
-export const light_blue_alt2_Switch = light_blue_alt2_Checkbox as Theme
-export const light_blue_alt2_TooltipContent = light_blue_alt2_Checkbox as Theme
-export const light_blue_alt2_SliderTrack = light_blue_alt2_Checkbox as Theme
-export const light_blue_alt2_SwitchThumb = {
-    background: light_blue12,
-    backgroundHover: light_blue11,
-    backgroundPress: light_blue10,
-    backgroundFocus: light_blue9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_blue3,
-    colorHover: light_blue4,
-    colorPress: light_blue3,
-    colorFocus: light_blue4,
-    colorTransparent: light_blue1,
-    borderColor: light_blue10,
-    borderColorHover: light_blue9,
-    borderColorFocus: light_blue10,
-    borderColorPress: light_blue10,
-    placeholderColor: light_blue4
-} as Theme
-export const light_blue_alt2_RadioGroupItem = {
     background: light_blue4,
     backgroundHover: light_blue5,
     backgroundPress: light_blue6,
@@ -7701,8 +7661,48 @@ export const light_blue_alt2_RadioGroupItem = {
     placeholderColor: light_blue8
 } as Theme
 
-export const light_blue_alt2_Input = light_blue_alt2_RadioGroupItem as Theme
-export const light_blue_alt2_TextArea = light_blue_alt2_RadioGroupItem as Theme
+export const light_blue_alt2_RadioGroupItem = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_Input = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_TextArea = light_blue_alt2_Checkbox as Theme
+export const light_blue_alt2_Switch = {
+    background: light_blue6,
+    backgroundHover: light_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: light_blue10,
+    backgroundStrong: light_blue5,
+    backgroundTransparent: light_blue4,
+    color: light_blue11,
+    colorHover: light_blue10,
+    colorPress: light_blue11,
+    colorFocus: light_blue10,
+    colorTransparent: light_blue10,
+    borderColor: light_blue9,
+    borderColorHover: light_blue10,
+    borderColorFocus: light_blue9,
+    borderColorPress: light_blue9,
+    placeholderColor: light_blue5
+} as Theme
+
+export const light_blue_alt2_TooltipContent = light_blue_alt2_Switch as Theme
+export const light_blue_alt2_SliderTrack = light_blue_alt2_Switch as Theme
+export const light_blue_alt2_SwitchThumb = {
+    background: light_blue12,
+    backgroundHover: light_blue11,
+    backgroundPress: light_blue10,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_blue3,
+    colorHover: light_blue4,
+    colorPress: light_blue3,
+    colorFocus: light_blue4,
+    colorTransparent: light_blue1,
+    borderColor: light_blue10,
+    borderColorHover: light_blue9,
+    borderColorFocus: light_blue10,
+    borderColorPress: light_blue10,
+    placeholderColor: light_blue4
+} as Theme
 export const light_blue_alt2_SliderTrackActive = {
     background: light_blue8,
     backgroundHover: light_blue6,
@@ -7798,44 +7798,6 @@ export const light_blue_active_Button = {
     placeholderColor: light_blue4
 } as Theme
 export const light_blue_active_Checkbox = {
-    background: light_blue8,
-    backgroundHover: light_blue9,
-    backgroundPress: light_blue10,
-    backgroundFocus: light_blue11,
-    backgroundStrong: light_blue6,
-    backgroundTransparent: light_blue5,
-    colorHover: light_blue9,
-    colorPress: light_blue10,
-    colorFocus: light_blue9,
-    colorTransparent: light_blue9,
-    borderColor: light_blue10,
-    borderColorHover: light_blue11,
-    borderColorFocus: light_blue10,
-    borderColorPress: light_blue10,
-    placeholderColor: light_blue4
-} as Theme
-
-export const light_blue_active_Switch = light_blue_active_Checkbox as Theme
-export const light_blue_active_TooltipContent = light_blue_active_Checkbox as Theme
-export const light_blue_active_SliderTrack = light_blue_active_Checkbox as Theme
-export const light_blue_active_SwitchThumb = {
-    background: light_blue11,
-    backgroundHover: light_blue10,
-    backgroundPress: light_blue9,
-    backgroundFocus: light_blue8,
-    backgroundStrong: light_blue12,
-    backgroundTransparent: light_color12,
-    colorHover: light_blue5,
-    colorPress: light_blue4,
-    colorFocus: light_blue5,
-    colorTransparent: light_blue1,
-    borderColor: light_blue9,
-    borderColorHover: light_blue8,
-    borderColorFocus: light_blue9,
-    borderColorPress: light_blue9,
-    placeholderColor: light_blue5
-} as Theme
-export const light_blue_active_RadioGroupItem = {
     background: light_blue5,
     backgroundHover: light_blue6,
     backgroundPress: light_blue8,
@@ -7853,8 +7815,46 @@ export const light_blue_active_RadioGroupItem = {
     placeholderColor: light_blue6
 } as Theme
 
-export const light_blue_active_Input = light_blue_active_RadioGroupItem as Theme
-export const light_blue_active_TextArea = light_blue_active_RadioGroupItem as Theme
+export const light_blue_active_RadioGroupItem = light_blue_active_Checkbox as Theme
+export const light_blue_active_Input = light_blue_active_Checkbox as Theme
+export const light_blue_active_TextArea = light_blue_active_Checkbox as Theme
+export const light_blue_active_Switch = {
+    background: light_blue8,
+    backgroundHover: light_blue9,
+    backgroundPress: light_blue10,
+    backgroundFocus: light_blue11,
+    backgroundStrong: light_blue6,
+    backgroundTransparent: light_blue5,
+    colorHover: light_blue9,
+    colorPress: light_blue10,
+    colorFocus: light_blue9,
+    colorTransparent: light_blue9,
+    borderColor: light_blue10,
+    borderColorHover: light_blue11,
+    borderColorFocus: light_blue10,
+    borderColorPress: light_blue10,
+    placeholderColor: light_blue4
+} as Theme
+
+export const light_blue_active_TooltipContent = light_blue_active_Switch as Theme
+export const light_blue_active_SliderTrack = light_blue_active_Switch as Theme
+export const light_blue_active_SwitchThumb = {
+    background: light_blue11,
+    backgroundHover: light_blue10,
+    backgroundPress: light_blue9,
+    backgroundFocus: light_blue8,
+    backgroundStrong: light_blue12,
+    backgroundTransparent: light_color12,
+    colorHover: light_blue5,
+    colorPress: light_blue4,
+    colorFocus: light_blue5,
+    colorTransparent: light_blue1,
+    borderColor: light_blue9,
+    borderColorHover: light_blue8,
+    borderColorFocus: light_blue9,
+    borderColorPress: light_blue9,
+    placeholderColor: light_blue5
+} as Theme
 export const light_blue_active_SliderTrackActive = {
     background: light_blue6,
     backgroundHover: light_blue5,
@@ -7951,46 +7951,6 @@ export const light_purple_alt1_Button = {
     placeholderColor: light_purple6
 } as Theme
 export const light_purple_alt1_Checkbox = {
-    background: light_purple5,
-    backgroundHover: light_purple6,
-    backgroundPress: light_purple8,
-    backgroundFocus: light_purple9,
-    backgroundStrong: light_purple4,
-    backgroundTransparent: light_purple3,
-    color: light_purple12,
-    colorHover: light_purple11,
-    colorPress: light_purple12,
-    colorFocus: light_purple11,
-    colorTransparent: light_purple11,
-    borderColor: light_purple8,
-    borderColorHover: light_purple9,
-    borderColorFocus: light_purple8,
-    borderColorPress: light_purple8,
-    placeholderColor: light_purple6
-} as Theme
-
-export const light_purple_alt1_Switch = light_purple_alt1_Checkbox as Theme
-export const light_purple_alt1_TooltipContent = light_purple_alt1_Checkbox as Theme
-export const light_purple_alt1_SliderTrack = light_purple_alt1_Checkbox as Theme
-export const light_purple_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_purple12,
-    backgroundPress: light_purple11,
-    backgroundFocus: light_purple10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_purple2,
-    colorHover: light_purple3,
-    colorPress: light_purple2,
-    colorFocus: light_purple3,
-    colorTransparent: light_purple1,
-    borderColor: light_purple11,
-    borderColorHover: light_purple10,
-    borderColorFocus: light_purple11,
-    borderColorPress: light_purple11,
-    placeholderColor: light_purple3
-} as Theme
-export const light_purple_alt1_RadioGroupItem = {
     background: light_purple3,
     backgroundHover: light_purple4,
     backgroundPress: light_purple5,
@@ -8009,8 +7969,48 @@ export const light_purple_alt1_RadioGroupItem = {
     placeholderColor: light_purple9
 } as Theme
 
-export const light_purple_alt1_Input = light_purple_alt1_RadioGroupItem as Theme
-export const light_purple_alt1_TextArea = light_purple_alt1_RadioGroupItem as Theme
+export const light_purple_alt1_RadioGroupItem = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_Input = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_TextArea = light_purple_alt1_Checkbox as Theme
+export const light_purple_alt1_Switch = {
+    background: light_purple5,
+    backgroundHover: light_purple6,
+    backgroundPress: light_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_purple4,
+    backgroundTransparent: light_purple3,
+    color: light_purple12,
+    colorHover: light_purple11,
+    colorPress: light_purple12,
+    colorFocus: light_purple11,
+    colorTransparent: light_purple11,
+    borderColor: light_purple8,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple8,
+    borderColorPress: light_purple8,
+    placeholderColor: light_purple6
+} as Theme
+
+export const light_purple_alt1_TooltipContent = light_purple_alt1_Switch as Theme
+export const light_purple_alt1_SliderTrack = light_purple_alt1_Switch as Theme
+export const light_purple_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_purple12,
+    backgroundPress: light_purple11,
+    backgroundFocus: light_purple10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_purple2,
+    colorHover: light_purple3,
+    colorPress: light_purple2,
+    colorFocus: light_purple3,
+    colorTransparent: light_purple1,
+    borderColor: light_purple11,
+    borderColorHover: light_purple10,
+    borderColorFocus: light_purple11,
+    borderColorPress: light_purple11,
+    placeholderColor: light_purple3
+} as Theme
 export const light_purple_alt1_SliderTrackActive = {
     background: light_purple9,
     backgroundHover: light_purple8,
@@ -8109,46 +8109,6 @@ export const light_purple_alt2_Button = {
     placeholderColor: light_purple5
 } as Theme
 export const light_purple_alt2_Checkbox = {
-    background: light_purple6,
-    backgroundHover: light_purple8,
-    backgroundPress: light_purple9,
-    backgroundFocus: light_purple10,
-    backgroundStrong: light_purple5,
-    backgroundTransparent: light_purple4,
-    color: light_purple11,
-    colorHover: light_purple10,
-    colorPress: light_purple11,
-    colorFocus: light_purple10,
-    colorTransparent: light_purple10,
-    borderColor: light_purple9,
-    borderColorHover: light_purple10,
-    borderColorFocus: light_purple9,
-    borderColorPress: light_purple9,
-    placeholderColor: light_purple5
-} as Theme
-
-export const light_purple_alt2_Switch = light_purple_alt2_Checkbox as Theme
-export const light_purple_alt2_TooltipContent = light_purple_alt2_Checkbox as Theme
-export const light_purple_alt2_SliderTrack = light_purple_alt2_Checkbox as Theme
-export const light_purple_alt2_SwitchThumb = {
-    background: light_purple12,
-    backgroundHover: light_purple11,
-    backgroundPress: light_purple10,
-    backgroundFocus: light_purple9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_purple3,
-    colorHover: light_purple4,
-    colorPress: light_purple3,
-    colorFocus: light_purple4,
-    colorTransparent: light_purple1,
-    borderColor: light_purple10,
-    borderColorHover: light_purple9,
-    borderColorFocus: light_purple10,
-    borderColorPress: light_purple10,
-    placeholderColor: light_purple4
-} as Theme
-export const light_purple_alt2_RadioGroupItem = {
     background: light_purple4,
     backgroundHover: light_purple5,
     backgroundPress: light_purple6,
@@ -8167,8 +8127,48 @@ export const light_purple_alt2_RadioGroupItem = {
     placeholderColor: light_purple8
 } as Theme
 
-export const light_purple_alt2_Input = light_purple_alt2_RadioGroupItem as Theme
-export const light_purple_alt2_TextArea = light_purple_alt2_RadioGroupItem as Theme
+export const light_purple_alt2_RadioGroupItem = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_Input = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_TextArea = light_purple_alt2_Checkbox as Theme
+export const light_purple_alt2_Switch = {
+    background: light_purple6,
+    backgroundHover: light_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: light_purple10,
+    backgroundStrong: light_purple5,
+    backgroundTransparent: light_purple4,
+    color: light_purple11,
+    colorHover: light_purple10,
+    colorPress: light_purple11,
+    colorFocus: light_purple10,
+    colorTransparent: light_purple10,
+    borderColor: light_purple9,
+    borderColorHover: light_purple10,
+    borderColorFocus: light_purple9,
+    borderColorPress: light_purple9,
+    placeholderColor: light_purple5
+} as Theme
+
+export const light_purple_alt2_TooltipContent = light_purple_alt2_Switch as Theme
+export const light_purple_alt2_SliderTrack = light_purple_alt2_Switch as Theme
+export const light_purple_alt2_SwitchThumb = {
+    background: light_purple12,
+    backgroundHover: light_purple11,
+    backgroundPress: light_purple10,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_purple3,
+    colorHover: light_purple4,
+    colorPress: light_purple3,
+    colorFocus: light_purple4,
+    colorTransparent: light_purple1,
+    borderColor: light_purple10,
+    borderColorHover: light_purple9,
+    borderColorFocus: light_purple10,
+    borderColorPress: light_purple10,
+    placeholderColor: light_purple4
+} as Theme
 export const light_purple_alt2_SliderTrackActive = {
     background: light_purple8,
     backgroundHover: light_purple6,
@@ -8264,44 +8264,6 @@ export const light_purple_active_Button = {
     placeholderColor: light_purple4
 } as Theme
 export const light_purple_active_Checkbox = {
-    background: light_purple8,
-    backgroundHover: light_purple9,
-    backgroundPress: light_purple10,
-    backgroundFocus: light_purple11,
-    backgroundStrong: light_purple6,
-    backgroundTransparent: light_purple5,
-    colorHover: light_purple9,
-    colorPress: light_purple10,
-    colorFocus: light_purple9,
-    colorTransparent: light_purple9,
-    borderColor: light_purple10,
-    borderColorHover: light_purple11,
-    borderColorFocus: light_purple10,
-    borderColorPress: light_purple10,
-    placeholderColor: light_purple4
-} as Theme
-
-export const light_purple_active_Switch = light_purple_active_Checkbox as Theme
-export const light_purple_active_TooltipContent = light_purple_active_Checkbox as Theme
-export const light_purple_active_SliderTrack = light_purple_active_Checkbox as Theme
-export const light_purple_active_SwitchThumb = {
-    background: light_purple11,
-    backgroundHover: light_purple10,
-    backgroundPress: light_purple9,
-    backgroundFocus: light_purple8,
-    backgroundStrong: light_purple12,
-    backgroundTransparent: light_color12,
-    colorHover: light_purple5,
-    colorPress: light_purple4,
-    colorFocus: light_purple5,
-    colorTransparent: light_purple1,
-    borderColor: light_purple9,
-    borderColorHover: light_purple8,
-    borderColorFocus: light_purple9,
-    borderColorPress: light_purple9,
-    placeholderColor: light_purple5
-} as Theme
-export const light_purple_active_RadioGroupItem = {
     background: light_purple5,
     backgroundHover: light_purple6,
     backgroundPress: light_purple8,
@@ -8319,8 +8281,46 @@ export const light_purple_active_RadioGroupItem = {
     placeholderColor: light_purple6
 } as Theme
 
-export const light_purple_active_Input = light_purple_active_RadioGroupItem as Theme
-export const light_purple_active_TextArea = light_purple_active_RadioGroupItem as Theme
+export const light_purple_active_RadioGroupItem = light_purple_active_Checkbox as Theme
+export const light_purple_active_Input = light_purple_active_Checkbox as Theme
+export const light_purple_active_TextArea = light_purple_active_Checkbox as Theme
+export const light_purple_active_Switch = {
+    background: light_purple8,
+    backgroundHover: light_purple9,
+    backgroundPress: light_purple10,
+    backgroundFocus: light_purple11,
+    backgroundStrong: light_purple6,
+    backgroundTransparent: light_purple5,
+    colorHover: light_purple9,
+    colorPress: light_purple10,
+    colorFocus: light_purple9,
+    colorTransparent: light_purple9,
+    borderColor: light_purple10,
+    borderColorHover: light_purple11,
+    borderColorFocus: light_purple10,
+    borderColorPress: light_purple10,
+    placeholderColor: light_purple4
+} as Theme
+
+export const light_purple_active_TooltipContent = light_purple_active_Switch as Theme
+export const light_purple_active_SliderTrack = light_purple_active_Switch as Theme
+export const light_purple_active_SwitchThumb = {
+    background: light_purple11,
+    backgroundHover: light_purple10,
+    backgroundPress: light_purple9,
+    backgroundFocus: light_purple8,
+    backgroundStrong: light_purple12,
+    backgroundTransparent: light_color12,
+    colorHover: light_purple5,
+    colorPress: light_purple4,
+    colorFocus: light_purple5,
+    colorTransparent: light_purple1,
+    borderColor: light_purple9,
+    borderColorHover: light_purple8,
+    borderColorFocus: light_purple9,
+    borderColorPress: light_purple9,
+    placeholderColor: light_purple5
+} as Theme
 export const light_purple_active_SliderTrackActive = {
     background: light_purple6,
     backgroundHover: light_purple5,
@@ -8417,46 +8417,6 @@ export const light_pink_alt1_Button = {
     placeholderColor: light_pink6
 } as Theme
 export const light_pink_alt1_Checkbox = {
-    background: light_pink5,
-    backgroundHover: light_pink6,
-    backgroundPress: light_pink8,
-    backgroundFocus: light_pink9,
-    backgroundStrong: light_pink4,
-    backgroundTransparent: light_pink3,
-    color: light_pink12,
-    colorHover: light_pink11,
-    colorPress: light_pink12,
-    colorFocus: light_pink11,
-    colorTransparent: light_pink11,
-    borderColor: light_pink8,
-    borderColorHover: light_pink9,
-    borderColorFocus: light_pink8,
-    borderColorPress: light_pink8,
-    placeholderColor: light_pink6
-} as Theme
-
-export const light_pink_alt1_Switch = light_pink_alt1_Checkbox as Theme
-export const light_pink_alt1_TooltipContent = light_pink_alt1_Checkbox as Theme
-export const light_pink_alt1_SliderTrack = light_pink_alt1_Checkbox as Theme
-export const light_pink_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_pink12,
-    backgroundPress: light_pink11,
-    backgroundFocus: light_pink10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_pink2,
-    colorHover: light_pink3,
-    colorPress: light_pink2,
-    colorFocus: light_pink3,
-    colorTransparent: light_pink1,
-    borderColor: light_pink11,
-    borderColorHover: light_pink10,
-    borderColorFocus: light_pink11,
-    borderColorPress: light_pink11,
-    placeholderColor: light_pink3
-} as Theme
-export const light_pink_alt1_RadioGroupItem = {
     background: light_pink3,
     backgroundHover: light_pink4,
     backgroundPress: light_pink5,
@@ -8475,8 +8435,48 @@ export const light_pink_alt1_RadioGroupItem = {
     placeholderColor: light_pink9
 } as Theme
 
-export const light_pink_alt1_Input = light_pink_alt1_RadioGroupItem as Theme
-export const light_pink_alt1_TextArea = light_pink_alt1_RadioGroupItem as Theme
+export const light_pink_alt1_RadioGroupItem = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_Input = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_TextArea = light_pink_alt1_Checkbox as Theme
+export const light_pink_alt1_Switch = {
+    background: light_pink5,
+    backgroundHover: light_pink6,
+    backgroundPress: light_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_pink4,
+    backgroundTransparent: light_pink3,
+    color: light_pink12,
+    colorHover: light_pink11,
+    colorPress: light_pink12,
+    colorFocus: light_pink11,
+    colorTransparent: light_pink11,
+    borderColor: light_pink8,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink8,
+    borderColorPress: light_pink8,
+    placeholderColor: light_pink6
+} as Theme
+
+export const light_pink_alt1_TooltipContent = light_pink_alt1_Switch as Theme
+export const light_pink_alt1_SliderTrack = light_pink_alt1_Switch as Theme
+export const light_pink_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_pink12,
+    backgroundPress: light_pink11,
+    backgroundFocus: light_pink10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_pink2,
+    colorHover: light_pink3,
+    colorPress: light_pink2,
+    colorFocus: light_pink3,
+    colorTransparent: light_pink1,
+    borderColor: light_pink11,
+    borderColorHover: light_pink10,
+    borderColorFocus: light_pink11,
+    borderColorPress: light_pink11,
+    placeholderColor: light_pink3
+} as Theme
 export const light_pink_alt1_SliderTrackActive = {
     background: light_pink9,
     backgroundHover: light_pink8,
@@ -8575,46 +8575,6 @@ export const light_pink_alt2_Button = {
     placeholderColor: light_pink5
 } as Theme
 export const light_pink_alt2_Checkbox = {
-    background: light_pink6,
-    backgroundHover: light_pink8,
-    backgroundPress: light_pink9,
-    backgroundFocus: light_pink10,
-    backgroundStrong: light_pink5,
-    backgroundTransparent: light_pink4,
-    color: light_pink11,
-    colorHover: light_pink10,
-    colorPress: light_pink11,
-    colorFocus: light_pink10,
-    colorTransparent: light_pink10,
-    borderColor: light_pink9,
-    borderColorHover: light_pink10,
-    borderColorFocus: light_pink9,
-    borderColorPress: light_pink9,
-    placeholderColor: light_pink5
-} as Theme
-
-export const light_pink_alt2_Switch = light_pink_alt2_Checkbox as Theme
-export const light_pink_alt2_TooltipContent = light_pink_alt2_Checkbox as Theme
-export const light_pink_alt2_SliderTrack = light_pink_alt2_Checkbox as Theme
-export const light_pink_alt2_SwitchThumb = {
-    background: light_pink12,
-    backgroundHover: light_pink11,
-    backgroundPress: light_pink10,
-    backgroundFocus: light_pink9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_pink3,
-    colorHover: light_pink4,
-    colorPress: light_pink3,
-    colorFocus: light_pink4,
-    colorTransparent: light_pink1,
-    borderColor: light_pink10,
-    borderColorHover: light_pink9,
-    borderColorFocus: light_pink10,
-    borderColorPress: light_pink10,
-    placeholderColor: light_pink4
-} as Theme
-export const light_pink_alt2_RadioGroupItem = {
     background: light_pink4,
     backgroundHover: light_pink5,
     backgroundPress: light_pink6,
@@ -8633,8 +8593,48 @@ export const light_pink_alt2_RadioGroupItem = {
     placeholderColor: light_pink8
 } as Theme
 
-export const light_pink_alt2_Input = light_pink_alt2_RadioGroupItem as Theme
-export const light_pink_alt2_TextArea = light_pink_alt2_RadioGroupItem as Theme
+export const light_pink_alt2_RadioGroupItem = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_Input = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_TextArea = light_pink_alt2_Checkbox as Theme
+export const light_pink_alt2_Switch = {
+    background: light_pink6,
+    backgroundHover: light_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: light_pink10,
+    backgroundStrong: light_pink5,
+    backgroundTransparent: light_pink4,
+    color: light_pink11,
+    colorHover: light_pink10,
+    colorPress: light_pink11,
+    colorFocus: light_pink10,
+    colorTransparent: light_pink10,
+    borderColor: light_pink9,
+    borderColorHover: light_pink10,
+    borderColorFocus: light_pink9,
+    borderColorPress: light_pink9,
+    placeholderColor: light_pink5
+} as Theme
+
+export const light_pink_alt2_TooltipContent = light_pink_alt2_Switch as Theme
+export const light_pink_alt2_SliderTrack = light_pink_alt2_Switch as Theme
+export const light_pink_alt2_SwitchThumb = {
+    background: light_pink12,
+    backgroundHover: light_pink11,
+    backgroundPress: light_pink10,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_pink3,
+    colorHover: light_pink4,
+    colorPress: light_pink3,
+    colorFocus: light_pink4,
+    colorTransparent: light_pink1,
+    borderColor: light_pink10,
+    borderColorHover: light_pink9,
+    borderColorFocus: light_pink10,
+    borderColorPress: light_pink10,
+    placeholderColor: light_pink4
+} as Theme
 export const light_pink_alt2_SliderTrackActive = {
     background: light_pink8,
     backgroundHover: light_pink6,
@@ -8730,44 +8730,6 @@ export const light_pink_active_Button = {
     placeholderColor: light_pink4
 } as Theme
 export const light_pink_active_Checkbox = {
-    background: light_pink8,
-    backgroundHover: light_pink9,
-    backgroundPress: light_pink10,
-    backgroundFocus: light_pink11,
-    backgroundStrong: light_pink6,
-    backgroundTransparent: light_pink5,
-    colorHover: light_pink9,
-    colorPress: light_pink10,
-    colorFocus: light_pink9,
-    colorTransparent: light_pink9,
-    borderColor: light_pink10,
-    borderColorHover: light_pink11,
-    borderColorFocus: light_pink10,
-    borderColorPress: light_pink10,
-    placeholderColor: light_pink4
-} as Theme
-
-export const light_pink_active_Switch = light_pink_active_Checkbox as Theme
-export const light_pink_active_TooltipContent = light_pink_active_Checkbox as Theme
-export const light_pink_active_SliderTrack = light_pink_active_Checkbox as Theme
-export const light_pink_active_SwitchThumb = {
-    background: light_pink11,
-    backgroundHover: light_pink10,
-    backgroundPress: light_pink9,
-    backgroundFocus: light_pink8,
-    backgroundStrong: light_pink12,
-    backgroundTransparent: light_color12,
-    colorHover: light_pink5,
-    colorPress: light_pink4,
-    colorFocus: light_pink5,
-    colorTransparent: light_pink1,
-    borderColor: light_pink9,
-    borderColorHover: light_pink8,
-    borderColorFocus: light_pink9,
-    borderColorPress: light_pink9,
-    placeholderColor: light_pink5
-} as Theme
-export const light_pink_active_RadioGroupItem = {
     background: light_pink5,
     backgroundHover: light_pink6,
     backgroundPress: light_pink8,
@@ -8785,8 +8747,46 @@ export const light_pink_active_RadioGroupItem = {
     placeholderColor: light_pink6
 } as Theme
 
-export const light_pink_active_Input = light_pink_active_RadioGroupItem as Theme
-export const light_pink_active_TextArea = light_pink_active_RadioGroupItem as Theme
+export const light_pink_active_RadioGroupItem = light_pink_active_Checkbox as Theme
+export const light_pink_active_Input = light_pink_active_Checkbox as Theme
+export const light_pink_active_TextArea = light_pink_active_Checkbox as Theme
+export const light_pink_active_Switch = {
+    background: light_pink8,
+    backgroundHover: light_pink9,
+    backgroundPress: light_pink10,
+    backgroundFocus: light_pink11,
+    backgroundStrong: light_pink6,
+    backgroundTransparent: light_pink5,
+    colorHover: light_pink9,
+    colorPress: light_pink10,
+    colorFocus: light_pink9,
+    colorTransparent: light_pink9,
+    borderColor: light_pink10,
+    borderColorHover: light_pink11,
+    borderColorFocus: light_pink10,
+    borderColorPress: light_pink10,
+    placeholderColor: light_pink4
+} as Theme
+
+export const light_pink_active_TooltipContent = light_pink_active_Switch as Theme
+export const light_pink_active_SliderTrack = light_pink_active_Switch as Theme
+export const light_pink_active_SwitchThumb = {
+    background: light_pink11,
+    backgroundHover: light_pink10,
+    backgroundPress: light_pink9,
+    backgroundFocus: light_pink8,
+    backgroundStrong: light_pink12,
+    backgroundTransparent: light_color12,
+    colorHover: light_pink5,
+    colorPress: light_pink4,
+    colorFocus: light_pink5,
+    colorTransparent: light_pink1,
+    borderColor: light_pink9,
+    borderColorHover: light_pink8,
+    borderColorFocus: light_pink9,
+    borderColorPress: light_pink9,
+    placeholderColor: light_pink5
+} as Theme
 export const light_pink_active_SliderTrackActive = {
     background: light_pink6,
     backgroundHover: light_pink5,
@@ -8883,46 +8883,6 @@ export const light_red_alt1_Button = {
     placeholderColor: light_red6
 } as Theme
 export const light_red_alt1_Checkbox = {
-    background: light_red5,
-    backgroundHover: light_red6,
-    backgroundPress: light_red8,
-    backgroundFocus: light_red9,
-    backgroundStrong: light_red4,
-    backgroundTransparent: light_red3,
-    color: light_red12,
-    colorHover: light_red11,
-    colorPress: light_red12,
-    colorFocus: light_red11,
-    colorTransparent: light_red11,
-    borderColor: light_red8,
-    borderColorHover: light_red9,
-    borderColorFocus: light_red8,
-    borderColorPress: light_red8,
-    placeholderColor: light_red6
-} as Theme
-
-export const light_red_alt1_Switch = light_red_alt1_Checkbox as Theme
-export const light_red_alt1_TooltipContent = light_red_alt1_Checkbox as Theme
-export const light_red_alt1_SliderTrack = light_red_alt1_Checkbox as Theme
-export const light_red_alt1_SwitchThumb = {
-    background: light_color12,
-    backgroundHover: light_red12,
-    backgroundPress: light_red11,
-    backgroundFocus: light_red10,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_red2,
-    colorHover: light_red3,
-    colorPress: light_red2,
-    colorFocus: light_red3,
-    colorTransparent: light_red1,
-    borderColor: light_red11,
-    borderColorHover: light_red10,
-    borderColorFocus: light_red11,
-    borderColorPress: light_red11,
-    placeholderColor: light_red3
-} as Theme
-export const light_red_alt1_RadioGroupItem = {
     background: light_red3,
     backgroundHover: light_red4,
     backgroundPress: light_red5,
@@ -8941,8 +8901,48 @@ export const light_red_alt1_RadioGroupItem = {
     placeholderColor: light_red9
 } as Theme
 
-export const light_red_alt1_Input = light_red_alt1_RadioGroupItem as Theme
-export const light_red_alt1_TextArea = light_red_alt1_RadioGroupItem as Theme
+export const light_red_alt1_RadioGroupItem = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_Input = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_TextArea = light_red_alt1_Checkbox as Theme
+export const light_red_alt1_Switch = {
+    background: light_red5,
+    backgroundHover: light_red6,
+    backgroundPress: light_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_red4,
+    backgroundTransparent: light_red3,
+    color: light_red12,
+    colorHover: light_red11,
+    colorPress: light_red12,
+    colorFocus: light_red11,
+    colorTransparent: light_red11,
+    borderColor: light_red8,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red8,
+    borderColorPress: light_red8,
+    placeholderColor: light_red6
+} as Theme
+
+export const light_red_alt1_TooltipContent = light_red_alt1_Switch as Theme
+export const light_red_alt1_SliderTrack = light_red_alt1_Switch as Theme
+export const light_red_alt1_SwitchThumb = {
+    background: light_color12,
+    backgroundHover: light_red12,
+    backgroundPress: light_red11,
+    backgroundFocus: light_red10,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_red2,
+    colorHover: light_red3,
+    colorPress: light_red2,
+    colorFocus: light_red3,
+    colorTransparent: light_red1,
+    borderColor: light_red11,
+    borderColorHover: light_red10,
+    borderColorFocus: light_red11,
+    borderColorPress: light_red11,
+    placeholderColor: light_red3
+} as Theme
 export const light_red_alt1_SliderTrackActive = {
     background: light_red9,
     backgroundHover: light_red8,
@@ -9041,46 +9041,6 @@ export const light_red_alt2_Button = {
     placeholderColor: light_red5
 } as Theme
 export const light_red_alt2_Checkbox = {
-    background: light_red6,
-    backgroundHover: light_red8,
-    backgroundPress: light_red9,
-    backgroundFocus: light_red10,
-    backgroundStrong: light_red5,
-    backgroundTransparent: light_red4,
-    color: light_red11,
-    colorHover: light_red10,
-    colorPress: light_red11,
-    colorFocus: light_red10,
-    colorTransparent: light_red10,
-    borderColor: light_red9,
-    borderColorHover: light_red10,
-    borderColorFocus: light_red9,
-    borderColorPress: light_red9,
-    placeholderColor: light_red5
-} as Theme
-
-export const light_red_alt2_Switch = light_red_alt2_Checkbox as Theme
-export const light_red_alt2_TooltipContent = light_red_alt2_Checkbox as Theme
-export const light_red_alt2_SliderTrack = light_red_alt2_Checkbox as Theme
-export const light_red_alt2_SwitchThumb = {
-    background: light_red12,
-    backgroundHover: light_red11,
-    backgroundPress: light_red10,
-    backgroundFocus: light_red9,
-    backgroundStrong: light_color12,
-    backgroundTransparent: light_color12,
-    color: light_red3,
-    colorHover: light_red4,
-    colorPress: light_red3,
-    colorFocus: light_red4,
-    colorTransparent: light_red1,
-    borderColor: light_red10,
-    borderColorHover: light_red9,
-    borderColorFocus: light_red10,
-    borderColorPress: light_red10,
-    placeholderColor: light_red4
-} as Theme
-export const light_red_alt2_RadioGroupItem = {
     background: light_red4,
     backgroundHover: light_red5,
     backgroundPress: light_red6,
@@ -9099,8 +9059,48 @@ export const light_red_alt2_RadioGroupItem = {
     placeholderColor: light_red8
 } as Theme
 
-export const light_red_alt2_Input = light_red_alt2_RadioGroupItem as Theme
-export const light_red_alt2_TextArea = light_red_alt2_RadioGroupItem as Theme
+export const light_red_alt2_RadioGroupItem = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_Input = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_TextArea = light_red_alt2_Checkbox as Theme
+export const light_red_alt2_Switch = {
+    background: light_red6,
+    backgroundHover: light_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: light_red10,
+    backgroundStrong: light_red5,
+    backgroundTransparent: light_red4,
+    color: light_red11,
+    colorHover: light_red10,
+    colorPress: light_red11,
+    colorFocus: light_red10,
+    colorTransparent: light_red10,
+    borderColor: light_red9,
+    borderColorHover: light_red10,
+    borderColorFocus: light_red9,
+    borderColorPress: light_red9,
+    placeholderColor: light_red5
+} as Theme
+
+export const light_red_alt2_TooltipContent = light_red_alt2_Switch as Theme
+export const light_red_alt2_SliderTrack = light_red_alt2_Switch as Theme
+export const light_red_alt2_SwitchThumb = {
+    background: light_red12,
+    backgroundHover: light_red11,
+    backgroundPress: light_red10,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_color12,
+    backgroundTransparent: light_color12,
+    color: light_red3,
+    colorHover: light_red4,
+    colorPress: light_red3,
+    colorFocus: light_red4,
+    colorTransparent: light_red1,
+    borderColor: light_red10,
+    borderColorHover: light_red9,
+    borderColorFocus: light_red10,
+    borderColorPress: light_red10,
+    placeholderColor: light_red4
+} as Theme
 export const light_red_alt2_SliderTrackActive = {
     background: light_red8,
     backgroundHover: light_red6,
@@ -9196,44 +9196,6 @@ export const light_red_active_Button = {
     placeholderColor: light_red4
 } as Theme
 export const light_red_active_Checkbox = {
-    background: light_red8,
-    backgroundHover: light_red9,
-    backgroundPress: light_red10,
-    backgroundFocus: light_red11,
-    backgroundStrong: light_red6,
-    backgroundTransparent: light_red5,
-    colorHover: light_red9,
-    colorPress: light_red10,
-    colorFocus: light_red9,
-    colorTransparent: light_red9,
-    borderColor: light_red10,
-    borderColorHover: light_red11,
-    borderColorFocus: light_red10,
-    borderColorPress: light_red10,
-    placeholderColor: light_red4
-} as Theme
-
-export const light_red_active_Switch = light_red_active_Checkbox as Theme
-export const light_red_active_TooltipContent = light_red_active_Checkbox as Theme
-export const light_red_active_SliderTrack = light_red_active_Checkbox as Theme
-export const light_red_active_SwitchThumb = {
-    background: light_red11,
-    backgroundHover: light_red10,
-    backgroundPress: light_red9,
-    backgroundFocus: light_red8,
-    backgroundStrong: light_red12,
-    backgroundTransparent: light_color12,
-    colorHover: light_red5,
-    colorPress: light_red4,
-    colorFocus: light_red5,
-    colorTransparent: light_red1,
-    borderColor: light_red9,
-    borderColorHover: light_red8,
-    borderColorFocus: light_red9,
-    borderColorPress: light_red9,
-    placeholderColor: light_red5
-} as Theme
-export const light_red_active_RadioGroupItem = {
     background: light_red5,
     backgroundHover: light_red6,
     backgroundPress: light_red8,
@@ -9251,8 +9213,46 @@ export const light_red_active_RadioGroupItem = {
     placeholderColor: light_red6
 } as Theme
 
-export const light_red_active_Input = light_red_active_RadioGroupItem as Theme
-export const light_red_active_TextArea = light_red_active_RadioGroupItem as Theme
+export const light_red_active_RadioGroupItem = light_red_active_Checkbox as Theme
+export const light_red_active_Input = light_red_active_Checkbox as Theme
+export const light_red_active_TextArea = light_red_active_Checkbox as Theme
+export const light_red_active_Switch = {
+    background: light_red8,
+    backgroundHover: light_red9,
+    backgroundPress: light_red10,
+    backgroundFocus: light_red11,
+    backgroundStrong: light_red6,
+    backgroundTransparent: light_red5,
+    colorHover: light_red9,
+    colorPress: light_red10,
+    colorFocus: light_red9,
+    colorTransparent: light_red9,
+    borderColor: light_red10,
+    borderColorHover: light_red11,
+    borderColorFocus: light_red10,
+    borderColorPress: light_red10,
+    placeholderColor: light_red4
+} as Theme
+
+export const light_red_active_TooltipContent = light_red_active_Switch as Theme
+export const light_red_active_SliderTrack = light_red_active_Switch as Theme
+export const light_red_active_SwitchThumb = {
+    background: light_red11,
+    backgroundHover: light_red10,
+    backgroundPress: light_red9,
+    backgroundFocus: light_red8,
+    backgroundStrong: light_red12,
+    backgroundTransparent: light_color12,
+    colorHover: light_red5,
+    colorPress: light_red4,
+    colorFocus: light_red5,
+    colorTransparent: light_red1,
+    borderColor: light_red9,
+    borderColorHover: light_red8,
+    borderColorFocus: light_red9,
+    borderColorPress: light_red9,
+    placeholderColor: light_red5
+} as Theme
 export const light_red_active_SliderTrackActive = {
     background: light_red6,
     backgroundHover: light_red5,
@@ -9331,46 +9331,6 @@ export const dark_orange_alt1_Button = {
     placeholderColor: dark_orange6
 } as Theme
 export const dark_orange_alt1_Checkbox = {
-    background: dark_orange5,
-    backgroundHover: dark_orange6,
-    backgroundPress: dark_orange8,
-    backgroundFocus: light_orange9,
-    backgroundStrong: dark_orange4,
-    backgroundTransparent: dark_orange3,
-    color: dark_orange12,
-    colorHover: dark_orange11,
-    colorPress: dark_orange12,
-    colorFocus: dark_orange11,
-    colorTransparent: dark_orange11,
-    borderColor: light_orange9,
-    borderColorHover: dark_orange10,
-    borderColorFocus: dark_orange8,
-    borderColorPress: light_orange9,
-    placeholderColor: dark_orange6
-} as Theme
-
-export const dark_orange_alt1_Switch = dark_orange_alt1_Checkbox as Theme
-export const dark_orange_alt1_TooltipContent = dark_orange_alt1_Checkbox as Theme
-export const dark_orange_alt1_SliderTrack = dark_orange_alt1_Checkbox as Theme
-export const dark_orange_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_orange12,
-    backgroundPress: dark_orange11,
-    backgroundFocus: dark_orange10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_orange2,
-    colorHover: dark_orange3,
-    colorPress: dark_orange2,
-    colorFocus: dark_orange3,
-    colorTransparent: dark_orange1,
-    borderColor: dark_orange10,
-    borderColorHover: light_orange9,
-    borderColorFocus: dark_orange11,
-    borderColorPress: dark_orange10,
-    placeholderColor: dark_orange3
-} as Theme
-export const dark_orange_alt1_RadioGroupItem = {
     background: dark_orange3,
     backgroundHover: dark_orange4,
     backgroundPress: dark_orange5,
@@ -9389,8 +9349,48 @@ export const dark_orange_alt1_RadioGroupItem = {
     placeholderColor: light_orange9
 } as Theme
 
-export const dark_orange_alt1_Input = dark_orange_alt1_RadioGroupItem as Theme
-export const dark_orange_alt1_TextArea = dark_orange_alt1_RadioGroupItem as Theme
+export const dark_orange_alt1_RadioGroupItem = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_Input = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_TextArea = dark_orange_alt1_Checkbox as Theme
+export const dark_orange_alt1_Switch = {
+    background: dark_orange5,
+    backgroundHover: dark_orange6,
+    backgroundPress: dark_orange8,
+    backgroundFocus: light_orange9,
+    backgroundStrong: dark_orange4,
+    backgroundTransparent: dark_orange3,
+    color: dark_orange12,
+    colorHover: dark_orange11,
+    colorPress: dark_orange12,
+    colorFocus: dark_orange11,
+    colorTransparent: dark_orange11,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange10,
+    borderColorFocus: dark_orange8,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange6
+} as Theme
+
+export const dark_orange_alt1_TooltipContent = dark_orange_alt1_Switch as Theme
+export const dark_orange_alt1_SliderTrack = dark_orange_alt1_Switch as Theme
+export const dark_orange_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_orange12,
+    backgroundPress: dark_orange11,
+    backgroundFocus: dark_orange10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_orange2,
+    colorHover: dark_orange3,
+    colorPress: dark_orange2,
+    colorFocus: dark_orange3,
+    colorTransparent: dark_orange1,
+    borderColor: dark_orange10,
+    borderColorHover: light_orange9,
+    borderColorFocus: dark_orange11,
+    borderColorPress: dark_orange10,
+    placeholderColor: dark_orange3
+} as Theme
 export const dark_orange_alt1_SliderTrackActive = {
     background: light_orange9,
     backgroundHover: dark_orange8,
@@ -9471,46 +9471,6 @@ export const dark_orange_alt2_Button = {
     placeholderColor: dark_orange5
 } as Theme
 export const dark_orange_alt2_Checkbox = {
-    background: dark_orange6,
-    backgroundHover: dark_orange8,
-    backgroundPress: light_orange9,
-    backgroundFocus: dark_orange10,
-    backgroundStrong: dark_orange5,
-    backgroundTransparent: dark_orange4,
-    color: dark_orange11,
-    colorHover: dark_orange10,
-    colorPress: dark_orange11,
-    colorFocus: dark_orange10,
-    colorTransparent: dark_orange10,
-    borderColor: dark_orange10,
-    borderColorHover: dark_orange11,
-    borderColorFocus: light_orange9,
-    borderColorPress: dark_orange10,
-    placeholderColor: dark_orange5
-} as Theme
-
-export const dark_orange_alt2_Switch = dark_orange_alt2_Checkbox as Theme
-export const dark_orange_alt2_TooltipContent = dark_orange_alt2_Checkbox as Theme
-export const dark_orange_alt2_SliderTrack = dark_orange_alt2_Checkbox as Theme
-export const dark_orange_alt2_SwitchThumb = {
-    background: dark_orange12,
-    backgroundHover: dark_orange11,
-    backgroundPress: dark_orange10,
-    backgroundFocus: light_orange9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_orange3,
-    colorHover: dark_orange4,
-    colorPress: dark_orange3,
-    colorFocus: dark_orange4,
-    colorTransparent: dark_orange1,
-    borderColor: light_orange9,
-    borderColorHover: dark_orange8,
-    borderColorFocus: dark_orange10,
-    borderColorPress: light_orange9,
-    placeholderColor: dark_orange4
-} as Theme
-export const dark_orange_alt2_RadioGroupItem = {
     background: dark_orange4,
     backgroundHover: dark_orange5,
     backgroundPress: dark_orange6,
@@ -9529,8 +9489,48 @@ export const dark_orange_alt2_RadioGroupItem = {
     placeholderColor: dark_orange8
 } as Theme
 
-export const dark_orange_alt2_Input = dark_orange_alt2_RadioGroupItem as Theme
-export const dark_orange_alt2_TextArea = dark_orange_alt2_RadioGroupItem as Theme
+export const dark_orange_alt2_RadioGroupItem = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_Input = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_TextArea = dark_orange_alt2_Checkbox as Theme
+export const dark_orange_alt2_Switch = {
+    background: dark_orange6,
+    backgroundHover: dark_orange8,
+    backgroundPress: light_orange9,
+    backgroundFocus: dark_orange10,
+    backgroundStrong: dark_orange5,
+    backgroundTransparent: dark_orange4,
+    color: dark_orange11,
+    colorHover: dark_orange10,
+    colorPress: dark_orange11,
+    colorFocus: dark_orange10,
+    colorTransparent: dark_orange10,
+    borderColor: dark_orange10,
+    borderColorHover: dark_orange11,
+    borderColorFocus: light_orange9,
+    borderColorPress: dark_orange10,
+    placeholderColor: dark_orange5
+} as Theme
+
+export const dark_orange_alt2_TooltipContent = dark_orange_alt2_Switch as Theme
+export const dark_orange_alt2_SliderTrack = dark_orange_alt2_Switch as Theme
+export const dark_orange_alt2_SwitchThumb = {
+    background: dark_orange12,
+    backgroundHover: dark_orange11,
+    backgroundPress: dark_orange10,
+    backgroundFocus: light_orange9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_orange3,
+    colorHover: dark_orange4,
+    colorPress: dark_orange3,
+    colorFocus: dark_orange4,
+    colorTransparent: dark_orange1,
+    borderColor: light_orange9,
+    borderColorHover: dark_orange8,
+    borderColorFocus: dark_orange10,
+    borderColorPress: light_orange9,
+    placeholderColor: dark_orange4
+} as Theme
 export const dark_orange_alt2_SliderTrackActive = {
     background: dark_orange8,
     backgroundHover: dark_orange6,
@@ -9609,44 +9609,6 @@ export const dark_orange_active_Button = {
     placeholderColor: dark_orange4
 } as Theme
 export const dark_orange_active_Checkbox = {
-    background: dark_orange8,
-    backgroundHover: light_orange9,
-    backgroundPress: dark_orange10,
-    backgroundFocus: dark_orange11,
-    backgroundStrong: dark_orange6,
-    backgroundTransparent: dark_orange5,
-    colorHover: light_orange9,
-    colorPress: dark_orange10,
-    colorFocus: light_orange9,
-    colorTransparent: light_orange9,
-    borderColor: dark_orange11,
-    borderColorHover: dark_orange12,
-    borderColorFocus: dark_orange10,
-    borderColorPress: dark_orange11,
-    placeholderColor: dark_orange4
-} as Theme
-
-export const dark_orange_active_Switch = dark_orange_active_Checkbox as Theme
-export const dark_orange_active_TooltipContent = dark_orange_active_Checkbox as Theme
-export const dark_orange_active_SliderTrack = dark_orange_active_Checkbox as Theme
-export const dark_orange_active_SwitchThumb = {
-    background: dark_orange11,
-    backgroundHover: dark_orange10,
-    backgroundPress: light_orange9,
-    backgroundFocus: dark_orange8,
-    backgroundStrong: dark_orange12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_orange5,
-    colorPress: dark_orange4,
-    colorFocus: dark_orange5,
-    colorTransparent: dark_orange1,
-    borderColor: dark_orange8,
-    borderColorHover: dark_orange6,
-    borderColorFocus: light_orange9,
-    borderColorPress: dark_orange8,
-    placeholderColor: dark_orange5
-} as Theme
-export const dark_orange_active_RadioGroupItem = {
     background: dark_orange5,
     backgroundHover: dark_orange6,
     backgroundPress: dark_orange8,
@@ -9664,8 +9626,46 @@ export const dark_orange_active_RadioGroupItem = {
     placeholderColor: dark_orange6
 } as Theme
 
-export const dark_orange_active_Input = dark_orange_active_RadioGroupItem as Theme
-export const dark_orange_active_TextArea = dark_orange_active_RadioGroupItem as Theme
+export const dark_orange_active_RadioGroupItem = dark_orange_active_Checkbox as Theme
+export const dark_orange_active_Input = dark_orange_active_Checkbox as Theme
+export const dark_orange_active_TextArea = dark_orange_active_Checkbox as Theme
+export const dark_orange_active_Switch = {
+    background: dark_orange8,
+    backgroundHover: light_orange9,
+    backgroundPress: dark_orange10,
+    backgroundFocus: dark_orange11,
+    backgroundStrong: dark_orange6,
+    backgroundTransparent: dark_orange5,
+    colorHover: light_orange9,
+    colorPress: dark_orange10,
+    colorFocus: light_orange9,
+    colorTransparent: light_orange9,
+    borderColor: dark_orange11,
+    borderColorHover: dark_orange12,
+    borderColorFocus: dark_orange10,
+    borderColorPress: dark_orange11,
+    placeholderColor: dark_orange4
+} as Theme
+
+export const dark_orange_active_TooltipContent = dark_orange_active_Switch as Theme
+export const dark_orange_active_SliderTrack = dark_orange_active_Switch as Theme
+export const dark_orange_active_SwitchThumb = {
+    background: dark_orange11,
+    backgroundHover: dark_orange10,
+    backgroundPress: light_orange9,
+    backgroundFocus: dark_orange8,
+    backgroundStrong: dark_orange12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_orange5,
+    colorPress: dark_orange4,
+    colorFocus: dark_orange5,
+    colorTransparent: dark_orange1,
+    borderColor: dark_orange8,
+    borderColorHover: dark_orange6,
+    borderColorFocus: light_orange9,
+    borderColorPress: dark_orange8,
+    placeholderColor: dark_orange5
+} as Theme
 export const dark_orange_active_SliderTrackActive = {
     background: dark_orange6,
     backgroundHover: dark_orange5,
@@ -9744,46 +9744,6 @@ export const dark_yellow_alt1_Button = {
     placeholderColor: dark_yellow6
 } as Theme
 export const dark_yellow_alt1_Checkbox = {
-    background: dark_yellow5,
-    backgroundHover: dark_yellow6,
-    backgroundPress: dark_yellow8,
-    backgroundFocus: light_yellow9,
-    backgroundStrong: dark_yellow4,
-    backgroundTransparent: dark_yellow3,
-    color: dark_yellow12,
-    colorHover: dark_yellow11,
-    colorPress: dark_yellow12,
-    colorFocus: dark_yellow11,
-    colorTransparent: dark_yellow11,
-    borderColor: light_yellow9,
-    borderColorHover: dark_yellow10,
-    borderColorFocus: dark_yellow8,
-    borderColorPress: light_yellow9,
-    placeholderColor: dark_yellow6
-} as Theme
-
-export const dark_yellow_alt1_Switch = dark_yellow_alt1_Checkbox as Theme
-export const dark_yellow_alt1_TooltipContent = dark_yellow_alt1_Checkbox as Theme
-export const dark_yellow_alt1_SliderTrack = dark_yellow_alt1_Checkbox as Theme
-export const dark_yellow_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_yellow12,
-    backgroundPress: dark_yellow11,
-    backgroundFocus: dark_yellow10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_yellow2,
-    colorHover: dark_yellow3,
-    colorPress: dark_yellow2,
-    colorFocus: dark_yellow3,
-    colorTransparent: dark_yellow1,
-    borderColor: dark_yellow10,
-    borderColorHover: light_yellow9,
-    borderColorFocus: dark_yellow11,
-    borderColorPress: dark_yellow10,
-    placeholderColor: dark_yellow3
-} as Theme
-export const dark_yellow_alt1_RadioGroupItem = {
     background: dark_yellow3,
     backgroundHover: dark_yellow4,
     backgroundPress: dark_yellow5,
@@ -9802,8 +9762,48 @@ export const dark_yellow_alt1_RadioGroupItem = {
     placeholderColor: light_yellow9
 } as Theme
 
-export const dark_yellow_alt1_Input = dark_yellow_alt1_RadioGroupItem as Theme
-export const dark_yellow_alt1_TextArea = dark_yellow_alt1_RadioGroupItem as Theme
+export const dark_yellow_alt1_RadioGroupItem = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_Input = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_TextArea = dark_yellow_alt1_Checkbox as Theme
+export const dark_yellow_alt1_Switch = {
+    background: dark_yellow5,
+    backgroundHover: dark_yellow6,
+    backgroundPress: dark_yellow8,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: dark_yellow4,
+    backgroundTransparent: dark_yellow3,
+    color: dark_yellow12,
+    colorHover: dark_yellow11,
+    colorPress: dark_yellow12,
+    colorFocus: dark_yellow11,
+    colorTransparent: dark_yellow11,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow10,
+    borderColorFocus: dark_yellow8,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow6
+} as Theme
+
+export const dark_yellow_alt1_TooltipContent = dark_yellow_alt1_Switch as Theme
+export const dark_yellow_alt1_SliderTrack = dark_yellow_alt1_Switch as Theme
+export const dark_yellow_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_yellow12,
+    backgroundPress: dark_yellow11,
+    backgroundFocus: dark_yellow10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_yellow2,
+    colorHover: dark_yellow3,
+    colorPress: dark_yellow2,
+    colorFocus: dark_yellow3,
+    colorTransparent: dark_yellow1,
+    borderColor: dark_yellow10,
+    borderColorHover: light_yellow9,
+    borderColorFocus: dark_yellow11,
+    borderColorPress: dark_yellow10,
+    placeholderColor: dark_yellow3
+} as Theme
 export const dark_yellow_alt1_SliderTrackActive = {
     background: light_yellow9,
     backgroundHover: dark_yellow8,
@@ -9884,46 +9884,6 @@ export const dark_yellow_alt2_Button = {
     placeholderColor: dark_yellow5
 } as Theme
 export const dark_yellow_alt2_Checkbox = {
-    background: dark_yellow6,
-    backgroundHover: dark_yellow8,
-    backgroundPress: light_yellow9,
-    backgroundFocus: dark_yellow10,
-    backgroundStrong: dark_yellow5,
-    backgroundTransparent: dark_yellow4,
-    color: dark_yellow11,
-    colorHover: dark_yellow10,
-    colorPress: dark_yellow11,
-    colorFocus: dark_yellow10,
-    colorTransparent: dark_yellow10,
-    borderColor: dark_yellow10,
-    borderColorHover: dark_yellow11,
-    borderColorFocus: light_yellow9,
-    borderColorPress: dark_yellow10,
-    placeholderColor: dark_yellow5
-} as Theme
-
-export const dark_yellow_alt2_Switch = dark_yellow_alt2_Checkbox as Theme
-export const dark_yellow_alt2_TooltipContent = dark_yellow_alt2_Checkbox as Theme
-export const dark_yellow_alt2_SliderTrack = dark_yellow_alt2_Checkbox as Theme
-export const dark_yellow_alt2_SwitchThumb = {
-    background: dark_yellow12,
-    backgroundHover: dark_yellow11,
-    backgroundPress: dark_yellow10,
-    backgroundFocus: light_yellow9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_yellow3,
-    colorHover: dark_yellow4,
-    colorPress: dark_yellow3,
-    colorFocus: dark_yellow4,
-    colorTransparent: dark_yellow1,
-    borderColor: light_yellow9,
-    borderColorHover: dark_yellow8,
-    borderColorFocus: dark_yellow10,
-    borderColorPress: light_yellow9,
-    placeholderColor: dark_yellow4
-} as Theme
-export const dark_yellow_alt2_RadioGroupItem = {
     background: dark_yellow4,
     backgroundHover: dark_yellow5,
     backgroundPress: dark_yellow6,
@@ -9942,8 +9902,48 @@ export const dark_yellow_alt2_RadioGroupItem = {
     placeholderColor: dark_yellow8
 } as Theme
 
-export const dark_yellow_alt2_Input = dark_yellow_alt2_RadioGroupItem as Theme
-export const dark_yellow_alt2_TextArea = dark_yellow_alt2_RadioGroupItem as Theme
+export const dark_yellow_alt2_RadioGroupItem = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_Input = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_TextArea = dark_yellow_alt2_Checkbox as Theme
+export const dark_yellow_alt2_Switch = {
+    background: dark_yellow6,
+    backgroundHover: dark_yellow8,
+    backgroundPress: light_yellow9,
+    backgroundFocus: dark_yellow10,
+    backgroundStrong: dark_yellow5,
+    backgroundTransparent: dark_yellow4,
+    color: dark_yellow11,
+    colorHover: dark_yellow10,
+    colorPress: dark_yellow11,
+    colorFocus: dark_yellow10,
+    colorTransparent: dark_yellow10,
+    borderColor: dark_yellow10,
+    borderColorHover: dark_yellow11,
+    borderColorFocus: light_yellow9,
+    borderColorPress: dark_yellow10,
+    placeholderColor: dark_yellow5
+} as Theme
+
+export const dark_yellow_alt2_TooltipContent = dark_yellow_alt2_Switch as Theme
+export const dark_yellow_alt2_SliderTrack = dark_yellow_alt2_Switch as Theme
+export const dark_yellow_alt2_SwitchThumb = {
+    background: dark_yellow12,
+    backgroundHover: dark_yellow11,
+    backgroundPress: dark_yellow10,
+    backgroundFocus: light_yellow9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_yellow3,
+    colorHover: dark_yellow4,
+    colorPress: dark_yellow3,
+    colorFocus: dark_yellow4,
+    colorTransparent: dark_yellow1,
+    borderColor: light_yellow9,
+    borderColorHover: dark_yellow8,
+    borderColorFocus: dark_yellow10,
+    borderColorPress: light_yellow9,
+    placeholderColor: dark_yellow4
+} as Theme
 export const dark_yellow_alt2_SliderTrackActive = {
     background: dark_yellow8,
     backgroundHover: dark_yellow6,
@@ -10022,44 +10022,6 @@ export const dark_yellow_active_Button = {
     placeholderColor: dark_yellow4
 } as Theme
 export const dark_yellow_active_Checkbox = {
-    background: dark_yellow8,
-    backgroundHover: light_yellow9,
-    backgroundPress: dark_yellow10,
-    backgroundFocus: dark_yellow11,
-    backgroundStrong: dark_yellow6,
-    backgroundTransparent: dark_yellow5,
-    colorHover: light_yellow9,
-    colorPress: dark_yellow10,
-    colorFocus: light_yellow9,
-    colorTransparent: light_yellow9,
-    borderColor: dark_yellow11,
-    borderColorHover: dark_yellow12,
-    borderColorFocus: dark_yellow10,
-    borderColorPress: dark_yellow11,
-    placeholderColor: dark_yellow4
-} as Theme
-
-export const dark_yellow_active_Switch = dark_yellow_active_Checkbox as Theme
-export const dark_yellow_active_TooltipContent = dark_yellow_active_Checkbox as Theme
-export const dark_yellow_active_SliderTrack = dark_yellow_active_Checkbox as Theme
-export const dark_yellow_active_SwitchThumb = {
-    background: dark_yellow11,
-    backgroundHover: dark_yellow10,
-    backgroundPress: light_yellow9,
-    backgroundFocus: dark_yellow8,
-    backgroundStrong: dark_yellow12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_yellow5,
-    colorPress: dark_yellow4,
-    colorFocus: dark_yellow5,
-    colorTransparent: dark_yellow1,
-    borderColor: dark_yellow8,
-    borderColorHover: dark_yellow6,
-    borderColorFocus: light_yellow9,
-    borderColorPress: dark_yellow8,
-    placeholderColor: dark_yellow5
-} as Theme
-export const dark_yellow_active_RadioGroupItem = {
     background: dark_yellow5,
     backgroundHover: dark_yellow6,
     backgroundPress: dark_yellow8,
@@ -10077,8 +10039,46 @@ export const dark_yellow_active_RadioGroupItem = {
     placeholderColor: dark_yellow6
 } as Theme
 
-export const dark_yellow_active_Input = dark_yellow_active_RadioGroupItem as Theme
-export const dark_yellow_active_TextArea = dark_yellow_active_RadioGroupItem as Theme
+export const dark_yellow_active_RadioGroupItem = dark_yellow_active_Checkbox as Theme
+export const dark_yellow_active_Input = dark_yellow_active_Checkbox as Theme
+export const dark_yellow_active_TextArea = dark_yellow_active_Checkbox as Theme
+export const dark_yellow_active_Switch = {
+    background: dark_yellow8,
+    backgroundHover: light_yellow9,
+    backgroundPress: dark_yellow10,
+    backgroundFocus: dark_yellow11,
+    backgroundStrong: dark_yellow6,
+    backgroundTransparent: dark_yellow5,
+    colorHover: light_yellow9,
+    colorPress: dark_yellow10,
+    colorFocus: light_yellow9,
+    colorTransparent: light_yellow9,
+    borderColor: dark_yellow11,
+    borderColorHover: dark_yellow12,
+    borderColorFocus: dark_yellow10,
+    borderColorPress: dark_yellow11,
+    placeholderColor: dark_yellow4
+} as Theme
+
+export const dark_yellow_active_TooltipContent = dark_yellow_active_Switch as Theme
+export const dark_yellow_active_SliderTrack = dark_yellow_active_Switch as Theme
+export const dark_yellow_active_SwitchThumb = {
+    background: dark_yellow11,
+    backgroundHover: dark_yellow10,
+    backgroundPress: light_yellow9,
+    backgroundFocus: dark_yellow8,
+    backgroundStrong: dark_yellow12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_yellow5,
+    colorPress: dark_yellow4,
+    colorFocus: dark_yellow5,
+    colorTransparent: dark_yellow1,
+    borderColor: dark_yellow8,
+    borderColorHover: dark_yellow6,
+    borderColorFocus: light_yellow9,
+    borderColorPress: dark_yellow8,
+    placeholderColor: dark_yellow5
+} as Theme
 export const dark_yellow_active_SliderTrackActive = {
     background: dark_yellow6,
     backgroundHover: dark_yellow5,
@@ -10157,46 +10157,6 @@ export const dark_green_alt1_Button = {
     placeholderColor: dark_green6
 } as Theme
 export const dark_green_alt1_Checkbox = {
-    background: dark_green5,
-    backgroundHover: dark_green6,
-    backgroundPress: dark_green8,
-    backgroundFocus: light_green9,
-    backgroundStrong: dark_green4,
-    backgroundTransparent: dark_green3,
-    color: dark_green12,
-    colorHover: dark_green11,
-    colorPress: dark_green12,
-    colorFocus: dark_green11,
-    colorTransparent: dark_green11,
-    borderColor: light_green9,
-    borderColorHover: dark_green10,
-    borderColorFocus: dark_green8,
-    borderColorPress: light_green9,
-    placeholderColor: dark_green6
-} as Theme
-
-export const dark_green_alt1_Switch = dark_green_alt1_Checkbox as Theme
-export const dark_green_alt1_TooltipContent = dark_green_alt1_Checkbox as Theme
-export const dark_green_alt1_SliderTrack = dark_green_alt1_Checkbox as Theme
-export const dark_green_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_green12,
-    backgroundPress: dark_green11,
-    backgroundFocus: dark_green10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_green2,
-    colorHover: dark_green3,
-    colorPress: dark_green2,
-    colorFocus: dark_green3,
-    colorTransparent: dark_green1,
-    borderColor: dark_green10,
-    borderColorHover: light_green9,
-    borderColorFocus: dark_green11,
-    borderColorPress: dark_green10,
-    placeholderColor: dark_green3
-} as Theme
-export const dark_green_alt1_RadioGroupItem = {
     background: dark_green3,
     backgroundHover: dark_green4,
     backgroundPress: dark_green5,
@@ -10215,8 +10175,48 @@ export const dark_green_alt1_RadioGroupItem = {
     placeholderColor: light_green9
 } as Theme
 
-export const dark_green_alt1_Input = dark_green_alt1_RadioGroupItem as Theme
-export const dark_green_alt1_TextArea = dark_green_alt1_RadioGroupItem as Theme
+export const dark_green_alt1_RadioGroupItem = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_Input = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_TextArea = dark_green_alt1_Checkbox as Theme
+export const dark_green_alt1_Switch = {
+    background: dark_green5,
+    backgroundHover: dark_green6,
+    backgroundPress: dark_green8,
+    backgroundFocus: light_green9,
+    backgroundStrong: dark_green4,
+    backgroundTransparent: dark_green3,
+    color: dark_green12,
+    colorHover: dark_green11,
+    colorPress: dark_green12,
+    colorFocus: dark_green11,
+    colorTransparent: dark_green11,
+    borderColor: light_green9,
+    borderColorHover: dark_green10,
+    borderColorFocus: dark_green8,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green6
+} as Theme
+
+export const dark_green_alt1_TooltipContent = dark_green_alt1_Switch as Theme
+export const dark_green_alt1_SliderTrack = dark_green_alt1_Switch as Theme
+export const dark_green_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_green12,
+    backgroundPress: dark_green11,
+    backgroundFocus: dark_green10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_green2,
+    colorHover: dark_green3,
+    colorPress: dark_green2,
+    colorFocus: dark_green3,
+    colorTransparent: dark_green1,
+    borderColor: dark_green10,
+    borderColorHover: light_green9,
+    borderColorFocus: dark_green11,
+    borderColorPress: dark_green10,
+    placeholderColor: dark_green3
+} as Theme
 export const dark_green_alt1_SliderTrackActive = {
     background: light_green9,
     backgroundHover: dark_green8,
@@ -10297,46 +10297,6 @@ export const dark_green_alt2_Button = {
     placeholderColor: dark_green5
 } as Theme
 export const dark_green_alt2_Checkbox = {
-    background: dark_green6,
-    backgroundHover: dark_green8,
-    backgroundPress: light_green9,
-    backgroundFocus: dark_green10,
-    backgroundStrong: dark_green5,
-    backgroundTransparent: dark_green4,
-    color: dark_green11,
-    colorHover: dark_green10,
-    colorPress: dark_green11,
-    colorFocus: dark_green10,
-    colorTransparent: dark_green10,
-    borderColor: dark_green10,
-    borderColorHover: dark_green11,
-    borderColorFocus: light_green9,
-    borderColorPress: dark_green10,
-    placeholderColor: dark_green5
-} as Theme
-
-export const dark_green_alt2_Switch = dark_green_alt2_Checkbox as Theme
-export const dark_green_alt2_TooltipContent = dark_green_alt2_Checkbox as Theme
-export const dark_green_alt2_SliderTrack = dark_green_alt2_Checkbox as Theme
-export const dark_green_alt2_SwitchThumb = {
-    background: dark_green12,
-    backgroundHover: dark_green11,
-    backgroundPress: dark_green10,
-    backgroundFocus: light_green9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_green3,
-    colorHover: dark_green4,
-    colorPress: dark_green3,
-    colorFocus: dark_green4,
-    colorTransparent: dark_green1,
-    borderColor: light_green9,
-    borderColorHover: dark_green8,
-    borderColorFocus: dark_green10,
-    borderColorPress: light_green9,
-    placeholderColor: dark_green4
-} as Theme
-export const dark_green_alt2_RadioGroupItem = {
     background: dark_green4,
     backgroundHover: dark_green5,
     backgroundPress: dark_green6,
@@ -10355,8 +10315,48 @@ export const dark_green_alt2_RadioGroupItem = {
     placeholderColor: dark_green8
 } as Theme
 
-export const dark_green_alt2_Input = dark_green_alt2_RadioGroupItem as Theme
-export const dark_green_alt2_TextArea = dark_green_alt2_RadioGroupItem as Theme
+export const dark_green_alt2_RadioGroupItem = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_Input = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_TextArea = dark_green_alt2_Checkbox as Theme
+export const dark_green_alt2_Switch = {
+    background: dark_green6,
+    backgroundHover: dark_green8,
+    backgroundPress: light_green9,
+    backgroundFocus: dark_green10,
+    backgroundStrong: dark_green5,
+    backgroundTransparent: dark_green4,
+    color: dark_green11,
+    colorHover: dark_green10,
+    colorPress: dark_green11,
+    colorFocus: dark_green10,
+    colorTransparent: dark_green10,
+    borderColor: dark_green10,
+    borderColorHover: dark_green11,
+    borderColorFocus: light_green9,
+    borderColorPress: dark_green10,
+    placeholderColor: dark_green5
+} as Theme
+
+export const dark_green_alt2_TooltipContent = dark_green_alt2_Switch as Theme
+export const dark_green_alt2_SliderTrack = dark_green_alt2_Switch as Theme
+export const dark_green_alt2_SwitchThumb = {
+    background: dark_green12,
+    backgroundHover: dark_green11,
+    backgroundPress: dark_green10,
+    backgroundFocus: light_green9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_green3,
+    colorHover: dark_green4,
+    colorPress: dark_green3,
+    colorFocus: dark_green4,
+    colorTransparent: dark_green1,
+    borderColor: light_green9,
+    borderColorHover: dark_green8,
+    borderColorFocus: dark_green10,
+    borderColorPress: light_green9,
+    placeholderColor: dark_green4
+} as Theme
 export const dark_green_alt2_SliderTrackActive = {
     background: dark_green8,
     backgroundHover: dark_green6,
@@ -10435,44 +10435,6 @@ export const dark_green_active_Button = {
     placeholderColor: dark_green4
 } as Theme
 export const dark_green_active_Checkbox = {
-    background: dark_green8,
-    backgroundHover: light_green9,
-    backgroundPress: dark_green10,
-    backgroundFocus: dark_green11,
-    backgroundStrong: dark_green6,
-    backgroundTransparent: dark_green5,
-    colorHover: light_green9,
-    colorPress: dark_green10,
-    colorFocus: light_green9,
-    colorTransparent: light_green9,
-    borderColor: dark_green11,
-    borderColorHover: dark_green12,
-    borderColorFocus: dark_green10,
-    borderColorPress: dark_green11,
-    placeholderColor: dark_green4
-} as Theme
-
-export const dark_green_active_Switch = dark_green_active_Checkbox as Theme
-export const dark_green_active_TooltipContent = dark_green_active_Checkbox as Theme
-export const dark_green_active_SliderTrack = dark_green_active_Checkbox as Theme
-export const dark_green_active_SwitchThumb = {
-    background: dark_green11,
-    backgroundHover: dark_green10,
-    backgroundPress: light_green9,
-    backgroundFocus: dark_green8,
-    backgroundStrong: dark_green12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_green5,
-    colorPress: dark_green4,
-    colorFocus: dark_green5,
-    colorTransparent: dark_green1,
-    borderColor: dark_green8,
-    borderColorHover: dark_green6,
-    borderColorFocus: light_green9,
-    borderColorPress: dark_green8,
-    placeholderColor: dark_green5
-} as Theme
-export const dark_green_active_RadioGroupItem = {
     background: dark_green5,
     backgroundHover: dark_green6,
     backgroundPress: dark_green8,
@@ -10490,8 +10452,46 @@ export const dark_green_active_RadioGroupItem = {
     placeholderColor: dark_green6
 } as Theme
 
-export const dark_green_active_Input = dark_green_active_RadioGroupItem as Theme
-export const dark_green_active_TextArea = dark_green_active_RadioGroupItem as Theme
+export const dark_green_active_RadioGroupItem = dark_green_active_Checkbox as Theme
+export const dark_green_active_Input = dark_green_active_Checkbox as Theme
+export const dark_green_active_TextArea = dark_green_active_Checkbox as Theme
+export const dark_green_active_Switch = {
+    background: dark_green8,
+    backgroundHover: light_green9,
+    backgroundPress: dark_green10,
+    backgroundFocus: dark_green11,
+    backgroundStrong: dark_green6,
+    backgroundTransparent: dark_green5,
+    colorHover: light_green9,
+    colorPress: dark_green10,
+    colorFocus: light_green9,
+    colorTransparent: light_green9,
+    borderColor: dark_green11,
+    borderColorHover: dark_green12,
+    borderColorFocus: dark_green10,
+    borderColorPress: dark_green11,
+    placeholderColor: dark_green4
+} as Theme
+
+export const dark_green_active_TooltipContent = dark_green_active_Switch as Theme
+export const dark_green_active_SliderTrack = dark_green_active_Switch as Theme
+export const dark_green_active_SwitchThumb = {
+    background: dark_green11,
+    backgroundHover: dark_green10,
+    backgroundPress: light_green9,
+    backgroundFocus: dark_green8,
+    backgroundStrong: dark_green12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_green5,
+    colorPress: dark_green4,
+    colorFocus: dark_green5,
+    colorTransparent: dark_green1,
+    borderColor: dark_green8,
+    borderColorHover: dark_green6,
+    borderColorFocus: light_green9,
+    borderColorPress: dark_green8,
+    placeholderColor: dark_green5
+} as Theme
 export const dark_green_active_SliderTrackActive = {
     background: dark_green6,
     backgroundHover: dark_green5,
@@ -10570,46 +10570,6 @@ export const dark_blue_alt1_Button = {
     placeholderColor: dark_blue6
 } as Theme
 export const dark_blue_alt1_Checkbox = {
-    background: dark_blue5,
-    backgroundHover: dark_blue6,
-    backgroundPress: dark_blue8,
-    backgroundFocus: light_blue9,
-    backgroundStrong: dark_blue4,
-    backgroundTransparent: dark_blue3,
-    color: dark_blue12,
-    colorHover: dark_blue11,
-    colorPress: dark_blue12,
-    colorFocus: dark_blue11,
-    colorTransparent: dark_blue11,
-    borderColor: light_blue9,
-    borderColorHover: dark_blue10,
-    borderColorFocus: dark_blue8,
-    borderColorPress: light_blue9,
-    placeholderColor: dark_blue6
-} as Theme
-
-export const dark_blue_alt1_Switch = dark_blue_alt1_Checkbox as Theme
-export const dark_blue_alt1_TooltipContent = dark_blue_alt1_Checkbox as Theme
-export const dark_blue_alt1_SliderTrack = dark_blue_alt1_Checkbox as Theme
-export const dark_blue_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_blue12,
-    backgroundPress: dark_blue11,
-    backgroundFocus: dark_blue10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_blue2,
-    colorHover: dark_blue3,
-    colorPress: dark_blue2,
-    colorFocus: dark_blue3,
-    colorTransparent: dark_blue1,
-    borderColor: dark_blue10,
-    borderColorHover: light_blue9,
-    borderColorFocus: dark_blue11,
-    borderColorPress: dark_blue10,
-    placeholderColor: dark_blue3
-} as Theme
-export const dark_blue_alt1_RadioGroupItem = {
     background: dark_blue3,
     backgroundHover: dark_blue4,
     backgroundPress: dark_blue5,
@@ -10628,8 +10588,48 @@ export const dark_blue_alt1_RadioGroupItem = {
     placeholderColor: light_blue9
 } as Theme
 
-export const dark_blue_alt1_Input = dark_blue_alt1_RadioGroupItem as Theme
-export const dark_blue_alt1_TextArea = dark_blue_alt1_RadioGroupItem as Theme
+export const dark_blue_alt1_RadioGroupItem = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_Input = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_TextArea = dark_blue_alt1_Checkbox as Theme
+export const dark_blue_alt1_Switch = {
+    background: dark_blue5,
+    backgroundHover: dark_blue6,
+    backgroundPress: dark_blue8,
+    backgroundFocus: light_blue9,
+    backgroundStrong: dark_blue4,
+    backgroundTransparent: dark_blue3,
+    color: dark_blue12,
+    colorHover: dark_blue11,
+    colorPress: dark_blue12,
+    colorFocus: dark_blue11,
+    colorTransparent: dark_blue11,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue10,
+    borderColorFocus: dark_blue8,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue6
+} as Theme
+
+export const dark_blue_alt1_TooltipContent = dark_blue_alt1_Switch as Theme
+export const dark_blue_alt1_SliderTrack = dark_blue_alt1_Switch as Theme
+export const dark_blue_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_blue12,
+    backgroundPress: dark_blue11,
+    backgroundFocus: dark_blue10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_blue2,
+    colorHover: dark_blue3,
+    colorPress: dark_blue2,
+    colorFocus: dark_blue3,
+    colorTransparent: dark_blue1,
+    borderColor: dark_blue10,
+    borderColorHover: light_blue9,
+    borderColorFocus: dark_blue11,
+    borderColorPress: dark_blue10,
+    placeholderColor: dark_blue3
+} as Theme
 export const dark_blue_alt1_SliderTrackActive = {
     background: light_blue9,
     backgroundHover: dark_blue8,
@@ -10710,46 +10710,6 @@ export const dark_blue_alt2_Button = {
     placeholderColor: dark_blue5
 } as Theme
 export const dark_blue_alt2_Checkbox = {
-    background: dark_blue6,
-    backgroundHover: dark_blue8,
-    backgroundPress: light_blue9,
-    backgroundFocus: dark_blue10,
-    backgroundStrong: dark_blue5,
-    backgroundTransparent: dark_blue4,
-    color: dark_blue11,
-    colorHover: dark_blue10,
-    colorPress: dark_blue11,
-    colorFocus: dark_blue10,
-    colorTransparent: dark_blue10,
-    borderColor: dark_blue10,
-    borderColorHover: dark_blue11,
-    borderColorFocus: light_blue9,
-    borderColorPress: dark_blue10,
-    placeholderColor: dark_blue5
-} as Theme
-
-export const dark_blue_alt2_Switch = dark_blue_alt2_Checkbox as Theme
-export const dark_blue_alt2_TooltipContent = dark_blue_alt2_Checkbox as Theme
-export const dark_blue_alt2_SliderTrack = dark_blue_alt2_Checkbox as Theme
-export const dark_blue_alt2_SwitchThumb = {
-    background: dark_blue12,
-    backgroundHover: dark_blue11,
-    backgroundPress: dark_blue10,
-    backgroundFocus: light_blue9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_blue3,
-    colorHover: dark_blue4,
-    colorPress: dark_blue3,
-    colorFocus: dark_blue4,
-    colorTransparent: dark_blue1,
-    borderColor: light_blue9,
-    borderColorHover: dark_blue8,
-    borderColorFocus: dark_blue10,
-    borderColorPress: light_blue9,
-    placeholderColor: dark_blue4
-} as Theme
-export const dark_blue_alt2_RadioGroupItem = {
     background: dark_blue4,
     backgroundHover: dark_blue5,
     backgroundPress: dark_blue6,
@@ -10768,8 +10728,48 @@ export const dark_blue_alt2_RadioGroupItem = {
     placeholderColor: dark_blue8
 } as Theme
 
-export const dark_blue_alt2_Input = dark_blue_alt2_RadioGroupItem as Theme
-export const dark_blue_alt2_TextArea = dark_blue_alt2_RadioGroupItem as Theme
+export const dark_blue_alt2_RadioGroupItem = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_Input = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_TextArea = dark_blue_alt2_Checkbox as Theme
+export const dark_blue_alt2_Switch = {
+    background: dark_blue6,
+    backgroundHover: dark_blue8,
+    backgroundPress: light_blue9,
+    backgroundFocus: dark_blue10,
+    backgroundStrong: dark_blue5,
+    backgroundTransparent: dark_blue4,
+    color: dark_blue11,
+    colorHover: dark_blue10,
+    colorPress: dark_blue11,
+    colorFocus: dark_blue10,
+    colorTransparent: dark_blue10,
+    borderColor: dark_blue10,
+    borderColorHover: dark_blue11,
+    borderColorFocus: light_blue9,
+    borderColorPress: dark_blue10,
+    placeholderColor: dark_blue5
+} as Theme
+
+export const dark_blue_alt2_TooltipContent = dark_blue_alt2_Switch as Theme
+export const dark_blue_alt2_SliderTrack = dark_blue_alt2_Switch as Theme
+export const dark_blue_alt2_SwitchThumb = {
+    background: dark_blue12,
+    backgroundHover: dark_blue11,
+    backgroundPress: dark_blue10,
+    backgroundFocus: light_blue9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_blue3,
+    colorHover: dark_blue4,
+    colorPress: dark_blue3,
+    colorFocus: dark_blue4,
+    colorTransparent: dark_blue1,
+    borderColor: light_blue9,
+    borderColorHover: dark_blue8,
+    borderColorFocus: dark_blue10,
+    borderColorPress: light_blue9,
+    placeholderColor: dark_blue4
+} as Theme
 export const dark_blue_alt2_SliderTrackActive = {
     background: dark_blue8,
     backgroundHover: dark_blue6,
@@ -10848,44 +10848,6 @@ export const dark_blue_active_Button = {
     placeholderColor: dark_blue4
 } as Theme
 export const dark_blue_active_Checkbox = {
-    background: dark_blue8,
-    backgroundHover: light_blue9,
-    backgroundPress: dark_blue10,
-    backgroundFocus: dark_blue11,
-    backgroundStrong: dark_blue6,
-    backgroundTransparent: dark_blue5,
-    colorHover: light_blue9,
-    colorPress: dark_blue10,
-    colorFocus: light_blue9,
-    colorTransparent: light_blue9,
-    borderColor: dark_blue11,
-    borderColorHover: dark_blue12,
-    borderColorFocus: dark_blue10,
-    borderColorPress: dark_blue11,
-    placeholderColor: dark_blue4
-} as Theme
-
-export const dark_blue_active_Switch = dark_blue_active_Checkbox as Theme
-export const dark_blue_active_TooltipContent = dark_blue_active_Checkbox as Theme
-export const dark_blue_active_SliderTrack = dark_blue_active_Checkbox as Theme
-export const dark_blue_active_SwitchThumb = {
-    background: dark_blue11,
-    backgroundHover: dark_blue10,
-    backgroundPress: light_blue9,
-    backgroundFocus: dark_blue8,
-    backgroundStrong: dark_blue12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_blue5,
-    colorPress: dark_blue4,
-    colorFocus: dark_blue5,
-    colorTransparent: dark_blue1,
-    borderColor: dark_blue8,
-    borderColorHover: dark_blue6,
-    borderColorFocus: light_blue9,
-    borderColorPress: dark_blue8,
-    placeholderColor: dark_blue5
-} as Theme
-export const dark_blue_active_RadioGroupItem = {
     background: dark_blue5,
     backgroundHover: dark_blue6,
     backgroundPress: dark_blue8,
@@ -10903,8 +10865,46 @@ export const dark_blue_active_RadioGroupItem = {
     placeholderColor: dark_blue6
 } as Theme
 
-export const dark_blue_active_Input = dark_blue_active_RadioGroupItem as Theme
-export const dark_blue_active_TextArea = dark_blue_active_RadioGroupItem as Theme
+export const dark_blue_active_RadioGroupItem = dark_blue_active_Checkbox as Theme
+export const dark_blue_active_Input = dark_blue_active_Checkbox as Theme
+export const dark_blue_active_TextArea = dark_blue_active_Checkbox as Theme
+export const dark_blue_active_Switch = {
+    background: dark_blue8,
+    backgroundHover: light_blue9,
+    backgroundPress: dark_blue10,
+    backgroundFocus: dark_blue11,
+    backgroundStrong: dark_blue6,
+    backgroundTransparent: dark_blue5,
+    colorHover: light_blue9,
+    colorPress: dark_blue10,
+    colorFocus: light_blue9,
+    colorTransparent: light_blue9,
+    borderColor: dark_blue11,
+    borderColorHover: dark_blue12,
+    borderColorFocus: dark_blue10,
+    borderColorPress: dark_blue11,
+    placeholderColor: dark_blue4
+} as Theme
+
+export const dark_blue_active_TooltipContent = dark_blue_active_Switch as Theme
+export const dark_blue_active_SliderTrack = dark_blue_active_Switch as Theme
+export const dark_blue_active_SwitchThumb = {
+    background: dark_blue11,
+    backgroundHover: dark_blue10,
+    backgroundPress: light_blue9,
+    backgroundFocus: dark_blue8,
+    backgroundStrong: dark_blue12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_blue5,
+    colorPress: dark_blue4,
+    colorFocus: dark_blue5,
+    colorTransparent: dark_blue1,
+    borderColor: dark_blue8,
+    borderColorHover: dark_blue6,
+    borderColorFocus: light_blue9,
+    borderColorPress: dark_blue8,
+    placeholderColor: dark_blue5
+} as Theme
 export const dark_blue_active_SliderTrackActive = {
     background: dark_blue6,
     backgroundHover: dark_blue5,
@@ -10983,46 +10983,6 @@ export const dark_purple_alt1_Button = {
     placeholderColor: dark_purple6
 } as Theme
 export const dark_purple_alt1_Checkbox = {
-    background: dark_purple5,
-    backgroundHover: dark_purple6,
-    backgroundPress: dark_purple8,
-    backgroundFocus: light_purple9,
-    backgroundStrong: dark_purple4,
-    backgroundTransparent: dark_purple3,
-    color: dark_purple12,
-    colorHover: dark_purple11,
-    colorPress: dark_purple12,
-    colorFocus: dark_purple11,
-    colorTransparent: dark_purple11,
-    borderColor: light_purple9,
-    borderColorHover: dark_purple10,
-    borderColorFocus: dark_purple8,
-    borderColorPress: light_purple9,
-    placeholderColor: dark_purple6
-} as Theme
-
-export const dark_purple_alt1_Switch = dark_purple_alt1_Checkbox as Theme
-export const dark_purple_alt1_TooltipContent = dark_purple_alt1_Checkbox as Theme
-export const dark_purple_alt1_SliderTrack = dark_purple_alt1_Checkbox as Theme
-export const dark_purple_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_purple12,
-    backgroundPress: dark_purple11,
-    backgroundFocus: dark_purple10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_purple2,
-    colorHover: dark_purple3,
-    colorPress: dark_purple2,
-    colorFocus: dark_purple3,
-    colorTransparent: dark_purple1,
-    borderColor: dark_purple10,
-    borderColorHover: light_purple9,
-    borderColorFocus: dark_purple11,
-    borderColorPress: dark_purple10,
-    placeholderColor: dark_purple3
-} as Theme
-export const dark_purple_alt1_RadioGroupItem = {
     background: dark_purple3,
     backgroundHover: dark_purple4,
     backgroundPress: dark_purple5,
@@ -11041,8 +11001,48 @@ export const dark_purple_alt1_RadioGroupItem = {
     placeholderColor: light_purple9
 } as Theme
 
-export const dark_purple_alt1_Input = dark_purple_alt1_RadioGroupItem as Theme
-export const dark_purple_alt1_TextArea = dark_purple_alt1_RadioGroupItem as Theme
+export const dark_purple_alt1_RadioGroupItem = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_Input = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_TextArea = dark_purple_alt1_Checkbox as Theme
+export const dark_purple_alt1_Switch = {
+    background: dark_purple5,
+    backgroundHover: dark_purple6,
+    backgroundPress: dark_purple8,
+    backgroundFocus: light_purple9,
+    backgroundStrong: dark_purple4,
+    backgroundTransparent: dark_purple3,
+    color: dark_purple12,
+    colorHover: dark_purple11,
+    colorPress: dark_purple12,
+    colorFocus: dark_purple11,
+    colorTransparent: dark_purple11,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple10,
+    borderColorFocus: dark_purple8,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple6
+} as Theme
+
+export const dark_purple_alt1_TooltipContent = dark_purple_alt1_Switch as Theme
+export const dark_purple_alt1_SliderTrack = dark_purple_alt1_Switch as Theme
+export const dark_purple_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_purple12,
+    backgroundPress: dark_purple11,
+    backgroundFocus: dark_purple10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_purple2,
+    colorHover: dark_purple3,
+    colorPress: dark_purple2,
+    colorFocus: dark_purple3,
+    colorTransparent: dark_purple1,
+    borderColor: dark_purple10,
+    borderColorHover: light_purple9,
+    borderColorFocus: dark_purple11,
+    borderColorPress: dark_purple10,
+    placeholderColor: dark_purple3
+} as Theme
 export const dark_purple_alt1_SliderTrackActive = {
     background: light_purple9,
     backgroundHover: dark_purple8,
@@ -11123,46 +11123,6 @@ export const dark_purple_alt2_Button = {
     placeholderColor: dark_purple5
 } as Theme
 export const dark_purple_alt2_Checkbox = {
-    background: dark_purple6,
-    backgroundHover: dark_purple8,
-    backgroundPress: light_purple9,
-    backgroundFocus: dark_purple10,
-    backgroundStrong: dark_purple5,
-    backgroundTransparent: dark_purple4,
-    color: dark_purple11,
-    colorHover: dark_purple10,
-    colorPress: dark_purple11,
-    colorFocus: dark_purple10,
-    colorTransparent: dark_purple10,
-    borderColor: dark_purple10,
-    borderColorHover: dark_purple11,
-    borderColorFocus: light_purple9,
-    borderColorPress: dark_purple10,
-    placeholderColor: dark_purple5
-} as Theme
-
-export const dark_purple_alt2_Switch = dark_purple_alt2_Checkbox as Theme
-export const dark_purple_alt2_TooltipContent = dark_purple_alt2_Checkbox as Theme
-export const dark_purple_alt2_SliderTrack = dark_purple_alt2_Checkbox as Theme
-export const dark_purple_alt2_SwitchThumb = {
-    background: dark_purple12,
-    backgroundHover: dark_purple11,
-    backgroundPress: dark_purple10,
-    backgroundFocus: light_purple9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_purple3,
-    colorHover: dark_purple4,
-    colorPress: dark_purple3,
-    colorFocus: dark_purple4,
-    colorTransparent: dark_purple1,
-    borderColor: light_purple9,
-    borderColorHover: dark_purple8,
-    borderColorFocus: dark_purple10,
-    borderColorPress: light_purple9,
-    placeholderColor: dark_purple4
-} as Theme
-export const dark_purple_alt2_RadioGroupItem = {
     background: dark_purple4,
     backgroundHover: dark_purple5,
     backgroundPress: dark_purple6,
@@ -11181,8 +11141,48 @@ export const dark_purple_alt2_RadioGroupItem = {
     placeholderColor: dark_purple8
 } as Theme
 
-export const dark_purple_alt2_Input = dark_purple_alt2_RadioGroupItem as Theme
-export const dark_purple_alt2_TextArea = dark_purple_alt2_RadioGroupItem as Theme
+export const dark_purple_alt2_RadioGroupItem = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_Input = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_TextArea = dark_purple_alt2_Checkbox as Theme
+export const dark_purple_alt2_Switch = {
+    background: dark_purple6,
+    backgroundHover: dark_purple8,
+    backgroundPress: light_purple9,
+    backgroundFocus: dark_purple10,
+    backgroundStrong: dark_purple5,
+    backgroundTransparent: dark_purple4,
+    color: dark_purple11,
+    colorHover: dark_purple10,
+    colorPress: dark_purple11,
+    colorFocus: dark_purple10,
+    colorTransparent: dark_purple10,
+    borderColor: dark_purple10,
+    borderColorHover: dark_purple11,
+    borderColorFocus: light_purple9,
+    borderColorPress: dark_purple10,
+    placeholderColor: dark_purple5
+} as Theme
+
+export const dark_purple_alt2_TooltipContent = dark_purple_alt2_Switch as Theme
+export const dark_purple_alt2_SliderTrack = dark_purple_alt2_Switch as Theme
+export const dark_purple_alt2_SwitchThumb = {
+    background: dark_purple12,
+    backgroundHover: dark_purple11,
+    backgroundPress: dark_purple10,
+    backgroundFocus: light_purple9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_purple3,
+    colorHover: dark_purple4,
+    colorPress: dark_purple3,
+    colorFocus: dark_purple4,
+    colorTransparent: dark_purple1,
+    borderColor: light_purple9,
+    borderColorHover: dark_purple8,
+    borderColorFocus: dark_purple10,
+    borderColorPress: light_purple9,
+    placeholderColor: dark_purple4
+} as Theme
 export const dark_purple_alt2_SliderTrackActive = {
     background: dark_purple8,
     backgroundHover: dark_purple6,
@@ -11261,44 +11261,6 @@ export const dark_purple_active_Button = {
     placeholderColor: dark_purple4
 } as Theme
 export const dark_purple_active_Checkbox = {
-    background: dark_purple8,
-    backgroundHover: light_purple9,
-    backgroundPress: dark_purple10,
-    backgroundFocus: dark_purple11,
-    backgroundStrong: dark_purple6,
-    backgroundTransparent: dark_purple5,
-    colorHover: light_purple9,
-    colorPress: dark_purple10,
-    colorFocus: light_purple9,
-    colorTransparent: light_purple9,
-    borderColor: dark_purple11,
-    borderColorHover: dark_purple12,
-    borderColorFocus: dark_purple10,
-    borderColorPress: dark_purple11,
-    placeholderColor: dark_purple4
-} as Theme
-
-export const dark_purple_active_Switch = dark_purple_active_Checkbox as Theme
-export const dark_purple_active_TooltipContent = dark_purple_active_Checkbox as Theme
-export const dark_purple_active_SliderTrack = dark_purple_active_Checkbox as Theme
-export const dark_purple_active_SwitchThumb = {
-    background: dark_purple11,
-    backgroundHover: dark_purple10,
-    backgroundPress: light_purple9,
-    backgroundFocus: dark_purple8,
-    backgroundStrong: dark_purple12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_purple5,
-    colorPress: dark_purple4,
-    colorFocus: dark_purple5,
-    colorTransparent: dark_purple1,
-    borderColor: dark_purple8,
-    borderColorHover: dark_purple6,
-    borderColorFocus: light_purple9,
-    borderColorPress: dark_purple8,
-    placeholderColor: dark_purple5
-} as Theme
-export const dark_purple_active_RadioGroupItem = {
     background: dark_purple5,
     backgroundHover: dark_purple6,
     backgroundPress: dark_purple8,
@@ -11316,8 +11278,46 @@ export const dark_purple_active_RadioGroupItem = {
     placeholderColor: dark_purple6
 } as Theme
 
-export const dark_purple_active_Input = dark_purple_active_RadioGroupItem as Theme
-export const dark_purple_active_TextArea = dark_purple_active_RadioGroupItem as Theme
+export const dark_purple_active_RadioGroupItem = dark_purple_active_Checkbox as Theme
+export const dark_purple_active_Input = dark_purple_active_Checkbox as Theme
+export const dark_purple_active_TextArea = dark_purple_active_Checkbox as Theme
+export const dark_purple_active_Switch = {
+    background: dark_purple8,
+    backgroundHover: light_purple9,
+    backgroundPress: dark_purple10,
+    backgroundFocus: dark_purple11,
+    backgroundStrong: dark_purple6,
+    backgroundTransparent: dark_purple5,
+    colorHover: light_purple9,
+    colorPress: dark_purple10,
+    colorFocus: light_purple9,
+    colorTransparent: light_purple9,
+    borderColor: dark_purple11,
+    borderColorHover: dark_purple12,
+    borderColorFocus: dark_purple10,
+    borderColorPress: dark_purple11,
+    placeholderColor: dark_purple4
+} as Theme
+
+export const dark_purple_active_TooltipContent = dark_purple_active_Switch as Theme
+export const dark_purple_active_SliderTrack = dark_purple_active_Switch as Theme
+export const dark_purple_active_SwitchThumb = {
+    background: dark_purple11,
+    backgroundHover: dark_purple10,
+    backgroundPress: light_purple9,
+    backgroundFocus: dark_purple8,
+    backgroundStrong: dark_purple12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_purple5,
+    colorPress: dark_purple4,
+    colorFocus: dark_purple5,
+    colorTransparent: dark_purple1,
+    borderColor: dark_purple8,
+    borderColorHover: dark_purple6,
+    borderColorFocus: light_purple9,
+    borderColorPress: dark_purple8,
+    placeholderColor: dark_purple5
+} as Theme
 export const dark_purple_active_SliderTrackActive = {
     background: dark_purple6,
     backgroundHover: dark_purple5,
@@ -11396,46 +11396,6 @@ export const dark_pink_alt1_Button = {
     placeholderColor: dark_pink6
 } as Theme
 export const dark_pink_alt1_Checkbox = {
-    background: dark_pink5,
-    backgroundHover: dark_pink6,
-    backgroundPress: dark_pink8,
-    backgroundFocus: light_pink9,
-    backgroundStrong: dark_pink4,
-    backgroundTransparent: dark_pink3,
-    color: dark_pink12,
-    colorHover: dark_pink11,
-    colorPress: dark_pink12,
-    colorFocus: dark_pink11,
-    colorTransparent: dark_pink11,
-    borderColor: light_pink9,
-    borderColorHover: dark_pink10,
-    borderColorFocus: dark_pink8,
-    borderColorPress: light_pink9,
-    placeholderColor: dark_pink6
-} as Theme
-
-export const dark_pink_alt1_Switch = dark_pink_alt1_Checkbox as Theme
-export const dark_pink_alt1_TooltipContent = dark_pink_alt1_Checkbox as Theme
-export const dark_pink_alt1_SliderTrack = dark_pink_alt1_Checkbox as Theme
-export const dark_pink_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_pink12,
-    backgroundPress: dark_pink11,
-    backgroundFocus: dark_pink10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_pink2,
-    colorHover: dark_pink3,
-    colorPress: dark_pink2,
-    colorFocus: dark_pink3,
-    colorTransparent: dark_pink1,
-    borderColor: dark_pink10,
-    borderColorHover: light_pink9,
-    borderColorFocus: dark_pink11,
-    borderColorPress: dark_pink10,
-    placeholderColor: dark_pink3
-} as Theme
-export const dark_pink_alt1_RadioGroupItem = {
     background: dark_pink3,
     backgroundHover: dark_pink4,
     backgroundPress: dark_pink5,
@@ -11454,8 +11414,48 @@ export const dark_pink_alt1_RadioGroupItem = {
     placeholderColor: light_pink9
 } as Theme
 
-export const dark_pink_alt1_Input = dark_pink_alt1_RadioGroupItem as Theme
-export const dark_pink_alt1_TextArea = dark_pink_alt1_RadioGroupItem as Theme
+export const dark_pink_alt1_RadioGroupItem = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_Input = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_TextArea = dark_pink_alt1_Checkbox as Theme
+export const dark_pink_alt1_Switch = {
+    background: dark_pink5,
+    backgroundHover: dark_pink6,
+    backgroundPress: dark_pink8,
+    backgroundFocus: light_pink9,
+    backgroundStrong: dark_pink4,
+    backgroundTransparent: dark_pink3,
+    color: dark_pink12,
+    colorHover: dark_pink11,
+    colorPress: dark_pink12,
+    colorFocus: dark_pink11,
+    colorTransparent: dark_pink11,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink10,
+    borderColorFocus: dark_pink8,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink6
+} as Theme
+
+export const dark_pink_alt1_TooltipContent = dark_pink_alt1_Switch as Theme
+export const dark_pink_alt1_SliderTrack = dark_pink_alt1_Switch as Theme
+export const dark_pink_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_pink12,
+    backgroundPress: dark_pink11,
+    backgroundFocus: dark_pink10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_pink2,
+    colorHover: dark_pink3,
+    colorPress: dark_pink2,
+    colorFocus: dark_pink3,
+    colorTransparent: dark_pink1,
+    borderColor: dark_pink10,
+    borderColorHover: light_pink9,
+    borderColorFocus: dark_pink11,
+    borderColorPress: dark_pink10,
+    placeholderColor: dark_pink3
+} as Theme
 export const dark_pink_alt1_SliderTrackActive = {
     background: light_pink9,
     backgroundHover: dark_pink8,
@@ -11536,46 +11536,6 @@ export const dark_pink_alt2_Button = {
     placeholderColor: dark_pink5
 } as Theme
 export const dark_pink_alt2_Checkbox = {
-    background: dark_pink6,
-    backgroundHover: dark_pink8,
-    backgroundPress: light_pink9,
-    backgroundFocus: dark_pink10,
-    backgroundStrong: dark_pink5,
-    backgroundTransparent: dark_pink4,
-    color: dark_pink11,
-    colorHover: dark_pink10,
-    colorPress: dark_pink11,
-    colorFocus: dark_pink10,
-    colorTransparent: dark_pink10,
-    borderColor: dark_pink10,
-    borderColorHover: dark_pink11,
-    borderColorFocus: light_pink9,
-    borderColorPress: dark_pink10,
-    placeholderColor: dark_pink5
-} as Theme
-
-export const dark_pink_alt2_Switch = dark_pink_alt2_Checkbox as Theme
-export const dark_pink_alt2_TooltipContent = dark_pink_alt2_Checkbox as Theme
-export const dark_pink_alt2_SliderTrack = dark_pink_alt2_Checkbox as Theme
-export const dark_pink_alt2_SwitchThumb = {
-    background: dark_pink12,
-    backgroundHover: dark_pink11,
-    backgroundPress: dark_pink10,
-    backgroundFocus: light_pink9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_pink3,
-    colorHover: dark_pink4,
-    colorPress: dark_pink3,
-    colorFocus: dark_pink4,
-    colorTransparent: dark_pink1,
-    borderColor: light_pink9,
-    borderColorHover: dark_pink8,
-    borderColorFocus: dark_pink10,
-    borderColorPress: light_pink9,
-    placeholderColor: dark_pink4
-} as Theme
-export const dark_pink_alt2_RadioGroupItem = {
     background: dark_pink4,
     backgroundHover: dark_pink5,
     backgroundPress: dark_pink6,
@@ -11594,8 +11554,48 @@ export const dark_pink_alt2_RadioGroupItem = {
     placeholderColor: dark_pink8
 } as Theme
 
-export const dark_pink_alt2_Input = dark_pink_alt2_RadioGroupItem as Theme
-export const dark_pink_alt2_TextArea = dark_pink_alt2_RadioGroupItem as Theme
+export const dark_pink_alt2_RadioGroupItem = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_Input = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_TextArea = dark_pink_alt2_Checkbox as Theme
+export const dark_pink_alt2_Switch = {
+    background: dark_pink6,
+    backgroundHover: dark_pink8,
+    backgroundPress: light_pink9,
+    backgroundFocus: dark_pink10,
+    backgroundStrong: dark_pink5,
+    backgroundTransparent: dark_pink4,
+    color: dark_pink11,
+    colorHover: dark_pink10,
+    colorPress: dark_pink11,
+    colorFocus: dark_pink10,
+    colorTransparent: dark_pink10,
+    borderColor: dark_pink10,
+    borderColorHover: dark_pink11,
+    borderColorFocus: light_pink9,
+    borderColorPress: dark_pink10,
+    placeholderColor: dark_pink5
+} as Theme
+
+export const dark_pink_alt2_TooltipContent = dark_pink_alt2_Switch as Theme
+export const dark_pink_alt2_SliderTrack = dark_pink_alt2_Switch as Theme
+export const dark_pink_alt2_SwitchThumb = {
+    background: dark_pink12,
+    backgroundHover: dark_pink11,
+    backgroundPress: dark_pink10,
+    backgroundFocus: light_pink9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_pink3,
+    colorHover: dark_pink4,
+    colorPress: dark_pink3,
+    colorFocus: dark_pink4,
+    colorTransparent: dark_pink1,
+    borderColor: light_pink9,
+    borderColorHover: dark_pink8,
+    borderColorFocus: dark_pink10,
+    borderColorPress: light_pink9,
+    placeholderColor: dark_pink4
+} as Theme
 export const dark_pink_alt2_SliderTrackActive = {
     background: dark_pink8,
     backgroundHover: dark_pink6,
@@ -11674,44 +11674,6 @@ export const dark_pink_active_Button = {
     placeholderColor: dark_pink4
 } as Theme
 export const dark_pink_active_Checkbox = {
-    background: dark_pink8,
-    backgroundHover: light_pink9,
-    backgroundPress: dark_pink10,
-    backgroundFocus: dark_pink11,
-    backgroundStrong: dark_pink6,
-    backgroundTransparent: dark_pink5,
-    colorHover: light_pink9,
-    colorPress: dark_pink10,
-    colorFocus: light_pink9,
-    colorTransparent: light_pink9,
-    borderColor: dark_pink11,
-    borderColorHover: dark_pink12,
-    borderColorFocus: dark_pink10,
-    borderColorPress: dark_pink11,
-    placeholderColor: dark_pink4
-} as Theme
-
-export const dark_pink_active_Switch = dark_pink_active_Checkbox as Theme
-export const dark_pink_active_TooltipContent = dark_pink_active_Checkbox as Theme
-export const dark_pink_active_SliderTrack = dark_pink_active_Checkbox as Theme
-export const dark_pink_active_SwitchThumb = {
-    background: dark_pink11,
-    backgroundHover: dark_pink10,
-    backgroundPress: light_pink9,
-    backgroundFocus: dark_pink8,
-    backgroundStrong: dark_pink12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_pink5,
-    colorPress: dark_pink4,
-    colorFocus: dark_pink5,
-    colorTransparent: dark_pink1,
-    borderColor: dark_pink8,
-    borderColorHover: dark_pink6,
-    borderColorFocus: light_pink9,
-    borderColorPress: dark_pink8,
-    placeholderColor: dark_pink5
-} as Theme
-export const dark_pink_active_RadioGroupItem = {
     background: dark_pink5,
     backgroundHover: dark_pink6,
     backgroundPress: dark_pink8,
@@ -11729,8 +11691,46 @@ export const dark_pink_active_RadioGroupItem = {
     placeholderColor: dark_pink6
 } as Theme
 
-export const dark_pink_active_Input = dark_pink_active_RadioGroupItem as Theme
-export const dark_pink_active_TextArea = dark_pink_active_RadioGroupItem as Theme
+export const dark_pink_active_RadioGroupItem = dark_pink_active_Checkbox as Theme
+export const dark_pink_active_Input = dark_pink_active_Checkbox as Theme
+export const dark_pink_active_TextArea = dark_pink_active_Checkbox as Theme
+export const dark_pink_active_Switch = {
+    background: dark_pink8,
+    backgroundHover: light_pink9,
+    backgroundPress: dark_pink10,
+    backgroundFocus: dark_pink11,
+    backgroundStrong: dark_pink6,
+    backgroundTransparent: dark_pink5,
+    colorHover: light_pink9,
+    colorPress: dark_pink10,
+    colorFocus: light_pink9,
+    colorTransparent: light_pink9,
+    borderColor: dark_pink11,
+    borderColorHover: dark_pink12,
+    borderColorFocus: dark_pink10,
+    borderColorPress: dark_pink11,
+    placeholderColor: dark_pink4
+} as Theme
+
+export const dark_pink_active_TooltipContent = dark_pink_active_Switch as Theme
+export const dark_pink_active_SliderTrack = dark_pink_active_Switch as Theme
+export const dark_pink_active_SwitchThumb = {
+    background: dark_pink11,
+    backgroundHover: dark_pink10,
+    backgroundPress: light_pink9,
+    backgroundFocus: dark_pink8,
+    backgroundStrong: dark_pink12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_pink5,
+    colorPress: dark_pink4,
+    colorFocus: dark_pink5,
+    colorTransparent: dark_pink1,
+    borderColor: dark_pink8,
+    borderColorHover: dark_pink6,
+    borderColorFocus: light_pink9,
+    borderColorPress: dark_pink8,
+    placeholderColor: dark_pink5
+} as Theme
 export const dark_pink_active_SliderTrackActive = {
     background: dark_pink6,
     backgroundHover: dark_pink5,
@@ -11809,46 +11809,6 @@ export const dark_red_alt1_Button = {
     placeholderColor: dark_red6
 } as Theme
 export const dark_red_alt1_Checkbox = {
-    background: dark_red5,
-    backgroundHover: dark_red6,
-    backgroundPress: dark_red8,
-    backgroundFocus: light_red9,
-    backgroundStrong: dark_red4,
-    backgroundTransparent: dark_red3,
-    color: dark_red12,
-    colorHover: dark_red11,
-    colorPress: dark_red12,
-    colorFocus: dark_red11,
-    colorTransparent: dark_red11,
-    borderColor: light_red9,
-    borderColorHover: dark_red10,
-    borderColorFocus: dark_red8,
-    borderColorPress: light_red9,
-    placeholderColor: dark_red6
-} as Theme
-
-export const dark_red_alt1_Switch = dark_red_alt1_Checkbox as Theme
-export const dark_red_alt1_TooltipContent = dark_red_alt1_Checkbox as Theme
-export const dark_red_alt1_SliderTrack = dark_red_alt1_Checkbox as Theme
-export const dark_red_alt1_SwitchThumb = {
-    background: light_color1,
-    backgroundHover: dark_red12,
-    backgroundPress: dark_red11,
-    backgroundFocus: dark_red10,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_red2,
-    colorHover: dark_red3,
-    colorPress: dark_red2,
-    colorFocus: dark_red3,
-    colorTransparent: dark_red1,
-    borderColor: dark_red10,
-    borderColorHover: light_red9,
-    borderColorFocus: dark_red11,
-    borderColorPress: dark_red10,
-    placeholderColor: dark_red3
-} as Theme
-export const dark_red_alt1_RadioGroupItem = {
     background: dark_red3,
     backgroundHover: dark_red4,
     backgroundPress: dark_red5,
@@ -11867,8 +11827,48 @@ export const dark_red_alt1_RadioGroupItem = {
     placeholderColor: light_red9
 } as Theme
 
-export const dark_red_alt1_Input = dark_red_alt1_RadioGroupItem as Theme
-export const dark_red_alt1_TextArea = dark_red_alt1_RadioGroupItem as Theme
+export const dark_red_alt1_RadioGroupItem = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_Input = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_TextArea = dark_red_alt1_Checkbox as Theme
+export const dark_red_alt1_Switch = {
+    background: dark_red5,
+    backgroundHover: dark_red6,
+    backgroundPress: dark_red8,
+    backgroundFocus: light_red9,
+    backgroundStrong: dark_red4,
+    backgroundTransparent: dark_red3,
+    color: dark_red12,
+    colorHover: dark_red11,
+    colorPress: dark_red12,
+    colorFocus: dark_red11,
+    colorTransparent: dark_red11,
+    borderColor: light_red9,
+    borderColorHover: dark_red10,
+    borderColorFocus: dark_red8,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red6
+} as Theme
+
+export const dark_red_alt1_TooltipContent = dark_red_alt1_Switch as Theme
+export const dark_red_alt1_SliderTrack = dark_red_alt1_Switch as Theme
+export const dark_red_alt1_SwitchThumb = {
+    background: light_color1,
+    backgroundHover: dark_red12,
+    backgroundPress: dark_red11,
+    backgroundFocus: dark_red10,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_red2,
+    colorHover: dark_red3,
+    colorPress: dark_red2,
+    colorFocus: dark_red3,
+    colorTransparent: dark_red1,
+    borderColor: dark_red10,
+    borderColorHover: light_red9,
+    borderColorFocus: dark_red11,
+    borderColorPress: dark_red10,
+    placeholderColor: dark_red3
+} as Theme
 export const dark_red_alt1_SliderTrackActive = {
     background: light_red9,
     backgroundHover: dark_red8,
@@ -11949,46 +11949,6 @@ export const dark_red_alt2_Button = {
     placeholderColor: dark_red5
 } as Theme
 export const dark_red_alt2_Checkbox = {
-    background: dark_red6,
-    backgroundHover: dark_red8,
-    backgroundPress: light_red9,
-    backgroundFocus: dark_red10,
-    backgroundStrong: dark_red5,
-    backgroundTransparent: dark_red4,
-    color: dark_red11,
-    colorHover: dark_red10,
-    colorPress: dark_red11,
-    colorFocus: dark_red10,
-    colorTransparent: dark_red10,
-    borderColor: dark_red10,
-    borderColorHover: dark_red11,
-    borderColorFocus: light_red9,
-    borderColorPress: dark_red10,
-    placeholderColor: dark_red5
-} as Theme
-
-export const dark_red_alt2_Switch = dark_red_alt2_Checkbox as Theme
-export const dark_red_alt2_TooltipContent = dark_red_alt2_Checkbox as Theme
-export const dark_red_alt2_SliderTrack = dark_red_alt2_Checkbox as Theme
-export const dark_red_alt2_SwitchThumb = {
-    background: dark_red12,
-    backgroundHover: dark_red11,
-    backgroundPress: dark_red10,
-    backgroundFocus: light_red9,
-    backgroundStrong: light_color1,
-    backgroundTransparent: light_color1,
-    color: dark_red3,
-    colorHover: dark_red4,
-    colorPress: dark_red3,
-    colorFocus: dark_red4,
-    colorTransparent: dark_red1,
-    borderColor: light_red9,
-    borderColorHover: dark_red8,
-    borderColorFocus: dark_red10,
-    borderColorPress: light_red9,
-    placeholderColor: dark_red4
-} as Theme
-export const dark_red_alt2_RadioGroupItem = {
     background: dark_red4,
     backgroundHover: dark_red5,
     backgroundPress: dark_red6,
@@ -12007,8 +11967,48 @@ export const dark_red_alt2_RadioGroupItem = {
     placeholderColor: dark_red8
 } as Theme
 
-export const dark_red_alt2_Input = dark_red_alt2_RadioGroupItem as Theme
-export const dark_red_alt2_TextArea = dark_red_alt2_RadioGroupItem as Theme
+export const dark_red_alt2_RadioGroupItem = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_Input = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_TextArea = dark_red_alt2_Checkbox as Theme
+export const dark_red_alt2_Switch = {
+    background: dark_red6,
+    backgroundHover: dark_red8,
+    backgroundPress: light_red9,
+    backgroundFocus: dark_red10,
+    backgroundStrong: dark_red5,
+    backgroundTransparent: dark_red4,
+    color: dark_red11,
+    colorHover: dark_red10,
+    colorPress: dark_red11,
+    colorFocus: dark_red10,
+    colorTransparent: dark_red10,
+    borderColor: dark_red10,
+    borderColorHover: dark_red11,
+    borderColorFocus: light_red9,
+    borderColorPress: dark_red10,
+    placeholderColor: dark_red5
+} as Theme
+
+export const dark_red_alt2_TooltipContent = dark_red_alt2_Switch as Theme
+export const dark_red_alt2_SliderTrack = dark_red_alt2_Switch as Theme
+export const dark_red_alt2_SwitchThumb = {
+    background: dark_red12,
+    backgroundHover: dark_red11,
+    backgroundPress: dark_red10,
+    backgroundFocus: light_red9,
+    backgroundStrong: light_color1,
+    backgroundTransparent: light_color1,
+    color: dark_red3,
+    colorHover: dark_red4,
+    colorPress: dark_red3,
+    colorFocus: dark_red4,
+    colorTransparent: dark_red1,
+    borderColor: light_red9,
+    borderColorHover: dark_red8,
+    borderColorFocus: dark_red10,
+    borderColorPress: light_red9,
+    placeholderColor: dark_red4
+} as Theme
 export const dark_red_alt2_SliderTrackActive = {
     background: dark_red8,
     backgroundHover: dark_red6,
@@ -12087,44 +12087,6 @@ export const dark_red_active_Button = {
     placeholderColor: dark_red4
 } as Theme
 export const dark_red_active_Checkbox = {
-    background: dark_red8,
-    backgroundHover: light_red9,
-    backgroundPress: dark_red10,
-    backgroundFocus: dark_red11,
-    backgroundStrong: dark_red6,
-    backgroundTransparent: dark_red5,
-    colorHover: light_red9,
-    colorPress: dark_red10,
-    colorFocus: light_red9,
-    colorTransparent: light_red9,
-    borderColor: dark_red11,
-    borderColorHover: dark_red12,
-    borderColorFocus: dark_red10,
-    borderColorPress: dark_red11,
-    placeholderColor: dark_red4
-} as Theme
-
-export const dark_red_active_Switch = dark_red_active_Checkbox as Theme
-export const dark_red_active_TooltipContent = dark_red_active_Checkbox as Theme
-export const dark_red_active_SliderTrack = dark_red_active_Checkbox as Theme
-export const dark_red_active_SwitchThumb = {
-    background: dark_red11,
-    backgroundHover: dark_red10,
-    backgroundPress: light_red9,
-    backgroundFocus: dark_red8,
-    backgroundStrong: dark_red12,
-    backgroundTransparent: light_color1,
-    colorHover: dark_red5,
-    colorPress: dark_red4,
-    colorFocus: dark_red5,
-    colorTransparent: dark_red1,
-    borderColor: dark_red8,
-    borderColorHover: dark_red6,
-    borderColorFocus: light_red9,
-    borderColorPress: dark_red8,
-    placeholderColor: dark_red5
-} as Theme
-export const dark_red_active_RadioGroupItem = {
     background: dark_red5,
     backgroundHover: dark_red6,
     backgroundPress: dark_red8,
@@ -12142,8 +12104,46 @@ export const dark_red_active_RadioGroupItem = {
     placeholderColor: dark_red6
 } as Theme
 
-export const dark_red_active_Input = dark_red_active_RadioGroupItem as Theme
-export const dark_red_active_TextArea = dark_red_active_RadioGroupItem as Theme
+export const dark_red_active_RadioGroupItem = dark_red_active_Checkbox as Theme
+export const dark_red_active_Input = dark_red_active_Checkbox as Theme
+export const dark_red_active_TextArea = dark_red_active_Checkbox as Theme
+export const dark_red_active_Switch = {
+    background: dark_red8,
+    backgroundHover: light_red9,
+    backgroundPress: dark_red10,
+    backgroundFocus: dark_red11,
+    backgroundStrong: dark_red6,
+    backgroundTransparent: dark_red5,
+    colorHover: light_red9,
+    colorPress: dark_red10,
+    colorFocus: light_red9,
+    colorTransparent: light_red9,
+    borderColor: dark_red11,
+    borderColorHover: dark_red12,
+    borderColorFocus: dark_red10,
+    borderColorPress: dark_red11,
+    placeholderColor: dark_red4
+} as Theme
+
+export const dark_red_active_TooltipContent = dark_red_active_Switch as Theme
+export const dark_red_active_SliderTrack = dark_red_active_Switch as Theme
+export const dark_red_active_SwitchThumb = {
+    background: dark_red11,
+    backgroundHover: dark_red10,
+    backgroundPress: light_red9,
+    backgroundFocus: dark_red8,
+    backgroundStrong: dark_red12,
+    backgroundTransparent: light_color1,
+    colorHover: dark_red5,
+    colorPress: dark_red4,
+    colorFocus: dark_red5,
+    colorTransparent: dark_red1,
+    borderColor: dark_red8,
+    borderColorHover: dark_red6,
+    borderColorFocus: light_red9,
+    borderColorPress: dark_red8,
+    placeholderColor: dark_red5
+} as Theme
 export const dark_red_active_SliderTrackActive = {
     background: dark_red6,
     backgroundHover: dark_red5,

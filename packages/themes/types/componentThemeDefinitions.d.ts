@@ -186,7 +186,7 @@ export declare const componentThemeDefinitions: {
         max?: number | undefined;
         min?: number | undefined;
         parentName?: string | undefined;
-        mask: "soften2";
+        mask: "softenBorder2";
     };
     Switch: {
         override: {
