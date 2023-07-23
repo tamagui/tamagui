@@ -9,5 +9,6 @@ export declare const masks: {
     inverseStrengthen2: import("@tamagui/create-theme").CreateMask;
     strengthenButSoftenBorder: import("@tamagui/create-theme").CreateMask;
     softenBorder: import("@tamagui/create-theme").CreateMask;
+    softenBorder2: import("@tamagui/create-theme").CreateMask;
 };
 //# sourceMappingURL=masks.d.ts.map
