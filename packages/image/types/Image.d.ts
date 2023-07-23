@@ -7,9 +7,7 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
     [x: string]: undefined;
 }>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
-    [x: string]: undefined;
-}>>>>), RNImage, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
+}>>), RNImage, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
     [x: string]: undefined;
 }, {
     prototype: RNImage;

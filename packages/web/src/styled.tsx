@@ -192,13 +192,26 @@ export function styled<
 
   type VariantProps = Omit<ParentVariants, keyof OurVariantProps> & OurVariantProps
   type OurPropsBaseBase = ParentPropsBase & VariantProps
-  type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
+
+  /**
+   * de-opting a bit of type niceness because were hitting depth issues too soon
+   * before we had:
+   *
+   * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
+   * and then below in type Props you would remove the PseudoProps line
+   * that would give you nicely merged psuedo sub-styles but its just too much for TS
+   * so now psuedos wont be nicely typed inside media queries, but at least we can nest
+   */
+
+  type OurPropsBase = OurPropsBaseBase
 
   type Props = Variants extends void
     ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBase &
-        // add in media (+ pseudos nested)
+        // add in psuedo
+        PseudoProps<Partial<OurPropsBaseBase>> &
+        // add in media
         MediaProps<Partial<OurPropsBase>>
 
   type ParentStaticProperties = {

@@ -7,9 +7,7 @@ export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import(
     readonly fullscreen?: boolean | undefined;
 }>> & import("@tamagui/web").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
-} & import("@tamagui/web").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
-    readonly fullscreen?: boolean | undefined;
-}>>>>, ScrollViewNative, import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps>, {
+}>>, ScrollViewNative, import("react-native").ScrollViewProps & Omit<import("@tamagui/web").StackProps, keyof import("react-native").ScrollViewProps>, {
     readonly fullscreen?: boolean | undefined;
 }, {
     prototype: ScrollViewNative;

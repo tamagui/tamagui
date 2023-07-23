@@ -343,10 +343,10 @@ export declare const config: {
         };
         space: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -371,10 +371,10 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
+            "-1": import("@tamagui/web").Variable<number>;
             "-0.25": import("@tamagui/web").Variable<number>;
             "-0.5": import("@tamagui/web").Variable<number>;
             "-0.75": import("@tamagui/web").Variable<number>;
-            "-1": import("@tamagui/web").Variable<number>;
             "-1.5": import("@tamagui/web").Variable<number>;
             "-2": import("@tamagui/web").Variable<number>;
             "-2.5": import("@tamagui/web").Variable<number>;
@@ -402,10 +402,10 @@ export declare const config: {
         };
         size: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -433,13 +433,13 @@ export declare const config: {
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
+            3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             true: import("@tamagui/web").Variable<number>;
             12: import("@tamagui/web").Variable<number>;
-            3: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             7: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
@@ -449,10 +449,10 @@ export declare const config: {
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
-            4: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
+            4: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
         };
     } & Omit<{
@@ -652,13 +652,13 @@ export declare const config: {
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
+            3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             true: import("@tamagui/web").Variable<number>;
             12: import("@tamagui/web").Variable<number>;
-            3: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             7: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
@@ -668,18 +668,18 @@ export declare const config: {
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
-            4: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
+            4: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
         };
         space: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -704,10 +704,10 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
+            "-1": import("@tamagui/web").Variable<number>;
             "-0.25": import("@tamagui/web").Variable<number>;
             "-0.5": import("@tamagui/web").Variable<number>;
             "-0.75": import("@tamagui/web").Variable<number>;
-            "-1": import("@tamagui/web").Variable<number>;
             "-1.5": import("@tamagui/web").Variable<number>;
             "-2": import("@tamagui/web").Variable<number>;
             "-2.5": import("@tamagui/web").Variable<number>;
@@ -735,10 +735,10 @@ export declare const config: {
         };
         size: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -812,8 +812,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        }, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -837,7 +837,7 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
 //# sourceMappingURL=index.d.ts.map
