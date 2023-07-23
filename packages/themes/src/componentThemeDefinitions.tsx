@@ -50,7 +50,7 @@ export const componentThemeDefinitions = {
   },
 
   Checkbox: {
-    mask: 'soften2',
+    mask: 'softenBorder2',
     ...maskOptions.component,
   },
 
