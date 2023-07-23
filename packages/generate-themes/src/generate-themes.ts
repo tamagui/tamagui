@@ -7,16 +7,21 @@ type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
+const ogRequire = Module.prototype.require
+
 export async function generateThemes(inputFile: string) {
-  require('esbuild-register/dist/node').register()
+  const { unregister } = require('esbuild-register/dist/node').register()
+
+  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+  purgeCache(inputFilePath)
 
   let promise: Promise<null | ThemeBuilder<any>> | null = null as any
 
-  const ogRequire = Module.prototype.require
   // @ts-ignore
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
+
     if (id === '@tamagui/create-theme/theme-builder' || id === '@tamagui/theme-builder') {
       if (!promise) {
         let resolve: Function
@@ -34,8 +39,6 @@ export async function generateThemes(inputFile: string) {
   }
 
   try {
-    const inputFilePath =
-      inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
     const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
@@ -44,8 +47,11 @@ export async function generateThemes(inputFile: string) {
       generated: generatedThemes,
       state: themeBuilder?.state,
     }
+  } catch (err) {
+    console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
   } finally {
     Module.prototype.require = ogRequire
+    unregister()
   }
 }
 
@@ -160,4 +166,53 @@ function themeBuilderIntercept(
       return out
     },
   })
+}
+
+/**
+ * Removes a module from the cache
+ */
+function purgeCache(moduleName) {
+  // Traverse the cache looking for the files
+  // loaded by the specified module name
+  searchCache(moduleName, function (mod) {
+    delete require.cache[mod.id]
+  })
+
+  // Remove cached paths to the module.
+  // Thanks to @bentael for pointing this out.
+  // @ts-ignore
+  Object.keys(module.constructor._pathCache).forEach(function (cacheKey) {
+    if (cacheKey.indexOf(moduleName) > 0) {
+      // @ts-ignore
+      delete module.constructor._pathCache[cacheKey]
+    }
+  })
+}
+
+/**
+ * Traverses the cache to search for all the cached
+ * files of the specified module name
+ */
+function searchCache(moduleName, callback) {
+  // Resolve the module identified by the specified name
+  let mod = require.resolve(moduleName)
+
+  // Check if the module has been resolved and found within
+  // the cache
+  // @ts-ignore
+  if (mod && (mod = require.cache[mod]) !== undefined) {
+    // Recursively go over the results
+    ;(function traverse(mod) {
+      // Go over each of the module's children and
+      // traverse them
+      // @ts-ignore
+      mod.children.forEach(function (child) {
+        traverse(child)
+      })
+
+      // Call the specified callback providing the
+      // found cached module
+      callback(mod)
+    })(mod)
+  }
 }

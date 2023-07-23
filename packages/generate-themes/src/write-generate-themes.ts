@@ -9,6 +9,8 @@ export async function writeGeneratedThemes(
   outPath: string,
   generatedOutput: Awaited<ReturnType<typeof generateThemes>>
 ) {
+  if (!generatedOutput) return
+
   const { generated, state } = generatedOutput
 
   const tamaguiDotDirExists = await fs.pathExists(tamaguiDotDir)
