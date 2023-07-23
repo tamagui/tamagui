@@ -22,7 +22,7 @@ export class TamaguiPlugin {
   ) {}
 
   apply(compiler: Compiler) {
-    if (this.options.enableStudio && !this.options.disableWatchConfig) {
+    if (!this.options.disableWatchConfig) {
       void watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
