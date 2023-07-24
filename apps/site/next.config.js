@@ -23,7 +23,7 @@ const plugins = [
     openAnalyzer: process.env.ANALYZE === 'true',
   }),
   withTamagui({
-    useReactNativeWebLite: true,
+    // useReactNativeWebLite: true,
     config: './tamagui.config.ts',
     themeBuilder: {
       input: '@tamagui/themes/src/themes-new.ts',

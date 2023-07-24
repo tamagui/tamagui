@@ -432,6 +432,9 @@ export function createComponent<
         ? 'value'
         : 'auto'
 
+    // temp: once we fix above we can disable this
+    const keepStyleSSR = willBeAnimated && animationsConfig?.keepStyleSSR
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -444,8 +447,7 @@ export function createComponent<
         resolveVariablesAs,
         isExiting,
         isAnimated,
-        // temp: once we fix above we can disable this
-        keepStyleSSR: willBeAnimated && animationsConfig?.keepStyleSSR,
+        keepStyleSSR,
       },
       null,
       languageContext || undefined,
@@ -629,21 +631,24 @@ export function createComponent<
       })
     }, [shouldSetMounted, state.unmounted])
 
-    let styles: Record<string, any>[]
+    let styles: Record<string, any>[] | undefined
+    const avoidStyle = keepStyleSSR && state.unmounted === true
 
-    if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
-      styles = {
-        ...(animationStyles ?? splitStylesStyle),
-      }
-    } else {
-      styles = [animationStyles ?? splitStylesStyle]
+    if (!avoidStyle) {
+      if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
+        styles = {
+          ...(animationStyles ?? splitStylesStyle),
+        }
+      } else {
+        styles = [animationStyles ?? splitStylesStyle]
 
-      // ugly but for now...
-      if (shouldForcePseudo) {
-        const next = {}
-        styles.forEach((style) => Object.assign(next, style))
-        // @ts-ignore
-        Object.assign(splitStyles.style, next)
+        // ugly but for now...
+        if (shouldForcePseudo) {
+          const next = {}
+          styles.forEach((style) => Object.assign(next, style))
+          // @ts-ignore
+          Object.assign(splitStyles.style, next)
+        }
       }
     }
 
@@ -667,9 +672,9 @@ export function createComponent<
     const className = classList.join(' ')
 
     if (process.env.TAMAGUI_TARGET === 'web') {
-      const style = animationStyles ?? splitStyles.style
+      const style = avoidStyle ? null : animationStyles ?? splitStyles.style
 
-      if (isAnimatedReactNativeWeb) {
+      if (isAnimatedReactNativeWeb && !avoidStyle) {
         viewProps.style = style
       } else if (isReactNative) {
         // TODO these shouldn't really return from getSplitStyles when in Native mode
@@ -698,7 +703,7 @@ export function createComponent<
     // TODO MOVE INTO HOOK
     if (process.env.TAMAGUI_TARGET === 'native') {
       // swap out the right family based on weight/style
-      if (splitStyles.fontFamily) {
+      if (styles && splitStyles.fontFamily) {
         const faceInfo = tamaguiConfig.fontsParsed[splitStyles.fontFamily]?.face
         if (faceInfo) {
           const [weight, style] = (() => {

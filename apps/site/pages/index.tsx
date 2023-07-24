@@ -1,5 +1,6 @@
 import { Hero } from '@components/Hero'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
+import { LogoWords } from '@tamagui/logo'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { NextSeo } from 'next-seo'
@@ -18,6 +19,7 @@ import { HomeSection, SectionTinted, TintSection } from '../components/TintSecti
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
+  return <LogoWords animated />
   return (
     <>
       <HomeGlow />
