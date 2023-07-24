@@ -114,22 +114,11 @@ const resolveVariants: StyleResolver = (
     return
   }
 
-  // set the curProps to use the new value for this variant
-  styleState.curProps[key] = value
-
   let variantValue = getVariantDefinition(variants[key], key, value, conf)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log({
-      key,
-      value,
-      variantValue,
-      variants,
-      curProps: { ...styleState.curProps },
-    })
-    console.groupEnd()
+    console.log(' - resolve variant', { key, value, variantValue })
   }
 
   if (!variantValue) {
@@ -155,7 +144,7 @@ const resolveVariants: StyleResolver = (
     )
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed('   expanded functional variant', key)
+      console.groupCollapsed('expanded functional variant', key)
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log({ fn, variantValue })
       console.groupEnd()
@@ -175,12 +164,7 @@ const resolveVariants: StyleResolver = (
       variantValue.fontFamily || variantValue[conf.inverseShorthands.fontFamily]
 
     if (fontFamilyUpdate) {
-      fontFamilyResult = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
-      styleState.fontFamily = fontFamilyResult
-      if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`   updating font family`, fontFamilyResult)
-      }
+      styleState.fontFamily = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
     }
 
     variantValue = resolveTokensAndVariants(
@@ -196,6 +180,14 @@ const resolveVariants: StyleResolver = (
 
   if (variantValue) {
     const expanded = expandStylesAndRemoveNullishValues(variantValue)
+
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+      console.groupCollapsed('completing variant', key)
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log({ expanded })
+      console.groupEnd()
+    }
+
     const next = Object.entries(expanded)
 
     // store any changed font family (only support variables for now)
@@ -214,24 +206,26 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
     const val = variableToFontNameCache.get(input)
     if (val) {
       return val
-    }
-    for (const key in conf.fontsParsed) {
-      const familyVariable = conf.fontsParsed[key].family
-      if (isVariable(familyVariable)) {
-        variableToFontNameCache.set(familyVariable, key)
-        if (familyVariable === input) {
-          return key
+    } else {
+      for (const key in conf.fontsParsed) {
+        const familyVariable = conf.fontsParsed[key].family
+        if (isVariable(familyVariable)) {
+          variableToFontNameCache.set(familyVariable, key)
+          if (familyVariable === input) {
+            return key
+          }
         }
       }
     }
   } else if (typeof input === 'string') {
     if (input?.[0] === '$') {
       return input
-    }
-    // this could be mapped back to
-    if (process.env.NODE_ENV === 'development') {
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log('[tamagui] should map back', input)
+    } else {
+      // this could be mapped back to
+      if (process.env.NODE_ENV === 'development') {
+        // rome-ignore lint/nursery/noConsoleLog: ok
+        console.log('[tamagui] should map back', input)
+      }
     }
   }
 }
@@ -270,9 +264,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       // avoids infinite loop if variant is matching a style prop
       // eg: { variants: { flex: { true: { flex: 2 } } } }
       if (parentVariantKey && parentVariantKey === key) {
-        res[fKey] =
-          // SYNC WITH *1
-          val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
+        res[fKey] = val
       } else {
         const variantOut = resolveVariants(
           fKey,
@@ -296,6 +288,11 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
             }
           }
         }
+
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log('  - variantOut', { fKey, variantOut, res: { ...res } })
+        }
       }
       continue
     }
@@ -307,7 +304,6 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
 
     if (typeof val === 'string') {
       const fVal =
-        // SYNC WITH *1
         val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
       res[fKey] = fVal
       continue

@@ -5,41 +5,34 @@ import { Button, Circle, Paragraph, SizableText, Text, XStack, styled } from 'ta
 export const Sandbox = () => {
   return (
     <>
-      <Subtitle debug="verbose">hello</Subtitle>
-      {/* <ChangeFamilyVariant debug="verbose" size="$15">
-        Test
-      </ChangeFamilyVariant>
-      <ChangeFamilyVariant size="$15" isHeading>
-        Test
-      </ChangeFamilyVariant> */}
+      <Subtitle>hello</Subtitle>
     </>
   )
 }
 
-// TODO test:
-
-const ChangeFamilyVariant = styled(SizableText, {
-  fontFamily: '$body',
-  variants: {
-    isHeading: {
-      true: {
-        fontFamily: '$heading',
-      },
-    },
-  } as const,
-})
-
-// need to fix the ls shouldnt be necessary on medias
+// need to fix the ls -1 shouldnt be necessary on medias
 const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
   ta: 'left',
-  ls: 10,
+  ls: -1,
 
-  $sm: {
+  $gtSm: {
     ta: 'center',
     size: '$7',
+    ls: -1,
+  },
+
+  $gtMd: {
+    size: '$8',
+    ls: -1,
+  },
+
+  $gtLg: {
+    size: '$9',
+    lh: 50,
+    ls: -1,
   },
 })
 

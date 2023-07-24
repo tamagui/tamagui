@@ -62,6 +62,15 @@ export function styled<
     if (!ComponentIn) {
       throw new Error(`No component given to styled()`)
     }
+    if (options?.variants) {
+      for (const key in options.variants) {
+        if (key in stylePropsAll) {
+          console.error(
+            `Invalid variant key overlaps with style key: ${key}. Tamagui prevents defining variants that use valid style keys to reduce complexity and confusion.`
+          )
+        }
+      }
+    }
   }
 
   const parentStaticConfig = ComponentIn['staticConfig'] as StaticConfig | undefined
