@@ -92,7 +92,8 @@ const points = {
     'More every month.',
   ],
   more: [
-    'Universal light/dark mode, image upload and Supabase utils.',
+    'Image upload and Supabase utils.',
+    'Reanimated, Solito, React Query, Zod & more',
     'TakeoutBot ongoing updates.',
     // 'Test, lint, CI/CD.',
     'Private Discord channel.',
@@ -477,8 +478,10 @@ export default function TakeoutPage({
           <LoadCherryBomb />
           <LoadCherryBomb />
           <LoadMunro />
-          <script src='https://cdn.paritydeals.com/banner.js' />
-          <style dangerouslySetInnerHTML={{__html: `
+          <script src="https://cdn.paritydeals.com/banner.js" />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
 .parity-banner {
     position: fixed!important;
     bottom: 0;
@@ -486,7 +489,9 @@ export default function TakeoutPage({
     right: 0;
     z-index: 1000;
   }
-`}} />
+`,
+            }}
+          />
         </Head>
       </>
 
@@ -938,14 +943,14 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
-                        <Bullet inProgress>Maestro native integration tests</Bullet>
-                        <Bullet inProgress>Playwright integration tests</Bullet>
-                        <Bullet inProgress>Reanimated + reanimated modules</Bullet>
-                        <Bullet inProgress>Simple state management system</Bullet>
-                        <Bullet inProgress>Layout animations</Bullet>
                         <Bullet inProgress>Storybook</Bullet>
+                        <Bullet inProgress>Maestro integration tests</Bullet>
+                        <Bullet inProgress>Simple state management system</Bullet>
+                        <Bullet inProgress>Reanimated modules</Bullet>
+                        <Bullet inProgress>Layout animations</Bullet>
                         <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
                         <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
+                        <Bullet>Playwright integration tests</Bullet>
                         <Bullet>Notifications</Bullet>
                         <Bullet>Alternative deployment targets</Bullet>
                         <Bullet>Simple data fetching library</Bullet>
