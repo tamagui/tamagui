@@ -1,15 +1,32 @@
 // debug-verbose
 // import './wdyr'
 
-import { Button, Circle, Text, XStack, styled } from 'tamagui'
+import { Button, Circle, SizableText, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <>
       <Circle width={100} height={100} bc={'red'} />
+      <CustomText>hello</CustomText>
     </>
   )
 }
+
+export const CustomText = styled(SizableText, {
+  fontFamily: '$body',
+
+  variants: {
+    bold: {
+      true: {
+        fontFamily: '$heading',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    bold: false,
+  },
+})
 
 // const NumberTicker = () => {
 //   const [numbers, setNumbers] = useState([0, 5, 2, 3])

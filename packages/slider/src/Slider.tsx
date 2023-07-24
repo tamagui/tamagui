@@ -2,6 +2,7 @@
 
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import {
+  GestureReponderEvent,
   GetProps,
   SizeTokens,
   TamaguiElement,
@@ -57,8 +58,16 @@ import {
 
 const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
-    const { min, max, dir, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } =
-      props
+    const {
+      min,
+      max,
+      dir,
+      onSlideStart,
+      onSlideMove,
+      onStepKeyDown,
+      onSlideEnd,
+      ...sliderProps
+    } = props
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
     const sliderRef = React.useRef<View>(null)
@@ -102,16 +111,21 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
-              onSlideStart?.(value, target)
+              onSlideStart?.(value, target, event)
             }
           }}
           onSlideMove={(event) => {
             const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
             if (value) {
-              onSlideMove?.(value)
+              onSlideMove?.(value, event)
             }
           }}
-          onSlideEnd={() => {}}
+          onSlideEnd={(event) => {
+            const value = getValueFromPointer(event.nativeEvent.pageX - state.offset)
+            if (value) {
+              onSlideEnd?.(event, value)
+            }
+          }}
           onStepKeyDown={(event) => {
             const isBackKey = BACK_KEYS[direction].includes(event.key)
             onStepKeyDown?.({ event, direction: isBackKey ? -1 : 1 })
@@ -143,7 +157,15 @@ function useOnDebouncedWindowResize(callback: Function, amt = 200) {
 
 const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
-    const { min, max, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
+    const {
+      min,
+      max,
+      onSlideStart,
+      onSlideMove,
+      onStepKeyDown,
+      onSlideEnd,
+      ...sliderProps
+    } = props
     const [state, setState] = React.useState(() => ({ size: 0, offset: 0 }))
     const sliderRef = React.useRef<View>(null)
 
@@ -184,16 +206,19 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
           onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
             if (value) {
-              onSlideStart?.(value, target)
+              onSlideStart?.(value, target, event)
             }
           }}
           onSlideMove={(event) => {
             const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
             if (value) {
-              onSlideMove?.(value)
+              onSlideMove?.(value, event)
             }
           }}
-          onSlideEnd={() => {}}
+          onSlideEnd={(event) => {
+            const value = getValueFromPointer(event.nativeEvent.pageY - state.offset)
+            onSlideEnd?.(event, value)
+          }}
           onStepKeyDown={(event) => {
             const isBackKey = BACK_KEYS.ltr.includes(event.key)
             onStepKeyDown?.({ event, direction: isBackKey ? -1 : 1 })
@@ -422,8 +447,6 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbProps>(function Slider
   return (
     <SliderThumbFrame
       ref={composedRefs}
-      // TODO
-      // @ts-ignore
       role="slider"
       aria-label={props['aria-label'] || label}
       aria-valuemin={context.min}
@@ -475,6 +498,9 @@ const SliderComponent = React.forwardRef<View, SliderProps>(
       value,
       onValueChange = () => {},
       size: sizeProp,
+      onSlideEnd,
+      onSlideMove,
+      onSlideStart,
       ...sliderProps
     } = props
     const sliderRef = React.useRef<View>(null)
@@ -514,8 +540,9 @@ const SliderComponent = React.forwardRef<View, SliderProps>(
       }, [])
     }
 
-    function handleSlideMove(value: number) {
+    function handleSlideMove(value: number, event: GestureReponderEvent) {
       updateValues(value, valueIndexToChangeRef.current)
+      onSlideMove?.(event, value)
     }
 
     function updateValues(value: number, atIndex: number) {
@@ -557,15 +584,17 @@ const SliderComponent = React.forwardRef<View, SliderProps>(
           ref={composedRefs}
           min={min}
           max={max}
+          onSlideEnd={onSlideEnd}
           onSlideStart={
             disabled
               ? undefined
-              : (value: number, target) => {
+              : (value: number, target, event) => {
                   // when starting on the track, move it right away
                   // when starting on thumb, dont jump until movemenet as it feels weird
                   if (target !== 'thumb') {
                     const closestIndex = getClosestValueIndex(values, value)
                     updateValues(value, closestIndex)
+                    onSlideStart?.(event, value, target)
                   }
                 }
           }
