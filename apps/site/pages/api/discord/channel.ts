@@ -118,6 +118,10 @@ const handler: NextApiHandler = async (req, res) => {
       }
     )
 
+    await discordClient.api.channels.createMessage(discordChannel.id, {
+      content: `Hello and welcome to your private Takeout channel! The creators of Takeout are here as well, so feel free to ask any questions and give us feedback as you go.`,
+    })
+
     discordChannelId = discordChannel.id
 
     await supabaseAdmin
