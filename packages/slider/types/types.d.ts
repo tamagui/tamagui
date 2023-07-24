@@ -7,9 +7,9 @@ export type ScopedProps<P> = P & {
 };
 export type Direction = 'ltr' | 'rtl';
 type SliderEventProps = {
-    onSlideStart(event: GestureReponderEvent, value: number, target: 'thumb' | 'track'): void;
-    onSlideMove(event: GestureReponderEvent, value: number): void;
-    onSlideEnd(event: GestureReponderEvent, value: number): void;
+    onSlideStart?: (event: GestureReponderEvent, value: number, target: 'thumb' | 'track') => void;
+    onSlideMove?: (event: GestureReponderEvent, value: number) => void;
+    onSlideEnd?: (event: GestureReponderEvent, value: number) => void;
 };
 type SliderImplPrivateProps = {
     onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void;
