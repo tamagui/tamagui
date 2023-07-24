@@ -78,10 +78,18 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
       )
     }
 
+    if (!context.interactions) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`No interactions provided to Select, potentially missing Adapt`)
+      }
+
+      return null
+    }
+
     const {
       style: { scrollbarWidth, listStyleType, overflow, ...restStyle },
       ...floatingProps
-    } = context.interactions!.getFloatingProps()
+    } = context.interactions.getFloatingProps()
 
     return (
       <>
