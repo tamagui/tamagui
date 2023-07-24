@@ -3,7 +3,7 @@ import { REST } from '@discordjs/rest'
 import { WebSocketManager } from '@discordjs/ws'
 
 const token = process.env.DISCORD_BOT_TOKEN!
-export const TAKEOUT_ROLE_ID = '1131082601600385125'
+export const TAKEOUT_ROLE_ID = '1131082605052301403'
 export const TAMAGUI_DISCORD_GUILD_ID = '909986013848412191'
 export const TAKEOUT_GROUP_ID = '1131249991256657950' // group id
 export const DEFAULT_ROLE_ID = '909986013848412191' // @everyone
