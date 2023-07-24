@@ -7,5 +7,6 @@
       "@my/ui/*": ["./packages/ui/*"]
     }
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "exclude": ["**/node_modules", "**/dist", "**/types", "apps/next/out", "apps/next/.next", "apps/next/.tamagui"]
 }
