@@ -133,7 +133,6 @@ function AppContents(
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
   const getLayout = ((Component as any).getLayout as GetLayout) || ((page) => page)
   const router = useRouter()
   const path = router.asPath
