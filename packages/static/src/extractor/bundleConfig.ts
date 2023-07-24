@@ -192,11 +192,13 @@ export async function bundleConfig(props: TamaguiOptions) {
         baseComponents[componentOutPaths.indexOf(component.moduleName)]
 
       if (!component.moduleName) {
-        console.warn(
-          `⚠️ no module name found: ${component.moduleName} ${JSON.stringify(
-            baseComponents
-          )} in ${JSON.stringify(componentOutPaths)}`
-        )
+        if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
+          console.warn(
+            `⚠️ no module name found: ${component.moduleName} ${JSON.stringify(
+              baseComponents
+            )} in ${JSON.stringify(componentOutPaths)}`
+          )
+        }
       }
     }
 
