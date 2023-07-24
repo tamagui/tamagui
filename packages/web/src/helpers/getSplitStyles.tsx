@@ -546,8 +546,9 @@ export const getSplitStyles: StyleSplitter = (
         ? [[keyInit, valInit]]
         : propMapper(keyInit, valInit, styleState)
 
-    if (!styleState.fontFamily) {
-      styleState.fontFamily = getPropMappedFontFamily(expanded)
+    const next = getPropMappedFontFamily(expanded)
+    if (next) {
+      styleState.fontFamily = next
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
