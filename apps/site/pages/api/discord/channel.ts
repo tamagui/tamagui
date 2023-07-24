@@ -102,9 +102,11 @@ const handler: NextApiHandler = async (req, res) => {
   if (!discordChannelId) {
     let channelName = subscription.data.id
     try {
-      const githubData = await fetch('https://api.github.com/user').then((res) =>
-        res.json()
-      )
+      const githubData = await fetch('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${userPrivate.data.github_token}`,
+        },
+      }).then((res) => res.json())
       channelName = githubData.data.login
     } catch (error) {}
 
