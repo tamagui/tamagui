@@ -95,7 +95,7 @@ const points = {
     'Universal light/dark mode, image upload and Supabase utils.',
     'TakeoutBot ongoing updates.',
     // 'Test, lint, CI/CD.',
-    '#takeout Discord access.',
+    'Private Discord channel.',
   ],
 }
 
