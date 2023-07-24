@@ -104,7 +104,9 @@ export class ThemeManager {
       }
 
       if (shouldNotify) {
-        this.notify(!!props.forceTheme)
+        queueMicrotask(() => {
+          this.notify(!!props.forceTheme)
+        })
       }
 
       return this.state

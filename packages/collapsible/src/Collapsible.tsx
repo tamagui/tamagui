@@ -156,6 +156,7 @@ const CollapsibleContent = CollapsibleContentFrame.styleable<
 CollapsibleContent.displayName = CONTENT_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
+
 function getState(open?: boolean) {
   return open ? 'open' : 'closed'
 }
@@ -173,4 +174,5 @@ export {
   CollapsibleTriggerFrame,
   createCollapsibleScope,
 }
+
 export type { CollapsibleContentProps, CollapsibleProps, CollapsibleTriggerProps }
