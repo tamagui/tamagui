@@ -347,11 +347,6 @@ const SubscriptionItem = ({
               Install GitHub App
             </ButtonLink>
           )}
-          {/* {!!productSlug && ( */}
-          <ButtonLink href={`/takeout`} size="$2" iconAfter={ArrowUpRight}>
-            View Page
-          </ButtonLink>
-          {/* )} */}
           {/* <Button
             disabled={isLoading}
             {...(isLoading && { opacity: 0.5 })}

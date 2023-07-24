@@ -14,6 +14,10 @@ How the product can be claimed. could be one of the following values:
 
 - `repo_access` - should be used with [`repository_name`](#repository_name)
 
+#### `claim_label`
+
+The text on the claim button.
+
 #### `repository_name`
 
 Will be used to invite user to the repository if [`claim_type`](#claim_type) is set to `repo_access`.
