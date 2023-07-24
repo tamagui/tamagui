@@ -30,6 +30,10 @@ ${new Error().stack}
   obj.displayName = `ProxyWorm - Check excludeReactNativeWebExports`
   obj._isProxyWorm = true
 
+  // reanimated tries to find component like things
+  obj.prototype ||= {}
+  obj.prototype.isReactComponent = true
+
   return new Proxy(obj, {
     get(_, key) {
       if (Reflect.has(obj, key)) return Reflect.get(obj, key)
