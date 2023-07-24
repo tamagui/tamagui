@@ -1,6 +1,6 @@
-import { FontWeightSteps, GenericFont } from './types'
+import { FontWeightValues, GenericFont } from './types'
 
-const fontWeights: FontWeightSteps[] = [
+const fontWeights: FontWeightValues[] = [
   '100',
   '200',
   '300',

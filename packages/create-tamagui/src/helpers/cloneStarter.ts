@@ -49,7 +49,9 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
   console.log(`Setting up ${chalk.blueBright(targetGitDir)}...`)
 
-  cd(repoRoot)
+  if (IS_TEST) {
+    cd(repoRoot)
+  }
 
   if (process.env.GITHUB_HEAD_REF) {
     try {

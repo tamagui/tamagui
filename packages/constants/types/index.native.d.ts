@@ -10,4 +10,5 @@ export declare const isWebTouchable = false;
 export declare const isTouchable = true;
 export declare const isAndroid = false;
 export declare const isIos = false;
+export declare const currentPlatform = "native";
 //# sourceMappingURL=index.native.d.ts.map

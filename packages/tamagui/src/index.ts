@@ -1,6 +1,7 @@
 import './setup.js'
 
 export * from '@tamagui/adapt'
+export * from '@tamagui/accordion'
 export * from '@tamagui/alert-dialog'
 export * from '@tamagui/animate-presence'
 export * from '@tamagui/avatar'
@@ -77,6 +78,7 @@ export type {
   GetVariantProps,
   GenericTextVariants,
   GenericStackVariants,
+  GetRef,
   Media,
   MediaPropKeys,
   MediaQueries,
@@ -87,6 +89,7 @@ export type {
   SpacerProps,
   StackPropsBase,
   TamaguiElement,
+  TamaguiTextElement,
   StackNonStyleProps,
   StaticConfig,
   StaticConfigParsed,
@@ -111,6 +114,7 @@ export type {
   ThemeProps,
   Themes,
   ThemeValueFallback,
+  TamaguiSettings,
   Tokens,
   TransformStyleProps,
   VariantSpreadExtras,

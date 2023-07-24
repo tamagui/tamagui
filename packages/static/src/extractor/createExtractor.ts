@@ -4,20 +4,19 @@ import { basename, relative } from 'path'
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  expandStyles,
+  expandStylesAndRemoveNullishValues,
   getSplitStyles,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { PseudoStyles, StaticConfigParsed } from '@tamagui/web'
+import type { GetStyleState, PseudoStyles, StaticConfigParsed } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
 import type {
   ExtractedAttr,
-  ExtractedAttrAttr,
   ExtractedAttrStyle,
   ExtractorOptions,
   ExtractorParseProps,
@@ -32,6 +31,7 @@ import {
   attrStr,
   findComponentName,
   getValidComponent,
+  getValidComponentsPaths,
   getValidImport,
   isPresent,
   isValidImport,
@@ -64,6 +64,17 @@ const INLINE_EXTRACTABLE = {
     onPressOut: 'onMouseUp',
   }),
 }
+
+const defaultComponentState = {
+  focus: false,
+  hover: false,
+  unmounted: true,
+  press: false,
+  pressIn: false,
+  resolveVariablesAs: 'variable',
+  noClassNames: false,
+  isAnimated: false,
+} as const
 
 const validHooks = {
   useMedia: true,
@@ -338,7 +349,9 @@ export function createExtractor(
           logger.info(
             ` - import ${isValidComponent ? '✅' : '⇣'} - ${names.join(
               ', '
-            )} from '${moduleName}'`
+            )} from '${moduleName}' - (valid: ${JSON.stringify(
+              getValidComponentsPaths(propsWithFileInfo)
+            )})`
           )
         }
         if (isValidComponent) {
@@ -401,6 +414,10 @@ export function createExtractor(
       modified: 0,
       found: 0,
     }
+
+    const themeState =
+      // TODO
+      { theme: defaultTheme, name: '' }
 
     callTraverse({
       // @ts-ignore
@@ -566,16 +583,8 @@ export function createExtractor(
         const out = getSplitStyles(
           styles,
           Component.staticConfig,
-          defaultTheme,
-          {
-            focus: false,
-            hover: false,
-            unmounted: true,
-            press: false,
-            pressIn: false,
-            resolveVariablesAs: 'variable',
-            noClassNames: false,
-          },
+          themeState,
+          defaultComponentState,
           undefined,
           undefined,
           undefined,
@@ -587,7 +596,7 @@ export function createExtractor(
         }
 
         // // add in the style object as classnames
-        // const atomics = getStylesAtomic(out.style)
+        // const atomics = getPropsAtomic(out.style)
         // for (const atomic of atomics) {
         //   out.rulesToInsert = out.rulesToInsert || []
         //   out.rulesToInsert.push(atomic)
@@ -778,8 +787,15 @@ export function createExtractor(
           ])
 
           const deoptProps = new Set([
-            // always de-opt animation
+            // always de-opt animation these
             'animation',
+            'disableOptimization',
+
+            // when using a non-CSS driver, de-opt on enterStyle/exitStyle
+            ...(tamaguiConfig?.animations.isReactNative
+              ? ['enterStyle', 'exitStyle']
+              : []),
+
             ...(restProps.deoptProps || []),
             ...(staticConfig.deoptProps || []),
           ])
@@ -845,6 +861,23 @@ export function createExtractor(
           // $sm={{ color: x ? 'red' : 'blue' }}
           // => {...media.sm && x && { color: 'red' }}
           // => {...media.sm && !x && { color: 'blue' }}
+
+          const propMapperStyleState: GetStyleState = {
+            staticConfig,
+            usedKeys: {},
+            classNames: {},
+            style: {},
+            theme: defaultTheme,
+            viewProps: staticConfig.defaultProps,
+            conf: tamaguiConfig!,
+            curProps: staticConfig.defaultProps,
+            props: staticConfig.defaultProps,
+            state: {
+              ...defaultComponentState,
+              resolveVariablesAs: 'auto',
+            },
+            debug: shouldPrintDebug,
+          }
 
           attrs = traversePath
             .get('openingElement')
@@ -1080,16 +1113,7 @@ export function createExtractor(
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = staticConfig.propMapper(
-                name,
-                styleValue,
-                defaultTheme,
-                staticConfig.defaultProps,
-                { resolveVariablesAs: 'auto' },
-                undefined,
-                undefined,
-                shouldPrintDebug
-              )
+              out = staticConfig.propMapper(name, styleValue, propMapperStyleState)
 
               if (out) {
                 if (!Array.isArray(out)) {
@@ -1535,6 +1559,9 @@ export function createExtractor(
               !shouldDeopt &&
               canFlattenProps &&
               !hasSpread &&
+              !staticConfig.isStyledHOC &&
+              !staticConfig.isHOC &&
+              !staticConfig.isReactNative &&
               staticConfig.neverFlatten !== true &&
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
           )
@@ -1665,6 +1692,7 @@ export function createExtractor(
             unmounted: false, // TODO match logic in createComponent
             press: false,
             pressIn: false,
+            isAnimated: false,
           }
 
           function mergeToEnd(obj: Object, key: string, val: any) {
@@ -1675,13 +1703,13 @@ export function createExtractor(
           }
 
           // preserves order
-          function expandStylesWithoutVariants(style: any) {
+          function expandStylesAndRemoveNullishValuesWithoutVariants(style: any) {
             let res = {}
             for (const key in style) {
               if (staticConfig.variants && key in staticConfig.variants) {
                 mergeToEnd(res, key, style[key])
               } else {
-                const expanded = expandStyles({ [key]: style[key] })
+                const expanded = expandStylesAndRemoveNullishValues({ [key]: style[key] })
                 for (const key in expanded) {
                   mergeToEnd(res, key, expanded[key])
                 }
@@ -1698,7 +1726,9 @@ export function createExtractor(
             if (cur.type === 'style') {
               // remove variants because they are processed later, and can lead to invalid values here
               // see <Spacer flex /> where flex looks like a valid style, but is a variant
-              const expanded = expandStylesWithoutVariants(cur.value)
+              const expanded = expandStylesAndRemoveNullishValuesWithoutVariants(
+                cur.value
+              )
               // preserve order
               for (const key in expanded) {
                 mergeToEnd(foundStaticProps, key, expanded[key])
@@ -1746,16 +1776,17 @@ export function createExtractor(
 
                   // if flattening, expand variants
                   if (variants[name] && variantValues.has(name)) {
+                    const styleState = {
+                      ...propMapperStyleState,
+                      props: completeProps,
+                      curProps: completeProps,
+                    }
+
                     let out = Object.fromEntries(
                       staticConfig.propMapper(
                         name,
                         variantValues.get(name),
-                        defaultTheme,
-                        completeProps,
-                        { ...state, resolveVariablesAs: 'auto' },
-                        undefined,
-                        undefined,
-                        shouldPrintDebug
+                        styleState
                       ) || []
                     )
                     if (out && isTargetingHTML) {
@@ -1927,9 +1958,9 @@ export function createExtractor(
           }
 
           // post process
-          const getStyles = (props: Object | null, debugName = '') => {
+          const getProps = (props: Object | null, debugName = '') => {
             if (!props) {
-              if (shouldPrintDebug) logger.info([' getStyles() no props'].join(' '))
+              if (shouldPrintDebug) logger.info([' getProps() no props'].join(' '))
               return {}
             }
             if (excludeProps?.size) {
@@ -1945,7 +1976,7 @@ export function createExtractor(
               const out = getSplitStyles(
                 props,
                 staticConfig,
-                defaultTheme,
+                themeState,
                 {
                   ...state,
                   fallbackProps: completeProps,
@@ -1956,30 +1987,24 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )
 
-              const outStyle = {
+              const outProps = {
+                ...out.viewProps,
                 ...out.style,
                 ...out.pseudos,
               }
 
               if (shouldPrintDebug) {
                 // prettier-ignore
-                logger.info(`\n       getStyles (props in): ${logLines(objToStr(props))}`)
+                logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
-                logger.info(`\n       getStyles (outStyle): ${logLines(objToStr(outStyle))}`)
+                logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
               }
 
-              return outStyle
+              return outProps
             } catch (err: any) {
               logger.info(['error', err.message, err.stack].join(' '))
               return {}
             }
-          }
-
-          // used to ensure we pass the entire prop bundle to getStyles
-          const completeStyles = getStyles(completeProps, 'completeStyles')
-
-          if (!completeStyles) {
-            throw new Error(`Impossible, no styles`)
           }
 
           let getStyleError: any = null
@@ -1987,10 +2012,15 @@ export function createExtractor(
           // fix up ternaries, combine final style values
           for (const attr of attrs) {
             try {
+              if (shouldPrintDebug) {
+                // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                console.log(`  Processing ${attr.type}:`)
+              }
+
               switch (attr.type) {
                 case 'ternary': {
-                  const a = getStyles(attr.value.alternate, 'ternary.alternate')
-                  const c = getStyles(attr.value.consequent, 'ternary.consequent')
+                  const a = getProps(attr.value.alternate, 'ternary.alternate')
+                  const c = getProps(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug)
@@ -1999,8 +2029,9 @@ export function createExtractor(
                 }
                 case 'style': {
                   // expand variants and such
-                  const styles = getStyles(attr.value, 'style')
+                  const styles = getProps(attr.value, 'style')
                   if (styles) {
+                    // @ts-ignore
                     attr.value = styles
                   }
                   // prettier-ignore
@@ -2009,11 +2040,52 @@ export function createExtractor(
                   if (shouldPrintDebug) logger.info(['  * styles (out)', logLines(objToStr(styles))].join(' '))
                   continue
                 }
+                case 'attr': {
+                  if (shouldFlatten && t.isJSXAttribute(attr.value)) {
+                    // we know all attributes are static
+                    // this only does one at a time but it should really do the whole group together...
+                    // also awkward to be doing it using jsxAttributes...
+                    const key = attr.value.name.name as string
+
+                    // dont process style/className can just stay attrs
+                    if (key === 'style' || key === 'className' || key === 'tag') {
+                      continue
+                    }
+
+                    // undefined = boolean true
+                    const value = attemptEvalSafe(
+                      attr.value.value || t.booleanLiteral(true)
+                    )
+                    if (value !== FAILED_EVAL) {
+                      const outProps = getProps({ [key]: value }, `attr.${key}`)
+                      const outKey = Object.keys(outProps)[0]
+                      if (outKey) {
+                        const outVal = outProps[outKey]
+                        attr.value = t.jsxAttribute(
+                          t.jsxIdentifier(outKey),
+                          t.jsxExpressionContainer(
+                            typeof outVal === 'string'
+                              ? t.stringLiteral(outVal)
+                              : literalToAst(outVal)
+                          )
+                        )
+                      }
+                    }
+                  }
+                }
               }
             } catch (err) {
               // any error de-opt
               getStyleError = err
             }
+          }
+
+          // add default props
+          if (shouldFlatten) {
+            attrs.unshift({
+              type: 'style',
+              value: getProps(staticConfig.defaultProps) as any,
+            })
           }
 
           if (shouldPrintDebug) {
@@ -2128,7 +2200,7 @@ export function createExtractor(
             node,
             lineNumbers,
             filePath,
-            config: tamaguiConfig,
+            config: tamaguiConfig!,
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,

@@ -50,6 +50,7 @@ const colorStyleKey = {
   borderTopColor: true,
   borderBottomColor: true,
 }
+
 // these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
 const costlyToAnimateStyleKey = {
   borderRadius: true,
@@ -189,14 +190,15 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         >()
       )
-      const animateOnly = props.animateOnly || []
+
+      const animateOnly = (props.animateOnly as string[]) || []
+      const hasAnimateOnly = !!props.animateOnly
 
       const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = useMemo(() => {
         if (isWeb) return true
-
         return Object.keys(style).some((key) => {
           if (animateOnly.length) {
             return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
@@ -211,16 +213,19 @@ export function createAnimations<A extends AnimationsConfig>(
         const completions: Promise<void>[] = []
 
         const nonAnimatedStyle = {}
+
         for (const key in style) {
           const val = style[key]
-          if (!animatedStyleKey[key] && !costlyToAnimateStyleKey[key]) {
+          if (animatedStyleKey[key] == null && !costlyToAnimateStyleKey[key]) {
             nonAnimatedStyle[key] = val
             continue
           }
-          if (animateOnly.length && animateOnly.indexOf(key) === -1) {
+
+          if (hasAnimateOnly && !animateOnly.includes(key)) {
             nonAnimatedStyle[key] = val
             continue
           }
+
           if (key !== 'transform') {
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
             continue
@@ -270,8 +275,8 @@ export function createAnimations<A extends AnimationsConfig>(
           const [val, type] = isColorStyleKey ? [0, undefined] : getValue(valIn)
           let animateToValue = val
           const value = animated || new Animated.Value(val)
-
           const curInterpolation = animationsState.current.get(value)
+
           let interpolateArgs: any
           if (type) {
             interpolateArgs = getInterpolated(
@@ -326,6 +331,7 @@ export function createAnimations<A extends AnimationsConfig>(
                     getAnimation(),
                   ])
                 : getAnimation()
+
               animation.start(({ finished }) => {
                 if (finished) {
                   resolve()
@@ -336,9 +342,9 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
-              // rome-ignore lint/nursery/noConsoleLog: ok
               // prettier-ignore
-              console.log(' 💠 animate',key,`from ${value['_value']} to`,valIn,`(${val})`,'type',type,'interpolate',interpolateArgs)
+              // rome-ignore lint/nursery/noConsoleLog: ok
+              console.log(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
           return value
@@ -364,7 +370,7 @@ export function createAnimations<A extends AnimationsConfig>(
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`Returning animated`, res)
+          console.log(`Returning animated`, res, 'given style', style)
         }
       }
 

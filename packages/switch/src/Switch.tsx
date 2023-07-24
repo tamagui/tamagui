@@ -5,6 +5,7 @@ import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  GetRef,
   NativeValue,
   SizeTokens,
   getVariableValue,
@@ -81,8 +82,8 @@ export const SwitchThumbFrame = styled(ThemeableStack, {
 export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>
 
 export const SwitchThumb = SwitchThumbFrame.extractable(
-  React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
-    (props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) => {
+  React.forwardRef<GetRef<typeof SwitchThumbFrame>, SwitchThumbProps>(
+    function SwitchThumb(props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) {
       const { __scopeSwitch, size: sizeProp, ...thumbProps } = props
       const {
         size: sizeContext,
@@ -111,8 +112,6 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
     }
   )
 )
-
-SwitchThumb.displayName = THUMB_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * Switch

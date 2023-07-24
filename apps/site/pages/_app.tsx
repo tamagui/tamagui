@@ -1,6 +1,5 @@
 import '@tamagui/core/reset.css'
 
-// import '../lib/wdyr'
 import '../app.css'
 
 import { GetLayout } from '@lib/getDefaultLayout'
@@ -13,10 +12,12 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider, Text, useDebounceValue } from 'tamagui'
 
-import { LoadGlusp, LoadInter900, LoadMunro } from '../components/LoadFont'
+import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
+
+// import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
 
@@ -45,17 +46,32 @@ if (typeof navigator !== 'undefined') {
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+  const router = useRouter()
+  const themeSetting = useThemeSetting()!
 
-  // set up NextThemeProvider above AppContents so it can useThemeSetting
+  useEffect(() => {
+    if (router.pathname === '/takeout' && theme !== 'dark') {
+      themeSetting.set('dark')
+      setTheme('dark')
+    }
+  }, [router.pathname, theme])
+
+  const inner = useMemo(
+    () => <AppContents {...props} theme={theme} setTheme={setTheme} />,
+    [theme, props]
+  )
 
   return (
     <>
       <NextThemeProvider
-        onChangeTheme={(next) => {
-          setTheme(next as any)
-        }}
+        onChangeTheme={setTheme as any}
+        {...(router.pathname === '/takeout' && {
+          forcedTheme: 'dark',
+          enableSystem: false,
+          defaultTheme: 'dark',
+        })}
       >
-        <AppContents {...props} theme={theme} setTheme={setTheme} />
+        {inner}
       </NextThemeProvider>
     </>
   )
@@ -67,17 +83,8 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
-  const [theme, setTheme] = useRootTheme()
   const [didInteract, setDidInteract] = useState(false)
-  const themeSetting = useThemeSetting()!
-  const router = useRouter()
-
-  useEffect(() => {
-    if (router.pathname === '/takeout' && theme !== 'dark') {
-      themeSetting.set('dark')
-      setTheme('dark')
-    }
-  }, [router.pathname, theme])
+  const didInteraceDelayed = useDebounceValue(didInteract, 100)
 
   useEffect(() => {
     const onDown = () => {
@@ -105,28 +112,22 @@ function AppContents(
       />
 
       {/* this will lazy load the font for /studio and /takeout pages */}
-      {didInteract && (
+      {/* load it after first interaction to avoid clogging the first click even */}
+      {didInteraceDelayed && (
         <>
           <LoadInter900 />
-          <LoadGlusp />
           <LoadMunro />
+          <LoadCherryBomb />
         </>
       )}
-
-      <NextThemeProvider
-        onChangeTheme={(next) => {
-          setTheme(next as any)
-        }}
+      <TamaguiProvider
+        config={config}
+        disableInjectCSS
+        disableRootThemeClass
+        defaultTheme={props.theme}
       >
-        <TamaguiProvider
-          config={config}
-          disableInjectCSS
-          disableRootThemeClass
-          defaultTheme={theme}
-        >
-          <ContentInner {...props} />
-        </TamaguiProvider>
-      </NextThemeProvider>
+        <ContentInner {...props} />
+      </TamaguiProvider>
     </>
   )
 }

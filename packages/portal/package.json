@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "1.35.12",
+  "version": "1.44.0",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -27,18 +27,18 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.35.12",
-    "@tamagui/stacks": "1.35.12",
-    "@tamagui/use-event": "1.35.12"
+    "@tamagui/core": "1.44.0",
+    "@tamagui/stacks": "1.44.0",
+    "@tamagui/use-event": "1.44.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.35.12",
+    "@tamagui/build": "1.44.0",
     "react": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.1"
   },
   "publishConfig": {
     "access": "public"

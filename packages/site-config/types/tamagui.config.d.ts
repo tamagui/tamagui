@@ -1,40 +1,46 @@
 import { themes } from '@tamagui/themes';
-export * from './animations';
-export declare const gluspFont: import("@tamagui/web").GenericFont;
+export { animations } from './animations.reanimated';
+export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/web").GenericFont;
 export declare const config: {
     defaultFont: string;
-    shouldAddPrefersColorThemes: boolean;
-    themeClassNameOnRoot: boolean;
+    shouldAddPrefersColorThemes: true;
+    themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
             type: "timing";
             duration: number;
         };
         superBouncy: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         slow: {
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
@@ -355,10 +361,10 @@ export declare const config: {
         };
         space: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -383,10 +389,10 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
+            "-1": import("@tamagui/web").Variable<number>;
             "-0.25": import("@tamagui/web").Variable<number>;
             "-0.5": import("@tamagui/web").Variable<number>;
             "-0.75": import("@tamagui/web").Variable<number>;
-            "-1": import("@tamagui/web").Variable<number>;
             "-1.5": import("@tamagui/web").Variable<number>;
             "-2": import("@tamagui/web").Variable<number>;
             "-2.5": import("@tamagui/web").Variable<number>;
@@ -414,10 +420,10 @@ export declare const config: {
         };
         size: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -445,13 +451,13 @@ export declare const config: {
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
+            3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             true: import("@tamagui/web").Variable<number>;
             12: import("@tamagui/web").Variable<number>;
-            3: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             7: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
@@ -461,10 +467,10 @@ export declare const config: {
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
-            4: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
+            4: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
         };
     } & Omit<{
@@ -664,13 +670,13 @@ export declare const config: {
         };
         radius: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
+            3: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
             8: import("@tamagui/web").Variable<number>;
             true: import("@tamagui/web").Variable<number>;
             12: import("@tamagui/web").Variable<number>;
-            3: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             7: import("@tamagui/web").Variable<number>;
             9: import("@tamagui/web").Variable<number>;
@@ -680,18 +686,18 @@ export declare const config: {
         };
         zIndex: {
             0: import("@tamagui/web").Variable<number>;
-            2: import("@tamagui/web").Variable<number>;
             1: import("@tamagui/web").Variable<number>;
-            4: import("@tamagui/web").Variable<number>;
+            2: import("@tamagui/web").Variable<number>;
             3: import("@tamagui/web").Variable<number>;
+            4: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
         };
         space: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -716,10 +722,10 @@ export declare const config: {
             18: import("@tamagui/web").Variable<number>;
             19: import("@tamagui/web").Variable<number>;
             20: import("@tamagui/web").Variable<number>;
+            "-1": import("@tamagui/web").Variable<number>;
             "-0.25": import("@tamagui/web").Variable<number>;
             "-0.5": import("@tamagui/web").Variable<number>;
             "-0.75": import("@tamagui/web").Variable<number>;
-            "-1": import("@tamagui/web").Variable<number>;
             "-1.5": import("@tamagui/web").Variable<number>;
             "-2": import("@tamagui/web").Variable<number>;
             "-2.5": import("@tamagui/web").Variable<number>;
@@ -747,10 +753,10 @@ export declare const config: {
         };
         size: {
             0: import("@tamagui/web").Variable<number>;
+            1: import("@tamagui/web").Variable<number>;
             0.25: import("@tamagui/web").Variable<number>;
             0.5: import("@tamagui/web").Variable<number>;
             0.75: import("@tamagui/web").Variable<number>;
-            1: import("@tamagui/web").Variable<number>;
             1.5: import("@tamagui/web").Variable<number>;
             2: import("@tamagui/web").Variable<number>;
             2.5: import("@tamagui/web").Variable<number>;
@@ -782,9 +788,55 @@ export declare const config: {
             lg: import("@tamagui/web").Variable<number>;
         };
     }, "zIndex" | "color" | "size" | "space" | "radius">;
+    settings: {
+        allowedStyleValues: "somewhat-strict-web";
+        autocompleteSpecificTokens: "except-special";
+    };
     fonts: {
-        heading: import("@tamagui/web").GenericFont;
-        body: import("@tamagui/web").GenericFont;
+        heading: import("@tamagui/web").FillInFont<{
+            size: {
+                5: number;
+                6: number;
+                9: number;
+                10: number;
+            };
+            transform: {
+                6: "uppercase";
+                7: "none";
+            };
+            weight: {
+                6: string;
+                7: string;
+            };
+            color: {
+                6: string;
+                7: string;
+            };
+            letterSpacing: {
+                5: number;
+                6: number;
+                7: number;
+                8: number;
+                9: number;
+                10: number;
+                11: number;
+                12: number;
+                14: number;
+                15: number;
+            };
+            face: {
+                700: {
+                    normal: string;
+                };
+                800: {
+                    normal: string;
+                };
+                900: {
+                    normal: string;
+                };
+            };
+        }, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -808,9 +860,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").GenericFont<9 | 15 | 10 | 5 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        glusp: import("@tamagui/web").GenericFont;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
         munro: import("@tamagui/web").GenericFont;
+        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

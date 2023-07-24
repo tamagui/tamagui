@@ -2,6 +2,7 @@ import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
+import Stripe from 'stripe'
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })
@@ -41,11 +42,17 @@ const handler: NextApiHandler = async (req, res) => {
       .json({ message: 'no subscription found with the provided id that belongs to you' })
   }
 
-  const data = await stripe.subscriptions.update(subId, {
-    cancel_at_period_end: false,
-  })
-  if (data) {
-    res.json({ message: 'The subscription is active again.' })
+  try {
+    const data = await stripe.subscriptions.update(subId, {
+      cancel_at_period_end: false,
+    })
+    if (data) {
+      res.json({ message: 'The subscription is active again.' })
+    }
+  } catch (error) {
+    if (error instanceof Stripe.errors.StripeError) {
+      res.status(error.statusCode || 500).json({ message: error.message })
+    }
   }
 }
 

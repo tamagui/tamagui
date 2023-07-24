@@ -9,5 +9,5 @@ test(`theme passes through .extractable HOC`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  expect(styles.backgroundColor).toBe(`rgb(221, 243, 228)`)
+  expect(styles.backgroundColor).toBe(`rgb(242, 252, 245)`)
 })

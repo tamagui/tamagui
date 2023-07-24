@@ -5,7 +5,7 @@ import { CheckCircle } from './CheckCircle'
 
 export const Features = ({ items, size, ...props }: any) => {
   return (
-    <YStack mt="$4" mb="$6" {...props} space="$4">
+    <YStack mt="$4" mb="$6" {...props} space="$3">
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
           <YStack mt={-3}>

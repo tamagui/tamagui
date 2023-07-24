@@ -1,7 +1,7 @@
 import { ThemeTint } from '@tamagui/logo'
 import { Link } from '@tamagui/lucide-icons'
 import { NextLink } from 'components/NextLink'
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -25,6 +25,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { BenchmarkChart } from './BenchmarkChart'
 import { BenchmarkChartNative } from './BenchmarkChartNative'
@@ -254,6 +255,9 @@ export const components = {
         className={'intro-paragraph' + (large ? ' large' : '')}
         my="$4"
         fow={large ? '200' : '300'}
+        $sm={{
+          size: '$8',
+        }}
         {...props}
       >
         {disableUnwrapText ? children : unwrapText(children)}
@@ -275,17 +279,6 @@ export const components = {
       // color: '$slate11',
       // lineHeight: '23px',
       // margin: 0,
-      {...props}
-    />
-  ),
-
-  Aside: (props) => (
-    <Paragraph
-      color="$color11"
-      tag="span"
-      als="center"
-      fow="600"
-      fontSize="$2"
       {...props}
     />
   ),
@@ -345,6 +338,7 @@ export const components = {
         {/* @ts-ignore */}
         <Paragraph
           tag="span"
+          // @ts-ignore
           fontSize="inherit"
           display="inline"
           cursor="pointer"
@@ -354,7 +348,13 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Text fontSize="inherit" display="inline-flex" y={2} ml={-1}>
+              <Text
+                // @ts-ignore
+                fontSize="inherit"
+                display="inline-flex"
+                y={2}
+                ml={-1}
+              >
                 <ExternalIcon />
               </Text>
             </>
@@ -486,7 +486,6 @@ export const components = {
           size="$8"
           lh="$9"
           fow="300"
-          ls="$0"
           color="$color"
           opacity={0.65}
         >
@@ -553,6 +552,65 @@ export const components = {
       </NoticeFrame>
     )
   },
+
+  Blog: {
+    ThemeBuilder: {
+      ExamplePalette: React.lazy(() =>
+        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.ExamplePalette }))
+      ),
+      ExampleTemplate: React.lazy(() =>
+        import('./BlogThemeBuilderExamples').then((x) => ({ default: x.ExampleTemplate }))
+      ),
+    },
+  },
+
+  Aside: ({ children, ...props }) => {
+    const [cutoff, setCutoff] = useState(true)
+
+    return (
+      <YStack
+        tag="aside"
+        space="$2"
+        bc="$color1"
+        br="$4"
+        p="$5"
+        px="$5"
+        pb="$10"
+        mx="$-2"
+        boc="$borderColor"
+        bw={1}
+        my="$4"
+        pos="relative"
+        {...(cutoff && {
+          maxHeight: 300,
+          overflow: 'hidden',
+        })}
+        {...props}
+      >
+        <YStack tag="span" my="$-5">
+          {children}
+        </YStack>
+
+        {cutoff && (
+          <LinearGradient
+            pos="absolute"
+            b={0}
+            l={0}
+            r={0}
+            height={200}
+            colors={['$backgroundTransparent', '$background']}
+            zi={1000}
+          >
+            <Spacer f={1} />
+            <Button onPress={() => setCutoff(!cutoff)} als="center">
+              Show more
+            </Button>
+            <Spacer size="$4" />
+          </LinearGradient>
+        )}
+      </YStack>
+    )
+  },
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
@@ -574,6 +632,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
 )
 
 const getNonTextChildren = (children) => {
+  // rome-ignore lint/complexity/useFlatMap: <explanation>
   return React.Children.map(children, (x) => {
     if (typeof x === 'string') return null
     if (x['type'] === code) return null

@@ -1,23 +1,19 @@
-import { getConfig } from '../config'
 import { getVariableValue } from '../createVariable'
-import { GenericFonts } from '../types'
+import { GenericFonts, GetStyleState } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 import { createProxy } from './createProxy'
 
 const extrasCache = new WeakMap()
 
 export function getVariantExtras(
-  props: any,
-  languageContext?: LanguageContextType,
-  theme?: any,
+  styleState: GetStyleState,
   defaultProps?: any,
-  avoidDefaultProps = false,
-  fontFamily?: string
+  avoidDefaultProps = false
 ) {
-  const conf = getConfig()
+  const { curProps, conf, languageContext, theme } = styleState
 
-  if (extrasCache.has(props)) {
-    return extrasCache.get(props)
+  if (extrasCache.has(curProps)) {
+    return extrasCache.get(curProps)
   }
 
   let fonts = conf.fontsParsed
@@ -25,24 +21,22 @@ export function getVariantExtras(
     fonts = getFontsForLanguage(conf.fontsParsed, languageContext)
   }
 
+  // should be able to just use styleState.fontFamily but no time to test for now
+  const fontFamily = getVariableValue(
+    styleState.fontFamily || styleState.curProps.fontFamily || styleState.conf.defaultFont
+  )
+
   const next = {
     fonts,
     tokens: conf.tokensParsed,
     theme,
-
-    get fontFamily() {
-      return getVariableValue(props.fontFamily || fontFamily)
-    },
-
-    get font() {
-      return fonts[this.fontFamily]
-    },
-
+    fontFamily,
+    font: fonts[fontFamily],
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: avoidDefaultProps
-      ? props
-      : createProxy(props, {
+      ? curProps
+      : createProxy(curProps, {
           // handles shorthands
           get(target, key) {
             const shorthand = conf.inverseShorthands[key as any]
@@ -68,7 +62,7 @@ export function getVariantExtras(
         }),
   }
 
-  extrasCache.set(props, next)
+  extrasCache.set(curProps, next)
 
   return next
 }

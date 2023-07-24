@@ -3,7 +3,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
-  Stack,
   StackProps,
   View as TamaguiView,
   createStyledContext,
@@ -38,7 +37,7 @@ type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : neve
  * Popper
  * -----------------------------------------------------------------------------------------------*/
 
-type PopperContextValue = UseFloatingReturn & {
+export type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
   anchorRef: any
   size?: SizeTokens
@@ -83,7 +82,6 @@ export function Popper(props: PopperProps) {
   const [anchorRef, setAnchorRef] = React.useState<any>()
   const [arrowEl, setArrow] = React.useState<any>(null)
   const [arrowSize, setArrowSize] = React.useState(0)
-  const arrowRef = React.useRef()
   const offsetOptions = offset ?? arrowSize
 
   const floating = useFloating({
@@ -100,9 +98,12 @@ export function Popper(props: PopperProps) {
     ].filter(Boolean),
   })
 
-  const { refs, middlewareData } = floating
-
-  const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
+  const {
+    refs,
+    middlewareData,
+    // @ts-expect-error this comes from Tooltip for example
+    open,
+  } = floating
 
   useIsomorphicLayoutEffect(() => {
     floating.refs.setReference(anchorRef)
@@ -110,12 +111,13 @@ export function Popper(props: PopperProps) {
 
   if (isWeb) {
     React.useEffect(() => {
+      if (open === false) return
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
       // Only call this when the floating element is rendered
       return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
-    }, [floating.update, refs.floating, refs.reference])
+    }, [open, floating.update, refs.floating, refs.reference])
   } else {
     // On Native there's no autoupdate so we call update() when necessary
 
@@ -147,7 +149,7 @@ export function Popper(props: PopperProps) {
     <PopperContext.Provider
       anchorRef={setAnchorRef}
       size={size}
-      arrowRef={composedArrowRefs}
+      arrowRef={setArrow}
       arrowStyle={middlewareData.arrow}
       onArrowSize={setArrowSize}
       isMounted={isMounted}
@@ -232,7 +234,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
   function PopperContent(props: PopperContentProps, forwardedRef) {
     const { strategy, placement, refs, x, y, getFloatingProps, size, isMounted, update } =
       usePopperContext()
-    const contentRefs = useComposedRefs<any>(refs.floating, forwardedRef)
+    const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
     const contents = React.useMemo(() => {
       return (
@@ -266,10 +268,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 
     // outer frame because we explicitly dont want animation to apply to this
     return (
-      <YStack
-        animateOnly={['transform']}
-        {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}
-      >
+      <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
         {contents}
       </YStack>
     )

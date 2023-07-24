@@ -1,3 +1,22 @@
+- styled(alertdialog.title) hits depth limit quick
+  - move dialog/alertdialog over to createStyledContext would reduce a lot of depth
+
+- sheet snappoints not consistent on mobile web vs other platforms (maybe dvh or maybe just different?)
+- sheet feature to have it snap to content size
+- node memory leak causing slowdowns
+- sheet breakpoints esp on mobile web
+- move simple-web to themeBuilder
+- add themeBuilder to compile time options in starters
+- make it so specific tokens can be omitted from types where theres a default token category
+
+- being able to limit fallback value better:
+  - only number | `${string}%` | SpaceToken
+  - right now its either allowing random strings or not allowing % strings, both which we don't want
+  - eventually could also make "color-like" strings easier:
+    - `#${string}` | `rgb(${string})` | `rgba(${string})` | `hsl(${string})` | `hsla(${string})` | NamedColors | 'transparent'
+
+- Popover.Close inside Sheet
+
 - studio: https://codemirror.net instead of monaco
 - document createStyledContext
 - document ThemeBuilder

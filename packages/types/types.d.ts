@@ -10,9 +10,13 @@ export interface TamaguiOptions {
   config?: string
 
   /**
-   * your themes generation file
+   * Use the new ThemeBuilder in `@tamagui/create-theme` to create beautiful theme sets,
+   * see docs at https://tamagui.dev/docs/guides/theme-builder
    */
-  themes?: string
+  themeBuilder?: {
+    input: string
+    output: string
+  }
 
   /**
    * Emit design system related CSS during build step for usage with frameworks

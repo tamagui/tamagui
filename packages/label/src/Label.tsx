@@ -4,7 +4,14 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
-import { GetProps, ReactComponentWithRef, isWeb, styled, themeable } from '@tamagui/web'
+import {
+  FontSizeTokens,
+  GetProps,
+  ReactComponentWithRef,
+  isWeb,
+  styled,
+  themeable,
+} from '@tamagui/web'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -43,7 +50,7 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
-        const fontStyle = getFontSized(val, extras)
+        const fontStyle = getFontSized(val as FontSizeTokens, extras)
 
         return {
           ...fontStyle,

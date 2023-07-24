@@ -11,6 +11,7 @@ test(`simple api passes border radius`, async ({ page }) => {
   const buttonFirstStyles = await buttons[0].evaluate((el) => {
     return window.getComputedStyle(el)
   })
+
   expect(buttonFirstStyles.borderTopLeftRadius).not.toBe('0px')
   expect(buttonFirstStyles.borderBottomLeftRadius).not.toBe('0px')
   expect(buttonFirstStyles.borderTopRightRadius).toBe('0px')

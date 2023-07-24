@@ -55,7 +55,19 @@ yarn sandbox
 
 This runs a client-side only vite build of tamagui, with a complete configuration already set up.
 
-To test on native, `kitchen-sink` is equally light weight and well set up:
+To test on native, `kitchen-sink` is equally light weight and well set up.
+
+You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
+
+```
+# Android
+yarn kitchen-sink:build:android
+
+# iOS
+yarn kitchen-sink:build:ios
+```
+
+After the build has been completed, run:
 
 ```
 yarn kitchen-sink

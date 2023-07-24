@@ -61,22 +61,12 @@ export const useThemeWithState = (props: ThemeProps) => {
     keys.current,
     isClient
       ? () => {
-          return props.shouldUpdate?.() ?? keys.current.length === 0
+          return props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
         }
       : undefined
   )
 
   const { themeManager, theme, name, className } = changedTheme
-
-  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-    console.groupCollapsed('  🔹 useTheme =>', name)
-    const logs = { ...props, name, className, ...(isDevTools && { theme }) }
-    for (const key in logs) {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('  ', key, logs[key])
-    }
-    console.groupEnd()
-  }
 
   if (!changedTheme.theme) {
     if (process.env.NODE_ENV === 'development') {
@@ -89,10 +79,24 @@ export const useThemeWithState = (props: ThemeProps) => {
     return getThemeProxied(changedTheme as any, keys.current)
   }, [theme, name, className, themeManager])
 
-  return {
+  const result = {
     ...changedTheme,
     theme: proxiedTheme,
   }
+
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed('  🔹 useTheme =>', name)
+    const logs = { props, changedTheme, ...(isDevTools && { theme }) }
+    for (const key in logs) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      console.log(' · ', key, logs[key])
+    }
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log('returning state', result)
+    console.groupEnd()
+  }
+
+  return result
 }
 
 export function getThemeProxied(
@@ -116,40 +120,32 @@ export function getThemeProxied(
       if (key === GetThemeUnwrapped) {
         return theme
       }
-      if (
-        key === '__proto__' ||
-        key === '$typeof' ||
-        typeof key !== 'string' ||
-        !themeManager
-      ) {
-        return Reflect.get(_, key)
+      if (typeof key === 'string' && keys) {
+        // auto convert variables to plain
+        const keyString = key[0] === '$' ? key.slice(1) : key
+        const val = themeManager!.getValue(keyString)
+        if (val && typeof val === 'object') {
+          return new Proxy(val as any, {
+            // when they touch the actual value we only track it
+            // if its a variable (web), its ignored!
+            get(_, subkey) {
+              // trigger read key that makes it track updates
+              if (
+                (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
+                !keys.includes(keyString)
+              ) {
+                keys.push(keyString)
+              }
+              if (subkey === 'get') {
+                return () => getVariable(val)
+              }
+              return Reflect.get(val as any, subkey)
+            },
+          })
+        }
       }
 
-      // auto convert variables to plain
-      const keyString = key[0] === '$' ? key.slice(1) : key
-      const val = themeManager.getValue(keyString)
-
-      if (val && keys) {
-        return new Proxy(val as any, {
-          // when they touch the actual value we only track it
-          // if its a variable (web), its ignored!
-          get(_, subkey) {
-            // trigger read key that makes it track updates
-            if (
-              (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
-              !keys.includes(keyString)
-            ) {
-              keys.push(keyString)
-            }
-            if (subkey === 'get') {
-              return () => getVariable(val)
-            }
-            return Reflect.get(val as any, subkey)
-          },
-        })
-      }
-
-      return val
+      return Reflect.get(_, key)
     },
   }) as UseThemeResult
 }
@@ -160,7 +156,7 @@ export const useChangeThemeEffect = (
   props: ThemeProps,
   root = false,
   keys?: string[],
-  disableUpdate?: () => boolean
+  shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
   if (isRSC) {
     // we need context working for this to work well
@@ -199,11 +195,14 @@ export const useChangeThemeEffect = (
     prevState: ThemeManagerState = state,
     forceShouldChange = false
   ) {
+    const forceUpdate = shouldUpdate?.()
+    if (!forceShouldChange && forceUpdate === false) return
     const next = nextState || manager.getState(props, parentManager)
-    // if (props.inverse) return true
+    if (forceShouldChange) return next
     if (!next) return
-    if (disableUpdate?.() === true) return
-    if (!forceShouldChange && !manager.getStateShouldChange(next, prevState)) return
+    if (forceUpdate !== true) {
+      if (!manager.getStateShouldChange(next, prevState)) return
+    }
     return next
   }
 
@@ -247,16 +246,15 @@ export const useChangeThemeEffect = (
       })
 
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-        const shouldUpdate = Boolean(keys?.length || isNewTheme)
+        const force = shouldUpdate?.()
+        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
         if (process.env.NODE_ENV === 'development' && props.debug) {
-          const logs = { shouldUpdate, props, name, manager, keys }
+          const logs = { force, doUpdate, props, name, manager, keys }
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, logs)
         }
-        if (shouldUpdate) {
-          queueMicrotask(() => {
-            setThemeState(createState)
-          })
+        if (doUpdate) {
+          setThemeState(createState)
         }
       }, themeManager.id)
 
@@ -303,7 +301,7 @@ export const useChangeThemeEffect = (
   }
 
   function createState(prev?: State, force = false): State {
-    if (prev && disableUpdate?.()) {
+    if (prev && shouldUpdate?.() === false) {
       return prev
     }
 

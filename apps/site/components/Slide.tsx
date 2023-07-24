@@ -1,4 +1,3 @@
-import { RootStore } from '@protected/studio/state/RootStore'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   FontSizeTokens,
@@ -229,11 +228,13 @@ const SlideInner = (props: SlideProps) => {
 
 export const ShowAllStepsContext = createContext(false)
 
+const colors = ['red', 'orange', 'blue', 'purple', 'green', 'pink', 'yellow']
+
 function useGlows(variant: SlideProps['variant']) {
   const colorThemeName = useThemeName().replace('dark_', '').replace('light_', '')
-  const next = RootStore.colors.indexOf(colorThemeName) + 1
-  const nextIndex = next % RootStore.colors.length
-  const altColorName = RootStore.colors[nextIndex]
+  const next = colors.indexOf(colorThemeName) + 1
+  const nextIndex = next % colors.length
+  const altColorName = colors[nextIndex]
 
   const glow = useHoverGlow({
     resist: 65,

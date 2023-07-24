@@ -1,10 +1,8 @@
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { sponsorshipDateMap } from '@protected/_utils/sponsorship'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
-
-
+import { sponsorshipDateMap } from 'protected/constants'
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })

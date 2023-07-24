@@ -152,9 +152,18 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     // first, de-dupe and parse them
     for (const themeName in themes) {
+      // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
+      const darkOrLightSpecificPrefix = themeName.startsWith('dark')
+        ? 'dark'
+        : themeName.startsWith('light')
+        ? 'light'
+        : ''
+
       const rawTheme = themes[themeName] as ThemeParsed
+
       // dont force referential equality but may need something more consistent than JSON.stringify
-      const key = JSON.stringify(rawTheme)
+      // separate between dark/light
+      const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
 
       // if existing, avoid
       if (existing.has(key)) {
@@ -196,14 +205,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
         if (isWeb || isRSC) {
           for (const themeName in dedupedThemes) {
-            themeRuleSets = [
-              ...themeRuleSets,
-              ...getThemeCSSRules({
-                config: configIn,
-                themeName,
-                ...dedupedThemes[themeName],
-              }),
-            ]
+            const nextRules = getThemeCSSRules({
+              config: configIn,
+              themeName,
+              ...dedupedThemes[themeName],
+            })
+            themeRuleSets = [...themeRuleSets, ...nextRules]
           }
         }
 
@@ -262,6 +269,7 @@ ${runtimeStyles}`
     Object.keys(configIn.fonts)[0]
 
   const config: TamaguiInternalConfig = {
+    settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
     animations: {} as any,

@@ -25,7 +25,8 @@ const appConfig = createTamagui(config)
 
 export type AppConfig = typeof appConfig
 
-declare module 'tamagui' { // or '@tamagui/core'
+declare module 'tamagui' {
+  // or '@tamagui/core'
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
   interface TamaguiCustomConfig extends AppConfig {}
@@ -292,7 +293,19 @@ const css = Tamagui.getCSS()
 
 Note that you can optimize this a bit by generating your CSS at build-time and then avoiding generating it on the client. This is covered in the Next.js Guide as it gives a good example of how to put all the pieces together properly, but you can apply it to any other framework.
 
-If using Next.js, [see the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
+To do this you would do something like this:
+
+```tsx
+Tamagui.getCSS({
+  // if you are using "outputCSS" option, you should use this "exclude"
+  // if not, then you can leave the option out
+  exclude: process.env.NODE_ENV === 'production' ? 'design-system' : null,
+})
+```
+
+And then you'll want to set `outputCSS` as documented in the [Compiler docs](/docs/intro/compiler) and import the CSS that the Tamagui compiler emits somewhere from your app.
+
+[See the Next.js guide](/docs/guides/next-js) for further documentation on how to set it up.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
@@ -411,22 +424,12 @@ const App = () => (
 
 One final note: using tokens with themes. Tokens are considered a "fallback" to themes, so any values you define in your theme will override the token. The next section will explain this further.
 
-### Strict tokens
+### Configuring tokens
 
-If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your existing `tamagui.config.ts` like so:
+You have a few options on the configuration object that control how strict your style values are allowed to be.
 
-```tsx
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends AppConfig {}
-
-  // add this:
-  interface ThemeValueFallback {
-    value: never
-  }
-}
-```
-
-This will change all special style properties that map to token/theme values to not accept strings or numbers. If you want to make exceptions, you can then add back in any general types by overriding one of the following: `SizeTokens`, `FontTokens`, `FontSizeTokens`, `FontLineHeightTokens`, `FontWeightTokens`, `FontLetterSpacingTokens`, `FontStyleTokens`, `FontTransformTokens`, `SpaceTokens`, `ColorTokens`, and `ZIndexTokens`.
+- ``
+- ``
 
 ### Themes
 
@@ -601,5 +604,78 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       default: false,
       description: `On the web, will generate ::selection styles for text selection.`,
     },
+    {
+      name: 'settings',
+      required: false,
+      type: 'TamaguiSettings',
+      description: `See Settings section below.`,
+    },
   ]}
 />
+
+### Settings
+
+<PropsTable
+  data={[
+    {
+      name: `allowedStyleValues`,
+      required: false,
+      type: 'AllowedStyleValuesSetting',
+      description: `Set up allowed values on style props, this is only a type-level validation (see below).`,
+    },
+    {
+      name: `autocompleteSpecificTokens`,
+      required: false,
+      type: `boolean | 'except-special'`,
+      description: `Set up if "specific tokens" ($color.name) are added to the types where tokens are allowed (see below).`,
+    },
+    {
+      name: 'mediaPropOrder',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `(beta) Will change the behavior of media styles. By default they have a fixed specificity: they always override any $theme- or $platform- styles. With this enabled, media styles will have the same precedence as the theme and platform styles, meaning that the order of the props determines if they override.`,
+    },
+  ]}
+/>
+
+_AllowedStyleValuesSetting_:
+
+Defaults to false:
+
+- "strict" - only allows tokens for any token-enabled properties
+- "strict-web" - same as strict but allows for web-specific tokens like auto/inherit
+- "somewhat-strict" - allow tokens or:
+  - for space/size: string% or numbers
+  - for radius: number
+  - for zIndex: number
+  - for color: named colors or rgba/hsla strings
+- "somewhat-strict-web" - same as somewhat-strict but allows for web-specific tokens
+- false (default) - allows any string (or number for styles that accept numbers)
+
+```tsx
+type AllowedValueSetting =
+  | boolean
+  | 'strict'
+  | 'somewhat-strict'
+  | 'strict-web'
+  | 'somewhat-strict-web'
+
+type AllowedStyleValuesSetting =
+  | AllowedValueSetting
+  | {
+      space?: AllowedValueSetting
+      size?: AllowedValueSetting
+      radius?: AllowedValueSetting
+      zIndex?: AllowedValueSetting
+      color?: AllowedValueSetting
+    }
+```
+
+_autocompleteSpecificTokens_:
+
+The VSCode autocomplete puts specific tokens above the regular ones, which leads to worse DX.
+If true this setting removes the specific token from types for the defined categories.
+
+If set to "except-special", specific tokens will autocomplete only if they don't normally use
+one of the special token groups: space, size, radius, zIndex, color.

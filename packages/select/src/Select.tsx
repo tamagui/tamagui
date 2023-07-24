@@ -1,8 +1,10 @@
 import { Adapt, useAdaptParent } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
+  FontSizeTokens,
   GetProps,
   TamaguiElement,
+  TamaguiTextElement,
   getVariableValue,
   isWeb,
   styled,
@@ -24,82 +26,15 @@ import { SELECT_NAME } from './constants'
 import { SelectProvider, createSelectContext, useSelectContext } from './context'
 import { SelectContent } from './SelectContent'
 import { SelectInlineImpl } from './SelectImpl'
+import { SelectItem, useSelectItemContext } from './SelectItem'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
+import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
 import { ScopedProps, SelectImplProps, SelectProps } from './types'
 import {
   useSelectBreakpointActive,
   useShowSelectSheet,
 } from './useSelectBreakpointActive'
-
-/* -------------------------------------------------------------------------------------------------
- * SelectTrigger
- * -----------------------------------------------------------------------------------------------*/
-
-const TRIGGER_NAME = 'SelectTrigger'
-
-export type SelectTriggerProps = ListItemProps
-
-export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
-  function SelectTrigger(props: ScopedProps<SelectTriggerProps>, forwardedRef) {
-    const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
-
-    const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      context.floatingContext?.refs.setReference as any
-    )
-    // const getItems = useCollection(__scopeSelect)
-    // const labelId = useLabelContext(context.trigger)
-    // const labelledBy = ariaLabelledby || labelId
-
-    if (context.shouldRenderWebNative) {
-      return null
-    }
-
-    return (
-      <ListItem
-        componentName={TRIGGER_NAME}
-        unstyled={unstyled}
-        {...(!unstyled && {
-          backgrounded: true,
-          radiused: true,
-          hoverTheme: true,
-          pressTheme: true,
-          focusable: true,
-          focusStyle: {
-            outlineStyle: 'solid',
-            outlineWidth: 2,
-            outlineColor: '$borderColorFocus',
-          },
-          borderWidth: 1,
-        })}
-        size={context.size}
-        // aria-controls={context.contentId}
-        aria-expanded={context.open}
-        aria-autocomplete="none"
-        dir={context.dir}
-        disabled={disabled}
-        data-disabled={disabled ? '' : undefined}
-        {...triggerProps}
-        ref={composedRefs}
-        {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
-          ? {
-              ...context.interactions.getReferenceProps(),
-              onMouseDown() {
-                context.floatingContext?.update()
-                context.setOpen(!context.open)
-              },
-            }
-          : {
-              onPress() {
-                context.setOpen(!context.open)
-              },
-            })}
-      />
-    )
-  }
-)
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
@@ -134,7 +69,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 
   return (
     <SelectValueFrame
-      size={context.size}
+      size={context.size as any}
       ref={composedRefs}
       // we don't want events from the portalled `SelectValue` children to bubble
       // through the item they came from
@@ -153,7 +88,7 @@ function unwrapSelectItem(selectValueChildren: any) {
         return child.props.children
       }
       if (child.props?.children) {
-        child.props.children = unwrapSelectItem(child.props.children)
+        return unwrapSelectItem(child.props.children)
       }
     }
     return child
@@ -170,160 +105,6 @@ export const SelectIcon = styled(XStack, {
   'aria-hidden': true,
   children: <Paragraph>▼</Paragraph>,
 })
-
-/* -------------------------------------------------------------------------------------------------
- * SelectItem
- * -----------------------------------------------------------------------------------------------*/
-
-const ITEM_NAME = 'SelectItem'
-
-type SelectItemContextValue = {
-  value: string
-  textId: string
-  isSelected: boolean
-}
-
-const [SelectItemContextProvider, useSelectItemContext] =
-  createSelectContext<SelectItemContextValue>(ITEM_NAME)
-
-export interface SelectItemProps extends ListItemProps {
-  value: string
-  index: number
-  disabled?: boolean
-  textValue?: string
-}
-
-export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
-  (props: ScopedProps<SelectItemProps>, forwardedRef) => {
-    const {
-      __scopeSelect,
-      value,
-      disabled = false,
-      textValue: textValueProp,
-      index,
-      ...itemProps
-    } = props
-    const context = useSelectContext(ITEM_NAME, __scopeSelect)
-    const isSelected = context.value === value
-    const textId = React.useId()
-
-    const {
-      selectedIndex,
-      setSelectedIndex,
-      listRef,
-      open,
-      setOpen,
-      onChange,
-      activeIndex,
-      allowMouseUpRef,
-      allowSelectRef,
-      setValueAtIndex,
-      selectTimeoutRef,
-      dataRef,
-    } = context
-
-    const composedRefs = useComposedRefs(forwardedRef, (node) => {
-      if (!isWeb) return
-      if (node instanceof HTMLElement) {
-        if (listRef) {
-          listRef.current[index] = node
-        }
-      }
-    })
-
-    useIsomorphicLayoutEffect(() => {
-      setValueAtIndex(index, value)
-    }, [index, setValueAtIndex, value])
-
-    function handleSelect() {
-      setSelectedIndex(index)
-      onChange(value)
-      setOpen(false)
-    }
-
-    const selectItemProps = context.interactions
-      ? context.interactions.getItemProps({
-          onTouchStart() {
-            allowSelectRef!.current = true
-            allowMouseUpRef!.current = false
-          },
-          onKeyDown(event) {
-            if (
-              event.key === 'Enter' ||
-              (event.key === ' ' && !dataRef?.current.typing)
-            ) {
-              event.preventDefault()
-              handleSelect()
-            } else {
-              allowSelectRef!.current = true
-            }
-          },
-          onClick() {
-            if (allowSelectRef!.current) {
-              setSelectedIndex(index)
-              setOpen(false)
-            }
-          },
-          onMouseUp() {
-            if (!allowMouseUpRef!.current) {
-              return
-            }
-
-            if (allowSelectRef!.current) {
-              handleSelect()
-            }
-
-            // On touch devices, prevent the element from
-            // immediately closing `onClick` by deferring it
-            clearTimeout(selectTimeoutRef!.current)
-            selectTimeoutRef!.current = setTimeout(() => {
-              allowSelectRef!.current = true
-            })
-          },
-        })
-      : {
-          onPress: handleSelect,
-        }
-
-    const isActive = activeIndex === index
-
-    return (
-      <SelectItemContextProvider
-        scope={__scopeSelect}
-        value={value}
-        textId={textId || ''}
-        isSelected={isSelected}
-      >
-        {context.shouldRenderWebNative ? (
-          <option value={value}>{props.children}</option>
-        ) : (
-          <ListItem
-            tag="div"
-            componentName={ITEM_NAME}
-            backgrounded
-            pressTheme
-            hoverTheme
-            focusTheme
-            cursor="default"
-            outlineWidth={0}
-            ref={composedRefs}
-            aria-labelledby={textId}
-            aria-selected={isSelected}
-            data-state={isSelected ? 'active' : 'inactive'}
-            aria-disabled={disabled || undefined}
-            data-disabled={disabled ? '' : undefined}
-            tabIndex={disabled ? undefined : -1}
-            size={context.size}
-            {...itemProps}
-            {...selectItemProps}
-          />
-        )}
-      </SelectItemContextProvider>
-    )
-  }
-)
-
-SelectItem.displayName = ITEM_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemText
@@ -350,11 +131,11 @@ export const SelectItemTextFrame = styled(SizableText, {
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
 
-const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
+const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>(
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
     const { __scopeSelect, className, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    const ref = React.useRef<TamaguiElement | null>(null)
+    const ref = React.useRef<TamaguiTextElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const isSelected = Boolean(itemContext.isSelected && context.valueNode)
@@ -362,7 +143,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       () => (
         <SelectItemTextFrame
           className={className}
-          size={context.size}
+          size={context.size as any}
           id={itemContext.textId}
           {...itemTextProps}
           ref={composedRefs}
@@ -380,16 +161,13 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSelected, contents])
 
-    if (context.shouldRenderWebNative) return <>{props.children}</>
+    if (context.shouldRenderWebNative) {
+      return <>{props.children}</>
+    }
+
     return (
       <>
         {contents}
-
-        {/* Portal the select item text into the trigger value node */}
-        {/* this needs some extra stability between renders */}
-        {/* {isWeb && isSelected
-          ? ReactDOM.createPortal(itemTextProps.children, context.valueNode!)
-          : null} */}
 
         {/* Portal an option in the bubble select */}
         {/* {context.bubbleSelect
@@ -514,7 +292,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 context.onChange(event.currentTarget.value)
               }}
-              size={size}
+              size={size as FontSizeTokens}
               ref={nativeSelectRef}
               style={{
                 color: 'var(--color)',

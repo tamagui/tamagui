@@ -1,6 +1,5 @@
 import {
   SideObject,
-  autoUpdate,
   flip,
   inner,
   offset,
@@ -161,7 +160,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   const interactions = useInteractions([
     useClick(context, { event: 'mousedown' }),
-    useDismiss(context, { outsidePress: true }),
+    useDismiss(context, { outsidePress: false }),
     useRole(context, { role: 'listbox' }),
     useInnerOffset(context, {
       enabled: !fallback,
@@ -171,7 +170,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }),
     useListNavigation(context, {
       listRef: listItemsRef,
-      activeIndex,
+      activeIndex: activeIndex || 0,
       selectedIndex,
       onNavigate: setActiveIndex,
     }),
@@ -262,6 +261,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open])
 
+  useIsomorphicLayoutEffect(() => {
+    if (!open && state.current.isMouseOutside) {
+      state.current.isMouseOutside = false
+    }
+  }, [open])
+
   // Replacement for `useDismiss` as the arrows are outside of the floating
   // element DOM tree.
   useIsomorphicLayoutEffect(() => {
@@ -345,6 +350,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       downArrowRef={downArrowRef}
       selectTimeoutRef={selectTimeoutRef}
       allowSelectRef={allowSelectRef}
+      update={update}
     >
       {children}
       {/* {isFormControl ? (

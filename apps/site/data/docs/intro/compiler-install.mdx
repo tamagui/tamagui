@@ -155,6 +155,13 @@ export default withPlugins([
 
     // Advanced:
 
+    // Watches a file that uses @tamagui/theme-builder
+    // See the "Creating Themes" guide
+    themeBuilder: {
+      input: './themes-input.tsx',
+      output: './themes.tsx',
+    },
+
     // adds mini-css-extract and css-minimizer-plugin, can fix issues with unique configurations
     enableCSSOptimizations: false,
     // disable tamagui config to make fonts easier to import
@@ -184,6 +191,8 @@ See the [Next.js Guide](/docs/guides/next-js) for more details on setting up you
 
 #### Babel / Metro
 
+Note that the `@tamagui/babel-plugin` is completely optional, and on native Tamagui doesn't optimize as much as on web, so leaving it out is actually recommended. If much later on you feel the need for a bit more speed, you can try adding it. But the `babel-plugin-transform-inline-environment-variables` is necessary so that the `TAMAGUI_TARGET` environment variable gets properly set.
+
 ```bash
 yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
 ```
@@ -196,6 +205,7 @@ process.env.TAMAGUI_TARGET = 'native'
 
 module.exports = {
   plugins: [
+    // optional:
     [
       '@tamagui/babel-plugin',
       {
@@ -206,15 +216,11 @@ module.exports = {
         disableExtraction: process.env.NODE_ENV === 'development',
       }
     ],
-    // be sure to set TAMAGUI_TARGET
-    ['transform-inline-environment-variables', {
-      include: ['TAMAGUI_TARGET']
-    }]
+    // be sure TAMAGUI_TARGET environment variable is set
+    'transform-inline-environment-variables'
   ]
 }
 ```
-
-We've noticed some issues with `@types/react-native` version `0.65.5`, you'll want to upgrade to at least `0.66.6`.
 
 #### Expo
 
@@ -321,3 +327,21 @@ The way it works is, when the compiler detects a styled() expression outside one
 You may see why this is experimental. It's very convenient as a developer, but has a variety of edge cases that can be confusing or breaking, and we want to avoid installation woes. Though it does continue on error and work generally, it outputs warnings in Webpack currently due to our plugin not properly indicating to Webpack about the new files (a fixable bug), which causes big yellow warning output and a cache de-opt.
 
 We're leaving this feature under the environment variable while it matures. Let us know if you find it useful.
+
+### Disabling the compiler
+
+You can disable the compiler optimizations for an entire file with a comment at the top of your file:
+
+```tsx
+// tamagui-ignore
+```
+
+You can disable the compiler optimization for a single component with the boolean property `disableOptimization`:
+
+```tsx
+import { Stack } from '@tamagui/core'
+
+export default () => (
+  <Stack disableOptimization />
+)
+```

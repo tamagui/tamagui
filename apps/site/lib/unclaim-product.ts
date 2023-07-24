@@ -1,5 +1,5 @@
-import { removeCollaboratorFromRepo } from '@protected/_utils/github'
 import { User } from '@supabase/supabase-js'
+import { removeCollaboratorFromRepo } from 'protected/_utils/github'
 
 import { Database, Json } from './supabase-types'
 import { supabaseAdmin } from './supabaseAdmin'
@@ -29,6 +29,7 @@ export async function unclaimProduct(
 
   switch (data.claim_type) {
     case 'repo_access':
+      // @ts-ignore
       unclaimRepoAccess({ data, claim, user })
       break
     default:
@@ -41,7 +42,7 @@ export async function unclaimProduct(
 
 type UnclaimFunction = (args: {
   data: {
-    [key: string]: Json
+    [key: string]: Json | undefined
   }
   user: User
   claim: Database['public']['Tables']['claims']['Row']

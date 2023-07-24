@@ -8,30 +8,32 @@ import { createPortal } from 'react-dom'
 
 import { PortalProps } from './PortalProps'
 
-export const Portal = ({ host = globalThis.document?.body, ...props }: PortalProps) => {
-  const contents = (
-    <YStack
-      contain="strict"
-      fullscreen
-      // @ts-expect-error ok on web
-      position={isWeb ? 'fixed' : 'absolute'}
-      maxWidth={isWeb ? '100vw' : '100%'}
-      maxHeight={isWeb ? '100vh' : '100%'}
-      pointerEvents="none"
-      {...props}
-    />
-  )
+export const Portal = React.memo(
+  ({ host = globalThis.document?.body, ...props }: PortalProps) => {
+    const contents = (
+      <YStack
+        contain="strict"
+        fullscreen
+        // @ts-expect-error ok on web
+        position={isWeb ? 'fixed' : 'absolute'}
+        maxWidth={isWeb ? '100vw' : '100%'}
+        maxHeight={isWeb ? '100vh' : '100%'}
+        pointerEvents="none"
+        {...props}
+      />
+    )
 
-  const [hostElement, setHostElement] = React.useState<any>(null)
+    const [hostElement, setHostElement] = React.useState<any>(null)
 
-  useIsomorphicLayoutEffect(() => {
-    setHostElement(host)
-  }, [host])
+    useIsomorphicLayoutEffect(() => {
+      setHostElement(host)
+    }, [host])
 
-  if (hostElement && props.children) {
-    return createPortal(contents, hostElement)
+    if (hostElement && props.children) {
+      return createPortal(contents, hostElement)
+    }
+
+    // ssr return null
+    return null
   }
-
-  // ssr return null
-  return null
-}
+)

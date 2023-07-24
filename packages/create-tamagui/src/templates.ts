@@ -40,7 +40,6 @@ export const templates = [
     )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
     value: `takeout-starter`,
     type: 'premium',
-    hidden: true,
     repo: {
       url: `https://github.com/tamagui/unistack`,
       dir: [],

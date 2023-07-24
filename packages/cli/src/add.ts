@@ -7,8 +7,16 @@ import path from 'path'
 import chalk from 'chalk'
 import { pascalCase } from 'change-case'
 import { copy, ensureDir, readFileSync } from 'fs-extra'
+import { marked } from 'marked'
+import TerminalRenderer from 'marked-terminal'
 import open from 'open'
 import prompts from 'prompts'
+
+marked.setOptions({
+  headerIds: false,
+  mangle: false,
+  renderer: new TerminalRenderer(),
+})
 
 const home = homedir()
 const tamaguiDir = path.join(home, '.tamagui')
@@ -62,10 +70,16 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     )
   )
 
+  console.log(chalk.gray(`Use ⇧/⇩ to navigate. Use tab to cycle the result. Use Page Up/Page Down (on Mac: fn + ⇧ / ⇩) to change page. Hit enter to select the highlighted item below the prompt.`))
   const result = await prompts({
     name: 'packageName',
     type: 'autocomplete',
-    message: `Pick a ${type}:`,
+    message:
+      type === 'icon'
+        ? `Pick an icon pack:`
+        : type === 'font'
+        ? `Pick a font:`
+        : `Pick one:`,
 
     choices: Object.entries<any>(meta).map(([slug, data]) => ({
       title:
@@ -96,6 +110,6 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
 
   const readmePath = path.join(finalDir, 'README.md')
   if (existsSync(readmePath)) {
-    console.log(chalk.blue(readFileSync(readmePath).toString()))
+    console.log(marked.parse(readFileSync(readmePath).toString()))
   }
 }

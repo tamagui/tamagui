@@ -5,8 +5,5 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "references": [
-    { "path": "apps/site" },
-    { "path": "apps/kitchen-sink" },
-  ]
+  "references": [{ "path": "apps/kitchen-sink" }]
 }

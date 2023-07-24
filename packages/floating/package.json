@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/floating",
-  "version": "1.35.12",
+  "version": "1.44.0",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -35,12 +35,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "^2.0.0",
-    "@floating-ui/react-native": "^0.10.0"
+    "@floating-ui/react-dom": "^2.0.1",
+    "@floating-ui/react-native": "^0.10.1"
   },
   "devDependencies": {
-    "@tamagui/build": "1.35.12",
+    "@tamagui/build": "1.44.0",
     "react": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.1"
   }
 }

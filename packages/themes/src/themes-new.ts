@@ -1,4 +1,4 @@
-import { createThemeBuilder } from '@tamagui/create-theme/theme-builder'
+import { createThemeBuilder } from '@tamagui/theme-builder'
 
 import { componentThemeDefinitions } from './componentThemeDefinitions'
 import { masks } from './masks'
@@ -68,7 +68,8 @@ const themesBuilder = createThemeBuilder()
     },
   })
   .addChildThemes(componentThemeDefinitions, {
-    avoidNestingWithin: ['alt1', 'alt2', 'active'],
+    // to save bundle size but make alt themes not work on components
+    // avoidNestingWithin: ['alt1', 'alt2'],
   })
 
 export const themes = themesBuilder.build()

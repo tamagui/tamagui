@@ -1,3 +1,4 @@
+export declare const accessibilityDirectMap: {};
 export declare const webToNativeAccessibilityDirectMap: {
     'aria-label': string;
     'aria-labelledby': string;

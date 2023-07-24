@@ -1,23 +1,28 @@
 import Module from 'module'
+import { join } from 'path'
 
-import type { ThemeBuilder } from '@tamagui/create-theme/theme-builder'
-import fs from 'fs-extra'
+import type { ThemeBuilder } from '@tamagui/theme-builder'
 
 type ThemeBuilderInterceptOpts = {
   onComplete: (result: { themeBuilder: ThemeBuilder<any> }) => void
 }
 
-export async function generateThemes(options: { inPath: string; outPath: string }) {
-  require('esbuild-register/dist/node').register()
+const ogRequire = Module.prototype.require
+
+export async function generateThemes(inputFile: string) {
+  const { unregister } = require('esbuild-register/dist/node').register()
+
+  const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
+  purgeCache(inputFilePath)
 
   let promise: Promise<null | ThemeBuilder<any>> | null = null as any
 
-  const ogRequire = Module.prototype.require
   // @ts-ignore
   Module.prototype.require = function (id) {
     // @ts-ignore
     const out = ogRequire.apply(this, arguments)
-    if (id === '@tamagui/create-theme/theme-builder') {
+
+    if (id === '@tamagui/create-theme/theme-builder' || id === '@tamagui/theme-builder') {
       if (!promise) {
         let resolve: Function
         promise = new Promise((res) => {
@@ -34,75 +39,131 @@ export async function generateThemes(options: { inPath: string; outPath: string 
   }
 
   try {
-    const requiredThemes = require(options.inPath)
+    const requiredThemes = require(inputFilePath)
     const themes = requiredThemes['default'] || requiredThemes['themes']
     const generatedThemes = generatedThemesToTypescript(themes)
-
     const themeBuilder = promise ? await promise : null
-
-    await Promise.all([
-      fs.writeFile(options.outPath, generatedThemes),
-      themeBuilder?.state
-        ? fs.writeFile(
-            `${options.outPath}.theme-builder.json`,
-            JSON.stringify(themeBuilder?.state)
-          )
-        : null,
-    ])
+    return {
+      generated: generatedThemes,
+      state: themeBuilder?.state,
+    }
+  } catch (err) {
+    console.warn(` ⚠️ Error running theme builder: ${err}`, err?.['stack'])
   } finally {
     Module.prototype.require = ogRequire
+    unregister()
   }
 }
 
-function generatedThemesToTypescript(themes: Record<string, any>) {
-  const deduped = new Map<string, Object>()
-  const dedupedToNames = new Map<string, string[]>()
+/**
+ * value -> name of variable
+ */
+const dedupedTokens = new Map<string, string>()
 
+function generatedThemesToTypescript(themes: Record<string, any>) {
+  const dedupedThemes = new Map<string, Object>()
+  const dedupedThemeToNames = new Map<string, string[]>()
+
+  let i = 0
   for (const name in themes) {
-    const theme = themes[name]
+    i++
+
+    const theme: Record<string, string> = themes[name]
+
+    // go through all tokens in current theme and add the new values to dedupedTokens map
+    let j = 0
+    for (const [key, value] of Object.entries(theme)) {
+      i++
+      const uniqueKey = `t${i}${j}`
+      if (!dedupedTokens.has(value)) {
+        dedupedTokens.set(value, uniqueKey)
+      }
+    }
+
     const key = JSON.stringify(theme)
-    if (deduped.has(key)) {
-      dedupedToNames.set(key, [...dedupedToNames.get(key)!, name])
+    if (dedupedThemes.has(key)) {
+      dedupedThemeToNames.set(key, [...dedupedThemeToNames.get(key)!, name])
     } else {
-      deduped.set(key, theme)
-      dedupedToNames.set(key, [name])
+      dedupedThemes.set(key, theme)
+      dedupedThemeToNames.set(key, [name])
     }
   }
 
+  const baseKeys = Object.entries(themes.light || themes[Object.keys(themes)[0]]) as [
+    string,
+    string
+  ][]
+
   const baseTypeString = `type Theme = {
-${Object.entries(themes.light || themes[Object.keys(themes)[0]])
+${baseKeys
   .map(([k]) => {
     return `  ${k}: string;\n`
   })
   .join('')}
 }`
 
-  let themesString = `${baseTypeString}\n`
+  let out = `${baseTypeString}\n`
 
-  deduped.forEach((theme) => {
+  // add in the helper function to generate a theme:
+  out += `
+function t(a) {
+  let res = {}
+  for (const [ki, vi] of a) {
+    res[ks[ki]] = vs[vi]
+  }
+  return res
+}
+`
+
+  // add all token variables
+  out += `const vs = [\n`
+  let index = 0
+  const valueToIndex = {}
+  dedupedTokens.forEach((name, value) => {
+    valueToIndex[value] = index
+    index++
+    out += `  '${value}',\n`
+  })
+  out += ']\n\n'
+
+  // add all keys array
+  const keys = baseKeys.map(([k]) => k)
+  out += `const ks = [\n`
+  out += keys.map((k) => `'${k}'`).join(',\n')
+  out += `]\n\n`
+
+  // add all themes
+  let nameI = 0
+  dedupedThemes.forEach((theme) => {
+    nameI++
     const key = JSON.stringify(theme)
-    const [baseName, ...restNames] = dedupedToNames.get(key)!
-    const baseTheme = `export const ${baseName} = ${objectToJsString(theme)} as Theme`
-    themesString += `\n${baseTheme}`
-
-    if (restNames.length) {
-      const duplicateThemes = restNames.map(
-        (name) => `export const ${name} = ${baseName} as Theme`
-      )
-      themesString += `\n\n` + duplicateThemes.join('\n')
-    }
+    const names = dedupedThemeToNames.get(key)!
+    const name = `n${nameI}`
+    const baseTheme = `export const ${name} = ${objectToJsString(
+      theme,
+      keys,
+      valueToIndex
+    )} as Theme`
+    out += `\n${baseTheme}`
+    const duplicateThemes = names.map((n) => `export const ${n} = ${name} as Theme`)
+    out += `\n\n` + duplicateThemes.join('\n')
   })
 
-  return themesString
+  return out
 }
 
-function objectToJsString(obj: Object, indent = 4) {
-  const whitespace = new Array(indent).fill(' ').join('')
-  return `{
-${Object.entries(obj)
-  .map(([k, v]) => `${whitespace}${k}: '${v}'`)
-  .join(',\n')}
-}`
+function objectToJsString(
+  obj: Object,
+  keys: string[],
+  valueToIndex: Record<string, number>
+) {
+  let arrItems: string[] = []
+  for (const key in obj) {
+    const ki = keys.indexOf(key)
+    const vi = valueToIndex[obj[key]]
+    arrItems.push(`[${ki}, ${vi}]`)
+  }
+  return `t([${arrItems.join(',')}])`
 }
 
 function createThemeIntercept(
@@ -141,4 +202,53 @@ function themeBuilderIntercept(
       return out
     },
   })
+}
+
+/**
+ * Removes a module from the cache
+ */
+function purgeCache(moduleName) {
+  // Traverse the cache looking for the files
+  // loaded by the specified module name
+  searchCache(moduleName, function (mod) {
+    delete require.cache[mod.id]
+  })
+
+  // Remove cached paths to the module.
+  // Thanks to @bentael for pointing this out.
+  // @ts-ignore
+  Object.keys(module.constructor._pathCache).forEach(function (cacheKey) {
+    if (cacheKey.indexOf(moduleName) > 0) {
+      // @ts-ignore
+      delete module.constructor._pathCache[cacheKey]
+    }
+  })
+}
+
+/**
+ * Traverses the cache to search for all the cached
+ * files of the specified module name
+ */
+function searchCache(moduleName, callback) {
+  // Resolve the module identified by the specified name
+  let mod = require.resolve(moduleName)
+
+  // Check if the module has been resolved and found within
+  // the cache
+  // @ts-ignore
+  if (mod && (mod = require.cache[mod]) !== undefined) {
+    // Recursively go over the results
+    ;(function traverse(mod) {
+      // Go over each of the module's children and
+      // traverse them
+      // @ts-ignore
+      mod.children.forEach(function (child) {
+        traverse(child)
+      })
+
+      // Call the specified callback providing the
+      // found cached module
+      callback(mod)
+    })(mod)
+  }
 }

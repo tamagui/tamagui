@@ -7,7 +7,6 @@ export const isClient = isWeb && isWindowDefined
 
 // may want to move to VITE_RSC_BUILD
 export const isRSC = process.env.ENABLE_RSC
-
 // causing troubles, was used for vite SSR but disabling until fixed
 // ? // note this is statically analyzed so no funny business, just access it without optional chaining
 //   // @ts-ignore
@@ -30,6 +29,12 @@ export const isWebTouchable =
   isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
 export const isTouchable = !isWeb || isWebTouchable
+// set :boolean to avoid inferring type to false
+export const isAndroid: boolean = false
+export const isIos: boolean = false
+export const currentPlatform = 'web'
+
+// --- development warnings ---
 
 if (!process.env.TAMAGUI_TARGET) {
   console.warn(`⚠️ Must set TAMAGUI_TARGET (set TAMAGUI_SHOW_TRACE=1 to see trace)`)
@@ -49,6 +54,3 @@ if (process.env.NODE_ENV === 'development') {
     )
   }
 }
-// set :boolean to avoid inferring type to false
-export const isAndroid: boolean = false
-export const isIos: boolean = false

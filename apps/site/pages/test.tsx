@@ -1,35 +1,5 @@
-import {
-  AnimationsDemo,
-  AnimationsPresenceDemo,
-  ListItemDemo,
-  ThemeInverseDemo,
-} from '@tamagui/demos'
-import { TabsAdvancedDemo } from '@tamagui/demos'
-import { LogoWords, TamaguiLogo, ThemeTint } from '@tamagui/logo'
-import { ListItem, Square, Stack, Theme, YStack, styled } from 'tamagui'
-
-import { ThemeToggle } from '../components/ThemeToggle'
-
-const TabsRovingIndicator = styled(Stack, {
-  position: 'absolute',
-  backgroundColor: '$color5',
-  opacity: 0.7,
-  animation: '100ms',
-  enterStyle: {
-    opacity: 0,
-  },
-  exitStyle: {
-    opacity: 0,
-  },
-  variants: {
-    active: {
-      true: {
-        backgroundColor: '$color8',
-        opacity: 0.6,
-      },
-    },
-  },
-})
+// debug
+import { H1 } from 'tamagui'
 
 // export default () => <Square size={100} animation="quick" bc="$background" />
 export default () => (
@@ -42,24 +12,35 @@ export default () => (
       flex: 1,
     }}
   >
-    <ThemeDemo />
+    <H1
+      ta="left"
+      size="$10"
+      maw={500}
+      h={130}
+      // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
+      $gtSm={{
+        mx: 0,
+        maxWidth: 800,
+        size: '$13',
+        h: 190,
+        ta: 'center',
+        als: 'center',
+      }}
+      $gtMd={{
+        maxWidth: 900,
+        size: '$14',
+        h: 240,
+      }}
+      $gtLg={{
+        size: '$16',
+        lh: '$15',
+        maxWidth: 1200,
+        h: 290,
+      }}
+    >
+      <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
+      <br />
+      runs&nbsp;faster
+    </H1>
   </div>
 )
-
-const ThemeDemo = () => {
-  return (
-    <YStack ai="center" fullscreen jc="center">
-      <YStack scale={2} pos="absolute" t="$8" space>
-        <LogoWords animated />
-      </YStack>
-
-      <ThemeTint>
-        <ThemeInverseDemo />
-      </ThemeTint>
-
-      <YStack pos="absolute" t="$4" r="$4">
-        <ThemeToggle />
-      </YStack>
-    </YStack>
-  )
-}

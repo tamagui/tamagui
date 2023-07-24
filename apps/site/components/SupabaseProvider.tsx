@@ -53,7 +53,7 @@ const SupabaseInside = ({ children }: { children: React.ReactNode }) => {
         if (session?.user.id === currentSession?.user.id) {
           return
         }
-        await fetch('/api/github-sync', { method: 'POST' })
+        await fetch('/api/account-sync', { method: 'POST' })
       }
 
       await swrClient.mutate('user')

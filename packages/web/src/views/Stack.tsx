@@ -1,17 +1,18 @@
+import { validStyles } from '@tamagui/helpers'
+
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
-import type { StackProps, StackPropsBase } from '../types'
+import type { StackProps, StackPropsBase, TamaguiElement } from '../types'
 
-export const Stack = createComponent<
-  StackProps,
-  React.Component<StackProps>,
-  StackPropsBase
->({
+export type Stack = TamaguiElement
+
+export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
   acceptsClassName: true,
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',
   },
+  validStyles,
 })
 
 // test types

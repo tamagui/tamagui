@@ -30,6 +30,7 @@ import {
   PopperProps,
   usePopperContext,
 } from '@tamagui/popper'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
 const TooltipContent = PopperContentFrame.extractable(
@@ -40,18 +41,21 @@ const TooltipContent = PopperContentFrame.extractable(
     ) => {
       const popper = usePopperContext()
       const padding =
-        props.size ||
-        popper.size ||
+        props.padding ??
+        props.size ??
+        popper.size ??
         getSize('$true', {
           shift: -2,
         })
+
       return (
         <PopoverContent
           componentName="Tooltip"
           disableRemoveScroll
           trapFocus={false}
-          padding={padding}
-          pointerEvents="none"
+          {...(!props.unstyled && {
+            padding,
+          })}
           ref={ref}
           {...props}
         />
@@ -65,6 +69,8 @@ const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
 })
 
 export type TooltipProps = PopperProps & {
+  open?: boolean
+  unstyled?: boolean
   children?: React.ReactNode
   onOpenChange?: (open: boolean) => void
   focus?: {
@@ -112,21 +118,25 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       : 0,
     onOpenChange: onOpenChangeProp,
     focus,
+    open: openProp,
     ...restProps
   } = props
   const triggerRef = React.useRef<HTMLButtonElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
   const delay = delayProp ?? delayGroup
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: false,
+    onChange: onOpenChangeProp,
+  })
   const id = props.groupId
 
   const onOpenChange = useEvent((open) => {
-    setOpen(open)
     if (open) {
       setCurrentId(id)
     }
-    onOpenChangeProp?.(open)
+    setOpen(open)
   })
 
   const useFloatingFn: UseFloatingFn = (props) => {
@@ -145,6 +155,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     ])
     return {
       ...floating,
+      open,
       getReferenceProps,
       getFloatingProps,
     } as any
@@ -154,15 +165,17 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = getSize('$true', {
-    shift: -2,
-    bounds: [0],
-  })
+  const smallerSize = props.unstyled
+    ? null
+    : getSize('$true', {
+        shift: -2,
+        bounds: [0],
+      })
 
   return (
     <FloatingOverrideContext.Provider value={useFloatingContext}>
       {/* default tooltip to a smaller size */}
-      <Popper size={smallerSize.key as SizeTokens} allowFlip stayInFrame {...restProps}>
+      <Popper size={smallerSize?.key as SizeTokens} allowFlip stayInFrame {...restProps}>
         <PopoverContext.Provider
           contentId={contentId}
           triggerRef={triggerRef}

@@ -1,6 +1,6 @@
 ---
 title: Animations
-description: Pluggable animation drivers.
+description: Swap out animation drivers per-platform or at runtime
 ---
 
 <HeroContainer>
@@ -101,16 +101,16 @@ export default createTamagui({
   other views reanimated expects, change that config to fix errors.
 </Notice>
 
-To install it add to your package.json:
+To install it add to your package.json. We use [Moti](https://moti.fyi) as the driver, which is a very light layer above reanimated:
 
 ```bash
-yarn add @tamagui/animations-reanimated react-native-reanimated
+yarn add @tamagui/animations-moti react-native-reanimated
 ```
 
 Then add it to your [config](/docs/core/configuration):
 
 ```tsx
-import { createAnimations } from '@tamagui/animations-reanimated'
+import { createAnimations } from '@tamagui/animations-moti'
 import { createTamagui } from 'tamagui'
 
 export default createTamagui({
@@ -241,19 +241,28 @@ AnimatePresence animates direct children before they unmount. It's inspired by a
 
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 
+You can use it simply with `enterStyle` + `exitStyle`:
+
 ```tsx
-import { AnimatePresence, Square } from 'tamagui'
+import { AnimatePresence, Stack } from 'tamagui'
 
 export const MyComponent = ({ isVisible }) => (
   <AnimatePresence>
     {isVisible && (
-      <Square
+      <Stack
         key="my-square"
         animation="bouncy"
         backgroundColor="green"
         size={50}
+        enterStyle={{
+          opacity: 0,
+          y: 10,
+          scale: 0.9,
+        }}
         exitStyle={{
-          size: 100,
+          opacity: 0,
+          y: -10,
+          scale: 0.9,
         }}
       />
     )}
@@ -261,12 +270,20 @@ export const MyComponent = ({ isVisible }) => (
 )
 ```
 
-Wrap one or more tamagui components with AnimatePresence. This enables the use the exitStyle prop, which accepts all style properties and variants, which will be animated to using the `animation` defined before the component is unmounted.
+<Notice>
+  Note you don't even need to set `opacity` on the base style. Tamagui knows to normalize
+  styles like opacity and scale to 1 (and y to 0) if it's not defined on the base styles
+  but is defined on `enterStyle` or `exitStyle`.
+</Notice>
+
+Wrap one or more tamagui components with AnimatePresence. This component will animate on enter and exit.
 
 <Notice>
   Animated child components must each have a unique key prop so AnimatePresence can track
   their presence in the tree.
 </Notice>
+
+#### Advanced AnimatePresence Usage
 
 <HeroContainer noPad>
   <AnimationsPresenceDemo />
@@ -314,3 +331,17 @@ export const MyComponent = ({ isVisible }) => (
 ```
 
 Note that it will always find the `true` variant and use that. In the future, Tamagui may be able to add support for more flexible variants here.
+
+### What to know when animating
+
+Allowing for spring based animations alongside every other feature of Tamagui has been a challenge. In order to preserve performance while still allowing for this, we've had to make a couple concessions, which are luckily minor.
+
+#### Conditional animations and HMR
+
+The animation hooks are heavy, which initially meant we either had to choose great performance or animations. We've settled on a trade-off. We track if the `animation` prop is set, and if so, we enable the hook. If it _is ever set, even just once_, then the hooks will continue to run for the remainder of the component lifecycle. This means if you ever plan to animate a component you should keep `animation` always set on the component props. You can disable it like so:
+
+```tsx
+<Stack animation={condition ? 'animation-name' : undefined} />
+```
+
+Note that because of this constraint, you also will see an error if you add the `animation` prop to a component in dev mode during an HMR. Simple reloading the page or triggering another HMR will fix it.

@@ -346,5 +346,15 @@ export declare function getDefaultTamaguiConfig(): import("@tamagui/core").Tamag
             1: number;
         };
     };
-}, boolean | undefined, string | undefined>;
+}, boolean | undefined, string | undefined, {
+    allowedStyleValues?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | {
+        space?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+        size?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "percent") | undefined;
+        radius?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+        zIndex?: ("number" | (boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web")) | undefined;
+        color?: ((boolean | "strict" | "somewhat-strict" | "strict-web" | "somewhat-strict-web") | "named") | undefined;
+    }) | undefined;
+    autocompleteSpecificTokens?: (boolean | "except-special") | undefined;
+    mediaPropOrder?: boolean | undefined;
+}>;
 //# sourceMappingURL=index.d.ts.map

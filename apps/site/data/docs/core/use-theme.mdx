@@ -34,7 +34,7 @@ into the type `ThemeParsed`, which maps the values in the object to type `Variab
     isVar: true,
   },
   color: {
-    val: '#fff,
+    val: '#fff',
     variable: 'var(--color)',
     name: 'color',
     isVar: true,
@@ -180,7 +180,7 @@ You can `useTheme()` (and `useMedia()`) at runtime. Like useMedia, useTheme will
 
 If you access `theme.bg.val` in your render function, the component will only re-render when theme.bg changes.
 
-````tsx
+```tsx
 import { theme, Stack } from '@tamagui/core'
 
 export default () => {
@@ -203,7 +203,7 @@ This is a more advanced use for building custom hooks or components, but you can
 function MyComponent(props) {
   const theme = useTheme(props.theme, 'MyComponent')
 }
-````
+```
 
 For example, if you have the following themes:
 

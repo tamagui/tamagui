@@ -1,9 +1,9 @@
 import { join } from 'path'
 
 import { getVariableValue } from '@tamagui/core-node'
-import { generateThemes } from '@tamagui/generate-themes'
+import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
-import fs from 'fs-extra'
+import fs, { readFile } from 'fs-extra'
 
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
@@ -36,19 +36,37 @@ export async function generateTamaguiStudioConfig(
 }
 
 export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
-  if (!tamaguiOptions.themes) {
+  if (!tamaguiOptions.themeBuilder) {
     return
   }
 
-  const inPath = tamaguiOptions.themes.startsWith('.')
-    ? join(process.cwd(), tamaguiOptions.themes)
-    : require.resolve(tamaguiOptions.themes)
+  const { input, output } = tamaguiOptions.themeBuilder
+  const inPath = resolveRelativePath(input)
+  const outPath = resolveRelativePath(output)
+  const generatedOutput = await generateThemes(inPath)
 
-  await generateThemes({
-    inPath,
-    outPath: join(tamaguiDir, `tamagui.themes.json`),
-  })
+  // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
+  const hasChanged = await (async () => {
+    try {
+      if (!generatedOutput) return false
+      const next = generatedOutput.generated
+      const current = await readFile(outPath, 'utf-8')
+      return next !== current
+    } catch (err) {
+      // ok
+    }
+    return true
+  })()
+
+  if (hasChanged) {
+    await writeGeneratedThemes(tamaguiDir, outPath, generatedOutput)
+  }
+
+  return hasChanged
 }
+
+const resolveRelativePath = (inputPath: string) =>
+  inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
 
 export function generateTamaguiStudioConfigSync(
   _tamaguiOptions: TamaguiOptions,

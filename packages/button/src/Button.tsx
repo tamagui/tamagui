@@ -10,6 +10,7 @@ import {
 } from '@tamagui/text'
 import {
   ButtonNestingContext,
+  FontSizeTokens,
   GetProps,
   SizeTokens,
   ThemeableProps,
@@ -41,7 +42,7 @@ export const ButtonContext = createStyledContext<
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
+type ButtonProps = TextParentStyles &
   GetProps<typeof ButtonFrame> &
   ThemeableProps & {
     /**
@@ -67,7 +68,7 @@ type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
      */
     scaleSpace?: number
     /**
-     *
+     * remove default styles
      */
     unstyled?: boolean
   }
@@ -96,10 +97,6 @@ const ButtonFrame = styled(ThemeableStack, {
         borderWidth: 1,
         borderColor: '$borderColor',
 
-        pressStyle: {
-          borderColor: '$borderColorPress',
-        },
-
         focusStyle: {
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
@@ -110,14 +107,6 @@ const ButtonFrame = styled(ThemeableStack, {
 
     size: {
       '...size': getButtonSized,
-    },
-
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
     },
 
     disabled: {
@@ -158,8 +147,10 @@ const ButtonText = styled(SizableText, {
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
   const { size, color } = useContext(ButtonContext)
-  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const iconSize =
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
+    scaleIcon
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   return getThemedIcon(children)
 }
 
@@ -194,8 +185,8 @@ const Button = withStaticProperties(ButtonComponent, {
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
-function useButton(
-  propsIn: ButtonProps,
+function useButton<Props extends ButtonProps>(
+  propsIn: Props,
   { Text = Button.Text }: { Text: any } = { Text: Button.Text }
 ) {
   // careful not to desctructure and re-order props, order is important
@@ -225,10 +216,12 @@ function useButton(
   } = propsIn
 
   const isNested = isRSC ? false : useContext(ButtonNestingContext)
-  const propsActive = useProps(propsIn)
+  const propsActive = useProps(propsIn) as any as ButtonProps
   const size = propsActive.size || '$true'
-  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
-  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const iconSize =
+    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
+    scaleIcon
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
   const contents = wrapChildrenInText(
@@ -273,14 +266,16 @@ function useButton(
         borderColor: '$background',
       },
     }),
-    tag,
+    ...(tag && {
+      tag,
+    }),
     ...rest,
     children: isRSC ? (
       inner
     ) : (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
-  }
+  } as Props
 
   return {
     spaceSize,
@@ -292,11 +287,10 @@ function useButton(
 export {
   Button,
   ButtonFrame,
-  ButtonText,
   ButtonIcon,
-
+  ButtonText,
+  buttonStaticConfig,
   // legacy
   useButton,
-  buttonStaticConfig,
 }
 export type { ButtonProps }

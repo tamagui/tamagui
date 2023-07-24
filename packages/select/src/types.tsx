@@ -79,11 +79,14 @@ export interface SelectContextValue {
   }
   native?: NativeValue
   shouldRenderWebNative: boolean
+  /** update floating-ui to recalculate */
+  update?: () => void
 }
 
 export type SelectViewportProps = ThemeableStackProps & {
   size?: SizeTokens
   disableScroll?: boolean
+  unstyled?: boolean
 }
 
 export type SelectContentProps = ScopedProps<{

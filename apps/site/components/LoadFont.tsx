@@ -46,3 +46,7 @@ export const LoadGlusp = () => (
 export const LoadMunro = () => (
   <LoadFont woff2File="/fonts/munro.woff2" cssFile="/fonts/munro.css" />
 )
+
+export const LoadCherryBomb = () => (
+  <LoadFont woff2File="/fonts/cherry-bomb.woff2" cssFile="/fonts/cherry-bomb.css" />
+)

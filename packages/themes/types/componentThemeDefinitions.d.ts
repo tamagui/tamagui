@@ -5,7 +5,7 @@ export declare const overlayThemeDefinitions: {
     };
 }[];
 export declare const componentThemeDefinitions: {
-    ListItem: {
+    ListItem: ({
         override: {
             color: number;
             colorHover: number;
@@ -34,13 +34,50 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
+        parentName?: string | undefined;
         parent: string;
-        mask: string;
-    }[];
+        mask: "strengthen";
+    } | {
+        override: {
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+        parent: string;
+        mask: "identity";
+    })[];
     Card: {
         override: {
             color: number;
@@ -70,11 +107,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften";
     };
     Button: {
         override: {
@@ -107,11 +145,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften2";
     };
     Checkbox: {
         override: {
@@ -142,46 +181,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
-    };
-    SliderTrackActive: {
-        override: {
-            color: number;
-            colorHover: number;
-            colorFocus: number;
-            colorPress: number;
-            shadowColor: number;
-            shadowColorHover: number;
-            shadowColorPress: number;
-            shadowColorFocus: number;
-        };
-        skip: {
-            color1: number;
-            color2: number;
-            color3: number;
-            color4: number;
-            color5: number;
-            color6: number;
-            color7: number;
-            color8: number;
-            color9: number;
-            color10: number;
-            color11: number;
-            color12: number;
-            shadowColor: number;
-            shadowColorHover: number;
-            shadowColorPress: number;
-            shadowColorFocus: number;
-        };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
-        strength?: number | undefined;
-        max?: number | undefined;
-        min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "softenBorder2";
     };
     Switch: {
         override: {
@@ -212,14 +217,14 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften2";
     };
     SwitchThumb: {
-        debug: boolean;
         override: {
             color: number;
             colorHover: number;
@@ -248,11 +253,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "inverseStrengthen2";
     };
     TooltipContent: {
         override: {
@@ -283,11 +289,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften2";
     };
     DrawerFrame: {
         override: {
@@ -318,11 +325,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften";
     };
     Progress: {
         override: {
@@ -353,11 +361,48 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften";
+    };
+    RadioGroupItem: {
+        override: {
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+        mask: "softenBorder2";
     };
     TooltipArrow: {
         override: {
@@ -388,11 +433,48 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften";
+    };
+    SliderTrackActive: {
+        override: {
+            color: number;
+            colorHover: number;
+            colorFocus: number;
+            colorPress: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        skip: {
+            color1: number;
+            color2: number;
+            color3: number;
+            color4: number;
+            color5: number;
+            color6: number;
+            color7: number;
+            color8: number;
+            color9: number;
+            color10: number;
+            color11: number;
+            color12: number;
+            shadowColor: number;
+            shadowColorHover: number;
+            shadowColorPress: number;
+            shadowColorFocus: number;
+        };
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        strength?: number | undefined;
+        max?: number | undefined;
+        min?: number | undefined;
+        parentName?: string | undefined;
+        mask: "inverseSoften";
     };
     SliderTrack: {
         override: {
@@ -423,11 +505,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "soften2";
     };
     SliderThumb: {
         override: {
@@ -458,11 +541,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "inverse";
     };
     Tooltip: {
         override: {
@@ -493,11 +577,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "inverse";
     };
     ProgressIndicator: {
         override: {
@@ -528,11 +613,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        mask: string;
+        parentName?: string | undefined;
+        mask: "inverse";
     };
     SheetOverlay: {
         parent: string;
@@ -581,13 +667,13 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parent: string;
-        mask: string;
-    }[];
+        parentName?: string | undefined;
+        mask: "softenBorder2";
+    };
     TextArea: {
         override: {
             color: number;
@@ -617,12 +703,12 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
-        parent: string;
-        mask: string;
-    }[];
+        parentName?: string | undefined;
+        mask: "softenBorder2";
+    };
 };
 //# sourceMappingURL=componentThemeDefinitions.d.ts.map

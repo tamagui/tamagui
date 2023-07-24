@@ -49,7 +49,7 @@ export const generateAtomicStyles = (
   conf = conf || getConfig()
 
   // were converting to css styles
-  const style = styleIn as Record<string, string | null | undefined>
+  const style = { ...styleIn } as Record<string, string | null | undefined>
 
   // transform
   if ('transform' in style && Array.isArray(style.transform)) {

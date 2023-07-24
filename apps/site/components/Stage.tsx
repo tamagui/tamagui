@@ -6,8 +6,6 @@ import {
   CenterProps,
   ContactShadows,
   ContactShadowsProps,
-  Environment,
-  EnvironmentProps,
   RandomizedLight,
   RandomizedLightProps,
   useBounds,
@@ -96,6 +94,11 @@ export function Stage({
   preset = 'rembrandt',
   ...props
 }: JSX.IntrinsicElements['group'] & StageProps) {
+  const [show, setShow] = React.useState(false)
+  React.useEffect(() => {
+    setShow(true)
+  }, [])
+
   const config = typeof preset === 'string' ? presets[preset] : preset
   const [{ radius, height }, set] = React.useState({
     radius: 0,
@@ -148,9 +151,14 @@ export function Stage({
         // observe
         {...props}
       >
-        <Refit radius={radius} adjustCamera={adjustCamera} />
+        {/* <Refit radius={radius} adjustCamera={adjustCamera} /> */}
         {/* @ts-ignore */}
-        <Center {...center} position={[0, shadowOffset / 2, 0]} onCentered={onCentered}>
+        <Center
+          scale={show ? 0.05 : 0.05} // this somehow fixes the flicker...
+          {...center}
+          position={[0, shadowOffset / 2, 0]}
+          onCentered={onCentered}
+        >
           {children}
         </Center>
       </Bounds>

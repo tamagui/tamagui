@@ -5,7 +5,6 @@ import { Price, Product } from 'types'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import { Database } from './supabase-types'
-
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
 export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -132,7 +131,7 @@ export const manageSubscriptionStatusChange = async (
   if (noCustomerError) throw noCustomerError
 
   const { id: uuid } = customerData || {}
-
+  // sendTakeoutWelcomeEmail()
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['default_payment_method'],
   })
@@ -196,40 +195,12 @@ export const manageSubscriptionStatusChange = async (
       subscription.default_payment_method as Stripe.PaymentMethod
     )
 
-  // handle code for the prices marked as one time -
-  // i.e. font and icon packs are one-time pay so we apply 100% discount on renewals
-  const oneTimeProducts: string[] = []
-  for (const item of subscription.items.data) {
-    const isOneTime = item.price.metadata.is_one_time
-    if (isOneTime) {
-      oneTimeProducts.push(
-        typeof item.price.product === 'string'
-          ? item.price.product
-          : item.price.product.id
-      )
-    }
-  }
+  const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
 
-  if (oneTimeProducts.length > 0) {
-    const couponId = `${subscription.id}-one-time`
-    try {
-      await stripe.coupons.retrieve(couponId)
-      // no error, so coupon exists and it's already been applied
-    } catch {
-      // we now know this is the first time we're running this, so go ahead and create and apply the coupon
-      const coupon = await stripe.coupons.create({
-        id: couponId,
-        applies_to: {
-          products: oneTimeProducts,
-        },
-        duration: 'forever',
-        percent_off: 100,
-      })
-      await stripe.subscriptions.update(subscription.id, {
-        coupon: coupon.id,
-      })
-    }
-  }
+  if (renewalCouponId)
+    await stripe.subscriptions.update(subscription.id, {
+      coupon: renewalCouponId,
+    })
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {

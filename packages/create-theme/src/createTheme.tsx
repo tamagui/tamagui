@@ -1,6 +1,11 @@
+import {
+  CreateThemeOptions,
+  CreateThemePalette,
+  GenericTheme,
+  ThemeMask,
+} from './createThemeTypes'
 import { isMinusZero } from './isMinusZero'
 import { setThemeInfo } from './themeInfo'
-import { CreateThemeOptions, CreateThemePalette, GenericTheme, ThemeMask } from './types'
 
 const identityCache = new Map()
 
@@ -10,13 +15,17 @@ export function createTheme<
 >(
   palette: CreateThemePalette,
   definition: Definition,
-  options?: CreateThemeOptions
+  options?: CreateThemeOptions,
+  name?: string,
+  skipCache = false
 ): {
   [key in keyof Definition | keyof Extras]: string
 } {
-  const cacheKey = JSON.stringify([palette, definition, options])
-  if (identityCache.has(cacheKey)) {
-    return identityCache.get(cacheKey)
+  const cacheKey = skipCache ? '' : JSON.stringify([name, palette, definition, options])
+  if (!skipCache) {
+    if (identityCache.has(cacheKey)) {
+      return identityCache.get(cacheKey)
+    }
   }
 
   const theme = {
@@ -28,8 +37,10 @@ export function createTheme<
     ...options?.nonInheritedValues,
   }
 
-  setThemeInfo(theme, { palette, definition, options })
-  identityCache.set(cacheKey, theme)
+  if (cacheKey) {
+    setThemeInfo(theme, { palette, definition, options, name })
+    identityCache.set(cacheKey, theme)
+  }
 
   return theme
 }

@@ -109,7 +109,7 @@ export function isValidThemeHook(
   if (!binding?.path) return false
   if (!binding.path.isVariableDeclarator()) return false
   const init = binding.path.node.init
-  if (!t.isCallExpression(init)) return false
+  if (!init || !t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false
   // TODO could support renaming useTheme by looking up import first
   if (init.callee.name !== 'useTheme') return false
@@ -202,7 +202,7 @@ const getValidComponentPackages = memoize((props: TamaguiOptionsWithFileInfo) =>
   return [...new Set(['@tamagui/core', 'tamagui', ...props.components])]
 })
 
-const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {
+export const getValidComponentsPaths = memoize((props: TamaguiOptionsWithFileInfo) => {
   return getValidComponentPackages(props).map((pkg) => {
     const root = findRoot(pkg)
     return basename(root)

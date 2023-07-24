@@ -125,7 +125,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           $gtSm={{
             position: 'fixed' as any,
             top: 0,
-            left: 'calc(min(100vw, 1250px))px',
             bottom: 0,
             width: 245,
           }}

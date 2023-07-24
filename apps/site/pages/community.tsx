@@ -1,5 +1,5 @@
-import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { authors } from '@data/authors'
+import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { getAllFrontmatter } from '@lib/mdx'
 import { useTint } from '@tamagui/logo'
 import { ChevronRight } from '@tamagui/lucide-icons'
@@ -156,6 +156,12 @@ export default function Community({ frontmatters }) {
           </H3>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <XStack py="$2" space="$4">
+              <StarterRepoCard
+                url="https://github.com/timothymiller/t4-app"
+                name="create-t4-app"
+                author="timothymiller"
+              />
+
               <StarterRepoCard
                 url="https://github.com/srikanthkh/tamagui-cna"
                 name="create-next-app"

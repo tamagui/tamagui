@@ -26,7 +26,7 @@ export function tamaguiPlugin(
 
     async buildEnd() {
       await watcher?.then((res) => {
-        res?.context.dispose()
+        res?.dispose()
       })
     },
 

@@ -1,24 +1,13 @@
-import type { ClassNamesObject, DebugProp, GetStyleResult, SplitStyleState, StaticConfigParsed, TamaguiInternalConfig, TextStyleProps, ThemeParsed } from '../types';
-import type { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
-type GetStyleState = {
-    style: TextStyleProps;
-    usedKeys: Record<string, number>;
-    classNames: ClassNamesObject;
-    staticConfig: StaticConfigParsed;
-    theme: ThemeParsed;
-    props: Record<string, any>;
-    viewProps: Record<string, any>;
-    state: SplitStyleState;
-    conf: TamaguiInternalConfig;
-    languageContext?: FontLanguageProps;
-    avoidDefaultProps?: boolean;
-    avoidMergeTransform?: boolean;
-};
+import type { DebugProp, GetStyleResult, GetStyleState, SplitStyleState, StaticConfigParsed, TextStyleProps, ThemeParsed } from '../types';
+import type { LanguageContextType } from '../views/FontLanguage.types';
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 type StyleSplitter = (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeParsed, state: SplitStyleState, parentSplitStyles?: GetStyleResult | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => GetStyleResult;
+}, staticConfig: StaticConfigParsed, themeState: {
+    theme: ThemeParsed;
+    name: string;
+}, state: SplitStyleState, parentSplitStyles?: GetStyleResult | null, languageContext?: LanguageContextType, elementType?: string, debug?: DebugProp) => GetStyleResult;
 export declare const PROP_SPLIT = "-";
 export declare const getSplitStyles: StyleSplitter;
 export declare const getSubStyle: (styleState: GetStyleState, subKey: string, styleIn: Object, avoidDefaultProps?: boolean, avoidMergeTransform?: boolean) => TextStyleProps;

@@ -1,9 +1,10 @@
-import { Narrow } from '@tamagui/web'
+import type { Narrow } from '@tamagui/web'
 
+import { applyMask } from './applyMask'
 import { createTheme } from './createTheme'
+import { CreateMask, CreateThemeOptions, MaskOptions } from './createThemeTypes'
 import { objectEntries, objectFromEntries, objectKeys } from './helpers'
-import { applyMask, createMask } from './masks'
-import { CreateMask, CreateThemeOptions, MaskOptions } from './types'
+import { createMask } from './masks'
 
 export type Palette = string[]
 
@@ -33,11 +34,11 @@ export type Theme<Masks = string> =
   | ThemeUsingTemplate
   | ThemeUsingMask<Masks>
 
-type ThemeWithParent<Masks = string> = Theme<Masks> & {
+export type ThemeWithParent<Masks = string> = Theme<Masks> & {
   parent: string
 }
 
-type PaletteDefinitions = {
+export type PaletteDefinitions = {
   [key: string]: Palette
 }
 
@@ -47,15 +48,15 @@ export type ThemeDefinition<Masks extends string = string> =
 
 type UnionableString = string & {}
 
-type ThemeDefinitions<Masks extends string = string> = {
+export type ThemeDefinitions<Masks extends string = string> = {
   [key: string]: ThemeDefinition<Masks | UnionableString>
 }
 
-type TemplateDefinitions = {
+export type TemplateDefinitions = {
   [key: string]: Template
 }
 
-type MaskDefinitions = {
+export type MaskDefinitions = {
   [key: string]: CreateMask | CreateMask['mask']
 }
 
@@ -299,7 +300,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
           throw new Error(`No template for theme ${themeName}: ${templateName}`)
         }
 
-        out[themeName] = createTheme(palette, template, options)
+        out[themeName] = createTheme(palette, template, options, themeName)
       }
     }
 
@@ -319,7 +320,13 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         throw new Error(`No mask ${maskFunction}`)
       }
 
-      out[themeName] = applyMask(parent, maskFunction as any, options)
+      out[themeName] = applyMask(
+        parent,
+        maskFunction as any,
+        options,
+        parentName,
+        themeName
+      )
     }
 
     return out as any

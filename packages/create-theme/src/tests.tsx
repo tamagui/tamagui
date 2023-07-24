@@ -1,5 +1,6 @@
+import { applyMask } from './applyMask'
 import { createTheme } from './createTheme'
-import { applyMask, createStrengthenMask, createWeakenMask } from './masks'
+import { createStrengthenMask, createWeakenMask } from './masks'
 
 // --- tests ---
 if (process.env.NODE_ENV === 'development') {

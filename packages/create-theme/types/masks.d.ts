@@ -1,6 +1,5 @@
-import { CreateMask, GenericTheme, MaskFunction, MaskOptions, ThemeMask } from './types';
+import { CreateMask, MaskFunction, MaskOptions } from './createThemeTypes';
 export declare const createMask: <C extends MaskFunction | CreateMask>(createMask: C) => CreateMask;
-export declare const combineMasks: (...masks: CreateMask[]) => CreateMask;
 export declare const skipMask: CreateMask;
 export declare const createIdentityMask: () => CreateMask;
 export declare const createInverseMask: () => CreateMask;
@@ -11,6 +10,5 @@ export declare const createShiftMask: ({ inverse }?: ShiftMaskOptions, defaultOp
 export declare const createWeakenMask: (defaultOptions?: MaskOptions) => CreateMask;
 export declare const createSoftenMask: (defaultOptions?: MaskOptions) => CreateMask;
 export declare const createStrengthenMask: (defaultOptions?: MaskOptions) => CreateMask;
-export declare function applyMask<Theme extends GenericTheme | ThemeMask>(theme: Theme, mask: CreateMask, options?: MaskOptions): Theme;
 export {};
 //# sourceMappingURL=masks.d.ts.map

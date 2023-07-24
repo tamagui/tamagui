@@ -69,31 +69,35 @@ if (shouldClean || shouldCleanBuildOnly) {
 if (shouldWatch) {
   process.env.IS_WATCHING = true
   process.env.DISABLE_AUTORUN = true
-  build().then(() => {
-    const rebuild = debounce(build, 100)
-    const chokidar = require('chokidar')
-    chokidar
-      // prevent infinite loop but cause race condition if you just build directly
-      .watch('src', {
-        persistent: true,
-        alwaysStat: true,
-        ignoreInitial: true,
-      })
-      .on('change', rebuild)
-      .on('add', rebuild)
+  const rebuild = debounce(build, 100)
+  const chokidar = require('chokidar')
+
+  // do one js build but not types
+  build({
+    skipTypes: true
   })
+  
+  chokidar
+    // prevent infinite loop but cause race condition if you just build directly
+    .watch('src', {
+      persistent: true,
+      alwaysStat: true,
+      ignoreInitial: true,
+    })
+    .on('change', rebuild)
+    .on('add', rebuild)
   return
 }
 
 build()
 
-async function build() {
+async function build({ skipTypes } = {}) {
   if (process.env.DEBUG) console.log('🔹', pkg.name)
   try {
     const start = Date.now()
     await Promise.all([
       //
-      buildTsc(),
+      skipTypes ? null : buildTsc(),
       buildJs(),
     ])
     console.log('built', pkg.name, 'in', Date.now() - start, 'ms')

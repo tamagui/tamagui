@@ -2,7 +2,6 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import * as Demos from '@tamagui/demos'
-import { ToastViewport } from '@tamagui/toast'
 import { useState } from 'react'
 import { Separator, Theme, XStack, YStack } from 'tamagui'
 
@@ -42,14 +41,12 @@ export default function App() {
 }
 
 const SandboxFrame = (props: { children: any }) => {
-  const [theme, setTheme] = useState(
-    new URLSearchParams(window.location.search).get('theme') === 'dark' ? 'dark' : 'light'
-  )
-  const [screenshot] = useState(
-    new URLSearchParams(window.location.search).has('screenshot')
-  )
+  const params = new URLSearchParams(window.location.search)
+  const [theme, setTheme] = useState(params.get('theme') === 'dark' ? 'dark' : 'light')
+  const [screenshot] = useState(params.has('screenshot'))
   const showThemeSwitch = !screenshot
-  const splitView = new URLSearchParams(window.location.search).get('splitView')
+  const splitView = params.get('splitView')
+  const centered = params.has('centered')
 
   return (
     <Provider defaultTheme={theme as any}>
@@ -77,7 +74,14 @@ const SandboxFrame = (props: { children: any }) => {
 
       <Theme name={screenshot ? 'blue' : undefined}>
         <XStack w="100%" h="100%" fullscreen>
-          <YStack ai="center" jc="center" f={1} h="100%">
+          <YStack
+            {...(centered && {
+              ai: 'center',
+              jc: 'center',
+            })}
+            f={1}
+            h="100%"
+          >
             {props.children}
           </YStack>
 
@@ -86,10 +90,12 @@ const SandboxFrame = (props: { children: any }) => {
               <Separator vertical />
               <Theme name="dark">
                 <YStack
-                  ai="center"
-                  jc="center"
                   f={1}
-                  h="100%"
+                  {...(centered && {
+                    ai: 'center',
+                    jc: 'center',
+                    h: '100%',
+                  })}
                   bg={screenshot ? 'transparent' : '$background'}
                 >
                   {props.children}

@@ -3,15 +3,16 @@
 exports[`flatten-tests > flattened media queries 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {
-    \\"flexDirection\\": \\"column\\",
-    \\"minWidth\\": 0,
-    \\"minHeight\\": 0,
-    \\"position\\": \\"relative\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"display\\": \\"flex\\",
-    \\"flexShrink\\": 0,
+  \\"0\\": {},
+  \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
+    \\"flexShrink\\": 0,
+    \\"display\\": \\"flex\\",
+    \\"flexBasis\\": \\"auto\\",
+    \\"position\\": \\"relative\\",
+    \\"minHeight\\": 0,
+    \\"minWidth\\": 0,
+    \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
       \\"translateY\\": 10
     }, {
@@ -20,7 +21,7 @@ const _sheet = ReactNativeStyleSheet.create({
       \\"rotate\\": \\"10deg\\"
     }]
   },
-  \\"1\\": {
+  \\"2\\": {
     \\"borderTopLeftRadius\\": 10,
     \\"borderTopRightRadius\\": 10,
     \\"borderBottomRightRadius\\": 10,
@@ -29,21 +30,21 @@ const _sheet = ReactNativeStyleSheet.create({
       \\"scale\\": 2
     }]
   },
-  \\"2\\": {},
-  \\"3\\": {
+  \\"3\\": {},
+  \\"4\\": {
     \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
   },
-  \\"4\\": {},
-  \\"5\\": {
+  \\"5\\": {},
+  \\"6\\": {
     \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
   },
-  \\"6\\": {}
+  \\"7\\": {}
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui/src/YStack';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <__ReactNativeView style={[_sheet[\\"0\\"], media.sm ? _sheet[\\"1\\"] : _sheet[\\"2\\"], media.sm && isLoading ? _sheet[\\"3\\"] : _sheet[\\"4\\"], media.sm && !isLoading ? _sheet[\\"5\\"] : _sheet[\\"6\\"]]} />;
+  return <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"], media.sm ? _sheet[\\"2\\"] : _sheet[\\"3\\"], media.sm && isLoading ? _sheet[\\"4\\"] : _sheet[\\"5\\"], media.sm && !isLoading ? _sheet[\\"6\\"] : _sheet[\\"7\\"]]} />;
 }"
 `;

@@ -1,11 +1,20 @@
-import { NextSeo } from 'next-seo'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { LogoWords, TamaguiLogo } from '@tamagui/logo'
 import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
 import { useThemeSetting } from '@tamagui/next-theme'
+import { NextSeo } from 'next-seo'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { Button, Paragraph, Spacer, XStack, YStack, styled, useEvent } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Spacer,
+  TamaguiInternalConfig,
+  XStack,
+  YStack,
+  styled,
+  useEvent,
+} from 'tamagui'
 
 import { ShowAllStepsContext, SlideContext } from '../../components/Slide'
 import { ThemeToggle } from '../../components/ThemeToggle'
@@ -16,29 +25,16 @@ import slideCorePrinciples from './slides/slide-core-principles'
 import slideCoreSyntax from './slides/slide-core-syntax'
 import slideCoreThemesAndAnimations from './slides/slide-core-themes-and-animations'
 import slideCssInJs from './slides/slide-css-in-js'
-import slideDesignSystems from './slides/slide-design-systems'
 import SlideExpressYourself from './slides/slide-express-yourself'
 import SlideFlatten from './slides/slide-flatten'
 import SlideHow from './slides/slide-how'
-import SlideLessons1 from './slides/slide-lessons-1'
-import SlideLessons2 from './slides/slide-lessons-2'
-import slideLessons3 from './slides/slide-lessons-3'
-import slidePartialEval from './slides/slide-partial-eval'
 import slidePartialEval2 from './slides/slide-partial-eval2'
-import slideSimplicity from './slides/slide-simplicity'
 import slideStatic from './slides/slide-static'
 import slideStatic2 from './slides/slide-static2'
-import SlideTamagui from './slides/slide-tamagui'
-import slideTamaguiCode from './slides/slide-tamagui-code'
-import Slide5 from './slides/slide-tamagui-native'
 import SlideThemes from './slides/slide-themes'
 import slideThemesComponents from './slides/slide-themes-components'
 import slideThemesExamples from './slides/slide-themes-examples'
-import slideThemesOverview from './slides/slide-themes-overview'
-import SlideThemes2 from './slides/slide-themes2'
 import SlideTrilemma from './slides/slide-trilemma'
-import slideTwitterPoll from './slides/slide-twitter-poll'
-import slideWebOnly from './slides/slide-web-only'
 import SlideWhat from './slides/slide-what'
 import SlideWhy from './slides/slide-why'
 import slideWhyBobRoss from './slides/slide-why-bob-ross'

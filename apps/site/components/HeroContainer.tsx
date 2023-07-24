@@ -53,7 +53,7 @@ export function HeroContainer({
       display="flex"
       alignItems={alignItems || 'center'}
       justifyContent="center"
-      py={70}
+      py={20}
       pos="relative"
       minHeight={300}
       contain="paint layout"

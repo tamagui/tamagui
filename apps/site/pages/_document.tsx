@@ -1,9 +1,8 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
-import { Children } from 'react'
 import { StyleSheet } from 'react-native'
 
 import {
-  LoadGlusp,
+  LoadCherryBomb,
   LoadInter400,
   LoadInter700,
   LoadInter900,
@@ -63,7 +62,7 @@ export default class Document extends NextDocument {
 
           {this.props.dangerousAsPath === '/takeout' && (
             <>
-              <LoadGlusp />
+              <LoadCherryBomb />
               <LoadMunro />
             </>
           )}

@@ -15,6 +15,9 @@ export type TamaguiProjectInfo = {
     nameToPaths?: NameToPaths;
 };
 export declare const esbuildOptions: {
+    readonly define: {
+        __DEV__: string;
+    };
     readonly loader: "tsx";
     readonly target: "es2018";
     readonly format: "cjs";

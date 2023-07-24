@@ -3,14 +3,7 @@ process.env.TAMAGUI_TARGET = 'web'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default-node'
-import {
-  Stack,
-  TamaguiComponent,
-  Text,
-  createTamagui,
-  getSplitStyles,
-  styled,
-} from '../core/src'
+import { Stack, Text, createTamagui, styled } from '../core/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {

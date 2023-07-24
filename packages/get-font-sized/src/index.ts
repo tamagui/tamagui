@@ -1,10 +1,10 @@
-import { getTokens, getVariableValue } from '@tamagui/core'
 import type {
   FontSizeTokens,
   GenericFont,
   TextProps,
   VariantSpreadFunction,
 } from '@tamagui/core'
+import { getTokens } from '@tamagui/core'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = '$true',
@@ -20,13 +20,13 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
 
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
-  const fontSize = props.fontSize || font.size[sizeToken]
-  const lineHeight = props.lineHeight || font.lineHeight?.[sizeToken]
-  const fontWeight = props.fontWeight || font.weight?.[sizeToken]
-  const letterSpacing = props.letterSpacing || font.letterSpacing?.[sizeToken]
-  const fontStyle = props.fontStyle || font.style?.[sizeToken]
-  const textTransform = props.textTransform || font.transform?.[sizeToken]
-  const color = props.color || font.color?.[sizeToken]
+  const fontSize = font.size[sizeToken]
+  const lineHeight = font.lineHeight?.[sizeToken]
+  const fontWeight = font.weight?.[sizeToken]
+  const letterSpacing = font.letterSpacing?.[sizeToken]
+  const fontStyle = font.style?.[sizeToken]
+  const textTransform = font.transform?.[sizeToken]
+  const color = font.color?.[sizeToken]
 
   const style = {
     color,

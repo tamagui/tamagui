@@ -1,7 +1,7 @@
 import { Database, Json } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { inviteCollaboratorToRepo } from '@protected/_utils/github'
 import { User } from '@supabase/auth-helpers-nextjs'
+import { inviteCollaboratorToRepo } from 'protected/_utils/github'
 
 export const claimProductAccess = async (
   subscription: Database['public']['Tables']['subscriptions']['Row'],
@@ -18,6 +18,7 @@ export const claimProductAccess = async (
   // check the product claim type and call the related claim function
   switch (metadata.claim_type) {
     case 'repo_access':
+      // @ts-ignore
       claimData = await claimRepositoryAccess({ subscription, product, user, metadata })
       break
     default:
@@ -38,7 +39,7 @@ type ClaimFunction = (args: {
   product: Database['public']['Tables']['products']['Row']
   user: User
   metadata: {
-    [key: string]: Json
+    [key: string]: Json | undefined
   }
 }) => Promise<{
   /**
@@ -60,8 +61,10 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
     .single()
 
   if (userPrivateRes.error) {
-    if (userPrivateRes.error.message.includes("rows returned")) {
-      throw new Error("No GitHub connection found. Try logging out and logging in with GitHub again.")
+    if (userPrivateRes.error.message.includes('rows returned')) {
+      throw new Error(
+        'No GitHub connection found. Try logging out and logging in with GitHub again.'
+      )
     }
     throw userPrivateRes.error
   }

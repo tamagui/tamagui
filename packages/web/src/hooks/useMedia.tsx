@@ -4,6 +4,7 @@ import { useMemo, useSyncExternalStore } from 'react'
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
+import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   MediaQueries,
   MediaQueryKey,
@@ -37,7 +38,8 @@ export let mediaState: MediaQueryState =
 export const mediaQueryConfig: MediaQueries = {}
 export const getMedia = () => mediaState
 export const mediaKeys = new Set<string>() // with $ prefix
-export const isMediaKey = (key: string) => mediaKeys.has(key)
+export const isMediaKey = (key: string) =>
+  mediaKeys.has(key) || key.startsWith('$platform-') || key.startsWith('$theme-')
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -45,13 +47,25 @@ export const getInitialMediaState = () => {
   return (getConfig().disableSSR ? mediaState : initState) || {}
 }
 
+// media always above pseudos
+const defaultMediaImportance = Object.keys(pseudoDescriptors).length
+
 let mediaKeysOrdered: string[]
+
 export const getMediaKeyImportance = (key: string) => {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     throw new Error('use short key')
   }
-  // + 2 because we set base usedKeys=1 in getSplitStyles and all media go above 1
-  return mediaKeysOrdered.indexOf(key) + 2
+
+  const conf = getConfig()
+  if (conf.settings.mediaPropOrder) {
+    return defaultMediaImportance
+  }
+
+  // + 100 because we set base usedKeys=1, psuedos are 2-N (however many we have)
+  // all media go above all pseudos so we need to pad it based on that
+  // right now theres 5 pseudos but in the future could be a few more
+  return mediaKeysOrdered.indexOf(key) + 100
 }
 
 const dispose = new Set<Function>()
@@ -235,8 +249,9 @@ export function useMediaPropsActive<A extends Object>(
     const next = {} as A
     const importancesUsed = {}
     const propNames = Object.keys(props)
+    const len = propNames.length
 
-    for (let i = propNames.length - 1; i >= 0; i--) {
+    for (let i = 0; i < len; i++) {
       let key = propNames[i]
       const val = props[key]
       if (key[0] === '$') {
@@ -250,14 +265,14 @@ export function useMediaPropsActive<A extends Object>(
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
-            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed)
+            mergeMediaByImportance(next, mediaKey, subKey, value, importancesUsed, true)
           }
         }
       } else {
         if (shouldExpandShorthands) {
           key = config.shorthands[key] || key
         }
-        mergeMediaByImportance(next, '', key, val, importancesUsed)
+        mergeMediaByImportance(next, '', key, val, importancesUsed, true)
       }
     }
 
@@ -268,9 +283,14 @@ export function useMediaPropsActive<A extends Object>(
 export const getMediaImportanceIfMoreImportant = (
   mediaKey: string,
   key: string,
-  importancesUsed: Record<string, number>
+  importancesUsed: Record<string, number>,
+  isSizeMedia: boolean
 ) => {
-  const importance = getMediaKeyImportance(mediaKey)
+  const conf = getConfig()
+  const importance =
+    isSizeMedia && !conf.settings.mediaPropOrder
+      ? getMediaKeyImportance(mediaKey)
+      : defaultMediaImportance
   return !importancesUsed[key] || importance > importancesUsed[key] ? importance : null
 }
 
@@ -279,9 +299,15 @@ export function mergeMediaByImportance(
   mediaKey: string,
   key: string,
   value: any,
-  importancesUsed: Record<string, number>
+  importancesUsed: Record<string, number>,
+  isSizeMedia: boolean
 ) {
-  const importance = getMediaImportanceIfMoreImportant(mediaKey, key, importancesUsed)
+  const importance = getMediaImportanceIfMoreImportant(
+    mediaKey,
+    key,
+    importancesUsed,
+    isSizeMedia
+  )
   if (importance === null) {
     return false
   }

@@ -48,6 +48,7 @@ export function removeUnusedHooks(
       }
       const shouldRemove = (() => {
         const isHook =
+          init &&
           t.isCallExpression(init) &&
           t.isIdentifier(init.callee) &&
           hooks[init.callee.name]

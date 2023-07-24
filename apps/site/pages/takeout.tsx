@@ -1,3 +1,4 @@
+import { ErrorBoundary } from '@components/ErrorBoundary'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { stripe } from '@lib/stripe'
@@ -5,18 +6,17 @@ import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
-import { LogoIcon, LogoWords, TamaguiLogo, ThemeTint, ThemeTintAlt } from '@tamagui/logo'
-import { Check, Dot, Hammer, Moon, Star, X } from '@tamagui/lucide-icons'
-import { useClientValue, useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
+import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
+import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
-import { NextSeo, ProductJsonLd } from 'next-seo'
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
 import Stripe from 'stripe'
 import {
@@ -26,6 +26,7 @@ import {
   Checkbox,
   Circle,
   Dialog,
+  FontSizeTokens,
   GetProps,
   H1,
   H2,
@@ -40,7 +41,6 @@ import {
   Separator,
   Sheet,
   SizableText,
-  SizeTokens,
   Spacer,
   Stack,
   TabLayout,
@@ -48,6 +48,7 @@ import {
   TabsProps,
   TabsTabProps,
   Theme,
+  ThemeName,
   Unspaced,
   XStack,
   XStackProps,
@@ -61,7 +62,7 @@ import {
 import { LinearGradient } from 'tamagui/linear-gradient'
 
 import { useHoverGlow } from '../components/HoverGlow'
-import { LoadGlusp, LoadMunro } from '../components/LoadFont'
+import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
 const points = {
@@ -113,8 +114,11 @@ const isSafariMobile = (() => {
 })()
 
 const TakeoutBox3D = dynamic(() => import('../components/TakeoutBox3D'), { ssr: false })
+const TakeoutGallery = dynamic(() => import('../components/TakeoutGallery'), {
+  ssr: false,
+})
 
-const heroHeight = 850
+const heroHeight = 1100
 
 type TakeoutPageProps = {
   starter: Database['public']['Tables']['products']['Row'] & {
@@ -143,8 +147,8 @@ const TakeoutCard2Frame = styled(YStack, {
     size: {
       '...size': (val) => ({
         elevation: val,
-        p: val,
-        br: val,
+        p: val as any,
+        br: val as any,
       }),
     },
   } as const,
@@ -161,16 +165,16 @@ type TakeoutCardFrameProps = GetProps<typeof TakeoutCard2Frame> & {
 
 const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps) => {
   const innerGlow = useHoverGlow({
-    resist: 50,
-    size: 450,
+    resist: 40,
+    size: 150,
     strategy: 'blur',
     blurPct: 100,
     // inverse: true,
     color: 'var(--color10)',
-    opacity: 0.2,
+    opacity: 0.5,
     background: 'transparent',
     style: {
-      transition: `all ease-out 500ms`,
+      transition: `all ease-out 300ms`,
     },
   })
 
@@ -179,7 +183,7 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     size: 200,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--color12)',
+    color: 'var(--color11)',
     opacity: 1,
     background: 'transparent',
   })
@@ -251,24 +255,23 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
   return (
     <YStack
-      y={heroHeight / 2 - 360}
+      y={heroHeight / 2 - 480}
       ai="center"
       jc="center"
       className="ease-in ms300 all"
+      pe="none"
       pos="relative"
+      scale={1.15}
       $xxs={{
-        scale: 0.3,
+        scale: 0.35,
       }}
       $xs={{
-        scale: 0.5,
+        scale: 0.45,
       }}
       $sm={{
-        scale: 0.58,
-      }}
-      $md={{
         scale: 0.65,
       }}
-      $lg={{
+      $md={{
         scale: 0.85,
       }}
       // ref={glow.parentRef as any}
@@ -277,70 +280,29 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         <glow.Component />
       </ThemeTint> */}
 
-      <Paragraph
-        color="$color"
-        size="$1"
-        fontSize={12}
-        ls={135}
-        o={0.1}
-        fontFamily="$silkscreen"
-        pe="none"
-        h={40}
-        userSelect="none"
-      >
-        TAMAGUI
-      </Paragraph>
-
       {/* animated borders shine */}
-      <YStack pos="absolute" y={-38}>
-        <ThemeTint>
-          <TAKEOUT className="theme-shadow masked2" zi={100} color="transparent" />
-        </ThemeTint>
-      </YStack>
+      {/* <YStack pos="absolute" y={5}>
+        <ThemeTintAlt>
+          <TAKEOUT className="theme-shadow clip-slice" zi={100} color="transparent" />
+        </ThemeTintAlt>
+      </YStack> */}
 
       <YStack
         pos="absolute"
-        className="mix-blend"
-        y={-35}
         style={{
-          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <ThemeTint>
-          <TAKEOUT className="" zi={1000} color="$color10" />
+          <TAKEOUT className="text-3d" zi={1000} color="$color10" />
         </ThemeTint>
       </YStack>
 
       <YStack
-        pos="absolute"
-        className="mix-blend"
-        y={-35}
-        scale={0.975}
-        style={{
-          clipPath: `polygon(0% 0, 50% 50%, 100% 100%, 100% 0%, 90% 0, 20% 100%)`,
-        }}
-      >
-        <ThemeTint>
-          <TAKEOUT className="" zi={1000} color="$color10" />
-        </ThemeTint>
-      </YStack>
-      {coupon && (
-        <YStack
-          className="mix-blend"
-          position="absolute"
-          left={0}
-          right={0}
-          top={-10}
-          zIndex="$5"
-        >
-          <DiscountText coupon={coupon} />
-        </YStack>
-      )}
-
-      <YStack
+        mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 20% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 10% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -369,14 +331,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
             {/* alt color slices */}
 
-            <ThemeTintAlt offset={1}>
+            {/* <ThemeTintAlt offset={1}>
               <TAKEOUT
-                className="clip-slice mix-blend animate-fade2"
+                className="clip-wave mix-blend"
                 pos="absolute"
                 color="$color8"
                 scale={1}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
           </ThemeTint>
         )}
 
@@ -388,7 +350,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           ai="center"
           jc="center"
           y={30}
-          scaleX={0.9}
+          scaleX={0.95}
         >
           <TAKEOUT className="bg-dot-grid clip-text" />
         </YStack>
@@ -402,80 +364,86 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           ai="center"
           jc="center"
           y={-20}
-          o={0.75}
-          scale={1.05}
         >
-          <TAKEOUT color="$background" className="" />
+          <TAKEOUT color="$color3" className="" />
         </YStack>
       </YStack>
-
-      <XStack my={21} gap={125} f={1} jc="space-between" className="mix-blend">
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-module-21.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
-
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-browser-bugs-2-58.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
-
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/coding-apps-websites-database-60.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
-
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-bucket-brush-63.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
-
-        <IconFrame>
-          <Image
-            className="pixelate"
-            src="/retro-icons/design-color-palette-sample-26.svg"
-            alt="Icon"
-            width={18}
-            height={18}
-          />
-        </IconFrame>
-      </XStack>
-
       <YStack
         position="absolute"
-        top={360}
-        r="-10%"
-        $sm={{ r: '-180%' }}
+        pe="none"
+        top={300}
+        r="-5%"
+        $lg={{ r: '-15%' }}
         $md={{ r: '-50%' }}
-        $lg={{ r: '-35%' }}
+        $sm={{ r: '-90%' }}
         zIndex={-1}
       >
         {enable3d && (
           <Suspense fallback={null}>
-            <TakeoutBox3D />
+            <ErrorBoundary noMessage>
+              <TakeoutBox3D />
+            </ErrorBoundary>
           </Suspense>
         )}
       </YStack>
+
+      <XStack
+        zi={1000}
+        my={21}
+        bottom={-100}
+        pos="absolute"
+        gap={50}
+        f={1}
+        alignSelf="center"
+        jc="space-between"
+        className="mix-blend"
+        pe="auto"
+        $sm={{
+          dsp: 'none',
+        }}
+      >
+        <FeatureIcon
+          themeIndex={0}
+          title="Monorepo"
+          icon="retro-icons/coding-apps-websites-module-21.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={1}
+          title="Design"
+          icon="retro-icons/design-color-painting-palette-25.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={2}
+          title="Deploy"
+          icon="retro-icons/computers-devices-electronics-vintage-mac-54.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={3}
+          title="Themes"
+          icon="retro-icons/design-color-bucket-brush-63.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={4}
+          title="Screens"
+          icon="retro-icons/coding-app-website-ui-62.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={5}
+          title="Assets"
+          icon="retro-icons/coding-apps-websites-plugin-33.svg"
+        />
+
+        <FeatureIcon
+          themeIndex={6}
+          title="& More"
+          icon="retro-icons/coding-apps-websites-programming-hold-code-9.svg"
+        />
+      </XStack>
     </YStack>
   )
 }
@@ -506,8 +474,19 @@ export default function TakeoutPage({
           description="Tamagui Takeout React Native Bootstrap Starter Kit"
         />
         <Head>
-          <LoadGlusp />
+          <LoadCherryBomb />
+          <LoadCherryBomb />
           <LoadMunro />
+          <script src='https://cdn.paritydeals.com/banner.js' />
+          <style dangerouslySetInnerHTML={{__html: `
+.parity-banner {
+    position: fixed!important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+`}} />
         </Head>
       </>
 
@@ -522,27 +501,16 @@ export default function TakeoutPage({
       <FaqModal />
       <AgreementModal />
 
-      {/* big background outlined font */}
-      <YStack
-        pos="absolute"
-        fullscreen
-        b="auto"
-        zi={-2}
-        pe="none"
-        ai="center"
-        jc="center"
-        ov="hidden"
-        contain="paint layout"
-        y={20}
-      >
-        <TAKEOUT
-          className={`font-outlined theme-shadow`}
-          fontSize={150 * 3.5}
-          lineHeight={110 * 3.5}
-          color="#000"
-          o={0.1}
+      {/* gradient on the end of the page */}
+      <ThemeTint>
+        <YStack
+          zi={-1}
+          fullscreen
+          style={{
+            background: `linear-gradient(to bottom, transparent, transparent, var(--color3))`,
+          }}
         />
-      </YStack>
+      </ThemeTint>
 
       <YStack>
         <ContainerXL>
@@ -552,11 +520,33 @@ export default function TakeoutPage({
                 onPress={() => {
                   store.showPurchase = true
                 }}
-                size="$3"
+                size="$4"
               >
                 Purchase
               </PurchaseButton>
             </YStack>
+
+            {coupon && (
+              <YStack
+                position="absolute"
+                $gtXs={{
+                  right: '5%',
+                  top: 150,
+                }}
+                $xs={{
+                  top: '65vh',
+                  left: 0,
+                  right: 0,
+                  ai: 'center',
+                  jc: 'center',
+                }}
+                zIndex="$5"
+              >
+                <DiscountText coupon={coupon} />
+              </YStack>
+            )}
+
+            <PromoVideo />
 
             <TakeoutHero coupon={coupon} />
           </YStack>
@@ -594,13 +584,13 @@ export default function TakeoutPage({
             </YStack>
           </YStack>
 
-          <XStack mt={heroHeight + 70} space="$10" $md={{ fd: 'column' }}>
+          <XStack mt={heroHeight} space="$10" $md={{ fd: 'column' }}>
             <XStack
               f={1}
               p="$10"
               mt={20}
               $md={{
-                flexDirection: 'column',
+                flexDirection: 'column-reverse',
               }}
               $lg={{
                 p: '$6',
@@ -609,7 +599,7 @@ export default function TakeoutPage({
                 p: '$4',
               }}
             >
-              <YStack mt={-500} ml={20} mr={-20}>
+              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={20}>
                 <StarterCard product={starter} />
               </YStack>
               {/* <YStack
@@ -621,10 +611,10 @@ export default function TakeoutPage({
                 o={0.24}
               /> */}
 
-              <YStack f={1} space="$6">
+              <YStack f={1} space="$5">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-230}
+                  mt={-350}
                   mb={-20}
                   size="$7"
                   ls={4}
@@ -633,52 +623,100 @@ export default function TakeoutPage({
                     size: '$4',
                   }}
                 >
-                  Jumpstarting startups since '23
+                  Universal React Native + Web Starter Kit
                 </MunroP>
 
                 <ThemeTint>
                   <H2
                     className="clip-text mix-blend"
-                    size="$13"
+                    ff="$cherryBomb"
+                    size="$12"
+                    lh="$11"
                     color="$color10"
+                    mb="$4"
                     style={{
                       // @ts-ignore
                       backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
                     }}
+                    $gtLg={{
+                      mr: 100,
+                    }}
                     $lg={{
-                      size: '$11',
+                      size: '$9',
+                      lh: '$8',
                     }}
                     $sm={{
-                      size: '$10',
+                      size: '$8',
+                      lh: '$7',
                     }}
                   >
-                    From idea to shipped in less time than ever.
+                    From idea to shipped in less time&nbsp;than&nbsp;ever
                   </H2>
+                </ThemeTint>
+
+                <ThemeTint>
+                  <MunroP
+                    style={{ textShadow: '-4px -4px 0 var(--color9)' }}
+                    size="$10"
+                    $sm={{ size: '$9' }}
+                  >
+                    We can't promise everything...
+                  </MunroP>
+                </ThemeTint>
+
+                <ThemeTint>
+                  <MunroP
+                    style={{ textShadow: '0 1px 1px var(--color9)' }}
+                    size="$9"
+                    fow="400"
+                    $sm={{ size: '$8' }}
+                  >
+                    Success is up to you. But we can say you've found the cheat code to
+                    shipping top quality web and native apps as fast as possible.
+                  </MunroP>
                 </ThemeTint>
 
                 <HeartsRow />
 
-                <MunroP size="$10" fow="400" $sm={{ size: '$8' }}>
-                  We can't promise the <Moon size="$3" style={{ marginBottom: -6 }} /> or
-                  the <Star size="$3" style={{ marginBottom: -6 }} />s - success is up to
-                  you. But if you want a cheat code to shipping a stunning web + native
-                  app fast, you've found it.
-                </MunroP>
-
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  Takeout 🥡 is a bootstrap that delivers on years of effort putting
-                  together a better unified React Native + web stack for startups.
+                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
+                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
+                  together a better React Native and web stack.
                 </Paragraph>
 
-                <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                  And of course it's powered by{' '}
-                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />, the
-                  best universal UI system ever created. Within an hour you'll be
-                  deploying your app on the web to Vercel and to iOS and Android app
-                  stores via Expo EAS.
+                <Paragraph
+                  theme="alt1"
+                  size="$8"
+                  $sm={{ size: '$7' }}
+                  $xs={{ size: '$6' }}
+                  fow="400"
+                >
+                  Powered by{' '}
+                  <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
+                  within an hour you'll be deploying on the web to Vercel and to
+                  iOS/Android app stores via Expo EAS. Featuring all new themes, 150 new
+                  icon packs, 1,500 new fonts, and much more.
                 </Paragraph>
 
                 <Spacer size="$6" />
+
+                <YStack marginTop={-260} marginBottom={-890} x={700} zi={-1}>
+                  <div
+                    style={{
+                      transform: 'rotateX(41deg) rotateZ(33deg)',
+                      transformStyle: 'preserve-3d',
+                      width: 715 * 0.75,
+                      borderRadius: 78,
+                      boxShadow: '0 0 30px 40px rgba(0,0,0,1)',
+                    }}
+                  >
+                    <Image
+                      alt="iPhone screenshot of Tamagui"
+                      src="/tama-phone.svg"
+                      width={715 * 0.75}
+                      height={1467 * 0.75}
+                    />
+                  </div>
+                </YStack>
 
                 <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
                   <TakeoutCard
@@ -785,178 +823,164 @@ export default function TakeoutPage({
                   </TakeoutCard>
                 </XStack>
 
-                <YStack marginTop={-300} marginBottom={-550} x={200} zi={-1}>
-                  <Image
-                    alt="iPhone screenshot of Tamagui"
-                    src="/iphone.png"
-                    width={863}
-                    height={928}
-                  />
-                </YStack>
+                <Spacer />
 
-                <Separator className="mix-blend" boc="#fff" o={0.25} my="$8" mx="$8" />
-
-                <YStack
-                  p="$6"
-                  px="$8"
-                  className="blur-medium"
-                  space="$6"
-                  elevation="$6"
-                  br="$10"
-                  mt={-100}
-                  $sm={{
-                    px: '$4',
-                    mx: '$-4',
-                  }}
-                >
-                  <YStack br="$10" zi={-1} fullscreen bc="$background" o={0.3} />
-                  <YStack br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
-
+                <ThemeTint>
                   <YStack
-                    bc="#000"
-                    rotate="-2deg"
-                    mt={-130}
-                    mb={20}
-                    px="$6"
-                    py="$2"
-                    elevation="$4"
-                    als="center"
-                    br="$5"
+                    p="$6"
+                    mt="$8"
+                    className="blur-medium"
+                    px="$8"
+                    space="$5"
+                    elevation="$6"
+                    br="$10"
+                    $sm={{
+                      px: '$4',
+                      mx: '$-4',
+                    }}
                   >
-                    <ThemeTint>
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color6" o={0.2} />
+                    <YStack pe="none" br="$10" zi={-1} fullscreen bc="$color" o={0.1} />
+                    <YStack
+                      pos="absolute"
+                      t={-400}
+                      o={0.2}
+                      r={-400}
+                      pe="none"
+                      w={1000}
+                      h={1000}
+                      scale={1.5}
+                      style={{
+                        background: 'radial-gradient(var(--color9), transparent 70%)',
+                      }}
+                    />
+
+                    <YStack
+                      bc="#000"
+                      rotate="-2deg"
+                      mt={-130}
+                      mb={20}
+                      px="$6"
+                      py="$2"
+                      elevation="$4"
+                      als="center"
+                      br="$5"
+                    >
                       <Paragraph
                         color="$color9"
                         fontFamily="$munro"
-                        size="$11"
+                        size="$9"
                         $sm={{ size: '$8' }}
                         fow="800"
                         ta="center"
                       >
                         Speedrun from 0-to-100 🥡
                       </Paragraph>
-                    </ThemeTint>
+                      <Paragraph
+                        color="$color9"
+                        fontFamily="$munro"
+                        size="$8"
+                        mt={-10}
+                        $sm={{ dsp: 'none' }}
+                        fow="800"
+                        ta="center"
+                      >
+                        (...but don't forget the long run)
+                      </Paragraph>
+                    </YStack>
+
                     <Paragraph
-                      color="$color9"
-                      fontFamily="$munro"
-                      size="$8"
-                      mt={-10}
-                      $sm={{ dsp: 'none' }}
-                      fow="800"
-                      ta="center"
+                      fontFamily="$cherryBomb"
+                      size="$9"
+                      color="$color11"
+                      className="text-3d"
+                      ls={-1}
+                      $sm={{ size: '$8' }}
+                      fow="400"
+                      mb="$4"
                     >
-                      (...but don't forget the long run)
+                      It's not just about shipping fast.
                     </Paragraph>
+
+                    <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                      Takeout is a template repo *and a bot* that's designed with
+                      pluggable, well-isolated features. Whenever we make significant
+                      updates, we trigger the TakeoutBot to send over a PR.
+                    </Paragraph>
+
+                    <ThemeTintAlt>
+                      <Paragraph
+                        className="text-shadow"
+                        size="$7"
+                        $sm={{ size: '$6' }}
+                        fow="400"
+                        color="$color9"
+                      >
+                        That means you get constant improvements to your codebase.
+                      </Paragraph>
+                    </ThemeTintAlt>
+
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      It's why we've set up pricing the way we have: lifetime rights,
+                      1-year of updates. Each year renewal is only 50% of the original
+                      purchase price.
+                    </Paragraph>
+
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      Forever pricing wouldn't incentivize us to keep innovating, and we
+                      have big plans to make Takeout the best stack, period.
+                    </Paragraph>
+
+                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
+                      There's a lot of nice stuff coming soon as a nice and easy to merge
+                      PR sent right to your repo:
+                    </Paragraph>
+
+                    <ThemeTintAlt>
+                      <XStack tag="ul" fw="wrap" gap="$5" my="$4">
+                        <Bullet inProgress>Maestro native integration tests</Bullet>
+                        <Bullet inProgress>Playwright integration tests</Bullet>
+                        <Bullet inProgress>Reanimated + reanimated modules</Bullet>
+                        <Bullet inProgress>Simple state management system</Bullet>
+                        <Bullet inProgress>Layout animations</Bullet>
+                        <Bullet inProgress>Storybook</Bullet>
+                        <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
+                        <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
+                        <Bullet>Notifications</Bullet>
+                        <Bullet>Alternative deployment targets</Bullet>
+                        <Bullet>Simple data fetching library</Bullet>
+                        <Bullet>Premium font add-ons</Bullet>
+                        <Bullet>Unified RN and web testing tools</Bullet>
+                        <Bullet>Improved CI/CD and caching</Bullet>
+                        <Bullet>MDX support via tamagui.dev config</Bullet>
+                        <Bullet>Replicache integration</Bullet>
+                      </XStack>
+                    </ThemeTintAlt>
+
+                    <Spacer />
                   </YStack>
+                </ThemeTint>
 
-                  <Paragraph
-                    fontFamily="$glusp"
-                    size="$4"
-                    ls={-1}
-                    $sm={{ size: '$3' }}
-                    fow="400"
-                  >
-                    It's not just about shipping fast.
-                  </Paragraph>
-
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    Takeout is a template repo *and a bot* that's designed with pluggable,
-                    well-isolated features. Whenever we make significant updates, we
-                    trigger the TakeoutBot to send over a PR.
-                  </Paragraph>
-
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400" color="$yellow10">
-                    That means you get constant improvements to your codebase.
-                  </Paragraph>
-
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    It's why we've set up pricing the way we have: lifetime rights, one
-                    year of updates. Forever pricing wouldn't incentivize us to keep
-                    innovating, and we want to make the Takeout stack the best stack,
-                    period.
-                  </Paragraph>
-
-                  <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                    We're working on bringing many nice new features that you can pick and
-                    choose from, some of which are already in progress:
-                  </Paragraph>
-
-                  <Separator />
-
-                  <XStack tag="ul" fw="wrap" gap="$4" my="$4">
-                    <Bullet inProgress>Maestro native integration tests</Bullet>
-                    <Bullet inProgress>Playwright integration tests</Bullet>
-                    <Bullet inProgress>Reanimated + reanimated modules</Bullet>
-                    <Bullet inProgress>Simple state management system</Bullet>
-                    <Bullet inProgress>Layout animations</Bullet>
-                    <Bullet inProgress>Storybook</Bullet>
-                    <Bullet>Notifications</Bullet>
-                    <Bullet>Alternative deployment targets</Bullet>
-                    <Bullet>Simple data fetching library</Bullet>
-                    <Bullet>Premium font add-ons</Bullet>
-                    <Bullet>Unified RN and web testing tools</Bullet>
-                    <Bullet>Improved CI/CD caching</Bullet>
-                  </XStack>
-
-                  <Spacer />
-                </YStack>
-
-                <Separator />
                 <Spacer />
 
-                <Paragraph als="center" fontFamily="$glusp" size="$1" scale={0.75}>
-                  Gallery
-                </Paragraph>
+                <ThemeTint>
+                  <Paragraph
+                    className="text-3d"
+                    als="center"
+                    fontFamily="$cherryBomb"
+                    size="$10"
+                  >
+                    Take a peek
+                  </Paragraph>
+                </ThemeTint>
 
-                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                  <TakeoutImage
-                    alt="asd"
-                    src="https://placekitten.com/200/200"
-                    width={200}
-                    height={200}
-                  />
-                </XStack>
+                <Spacer />
+
+                <YStack mih={530}>
+                  <Lazy>
+                    <TakeoutGallery />
+                  </Lazy>
+                </YStack>
 
                 <Spacer />
                 <Separator />
@@ -1003,27 +1027,27 @@ export default function TakeoutPage({
                   />
                 </XStack>
 
-                <MunroP size="$10">
+                <MunroP size="$10" $sm={{ size: '$9' }}>
                   A reference design for a building a truly high quality app - that keeps
                   improving.
                 </MunroP>
 
                 <HeartsRow />
 
-                <MunroP size="$10" color="$yellow10">
+                <MunroP size="$10" $sm={{ size: '$9' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
 
                 <MunroP size="$3" o={0.3}>
                   These statements have not been approved by the FDA. Talk to your doctor
-                  about Tamagui Takeout. Side effects may include spending way too much
-                  time tweaking color palettes when you should be just shipping your damn
-                  app.
+                  before trying Tamagui Takeout. Side effects may include spending way too
+                  much time tweaking color palettes when you should be just shipping your
+                  damn app.
                 </MunroP>
               </YStack>
             </XStack>
 
-            <YStack mt={200} w={3} mih={500} h="100%" />
+            <YStack mt={200} w={3} mih={500} h="100%" $sm={{ display: 'none' }} />
           </XStack>
 
           <YStack pos="absolute" t={150} r={-520} rotate="120deg" o={0.045} zi={-2}>
@@ -1042,65 +1066,6 @@ export default function TakeoutPage({
   )
 }
 
-const TakeoutImage = (props: any) => (
-  <XStack
-    animation="quick"
-    br="$10"
-    ov="hidden"
-    elevation="$2"
-    hoverStyle={{ scale: 1.025 }}
-    pressStyle={{ scale: 0.975 }}
-    cursor="pointer"
-  >
-    <Image {...props} />
-  </XStack>
-)
-
-const Bullet = ({
-  size = '$6',
-  children,
-  subtitle,
-  inProgress,
-  ...props
-}: XStackProps & {
-  children: any
-  subtitle?: any
-  size?: SizeTokens
-  inProgress?: boolean
-}) => {
-  return (
-    <XStack tag="li" ai="flex-start" space f={1} {...props} w="calc(50% - 10px)">
-      <YStack y={-1}>
-        <Circle size={42} my={-6} boc="$borderColor" bw={1}>
-          {inProgress ? (
-            <Hammer size={24} color="$color10" />
-          ) : (
-            <Dot size={24} color="$color10" />
-          )}
-        </Circle>
-      </YStack>
-      <YStack f={1}>
-        <Paragraph wordWrap="break-word" size={size}>
-          {children}
-        </Paragraph>
-        {!!subtitle && (
-          <Paragraph
-            size={
-              getSize(size, {
-                shift: -2,
-              }) as any
-            }
-            theme="alt2"
-            o={0.5}
-          >
-            {subtitle}
-          </Paragraph>
-        )}
-      </YStack>
-    </XStack>
-  )
-}
-
 const Point = ({
   size = '$4',
   children,
@@ -1109,7 +1074,7 @@ const Point = ({
 }: XStackProps & {
   children: any
   subtitle?: any
-  size?: SizeTokens
+  size?: FontSizeTokens
 }) => {
   return (
     <XStack tag="li" ai="flex-start" space f={1} ov="hidden" {...props}>
@@ -1140,7 +1105,7 @@ const Point = ({
 
 const IconFrame = styled(Stack, {
   borderRadius: 1000,
-  p: '$4',
+  p: '$2',
   bc: 'rgba(255, 255, 255, 0.035)',
 })
 
@@ -1148,6 +1113,9 @@ class TakeoutStore extends Store {
   showPurchase = false
   showFaq = false
   showAgreement = false
+  promoInputIsOpen = false
+  appliedCoupon: Stripe.Coupon | null = null
+  appliedPromoCode: string | null = null
 }
 
 function formatPrice(amount: number, currency: string) {
@@ -1204,10 +1172,15 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
 
   // with discount applied
   const finalPrice = useMemo(() => {
-    if (coupon?.amount_off) return sum - coupon.amount_off
-    if (coupon?.percent_off) return (sum * (100 - coupon.percent_off)) / 100
+    const appliedCoupon = store.appliedCoupon ?? coupon
+    if (appliedCoupon) {
+      if (appliedCoupon.amount_off) return sum - appliedCoupon.amount_off
+      if (appliedCoupon.percent_off)
+        return (sum * (100 - appliedCoupon.percent_off)) / 100
+    }
+
     return sum
-  }, [sum])
+  }, [sum, store.appliedCoupon, coupon])
   const hasDiscountApplied = finalPrice !== sum
 
   const noProductSelected = selectedProductsIds.length === 0
@@ -1259,17 +1232,15 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           w="90%"
           maw={900}
         >
-          <ScrollView>
-            <YStack h="100%" space>
-              <XStack ai="center" jc="space-between" gap="$6" mx="$8">
-                <Separator />
-                <Dialog.Title size="$9" $sm={{ size: '$8' }} my="$3" als="center">
+          <ScrollView $gtSm={{ maxHeight: '90vh' }}>
+            <YStack space>
+              <XStack ai="center" jc="center" gap="$6" mx="$8">
+                <Dialog.Title py="$2" size="$9" $sm={{ size: '$7' }} my="$1" als="center">
                   Purchase 🥡
                 </Dialog.Title>
-                <Separator />
               </XStack>
 
-              <YStack>
+              <YStack my="$2">
                 <YStack gap="$4" $gtSm={{ fd: 'row' }} flexWrap="wrap">
                   {products.map((product) => {
                     const active = selectedProductsIds.includes(product.id)
@@ -1363,7 +1334,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   </YStack>
                 </ScrollView>
 
-                <YStack f={1} space="$4" mt="$8">
+                <YStack f={1} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
@@ -1400,8 +1371,13 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               <YStack gap="$0" f={1}>
                                 <H4 mt="$-1">{price.description}</H4>
 
-                                <Paragraph theme="alt1" ellipse>
-                                  {formatPrice(price.unit_amount! / 100, 'usd')}
+                                <Paragraph theme="alt1">
+                                  {formatPrice(price.unit_amount! / 100, 'usd')} base + 1
+                                  year of updates
+                                </Paragraph>
+                                <Paragraph theme="alt1" size="$2">
+                                  {formatPrice(price.unit_amount! / (100 * 2), 'usd')}{' '}
+                                  annual renewal (cancel anytime)
                                 </Paragraph>
                               </YStack>
                             </Label>
@@ -1411,7 +1387,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                     </RadioGroup>
                   </YStack>
 
-                  <Spacer f={100} />
+                  <Spacer size="$1" />
 
                   <YStack space>
                     <XStack ai="flex-end" jc="flex-end" gap="$2">
@@ -1426,6 +1402,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <H3 size="$10">{formatPrice(finalPrice! / 100, 'usd')}</H3>
                       )}
                     </XStack>
+                    <Unspaced>
+                      <YStack mt="$2">
+                        <PromotionInput />
+                      </YStack>
+                    </Unspaced>
 
                     <Separator />
 
@@ -1441,9 +1422,14 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                             params.append('product_id', productId)
                           }
                           params.append(`price-${starter.id}`, starterPriceId)
-                          if (coupon) {
-                            params.append(`coupon`, coupon.id)
+                          if (store.appliedPromoCode) {
+                            // the coupon user applied
+                            params.append(`promotion_code`, store.appliedPromoCode)
+                          } else if (coupon) {
+                            // the coupon that's applied by default (special event, etc.)
+                            params.append(`coupon_id`, coupon.id)
                           }
+
                           return params.toString()
                         })()}`}
                       >
@@ -1467,7 +1453,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               store.showFaq = true
                             }}
                             style={{ textDecorationLine: 'underline' }}
-                            size="$1"
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
                           >
                             FAQ
                           </SizableText>
@@ -1479,7 +1468,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                               store.showAgreement = true
                             }}
                             style={{ textDecorationLine: 'underline' }}
-                            size="$1"
+                            hoverStyle={{
+                              color: '$color11',
+                            }}
+                            size="$2"
                           >
                             License Agreement
                           </SizableText>
@@ -1492,21 +1484,20 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                   </YStack>
                 </YStack>
               </XStack>
-
-              <Unspaced>
-                <Dialog.Close asChild>
-                  <Button
-                    position="absolute"
-                    top="$1"
-                    right="$1"
-                    size="$2"
-                    circular
-                    icon={X}
-                  />
-                </Dialog.Close>
-              </Unspaced>
             </YStack>
           </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$4"
+                right="$4"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -1548,25 +1539,25 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <TakeoutCardFrame
           className="blur-medium"
           zi={1000}
-          maw={340}
+          maw={320}
           als="center"
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
           shadowColor="#000"
-          x={-100}
-          y={100}
+          x={-50}
+          y={50}
           mah="calc(min(85vh, 800px))"
           $md={{
             x: -20,
             y: 0,
-            mb: 280,
+            // mb: 280,
             mah: 'auto',
             w: '100%',
             maw: '100%',
-            mt: 160,
+            mt: 100,
           }}
         >
-          <YStack zi={-1} fullscreen bc="$backgroundStrong" o={0.8} />
+          <YStack zi={-1} fullscreen bc="$color5" o={0.5} />
 
           <LinearGradient
             pos="absolute"
@@ -1592,13 +1583,15 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
           <ScrollView disabled={media.md} showsVerticalScrollIndicator={false}>
             <YStack space="$2" p="$6">
-              <MunroP size="$3" o={0.12} mt={-5}>
+              <MunroP size="$3" o={0.1} mt={-5} mb={-5}>
                 Drop 0001
               </MunroP>
 
-              <MunroP size="$11" ls={2}>
-                The Stack
-              </MunroP>
+              <ThemeTintAlt>
+                <MunroP className="callout" color="$color9" size="$11" ls={2}>
+                  The Stack
+                </MunroP>
+              </ThemeTintAlt>
 
               <YStack>
                 <Row
@@ -1639,13 +1632,13 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Themes"
-                  description="Two all new theme - Pastel and Neon - that bring a muted or more bright feel."
+                  description="Two all new themes - Pastel and Neon - that bring a muted or more bright feel."
                   after="03"
                 />
 
                 <Row
-                  title="CI / CD"
-                  description="Lint, fix, tests, and deploys - all set up from day 1."
+                  title="Deploy"
+                  description="Vercel and Expo EAS configured for you to ship as fast as possible."
                   after="05"
                 />
 
@@ -1725,10 +1718,11 @@ const Row = (props: { title: any; description: any; after: any }) => {
       }}
     >
       <YStack f={1} py="$3" space="$1">
-        <MunroP size="$7">{props.title}</MunroP>
+        <Paragraph fontFamily="$cherryBomb" size="$4">
+          {props.title}
+        </Paragraph>
         <Paragraph
           size="$3"
-          lh={18}
           color="$color10"
           $md={{
             display: showDetail ? 'flex' : 'none',
@@ -1750,15 +1744,14 @@ const TakeoutCardFrame = styled(YStack, {
   ov: 'hidden',
 })
 
-const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
+const TAKEOUT = ({ fontSize = 450, lineHeight = fontSize * 0.64, ...props }) => (
   <H1
     className="mix-blend font-outlined"
     userSelect="none"
     color="$backgroundStrong"
-    fontFamily="$glusp"
+    fontFamily="$cherryBomb"
     fontSize={fontSize}
     lineHeight={lineHeight}
-    mt={40}
     whiteSpace="nowrap"
     minWidth={970}
     ta="center"
@@ -1766,7 +1759,7 @@ const TAKEOUT = ({ fontSize = 290, lineHeight = 255, ...props }) => (
   >
     Take
     <br />
-    out
+    <span style={{ display: 'inline-flex', transform: 'translateY(-65px)' }}>out</span>
   </H1>
 )
 
@@ -1997,7 +1990,11 @@ const Points = () => (
 )
 
 const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const couponPromise = stripe.coupons.list()
+  const promoListPromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code site are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
   const productPromises = [
     supabaseAdmin
       .from('products')
@@ -2015,20 +2012,16 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
       .eq('metadata->>slug', 'font-packs')
       .single(),
   ]
-  const promises = [couponPromise, ...productPromises]
+  const promises = [promoListPromise, ...productPromises]
   const queries = await Promise.all(promises)
 
   const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof couponPromise>
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>
 
   let coupon: Stripe.Coupon | null = null
 
   if (couponsList.data.length > 0) {
-    for (const _coupon of couponsList.data) {
-      if (_coupon.metadata?.show_on_site) {
-        coupon = _coupon
-      }
-    }
+    coupon = couponsList.data[0].coupon
   }
 
   for (const product of products) {
@@ -2059,23 +2052,8 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   }
 }
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
-  try {
-    const props = await getTakeoutProducts()
-    return {
-      revalidate: 60,
-      props,
-    }
-  } catch (err) {
-    console.error(`Error getting props`, err)
-    return {
-      notFound: true,
-    }
-  }
-}
-
 const HeartsRow = () => (
-  <XStack space="$12" als="center" spaceDirection="horizontal">
+  <XStack space="$12" my="$4" als="center" spaceDirection="horizontal">
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
@@ -2097,7 +2075,9 @@ const FaqModal = () => {
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -2129,25 +2109,18 @@ const FaqModal = () => {
           w="90%"
           maw={900}
         >
-          <YStack h="100%">
-            <ScrollView>
-              <H1 ta="center">Frequently Asked Questions</H1>
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '90vh' }}>
+              <H1 px="$4" $sm={{ size: '$8' }}>
+                Frequently Asked Questions
+              </H1>
               <XStack mt="$4" flexWrap="wrap" gap="$6" p="$4">
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Can I still ues the starter after my subscription has ended?</H5>
+                  <H5>Can I still use the starter after my subscription has ended?</H5>
                   <Paragraph>
                     Of course! the subscription is only for the bot updates. If you cancel
                     your subscription you will stop receiving updates but can still use
                     your starter.
-                  </Paragraph>
-                </YStack>
-
-                <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>Do I have to annually pay for the icon and font packages?</H5>
-                  <Paragraph>
-                    No. Technically the icon and font packages are offered as a
-                    subscription but the renewal will be free so you pay only once. We
-                    apply a 100% coupon right after your checkout.
                   </Paragraph>
                 </YStack>
 
@@ -2163,8 +2136,21 @@ const FaqModal = () => {
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
                   <H5>Is there a refund policy?</H5>
                   <Paragraph>
-                    No. Since that would allow folks to just purchase the starter, fork
-                    and refund. We don't offer a refund to prevent abuse of our product.
+                    No, to prevent abuse we have a no refund policy, but reach out to us
+                    if you are non-profit or a student with a .edu email address if you
+                    would like a discount.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>
+                    Can I use some of the features? What about merge conflicts with the
+                    bot?
+                  </H5>
+                  <Paragraph>
+                    Yes. We've designed the repo to be as well isolated as possible. We
+                    are working on settings for takeout.json that let you configure which
+                    types of updates you'd like to receive.
                   </Paragraph>
                 </YStack>
 
@@ -2175,6 +2161,15 @@ const FaqModal = () => {
                     send update PRs to all the repositories that have the bot installed
                     and have an active subscription. You may tweak the changes on the PR
                     and merge, or just disable it if you want to.
+                  </Paragraph>
+                </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How often does the bot trigger updates?</H5>
+                  <Paragraph>
+                    We do this manually to avoid constant PRs and try to schedule them at
+                    most once a week. We're also working on a UI for users to manually
+                    trigger older updates in case they've missed them.
                   </Paragraph>
                 </YStack>
 
@@ -2200,9 +2195,23 @@ const FaqModal = () => {
                     font` and follow the steps to install the packages.
                   </Paragraph>
                 </YStack>
+
+                <YStack gap="$4" f={1} fb={0} minWidth={300}>
+                  <H5>How many projects can I use this for?</H5>
+                  <Paragraph
+                    cursor="pointer"
+                    textDecorationLine="underline"
+                    onPress={() => {
+                      store.showAgreement = true
+                    }}
+                  >
+                    See License
+                  </Paragraph>
+                </YStack>
+
                 {/* 
                 <YStack gap="$4" f={1} fb={0} minWidth={300}>
-                  <H5>
+                  <H5 >
                     Can I get auto-updates if I have my repository on a git server that
                     doesn't support GitHub bots?
                   </H5>
@@ -2213,13 +2222,38 @@ const FaqModal = () => {
                   </Paragraph>
                 </YStack> */}
               </XStack>
-            </ScrollView>
-          </YStack>
+            </YStack>
+          </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
   )
 }
+
+const Ul = styled(YStack, {
+  name: 'ul',
+  tag: 'ul',
+  paddingLeft: 20,
+})
+
+const Li = styled(YStack, {
+  name: 'li',
+  tag: 'li',
+  // @ts-ignore˝
+  display: 'list-item',
+})
 
 const AgreementModal = () => {
   const store = useTakeoutStore()
@@ -2234,7 +2268,9 @@ const AgreementModal = () => {
       <Dialog.Adapt when="sm">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" space>
-            <Dialog.Adapt.Contents />
+            <Sheet.ScrollView>
+              <Dialog.Adapt.Contents />
+            </Sheet.ScrollView>
           </Sheet.Frame>
           <Sheet.Overlay />
         </Sheet>
@@ -2266,9 +2302,135 @@ const AgreementModal = () => {
           w="90%"
           maw={900}
         >
-          <YStack h="100%" space>
-            <Paragraph>TODO</Paragraph>
-          </YStack>
+          <ScrollView>
+            <YStack $gtSm={{ maxHeight: '90vh' }} space>
+              <H1 $sm={{ size: '$8' }}>License Agreement</H1>
+
+              <Paragraph>
+                Tamagui Takeout License grants you a non-exclusive license and permission
+                to use the Takout products based on the number of purchased licenses.
+              </Paragraph>
+
+              <Paragraph>
+                Tamagui Takeout License grants the same permissions to all Employees and
+                Contractors of the Licensee to access and use the Takeout stack up to the
+                number of seats purchased.
+              </Paragraph>
+
+              <Paragraph>
+                Seats only apply to the subscription - if the number of Employees and
+                Contractors who modify the Takeout stack for the the duration of the
+                license purchase exceeds your seat limit, you must upgrade or cancel your
+                subscription.
+              </Paragraph>
+
+              <Paragraph>You can:</Paragraph>
+
+              <Paragraph>
+                <Ul>
+                  <Li>
+                    Use all Takeout stack deliverables within a single code repository for
+                    a single public product.
+                  </Li>
+                  <Li>
+                    Use the Takeout stack deliverables for unlimited private projects
+                    available to only licensees.
+                  </Li>
+                  <Li>
+                    Deploy all Takeout stack deliverables to one public domain, and one
+                    public app within each of the iOS and Android app stores.
+                  </Li>
+                  <Li>
+                    Deliver a product that is commercial in nature with the Takeout stack.
+                  </Li>
+                  <Li>
+                    Re-use all Takeout stack deliverables for a new project after a
+                    previous project has been shut down to users.
+                  </Li>
+                </Ul>
+              </Paragraph>
+
+              <Paragraph>You cannot:</Paragraph>
+
+              <Paragraph>
+                <Ul>
+                  <Li>
+                    Re-sell or distribute the Takeout stack available for users to read
+                    for any purpose, even with modification.
+                  </Li>
+                  <Li>
+                    Create a service which allows for users to use the Takeout stack to
+                    build their own publicly available products.
+                  </Li>
+                  <Li>
+                    Create a code template, UI kit, or starter kit based on the Takeout
+                    stack available to users.
+                  </Li>
+                  <Li>
+                    Use the Takeout stack for more than one public domain per license
+                    purchase.
+                  </Li>
+                </Ul>
+              </Paragraph>
+
+              <H3>License Definitions</H3>
+
+              <Paragraph>
+                <Ul>
+                  <Li>
+                    Licensee is a person or a business entity who has purchased a License.
+                  </Li>
+                  <Li>
+                    Takeout stack is the code and assets made available to the Licensee
+                    after purchasing a Tamagui license.
+                  </Li>
+                  <Li>
+                    Product is any artifact produced that incorporates the Takeout stack.
+                  </Li>
+                  <Li>User is any person not licensed to use the Takeout stack.</Li>
+                  <Li>Employee is a full-time or part-time employee of the Licensee.</Li>
+                  <Li>
+                    Contractor is an individual or business entity contracted to perform
+                    services for the Licensee.
+                  </Li>
+                  <Li>
+                    Client is an individual or entity receiving custom professional
+                    services directly from the Licensee, produced specifically for that
+                    individual or entity.
+                  </Li>
+                </Ul>
+              </Paragraph>
+
+              <H3>Liability</H3>
+
+              <Paragraph>
+                Tamagui's liability to you for costs, damages, or other losses arising
+                from your use of the Takeout stack — including third-party claims against
+                you — is limited to a refund of your license fee. Tamagui may not be held
+                liable for any consequential damages related to your use of the Takeout
+                stack. The ownership of the Takeout stack remains with the Tamagui
+                development team. You are required to abide by the licensing terms to
+                avoid termination in case of non-compliance with the agreed terms.
+              </Paragraph>
+
+              <Paragraph>
+                Got any further questions?{' '}
+                <a href="mailto:support@tamagui.dev">Send us an email</a>
+              </Paragraph>
+            </YStack>
+          </ScrollView>
+          <Unspaced>
+            <Dialog.Close asChild>
+              <Button
+                position="absolute"
+                top="$2"
+                right="$2"
+                size="$2"
+                circular
+                icon={X}
+              />
+            </Dialog.Close>
+          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -2280,29 +2442,389 @@ const DiscountText = ({
 }: {
   coupon: NonNullable<TakeoutPageProps['coupon']>
 }) => {
+  const text = coupon.amount_off
+    ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
+    : coupon.percent_off
+    ? `${coupon.percent_off}% ${coupon.name}`
+    : ''
   return (
-    <ThemeTint>
-      <YStack
-        style={{
-          clipPath:
-            'polygon(0% 6px, 6px 6px, 6px 0%, calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px))',
-        }}
-        m="auto"
-        px="$3"
-        py="$1"
-        backgroundColor="$color5"
-        theme="alt2"
-        scale={1}
-        $sm={{ scale: 1.5 }}
-      >
-        <Paragraph color="white" textAlign="center" fontFamily="$munro" size="$8">
-          {coupon.amount_off
-            ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
-            : coupon.percent_off
-            ? `${coupon.percent_off}% ${coupon.name}`
-            : ''}
-        </Paragraph>
+    <ThemeTintAlt>
+      <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="10deg">
+        <YStack
+          fullscreen
+          shadowColor="rgba(0,0,0,0.5)"
+          shadowRadius={10}
+          shadowOffset={{ height: 5, width: 0 }}
+          scale={0.95}
+        />
+        <YStack px="$4" py="$1" backgroundColor="$color8" className="corner-cut">
+          <MunroP color="white" textAlign="center" size="$7">
+            {text.trim()}
+          </MunroP>
+        </YStack>
       </YStack>
-    </ThemeTint>
+    </ThemeTintAlt>
   )
+}
+
+let keepCycling = true
+
+const FeatureIcon = ({
+  themeIndex,
+  title,
+  icon,
+}: {
+  themeIndex: number
+  icon: string
+  title: string
+}) => {
+  const Tint = useTint()
+  const store = useTakeoutStore()
+
+  useEffect(() => {
+    if (store.showPurchase) return
+    if (!keepCycling) return
+
+    const id = setTimeout(() => {
+      Tint.setNextTint()
+    }, 10_000)
+
+    return () => clearTimeout(id)
+  }, [Tint.tint, store.showPurchase])
+  const theme = Tint.tints[themeIndex] as ThemeName
+  const active = Tint.tint === theme
+
+  return (
+    <YStack>
+      <Theme name={theme}>
+        <PixelTooltip active={active} label={title}>
+          <IconFrame
+            onMouseEnter={() => {
+              keepCycling = false
+              Tint.setTintIndex(themeIndex)
+            }}
+            backgroundColor={active ? '$color9' : '$color3'}
+          >
+            <Image className="pixelate" src={icon} alt="Icon" height={18} width={18} />
+          </IconFrame>
+        </PixelTooltip>
+      </Theme>
+    </YStack>
+  )
+}
+
+const PixelTooltip = ({
+  children,
+  label,
+  active,
+}: {
+  label: string
+  children?: any
+  active?: boolean
+}) => {
+  return (
+    <YStack
+      ai="center"
+      jc="center"
+      {...(active && {
+        scale: 1.1,
+      })}
+    >
+      <Paragraph color="$color12" fontFamily="$munro" size="$4">
+        {label}
+      </Paragraph>
+      {children}
+    </YStack>
+  )
+}
+
+const PromotionInput = () => {
+  const store = useTakeoutStore()
+
+  const [localCode, setLocalCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const applyCoupon = (promoCode: string, coupon: Stripe.Coupon) => {
+    store.appliedCoupon = coupon
+    store.appliedPromoCode = promoCode
+  }
+
+  const removeCoupon = () => {
+    setLocalCode('')
+    store.appliedCoupon = null
+    store.appliedPromoCode = null
+  }
+
+  const closeField = () => {
+    setLocalCode('')
+    store.promoInputIsOpen = false
+  }
+
+  const checkPromotion = async () => {
+    setIsLoading(true)
+    try {
+      const res = await fetch(
+        `/api/check-promo-code?${new URLSearchParams({ code: localCode })}`
+      )
+      if (res.status === 200) {
+        const json = (await res.json()) as Stripe.Coupon
+        applyCoupon(localCode, json)
+      } else {
+        const json = await res.json()
+        if (json.message) {
+          alert(json.message)
+        }
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <AnimatePresence exitBeforeEnter>
+      {store.promoInputIsOpen ? (
+        <XStack
+          key="is-open"
+          animation="100ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+          opacity={1}
+          gap="$2"
+          jc="center"
+          ai="center"
+        >
+          {store.appliedPromoCode ? (
+            <>
+              <Paragraph theme="green_alt2">
+                Coupon {store.appliedPromoCode} applied.
+              </Paragraph>
+              <Button chromeless size="$2" onPress={removeCoupon}>
+                Remove Coupon
+              </Button>
+            </>
+          ) : (
+            <>
+              {!store.appliedPromoCode && (
+                <Button disabled={isLoading} size="$2" chromeless onPress={closeField}>
+                  Cancel
+                </Button>
+              )}
+              <Input
+                disabled={!!store.appliedPromoCode}
+                value={store.appliedPromoCode ?? localCode}
+                onChangeText={(text) => {
+                  setLocalCode(text)
+                }}
+                placeholder="Enter the code"
+                size="$2"
+              />
+              <Button
+                disabled={isLoading}
+                themeInverse
+                size="$2"
+                onPress={checkPromotion}
+              >
+                Submit
+              </Button>
+            </>
+          )}
+        </XStack>
+      ) : (
+        <Paragraph
+          key="is-not-open"
+          animation="100ms"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+          opacity={1}
+          ta="right"
+          textDecorationLine="underline"
+          cursor="pointer"
+          theme="alt2"
+          size="$2"
+          onPress={() => {
+            store.promoInputIsOpen = true
+          }}
+        >
+          Have a coupon code?
+        </Paragraph>
+      )}
+    </AnimatePresence>
+  )
+}
+
+const lazy = globalThis['requestIdleCallback'] || setTimeout
+
+const useLazilyMounted = (extraTime?: number) => {
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    if (isClient) {
+      lazy(() => {
+        setTimeout(() => {
+          setLoaded(true)
+        }, extraTime)
+      })
+    }
+  }, [])
+  return loaded
+}
+
+const PromoVideo = () => {
+  const [open, setOpen] = useState(false)
+  const loaded = useLazilyMounted(100)
+
+  return (
+    <YStack
+      className="all ease-in ms300"
+      disableOptimization
+      pos="absolute"
+      t={200}
+      l={-300}
+      pe={!loaded ? 'none' : 'auto'}
+      zi={1000}
+      o={loaded ? 1 : 0}
+      scale={!loaded ? 1 : 0.22}
+      rotate="-5deg"
+      $sm={{
+        dsp: 'none',
+      }}
+      {...(open && {
+        scale: 1,
+        rotate: '0deg',
+        x: 600,
+        y: -120,
+      })}
+      cursor="pointer"
+      onPress={() => {
+        setOpen(true)
+      }}
+    >
+      {open && (
+        <Button
+          pos="absolute"
+          t={-20}
+          r={-20}
+          elevation="$4"
+          zi={100}
+          circular
+          icon={X}
+          onPress={(e) => {
+            e.stopPropagation()
+            setOpen(false)
+          }}
+        ></Button>
+      )}
+      <YStack
+        br="$10"
+        ov="hidden"
+        elevation="$10"
+        w={840}
+        h={480}
+        bc="$color3"
+        bw={3}
+        boc="$borderColor"
+      >
+        {!open && (
+          <YStack fullscreen ai="center" jc="center" bc="rgba(0,0,0,0.75)">
+            <PlayCircle size={150} color="red" />
+            <Paragraph
+              size="$15"
+              pos="absolute"
+              rotate="-10deg"
+              ta="center"
+              ff="$silkscreen"
+            >
+              WATCH THE VIDEO
+            </Paragraph>
+          </YStack>
+        )}
+        <iframe
+          width="840"
+          height="480"
+          style={{
+            width: 840,
+            height: 480,
+          }}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
+            open ? 1 : 0
+          }`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
+      </YStack>
+    </YStack>
+  )
+}
+
+export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
+  try {
+    const props = await getTakeoutProducts()
+    return {
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      notFound: true,
+    }
+  }
+}
+
+const Bullet = ({
+  size = '$6',
+  children,
+  subtitle,
+  inProgress,
+  ...props
+}: XStackProps & {
+  children: any
+  subtitle?: any
+  size?: FontSizeTokens
+  inProgress?: boolean
+}) => {
+  return (
+    <XStack
+      tag="li"
+      ai="flex-start"
+      space
+      f={1}
+      {...props}
+      w="100%"
+      $gtSm={{ w: 'calc(50% - 20px)' }}
+    >
+      <YStack y={-1}>
+        <Circle size={42} my={-6} boc="$borderColor" bw={1}>
+          {inProgress ? (
+            <Hammer size={24} color="$color10" />
+          ) : (
+            <Dot size={24} color="$color10" />
+          )}
+        </Circle>
+      </YStack>
+      <YStack f={1}>
+        <Paragraph wordWrap="break-word" size={size}>
+          {children}
+        </Paragraph>
+        {!!subtitle && (
+          <Paragraph
+            size={
+              getSize(size, {
+                shift: -2,
+              }) as any
+            }
+            theme="alt2"
+            o={0.5}
+          >
+            {subtitle}
+          </Paragraph>
+        )}
+      </YStack>
+    </XStack>
+  )
+}
+
+const Lazy = (props: { children: any }) => {
+  const loaded = useLazilyMounted(500)
+  return loaded ? props.children : null
 }

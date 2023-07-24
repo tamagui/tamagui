@@ -46,12 +46,19 @@ const external = [
   'react-native-svg',
 ]
 
+const esbuildExtraOptions = {
+  define: {
+    __DEV__: `${process.env.NODE_ENV === 'development'}`,
+  },
+}
+
 export const esbuildOptions = {
   loader: 'tsx',
   target: 'es2018',
   format: 'cjs',
   jsx: 'transform',
   platform: 'node',
+  ...esbuildExtraOptions,
 } as const
 
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>
@@ -125,6 +132,7 @@ export async function bundleConfig(props: TamaguiOptions) {
             external,
             outfile: configOutPath,
             target: 'node16',
+            ...esbuildExtraOptions,
           })
         : null,
       ...baseComponents.map((componentModule, i) => {
@@ -134,30 +142,25 @@ export async function bundleConfig(props: TamaguiOptions) {
           external,
           outfile: componentOutPaths[i],
           target: 'node16',
+          ...esbuildExtraOptions,
         })
       }),
     ])
 
-    if (!loggedOutputInfo) {
-      loggedOutputInfo = true
-      colorLog(
-        Color.FgYellow,
-        `
+    colorLog(
+      Color.FgYellow,
+      `
     ➡ [tamagui] (${Date.now() - start}ms):`
-      )
-      colorLog(
-        Color.Dim,
+    )
+    colorLog(
+      Color.Dim,
+      `
+        Config     .${sep}${relative(process.cwd(), configOutPath)}
+        Components ${[
+          ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
+        ].join('\n             ')}
         `
-          Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${[
-            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-          ].join('\n             ')}
-          `
-      )
-    }
-
-    // get around node.js's module cache to get the new config...
-    delete require.cache[path.resolve(configOutPath)]
+    )
 
     let out
     const unregister = registerRequire()

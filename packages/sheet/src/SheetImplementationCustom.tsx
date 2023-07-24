@@ -118,11 +118,11 @@ export const SheetImplementationCustom = themeable(
         value: animatedNumber,
         hostRef: sheetRef,
       },
-      (value) => {
+      useCallback((value) => {
         if (!driver.isReactNative) return
         at.current = value
         scrollBridge.paneY = value
-      }
+      }, [])
     )
 
     function stopSpring() {
@@ -138,8 +138,7 @@ export const SheetImplementationCustom = themeable(
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
 
-      let toValue =
-         isHidden || position === -1 ? screenSize : positions[position]
+      let toValue = isHidden || position === -1 ? screenSize : positions[position]
 
       if (at.current === toValue) return
       at.current = toValue

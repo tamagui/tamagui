@@ -1,5 +1,3 @@
-import { join } from 'path'
-
 /* eslint-disable no-console */
 import arg from 'arg'
 import chalk from 'chalk'
@@ -25,21 +23,23 @@ const COMMAND_MAP = {
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
-      const { generateThemes } = require('@tamagui/generate-themes')
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      const [cmd, inPath, outPath] = _
+      const [_cmd, inPath, outPath] = _
       if (!inPath || !outPath) {
         throw new Error(
           `Must supply both input and output paths, missing one (inPath: ${inPath}, outPath: ${outPath})`
         )
       }
-      await generateThemes({
-        ...options,
-        inPath: join(options.root, inPath),
-        outPath: join(options.root, outPath),
-      })
+
+      const { generateThemes, writeGeneratedThemes } = require('@tamagui/generate-themes')
+
+      await writeGeneratedThemes(
+        options.paths.dotDir,
+        outPath,
+        await generateThemes(inPath)
+      )
     },
   },
 
@@ -109,24 +109,24 @@ const COMMAND_MAP = {
     },
   },
 
-  // studio: {
-  //   shorthands: ['s'],
-  //   description: `Studio`,
-  //   flags: {
-  //     '--help': Boolean,
-  //     '--debug': Boolean,
-  //     '--verbose': Boolean,
-  //     '--local': Boolean,
-  //   },
-  //   async run() {
-  //     const { _, ...flags } = arg(this.flags)
-  //     const { studio } = await import('./studio')
-  //     const options = await getOptions({
-  //       debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-  //     })
-  //     await studio(options, !flags['--local'])
-  //   },
-  // },
+  studio: {
+    shorthands: ['s'],
+    description: `Studio`,
+    flags: {
+      '--help': Boolean,
+      '--debug': Boolean,
+      '--verbose': Boolean,
+      '--remote': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { studio } = require('./studio')
+      const options = await getOptions({
+        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+      })
+      await studio(options, flags['--remote'])
+    },
+  },
 }
 
 type CommandDefinitions = typeof COMMAND_MAP

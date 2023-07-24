@@ -1,26 +1,52 @@
-import { Moon } from '@tamagui/lucide-icons'
-import { H1, Stack, getConfig, getToken, getTokenValue, getTokens } from 'tamagui'
+// debug-verbose
+// import './wdyr'
 
-// TODO this is a great test: media + animation + space (test without animation too)
-// <Stack
-//       animation="bouncy"
-//       space="$4"
-//       debug="verbose"
-//       backgroundColor="blue"
-//       $sm={{
-//         backgroundColor: 'yellow',
-//       }}
-//       $md={{
-//         space: '$5',
-//         backgroundColor: 'red',
-//       }}
-//     >
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//       <Square size={20} bc="red" />
-//     </Stack>
+import { Button, Circle, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
-  console.log('wtf', getTokens({ prefixed: true }))
-  return <H1>test things here</H1>
+  return (
+    <>
+      <Circle width={100} height={100} bc={'red'} />
+    </>
+  )
 }
+
+// const NumberTicker = () => {
+//   const [numbers, setNumbers] = useState([0, 5, 2, 3])
+
+//   useEffect(() => {
+//     setTimeout(() => {
+//       setNumbers(
+//         numbers.map((n) => {
+//           return Math.floor(Math.random() * 10)
+//         })
+//       )
+//     }, 3000)
+//   }, [numbers])
+
+//   return (
+//     <XStack als="center" m="auto">
+//       {numbers.map((n, i) => {
+//         return (
+//           <AnimatePresence exitBeforeEnter key={i}>
+//             <H1
+//               animation="quick"
+//               enterStyle={{
+//                 y: -30,
+//                 o: 0,
+//               }}
+//               exitStyle={{
+//                 y: 30,
+//                 o: 0,
+//               }}
+//               o={1}
+//               key={n}
+//             >
+//               {n}
+//             </H1>
+//           </AnimatePresence>
+//         )
+//       })}
+//     </XStack>
+//   )
+// }
