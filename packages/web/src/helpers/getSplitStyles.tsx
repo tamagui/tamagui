@@ -2,7 +2,6 @@ import {
   currentPlatform,
   isAndroid,
   isClient,
-  isRSC,
   isServer,
   isWeb,
   useIsomorphicLayoutEffect,
@@ -1226,11 +1225,9 @@ const useInsertEffectCompat = isWeb
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
 
-  if (!isRSC) {
-    useInsertEffectCompat(() => {
-      insertStyleRules(res.rulesToInsert)
-    }, [res.rulesToInsert])
-  }
+  useInsertEffectCompat(() => {
+    insertStyleRules(res.rulesToInsert)
+  }, [res.rulesToInsert])
 
   return res
 }

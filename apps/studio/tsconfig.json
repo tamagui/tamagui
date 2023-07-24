@@ -1,4 +1,14 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ],
+      "@protected/*": [
+        "./src/*"
+      ],
+    }
+  },
   "extends": "../../tsconfig"
 }

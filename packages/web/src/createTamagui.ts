@@ -1,7 +1,7 @@
-import { isRSC, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig } from './config'
-import { Variable, getVariableValue } from './createVariable'
+import { Variable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -203,7 +203,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         // then, generate CSS from de-duped
         let themeRuleSets: string[] = []
 
-        if (isWeb || isRSC) {
+        if (isWeb) {
           for (const themeName in dedupedThemes) {
             const nextRules = getThemeCSSRules({
               config: configIn,

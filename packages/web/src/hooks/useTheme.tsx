@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -14,7 +14,6 @@ import {
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
-import { useServerRef } from './useServerHooks'
 
 export type ChangedThemeResponse = {
   isNewTheme: boolean
@@ -49,11 +48,11 @@ type UseThemeResult = {
 }
 
 export const useTheme = (props: ThemeProps = emptyProps): UseThemeResult => {
-  return (isRSC ? null : useThemeWithState(props)?.theme) || getDefaultThemeProxied()
+  return useThemeWithState(props)?.theme || getDefaultThemeProxied()
 }
 
 export const useThemeWithState = (props: ThemeProps) => {
-  const keys = useServerRef<string[]>([])
+  const keys = useRef<string[]>([])
 
   const changedTheme = useChangeThemeEffect(
     props,
@@ -158,15 +157,6 @@ export const useChangeThemeEffect = (
   keys?: string[],
   shouldUpdate?: () => boolean | undefined
 ): ChangedThemeResponse => {
-  if (isRSC) {
-    // we need context working for this to work well
-    return {
-      isNewTheme: false,
-      ...createState().state,
-      themeManager: null,
-    }
-  }
-
   const {
     // @ts-expect-error internal use only
     disable,
@@ -249,9 +239,9 @@ export const useChangeThemeEffect = (
         const force = shouldUpdate?.()
         const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
         if (process.env.NODE_ENV === 'development' && props.debug) {
-          const logs = { force, doUpdate, props, name, manager, keys }
+          // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(` 🔸 onChange`, themeManager.id, logs)
+          console.log(` 🔸 onChange`, themeManager.id, { force, doUpdate, props, name, manager, keys })
         }
         if (doUpdate) {
           setThemeState(createState)

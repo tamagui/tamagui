@@ -1,9 +1,8 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, forwardRef, isValidElement, useMemo } from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import { useServerRef } from '../hooks/useServerHooks'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
 import type { DebugProp, ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
@@ -60,7 +59,7 @@ export function useThemedChildren(
 ) {
   const { themeManager, isNewTheme } = themeState
   const { shallow, forceClassName } = props
-  const hasEverThemed = useServerRef(false)
+  const hasEverThemed = useRef(false)
   if (isNewTheme) {
     hasEverThemed.current = true
   }

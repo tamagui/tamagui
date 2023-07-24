@@ -1,11 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import {
-  isClient,
-  isRSC,
-  isServer,
-  isWeb,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { validStyles } from '@tamagui/helpers'
 import React, {
   Children,
@@ -16,8 +10,8 @@ import React, {
   useCallback,
   useContext,
   useId,
-  useMemo,
   useRef,
+  useState,
 } from 'react'
 
 import { getConfig, onConfiguredOnce } from './config'
@@ -33,7 +27,6 @@ import { themeable } from './helpers/themeable'
 import { useShallowSetState } from './helpers/useShallowSetState'
 import { useAnimationDriver } from './hooks/useAnimationDriver'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
-import { useServerRef, useServerState } from './hooks/useServerHooks'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
 import {
@@ -253,7 +246,7 @@ export function createComponent<
     )
     stateRef.current ||= {}
 
-    const hostRef = useServerRef<TamaguiElement>(null)
+    const hostRef = useRef<TamaguiElement>(null)
 
     /**
      * Component state for tracking animations, pseudos
@@ -277,7 +270,7 @@ export function createComponent<
     })()
 
     const usePresence = animationsConfig?.usePresence
-    const presence = (!isRSC && willBeAnimated && usePresence?.()) || null
+    const presence = (willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
 
@@ -293,7 +286,7 @@ export function createComponent<
         ? defaultComponentStateShouldEnter!
         : defaultComponentState!
       : defaultComponentStateMounted!
-    const states = useServerState<TamaguiComponentState>(initialState)
+    const states = useState<TamaguiComponentState>(initialState)
 
     const state = propsIn.forceStyle
       ? { ...states[0], [propsIn.forceStyle]: true }
@@ -327,7 +320,7 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const languageContext = isRSC ? null : useContext(FontLanguageContext)
+    const languageContext = useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     const isTaggable = !Component || typeof Component === 'string'
@@ -522,7 +515,7 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    if (!isRSC && willBeAnimated && useAnimations && !isHOC) {
+    if (willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
         // if hydrating, send empty style
@@ -755,7 +748,7 @@ export function createComponent<
     )
 
     const events: TamaguiComponentEvents | null =
-      shouldAttach && !isRSC && !isDisabled && !asChild
+      shouldAttach && !isDisabled && !asChild
         ? {
             onPressOut: attachPress
               ? (e) => {

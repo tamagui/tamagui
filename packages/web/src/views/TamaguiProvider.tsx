@@ -1,12 +1,12 @@
-import { isClient, isRSC, isServer, isWeb } from '@tamagui/constants'
+import { isClient, isServer, isWeb } from '@tamagui/constants'
 import * as React from 'react'
 
+import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
 import { ButtonNestingContext } from '../contexts/ButtonNestingContext'
 import { TextAncestorContext } from '../contexts/TextAncestorContext'
 import { useMediaListeners } from '../hooks/useMedia'
 import type { TamaguiProviderProps } from '../types'
 import { ThemeProvider } from './ThemeProvider'
-import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
 
 export function TamaguiProvider({
   children,
@@ -14,17 +14,6 @@ export function TamaguiProvider({
   config,
   ...themePropsProvider
 }: TamaguiProviderProps) {
-  if (isRSC) {
-    return (
-      <span
-        style={{ display: 'contents' }}
-        className={`t_${Object.keys(config.themes)[0] || 'light'}`}
-      >
-        {children}
-      </span>
-    )
-  }
-
   if (!(isWeb && isServer)) {
     useMediaListeners(config)
   }

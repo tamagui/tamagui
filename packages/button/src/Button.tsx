@@ -16,7 +16,6 @@ import {
   ThemeableProps,
   createStyledContext,
   getVariableValue,
-  isRSC,
   spacedChildren,
   styled,
   useProps,
@@ -215,7 +214,7 @@ function useButton<Props extends ButtonProps>(
     ...rest
   } = propsIn
 
-  const isNested = isRSC ? false : useContext(ButtonNestingContext)
+  const isNested = useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn) as any as ButtonProps
   const size = propsActive.size || '$true'
   const iconSize =
@@ -270,9 +269,7 @@ function useButton<Props extends ButtonProps>(
       tag,
     }),
     ...rest,
-    children: isRSC ? (
-      inner
-    ) : (
+    children: (
       <ButtonNestingContext.Provider value={true}>{inner}</ButtonNestingContext.Provider>
     ),
   } as Props

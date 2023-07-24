@@ -1,9 +1,9 @@
-import { isRSC, isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { startTransition, useState } from 'react'
 
 export function useDidFinishSSR() {
   // conditional hook because it never changes if already true
-  if (isServer || isRSC) {
+  if (isServer) {
     return false
   }
 
@@ -23,8 +23,8 @@ type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
 export function useClientValue<Value extends any>(
   value?: Value
 ): FunctionOrValue<Value> | undefined {
-  if (isServer || isRSC) {
-    return undefined
+  if (isServer) {
+    return
   }
 
   const [v, setV] = useState<FunctionOrValue<Value> | undefined>(undefined)

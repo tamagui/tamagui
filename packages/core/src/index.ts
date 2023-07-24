@@ -12,7 +12,6 @@ import {
   Stack as WebStack,
   Text as WebText,
   composeEventHandlers,
-  isRSC,
   mergeEvent,
   setupHooks,
 } from '@tamagui/web'
@@ -81,28 +80,26 @@ setupHooks({
       ...viewProps
     } = propsIn
 
-    if (!isRSC) {
-      usePlatformMethods(hostRef as RefObject<Element>)
-      useElementLayout(hostRef as RefObject<Element>, onLayout as any)
-      useResponderEvents(hostRef, {
-        onMoveShouldSetResponder,
-        onMoveShouldSetResponderCapture,
-        onResponderEnd,
-        onResponderGrant,
-        onResponderMove,
-        onResponderReject,
-        onResponderRelease,
-        onResponderStart,
-        onResponderTerminate,
-        onResponderTerminationRequest,
-        onScrollShouldSetResponder,
-        onScrollShouldSetResponderCapture,
-        onSelectionChangeShouldSetResponder,
-        onSelectionChangeShouldSetResponderCapture,
-        onStartShouldSetResponder,
-        onStartShouldSetResponderCapture,
-      } as any)
-    }
+    usePlatformMethods(hostRef as RefObject<Element>)
+    useElementLayout(hostRef as RefObject<Element>, onLayout as any)
+    useResponderEvents(hostRef, {
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
+    } as any)
 
     // TODO move into getSplitStyles inital `if (process.env.TAMAGUI_TARGET === 'web')` block
 

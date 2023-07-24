@@ -1,4 +1,4 @@
-import { isRSC, isWeb } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 import { useContext } from 'react'
 
 import { FontLanguageContext } from '../contexts/FontLanguageContext'
@@ -24,7 +24,7 @@ export function useStyle<
 ) {
   const isText = base.staticConfig.isText
   const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-  const languageContext = isRSC ? null : useContext(FontLanguageContext)
+  const languageContext = useContext(FontLanguageContext)
   const themeState = useThemeWithState({})
   const media = useMedia()
   const out = useSplitStyles(
