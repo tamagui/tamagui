@@ -17,6 +17,7 @@ import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
+import { NextScript } from 'next/script'
 import React, { Suspense, memo, useEffect, useMemo, useState } from 'react'
 import Stripe from 'stripe'
 import {
@@ -478,7 +479,7 @@ export default function TakeoutPage({
           <LoadCherryBomb />
           <LoadCherryBomb />
           <LoadMunro />
-          <script src="https://cdn.paritydeals.com/banner.js" />
+          <NextScript src="https://cdn.paritydeals.com/banner.js" />
           <style
             dangerouslySetInnerHTML={{
               __html: `

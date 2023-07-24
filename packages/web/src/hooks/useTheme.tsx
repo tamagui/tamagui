@@ -364,7 +364,7 @@ export const useChangeThemeEffect = (
       mounted,
     }
 
-    if (process.env.NODE_ENV === 'development' && props['debug']) {
+    if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id

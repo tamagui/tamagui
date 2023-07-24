@@ -205,7 +205,8 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   for (let i = 0; i < numProps; i++) {
-    let keyInit = propKeys[i]
+    const keyOg = propKeys[i]
+    let keyInit = keyOg
     let valInit = props[keyInit]
 
     // normalize shorthands up front
@@ -216,6 +217,8 @@ export const getSplitStyles: StyleSplitter = (
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
     if (keyInit in skipProps && !isHOC) continue
+
+    styleState.curProps[keyInit] = valInit
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -495,10 +498,14 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassThrough = shouldPassProp || isHOCShouldPassThrough
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.groupCollapsed(`  🔹 prop ${keyInit} ${shouldPassThrough ? '(pass)' : ''}`)
+      console.groupCollapsed(
+        `🔹🔹🔹🔹 ${keyOg}${keyInit !== keyOg ? ` (shorthand for ${keyInit})` : ''} ${
+          shouldPassThrough ? '(pass)' : ''
+        } 🔹🔹🔹🔹`
+      )
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough })
+      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough, curProps: { ...styleState.curProps } })
       console.groupEnd()
     }
 
@@ -538,16 +545,15 @@ export const getSplitStyles: StyleSplitter = (
     // default font family
     // is this great? no, but backwards compat until we add tests and make better
     defaultFontVariable ||= `$${conf.defaultFont}`
-    styleState.fontFamily ||=
-      props[conf.inverseShorthands.fontFamily] || props.fontFamily || defaultFontVariable
 
     const expanded =
       isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
         ? [[keyInit, valInit]]
         : propMapper(keyInit, valInit, styleState)
 
-    if (!styleState.fontFamily) {
-      styleState.fontFamily = getPropMappedFontFamily(expanded)
+    const next = getPropMappedFontFamily(expanded)
+    if (next) {
+      styleState.fontFamily = next
     }
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -569,6 +575,13 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val == null) continue
       if (key in usedKeys) continue
+
+      if (key === 'fontFamily' && valInit && val) {
+        const fam = valInit[0] === '$' ? valInit : val
+        if (fam in conf.fontsParsed) {
+          styleState.fontFamily = fam
+        }
+      }
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
@@ -885,13 +898,6 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
 
-      if (key === 'fontFamily' && !styleState.fontFamily && valInit && val) {
-        const fam = valInit[0] === '$' ? valInit : val
-        if (fam in conf.fontsParsed) {
-          styleState.fontFamily = fam
-        }
-      }
-
       if (
         key in validStyleProps ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
@@ -915,9 +921,6 @@ export const getSplitStyles: StyleSplitter = (
       console.groupEnd()
     }
   }
-
-  // default to default font
-  styleState.fontFamily ||= conf.defaultFont
 
   fixStyles(style)
   if (isWeb) {

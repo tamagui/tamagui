@@ -45,6 +45,7 @@
     "release:canary": "yarn release --canary --ci",
     "release": "node -r esbuild-register ./scripts/release.ts",
     "sandbox:extract": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
+    "sandbox:no-extract": "yarn workspace @tamagui/kitchen-sink dev:web",
     "sandbox:prod": "yarn workspace @tamagui/kitchen-sink dev:web:prod",
     "sandbox": "yarn workspace @tamagui/kitchen-sink dev:web:extract",
     "setup": "node -r esbuild-register ./scripts/setup.ts",

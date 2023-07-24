@@ -112,7 +112,6 @@ module.exports = function (name, { defaultConfig }) {
     },
     experimental: {
       esmExternals: true,
-      forceSwcTransforms: true,
       scrollRestoration: true,
       legacyBrowsers: false,
     },

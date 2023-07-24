@@ -1,38 +1,79 @@
+// debug
 // import './wdyr'
 
-import { Button, Circle, Paragraph, SizableText, Text, XStack, styled } from 'tamagui'
+import { Button, Circle, H2, Paragraph, SizableText, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <>
-      <Subtitle>hello</Subtitle>
+      {/* <Subtitle debug="verbose">hello</Subtitle> */}
+
+      {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
+        WATCH THE VIDEO
+      </Paragraph> */}
+
+      <Button.Text fontWeight="900">test out</Button.Text>
+
+      <H2
+        className="clip-text mix-blend"
+        ff="$mono"
+        size="$12"
+        lh="$11"
+        color="$color10"
+        mb="$4"
+        style={{
+          // @ts-ignore
+          backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
+        }}
+        $gtLg={{
+          mr: 100,
+        }}
+        $lg={{
+          size: '$9',
+          lh: '$8',
+        }}
+        $sm={{
+          size: '$8',
+          lh: '$7',
+        }}
+      >
+        test
+      </H2>
+
+      {/* <ChangeFamilyVariant debug="verbose" size="$15">
+        Test
+      </ChangeFamilyVariant>
+      <ChangeFamilyVariant size="$15" isHeading>
+        Test
+      </ChangeFamilyVariant> */}
     </>
   )
 }
 
-// need to fix the ls -1 shouldnt be necessary on medias
+// TODO test:
+
+const ChangeFamilyVariant = styled(SizableText, {
+  fontFamily: '$body',
+  variants: {
+    isHeading: {
+      true: {
+        fontFamily: '$heading',
+      },
+    },
+  } as const,
+})
+
+// need to fix the ls shouldnt be necessary on medias
 const Subtitle = styled(Paragraph, {
   color: '$gray10',
   size: '$6',
   fontFamily: '$silkscreen',
   ta: 'left',
-  ls: -1,
+  ls: 10,
 
-  $gtSm: {
+  $sm: {
     ta: 'center',
     size: '$7',
-    ls: -1,
-  },
-
-  $gtMd: {
-    size: '$8',
-    ls: -1,
-  },
-
-  $gtLg: {
-    size: '$9',
-    lh: 50,
-    ls: -1,
   },
 })
 

@@ -43,6 +43,7 @@ import { literalToAst } from './literalToAst'
 import { loadTamagui, loadTamaguiSync } from './loadTamagui'
 import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
+import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { removeUnusedHooks } from './removeUnusedHooks'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
@@ -512,6 +513,10 @@ export function createExtractor(
         // }
 
         if (!Component) {
+          if (shouldPrintDebug) {
+            logger.info(` No component found`)
+          }
+
           /**
            * We could/should still extract CSS just limited to validStyleProps
            */
@@ -678,7 +683,7 @@ export function createExtractor(
           if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
             if (shouldPrintDebug) {
               logger.info(
-                ` - Binding not internal import or from components ${binding.identifier.name} in ${modulePath}`
+                ` - Binding for ${componentName} not internal import or from components ${binding.identifier.name} in ${modulePath}`
               )
             }
             return
@@ -754,6 +759,10 @@ export function createExtractor(
         }
 
         if (shouldDisableExtraction) {
+          if (shouldPrintDebug === 'verbose') {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log(` Extraction disabled`)
+          }
           return
         }
 
@@ -776,6 +785,11 @@ export function createExtractor(
               if (!t.isStringLiteral(val)) return
               tagName = val.value
             })
+
+          if (shouldPrintDebug === 'verbose') {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log(` Start tag ${tagName}`)
+          }
 
           const flatNode = getFlattenedNode?.({ isTextView, tag: tagName })
 
@@ -1958,7 +1972,11 @@ export function createExtractor(
           }
 
           // post process
-          const getProps = (props: Object | null, debugName = '') => {
+          const getProps = (
+            props: Object | null,
+            includeProps = false,
+            debugName = ''
+          ) => {
             if (!props) {
               if (shouldPrintDebug) logger.info([' getProps() no props'].join(' '))
               return {}
@@ -1988,16 +2006,25 @@ export function createExtractor(
               )
 
               const outProps = {
+                ...(includeProps ? out.viewProps : {}),
                 ...out.viewProps,
                 ...out.style,
                 ...out.pseudos,
               }
 
               if (shouldPrintDebug) {
+                logger.info(`(${debugName})`)
                 // prettier-ignore
                 logger.info(`\n       getProps (props in): ${logLines(objToStr(props))}`)
                 // prettier-ignore
                 logger.info(`\n       getProps (outProps): ${logLines(objToStr(outProps))}`)
+              }
+
+              if (out.fontFamily) {
+                setPropsToFontFamily(outProps, out.fontFamily)
+                if (shouldPrintDebug) {
+                  logger.info(`\n      💬 new font fam: ${out.fontFamily}`)
+                }
               }
 
               return outProps
@@ -2019,8 +2046,8 @@ export function createExtractor(
 
               switch (attr.type) {
                 case 'ternary': {
-                  const a = getProps(attr.value.alternate, 'ternary.alternate')
-                  const c = getProps(attr.value.consequent, 'ternary.consequent')
+                  const a = getProps(attr.value.alternate, false, 'ternary.alternate')
+                  const c = getProps(attr.value.consequent, false, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug)
@@ -2029,7 +2056,7 @@ export function createExtractor(
                 }
                 case 'style': {
                   // expand variants and such
-                  const styles = getProps(attr.value, 'style')
+                  const styles = getProps(attr.value, false, 'style')
                   if (styles) {
                     // @ts-ignore
                     attr.value = styles
@@ -2057,7 +2084,7 @@ export function createExtractor(
                       attr.value.value || t.booleanLiteral(true)
                     )
                     if (value !== FAILED_EVAL) {
-                      const outProps = getProps({ [key]: value }, `attr.${key}`)
+                      const outProps = getProps({ [key]: value }, true, `attr.${key}`)
                       const outKey = Object.keys(outProps)[0]
                       if (outKey) {
                         const outVal = outProps[outKey]

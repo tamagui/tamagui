@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react'
+import { startTransition, useLayoutEffect, useState } from 'react'
 
 import { ColorScheme } from './types'
 
@@ -16,7 +16,11 @@ export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } 
         ? 'light'
         : fallback
 
-      setVal(val)
+      // this seems to prevent hydration errors, but not always so if you remove it and it doesn't error
+      // you may regress some peoples apps
+      startTransition(() => {
+        setVal(val)
+      })
     }, [])
   }
 
