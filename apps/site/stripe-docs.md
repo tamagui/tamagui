@@ -24,7 +24,7 @@ A text that'll be shown under the product on subscriptions page on how to instal
 
 #### `slug`
 
-A URL friendly text that may be used for querying. e.g. starter-pack, icon-packs.
+A URL friendly text that may be used for querying. e.g. universal-starter, icon-packs.
 
 ## Special Promotion Code
 

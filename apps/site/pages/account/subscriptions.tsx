@@ -1,21 +1,27 @@
 import { Container } from '@components/Container'
+import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/core'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { ArrowUpRight } from '@tamagui/lucide-icons'
+import { ArrowUpRight, Search } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useSWRConfig } from 'swr'
+import useSWR, { mutate, useSWRConfig } from 'swr'
+import useSWRMutation from 'swr/mutation'
 import {
+  Avatar,
   Button,
+  Fieldset,
+  Form,
   H2,
   H3,
-  H5,
   H6,
   Image,
+  Input,
+  Label,
   Paragraph,
   Separator,
   SizableText,
@@ -235,6 +241,9 @@ const SubscriptionItem = ({
   >[number]
   subscription: SubscriptionDetailProps['subscription']
 }) => {
+  const hasDiscordInvites =
+    (item.price.product?.metadata as Record<string, any>).slug === 'universal-starter'
+
   // const { mutate } = useSWRConfig()
   const [isLoading, setIsLoading] = useState(false)
   const product = item.price.product
@@ -306,7 +315,7 @@ const SubscriptionItem = ({
       : null
 
   return (
-    <YStack key={product.id} gap="$2">
+    <YStack key={product.id} gap="$4">
       <XStack gap="$2" jc="space-between">
         <Image
           source={{
@@ -357,14 +366,189 @@ const SubscriptionItem = ({
       <YStack>
         <H3>{product.name}</H3>
         <Paragraph theme="alt1">{product.description}</Paragraph>
-        {installInstructions && (
-          <YStack mt="$3">
-            <H5>How to use</H5>
-            <Paragraph mt="$2">{installInstructions}</Paragraph>
-          </YStack>
-        )}
+      </YStack>
+      <YStack gap="$4" separator={<Separator />}>
+        <YStack>
+          {installInstructions && (
+            <YStack>
+              <H6>How to use</H6>
+              <Paragraph mt="$2">{installInstructions}</Paragraph>
+            </YStack>
+          )}
+        </YStack>
+        {hasDiscordInvites && <DiscordPanel subscriptionId={subscription.id} />}
       </YStack>
     </YStack>
+  )
+}
+
+const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
+  const groupInfoSwr = useSWR<{ current: number; max: number }>(
+    `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+  const [draftQuery, setDraftQuery] = useState('')
+  const [query, setQuery] = useState(draftQuery)
+  const searchSwr = useSWR<RESTGetAPIGuildMembersSearchResult>(
+    query
+      ? `/api/discord/search-member?${new URLSearchParams({ query }).toString()}`
+      : null,
+    (url) =>
+      fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
+        res.json()
+      )
+  )
+
+  const resetChannelMutation = useSWRMutation(
+    [`/api/discord/channel`, 'DELETE', subscriptionId],
+    (url) =>
+      fetch(`/api/discord/channel`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+        setDraftQuery('')
+        setQuery('')
+      },
+    }
+  )
+
+  const handleSearch = async () => {
+    setQuery(draftQuery)
+  }
+
+  return (
+    <YStack gap="$2">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H6>
+          Discord Access{' '}
+          {!!groupInfoSwr.data &&
+            `(${groupInfoSwr.data?.current}/${groupInfoSwr.data?.max})`}
+        </H6>
+        <Button
+          size="$2"
+          onPress={() => resetChannelMutation.trigger()}
+          disabled={resetChannelMutation.isMutating}
+        >
+          {resetChannelMutation.isMutating ? 'Resetting...' : 'Reset'}
+        </Button>
+      </XStack>
+      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" ai="flex-end">
+        <Fieldset>
+          <Label size="$2" htmlFor="discord-username">
+            Username / Nickname
+          </Label>
+          <Input
+            size="$2"
+            placeholder="Your username..."
+            id="discord-username"
+            value={draftQuery}
+            onChangeText={setDraftQuery}
+          />
+        </Fieldset>
+
+        <Form.Trigger>
+          <Button size="$2" icon={Search}>
+            Search
+          </Button>
+        </Form.Trigger>
+      </Form>
+
+      <YStack gap="$2">
+        {searchSwr.data?.map((member) => {
+          return (
+            <DiscordMember
+              key={member.user?.id}
+              member={member}
+              subscriptionId={subscriptionId}
+            />
+          )
+        })}
+      </YStack>
+    </YStack>
+  )
+}
+
+const DiscordMember = ({
+  member,
+  subscriptionId,
+}: {
+  member: APIGuildMember
+  subscriptionId: string
+}) => {
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    ['/api/discord/channel', 'POST', member.user?.id],
+    async () => {
+      const res = await fetch('/api/discord/channel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription_id: subscriptionId,
+          discord_id: member.user?.id,
+        }),
+      })
+
+      if (res.status < 200 || res.status > 299) {
+        throw await res.json()
+      }
+      return await res.json()
+    },
+    {
+      onSuccess: async () => {
+        await mutate(
+          `/api/discord/channel?${new URLSearchParams({
+            subscription_id: subscriptionId,
+          })}`
+        )
+      },
+    }
+  )
+
+  const name = member.nick || member.user?.global_name
+
+  const username = `${member.user?.username}${
+    member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
+  }`
+  const avatarSrc = member.user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
+    : null
+  return (
+    <XStack gap="$2" ai="center" flexWrap="wrap">
+      <Button minWidth={70} size="$2" disabled={isMutating} onPress={() => trigger()}>
+        {isMutating ? 'Inviting...' : 'Add'}
+      </Button>
+      <Avatar circular size="$2">
+        <Avatar.Image accessibilityLabel={`avatar for ${username}`} src={avatarSrc!} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
+      <Paragraph>{`${username}${name ? ` (${name})` : ''}`}</Paragraph>
+      {data && (
+        <Paragraph size="$1" theme="green_alt2">
+          {data.message}
+        </Paragraph>
+      )}
+      {error && (
+        <Paragraph size="$1" theme="red_alt2">
+          {error.message}
+        </Paragraph>
+      )}
+    </XStack>
   )
 }
 

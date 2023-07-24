@@ -26,7 +26,7 @@ import {
   SizableText,
   Spinner,
   XStack,
-  YStack,
+  YStack
 } from 'tamagui'
 
 export default function Page() {
@@ -412,6 +412,5 @@ const SponsorButton = () => {
     </ButtonLink>
   )
 }
-
 Page.getLayout = (page, pageProps, path) =>
   withSupabase(getDefaultLayout(page, pageProps, path), pageProps)
