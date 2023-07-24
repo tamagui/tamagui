@@ -176,7 +176,6 @@ export const useChangeThemeEffect = (
 
   const [themeState, setThemeState] = useState<State>(createState)
   const { state, mounted, isNewTheme, themeManager } = themeState
-
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
 
   function getShouldUpdateTheme(
@@ -213,19 +212,13 @@ export const useChangeThemeEffect = (
 
       const nextState = getShouldUpdateTheme(themeManager)
 
-      if (nextState) {
-        if (isNewTheme) {
-          // if it's a new theme we can just update + publish to children
-          themeManager.updateState(nextState, true)
-        }
+      // if (nextState && isNewTheme) {
+      //   // if it's a new theme we can just update + publish to children
+      //   themeManager.updateState(nextState, true)
+      // }
 
-        // if not we will be creating a whole new themeManager
+      if (nextState || isNewTheme) {
         setThemeState(createState)
-      } else {
-        if (isNewTheme) {
-          // need to revert to parent
-          setThemeState(createState)
-        }
       }
 
       // for updateTheme/replaceTheme
@@ -254,13 +247,14 @@ export const useChangeThemeEffect = (
         activeThemeManagers.delete(themeManager)
       }
     }, [
+      themeManager,
       parentManager,
       isNewTheme,
       props.componentName,
       props.inverse,
       props.name,
       props.reset,
-      themeState.mounted,
+      mounted,
     ])
 
     if (process.env.NODE_ENV === 'development') {

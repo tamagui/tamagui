@@ -1,4 +1,4 @@
-import { startTransition, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 import { ColorScheme } from './types'
 
@@ -16,9 +16,7 @@ export const useRootTheme = ({ fallback = 'light' }: { fallback?: ColorScheme } 
         ? 'light'
         : fallback
 
-      startTransition(() => {
-        setVal(val)
-      })
+      setVal(val)
     }, [])
   }
 

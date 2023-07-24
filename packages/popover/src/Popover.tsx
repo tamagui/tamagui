@@ -184,7 +184,7 @@ const PopoverContentInner = React.memo(
 
       return (
         <Stack pointerEvents={context.open ? 'auto' : 'none'}>
-          <Theme name={themeName}>
+          <Theme forceClassName name={themeName}>
             <PopoverContentImpl
               {...contentImplProps}
               disableRemoveScroll={disableRemoveScroll}

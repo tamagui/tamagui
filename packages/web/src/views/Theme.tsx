@@ -103,6 +103,7 @@ export function useThemedChildren(
     return wrapThemeElements({
       children: elementsWithContext,
       themeState,
+      forceClassName,
     })
   }
 
@@ -112,11 +113,13 @@ export function useThemedChildren(
 export function wrapThemeElements({
   children,
   themeState,
+  forceClassName,
 }: {
   children?: React.ReactNode
   themeState: ChangedThemeResponse
+  forceClassName?: boolean
 }) {
-  if (!themeState.isNewTheme) {
+  if (!themeState.isNewTheme && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 

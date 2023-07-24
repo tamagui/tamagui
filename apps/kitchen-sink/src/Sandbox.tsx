@@ -1,30 +1,39 @@
 // debug-verbose
 // import './wdyr'
 
-import { Button, Circle, SizableText, Text, XStack, styled } from 'tamagui'
+import { Button, Circle, Paragraph, SizableText, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <>
-      <Circle width={100} height={100} bc={'red'} />
-      <CustomText>hello</CustomText>
+      <Subtitle>hello</Subtitle>
     </>
   )
 }
 
-export const CustomText = styled(SizableText, {
-  fontFamily: '$body',
+// need to fix the ls -1 shouldnt be necessary on medias
+const Subtitle = styled(Paragraph, {
+  color: '$gray10',
+  size: '$6',
+  fontFamily: '$silkscreen',
+  ta: 'left',
+  ls: -1,
 
-  variants: {
-    bold: {
-      true: {
-        fontFamily: '$heading',
-      },
-    },
-  } as const,
+  $gtSm: {
+    ta: 'center',
+    size: '$7',
+    ls: -1,
+  },
 
-  defaultVariants: {
-    bold: false,
+  $gtMd: {
+    size: '$8',
+    ls: -1,
+  },
+
+  $gtLg: {
+    size: '$9',
+    lh: 50,
+    ls: -1,
   },
 })
 

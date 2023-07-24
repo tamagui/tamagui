@@ -31,14 +31,28 @@ export function StacksDemo() {
       </XStack>
 
       <ZStack maxWidth={50} maxHeight={85} width={100} flex={1}>
-        <YStack fullscreen borderWidth={2} borderRadius="$4" padding="$2" />
-        <YStack fullscreen y={10} x={10} borderWidth={2} borderRadius="$4" padding="$2" />
         <YStack
+          fullscreen
+          borderRadius="$4"
+          padding="$2"
+          borderColor="$color"
+          borderWidth={2}
+        />
+        <YStack
+          borderColor="$color"
+          fullscreen
+          y={10}
+          x={10}
+          borderWidth={2}
+          borderRadius="$4"
+          padding="$2"
+        />
+        <YStack
+          borderColor="$color"
           fullscreen
           y={20}
           x={20}
           borderWidth={2}
-          backgroundColor="$color"
           borderRadius="$4"
           padding="$2"
         />
