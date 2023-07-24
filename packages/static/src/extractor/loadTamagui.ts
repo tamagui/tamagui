@@ -12,7 +12,6 @@ import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire } from '../require'
 import {
   TamaguiProjectInfo,
-  esbuildOptions,
   getBundledConfig,
   hasBundledConfigChanged,
   loadComponents,
@@ -257,11 +256,19 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
   )
 
   const themeBuilderInput = options.tamaguiOptions.themeBuilder?.input
-  const disposeThemesWatcher = themeBuilderInput
-    ? await esbuildWatchFiles(require.resolve(themeBuilderInput), () => {
-        void generateThemesAndLog(options.tamaguiOptions)
-      })
-    : null
+  let disposeThemesWatcher: Function | undefined
+
+  if (themeBuilderInput) {
+    let inputPath = themeBuilderInput
+    try {
+      inputPath = require.resolve(themeBuilderInput)
+    } catch {
+      // ok
+    }
+    disposeThemesWatcher = await esbuildWatchFiles(inputPath, () => {
+      void generateThemesAndLog(options.tamaguiOptions)
+    })
+  }
 
   return {
     dispose() {

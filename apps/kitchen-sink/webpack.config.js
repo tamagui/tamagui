@@ -107,7 +107,7 @@ module.exports = {
       importsWhitelist: ['constants.js'],
       disableExtraction,
       themeBuilder: {
-        input: '@tamagui/themes/src/themes-new.ts',
+        input: '../../packages/themes/src/themes-new.ts',
         output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
       }
       // disable: true,

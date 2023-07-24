@@ -1,4 +1,3 @@
-// debug-verbose
 // import './wdyr'
 
 import { Button, Circle, Paragraph, SizableText, Text, XStack, styled } from 'tamagui'
