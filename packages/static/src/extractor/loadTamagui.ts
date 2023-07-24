@@ -96,7 +96,6 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
 // loads in-process using esbuild-register
 export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
   const props = getFilledOptions(propsIn)
-  const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
 
   const unregisterRequire = registerRequire()
   try {
@@ -170,7 +169,6 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       }
     }
   } finally {
-    unregister()
     unregisterRequire()
   }
 }

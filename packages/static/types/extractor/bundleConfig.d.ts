@@ -15,14 +15,13 @@ export type TamaguiProjectInfo = {
     nameToPaths?: NameToPaths;
 };
 export declare const esbuildOptions: {
-    readonly define: {
+    define: {
         __DEV__: string;
     };
-    readonly loader: "tsx";
-    readonly target: "es2018";
-    readonly format: "cjs";
-    readonly jsx: "transform";
-    readonly platform: "node";
+    target: string;
+    format: "cjs";
+    jsx: "transform";
+    platform: "node";
 };
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;

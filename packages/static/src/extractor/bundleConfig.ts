@@ -53,13 +53,12 @@ const esbuildExtraOptions = {
 }
 
 export const esbuildOptions = {
-  loader: 'tsx',
   target: 'es2018',
   format: 'cjs',
   jsx: 'transform',
   platform: 'node',
   ...esbuildExtraOptions,
-} as const
+} satisfies esbuild.BuildOptions
 
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>
 
@@ -164,7 +163,6 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     let out
     const unregisterTamagui = registerRequire()
-    const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
     try {
       out = require(configOutPath)
     } catch (err) {
@@ -172,7 +170,6 @@ export async function bundleConfig(props: TamaguiOptions) {
       throw err
     } finally {
       unregisterTamagui()
-      unregister()
     }
     const config = out.default || out
 

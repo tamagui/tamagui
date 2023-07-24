@@ -10,7 +10,9 @@ type ThemeBuilderInterceptOpts = {
 const ogRequire = Module.prototype.require
 
 export async function generateThemes(inputFile: string) {
-  const { unregister } = require('esbuild-register/dist/node').register()
+  const { unregister } = require('esbuild-register/dist/node').register({
+    hookIgnoreNodeModules: false,
+  })
 
   const inputFilePath = inputFile[0] === '.' ? join(process.cwd(), inputFile) : inputFile
   purgeCache(inputFilePath)

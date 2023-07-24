@@ -20,12 +20,16 @@ export function registerRequire() {
     return () => {}
   }
 
+  const { unregister } = require('esbuild-register/dist/node').register({
+    hookIgnoreNodeModules: false,
+  })
+
   isRegistered = true
 
   Module.prototype.require = tamaguiRequire
 
   return () => {
-    // unregister
+    unregister()
     isRegistered = false
     Module.prototype.require = og
   }
