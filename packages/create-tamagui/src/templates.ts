@@ -12,7 +12,7 @@ const repoRoot = join(__dirname, '..', '..', '..')
 
 export const templates = [
   {
-    title: `Next + Expo + Solito (recommended for production) - Production-ready universal app with a monorepo.`,
+    title: `Next + Expo + Solito - Production-ready universal app with a monorepo.`,
     value: 'next-expo-solito',
     type: 'included-in-monorepo',
     repo: {
@@ -37,7 +37,7 @@ export const templates = [
   {
     title: `${chalk.bold.underline(
       `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
-    )} - Production-ready universal app with onboarding, authentication, account, settings, profiles, feed, adaptive universal layouts and more.`,
+    )} - Prod-ready universal app with onboarding, auth, account, settings, profiles, feed, adaptive layouts and more.`,
     value: `takeout-starter`,
     type: 'premium',
     repo: {

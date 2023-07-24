@@ -163,13 +163,15 @@ export async function bundleConfig(props: TamaguiOptions) {
     )
 
     let out
-    const unregister = registerRequire()
+    const unregisterTamagui = registerRequire()
+    const { unregister } = require('esbuild-register/dist/node').register(esbuildOptions)
     try {
       out = require(configOutPath)
     } catch (err) {
       // rome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
     } finally {
+      unregisterTamagui()
       unregister()
     }
     const config = out.default || out

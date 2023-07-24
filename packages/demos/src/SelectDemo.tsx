@@ -42,7 +42,7 @@ export function SelectDemoItem(props: SelectProps) {
       </Select.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet native={props.native} modal dismissOnSnapToBottom>
+        <Sheet native={!!props.native} modal dismissOnSnapToBottom>
           <Sheet.Frame>
             <Sheet.ScrollView>
               <Adapt.Contents />
