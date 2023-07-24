@@ -18,6 +18,7 @@ import { extractMediaStyle } from './extractMediaStyle'
 import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
 import { logLines } from './logLines'
+import { getFontFamilyClassNameFromProps } from './propsToFontFamilyCache'
 import { timer } from './timer'
 
 const mergeStyleGroups = {
@@ -200,15 +201,25 @@ export async function extractToClassNames({
               }
             } else {
               const styles = addStyles(attr.value)
+              const newFontFamily = getFontFamilyClassNameFromProps(attr.value) || ''
               const newClassNames = concatClassName(
-                styles.map((x) => x.identifier).join(' ')
+                styles.map((x) => x.identifier).join(' ') + newFontFamily
               )
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
               ) as t.StringLiteral | null
 
               if (existing) {
-                existing.value = `${existing.value} ${newClassNames}`
+                let previous = existing.value
+                // replace existing font_ with new one
+                if (newFontFamily) {
+                  if (shouldPrintDebug) {
+                    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                    console.log(` newFontFamily: ${newFontFamily}`)
+                  }
+                  previous = previous.replace(/font_[a-z]+/i, '')
+                }
+                existing.value = `${previous} ${newClassNames}`
               } else {
                 finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
               }
@@ -340,14 +351,6 @@ export async function extractToClassNames({
           // add is_Component className
           if (staticConfig.componentName) {
             value += ` is_${staticConfig.componentName}`
-          }
-
-          if (staticConfig.isText) {
-            let family = completeProps.fontFamily || config.defaultFont || 'body'
-            if (family[0] === '$') {
-              family = family.slice(1)
-            }
-            value += ` font_${family}`
           }
 
           return value
