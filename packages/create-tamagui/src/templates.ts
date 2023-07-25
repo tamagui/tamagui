@@ -24,7 +24,7 @@ export const templates = [
   },
 
   {
-    title: `Simple Web (only for learning - not recommended for production) - Client-only web app with Webpack or Vite. Useful to understand how to set up tamagui.config.ts.`,
+    title: `Simple Web - Learning only, not prod-ready. Client web app, Webpack + Vite. Helps understand tamagui.config.ts.`,
     value: 'simple-web',
     type: 'included-in-monorepo',
     repo: {
@@ -37,7 +37,7 @@ export const templates = [
   {
     title: `${chalk.bold.underline(
       `🥡 Takeout Starter (${makeRainbowChalk('Premium')})`
-    )} - Prod-ready universal app with onboarding, auth, account, settings, profiles, feed, adaptive layouts and more.`,
+    )} - Prod-ready universal app - onboarding, auth, account, settings, profiles, feed, adaptive layouts & more.`,
     value: `takeout-starter`,
     type: 'premium',
     repo: {
