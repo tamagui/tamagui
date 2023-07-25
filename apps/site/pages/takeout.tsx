@@ -343,7 +343,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           </ThemeTint>
         )}
 
-        <YStack
+        {/* <YStack
           pos="absolute"
           fullscreen
           zi={2}
@@ -354,10 +354,10 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           scaleX={0.95}
         >
           <TAKEOUT className="bg-dot-grid clip-text" />
-        </YStack>
+        </YStack> */}
 
         {/* takeout shadow */}
-        <YStack
+        {/* <YStack
           pos="absolute"
           fullscreen
           zi={-1}
@@ -367,7 +367,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
           y={-20}
         >
           <TAKEOUT color="$color3" className="" />
-        </YStack>
+        </YStack> */}
       </YStack>
       <YStack
         position="absolute"
@@ -2453,8 +2453,8 @@ const DiscountText = ({
     ? `${coupon.percent_off}% ${coupon.name}`
     : ''
   return (
-    <ThemeTintAlt>
-      <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="10deg">
+    <Theme reset>
+      <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
         <YStack
           fullscreen
           shadowColor="rgba(0,0,0,0.5)"
@@ -2462,13 +2462,33 @@ const DiscountText = ({
           shadowOffset={{ height: 5, width: 0 }}
           scale={0.95}
         />
-        <YStack px="$4" py="$1" backgroundColor="$color8" className="corner-cut">
-          <MunroP color="white" textAlign="center" size="$7">
+        <YStack
+          px="$4"
+          py="$1"
+          backgroundColor="$color8"
+          style={{
+            clipPath: `polygon(
+            0% 3px,
+            3px 3px,
+            3px 0%,
+            calc(100% - 3px) 0%,
+            calc(100% - 3px) 3px,
+            100% 3px,
+            100% calc(100% - 3px),
+            calc(100% - 3px) calc(100% - 3px),
+            calc(100% - 3px) 100%,
+            3px 100%,
+            3px calc(100% - 3px),
+            0% calc(100% - 3px)
+          )`,
+          }}
+        >
+          <Paragraph ff="$munro" color="white" textAlign="center" size="$7">
             {text.trim()}
-          </MunroP>
+          </Paragraph>
         </YStack>
       </YStack>
-    </ThemeTintAlt>
+    </Theme>
   )
 }
 
@@ -2675,7 +2695,7 @@ const useLazilyMounted = (extraTime?: number) => {
 
 const PromoVideo = () => {
   const [open, setOpen] = useState(false)
-  const loaded = useLazilyMounted(100)
+  const loaded = useLazilyMounted(0)
 
   return (
     <YStack
@@ -2830,6 +2850,6 @@ const Bullet = ({
 }
 
 const Lazy = (props: { children: any }) => {
-  const loaded = useLazilyMounted(500)
+  const loaded = useLazilyMounted(100)
   return loaded ? props.children : null
 }

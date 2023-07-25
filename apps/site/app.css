@@ -807,20 +807,3 @@ input, textarea {
   -webkit-text-stroke: 2px var(--color10);
   animation: clip-fade 150s infinite;
 }
-
-.corner-cut {
-  clip-path: polygon(
-    0% 5px,
-    5px 5px,
-    5px 0%,
-    calc(100% - 5px) 0%,
-    calc(100% - 5px) 5px,
-    100% 5px,
-    100% calc(100% - 5px),
-    calc(100% - 5px) calc(100% - 5px),
-    calc(100% - 5px) 100%,
-    5px 100%,
-    5px calc(100% - 5px),
-    0% calc(100% - 5px)
-  );
-}
