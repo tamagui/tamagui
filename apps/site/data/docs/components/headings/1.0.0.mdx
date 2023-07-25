@@ -77,20 +77,16 @@ const SizableText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': (val, { tokens, props }) => {
-        const family = getVariableValue(props.fontFamily) || '$body'
-        const font = tokens.font[family] || tokens.font['$body']
-        const fontFamily = font.family
-        const fontSize = props.fontSize || font.size[val]
-        const lineHeight = props.lineHeight || font.lineHeight[val]
-        const fontWeight = props.fontWeight || font.weight[val]
-        const letterSpacing = props.letterSpacing || font.letterSpacing[val]
-        const fontStyle = props.fontStyle || font.style?.[val]
-        const textTransform = props.textTransform || font.transform?.[val]
+      '...fontSize': (val, { font, props }) => {
+        const fontSize = font.size[val]
+        const lineHeight = font.lineHeight[val]
+        const fontWeight = font.weight[val]
+        const letterSpacing = font.letterSpacing[val]
+        const fontStyle = font.style?.[val]
+        const textTransform = font.transform?.[val]
         return {
           fontStyle,
           textTransform,
-          fontFamily,
           fontWeight,
           letterSpacing,
           fontSize,

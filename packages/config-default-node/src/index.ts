@@ -1,11 +1,6 @@
 // SEE config-default
 
-import {
-  TamaguiInternalConfig,
-  createFont,
-  createTamagui,
-  createTokens,
-} from '@tamagui/core-node'
+import { CreateTamaguiProps, createFont, createTokens } from '@tamagui/core-node'
 import { shorthands } from '@tamagui/shorthands'
 
 // basic fallback theme just to have compiler load in decent tate
@@ -188,7 +183,7 @@ export function getDefaultTamaguiConfig() {
     },
   }
 
-  return createTamagui({
+  return {
     shouldAddPrefersColorThemes: true,
     themeClassNameOnRoot: true,
     shorthands,
@@ -214,5 +209,5 @@ export function getDefaultTamaguiConfig() {
       hoverNone: { hover: 'none' },
       pointerCoarse: { pointer: 'coarse' },
     },
-  }) as TamaguiInternalConfig
+  } satisfies CreateTamaguiProps
 }

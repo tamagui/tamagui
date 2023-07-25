@@ -261,12 +261,21 @@ ${runtimeStyles}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultFont =
+  const defaultFontName =
     configIn.defaultFont ||
     // uses font named "body" if present for compat
-    ('body' in configIn.fonts ? 'body' : false) ||
+    ('body' in configIn.fonts ? 'body' : 0) ||
     // defaults to the first font to make life easier
     Object.keys(configIn.fonts)[0]
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (defaultFontName?.[0] === '$') {
+      throw new Error(`Pass defaultFont without a $ prefix (${configIn.defaultFont})`)
+    }
+  }
+
+  // ensure prefixed with $
+  const defaultFont = `$${defaultFontName}`
 
   const config: TamaguiInternalConfig = {
     settings: {},

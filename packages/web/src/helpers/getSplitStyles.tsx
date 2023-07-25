@@ -94,7 +94,6 @@ type StyleSplitter = (
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
-let defaultFontVariable = ''
 
 // loop props backwards
 //   track used keys:
@@ -541,10 +540,6 @@ export const getSplitStyles: StyleSplitter = (
 
     // after shouldPassThrough
     if (keyInit in skipProps) continue
-
-    // default font family
-    // is this great? no, but backwards compat until we add tests and make better
-    defaultFontVariable ||= `$${conf.defaultFont}`
 
     const expanded =
       isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)

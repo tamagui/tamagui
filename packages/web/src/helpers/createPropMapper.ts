@@ -431,12 +431,13 @@ const getToken = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          if (fontFamily) {
+          const fam = fontFamily || styleState.conf.defaultFont
+          if (fam) {
             const fontsParsed = languageContext
               ? getFontsForLanguage(conf.fontsParsed, languageContext)
               : conf.fontsParsed
-            valOrVar =
-              fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+            const font = fontsParsed[fam]
+            valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }
           break
