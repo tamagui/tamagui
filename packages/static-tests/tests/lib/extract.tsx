@@ -23,7 +23,7 @@ export async function extractForWeb(
     sourcePath: `/test.tsx`,
     ...opts,
     options: {
-      components: ['@tamagui/core', '@tamagui/test-design-system'],
+      components: ['tamagui', '@tamagui/core', '@tamagui/test-design-system'],
       config: './tests/lib/tamagui.config.cjs',
       ...opts?.options,
     },
