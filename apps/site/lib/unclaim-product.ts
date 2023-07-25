@@ -1,5 +1,6 @@
 import { User } from '@supabase/supabase-js'
 import { removeCollaboratorFromRepo } from 'protected/_utils/github'
+import Stripe from 'stripe'
 
 import { Database, Json } from './supabase-types'
 import { supabaseAdmin } from './supabaseAdmin'
@@ -7,30 +8,35 @@ import { supabaseAdmin } from './supabaseAdmin'
 /**
  * removes access to previously claimed access
  */
-export async function unclaimProduct(
-  claim: Database['public']['Tables']['claims']['Row']
-) {
-  const data = claim.data
-  if (typeof data !== 'object' || !data || Array.isArray(data)) {
-    throw new Error('bad `data` on claim row')
-  }
-
-  const subscriptionRes = await supabaseAdmin
-    .from('subscriptions')
+export async function unclaimSubscription(subscription: Stripe.Subscription) {
+  // if (typeof data !== 'object' || !data || Array.isArray(data)) {
+  //   throw new Error('bad `data` on claim row')
+  // }
+  const claimRes = await supabaseAdmin
+    .from('claims')
     .select('*')
-    .eq('id', claim.subscription_id)
+    .eq('subscription_id', subscription.id)
     .single()
-  if (subscriptionRes.error) throw subscriptionRes.error
-  const subscription = subscriptionRes.data
+  if (claimRes.error) throw claimRes.error
 
-  const userRes = await supabaseAdmin.auth.admin.getUserById(subscription.user_id)
+  const claim = claimRes.data
+  const subscriptionRes = await supabaseAdmin.from('subscriptions').select('*').single()
+  if (subscriptionRes.error) throw subscriptionRes.error
+
+  const userId = subscriptionRes.data?.user_id
+
+  const userRes = await supabaseAdmin.auth.admin.getUserById(userId)
   if (userRes.error) throw userRes.error
   const { user } = userRes.data
 
-  switch (data.claim_type) {
+  const claimData = claim.data
+  if (typeof claimData !== 'object' || !claimData || Array.isArray(claimData)) {
+    throw new Error('bad `data` on claim row')
+  }
+
+  switch (claimData.claim_type) {
     case 'repo_access':
-      // @ts-ignore
-      unclaimRepoAccess({ data, claim, user })
+      unclaimRepoAccess({ data: claimData, claim, user })
       break
     default:
       break

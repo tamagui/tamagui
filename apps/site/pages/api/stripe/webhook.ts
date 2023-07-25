@@ -7,6 +7,7 @@ import {
   upsertPriceRecord,
   upsertProductRecord,
 } from '@lib/supabaseAdmin'
+import { unclaimSubscription } from '@lib/unclaim-product'
 import { buffer } from 'micro'
 import { NextApiHandler, PageConfig } from 'next'
 import Stripe from 'stripe'
@@ -64,6 +65,7 @@ const handler: NextApiHandler = async (req, res) => {
       )
       break
     case 'customer.subscription.deleted':
+      await unclaimSubscription(event.data.object as Stripe.Subscription)
       await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
       break
 
