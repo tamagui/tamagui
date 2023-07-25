@@ -3,19 +3,12 @@ import { GenericFonts, GetStyleState } from '../types'
 import { LanguageContextType } from '../views/FontLanguage.types'
 import { createProxy } from './createProxy'
 
-const extrasCache = new WeakMap()
-
 export function getVariantExtras(
   styleState: GetStyleState,
   defaultProps?: any,
   avoidDefaultProps = false
 ) {
   const { curProps, conf, languageContext, theme } = styleState
-
-  if (extrasCache.has(curProps)) {
-    return extrasCache.get(curProps)
-  }
-
   let fonts = conf.fontsParsed
   if (languageContext) {
     fonts = getFontsForLanguage(conf.fontsParsed, languageContext)
@@ -62,9 +55,7 @@ export function getVariantExtras(
         }),
   }
 
-  extrasCache.set(curProps, next)
-
-  return next
+  return next as any
 }
 
 const fontLanguageCache = new WeakMap()

@@ -146,6 +146,7 @@ const resolveVariants: StyleResolver = (
 
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
+
     variantValue = fn(
       value,
       getVariantExtras(styleState, defaultProps, avoidDefaultProps)

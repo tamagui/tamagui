@@ -47,6 +47,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
       console.groupEnd()
     }
   }
+
   return style
 }
 

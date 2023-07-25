@@ -15,26 +15,14 @@ export const Sandbox = () => {
       <Button.Text fontWeight="900">test out</Button.Text>
 
       <H2
-        className="clip-text mix-blend"
         ff="$mono"
         size="$12"
-        lh="$11"
-        color="$color10"
-        mb="$4"
-        style={{
-          // @ts-ignore
-          backgroundImage: `-webkit-linear-gradient(100deg, var(--color9), yellow)`,
-        }}
-        $gtLg={{
-          mr: 100,
-        }}
         $lg={{
           size: '$9',
-          lh: '$8',
         }}
         $sm={{
+          ff: '$mono',
           size: '$8',
-          lh: '$7',
         }}
       >
         test
