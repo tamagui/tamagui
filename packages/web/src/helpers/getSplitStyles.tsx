@@ -67,6 +67,8 @@ import {
 } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
+const fontFamilyKey = 'fontFamily'
+
 // bugfix for some reason it gets reset
 const IS_STATIC = process.env.IS_STATIC === 'is_static'
 
@@ -94,7 +96,6 @@ type StyleSplitter = (
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
-let defaultFontVariable = ''
 
 // loop props backwards
 //   track used keys:
@@ -542,9 +543,14 @@ export const getSplitStyles: StyleSplitter = (
     // after shouldPassThrough
     if (keyInit in skipProps) continue
 
-    // default font family
-    // is this great? no, but backwards compat until we add tests and make better
-    defaultFontVariable ||= `$${conf.defaultFont}`
+    // we sort of have to update fontFamily all the time: before variants run, after each variant
+    if (
+      valInit &&
+      (keyInit === fontFamilyKey || keyInit === shorthands[fontFamilyKey]) &&
+      valInit in conf.fontsParsed
+    ) {
+      styleState.fontFamily = valInit
+    }
 
     const expanded =
       isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
@@ -576,7 +582,7 @@ export const getSplitStyles: StyleSplitter = (
       if (val == null) continue
       if (key in usedKeys) continue
 
-      if (key === 'fontFamily' && valInit && val) {
+      if (key === fontFamilyKey && valInit && val) {
         const fam = valInit[0] === '$' ? valInit : val
         if (fam in conf.fontsParsed) {
           styleState.fontFamily = fam
@@ -883,7 +889,7 @@ export const getSplitStyles: StyleSplitter = (
               usedKeys,
               mediaState[mediaKeyShort]
             )
-            if (key === 'fontFamily') {
+            if (key === fontFamilyKey) {
               styleState.fontFamily = mediaStyle.fontFamily as string
             }
           }
@@ -929,7 +935,7 @@ export const getSplitStyles: StyleSplitter = (
 
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
-    if ('fontFamily' in style && style.fontFamily) {
+    if (fontFamilyKey in style && style.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
       if (faceInfo) {
         const overrideFace =

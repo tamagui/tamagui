@@ -163,7 +163,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
 
       return {
         components: [],
-        tamaguiConfig: getDefaultTamaguiConfig(),
+        tamaguiConfig: createTamagui(getDefaultTamaguiConfig()),
         nameToPaths: {},
       }
     }

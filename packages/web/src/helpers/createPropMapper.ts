@@ -185,6 +185,7 @@ const resolveVariants: StyleResolver = (
     if (fontFamilyUpdate) {
       fontFamilyResult = getFontFamilyFromNameOrVariable(fontFamilyUpdate, conf)
       styleState.fontFamily = fontFamilyResult
+
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`   updating font family`, fontFamilyResult)
@@ -220,9 +221,7 @@ const resolveVariants: StyleResolver = (
 export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInternalConfig) {
   if (isVariable(input)) {
     const val = variableToFontNameCache.get(input)
-    if (val) {
-      return val
-    }
+    if (val) return val
     for (const key in conf.fontsParsed) {
       const familyVariable = conf.fontsParsed[key].family
       if (isVariable(familyVariable)) {
@@ -235,11 +234,6 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
   } else if (typeof input === 'string') {
     if (input?.[0] === '$') {
       return input
-    }
-    // this could be mapped back to
-    if (process.env.NODE_ENV === 'development') {
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log('[tamagui] should map back', input)
     }
   }
 }
@@ -431,12 +425,13 @@ const getToken = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          if (fontFamily) {
+          const fam = fontFamily || styleState.conf.defaultFont
+          if (fam) {
             const fontsParsed = languageContext
               ? getFontsForLanguage(conf.fontsParsed, languageContext)
               : conf.fontsParsed
-            valOrVar =
-              fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+            const font = fontsParsed[fam]
+            valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }
           break
