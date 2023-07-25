@@ -141,7 +141,7 @@ function t(a) {
     const key = JSON.stringify(theme)
     const names = dedupedThemeToNames.get(key)!
     const name = `n${nameI}`
-    const baseTheme = `export const ${name} = ${objectToJsString(
+    const baseTheme = `const ${name} = ${objectToJsString(
       theme,
       keys,
       valueToIndex
