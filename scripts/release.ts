@@ -276,7 +276,7 @@ async function run() {
             }
 
             try {
-              await spawnify(`npm publish --tag prepub`, {
+              await spawnify(`npm publish --tag prepub --access public`, {
                 cwd,
                 avoidLog: true,
               })
