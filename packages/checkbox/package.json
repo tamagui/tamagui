@@ -19,7 +19,6 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@radix-ui/react-use-previous": "^1.0.0",
     "@tamagui/core": "1.45.8",
     "@tamagui/create-context": "1.45.8",
     "@tamagui/focusable": "1.45.8",
@@ -28,7 +27,8 @@
     "@tamagui/helpers-tamagui": "1.45.8",
     "@tamagui/label": "1.45.8",
     "@tamagui/stacks": "1.45.8",
-    "@tamagui/use-controllable-state": "1.45.8"
+    "@tamagui/use-controllable-state": "1.45.8",
+    "@tamagui/use-previous": "1.45.8"
   },
   "exports": {
     "./package.json": "./package.json",

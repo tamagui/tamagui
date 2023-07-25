@@ -34,7 +34,6 @@
     "@floating-ui/react": "^0.24.7",
     "@floating-ui/react-dom": "^2.0.1",
     "@floating-ui/react-native": "^0.10.1",
-    "@radix-ui/react-use-previous": "^1.0.0",
     "@tamagui/adapt": "1.45.8",
     "@tamagui/animate-presence": "1.45.8",
     "@tamagui/compose-refs": "1.45.8",
@@ -50,7 +49,8 @@
     "@tamagui/stacks": "1.45.8",
     "@tamagui/text": "1.45.8",
     "@tamagui/use-controllable-state": "1.45.8",
-    "@tamagui/use-event": "1.45.8"
+    "@tamagui/use-event": "1.45.8",
+    "@tamagui/use-previous": "1.45.8"
   },
   "peerDependencies": {
     "react": "*",

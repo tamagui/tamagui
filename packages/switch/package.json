@@ -31,7 +31,6 @@
     }
   },
   "dependencies": {
-    "@radix-ui/react-use-previous": "^1.0.0",
     "@tamagui/compose-refs": "1.45.8",
     "@tamagui/core": "1.45.8",
     "@tamagui/create-context": "1.45.8",
@@ -39,7 +38,8 @@
     "@tamagui/get-token": "1.45.8",
     "@tamagui/label": "1.45.8",
     "@tamagui/stacks": "1.45.8",
-    "@tamagui/use-controllable-state": "1.45.8"
+    "@tamagui/use-controllable-state": "1.45.8",
+    "@tamagui/use-previous": "1.45.8"
   },
   "peerDependencies": {
     "react": "*",

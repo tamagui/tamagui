@@ -1,7 +1,6 @@
 // via radix
 // https://github.com/radix-ui/primitives/blob/main/packages/react/switch/src/Switch.tsx
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -19,6 +18,7 @@ import { getSize } from '@tamagui/get-token'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 import {
   Switch as NativeSwitch,

@@ -1,7 +1,6 @@
 // fork of radix
 // https://github.com/radix-ui/primitives/tree/main/packages/react/checkbox/src/Checkbox.tsx
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import {
   GetProps,
   SizeTokens,
@@ -25,6 +24,7 @@ import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useLabelContext } from '@tamagui/label'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
 export const CheckboxStyledContext = createStyledContext({

@@ -29,9 +29,9 @@
     }
   },
   "dependencies": {
-    "@radix-ui/react-use-escape-keydown": "^1.0.2",
     "@tamagui/compose-refs": "1.45.8",
     "@tamagui/core": "1.45.8",
+    "@tamagui/use-escape-keydown": "1.45.8",
     "@tamagui/use-event": "1.45.8"
   },
   "peerDependencies": {
