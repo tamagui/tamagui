@@ -2007,7 +2007,6 @@ export function createExtractor(
 
               const outProps = {
                 ...(includeProps ? out.viewProps : {}),
-                ...out.viewProps,
                 ...out.style,
                 ...out.pseudos,
               }
