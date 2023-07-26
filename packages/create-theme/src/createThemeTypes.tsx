@@ -43,7 +43,7 @@ type ThemeUsingTemplate = CreateThemeOptions & {
 }
 
 type ThemePreDefined = {
-  theme: GenericTheme
+  theme: { [key: string]: string }
 }
 
 export type Theme<Masks = string> =

@@ -880,10 +880,10 @@ export declare const tokens: {
     };
     space: {
         0: Variable<number>;
-        1: Variable<number>;
         0.25: Variable<number>;
         0.5: Variable<number>;
         0.75: Variable<number>;
+        1: Variable<number>;
         1.5: Variable<number>;
         2: Variable<number>;
         2.5: Variable<number>;
@@ -908,10 +908,10 @@ export declare const tokens: {
         18: Variable<number>;
         19: Variable<number>;
         20: Variable<number>;
-        [-1]: Variable<number>;
         [-0.25]: Variable<number>;
         [-0.5]: Variable<number>;
         [-0.75]: Variable<number>;
+        [-1]: Variable<number>;
         [-1.5]: Variable<number>;
         [-2]: Variable<number>;
         [-2.5]: Variable<number>;
@@ -939,10 +939,10 @@ export declare const tokens: {
     };
     size: {
         0: Variable<number>;
-        1: Variable<number>;
         0.25: Variable<number>;
         0.5: Variable<number>;
         0.75: Variable<number>;
+        1: Variable<number>;
         1.5: Variable<number>;
         2: Variable<number>;
         2.5: Variable<number>;
@@ -970,9 +970,9 @@ export declare const tokens: {
     };
     radius: {
         0: Variable<number>;
-        1: Variable<number>;
         2: Variable<number>;
         3: Variable<number>;
+        1: Variable<number>;
         4: Variable<number>;
         8: Variable<number>;
         true: Variable<number>;
@@ -986,9 +986,9 @@ export declare const tokens: {
     };
     zIndex: {
         0: Variable<number>;
-        1: Variable<number>;
         2: Variable<number>;
         3: Variable<number>;
+        1: Variable<number>;
         4: Variable<number>;
         5: Variable<number>;
     };
@@ -1189,9 +1189,9 @@ export declare const tokens: {
     };
     radius: {
         0: Variable<number>;
-        1: Variable<number>;
         2: Variable<number>;
         3: Variable<number>;
+        1: Variable<number>;
         4: Variable<number>;
         8: Variable<number>;
         true: Variable<number>;
@@ -1205,18 +1205,18 @@ export declare const tokens: {
     };
     zIndex: {
         0: Variable<number>;
-        1: Variable<number>;
         2: Variable<number>;
         3: Variable<number>;
+        1: Variable<number>;
         4: Variable<number>;
         5: Variable<number>;
     };
     space: {
         0: Variable<number>;
-        1: Variable<number>;
         0.25: Variable<number>;
         0.5: Variable<number>;
         0.75: Variable<number>;
+        1: Variable<number>;
         1.5: Variable<number>;
         2: Variable<number>;
         2.5: Variable<number>;
@@ -1241,10 +1241,10 @@ export declare const tokens: {
         18: Variable<number>;
         19: Variable<number>;
         20: Variable<number>;
-        [-1]: Variable<number>;
         [-0.25]: Variable<number>;
         [-0.5]: Variable<number>;
         [-0.75]: Variable<number>;
+        [-1]: Variable<number>;
         [-1.5]: Variable<number>;
         [-2]: Variable<number>;
         [-2.5]: Variable<number>;
@@ -1272,10 +1272,10 @@ export declare const tokens: {
     };
     size: {
         0: Variable<number>;
-        1: Variable<number>;
         0.25: Variable<number>;
         0.5: Variable<number>;
         0.75: Variable<number>;
+        1: Variable<number>;
         1.5: Variable<number>;
         2: Variable<number>;
         2.5: Variable<number>;

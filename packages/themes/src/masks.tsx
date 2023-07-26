@@ -1,4 +1,5 @@
 import {
+  MaskDefinitions,
   combineMasks,
   createIdentityMask,
   createInverseMask,
@@ -7,7 +8,6 @@ import {
   createStrengthenMask,
   skipMask,
 } from '@tamagui/create-theme'
-import { MaskDefinitions } from '@tamagui/theme-builder'
 
 export const masks = {
   identity: createIdentityMask(),

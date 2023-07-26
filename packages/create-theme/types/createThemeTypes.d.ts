@@ -33,7 +33,9 @@ type ThemeUsingTemplate = CreateThemeOptions & {
     template: string;
 };
 type ThemePreDefined = {
-    theme: GenericTheme;
+    theme: {
+        [key: string]: string;
+    };
 };
 export type Theme<Masks = string> = ThemePreDefined | ThemeUsingTemplate | ThemeUsingMask<Masks>;
 export type ThemeWithParent<Masks = string> = Theme<Masks> & {

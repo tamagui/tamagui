@@ -34,7 +34,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -70,7 +70,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -107,7 +107,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -145,7 +145,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -181,7 +181,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -217,7 +217,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -253,7 +253,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -289,7 +289,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -325,7 +325,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -361,7 +361,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -397,7 +397,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -433,7 +433,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -469,7 +469,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -505,7 +505,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -541,7 +541,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -577,7 +577,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -613,7 +613,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -667,7 +667,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -703,7 +703,7 @@ export declare const componentThemeDefinitions: {
             shadowColorPress: number;
             shadowColorFocus: number;
         };
-        palette?: import("@tamagui/theme-builder").CreateThemePalette | undefined;
+        palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
