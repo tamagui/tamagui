@@ -21,11 +21,6 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./theme-builder": {
-      "types": "./types/ThemeBuilder.d.ts",
-      "import": "./dist/esm/ThemeBuilder.js",
-      "require": "./dist/cjs/ThemeBuilder.js"
-    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",

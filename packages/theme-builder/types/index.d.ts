@@ -1,3 +1,2 @@
-export * from '@tamagui/create-theme';
-export * from '@tamagui/create-theme/theme-builder';
+export * from './ThemeBuilder';
 //# sourceMappingURL=index.d.ts.map

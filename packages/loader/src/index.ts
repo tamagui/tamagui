@@ -1,5 +1,7 @@
 import path from 'path'
 
+// TODO this is being compiled below the export *
+// just turn this into a cjs module only
 process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'web'
 process.env.TAMAGUI_COMPILE_PROCESS = '1'
 process.env.IS_STATIC = 'is_static'

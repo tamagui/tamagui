@@ -5,7 +5,6 @@
   },
   "exclude": [
     "./types",
-    "./theme-builder",
   ],
   "references": [
     {

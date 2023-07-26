@@ -1,4 +1,4 @@
-import { ThemeDefinitions } from '@tamagui/theme-builder'
+import { ThemeDefinitions } from '@tamagui/create-theme'
 
 import { masks } from './masks'
 import { maskOptions } from './templates'

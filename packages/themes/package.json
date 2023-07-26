@@ -36,7 +36,6 @@
   "dependencies": {
     "@tamagui/colors": "1.45.10",
     "@tamagui/create-theme": "1.45.10",
-    "@tamagui/theme-builder": "1.45.10",
     "@tamagui/web": "1.45.10"
   },
   "devDependencies": {

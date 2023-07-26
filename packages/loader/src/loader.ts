@@ -1,4 +1,3 @@
-import { Color, colorLog } from '@tamagui/cli-color'
 import {
   TamaguiOptions,
   createExtractor,

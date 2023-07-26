@@ -21,4 +21,37 @@ export type CreateMask = {
 export type CreateThemeOptions = {
     nonInheritedValues?: GenericTheme;
 };
+export type Palette = string[];
+export type Template = {
+    [key: string]: number;
+};
+export type ThemeUsingMask<Masks = string> = MaskOptions & {
+    mask: Masks;
+};
+type ThemeUsingTemplate = CreateThemeOptions & {
+    palette: string;
+    template: string;
+};
+type ThemePreDefined = {
+    theme: GenericTheme;
+};
+export type Theme<Masks = string> = ThemePreDefined | ThemeUsingTemplate | ThemeUsingMask<Masks>;
+export type ThemeWithParent<Masks = string> = Theme<Masks> & {
+    parent: string;
+};
+export type PaletteDefinitions = {
+    [key: string]: Palette;
+};
+export type ThemeDefinition<Masks extends string = string> = Theme<Masks> | ThemeWithParent<Masks>[];
+type UnionableString = string & {};
+export type ThemeDefinitions<Masks extends string = string> = {
+    [key: string]: ThemeDefinition<Masks | UnionableString>;
+};
+export type TemplateDefinitions = {
+    [key: string]: Template;
+};
+export type MaskDefinitions = {
+    [key: string]: CreateMask | CreateMask['mask'];
+};
+export {};
 //# sourceMappingURL=createThemeTypes.d.ts.map

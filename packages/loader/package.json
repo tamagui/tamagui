@@ -20,6 +20,7 @@
   "dependencies": {
     "@tamagui/cli-color": "1.45.10",
     "@tamagui/static": "1.45.10",
+    "esbuild-loader": "^3.0.1",
     "fs-extra": "^11.1.0",
     "loader-utils": "^3.2.1",
     "lodash": "^4.17.21"
