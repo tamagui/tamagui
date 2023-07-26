@@ -1,5 +1,5 @@
 check_for_test_only () {
-    grep -r --include="**/*.test.ts*" 'test.only' ./
+    grep -r --include="**/*.test.ts*" 'test' ./
 }
 
 if check_for_test_only; then
