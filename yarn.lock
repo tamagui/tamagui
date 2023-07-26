@@ -6538,7 +6538,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-builder@1.45.10, @tamagui/theme-builder@workspace:packages/theme-builder":
+"@tamagui/theme-builder@workspace:packages/theme-builder":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-builder@workspace:packages/theme-builder"
   dependencies:
@@ -6568,7 +6568,6 @@ __metadata:
     "@tamagui/cli": 1.45.10
     "@tamagui/colors": 1.45.10
     "@tamagui/create-theme": 1.45.10
-    "@tamagui/theme-builder": 1.45.10
     "@tamagui/web": 1.45.10
     vitest: ^0.26.3
   languageName: unknown
@@ -23163,6 +23162,7 @@ __metadata:
     "@tamagui/build": 1.45.10
     "@tamagui/cli-color": 1.45.10
     "@tamagui/static": 1.45.10
+    esbuild-loader: ^3.0.1
     fs-extra: ^11.1.0
     loader-utils: ^3.2.1
     lodash: ^4.17.21

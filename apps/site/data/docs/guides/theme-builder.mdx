@@ -13,22 +13,27 @@ demoName: ThemeBuilder
   with some performance benefits to boot.
 </IntroParagraph>
 
-The Tamagui theme system is extremely powerful, but in the past, way too hard to work with. With version 1.37 Tamagui has released two new things to help make authoring themes much easier:
+With version 1.37 Tamagui has released two new things to help make authoring themes much easier:
 
-- `createThemeBuilder` - a chainable API for generating themes, exported from `@tamagui/theme-builder`.
-- `themeBuilder` - an option for the Tamagui compiler that watches and generates themes at compile-time.
+- `createThemeBuilder` - a chainable theme creation API exported from `@tamagui/theme-builder`.
+- `themeBuilder` - option for the Tamagui compiler to watches and generate themes.
 
-The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhile the `themeBuilder` option automates pre-generating themes, which means you can avoid the cost of generating themes at runtime as well as the extra bundle size of the `@tamagui/theme-builder` package.
+The new ThemeBuilder makes it much easier to generate a suite of themes. Meanwhile the `themeBuilder` option automates pre-generating themes, which means you can avoid some runtime cost and bundle size.
 
-This guide goes into the why and how of `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
+This guide goes into `createThemeBuilder`. If you want to [skip to the API, check here](#createthemebuilder), or you can just copy-paste [a complete example here](#complete-example).
 
 <Notice>
-  Note that you don't need to create your own theme suite. You can use our built-in
-  themes. Or you can just avoid themes altogether! This guide is for more advanced use
-  cases where you want to generate a very custom look and feel for your app.
+  You don't need to create your own theme suite. You can use our built-in themes or roll
+  your own by hand. Or you can just avoid themes altogether! This guide is for more
+  advanced use cases where you want to generate a very custom look and feel for your app.
 </Notice>
 
-Before we dive in, here's a minimal createThemeBuilder example to help understand what we're building up towards. It generates a few themes: `light`, `dark`, `light_subtle`, and `dark_subtle`. It uses all the concepts we'll cover in this guide: palettes, templates, masks and ultimately, themes:
+Before we dive in, here's a minimal createThemeBuilder example to understand what we're building towards. It generates `light`, `dark`, `light_subtle`, and `dark_subtle` themes using all the concepts we'll cover in this guide: palettes, templates, masks, and themes:
+
+<Notice>
+  Note that the @tamagui/theme-builder package requires TypeScript 5 or greater for const
+  generic support.
+</Notice>
 
 ```tsx
 import { createSoftenMask, createThemeBuilder } from '@tamagui/theme-builder'
