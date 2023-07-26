@@ -933,35 +933,6 @@ export const getSplitStyles: StyleSplitter = (
     styleToCSS(style)
   }
 
-  // native: swap out the right family based on weight/style
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    if (fontFamilyKey in style && style.fontFamily) {
-      const faceInfo = getFont(style.fontFamily as string)?.face
-      if (faceInfo) {
-        const overrideFace =
-          faceInfo[style.fontWeight as string]?.[style.fontStyle || 'normal']?.val
-        if (overrideFace) {
-          style.fontFamily = overrideFace
-          styleState.fontFamily = overrideFace
-          delete style.fontWeight
-          delete style.fontStyle
-        }
-      }
-      if (process.env.NODE_ENV === 'development') {
-        if (debug) {
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
-        }
-      }
-    }
-    if ('elevationAndroid' in style) {
-      // @ts-ignore
-      style['elevation'] = style.elevationAndroid
-      // @ts-ignore
-      delete style.elevationAndroid
-    }
-  }
-
   // always do this at the very end to preserve the order strictly (animations, origin)
   // and allow proper merging of all pseudos before applying
   if (flatTransforms) {
@@ -1087,6 +1058,25 @@ export const getSplitStyles: StyleSplitter = (
     classNames,
     rulesToInsert,
     dynamicThemeAccess,
+  }
+
+  // native: swap out the right family based on weight/style
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (style.fontFamily) {
+      const faceInfo = getFont(style.fontFamily as string)?.face
+      if (faceInfo) {
+        const overrideFace =
+          faceInfo[style.fontWeight as string]?.[style.fontStyle || 'normal']?.val
+        if (overrideFace) {
+          style.fontFamily = overrideFace
+          styleState.fontFamily = overrideFace
+        }
+      }
+      if (process.env.NODE_ENV === 'development' && debug) {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
+      }
+    }
   }
 
   if (className) {

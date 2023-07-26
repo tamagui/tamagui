@@ -4,17 +4,16 @@
 import { Button, Circle, H2, Paragraph, SizableText, Text, XStack, styled } from 'tamagui'
 
 export const Sandbox = () => {
+  // need to test all these they seem to be all working:
   return (
     <>
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
-
       {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
         WATCH THE VIDEO
       </Paragraph> */}
 
-      <Button.Text fontWeight="900">test out</Button.Text>
-
-      <H2
+      {/* <Button.Text fontWeight="900">test out</Button.Text> */}
+      {/* <H2
         ff="$mono"
         size="$12"
         $lg={{
@@ -26,8 +25,10 @@ export const Sandbox = () => {
         }}
       >
         test
-      </H2>
-
+      </H2> */}
+      {/* <ChangeWeight>Default</ChangeWeight>
+      <ChangeWeight weight="low">low</ChangeWeight>
+      <ChangeWeight weight="high">high</ChangeWeight> */}
       {/* <ChangeFamilyVariant debug="verbose" size="$15">
         Test
       </ChangeFamilyVariant>
@@ -37,6 +38,22 @@ export const Sandbox = () => {
     </>
   )
 }
+
+const ChangeWeight = styled(Text, {
+  fontFamily: '$heading',
+  fontWeight: '500',
+
+  variants: {
+    weight: {
+      low: {
+        fontWeight: '$1',
+      },
+      high: {
+        fontWeight: '800',
+      },
+    },
+  } as const,
+})
 
 // TODO test:
 

@@ -1302,7 +1302,7 @@ export type StyleResolver<Response = PropMappedValue> = (
   value: any,
   state: GetStyleState,
   defaultProps: any,
-  returnVariablesAs: 'auto' | 'value' | 'non-color-value',
+  returnVariablesAs: 'auto' | 'value',
   parentVariantKey: string,
   avoidDefaultProps?: boolean
 ) => Response

@@ -46,6 +46,15 @@ export function expandStylesAndRemoveNullishValues(
 }
 
 export function fixStyles(style: Record<string, any>) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if ('elevationAndroid' in style) {
+      // @ts-ignore
+      style['elevation'] = style.elevationAndroid
+      // @ts-ignore
+      delete style.elevationAndroid
+    }
+  }
+
   if (
     style.shadowRadius ||
     style.shadowColor ||

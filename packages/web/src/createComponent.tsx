@@ -671,10 +671,6 @@ export function createComponent<
 
     const className = classList.join(' ')
 
-    if (className.includes('undefined')) {
-      console.warn('???', { classList, componentClassName, fontFamilyClassName })
-    }
-
     if (process.env.TAMAGUI_TARGET === 'web') {
       const style = avoidStyle ? null : animationStyles ?? splitStyles.style
 
@@ -702,40 +698,8 @@ export function createComponent<
         viewProps.className = className
         viewProps.style = style
       }
-    }
-
-    // TODO MOVE INTO HOOK
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      // swap out the right family based on weight/style
-      if (styles && isText) {
-        const fontFamily = splitStyles.fontFamily || tamaguiConfig.defaultFont
-        if (fontFamily) {
-          const faceInfo = tamaguiConfig.fontsParsed[fontFamily]?.face
-          if (faceInfo) {
-            const [weight, style] = (() => {
-              let weight: string | undefined
-              let style: string | undefined
-              for (let i = styles.length; i >= 0; i--) {
-                weight ??= styles[i]?.fontWeight
-                style ??= styles[i]?.fontStyle
-              }
-              return [weight || '400', style || 'normal'] as const
-            })()
-            const overrideFace = faceInfo[weight]?.[style]?.val
-            if (overrideFace) {
-              for (const style of styles) {
-                if (style?.fontFamily) {
-                  style.fontFamily = overrideFace
-                  style.fontWeight = undefined
-                  style.fontStyle = undefined
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // assign styles
+    } else {
+      // native assign styles
       viewProps.style = styles
     }
 

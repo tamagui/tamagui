@@ -18,12 +18,7 @@ import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-export type ResolveVariableTypes =
-  | 'auto'
-  | 'value'
-  | 'variable'
-  | 'both'
-  | 'non-color-value'
+export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
 export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   // temp remove classnames
@@ -441,7 +436,7 @@ const getToken = (
       for (const cat in tokenCategories) {
         if (key in tokenCategories[cat]) {
           const res = tokensParsed[cat][value]
-          if (res) {
+          if (res != null) {
             valOrVar = res
             hasSet = true
           }
@@ -449,7 +444,7 @@ const getToken = (
       }
       if (!hasSet) {
         const spaceVar = tokensParsed.space[value]
-        if (spaceVar) {
+        if (spaceVar != null) {
           valOrVar = spaceVar
           hasSet = true
         }
@@ -480,14 +475,6 @@ function resolveVariableValue(
   if (isVariable(valOrVar)) {
     if (resolveAs === 'variable') {
       return valOrVar
-    }
-    if (resolveAs === 'non-color-value') {
-      if (isWeb) {
-        if (key in tokenCategories.color) {
-          return valOrVar.variable
-        }
-      }
-      return valOrVar.val
     }
     if (!isWeb || resolveAs === 'value') {
       return valOrVar.val

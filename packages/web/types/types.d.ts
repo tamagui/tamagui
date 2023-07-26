@@ -640,7 +640,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
 };
-export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, state: GetStyleState, defaultProps: any, returnVariablesAs: 'auto' | 'value' | 'non-color-value', parentVariantKey: string, avoidDefaultProps?: boolean) => Response;
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, state: GetStyleState, defaultProps: any, returnVariablesAs: 'auto' | 'value', parentVariantKey: string, avoidDefaultProps?: boolean) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>, avoidDefaultProps?: boolean) => PropMappedValue;
 export type StaticConfigParsed = StaticConfig & {
     parsed: true;
