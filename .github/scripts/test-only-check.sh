@@ -1,7 +1,5 @@
 check_for_test_only () {
-    pwd
-    ls
-    grep -r --include="./apps/kitchen-sink/tests/GroupUseCases.test.tsx" 'test.only' ./
+    grep -r --include="**/*.test.ts*" 'test.only' ./
 }
 
 if check_for_test_only; then
