@@ -116,6 +116,7 @@ export type {
   ThemeValueFallback,
   TamaguiSettings,
   Tokens,
+  Token,
   TransformStyleProps,
   VariantSpreadExtras,
   Styleable,
