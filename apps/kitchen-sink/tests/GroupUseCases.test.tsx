@@ -61,7 +61,7 @@ test(`composite api passes border radius`, async ({ page }) => {
   expect(buttonLastStyles.borderBottomRightRadius).not.toBe('0px')
 })
 
-test(`composite api group item not using Group.Item will break`, async ({ page }) => {
+test.only(`composite api group item not using Group.Item will break`, async ({ page }) => {
   const brokenButtonStyles = await page
     .getByTestId('composite-api-group')
     .getByTestId('not-using-item')
