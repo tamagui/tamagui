@@ -41,8 +41,8 @@ export declare const fonts: {
                 normal: string;
             };
         };
-    }, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+    }, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -66,6 +66,6 @@ export declare const fonts: {
             16: number;
         };
     };
-    silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 1 | 2 | 11 | 12 | 14 | 16 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
 };
 //# sourceMappingURL=fonts.d.ts.map
