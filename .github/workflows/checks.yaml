@@ -15,11 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install
-        uses: ./.github/actions/install
       - name: Check for test.only
         run: ./.github/scripts/test-only-check.sh
         shell: bash
+      - name: Install
+        uses: ./.github/actions/install
       - name: Check
         run: yarn check
       - name: Lint
