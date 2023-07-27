@@ -1,4 +1,5 @@
 import { useUser } from 'hooks/useUser'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 import { Paragraph, TooltipSimple, styled } from 'tamagui'
 
@@ -20,6 +21,8 @@ const HeadAnchor = styled(Paragraph, {
 
 export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
   const userSwr = useUser()
+  const router = useRouter()
+  console.log(router)
   // there is user context and supabase setup in the current page
   return (
     <>
@@ -43,32 +46,22 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
         </HeadAnchor>
       </NextLink>
 
-      {!userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
-        <NextLink prefetch={false} href="/login">
-          <HeadAnchor
-            $md={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            Login
-          </HeadAnchor>
+      {!router.asPath.startsWith('/takeout') && (
+        <NextLink prefetch={false} href="/takeout">
+          <TooltipSimple delay={0} restMs={25} label="Takeout">
+            <HeadAnchor
+              {...(!forceShowAllLinks && {
+                size: '$8',
+              })}
+              $sm={{
+                display: forceShowAllLinks ? 'flex' : 'none',
+              }}
+            >
+              {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
+            </HeadAnchor>
+          </TooltipSimple>
         </NextLink>
       )}
-
-      <NextLink prefetch={false} href="/takeout">
-        <TooltipSimple delay={0} restMs={25} label="Takeout">
-          <HeadAnchor
-            {...(!forceShowAllLinks && {
-              size: '$8',
-            })}
-            $sm={{
-              display: forceShowAllLinks ? 'flex' : 'none',
-            }}
-          >
-            {forceShowAllLinks ? ' Takeout 🥡' : '🥡'}
-          </HeadAnchor>
-        </TooltipSimple>
-      </NextLink>
 
       {forceShowAllLinks && (
         <NextLink prefetch={false} href="/blog">
@@ -85,6 +78,18 @@ export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderPr
       {showExtra && (
         <NextLink prefetch={false} href="/studio">
           <HeadAnchor>Studio</HeadAnchor>
+        </NextLink>
+      )}
+
+      {!userSwr.data?.session?.user && (forceShowAllLinks || showAuth) && (
+        <NextLink prefetch={false} href="/login">
+          <HeadAnchor
+            $md={{
+              display: forceShowAllLinks ? 'flex' : 'none',
+            }}
+          >
+            Login
+          </HeadAnchor>
         </NextLink>
       )}
     </>
