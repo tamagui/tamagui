@@ -178,6 +178,8 @@ export const getSplitStyles: StyleSplitter = (
 
   // handle before the loop so we can mark usedKeys in className
   // since the compiler will optimize to className we just treat className as the more powerful
+  //   TODO the compiler should probably just leave things inline if its not flattening
+  //   that way it keeps merging order
   if (typeof props.className === 'string') {
     for (const cn of props.className.split(' ')) {
       if (cn[0] === '_') {
@@ -630,8 +632,8 @@ export const getSplitStyles: StyleSplitter = (
         )
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
-        const isEnter = descriptor.name === 'enter'
-        const isExit = descriptor.name === 'exit'
+        const isEnter = key === 'enterStyle'
+        const isExit = key === 'exitStyle'
 
         // dev-time warning that helps clear confusion around need for animation  when using enter/exit style
         if (
@@ -717,14 +719,6 @@ export const getSplitStyles: StyleSplitter = (
             console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
             console.groupEnd()
           }
-
-          // if (!isDisabled) {
-          //   if (valInit === staticConfig.defaultProps[keyInit]) {
-          //     // ignore:
-          //     // if it's a default property given by styled(), we don't mark it as used, so
-          //     // that props given inline can override:
-          //   }
-          // }
 
           const importance = descriptor.priority
 

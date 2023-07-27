@@ -1,6 +1,5 @@
 import { isWeb } from '@tamagui/constants'
 
-import { getConfig } from '../config'
 import { expandStyle } from './expandStyle'
 import { normalizeShadow } from './normalizeShadow'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -14,18 +13,12 @@ import { pseudoDescriptors } from './pseudoDescriptors'
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
 
-export function expandStylesAndRemoveNullishValues(
-  style: Record<string, any>,
-  { shorthands } = getConfig()
-) {
+export function expandStylesAndRemoveNullishValues(style: Record<string, any>) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
     const valIn = style[key]
-    if (valIn == null) {
-      continue
-    }
-    key = shorthands?.[key] || key
+    if (valIn == null) continue
     if (key in pseudoDescriptors) {
       res[key] = expandStylesAndRemoveNullishValues(valIn)
       continue

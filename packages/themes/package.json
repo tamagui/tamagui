@@ -22,11 +22,6 @@
   "exports": {
     "./package.json": "./package.json",
     "./src/themes-new.ts": "./src/themes-new.ts",
-    "./generated.json": {
-      "types": "./generated.d.ts",
-      "import": "./generated.json",
-      "require": "./generated.json"
-    },
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
