@@ -263,9 +263,6 @@ export function createComponent<
       if (isServer) return false
       const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
-      if (next && !curState.hasAnimated) {
-        curState.hasAnimated = true
-      }
       return Boolean(next || curState.hasAnimated)
     })()
 
@@ -292,6 +289,8 @@ export function createComponent<
       ? { ...states[0], [propsIn.forceStyle]: true }
       : states[0]
     const setState = states[1]
+
+    // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
     let isAnimated = willBeAnimated
@@ -616,19 +615,26 @@ export function createComponent<
 
     const shouldSetMounted = needsMount && state.unmounted
 
-    // combined two effects into one for performance so be careful with logic
-    // because no need for mouseUp removal effect if its not even mounted yet
+    // combined multiple effects into one for performance so be careful with logic
     useIsomorphicLayoutEffect(() => {
-      if (!shouldSetMounted) {
-        return () => {
-          mouseUps.delete(unPress)
-        }
+      // once animated, always animated to preserve hooks
+      if (willBeAnimated && !stateRef.current.hasAnimated) {
+        stateRef.current.hasAnimated = true
       }
 
-      const unmounted = state.unmounted === true && hasEnterStyle ? 'should-enter' : false
-      setStateShallow({
-        unmounted,
-      })
+      if (shouldSetMounted) {
+        const unmounted =
+          state.unmounted === true && hasEnterStyle ? 'should-enter' : false
+        setStateShallow({
+          unmounted,
+        })
+        return
+        // no need for mouseUp removal effect if its not even mounted yet
+      }
+
+      return () => {
+        mouseUps.delete(unPress)
+      }
     }, [shouldSetMounted, state.unmounted])
 
     let styles: Record<string, any>[] | undefined
