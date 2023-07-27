@@ -13,7 +13,9 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   if (!font) {
     if (process.env.NODE_ENV === 'development') {
       console.warn(
-        `Warning: No font found. For a sized text component, you either need to set fontFamily directly, or through the "defaultFont" setting in your createTamagui config.`
+        `Warning: No font found in props`,
+        { ...props },
+        `For a sized text component, you either need to set fontFamily directly, or through the "defaultFont" setting in your createTamagui config.`
       )
     }
     return

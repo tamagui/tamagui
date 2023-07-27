@@ -261,17 +261,6 @@ export const AnimatePresence: React.FunctionComponent<
     )
   })
 
-  if (process.env.NODE_ENV === 'development') {
-    const shouldWarn = exitBeforeEnter && childrenToRender.length > 1
-    if (shouldWarn && hasWarned && !hasWarned.current) {
-      hasWarned.current = true
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log(
-        `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This can lead to odd visual behaviour.`
-      )
-    }
-  }
-
   return (
     <>
       {exiting.size
