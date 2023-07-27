@@ -1,7 +1,7 @@
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
-import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import { AnimationDriver, UniversalAnimatedNumber, useSafeRef } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 import Animated, {
   SharedValue,
   cancelAnimation,
@@ -123,12 +123,16 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const animateStr = JSON.stringify(animate)
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
       const isExiting = Boolean(presence?.[1])
+      const sendExitComplete = presence?.[1]
       const transition = animations[animationKey as keyof typeof animations]
 
       const motiProps = {
         animate: isExiting ? undefined : styles,
         transition,
-        onDidAnimate,
+        onDidAnimate() {
+          onDidAnimate?.()
+          sendExitComplete?.()
+        },
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
