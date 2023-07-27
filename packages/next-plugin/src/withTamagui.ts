@@ -23,11 +23,6 @@ export type WithTamaguiProps = TamaguiOptions & {
 }
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
-  // default TAMAGUI_DOES_SSR_CSS to true if outputCSS is enabled
-  if (tamaguiOptions.outputCSS) {
-    process.env.TAMAGUI_DOES_SSR_CSS ??= 'true'
-  }
-
   return (nextConfig: any = {}) => {
     const isAppDir = nextConfig.experimental?.appDir
 
@@ -183,6 +178,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             'process.env.IS_STATIC': '""',
             'process.env.TAMAGUI_TARGET': '"web"',
             __DEV__: JSON.stringify(dev),
+            ...(tamaguiOptions.outputCSS && {
+              'process.env.TAMAGUI_DOES_SSR_CSS': '"true"',
+            }),
           })
         )
 

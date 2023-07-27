@@ -337,7 +337,7 @@ Tamagui.getCSS({
 
 For Next.js there's a nice [option to `outputCSS`](/docs/guides/next-js) which will handle emitting a css file for you. But you can also just do this yourself by calling Tamagui.getCSS() with any other bundler or framework sometime in your pre-build or on the server and handing it over as CSS.
 
-One final optimization you can make if you are doing these server-side CSS patterns is setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `true`. Most bundlers will then be able to shake out all the theme-related CSS generation code from `@tamagui/core`, saving ~2kb of minified JS. If you set `outputCSS` option with Next.js, this will be set automatically.
+One final optimization you can make if you are doing these server-side CSS patterns is setting the environment variable `TAMAGUI_DOES_SSR_CSS` to `true` for the client bundle only. Most bundlers will then be able to shake out all the theme-related CSS generation code from `@tamagui/core`, saving ~2kb of minified JS. If you set `outputCSS` option with Next.js, this will be set automatically.
 
 <Notice>
   Make sure the style tag you insert with the `getCSS` styles is inserted after any
