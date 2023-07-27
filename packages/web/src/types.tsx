@@ -1953,7 +1953,7 @@ export type UniversalAnimatedNumber<A> = {
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
   keepStyleSSR?: boolean
-  // supportsCSSVariables?: boolean
+  supportsCSSVars?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>

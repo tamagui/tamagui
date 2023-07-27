@@ -1,21 +1,14 @@
-import { isServer, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { startTransition, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
-export function useDidFinishSSR() {
-  // conditional hook because it never changes if already true
-  if (isServer) {
-    return false
-  }
+const emptyFn = () => {}
+const emptyFnFn = () => emptyFn
 
-  const [did, setDid] = useState<boolean>(false)
-
-  useIsomorphicLayoutEffect(() => {
-    startTransition(() => {
-      setDid(true)
-    })
-  }, [])
-
-  return did
+export function useDidFinishSSR<A extends any = boolean>(value?: A): A | false {
+  return useSyncExternalStore(
+    emptyFnFn,
+    () => (value == undefined ? true : value),
+    () => false as any
+  )
 }
 
 type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
@@ -23,16 +16,6 @@ type FunctionOrValue<Value> = Value extends () => infer X ? X : Value
 export function useClientValue<Value extends any>(
   value?: Value
 ): FunctionOrValue<Value> | undefined {
-  if (isServer) {
-    return
-  }
-
-  const [v, setV] = useState<FunctionOrValue<Value> | undefined>(undefined)
-
-  useIsomorphicLayoutEffect(() => {
-    // @ts-expect-error (this works with a function)
-    setV(value)
-  }, [])
-
-  return v
+  const done = useDidFinishSSR()
+  return !done ? undefined : typeof value === 'function' ? value() : value
 }

@@ -1,6 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { validStyles } from '@tamagui/helpers'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
@@ -182,6 +183,9 @@ export function createComponent<
         propsIn['data-test-renders']['current'] += 1
       }
     }
+
+    const isHydrated = false //useDidFinishSSR()
+
     // const time = t.start({ quiet: true })
 
     // set variants through context
@@ -259,8 +263,11 @@ export function createComponent<
       props.animation || (props.style && hasAnimatedStyleValue(props.style))
     )
 
+    // disable for now still ssr issues
+    const supportsCSSVars = false //animationsConfig?.supportsCSSVars
+
     const willBeAnimated = (() => {
-      if (isServer) return false
+      if (isServer && !supportsCSSVars) return false
       const curState = stateRef.current
       const next = !!(hasAnimationProp && !isHOC && useAnimations)
       return Boolean(next || curState.hasAnimated)
@@ -271,18 +278,17 @@ export function createComponent<
 
     const hasEnterStyle = !!props.enterStyle
 
-    // disable for now still ssr issues
-    const supportsCSSVariables = false // ?? animationsConfig?.supportsCSSVariables
-
     const needsMount = Boolean(
       (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
     )
 
-    const initialState = needsMount
-      ? supportsCSSVariables
-        ? defaultComponentStateShouldEnter!
-        : defaultComponentState!
-      : defaultComponentStateMounted!
+    const initialState =
+      needsMount || supportsCSSVars
+        ? supportsCSSVars
+          ? defaultComponentStateShouldEnter!
+          : defaultComponentState!
+        : defaultComponentStateMounted!
+
     const states = useState<TamaguiComponentState>(initialState)
 
     const state = propsIn.forceStyle
@@ -295,19 +301,10 @@ export function createComponent<
 
     let isAnimated = willBeAnimated
 
-    if (willBeAnimated && !supportsCSSVariables) {
-      // cheat code to not always pay the cost of triple rendering,
-      // after a bit we consider this component hydrated
-      let hasHydrated = false
-      numRenderedOfType[componentName] ??= 0
-      if (willBeAnimated) {
-        if (++numRenderedOfType[componentName] > HYDRATION_CUTOFF) {
-          hasHydrated = true
-        }
-      }
-      const hasPresenceIsHydrated = presence && hasHydrated
+    if (willBeAnimated && !supportsCSSVars) {
+      const hasPresenceIsHydrated = presence && isHydrated
       if (!hasPresenceIsHydrated) {
-        if (isAnimated && (isServer || state.unmounted === true)) {
+        if (isServer || state.unmounted === true) {
           isAnimated = false
         }
       }
