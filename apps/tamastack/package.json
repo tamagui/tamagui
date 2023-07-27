@@ -1,22 +1,22 @@
 {
   "name": "@tamagui/stack",
-  "version": "1.46.1",
+  "version": "1.46.2",
   "private": true,
   "main": "index.js",
   "scripts": {
     "dev": "tama dev"
   },
   "dependencies": {
-    "@tamagui/colors": "1.46.1",
-    "@tamagui/config": "1.46.1",
-    "@tamagui/core": "1.46.1",
-    "@tamagui/shorthands": "1.46.1",
-    "@tamagui/themes": "1.46.1",
+    "@tamagui/colors": "1.46.2",
+    "@tamagui/config": "1.46.2",
+    "@tamagui/core": "1.46.2",
+    "@tamagui/shorthands": "1.46.2",
+    "@tamagui/themes": "1.46.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1"
   },
   "devDependencies": {
-    "@tamagui/cli": "1.46.1"
+    "@tamagui/cli": "1.46.2"
   }
 }
