@@ -13,7 +13,7 @@ export function useShallowSetState<State extends TamaguiComponentState>(
         for (const key in next) {
           if (prev[key] !== next[key]) {
             if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              console.warn(` ▲ setState ${debugName}`, next)
+              console.warn(` ▲ setState ${debugName}`, { ...prev }, { ...next })
             }
             return { ...prev, ...next }
           }

@@ -1,7 +1,7 @@
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
-import { AnimationDriver, UniversalAnimatedNumber, useSafeRef } from '@tamagui/web'
+import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
-import { useContext, useMemo, useRef } from 'react'
+import { useContext, useMemo } from 'react'
 import Animated, {
   SharedValue,
   cancelAnimation,
@@ -24,6 +24,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     Text: Animated.Text,
     isReactNative: true,
     keepStyleSSR: true,
+    supportsCSSVars: true,
     animations,
     usePresence,
 
