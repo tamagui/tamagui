@@ -22,7 +22,6 @@ const HeadAnchor = styled(Paragraph, {
 export const HeaderLinks = ({ showExtra, forceShowAllLinks, showAuth }: HeaderProps) => {
   const userSwr = useUser()
   const router = useRouter()
-  console.log(router)
   // there is user context and supabase setup in the current page
   return (
     <>
