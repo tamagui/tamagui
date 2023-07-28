@@ -1,12 +1,14 @@
 import { TamaguiComponent, getSplitStyles } from '../core/src'
 
 const emptyObj = {} as any
-const state = {
+const componentState = {
   hover: false,
   press: false,
   pressIn: false,
   focus: false,
   unmounted: true,
+}
+const styleProps = {
   mediaState: undefined,
   isAnimated: false,
 }
@@ -22,8 +24,10 @@ export function simplifiedGetSplitStyles(
   return getSplitStyles(
     props,
     component.staticConfig,
-    { theme: emptyObj, name: '' },
-    state,
+    emptyObj,
+    '',
+    componentState,
+    styleProps,
     emptyObj,
     emptyObj,
     options.tag,
