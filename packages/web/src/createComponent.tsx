@@ -254,7 +254,7 @@ export function createComponent<
     )
 
     // disable for now still ssr issues
-    const supportsCSSVars = false //animationsConfig?.supportsCSSVars
+    const supportsCSSVars = animationsConfig?.supportsCSSVars
 
     const willBeAnimated = (() => {
       if (isServer && !supportsCSSVars) return false
@@ -271,12 +271,11 @@ export function createComponent<
 
     // if (shouldTime) time`pre-use-state`
 
-    const initialState =
-      needsMount || supportsCSSVars
-        ? supportsCSSVars
-          ? defaultComponentStateShouldEnter!
-          : defaultComponentState!
-        : defaultComponentStateMounted!
+    const initialState = willBeAnimated
+      ? supportsCSSVars
+        ? defaultComponentStateShouldEnter!
+        : defaultComponentState!
+      : defaultComponentStateMounted!
 
     const states = useState<TamaguiComponentState>(initialState)
 
@@ -887,7 +886,11 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(`render <${element} /> with props`)
+        console.groupCollapsed(
+          `render <${element} /> with props`,
+          initialState,
+          willBeAnimated
+        )
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('viewProps', viewProps)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -901,7 +904,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType })
+          console.log({ state, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState })
         }
         console.groupEnd()
         console.groupEnd()
@@ -971,7 +974,9 @@ export function createComponent<
 }
 
 // for elements to avoid spacing
-export const Unspaced = (props: { children?: any }) => props.children
+export function Unspaced(props: { children?: any }) {
+  return props.children
+}
 Unspaced['isUnspaced'] = true
 
 // dont used styled() here to avoid circular deps

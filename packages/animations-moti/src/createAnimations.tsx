@@ -1,6 +1,7 @@
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
-import { MotiTransition, useMotify } from 'moti'
+import { MotiTransition } from 'moti'
+import { useMotify } from 'moti/author'
 import { useCallback, useContext, useMemo } from 'react'
 import Animated, {
   SharedValue,

@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.46.0-1690569788107",
-    "next": "^13.4.4"
+    "next": "^13.4.12"
   },
   "peerDependencies": {
     "next": ">=13"

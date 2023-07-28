@@ -223,7 +223,7 @@ async function buildJs() {
           platform: shouldBundle ? 'node' : 'neutral',
         })
       : null,
-    pkgModuleJSX
+    pkgModuleJSX && shouldIncludeMjs
       ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',

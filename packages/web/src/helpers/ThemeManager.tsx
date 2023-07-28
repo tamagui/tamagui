@@ -334,7 +334,11 @@ function getState(
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    typeof props.debug === 'string' &&
+    typeof window !== 'undefined'
+  ) {
     console.warn('ThemeManager.getState():', {
       result,
     })
