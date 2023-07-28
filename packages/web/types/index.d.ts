@@ -15,6 +15,7 @@ export { getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue,
 export * from './constants/constants';
 export * from './helpers/createStyledContext';
 export * from './helpers/expandStyles';
+export * from './helpers/propMapper';
 export * from './helpers/getAnimationDriver';
 export * from './helpers/getExpandedShorthands';
 export * from './helpers/getSplitStyles';
@@ -36,7 +37,6 @@ export * from './contexts/ButtonNestingContext';
 export { configureMedia, getMedia, mediaState, useMedia, useMediaPropsActive, mediaObjectToString, mediaQueryConfig, } from './hooks/useMedia';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';
-export * from './hooks/useSafeRef';
 export * from './hooks/useStyle';
 export * from './hooks/useAnimationDriver';
 export * from './hooks/useIsTouchDevice';

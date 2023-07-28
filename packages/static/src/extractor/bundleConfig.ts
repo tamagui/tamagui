@@ -5,7 +5,7 @@ import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { Color, colorLog } from '@tamagui/cli-color'
-import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web'
+import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
@@ -26,7 +26,7 @@ export type LoadedComponents = {
   nameToInfo: Record<
     string,
     {
-      staticConfig: StaticConfigParsed
+      staticConfig: StaticConfig
     }
   >
 }
@@ -385,7 +385,7 @@ const esbuildit = (src: string, target?: 'modern') => {
 }
 
 function getComponentStaticConfigByName(name: string, exported: any) {
-  const components: Record<string, { staticConfig: StaticConfigParsed }> = {}
+  const components: Record<string, { staticConfig: StaticConfig }> = {}
   try {
     if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
       throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
@@ -412,11 +412,11 @@ function getComponentStaticConfigByName(name: string, exported: any) {
 function getTamaguiComponent(
   name: string,
   Component: any
-): undefined | { staticConfig: StaticConfigParsed } {
+): undefined | { staticConfig: StaticConfig } {
   if (name[0].toUpperCase() !== name[0]) {
     return
   }
-  const staticConfig = Component?.staticConfig as StaticConfigParsed | undefined
+  const staticConfig = Component?.staticConfig as StaticConfig | undefined
   if (staticConfig) {
     return Component
   }

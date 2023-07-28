@@ -7,10 +7,11 @@ import {
   expandStylesAndRemoveNullishValues,
   getSplitStyles,
   mediaQueryConfig,
+  propMapper,
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { GetStyleState, PseudoStyles, StaticConfigParsed } from '@tamagui/web'
+import type { GetStyleState, PseudoStyles, StaticConfig } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -202,7 +203,7 @@ export function createExtractor(
       return null
     }
 
-    function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
+    function isValidStyleKey(name: string, staticConfig: StaticConfig) {
       if (!projectInfo) {
         throw new Error(`Tamagui extractor not loaded yet`)
       }
@@ -768,12 +769,13 @@ export function createExtractor(
 
         try {
           const { staticConfig } = component
+          const defaultProps = staticConfig.defaultProps || {}
           const variants = staticConfig.variants || {}
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
           // find tag="a" tag="main" etc dom indicators
-          let tagName = staticConfig.defaultProps.tag ?? (isTextView ? 'span' : 'div')
+          let tagName = defaultProps.tag ?? (isTextView ? 'span' : 'div')
           traversePath
             .get('openingElement')
             .get('attributes')
@@ -882,10 +884,10 @@ export function createExtractor(
             classNames: {},
             style: {},
             theme: defaultTheme,
-            viewProps: staticConfig.defaultProps,
+            viewProps: defaultProps,
             conf: tamaguiConfig!,
-            curProps: staticConfig.defaultProps,
-            props: staticConfig.defaultProps,
+            curProps: defaultProps,
+            props: defaultProps,
             state: {
               ...defaultComponentState,
               resolveVariablesAs: 'auto',
@@ -1127,7 +1129,7 @@ export function createExtractor(
 
               // for now passing empty props {}, a bit odd, need to at least document
               // for now we don't expose custom components so just noting behavior
-              out = staticConfig.propMapper(name, styleValue, propMapperStyleState)
+              out = propMapper(name, styleValue, propMapperStyleState)
 
               if (out) {
                 if (!Array.isArray(out)) {
@@ -1204,7 +1206,7 @@ export function createExtractor(
                 if (shouldPrintDebug) {
                   logger.info(`  style: ${name} = ${styleValue}`)
                 }
-                if (!(name in staticConfig.defaultProps)) {
+                if (!(name in defaultProps)) {
                   if (!hasSetOptimized) {
                     res.optimized++
                     hasSetOptimized = true
@@ -1655,28 +1657,26 @@ export function createExtractor(
 
           // only if we flatten, ensure the default styles are there
           if (shouldFlatten) {
-            const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap(
-              (key) => {
-                if (!isValidStyleKey(key, staticConfig)) {
-                  return []
-                }
-                const value = staticConfig.defaultProps[key]
-                const name = tamaguiConfig?.shorthands[key] || key
-                if (value === undefined) {
-                  logger.warn(
-                    `⚠️ Error evaluating default style for component, prop ${key} ${value}`
-                  )
-                  shouldDeopt = true
-                  return
-                }
-                const attr: ExtractedAttrStyle = {
-                  type: 'style',
-                  name,
-                  value: { [name]: value },
-                }
-                return attr
+            const defaultStyleAttrs = Object.keys(defaultProps).flatMap((key) => {
+              if (!isValidStyleKey(key, staticConfig)) {
+                return []
               }
-            ) as ExtractedAttr[]
+              const value = defaultProps[key]
+              const name = tamaguiConfig?.shorthands[key] || key
+              if (value === undefined) {
+                logger.warn(
+                  `⚠️ Error evaluating default style for component, prop ${key} ${value}`
+                )
+                shouldDeopt = true
+                return
+              }
+              const attr: ExtractedAttrStyle = {
+                type: 'style',
+                name,
+                value: { [name]: value },
+              }
+              return attr
+            }) as ExtractedAttr[]
 
             if (defaultStyleAttrs.length) {
               attrs = [...defaultStyleAttrs, ...attrs]
@@ -1767,9 +1767,9 @@ export function createExtractor(
 
           // must preserve exact order
           const completeProps = {}
-          for (const key in staticConfig.defaultProps) {
+          for (const key in defaultProps) {
             if (!(key in foundStaticProps)) {
-              completeProps[key] = staticConfig.defaultProps[key]
+              completeProps[key] = defaultProps[key]
             }
           }
           for (const key in foundStaticProps) {
@@ -1797,11 +1797,7 @@ export function createExtractor(
                     }
 
                     let out = Object.fromEntries(
-                      staticConfig.propMapper(
-                        name,
-                        variantValues.get(name),
-                        styleState
-                      ) || []
+                      propMapper(name, variantValues.get(name), styleState) || []
                     )
                     if (out && isTargetingHTML) {
                       const cn = out.className
@@ -1959,10 +1955,7 @@ export function createExtractor(
               ].join(' ')
             )
             logger.info(
-              [
-                '  - defaultProps: \n',
-                logLines(objToStr(staticConfig.defaultProps)),
-              ].join(' ')
+              ['  - defaultProps: \n', logLines(objToStr(defaultProps))].join(' ')
             )
             // prettier-ignore
             logger.info(['  - foundStaticProps: \n', logLines(objToStr(foundStaticProps))].join(' '))
@@ -2110,7 +2103,7 @@ export function createExtractor(
           if (shouldFlatten) {
             attrs.unshift({
               type: 'style',
-              value: getProps(staticConfig.defaultProps) as any,
+              value: getProps(defaultProps) as any,
             })
           }
 

@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useMemo, useSyncExternalStore } from 'react'
+import { useMemo, useRef, useSyncExternalStore } from 'react'
 
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
@@ -12,7 +12,6 @@ import type {
   MediaQueryState,
   TamaguiInternalConfig,
 } from '../types'
-import { useSafeRef } from './useSafeRef'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -39,7 +38,8 @@ export const mediaQueryConfig: MediaQueries = {}
 export const getMedia = () => mediaState
 export const mediaKeys = new Set<string>() // with $ prefix
 export const isMediaKey = (key: string) =>
-  mediaKeys.has(key) || key.startsWith('$platform-') || key.startsWith('$theme-')
+  mediaKeys.has(key) ||
+  (key[0] === '$' && (key.startsWith('$platform-') || key.startsWith('$theme-')))
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -179,18 +179,24 @@ function subscribe(subscriber: any) {
 }
 
 export function useMedia(uid?: any, debug?: any): UseMediaState {
-  const internal = useSafeRef<UseMediaInternalState>(undefined as any)
+  const internal = useRef<UseMediaInternalState>(undefined as any)
   if (!internal.current) {
     internal.current = {
       prev: initState,
     }
   }
+
   const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       const { touched, prev } = internal.current
       const componentState = uid ? shouldUpdate.get(uid) : undefined
-      if (componentState?.enabled === false) {
+
+      if (!componentState && !touched) {
+        return prev
+      }
+
+      if (!componentState?.enabled === false) {
         return prev
       }
 

@@ -4,11 +4,10 @@ import {
   Text,
   UniversalAnimatedNumber,
   useIsomorphicLayoutEffect,
-  useSafeRef,
 } from '@tamagui/core'
 import { animate } from '@tamagui/cubic-bezier-animator'
 import { usePresence } from '@tamagui/use-presence'
-import { useMemo, useState } from 'react'
+import { useRef, useState } from 'react'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
@@ -62,7 +61,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const isEntering = !!state.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const initialPositionRef = useSafeRef<any>(null)
+      const initialPositionRef = useRef<any>(null)
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation

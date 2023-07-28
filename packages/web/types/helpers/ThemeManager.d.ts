@@ -14,7 +14,7 @@ export type ThemeManagerState = {
     parentName?: string;
     componentName?: string;
 };
-export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
+export declare function getHasThemeUpdatingProps(props: ThemeProps): boolean;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;

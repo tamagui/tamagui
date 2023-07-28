@@ -6,27 +6,13 @@
 import { isWeb } from '@tamagui/constants'
 
 import { getAllSelectors } from './insertStyleRule'
-import { names, normalizeColor } from './normalizeColor'
-import { normalizeStylePropKeys } from './normalizeStylePropKeys'
-
-const colorCache = new Map()
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  if (property && property in unitlessNumbers) {
+  if (!isWeb || (property && property in unitlessNumbers)) {
     return value
   }
   let res = value
-  if (property && (property in normalizeStylePropKeys || value in names)) {
-    if (colorCache.has(value)) {
-      return colorCache.get(value)
-    }
-    res = normalizeColor(value)
-    // avoid memory pressure
-    if (colorCache.size > 1000) {
-      colorCache.clear()
-    }
-    colorCache.set(value, res)
-  } else if (
+  if (
     isWeb &&
     typeof value === 'number' &&
     (property === undefined ||

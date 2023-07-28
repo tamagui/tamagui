@@ -1,4 +1,4 @@
-import { StaticConfig, StaticConfigParsed } from '../types'
+import { StaticConfig } from '../types'
 
 export function isTamaguiComponent<A>(
   comp: A,
@@ -6,6 +6,6 @@ export function isTamaguiComponent<A>(
 ): comp is A & {
   staticConfig: StaticConfig
 } {
-  const config = comp?.['staticConfig'] as StaticConfigParsed | undefined
-  return (config?.parsed && (name ? name === config.componentName : true)) || false
+  const config = comp?.['staticConfig'] as StaticConfig | undefined
+  return Boolean(config && (name ? name === config.componentName : true))
 }

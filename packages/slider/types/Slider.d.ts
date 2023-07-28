@@ -385,7 +385,7 @@ declare const SliderThumb: import("@tamagui/core").ReactComponentWithRef<SliderT
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
 }>>, keyof SliderThumbProps>, TamaguiElement> & {
-    staticConfig: import("@tamagui/core").StaticConfigParsed;
+    staticConfig: import("@tamagui/core").StaticConfig;
     styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -572,7 +572,7 @@ declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAtt
         readonly size?: SizeTokens | undefined;
         readonly unstyled?: boolean | undefined;
     }>>, keyof SliderThumbProps>, TamaguiElement> & {
-        staticConfig: import("@tamagui/core").StaticConfigParsed;
+        staticConfig: import("@tamagui/core").StaticConfig;
         styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
             style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -759,7 +759,7 @@ declare const Thumb: import("@tamagui/core").ReactComponentWithRef<SliderThumbPr
     readonly size?: SizeTokens | undefined;
     readonly unstyled?: boolean | undefined;
 }>>, keyof SliderThumbProps>, TamaguiElement> & {
-    staticConfig: import("@tamagui/core").StaticConfigParsed;
+    staticConfig: import("@tamagui/core").StaticConfig;
     styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "onLayout" | "style" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{

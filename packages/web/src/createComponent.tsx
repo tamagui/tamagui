@@ -1,7 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { validStyles } from '@tamagui/helpers'
-import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
@@ -14,6 +13,8 @@ import React, {
   useRef,
   useState,
 } from 'react'
+// @ts-ignore
+import { View } from 'react-native'
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
@@ -22,7 +23,6 @@ import { TextAncestorContext } from './contexts/TextAncestorContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
-import { parseStaticConfig } from './helpers/parseStaticConfig'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
 import { useShallowSetState } from './helpers/useShallowSetState'
@@ -36,12 +36,12 @@ import {
   SpaceValue,
   SpacerProps,
   StaticConfig,
-  StaticConfigParsed,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
   TamaguiElement,
   TamaguiInternalConfig,
+  ThemeParsed,
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
@@ -119,9 +119,7 @@ export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = TamaguiElement,
   BaseProps = never
->(staticConfigIn: Partial<StaticConfig> | StaticConfigParsed) {
-  const staticConfig = parseStaticConfig(staticConfigIn)
-
+>(staticConfig: StaticConfig) {
   onConfiguredOnce((conf) => {
     // one time only setup
     if (!tamaguiConfig) {
@@ -152,13 +150,13 @@ export function createComponent<
   const defaultComponentClassName = `is_${staticConfig.componentName}`
   const defaultProps = staticConfig.defaultProps
 
-  if (process.env.NODE_ENV === 'development' && staticConfigIn.defaultProps?.['debug']) {
+  if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
-        defaultPropsKeyOrder: Object.keys(defaultProps),
+        defaultPropsKeyOrder: defaultProps ? Object.keys(defaultProps) : [],
       })
     }
   }
@@ -186,8 +184,6 @@ export function createComponent<
 
     const isHydrated = false //useDidFinishSSR()
 
-    // const time = t.start({ quiet: true })
-
     // set variants through context
     // order is after default props but before props
     let styledContextProps: Object | undefined
@@ -201,8 +197,8 @@ export function createComponent<
           // because its after default props but before props this annoying amount of checks
           propsIn[key] ||
           propsIn[inverseShorthands[key]] ||
-          defaultProps[key] ||
-          defaultProps[inverseShorthands[key]]
+          defaultProps?.[key] ||
+          defaultProps?.[inverseShorthands[key]]
         // if not set, use context
         if (propVal === undefined) {
           if (contextValue) {
@@ -230,8 +226,10 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
 
+    // console.log('curDefaultProps', curDefaultProps)
+
     if (curDefaultProps) {
-      props = mergeProps(curDefaultProps, propsIn)[0]
+      props = mergeProps(curDefaultProps, propsIn)
     } else {
       props = propsIn
     }
@@ -402,7 +400,7 @@ export function createComponent<
           )
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ props, state, staticConfig, elementType, themeStateProps, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props), curDefaultPropsOrder: Object.keys(curDefaultProps) })
+          console.log({ props, state, staticConfig, elementType, themeStateProps, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props) })
           console.groupEnd()
         }
       }
@@ -434,7 +432,11 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      themeState,
+      themeState.state as {
+        // we can assume its always here, it is
+        theme: ThemeParsed
+        name: string
+      },
       {
         ...state,
         mediaState,
@@ -450,6 +452,8 @@ export function createComponent<
       elementType,
       debugProp
     )
+
+    // return <View style={{ borderColor: 'yellow', borderWidth: 2, padding: 5 }} />
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
@@ -524,7 +528,7 @@ export function createComponent<
           ...state,
           isAnimated,
         },
-        theme: themeState.theme,
+        theme: themeState.state.theme!,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,
         hostRef,
@@ -640,10 +644,10 @@ export function createComponent<
     if (!avoidStyle) {
       if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
         styles = {
-          ...(animationStyles ?? splitStylesStyle),
+          ...(animationStyles || splitStylesStyle),
         }
       } else {
-        styles = [animationStyles ?? splitStylesStyle]
+        styles = [animationStyles || splitStylesStyle]
 
         // ugly but for now...
         if (shouldForcePseudo) {
@@ -656,25 +660,27 @@ export function createComponent<
     }
 
     let fontFamily = isText
-      ? splitStyles.fontFamily || staticConfig.defaultProps.fontFamily
+      ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
       : null
     if (fontFamily && fontFamily[0] === '$') {
       fontFamily = fontFamily.slice(1)
     }
     const fontFamilyClassName = fontFamily ? `font_${fontFamily}` : ''
 
-    const classList = [
-      hasEnterStyle && ((state.unmounted && needsMount) || !isClient)
-        ? 't_will-mount'
-        : '',
-      componentName ? componentClassName : '',
-      fontFamilyClassName,
-      classNames ? Object.values(classNames).join(' ') : '',
-    ]
-
-    const className = classList.join(' ')
+    let className: string | undefined
 
     if (process.env.TAMAGUI_TARGET === 'web') {
+      const classList = [
+        hasEnterStyle && ((state.unmounted && needsMount) || !isClient)
+          ? 't_will-mount'
+          : '',
+        componentName ? componentClassName : '',
+        fontFamilyClassName,
+        classNames ? Object.values(classNames).join(' ') : '',
+      ]
+
+      className = classList.join(' ')
+
       const style = avoidStyle ? null : animationStyles ?? splitStyles.style
 
       if (isAnimatedReactNativeWeb && !avoidStyle) {
@@ -927,6 +933,10 @@ export function createComponent<
   }
 
   type ComponentType = TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>
+
+  // let res = (props) => (
+  //   <View style={{ borderColor: 'yellow', borderWidth: 2, padding: 5 }} />
+  // )
 
   let res: ComponentType = component as any
 

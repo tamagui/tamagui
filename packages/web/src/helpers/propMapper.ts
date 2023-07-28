@@ -6,7 +6,6 @@ import type {
   DebugProp,
   GetStyleState,
   PropMapper,
-  StaticConfigParsed,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -20,87 +19,64 @@ import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
-export const createPropMapper = (staticConfig: StaticConfigParsed) => {
-  // temp remove classnames
-  const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, false)[0]
+export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
+  if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
+    if (key === 'elevationAndroid') return
+  }
 
-  const mapper: PropMapper = (
-    key,
-    value,
-    styleStateIn,
-    subPropsIn,
-    avoidDefaultProps = false
-  ) => {
-    if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
-      if (key === 'elevationAndroid') return
-    }
-
-    // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
-    // fallbackProps is awkward thanks to static
-    // also we need to override the props here because subStyles pass in a sub-style props object
-    const subProps = styleStateIn.state.fallbackProps || subPropsIn
-    const styleState = subProps
-      ? {
-          ...styleStateIn,
-          curProps: subProps,
-        }
-      : styleStateIn
-
-    const { conf, state, fontFamily } = styleState
-    const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
-
-    // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
-      // prettier-ignore
-      console.warn(`Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(', ')}`)
-    }
-
-    const variantValue = resolveVariants(
-      key,
-      value,
-      styleState,
-      defaultProps,
-      returnVariablesAs,
-      '',
-      avoidDefaultProps
-    )
-
-    if (variantValue) {
-      return variantValue
-    }
-
-    let shouldReturn = false
-
-    // handle shorthands
-    if (key in conf.shorthands) {
-      shouldReturn = true
-      key = conf.shorthands[key]
-    }
-
-    if (value) {
-      if (value[0] === '$') {
-        value = getToken(key, value, styleState, returnVariablesAs)
-      } else if (isVariable(value)) {
-        value = resolveVariableValue(key, value, returnVariablesAs)
+  // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
+  // fallbackProps is awkward thanks to static
+  // also we need to override the props here because subStyles pass in a sub-style props object
+  const subProps = styleStateIn.state.fallbackProps || subPropsIn
+  const styleState = subProps
+    ? {
+        ...styleStateIn,
+        curProps: subProps,
       }
-    }
+    : styleStateIn
 
-    if (shouldReturn || value != null) {
-      return expandStyle(key, value) || [[key, value]]
+  const { conf, state, fontFamily } = styleState
+  const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
+
+  // prettier-ignore
+  if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
+    // prettier-ignore
+    console.warn(`Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(', ')}`)
+  }
+
+  const variantValue = resolveVariants(key, value, styleState, returnVariablesAs, '')
+
+  if (variantValue) {
+    return variantValue
+  }
+
+  let shouldReturn = false
+
+  // handle shorthands
+  if (key in conf.shorthands) {
+    shouldReturn = true
+    key = conf.shorthands[key]
+  }
+
+  if (value) {
+    if (value[0] === '$') {
+      value = getToken(key, value, styleState, returnVariablesAs)
+    } else if (isVariable(value)) {
+      value = resolveVariableValue(key, value, returnVariablesAs)
     }
   }
 
-  return mapper
+  if (shouldReturn || value != null) {
+    return expandStyle(key, value) || [[key, value]]
+  }
 }
 
 const resolveVariants: StyleResolver = (
   key,
   value,
   styleState,
-  defaultProps,
   returnVariablesAs,
-  parentVariantKey,
-  avoidDefaultProps = false
+  parentVariantKey
 ) => {
   const { staticConfig, conf, debug } = styleState
   const { variants } = staticConfig
@@ -142,10 +118,7 @@ const resolveVariants: StyleResolver = (
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
 
-    variantValue = fn(
-      value,
-      getVariantExtras(styleState, defaultProps, avoidDefaultProps)
-    )
+    variantValue = fn(value, getVariantExtras(styleState))
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('   expanded functional variant', key)
@@ -187,10 +160,8 @@ const resolveVariants: StyleResolver = (
       key,
       variantValue,
       styleState,
-      defaultProps,
       returnVariablesAs,
-      parentVariantKey,
-      avoidDefaultProps
+      parentVariantKey
     )
   }
 
@@ -241,10 +212,8 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
   styleState,
-  defaultProps,
   returnVariablesAs,
-  parentVariantKey,
-  avoidDefaultProps
+  parentVariantKey
 ) => {
   const { conf, staticConfig, debug, theme } = styleState
   const { variants } = staticConfig
@@ -267,15 +236,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
           // SYNC WITH *1
           val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
       } else {
-        const variantOut = resolveVariants(
-          fKey,
-          val,
-          styleState,
-          defaultProps,
-          returnVariablesAs,
-          key,
-          avoidDefaultProps
-        )
+        const variantOut = resolveVariants(fKey, val, styleState, returnVariablesAs, key)
 
         // apply, merging sub-styles
         if (variantOut) {
@@ -311,10 +272,8 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
         fKey,
         val,
         styleState,
-        defaultProps,
         returnVariablesAs,
-        key,
-        avoidDefaultProps
+        key
       )
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {

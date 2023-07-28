@@ -125,8 +125,8 @@ export function wrapThemeElements({
 
   // in order to provide currentColor, set color by default
   const themeColor =
-    themeState.theme && themeState.isNewTheme
-      ? variableToString(themeState.theme.color)
+    themeState.state.theme && themeState.isNewTheme
+      ? variableToString(themeState.state.theme.color)
       : ''
   const colorStyle = themeColor
     ? {
@@ -137,7 +137,7 @@ export function wrapThemeElements({
   const parentScheme = themeState.themeManager?.parentManager?.scheme
   const scheme = themeState.themeManager?.scheme
   const isInversing = scheme && parentScheme && scheme !== parentScheme
-  const className = themeState.className || ''
+  const className = themeState.state.className || ''
 
   let themedChildren = (
     <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
