@@ -1,12 +1,13 @@
 import { Container } from '@components/Container'
 import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/core'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { Json } from '@lib/supabase-types'
+import { Database, Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { ArrowUpRight, Search } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useSWR, { mutate, useSWRConfig } from 'swr'
@@ -336,17 +337,7 @@ const SubscriptionItem = ({
           >
             {claimLabel}
           </Button>
-          {hasGithubApp && item.id && (
-            <ButtonLink
-              href={`/api/github/install-bot?${new URLSearchParams({
-                subscription_item_id: item.id.toString(),
-              })}`}
-              size="$2"
-              themeInverse
-            >
-              Install GitHub App
-            </ButtonLink>
-          )}
+
           {/* <Button
             disabled={isLoading}
             {...(isLoading && { opacity: 0.5 })}
@@ -372,7 +363,66 @@ const SubscriptionItem = ({
           )}
         </YStack>
         {hasDiscordInvites && <DiscordPanel subscriptionId={subscription.id} />}
+        {hasGithubApp && item.id && (
+          <BotInstallPanel
+            subItemId={item.id}
+            appInstallations={getArray(item.app_installations ?? [])}
+          />
+        )}
       </YStack>
+    </YStack>
+  )
+}
+
+const BotInstallPanel = ({
+  subItemId,
+  appInstallations,
+}: {
+  subItemId: string
+  appInstallations: Database['public']['Tables']['app_installations']['Row'][]
+}) => {
+  const activeInstallations = appInstallations.filter(
+    (installation) => !!installation.installed_at
+  )
+  const installationUrl = `/api/github/install-bot?${new URLSearchParams({
+    subscription_item_id: subItemId,
+  })}`
+
+  return (
+    <YStack gap="$2">
+      <XStack jc="space-between" gap="$2" ai="center">
+        <H6>GitHub App</H6>
+      </XStack>
+      {activeInstallations.length > 0 ? (
+        <YStack gap="$1">
+          {activeInstallations.map((installation) => (
+            <Paragraph>
+              Installation ID: {installation.github_installation_id} -{' '}
+              <Link
+                href={`https://github.com/settings/installations/${installation.github_installation_id}`}
+              >
+                Installation Settings
+              </Link>
+            </Paragraph>
+          ))}
+        </YStack>
+      ) : (
+        <>
+        <Paragraph>
+          No installation found. To receive updates, you need to install the Takeout
+          GitHub Bot on your repo.
+        </Paragraph>
+        <Paragraph theme="alt1">
+          If you have already installed the bot and don't see it here, 
+        </Paragraph>
+        </>
+      )}
+
+      <XStack>
+        <ButtonLink href={installationUrl} size="$2" themeInverse>
+          Install GitHub App
+        </ButtonLink>
+      </XStack>
     </YStack>
   )
 }
@@ -551,12 +601,7 @@ const GithubAppMessage = () => {
   const router = useRouter()
   const githubAppInstalled = !!router.query.github_app_installed
   if (!githubAppInstalled) return null
-  return (
-    <Paragraph theme="green_alt2">
-      GitHub App installed successfully. We will create PRs to your fork as we ship new
-      updates.
-    </Paragraph>
-  )
+  return <Paragraph theme="green_alt2"></Paragraph>
 }
 
 Page.getLayout = getDefaultLayout
