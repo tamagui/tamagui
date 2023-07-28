@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-tamagui",
-  "version": "1.46.0-1690529497942",
+  "version": "1.46.0-1690532567554",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -19,11 +19,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/helpers": "1.46.0-1690529497942",
-    "@tamagui/web": "1.46.0-1690529497942"
+    "@tamagui/helpers": "1.46.0-1690532567554",
+    "@tamagui/web": "1.46.0-1690532567554"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690529497942",
+    "@tamagui/build": "1.46.0-1690532567554",
     "react": "^18.2.0",
     "react-native": "^0.72.1",
     "vitest": "^0.26.3"

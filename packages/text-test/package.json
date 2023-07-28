@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text-test",
-  "version": "1.46.0-1690529497942",
+  "version": "1.46.0-1690532567554",
   "main": "dist/cjs",
   "private": true,
   "module": "dist/esm",
@@ -9,7 +9,7 @@
     "test": "TAMAGUI_TARGET=web vitest --config ../vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {
-    "@tamagui/text": "1.46.0-1690529497942",
+    "@tamagui/text": "1.46.0-1690532567554",
     "vitest": "^0.26.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collapsible",
-  "version": "1.46.0-1690529497942",
+  "version": "1.46.0-1690532567554",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,19 +17,19 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "1.46.0-1690529497942",
-    "@tamagui/compose-refs": "1.46.0-1690529497942",
-    "@tamagui/core": "1.46.0-1690529497942",
-    "@tamagui/create-context": "1.46.0-1690529497942",
-    "@tamagui/polyfill-dev": "1.46.0-1690529497942",
-    "@tamagui/stacks": "1.46.0-1690529497942",
-    "@tamagui/use-controllable-state": "1.46.0-1690529497942"
+    "@tamagui/animate-presence": "1.46.0-1690532567554",
+    "@tamagui/compose-refs": "1.46.0-1690532567554",
+    "@tamagui/core": "1.46.0-1690532567554",
+    "@tamagui/create-context": "1.46.0-1690532567554",
+    "@tamagui/polyfill-dev": "1.46.0-1690532567554",
+    "@tamagui/stacks": "1.46.0-1690532567554",
+    "@tamagui/use-controllable-state": "1.46.0-1690532567554"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690529497942",
+    "@tamagui/build": "1.46.0-1690532567554",
     "react": "^18.2.0"
   },
   "publishConfig": {

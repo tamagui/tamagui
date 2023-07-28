@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focusable",
-  "version": "1.46.0-1690529497942",
+  "version": "1.46.0-1690532567554",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -22,14 +22,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.46.0-1690529497942",
-    "@tamagui/web": "1.46.0-1690529497942"
+    "@tamagui/compose-refs": "1.46.0-1690532567554",
+    "@tamagui/web": "1.46.0-1690532567554"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690529497942",
+    "@tamagui/build": "1.46.0-1690532567554",
     "react": "^18.2.0"
   },
   "publishConfig": {
