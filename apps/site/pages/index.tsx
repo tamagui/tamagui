@@ -19,15 +19,6 @@ import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
-    <Circle
-      debug="verbose"
-      animation="quick"
-      size={100}
-      bg="red"
-      enterStyle={{ y: -100, o: 0 }}
-    />
-  )
-  return (
     <>
       <HomeGlow />
       <NextSeo
