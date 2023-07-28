@@ -408,13 +408,14 @@ const BotInstallPanel = ({
         </YStack>
       ) : (
         <>
-        <Paragraph>
-          No installation found. To receive updates, you need to install the Takeout
-          GitHub Bot on your repo.
-        </Paragraph>
-        <Paragraph theme="alt1">
-          If you have already installed the bot and don't see it here, 
-        </Paragraph>
+          <Paragraph>
+            No installation found. To receive updates, you need to install the Takeout
+            GitHub Bot on your repo.
+          </Paragraph>
+          <Paragraph theme="alt1">
+            If you have already installed the bot and don't see it here, *uninstall* the
+            bot from GitHub, come back to this page and try again.
+          </Paragraph>
         </>
       )}
 
