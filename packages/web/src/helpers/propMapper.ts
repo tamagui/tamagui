@@ -85,6 +85,7 @@ const resolveVariants: StyleResolver = (
 ) => {
   const { staticConfig, conf, debug } = styleState
   const { variants } = staticConfig
+  if (!variants) return
 
   let variantValue = getVariantDefinition(variants[key], key, value, conf)
 
@@ -254,8 +255,6 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       }
       continue
     }
-
-    console.log('handling', val)
 
     if (isVariable(val)) {
       res[fKey] = resolveVariableValue(val, styleProps)
