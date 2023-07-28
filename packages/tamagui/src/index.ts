@@ -185,7 +185,6 @@ export {
   useThemeName,
   useProps,
   useMediaPropsActive,
-  useSafeRef,
 } from '@tamagui/core'
 
 /** @deprecated LinearGradient has been moved to tamagui/linear-gradient as of 1.1 */

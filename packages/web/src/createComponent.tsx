@@ -41,6 +41,7 @@ import {
   TamaguiComponentState,
   TamaguiElement,
   TamaguiInternalConfig,
+  ThemeParsed,
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
@@ -372,7 +373,6 @@ export function createComponent<
         return stateRef.current.isListeningToTheme
       },
       debug: debugProp,
-      _debug: props['_debug'],
     }
 
     const isExiting = Boolean(!state.unmounted && presence?.[0] === false)
@@ -432,8 +432,11 @@ export function createComponent<
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      // @ts-expect-error theme is there
-      themeState.state,
+      themeState.state as {
+        // we can assume its always here, it is
+        theme: ThemeParsed
+        name: string
+      },
       {
         ...state,
         mediaState,

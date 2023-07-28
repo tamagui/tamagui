@@ -10,6 +10,7 @@ import {
   SplitStyleState,
   TamaguiComponent,
   TextNonStyleProps,
+  ThemeParsed,
 } from '../types'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -30,7 +31,10 @@ export function useStyle<
   const out = useSplitStyles(
     style as any,
     base.staticConfig,
-    themeState!,
+    themeState.state as {
+      theme: ThemeParsed
+      name: string
+    },
     {
       ...(options as any),
       mediaState: media,

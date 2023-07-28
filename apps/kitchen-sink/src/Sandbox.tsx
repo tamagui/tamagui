@@ -3,8 +3,16 @@
 
 import { useLayoutEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Text } from 'react-native'
-import { Paragraph, SizableText, Stack, XStack, YStack, styled } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  SizableText,
+  Stack,
+  Text,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 const StyledStack = styled(Stack, {
   borderColor: 'red',
@@ -26,7 +34,7 @@ const BenchmarkOne = ({ name }) => {
 
   return (
     <>
-      <Button title="go" onPress={() => setX(Math.random())} />
+      <Button onPress={() => setX(Math.random())}>Go</Button>
       <YStack ov="hidden">
         {name === 'rn' && (
           <XStack>

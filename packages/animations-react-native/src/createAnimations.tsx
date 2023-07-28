@@ -7,9 +7,8 @@ import {
   isWeb,
   useEvent,
   useIsomorphicLayoutEffect,
-  useSafeRef,
 } from '@tamagui/web'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
@@ -73,7 +72,7 @@ export const AnimatedText = Animated.Text
 export function useAnimatedNumber(
   initial: number
 ): UniversalAnimatedNumber<Animated.Value> {
-  const state = useSafeRef(
+  const state = useRef(
     null as any as {
       val: Animated.Value
       composite: Animated.CompositeAnimation | null
@@ -177,9 +176,9 @@ export function createAnimations<A extends AnimationsConfig>(
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       /** store Animated value of each key e.g: color: AnimatedValue */
-      const animateStyles = useSafeRef<Record<string, Animated.Value>>({})
-      const animatedTranforms = useSafeRef<{ [key: string]: Animated.Value }[]>([])
-      const animationsState = useSafeRef(
+      const animateStyles = useRef<Record<string, Animated.Value>>({})
+      const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
+      const animationsState = useRef(
         new WeakMap<
           Animated.Value,
           {

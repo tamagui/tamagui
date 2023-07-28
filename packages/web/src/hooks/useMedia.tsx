@@ -12,7 +12,6 @@ import type {
   MediaQueryState,
   TamaguiInternalConfig,
 } from '../types'
-import { useSafeRef } from './useSafeRef'
 
 export let mediaState: MediaQueryState =
   // development only safeguard

@@ -139,10 +139,10 @@ export class ThemeManager {
   }
 
   getState(props = this.props, parentManager = this.parentManager) {
-    return (
+    const next =
       getState(props, parentManager) ||
       (process.env.TAMAGUI_TARGET === 'native' ? parentManager?.state || null : null)
-    )
+    return next
   }
 
   _allKeys: Set<string> | null = null
@@ -155,9 +155,9 @@ export class ThemeManager {
   }
 
   // gets value going up to parents
-  getValue(key: string, state?: ThemeManagerState) {
+  getValue(key: string, state: ThemeManagerState = this.state) {
     if (!key) return
-    let theme = (state || this.state).theme
+    let theme = state.theme
     let manager = this as ThemeManager | null
     while (theme && manager) {
       if (key in theme) {

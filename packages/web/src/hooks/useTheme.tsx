@@ -12,7 +12,7 @@ import {
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { ThemeParsed, ThemeProps } from '../types'
-import { GetThemeUnwrapped } from './getThemeUnwrapped'
+import { GetThemeUnwrapped, getThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state: ThemeManagerState
@@ -61,7 +61,7 @@ export const useThemeWithState = (props: ThemeProps): ChangedThemeResponse => {
     throw `❌`
   }
 
-  const proxiedTheme = useMemo(() => {
+  const themeProxied = useMemo(() => {
     return getThemeProxied(
       {
         theme,
@@ -71,8 +71,6 @@ export const useThemeWithState = (props: ThemeProps): ChangedThemeResponse => {
     )
   }, [theme, name, className, themeManager])
 
-  changedThemeState.state.theme = proxiedTheme
-
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed('  🔹 useTheme =>', name)
     // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -80,7 +78,13 @@ export const useThemeWithState = (props: ThemeProps): ChangedThemeResponse => {
     console.groupEnd()
   }
 
-  return changedThemeState
+  return {
+    ...changedThemeState,
+    state: {
+      ...changedThemeState.state,
+      theme: themeProxied,
+    },
+  }
 }
 
 export function getThemeProxied(
@@ -151,11 +155,7 @@ export const useChangeThemeEffect = (
   const parentManager = useContext(ThemeManagerContext)
   const hasThemeUpdatingProps = props['_debug'] ? false : getHasThemeUpdatingProps(props)
 
-  // if (props['_debug']) {
-  //   console.log('???????')
-  // }
-
-  if (disable || props['_debug']) {
+  if (disable) {
     if (!parentManager) throw `❌`
     return {
       isNewTheme: false,

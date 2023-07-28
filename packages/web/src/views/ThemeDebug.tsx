@@ -71,8 +71,8 @@ export function ThemeDebug({
             &lt;Theme {id} /&gt;&nbsp;
             {JSON.stringify(
               {
-                name: themeState.name,
-                className: themeState.className,
+                name: themeState.state.name,
+                className: themeState.state.className,
                 inverse: themeProps.inverse,
                 forceClassName: themeProps.forceClassName,
                 parent: themeState.themeManager?.state.parentName,
