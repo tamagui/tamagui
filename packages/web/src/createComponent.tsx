@@ -454,9 +454,6 @@ export function createComponent<
       debugProp
     )
 
-    // if (props['borderWidth'] === 2)
-    //   return <View style={{ borderColor: 'yellow', borderWidth: 2, padding: 5 }} />
-
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)

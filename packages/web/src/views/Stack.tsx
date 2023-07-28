@@ -8,10 +8,7 @@ export type Stack = TamaguiElement
 
 export const Stack = createComponent<StackProps, Stack, StackPropsBase>({
   acceptsClassName: true,
-  defaultProps: {
-    ...stackDefaultStyles,
-    flexDirection: 'column',
-  },
+  defaultProps: stackDefaultStyles,
   validStyles,
 })
 
