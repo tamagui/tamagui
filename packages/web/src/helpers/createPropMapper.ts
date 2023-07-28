@@ -161,16 +161,11 @@ const resolveVariants: StyleResolver = (
     console.log(`   attaching updated curProps`, {
       new: variantValue,
       before: styleState.curProps,
-      after: {
-        ...styleState.curProps,
-        ...variantValue,
-      },
+      after: Object.assign(styleState.curProps, variantValue),
     })
   }
-  styleState.curProps = {
-    ...styleState.curProps,
-    ...variantValue,
-  }
+
+  Object.assign(styleState.curProps, variantValue)
 
   let fontFamilyResult: any
 

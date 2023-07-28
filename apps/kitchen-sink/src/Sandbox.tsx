@@ -1,12 +1,59 @@
 // debug
 // import './wdyr'
 
-import { Paragraph, SizableText, Text, styled } from 'tamagui'
+import { useLayoutEffect, useState } from 'react'
+import { Button, Paragraph, SizableText, Stack, Text, XStack, styled } from 'tamagui'
+
+const StyledStack = styled(Stack, {
+  borderColor: 'red',
+  borderWidth: 2,
+  padding: 5,
+})
+
+const Benchmark = () => {
+  const [x, setX] = useState(0)
+
+  return (
+    <>
+      <Button onPress={() => setX(Math.random())}>go</Button>
+      <XStack>
+        <BenchTama key={x} />
+      </XStack>
+    </>
+  )
+}
+
+const BenchTama = () => {
+  return (
+    <TimedRender>
+      {new Array(1000).fill(0).map((_, i) => (
+        <StyledStack key={i} />
+      ))}
+    </TimedRender>
+  )
+}
+
+function TimedRender(props) {
+  const [start] = useState(Date.now())
+  const [end, setEnd] = useState(0)
+
+  useLayoutEffect(() => {
+    setEnd(Date.now())
+  }, [])
+
+  return (
+    <>
+      {!!end && <Text>Took {start - end}ms</Text>}
+      {props.children}
+    </>
+  )
+}
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
   return (
     <>
+      <Benchmark />
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
       {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
         WATCH THE VIDEO
