@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { isClient, isServer, isWeb } from '@tamagui/constants'
-import { useContext, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
 import { getVariable } from '../createVariable'
@@ -182,78 +182,78 @@ export const useChangeThemeEffect = (
     return next
   }
 
-  // if (!isServer) {
-  //   // listen for parent change + notify children change
-  //   useLayoutEffect(() => {
-  //     // SSR safe inverse (because server can't know prefers scheme)
-  //     // could be done through fancy selectors like how we do prefers-media
-  //     // but may be a bit of explosion of selectors
-  //     if (props.inverse && !mounted) {
-  //       setThemeState({ ...themeState, mounted: true })
-  //       return
-  //     }
+  if (!isServer) {
+    // listen for parent change + notify children change
+    useLayoutEffect(() => {
+      // SSR safe inverse (because server can't know prefers scheme)
+      // could be done through fancy selectors like how we do prefers-media
+      // but may be a bit of explosion of selectors
+      if (props.inverse && !mounted) {
+        setThemeState({ ...themeState, mounted: true })
+        return
+      }
 
-  //     if (isNewTheme && themeManager) {
-  //       activeThemeManagers.add(themeManager)
-  //     }
+      if (isNewTheme && themeManager) {
+        activeThemeManagers.add(themeManager)
+      }
 
-  //     const nextState = getShouldUpdateTheme(themeManager)
+      const nextState = getShouldUpdateTheme(themeManager)
 
-  //     // if (nextState && isNewTheme) {
-  //     //   // if it's a new theme we can just update + publish to children
-  //     //   themeManager.updateState(nextState, true)
-  //     // }
+      // if (nextState && isNewTheme) {
+      //   // if it's a new theme we can just update + publish to children
+      //   themeManager.updateState(nextState, true)
+      // }
 
-  //     if (nextState || isNewTheme) {
-  //       setThemeState(createState)
-  //     }
+      if (nextState || isNewTheme) {
+        setThemeState(createState)
+      }
 
-  //     // for updateTheme/replaceTheme
-  //     const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
-  //       if (forced) {
-  //         setThemeState((prev) => createState(prev, true))
-  //       }
-  //     })
+      // for updateTheme/replaceTheme
+      const selfListenerDispose = themeManager.onChangeTheme((_a, _b, forced) => {
+        if (forced) {
+          setThemeState((prev) => createState(prev, true))
+        }
+      })
 
-  //     const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
-  //       const force = shouldUpdate?.()
-  //       const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
-  //       if (process.env.NODE_ENV === 'development' && props.debug) {
-  //         // prettier-ignore
-  //         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  //         console.log(` 🔸 onChange`, themeManager.id, { force, doUpdate, props, name, manager, keys })
-  //       }
-  //       if (doUpdate) {
-  //         setThemeState(createState)
-  //       }
-  //     }, themeManager.id)
+      const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
+        const force = shouldUpdate?.()
+        const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
+        if (process.env.NODE_ENV === 'development' && props.debug) {
+          // prettier-ignore
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log(` 🔸 onChange`, themeManager.id, { force, doUpdate, props, name, manager, keys })
+        }
+        if (doUpdate) {
+          setThemeState(createState)
+        }
+      }, themeManager.id)
 
-  //     return () => {
-  //       selfListenerDispose()
-  //       disposeChangeListener?.()
-  //       activeThemeManagers.delete(themeManager)
-  //     }
-  //   }, [
-  //     themeManager,
-  //     parentManager,
-  //     isNewTheme,
-  //     props.componentName,
-  //     props.inverse,
-  //     props.name,
-  //     props.reset,
-  //     mounted,
-  //   ])
+      return () => {
+        selfListenerDispose()
+        disposeChangeListener?.()
+        activeThemeManagers.delete(themeManager)
+      }
+    }, [
+      themeManager,
+      parentManager,
+      isNewTheme,
+      props.componentName,
+      props.inverse,
+      props.name,
+      props.reset,
+      mounted,
+    ])
 
-  //   if (process.env.NODE_ENV === 'development') {
-  //     useEffect(() => {
-  //       globalThis['TamaguiThemeManagers'] ??= new Set()
-  //       globalThis['TamaguiThemeManagers'].add(themeManager)
-  //       return () => {
-  //         globalThis['TamaguiThemeManagers'].delete(themeManager)
-  //       }
-  //     }, [themeManager])
-  //   }
-  // }
+    if (process.env.NODE_ENV === 'development') {
+      useEffect(() => {
+        globalThis['TamaguiThemeManagers'] ??= new Set()
+        globalThis['TamaguiThemeManagers'].add(themeManager)
+        return () => {
+          globalThis['TamaguiThemeManagers'].delete(themeManager)
+        }
+      }, [themeManager])
+    }
+  }
 
   if (isInversingOnMount) {
     if (!parentManager) throw '❌'

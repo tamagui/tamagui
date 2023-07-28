@@ -150,6 +150,8 @@ export interface PopoverContentTypeProps
 export const PopoverContent = PopperContentFrame.extractable(
   React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
     function PopoverContent(props: PopoverContentTypeProps, forwardedRef) {
+      console.warn('props1', props)
+
       return (
         <PopoverContentPortal zIndex={props.zIndex}>
           <PopoverContentInner {...props} ref={forwardedRef} />
@@ -333,6 +335,9 @@ const PopoverContentImpl = React.forwardRef<
     disableRemoveScroll,
     ...contentProps
   } = props
+
+  console.warn('contentProps', contentProps)
+
   const context = usePopoverContext()
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext()

@@ -97,12 +97,26 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-// loop props backwards
-//   track used keys:
-//     const keys = new Set<string>()
-//   keep classnames and styles separate:
-//     const styles = {}
-//     const classNames = {}
+// if you need and easier way to test performance, you can do something like this
+// add this early return somewhere in this file and you can see roughly where it slows down:
+
+// return {
+//   space,
+//   hasMedia,
+//   fontFamily: styleState.fontFamily,
+//   viewProps: {
+//     children: props.children,
+//   },
+//   style: {
+//     borderColor: props.borderColor,
+//     borderWidth: props.borderWidth,
+//     padding: props.padding,
+//   },
+//   pseudos,
+//   classNames,
+//   rulesToInsert,
+//   dynamicThemeAccess,
+// }
 
 export const getSplitStyles: StyleSplitter = (
   props,
@@ -145,7 +159,7 @@ export const getSplitStyles: StyleSplitter = (
    * Not the biggest fan of creating this object but it is a nice API
    */
   const styleState: GetStyleState = {
-    curProps: props,
+    curProps: { ...props },
     classNames,
     conf,
     props,
@@ -198,24 +212,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
   }
-
-  // return {
-  //   space,
-  //   hasMedia,
-  //   fontFamily: styleState.fontFamily,
-  //   viewProps: {
-  //     children: props.children,
-  //   },
-  //   style: {
-  //     borderColor: props.borderColor,
-  //     borderWidth: props.borderWidth,
-  //     padding: props.padding,
-  //   },
-  //   pseudos,
-  //   classNames,
-  //   rulesToInsert,
-  //   dynamicThemeAccess,
-  // }
 
   for (const keyOg in props) {
     let keyInit = keyOg
@@ -481,13 +477,18 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    let isMedia = isMediaKey(keyInit)
+    const isValidStyleKeyInit = keyInit in validStyleProps
+    const isShorthand = keyInit in shorthands
+
+    let isVariant = !isValidStyleKeyInit && variants && keyInit in variants
+
+    const isStyleLikeKey = isShorthand || isValidStyleKeyInit || isVariant
+
     let isPseudo = keyInit in validPseudoKeys
+    let isMedia = !isStyleLikeKey && !isPseudo && isMediaKey(keyInit)
     let isMediaOrPseudo = isMedia || isPseudo
 
-    let isVariant = variants && keyInit in variants
-    const isStyleProp =
-      isMediaOrPseudo || isVariant || keyInit in validStyleProps || keyInit in shorthands
+    const isStyleProp = isMediaOrPseudo || isVariant || isValidStyleKeyInit || isShorthand
 
     if (isStyleProp && props.asChild === 'except-style') {
       continue
@@ -501,7 +502,8 @@ export const getSplitStyles: StyleSplitter = (
 
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isMediaOrPseudo ||
+        (isStyleLikeKey ||
+          isMediaOrPseudo ||
           parentStaticConfig?.variants?.[keyInit] ||
           keyInit in skipProps)
     )
@@ -564,7 +566,12 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const avoidPropMap = isMediaOrPseudo || (keyInit in validStyleProps && !isVariant)
+    const avoidPropMap =
+      isMediaOrPseudo ||
+      // micro-bench optimize - if theres no variants at all, no need to do expansions
+      (isValidStyleKeyInit && !variants) ||
+      (!isVariant && !isValidStyleKeyInit)
+
     const expanded = avoidPropMap
       ? [[keyInit, valInit]]
       : propMapper(keyInit, valInit, styleState)
@@ -594,40 +601,13 @@ export const getSplitStyles: StyleSplitter = (
       if (val == null) continue
       if (key in usedKeys) continue
 
-      if (isText) {
-        if (key === fontFamilyKey && valInit && val) {
-          const fam = valInit[0] === '$' ? valInit : val
-          if (fam in conf.fontsParsed) {
-            styleState.fontFamily = fam
-          }
-        }
-      }
-
-      isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
+      isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
       isMediaOrPseudo = isMedia || isPseudo
+      isVariant = variants && key in variants
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
         viewProps[key] = props[key] ?? val
-      }
-
-      // have to run this logic again here
-      const isHOCShouldPassThrough =
-        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
-
-      if (isHOCShouldPassThrough) {
-        isVariant = variants && key in variants
-        passDownProp(viewProps, key, val, isMediaOrPseudo)
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          console.groupCollapsed(` - passing down prop ${key}`)
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ val, after: { ...viewProps[key] } })
-          console.groupEnd()
-        }
-        // if its also a variant here, pass down but also keep it
-        if (!isVariant) {
-          continue
-        }
       }
 
       // pseudo
@@ -724,7 +704,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed('pseudo', key, !isDisabled)
+            console.groupCollapsed('pseudo', key, { isDisabled })
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...componentState } })
@@ -732,14 +712,6 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           const importance = descriptor.priority
-
-          if (!isDisabled) {
-            // mark usedKeys based not on pseudoStyleObject
-            for (const key in val) {
-              const k = shorthands[key] || key
-              usedKeys[k] = Math.max(importance, usedKeys[k] || 0)
-            }
-          }
 
           for (const pkey in pseudoStyleObject) {
             const val = pseudoStyleObject[pkey]
@@ -766,6 +738,15 @@ export const getSplitStyles: StyleSplitter = (
                 // rome-ignore lint/nursery/noConsoleLog: <explanation>
                 console.log('    subKey', pkey, shouldMerge, { importance, curImportance, pkey, val })
               }
+            }
+          }
+
+          // set this after the loop over pseudoStyleObject
+          if (!isDisabled) {
+            // mark usedKeys based not on pseudoStyleObject
+            for (const key in val) {
+              const k = shorthands[key] || key
+              usedKeys[k] = Math.max(importance, usedKeys[k] || 0)
             }
           }
         }
@@ -986,11 +967,7 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (
-            styleProps.isAnimated &&
-            props.animateOnly &&
-            props.animateOnly.includes(key)
-          ) {
+          if (styleProps.isAnimated && props.animateOnly?.includes(key)) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)

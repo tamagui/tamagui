@@ -133,9 +133,12 @@ setupHooks({
 
       // use Pressability to get smooth unPress when you press + hold + move out
       // only ever create once, use .configure() to update later
-      const pressability = usePressability(
-        events ? { ...events, hitSlop: viewProps.hitSlop } : {}
-      )
+      if (events && viewProps.hitSlop) {
+        events.hitSlop = viewProps.hitSlop
+      }
+
+      const pressability = usePressability(events || null)
+
       if (events?.onPress) {
         for (const key in pressability) {
           const og = viewProps[key]

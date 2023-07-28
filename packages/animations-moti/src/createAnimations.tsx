@@ -1,7 +1,7 @@
 import { PresenceContext, usePresence } from '@tamagui/use-presence'
 import { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { MotiTransition, useMotify } from 'moti'
-import { useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import Animated, {
   SharedValue,
   cancelAnimation,
@@ -96,7 +96,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }, [val, getStyle, derivedValue])
     },
 
-    useAnimations: ({ props, presence, style, state, onDidAnimate }) => {
+    useAnimations: ({ props, presence, style, onDidAnimate }) => {
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -108,7 +108,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       if (animateOnly) {
         animate = {}
         dontAnimate = { ...style }
-
         for (const key of animateOnly) {
           if (!(key in style)) continue
           animate[key] = style[key]
@@ -127,13 +126,15 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const sendExitComplete = presence?.[1]
       const transition = animations[animationKey as keyof typeof animations]
 
+      const onDidAnimateCombined = useCallback(() => {
+        onDidAnimate?.()
+        sendExitComplete?.()
+      }, [])
+
       const motiProps = {
         animate: isExiting ? undefined : styles,
         transition,
-        onDidAnimate() {
-          onDidAnimate?.()
-          sendExitComplete?.()
-        },
+        onDidAnimate: onDidAnimateCombined,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
@@ -150,6 +151,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           moti,
           dontAnimate,
           isExiting,
+          animateStr,
         })
       }
 

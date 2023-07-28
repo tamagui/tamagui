@@ -35,8 +35,11 @@ export let mediaState: MediaQueryState =
     : ({} as any)
 
 export const mediaQueryConfig: MediaQueries = {}
+
 export const getMedia = () => mediaState
+
 export const mediaKeys = new Set<string>() // with $ prefix
+
 export const isMediaKey = (key: string) =>
   mediaKeys.has(key) ||
   (key[0] === '$' && (key.startsWith('$platform-') || key.startsWith('$theme-')))

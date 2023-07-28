@@ -1,6 +1,44 @@
-// flat transform props
 import { isAndroid } from '@tamagui/constants'
-export const stylePropsTransform = Object.freeze({
+
+// TODO merge into validStyleProps as well to save bundle size!
+export const stylePropsUnitless = {
+  WebkitLineClamp: true,
+  animationIterationCount: true,
+  aspectRatio: true,
+  borderImageOutset: true,
+  borderImageSlice: true,
+  borderImageWidth: true,
+  columnCount: true,
+  flex: true,
+  flexGrow: true,
+  flexOrder: true,
+  flexPositive: true,
+  flexShrink: true,
+  flexNegative: true,
+  fontWeight: true,
+  gridRow: true,
+  gridRowEnd: true,
+  gridRowGap: true,
+  gridRowStart: true,
+  gridColumn: true,
+  gridColumnEnd: true,
+  gridColumnGap: true,
+  gridColumnStart: true,
+  lineClamp: true,
+  opacity: true,
+  order: true,
+  orphans: true,
+  tabSize: true,
+  widows: true,
+  zoom: true,
+  scale: true,
+  scaleX: true,
+  scaleY: true,
+  scaleZ: true,
+  shadowOpacity: true,
+}
+
+export const stylePropsTransform = {
   x: true,
   y: true,
   scale: true,
@@ -14,13 +52,13 @@ export const stylePropsTransform = Object.freeze({
   rotateY: true,
   rotateX: true,
   rotateZ: true,
-})
+}
 
-export const validStylesOnBaseProps = Object.freeze({
+export const validStylesOnBaseProps = {
   placeholderTextColor: true,
-})
+}
 
-export const stylePropsView = Object.freeze({
+export const stylePropsView = {
   backfaceVisibility: true,
   backgroundColor: true,
   borderBottomColor: true,
@@ -45,22 +83,17 @@ export const stylePropsView = Object.freeze({
   borderTopStartRadius: true,
   borderTopWidth: true,
   borderWidth: true,
-  opacity: true,
   transform: true,
   alignContent: true,
   alignItems: true,
   alignSelf: true,
-  aspectRatio: true,
   borderEndWidth: true,
   borderStartWidth: true,
   bottom: true,
   display: true,
   end: true,
-  flex: true,
   flexBasis: true,
   flexDirection: true,
-  flexGrow: true,
-  flexShrink: true,
   flexWrap: true,
   gap: true,
   columnGap: true,
@@ -100,10 +133,10 @@ export const stylePropsView = Object.freeze({
   direction: true,
   shadowColor: true,
   shadowOffset: true,
-  shadowOpacity: true,
   shadowRadius: true,
   ...validStylesOnBaseProps,
   ...stylePropsTransform,
+  ...stylePropsUnitless,
 
   // allow a few web only ones
 
@@ -128,9 +161,9 @@ export const stylePropsView = Object.freeze({
     outlineWidth: true,
   }),
   ...(isAndroid ? { elevationAndroid: true } : {}),
-})
+}
 
-export const stylePropsFont = Object.freeze({
+export const stylePropsFont = {
   fontFamily: true,
   fontSize: true,
   fontStyle: true,
@@ -138,9 +171,9 @@ export const stylePropsFont = Object.freeze({
   letterSpacing: true,
   lineHeight: true,
   textTransform: true,
-})
+}
 
-export const stylePropsTextOnly = Object.freeze({
+export const stylePropsTextOnly = {
   color: true,
   ...stylePropsFont,
   textAlign: true,
@@ -163,24 +196,24 @@ export const stylePropsTextOnly = Object.freeze({
     WebkitLineClamp: true,
     WebkitBoxOrient: true,
   }),
-})
+}
 
-export const stylePropsText = Object.freeze({
+export const stylePropsText = {
   ...stylePropsView,
   ...stylePropsTextOnly,
-})
+}
 
 export const stylePropsAll = stylePropsText
 
-export const validPseudoKeys = Object.freeze({
+export const validPseudoKeys = {
   enterStyle: true,
   exitStyle: true,
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
-})
+}
 
-export const validStyles = Object.freeze({
+export const validStyles = {
   ...validPseudoKeys,
   ...stylePropsView,
-})
+}

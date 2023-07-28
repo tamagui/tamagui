@@ -642,7 +642,7 @@ export type GetStyleState = {
     debug?: DebugProp;
     transforms?: FlatTransforms;
 };
-export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, state: GetStyleState, returnVariablesAs: 'auto' | 'value', parentVariantKey: string) => Response;
+export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, subProps?: Record<string, any>) => PropMappedValue;
 export type GenericVariantDefinitions = {
     [key: string]: {

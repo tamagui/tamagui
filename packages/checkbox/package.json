@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "1.46.0-1690532567554",
+  "version": "1.46.0-1690569788107",
   "sideEffects": [
     "*.css"
   ],
@@ -19,16 +19,16 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "1.46.0-1690532567554",
-    "@tamagui/create-context": "1.46.0-1690532567554",
-    "@tamagui/focusable": "1.46.0-1690532567554",
-    "@tamagui/font-size": "1.46.0-1690532567554",
-    "@tamagui/get-token": "1.46.0-1690532567554",
-    "@tamagui/helpers-tamagui": "1.46.0-1690532567554",
-    "@tamagui/label": "1.46.0-1690532567554",
-    "@tamagui/stacks": "1.46.0-1690532567554",
-    "@tamagui/use-controllable-state": "1.46.0-1690532567554",
-    "@tamagui/use-previous": "1.46.0-1690532567554"
+    "@tamagui/core": "1.46.0-1690569788107",
+    "@tamagui/create-context": "1.46.0-1690569788107",
+    "@tamagui/focusable": "1.46.0-1690569788107",
+    "@tamagui/font-size": "1.46.0-1690569788107",
+    "@tamagui/get-token": "1.46.0-1690569788107",
+    "@tamagui/helpers-tamagui": "1.46.0-1690569788107",
+    "@tamagui/label": "1.46.0-1690569788107",
+    "@tamagui/stacks": "1.46.0-1690569788107",
+    "@tamagui/use-controllable-state": "1.46.0-1690569788107",
+    "@tamagui/use-previous": "1.46.0-1690569788107"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -42,7 +42,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690532567554",
+    "@tamagui/build": "1.46.0-1690569788107",
     "react": "^18.2.0"
   },
   "publishConfig": {

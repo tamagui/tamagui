@@ -3,9 +3,9 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
-  DebugProp,
   GetStyleState,
   PropMapper,
+  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -14,13 +14,13 @@ import { expandStyle } from './expandStyle'
 import { expandStylesAndRemoveNullishValues } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
-import { mergeProps } from './mergeProps'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
+    // this shouldnt be necessary and handled in the outer loop
     if (key === 'elevationAndroid') return
   }
 
@@ -28,15 +28,17 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
   const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
+
   const styleState = subProps
-    ? {
-        ...styleStateIn,
-        curProps: subProps,
-      }
+    ? new Proxy(styleStateIn, {
+        get(_, k) {
+          return k === 'curProps' ? subProps : Reflect.get(_, k)
+        },
+      })
     : styleStateIn
 
-  const { conf, styleProps, fontFamily } = styleState
-  const returnVariablesAs = styleProps.resolveVariablesAs === 'value' ? 'value' : 'auto'
+  const { conf, styleProps, fontFamily, staticConfig } = styleState
+  const { variants } = staticConfig
 
   // prettier-ignore
   if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
@@ -44,10 +46,11 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     console.warn(`Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(', ')}`)
   }
 
-  const variantValue = resolveVariants(key, value, styleState, returnVariablesAs, '')
-
-  if (variantValue) {
-    return variantValue
+  if (variants && key in variants && value != null) {
+    const variantValue = resolveVariants(key, value, styleProps, styleState, '')
+    if (variantValue) {
+      return variantValue
+    }
   }
 
   let shouldReturn = false
@@ -60,9 +63,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   if (value) {
     if (value[0] === '$') {
-      value = getToken(key, value, styleState, returnVariablesAs)
+      value = getToken(key, value, styleProps, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(key, value, returnVariablesAs)
+      value = resolveVariableValue(value, styleProps)
     }
   }
 
@@ -74,16 +77,13 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 const resolveVariants: StyleResolver = (
   key,
   value,
+  styleProps,
   styleState,
-  returnVariablesAs,
   parentVariantKey
 ) => {
   const { staticConfig, conf, debug } = styleState
   const { variants } = staticConfig
-
-  if (!variants || !(key in variants) || value == null) {
-    return
-  }
+  if (!variants) return
 
   let variantValue = getVariantDefinition(variants[key], key, value, conf)
 
@@ -159,8 +159,8 @@ const resolveVariants: StyleResolver = (
     variantValue = resolveTokensAndVariants(
       key,
       variantValue,
+      styleProps,
       styleState,
-      returnVariablesAs,
       parentVariantKey
     )
   }
@@ -194,7 +194,7 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
       }
     }
   } else if (typeof input === 'string') {
-    if (input?.[0] === '$') {
+    if (input[0] === '$') {
       return input
     }
   }
@@ -211,8 +211,8 @@ export const getPropMappedFontFamily = (expanded?: any) => {
 const resolveTokensAndVariants: StyleResolver<Object> = (
   key, // we dont use key assume value is object instead
   value,
+  styleProps,
   styleState,
-  returnVariablesAs,
   parentVariantKey
 ) => {
   const { conf, staticConfig, debug, theme } = styleState
@@ -234,9 +234,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       if (parentVariantKey && parentVariantKey === key) {
         res[fKey] =
           // SYNC WITH *1
-          val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
+          val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
       } else {
-        const variantOut = resolveVariants(fKey, val, styleState, returnVariablesAs, key)
+        const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
 
         // apply, merging sub-styles
         if (variantOut) {
@@ -255,26 +255,20 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isVariable(val)) {
-      res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
+      res[fKey] = resolveVariableValue(val, styleProps)
       continue
     }
 
     if (typeof val === 'string') {
       const fVal =
         // SYNC WITH *1
-        val[0] === '$' ? getToken(fKey, val, styleState, returnVariablesAs) : val
+        val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
       res[fKey] = fVal
       continue
     }
 
     if (isObj(val)) {
-      const subObject = resolveTokensAndVariants(
-        fKey,
-        val,
-        styleState,
-        returnVariablesAs,
-        key
-      )
+      const subObject = resolveTokensAndVariants(fKey, val, styleProps, styleState, key)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -341,9 +335,8 @@ const fontShorthand = {
 const getToken = (
   key: string,
   value: string,
-  styleState: GetStyleState,
-  resolveAs?: ResolveVariableTypes,
-  debug?: DebugProp
+  styleProps: SplitStyleProps,
+  styleState: GetStyleState
 ) => {
   const { theme, conf, languageContext, fontFamily } = styleState
 
@@ -351,7 +344,7 @@ const getToken = (
   let valOrVar: any
   let hasSet = false
   if (value in theme) {
-    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(` - getting theme value for ${key} from ${value} = ${theme[value].val}`)
     }
@@ -407,14 +400,18 @@ const getToken = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(key, valOrVar, resolveAs)
+    const out = resolveVariableValue(valOrVar, styleProps)
     return out
   }
 
-  if (process.env.NODE_ENV === 'development' && isDevTools && debug === 'verbose') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    isDevTools &&
+    styleState.debug === 'verbose'
+  ) {
     console.groupCollapsed('  ﹒ propMap (val)', key, value)
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ valOrVar, theme, hasSet, resolveAs }, theme[key])
+    console.log({ valOrVar, theme, hasSet }, theme[key])
     console.groupEnd()
   }
 
@@ -422,15 +419,11 @@ const getToken = (
 }
 
 function resolveVariableValue(
-  key: string,
   valOrVar: Variable | any,
-  resolveAs: ResolveVariableTypes = 'auto'
+  { resolveVariablesAs }: SplitStyleProps
 ) {
   if (isVariable(valOrVar)) {
-    if (resolveAs === 'variable') {
-      return valOrVar
-    }
-    if (!isWeb || resolveAs === 'value') {
+    if (!isWeb || resolveVariablesAs === 'value') {
       return valOrVar.val
     }
     return valOrVar.variable

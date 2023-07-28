@@ -1,105 +1,22 @@
 // debug
 // import './wdyr'
 
-import { useLayoutEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import {
-  Button,
-  Paragraph,
-  SizableText,
-  Stack,
-  Text,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
-
-const StyledStack = styled(Stack, {
-  borderColor: 'red',
-  borderWidth: 2,
-  padding: 5,
-})
-
-const Benchmark = () => {
-  return (
-    <>
-      <BenchmarkOne name="tama" />
-      <BenchmarkOne name="rn" />
-    </>
-  )
-}
-
-const BenchmarkOne = ({ name }) => {
-  const [x, setX] = useState(0)
-
-  return (
-    <>
-      <Button onPress={() => setX(Math.random())}>Go</Button>
-      <YStack ov="hidden">
-        {name === 'rn' && (
-          <XStack>
-            <BenchRN key={x} />
-          </XStack>
-        )}
-        {name === 'tama' && (
-          <XStack>
-            <BenchTama key={x} />
-          </XStack>
-        )}
-      </YStack>
-    </>
-  )
-}
-
-const BenchTama = () => {
-  return (
-    <TimedRender>
-      {new Array(1000).fill(0).map((_, i) => (
-        <StyledStack key={i} />
-      ))}
-    </TimedRender>
-  )
-}
-
-const styles = StyleSheet.create({
-  style: {
-    borderColor: 'red',
-    borderWidth: 2,
-    padding: 5,
-  },
-})
-
-const BenchRN = () => {
-  return (
-    <TimedRender>
-      {new Array(1000).fill(0).map((_, i) => (
-        <View style={styles.style} key={i} />
-      ))}
-    </TimedRender>
-  )
-}
-
-function TimedRender(props) {
-  const [start] = useState(Date.now())
-  const [end, setEnd] = useState(0)
-
-  useLayoutEffect(() => {
-    setEnd(Date.now())
-  }, [])
-
-  return (
-    <>
-      {!!end && <Text>Took {start - end}ms</Text>}
-      {props.children}
-    </>
-  )
-}
+import { Circle, H2, Paragraph, SizableText, Text, styled } from 'tamagui'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
   return (
     <>
-      <Benchmark />
+      <Circle
+        debug="verbose"
+        animation="quick"
+        size={100}
+        bc="red"
+        enterStyle={{ y: 100 }}
+        hoverStyle={{
+          scale: 1.2,
+        }}
+      />
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
       {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
         WATCH THE VIDEO

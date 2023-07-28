@@ -44,11 +44,10 @@ export function Demo({
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        enterStyle={{ x: 0, y: -10, opacity: 0 }}
-        exitStyle={{ x: 0, y: -10, opacity: 0 }}
-        x={0}
-        y={0}
-        opacity={1}
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
+        elevate
+        debug="verbose"
         animation={[
           'quick',
           {
@@ -57,7 +56,6 @@ export function Demo({
             },
           },
         ]}
-        elevate
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
 
