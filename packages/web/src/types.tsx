@@ -1303,8 +1303,8 @@ export type GetStyleState = {
 export type StyleResolver<Response = PropMappedValue> = (
   key: string,
   value: any,
+  props: SplitStyleProps,
   state: GetStyleState,
-  returnVariablesAs: 'auto' | 'value',
   parentVariantKey: string
 ) => Response
 

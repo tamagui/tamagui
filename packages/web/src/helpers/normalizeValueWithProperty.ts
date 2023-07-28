@@ -7,6 +7,8 @@ import { isWeb } from '@tamagui/constants'
 
 import { getAllSelectors } from './insertStyleRule'
 
+// only doing this on web on native it accepts pixel values
+
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (!isWeb || (property && property in unitlessNumbers)) {
     return value

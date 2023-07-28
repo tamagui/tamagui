@@ -97,12 +97,26 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-// loop props backwards
-//   track used keys:
-//     const keys = new Set<string>()
-//   keep classnames and styles separate:
-//     const styles = {}
-//     const classNames = {}
+// if you need and easier way to test performance, you can do something like this
+// add this early return somewhere in this file and you can see roughly where it slows down:
+
+// return {
+//   space,
+//   hasMedia,
+//   fontFamily: styleState.fontFamily,
+//   viewProps: {
+//     children: props.children,
+//   },
+//   style: {
+//     borderColor: props.borderColor,
+//     borderWidth: props.borderWidth,
+//     padding: props.padding,
+//   },
+//   pseudos,
+//   classNames,
+//   rulesToInsert,
+//   dynamicThemeAccess,
+// }
 
 export const getSplitStyles: StyleSplitter = (
   props,
@@ -198,24 +212,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
   }
-
-  // return {
-  //   space,
-  //   hasMedia,
-  //   fontFamily: styleState.fontFamily,
-  //   viewProps: {
-  //     children: props.children,
-  //   },
-  //   style: {
-  //     borderColor: props.borderColor,
-  //     borderWidth: props.borderWidth,
-  //     padding: props.padding,
-  //   },
-  //   pseudos,
-  //   classNames,
-  //   rulesToInsert,
-  //   dynamicThemeAccess,
-  // }
 
   for (const keyOg in props) {
     let keyInit = keyOg
@@ -564,7 +560,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const avoidPropMap = isMediaOrPseudo || (keyInit in validStyleProps && !isVariant)
+    const avoidPropMap = isMediaOrPseudo || !(keyInit in validStyleProps || isVariant)
     const expanded = avoidPropMap
       ? [[keyInit, valInit]]
       : propMapper(keyInit, valInit, styleState)
@@ -593,15 +589,6 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val == null) continue
       if (key in usedKeys) continue
-
-      if (isText) {
-        if (key === fontFamilyKey && valInit && val) {
-          const fam = valInit[0] === '$' ? valInit : val
-          if (fam in conf.fontsParsed) {
-            styleState.fontFamily = fam
-          }
-        }
-      }
 
       isMedia = isMediaKey(key)
       isPseudo = key in validPseudoKeys
@@ -986,11 +973,7 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (
-            styleProps.isAnimated &&
-            props.animateOnly &&
-            props.animateOnly.includes(key)
-          ) {
+          if (styleProps.isAnimated && props.animateOnly?.includes(key)) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
