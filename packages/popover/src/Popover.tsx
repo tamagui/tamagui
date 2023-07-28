@@ -344,14 +344,11 @@ const PopoverContentImpl = React.forwardRef<
     return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
   }, [children])
 
-  React.useEffect(() => {
-    if (!open) {
-      setHasShownOnce(true)
-    }
-  }, [open])
-
   if (open && isFullyHidden) {
     setIsFullyHidden(false)
+  }
+  if (!open && isFullyHidden && !hasShownOnce) {
+    setHasShownOnce(true)
   }
 
   if (!keepChildrenMounted) {

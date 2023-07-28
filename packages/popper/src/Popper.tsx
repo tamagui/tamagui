@@ -237,7 +237,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     const contentRefs = useComposedRefs<any>(refs.setFloating, forwardedRef)
 
     const contents = React.useMemo(() => {
-      console.warn('props', props)
       return (
         <PopperContentFrame
           key="popper-content-frame"

@@ -1,5 +1,5 @@
 import { PresenceContext } from '@tamagui/use-presence'
-import type { PresenceContextProps } from '@tamagui/web'
+import { PresenceContextProps, type, useIsomorphicLayoutEffect } from '@tamagui/web'
 import * as React from 'react'
 import { useId } from 'react'
 
@@ -69,7 +69,7 @@ export const PresenceChild = ({
    * If there's no animated components to fire exit animations, we want to remove this
    * component immediately.
    */
-  React.useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     !(isPresent || presenceChildren.size) && onExitComplete?.()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPresent])
