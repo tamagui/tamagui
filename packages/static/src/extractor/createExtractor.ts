@@ -11,7 +11,13 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { GetStyleState, PseudoStyles, StaticConfig } from '@tamagui/web'
+import type {
+  GetStyleState,
+  PseudoStyles,
+  SplitStyleProps,
+  StaticConfig,
+  TamaguiComponentState,
+} from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -67,17 +73,6 @@ const INLINE_EXTRACTABLE = {
   }),
 }
 
-const defaultComponentState = {
-  focus: false,
-  hover: false,
-  unmounted: true,
-  press: false,
-  pressIn: false,
-  resolveVariablesAs: 'variable',
-  noClassNames: false,
-  isAnimated: false,
-} as const
-
 const validHooks = {
   useMedia: true,
   useTheme: true,
@@ -101,6 +96,20 @@ export function createExtractor(
   if (!process.env.TAMAGUI_TARGET) {
     console.warn('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
     process.exit(1)
+  }
+
+  const componentState: TamaguiComponentState = {
+    focus: false,
+    hover: false,
+    unmounted: true,
+    press: false,
+    pressIn: false,
+  } as const
+
+  const styleProps: SplitStyleProps = {
+    resolveVariablesAs: process.env.TAMAGUI_TARGET === 'native' ? 'value' : 'variable',
+    noClassNames: false,
+    isAnimated: false,
   }
 
   const shouldAddDebugProp =
@@ -417,10 +426,6 @@ export function createExtractor(
       found: 0,
     }
 
-    const themeState =
-      // TODO
-      { theme: defaultTheme, name: '' }
-
     callTraverse({
       // @ts-ignore
       Program: {
@@ -589,8 +594,10 @@ export function createExtractor(
         const out = getSplitStyles(
           styles,
           Component.staticConfig,
-          themeState,
-          defaultComponentState,
+          defaultTheme,
+          '',
+          componentState,
+          styleProps,
           undefined,
           undefined,
           undefined,
@@ -888,8 +895,9 @@ export function createExtractor(
             conf: tamaguiConfig!,
             curProps: defaultProps,
             props: defaultProps,
-            state: {
-              ...defaultComponentState,
+            componentState,
+            styleProps: {
+              ...styleProps,
               resolveVariablesAs: 'auto',
             },
             debug: shouldPrintDebug,
@@ -1699,16 +1707,6 @@ export function createExtractor(
             )
           }
 
-          const state = {
-            noClassNames: false,
-            focus: false,
-            hover: false,
-            unmounted: false, // TODO match logic in createComponent
-            press: false,
-            pressIn: false,
-            isAnimated: false,
-          }
-
           function mergeToEnd(obj: Object, key: string, val: any) {
             if (key in obj) {
               delete obj[key]
@@ -1987,9 +1985,11 @@ export function createExtractor(
               const out = getSplitStyles(
                 props,
                 staticConfig,
-                themeState,
+                defaultTheme,
+                '',
+                componentState,
                 {
-                  ...state,
+                  ...styleProps,
                   fallbackProps: completeProps,
                 },
                 undefined,

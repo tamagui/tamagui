@@ -8,5 +8,5 @@ const StyledInput = styled(Input, {
 })
 
 export function StyledInputFocusStyle() {
-  return <StyledInput debug="verbose" />
+  return <StyledInput />
 }
