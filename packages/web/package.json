@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.46.0-1690532567554",
+  "version": "1.46.0-1690569788107",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,19 +27,19 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.46.0-1690532567554",
-    "@tamagui/constants": "1.46.0-1690532567554",
-    "@tamagui/helpers": "1.46.0-1690532567554",
-    "@tamagui/normalize-css-color": "1.46.0-1690532567554",
-    "@tamagui/use-did-finish-ssr": "1.46.0-1690532567554",
-    "@tamagui/use-event": "1.46.0-1690532567554",
-    "@tamagui/use-force-update": "1.46.0-1690532567554"
+    "@tamagui/compose-refs": "1.46.0-1690569788107",
+    "@tamagui/constants": "1.46.0-1690569788107",
+    "@tamagui/helpers": "1.46.0-1690569788107",
+    "@tamagui/normalize-css-color": "1.46.0-1690569788107",
+    "@tamagui/use-did-finish-ssr": "1.46.0-1690569788107",
+    "@tamagui/use-event": "1.46.0-1690569788107",
+    "@tamagui/use-force-update": "1.46.0-1690569788107"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690532567554",
+    "@tamagui/build": "1.46.0-1690569788107",
     "@testing-library/react": "^13.4.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",

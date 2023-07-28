@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "1.46.0-1690532567554",
+  "version": "1.46.0-1690569788107",
   "sideEffects": [
     "*.css"
   ],
@@ -20,7 +20,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690532567554"
+    "@tamagui/build": "1.46.0-1690569788107"
   },
   "exports": {
     "./package.json": "./package.json",

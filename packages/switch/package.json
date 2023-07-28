@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "1.46.0-1690532567554",
+  "version": "1.46.0-1690569788107",
   "sideEffects": [
     "*.css"
   ],
@@ -31,22 +31,22 @@
     }
   },
   "dependencies": {
-    "@tamagui/compose-refs": "1.46.0-1690532567554",
-    "@tamagui/core": "1.46.0-1690532567554",
-    "@tamagui/create-context": "1.46.0-1690532567554",
-    "@tamagui/focusable": "1.46.0-1690532567554",
-    "@tamagui/get-token": "1.46.0-1690532567554",
-    "@tamagui/label": "1.46.0-1690532567554",
-    "@tamagui/stacks": "1.46.0-1690532567554",
-    "@tamagui/use-controllable-state": "1.46.0-1690532567554",
-    "@tamagui/use-previous": "1.46.0-1690532567554"
+    "@tamagui/compose-refs": "1.46.0-1690569788107",
+    "@tamagui/core": "1.46.0-1690569788107",
+    "@tamagui/create-context": "1.46.0-1690569788107",
+    "@tamagui/focusable": "1.46.0-1690569788107",
+    "@tamagui/get-token": "1.46.0-1690569788107",
+    "@tamagui/label": "1.46.0-1690569788107",
+    "@tamagui/stacks": "1.46.0-1690569788107",
+    "@tamagui/use-controllable-state": "1.46.0-1690569788107",
+    "@tamagui/use-previous": "1.46.0-1690569788107"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.46.0-1690532567554",
+    "@tamagui/build": "1.46.0-1690569788107",
     "react": "^18.2.0",
     "react-native": "^0.72.1"
   },
