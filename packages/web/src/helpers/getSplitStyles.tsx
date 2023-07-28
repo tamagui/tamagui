@@ -786,7 +786,9 @@ export const getSplitStyles: StyleSplitter = (
           console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
         }
 
-        const hasSpace = 'space' in val
+        // for some reason 'space' in val upsetting next ssr during prod build
+        // technically i guess this also will not apply if 0 space which makes sense?
+        const hasSpace = val['space']
         if (hasSpace || !shouldDoClasses) {
           if (!Array.isArray(hasMedia)) {
             hasMedia = []
