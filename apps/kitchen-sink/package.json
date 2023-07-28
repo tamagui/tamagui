@@ -29,6 +29,7 @@
     "@react-native/polyfills": "^2.0.0",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
+    "@shopify/restyle": "^2.4.2",
     "@tamagui/animations-reanimated": "1.46.0-1690532567554",
     "@tamagui/cli": "1.46.0-1690532567554",
     "@tamagui/colors": "1.46.0-1690532567554",

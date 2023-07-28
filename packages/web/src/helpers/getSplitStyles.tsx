@@ -477,11 +477,11 @@ export const getSplitStyles: StyleSplitter = (
      * for if there's a pseudo/media returned from it.
      */
 
-    let isMedia = isMediaKey(keyInit)
-    let isPseudo = keyInit in validPseudoKeys
+    let isVariant = variants && keyInit in variants
+    let isPseudo = !isVariant && keyInit in validPseudoKeys
+    let isMedia = isVariant && !isPseudo && isMediaKey(keyInit)
     let isMediaOrPseudo = isMedia || isPseudo
 
-    let isVariant = variants && keyInit in variants
     const isStyleProp =
       isMediaOrPseudo || isVariant || keyInit in validStyleProps || keyInit in shorthands
 
@@ -560,7 +560,14 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    const avoidPropMap = isMediaOrPseudo || !(keyInit in validStyleProps || isVariant)
+    const isValidStyleKeyInit = keyInit in validStyleProps
+
+    const avoidPropMap =
+      isMediaOrPseudo ||
+      // micro-bench optimize - if theres no variants at all, no need to do expansions
+      (isValidStyleKeyInit && !variants) ||
+      !(isValidStyleKeyInit || isVariant)
+
     const expanded = avoidPropMap
       ? [[keyInit, valInit]]
       : propMapper(keyInit, valInit, styleState)
@@ -590,8 +597,8 @@ export const getSplitStyles: StyleSplitter = (
       if (val == null) continue
       if (key in usedKeys) continue
 
-      isMedia = isMediaKey(key)
-      isPseudo = key in validPseudoKeys
+      isPseudo = !isValidStyleKeyInit && key in validPseudoKeys
+      isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
       isMediaOrPseudo = isMedia || isPseudo
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {

@@ -3,7 +3,6 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
-  DebugProp,
   GetStyleState,
   PropMapper,
   SplitStyleProps,
@@ -15,7 +14,6 @@ import { expandStyle } from './expandStyle'
 import { expandStylesAndRemoveNullishValues } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
-import { mergeProps } from './mergeProps'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
@@ -32,11 +30,11 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
 
   const styleState = subProps
-    ? // for hermes we likely want to avoid spreads like this
-      {
-        ...styleStateIn,
-        curProps: subProps,
-      }
+    ? new Proxy(styleStateIn, {
+        get(_, k) {
+          return k === 'curProps' ? subProps : Reflect.get(_, k)
+        },
+      })
     : styleStateIn
 
   const { conf, styleProps, fontFamily, staticConfig } = styleState
