@@ -44,7 +44,7 @@ export declare const LinearGradient: import("@tamagui/core").ReactComponentWithR
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }>>>, import("@tamagui/core").TamaguiElement> & {
-    staticConfig: import("@tamagui/core").StaticConfigParsed;
+    staticConfig: import("@tamagui/core").StaticConfig;
     styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "style" | "children" | "onLayout" | "display" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
         style?: import("@tamagui/core").StyleProp<ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & ViewStyle)>;
     } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "elevation" | "fullscreen"> & {

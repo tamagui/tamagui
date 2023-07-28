@@ -499,7 +499,7 @@ export declare const Card: import("@tamagui/web").ReactComponentWithRef<Omit<imp
     readonly unstyled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>, import("@tamagui/web").TamaguiElement> & {
-    staticConfig: import("@tamagui/web").StaticConfigParsed;
+    staticConfig: import("@tamagui/web").StaticConfig;
     extractable: <X>(a: X, opts?: Partial<import("@tamagui/web").StaticConfig> | undefined) => X;
     styleable: import("@tamagui/web").Styleable<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | import("react").CSSProperties | (import("react").CSSProperties & import("react-native").ViewStyle)>;

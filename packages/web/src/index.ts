@@ -25,6 +25,7 @@ export * from './constants/constants'
 
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
+export * from './helpers/propMapper'
 export * from './helpers/getAnimationDriver'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSplitStyles'

@@ -1,4 +1,4 @@
-import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/web';
+import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web';
 import { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;
@@ -6,7 +6,7 @@ type NameToPaths = {
 export type LoadedComponents = {
     moduleName: string;
     nameToInfo: Record<string, {
-        staticConfig: StaticConfigParsed;
+        staticConfig: StaticConfig;
     }>;
 };
 export type TamaguiProjectInfo = {
