@@ -132,8 +132,16 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const { shorthands } = conf
-  const { isHOC, isText, variants, isReactNative, inlineProps, inlineWhenUnflattened } =
-    staticConfig
+  const {
+    isHOC,
+    isText,
+    variants,
+    isReactNative,
+    inlineProps,
+    inlineWhenUnflattened,
+    parentStaticConfig,
+    acceptsClassName,
+  } = staticConfig
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   let pseudos: PseudoStyles | null = null
@@ -142,8 +150,7 @@ export const getSplitStyles: StyleSplitter = (
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
   let dynamicThemeAccess: boolean | undefined
-  const shouldDoClasses =
-    staticConfig.acceptsClassName && isWeb && !styleProps.noClassNames
+  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
 
   let style: ViewStyleWithPseudos = {}
   const rulesToInsert: RulesToInsert = []
@@ -494,7 +501,6 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const parentStaticConfig = staticConfig.parentStaticConfig
     const shouldPassProp =
       !isStyleProp ||
       // is in parent variants
@@ -961,7 +967,10 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (styleProps.isAnimated && props.animateOnly?.includes(key)) {
+          if (
+            styleProps.isAnimated &&
+            (!props.animateOnly || props.animateOnly.includes(key))
+          ) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)

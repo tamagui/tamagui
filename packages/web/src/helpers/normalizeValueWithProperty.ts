@@ -10,24 +10,16 @@ import { getAllSelectors } from './insertStyleRule'
 // only doing this on web on native it accepts pixel values
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  if (property && property in stylePropsUnitless) {
-    return value
-  }
   let res = value
   if (
-    typeof value === 'number' &&
-    (property === undefined ||
-      !(property in stylePropsUnitless || property in stringNumbers))
+    (property === undefined || !(property in stylePropsUnitless)) &&
+    typeof value === 'number'
   ) {
     res = `${value}px`
-  } else if (property !== undefined && property in stringNumbers) {
+  } else if (property !== undefined) {
     res = `${res}`
   }
   return res
-}
-
-const stringNumbers = {
-  zIndex: true,
 }
 
 // getting real values for colors for animations (reverse mapped from CSS)

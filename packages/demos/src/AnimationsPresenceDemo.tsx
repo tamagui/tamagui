@@ -41,7 +41,14 @@ export function AnimationsPresenceDemo() {
       alignItems="center"
     >
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
-        <YStackEnterable key={page} animation="bouncy" fullscreen x={0} opacity={1}>
+        <YStackEnterable
+          debug="verbose"
+          key={page}
+          animation="bouncy"
+          fullscreen
+          x={0}
+          opacity={1}
+        >
           <Image source={{ uri: images[imageIndex], width: 780, height: 300 }} />
         </YStackEnterable>
       </AnimatePresence>

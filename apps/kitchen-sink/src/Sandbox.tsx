@@ -1,7 +1,7 @@
 // debug
 // import './wdyr'
 
-import { Circle, H2, Paragraph, SizableText, Text, styled } from 'tamagui'
+import { Circle, Paragraph, SizableText, Text, styled } from 'tamagui'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:

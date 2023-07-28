@@ -27,6 +27,7 @@ export declare const stylePropsUnitless: {
     orphans: boolean;
     tabSize: boolean;
     widows: boolean;
+    zIndex: boolean;
     zoom: boolean;
     scale: boolean;
     scaleX: boolean;
@@ -98,6 +99,7 @@ export declare const stylePropsView: {
     orphans: boolean;
     tabSize: boolean;
     widows: boolean;
+    zIndex: boolean;
     zoom: boolean;
     scale: boolean;
     scaleX: boolean;
@@ -185,7 +187,6 @@ export declare const stylePropsView: {
     start: boolean;
     top: boolean;
     width: boolean;
-    zIndex: boolean;
     direction: boolean;
     shadowColor: boolean;
     shadowOffset: boolean;
@@ -292,6 +293,7 @@ export declare const stylePropsText: {
     orphans: boolean;
     tabSize: boolean;
     widows: boolean;
+    zIndex: boolean;
     zoom: boolean;
     scale: boolean;
     scaleX: boolean;
@@ -379,7 +381,6 @@ export declare const stylePropsText: {
     start: boolean;
     top: boolean;
     width: boolean;
-    zIndex: boolean;
     direction: boolean;
     shadowColor: boolean;
     shadowOffset: boolean;
@@ -451,6 +452,7 @@ export declare const stylePropsAll: {
     orphans: boolean;
     tabSize: boolean;
     widows: boolean;
+    zIndex: boolean;
     zoom: boolean;
     scale: boolean;
     scaleX: boolean;
@@ -538,7 +540,6 @@ export declare const stylePropsAll: {
     start: boolean;
     top: boolean;
     width: boolean;
-    zIndex: boolean;
     direction: boolean;
     shadowColor: boolean;
     shadowOffset: boolean;
@@ -597,6 +598,7 @@ export declare const validStyles: {
     orphans: boolean;
     tabSize: boolean;
     widows: boolean;
+    zIndex: boolean;
     zoom: boolean;
     scale: boolean;
     scaleX: boolean;
@@ -684,7 +686,6 @@ export declare const validStyles: {
     start: boolean;
     top: boolean;
     width: boolean;
-    zIndex: boolean;
     direction: boolean;
     shadowColor: boolean;
     shadowOffset: boolean;

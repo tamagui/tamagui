@@ -1,6 +1,7 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { validStyles } from '@tamagui/helpers'
+import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
   Fragment,
@@ -174,8 +175,6 @@ export function createComponent<
       }
     }
 
-    const isHydrated = false //useDidFinishSSR()
-
     // set variants through context
     // order is after default props but before props
     let styledContextProps: Object | undefined
@@ -226,6 +225,8 @@ export function createComponent<
     const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
+    const isHydrated = useDidFinishSSR()
+
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
@@ -266,10 +267,7 @@ export function createComponent<
     const presence = (willBeAnimated && usePresence?.()) || null
 
     const hasEnterStyle = !!props.enterStyle
-
-    const needsMount = Boolean(
-      (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
-    )
+    const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
 
     // if (shouldTime) time`pre-use-state`
 
@@ -295,8 +293,7 @@ export function createComponent<
     let isAnimated = willBeAnimated
 
     if (willBeAnimated && !supportsCSSVars) {
-      const hasPresenceIsHydrated = presence && isHydrated
-      if (!hasPresenceIsHydrated) {
+      if (!presence && isHydrated) {
         if (isServer || state.unmounted === true) {
           isAnimated = false
         }
