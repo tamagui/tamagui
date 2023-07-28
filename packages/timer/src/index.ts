@@ -10,7 +10,7 @@ export function timer() {
   return {
     start(opts?: { quiet?: boolean }) {
       let start = Date.now()
-      const quiet = opts?.quiet
+      const quiet = opts?.quiet ?? true
       return (strings: TemplateStringsArray, ...vars: any[]) => {
         const elapsed = Date.now() - start
         start = Date.now()
@@ -47,7 +47,7 @@ export function timer() {
           const avg = `avg ${`${timings[name] / typeRuns}`.slice(0, 9).padEnd(9)}ms`
           const total = timings[name]
           totalTime += total
-          return `${name.slice(0, 14).padStart(15)} | ${avg} | total ${total}ms`
+          return `${name.slice(0, 30).padStart(31)} | ${avg} | total ${total}ms`
         }),
         `                                    total ${totalTime}ms`,
       ].join('\n')

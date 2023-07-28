@@ -40,7 +40,7 @@
     "@tamagui/shorthands": "1.46.2",
     "@tamagui/themes": "1.46.2",
     "burnt": "^0.10.0",
-    "expo": "49.0.0-beta.5",
+    "expo": "^49.0.5",
     "expo-dev-client": "~2.4.3",
     "expo-font": "~11.4.0",
     "expo-linear-gradient": "~12.3.0",
