@@ -153,11 +153,9 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
-    const shouldTime = staticConfig.defaultProps?.padding === 5
-    let time: any
-    if (shouldTime) {
-      time = timer.start()
-    }
+    // const shouldTime = staticConfig.defaultProps?.padding === 5
+    // let time: any
+    // if (shouldTime) time = timer.start()
 
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
@@ -242,7 +240,7 @@ export function createComponent<
     )
     stateRef.current ||= {}
 
-    if (shouldTime) time`stateref`
+    // if (shouldTime) time`stateref`
 
     const hostRef = useRef<TamaguiElement>(null)
 
@@ -276,7 +274,7 @@ export function createComponent<
       (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
     )
 
-    if (shouldTime) time`pre-use-state`
+    // if (shouldTime) time`pre-use-state`
 
     const initialState =
       needsMount || supportsCSSVars
@@ -295,7 +293,7 @@ export function createComponent<
     // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    if (shouldTime) time`use-state`
+    // if (shouldTime) time`use-state`
 
     let isAnimated = willBeAnimated
 
@@ -322,7 +320,7 @@ export function createComponent<
     const languageContext = useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
-    if (shouldTime) time`use-context`
+    // if (shouldTime) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -368,7 +366,7 @@ export function createComponent<
     const disableThemeProp = props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
-    if (shouldTime) time`theme-props`
+    // if (shouldTime) time`theme-props`
 
     const themeStateProps = {
       name: props.theme,
@@ -415,14 +413,14 @@ export function createComponent<
       }
     }
 
-    if (shouldTime) time`pre-theme-media`
+    // if (shouldTime) time`pre-theme-media`
 
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    if (shouldTime) time`theme`
+    // if (shouldTime) time`theme`
 
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
@@ -431,7 +429,7 @@ export function createComponent<
       debugProp ? { props, staticConfig } : null
     )
 
-    if (shouldTime) time`media`
+    // if (shouldTime) time`media`
 
     setDidGetVariableValue(false)
 
@@ -482,7 +480,7 @@ export function createComponent<
       debugProp
     )
 
-    if (shouldTime) time`split-styles`
+    // if (shouldTime) time`split-styles`
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
@@ -597,7 +595,7 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
-    if (shouldTime) time`destructure`
+    // if (shouldTime) time`destructure`
 
     const disabled = props.accessibilityState?.disabled || props.accessibilityDisabled
 
@@ -636,7 +634,7 @@ export function createComponent<
       }
     }
 
-    if (shouldTime) time`events-hooks`
+    // if (shouldTime) time`events-hooks`
 
     const unPress = useCallback(() => {
       setStateShallow({
@@ -742,7 +740,7 @@ export function createComponent<
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
 
-    if (shouldTime) time`events-setup`
+    // if (shouldTime) time`events-setup`
 
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isDisabled && !asChild
@@ -826,7 +824,7 @@ export function createComponent<
       }
     }
 
-    if (shouldTime) time`events`
+    // if (shouldTime) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -843,7 +841,7 @@ export function createComponent<
 
     const direction = props.spaceDirection || 'both'
 
-    if (shouldTime) time`hooks`
+    // if (shouldTime) time`hooks`
 
     // since we re-render without changing children often for animations or on mount
     // we memo children here. tested this on the site homepage which has hundreds of components
@@ -941,20 +939,20 @@ export function createComponent<
       }
     }
 
-    if (shouldTime) {
-      time`rest`
-      setTimeout(() => {
-        if (!hasLogged) {
-          timer.print()
-        }
-        hasLogged = true
-      }, 1000)
-    }
+    // if (shouldTime) {
+    //   time`rest`
+    //   setTimeout(() => {
+    //     if (!hasLogged) {
+    //       timer.print()
+    //     }
+    //     hasLogged = true
+    //   }, 1000)
+    // }
 
     return content
   })
 
-  let hasLogged = false
+  // let hasLogged = false
 
   if (staticConfig.componentName) {
     component.displayName = staticConfig.componentName
