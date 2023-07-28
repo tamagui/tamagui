@@ -31,7 +31,7 @@ ${new Error().stack}
   obj._isProxyWorm = true
 
   // reanimated tries to find component like things
-  obj.prototype ||= {}
+  obj.prototype = obj.prototype || {}
   obj.prototype.isReactComponent = true
 
   return new Proxy(obj, {
