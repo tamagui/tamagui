@@ -37,11 +37,14 @@ type UseThemeResult = {
 }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
-  const res = useThemeWithState(props)?.state.theme || getDefaultThemeProxied()
+  const [_, theme] = useThemeWithState(props)
+  const res = theme || getDefaultThemeProxied()
   return res as UseThemeResult
 }
 
-export const useThemeWithState = (props: ThemeProps): ChangedThemeResponse => {
+export const useThemeWithState = (
+  props: ThemeProps
+): [ChangedThemeResponse, ThemeParsed] => {
   const keys = useRef<string[]>([])
 
   const changedThemeState = useChangeThemeEffect(
@@ -78,13 +81,7 @@ export const useThemeWithState = (props: ThemeProps): ChangedThemeResponse => {
     console.groupEnd()
   }
 
-  return {
-    ...changedThemeState,
-    state: {
-      ...changedThemeState.state,
-      theme: themeProxied,
-    },
-  }
+  return [changedThemeState, themeProxied]
 }
 
 export function getThemeProxied(
@@ -153,7 +150,7 @@ export const useChangeThemeEffect = (
   } = props
 
   const parentManager = useContext(ThemeManagerContext)
-  const hasThemeUpdatingProps = props['_debug'] ? false : getHasThemeUpdatingProps(props)
+  const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (disable) {
     if (!parentManager) throw `❌`

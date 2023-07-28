@@ -13,7 +13,6 @@ function worm(root = false) {
           process.env.NODE_ENV === 'development' &&
           process.env.DEBUG?.startsWith('tamagui')
         ) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
           console.warn(`
 
 This has been excluded via Tamagui!

@@ -406,7 +406,9 @@ export function createComponent<
       }
     }
 
-    const themeState = useThemeWithState(themeStateProps)!
+    themeStateProps['debug'] = props['borderWidth'] === 2
+
+    const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
@@ -429,31 +431,28 @@ export function createComponent<
     // temp: once we fix above we can disable this
     const keepStyleSSR = willBeAnimated && animationsConfig?.keepStyleSSR
 
+    const styleProps = {
+      mediaState,
+      noClassNames,
+      hasTextAncestor,
+      resolveVariablesAs,
+      isExiting,
+      isAnimated,
+      keepStyleSSR,
+    } as const
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
-      themeState.state as {
-        // we can assume its always here, it is
-        theme: ThemeParsed
-        name: string
-      },
-      {
-        ...state,
-        mediaState,
-        noClassNames,
-        hasTextAncestor,
-        resolveVariablesAs,
-        isExiting,
-        isAnimated,
-        keepStyleSSR,
-      },
+      theme,
+      themeState.state.name,
+      state,
+      styleProps,
       null,
       languageContext || undefined,
       elementType,
       debugProp
     )
-
-    // return <View style={{ borderColor: 'yellow', borderWidth: 2, padding: 5 }} />
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
@@ -524,10 +523,8 @@ export function createComponent<
         style: splitStylesStyle,
         // style: splitStylesStyle,
         presence,
-        state: {
-          ...state,
-          isAnimated,
-        },
+        componentState: state,
+        styleProps,
         theme: themeState.state.theme!,
         pseudos: pseudos || null,
         onDidAnimate: props.onDidAnimate,

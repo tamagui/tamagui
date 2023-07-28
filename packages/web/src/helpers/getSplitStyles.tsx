@@ -41,9 +41,10 @@ import type {
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
-  SplitStyleState,
+  SplitStyleProps,
   StaticConfig,
   StyleObject,
+  TamaguiComponentState,
   TamaguiInternalConfig,
   TextStyleProps,
   ThemeParsed,
@@ -83,11 +84,10 @@ let conf: TamaguiInternalConfig
 type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfig,
-  themeState: {
-    theme: ThemeParsed
-    name: string
-  },
-  state: SplitStyleState,
+  theme: ThemeParsed,
+  themeName: string,
+  componentState: TamaguiComponentState,
+  styleProps: SplitStyleProps,
   parentSplitStyles?: GetStyleResult | null,
   languageContext?: LanguageContextType,
   // web-only
@@ -107,8 +107,10 @@ export const PROP_SPLIT = '-'
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
-  themeState,
-  state,
+  theme,
+  themeName,
+  componentState,
+  styleProps,
   parentSplitStyles,
   languageContext,
   elementType,
@@ -116,18 +118,18 @@ export const getSplitStyles: StyleSplitter = (
 ) => {
   conf = conf || getConfig()
   const { shorthands } = conf
-  const { theme, name: themeName } = themeState
   const { isHOC, isText, variants, isReactNative, inlineProps, inlineWhenUnflattened } =
     staticConfig
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   let pseudos: PseudoStyles | null = null
-  const mediaState = state.mediaState || globalMediaState
+  const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
   let dynamicThemeAccess: boolean | undefined
-  const shouldDoClasses = staticConfig.acceptsClassName && isWeb && !state.noClassNames
+  const shouldDoClasses =
+    staticConfig.acceptsClassName && isWeb && !styleProps.noClassNames
 
   let style: ViewStyleWithPseudos = {}
   const rulesToInsert: RulesToInsert = []
@@ -147,7 +149,8 @@ export const getSplitStyles: StyleSplitter = (
     classNames,
     conf,
     props,
-    state,
+    styleProps,
+    componentState,
     staticConfig,
     style,
     theme,
@@ -161,7 +164,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ props, staticConfig, shouldDoClasses, state, styleState, theme: { ...theme } })
+    console.log({ props, staticConfig, shouldDoClasses, styleProps, componentState, styleState, theme: { ...theme } })
     console.groupEnd()
   }
 
@@ -576,7 +579,7 @@ export const getSplitStyles: StyleSplitter = (
       if (!isServer && isDevTools) {
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ expanded, state: { ...state }, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys }, curProps: { ...styleState.curProps } })
+        console.log({ expanded, styleProps, componentState, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys }, curProps: { ...styleState.curProps } })
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
           ...style,
@@ -632,7 +635,12 @@ export const getSplitStyles: StyleSplitter = (
         if (!val) continue
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
-        const pseudoStyleObject = getSubStyle(styleState, key, val, state.noClassNames)
+        const pseudoStyleObject = getSubStyle(
+          styleState,
+          key,
+          val,
+          styleProps.noClassNames
+        )
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = key === 'enterStyle'
@@ -641,8 +649,8 @@ export const getSplitStyles: StyleSplitter = (
         // dev-time warning that helps clear confusion around need for animation  when using enter/exit style
         if (
           process.env.NODE_ENV === 'development' &&
-          !state.isAnimated &&
-          !state.unmounted &&
+          !styleProps.isAnimated &&
+          !componentState.unmounted &&
           (isEnter || isExit)
         ) {
           console.warn(
@@ -653,7 +661,7 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
-        if (!descriptor || (isExit && !state.isExiting)) {
+        if (!descriptor || (isExit && !styleProps.isExiting)) {
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -704,7 +712,7 @@ export const getSplitStyles: StyleSplitter = (
           // see the if (isDisabled) block below which loops through animatableDefaults
 
           const descriptorKey = descriptor.stateKey || descriptor.name
-          const pseudoState = state[descriptorKey]
+          const pseudoState = componentState[descriptorKey]
           let isDisabled = !pseudoState
 
           // we never animate in on server side just show the full thing
@@ -719,7 +727,7 @@ export const getSplitStyles: StyleSplitter = (
             console.groupCollapsed('pseudo', key, !isDisabled)
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...state } })
+            console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...componentState } })
             console.groupEnd()
           }
 
@@ -978,14 +986,18 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (state.isAnimated && props.animateOnly && props.animateOnly.includes(key)) {
+          if (
+            styleProps.isAnimated &&
+            props.animateOnly &&
+            props.animateOnly.includes(key)
+          ) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
             mergeClassName(transforms, classNames, key, atomicStyle.identifier)
           }
         }
-        if (!IS_STATIC && !state.keepStyleSSR) {
+        if (!IS_STATIC && !styleProps.keepStyleSSR) {
           style = retainedStyles
         }
       }
@@ -1097,7 +1109,7 @@ export const getSplitStyles: StyleSplitter = (
     if (isDevTools) {
       console.groupCollapsed('  🔹 ===>')
       // prettier-ignore
-      const logs = { ...result, state, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles }
+      const logs = { ...result, componentState, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles }
       for (const key in logs) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(key, logs[key])
