@@ -204,7 +204,6 @@ export type PopperContentProps = SizableStackProps
 
 export const PopperContentFrame = styled(ThemeableStack, {
   name: 'PopperContent',
-  debug: 'verbose',
 
   variants: {
     unstyled: {

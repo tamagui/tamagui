@@ -642,12 +642,6 @@ export const getSplitStyles: StyleSplitter = (
 
         // don't continue here on isEnter && !state.unmounted because we need to merge defaults
         if (!descriptor || (isExit && !styleProps.isExiting)) {
-          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-            // prettier-ignore
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('skip exit')
-          }
-
           continue
         }
 
@@ -693,7 +687,7 @@ export const getSplitStyles: StyleSplitter = (
 
           const descriptorKey = descriptor.stateKey || descriptor.name
           const pseudoState = componentState[descriptorKey]
-          let isDisabled = !pseudoState
+          let isDisabled = isExit ? !styleProps.isExiting : !pseudoState
 
           // we never animate in on server side just show the full thing
           // on client side we use CSS to hide the fully in SSR items, then
@@ -741,9 +735,9 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          // set this after the loop over pseudoStyleObject
+          // set this after the loop over pseudoStyleObject so it applies before setting usedKeys
           if (!isDisabled) {
-            // mark usedKeys based not on pseudoStyleObject
+            // mark usedKeys based on pseudoStyleObject
             for (const key in val) {
               const k = shorthands[key] || key
               usedKeys[k] = Math.max(importance, usedKeys[k] || 0)
