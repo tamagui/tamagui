@@ -1290,7 +1290,8 @@ export type GetStyleState = {
   props: Record<string, any>
   curProps: Record<string, any>
   viewProps: Record<string, any>
-  state: SplitStyleState
+  styleProps: SplitStyleProps
+  componentState: TamaguiComponentState
   conf: TamaguiInternalConfig
   languageContext?: FontLanguageProps
   avoidMergeTransform?: boolean
@@ -1870,13 +1871,12 @@ export type TamaguiComponentState = {
   }
 }
 
-export type SplitStyleState = TamaguiComponentState & {
+export type SplitStyleProps = {
   mediaState?: Record<string, boolean>
   noClassNames?: boolean
   resolveVariablesAs?: ResolveVariableTypes
   fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
-
   // for animations
   isAnimated: boolean
   isExiting?: boolean
@@ -1967,7 +1967,8 @@ export type UseAnimationHook = (props: {
   presence?: UsePresenceResult | null
   hostRef: RefObject<HTMLElement | View>
   staticConfig: StaticConfig
-  state: SplitStyleState
+  styleProps: SplitStyleProps
+  componentState: TamaguiComponentState
   theme: ThemeParsed
   pseudos: PseudoProps<ViewStyle> | null
   onDidAnimate?: any

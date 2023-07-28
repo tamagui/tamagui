@@ -3,14 +3,14 @@ import { useContext } from 'react'
 
 import { FontLanguageContext } from '../contexts/FontLanguageContext'
 import { TextAncestorContext } from '../contexts/TextAncestorContext'
+import { defaultComponentState } from '../createComponent'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import {
   DebugProp,
   GetProps,
-  SplitStyleState,
+  SplitStyleProps,
   TamaguiComponent,
   TextNonStyleProps,
-  ThemeParsed,
 } from '../types'
 import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
@@ -21,20 +21,19 @@ export function useStyle<
 >(
   base: Component,
   style: StyleProps,
-  options?: Partial<SplitStyleState> & { debug?: DebugProp }
+  options?: Partial<SplitStyleProps> & { debug?: DebugProp }
 ) {
   const isText = base.staticConfig.isText
   const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
   const languageContext = useContext(FontLanguageContext)
-  const themeState = useThemeWithState({})
+  const [themeState] = useThemeWithState({})
   const media = useMedia()
   const out = useSplitStyles(
     style as any,
     base.staticConfig,
-    themeState.state as {
-      theme: ThemeParsed
-      name: string
-    },
+    themeState.state.theme!,
+    themeState.state.name,
+    defaultComponentState,
     {
       ...(options as any),
       mediaState: media,

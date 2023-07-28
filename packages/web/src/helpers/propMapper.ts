@@ -27,7 +27,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   // we use this for the sub-props like pseudos so we need to overwrite the "props" in styleState
   // fallbackProps is awkward thanks to static
   // also we need to override the props here because subStyles pass in a sub-style props object
-  const subProps = styleStateIn.state.fallbackProps || subPropsIn
+  const subProps = styleStateIn.styleProps.fallbackProps || subPropsIn
   const styleState = subProps
     ? {
         ...styleStateIn,
@@ -35,8 +35,8 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
       }
     : styleStateIn
 
-  const { conf, state, fontFamily } = styleState
-  const returnVariablesAs = state.resolveVariablesAs === 'value' ? 'value' : 'auto'
+  const { conf, styleProps, fontFamily } = styleState
+  const returnVariablesAs = styleProps.resolveVariablesAs === 'value' ? 'value' : 'auto'
 
   // prettier-ignore
   if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
