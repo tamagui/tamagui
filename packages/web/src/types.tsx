@@ -26,8 +26,8 @@ import type {
 } from 'react-native'
 
 import type { Variable } from './createVariable'
-import type { ResolveVariableTypes } from './helpers/createPropMapper'
 import { StyledContext } from './helpers/createStyledContext'
+import type { ResolveVariableTypes } from './helpers/propMapper'
 import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
@@ -53,7 +53,7 @@ export type LoadedComponents = {
   nameToInfo: Record<
     string,
     {
-      staticConfig: StaticConfigParsed
+      staticConfig: StaticConfig
     }
   >
 }
@@ -1238,7 +1238,7 @@ export type Styleable<Props, Ref> = <
 >(
   a: X
 ) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
-  staticConfig: StaticConfigParsed
+  staticConfig: StaticConfig
   styleable: Styleable<Props, Ref>
 }
 
@@ -1256,7 +1256,7 @@ export type TamaguiComponent<
   }
 
 type StaticComponentObject<Props, Ref> = {
-  staticConfig: StaticConfigParsed
+  staticConfig: StaticConfig
 
   /** @deprecated use `styleable` instead (same functionality, better name) */
   extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X
@@ -1279,11 +1279,13 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
 
 export type PropMappedValue = [string, any][] | undefined
 
+type FlatTransforms = Record<string, any>
+
 export type GetStyleState = {
   style: TextStyleProps
   usedKeys: Record<string, number>
   classNames: ClassNamesObject
-  staticConfig: StaticConfigParsed
+  staticConfig: StaticConfig
   theme: ThemeParsed
   props: Record<string, any>
   curProps: Record<string, any>
@@ -1291,39 +1293,26 @@ export type GetStyleState = {
   state: SplitStyleState
   conf: TamaguiInternalConfig
   languageContext?: FontLanguageProps
-  avoidDefaultProps?: boolean
   avoidMergeTransform?: boolean
   fontFamily?: string
   debug?: DebugProp
+  transforms?: FlatTransforms
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
   key: string,
   value: any,
   state: GetStyleState,
-  defaultProps: any,
   returnVariablesAs: 'auto' | 'value',
-  parentVariantKey: string,
-  avoidDefaultProps?: boolean
+  parentVariantKey: string
 ) => Response
 
 export type PropMapper = (
   key: string,
   value: any,
   state: GetStyleState,
-  subProps?: Record<string, any>,
-  avoidDefaultProps?: boolean
+  subProps?: Record<string, any>
 ) => PropMappedValue
-
-export type StaticConfigParsed = StaticConfig & {
-  parsed: true
-  propMapper: PropMapper
-  variantsParsed?: {
-    [key: string]: {
-      [key: string]: any
-    }
-  }
-}
 
 export type GenericVariantDefinitions = {
   [key: string]: {
@@ -1336,6 +1325,8 @@ export type GenericVariantDefinitions = {
 }
 
 export type StaticConfigPublic = {
+  defaultProps?: Record<string, any>
+
   /**
    * (compiler) If you need to pass context or something, prevents from ever
    * flattening. The 'jsx' option means it will never flatten. if you
@@ -1406,11 +1397,6 @@ type StaticConfigBase = StaticConfigPublic & {
    * Used for applying sub theme style
    */
   componentName?: string
-
-  /**
-   * Same as React.defaultProps, be sure to sync
-   */
-  defaultProps: Record<string, any>
 
   /**
    * Merges into defaultProps later on, used internally yonly
@@ -1980,7 +1966,7 @@ export type UseAnimationHook = (props: {
   props: Record<string, any>
   presence?: UsePresenceResult | null
   hostRef: RefObject<HTMLElement | View>
-  staticConfig: StaticConfigParsed
+  staticConfig: StaticConfig
   state: SplitStyleState
   theme: ThemeParsed
   pseudos: PseudoProps<ViewStyle> | null

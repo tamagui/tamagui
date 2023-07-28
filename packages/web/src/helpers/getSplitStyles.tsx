@@ -42,7 +42,7 @@ import type {
   RulesToInsert,
   SpaceTokens,
   SplitStyleState,
-  StaticConfigParsed,
+  StaticConfig,
   StyleObject,
   TamaguiInternalConfig,
   TextStyleProps,
@@ -51,7 +51,6 @@ import type {
 } from '../types'
 import type { LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
-import { getPropMappedFontFamily } from './createPropMapper'
 import { fixStyles } from './expandStyles'
 import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
@@ -65,6 +64,7 @@ import {
   normalizeValueWithProperty,
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty'
+import { getPropMappedFontFamily, propMapper } from './propMapper'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 const fontFamilyKey = 'fontFamily'
@@ -82,7 +82,7 @@ let conf: TamaguiInternalConfig
 
 type StyleSplitter = (
   props: { [key: string]: any },
-  staticConfig: StaticConfigParsed,
+  staticConfig: StaticConfig,
   themeState: {
     theme: ThemeParsed
     name: string
@@ -117,30 +117,19 @@ export const getSplitStyles: StyleSplitter = (
   conf = conf || getConfig()
   const { shorthands } = conf
   const { theme, name: themeName } = themeState
-  const {
-    isHOC,
-    variants,
-    propMapper,
-    isReactNative,
-    inlineProps,
-    inlineWhenUnflattened,
-  } = staticConfig
-  const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
+  const { isHOC, isText, variants, isReactNative, inlineProps, inlineWhenUnflattened } =
+    staticConfig
+  const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
   let pseudos: PseudoStyles | null = null
   const mediaState = state.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
-  const propKeys = Object.keys(props)
-  const numProps = propKeys.length
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
   let dynamicThemeAccess: boolean | undefined
-
-  const shouldDoClasses =
-    staticConfig.acceptsClassName && (isWeb || IS_STATIC) && !state.noClassNames
+  const shouldDoClasses = staticConfig.acceptsClassName && isWeb && !state.noClassNames
 
   let style: ViewStyleWithPseudos = {}
-  const flatTransforms: FlatTransforms = {}
   const rulesToInsert: RulesToInsert = []
   const classNames: ClassNamesObject = {}
   let className = '' // existing classNames
@@ -172,7 +161,7 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ props, staticConfig, shouldDoClasses, state, propKeys, styleState, theme: { ...theme } })
+    console.log({ props, staticConfig, shouldDoClasses, state, styleState, theme: { ...theme } })
     console.groupEnd()
   }
 
@@ -180,7 +169,7 @@ export const getSplitStyles: StyleSplitter = (
   // since the compiler will optimize to className we just treat className as the more powerful
   //   TODO the compiler should probably just leave things inline if its not flattening
   //   that way it keeps merging order
-  if (typeof props.className === 'string') {
+  if (process.env.TAMAGUI_TARGET === 'web' && typeof props.className === 'string') {
     for (const cn of props.className.split(' ')) {
       if (cn[0] === '_') {
         // tamagui, merge it expanded on key, eventually this will go away with better compiler
@@ -207,10 +196,27 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  for (let i = 0; i < numProps; i++) {
-    const keyOg = propKeys[i]
+  // return {
+  //   space,
+  //   hasMedia,
+  //   fontFamily: styleState.fontFamily,
+  //   viewProps: {
+  //     children: props.children,
+  //   },
+  //   style: {
+  //     borderColor: props.borderColor,
+  //     borderWidth: props.borderWidth,
+  //     padding: props.padding,
+  //   },
+  //   pseudos,
+  //   classNames,
+  //   rulesToInsert,
+  //   dynamicThemeAccess,
+  // }
+
+  for (const keyOg in props) {
     let keyInit = keyOg
-    let valInit = props[keyInit]
+    let valInit = props[keyOg]
 
     // normalize shorthands up front
     if (keyInit in shorthands) {
@@ -306,7 +312,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const isMainStyle = keyInit === 'style'
-    if (isMainStyle || keyInit.startsWith('_style')) {
+    if (isMainStyle || (keyInit[0] === '_' && keyInit.startsWith('_style'))) {
       if (!valInit) continue
       const styles = [].concat(valInit).flat()
       const styleLen = styles.length
@@ -484,17 +490,16 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    const parentStaticConfig = staticConfig.parentStaticConfig
     const shouldPassProp =
       !isStyleProp ||
       // is in parent variants
-      (isHOC &&
-        staticConfig.parentStaticConfig?.variants &&
-        keyInit in staticConfig.parentStaticConfig.variants)
+      (isHOC && parentStaticConfig?.variants && keyInit in parentStaticConfig.variants)
 
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
         (isMediaOrPseudo ||
-          staticConfig.parentStaticConfig?.variants?.[keyInit] ||
+          parentStaticConfig?.variants?.[keyInit] ||
           keyInit in skipProps)
     )
 
@@ -546,18 +551,20 @@ export const getSplitStyles: StyleSplitter = (
     if (keyInit in skipProps) continue
 
     // we sort of have to update fontFamily all the time: before variants run, after each variant
-    if (
-      valInit &&
-      (keyInit === fontFamilyKey || keyInit === shorthands[fontFamilyKey]) &&
-      valInit in conf.fontsParsed
-    ) {
-      styleState.fontFamily = valInit
+    if (isText) {
+      if (
+        valInit &&
+        (keyInit === fontFamilyKey || keyInit === shorthands[fontFamilyKey]) &&
+        valInit in conf.fontsParsed
+      ) {
+        styleState.fontFamily = valInit
+      }
     }
 
-    const expanded =
-      isMediaOrPseudo || (!(keyInit in validStyleProps) && !isVariant)
-        ? [[keyInit, valInit]]
-        : propMapper(keyInit, valInit, styleState)
+    const avoidPropMap = isMediaOrPseudo || (keyInit in validStyleProps && !isVariant)
+    const expanded = avoidPropMap
+      ? [[keyInit, valInit]]
+      : propMapper(keyInit, valInit, styleState)
 
     const next = getPropMappedFontFamily(expanded)
     if (next) {
@@ -584,10 +591,12 @@ export const getSplitStyles: StyleSplitter = (
       if (val == null) continue
       if (key in usedKeys) continue
 
-      if (key === fontFamilyKey && valInit && val) {
-        const fam = valInit[0] === '$' ? valInit : val
-        if (fam in conf.fontsParsed) {
-          styleState.fontFamily = fam
+      if (isText) {
+        if (key === fontFamilyKey && valInit && val) {
+          const fam = valInit[0] === '$' ? valInit : val
+          if (fam in conf.fontsParsed) {
+            styleState.fontFamily = fam
+          }
         }
       }
 
@@ -601,7 +610,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // have to run this logic again here
       const isHOCShouldPassThrough =
-        isHOC && (isMediaOrPseudo || staticConfig.parentStaticConfig?.variants?.[keyInit])
+        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
 
       if (isHOCShouldPassThrough) {
         isVariant = variants && key in variants
@@ -623,13 +632,7 @@ export const getSplitStyles: StyleSplitter = (
         if (!val) continue
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
-        const pseudoStyleObject = getSubStyle(
-          styleState,
-          key,
-          val,
-          true,
-          state.noClassNames
-        )
+        const pseudoStyleObject = getSubStyle(styleState, key, val, state.noClassNames)
 
         const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
         const isEnter = key === 'enterStyle'
@@ -737,7 +740,7 @@ export const getSplitStyles: StyleSplitter = (
             if (isDisabled) {
               if (pkey in animatableDefaults && !(pkey in usedKeys)) {
                 const defaultVal = animatableDefaults[pkey]
-                mergeStyle(styleState, flatTransforms, pkey, defaultVal)
+                mergeStyle(styleState, pkey, defaultVal)
               }
             } else {
               const curImportance = usedKeys[importance] || 0
@@ -747,7 +750,7 @@ export const getSplitStyles: StyleSplitter = (
                 pseudos ||= {}
                 pseudos[key] ||= {}
                 pseudos[key][pkey] = val
-                mergeStyle(styleState, flatTransforms, pkey, val)
+                mergeStyle(styleState, pkey, val)
                 usedKeys[pkey] ||= 1
               }
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -761,9 +764,8 @@ export const getSplitStyles: StyleSplitter = (
 
         continue
       }
-
       // media
-      if (isMedia) {
+      else if (isMedia) {
         if (!val) continue
 
         const isPlatformMedia = key.startsWith('$platform-')
@@ -902,7 +904,7 @@ export const getSplitStyles: StyleSplitter = (
         key in validStyleProps ||
         (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
       ) {
-        mergeStyle(styleState, flatTransforms, key, val)
+        mergeStyle(styleState, key, val)
         continue
       }
 
@@ -927,10 +929,24 @@ export const getSplitStyles: StyleSplitter = (
     styleToCSS(style)
   }
 
+  // these are only the flat transforms
   // always do this at the very end to preserve the order strictly (animations, origin)
   // and allow proper merging of all pseudos before applying
-  if (flatTransforms) {
-    mergeFlatTransforms(style, flatTransforms, true)
+  if (styleState.transforms) {
+    // we need to match the order for animations to work because it needs consistent order
+    // was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
+    // but if we just handle it here its not a big cost and avoids having stateful things
+    // so the strategy is: always sort by a consistent order, until you run into a "duplicate"
+    // because you can have something like:
+    //   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
+    // so basically we sort until we get to a duplicate... we could sort even smarter but
+    // this should work for most (all?) of our cases since the order preservation really only needs to apply
+    // to the "flat" transform props
+    Object.entries(styleState.transforms)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .forEach(([key, val]) => {
+        mergeTransform(style, key, val, true)
+      })
   }
 
   // add in defaults if not set:
@@ -1081,7 +1097,7 @@ export const getSplitStyles: StyleSplitter = (
     if (isDevTools) {
       console.groupCollapsed('  🔹 ===>')
       // prettier-ignore
-      const logs = { ...result, state, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles, flatTransforms }
+      const logs = { ...result, state, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles }
       for (const key in logs) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(key, logs[key])
@@ -1125,46 +1141,16 @@ function mergeClassName(
   }
 }
 
-/**
- * getSubStyle calls propMapper with props
- * those should be specific to the substyle, but fallback to the base props
- * so given props:
- *
- *   { fontSize: 12, color: 'red', $sm: { color: 'blue' } }
- *
- * getSubStyle props should be a proxy that ends up like:
- *
- *   { fontSize: 12, color: 'blue' }
- *
- * and to avoid re-creating it over and over, use a WeakMap
- */
-
-function getSubStyleProps(
-  defaultProps: Object,
-  baseProps: Object,
-  specificProps: Object
-) {
-  return {
-    ...defaultProps,
-    ...baseProps,
-    ...specificProps,
-  }
-}
-
-function mergeStyle(
-  { classNames, viewProps, style, usedKeys }: GetStyleState,
-  flatTransforms: FlatTransforms,
-  key: string,
-  val: any
-) {
-  if (val?.[0] === '_') {
+function mergeStyle(styleState: GetStyleState, key: string, val: any) {
+  const { classNames, viewProps, style, usedKeys } = styleState
+  if (isWeb && val?.[0] === '_') {
     classNames[key] = val
     usedKeys[key] ||= 1
   } else if (key in stylePropsTransform) {
-    flatTransforms ||= {}
-    flatTransforms[key] = val
+    styleState.transforms ||= {}
+    styleState.transforms[key] = val
   } else {
-    const out = normalizeValueWithProperty(val, key)
+    const out = isWeb ? normalizeValueWithProperty(val, key) : val
     if (key in validStylesOnBaseProps) {
       viewProps[key] = out
     } else {
@@ -1177,7 +1163,6 @@ export const getSubStyle = (
   styleState: GetStyleState,
   subKey: string,
   styleIn: Object,
-  avoidDefaultProps?: boolean,
   avoidMergeTransform?: boolean
 ): TextStyleProps => {
   const { staticConfig, props, conf } = styleState
@@ -1186,13 +1171,7 @@ export const getSubStyle = (
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
-    const expanded = staticConfig.propMapper(
-      key,
-      val,
-      styleState,
-      getSubStyleProps(staticConfig.defaultProps, props, props[subKey]),
-      avoidDefaultProps
-    )
+    const expanded = propMapper(key, val, styleState, { ...props, ...props[subKey] })
     if (!expanded || (!staticConfig.isHOC && key in skipProps)) {
       continue
     }
@@ -1252,8 +1231,6 @@ const animatableDefaults = {
 const lowercaseHyphenate = (match: string) => `-${match.toLowerCase()}`
 const hyphenate = (str: string) => str.replace(/[A-Z]/g, lowercaseHyphenate)
 
-export type FlatTransforms = Record<string, any>
-
 const mergeTransform = (
   obj: TextStyleProps,
   key: string,
@@ -1267,27 +1244,6 @@ const mergeTransform = (
   obj.transform[backwards ? 'unshift' : 'push']({
     [mapTransformKeys[key] || key]: val,
   } as any)
-}
-
-// we need to match the order for animations to work because it needs consistent order
-// was thinking of having something like `state.prevTransformsOrder = ['y', 'x', ...]
-// but if we just handle it here its not a big cost and avoids having stateful things
-// so the strategy is: always sort by a consistent order, until you run into a "duplicate"
-// because you can have something like:
-//   [{ translateX: 0 }, { scale: 1 }, { translateX: 10 }]
-// so basically we sort until we get to a duplicate... we could sort even smarter but
-// this should work for most (all?) of our cases since the order preservation really only needs to apply
-// to the "flat" transform props
-const mergeFlatTransforms = (
-  obj: TextStyleProps,
-  flatTransforms: FlatTransforms,
-  backwards = false
-) => {
-  Object.entries(flatTransforms)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .forEach(([key, val]) => {
-      mergeTransform(obj, key, val, backwards)
-    })
 }
 
 const mapTransformKeys = {

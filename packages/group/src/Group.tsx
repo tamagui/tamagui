@@ -318,6 +318,6 @@ const getBorderRadius = ({
 }
 
 const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props, false, getConfig().shorthands)[0]
+  const next = mergeProps(child.props, props, getConfig().shorthands)
   return React.cloneElement({ ...child, props: null }, next)
 }

@@ -92,7 +92,6 @@ export type {
   TamaguiTextElement,
   StackNonStyleProps,
   StaticConfig,
-  StaticConfigParsed,
   SpecificTokens,
   ThemeTokens,
   TamaguiBaseTheme,

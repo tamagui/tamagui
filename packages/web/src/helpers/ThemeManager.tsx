@@ -28,7 +28,7 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function getHasThemeUpdatingProps(props: ThemeProps) {
-  return props.name || props.componentName || props.inverse || props.reset
+  return Boolean(props.name || props.componentName || props.inverse || props.reset)
 }
 
 let uid = 0

@@ -2,7 +2,9 @@
 // import './wdyr'
 
 import { useLayoutEffect, useState } from 'react'
-import { Button, Paragraph, SizableText, Stack, Text, XStack, styled } from 'tamagui'
+import { StyleSheet, View } from 'react-native'
+import { Button, Text } from 'react-native'
+import { Paragraph, SizableText, Stack, XStack, YStack, styled } from 'tamagui'
 
 const StyledStack = styled(Stack, {
   borderColor: 'red',
@@ -11,14 +13,32 @@ const StyledStack = styled(Stack, {
 })
 
 const Benchmark = () => {
+  return (
+    <>
+      <BenchmarkOne name="tama" />
+      <BenchmarkOne name="rn" />
+    </>
+  )
+}
+
+const BenchmarkOne = ({ name }) => {
   const [x, setX] = useState(0)
 
   return (
     <>
-      <Button onPress={() => setX(Math.random())}>go</Button>
-      <XStack>
-        <BenchTama key={x} />
-      </XStack>
+      <Button title="go" onPress={() => setX(Math.random())} />
+      <YStack ov="hidden">
+        {name === 'rn' && (
+          <XStack>
+            <BenchRN key={x} />
+          </XStack>
+        )}
+        {name === 'tama' && (
+          <XStack>
+            <BenchTama key={x} />
+          </XStack>
+        )}
+      </YStack>
     </>
   )
 }
@@ -28,6 +48,24 @@ const BenchTama = () => {
     <TimedRender>
       {new Array(1000).fill(0).map((_, i) => (
         <StyledStack key={i} />
+      ))}
+    </TimedRender>
+  )
+}
+
+const styles = StyleSheet.create({
+  style: {
+    borderColor: 'red',
+    borderWidth: 2,
+    padding: 5,
+  },
+})
+
+const BenchRN = () => {
+  return (
+    <TimedRender>
+      {new Array(1000).fill(0).map((_, i) => (
+        <View style={styles.style} key={i} />
       ))}
     </TimedRender>
   )

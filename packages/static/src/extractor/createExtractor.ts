@@ -10,7 +10,7 @@ import {
   proxyThemeVariables,
   pseudoDescriptors,
 } from '@tamagui/core-node'
-import type { GetStyleState, PseudoStyles, StaticConfigParsed } from '@tamagui/web'
+import type { GetStyleState, PseudoStyles, StaticConfig } from '@tamagui/web'
 import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
@@ -202,7 +202,7 @@ export function createExtractor(
       return null
     }
 
-    function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
+    function isValidStyleKey(name: string, staticConfig: StaticConfig) {
       if (!projectInfo) {
         throw new Error(`Tamagui extractor not loaded yet`)
       }
