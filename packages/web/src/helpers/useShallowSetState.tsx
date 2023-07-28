@@ -7,20 +7,14 @@ export function useShallowSetState<State extends TamaguiComponentState>(
   debug?: DebugProp,
   debugName?: string
 ) {
-  return useCallback(
-    (next: Partial<State>) => {
-      setter((prev) => {
-        for (const key in next) {
-          if (prev[key] !== next[key]) {
-            if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-              console.warn(` ▲ setState ${debugName}`, { ...prev }, { ...next })
-            }
-            return { ...prev, ...next }
-          }
-        }
-        return prev
-      })
-    },
-    [setter]
-  )
+  return (next: Partial<State>) => setter((prev) => shallow(prev, next))
+}
+
+function shallow(prev, next) {
+  for (const key in next) {
+    if (prev[key] !== next[key]) {
+      return { ...prev, ...next }
+    }
+  }
+  return prev
 }

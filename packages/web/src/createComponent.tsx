@@ -9,6 +9,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -49,17 +50,7 @@ import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
-// let t
-// import { timer } from '@tamagui/timer'
-// if (true || process.env.ANALYZE) {
-//   t = require().timer()
-//   setTimeout(() => {
-//     const out = t.print()
-//     if (isClient) {
-//       alert(out)
-//     }
-//   }, 2000)
-// }
+const timer = require('@tamagui/timer').timer()
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
@@ -162,6 +153,12 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    const shouldTime = staticConfig.defaultProps?.padding === 5
+    let time: any
+    if (shouldTime) {
+      time = timer.start()
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {
@@ -245,6 +242,8 @@ export function createComponent<
     )
     stateRef.current ||= {}
 
+    if (shouldTime) time`stateref`
+
     const hostRef = useRef<TamaguiElement>(null)
 
     /**
@@ -277,6 +276,8 @@ export function createComponent<
       (isWeb ? willBeAnimated && isClient : true) && willBeAnimated
     )
 
+    if (shouldTime) time`pre-use-state`
+
     const initialState =
       needsMount || supportsCSSVars
         ? supportsCSSVars
@@ -294,6 +295,8 @@ export function createComponent<
     // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
+    if (shouldTime) time`use-state`
+
     let isAnimated = willBeAnimated
 
     if (willBeAnimated && !supportsCSSVars) {
@@ -305,6 +308,11 @@ export function createComponent<
       }
     }
 
+    // once animated, always animated to preserve hooks
+    if (willBeAnimated && !stateRef.current.hasAnimated) {
+      stateRef.current.hasAnimated = true
+    }
+
     const componentClassName = props.asChild
       ? ''
       : props.componentName
@@ -313,6 +321,8 @@ export function createComponent<
     const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const languageContext = useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
+
+    if (shouldTime) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -357,6 +367,8 @@ export function createComponent<
     // internal use only
     const disableThemeProp = props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
+
+    if (shouldTime) time`theme-props`
 
     const themeStateProps = {
       name: props.theme,
@@ -403,12 +415,14 @@ export function createComponent<
       }
     }
 
-    themeStateProps['debug'] = props['borderWidth'] === 2
+    if (shouldTime) time`pre-theme-media`
 
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
+
+    if (shouldTime) time`theme`
 
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
@@ -416,6 +430,8 @@ export function createComponent<
       stateRef,
       debugProp ? { props, staticConfig } : null
     )
+
+    if (shouldTime) time`media`
 
     setDidGetVariableValue(false)
 
@@ -438,6 +454,21 @@ export function createComponent<
       keepStyleSSR,
     } as const
 
+    // const splitStyles = {
+    //   dynamicThemeAccess: false,
+    //   hasMedia: false,
+    //   viewProps: {
+    //     children: props.children,
+    //     onPress: props.onPress,
+    //   },
+    //   style: {
+    //     borderColor: props.borderColor,
+    //     borderWidth: props.borderWidth,
+    //     padding: props.padding,
+    //   },
+    //   rulesToInsert: [],
+    //   classNames: {},
+    // }
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -450,6 +481,8 @@ export function createComponent<
       elementType,
       debugProp
     )
+
+    if (shouldTime) time`split-styles`
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
@@ -564,6 +597,8 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
+    if (shouldTime) time`destructure`
+
     const disabled = props.accessibilityState?.disabled || props.accessibilityDisabled
 
     // these can ultimately be for DOM, react-native-web views, or animated views
@@ -589,7 +624,7 @@ export function createComponent<
     viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
 
     if (process.env.NODE_ENV === 'development') {
-      if (!isText && isWeb && !isHOC) {
+      if (!isReactNative && !isText && isWeb && !isHOC) {
         Children.toArray(props.children).forEach((item) => {
           // allow newlines because why not its annoying with mdx
           if (typeof item === 'string' && item !== '\n') {
@@ -601,22 +636,19 @@ export function createComponent<
       }
     }
 
+    if (shouldTime) time`events-hooks`
+
     const unPress = useCallback(() => {
       setStateShallow({
         press: false,
         pressIn: false,
       })
-    }, [setStateShallow])
+    }, [])
 
     const shouldSetMounted = needsMount && state.unmounted
 
     // combined multiple effects into one for performance so be careful with logic
-    useIsomorphicLayoutEffect(() => {
-      // once animated, always animated to preserve hooks
-      if (willBeAnimated && !stateRef.current.hasAnimated) {
-        stateRef.current.hasAnimated = true
-      }
-
+    useEffect(() => {
       if (shouldSetMounted) {
         const unmounted =
           state.unmounted === true && hasEnterStyle ? 'should-enter' : false
@@ -632,26 +664,10 @@ export function createComponent<
       }
     }, [shouldSetMounted, state.unmounted])
 
-    let styles: Record<string, any>[] | undefined
     const avoidStyle = keepStyleSSR && state.unmounted === true
 
-    if (!avoidStyle) {
-      if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
-        styles = {
-          ...(animationStyles || splitStylesStyle),
-        }
-      } else {
-        styles = [animationStyles || splitStylesStyle]
-
-        // ugly but for now...
-        if (shouldForcePseudo) {
-          const next = {}
-          styles.forEach((style) => Object.assign(next, style))
-          // @ts-ignore
-          Object.assign(splitStyles.style, next)
-        }
-      }
-    }
+    // shouldnt avoidStyles still keep splitStylesStyle and just avoid animation?
+    const styles = avoidStyle ? undefined : animationStyles || splitStylesStyle
 
     let fontFamily = isText
       ? splitStyles.fontFamily || staticConfig.defaultProps?.fontFamily
@@ -725,6 +741,8 @@ export function createComponent<
         (noClassNames && 'pressStyle' in props) ||
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
+
+    if (shouldTime) time`events-setup`
 
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isDisabled && !asChild
@@ -808,6 +826,8 @@ export function createComponent<
       }
     }
 
+    if (shouldTime) time`events`
+
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log(`events`, { events, isHoverable, attachPress })
@@ -822,6 +842,8 @@ export function createComponent<
     }
 
     const direction = props.spaceDirection || 'both'
+
+    if (shouldTime) time`hooks`
 
     // since we re-render without changing children often for animations or on mount
     // we memo children here. tested this on the site homepage which has hundreds of components
@@ -919,8 +941,20 @@ export function createComponent<
       }
     }
 
+    if (shouldTime) {
+      time`rest`
+      setTimeout(() => {
+        if (!hasLogged) {
+          timer.print()
+        }
+        hasLogged = true
+      }, 1000)
+    }
+
     return content
   })
+
+  let hasLogged = false
 
   if (staticConfig.componentName) {
     component.displayName = staticConfig.componentName
