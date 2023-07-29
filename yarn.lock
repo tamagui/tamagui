@@ -4866,11 +4866,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
-    "@tamagui/animations-react-native": 1.46.0-1690569788107
     "@tamagui/build": 1.46.0-1690569788107
-    "@tamagui/use-presence": 1.46.0-1690569788107
-    "@tamagui/web": 1.46.0-1690569788107
-    react-native-reanimated: ^3.4.1
   languageName: unknown
   linkType: soft
 
@@ -5155,16 +5151,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/config-base@workspace:packages/config-base"
   dependencies:
-    "@tamagui/animations-css": 1.46.0-1690569788107
-    "@tamagui/animations-react-native": 1.46.0-1690569788107
     "@tamagui/build": 1.46.0-1690569788107
-    "@tamagui/colors": 1.46.0-1690569788107
-    "@tamagui/core": 1.46.0-1690569788107
-    "@tamagui/font-inter": 1.46.0-1690569788107
-    "@tamagui/font-silkscreen": 1.46.0-1690569788107
-    "@tamagui/react-native-media-driver": 1.46.0-1690569788107
-    "@tamagui/shorthands": 1.46.0-1690569788107
-    "@tamagui/theme-base": 1.46.0-1690569788107
   languageName: unknown
   linkType: soft
 
@@ -5284,7 +5271,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/create-themes@1.46.0-1690569788107, @tamagui/create-themes@workspace:packages/create-themes":
+"@tamagui/create-themes@workspace:packages/create-themes":
   version: 0.0.0-use.local
   resolution: "@tamagui/create-themes@workspace:packages/create-themes"
   dependencies:
@@ -6539,14 +6526,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@1.46.0-1690569788107, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
     "@tamagui/build": 1.46.0-1690569788107
-    "@tamagui/colors": 1.46.0-1690569788107
-    "@tamagui/core": 1.46.0-1690569788107
-    "@tamagui/create-themes": 1.46.0-1690569788107
   languageName: unknown
   linkType: soft
 

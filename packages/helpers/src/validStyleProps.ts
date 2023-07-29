@@ -1,6 +1,37 @@
 import { isAndroid } from '@tamagui/constants'
 
-// TODO merge into validStyleProps as well to save bundle size!
+// used for propMapping to find the right token category
+// just specificy the least costly, all else go to `space` (most keys - we can exclude)
+export const tokenCategories = {
+  radius: {
+    borderRadius: true,
+    borderTopLeftRadius: true,
+    borderTopRightRadius: true,
+    borderBottomLeftRadius: true,
+    borderBottomRightRadius: true,
+  },
+  size: {
+    width: true,
+    height: true,
+    minWidth: true,
+    minHeight: true,
+    maxWidth: true,
+    maxHeight: true,
+  },
+  zIndex: {
+    zIndex: true,
+  },
+  color: {
+    color: true,
+    backgroundColor: true,
+    borderColor: true,
+    borderBottomColor: true,
+    borderTopColor: true,
+    borderLeftColor: true,
+    borderRightColor: true,
+  },
+}
+
 export const stylePropsUnitless = {
   WebkitLineClamp: true,
   animationIterationCount: true,
@@ -61,26 +92,15 @@ export const validStylesOnBaseProps = {
 
 export const stylePropsView = {
   backfaceVisibility: true,
-  backgroundColor: true,
-  borderBottomColor: true,
   borderBottomEndRadius: true,
-  borderBottomLeftRadius: true,
-  borderBottomRightRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
-  borderColor: true,
   borderEndColor: true,
-  borderLeftColor: true,
   borderLeftWidth: true,
-  borderRadius: true,
-  borderRightColor: true,
   borderRightWidth: true,
   borderStartColor: true,
   borderStyle: true,
-  borderTopColor: true,
   borderTopEndRadius: true,
-  borderTopLeftRadius: true,
-  borderTopRightRadius: true,
   borderTopStartRadius: true,
   borderTopWidth: true,
   borderWidth: true,
@@ -99,7 +119,6 @@ export const stylePropsView = {
   gap: true,
   columnGap: true,
   rowGap: true,
-  height: true,
   justifyContent: true,
   left: true,
   margin: true,
@@ -111,10 +130,6 @@ export const stylePropsView = {
   marginStart: true,
   marginTop: true,
   marginVertical: true,
-  maxHeight: true,
-  maxWidth: true,
-  minHeight: true,
-  minWidth: true,
   overflow: true,
   padding: true,
   paddingBottom: true,
@@ -129,11 +144,14 @@ export const stylePropsView = {
   right: true,
   start: true,
   top: true,
-  width: true,
   direction: true,
   shadowColor: true,
   shadowOffset: true,
   shadowRadius: true,
+  ...tokenCategories.color,
+  ...tokenCategories.radius,
+  ...tokenCategories.size,
+  ...tokenCategories.radius,
   ...validStylesOnBaseProps,
   ...stylePropsTransform,
   ...stylePropsUnitless,

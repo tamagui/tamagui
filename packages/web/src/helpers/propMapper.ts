@@ -1,4 +1,5 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
+import { tokenCategories } from '@tamagui/helpers'
 
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
@@ -417,37 +418,4 @@ function resolveVariableValue(
     return valOrVar.variable
   }
   return valOrVar
-}
-
-// TODO move to validStyleProps to merge
-
-// just specificy the least costly, all else go to `space` (most keys - we can exclude)
-const tokenCategories = {
-  radius: {
-    borderRadius: true,
-    borderTopLeftRadius: true,
-    borderTopRightRadius: true,
-    borderBottomLeftRadius: true,
-    borderBottomRightRadius: true,
-  },
-  size: {
-    width: true,
-    height: true,
-    minWidth: true,
-    minHeight: true,
-    maxWidth: true,
-    maxHeight: true,
-  },
-  zIndex: {
-    zIndex: true,
-  },
-  color: {
-    color: true,
-    backgroundColor: true,
-    borderColor: true,
-    borderBottomColor: true,
-    borderTopColor: true,
-    borderLeftColor: true,
-    borderRightColor: true,
-  },
 }

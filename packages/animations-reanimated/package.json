@@ -12,7 +12,6 @@
     "types",
     "dist"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "1.46.0-1690569788107"
   },
