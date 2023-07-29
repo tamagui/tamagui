@@ -523,9 +523,13 @@ export const getSplitStyles: StyleSplitter = (
           shouldPassThrough ? '(pass)' : ''
         } 🔹🔹🔹🔹`
       )
-      // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough, curProps: { ...styleState.curProps }, parentStaticConfig })
+      console.log({ isVariant, valInit, shouldPassProp })
+      if (isClient) {
+        // prettier-ignore
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log({ variants, variant: variants?.[keyInit], isVariant, isHOCShouldPassThrough, curProps: { ...styleState.curProps }, parentStaticConfig })
+      }
       console.groupEnd()
     }
 

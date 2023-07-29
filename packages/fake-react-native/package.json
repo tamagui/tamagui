@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/fake-react-native",
-  "version": "1.46.0-1690569788107",
+  "version": "1.47.0",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
