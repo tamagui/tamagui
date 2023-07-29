@@ -128,18 +128,6 @@ const resolveVariants: StyleResolver = (
     }
   }
 
-  // update curProps for variants expanded:
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log(`   attaching updated curProps`, {
-      new: variantValue,
-      before: styleState.curProps,
-      after: Object.assign(styleState.curProps, variantValue),
-    })
-  }
-
-  Object.assign(styleState.curProps, variantValue)
-
   let fontFamilyResult: any
 
   if (isObj(variantValue)) {

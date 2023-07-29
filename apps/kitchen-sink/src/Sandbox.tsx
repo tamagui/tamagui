@@ -1,22 +1,42 @@
-// debug
+// debug-verbose 123 123
 // import './wdyr'
 
-import { Circle, Paragraph, SizableText, Text, styled } from 'tamagui'
+import { Circle, H1, Paragraph, SizableText, Text, styled } from 'tamagui'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
   return (
     <>
-      <Circle
-        debug="verbose"
-        animation="quick"
-        size={100}
-        bc="red"
-        enterStyle={{ y: 100 }}
-        hoverStyle={{
-          scale: 1.2,
+      <H1
+        ta="left"
+        size="$10"
+        maw={500}
+        h={130}
+        // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
+        $gtSm={{
+          mx: 0,
+          maxWidth: 800,
+          size: '$13',
+          h: 190,
+          ta: 'center',
+          als: 'center',
         }}
-      />
+        $gtMd={{
+          maxWidth: 900,
+          size: '$14',
+          h: 240,
+        }}
+        $gtLg={{
+          size: '$16',
+          lh: '$15',
+          maxWidth: 1200,
+          h: 290,
+        }}
+      >
+        <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
+        <br />
+        runs&nbsp;faster
+      </H1>
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
       {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
         WATCH THE VIDEO
