@@ -10,7 +10,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
   useState,
@@ -48,7 +47,7 @@ import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
-const timer = require('@tamagui/timer').timer()
+// const timer = require('@tamagui/timer').timer()
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
