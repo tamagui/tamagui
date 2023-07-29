@@ -172,7 +172,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
     usePresence,
-    useAnimations: ({ props, onDidAnimate, style, state, presence }) => {
+    useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       /** store Animated value of each key e.g: color: AnimatedValue */
@@ -193,7 +193,7 @@ export function createAnimations<A extends AnimationsConfig>(
       const animateOnly = (props.animateOnly as string[]) || []
       const hasAnimateOnly = !!props.animateOnly
 
-      const args = [JSON.stringify(style), state, isExiting, !!onDidAnimate]
+      const args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate]
 
       // check if there is any style that is not supported by native driver
       const isThereNoNativeStyleKeys = useMemo(() => {

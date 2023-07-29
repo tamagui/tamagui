@@ -26,11 +26,7 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "dependencies": {
-    "@tamagui/colors": "1.46.0-1690569788107",
-    "@tamagui/core": "1.46.0-1690569788107",
-    "@tamagui/create-themes": "1.46.0-1690569788107"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "1.46.0-1690569788107"
   },

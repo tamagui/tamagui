@@ -1,5 +1,5 @@
 import { PresenceContext } from '@tamagui/use-presence'
-import { PresenceContextProps, type, useIsomorphicLayoutEffect } from '@tamagui/web'
+import { PresenceContextProps, useIsomorphicLayoutEffect } from '@tamagui/web'
 import * as React from 'react'
 import { useId } from 'react'
 

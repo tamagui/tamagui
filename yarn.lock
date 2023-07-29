@@ -5173,6 +5173,7 @@ __metadata:
   resolution: "@tamagui/config-default-node@workspace:packages/config-default-node"
   dependencies:
     "@tamagui/build": 1.46.0-1690569788107
+    "@tamagui/core-node": 1.46.0-1690569788107
     "@tamagui/shorthands": 1.46.0-1690569788107
   languageName: unknown
   linkType: soft

@@ -26,17 +26,7 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "dependencies": {
-    "@tamagui/animations-css": "1.46.0-1690569788107",
-    "@tamagui/animations-react-native": "1.46.0-1690569788107",
-    "@tamagui/colors": "1.46.0-1690569788107",
-    "@tamagui/core": "1.46.0-1690569788107",
-    "@tamagui/font-inter": "1.46.0-1690569788107",
-    "@tamagui/font-silkscreen": "1.46.0-1690569788107",
-    "@tamagui/react-native-media-driver": "1.46.0-1690569788107",
-    "@tamagui/shorthands": "1.46.0-1690569788107",
-    "@tamagui/theme-base": "1.46.0-1690569788107"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "1.46.0-1690569788107"
   },

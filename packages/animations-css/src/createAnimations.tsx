@@ -57,8 +57,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, state, hostRef }) => {
-      const isEntering = !!state.unmounted
+    useAnimations: ({ props, presence, style, componentState, hostRef }) => {
+      const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
       const initialPositionRef = useRef<any>(null)
