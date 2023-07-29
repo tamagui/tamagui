@@ -636,6 +636,7 @@ export default function TakeoutPage({
                     className="clip-text mix-blend"
                     ff="$cherryBomb"
                     size="$12"
+                    fontSize={96}
                     lh="$11"
                     color="$color10"
                     mb="$4"
@@ -647,12 +648,12 @@ export default function TakeoutPage({
                       mr: 100,
                     }}
                     $lg={{
-                      size: '$9',
-                      lh: '$8',
+                      size: '$10',
+                      mr: 50,
                     }}
                     $sm={{
-                      size: '$8',
-                      lh: '$7',
+                      size: '$9',
+                      lh: '$8',
                     }}
                   >
                     From idea to shipped in less time&nbsp;than&nbsp;ever
@@ -660,11 +661,7 @@ export default function TakeoutPage({
                 </ThemeTint>
 
                 <ThemeTint>
-                  <MunroP
-                    style={{ textShadow: '-4px -4px 0 var(--color9)' }}
-                    size="$10"
-                    $sm={{ size: '$9' }}
-                  >
+                  <MunroP className="callout" size="$10" $sm={{ size: '$9' }}>
                     We can't promise everything...
                   </MunroP>
                 </ThemeTint>
@@ -723,7 +720,7 @@ export default function TakeoutPage({
                   </div>
                 </YStack>
 
-                <XStack fw="wrap" gap="$4" mx="$-8" ai="center" jc="center">
+                <XStack fw="wrap" gap="$3" mx="$-8" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
                     title="Monorepo"
