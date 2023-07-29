@@ -508,7 +508,8 @@ export const getSplitStyles: StyleSplitter = (
 
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
-        (isStyleLikeKey ||
+        (isShorthand ||
+          isValidStyleKeyInit ||
           isMediaOrPseudo ||
           parentStaticConfig?.variants?.[keyInit] ||
           keyInit in skipProps)
@@ -524,7 +525,7 @@ export const getSplitStyles: StyleSplitter = (
       )
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough, curProps: { ...styleState.curProps } })
+      console.log({ valInit, variants, variant: variants?.[keyInit], isVariant, shouldPassProp, isHOCShouldPassThrough, curProps: { ...styleState.curProps }, parentStaticConfig })
       console.groupEnd()
     }
 
@@ -614,6 +615,22 @@ export const getSplitStyles: StyleSplitter = (
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
         viewProps[key] = props[key] ?? val
+      }
+
+      // have to run this logic again here because expansions may need to be passed down
+      // see StyledButtonVariantPseudoMerge test
+      const isHOCShouldPassThrough =
+        isHOC && (isMediaOrPseudo || parentStaticConfig?.variants?.[keyInit])
+
+      if (isHOCShouldPassThrough) {
+        passDownProp(viewProps, key, val, isMediaOrPseudo)
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+          console.groupCollapsed(` - passing down prop ${key}`)
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log({ val, after: { ...viewProps[key] } })
+          console.groupEnd()
+        }
+        continue
       }
 
       // pseudo

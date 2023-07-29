@@ -218,6 +218,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     const val = value[rKey]
 
     if (variants && fKey in variants) {
+      // if its a variant expanded, attach to curProps
+      styleState.curProps[fKey] = val
+
       // avoids infinite loop if variant is matching a style prop
       // eg: { variants: { flex: { true: { flex: 2 } } } }
       if (parentVariantKey && parentVariantKey === key) {
