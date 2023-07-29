@@ -6,33 +6,21 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {},
   \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"2\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"3\\": {
-    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+    \\"backgroundColor\\": \\"blue\\"
   },
   \\"4\\": {},
   \\"5\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"6\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"7\\": {}
 });
@@ -52,14 +40,8 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {},
   \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\",
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -75,12 +57,6 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {},
   \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\"
   },
   \\"2\\": {
@@ -123,14 +99,7 @@ exports[`normalize ternaries flips the conditional properly 1`] = `
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {},
   \\"1\\": {
-    \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
-    \\"flexDirection\\": \\"column\\"
+    \\"alignItems\\": \\"stretch\\"
   },
   \\"2\\": {
     \\"marginBottom\\": 0

@@ -6,12 +6,6 @@ const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {},
   \\"1\\": {
     \\"alignItems\\": \\"stretch\\",
-    \\"flexShrink\\": 0,
-    \\"display\\": \\"flex\\",
-    \\"flexBasis\\": \\"auto\\",
-    \\"position\\": \\"relative\\",
-    \\"minHeight\\": 0,
-    \\"minWidth\\": 0,
     \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
       \\"translateY\\": 10
@@ -32,11 +26,11 @@ const _sheet = ReactNativeStyleSheet.create({
   },
   \\"3\\": {},
   \\"4\\": {
-    \\"backgroundColor\\": \\"rgba(255,0,0,1.00)\\"
+    \\"backgroundColor\\": \\"red\\"
   },
   \\"5\\": {},
   \\"6\\": {
-    \\"backgroundColor\\": \\"rgba(0,0,255,1.00)\\"
+    \\"backgroundColor\\": \\"blue\\"
   },
   \\"7\\": {}
 });

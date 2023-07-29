@@ -55,13 +55,7 @@ describe('flatten-tests', () => {
         },
       ],
       flexDirection: 'column',
-      flexShrink: 0,
       alignItems: 'stretch',
-      minHeight: 0,
-      minWidth: 0,
-      position: 'relative',
-      display: 'flex',
-      flexBasis: 'auto',
     })
 
     expect(sheetStyles['2']).toEqual({
@@ -77,11 +71,11 @@ describe('flatten-tests', () => {
     })
 
     expect(sheetStyles['4']).toEqual({
-      backgroundColor: 'rgba(255,0,0,1.00)',
+      backgroundColor: 'red',
     })
 
     expect(sheetStyles['6']).toEqual({
-      backgroundColor: 'rgba(0,0,255,1.00)',
+      backgroundColor: 'blue',
     })
   })
 })
