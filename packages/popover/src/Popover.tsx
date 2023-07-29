@@ -515,7 +515,6 @@ export const Popover = withStaticProperties(
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
-      transition: true,
     })
 
     const breakpointActive = useSheetBreakpointActive(sheetBreakpoint)
