@@ -1990,69 +1990,6 @@ const Points = () => (
   </YStack>
 )
 
-const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
-  const promoListPromise = stripe.promotionCodes.list({
-    code: 'SITE', // ones with code site are considered public and will be shown here
-    active: true,
-    expand: ['data.coupon'],
-  })
-  const productPromises = [
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'universal-starter')
-      .single(),
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'icon-packs')
-      .single(),
-    supabaseAdmin
-      .from('products')
-      .select('*, prices(*)')
-      .eq('metadata->>slug', 'font-packs')
-      .single(),
-  ]
-  const promises = [promoListPromise, ...productPromises]
-  const queries = await Promise.all(promises)
-
-  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
-  const couponsList = queries[0] as Awaited<typeof promoListPromise>
-
-  let coupon: Stripe.Coupon | null = null
-
-  if (couponsList.data.length > 0) {
-    coupon = couponsList.data[0].coupon
-  }
-
-  for (const product of products) {
-    if (product.error) throw product.error
-    if (
-      !product.data.prices ||
-      !Array.isArray(product.data.prices) ||
-      product.data.prices.length === 0
-    ) {
-      throw new Error('No prices are attached to the product.')
-    }
-  }
-
-  return {
-    starter: {
-      ...products[0].data!,
-      prices: getArray(products[0].data!.prices!).filter((p) => p.active),
-    },
-    iconsPack: {
-      ...products[1].data!,
-      prices: getArray(products[1].data!.prices!).filter((p) => p.active),
-    },
-    fontsPack: {
-      ...products[2].data!,
-      prices: getArray(products[2].data!.prices!).filter((p) => p.active),
-    },
-    coupon,
-  }
-}
-
 const HeartsRow = () => (
   <XStack space="$12" my="$4" als="center" spaceDirection="horizontal">
     <img src="/heart.svg" style={{ width: 16, height: 16 }} />
@@ -2778,20 +2715,6 @@ const PromoVideo = () => {
   )
 }
 
-export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
-  try {
-    const props = await getTakeoutProducts()
-    return {
-      props,
-    }
-  } catch (err) {
-    console.error(`Error getting props`, err)
-    return {
-      notFound: true,
-    }
-  }
-}
-
 const Bullet = ({
   size = '$6',
   children,
@@ -2850,4 +2773,81 @@ const Bullet = ({
 const Lazy = (props: { children: any }) => {
   const loaded = useLazilyMounted(100)
   return loaded ? props.children : null
+}
+
+export const getStaticProps: GetStaticProps<TakeoutPageProps | any> = async () => {
+  try {
+    const props = await getTakeoutProducts()
+    return {
+      props,
+    }
+  } catch (err) {
+    console.error(`Error getting props`, err)
+    return {
+      notFound: true,
+    }
+  }
+}
+
+const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
+  const promoListPromise = stripe.promotionCodes.list({
+    code: 'SITE', // ones with code site are considered public and will be shown here
+    active: true,
+    expand: ['data.coupon'],
+  })
+  const productPromises = [
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'universal-starter')
+      .single(),
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'icon-packs')
+      .single(),
+    supabaseAdmin
+      .from('products')
+      .select('*, prices(*)')
+      .eq('metadata->>slug', 'font-packs')
+      .single(),
+  ]
+  const promises = [promoListPromise, ...productPromises]
+  const queries = await Promise.all(promises)
+
+  const products = queries.slice(1) as Awaited<(typeof productPromises)[number]>[]
+  const couponsList = queries[0] as Awaited<typeof promoListPromise>
+
+  let coupon: Stripe.Coupon | null = null
+
+  if (couponsList.data.length > 0) {
+    coupon = couponsList.data[0].coupon
+  }
+
+  for (const product of products) {
+    if (product.error) throw product.error
+    if (
+      !product.data.prices ||
+      !Array.isArray(product.data.prices) ||
+      product.data.prices.length === 0
+    ) {
+      throw new Error('No prices are attached to the product.')
+    }
+  }
+
+  return {
+    starter: {
+      ...products[0].data!,
+      prices: getArray(products[0].data!.prices!).filter((p) => p.active),
+    },
+    iconsPack: {
+      ...products[1].data!,
+      prices: getArray(products[1].data!.prices!).filter((p) => p.active),
+    },
+    fontsPack: {
+      ...products[2].data!,
+      prices: getArray(products[2].data!.prices!).filter((p) => p.active),
+    },
+    coupon,
+  }
 }
