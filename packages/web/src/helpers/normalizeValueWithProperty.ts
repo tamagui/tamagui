@@ -3,6 +3,7 @@
  * Copyright (c) Nicolas Gallagher licensed under the MIT license.
  */
 
+import { isWeb } from '@tamagui/constants'
 import { stylePropsUnitless } from '@tamagui/helpers'
 
 import { getAllSelectors } from './insertStyleRule'
@@ -10,6 +11,7 @@ import { getAllSelectors } from './insertStyleRule'
 // only doing this on web on native it accepts pixel values
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
+  if (!isWeb) return value
   let res = value
   if (
     (property === undefined || !(property in stylePropsUnitless)) &&
