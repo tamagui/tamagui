@@ -943,13 +943,13 @@ export default function TakeoutPage({
 
                     <ThemeTintAlt>
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
-                        <Bullet inProgress>Storybook</Bullet>
-                        <Bullet inProgress>Maestro integration tests</Bullet>
-                        <Bullet inProgress>Simple state management system</Bullet>
-                        <Bullet inProgress>Reanimated modules</Bullet>
-                        <Bullet inProgress>Layout animations</Bullet>
-                        <Bullet inProgress>Tamagui CLI: Doctor</Bullet>
-                        <Bullet inProgress>Tamagui CLI: Upgrade</Bullet>
+                        <Bullet status="done">Storybook</Bullet>
+                        <Bullet status="building">Maestro integration tests</Bullet>
+                        <Bullet status="building">Simple state management system</Bullet>
+                        <Bullet status="building">Reanimated modules</Bullet>
+                        <Bullet status="building">Layout animations</Bullet>
+                        <Bullet status="building">Tamagui CLI: Doctor</Bullet>
+                        <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
                         <Bullet>Playwright integration tests</Bullet>
                         <Bullet>Notifications</Bullet>
                         <Bullet>Alternative deployment targets</Bullet>
@@ -2800,13 +2800,13 @@ const Bullet = ({
   size = '$6',
   children,
   subtitle,
-  inProgress,
+  status,
   ...props
 }: XStackProps & {
   children: any
   subtitle?: any
   size?: FontSizeTokens
-  inProgress?: boolean
+  status?: 'building' | 'done'
 }) => {
   return (
     <XStack
@@ -2820,7 +2820,9 @@ const Bullet = ({
     >
       <YStack y={-1}>
         <Circle size={42} my={-6} boc="$borderColor" bw={1}>
-          {inProgress ? (
+          {status === 'done' ? (
+            <Check size={24} color="$color10" />
+          ) : status === 'building' ? (
             <Hammer size={24} color="$color10" />
           ) : (
             <Dot size={24} color="$color10" />

@@ -140,7 +140,6 @@ export default function TakeoutGallery() {
             overflow: 'hidden',
             $md: {
               flexGrow: 1,
-              width: '100%',
             },
           }}
         />
@@ -159,8 +158,7 @@ export default function TakeoutGallery() {
             borderRadius: '$6',
             overflow: 'hidden',
             $md: {
-              flexGrow: 1,
-              width: '100%',
+              flexGrow: 2,
             },
           }}
         />
@@ -180,7 +178,6 @@ export default function TakeoutGallery() {
             overflow: 'hidden',
             $md: {
               flexGrow: 1,
-              width: '100%',
             },
           }}
         />

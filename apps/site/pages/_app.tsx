@@ -1,7 +1,6 @@
 import '@tamagui/core/reset.css'
 
 import '../app.css'
-import '../lib/wdyr'
 
 import { GetLayout } from '@lib/getDefaultLayout'
 import {
@@ -17,6 +16,8 @@ import { TamaguiProvider, Text, useDebounceValue } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
+
+// import '../lib/wdyr'
 
 Error.stackTraceLimit = Infinity
 
