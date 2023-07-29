@@ -937,8 +937,7 @@ export default function TakeoutPage({
                     </Paragraph>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      There's a lot of nice stuff coming soon as a nice and easy to merge
-                      PR sent right to your repo:
+                      There's a lot of nice stuff coming soon as a PR to your repo:
                     </Paragraph>
 
                     <ThemeTintAlt>
