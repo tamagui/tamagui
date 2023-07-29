@@ -1,7 +1,9 @@
 import { ThemeProvider, createBox, createTheme } from '@shopify/restyle'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Stack, Text, XStack, YStack, styled } from 'tamagui'
+
+import { TimedRender } from '../components/TimedRender'
 
 export const Benchmark = () => {
   return (
@@ -126,21 +128,5 @@ const BenchRN = () => {
         <View style={styles.style} key={i} />
       ))}
     </TimedRender>
-  )
-}
-
-function TimedRender(props) {
-  const [start] = useState(Date.now())
-  const [end, setEnd] = useState(0)
-
-  useLayoutEffect(() => {
-    setEnd(Date.now())
-  }, [])
-
-  return (
-    <>
-      {!!end && <Text>Took {start - end}ms</Text>}
-      {props.children}
-    </>
   )
 }

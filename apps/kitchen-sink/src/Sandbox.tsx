@@ -3,13 +3,14 @@
 
 import { Circle, H1, Paragraph, SizableText, Text, styled } from 'tamagui'
 
-import { Benchmark } from './Benchmark'
+import { Benchmark } from './usecases/Benchmark'
+import { BenchmarkSelect } from './usecases/BenchmarkSelect'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
   return (
     <>
-      <Benchmark />
+      <BenchmarkSelect />
 
       {/* TODO test this one at diff sizes make sure:
     

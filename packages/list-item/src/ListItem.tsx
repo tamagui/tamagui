@@ -216,6 +216,7 @@ export const useListItem = (
     unstyled,
     ...props,
   })
+
   const size = mediaActiveProps.size || '$true'
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })

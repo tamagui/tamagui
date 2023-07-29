@@ -80,36 +80,34 @@ export function SelectDemoItem(props: SelectProps) {
           enterStyle={{ o: 0, y: -10 }}
           exitStyle={{ o: 0, y: 10 }}
         >
-          <XStack>
-            <Select.Group space="$0">
-              <Select.Label>Fruits</Select.Label>
-              {items.map((item, i) => {
-                return (
-                  <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
-                    <Select.ItemText>{item.name}</Select.ItemText>
-                    <Select.ItemIndicator marginLeft="auto">
-                      <Check size={16} />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                )
-              })}
-            </Select.Group>
-            {/* special icon treatment for native */}
-            {props.native && (
-              <YStack
-                position="absolute"
-                right={0}
-                top={0}
-                bottom={0}
-                alignItems="center"
-                justifyContent="center"
-                width={'$4'}
-                pointerEvents="none"
-              >
-                <ChevronDown size={getFontSize((props.size ?? '$true') as any)} />
-              </YStack>
-            )}
-          </XStack>
+          <Select.Group space="$0">
+            <Select.Label>Fruits</Select.Label>
+            {items.map((item, i) => {
+              return (
+                <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
+                  <Select.ItemText>{item.name}</Select.ItemText>
+                  <Select.ItemIndicator marginLeft="auto">
+                    <Check size={16} />
+                  </Select.ItemIndicator>
+                </Select.Item>
+              )
+            })}
+          </Select.Group>
+          {/* special icon treatment for native */}
+          {props.native && (
+            <YStack
+              position="absolute"
+              right={0}
+              top={0}
+              bottom={0}
+              alignItems="center"
+              justifyContent="center"
+              width={'$4'}
+              pointerEvents="none"
+            >
+              <ChevronDown size={getFontSize((props.size ?? '$true') as any)} />
+            </YStack>
+          )}
         </Select.Viewport>
 
         <Select.ScrollDownButton
