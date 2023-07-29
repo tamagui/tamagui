@@ -579,9 +579,12 @@ export const getSplitStyles: StyleSplitter = (
 
     const avoidPropMap =
       isMediaOrPseudo ||
-      // micro-bench optimize - if theres no variants at all, no need to do expansions
-      (isValidStyleKeyInit && !variants) ||
-      (!isVariant && !isValidStyleKeyInit)
+      (!isVariant && !isValidStyleKeyInit) ||
+      // micro-bench optimize - avoid expansion in some cases
+      (isValidStyleKeyInit &&
+        !variants &&
+        (typeof valInit === 'number' ||
+          (typeof valInit === 'string' && valInit[0] !== '$')))
 
     const expanded = avoidPropMap
       ? [[keyInit, valInit]]

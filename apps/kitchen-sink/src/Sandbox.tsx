@@ -3,17 +3,21 @@
 
 import { Circle, H1, Paragraph, SizableText, Text, styled } from 'tamagui'
 
+import { Benchmark } from './Benchmark'
+
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
   return (
     <>
+      <Benchmark />
+
       {/* TODO test this one at diff sizes make sure:
     
       - font size is right at each size
       - textTransform + lineHeight too etc
     
     */}
-      <H1
+      {/* <H1
         ta="left"
         size="$10"
         maw={500}
@@ -42,7 +46,7 @@ export const Sandbox = () => {
         <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
         <br />
         runs&nbsp;faster
-      </H1>
+      </H1> */}
 
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
       {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
