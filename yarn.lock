@@ -4843,7 +4843,7 @@ __metadata:
     "@tamagui/use-presence": 1.46.0-1690569788107
     "@tamagui/web": 1.46.0-1690569788107
     moti: ^0.25.3
-    react-native-reanimated: ^3.4.1
+    react-native-reanimated: ^3.3.0
   languageName: unknown
   linkType: soft
 
@@ -5689,7 +5689,7 @@ __metadata:
     react-native: ^0.72.1
     react-native-gesture-handler: ~2.12.0
     react-native-ios-modal: 2.0.0-3
-    react-native-reanimated: ^3.4.1
+    react-native-reanimated: ^3.3.0
     react-native-safe-area-context: 4.6.3
     react-native-screens: ~3.22.0
     react-native-svg: ^13.9.0
@@ -20576,7 +20576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:^3.4.1":
+"react-native-reanimated@npm:^3.3.0":
   version: 3.4.1
   resolution: "react-native-reanimated@npm:3.4.1"
   dependencies:
