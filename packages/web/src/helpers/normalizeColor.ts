@@ -11,7 +11,9 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
   const colorProcessed = NCC.normalizeCSSColor(color)
   if (typeof colorProcessed === 'number') {
     const { r, g, b, a } = rgba(colorProcessed)
-    const alpha = (opacity ?? a ?? 1).toFixed(2)
+    const o = +(opacity ?? a ?? 1)
+    console.log('wtf is', colorProcessed, opacity)
+    const alpha = o.toFixed(2)
     return `rgba(${r},${g},${b},${alpha})`
   }
   if (process.env.TAMAGUI_TARGET === 'native') {

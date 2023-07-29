@@ -107,10 +107,10 @@ export function styleToCSS(style: Record<string, any>) {
     const radius = normalizeValueWithProperty(shadowRadius)
     const shadow = `${width} ${height} ${radius} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
-    style.shadowOffset = undefined
-    style.shadowRadius = undefined
-    style.shadowColor = undefined
-    style.shadowOpacity = undefined
+    delete style.shadowOffset
+    delete style.shadowRadius
+    delete style.shadowColor
+    delete style.shadowOpacity
   }
 
   // text-shadow
@@ -125,9 +125,9 @@ export function styleToCSS(style: Record<string, any>) {
       const offsetY = normalizeValueWithProperty(height)
       style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
     }
-    style.textShadowColor = undefined
-    style.textShadowOffset = undefined
-    style.textShadowRadius = undefined
+    delete style.textShadowColor
+    delete style.textShadowOffset
+    delete style.textShadowRadius
   }
 }
 
