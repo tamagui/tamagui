@@ -26,9 +26,20 @@ interface ProgressIndicatorProps extends YStackProps {}
 
 export const ProgressIndicatorFrame = styled(ThemeableStack, {
   name: INDICATOR_NAME,
-  height: '100%',
-  width: '100%',
-  backgrounded: true,
+
+  variants: {
+    unstyled: {
+      false: {
+        height: '100%',
+        width: '100%',
+        backgrounded: true,
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: false,
+  },
 })
 
 const ProgressIndicator = ProgressIndicatorFrame.extractable(
@@ -110,11 +121,16 @@ type ProgressElement = TamaguiElement
 
 export const ProgressFrame = styled(ThemeableStack, {
   name: PROGRESS_NAME,
-  borderRadius: 100_000,
-  overflow: 'hidden',
-  backgrounded: true,
 
   variants: {
+    unstyled: {
+      false: {
+        borderRadius: 100_000,
+        overflow: 'hidden',
+        backgrounded: true,
+      },
+    },
+
     size: {
       '...size': (val) => {
         const size = Math.round(getVariableValue(getSize(val)) * 0.25)
@@ -155,7 +171,6 @@ const Progress = withStaticProperties(
         return (
           <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
             <ProgressFrame
-              size={size}
               aria-valuemax={max}
               aria-valuemin={0}
               aria-valuenow={isNumber(value) ? value : undefined}
@@ -165,6 +180,9 @@ const Progress = withStaticProperties(
               data-state={getProgressState(value, max)}
               data-value={value ?? undefined}
               data-max={max}
+              {...(progressProps.unstyled !== true && {
+                size,
+              })}
               {...progressProps}
               onLayout={(e) => {
                 setWidth(e.nativeEvent.layout.width)
