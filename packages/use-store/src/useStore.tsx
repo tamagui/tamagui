@@ -23,8 +23,6 @@ import { useAsyncExternalStore } from './useAsyncExternalStore'
 import { DebugStores, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
-const shouldUseSyncDefault =
-  typeof window === 'undefined' || !window.location.hash.includes(`use-async-store`)
 
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(
@@ -301,7 +299,9 @@ function useStoreFromInfo(
     return snap
   }, [])
 
-  const state = shouldUseSyncDefault
+  // sync by default
+  // rome-ignore lint/nursery/noConstantCondition: <explanation>
+  const state = true
     ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
     : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
