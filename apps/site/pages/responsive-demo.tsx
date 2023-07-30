@@ -1,26 +1,16 @@
 // @ts-nocheck responsive props
 
-import { NextSeo } from 'next-seo'
 // @ts-ignore
 import img1 from '@tamagui/demos/photo/photo1'
 // @ts-ignore
 import img2 from '@tamagui/demos/photo/photo2'
 // @ts-ignore
 import img3 from '@tamagui/demos/photo/photo3'
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { MapPin, Star } from '@tamagui/lucide-icons'
+import { NextSeo } from 'next-seo'
 import React from 'react'
-import {
-  H3,
-  H4,
-  H5,
-  Image,
-  LinearGradient,
-  Paragraph,
-  Spacer,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { H3, H4, H5, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
 export default function ResponsiveDemo() {
   const header = (
@@ -72,7 +62,12 @@ export default function ResponsiveDemo() {
           {coverPhoto}
         </YStack>
 
-        <XStack f={1} space $small={{ display: 'none' }} $gtLarge={{ fd: 'column', maw: 450 }}>
+        <XStack
+          f={1}
+          space
+          $small={{ display: 'none' }}
+          $gtLarge={{ fd: 'column', maw: 450 }}
+        >
           <YStack ov="hidden" f={2} maw={400} $gtMedium={{ maw: '100%', f: 0 }}>
             {coverPhoto}
           </YStack>
@@ -115,17 +110,17 @@ export default function ResponsiveDemo() {
             </XStack>
 
             <Paragraph theme="alt1" size="$4">
-              A lovely, private and very clean cottage with all amenities for a comfortable and
-              peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden and
-              well situated for touring to Akaka Falls, Volcano National Park, and many other
-              destinations.
+              A lovely, private and very clean cottage with all amenities for a
+              comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
+              Tropical Botanical Garden and well situated for touring to Akaka Falls,
+              Volcano National Park, and many other destinations.
             </Paragraph>
 
             <Paragraph $medium={{ display: 'none' }} theme="alt1" size="$4">
-              A lovely, private and very clean cottage with all amenities for a comfortable and
-              peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden and
-              well situated for touring to Akaka Falls, Volcano National Park, and many other
-              destinations.
+              A lovely, private and very clean cottage with all amenities for a
+              comfortable and peaceful stay. We are a 20 minute walk from the Hawaii
+              Tropical Botanical Garden and well situated for touring to Akaka Falls,
+              Volcano National Park, and many other destinations.
             </Paragraph>
           </YStack>
         </YStack>
