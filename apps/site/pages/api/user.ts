@@ -94,7 +94,7 @@ const getUserTeams = async (supabase: SupabaseClient<Database>) => {
 const getSubscriptions = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase
     .from('subscriptions')
-    .select('*, subscription_items(*, prices(*, products(*)))')
+    .select('*, subscription_items(*, prices(*, products(*)), app_installations(*))')
   if (result.error) throw new Error(result.error.message)
   return result.data.map((sub) => ({
     ...sub,

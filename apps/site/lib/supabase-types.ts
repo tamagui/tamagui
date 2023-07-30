@@ -268,34 +268,6 @@ export interface Database {
         }
         Relationships: []
       }
-      subscription_discord_channels: {
-        Row: {
-          created_at: string | null
-          discord_channel_id: string
-          id: number
-          subscription_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          discord_channel_id: string
-          id?: number
-          subscription_id: string
-        }
-        Update: {
-          created_at?: string | null
-          discord_channel_id?: string
-          id?: number
-          subscription_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "subscription_discord_channels_subscription_id_fkey"
-            columns: ["subscription_id"]
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       subscription_items: {
         Row: {
           id: string

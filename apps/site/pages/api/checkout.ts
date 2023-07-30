@@ -105,6 +105,12 @@ const handler: NextApiHandler = async (req, res) => {
         quantity: 1,
       }
     }),
+    // @ts-ignore
+    custom_text: {
+      submit: {
+        message: 'A 50% coupon will be automatically applied on your subscription for future renewals.',
+      },
+    },
     customer: stripeCustomerId,
     mode: 'subscription',
     discounts: promoCodeId
