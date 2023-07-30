@@ -37,6 +37,7 @@ type DisposeFn = () => void
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn
 
 export interface SelectItemParentContextValue {
+  initialValue?: any
   setSelectedIndex: (index: number) => void
   listRef?: MutableRefObject<Array<HTMLElement | null>>
   setOpen: (open: boolean) => void

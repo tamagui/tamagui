@@ -64,9 +64,10 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       interactions,
       shouldRenderWebNative,
       size,
+      initialValue,
     } = context
 
-    const [isSelected, setSelected] = React.useState(false)
+    const [isSelected, setSelected] = React.useState(initialValue === value)
     const [isActive, setActive] = React.useState(false)
 
     React.useEffect(() => {

@@ -21,7 +21,6 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import * as React from 'react'
-import { useMemo } from 'react'
 import { flushSync } from 'react-dom'
 
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
@@ -375,22 +374,4 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           ) : null} */}
     </SelectProvider>
   )
-}
-
-// only for debugging if a useMemo is working
-
-export const useMemoDebug: typeof useMemo = (fn, args) => {
-  let run = 1
-
-  const res = useMemo(() => {
-    run = 0
-    return fn()
-  }, args)
-
-  if (run === 1) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log('saved a run')
-  }
-
-  return res
 }

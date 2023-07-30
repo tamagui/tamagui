@@ -466,12 +466,6 @@ export const Select = withStaticProperties(
     const [selectedIndex, setSelectedIndex] = React.useState(0)
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
 
-    React.useEffect(() => {
-      // to go after the item mount 🤷‍♂️
-      if (!valueNode) return
-      emitValue(value)
-    }, [value, valueNode])
-
     useIsomorphicLayoutEffect(() => {
       selectedIndexRef.current = selectedIndex
       activeIndexRef.current = activeIndex
@@ -486,6 +480,7 @@ export const Select = withStaticProperties(
     return (
       <AdaptProvider>
         <SelectItemParentProvider
+          initialValue={React.useMemo(() => value, [])}
           scope={__scopeSelect}
           size={sizeProp}
           activeIndexSubscribe={activeIndexSubscribe}
