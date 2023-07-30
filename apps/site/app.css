@@ -807,3 +807,7 @@ input, textarea {
   -webkit-text-stroke: 2px var(--color10);
   animation: clip-fade 150s infinite;
 }
+
+.text-wrap-balance {
+  text-wrap: balance;
+}

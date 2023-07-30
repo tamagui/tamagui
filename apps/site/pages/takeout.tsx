@@ -633,7 +633,7 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <H2
-                    className="clip-text mix-blend"
+                    className="clip-text mix-blend text-wrap-balance"
                     ff="$cherryBomb"
                     size="$12"
                     fontSize={96}
@@ -654,9 +654,10 @@ export default function TakeoutPage({
                     $sm={{
                       size: '$9',
                       lh: '$8',
+                      mr: 0,
                     }}
                   >
-                    From idea to shipped in less time&nbsp;than&nbsp;ever
+                    From idea to shipped in less time than ever
                   </H2>
                 </ThemeTint>
 
