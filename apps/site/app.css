@@ -141,13 +141,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
-  background: linear-gradient(
-    330deg,
-    var(--background) 0%,
-    transparent 30%,
-    transparent 70%,
-    var(--background) 100%
-  );
+  background: linear-gradient(30deg, var(--background) -50%, transparent, var(--background) 150%);
 }
 
 .hero-blur {
