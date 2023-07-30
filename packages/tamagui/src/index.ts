@@ -186,11 +186,3 @@ export {
   useProps,
   useMediaPropsActive,
 } from '@tamagui/core'
-
-/** @deprecated LinearGradient has been moved to tamagui/linear-gradient as of 1.1 */
-export function LinearGradient(props: never) {
-  if (process.env.NODE_ENV === 'development') {
-    console.warn(`LinearGradient has been moved to tamagui/linear-gradient as of 1.1`)
-  }
-  return null
-}
