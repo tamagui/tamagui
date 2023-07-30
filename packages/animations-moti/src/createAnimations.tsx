@@ -89,12 +89,12 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const derivedValue = useDerivedValue(() => {
         return instance.value
         // dependency array is very important here
-      }, [instance])
+      }, [instance, getStyle])
 
       return useAnimatedStyle(() => {
         return getStyle(derivedValue.value)
         // dependency array is very important here
-      }, [val, getStyle, derivedValue])
+      }, [val, getStyle, derivedValue, instance])
     },
 
     useAnimations: ({ props, presence, style, onDidAnimate }) => {
