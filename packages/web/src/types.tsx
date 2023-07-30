@@ -2112,3 +2112,13 @@ export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
     ) extends Ref<infer T> | string | undefined
   ? T
   : unknown
+
+export type ThemesLikeObject = Record<string, Record<string, string>>
+
+// dedupe themes to avoid duplicate CSS generation
+export type DedupedTheme = {
+  names: string[]
+  theme: ThemeParsed
+}
+
+export type DedupedThemes = DedupedTheme[]

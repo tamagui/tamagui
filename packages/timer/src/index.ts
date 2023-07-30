@@ -9,11 +9,11 @@ export function timer() {
 
   return {
     start(opts?: { quiet?: boolean }) {
-      let start = Date.now()
+      let start = performance.now()
       const quiet = opts?.quiet ?? true
       return (strings: TemplateStringsArray, ...vars: any[]) => {
-        const elapsed = Date.now() - start
-        start = Date.now()
+        const elapsed = performance.now() - start
+        start = performance.now()
         const tag = strings[0]
         typesOfRuns.add(tag)
         runs++

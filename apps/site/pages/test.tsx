@@ -1,7 +1,9 @@
 // debug
 import { useId, useState } from 'react'
-import { Button, Circle, Paragraph, Text, useDidFinishSSR } from 'tamagui'
+import { Button, Circle, Paragraph, Text, Theme, YStack, useDidFinishSSR } from 'tamagui'
 import { H1, H2 } from 'tamagui'
+
+import { MediaPlayer } from '../components/MediaPlayer'
 
 // export default () => <Square size={100} animation="quick" bc="$background" />
 
@@ -19,8 +21,12 @@ export default () => {
         flex: 1,
       }}
     >
-      <Button onPress={() => setX(Math.random())}>ok</Button>
-      <Test key={x} />
+      <YStack>
+        <MediaPlayer />
+        <Theme name="blue">
+          <MediaPlayer />
+        </Theme>
+      </YStack>
     </div>
   )
 }
@@ -28,8 +34,6 @@ export default () => {
 const Test = () => {
   const hydrated = useDidFinishSSR()
   const id = useId()
-
-  console.log('hydrated', id, hydrated)
 
   return <Paragraph>{`${id} hydrated ${hydrated}`}</Paragraph>
 }

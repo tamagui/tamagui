@@ -1,6 +1,9 @@
 import { isClient } from '@tamagui/constants'
 
-import type { RulesToInsert, StyleObject } from '../types'
+import { getConfig } from '../config'
+import { Variable, createVariable } from '../createVariable'
+import type { DedupedTheme, DedupedThemes, RulesToInsert, ThemeParsed } from '../types'
+import { ensureThemeVariable } from './themes'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
@@ -63,16 +66,25 @@ export function listenForSheetChanges() {
 
 let lastScannedSheets: Set<CSSStyleSheet> | null = null
 
-export function scanAllSheets() {
+export function scanAllSheets(collectThemes = false): DedupedThemes | undefined {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
+
+  const x = performance.now()
+
+  let themes: DedupedThemes | undefined
 
   const sheets = document.styleSheets || []
   const prev = lastScannedSheets
   const current = new Set(sheets as any as CSSStyleSheet[])
   if (document.styleSheets) {
     for (const sheet of current) {
-      sheet && updateSheetStyles(sheet)
+      if (sheet) {
+        const out = updateSheetStyles(sheet, false, collectThemes)
+        if (out) {
+          themes = out
+        }
+      }
     }
     lastScannedSheets = current
   }
@@ -84,6 +96,8 @@ export function scanAllSheets() {
       }
     }
   }
+
+  return themes
 }
 
 function track(id: string, remove = false) {
@@ -92,7 +106,14 @@ function track(id: string, remove = false) {
   return next
 }
 
-function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
+const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
+const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
+
+function updateSheetStyles(
+  sheet: CSSStyleSheet,
+  remove = false,
+  collectThemes = false
+): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
   let rules: CSSRuleList
@@ -105,8 +126,8 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
     return
   }
 
-  const firstSelector = getTamaguiSelector(rules[0])?.[0]
-  const lastSelector = getTamaguiSelector(rules[rules.length - 1])?.[0]
+  const firstSelector = getTamaguiSelector(rules[0], collectThemes)?.[0]
+  const lastSelector = getTamaguiSelector(rules[rules.length - 1], collectThemes)?.[0]
   const cacheKey = `${rules.length}${firstSelector}${lastSelector}`
   const lastScanned = scannedCache.get(sheet)
 
@@ -120,22 +141,36 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   const len = rules.length
   let fails = 0
 
+  let dedupedThemes: DedupedThemes | undefined
+
   for (let i = 0; i < len; i++) {
     const rule = rules[i]
     if (!(rule instanceof CSSStyleRule)) continue
 
-    const response = getTamaguiSelector(rule)
+    const response = getTamaguiSelector(rule, collectThemes)
 
-    if (!response) {
+    if (response) {
+      // reset to 0 on any success as eg every other theme scan we get empty
+      fails = 0
+    } else {
       fails++
-      if (fails > 20) {
+      if (fails > bailAfter) {
         // conservatively bail out of non-tamagui sheets
         return
       }
       continue
     }
 
-    const [identifier, cssRule] = response
+    const [identifier, cssRule, isTheme] = response
+
+    if (isTheme) {
+      const deduped = addThemesFromCSS(cssRule)
+      if (deduped) {
+        dedupedThemes ||= []
+        dedupedThemes.push(deduped)
+      }
+      continue
+    }
 
     // track references
     const total = track(identifier, remove)
@@ -156,32 +191,120 @@ function updateSheetStyles(sheet: CSSStyleSheet, remove = false) {
   }
 
   scannedCache.set(sheet, cacheKey)
+
+  return dedupedThemes
+}
+
+let rootComputedStyle: CSSStyleDeclaration | null = null
+
+function addThemesFromCSS(cssStyleRule: CSSStyleRule) {
+  if (!rootComputedStyle) {
+    rootComputedStyle = getComputedStyle(document.body)
+  }
+
+  const selectors = cssStyleRule.selectorText.split(',')
+
+  if (!selectors.length) return
+
+  const rulesWithBraces = (cssStyleRule.cssText || '')
+    .slice(cssStyleRule.selectorText.length + 2, -1)
+    .trim()
+  const rules = rulesWithBraces.split(';')
+
+  // get theme object parsed
+  const values: ThemeParsed = {}
+  // build values first
+  for (const rule of rules) {
+    const sepI = rule.indexOf(':')
+    if (sepI === -1) continue
+    const key = rule.slice(rule.indexOf('--') + 2, sepI)
+    const val = rule.slice(sepI + 2, -1)
+
+    // console.log('got', { key, val })
+
+    const value =
+      val[3] === '(' // is var(
+        ? rootComputedStyle.getPropertyValue(val.slice(4, -1))
+        : val
+
+    values[key] = createVariable(
+      {
+        key,
+        name: key,
+        val: value,
+      },
+      true
+    )
+  }
+
+  const dedupedEntry: DedupedTheme = {
+    names: [],
+    theme: values,
+  }
+
+  // loop selectors and build deduped
+  for (const selector of selectors.slice(0, 3)) {
+    let scheme = selector.includes('t_dark')
+      ? 'dark'
+      : selector.includes('t_light')
+      ? 'light'
+      : ''
+    let name = selector.slice(selector.lastIndexOf('.t_') + 3)
+
+    if (name.startsWith(scheme)) {
+      // we have some hardcoded for component themes t_light_name
+      name = name.slice(scheme.length + 1)
+    }
+    // for base dark and light
+    if (scheme === name) {
+      scheme = ''
+    }
+    const themeName = `${scheme}${scheme && name ? '_' : ''}${name}`
+
+    if (dedupedEntry.names.includes(themeName)) {
+      continue
+    }
+
+    dedupedEntry.names.push(themeName)
+  }
+
+  return dedupedEntry
 }
 
 function getTamaguiSelector(
-  rule: CSSRule | null
-): readonly [string, CSSStyleRule] | null {
+  rule: CSSRule | null,
+  collectThemes = false
+): readonly [string, CSSStyleRule] | [string, CSSStyleRule, true] | undefined {
   if (rule instanceof CSSStyleRule) {
     const text = rule.selectorText
-    if (text[0] === '.' && text[1] === '_') {
-      return [text.slice(1), rule]
-    }
-    if (text.startsWith(':root') && text.includes('._')) {
-      return [getIdentifierFromTamaguiSelector(text), rule]
+    if (text[0] === ':' && text[1] === 'r') {
+      if (text.startsWith(':root ._')) {
+        return [getIdentifierFromTamaguiSelector(text), rule]
+      }
+      if (collectThemes) {
+        if (text.startsWith(':root.t_') || text.startsWith(':root .t_')) {
+          return [
+            text.slice(0, 20), // just used as uid
+            rule,
+            true,
+          ]
+        }
+      }
     }
   } else if (rule instanceof CSSMediaRule) {
     // tamagui only ever inserts 1 rule per media
-    if (rule.cssRules.length > 1) return null
+    if (rule.cssRules.length > 1) return
     return getTamaguiSelector(rule.cssRules[0])
   }
-  return null
 }
 
-const getIdentifierFromTamaguiSelector = (selector: string) =>
-  selector
-    .replace(/(:root)+\s+/, '')
-    .replace(/:[a-z]+$/, '')
-    .slice(1)
+const getIdentifierFromTamaguiSelector = (selector: string) => {
+  let res = selector.slice(8)
+  if (selector.includes(':')) {
+    return res.replace(/:[a-z]+$/, '')
+  }
+  return res
+}
 
 const sheet = isClient
   ? document.head.appendChild(document.createElement('style')).sheet

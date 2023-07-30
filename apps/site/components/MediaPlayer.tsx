@@ -48,7 +48,7 @@ export const MediaPlayer = memo(
             overflow="visible"
             borderWidth={1}
             borderColor="$borderColor"
-            backgroundColor="$background"
+            backgroundColor="$color1"
             br="$7"
             pointerEvents={pointerEvents}
             p={0}
@@ -63,10 +63,10 @@ export const MediaPlayer = memo(
 
               <YStack als="center" y={-3} miw={165} jc="center">
                 <Paragraph fontWeight="700">Billie Jean</Paragraph>
-                <Paragraph color="$colorHover" size="$3">
+                <Paragraph color="$color11" size="$3">
                   Michael Jackson
                 </Paragraph>
-                <Paragraph color="$colorHover" size="$3">
+                <Paragraph color="$color11" o={0.65} size="$3">
                   Thriller
                 </Paragraph>
               </YStack>

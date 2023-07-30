@@ -1,4 +1,4 @@
-import { themes } from '@tamagui/themes';
+import { themes as themesIn } from '@tamagui/themes';
 export { animations } from './animations.reanimated';
 export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/web").GenericFont;
@@ -52,7 +52,7 @@ export declare const config: {
             stiffness: number;
         };
     }>;
-    themes: typeof themes;
+    themes: typeof themesIn;
     media: {
         xl: {
             maxWidth: number;

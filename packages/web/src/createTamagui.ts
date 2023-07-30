@@ -10,16 +10,19 @@ import {
   scanAllSheets,
 } from './helpers/insertStyleRule'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
-import { ensureThemeVariable, proxyThemeToParents } from './helpers/themes'
+import { ensureThemeVariable, proxyThemesToParents } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
 import {
   CreateTamaguiProps,
+  DedupedTheme,
+  DedupedThemes,
   GetCSS,
   InferTamaguiConfig,
   TamaguiInternalConfig,
   ThemeParsed,
+  ThemesLikeObject,
 } from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
@@ -44,7 +47,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  scanAllSheets()
+  const noThemes = Object.keys(configIn.themes).length === 0
+  const foundThemes = scanAllSheets(noThemes)
   listenForSheetChanges()
 
   const fontTokens = Object.fromEntries(
@@ -71,7 +75,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const specificTokens = {}
 
   const themeConfig = (() => {
-    const themes = { ...configIn.themes }
     const cssRuleSets: string[] = []
 
     if (process.env.TAMAGUI_DOES_SSR_CSS !== 'true') {
@@ -142,61 +145,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
     }
 
-    // dedupe themes to avoid duplicate CSS generation
-    type DedupedTheme = {
-      names: string[]
-      theme: ThemeParsed
-    }
-    const dedupedThemes: {
-      [key: string]: DedupedTheme
-    } = {}
-    const existing = new Map<string, DedupedTheme>()
-
-    // first, de-dupe and parse them
-    for (const themeName in themes) {
-      // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
-      const darkOrLightSpecificPrefix = themeName.startsWith('dark')
-        ? 'dark'
-        : themeName.startsWith('light')
-        ? 'light'
-        : ''
-
-      const rawTheme = themes[themeName] as ThemeParsed
-
-      // dont force referential equality but may need something more consistent than JSON.stringify
-      // separate between dark/light
-      const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
-
-      // if existing, avoid
-      if (existing.has(key)) {
-        const e = existing.get(key)!
-        themes[themeName] = e.theme
-        e.names.push(themeName)
-        continue
-      }
-
-      // ensure each theme object unique for dedupe
-      const theme = { ...rawTheme }
-      // parse into variables
-      for (const key in theme) {
-        // make sure properly names theme variables
-        ensureThemeVariable(theme, key)
-      }
-      themes[themeName] = theme
-
-      // set deduped
-      dedupedThemes[themeName] = {
-        names: [themeName],
-        theme,
-      }
-
-      existing.set(key, dedupedThemes[themeName])
-    }
-
-    // proxy upwards to get parent variables (themes are subset going down)
-    for (const themeName in themes) {
-      themes[themeName] = proxyThemeToParents(themeName, themes[themeName], themes)
-    }
+    const themesIn = { ...configIn.themes } as ThemesLikeObject
+    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
+    const themes = proxyThemesToParents(dedupedThemes)
 
     return {
       themes,
@@ -206,11 +157,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         let themeRuleSets: string[] = []
 
         if (isWeb) {
-          for (const themeName in dedupedThemes) {
+          for (const { names, theme } of dedupedThemes) {
             const nextRules = getThemeCSSRules({
               config: configIn,
-              themeName,
-              ...dedupedThemes[themeName],
+              themeName: names[0],
+              names,
+              theme,
             })
             themeRuleSets = [...themeRuleSets, ...nextRules]
           }
@@ -327,4 +279,52 @@ ${runtimeStyles}`
   }
 
   return config as any
+}
+
+// dedupes the themes if given them via JS config
+function getThemesDeduped(themes: ThemesLikeObject): DedupedThemes {
+  const dedupedThemes: DedupedThemes = []
+  const existing = new Map<string, DedupedTheme>()
+
+  // first, de-dupe and parse them
+  for (const themeName in themes) {
+    // forces us to separate the dark/light themes (otherwise we generate bad t_light prefix selectors)
+    const darkOrLightSpecificPrefix = themeName.startsWith('dark')
+      ? 'dark'
+      : themeName.startsWith('light')
+      ? 'light'
+      : ''
+
+    const rawTheme = themes[themeName]
+
+    // dont force referential equality but may need something more consistent than JSON.stringify
+    // separate between dark/light
+    const key = darkOrLightSpecificPrefix + JSON.stringify(rawTheme)
+
+    // if existing, avoid
+    if (existing.has(key)) {
+      const e = existing.get(key)!
+      e.names.push(themeName)
+      continue
+    }
+
+    // ensure each theme object unique for dedupe
+    // is ThemeParsed because we call ensureThemeVariable
+    const theme = { ...rawTheme } as any as ThemeParsed
+    // parse into variables
+    for (const key in theme) {
+      // make sure properly names theme variables
+      ensureThemeVariable(theme, key)
+    }
+
+    // set deduped
+    const deduped: DedupedTheme = {
+      names: [themeName],
+      theme,
+    }
+    dedupedThemes.push(deduped)
+    existing.set(key, deduped)
+  }
+
+  return dedupedThemes
 }
