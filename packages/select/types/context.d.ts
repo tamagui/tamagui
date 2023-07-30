@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ScopedProps, SelectContextValue } from './types';
+import { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types';
 export declare const createSelectContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
     (props: ContextValueType & {
         scope: import("@tamagui/create-context").Scope<ContextValueType>;
@@ -20,8 +20,29 @@ export declare const SelectProvider: {
     warn?: boolean | undefined;
     fallback?: Partial<SelectContextValue> | undefined;
 } | undefined) => SelectContextValue;
-export declare const ForwardSelectContext: (props: ScopedProps<{
+export declare const createSelectItemParentContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
+    (props: ContextValueType & {
+        scope: import("@tamagui/create-context").Scope<ContextValueType>;
+        children: import("react").ReactNode;
+    }): JSX.Element;
+    displayName: string;
+}, (consumerName: string, scope: import("@tamagui/create-context").Scope<ContextValueType | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<ContextValueType> | undefined;
+} | undefined) => ContextValueType], createSelectItemParentScope: import("@tamagui/create-context").CreateScope;
+export declare const SelectItemParentProvider: {
+    (props: SelectItemParentContextValue & {
+        scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue>;
+        children: import("react").ReactNode;
+    }): JSX.Element;
+    displayName: string;
+}, useSelectItemParentContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<SelectItemParentContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<SelectItemParentContextValue> | undefined;
+} | undefined) => SelectItemParentContextValue;
+export declare const ForwardSelectContext: ({ __scopeSelect, context, itemContext, children, }: ScopedProps<{
     children?: any;
     context: SelectContextValue;
+    itemContext: SelectItemParentContextValue;
 }>) => JSX.Element;
 //# sourceMappingURL=context.d.ts.map

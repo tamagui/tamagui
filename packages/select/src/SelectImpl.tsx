@@ -21,10 +21,16 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import * as React from 'react'
+import { useMemo } from 'react'
 import { flushSync } from 'react-dom'
 
 import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
-import { SelectProvider, useSelectContext } from './context'
+import {
+  SelectItemParentProvider,
+  SelectProvider,
+  useSelectContext,
+  useSelectItemParentContext,
+} from './context'
 import { SelectImplProps } from './types'
 
 // TODO use id for focusing from label
@@ -38,14 +44,14 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   } = props
 
   const selectContext = useSelectContext('SelectSheetImpl', __scopeSelect)
-  const {
-    setActiveIndex,
-    setOpen,
-    setSelectedIndex,
-    selectedIndex,
-    activeIndex,
-    forceUpdate,
-  } = selectContext
+  const selectItemParentContext = useSelectItemParentContext(
+    'SelectSheetImpl',
+    __scopeSelect
+  )
+  const { setActiveIndex, selectedIndex, activeIndex, forceUpdate } = selectContext
+
+  const { setOpen, setSelectedIndex } = selectItemParentContext
+
   const [scrollTop, setScrollTop] = React.useState(0)
   const touch = useIsTouchDevice()
 
@@ -294,7 +300,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // Scroll the `activeIndex` item into view only in "controlledScrolling"
   // (keyboard nav) mode.
-  useIsomorphicLayoutEffect(() => {
+  React.useEffect(() => {
     if (open && controlledScrolling) {
       if (activeIndex != null) {
         listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
@@ -305,7 +311,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, refs, controlledScrolling, activeIndex])
 
   // Scroll the `selectedIndex` into view upon opening the floating element.
-  useIsomorphicLayoutEffect(() => {
+  React.useEffect(() => {
     if (open && fallback) {
       if (selectedIndex != null) {
         listItemsRef.current[selectedIndex]?.scrollIntoView({ block: 'nearest' })
@@ -332,27 +338,29 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       {...(selectContext as Required<typeof selectContext>)}
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
-      setValueAtIndex={(index, value) => {
-        listContentRef.current[index] = value
-      }}
       fallback={fallback}
-      interactions={interactionsContext}
       floatingContext={context}
       activeIndex={activeIndex}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling={controlledScrolling}
-      dataRef={context.dataRef}
-      listRef={listItemsRef}
       blockSelection={blockSelection}
-      allowMouseUpRef={allowMouseUpRef}
       upArrowRef={upArrowRef}
       downArrowRef={downArrowRef}
-      selectTimeoutRef={selectTimeoutRef}
-      allowSelectRef={allowSelectRef}
       update={update}
     >
-      {children}
+      <SelectItemParentProvider
+        scope={__scopeSelect}
+        {...selectItemParentContext}
+        allowMouseUpRef={allowMouseUpRef}
+        allowSelectRef={allowSelectRef}
+        dataRef={context.dataRef}
+        interactions={interactionsContext}
+        listRef={listItemsRef}
+        selectTimeoutRef={selectTimeoutRef}
+      >
+        {children}
+      </SelectItemParentProvider>
       {/* {isFormControl ? (
             <BubbleSelect
               ref={setBubbleSelect}
@@ -369,5 +377,20 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   )
 }
 
-// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
-const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) || ''
+// only for debugging if a useMemo is working
+
+export const useMemoDebug: typeof useMemo = (fn, args) => {
+  let run = 1
+
+  const res = useMemo(() => {
+    run = 0
+    return fn()
+  }, args)
+
+  if (run === 1) {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log('saved a run')
+  }
+
+  return res
+}

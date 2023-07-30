@@ -8,7 +8,11 @@ import {
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import * as React from 'react'
 
-import { createSelectContext, useSelectContext } from './context'
+import {
+  createSelectContext,
+  useSelectContext,
+  useSelectItemParentContext,
+} from './context'
 import { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -43,24 +47,41 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       index,
       ...itemProps
     } = props
-    const context = useSelectContext(ITEM_NAME, __scopeSelect)
-    const isSelected = context.value === value
-    const textId = React.useId()
+    const context = useSelectItemParentContext(ITEM_NAME, __scopeSelect)
 
     const {
-      selectedIndex,
       setSelectedIndex,
       listRef,
-      open,
       setOpen,
       onChange,
-      activeIndex,
+      activeIndexSubscribe,
+      valueSubscribe,
       allowMouseUpRef,
       allowSelectRef,
       setValueAtIndex,
       selectTimeoutRef,
       dataRef,
+      interactions,
+      shouldRenderWebNative,
+      size,
     } = context
+
+    const [isSelected, setSelected] = React.useState(false)
+    const [isActive, setActive] = React.useState(false)
+
+    React.useEffect(() => {
+      return activeIndexSubscribe((i) => {
+        setActive(index === i)
+      })
+    }, [index])
+
+    React.useEffect(() => {
+      return valueSubscribe((val) => {
+        setSelected(val === value)
+      })
+    }, [value])
+
+    const textId = React.useId()
 
     const composedRefs = useComposedRefs(forwardedRef, (node) => {
       if (!isWeb) return
@@ -81,8 +102,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       setOpen(false)
     }
 
-    const selectItemProps = context.interactions
-      ? context.interactions.getItemProps({
+    const selectItemProps = interactions
+      ? interactions.getItemProps({
           ...(isWebTouchable
             ? {
                 onTouchStart() {
@@ -141,9 +162,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           onPress: handleSelect,
         }
 
-    const isActive = activeIndex === index
-
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (isActive) {
         listRef?.current[index]?.focus()
       }
@@ -156,7 +175,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         textId={textId || ''}
         isSelected={isSelected}
       >
-        {context.shouldRenderWebNative ? (
+        {shouldRenderWebNative ? (
           <option value={value}>{props.children}</option>
         ) : (
           <ListItem
@@ -175,7 +194,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             aria-disabled={disabled || undefined}
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
-            size={context.size}
+            size={size}
             {...itemProps}
             {...selectItemProps}
           />

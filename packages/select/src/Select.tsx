@@ -8,6 +8,7 @@ import {
   getVariableValue,
   isWeb,
   styled,
+  useEvent,
   useGet,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -23,7 +24,13 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
 import { SELECT_NAME } from './constants'
-import { SelectProvider, createSelectContext, useSelectContext } from './context'
+import {
+  SelectItemParentProvider,
+  SelectProvider,
+  createSelectContext,
+  useSelectContext,
+  useSelectItemParentContext,
+} from './context'
 import { SelectContent } from './SelectContent'
 import { SelectInlineImpl } from './SelectImpl'
 import { SelectItem, useSelectItemContext } from './SelectItem'
@@ -62,6 +69,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 ) {
   // We ignore `className` and `style` as this part shouldn't be styled.
   const context = useSelectContext(VALUE_NAME, __scopeSelect)
+  const itemParentContext = useSelectItemParentContext(VALUE_NAME, __scopeSelect)
   const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
   const children = childrenProp ?? context.selectedItem
   const isEmptyValue = context.value == null || context.value === ''
@@ -69,7 +77,7 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 
   return (
     <SelectValueFrame
-      size={context.size as any}
+      size={itemParentContext.size as any}
       ref={composedRefs}
       // we don't want events from the portalled `SelectValue` children to bubble
       // through the item they came from
@@ -135,6 +143,7 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
     const { __scopeSelect, className, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
+    const itemParentContext = useSelectItemParentContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiTextElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
@@ -143,14 +152,14 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
       () => (
         <SelectItemTextFrame
           className={className}
-          size={context.size as any}
+          size={itemParentContext.size as any}
           id={itemContext.textId}
           {...itemTextProps}
           ref={composedRefs}
         />
       ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [props, context.size, className, itemContext.textId]
+      [props, itemParentContext.size, className, itemContext.textId]
     )
 
     // until portals work in sub-trees on RN, use this just for native:
@@ -161,7 +170,7 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSelected, contents])
 
-    if (context.shouldRenderWebNative) {
+    if (itemParentContext.shouldRenderWebNative) {
       return <>{props.children}</>
     }
 
@@ -199,7 +208,7 @@ type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
 const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
   (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
     const { __scopeSelect, ...itemIndicatorProps } = props
-    const context = useSelectContext(ITEM_INDICATOR_NAME, __scopeSelect)
+    const context = useSelectItemParentContext(ITEM_INDICATOR_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
 
     if (context.shouldRenderWebNative) {
@@ -279,18 +288,19 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
     const groupId = React.useId()
 
     const context = useSelectContext(GROUP_NAME, __scopeSelect)
-    const size = context.size ?? '$true'
+    const itemParentContext = useSelectItemParentContext(GROUP_NAME, __scopeSelect)
+    const size = itemParentContext.size ?? '$true'
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
     const content = (function () {
-      if (context.shouldRenderWebNative) {
+      if (itemParentContext.shouldRenderWebNative) {
         return (
           // @ts-expect-error until we support typing based on tag
           <NativeSelectFrame asChild size={size} value={context.value}>
             <NativeSelectTextFrame
               // @ts-ignore it's ok since tag="select"
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                context.onChange(event.currentTarget.value)
+                itemParentContext.onChange(event.currentTarget.value)
               }}
               size={size as FontSizeTokens}
               ref={nativeSelectRef}
@@ -336,7 +346,7 @@ export type SelectLabelProps = ListItemProps
 const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
   (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
     const { __scopeSelect, ...labelProps } = props
-    const context = useSelectContext(LABEL_NAME, __scopeSelect)
+    const context = useSelectItemParentContext(LABEL_NAME, __scopeSelect)
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
 
     if (context.shouldRenderWebNative) {
@@ -446,6 +456,17 @@ export const Select = withStaticProperties(
     })
 
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
+
+    const [emitValue, valueSubscribe] = useEmitter<any>()
+    const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
+
+    React.useEffect(() => {
+      // to go after the item mount 🤷‍♂️
+      queueMicrotask(() => {
+        emitValue(value)
+      })
+    }, [value])
+
     const selectedIndexRef = React.useRef<number | null>(null)
     const activeIndexRef = React.useRef<number | null>(null)
     const listContentRef = React.useRef<string[]>([])
@@ -465,50 +486,64 @@ export const Select = withStaticProperties(
 
     return (
       <AdaptProvider>
-        <SelectProvider
-          dir={dir}
-          blockSelection={false}
-          size={sizeProp}
-          fallback={false}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-          forceUpdate={forceUpdate}
-          valueNode={valueNode}
-          onValueNodeChange={setValueNode}
-          scopeKey={scopeKey}
-          sheetBreakpoint={sheetBreakpoint}
+        <SelectItemParentProvider
           scope={__scopeSelect}
-          setValueAtIndex={(index, value) => {
-            listContentRef.current[index] = value
-          }}
-          activeIndex={activeIndex}
-          onChange={setValue}
-          selectedIndex={selectedIndex}
-          setActiveIndex={setActiveIndex}
+          size={sizeProp}
+          activeIndexSubscribe={activeIndexSubscribe}
+          valueSubscribe={valueSubscribe}
           setOpen={setOpen}
+          onChange={React.useCallback((val) => {
+            setValue(val)
+            emitValue(val)
+          }, [])}
           setSelectedIndex={setSelectedIndex}
-          value={value}
-          open={open}
-          native={native}
+          setValueAtIndex={React.useCallback((index, value) => {
+            listContentRef.current[index] = value
+          }, [])}
           shouldRenderWebNative={shouldRenderWebNative}
         >
-          <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
-            {shouldRenderWebNative ? (
-              children
-            ) : (
-              <SelectImpl
-                activeIndexRef={activeIndexRef}
-                listContentRef={listContentRef}
-                selectedIndexRef={selectedIndexRef}
-                {...props}
-                open={open}
-                value={value}
-              >
-                {children}
-              </SelectImpl>
-            )}
-          </SelectSheetController>
-        </SelectProvider>
+          <SelectProvider
+            scope={__scopeSelect}
+            dir={dir}
+            blockSelection={false}
+            fallback={false}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+            forceUpdate={forceUpdate}
+            valueNode={valueNode}
+            onValueNodeChange={setValueNode}
+            scopeKey={scopeKey}
+            sheetBreakpoint={sheetBreakpoint}
+            activeIndex={activeIndex}
+            selectedIndex={selectedIndex}
+            setActiveIndex={React.useCallback((index) => {
+              setActiveIndex(index)
+              if (typeof index === 'number') {
+                emitActiveIndex(index)
+              }
+            }, [])}
+            value={value}
+            open={open}
+            native={native}
+          >
+            <SelectSheetController onOpenChange={setOpen} __scopeSelect={__scopeSelect}>
+              {shouldRenderWebNative ? (
+                children
+              ) : (
+                <SelectImpl
+                  activeIndexRef={activeIndexRef}
+                  listContentRef={listContentRef}
+                  selectedIndexRef={selectedIndexRef}
+                  {...props}
+                  open={open}
+                  value={value}
+                >
+                  {children}
+                </SelectImpl>
+              )}
+            </SelectSheetController>
+          </SelectProvider>
+        </SelectItemParentProvider>
       </AdaptProvider>
     )
   },
@@ -529,6 +564,23 @@ export const Select = withStaticProperties(
     Sheet: Sheet.Controlled,
   }
 )
+
+function useEmitter<A>() {
+  const listeners = React.useRef<Set<Function>>()
+  if (!listeners.current) {
+    listeners.current = new Set()
+  }
+  const emit = (value: A) => {
+    listeners.current!.forEach((l) => l(value))
+  }
+  const subscribe = React.useCallback((listener: (val: A) => void) => {
+    listeners.current!.add(listener)
+    return () => {
+      listeners.current!.delete(listener)
+    }
+  }, [])
+  return [emit, subscribe] as const
+}
 
 // @ts-ignore
 Select.displayName = SELECT_NAME

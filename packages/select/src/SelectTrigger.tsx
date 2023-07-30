@@ -3,7 +3,7 @@ import { TamaguiElement } from '@tamagui/core'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import * as React from 'react'
 
-import { useSelectContext } from './context'
+import { useSelectContext, useSelectItemParentContext } from './context'
 import { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     const { __scopeSelect, disabled = false, unstyled = false, ...triggerProps } = props
 
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
+    const itemParentContext = useSelectItemParentContext(TRIGGER_NAME, __scopeSelect)
     const composedRefs = useComposedRefs(
       forwardedRef,
       context.floatingContext?.refs.setReference as any
@@ -25,7 +26,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
-    if (context.shouldRenderWebNative) {
+    if (itemParentContext.shouldRenderWebNative) {
       return null
     }
 
@@ -46,7 +47,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
           },
           borderWidth: 1,
         })}
-        size={context.size}
+        size={itemParentContext.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -55,17 +56,17 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
         ref={composedRefs}
-        {...(process.env.TAMAGUI_TARGET === 'web' && context.interactions
+        {...(process.env.TAMAGUI_TARGET === 'web' && itemParentContext.interactions
           ? {
-              ...context.interactions.getReferenceProps(),
+              ...itemParentContext.interactions.getReferenceProps(),
               onMouseDown() {
                 context.floatingContext?.update()
-                context.setOpen(!context.open)
+                itemParentContext.setOpen(!context.open)
               },
             }
           : {
               onPress() {
-                context.setOpen(!context.open)
+                itemParentContext.setOpen(!context.open)
               },
             })}
       />

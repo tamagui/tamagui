@@ -22,12 +22,12 @@ export function SelectDemo() {
         <SelectDemoItem />
       </XStack>
 
-      <XStack ai="center" space>
+      {/* <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
         <SelectDemoItem native />
-      </XStack>
+      </XStack> */}
     </YStack>
   )
 }
@@ -76,11 +76,11 @@ export function SelectDemoItem(props: SelectProps) {
           // to do animations:
           // animation="quick"
           // animateOnly={['transform', 'opacity']}
+          // enterStyle={{ o: 0, y: -10 }}
+          // exitStyle={{ o: 0, y: 10 }}
           minWidth={200}
-          enterStyle={{ o: 0, y: -10 }}
-          exitStyle={{ o: 0, y: 10 }}
         >
-          <Select.Group space="$0">
+          <Select.Group>
             <Select.Label>Fruits</Select.Label>
             {items.map((item, i) => {
               return (
@@ -93,7 +93,7 @@ export function SelectDemoItem(props: SelectProps) {
               )
             })}
           </Select.Group>
-          {/* special icon treatment for native */}
+          {/* Native gets an extra icon */}
           {props.native && (
             <YStack
               position="absolute"

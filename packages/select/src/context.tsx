@@ -1,20 +1,36 @@
 import { createContextScope } from '@tamagui/create-context'
 
 import { SELECT_NAME } from './constants'
-import { ScopedProps, SelectContextValue } from './types'
+import { ScopedProps, SelectContextValue, SelectItemParentContextValue } from './types'
 
-export const [createSelectContext, createSelectScope] =
-  createContextScope(SELECT_NAME)
+export const [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME)
 
 export const [SelectProvider, useSelectContext] =
   createSelectContext<SelectContextValue>(SELECT_NAME)
 
-export const ForwardSelectContext = (
-  props: ScopedProps<{ children?: any; context: SelectContextValue }>,
-) => {
+// these values shouldn't change as often for performance to avoid re-rendering every item
+
+export const [createSelectItemParentContext, createSelectItemParentScope] =
+  createContextScope(SELECT_NAME + 'ItemParent')
+
+export const [SelectItemParentProvider, useSelectItemParentContext] =
+  createSelectContext<SelectItemParentContextValue>(SELECT_NAME)
+
+export const ForwardSelectContext = ({
+  __scopeSelect,
+  context,
+  itemContext,
+  children,
+}: ScopedProps<{
+  children?: any
+  context: SelectContextValue
+  itemContext: SelectItemParentContextValue
+}>) => {
   return (
-    <SelectProvider isInSheet scope={props.__scopeSelect} {...props.context}>
-      {props.children}
+    <SelectProvider isInSheet scope={__scopeSelect} {...context}>
+      <SelectItemParentProvider scope={__scopeSelect} {...itemContext}>
+        {children}
+      </SelectItemParentProvider>
     </SelectProvider>
   )
 }

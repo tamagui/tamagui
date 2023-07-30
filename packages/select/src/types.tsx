@@ -33,52 +33,58 @@ export interface SelectProps {
   native?: NativeValue<'web'>
 }
 
-export interface SelectContextValue {
-  dir?: Direction
-  scopeKey: string
-  sheetBreakpoint: string | boolean | null
-  size?: SizeTokens
-  value: any
-  selectedItem: ReactNode
-  setSelectedItem: (item: ReactNode) => void
-  selectedIndex: number
+type DisposeFn = () => void
+export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn
+
+export interface SelectItemParentContextValue {
   setSelectedIndex: (index: number) => void
-  activeIndex: number | null
-  setActiveIndex: (index: number | null) => void
-  setValueAtIndex: (index: number, value: string) => void
-  open: boolean
+  listRef?: MutableRefObject<Array<HTMLElement | null>>
   setOpen: (open: boolean) => void
   onChange: (value: string) => void
-  valueNode: Element | null
-  onValueNodeChange(node: HTMLElement): void
-  forceUpdate: DispatchWithoutAction
-
-  // SheetImpl only:
-  isInSheet?: boolean
-
-  // InlineImpl only:
-  fallback: boolean
-  blockSelection: boolean
+  activeIndexSubscribe: EmitterSubscriber<number>
+  valueSubscribe: EmitterSubscriber<any>
   allowSelectRef?: MutableRefObject<boolean>
   allowMouseUpRef?: MutableRefObject<boolean>
-  upArrowRef?: MutableRefObject<HTMLDivElement | null>
-  downArrowRef?: MutableRefObject<HTMLDivElement | null>
+  setValueAtIndex: (index: number, value: string) => void
   selectTimeoutRef?: MutableRefObject<any>
-  setScrollTop?: Function
-  setInnerOffset?: Function
   dataRef?: MutableRefObject<ContextData>
-  controlledScrolling?: boolean
-  listRef?: MutableRefObject<Array<HTMLElement | null>>
-  canScrollUp?: boolean
-  canScrollDown?: boolean
-  floatingContext?: FloatingContext<ReferenceType>
   interactions?: {
     getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
     getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
     getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
   }
+  shouldRenderWebNative?: boolean
+  size?: SizeTokens
+}
+
+export interface SelectContextValue {
+  dir?: Direction
+  scopeKey: string
+  sheetBreakpoint: string | boolean | null
+  value: any
+  selectedItem: ReactNode
+  setSelectedItem: (item: ReactNode) => void
+  selectedIndex: number
+  activeIndex: number | null
+  setActiveIndex: (index: number | null) => void
+  open: boolean
+  valueNode: Element | null
+  onValueNodeChange(node: HTMLElement): void
+  forceUpdate: DispatchWithoutAction
+  // SheetImpl only:
+  isInSheet?: boolean
+  // InlineImpl only:
+  fallback: boolean
+  blockSelection: boolean
+  upArrowRef?: MutableRefObject<HTMLDivElement | null>
+  downArrowRef?: MutableRefObject<HTMLDivElement | null>
+  setScrollTop?: Function
+  setInnerOffset?: Function
+  controlledScrolling?: boolean
+  canScrollUp?: boolean
+  canScrollDown?: boolean
+  floatingContext?: FloatingContext<ReferenceType>
   native?: NativeValue
-  shouldRenderWebNative: boolean
   /** update floating-ui to recalculate */
   update?: () => void
 }

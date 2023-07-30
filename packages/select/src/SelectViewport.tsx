@@ -12,7 +12,11 @@ import { ThemeableStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { VIEWPORT_NAME } from './constants'
-import { ForwardSelectContext, useSelectContext } from './context'
+import {
+  ForwardSelectContext,
+  useSelectContext,
+  useSelectItemParentContext,
+} from './context'
 import { ScopedProps, SelectViewportProps } from './types'
 import { useSelectBreakpointActive } from './useSelectBreakpointActive'
 
@@ -53,6 +57,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
   function SelectViewport(props: ScopedProps<SelectViewportProps>, forwardedRef) {
     const { __scopeSelect, children, disableScroll, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
+    const itemContext = useSelectItemParentContext(VIEWPORT_NAME, __scopeSelect)
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
     useIsomorphicLayoutEffect(() => {
@@ -66,19 +71,21 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
       context.floatingContext?.refs.setFloating
     )
 
-    if (context.shouldRenderWebNative) {
+    if (itemContext.shouldRenderWebNative) {
       return <>{children}</>
     }
 
     if (breakpointActive || !isWeb) {
       return (
         <PortalItem hostName={`${context.scopeKey}SheetContents`}>
-          <ForwardSelectContext context={context}>{children}</ForwardSelectContext>
+          <ForwardSelectContext itemContext={itemContext} context={context}>
+            {children}
+          </ForwardSelectContext>
         </PortalItem>
       )
     }
 
-    if (!context.interactions) {
+    if (!itemContext.interactions) {
       if (process.env.NODE_ENV === 'development') {
         console.warn(`No interactions provided to Select, potentially missing Adapt`)
       }
@@ -89,7 +96,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
     const {
       style: { scrollbarWidth, listStyleType, overflow, ...restStyle },
       ...floatingProps
-    } = context.interactions.getFloatingProps()
+    } = itemContext.interactions.getFloatingProps()
 
     return (
       <>
@@ -105,7 +112,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
             {context.open ? (
               <SelectViewportFrame
                 key="select-viewport"
-                size={context.size}
+                size={itemContext.size}
                 // @ts-ignore
                 role="presentation"
                 {...viewportProps}
