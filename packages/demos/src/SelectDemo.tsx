@@ -22,12 +22,12 @@ export function SelectDemo() {
         <SelectDemoItem />
       </XStack>
 
-      {/* <XStack ai="center" space>
+      <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
         <SelectDemoItem native />
-      </XStack> */}
+      </XStack>
     </YStack>
   )
 }
