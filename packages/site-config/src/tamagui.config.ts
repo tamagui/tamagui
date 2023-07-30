@@ -3,7 +3,7 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/themes'
+import { themes as themesIn, tokens } from '@tamagui/themes'
 import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations.reanimated'
@@ -102,11 +102,17 @@ const monoFont = createGenericFont(
   }
 )
 
+const themes =
+  process.env.IS_STATIC || process.env.TAMAGUI_IS_SERVER
+    ? themesIn
+    : ({} as typeof themesIn)
+
 export const config = {
   defaultFont: 'body',
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
+  // dirty hack for now to avoid themes only on client bundle
   themes,
   media,
   shorthands,

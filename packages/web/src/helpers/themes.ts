@@ -1,6 +1,6 @@
 import { createVariable, isVariable } from '../createVariable'
 import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { CreateTamaguiProps } from '../types'
+import { CreateTamaguiProps, DedupedThemes, ThemeParsed } from '../types'
 
 // mutates, freeze after
 // shared by createTamagui so extracted here
@@ -25,40 +25,63 @@ export function ensureThemeVariable(theme: any, key: string) {
   }
 }
 
-export function proxyThemeToParents(
-  themeName: string,
-  theme: any,
-  themes: CreateTamaguiProps['themes']
-) {
-  // we could test if this is better as just a straight object spread or fancier proxy
-  const cur: string[] = []
-  // if theme is dark_blue_alt1_Button
-  // this will be the parent names in order: ['dark', 'dark_blue', 'dark_blue_alt1"]
-  const parents = themeName
-    .split('_')
-    .slice(0, -1)
-    .map((part) => {
-      cur.push(part)
-      return cur.join('_')
-    })
+// this seems expensive but its necessary to do two loops unless we want to refactor a variety of things again
+// not *too* much work but not a big cost doing the two loops
+export function proxyThemesToParents(
+  dedupedThemes: DedupedThemes
+): Record<string, ThemeParsed> {
+  const themesRaw: Record<string, ThemeParsed> = {}
 
-  const numParents = parents.length
+  // fill it in so we can look it up next
+  for (const { names, theme } of dedupedThemes) {
+    for (const name of names) {
+      themesRaw[name] = theme
+    }
+  }
 
-  // proxy fallback values to parent theme values
-  return new Proxy(theme, {
-    get(target, key) {
-      if (key === GetThemeUnwrapped) return theme
-      if (numParents && !Reflect.has(target, key)) {
-        // check parents
-        for (let i = numParents - 1; i >= 0; i--) {
-          const parent = themes[parents[i]]
-          if (!parent) continue
-          if (Reflect.has(parent, key)) {
-            return Reflect.get(parent, key)
+  const themes: Record<string, ThemeParsed> = {}
+  // now go back and re-fill it in
+  // we do have to call this once per non-duplicated theme!
+  // because they could have different parent chains
+  // despite being the same theme
+
+  for (const { names, theme } of dedupedThemes) {
+    for (const themeName of names) {
+      const cur: string[] = []
+      // if theme is dark_blue_alt1_Button
+      // this will be the parent names in order: ['dark', 'dark_blue', 'dark_blue_alt1"]
+      const parents = themeName
+        .split('_')
+        .slice(0, -1)
+        .map((part) => {
+          cur.push(part)
+          return cur.join('_')
+        })
+
+      const numParents = parents.length
+
+      // TODO maybe faster to just object spread? needs profiling on native + web
+      // proxy fallback values to parent theme values
+      const proxiedTheme = new Proxy(theme, {
+        get(target, key) {
+          if (key === GetThemeUnwrapped) return theme
+          if (numParents && !Reflect.has(target, key)) {
+            // check parents
+            for (let i = numParents - 1; i >= 0; i--) {
+              const parent = themesRaw[parents[i]]
+              if (!parent) continue
+              if (Reflect.has(parent, key)) {
+                return Reflect.get(parent, key)
+              }
+            }
           }
-        }
-      }
-      return Reflect.get(target, key)
-    },
-  })
+          return Reflect.get(target, key)
+        },
+      })
+
+      themes[themeName] = proxiedTheme
+    }
+  }
+
+  return themes
 }

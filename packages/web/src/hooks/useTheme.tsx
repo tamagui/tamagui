@@ -61,6 +61,13 @@ export const useThemeWithState = (
   const { themeManager, state } = changedThemeState
   const { theme, name, className } = state
   if (!theme) {
+    if (process.env.NODE_ENV === 'develpoment') {
+      throw new Error(
+        `No theme given props ${JSON.stringify(props)} in themes: ${Object.keys(
+          getConfig().themes
+        )}`
+      )
+    }
     throw `❌`
   }
 

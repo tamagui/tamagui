@@ -175,8 +175,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         webpackConfig.plugins.push(
           new webpack.DefinePlugin({
-            'process.env.IS_STATIC': '""',
+            'process.env.IS_STATIC': JSON.stringify(''),
             'process.env.TAMAGUI_TARGET': '"web"',
+            'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
             __DEV__: JSON.stringify(dev),
             ...(tamaguiOptions.outputCSS && {
               'process.env.TAMAGUI_DOES_SSR_CSS': '"true"',

@@ -979,4 +979,10 @@ type FillInFontValues<A extends GenericFont, K extends keyof A, DefaultKeys exte
 export type GetRef<C> = C extends TamaguiComponent<any, infer Ref> ? Ref : C extends new (props: any) => Component ? InstanceType<C> : C extends abstract new (...args: any) => any ? InstanceType<C> : C extends Component ? C : (C extends JSXElementConstructor<{
     ref?: infer R;
 }> ? R : C extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[C]['ref'] : unknown) extends Ref<infer T> | string | undefined ? T : unknown;
+export type ThemesLikeObject = Record<string, Record<string, string>>;
+export type DedupedTheme = {
+    names: string[];
+    theme: ThemeParsed;
+};
+export type DedupedThemes = DedupedTheme[];
 //# sourceMappingURL=types.d.ts.map
