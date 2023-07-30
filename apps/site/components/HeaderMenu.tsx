@@ -35,7 +35,17 @@ export const HeaderMenu = React.memo(function HeaderMenu() {
       </Popover.Trigger>
 
       <Adapt platform="touch" when="sm">
-        <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
+        <Popover.Sheet
+          zIndex={100000000}
+          modal
+          dismissOnSnapToBottom
+          animationConfig={{
+            type: 'spring',
+            damping: 20,
+            mass: 1.2,
+            stiffness: 250,
+          }}
+        >
           <Popover.Sheet.Frame>
             <Popover.Sheet.ScrollView>
               <Adapt.Contents />
