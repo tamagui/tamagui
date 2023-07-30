@@ -460,18 +460,17 @@ export const Select = withStaticProperties(
     const [emitValue, valueSubscribe] = useEmitter<any>()
     const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
 
-    React.useEffect(() => {
-      // to go after the item mount 🤷‍♂️
-      queueMicrotask(() => {
-        emitValue(value)
-      })
-    }, [value])
-
     const selectedIndexRef = React.useRef<number | null>(null)
     const activeIndexRef = React.useRef<number | null>(null)
     const listContentRef = React.useRef<string[]>([])
     const [selectedIndex, setSelectedIndex] = React.useState(0)
     const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
+
+    React.useEffect(() => {
+      // to go after the item mount 🤷‍♂️
+      if (!valueNode) return
+      emitValue(value)
+    }, [value, valueNode])
 
     useIsomorphicLayoutEffect(() => {
       selectedIndexRef.current = selectedIndex
