@@ -399,6 +399,8 @@ const BotInstallPanel = ({
             <Paragraph>
               Installation ID: {installation.github_installation_id} -{' '}
               <Link
+                style={{ textDecoration: 'underline' }}
+                target="_blank"
                 href={`https://github.com/settings/installations/${installation.github_installation_id}`}
               >
                 Installation Settings
