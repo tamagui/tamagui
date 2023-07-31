@@ -32,7 +32,6 @@ export declare class ThemeManager {
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;
     _allKeys: Set<string> | null;
     get allKeys(): Set<string>;
-    getValue(key: string, state?: ThemeManagerState): string | number | import("..").Variable<any> | undefined;
     notify(forced?: boolean): void;
     onChangeTheme(cb: ThemeListener, debugId?: number): () => void;
 }

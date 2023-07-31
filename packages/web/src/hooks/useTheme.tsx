@@ -116,8 +116,10 @@ export function getThemeProxied(
       if (typeof key === 'string' && keys) {
         // auto convert variables to plain
         const keyString = key[0] === '$' ? key.slice(1) : key
-        const val = themeManager?.getValue(keyString)
+        const val = theme[keyString]
         if (val && typeof val === 'object') {
+          // TODO this could definitely be done better by at the very minimum
+          // proxying it up front and just having a listener here
           return new Proxy(val as any, {
             // when they touch the actual value we only track it
             // if its a variable (web), its ignored!

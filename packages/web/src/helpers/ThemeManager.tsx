@@ -154,24 +154,6 @@ export class ThemeManager {
     return this._allKeys
   }
 
-  // gets value going up to parents
-  getValue(key: string, state: ThemeManagerState = this.state) {
-    if (!key) return
-    let theme = state.theme
-    let manager = this as ThemeManager | null
-    while (theme && manager) {
-      if (key in theme) {
-        return theme[key]
-      }
-      manager = manager.parentManager
-      theme = manager?.state.theme
-    }
-    const tokens = getTokens()
-    if (key in tokens.color) {
-      return tokens.color[key]
-    }
-  }
-
   notify(forced = false) {
     this.themeListeners.forEach((cb) => cb(this.state.name, this, forced))
   }
