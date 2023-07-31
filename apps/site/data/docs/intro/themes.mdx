@@ -391,3 +391,35 @@ Sometimes you want to defer loading themes, or change existing theme values at r
 - Dynamic themes only work on the client side and will be ignored on the server side.
 - The difference between `updateTheme` and `replaceTheme` is that `replaceTheme` will replace the entire theme, while `updateTheme` will only update the values that are passed in.
 - On the web if you are going to change between dark and light themes more than 3 times, you'll want to adjust the `maxDarkLightNesting` option, see [Configuration](/docs/core/configuration).
+
+### Advanced Optimization
+
+You can configure Tamagui to not send any themes JS to the client side, so long as your are serving the resulting css file from the `getCSS` call on initial load of your app (SSR).
+
+To enable this you need to have your bundler tree shake away the themes object you'd typically pass to `createTamagui` for the client bundle. Note this is a somewhat advanced optimization and not necessary to do right away.
+
+Here's how we do it for example on Next.js:
+
+```tsx
+// we check for both
+//   - IS_STATIC (set by the compiler at build-time when it loads your bundle for optimization)
+//   - TAMAGUI_IS_SERVER (set to true by the @tamagui/next-plugin only when isServer = true)
+//
+// if true we keep the JS themes so the server side can use them for rendering
+// but if this is the client side bundle we just pass `{}` cast as the same type as our themes object
+//
+// tamagui automatically detects if you pass an empty object on client side and will then try and hydrate
+// your themes from CSS. this typically only takes less than a handful of ms,
+// and can save a lot of JS bundle size especially if you have many themes
+// if you only have simple themes, don't worry so much about this optimization
+
+const themes =
+  process.env.IS_STATIC || process.env.TAMAGUI_IS_SERVER
+    ? themesIn
+    : ({} as typeof themesIn)
+
+export const config = createTamagui({
+  themes,
+  // ...
+})
+```
