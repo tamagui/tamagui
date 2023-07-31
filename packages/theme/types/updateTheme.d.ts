@@ -24,7 +24,7 @@ export declare function updateTheme({ name, theme, }: {
     };
     cssRules?: undefined;
 } | {
-    theme: any;
+    theme: import("@tamagui/web").ThemeParsed;
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=updateTheme.d.ts.map

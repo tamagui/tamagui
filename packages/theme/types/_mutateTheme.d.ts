@@ -1,4 +1,4 @@
-import type { ThemeDefinition } from '@tamagui/web';
+import type { ThemeDefinition, ThemeParsed } from '@tamagui/web';
 export declare function _mutateTheme(props: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;
@@ -26,7 +26,7 @@ export declare function _mutateTheme(props: {
     };
     cssRules?: undefined;
 } | {
-    theme: any;
+    theme: ThemeParsed;
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=_mutateTheme.d.ts.map

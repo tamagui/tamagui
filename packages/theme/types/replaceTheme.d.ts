@@ -24,7 +24,7 @@ export declare function replaceTheme({ name, theme, }: {
     };
     cssRules?: undefined;
 } | {
-    theme: any;
+    theme: import("@tamagui/web").ThemeParsed;
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=replaceTheme.d.ts.map

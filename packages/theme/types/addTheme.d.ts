@@ -1,4 +1,4 @@
-import type { ThemeDefinition } from '@tamagui/web';
+import type { ThemeDefinition, ThemeParsed } from '@tamagui/web';
 export declare function addTheme(props: {
     name: string;
     theme: Partial<Record<keyof ThemeDefinition, any>>;
@@ -25,7 +25,7 @@ export declare function addTheme(props: {
     };
     cssRules?: undefined;
 } | {
-    theme: any;
+    theme: ThemeParsed;
     cssRules: string[];
 } | undefined;
 //# sourceMappingURL=addTheme.d.ts.map
