@@ -47,8 +47,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
+  // faster $lookups
+  const tokensParsed: any = Object.fromEntries(
+    Object.entries(configIn.tokens).map(([k, v]) => {
+      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
+      return [k, val]
+    })
+  )
+
   const noThemes = Object.keys(configIn.themes).length === 0
-  const foundThemes = scanAllSheets(noThemes)
+  const foundThemes = scanAllSheets(noThemes, tokensParsed)
   listenForSheetChanges()
 
   const fontTokens = Object.fromEntries(
@@ -73,14 +81,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   const specificTokens = {}
-
-  // faster $lookups
-  const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => {
-      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      return [k, val]
-    })
-  )
 
   const themeConfig = (() => {
     const cssRuleSets: string[] = []
