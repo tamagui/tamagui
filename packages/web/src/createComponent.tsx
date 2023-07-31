@@ -427,7 +427,8 @@ export function createComponent<
 
     const resolveVariablesAs =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
-      isAnimated || (isHOC && state.unmounted == false && hasAnimationProp)
+      (isAnimated && !supportsCSSVars) ||
+      (isHOC && state.unmounted == false && hasAnimationProp)
         ? 'value'
         : 'auto'
 

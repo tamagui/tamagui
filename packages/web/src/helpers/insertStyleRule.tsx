@@ -2,7 +2,14 @@ import { isClient } from '@tamagui/constants'
 
 import { getConfig } from '../config'
 import { Variable, createVariable } from '../createVariable'
-import type { DedupedTheme, DedupedThemes, RulesToInsert, ThemeParsed } from '../types'
+import type {
+  DedupedTheme,
+  DedupedThemes,
+  RulesToInsert,
+  ThemeParsed,
+  Tokens,
+  TokensParsed,
+} from '../types'
 import { ensureThemeVariable } from './themes'
 
 const allSelectors: Record<string, string> = {}
@@ -66,11 +73,12 @@ export function listenForSheetChanges() {
 
 let lastScannedSheets: Set<CSSStyleSheet> | null = null
 
-export function scanAllSheets(collectThemes = false): DedupedThemes | undefined {
+export function scanAllSheets(
+  collectThemes = false,
+  tokens?: TokensParsed
+): DedupedThemes | undefined {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
-
-  const x = performance.now()
 
   let themes: DedupedThemes | undefined
 
@@ -80,7 +88,7 @@ export function scanAllSheets(collectThemes = false): DedupedThemes | undefined 
   if (document.styleSheets) {
     for (const sheet of current) {
       if (sheet) {
-        const out = updateSheetStyles(sheet, false, collectThemes)
+        const out = updateSheetStyles(sheet, false, collectThemes, tokens)
         if (out) {
           themes = out
         }
@@ -112,7 +120,8 @@ const bailAfter = bailAfterEnv ? +bailAfterEnv : 250
 function updateSheetStyles(
   sheet: CSSStyleSheet,
   remove = false,
-  collectThemes = false
+  collectThemes = false,
+  tokens?: TokensParsed
 ): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
@@ -164,7 +173,7 @@ function updateSheetStyles(
     const [identifier, cssRule, isTheme] = response
 
     if (isTheme) {
-      const deduped = addThemesFromCSS(cssRule)
+      const deduped = addThemesFromCSS(cssRule, tokens)
       if (deduped) {
         dedupedThemes ||= []
         dedupedThemes.push(deduped)
@@ -195,16 +204,21 @@ function updateSheetStyles(
   return dedupedThemes
 }
 
+let colorVarToVal: Record<string, string>
 let rootComputedStyle: CSSStyleDeclaration | null = null
 
-function addThemesFromCSS(cssStyleRule: CSSStyleRule) {
-  if (!rootComputedStyle) {
-    rootComputedStyle = getComputedStyle(document.body)
-  }
-
+function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
   const selectors = cssStyleRule.selectorText.split(',')
 
   if (!selectors.length) return
+
+  if (tokens && !colorVarToVal) {
+    colorVarToVal = {}
+    for (const key in tokens.color) {
+      const token = tokens.color[key]
+      colorVarToVal[token.name] = token.val
+    }
+  }
 
   const rulesWithBraces = (cssStyleRule.cssText || '')
     .slice(cssStyleRule.selectorText.length + 2, -1)
@@ -218,15 +232,22 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule) {
     const sepI = rule.indexOf(':')
     if (sepI === -1) continue
     const key = rule.slice(rule.indexOf('--') + 2, sepI)
-    const val = rule.slice(sepI + 2, -1)
-
-    // console.log('got', { key, val })
-
-    const value =
-      val[3] === '(' // is var(
-        ? rootComputedStyle.getPropertyValue(val.slice(4, -1))
-        : val
-
+    const val = rule.slice(sepI + 2)
+    let value: string
+    if (val[3] === '(') {
+      // var()
+      const varName = val.slice(6, -1)
+      const tokenVal = colorVarToVal[varName]
+      // either hydrate it from tokens directly or from computed style on body if no token
+      if (tokenVal) {
+        value = tokenVal
+      } else {
+        rootComputedStyle ||= getComputedStyle(document.body)
+        value = rootComputedStyle.getPropertyValue('--' + varName)
+      }
+    } else {
+      value = val
+    }
     values[key] = createVariable(
       {
         key,
