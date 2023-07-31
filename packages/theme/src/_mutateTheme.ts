@@ -50,7 +50,7 @@ export function _mutateTheme(props: {
     ensureThemeVariable(theme, key)
   }
 
-  const themeProxied = proxyThemeToParents(themeName, theme, config.themes)
+  const themeProxied = proxyThemeToParents(themeName, theme)
   config.themes[themeName] = themeProxied
 
   let cssRules: string[] = []
