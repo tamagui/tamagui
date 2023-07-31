@@ -76,6 +76,7 @@ export interface PopoverContentImplProps extends PopperContentProps, Omit<Dismis
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     disableRemoveScroll?: boolean;
+    freezeContentsWhenHidden?: boolean;
 }
 export type PopoverCloseProps = YStackProps;
 export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {

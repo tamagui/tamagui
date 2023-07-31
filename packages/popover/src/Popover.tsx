@@ -314,6 +314,8 @@ export interface PopoverContentImplProps
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
   disableRemoveScroll?: boolean
+
+  freezeContentsWhenHidden?: boolean
 }
 
 const PopoverContentImpl = React.forwardRef<
@@ -331,6 +333,7 @@ const PopoverContentImpl = React.forwardRef<
     onInteractOutside,
     children,
     disableRemoveScroll,
+    freezeContentsWhenHidden,
     ...contentProps
   } = props
 
@@ -395,7 +398,7 @@ const PopoverContentImpl = React.forwardRef<
   //     onDismiss={handleDismiss}
   //   >
 
-  const freeze = isFullyHidden && (hasShownOnce || !keepChildrenMounted)
+  const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 
   return (
     <Animate
