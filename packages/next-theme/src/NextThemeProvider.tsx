@@ -143,7 +143,7 @@ export const NextThemeProvider = memo(
       const wePrefer = colorScheme || 'light'
 
       // avoid running this because it causes full page reflow
-      if (userPrefers !== wePrefer || wePrefer === 'dark') {
+      if (userPrefers !== wePrefer) {
         document.documentElement.style.setProperty('color-scheme', colorScheme)
       }
     }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
