@@ -3,6 +3,7 @@ import { useId, useState } from 'react'
 import { Button, Circle, Paragraph, Text, Theme, YStack, useDidFinishSSR } from 'tamagui'
 import { H1, H2 } from 'tamagui'
 
+import { InstallInput } from '../components/InstallInput'
 import { MediaPlayer } from '../components/MediaPlayer'
 
 // export default () => <Square size={100} animation="quick" bc="$background" />
@@ -22,10 +23,7 @@ export default () => {
       }}
     >
       <YStack>
-        <MediaPlayer />
-        <Theme name="blue">
-          <MediaPlayer />
-        </Theme>
+        <InstallInput />
       </YStack>
     </div>
   )
