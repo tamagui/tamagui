@@ -242,6 +242,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           key="popper-content-frame"
           data-placement={placement}
           data-strategy={strategy}
+          contain="layout"
           size={size}
           {...props}
         />
