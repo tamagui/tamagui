@@ -102,6 +102,7 @@ const monoFont = createGenericFont(
   }
 )
 
+// dirty hack for now to avoid themes only on client bundle
 const themes =
   process.env.IS_STATIC || process.env.TAMAGUI_IS_SERVER
     ? themesIn
@@ -112,7 +113,6 @@ export const config = {
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
   animations,
-  // dirty hack for now to avoid themes only on client bundle
   themes,
   media,
   shorthands,

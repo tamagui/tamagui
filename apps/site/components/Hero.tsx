@@ -93,7 +93,7 @@ const HeroContents = memo(() => {
         }}
       >
         <XStack pos="absolute" als="center" y={-70}>
-          <Link href="/takeout">
+          <Link prefetch={false} href="/takeout">
             <ThemeTintAlt>
               <Button
                 bw={2}

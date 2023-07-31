@@ -243,7 +243,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule) {
   }
 
   // loop selectors and build deduped
-  for (const selector of selectors.slice(0, 3)) {
+  for (const selector of selectors) {
     let scheme = selector.includes('t_dark')
       ? 'dark'
       : selector.includes('t_light')

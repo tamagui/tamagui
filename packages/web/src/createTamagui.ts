@@ -74,6 +74,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const specificTokens = {}
 
+  // faster $lookups
+  const tokensParsed: any = Object.fromEntries(
+    Object.entries(configIn.tokens).map(([k, v]) => {
+      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
+      return [k, val]
+    })
+  )
+
   const themeConfig = (() => {
     const cssRuleSets: string[] = []
 
@@ -147,7 +155,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     const themesIn = { ...configIn.themes } as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
-    const themes = proxyThemesToParents(dedupedThemes)
+    const themes = proxyThemesToParents(dedupedThemes, tokensParsed)
 
     return {
       themes,
@@ -172,14 +180,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       },
     }
   })()
-
-  // faster $lookups
-  const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => {
-      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      return [k, val]
-    })
-  )
 
   const shorthands = configIn.shorthands || {}
 

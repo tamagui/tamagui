@@ -1,6 +1,6 @@
 import { createVariable, isVariable } from '../createVariable'
 import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
-import { CreateTamaguiProps, DedupedThemes, ThemeParsed } from '../types'
+import { CreateTamaguiProps, DedupedThemes, ThemeParsed, Tokens } from '../types'
 
 // mutates, freeze after
 // shared by createTamagui so extracted here
@@ -28,7 +28,8 @@ export function ensureThemeVariable(theme: any, key: string) {
 // this seems expensive but its necessary to do two loops unless we want to refactor a variety of things again
 // not *too* much work but not a big cost doing the two loops
 export function proxyThemesToParents(
-  dedupedThemes: DedupedThemes
+  dedupedThemes: DedupedThemes,
+  tokens: Tokens
 ): Record<string, ThemeParsed> {
   const themesRaw: Record<string, ThemeParsed> = {}
 
@@ -65,17 +66,16 @@ export function proxyThemesToParents(
       const proxiedTheme = new Proxy(theme, {
         get(target, key) {
           if (key === GetThemeUnwrapped) return theme
-          if (numParents && !Reflect.has(target, key)) {
-            // check parents
-            for (let i = numParents - 1; i >= 0; i--) {
-              const parent = themesRaw[parents[i]]
-              if (!parent) continue
-              if (Reflect.has(parent, key)) {
-                return Reflect.get(parent, key)
-              }
+          if (Reflect.has(target, key)) return Reflect.get(target, key)
+          // check parents
+          for (let i = numParents - 1; i >= 0; i--) {
+            const parent = themesRaw[parents[i]]
+            if (!parent) continue
+            if (Reflect.has(parent, key)) {
+              return Reflect.get(parent, key)
             }
           }
-          return Reflect.get(target, key)
+          return Reflect.get(tokens, key)
         },
       })
 
