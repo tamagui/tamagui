@@ -47,7 +47,6 @@ export function Demo({
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        debug="verbose"
         animation={[
           'quick',
           {
