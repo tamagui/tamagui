@@ -93,6 +93,7 @@ module.exports = function (name, { defaultConfig }) {
     productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     swcMinify: true,
     reactStrictMode: true,
+    // reactStrictMode: false,
     optimizeFonts: true,
     modularizeImports: {
       '@tamagui/lucide-icons': {

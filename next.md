@@ -1,3 +1,5 @@
+- deprecate rnw-lite when we can after making sure all tests / animation drivers pass on rnw
+
 - imperative sheet
 
 - styled(alertdialog.title) hits depth limit quick

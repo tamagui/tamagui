@@ -317,20 +317,18 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    const isMainStyle = keyInit === 'style'
-    if (isMainStyle || (keyInit[0] === '_' && keyInit.startsWith('_style'))) {
+    if (keyInit === 'style' || (keyInit[0] === '_' && keyInit.startsWith('_style'))) {
       if (!valInit) continue
       const styles = [].concat(valInit).flat()
-      const styleLen = styles.length
-      for (let j = styleLen; j >= 0; j--) {
-        const cur = styles[j]
-        if (!cur) continue
-        for (const key in cur) {
-          if (!isMainStyle && key in usedKeys) {
-            continue
+      for (const cur of styles) {
+        const isRNW = cur['$$css']
+        if (isRNW) {
+          Object.assign(classNames, cur)
+        } else {
+          if (!cur) continue
+          for (const key in cur) {
+            style[key] = cur[key]
           }
-          usedKeys[key] = 1
-          style[key] = cur[key]
         }
       }
       continue
@@ -986,6 +984,7 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
       const retainedStyles = {}
+
       if (style['$$css']) {
         // avoid re-processing for rnw
       } else {

@@ -1,26 +1,10 @@
-import '../lib/wdyr'
-
-// debug
 import { memo } from 'react'
 import { Platform } from 'react-native'
 import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
 
-export default memo(() => {
-  console.warn('rendereingasd')
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        flex: 1,
-      }}
-    >
-      <Input accessibilityLabel="ok" placeholder="search" />
-    </div>
-  )
-})
+export function StyledRNW() {
+  return <Input id="styled-rnw-input" accessibilityLabel="ok" placeholder="search" />
+}
 
 type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
@@ -37,8 +21,8 @@ const TextInput = styled(
       unset: {
         false: {
           borderWidth: 2,
-          py: '$2',
-          px: '$3',
+          py: 12,
+          px: 14,
           borderRadius: 6,
           bg: '$color3',
           focusStyle: {
@@ -62,14 +46,10 @@ export const Input = TamaguiInput.styleable<
 >(function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
-  console.warn('why render me?')
-
   return (
     <TextInput
       unstyled
-      debug="verbose"
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
-      testID={props.testID ?? props.id}
       {...props}
       focusStyle={{ margin: 0, ...props.focusStyle }}
       id={Platform.select({
