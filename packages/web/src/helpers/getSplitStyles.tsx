@@ -704,7 +704,8 @@ export const getSplitStyles: StyleSplitter = (
               classNames,
               fullKey,
               psuedoStyle.identifier,
-              isMediaOrPseudo
+              isMediaOrPseudo,
+              true
             )
           }
         } else {
@@ -856,7 +857,7 @@ export const getSplitStyles: StyleSplitter = (
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (fullKey in usedKeys) continue
             addStyleToInsertRules(rulesToInsert, out as any)
-            mergeClassName(transforms, classNames, fullKey, out.identifier, true)
+            mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
           const isThemeMedia = mediaKeyShort.startsWith('theme-')
@@ -994,12 +995,20 @@ export const getSplitStyles: StyleSplitter = (
           const key = atomicStyle.property
           if (
             styleProps.isAnimated &&
+            styleProps.noClassNames &&
             (!props.animateOnly || props.animateOnly.includes(key))
           ) {
             retainedStyles[key] = style[key]
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
-            mergeClassName(transforms, classNames, key, atomicStyle.identifier)
+            mergeClassName(
+              transforms,
+              classNames,
+              key,
+              atomicStyle.identifier,
+              false,
+              true
+            )
           }
         }
         if (!IS_STATIC && !styleProps.keepStyleSSR) {
@@ -1131,12 +1140,13 @@ function mergeClassName(
   classNames: Record<string, string>,
   key: string,
   val: string,
-  isMediaOrPseudo = false
+  isMediaOrPseudo = false,
+  isInsertingNow = false
 ) {
   if (process.env.TAMAGUI_TARGET === 'web') {
     // empty classnames passed by compiler sometimes
     if (!val) return
-    if (val[0] === '_' && val.startsWith('_transform-')) {
+    if (!isInsertingNow && val[0] === '_' && val.startsWith('_transform-')) {
       const ns: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
       let transform = insertedTransforms[val]
       if (isClient && !transform) {

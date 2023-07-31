@@ -341,15 +341,11 @@ export function createComponent<
       }
     }
 
-    const isReactNativeAnimated = animationsConfig?.isReactNative
-    const avoidClassesWhileAnimating = isReactNativeAnimated
-    const isAnimatedReactNative = isAnimated && isReactNativeAnimated
+    const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
-
-    const shouldAvoidClasses =
-      !isWeb ||
-      !!(isAnimated && avoidClassesWhileAnimating) ||
-      !staticConfig.acceptsClassName
+    const shouldAvoidClasses = Boolean(
+      !isWeb || isAnimated || !staticConfig.acceptsClassName
+    )
 
     const shouldForcePseudo = !!propsIn.forceStyle
     const noClassNames = shouldAvoidClasses || shouldForcePseudo
@@ -477,7 +473,7 @@ export function createComponent<
     })
 
     // animation setup
-    const isAnimatedReactNativeWeb = isAnimated && avoidClassesWhileAnimating
+    const isAnimatedReactNativeWeb = isAnimated && isReactNative
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
@@ -904,7 +900,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ state, styleProps, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, avoidClasses: avoidClassesWhileAnimating, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState, classNames })
+          console.log({ state, styleProps, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState, classNames })
         }
         console.groupEnd()
         console.groupEnd()

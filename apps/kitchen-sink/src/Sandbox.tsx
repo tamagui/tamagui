@@ -11,68 +11,11 @@ import {
   useThemeName,
 } from 'tamagui'
 
-type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
-
-const TextInput = styled(
-  TamaguiInput,
-  {
-    unstyled: true,
-    fontSize: 16,
-    fontFamily: '$silkscreen',
-    debug: 'verbose',
-    color: '$color5',
-    minWidth: 0,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    variants: {
-      unset: {
-        false: {
-          borderWidth: 2,
-          py: '$2',
-          px: '$3',
-          borderRadius: 6,
-          bg: '$color3',
-          focusStyle: {
-            bg: '$color4',
-            margin: 0,
-          },
-        },
-      },
-    } as const,
-    defaultVariants: {
-      unset: false,
-    },
-  },
-  {
-    inlineProps: new Set(['id', 'testID']),
-  }
-)
-
-export const Input = TamaguiInput.styleable<
-  RequireField<React.ComponentProps<typeof TextInput>, 'accessibilityLabel'>
->(function MyInput({ ...props }, ref) {
-  const parentTheme = useThemeName()
-  return (
-    <TextInput
-      keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
-      testID={props.testID ?? props.id}
-      {...props}
-      focusStyle={{ margin: 0, ...props.focusStyle }}
-      id={Platform.select({
-        // on native, this leads to duplicates?
-        web: props.id,
-      })}
-      ref={ref}
-    />
-  )
-})
-
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
 
   return (
     <>
-      <Input accessibilityLabel="ok" placeholder="search" />
       {/* <BenchmarkSelect /> */}
 
       {/* TODO test this one at diff sizes make sure:
