@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-did-finish-ssr",
-  "version": "1.47.8",
+  "version": "1.47.9",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -26,10 +26,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/constants": "1.47.8"
+    "@tamagui/constants": "1.47.9"
   },
   "devDependencies": {
-    "@tamagui/build": "1.47.8",
+    "@tamagui/build": "1.47.9",
     "react": "^18.2.0"
   },
   "peerDependencies": {
