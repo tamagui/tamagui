@@ -11,7 +11,7 @@ export const [SelectProvider, useSelectContext] =
 // these values shouldn't change as often for performance to avoid re-rendering every item
 
 export const [createSelectItemParentContext, createSelectItemParentScope] =
-  createContextScope(SELECT_NAME + 'ItemParent')
+  createContextScope(SELECT_NAME)
 
 export const [SelectItemParentProvider, useSelectItemParentContext] =
   createSelectContext<SelectItemParentContextValue>(SELECT_NAME)
