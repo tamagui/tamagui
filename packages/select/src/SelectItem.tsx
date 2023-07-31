@@ -8,11 +8,7 @@ import {
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 import * as React from 'react'
 
-import {
-  createSelectContext,
-  useSelectContext,
-  useSelectItemParentContext,
-} from './context'
+import { createSelectContext, useSelectItemParentContext } from './context'
 import { ScopedProps } from './types'
 
 /* -------------------------------------------------------------------------------------------------
@@ -137,8 +133,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
 
           onClick() {
             if (allowSelectRef!.current) {
-              setSelectedIndex(index)
-              setOpen(false)
+              handleSelect()
             }
           },
 

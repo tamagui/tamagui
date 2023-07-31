@@ -147,7 +147,7 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
     const ref = React.useRef<TamaguiTextElement | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
-    const isSelected = Boolean(itemContext.isSelected && context.valueNode)
+
     const contents = React.useMemo(
       () => (
         <SelectItemTextFrame
@@ -162,13 +162,22 @@ const SelectItemText = React.forwardRef<TamaguiTextElement, SelectItemTextProps>
       [props, itemParentContext.size, className, itemContext.textId]
     )
 
-    // until portals work in sub-trees on RN, use this just for native:
-    useIsomorphicLayoutEffect(() => {
-      if (isSelected) {
+    React.useEffect(() => {
+      if (
+        itemParentContext.initialValue === itemContext.value &&
+        !context.selectedIndex
+      ) {
         context.setSelectedItem(contents)
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSelected, contents])
+    }, [])
+
+    React.useEffect(() => {
+      return itemParentContext.valueSubscribe((val) => {
+        if (val === itemContext.value) {
+          context.setSelectedItem(contents)
+        }
+      })
+    }, [itemContext.value])
 
     if (itemParentContext.shouldRenderWebNative) {
       return <>{props.children}</>

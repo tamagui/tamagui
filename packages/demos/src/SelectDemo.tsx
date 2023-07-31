@@ -1,5 +1,5 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Adapt,
   Label,
@@ -22,12 +22,12 @@ export function SelectDemo() {
         <SelectDemoItem />
       </XStack>
 
-      <XStack ai="center" space>
+      {/* <XStack ai="center" space>
         <Label f={1} fb={0}>
           Native
         </Label>
         <SelectDemoItem native />
-      </XStack>
+      </XStack> */}
     </YStack>
   )
 }
@@ -82,16 +82,25 @@ export function SelectDemoItem(props: SelectProps) {
         >
           <Select.Group>
             <Select.Label>Fruits</Select.Label>
-            {items.map((item, i) => {
-              return (
-                <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
-                  <Select.ItemText>{item.name}</Select.ItemText>
-                  <Select.ItemIndicator marginLeft="auto">
-                    <Check size={16} />
-                  </Select.ItemIndicator>
-                </Select.Item>
-              )
-            })}
+            {/* for longer lists memoizing these is useful */}
+            {useMemo(
+              () =>
+                items.map((item, i) => {
+                  return (
+                    <Select.Item
+                      index={i}
+                      key={item.name}
+                      value={item.name.toLowerCase()}
+                    >
+                      <Select.ItemText>{item.name}</Select.ItemText>
+                      <Select.ItemIndicator marginLeft="auto">
+                        <Check size={16} />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  )
+                }),
+              [items]
+            )}
           </Select.Group>
           {/* Native gets an extra icon */}
           {props.native && (
