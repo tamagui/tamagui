@@ -1,16 +1,17 @@
 // debug-verbose
 // import './wdyr'
 
-import { Circle, H1, Paragraph, SizableText, Text, styled } from 'tamagui'
+import { Circle, H1, Paragraph, SizableText, Text, styled, useTheme } from 'tamagui'
 
 import { Benchmark } from './usecases/Benchmark'
 import { BenchmarkSelect } from './usecases/BenchmarkSelect'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
+
   return (
     <>
-      <BenchmarkSelect />
+      {/* <BenchmarkSelect /> */}
 
       {/* TODO test this one at diff sizes make sure:
     

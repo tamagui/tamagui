@@ -18,7 +18,6 @@ export const InstallInput = memo(() => {
       ai="center"
       als="center"
       elevation="$3"
-      debug="verbose"
       bc="$background"
       br="$10"
     >

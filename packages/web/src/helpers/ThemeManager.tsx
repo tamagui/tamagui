@@ -307,7 +307,7 @@ function getState(
     if (found) {
       result = {
         name: found,
-        theme: getThemeUnwrapped(themes[found]),
+        theme: themes[found],
         className: getNextThemeClassName(found),
         parentName,
         componentName,

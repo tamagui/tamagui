@@ -120,13 +120,13 @@ const resolveVariants: StyleResolver = (
 
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
-
-    variantValue = fn(value, getVariantExtras(styleState))
+    const extras = getVariantExtras(styleState)
+    variantValue = fn(value, extras)
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('   expanded functional variant', key)
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log({ fn, variantValue })
+      console.log({ fn, variantValue, extras })
       console.groupEnd()
     }
   }
