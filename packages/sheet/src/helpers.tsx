@@ -8,3 +8,17 @@ export function resisted(y: number, minY: number, maxOverflow = 25) {
   }
   return y
 }
+
+// // set all the way off screen
+// // + 0.1 ensures this is unique - see hasntMeasured ref
+
+// let hiddenSize: number
+
+// export function getHiddenSize() {
+//   if (hiddenSize == undefined) {
+//     // this trigger reflow on web avoid doing on startup
+//     const screen = Dimensions.get('screen')
+//     hiddenSize = Math.max(screen.height, screen.width) + 0.1
+//   }
+//   return hiddenSize
+// }

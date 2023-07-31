@@ -31,13 +31,15 @@ import {
   View,
 } from 'react-native'
 
-import { HIDDEN_SIZE, SHEET_HIDDEN_STYLESHEET } from './constants'
+import { SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
+
+let hiddenSize = 10_000.1
 
 export const SheetImplementationCustom = themeable(
   forwardRef<View, SheetProps>(function SheetImplementationCustom(props, forwardedRef) {
@@ -109,8 +111,8 @@ export const SheetImplementationCustom = themeable(
       [zIndex]
     )
 
-    const animatedNumber = useAnimatedNumber(HIDDEN_SIZE)
-    const at = useRef(HIDDEN_SIZE)
+    const animatedNumber = useAnimatedNumber(hiddenSize)
+    const at = useRef(hiddenSize)
 
     useAnimatedNumberReaction(
       {
@@ -132,7 +134,7 @@ export const SheetImplementationCustom = themeable(
       }
     }
 
-    const hasntMeasured = at.current === HIDDEN_SIZE
+    const hasntMeasured = at.current === hiddenSize
 
     const animateTo = useEvent((position: number) => {
       if (frameSize === 0) return
@@ -313,7 +315,7 @@ export const SheetImplementationCustom = themeable(
 
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
-      const translateY = frameSize === 0 ? HIDDEN_SIZE : val
+      const translateY = frameSize === 0 ? hiddenSize : val
       return {
         transform: [{ translateY }],
       }
