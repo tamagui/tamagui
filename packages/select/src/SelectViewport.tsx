@@ -78,7 +78,11 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
     if (breakpointActive || !isWeb) {
       return (
         <PortalItem hostName={`${context.scopeKey}SheetContents`}>
-          <ForwardSelectContext itemContext={itemContext} context={context}>
+          <ForwardSelectContext
+            __scopeSelect={__scopeSelect}
+            itemContext={itemContext}
+            context={context}
+          >
             {children}
           </ForwardSelectContext>
         </PortalItem>
