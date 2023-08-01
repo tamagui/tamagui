@@ -101,6 +101,8 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
     // lets shim require and avoid importing react-native + react-native-web
     // we just need to read the config around them
     process.env.IS_STATIC = 'is_static'
+    process.env.TAMAGUI_IS_SERVER = 'true'
+
     const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 

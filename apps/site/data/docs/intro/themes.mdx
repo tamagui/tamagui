@@ -402,7 +402,6 @@ Here's how we do it for example on Next.js:
 
 ```tsx
 // we check for both
-//   - IS_STATIC (set by the compiler at build-time when it loads your bundle for optimization)
 //   - TAMAGUI_IS_SERVER (set to true by the @tamagui/next-plugin only when isServer = true)
 //
 // if true we keep the JS themes so the server side can use them for rendering
@@ -414,7 +413,7 @@ Here's how we do it for example on Next.js:
 // if you only have simple themes, don't worry so much about this optimization
 
 const themes =
-  process.env.IS_STATIC || process.env.TAMAGUI_IS_SERVER
+  process.env.TAMAGUI_IS_SERVER
     ? themesIn
     : ({} as typeof themesIn)
 
