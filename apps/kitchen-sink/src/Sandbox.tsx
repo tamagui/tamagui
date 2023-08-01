@@ -1,7 +1,6 @@
-// debug-verbose
 // import './wdyr'
 
-import { Paragraph, SizableText, Square, Text, styled } from 'tamagui'
+import { Paragraph, SizableText, Square, Text, styled, useTheme } from 'tamagui'
 import { YStack, themeable } from 'tamagui'
 
 export const Sandbox = () => {

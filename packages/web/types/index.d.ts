@@ -28,6 +28,7 @@ export * from './helpers/matchMedia';
 export * from './helpers/mergeProps';
 export * from './helpers/normalizeColor';
 export * from './helpers/proxyThemeVariables';
+export * from './helpers/proxyThemeToParents';
 export * from './helpers/pseudoDescriptors';
 export * from './helpers/themeable';
 export * from './helpers/themes';

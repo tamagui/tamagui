@@ -9,8 +9,9 @@ import {
   listenForSheetChanges,
   scanAllSheets,
 } from './helpers/insertStyleRule'
+import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
-import { ensureThemeVariable, proxyThemesToParents } from './helpers/themes'
+import { ensureThemeVariable } from './helpers/themes'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
@@ -155,7 +156,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     const themesIn = { ...configIn.themes } as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn)
-    const themes = proxyThemesToParents(dedupedThemes, tokensParsed)
+    const themes = proxyThemesToParents(dedupedThemes)
 
     return {
       themes,
