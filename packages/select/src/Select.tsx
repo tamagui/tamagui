@@ -334,6 +334,7 @@ const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
         />
       )
     })()
+
     return (
       <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
         {content}
@@ -445,6 +446,7 @@ export const Select = withStaticProperties(
         [scopeKey]
       ),
     })
+
     const sheetBreakpoint = when
     const isSheet = useSelectBreakpointActive(sheetBreakpoint)
     const SelectImpl = isSheet || !isWeb ? SelectSheetImpl : SelectInlineImpl
@@ -489,8 +491,8 @@ export const Select = withStaticProperties(
     return (
       <AdaptProvider>
         <SelectItemParentProvider
-          initialValue={React.useMemo(() => value, [])}
           scope={__scopeSelect}
+          initialValue={React.useMemo(() => value, [])}
           size={sizeProp}
           activeIndexSubscribe={activeIndexSubscribe}
           valueSubscribe={valueSubscribe}
