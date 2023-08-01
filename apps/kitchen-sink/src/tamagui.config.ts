@@ -1,5 +1,6 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
 import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { config } from '@tamagui/config'
 import { createTamagui } from 'tamagui'
 
@@ -44,6 +45,38 @@ export const animations = createAnimations({
   },
 })
 
+// test native
+export const animationsNative = createAnimationsNative({
+  bouncy: {
+    type: 'spring',
+    damping: 9,
+    mass: 0.9,
+    stiffness: 150,
+  },
+  lazy: {
+    type: 'spring',
+    damping: 18,
+    stiffness: 50,
+  },
+  slow: {
+    type: 'spring',
+    damping: 15,
+    stiffness: 40,
+  },
+  quick: {
+    type: 'spring',
+    damping: 20,
+    mass: 1.2,
+    stiffness: 250,
+  },
+  tooltip: {
+    type: 'spring',
+    damping: 10,
+    mass: 0.9,
+    stiffness: 100,
+  },
+})
+
 // this is used by the button test...
 config.themes = {
   ...config.themes,
@@ -58,13 +91,16 @@ config.themes = {
   },
 }
 
+const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
+
 const tamaConf = createTamagui({
   ...config,
   // test reanimated
-  animations:
-    typeof window !== 'undefined' && globalThis.location?.search.includes('driver=css')
-      ? animationsCSS
-      : animations,
+  animations: search.includes('driver=css')
+    ? animationsCSS
+    : search.includes('driver=native')
+    ? animationsNative
+    : animations,
   themeClassNameOnRoot: false,
 })
 

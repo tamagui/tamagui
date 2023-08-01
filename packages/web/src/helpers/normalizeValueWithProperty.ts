@@ -12,13 +12,13 @@ import { getAllSelectors } from './insertStyleRule'
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (!isWeb) return value
+  if (property && property in stylePropsUnitless) {
+    return value
+  }
   let res = value
-  if (
-    (property === undefined || !(property in stylePropsUnitless)) &&
-    typeof value === 'number'
-  ) {
+  if (typeof value === 'number') {
     res = `${value}px`
-  } else if (property !== undefined) {
+  } else if (property) {
     res = `${res}`
   }
   return res
