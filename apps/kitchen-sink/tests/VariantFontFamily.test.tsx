@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=VariantFontFamily')
+  await setupPage(page, { name: "VariantFontFamily", type: "useCase" })
+
 })
 
 test(`testing things...`, async ({ page }) => {

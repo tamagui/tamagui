@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledCheckboxTheme')
+  await setupPage(page, { name: "StyledCheckboxTheme", type: "useCase" })
 })
 
 test(`theme passes through .extractable HOC`, async ({ page }) => {

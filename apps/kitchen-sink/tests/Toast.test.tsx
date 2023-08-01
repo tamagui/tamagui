@@ -1,8 +1,8 @@
 import { Page, expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=ToastCase', { waitUntil: 'networkidle' })
-  await new Promise((res) => setTimeout(res, 3000))
+  await setupPage(page, { name: "ToastCase", type: "useCase" })
 })
 
 async function buttonIsFocused(page: Page, identifier: number) {

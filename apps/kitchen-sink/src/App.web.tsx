@@ -45,7 +45,7 @@ const SandboxFrame = (props: { children: any }) => {
   const [theme, setTheme] = useState(params.get('theme') === 'dark' ? 'dark' : 'light')
   const [screenshot] = useState(params.has('screenshot'))
   const showThemeSwitch = !screenshot
-  const splitView = params.get('splitView')
+  const splitView = params.has('splitView')
   const centered = params.has('centered')
 
   return (

@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
+import { setupPage } from './test-utils'
 import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyleProp', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "StyleProp", type: "useCase" })
 })
 
 test(`style prop flattens`, async ({ page }) => {

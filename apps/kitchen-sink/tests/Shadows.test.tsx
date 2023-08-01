@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
-import { getStyles, whilePressed } from './utils'
+import { setupPage } from './test-utils'
+import { getStyles } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=Shadows')
+  await setupPage(page, { name: "Shadows", type: "useCase" })
 })
 
 test(`shadows work`, async ({ page }) => {

@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 import { getStyles } from './utils'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=VariantsOrder', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "VariantsOrder", type: "useCase" })
 })
 
 test(`variants apply below default props but above parent defaultvariants/props as you nest styled()`, async ({

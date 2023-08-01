@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 import { getStyles } from './utils'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledVariantTextColor', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "StyledVariantTextColor", type: "useCase" })
 })
 
 test(`sets text colors with variants + theme`, async ({ page }) => {

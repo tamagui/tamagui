@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 import { getHoverStyle, getPressStyle } from './utils'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledButtonVariantPseudo', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "StyledButtonVariantPseudo", type: "useCase" })
 })
 
 test(`hover HOC + variant + pseudos work`, async ({ page }) => {

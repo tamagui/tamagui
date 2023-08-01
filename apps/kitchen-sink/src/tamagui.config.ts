@@ -1,5 +1,5 @@
 import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css'
-import { createAnimations } from '@tamagui/animations-moti'
+import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { config } from '@tamagui/config'
 import { createTamagui } from 'tamagui'
@@ -13,8 +13,8 @@ export const animationsCSS = createAnimationsCSS({
   tooltip: 'ease-in 400ms',
 })
 
-// test reanimated
-export const animations = createAnimations({
+
+export const animationsMoti = createAnimationsMoti({
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -45,7 +45,6 @@ export const animations = createAnimations({
   },
 })
 
-// test native
 export const animationsNative = createAnimationsNative({
   bouncy: {
     type: 'spring',
@@ -95,19 +94,18 @@ const search = (typeof window !== 'undefined' && globalThis.location?.search) ||
 
 const tamaConf = createTamagui({
   ...config,
-  // test reanimated
-  animations: search.includes('driver=css')
+  animations: search.includes('animationDriver=css')
     ? animationsCSS
-    : search.includes('driver=native')
-    ? animationsNative
-    : animations,
+    : search.includes('animationDriver=moti')
+      ? animationsMoti
+      : animationsNative, // search.includes('animationDriver=native')
   themeClassNameOnRoot: false,
 })
 
 export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
+  interface TamaguiCustomConfig extends Conf { }
 }
 
 export default tamaConf

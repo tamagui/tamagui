@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 import { getStyles } from './utils'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=ButtonCustom', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "ButtonCustom", type: "useCase" })
 })
 
 test(`keeps flex direction for styled(Button)`, async ({ page }) => {
