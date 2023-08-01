@@ -984,7 +984,8 @@ export const getSplitStyles: StyleSplitter = (
 
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (shouldDoClasses) {
-      const retainedStyles = {}
+      let retainedStyles: ViewStyleWithPseudos | undefined
+      let shouldRetain = false
 
       if (style['$$css']) {
         // avoid re-processing for rnw
@@ -993,12 +994,25 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const key = atomicStyle.property
-          if (
+          const isAnimatedAndAnimateOnly =
             styleProps.isAnimated &&
             styleProps.noClassNames &&
             (!props.animateOnly || props.animateOnly.includes(key))
-          ) {
+
+          // or not animated but you have animateOnly
+          // (moves it to style={}, nice to avoid generating lots of classnames)
+          const nonAnimatedAnimateOnly =
+            !isAnimatedAndAnimateOnly &&
+            !styleProps.isAnimated &&
+            props.animateOnly?.includes(key)
+
+          if (isAnimatedAndAnimateOnly) {
+            retainedStyles ||= {}
             retainedStyles[key] = style[key]
+          } else if (nonAnimatedAnimateOnly) {
+            retainedStyles ||= {}
+            retainedStyles[key] = atomicStyle.value
+            shouldRetain = true
           } else {
             addStyleToInsertRules(rulesToInsert, atomicStyle)
             mergeClassName(
@@ -1011,8 +1025,9 @@ export const getSplitStyles: StyleSplitter = (
             )
           }
         }
-        if (!IS_STATIC && !styleProps.keepStyleSSR) {
-          style = retainedStyles
+
+        if (shouldRetain || (!IS_STATIC && !styleProps.keepStyleSSR)) {
+          style = retainedStyles || {}
         }
       }
     }

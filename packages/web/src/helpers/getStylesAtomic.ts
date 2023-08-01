@@ -87,9 +87,7 @@ export const generateAtomicStyles = (
       pseudo: pseudo?.name as any,
       identifier,
       rules,
-    }
-    if (process.env.NODE_ENV === 'test') {
-      styleObject.value = value
+      value,
     }
     out.push(styleObject)
   }

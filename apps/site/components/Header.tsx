@@ -58,44 +58,60 @@ export function Header(props: HeaderProps) {
           px: '$4',
         }}
       >
-        <XStack
-          className={`ease-out all ms200 ${
-            isScrolled ? 'blur-medium hover-highlights ' : ''
-          }`}
-          bbc="$borderColor"
-          py="$1"
-          y={3}
-          ov="hidden"
-          width="100%"
-          bw={1}
-          boc="transparent"
-          maw={1120}
-          br="$10"
-          $sm={{
-            br: 0,
-            y: 0,
-            py: '$2',
-          }}
-          {...(isScrolled && {
-            $gtSm: {
+        <XStack width="100%" maw={1120} pos="relative">
+          <XStack
+            className={`ease-out all ms200 ${
+              isScrolled ? 'blur-medium hover-highlights ' : ''
+            }`}
+            bbc="$borderColor"
+            py="$1"
+            y={3}
+            ov="hidden"
+            contain="paint"
+            width="100%"
+            bw={1}
+            boc="transparent"
+            br="$10"
+            $sm={{
+              br: 0,
+              y: 0,
               py: '$2',
-              y: 5,
-              elevation: '$3',
-              boc: '$borderColor',
-            },
-          })}
-        >
-          <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
-          <ContainerLarge>
-            <ThemeTint>
-              {React.useMemo(
-                () => (
-                  <HeaderContents floating {...props} />
-                ),
-                [props]
-              )}
-            </ThemeTint>
-          </ContainerLarge>
+            }}
+            {...(isScrolled && {
+              $gtSm: {
+                py: '$2',
+                y: 5,
+                boc: '$borderColor',
+              },
+            })}
+          >
+            <YStack o={isScrolled ? 0.75 : 0} fullscreen bc="$background" />
+            <ContainerLarge>
+              <ThemeTint>
+                {React.useMemo(
+                  () => (
+                    <HeaderContents floating {...props} />
+                  ),
+                  [props]
+                )}
+              </ThemeTint>
+            </ContainerLarge>
+          </XStack>
+          {/* do shadow separate so we can contain paint because its causing perf issues */}
+          <XStack
+            className={`ease-out all ms200`}
+            zi={-1}
+            br="$10"
+            fullscreen
+            {...(isScrolled && {
+              $gtSm: {
+                py: '$2',
+                y: 5,
+                elevation: '$3',
+                boc: '$borderColor',
+              },
+            })}
+          />
         </XStack>
       </XStack>
       <YStack height={54} w="100%" />
@@ -166,7 +182,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
       <XStack
         position="absolute"
-        className="all ease-in ms150"
         $sm={{
           opacity: 0,
           pointerEvents: 'none',
