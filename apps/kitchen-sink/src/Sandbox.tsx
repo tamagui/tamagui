@@ -4,54 +4,15 @@
 import { Paragraph, SizableText, Square, Text, styled } from 'tamagui'
 import { YStack, themeable } from 'tamagui'
 
-export const View = styled(YStack, {
-  variants: {
-    center: {
-      true: {
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    },
-    absolute: {
-      true: {
-        position: 'absolute',
-      },
-    },
-    stretch: {
-      true: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      },
-    },
-  } as const,
-})
-
-const DrawListRow = styled(View, {
-  fd: 'row',
-  columnGap: '$3',
-  ai: 'flex-start',
-  $md: {
-    ai: 'center',
-    columnGap: '$1',
-  },
-  $lg: {
-    columnGap: '$3',
-  },
-  rowGap: '$3',
-  px: '$3',
-})
-
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
 
   return (
     <>
-      <DrawListRow debug="verbose">
+      {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />
-      </DrawListRow>
+      </DrawListRow> */}
+
       {/* <BenchmarkSelect /> */}
 
       {/* TODO test this one at diff sizes make sure:
@@ -205,3 +166,43 @@ const Subtitle = styled(Paragraph, {
 //     </XStack>
 //   )
 // }
+
+export const View = styled(YStack, {
+  variants: {
+    center: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+    absolute: {
+      true: {
+        position: 'absolute',
+      },
+    },
+    stretch: {
+      true: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+      },
+    },
+  } as const,
+})
+
+const DrawListRow = styled(View, {
+  fd: 'row',
+  columnGap: '$3',
+  ai: 'flex-start',
+  $md: {
+    ai: 'center',
+    columnGap: '$1',
+  },
+  $lg: {
+    columnGap: '$3',
+  },
+  rowGap: '$3',
+  px: '$3',
+})
