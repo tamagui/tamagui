@@ -321,11 +321,11 @@ export const getSplitStyles: StyleSplitter = (
       if (!valInit) continue
       const styles = [].concat(valInit).flat()
       for (const cur of styles) {
+        if (!cur) continue
         const isRNW = cur['$$css']
         if (isRNW) {
           Object.assign(classNames, cur)
         } else {
-          if (!cur) continue
           for (const key in cur) {
             style[key] = cur[key]
           }
