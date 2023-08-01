@@ -32,6 +32,16 @@ export const CheckboxStyledContext = createStyledContext({
   scaleIcon: 1,
 })
 
+const useCheckboxStyledContext = () => {
+  const value = React.useContext(CheckboxStyledContext)
+  if (value === null) {
+    throw new Error(
+      'useCheckboxStyledContext must be used within a CheckboxStyledContext.Provider'
+    )
+  }
+  return value
+}
+
 export type CheckedState = boolean | 'indeterminate'
 
 export function isIndeterminate(checked?: CheckedState): checked is 'indeterminate' {
@@ -140,7 +150,7 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
         ...indicatorProps
       } = props
       const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
-      const styledContext = React.useContext(CheckboxStyledContext)
+      const styledContext = useCheckboxStyledContext()
       const iconSize =
         (typeof styledContext.size === 'number'
           ? styledContext.size * 0.65
@@ -288,8 +298,7 @@ const CheckboxComponent = CheckboxFrame.extractable(
       onChange: onCheckedChange,
     })
 
-    // TODO: this could be null - fix the type
-    const styledContext = React.useContext(CheckboxStyledContext)
+    const styledContext = useCheckboxStyledContext()
     const adjustedSize = getVariableValue(
       getSize(propsActive.size ?? styledContext?.size ?? '$true', {
         shift: sizeAdjust,

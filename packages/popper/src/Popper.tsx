@@ -51,7 +51,13 @@ export type PopperContextValue = UseFloatingReturn & {
 
 export const PopperContext = createStyledContext<PopperContextValue>({} as any)
 
-export const usePopperContext = () => React.useContext(PopperContext)
+export const usePopperContext = () => {
+  const value = React.useContext(PopperContext)
+  if (value === null) {
+    throw new Error('usePopperContext must be used within a PopperContext.Provider')
+  }
+  return value
+}
 
 export type PopperProps = {
   size?: SizeTokens

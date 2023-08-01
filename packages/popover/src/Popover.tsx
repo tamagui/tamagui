@@ -76,7 +76,13 @@ type PopoverContextValue = {
 
 export const PopoverContext = createStyledContext<PopoverContextValue>({} as any)
 
-export const usePopoverContext = () => React.useContext(PopoverContext)
+export const usePopoverContext = () => {
+  const value = React.useContext(PopoverContext)
+  if (value === null) {
+    throw new Error('usePopoverContext must be used within a PopoverContext.Provider')
+  }
+  return value
+}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverAnchor

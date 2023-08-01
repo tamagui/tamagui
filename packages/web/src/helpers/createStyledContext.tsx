@@ -3,10 +3,10 @@ import React, { createContext, useContext, useMemo } from 'react'
 import { objectIdentityKey } from './objectIdentityKey'
 
 export type StyledContext<Props extends Object = any> = Omit<
-  React.Context<Props>,
+  React.Context<Props | null>,
   'Provider'
 > & {
-  context: React.Context<Props>
+  context: React.Context<Props | null>
   props: Object
   Provider: React.ProviderExoticComponent<
     Partial<Props> & {
@@ -18,7 +18,7 @@ export type StyledContext<Props extends Object = any> = Omit<
 export function createStyledContext<VariantProps extends Record<string, any>>(
   props: VariantProps
 ): StyledContext<VariantProps> {
-  const OGContext = createContext<any>(null)
+  const OGContext = createContext<VariantProps | null>(null)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
 
@@ -26,7 +26,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
     children,
     ...values
   }: VariantProps & { children?: React.ReactNode }) => {
-    const value = useMemo(() => values, [objectIdentityKey(values)])
+    const value = useMemo(() => values as VariantProps, [objectIdentityKey(values)])
     return <OGProvider value={value}>{children}</OGProvider>
   }
 

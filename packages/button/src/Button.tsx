@@ -38,6 +38,14 @@ export const ButtonContext = createStyledContext<
   textAlign: undefined,
 })
 
+const useButtonContext = () => {
+  const value = useContext(ButtonContext)
+  if (value === null) {
+    throw new Error('useButtonContext must be used within a ButtonContext.Provider')
+  }
+  return value
+}
+
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
@@ -145,7 +153,7 @@ const ButtonText = styled(SizableText, {
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
-  const { size, color } = useContext(ButtonContext)
+  const { size, color } = useButtonContext()
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon

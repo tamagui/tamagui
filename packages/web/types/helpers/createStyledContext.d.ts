@@ -1,6 +1,6 @@
 import React from 'react';
-export type StyledContext<Props extends Object = any> = Omit<React.Context<Props>, 'Provider'> & {
-    context: React.Context<Props>;
+export type StyledContext<Props extends Object = any> = Omit<React.Context<Props | null>, 'Provider'> & {
+    context: React.Context<Props | null>;
     props: Object;
     Provider: React.ProviderExoticComponent<Partial<Props> & {
         children?: React.ReactNode;
