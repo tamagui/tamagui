@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=FontFamilyShorthand', { waitUntil: 'networkidle' })
+  await setupPage(page, { name: "FontFamilyShorthand", type: "useCase" })
 })
 
 test(`using full form and shorthand for fontFamily both respect text-transform`, async ({ page }) => {

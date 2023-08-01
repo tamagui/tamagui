@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
 
 import { getStyles } from './utils'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledHOCNamed')
+  await setupPage(page, { name: "StyledHOCNamed", type: "useCase" })
 })
 
 test(`styled() name works on HOC`, async ({ page }) => {

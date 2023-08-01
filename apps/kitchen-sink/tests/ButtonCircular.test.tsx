@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=ButtonCircular')
+  await setupPage(page, { name: "ButtonCircular", type: "useCase" })
 })
 
 test(`tag button + circular prop works`, async ({ page }) => {

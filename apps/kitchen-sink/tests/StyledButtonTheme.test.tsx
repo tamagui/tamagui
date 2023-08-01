@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/?test=StyledButtonTheme')
+  await setupPage(page, { name: "StyledButtonTheme", type: "useCase" })
 })
 
 test(`button + styled + styleable + theme works`, async ({ page }) => {
