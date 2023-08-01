@@ -247,6 +247,13 @@ export default function Community({ frontmatters }) {
             imageWidth={100}
             imageHeight={100}
           />
+          <GoldSponsor
+            name="Meteor"
+            link="https://meteorwallet.app"
+            image="/sponsors/meteor.png"
+            imageWidth={100}
+            imageHeight={100}
+          />
         </XStack>
 
         <Spacer />
