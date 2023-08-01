@@ -223,6 +223,20 @@ export default function Community({ frontmatters }) {
 
         <XStack space spaceDirection="both" flexWrap="wrap">
           <GoldSponsor
+            name="Uniswap"
+            link="https://uniswap.org"
+            image="/sponsors/uniswap.jpeg"
+            imageWidth={150}
+            imageHeight={150}
+          />
+          <GoldSponsor
+            name="Appfolio"
+            link="https://www.appfolio.com/"
+            image="/sponsors/appfolio.jpeg"
+            imageWidth={150}
+            imageHeight={150}
+          />
+          <GoldSponsor
             name="Manifold Finance"
             link="https://www.manifoldfinance.com"
             image="/sponsors/manifold.png"
@@ -364,7 +378,7 @@ function GoldSponsor(props: {
   imageHeight: number
 }) {
   return (
-    <FlatBubbleCard mb="$4" flat p={0}>
+    <FlatBubbleCard mb="$4" flat p={0} fb={0}>
       <NextLink href={props.link} target="_blank">
         <YStack
           ai="center"
@@ -384,7 +398,7 @@ function GoldSponsor(props: {
               width: props.imageWidth,
             }}
           />
-          <H5 cursor="inherit" als="center" letterSpacing={4} ai="center">
+          <H5 ta="center" cursor="inherit" als="center" letterSpacing={4} ai="center">
             {props.name}
           </H5>
         </YStack>
