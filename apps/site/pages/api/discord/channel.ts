@@ -10,6 +10,7 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
+import { getTakeoutPriceInfo } from '../../../lib/getProductInfo'
 
 const roleBitField = '1024' // VIEW_CHANNEL
 
@@ -72,36 +73,19 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   const pricingDescription = getSingle(starterSubItem.prices)?.description?.toLowerCase()
-  const current = discordInvites.data.length
-  let max = 1
-  if (pricingDescription?.includes('personal')) {
-    max = 1
-  }
-
-  const minMaxMatch = Number(
-    pricingDescription?.match(/team \([0-9]+-([0-9]+) seats\)/)?.[1]
-  )
-  if (minMaxMatch && !isNaN(minMaxMatch)) {
-    max = minMaxMatch
-  }
-
-  const minOnlyMatch = Number(pricingDescription?.match(/team \(\+([0-9]+) seats\)/)?.[1])
-  if (minOnlyMatch && !isNaN(minOnlyMatch)) {
-    max = 10
-  }
-
-  const hasPrivateChannel = max > 1
+  const currentlyOccupiedSeats = discordInvites.data.length
+  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(pricingDescription ?? "")
 
   if (req.method === 'GET') {
     return res.json({
-      current,
-      max,
+      currentlyOccupiedSeats,
+      discordSeats,
     })
   }
 
   let discordChannelId: string | null = (subscription.data.metadata as Record<string, any>)
     ?.discord_channel || null
-  if (hasPrivateChannel && !discordChannelId) {
+  if (hasDiscordPrivateChannels && !discordChannelId) {
     let channelName = subscription.data.id
     try {
       const githubData = await fetch('https://api.github.com/user', {
@@ -162,9 +146,9 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    if (current >= max) {
+    if (currentlyOccupiedSeats >= discordSeats) {
       return res.status(401).json({
-        message: `you've maxed out the members of your channel ${current}/${max}`,
+        message: `you've maxed out the members of your channel ${currentlyOccupiedSeats}/${discordSeats}`,
       })
     }
 
@@ -182,7 +166,7 @@ const handler: NextApiHandler = async (req, res) => {
       discord_user_id: userDiscordId,
       subscription_id: subscription.data.id,
     })
-    
+
     await discordClient.api.guilds.addRoleToMember(
       TAMAGUI_DISCORD_GUILD_ID,
       userDiscordId,

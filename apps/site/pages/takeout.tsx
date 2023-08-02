@@ -7,7 +7,7 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, PlayCircle, Info, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -49,6 +49,7 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
+  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -64,8 +65,13 @@ import { LinearGradient } from 'tamagui/linear-gradient'
 import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
+import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 
 const points = {
+  // this one's only shown on modal
+  modal: [
+    'Lifetime rights'
+  ],
   monorepo: [
     'Well-isolated configuration.',
     '100% shared code between web and native.',
@@ -275,7 +281,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       $md={{
         scale: 0.85,
       }}
-      // ref={glow.parentRef as any}
+    // ref={glow.parentRef as any}
     >
       {/* <ThemeTint>
         <glow.Component />
@@ -452,9 +458,9 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 const useDisableMotion = () => {
   return useClientValue(
     isClient &&
-      (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
-        window.location.search?.includes('disable-motion') ||
-        /firefox/i.test(navigator.userAgent))
+    (window.matchMedia(`(prefers-reduced-motion: reduce)`)?.matches ||
+      window.location.search?.includes('disable-motion') ||
+      /firefox/i.test(navigator.userAgent))
   )
 }
 
@@ -1188,6 +1194,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter.id)
 
+  const takeoutPriceInfo = getTakeoutPriceInfo(starter.prices.find(price => price.id === starterPriceId)?.description ?? "")
   return (
     <Dialog
       modal
@@ -1331,9 +1338,83 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 $sm={{ fd: 'column-reverse' }}
               >
                 <ScrollView space $gtSm={{ maw: '55%' }} ov="hidden">
-                  <YStack space="$4">
-                    <Points />
+                  <YStack separator={<Separator />} borderWidth='$0.5' borderRadius="$4" borderColor="$borderColor">
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>Lifetime access + 1 year of updates</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>✅</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>License Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Number of people that are allowed to use the starter</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.licenseSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>Public Domains Usages</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Number of domains you're allowed to use the starter on</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.publicDomainUses}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>Play Store App Publishes</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Number of Android apps you're allowed to publish</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.androidAppsPublished}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>App Store Publishes</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Number of iOS apps you're allowed to publish</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.iosAppsPublished}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>Discord Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Access to the Takeout channel</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.discordSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>Discord Private Channel</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Private chat for your team only</Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.hasDiscordPrivateChannels ? '✅' : '❌'}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$2" gap="$2">
+                      <YStack width="75%">
+                        <Paragraph>GitHub Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">Direct access to source code and issues</Paragraph>
+
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2">
+                        <Paragraph>{takeoutPriceInfo.githubSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
                   </YStack>
+                  {/* <YStack space="$4">
+                    <Points />
+                  </YStack> */}
                 </ScrollView>
 
                 <YStack f={1} space="$4">
@@ -1502,7 +1583,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog >
   )
 }
 
@@ -1521,7 +1602,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       return
     }
 
-    let dispose = () => {}
+    let dispose = () => { }
 
     // @ts-ignore
     import('../lib/sticksy').then(({ Sticksy }) => {
@@ -2384,8 +2465,8 @@ const DiscountText = ({
   const text = coupon.amount_off
     ? `${formatPrice(coupon.amount_off, 'usd')} ${coupon.name}`
     : coupon.percent_off
-    ? `${coupon.percent_off}% ${coupon.name}`
-    : ''
+      ? `${coupon.percent_off}% ${coupon.name}`
+      : ''
   return (
     <Theme reset>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
@@ -2703,9 +2784,8 @@ const PromoVideo = () => {
             width: 840,
             height: 480,
           }}
-          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${
-            open ? 1 : 0
-          }`}
+          src={`https://www.youtube.com/embed/Guwa1oPBvmU?modestbranding=1&rel=0&showinfo=0&autoplay=${open ? 1 : 0
+            }`}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
