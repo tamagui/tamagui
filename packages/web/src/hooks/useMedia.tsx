@@ -181,10 +181,10 @@ function subscribe(subscriber: any) {
   return () => listeners.delete(subscriber)
 }
 
-export function useMedia(uid?: any, debug?: any): UseMediaState {
+export function useMedia(uid?: any): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
 
-  const state = useSyncExternalStore<MediaQueryState>(
+  return useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       if (!internal.current) {
@@ -210,23 +210,20 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
       }
 
       internal.current.prev = mediaState
-      return mediaState
+
+      return new Proxy(mediaState, {
+        get(_, key) {
+          if (typeof key === 'string') {
+            internal.current ||= { prev: initState }
+            internal.current.touched ||= new Set()
+            internal.current.touched.add(key)
+          }
+          return Reflect.get(mediaState, key)
+        },
+      })
     },
     () => initState
   )
-
-  return useMemo(() => {
-    return new Proxy(state, {
-      get(_, key) {
-        if (typeof key === 'string') {
-          internal.current ||= { prev: initState }
-          internal.current.touched ||= new Set()
-          internal.current.touched.add(key)
-        }
-        return Reflect.get(state, key)
-      },
-    })
-  }, [state])
 }
 
 /**
