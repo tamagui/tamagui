@@ -18,6 +18,8 @@ import { HomeSection, SectionTinted, TintSection } from '../components/TintSecti
 import { getCompilationExamples } from '../lib/getCompilationExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
+  return <Hero />
+
   return (
     <>
       <HomeGlow />

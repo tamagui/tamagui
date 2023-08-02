@@ -340,7 +340,7 @@ const getToken = (
   if (value in theme) {
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(` - getting theme value for ${key} from ${value} = ${theme[value].val}`)
+      console.log(` - getting theme value for ${key} from ${value}`)
     }
     valOrVar = theme[value]
     hasSet = true

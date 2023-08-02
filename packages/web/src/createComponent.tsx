@@ -10,6 +10,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -100,8 +101,6 @@ if (typeof document !== 'undefined') {
 let BaseText: any
 let BaseView: any
 let hasSetupBaseViews = false
-
-const numRenderedOfType: Record<string, number> = {}
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -413,8 +412,7 @@ export function createComponent<
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
       // should match to the one used in `setMediaShouldUpdate` below
-      stateRef,
-      debugProp ? { props, staticConfig } : null
+      stateRef
     )
 
     // if (shouldTime) time`media`

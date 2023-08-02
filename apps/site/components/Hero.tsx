@@ -63,9 +63,33 @@ export function Hero() {
   )
 }
 
-const HeroContents = memo(() => {
+const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
+  return (
+    <Subtitle>
+      <NextLink href="/docs/core/configuration">
+        <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
+          styles
+        </Tag>
+      </NextLink>
+      ,{' '}
+      <NextLink href="/docs/intro/why-a-compiler">
+        <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
+          optimizing compiler
+        </Tag>
+      </NextLink>{' '}
+      &{' '}
+      <NextLink href="/docs/components/stacks">
+        <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
+          UI&nbsp;kit
+        </Tag>
+      </NextLink>{' '}
+      that&nbsp;unify&nbsp;React Native + Web
+    </Subtitle>
+  )
+})
 
+const HeroContents = memo(function HeroContents() {
   return (
     <ContainerLarge contain="layout" pos="relative">
       <YStack
@@ -161,38 +185,7 @@ const HeroContents = memo(() => {
               maw: 900,
             }}
           >
-            <Subtitle>
-              <NextLink href="/docs/core/configuration">
-                <Tag
-                  theme="green_alt2"
-                  onHoverIn={() => setHovered(0)}
-                  active={hovered === 0}
-                >
-                  styles
-                </Tag>
-              </NextLink>
-              ,{' '}
-              <NextLink href="/docs/intro/why-a-compiler">
-                <Tag
-                  theme="blue_alt2"
-                  onHoverIn={() => setHovered(1)}
-                  active={hovered === 1}
-                >
-                  optimizing compiler
-                </Tag>
-              </NextLink>{' '}
-              &{' '}
-              <NextLink href="/docs/components/stacks">
-                <Tag
-                  theme="purple_alt2"
-                  onHoverIn={() => setHovered(2)}
-                  active={hovered === 2}
-                >
-                  UI&nbsp;kit
-                </Tag>
-              </NextLink>{' '}
-              that&nbsp;unify&nbsp;React Native + Web
-            </Subtitle>
+            <HeroSubTitle />
           </YStack>
         </YStack>
 

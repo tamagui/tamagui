@@ -17,7 +17,7 @@ type UpdateState = {
     keys: MediaQueryKey[];
 };
 export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
-export declare function useMedia(uid?: any, debug?: any): UseMediaState;
+export declare function useMedia(uid?: any): UseMediaState;
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
