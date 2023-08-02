@@ -61,25 +61,18 @@ export const measureLayout = (
   }
 }
 
-const idFn = () => {}
-
 export function useElementLayout(
   ref: RefObject<Element>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ) {
-  const hasLayoutEvent = !!onLayout
-  const onLayoutEvent = useEvent(onLayout || idFn)
-
-  // Observing is done in a separate effect to avoid this effect running
-  // when 'onLayout' changes.
   useIsomorphicLayoutEffect(() => {
-    if (!resizeObserver || !hasLayoutEvent) return
+    if (!resizeObserver || !onLayout) return
     const node = ref.current
     if (!node) return
-    LayoutHandlers.set(node, onLayoutEvent)
+    LayoutHandlers.set(node, onLayout)
     resizeObserver.observe(node)
     return () => {
       resizeObserver?.unobserve(node)
     }
-  }, [ref, hasLayoutEvent])
+  }, [ref, onLayout])
 }
