@@ -190,7 +190,7 @@ const handler: NextApiHandler = async (req, res) => {
       TAKEOUT_ROLE_ID
     )
   }
-  res.json({ message: `successfully added to takeout -> #${subscription.data.id}` })
+  res.json({ message: `Done!` })
 }
 
 export default handler
