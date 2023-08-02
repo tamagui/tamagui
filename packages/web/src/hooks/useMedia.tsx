@@ -194,7 +194,7 @@ export function useMedia(uid?: any, debug?: any): UseMediaState {
       const { touched, prev } = internal.current
       const componentState = uid ? shouldUpdate.get(uid) : undefined
 
-      if (!componentState?.enabled === false) {
+      if (!componentState?.enabled) {
         return prev
       }
 
