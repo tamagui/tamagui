@@ -11,7 +11,7 @@ import {
   getHasThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import type { ThemeParsed, ThemeProps } from '../types'
+import type { DebugProp, ThemeParsed, ThemeProps } from '../types'
 import { GetThemeUnwrapped, getThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
@@ -53,7 +53,16 @@ export const useThemeWithState = (
     keys.current,
     !isServer
       ? () => {
-          return props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
+          const next =
+            props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
+          if (process.env.NODE_ENV === 'development' && props.debug) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log(`  🎨 useTheme() shouldUpdate?`, next, {
+              shouldUpdateProp: props.shouldUpdate?.(),
+              keys: [...keys.current],
+            })
+          }
+          return next
         }
       : undefined
   )
@@ -78,7 +87,8 @@ export const useThemeWithState = (
         theme,
         themeManager,
       },
-      keys.current
+      keys.current,
+      props.debug
     )
   }, [theme, name, className, themeManager])
 
@@ -100,7 +110,8 @@ export function getThemeProxied(
     theme: ThemeParsed
     themeManager?: ThemeManager
   },
-  keys?: string[]
+  keys?: string[],
+  debug?: DebugProp
 ): UseThemeResult {
   return createProxy(theme, {
     has(_, key) {
@@ -131,6 +142,9 @@ export function getThemeProxied(
                 !keys.includes(keyString)
               ) {
                 keys.push(keyString)
+                if (process.env.NODE_ENV === 'development' && debug) {
+                  console.warn(` 🎨 useTheme() tracking new key: ${keyString}`)
+                }
               }
               if (subkey === 'get') {
                 return () => getVariable(val)
