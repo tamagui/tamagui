@@ -130,21 +130,18 @@ export interface Database {
       discord_invites: {
         Row: {
           created_at: string | null
-          discord_channel_id: string
           discord_user_id: string
           id: number
           subscription_id: string
         }
         Insert: {
           created_at?: string | null
-          discord_channel_id: string
           discord_user_id: string
           id?: number
           subscription_id: string
         }
         Update: {
           created_at?: string | null
-          discord_channel_id?: string
           discord_user_id?: string
           id?: number
           subscription_id?: string

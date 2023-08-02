@@ -177,13 +177,12 @@ const handler: NextApiHandler = async (req, res) => {
           { id: userDiscordId, type: 1, allow: roleBitField },
         ],
       })
-      await supabaseAdmin.from('discord_invites').insert({
-        discord_channel_id: discordChannelId,
-        discord_user_id: userDiscordId,
-        subscription_id: subscription.data.id,
-      })
     }
-
+    await supabaseAdmin.from('discord_invites').insert({
+      discord_user_id: userDiscordId,
+      subscription_id: subscription.data.id,
+    })
+    
     await discordClient.api.guilds.addRoleToMember(
       TAMAGUI_DISCORD_GUILD_ID,
       userDiscordId,
