@@ -1,13 +1,15 @@
 // import './wdyr'
 
-import { Paragraph, SizableText, Square, Text, styled, useTheme } from 'tamagui'
-import { YStack, themeable } from 'tamagui'
+import { Paragraph, SizableText, Text, YStack, styled, useMedia, useWindowDimensions } from 'tamagui'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
 
+  console.log(useMedia().gtSm, useMedia().sm)
   return (
     <>
+    <Text>useMedia().gtSm: {useMedia().gtSm ? "TRUE": "FALSE"}. if it works the rectangle will be red:</Text>
+      <YStack bc="blue" $sm={{ backgroundColor: "yellow" }} $gtSm={{ backgroundColor: "red" }} width={100} height={100} />
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />
       </DrawListRow> */}
