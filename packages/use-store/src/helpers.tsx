@@ -13,8 +13,7 @@ const weakKey = (obj: any, prefix = '') => {
 export function getStoreUid(Constructor: any, props: string | Object | void) {
   // in dev mode we can use name which gives us nice `allStores.StoreName` access
   // in prod mode it usually is minified and mangled, unsafe to use name so use weakkey
-  const storeName =
-    process.env.NODE_ENV === 'development' ? Constructor.name : weakKey(Constructor)
+  const storeName = weakKey(Constructor)
   const uid = `${storeName}${
     !props ? '' : typeof props === 'string' ? props : getKey(props)
   }`

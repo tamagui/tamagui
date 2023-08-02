@@ -385,7 +385,7 @@ export function createComponent<
           `%c ${banner} (unmounted: ${state.unmounted})${
             presence ? ` (presence: ${presence[0]})` : ''
           } ${isHydrated ? '💦' : '🏜️'}`,
-          'background: green;'
+          'background: green; color: white;'
         )
         if (!isServer) {
           console.groupCollapsed(
@@ -882,11 +882,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (debugProp) {
         const element = typeof elementType === 'string' ? elementType : 'Component'
-        console.groupCollapsed(
-          `render <${element} /> with props`,
-          initialState,
-          willBeAnimated
-        )
+        console.groupCollapsed(`render <${element} /> with props`)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('viewProps', viewProps)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -900,7 +896,7 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ state, styleProps, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState, classNames })
+          console.log({ state, styleProps, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, willBeAnimated, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState, classNames })
         }
         console.groupEnd()
         console.groupEnd()

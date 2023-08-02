@@ -60,12 +60,13 @@ export const useThemeWithState = (
 
   const { themeManager, state } = changedThemeState
   const { theme, name, className } = state
+
   if (!theme) {
-    if (process.env.NODE_ENV === 'develpoment') {
+    if (process.env.NODE_ENV === 'development') {
       throw new Error(
-        `No theme given props ${JSON.stringify(props)} in themes: ${Object.keys(
-          getConfig().themes
-        )}`
+        `No theme found given props ${JSON.stringify(
+          props
+        )}. Themes given to tamagui are: ${Object.keys(getConfig().themes)}`
       )
     }
     throw `❌`

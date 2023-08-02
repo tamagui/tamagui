@@ -103,7 +103,10 @@ const monoFont = createGenericFont(
 )
 
 // avoid themes only on client bundle
-const themes = process.env.TAMAGUI_IS_SERVER ? themesIn : ({} as typeof themesIn)
+const themes =
+  process.env.TAMAGUI_IS_SERVER || process.env.TAMAGUI_KEEP_THEMES
+    ? themesIn
+    : ({} as typeof themesIn)
 
 export const config = {
   defaultFont: 'body',

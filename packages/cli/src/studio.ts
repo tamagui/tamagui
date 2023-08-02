@@ -60,6 +60,9 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
         viteReactPlugin(),
         viteTsConfigPaths(),
       ],
+      define: {
+        'process.env.TAMAGUI_KEEP_THEMES': 'true',
+      },
     })
 
     // these can be lazy loaded (eventually should put in own process)
