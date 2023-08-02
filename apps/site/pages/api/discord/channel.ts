@@ -90,6 +90,8 @@ const handler: NextApiHandler = async (req, res) => {
     max = 10
   }
 
+  const hasPrivateChannel = max > 1
+
   if (req.method === 'GET') {
     return res.json({
       current,
@@ -97,9 +99,9 @@ const handler: NextApiHandler = async (req, res) => {
     })
   }
 
-  let discordChannelId = (subscription.data.metadata as Record<string, any>)
-    ?.discord_channel
-  if (!discordChannelId) {
+  let discordChannelId: string | null = (subscription.data.metadata as Record<string, any>)
+    ?.discord_channel || null
+  if (hasPrivateChannel && !discordChannelId) {
     let channelName = subscription.data.id
     try {
       const githubData = await fetch('https://api.github.com/user', {
@@ -108,7 +110,7 @@ const handler: NextApiHandler = async (req, res) => {
         },
       }).then((res) => res.json())
       channelName = githubData.data.login
-    } catch (error) {}
+    } catch (error) { }
 
     const discordChannel = await discordClient.api.guilds.createChannel(
       TAMAGUI_DISCORD_GUILD_ID,
@@ -133,9 +135,11 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
-    await discordClient.api.channels.edit(discordChannelId, {
-      permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
-    })
+    if (discordChannelId) {
+      await discordClient.api.channels.edit(discordChannelId, {
+        permission_overwrites: [{ id: DEFAULT_ROLE_ID, type: 0, deny: roleBitField }],
+      })
+    }
     await Promise.allSettled(
       discordInvites.data.map((inv) =>
         discordClient.api.guilds.removeRoleFromMember(
@@ -164,24 +168,27 @@ const handler: NextApiHandler = async (req, res) => {
       })
     }
 
-    const channel = await discordClient.api.channels.get(discordChannelId)
+    if (discordChannelId) {
+      const channel = await discordClient.api.channels.get(discordChannelId)
 
-    await discordClient.api.channels.edit(discordChannelId, {
-      permission_overwrites: [
-        ...(channel as any).permission_overwrites, // other permissions
-        { id: userDiscordId, type: 1, allow: roleBitField },
-      ],
-    })
+      await discordClient.api.channels.edit(discordChannelId, {
+        permission_overwrites: [
+          ...(channel as any).permission_overwrites, // other permissions
+          { id: userDiscordId, type: 1, allow: roleBitField },
+        ],
+      })
+      await supabaseAdmin.from('discord_invites').insert({
+        discord_channel_id: discordChannelId,
+        discord_user_id: userDiscordId,
+        subscription_id: subscription.data.id,
+      })
+    }
+
     await discordClient.api.guilds.addRoleToMember(
       TAMAGUI_DISCORD_GUILD_ID,
       userDiscordId,
       TAKEOUT_ROLE_ID
     )
-    await supabaseAdmin.from('discord_invites').insert({
-      discord_channel_id: discordChannelId,
-      discord_user_id: userDiscordId,
-      subscription_id: subscription.data.id,
-    })
   }
   res.json({ message: `successfully added to takeout -> #${subscription.data.id}` })
 }
