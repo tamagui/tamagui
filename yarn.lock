@@ -5184,7 +5184,7 @@ __metadata:
     ts-morph: ^15.1.0
     typescript: ^5.1.3
     url: ^0.11.0
-    vite: ^4.3.0
+    vite: ^4.4.8
     vite-tsconfig-paths: ^4.2.0
     ws: ^8.7.0
     zx: ^7.1.1
@@ -25098,7 +25098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.3.0, vite@npm:^4.4.8":
+"vite@npm:^4.4.8":
   version: 4.4.8
   resolution: "vite@npm:4.4.8"
   dependencies:

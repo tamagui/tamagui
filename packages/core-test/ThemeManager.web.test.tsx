@@ -170,7 +170,7 @@ describe('ThemeManager', () => {
     })
     expect(newState).toMatchInlineSnapshot(`
       {
-        "className": "t_sub_theme t_dark",
+        "className": "t_dark",
         "componentName": undefined,
         "name": "dark",
         "parentName": "",
@@ -476,7 +476,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.className).toBe('t_sub_theme t_red_alt2')
+    expect(child.state.className).toBe('t_red_alt2')
 
     const child2 = new ThemeManager(
       {
@@ -490,7 +490,7 @@ describe('ThemeManager', () => {
       },
       child2
     )
-    expect(child3.state.className).toBe('t_sub_theme t_red_alt2')
+    expect(child3.state.className).toBe('t_red_alt2')
   })
 
   test('Finds component dark_red + Button', () => {
@@ -507,7 +507,7 @@ describe('ThemeManager', () => {
       },
       parent
     )
-    expect(child.state.className).toBe('t_sub_theme t_red_Button')
+    expect(child.state.className).toBe('t_red_Button')
     expect(child.state.name).toBe('dark_red_Button')
   })
 
