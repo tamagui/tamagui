@@ -1337,77 +1337,77 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <ScrollView space $gtSm={{ maw: '55%' }} ov="hidden">
+                <ScrollView space $gtSm={{ w: '55%' }} ov="hidden">
                   <YStack separator={<Separator />} borderWidth='$0.5' borderRadius="$4" borderColor="$borderColor">
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>Lifetime access + 1 year of updates</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>✅</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>License Seats</Paragraph>
                         <Paragraph size="$2" theme="alt2">Number of people that are allowed to use the starter</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.licenseSeats}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>Public Domains Usages</Paragraph>
                         <Paragraph size="$2" theme="alt2">Number of domains you're allowed to use the starter on</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.publicDomainUses}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>Play Store App Publishes</Paragraph>
                         <Paragraph size="$2" theme="alt2">Number of Android apps you're allowed to publish</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.androidAppsPublished}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>App Store Publishes</Paragraph>
                         <Paragraph size="$2" theme="alt2">Number of iOS apps you're allowed to publish</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.iosAppsPublished}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>Discord Seats</Paragraph>
                         <Paragraph size="$2" theme="alt2">Access to the Takeout channel</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.discordSeats}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>Discord Private Channel</Paragraph>
                         <Paragraph size="$2" theme="alt2">Private chat for your team only</Paragraph>
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.hasDiscordPrivateChannels ? '✅' : '❌'}</Paragraph>
                       </XStack>
                     </XStack>
                     <XStack px="$4" py="$2" gap="$2">
-                      <YStack width="75%">
+                      <YStack width="80%">
                         <Paragraph>GitHub Seats</Paragraph>
                         <Paragraph size="$2" theme="alt2">Direct access to source code and issues</Paragraph>
 
                       </YStack>
-                      <XStack f={1} ai="center" gap="$2">
+                      <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph>{takeoutPriceInfo.githubSeats}</Paragraph>
                       </XStack>
                     </XStack>
