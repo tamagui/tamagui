@@ -184,7 +184,7 @@ function subscribe(subscriber: any) {
 export function useMedia(uid?: any): UseMediaState {
   const internal = useRef<UseMediaInternalState | undefined>()
 
-  return useSyncExternalStore<MediaQueryState>(
+  const state = useSyncExternalStore<MediaQueryState>(
     subscribe,
     () => {
       if (!internal.current) {
@@ -194,7 +194,7 @@ export function useMedia(uid?: any): UseMediaState {
       const { touched, prev } = internal.current
       const componentState = uid ? shouldUpdate.get(uid) : undefined
 
-      if (!componentState?.enabled) {
+      if (componentState && componentState.enabled === false) {
         return prev
       }
 
@@ -211,19 +211,21 @@ export function useMedia(uid?: any): UseMediaState {
 
       internal.current.prev = mediaState
 
-      return new Proxy(mediaState, {
-        get(_, key) {
-          if (typeof key === 'string') {
-            internal.current ||= { prev: initState }
-            internal.current.touched ||= new Set()
-            internal.current.touched.add(key)
-          }
-          return Reflect.get(mediaState, key)
-        },
-      })
+      return mediaState
     },
     () => initState
   )
+
+  return new Proxy(mediaState, {
+    get(_, key) {
+      if (typeof key === 'string') {
+        internal.current ||= { prev: initState }
+        internal.current.touched ||= new Set()
+        internal.current.touched.add(key)
+      }
+      return Reflect.get(mediaState, key)
+    },
+  })
 }
 
 /**
