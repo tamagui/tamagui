@@ -230,6 +230,7 @@ export function createComponent<
         hasAnimated?: boolean
         themeShallow?: boolean
         isListeningToTheme?: boolean
+        pendingState?: Partial<TamaguiComponentState>
       }
     )
     stateRef.current ||= {}
@@ -280,6 +281,13 @@ export function createComponent<
       : states[0]
     const setState = states[1]
     const setStateShallowOriginal = useShallowSetState(setState)
+
+    // if we have a pending non-updated state from our noRender pseudo stuff, commit it if a new render comes in
+    const pendingState = stateRef.current.pendingState
+    if (pendingState) {
+      delete stateRef.current.pendingState
+      setStateShallowOriginal(pendingState)
+    }
 
     let setStateShallow = setStateShallowOriginal
 
@@ -559,6 +567,8 @@ export function createComponent<
             setStateShallowOriginal(next)
           } else {
             updatePseudoStateForAnimations!(next)
+            stateRef.current.pendingState ||= {}
+            Object.assign(stateRef.current.pendingState, next)
           }
         }
       }
