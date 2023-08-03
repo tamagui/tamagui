@@ -104,26 +104,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         press: false,
         focus: false,
       })
-      const animationKey = Array.isArray(props.animation)
-        ? props.animation[0]
-        : props.animation
-
-      let animate: Object | undefined
-      let dontAnimate: Object | undefined
-
-      const animateOnly = props.animateOnly || ['transform', 'opacity']
-      if (animateOnly) {
-        animate = {}
-        dontAnimate = { ...style }
-        for (const key of animateOnly) {
-          if (!(key in style)) continue
-          animate[key] = style[key]
-          delete dontAnimate[key]
-        }
-      } else {
-        animate = { ...style }
-        dontAnimate = {}
-      }
+      const [animationKey, transitionOverride] = [].concat(props.animation)
 
       // without this, the driver breaks on native
       // stringifying -> parsing fixes that
@@ -131,12 +112,25 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
       const isExiting = Boolean(presence?.[1])
       const sendExitComplete = presence?.[1]
-      const transition = animations[animationKey as keyof typeof animations]
+      const transition = Object.assign(
+        {},
+        animations[animationKey as keyof typeof animations],
+        transitionOverride
+      )
 
       const onDidAnimateCombined = useCallback(() => {
         onDidAnimate?.()
         sendExitComplete?.()
       }, [])
+
+      const animateOnly = props.animateOnly || ['transform', 'opacity']
+      const dontAnimate = { ...style }
+      for (const key of animateOnly) {
+        if (key in style) {
+          delete dontAnimate[key]
+        }
+      }
+      const animateOnlyString = animateOnly.join(',')
 
       const animateWithPseudos = useDerivedValue<any>(() => {
         let final = Object.assign({}, styles)
@@ -155,8 +149,29 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           final = Object.assign(final, pseudos.focusStyle)
         }
 
+        const animatesOnly = animateOnlyString.split(',')
+
+        Object.keys(final).forEach((key) => {
+          if (!animatesOnly.includes(key)) {
+            delete final[key]
+          }
+        })
+
+        if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log(`Moti animation:`, {
+            animate: final,
+            transition,
+            styles,
+            moti,
+            dontAnimate,
+            isExiting,
+            animateStr,
+          })
+        }
+
         return final
-      }, [pseudoState, pseudos, styles])
+      }, [pseudoState, pseudos, styles, animateOnlyString])
 
       const moti = useMotify({
         animate: isExiting ? undefined : animateWithPseudos,
@@ -166,19 +181,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
       })
-
-      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log(`Moti animation:`, {
-          animate,
-          transition,
-          styles,
-          moti,
-          dontAnimate,
-          isExiting,
-          animateStr,
-        })
-      }
 
       return {
         style: [dontAnimate, moti.style],
