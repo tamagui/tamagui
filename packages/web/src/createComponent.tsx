@@ -975,8 +975,6 @@ export function createComponent<
       time.print()
     }
 
-    if (props.testID?.includes('moti')) console.log('rendered...')
-
     return content
   })
 

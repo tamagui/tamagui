@@ -142,23 +142,18 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         let final = Object.assign({}, styles)
 
         const { hover: hovered, press: pressed, focus: focused } = pseudoState.value
-        console.log('[moti] animateWithPseudos', pseudoState.value, transition)
 
         if (hovered && pseudos?.hoverStyle) {
-          console.log('[moti] [hover]', pseudos.hoverStyle)
           final = Object.assign(final, pseudos.hoverStyle)
         }
 
         if (pressed && pseudos?.pressStyle) {
-          console.log('[moti] [press]', pseudos.pressStyle)
           final = Object.assign(final, pseudos.pressStyle)
         }
 
         if (focused && pseudos?.focusStyle) {
           final = Object.assign(final, pseudos.focusStyle)
         }
-
-        console.log('[moti] [final]', final)
 
         return final
       }, [pseudoState, pseudos, styles])
