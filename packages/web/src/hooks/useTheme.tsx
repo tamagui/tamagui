@@ -79,7 +79,7 @@ export const useThemeWithState = (
         )}. Themes given to tamagui are: ${Object.keys(getConfig().themes)}`
       )
     }
-    throw `❌`
+    throw `❌ 1`
   }
 
   const themeProxied = useMemo(() => {
@@ -178,7 +178,7 @@ export const useChangeThemeEffect = (
   const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (disable) {
-    if (!parentManager) throw `❌`
+    if (!parentManager) throw `❌ 2`
     return {
       isNewTheme: false,
       state: parentManager.state,
@@ -281,7 +281,7 @@ export const useChangeThemeEffect = (
   }
 
   if (isInversingOnMount) {
-    if (!parentManager) throw '❌'
+    if (!parentManager) throw '❌ 3'
     return {
       isNewTheme: false,
       themeManager: parentManager,

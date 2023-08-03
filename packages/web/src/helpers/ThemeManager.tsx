@@ -57,7 +57,7 @@ export class ThemeManager {
           `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
         )
       }
-      throw `❌`
+      throw `❌ 0`
     }
 
     // no change no props

@@ -1,5 +1,5 @@
 const lightShadowColor = 'rgba(0,0,0,0.04)'
-const lightShadowColorStrong = 'rgba(0,0,0,0.1)'
+const lightShadowColorStrong = 'rgba(0,0,0,0.085)'
 const darkShadowColor = 'rgba(0,0,0,0.2)'
 const darkShadowColorStrong = 'rgba(0,0,0,0.3)'
 

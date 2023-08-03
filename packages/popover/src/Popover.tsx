@@ -228,27 +228,6 @@ function PopoverContentPortal(props: PopoverContentTypeProps) {
   const zIndex = props.zIndex ?? 150_000
   const context = usePopoverContext()
   const popperContext = usePopperContext()
-
-  // Portal the contents and add a transparent bg overlay to handle dismiss on native
-  return (
-    <Portal zIndex={zIndex}>
-      <PopoverContentPortalContents
-        popperContext={popperContext}
-        context={context}
-        {...props}
-      />
-    </Portal>
-  )
-}
-
-function PopoverContentPortalContents({
-  context,
-  popperContext,
-  ...props
-}: PopoverContentTypeProps & {
-  context: PopoverContextValue
-  popperContext: PopperContextValue
-}) {
   const themeName = useThemeName()
 
   let contents = props.children
@@ -262,22 +241,19 @@ function PopoverContentPortalContents({
     )
   }
 
+  // Portal the contents and add a transparent bg overlay to handle dismiss on native
   return (
-    <Theme forceClassName name={themeName}>
-      {React.useMemo(() => {
-        return (
-          <>
-            {!!context.open && !context.breakpointActive && (
-              <YStack
-                fullscreen
-                onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-              />
-            )}
-            {contents}
-          </>
-        )
-      }, [props.children, popperContext, context])}
-    </Theme>
+    <Portal zIndex={zIndex}>
+      <Theme forceClassName name={themeName}>
+        {!!context.open && !context.breakpointActive && (
+          <YStack
+            fullscreen
+            onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+          />
+        )}
+        {contents}
+      </Theme>
+    </Portal>
   )
 }
 

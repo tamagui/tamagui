@@ -250,6 +250,12 @@ export async function watchTamaguiConfig(tamaguiOptions: TamaguiOptions) {
     throw new Error(`No config`)
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    return {
+      dispose() {},
+    }
+  }
+
   const disposeConfigWatcher = await esbuildWatchFiles(
     options.tamaguiOptions.config,
     () => {

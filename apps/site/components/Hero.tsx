@@ -229,7 +229,7 @@ const HeroContents = memo(function HeroContents() {
                 bw={2}
                 mx="$2"
                 tabIndex="0"
-                elevation="$2"
+                elevation="$1"
                 pressStyle={{
                   elevation: '$0',
                 }}
@@ -253,7 +253,7 @@ const HeroContents = memo(function HeroContents() {
                 bw={2}
                 mx="$2"
                 tabIndex="0"
-                elevation="$2"
+                elevation="$1"
                 letterSpacing={-2}
                 pressStyle={{
                   elevation: '$0',
