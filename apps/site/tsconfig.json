@@ -11,9 +11,6 @@
       "@tamagui/*": [
         "../../packages/*"
       ],
-      "@takeout/*": [
-        "../../takeout/*"
-      ],
       "@components/*": [
         "./components/*"
       ],

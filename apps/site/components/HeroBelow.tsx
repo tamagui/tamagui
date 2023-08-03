@@ -36,7 +36,17 @@ const TitleLink = ({ href, children, ...props }: any) => {
 export const HeroBelow = memo(() => {
   return (
     <>
-      <YStack pos="relative" zi={1000} elevation="$4" py="$4" pt="$6" pb="$10">
+      <YStack
+        pos="relative"
+        zi={1000}
+        elevation="$4"
+        $theme-light={{
+          elevation: '$1',
+        }}
+        py="$4"
+        pt="$6"
+        pb="$10"
+      >
         <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
 
         <XStack pos="absolute" als="center" y={-45}>

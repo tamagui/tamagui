@@ -62,12 +62,9 @@ export const Input = TamaguiInput.styleable<
 >(function MyInput({ ...props }, ref) {
   const parentTheme = useThemeName()
 
-  console.warn('why render me?')
-
   return (
     <TextInput
       unstyled
-      debug="verbose"
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
       testID={props.testID ?? props.id}
       {...props}

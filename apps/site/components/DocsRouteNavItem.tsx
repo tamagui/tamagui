@@ -5,7 +5,7 @@ import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
-export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
+export const DocsRouteNavItem = function DocsRouteNavItem({
   children,
   active,
   href,
@@ -84,4 +84,4 @@ export const DocsRouteNavItem = React.memo(function DocsRouteNavItem({
       </XStack>
     </NextLink>
   )
-})
+}

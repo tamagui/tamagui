@@ -173,6 +173,9 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
           elevation="$1"
           shadowRadius={6}
           shadowOpacity={0.0025}
+          $theme-light={{
+            elevation: '$0',
+          }}
         />
 
         <YStack $xs={{ display: 'none' }}>
