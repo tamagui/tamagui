@@ -6,7 +6,7 @@
  *
  * @flow
  */
-declare const propsToAriaRole: ({ accessibilityRole }: {
+declare const propsToAriaRole: ({ accessibilityRole, }: {
     accessibilityRole?: string | undefined;
 }) => string | void;
 export default propsToAriaRole;

@@ -52,7 +52,7 @@ export function validate(obj: Object) {
 
     if (typeof value === 'string' && value.indexOf('!important') > -1) {
       error(
-        `Invalid style declaration "${prop}:${value}". Values cannot include "!important"`,
+        `Invalid style declaration "${prop}:${value}". Values cannot include "!important"`
       )
       isInvalid = true
     } else {

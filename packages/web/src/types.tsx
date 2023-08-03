@@ -2030,9 +2030,7 @@ export type ModifyTamaguiComponentStyleProps<
  * Narrow copied from ts-toolbelt
  * https://github.com/millsp/ts-toolbelt/blob/master/sources/Function/Narrow.ts
  */
-export type Try<A1 extends any, A2 extends any, Catch = never> = A1 extends A2
-  ? A1
-  : Catch
+export type Try<A1, A2, Catch = never> = A1 extends A2 ? A1 : Catch
 
 type Narrowable = string | number | bigint | boolean
 
@@ -2043,7 +2041,7 @@ type NarrowRaw<A> =
       [K in keyof A]: A[K] extends Function ? A[K] : NarrowRaw<A[K]>
     }
 
-export type Narrow<A extends any> = Try<A, [], NarrowRaw<A>>
+export type Narrow<A> = Try<A, [], NarrowRaw<A>>
 
 export type NativePlatform = 'web' | 'mobile' | 'android' | 'ios'
 export type NativeValue<Platform extends NativePlatform = NativePlatform> =

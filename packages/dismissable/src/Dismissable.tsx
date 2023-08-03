@@ -1,9 +1,9 @@
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
-import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/core'
+import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'

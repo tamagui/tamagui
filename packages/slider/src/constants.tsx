@@ -5,8 +5,7 @@ import { Direction, SliderContextValue } from './types'
 
 export const SLIDER_NAME = 'Slider'
 
-export const [createSliderContext, createSliderScope] =
-  createContextScope(SLIDER_NAME)
+export const [createSliderContext, createSliderScope] = createContextScope(SLIDER_NAME)
 
 export const [SliderProvider, useSliderContext] =
   createSliderContext<SliderContextValue>(SLIDER_NAME)

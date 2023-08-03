@@ -39,7 +39,7 @@ class Linking {
    */
   addEventListener: OnOpenCallback | GenericCallback = (
     event: string,
-    callback: Callback,
+    callback: Callback
   ) => {
     if (!this._eventCallbacks[event]) {
       this._eventCallbacks[event] = [callback]
@@ -54,11 +54,11 @@ class Linking {
    */
   removeEventListener: OnOpenCallback | GenericCallback = (
     event: string,
-    callback: Callback,
+    callback: Callback
   ) => {
     const callbacks = this._eventCallbacks[event]
     const filteredCallbacks = callbacks.filter(
-      (c) => c.toString() !== callback.toString(),
+      (c) => c.toString() !== callback.toString()
     )
     this._eventCallbacks[event] = filteredCallbacks
   }
@@ -91,10 +91,7 @@ class Linking {
   }
 
   _validateURL(url: string) {
-    invariant(
-      typeof url === 'string',
-      'Invalid URL: should be a string. Was: ' + url,
-    )
+    invariant(typeof url === 'string', 'Invalid URL: should be a string. Was: ' + url)
     invariant(url, 'Invalid URL: cannot be empty')
   }
 }

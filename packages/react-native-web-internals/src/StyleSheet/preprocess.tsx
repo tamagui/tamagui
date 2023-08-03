@@ -57,9 +57,9 @@ export const createTextShadowValue = (style: Object): void | string => {
 export const preprocess = <
   T extends {
     [K in string]: any
-  },
+  }
 >(
-  originalStyle: T,
+  originalStyle: T
 ): T => {
   const style = originalStyle || emptyObject
   const nextStyle = {}

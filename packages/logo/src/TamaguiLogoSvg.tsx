@@ -1,5 +1,5 @@
 export const TamaguiIconSvg = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width={424} height={394}  viewBox="0 0 424 394" {...props}>
+  <svg width={424} height={394} viewBox="0 0 424 394" {...props}>
     <g fill="none" fillRule="evenodd">
       <path
         d="M310.786 30v28.75H372.5l-.001 28.75H426.5v86.25h-54.001l.001 28.75h-61.714v115h-28.929V375h-202.5v-57.5H21.5v-230h57.857V30h231.429Z"

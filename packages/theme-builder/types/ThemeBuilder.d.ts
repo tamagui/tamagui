@@ -11,7 +11,7 @@ type GetGeneratedThemeFromTemplate<Template> = {
     [key in keyof Template]: string;
 };
 type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends string ? P extends keyof Themes ? Themes[P] : GetParentName<P> extends keyof Themes ? Themes[GetParentName<P>] : GetParentName<GetParentName<P>> extends keyof Themes ? Themes[GetParentName<GetParentName<P>>] : GetParentName<GetParentName<GetParentName<P>>> extends keyof Themes ? Themes[GetParentName<GetParentName<GetParentName<P>>>] : never : never;
-type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends {
+type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
     theme: infer T;
 } ? T : TD extends {
     parent: infer P;

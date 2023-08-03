@@ -1,2 +1,2 @@
-const debuggerAppPath: string;
-export default debuggerAppPath;
+const debuggerAppPath: string
+export default debuggerAppPath

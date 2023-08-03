@@ -190,7 +190,7 @@ describe('StyleSheet', () => {
             opacity: 'opacity-05',
             width: 'width-200',
           },
-        ]),
+        ])
       ).toMatchInlineSnapshot(`
         [
           "position-absolute opacity-05 width-200",
@@ -220,7 +220,7 @@ describe('StyleSheet', () => {
               width: 'width-200',
             },
           ],
-        ]),
+        ])
       ).toMatchInlineSnapshot(`
         [
           "borderWidth-0 borderColor-red display-flex position-absolute opacity-05 width-200",
@@ -328,12 +328,9 @@ describe('StyleSheet', () => {
       `)
       expect(
         StyleSheet(
-          [
-            inlineStyle,
-            { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 },
-          ],
-          { writingDirection },
-        ),
+          [inlineStyle, { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 }],
+          { writingDirection }
+        )
       ).toMatchInlineSnapshot(`
         [
           "",
@@ -348,7 +345,7 @@ describe('StyleSheet', () => {
       expect(
         StyleSheet([inlineStyle, { marginEnd: null, marginLeft: 11 }], {
           writingDirection,
-        }),
+        })
       ).toMatchInlineSnapshot(`
         [
           "",
@@ -377,14 +374,11 @@ describe('StyleSheet', () => {
       // logical wins
       expect(
         StyleSheet(
-          [
-            staticStyle,
-            { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 },
-          ],
+          [staticStyle, { marginLeft: 1, marginEnd: 0, marginStart: 0, marginRight: 11 }],
           {
             writingDirection,
-          },
-        ),
+          }
+        )
       ).toMatchInlineSnapshot(`
         [
           "r-right-1bnbe1j r-textAlign-1ff274t",
@@ -398,7 +392,7 @@ describe('StyleSheet', () => {
       expect(
         StyleSheet([staticStyle, { marginEnd: null, marginLeft: 11 }], {
           writingDirection,
-        }),
+        })
       ).toMatchInlineSnapshot(`
         [
           "r-right-1bnbe1j r-textAlign-1ff274t",

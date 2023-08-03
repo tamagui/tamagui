@@ -92,7 +92,11 @@ export function evaluateAstNode(
     return null
   }
 
-  if (t.isNumericLiteral(exprNode) || t.isStringLiteral(exprNode) || t.isBooleanLiteral(exprNode)) {
+  if (
+    t.isNumericLiteral(exprNode) ||
+    t.isStringLiteral(exprNode) ||
+    t.isBooleanLiteral(exprNode)
+  ) {
     // In the interest of representing the "evaluated" prop
     // as the user intended, we support negative null. Why not.
     return exprNode.value
@@ -100,13 +104,21 @@ export function evaluateAstNode(
 
   if (t.isBinaryExpression(exprNode)) {
     if (exprNode.operator === '+') {
-      return evaluateAstNode(exprNode.left, evalFn) + evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) + evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '-') {
-      return evaluateAstNode(exprNode.left, evalFn) - evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) - evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '*') {
-      return evaluateAstNode(exprNode.left, evalFn) * evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) * evaluateAstNode(exprNode.right, evalFn)
+      )
     } else if (exprNode.operator === '/') {
-      return evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
+      return (
+        evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
+      )
     }
   }
 

@@ -14,7 +14,7 @@ import useStable from '../useStable/index'
 type Callback = null | ((arg0: any) => void)
 type AddListener = (
   target: EventTarget,
-  listener: null | ((arg0: any) => void),
+  listener: null | ((arg0: any) => void)
 ) => () => void
 
 /**
@@ -31,7 +31,7 @@ export default function useEvent(
   options?: {
     capture?: boolean
     passive?: boolean
-  } | null,
+  } | null
 ): AddListener {
   const targetListeners = useStable(() => new Map())
 

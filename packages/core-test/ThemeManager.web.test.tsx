@@ -172,6 +172,7 @@ describe('ThemeManager', () => {
       {
         "className": "t_dark",
         "componentName": undefined,
+        "inverse": undefined,
         "name": "dark",
         "parentName": "",
         "theme": {

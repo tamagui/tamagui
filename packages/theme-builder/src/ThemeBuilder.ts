@@ -40,7 +40,7 @@ type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends 
     : never
   : never
 
-type GetGeneratedTheme<TD extends any, S extends ThemeBuilderState> = TD extends {
+type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
   theme: infer T
 }
   ? T

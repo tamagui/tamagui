@@ -10,11 +10,7 @@ import { highlightWord } from './highlightWord'
 refractor.register(tsx)
 refractor.register(css)
 
-export function codeToHTML(
-  source: string,
-  language: 'tsx' | 'css' | string,
-  line = '0',
-) {
+export function codeToHTML(source: string, language: 'tsx' | 'css' | string, line = '0') {
   let result: any = refractor.highlight(source, language)
   result = highlightLine(result, rangeParser(line))
   result = highlightWord(result)

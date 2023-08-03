@@ -42,9 +42,18 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
   const { variants } = staticConfig
 
   // prettier-ignore
-  if (process.env.NODE_ENV === 'development' && fontFamily && fontFamily[0] === '$' && !(fontFamily in conf.fontsParsed)) {
+  if (
+    process.env.NODE_ENV === "development" &&
+    fontFamily &&
+    fontFamily[0] === "$" &&
+    !(fontFamily in conf.fontsParsed)
+  ) {
     // prettier-ignore
-    console.warn(`Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(', ')}`)
+    console.warn(
+      `Warning: no fontFamily "${fontFamily}" found in config: ${Object.keys(conf.fontsParsed).join(
+        ", ",
+      )}`,
+    );
   }
 
   if (variants && key in variants && value != null) {

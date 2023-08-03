@@ -372,7 +372,9 @@ export function createComponent<
 
       if (debugProp && debugProp !== 'profile') {
         // prettier-ignore
-        const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
+        const name = `${
+          componentName || Component?.displayName || Component?.name || "[Unnamed Component]"
+        }`;
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
         const dataIs = propsIn['data-is'] || ''
         const banner = `${name}${dataIs ? ` ${dataIs}` : ''} ${type} id ${id}`
@@ -390,7 +392,22 @@ export function createComponent<
           )
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ propsIn, props, state, staticConfig, elementType, themeStateProps, styledContext: { contextProps: styledContextProps, overriddenContextProps }, presence, isAnimated, isHOC, hasAnimationProp, useAnimations, propsInOrder: Object.keys(propsIn), propsOrder: Object.keys(props) })
+          console.log({
+            propsIn,
+            props,
+            state,
+            staticConfig,
+            elementType,
+            themeStateProps,
+            styledContext: { contextProps: styledContextProps, overriddenContextProps },
+            presence,
+            isAnimated,
+            isHOC,
+            hasAnimationProp,
+            useAnimations,
+            propsInOrder: Object.keys(propsIn),
+            propsOrder: Object.keys(props),
+          });
           console.groupEnd()
         }
       }
@@ -480,7 +497,7 @@ export function createComponent<
         console.groupCollapsed('>>>')
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('props in', propsIn, 'mapped to', props, 'in order', Object.keys(props))
+        console.log("props in", propsIn, "mapped to", props, "in order", Object.keys(props));
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
         // rome-ignore lint/nursery/noConsoleLog: ok
@@ -892,7 +909,35 @@ export function createComponent<
         if (typeof window !== 'undefined') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({ state, styleProps, themeState, isAnimated, isAnimatedReactNativeWeb, defaultProps, viewProps, splitStyles, animationStyles, handlesPressEvents, willBeAnimated, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, pseudos, content, shouldAvoidClasses, animation: props.animation, style: splitStylesStyle, staticConfig, tamaguiConfig, shouldForcePseudo, elementType, initialState, classNames })
+          console.log({
+            state,
+            styleProps,
+            themeState,
+            isAnimated,
+            isAnimatedReactNativeWeb,
+            defaultProps,
+            viewProps,
+            splitStyles,
+            animationStyles,
+            handlesPressEvents,
+            willBeAnimated,
+            isStringElement,
+            classNamesIn: props.className?.split(" "),
+            classNamesOut: viewProps.className?.split(" "),
+            events,
+            shouldAttach,
+            pseudos,
+            content,
+            shouldAvoidClasses,
+            animation: props.animation,
+            style: splitStylesStyle,
+            staticConfig,
+            tamaguiConfig,
+            shouldForcePseudo,
+            elementType,
+            initialState,
+            classNames,
+          });
         }
         console.groupEnd()
         console.groupEnd()

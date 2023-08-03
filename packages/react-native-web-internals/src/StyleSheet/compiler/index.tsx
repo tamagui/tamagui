@@ -219,8 +219,7 @@ export function classic(style: Style, name: string): CompilerOutput {
   const selector = `.${identifier}`
   let animationName
   if (animationKeyframes != null) {
-    const [animationNames, keyframesRules] =
-      processKeyframesValue(animationKeyframes)
+    const [animationNames, keyframesRules] = processKeyframesValue(animationKeyframes)
     animationName = animationNames.join(',')
     compiledRules.push(...keyframesRules)
   }
@@ -237,7 +236,7 @@ export function classic(style: Style, name: string): CompilerOutput {
  */
 export function inline(
   originalStyle: Style,
-  isRTL?: boolean,
+  isRTL?: boolean
 ): {
   [K in string]: unknown
 } {
@@ -280,9 +279,7 @@ export function inline(
         if (typeof val === 'string') {
           const valuePolyfill = PROPERTIES_I18N[val]
           if (valuePolyfill != null) {
-            originalValues[i] = isRTL
-              ? PROPERTIES_FLIP[valuePolyfill]
-              : valuePolyfill
+            originalValues[i] = isRTL ? PROPERTIES_FLIP[valuePolyfill] : valuePolyfill
           }
         }
       })
@@ -307,7 +304,7 @@ export function inline(
  */
 export function stringifyValueWithProperty(
   value: Value,
-  property: string | null,
+  property: string | null
 ): string {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
   const normalizedValue = normalizeValueWithProperty(value, property)
@@ -343,7 +340,7 @@ function createAtomicRules(identifier: string, property, value): Rules {
         `${selector}::-webkit-input-placeholder${block}`,
         `${selector}::-moz-placeholder${block}`,
         `${selector}:-ms-input-placeholder${block}`,
-        `${selector}::placeholder${block}`,
+        `${selector}::placeholder${block}`
       )
       break
     }

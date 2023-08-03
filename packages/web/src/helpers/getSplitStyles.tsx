@@ -190,7 +190,15 @@ export const getSplitStyles: StyleSplitter = (
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ props, staticConfig, shouldDoClasses, styleProps, componentState, styleState, theme: { ...theme } })
+    console.log({
+      props,
+      staticConfig,
+      shouldDoClasses,
+      styleProps,
+      componentState,
+      styleState,
+      theme: { ...theme },
+    });
     console.groupEnd()
   }
 
@@ -531,7 +539,14 @@ export const getSplitStyles: StyleSplitter = (
       if (isClient) {
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ variants, variant: variants?.[keyInit], isVariant, isHOCShouldPassThrough, curProps: { ...styleState.curProps }, parentStaticConfig })
+        console.log({
+          variants,
+          variant: variants?.[keyInit],
+          isVariant,
+          isHOCShouldPassThrough,
+          curProps: { ...styleState.curProps },
+          parentStaticConfig,
+        });
       }
       console.groupEnd()
     }
@@ -603,7 +618,18 @@ export const getSplitStyles: StyleSplitter = (
       if (!isServer && isDevTools) {
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({ expanded, styleProps, componentState, isVariant, variant: variants?.[keyInit], shouldPassProp, isHOCShouldPassThrough, theme, usedKeys: { ...usedKeys }, curProps: { ...styleState.curProps } })
+        console.log({
+          expanded,
+          styleProps,
+          componentState,
+          isVariant,
+          variant: variants?.[keyInit],
+          shouldPassProp,
+          isHOCShouldPassThrough,
+          theme,
+          usedKeys: { ...usedKeys },
+          curProps: { ...styleState.curProps },
+        });
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
           ...style,
@@ -692,10 +718,10 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed('pseudo (classes)', key)
+            console.groupCollapsed("pseudo (classes)", key);
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log({ pseudoStyleObject, pseudoStyles })
+            console.log({ pseudoStyleObject, pseudoStyles });
             console.groupEnd()
           }
 
@@ -732,10 +758,16 @@ export const getSplitStyles: StyleSplitter = (
 
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.groupCollapsed('pseudo', key, { isDisabled })
+            console.groupCollapsed("pseudo", key, { isDisabled });
             // prettier-ignore
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log(pseudoStyleObject, { isDisabled, descriptorKey, descriptor, pseudoState, state: { ...componentState } })
+            console.log(pseudoStyleObject, {
+              isDisabled,
+              descriptorKey,
+              descriptor,
+              pseudoState,
+              state: { ...componentState },
+            });
             console.groupEnd()
           }
 
@@ -764,7 +796,12 @@ export const getSplitStyles: StyleSplitter = (
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 // prettier-ignore
                 // rome-ignore lint/nursery/noConsoleLog: <explanation>
-                console.log('    subKey', pkey, shouldMerge, { importance, curImportance, pkey, val })
+                console.log("    subKey", pkey, shouldMerge, {
+                  importance,
+                  curImportance,
+                  pkey,
+                  val,
+                });
               }
             }
           }
@@ -811,7 +848,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses })
+          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses });
         }
 
         // for some reason 'space' in val upsetting next ssr during prod build
@@ -1143,7 +1180,15 @@ export const getSplitStyles: StyleSplitter = (
     if (isDevTools) {
       console.groupCollapsed('  🔹 ===>')
       // prettier-ignore
-      const logs = { ...result, componentState, transforms, viewProps, viewPropsOrder: Object.keys(viewProps), rulesToInsert, parentSplitStyles }
+      const logs = {
+        ...result,
+        componentState,
+        transforms,
+        viewProps,
+        viewPropsOrder: Object.keys(viewProps),
+        rulesToInsert,
+        parentSplitStyles,
+      };
       for (const key in logs) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(key, logs[key])

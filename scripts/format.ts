@@ -3,6 +3,8 @@ import { statSync } from 'node:fs'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
+import pMap from 'p-map'
+
 import { spawnify } from './spawnify'
 
 const exec = promisify(proc.exec)
@@ -16,8 +18,15 @@ async function format() {
     location: string
   }[]
 
-  await Promise.all(
-    packagePaths.map(async ({ location, name }) => {
+  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  console.log(` formatting: ${packagePaths.map((x) => x.name).join('\n')}`)
+
+  const configPath = join(__dirname, '..', '.prettierrc')
+  const ignorePath = join(__dirname, '..', '.prettierignore')
+
+  await pMap(
+    packagePaths,
+    async ({ location, name }) => {
       if (location.startsWith(`apps`) || location.startsWith(`starters`)) {
         return
       }
@@ -31,13 +40,21 @@ async function format() {
       }
 
       try {
-        await spawnify(`prettier --write \"**/*.{ts,tsx}\"`, {
-          cwd,
-        })
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log(`Prettying: ${cwd}`)
+        await spawnify(
+          `prettier --ignore-path ${ignorePath} --config ${configPath} --write src/**/*.{ts,tsx}`,
+          {
+            cwd,
+          }
+        )
       } catch (err) {
         // rome-ignore lint/nursery/noConsoleLog: ok
         console.log(`err`, location, err)
       }
-    })
+    },
+    {
+      concurrency: 10,
+    }
   )
 }

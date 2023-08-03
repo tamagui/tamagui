@@ -25,7 +25,7 @@ export default function renderApplication<Props extends Object>(
     initialProps: Props
     mode: 'concurrent' | 'legacy'
     rootTag: any
-  },
+  }
 ) {
   const { hydrate: shouldHydrate, initialProps, mode, rootTag } = options
   const renderFn = shouldHydrate
@@ -39,21 +39,17 @@ export default function renderApplication<Props extends Object>(
   invariant(rootTag, 'Expect to have a valid rootTag, instead got ', rootTag)
 
   return renderFn(
-    <AppContainer
-      WrapperComponent={WrapperComponent}
-      ref={callback}
-      rootTag={rootTag}
-    >
+    <AppContainer WrapperComponent={WrapperComponent} ref={callback} rootTag={rootTag}>
       <RootComponent {...initialProps} />
     </AppContainer>,
-    rootTag,
+    rootTag
   )
 }
 
 export function getApplication(
   RootComponent: ComponentType<Object>,
   initialProps: Object,
-  WrapperComponent?: FunctionComponent<any> | null,
+  WrapperComponent?: FunctionComponent<any> | null
 ): {
   element: ReactNode
   getStyleElement: (object: Object) => ReactNode

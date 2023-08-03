@@ -245,7 +245,14 @@ export const useChangeThemeEffect = (
         if (process.env.NODE_ENV === 'development' && props.debug) {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(` 🔸 onChange`, themeManager.id, { force, doUpdate, props, name, manager, keys })
+          console.log(` 🔸 onChange`, themeManager.id, {
+            force,
+            doUpdate,
+            props,
+            name,
+            manager,
+            keys,
+          });
         }
         if (doUpdate) {
           setThemeState(createState)
