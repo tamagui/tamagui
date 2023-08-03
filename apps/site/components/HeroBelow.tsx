@@ -40,9 +40,9 @@ export const HeroBelow = memo(() => {
         pos="relative"
         zi={1000}
         elevation="$4"
-        $theme-light={{
-          elevation: '$1',
-        }}
+        // $theme-light={{
+        //   elevation: '$1',
+        // }}
         py="$4"
         pt="$6"
         pb="$10"
