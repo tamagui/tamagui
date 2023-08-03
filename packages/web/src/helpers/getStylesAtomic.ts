@@ -53,6 +53,7 @@ export const generateAtomicStyles = (
   const out: StyleObject[] = []
   for (const key in style) {
     const value = style[key]
+    if (key in pseudoDescriptors) continue
     if (value == null) continue
     const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
