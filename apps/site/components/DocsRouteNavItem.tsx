@@ -14,7 +14,7 @@ export const DocsRouteNavItem = function DocsRouteNavItem({
 }: NavItemProps) {
   const isExternal = href.startsWith('http')
   return (
-    <NextLink href={href}>
+    <NextLink prefetch={false} href={href}>
       <XStack
         className="docs-nav-item all ease-in ms150"
         {...props}

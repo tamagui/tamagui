@@ -12,7 +12,7 @@ import { IconStack } from './IconStack'
 
 const TitleLink = ({ href, children, ...props }: any) => {
   return (
-    <NextLink href={href}>
+    <NextLink prefetch={false} href={href}>
       <H3 cursor="pointer" color="$color" my="$2">
         <CodeInline
           cursor="pointer"

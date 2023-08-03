@@ -67,19 +67,19 @@ const HeroSubTitle = memo(() => {
   const [hovered, setHovered] = useHeroHovered()
   return (
     <Subtitle>
-      <NextLink href="/docs/core/configuration">
+      <NextLink prefetch={false} href="/docs/core/configuration">
         <Tag theme="green_alt2" onHoverIn={() => setHovered(0)} active={hovered === 0}>
           styles
         </Tag>
       </NextLink>
       ,{' '}
-      <NextLink href="/docs/intro/why-a-compiler">
+      <NextLink prefetch={false} href="/docs/intro/why-a-compiler">
         <Tag theme="blue_alt2" onHoverIn={() => setHovered(1)} active={hovered === 1}>
           optimizing compiler
         </Tag>
       </NextLink>{' '}
       &{' '}
-      <NextLink href="/docs/components/stacks">
+      <NextLink prefetch={false} href="/docs/components/stacks">
         <Tag theme="purple_alt2" onHoverIn={() => setHovered(2)} active={hovered === 2}>
           UI&nbsp;kit
         </Tag>
