@@ -1,13 +1,14 @@
 import { ErrorBoundary } from '@components/ErrorBoundary'
 import { PoweredByStripeIcon } from '@components/PoweredByStripeIcon'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
+import { getTakeoutPriceInfo } from '@lib/getProductInfo'
 import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
 import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, PlayCircle, X } from '@tamagui/lucide-icons'
+import { Check, Dot, Hammer, Info, PlayCircle, X } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -49,6 +50,7 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
+  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -66,6 +68,8 @@ import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
 const points = {
+  // this one's only shown on modal
+  modal: ['Lifetime rights'],
   monorepo: [
     'Well-isolated configuration.',
     '100% shared code between web and native.',
@@ -262,7 +266,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       className="ease-in ms300 all"
       pe="none"
       pos="relative"
-      scale={1.15}
+      scale={1}
       $xxs={{
         scale: 0.35,
       }}
@@ -332,14 +336,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
             {/* alt color slices */}
 
-            {/* <ThemeTintAlt offset={1}>
+            <ThemeTintAlt offset={3}>
               <TAKEOUT
                 className="clip-wave mix-blend"
                 pos="absolute"
                 color="$color8"
                 scale={1}
               />
-            </ThemeTintAlt> */}
+            </ThemeTintAlt>
           </ThemeTint>
         )}
 
@@ -604,17 +608,9 @@ export default function TakeoutPage({
                 p: '$4',
               }}
             >
-              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={20}>
+              <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
               </YStack>
-              {/* <YStack
-                className="mix-blend"
-                fullscreen
-                bw={1}
-                boc="$color"
-                bc="$background"
-                o={0.24}
-              /> */}
 
               <YStack f={1} space="$5">
                 <MunroP
@@ -721,7 +717,7 @@ export default function TakeoutPage({
                   </div>
                 </YStack>
 
-                <XStack fw="wrap" gap="$3" mx="$-8" ai="center" jc="center">
+                <XStack fw="wrap" gap="$3" mx="$-10" ai="center" jc="center">
                   <TakeoutCard
                     theme="orange"
                     title="Monorepo"
@@ -1188,6 +1184,9 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
   const noProductSelected = selectedProductsIds.length === 0
   const showTeamSelect = selectedProductsIds.includes(starter.id)
 
+  const takeoutPriceInfo = getTakeoutPriceInfo(
+    starter.prices.find((price) => price.id === starterPriceId)?.description ?? ''
+  )
   return (
     <Dialog
       modal
@@ -1330,10 +1329,115 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <ScrollView space $gtSm={{ maw: '55%' }} ov="hidden">
-                  <YStack space="$4">
-                    <Points />
+                <ScrollView space $gtSm={{ w: '55%' }} ov="hidden">
+                  <YStack
+                    separator={<Separator o={0.35} />}
+                    borderWidth="$0.5"
+                    borderRadius="$4"
+                    borderColor="$borderColor"
+                  >
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6" fow="bold">
+                          Lifetime access + 1 year of updates
+                        </Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          You own the code for life, with updates for a year
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">✅</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">License Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Number of people that are allowed to develop on the starter
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">Public Releases</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Number public domains deployed to
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.publicDomainUses}
+                        </Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">Play Store Apps</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Number of Android apps to publish
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.androidAppsPublished}
+                        </Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">App Store Apps</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Number of iOS apps to publish
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.iosAppsPublished}
+                        </Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">Discord Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Access to the Takeout channel
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">Discord Private Channel</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Private chat for your team only
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">
+                          {takeoutPriceInfo.hasDiscordPrivateChannels ? '✅' : '❌'}
+                        </Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$3" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">GitHub Seats</Paragraph>
+                        <Paragraph size="$2" theme="alt2">
+                          Direct access to source code and issues
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">{takeoutPriceInfo.githubSeats}</Paragraph>
+                      </XStack>
+                    </XStack>
                   </YStack>
+                  {/* <YStack space="$4">
+                    <Points />
+                  </YStack> */}
                 </ScrollView>
 
                 <YStack f={1} space="$4">
@@ -1410,7 +1514,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       </YStack>
                     </Unspaced>
 
-                    <Separator />
+                    {/* <Separator /> */}
 
                     <YStack pb="$8" px="$4" space>
                       <NextLink
@@ -1541,7 +1645,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
         <TakeoutCardFrame
           className="blur-medium"
           zi={1000}
-          maw={320}
+          maw={310}
           als="center"
           shadowRadius={30}
           shadowOffset={{ height: 20, width: 0 }}
@@ -2387,7 +2491,7 @@ const DiscountText = ({
     ? `${coupon.percent_off}% ${coupon.name}`
     : ''
   return (
-    <Theme reset>
+    <ThemeTintAlt offset={6}>
       <YStack m="auto" scale={1} $xs={{ scale: 1.2, rotate: '0deg' }} rotate="7deg">
         <YStack
           fullscreen
@@ -2422,7 +2526,7 @@ const DiscountText = ({
           </Paragraph>
         </YStack>
       </YStack>
-    </Theme>
+    </ThemeTintAlt>
   )
 }
 
@@ -2637,11 +2741,11 @@ const PromoVideo = () => {
       disableOptimization
       pos="absolute"
       t={200}
-      l={-300}
+      l={-250}
       pe={!loaded ? 'none' : 'auto'}
       zi={1000}
       o={loaded ? 1 : 0}
-      scale={!loaded ? 1 : 0.22}
+      scale={!loaded ? 0.5 : 0.22}
       rotate="-5deg"
       $sm={{
         dsp: 'none',
