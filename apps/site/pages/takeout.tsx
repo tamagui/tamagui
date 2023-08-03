@@ -336,14 +336,14 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
 
             {/* alt color slices */}
 
-            <ThemeTintAlt offset={3}>
+            {/* <ThemeTintAlt offset={3}>
               <TAKEOUT
                 className="clip-wave mix-blend"
                 pos="absolute"
                 color="$color8"
                 scale={1}
               />
-            </ThemeTintAlt>
+            </ThemeTintAlt> */}
           </ThemeTint>
         )}
 
@@ -1360,7 +1360,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    {/* <XStack px="$4" py="$3" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Public Releases</Paragraph>
                         <Paragraph size="$2" theme="alt2">
@@ -1377,7 +1377,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">Play Store Apps</Paragraph>
                         <Paragraph size="$2" theme="alt2">
-                          Number of Android apps to publish
+                          Number of public Android apps
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -1390,7 +1390,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">App Store Apps</Paragraph>
                         <Paragraph size="$2" theme="alt2">
-                          Number of iOS apps to publish
+                          Number of public iOS apps
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
@@ -1398,7 +1398,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                           {takeoutPriceInfo.iosAppsPublished}
                         </Paragraph>
                       </XStack>
-                    </XStack>
+                    </XStack> */}
                     <XStack px="$4" py="$3" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
@@ -1427,7 +1427,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       <YStack width="80%">
                         <Paragraph size="$6">GitHub Seats</Paragraph>
                         <Paragraph size="$2" theme="alt2">
-                          Direct access to source code and issues
+                          Open PRs and issues on the Github repo
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
