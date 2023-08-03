@@ -182,15 +182,9 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       return {
         style: [dontAnimate, moti.style],
-        updatePseudoState: useMemo(
-          // useCallback doesn't infer param types of optional functions 🤷‍♂️
-          // i tried: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/64606
-          // - fernando
-          () => (next) => {
-            pseudoState.value = Object.assign({}, pseudoState.value, next)
-          },
-          []
-        ),
+        updatePseudoState(next) {
+          pseudoState.value = Object.assign({}, pseudoState.value, next)
+        },
       }
     },
   }
