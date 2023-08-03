@@ -150,18 +150,6 @@ export interface PopoverContentTypeProps
 export const PopoverContent = PopperContentFrame.extractable(
   React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
     function PopoverContent(props: PopoverContentTypeProps, forwardedRef) {
-      return (
-        <PopoverContentPortal zIndex={props.zIndex}>
-          <PopoverContentInner {...props} ref={forwardedRef} />
-        </PopoverContentPortal>
-      )
-    }
-  )
-)
-
-const PopoverContentInner = React.memo(
-  React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
-    (props, forwardedRef) => {
       const {
         allowPinchZoom,
         trapFocus,
@@ -173,7 +161,6 @@ const PopoverContentInner = React.memo(
       const contentRef = React.useRef<any>(null)
       const composedRefs = useComposedRefs(forwardedRef, contentRef)
       const isRightClickOutsideRef = React.useRef(false)
-      const themeName = useThemeName()
 
       // aria-hide everything except the content (better supported equivalent to setting aria-modal)
       React.useEffect(() => {
@@ -183,8 +170,8 @@ const PopoverContentInner = React.memo(
       }, [context.open])
 
       return (
-        <Stack pointerEvents={context.open ? 'auto' : 'none'}>
-          <Theme forceClassName name={themeName}>
+        <PopoverContentPortal zIndex={props.zIndex}>
+          <Stack pointerEvents={context.open ? 'auto' : 'none'}>
             <PopoverContentImpl
               {...contentImplProps}
               disableRemoveScroll={disableRemoveScroll}
@@ -216,8 +203,8 @@ const PopoverContentInner = React.memo(
                 { checkDefaultPrevented: false }
               )}
             />
-          </Theme>
-        </Stack>
+          </Stack>
+        </PopoverContentPortal>
       )
     }
   )
@@ -254,17 +241,17 @@ function PopoverContentPortal(props: PopoverContentTypeProps) {
   )
 }
 
-const PopoverContentPortalContents = ({
+function PopoverContentPortalContents({
   context,
   popperContext,
   ...props
 }: PopoverContentTypeProps & {
   context: PopoverContextValue
   popperContext: PopperContextValue
-}) => {
+}) {
   const themeName = useThemeName()
 
-  let contents = React.useMemo(() => props.children, [props.children])
+  let contents = props.children
 
   // native doesnt support portals
   if (Platform.OS === 'android' || Platform.OS === 'ios') {
@@ -277,13 +264,19 @@ const PopoverContentPortalContents = ({
 
   return (
     <Theme forceClassName name={themeName}>
-      {!!context.open && !context.breakpointActive && (
-        <YStack
-          fullscreen
-          onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
-        />
-      )}
-      {contents}
+      {React.useMemo(() => {
+        return (
+          <>
+            {!!context.open && !context.breakpointActive && (
+              <YStack
+                fullscreen
+                onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+              />
+            )}
+            {contents}
+          </>
+        )
+      }, [props.children, popperContext, context])}
     </Theme>
   )
 }
@@ -321,7 +314,7 @@ export interface PopoverContentImplProps
 const PopoverContentImpl = React.forwardRef<
   PopoverContentImplElement,
   PopoverContentImplProps
->((props: PopoverContentImplProps, forwardedRef) => {
+>(function PopoverContentImpl(props: PopoverContentImplProps, forwardedRef) {
   const {
     trapFocus,
     onOpenAutoFocus,
@@ -341,7 +334,6 @@ const PopoverContentImpl = React.forwardRef<
   const { open, keepChildrenMounted } = context
   const popperContext = usePopperContext()
   const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
-  const [hasShownOnce, setHasShownOnce] = React.useState(false)
 
   const contents = React.useMemo(() => {
     return isWeb ? <div style={{ display: 'contents' }}>{children}</div> : children
@@ -349,9 +341,6 @@ const PopoverContentImpl = React.forwardRef<
 
   if (open && isFullyHidden) {
     setIsFullyHidden(false)
-  }
-  if (!open && isFullyHidden && !hasShownOnce) {
-    setHasShownOnce(true)
   }
 
   if (!keepChildrenMounted) {
