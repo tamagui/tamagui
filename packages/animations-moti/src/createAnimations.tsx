@@ -111,7 +111,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       let animate: Object | undefined
       let dontAnimate: Object | undefined
 
-      const animateOnly = props.animateOnly
+      const animateOnly = props.animateOnly || ['transform', 'opacity']
       if (animateOnly) {
         animate = {}
         dontAnimate = { ...style }
