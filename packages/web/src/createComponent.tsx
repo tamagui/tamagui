@@ -48,8 +48,6 @@ import { Slot } from './views/Slot'
 import { useThemedChildren } from './views/Theme'
 import { ThemeDebug } from './views/ThemeDebug'
 
-// const timer = require('@tamagui/timer').timer()
-
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
 
@@ -70,10 +68,6 @@ const defaultComponentStateShouldEnter: TamaguiComponentState = {
   ...defaultComponentState,
   unmounted: 'should-enter',
 }
-
-const HYDRATION_CUTOFF = process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
-  ? +process.env.TAMAGUI_ANIMATED_PRESENCE_HYDRATION_CUTOFF
-  : 5
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -149,10 +143,6 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
-    // const shouldTime = staticConfig.defaultProps?.padding === 5
-    // let time: any
-    // if (shouldTime) time = timer.start()
-
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {
@@ -223,6 +213,12 @@ export function createComponent<
     const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
+    let time: any
+    if (process.env.NODE_ENV === 'development' && debugProp === 'profile') {
+      const timer = require('@tamagui/timer').timer()
+      time = timer.start()
+    }
+
     const isHydrated = useDidFinishSSR()
 
     // conditional but if ever true stays true
@@ -236,7 +232,7 @@ export function createComponent<
     )
     stateRef.current ||= {}
 
-    // if (shouldTime) time`stateref`
+    if (process.env.NODE_ENV === 'development' && time) time`stateref`
 
     const hostRef = useRef<TamaguiElement>(null)
 
@@ -267,7 +263,7 @@ export function createComponent<
     const hasEnterStyle = !!props.enterStyle
     const needsMount = Boolean((isWeb ? isClient : true) && willBeAnimated)
 
-    // if (shouldTime) time`pre-use-state`
+    if (process.env.NODE_ENV === 'development' && time) time`pre-use-state`
 
     const initialState = willBeAnimated
       ? supportsCSSVars
@@ -285,7 +281,7 @@ export function createComponent<
     // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
     const setStateShallow = useShallowSetState(setState, debugProp, componentName)
 
-    // if (shouldTime) time`use-state`
+    if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     let isAnimated = willBeAnimated
 
@@ -311,7 +307,7 @@ export function createComponent<
     const languageContext = useContext(FontLanguageContext)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
-    // if (shouldTime) time`use-context`
+    if (process.env.NODE_ENV === 'development' && time) time`use-context`
 
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -353,7 +349,7 @@ export function createComponent<
     const disableThemeProp = props['data-disable-theme']
     const disableTheme = (disableThemeProp && !willBeAnimated) || isHOC
 
-    // if (shouldTime) time`theme-props`
+    if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
     const themeStateProps = {
       name: props.theme,
@@ -374,7 +370,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       const id = useId()
 
-      if (debugProp) {
+      if (debugProp && debugProp !== 'profile') {
         // prettier-ignore
         const name = `${componentName || Component?.displayName || Component?.name || '[Unnamed Component]'}`
         const type = isAnimatedReactNative ? '(animated)' : isReactNative ? '(rnw)' : ''
@@ -400,14 +396,14 @@ export function createComponent<
       }
     }
 
-    // if (shouldTime) time`pre-theme-media`
+    if (process.env.NODE_ENV === 'development' && time) time`pre-theme-media`
 
     const [themeState, theme] = useThemeWithState(themeStateProps)
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
 
-    // if (shouldTime) time`theme`
+    if (process.env.NODE_ENV === 'development' && time) time`theme`
 
     const mediaState = useMedia(
       // @ts-ignore, we just pass a stable object so we can get it later with
@@ -415,7 +411,7 @@ export function createComponent<
       stateRef
     )
 
-    // if (shouldTime) time`media`
+    if (process.env.NODE_ENV === 'development' && time) time`media`
 
     setDidGetVariableValue(false)
 
@@ -452,13 +448,13 @@ export function createComponent<
       debugProp
     )
 
-    // if (shouldTime) time`split-styles`
+    if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
 
     // only listen for changes if we are using raw theme values or media space, or dynamic media (native)
     // array = space media breakpoints
-    const isMediaArray = Array.isArray(splitStyles.hasMedia)
+    const isMediaArray = splitStyles.hasMedia && Array.isArray(splitStyles.hasMedia)
     const shouldListenForMedia =
       didGetVariableValue() ||
       isMediaArray ||
@@ -480,7 +476,7 @@ export function createComponent<
         )
       }
 
-      if (debugProp) {
+      if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
         // prettier-ignore
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -535,6 +531,8 @@ export function createComponent<
       if (isAnimated && animations) {
         animationStyles = animations.style
       }
+
+      if (process.env.NODE_ENV === 'development' && time) time`animations`
     }
 
     const {
@@ -565,7 +563,7 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
-    // if (shouldTime) time`destructure`
+    if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
     const disabled = props.accessibilityState?.disabled || props.accessibilityDisabled
 
@@ -604,7 +602,7 @@ export function createComponent<
       }
     }
 
-    // if (shouldTime) time`events-hooks`
+    if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
     const unPress = useCallback(() => {
       setStateShallow({
@@ -707,7 +705,7 @@ export function createComponent<
         (isWeb && noClassNames && 'hoverStyle' in props)
     )
 
-    // if (shouldTime) time`events-setup`
+    if (process.env.NODE_ENV === 'development' && time) time`events-setup`
 
     const events: TamaguiComponentEvents | null =
       shouldAttach && !isDisabled && !asChild
@@ -789,7 +787,7 @@ export function createComponent<
       })
     }
 
-    // if (shouldTime) time`events`
+    if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -806,7 +804,7 @@ export function createComponent<
 
     const direction = props.spaceDirection || 'both'
 
-    // if (shouldTime) time`hooks`
+    if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
     // since we re-render without changing children often for animations or on mount
     // we memo children here. tested this on the site homepage which has hundreds of components
@@ -878,7 +876,7 @@ export function createComponent<
     }
 
     if (process.env.NODE_ENV === 'development') {
-      if (debugProp) {
+      if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -901,15 +899,10 @@ export function createComponent<
       }
     }
 
-    // if (shouldTime) {
-    //   time`rest`
-    //   setTimeout(() => {
-    //     if (!hasLogged) {
-    //       timer.print()
-    //     }
-    //     hasLogged = true
-    //   }, 1000)
-    // }
+    if (process.env.NODE_ENV === 'development' && time) {
+      time`rest`
+      time.print()
+    }
 
     return content
   })
@@ -948,7 +941,8 @@ export function createComponent<
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
-      : forwardRef(Component as any)
+      : // memo because theme changes otherwise would always re-render
+        memo(forwardRef(Component as any))
 
     const extendedConfig = extendStyledConfig()
     const out = themeable(ComponentForwardedRef, extendedConfig) as any
