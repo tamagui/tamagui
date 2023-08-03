@@ -38,35 +38,15 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
 
 let conf: TamaguiInternalConfig
 
+// mutates...
+
 export const generateAtomicStyles = (
-  styleIn: ViewStyleWithPseudos,
+  style: ViewStyleWithPseudos,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
-  if (!styleIn) return []
+  if (!style) return []
 
   conf = conf || getConfig()
-
-  // were converting to css styles
-  const style = { ...styleIn } as Record<string, string | null | undefined>
-
-  // transform
-  if ('transform' in style && Array.isArray(style.transform)) {
-    style.transform = style.transform
-      .map(
-        // { scale: 2 } => 'scale(2)'
-        // { translateX: 20 } => 'translateX(20px)'
-        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-        (transform) => {
-          const type = Object.keys(transform)[0]
-          const value = transform[type]
-          if (type === 'matrix' || type === 'matrix3d') {
-            return `${type}(${value.join(',')})`
-          }
-          return `${type}(${normalizeValueWithProperty(value, type)})`
-        }
-      )
-      .join(' ')
-  }
 
   styleToCSS(style)
 
@@ -93,6 +73,25 @@ export const generateAtomicStyles = (
 }
 
 export function styleToCSS(style: Record<string, any>) {
+  // transform
+  if ('transform' in style && Array.isArray(style.transform)) {
+    style.transform = style.transform
+      .map(
+        // { scale: 2 } => 'scale(2)'
+        // { translateX: 20 } => 'translateX(20px)'
+        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+        (transform) => {
+          const type = Object.keys(transform)[0]
+          const value = transform[type]
+          if (type === 'matrix' || type === 'matrix3d') {
+            return `${type}(${value.join(',')})`
+          }
+          return `${type}(${normalizeValueWithProperty(value, type)})`
+        }
+      )
+      .join(' ')
+  }
+
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius) {
