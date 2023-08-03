@@ -31,6 +31,7 @@ async function build() {
         logLevel: 'warning',
         define: {
           'process.env.ENABLE_RSC': 'undefined',
+          'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
         },
         plugins: [
           alias({
@@ -53,6 +54,10 @@ async function build() {
         allowOverwrite: true,
         platform: 'node',
         logLevel: 'warning',
+        define: {
+          'process.env.ENABLE_RSC': 'undefined',
+          'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
+        },
         plugins: [
           alias({
             'react-native': require.resolve('@tamagui/fake-react-native'),

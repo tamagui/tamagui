@@ -214,7 +214,11 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     let time: any
-    if (process.env.NODE_ENV === 'development' && debugProp === 'profile') {
+    if (
+      !process.env.TAMAGUI_IS_CORE_NODE &&
+      process.env.NODE_ENV === 'development' &&
+      debugProp === 'profile'
+    ) {
       const timer = require('@tamagui/timer').timer()
       time = timer.start()
     }
