@@ -8,9 +8,7 @@ import React, {
   createElement,
   forwardRef,
   memo,
-  useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
   useState,
@@ -641,12 +639,12 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
-    const unPress = useCallback(() => {
+    const unPress = () => {
       setStateShallow({
         press: false,
         pressIn: false,
       })
-    }, [])
+    }
 
     const shouldSetMounted = needsMount && state.unmounted
 
