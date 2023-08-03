@@ -187,10 +187,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           // i tried: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/64606
           // - fernando
           () => (next) => {
-            pseudoState.value = {
-              ...pseudoState.value,
-              ...next,
-            }
+            pseudoState.value = Object.assign({}, pseudoState.value, next)
           },
           []
         ),
