@@ -2,6 +2,8 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
   let discordSeats = 1
   let licenseSeats = 1
 
+  const isFirstTier = pricingDescription.toLowerCase().includes('hobby')
+
   const minMaxMatch = Number(pricingDescription?.match(/.*[0-9]+-([0-9]+) seats.*/)?.[1])
   // e.g. "Team (10-20 seats)"
   if (minMaxMatch && !isNaN(minMaxMatch)) {
@@ -16,7 +18,7 @@ export function getTakeoutPriceInfo(pricingDescription: string) {
     licenseSeats = Infinity
   }
 
-  const hasDiscordPrivateChannels = discordSeats > 1
+  const hasDiscordPrivateChannels = !isFirstTier
 
   return {
     discordSeats,
