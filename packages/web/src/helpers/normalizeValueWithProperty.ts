@@ -16,6 +16,8 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
     return value
   }
   let res = value
+  // shadowOffset etc
+  if (value && typeof value === 'object') return value
   if (typeof value === 'number') {
     res = `${value}px`
   } else if (property) {

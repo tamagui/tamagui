@@ -6,34 +6,32 @@
 import { StyleObject, simpleHash } from '@tamagui/helpers'
 
 import { getConfig } from '../config'
-import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
+import type { DebugProp, TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
-import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
+import {
+  PseudoDescriptor,
+  pseudoDescriptors,
+  pseudoDescriptorsBase,
+} from './pseudoDescriptors'
 
 // refactor this file away next...
 
-// matching order of the below *0
-const pseudosOrdered = [
-  pseudoDescriptors.hoverStyle,
-  pseudoDescriptors.pressStyle,
-  pseudoDescriptors.focusStyle,
-]
-
-export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
-  // performance optimization
-  if (!(stylesIn.hoverStyle || stylesIn.pressStyle || stylesIn.focusStyle)) {
-    return generateAtomicStyles(stylesIn)
-  }
-
-  // only for pseudos
-  const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
+export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugProp) {
   let res: StyleObject[] = []
-  // *1 order matched to *0
-  for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
-    if (!style) continue
-    const pseudo = pseudosOrdered[index]
-    res = [...res, ...generateAtomicStyles(style, pseudo)]
+  for (const pseudoName in pseudoDescriptorsBase) {
+    const pseudoStyle = stylesIn[pseudoName]
+    if (pseudoStyle) {
+      res = [
+        ...res,
+        ...generateAtomicStyles(pseudoStyle, pseudoDescriptorsBase[pseudoName]),
+      ]
+    }
+  }
+  res = [...res, ...generateAtomicStyles(stylesIn)]
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res
 }
@@ -74,9 +72,8 @@ export const generateAtomicStyles = (
 
   const out: StyleObject[] = []
   for (const key in style) {
-    const value = normalizeValueWithProperty(style[key], key)
-    if (value == null || value == undefined) continue
-
+    const value = style[key]
+    if (value == null) continue
     const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
