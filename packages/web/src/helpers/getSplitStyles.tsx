@@ -181,7 +181,12 @@ export const getSplitStyles: StyleSplitter = (
     debug,
   }
 
-  if (process.env.NODE_ENV === 'development' && debug && isClient) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    debug &&
+    debug !== 'profile' &&
+    isClient
+  ) {
     console.groupCollapsed('getSplitStyles (collapsed)')
     // prettier-ignore
     // rome-ignore lint/nursery/noConsoleLog: ok
@@ -806,7 +811,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`  📺 ${key}`, { key, mediaStyle, props, shouldDoClasses })
+          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses })
         }
 
         // for some reason 'space' in val upsetting next ssr during prod build
@@ -842,7 +847,7 @@ export const getSplitStyles: StyleSplitter = (
             }
           }
 
-          const mediaStyles = getStylesAtomic(mediaStyle)
+          const mediaStyles = getStylesAtomic(mediaStyle, debug)
           const priority = mediaStylesSeen
           mediaStylesSeen += 1
 
@@ -1123,7 +1128,7 @@ export const getSplitStyles: StyleSplitter = (
           styleState.fontFamily = overrideFace
         }
       }
-      if (process.env.NODE_ENV === 'development' && debug) {
+      if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
         console.log(`Found fontFamily native: ${style.fontFamily}`, faceInfo)
       }
