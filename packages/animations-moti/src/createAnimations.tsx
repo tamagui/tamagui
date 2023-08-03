@@ -28,7 +28,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     supportsCSSVars: true,
     animations,
     usePresence,
-    supportsZeroRenderPseudos: true,
+    supportsPseudos: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const sharedValue = useSharedValue(initial)

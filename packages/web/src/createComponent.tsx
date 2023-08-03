@@ -456,7 +456,7 @@ export function createComponent<
       isExiting,
       isAnimated,
       keepStyleSSR,
-      supportsZeroRenderPseudosForAnimations: animationsConfig.supportsZeroRenderPseudos,
+      noRenderPseudos: willBeAnimated && animationsConfig?.supportsPseudos,
     }
 
     const splitStyles = useSplitStyles(
