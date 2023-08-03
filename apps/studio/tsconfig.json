@@ -2,13 +2,19 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
+      ],
       "src/*": [
         "./src/*"
       ],
       "@protected/*": [
         "./src/*"
       ],
-    }
+    },
   },
   "extends": "../../tsconfig"
 }

@@ -21,15 +21,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/use-store": "1.48.11",
+    "@tamagui/use-store": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.6",
     "react-router-dom": "^6.14.1",
-    "tamagui": "1.48.11"
+    "tamagui": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.48.11",
+    "@tamagui/build": "*",
     "vite": "^4.4.8"
   }
 }
