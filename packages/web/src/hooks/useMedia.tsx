@@ -216,14 +216,14 @@ export function useMedia(uid?: any): UseMediaState {
     () => initState
   )
 
-  return new Proxy(mediaState, {
+  return new Proxy(state, {
     get(_, key) {
       if (typeof key === 'string') {
         internal.current ||= { prev: initState }
         internal.current.touched ||= new Set()
         internal.current.touched.add(key)
       }
-      return Reflect.get(mediaState, key)
+      return Reflect.get(state, key)
     },
   })
 }

@@ -10,7 +10,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
   useState,
@@ -283,7 +282,7 @@ export function createComponent<
     const setState = states[1]
 
     // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
-    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
+    const setStateShallow = useShallowSetState(setState)
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 

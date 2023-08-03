@@ -1,11 +1,9 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 
-import { DebugProp, TamaguiComponentState } from '../types'
+import { TamaguiComponentState } from '../types'
 
 export function useShallowSetState<State extends TamaguiComponentState>(
-  setter: React.Dispatch<React.SetStateAction<State>>,
-  debug?: DebugProp,
-  debugName?: string
+  setter: React.Dispatch<React.SetStateAction<State>>
 ) {
   return (next: Partial<State>) => setter((prev) => shallow(prev, next))
 }
