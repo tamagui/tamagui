@@ -106,10 +106,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       })
       const [animationKey, transitionOverride] = [].concat(props.animation)
 
-      // without this, the driver breaks on native
-      // stringifying -> parsing fixes that
-      const animateStr = JSON.stringify(animate)
-      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
       const isExiting = Boolean(presence?.[1])
       const sendExitComplete = presence?.[1]
       const transition = Object.assign(
@@ -130,6 +126,12 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
           delete dontAnimate[key]
         }
       }
+
+      // TODO see if native works without this
+      // this is likely expensive for no reason
+      const animateStr = JSON.stringify(style)
+      const styles = useMemo(() => JSON.parse(animateStr), [animateStr])
+
       const animateOnlyString = animateOnly.join(',')
 
       const animateWithPseudos = useDerivedValue<any>(() => {
