@@ -1,15 +1,98 @@
 // import './wdyr'
 
-import { Paragraph, SizableText, Text, YStack, styled, useMedia, useWindowDimensions } from 'tamagui'
+import { Menu } from '@tamagui/lucide-icons'
+import { memo } from 'react'
+import {
+  Adapt,
+  Button,
+  Paragraph,
+  Popover,
+  SizableText,
+  Square,
+  Text,
+  YStack,
+  styled,
+} from 'tamagui'
+
+const PopoverRenderTest = memo(() => {
+  return (
+    <Popover keepChildrenMounted size="$5" stayInFrame={{ padding: 20 }}>
+      <Popover.Trigger asChild>
+        <Button
+          size="$3"
+          chromeless
+          circular
+          hoverStyle={{
+            bc: 'transparent',
+          }}
+          noTextWrap
+        >
+          <Menu size={16} color="var(--color)" />
+        </Button>
+      </Popover.Trigger>
+
+      <Adapt platform="touch" when="sm">
+        <Popover.Sheet
+          zIndex={100000000}
+          modal
+          dismissOnSnapToBottom
+          animationConfig={{
+            type: 'spring',
+            damping: 20,
+            mass: 1.2,
+            stiffness: 250,
+          }}
+        >
+          <Popover.Sheet.Frame>
+            <Popover.Sheet.ScrollView>
+              <Adapt.Contents />
+            </Popover.Sheet.ScrollView>
+          </Popover.Sheet.Frame>
+          <Popover.Sheet.Overlay zIndex={100} />
+        </Popover.Sheet>
+      </Adapt>
+
+      <Popover.Content
+        bw={1}
+        boc="$borderColor"
+        enterStyle={{ x: 0, y: -10, o: 0 }}
+        exitStyle={{ x: 0, y: -10, o: 0 }}
+        x={0}
+        y={0}
+        o={1}
+        animation={[
+          'quick',
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
+        animateOnly={['transform', 'opacity']}
+        p={0}
+        maxHeight="80vh"
+        elevate
+        zIndex={100000000}
+      >
+        <Popover.Arrow borderWidth={1} boc="$borderColor" />
+
+        <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+          <YStack miw={230} p="$3" ai="flex-end">
+            <Square size={100} bc="red" />
+          </YStack>
+        </Popover.ScrollView>
+      </Popover.Content>
+    </Popover>
+  )
+})
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
 
-  console.log(useMedia().gtSm, useMedia().sm)
   return (
     <>
-    <Text>useMedia().gtSm: {useMedia().gtSm ? "TRUE": "FALSE"}. if it works the rectangle will be red:</Text>
-      <YStack bc="blue" $sm={{ backgroundColor: "yellow" }} $gtSm={{ backgroundColor: "red" }} width={100} height={100} />
+      <PopoverRenderTest />
+
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />
       </DrawListRow> */}
