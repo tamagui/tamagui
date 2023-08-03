@@ -764,7 +764,7 @@ input, textarea {
 
 .clip-wave {
   mask-image: url(./public/takeout/geometric.svg);
-  mask-size: 50% 50%;
+  mask-size: 150% 150%;
   animation: clip-fade 80s infinite alternate;
 }
 
@@ -775,13 +775,13 @@ input, textarea {
 
 @keyframes clip-fade {
   0% {
-    mask-position: bottom left;
-    -webkit-mask-position: bottom left;
+    mask-position: top left;
+    -webkit-mask-position: top left;
   }
   
   100% {
-    mask-position: bottom right;
-    -webkit-mask-position: bottom right;
+    mask-position: top right;
+    -webkit-mask-position: top right;
   }
 }
 
