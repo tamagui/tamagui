@@ -1,7 +1,7 @@
 // import './wdyr'
 
 import { Menu } from '@tamagui/lucide-icons'
-import { memo } from 'react'
+import { memo, useRef } from 'react'
 import {
   Adapt,
   Button,
@@ -92,6 +92,35 @@ export const Sandbox = () => {
   return (
     <>
       <PopoverRenderTest />
+
+      <View
+        height={300}
+        width={300}
+        bg="cyan"
+        als="center"
+        scale={1}
+        mt={200}
+        borderRadius={0}
+        rotate="0deg"
+        hoverStyle={{
+          scale: 1.1,
+          rotate: '45deg',
+          borderRadius: 20,
+        }}
+        pressStyle={{
+          scale: 1.2,
+          rotate: '180deg',
+          borderRadius: 40,
+        }}
+        testID="moti-no-render"
+        animation="quick"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Text ta="center" fontWeight="600" fontSize={50} color="black">
+          Moti x Tamagui
+        </Text>
+      </View>
 
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />

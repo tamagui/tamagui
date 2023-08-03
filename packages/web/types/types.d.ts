@@ -834,6 +834,7 @@ export type SplitStyleProps = {
     exitVariant?: string;
     enterVariant?: string;
     keepStyleSSR?: boolean;
+    noRenderPseudos?: boolean;
 };
 export interface PresenceContextProps {
     id: string;
@@ -877,6 +878,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
     keepStyleSSR?: boolean;
     supportsCSSVars?: boolean;
+    supportsPseudos?: boolean;
     useAnimations: UseAnimationHook;
     usePresence: () => UsePresenceResult;
     useAnimatedNumber: (initial: number) => UniversalAnimatedNumber<any>;
@@ -904,6 +906,7 @@ export type UseAnimationHook = (props: {
     delay?: number;
 }) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
+    updatePseudoState?: (state: Partial<Pick<TamaguiComponentState, 'hover' | 'press' | 'focus'>>) => void;
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = StyleObject[];
