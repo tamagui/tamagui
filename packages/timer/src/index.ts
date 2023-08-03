@@ -7,11 +7,32 @@ export function timer() {
   const typesOfRuns = new Set<string>()
   const timings: Record<string, number> = {}
 
+  function print() {
+    const typeRuns = runs / typesOfRuns.size
+    let totalTime = 0
+
+    const out = [
+      `Ran ${typeRuns} per-type, ${runs} total`,
+      ...[...typesOfRuns].map((name) => {
+        const avg = `avg ${`${timings[name] / typeRuns}`.slice(0, 9).padEnd(9)}ms`
+        const total = timings[name]
+        totalTime += total
+        return `${name.slice(0, 30).padStart(31)} | ${avg} | total ${total}ms`
+      }),
+      `                                    total ${totalTime}ms`,
+    ].join('\n')
+
+    // rome-ignore lint/nursery/noConsoleLog: ok
+    console.log(out)
+    return out
+  }
+
   return {
     start(opts?: { quiet?: boolean }) {
       let start = performance.now()
       const quiet = opts?.quiet ?? true
-      return (strings: TemplateStringsArray, ...vars: any[]) => {
+
+      function time(strings: TemplateStringsArray, ...vars: any[]) {
         const elapsed = performance.now() - start
         start = performance.now()
         const tag = strings[0]
@@ -28,6 +49,10 @@ export function timer() {
           console.log(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
       }
+
+      time['print'] = print
+
+      return time
     },
 
     profile() {
@@ -37,24 +62,6 @@ export function timer() {
       }
     },
 
-    print() {
-      const typeRuns = runs / typesOfRuns.size
-      let totalTime = 0
-
-      const out = [
-        `Ran ${typeRuns} per-type, ${runs} total`,
-        ...[...typesOfRuns].map((name) => {
-          const avg = `avg ${`${timings[name] / typeRuns}`.slice(0, 9).padEnd(9)}ms`
-          const total = timings[name]
-          totalTime += total
-          return `${name.slice(0, 30).padStart(31)} | ${avg} | total ${total}ms`
-        }),
-        `                                    total ${totalTime}ms`,
-      ].join('\n')
-
-      // rome-ignore lint/nursery/noConsoleLog: ok
-      console.log(out)
-      return out
-    },
+    print,
   }
 }
