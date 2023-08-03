@@ -142,9 +142,6 @@ export function wrapThemeElements({
       }
     : undefined
 
-  const parentScheme = themeState.parentState?.scheme
-  const scheme = themeState.state.scheme
-  const isInversing = scheme && parentScheme && scheme !== parentScheme
   const className = themeState.state.className || ''
 
   let themedChildren = (
@@ -153,7 +150,12 @@ export function wrapThemeElements({
     </span>
   )
 
-  if (isInversing) {
+  if (themeState.state.inverse) {
+    const scheme = themeState.state.name.startsWith('light')
+      ? 'light'
+      : themeState.state.name.startsWith('dark')
+      ? 'dark'
+      : ''
     themedChildren = (
       <span className={`t_${scheme} _dsp_contents is_inversed`}>{themedChildren}</span>
     )

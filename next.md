@@ -1,3 +1,5 @@
+- next seems to be extracting for server and web, but likely we can leave it off for server since the style should be identical
+
 - deprecate rnw-lite when we can after making sure all tests / animation drivers pass on rnw
 
 - imperative sheet

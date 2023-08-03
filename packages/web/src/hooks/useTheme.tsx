@@ -16,7 +16,6 @@ import { GetThemeUnwrapped, getThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state: ThemeManagerState
-  parentState?: ThemeManagerState
   themeManager: ThemeManager
   isNewTheme: boolean
   mounted?: boolean
@@ -353,7 +352,7 @@ export const useChangeThemeEffect = (
       }
     }
 
-    const isNewTheme = Boolean(themeManager !== parentManager)
+    const isNewTheme = Boolean(themeManager !== parentManager || props.inverse)
 
     // only inverse relies on this for ssr
     const mounted = !props.inverse ? true : root || prev?.mounted
@@ -372,7 +371,6 @@ export const useChangeThemeEffect = (
     }
 
     const response = {
-      parentState: parentManager?.state,
       state,
       themeManager,
       isNewTheme,

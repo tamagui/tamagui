@@ -1,6 +1,5 @@
-import { getThemes, getTokens } from '../config'
+import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { ThemeParsed, ThemeProps } from '../types'
 
 type ThemeListener = (
@@ -23,7 +22,7 @@ export type ThemeManagerState = {
   className?: string
   parentName?: string
   componentName?: string
-  scheme?: string
+  inverse?: boolean
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -312,11 +311,7 @@ function getState(
         className: getNextThemeClassName(found),
         parentName,
         componentName,
-        scheme: found.startsWith('light')
-          ? 'light'
-          : found.startsWith('dark')
-          ? 'dark'
-          : undefined,
+        inverse: props.inverse,
       }
       break
     }
