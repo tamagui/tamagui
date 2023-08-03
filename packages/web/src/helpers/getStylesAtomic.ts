@@ -52,9 +52,30 @@ export const generateAtomicStyles = (
 
   const out: StyleObject[] = []
   for (const key in style) {
-    const value = normalizeValueWithProperty(style[key], key)
     if (key in pseudoDescriptors) continue
-    if (value == null) continue
+    let val = style[key]
+    if (val == null) continue
+
+    // transform
+    if (key === 'transform' && Array.isArray(style.transform)) {
+      val = val
+        .map(
+          // { scale: 2 } => 'scale(2)'
+          // { translateX: 20 } => 'translateX(20px)'
+          // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
+          (transform) => {
+            const type = Object.keys(transform)[0]
+            const value = transform[type]
+            if (type === 'matrix' || type === 'matrix3d') {
+              return `${type}(${value.join(',')})`
+            }
+            return `${type}(${normalizeValueWithProperty(value, type)})`
+          }
+        )
+        .join(' ')
+    }
+
+    const value = normalizeValueWithProperty(val, key)
     const hash = simpleHash(`${value}`)
     const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const shortProp = conf.inverseShorthands[key] || key
@@ -74,25 +95,6 @@ export const generateAtomicStyles = (
 }
 
 export function styleToCSS(style: Record<string, any>) {
-  // transform
-  if ('transform' in style && Array.isArray(style.transform)) {
-    style.transform = style.transform
-      .map(
-        // { scale: 2 } => 'scale(2)'
-        // { translateX: 20 } => 'translateX(20px)'
-        // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
-        (transform) => {
-          const type = Object.keys(transform)[0]
-          const value = transform[type]
-          if (type === 'matrix' || type === 'matrix3d') {
-            return `${type}(${value.join(',')})`
-          }
-          return `${type}(${normalizeValueWithProperty(value, type)})`
-        }
-      )
-      .join(' ')
-  }
-
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius) {

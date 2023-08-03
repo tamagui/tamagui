@@ -981,7 +981,8 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   fixStyles(style)
-  if (isWeb) {
+
+  if (isWeb && !staticConfig.isReactNative) {
     styleToCSS(style)
   }
 
