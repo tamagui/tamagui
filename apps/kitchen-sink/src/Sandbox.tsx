@@ -1,6 +1,15 @@
 // import './wdyr'
 
-import { Paragraph, SizableText, Text, YStack, styled, useMedia, useWindowDimensions } from 'tamagui'
+import {
+  H1,
+  Paragraph,
+  SizableText,
+  Text,
+  XStack,
+  YStack,
+  styled,
+  useMedia,
+} from 'tamagui'
 
 export const Sandbox = () => {
   // need to test all these they seem to be all working:
@@ -8,8 +17,19 @@ export const Sandbox = () => {
   console.log(useMedia().gtSm, useMedia().sm)
   return (
     <>
-    <Text>useMedia().gtSm: {useMedia().gtSm ? "TRUE": "FALSE"}. if it works the rectangle will be red:</Text>
-      <YStack bc="blue" $sm={{ backgroundColor: "yellow" }} $gtSm={{ backgroundColor: "red" }} width={100} height={100} />
+      <XStack justifyContent="center" alignItems="center" flexDirection="column">
+        <Paragraph $sm={{ paddingHorizontal: 6 }}>
+          useMedia().gtSm: {useMedia().gtSm ? 'TRUE' : 'FALSE'}. if it works the rectangle
+          will be red:
+        </Paragraph>
+        <YStack
+          bc="blue"
+          $sm={{ backgroundColor: 'yellow' }}
+          $gtSm={{ backgroundColor: 'red' }}
+          width={100}
+          height={100}
+        />
+      </XStack>
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />
       </DrawListRow> */}
@@ -50,11 +70,11 @@ export const Sandbox = () => {
       >
         <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
         <br />
-        runs&nbsp;faster
+        runs faster
       </H1> */}
 
       {/* <Subtitle debug="verbose">hello</Subtitle> */}
-      {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
+      {/* <Paragraph size="$15" pos="relative" rotate="-10deg" ta="center" ff="$silkscreen">
         WATCH THE VIDEO
       </Paragraph> */}
 
