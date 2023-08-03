@@ -559,8 +559,6 @@ export function createComponent<
 
       setStateShallow = (next) => {
         if (!updatePseudoStateForAnimations || 'unmounted' in next) {
-          // unmounted is never called on the pseudo side
-          // it would be best if unmounted lived in its own state variable to avoid this level of mixing probs
           setStateShallowOriginal(next)
         } else if (updatePseudoStateForAnimations) {
           updatePseudoStateForAnimations(next)
