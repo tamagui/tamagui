@@ -782,6 +782,15 @@ export const getSplitStyles: StyleSplitter = (
                 const defaultVal = animatableDefaults[pkey]
                 mergeStyle(styleState, pkey, defaultVal)
               }
+              if (styleProps.supportsZeroRenderPseudosForAnimations) {
+                pseudos ||= {}
+                pseudos[key] ||= {}
+                if (pkey in stylePropsTransform) {
+                  mergeTransform(pseudos[key], pkey, val)
+                } else {
+                  pseudos[key][pkey] = val
+                }
+              }
             } else {
               const curImportance = usedKeys[importance] || 0
               const shouldMerge = importance >= curImportance

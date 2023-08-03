@@ -283,7 +283,9 @@ export function createComponent<
     const setState = states[1]
 
     // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
-    const setStateShallow = useShallowSetState(setState, debugProp, componentName)
+    const setStateShallowOriginal = useShallowSetState(setState, debugProp, componentName)
+
+    let setStateShallow = setStateShallowOriginal
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -446,7 +448,7 @@ export function createComponent<
     // temp: once we fix above we can disable this
     const keepStyleSSR = willBeAnimated && animationsConfig?.keepStyleSSR
 
-    const styleProps = {
+    const styleProps: Parameters<typeof useSplitStyles>[5] = {
       mediaState,
       noClassNames,
       hasTextAncestor,
@@ -454,7 +456,8 @@ export function createComponent<
       isExiting,
       isAnimated,
       keepStyleSSR,
-    } as const
+      supportsZeroRenderPseudosForAnimations: animationsConfig.supportsZeroRenderPseudos,
+    }
 
     const splitStyles = useSplitStyles(
       props,
@@ -533,6 +536,9 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
+    let updatePseudoStateForAnimations: NonNullable<
+      ReturnType<NonNullable<typeof useAnimations>>
+    >['updatePseudoState']
     if (willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
@@ -548,6 +554,23 @@ export function createComponent<
         hostRef,
         staticConfig,
       })
+
+      updatePseudoStateForAnimations = animations?.updatePseudoState
+
+      setStateShallow = useCallback(
+        (next) => {
+          if ('unmounted' in next) {
+            // unmounted is never called on the pseudo side
+            // it would be best if unmounted lived in its own state variable to avoid this level of mixing probs
+            setStateShallowOriginal(next)
+          } else if (updatePseudoStateForAnimations) {
+            updatePseudoStateForAnimations(next)
+          } else {
+            setStateShallowOriginal(next)
+          }
+        },
+        [updatePseudoStateForAnimations, setStateShallowOriginal]
+      )
 
       if (isAnimated && animations) {
         animationStyles = animations.style
@@ -767,7 +790,6 @@ export function createComponent<
                   setStateShallow({
                     press: true,
                     pressIn: true,
-                    hover: false,
                   })
                   onPressIn?.(e)
                   onMouseDown?.(e)
@@ -952,6 +974,8 @@ export function createComponent<
       time`rest`
       time.print()
     }
+
+    if (props.testID?.includes('moti')) console.log('rendered...')
 
     return content
   })

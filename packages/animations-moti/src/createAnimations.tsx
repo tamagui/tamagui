@@ -28,6 +28,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
     supportsCSSVars: true,
     animations,
     usePresence,
+    supportsZeroRenderPseudos: true,
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<ReanimatedAnimatedNumber> {
       const sharedValue = useSharedValue(initial)
@@ -97,7 +98,12 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       }, [val, getStyle, derivedValue, instance])
     },
 
-    useAnimations: ({ props, presence, style, onDidAnimate }) => {
+    useAnimations: ({ props, presence, style, onDidAnimate, pseudos }) => {
+      const pseudoState = useSharedValue({
+        hover: false,
+        press: false,
+        focus: false,
+      })
       const animationKey = Array.isArray(props.animation)
         ? props.animation[0]
         : props.animation
@@ -105,7 +111,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       let animate: Object | undefined
       let dontAnimate: Object | undefined
 
-      const animateOnly = props.animateOnly || ['transform', 'opacity']
+      const animateOnly = props.animateOnly
       if (animateOnly) {
         animate = {}
         dontAnimate = { ...style }
@@ -132,16 +138,39 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
         sendExitComplete?.()
       }, [])
 
-      const motiProps = {
-        animate: isExiting ? undefined : styles,
+      const animateWithPseudos = useDerivedValue<any>(() => {
+        let final = Object.assign({}, styles)
+
+        const { hover: hovered, press: pressed, focus: focused } = pseudoState.value
+        console.log('[moti] animateWithPseudos', pseudoState.value, transition)
+
+        if (hovered && pseudos?.hoverStyle) {
+          console.log('[moti] [hover]', pseudos.hoverStyle)
+          final = Object.assign(final, pseudos.hoverStyle)
+        }
+
+        if (pressed && pseudos?.pressStyle) {
+          console.log('[moti] [press]', pseudos.pressStyle)
+          final = Object.assign(final, pseudos.pressStyle)
+        }
+
+        if (focused && pseudos?.focusStyle) {
+          final = Object.assign(final, pseudos.focusStyle)
+        }
+
+        console.log('[moti] [final]', final)
+
+        return final
+      }, [pseudoState, pseudos, styles])
+
+      const moti = useMotify({
+        animate: isExiting ? undefined : animateWithPseudos,
         transition,
         onDidAnimate: onDidAnimateCombined,
         usePresenceValue: presence as any,
         presenceContext: useContext(PresenceContext),
         exit: isExiting ? styles : undefined,
-      }
-
-      const moti = useMotify(motiProps)
+      })
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -158,6 +187,18 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       return {
         style: [dontAnimate, moti.style],
+        updatePseudoState: useMemo(
+          // useCallback doesn't infer param types of optional functions 🤷‍♂️
+          // i tried: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/64606
+          // - fernando
+          () => (next) => {
+            pseudoState.value = {
+              ...pseudoState.value,
+              ...next,
+            }
+          },
+          []
+        ),
       }
     },
   }
