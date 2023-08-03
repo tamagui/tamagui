@@ -1,5 +1,13 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import React, {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useEffect,
+  useId,
+  useRef,
+} from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
@@ -7,7 +15,7 @@ import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
 import type { DebugProp, ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
-export const Theme = forwardRef((props: ThemeProps, ref) => {
+export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children
@@ -134,9 +142,9 @@ export function wrapThemeElements({
       }
     : undefined
 
-  const parentScheme = themeState.themeManager?.parentManager?.scheme
-  const scheme = themeState.themeManager?.scheme
-  const isInversing = scheme && parentScheme && scheme !== parentScheme
+  const parentScheme = themeState.parentState?.scheme
+  const scheme = themeState.state.scheme
+  const isInversing = (scheme || parentScheme) && scheme !== parentScheme
   const className = themeState.state.className || ''
 
   let themedChildren = (

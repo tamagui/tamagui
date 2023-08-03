@@ -5049,7 +5049,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@1.48.11, @tamagui/build@workspace:packages/build":
+"@tamagui/build@*, @tamagui/build@1.48.11, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -6576,13 +6576,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/studio@workspace:apps/studio"
   dependencies:
-    "@tamagui/build": 1.48.11
-    "@tamagui/use-store": 1.48.11
+    "@tamagui/build": "*"
+    "@tamagui/use-store": "*"
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.19.6
     react-router-dom: ^6.14.1
-    tamagui: 1.48.11
+    tamagui: "*"
     vite: ^4.4.8
   languageName: unknown
   linkType: soft
@@ -6921,7 +6921,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-store@1.48.11, @tamagui/use-store@workspace:packages/use-store":
+"@tamagui/use-store@*, @tamagui/use-store@1.48.11, @tamagui/use-store@workspace:packages/use-store":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-store@workspace:packages/use-store"
   dependencies:
@@ -23474,7 +23474,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@1.48.11, tamagui@workspace:packages/tamagui":
+"tamagui@*, tamagui@1.48.11, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:

@@ -23,6 +23,7 @@ export type ThemeManagerState = {
   className?: string
   parentName?: string
   componentName?: string
+  scheme?: string
 }
 
 const emptyState: ThemeManagerState = { name: '' }
@@ -311,6 +312,11 @@ function getState(
         className: getNextThemeClassName(found),
         parentName,
         componentName,
+        scheme: found.startsWith('light')
+          ? 'light'
+          : found.startsWith('dark')
+          ? 'dark'
+          : undefined,
       }
       break
     }

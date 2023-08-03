@@ -16,6 +16,7 @@ import { GetThemeUnwrapped, getThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state: ThemeManagerState
+  parentState?: ThemeManagerState
   themeManager: ThemeManager
   isNewTheme: boolean
   mounted?: boolean
@@ -371,11 +372,12 @@ export const useChangeThemeEffect = (
     }
 
     const response = {
+      parentState: parentManager?.state,
       state,
       themeManager,
       isNewTheme,
       mounted,
-    }
+    } satisfies ChangedThemeResponse
 
     if (process.env.NODE_ENV === 'development' && props['debug'] && isClient) {
       console.groupCollapsed(` 🔷 ${themeManager.id} useChangeThemeEffect createState`)

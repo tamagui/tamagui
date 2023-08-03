@@ -119,9 +119,12 @@ export function createUseStoreSelector<
 export function useStoreSelector<
   A extends Store<B>,
   B extends Object,
-  S extends Selector<any, Selected>,
-  Selected
->(StoreKlass: (new (props: B) => A) | (new () => A), selector: S, props?: B): Selected {
+  S extends Selector<A, any>
+>(
+  StoreKlass: (new (props: B) => A) | (new () => A),
+  selector: S,
+  props?: B
+): S extends Selector<any, infer R> ? R : unknown {
   return useStore(StoreKlass, props, { selector }) as any
 }
 

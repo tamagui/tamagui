@@ -145,19 +145,17 @@ export function Popper(props: PopperProps) {
     }, [dimensions, keyboardOpen])
   }
 
-  return (
-    <PopperContext.Provider
-      anchorRef={setAnchorRef}
-      size={size}
-      arrowRef={setArrow}
-      arrowStyle={middlewareData.arrow}
-      onArrowSize={setArrowSize}
-      isMounted={isMounted}
-      {...floating}
-    >
-      {children}
-    </PopperContext.Provider>
-  )
+  const popperContext = {
+    anchorRef: setAnchorRef,
+    size,
+    arrowRef: setArrow,
+    arrowStyle: middlewareData.arrow,
+    onArrowSize: setArrowSize,
+    isMounted,
+    ...floating,
+  }
+
+  return <PopperContext.Provider {...popperContext}>{children}</PopperContext.Provider>
 }
 
 /* -------------------------------------------------------------------------------------------------

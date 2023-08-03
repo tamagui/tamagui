@@ -1,9 +1,7 @@
 // *0 order matches to *1
 
-export const pseudoDescriptors: Record<
-  'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
-  PseudoDescriptor
-> = {
+export const pseudoDescriptorsBase = {
+  // order of keys here important! in priority order
   hoverStyle: {
     name: 'hover',
     priority: 1,
@@ -17,6 +15,13 @@ export const pseudoDescriptors: Record<
     name: 'focus',
     priority: 3,
   },
+} as const
+
+export const pseudoDescriptors: Record<
+  'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
+  PseudoDescriptor
+> = {
+  ...pseudoDescriptorsBase,
   enterStyle: {
     name: 'enter',
     stateKey: 'unmounted',

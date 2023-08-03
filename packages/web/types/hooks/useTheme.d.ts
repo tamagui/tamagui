@@ -2,6 +2,7 @@ import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
 import type { DebugProp, ThemeParsed, ThemeProps } from '../types';
 export type ChangedThemeResponse = {
     state: ThemeManagerState;
+    parentState?: ThemeManagerState;
     themeManager: ThemeManager;
     isNewTheme: boolean;
     mounted?: boolean;
