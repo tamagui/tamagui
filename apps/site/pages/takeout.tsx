@@ -8,7 +8,16 @@ import { getArray } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { getSize } from '@tamagui/get-token'
 import { LogoIcon, LogoWords, ThemeTint, ThemeTintAlt, useTint } from '@tamagui/logo'
-import { Check, Dot, Hammer, Info, PlayCircle, X } from '@tamagui/lucide-icons'
+import {
+  Check,
+  CheckCircle,
+  Dot,
+  Hammer,
+  Info,
+  PlayCircle,
+  X,
+  XCircle,
+} from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
 import { Store, createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
@@ -67,9 +76,11 @@ import { useHoverGlow } from '../components/HoverGlow'
 import { LoadCherryBomb, LoadMunro } from '../components/LoadFont'
 import { NextLink } from '../components/NextLink'
 
+const checkCircle = <CheckCircle color="$green9" />
+const xCircle = <XCircle size={28} color="$red9" />
+
 const points = {
   // this one's only shown on modal
-  modal: ['Lifetime rights'],
   monorepo: [
     'Well-isolated configuration.',
     '100% shared code between web and native.',
@@ -85,7 +96,7 @@ const points = {
     'Script that sets up both local and remote dev environments.',
   ],
   screens: [
-    '100% shared native and web, adapted to each platform.',
+    'A variety of navigation screen types adapted to each platform.',
     'Onboarding, auth, account, settings, profile, feed, edit profile.',
     // 'Adapted to each platform.',
     'Universal form system + validation.',
@@ -93,7 +104,6 @@ const points = {
   assets: [
     '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
     'All of Google fonts, over +1500 packs.',
-    'More every month.',
   ],
   more: [
     'Image upload and Supabase utils.',
@@ -910,8 +920,8 @@ export default function TakeoutPage({
                     <ThemeTintAlt>
                       <Paragraph
                         className="text-shadow"
-                        size="$7"
-                        $sm={{ size: '$6' }}
+                        size="$8"
+                        $sm={{ size: '$7' }}
                         fow="400"
                         color="$color9"
                       >
@@ -922,36 +932,37 @@ export default function TakeoutPage({
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
                       It's why we've set up pricing the way we have: lifetime rights,
                       1-year of updates. Each year renewal is only 50% of the original
-                      purchase price.
+                      purchase price. Forever pricing wouldn't incentivize us to keep
+                      innovating, and we have big plans to make Takeout the best stack,
+                      period.
                     </Paragraph>
 
                     <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Forever pricing wouldn't incentivize us to keep innovating, and we
-                      have big plans to make Takeout the best stack, period.
-                    </Paragraph>
-
-                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      There's a lot of nice stuff coming soon as a PR to your repo:
+                      Here's what we're planning, to come auomatically as a PR to your
+                      repo:
                     </Paragraph>
 
                     <ThemeTintAlt>
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
                         <Bullet status="done">Storybook</Bullet>
+                        <Bullet status="done">tRPC</Bullet>
+                        <Bullet status="done">
+                          CLI to easily create Screens + Components
+                        </Bullet>
+                        <Bullet status="done">Reanimated</Bullet>
                         <Bullet status="building">Maestro integration tests</Bullet>
                         <Bullet status="building">Simple state management system</Bullet>
-                        <Bullet status="building">Reanimated modules</Bullet>
                         <Bullet status="building">Layout animations</Bullet>
                         <Bullet status="building">Tamagui CLI: Doctor</Bullet>
                         <Bullet status="building">Tamagui CLI: Upgrade</Bullet>
                         <Bullet>Playwright integration tests</Bullet>
                         <Bullet>Notifications</Bullet>
                         <Bullet>Alternative deployment targets</Bullet>
-                        <Bullet>Simple data fetching library</Bullet>
                         <Bullet>Premium font add-ons</Bullet>
                         <Bullet>Unified RN and web testing tools</Bullet>
                         <Bullet>Improved CI/CD and caching</Bullet>
-                        <Bullet>MDX support via tamagui.dev config</Bullet>
-                        <Bullet>Replicache integration</Bullet>
+                        <Bullet>Generator for MDX support</Bullet>
+                        <Bullet>Generator for Replicache support</Bullet>
                       </XStack>
                     </ThemeTintAlt>
 
@@ -1232,11 +1243,18 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
           exitStyle={{ opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
+          p={0}
         >
-          <ScrollView $gtSm={{ maxHeight: '90vh' }}>
+          <ScrollView p="$6" $gtSm={{ maxHeight: '90vh' }}>
             <YStack space>
               <XStack ai="center" jc="center" gap="$6" mx="$8">
-                <Dialog.Title py="$2" size="$9" $sm={{ size: '$7' }} my="$1" als="center">
+                <Dialog.Title
+                  ff="$silkscreen"
+                  size="$9"
+                  $sm={{ size: '$7' }}
+                  my="$1"
+                  als="center"
+                >
                   Purchase 🥡
                 </Dialog.Title>
               </XStack>
@@ -1329,41 +1347,41 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                 separator={<Separator vertical />}
                 $sm={{ fd: 'column-reverse' }}
               >
-                <ScrollView space $gtSm={{ w: '55%' }} ov="hidden">
+                <YStack maxWidth={450}>
                   <YStack
                     separator={<Separator o={0.35} />}
                     borderWidth="$0.5"
                     borderRadius="$4"
                     borderColor="$borderColor"
                   >
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6" fow="bold">
                           Lifetime access + 1 year of updates
                         </Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           You own the code for life, with updates for a year
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
-                        <Paragraph size="$8">✅</Paragraph>
+                        <Paragraph size="$8">{checkCircle}</Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">License Seats</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
-                          Number of people that are allowed to develop on the starter
+                        <Paragraph size="$3" theme="alt1">
+                          Number of people that are allowed to develop on it
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph size="$8">{takeoutPriceInfo.licenseSeats}</Paragraph>
                       </XStack>
                     </XStack>
-                    {/* <XStack px="$4" py="$3" gap="$3">
+                    {/* <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Public Releases</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Number public domains deployed to
                         </Paragraph>
                       </YStack>
@@ -1373,10 +1391,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         </Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Play Store Apps</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Number of public Android apps
                         </Paragraph>
                       </YStack>
@@ -1386,10 +1404,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         </Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">App Store Apps</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Number of public iOS apps
                         </Paragraph>
                       </YStack>
@@ -1399,10 +1417,10 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         </Paragraph>
                       </XStack>
                     </XStack> */}
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Seats</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Access to the Takeout channel
                         </Paragraph>
                       </YStack>
@@ -1410,23 +1428,36 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                         <Paragraph size="$8">{takeoutPriceInfo.discordSeats}</Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
+                      <YStack width="80%">
+                        <Paragraph size="$6">Discord #takeout-general channel</Paragraph>
+                        <Paragraph size="$3" theme="alt1">
+                          Private group chat for all Takeout purchasers
+                        </Paragraph>
+                      </YStack>
+                      <XStack f={1} ai="center" gap="$2" jc="center">
+                        <Paragraph size="$8">{checkCircle}</Paragraph>
+                      </XStack>
+                    </XStack>
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">Discord Private Channel</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Private chat for your team only
                         </Paragraph>
                       </YStack>
                       <XStack f={1} ai="center" gap="$2" jc="center">
                         <Paragraph size="$8">
-                          {takeoutPriceInfo.hasDiscordPrivateChannels ? '✅' : '❌'}
+                          {takeoutPriceInfo.hasDiscordPrivateChannels
+                            ? checkCircle
+                            : xCircle}
                         </Paragraph>
                       </XStack>
                     </XStack>
-                    <XStack px="$4" py="$3" gap="$3">
+                    <XStack px="$4" py="$4" gap="$3">
                       <YStack width="80%">
                         <Paragraph size="$6">GitHub Seats</Paragraph>
-                        <Paragraph size="$2" theme="alt2">
+                        <Paragraph size="$3" theme="alt1">
                           Open PRs and issues on the Github repo
                         </Paragraph>
                       </YStack>
@@ -1435,12 +1466,14 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
                       </XStack>
                     </XStack>
                   </YStack>
-                  {/* <YStack space="$4">
-                    <Points />
-                  </YStack> */}
-                </ScrollView>
 
-                <YStack f={1} space="$4">
+                  <YStack mt="$6" space="$4">
+                    <H4>Every plan includes all the same assets:</H4>
+                    <Points />
+                  </YStack>
+                </YStack>
+
+                <YStack f={2} space="$4">
                   <YStack
                     opacity={showTeamSelect ? 1 : 0.25}
                     pointerEvents={showTeamSelect ? 'auto' : 'none'}
@@ -1714,7 +1747,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Screens"
-                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed and more + carefully crafted layouts to adapt to web and native."
+                  description="Tab bar, Stack view, Onboarding, Auth, Profile, Edit Profile, Account, Settings, Feed + more, well crafted layouts to adapt to web/native."
                   after="08"
                 />
 
@@ -1726,7 +1759,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
 
                 <Row
                   title="Icons"
-                  description="A whopping ~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
+                  description="~180k icons in total across +150 different packs, integrated with your theme color and sizes, tree-shakeable, from iconify.design"
                   after="+150"
                 />
 
@@ -2071,7 +2104,7 @@ const TabsRovingIndicator = ({
 }
 
 const Points = () => (
-  <YStack tag="ul" gap="$1.5" zi={2} mt="$8" $gtSm={{ maw: 660 }} ov="hidden">
+  <YStack tag="ul" gap="$1.5" zi={2} ov="hidden">
     {/* <Point>React (web, native, ios) monorepo sharing a single codebase</Point>
     <Point>
       All the important screens: Onboard, Register, Login, Forgot Password, Account,
