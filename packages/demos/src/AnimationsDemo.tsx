@@ -21,6 +21,7 @@ export function AnimationsDemo(props) {
         animation={props.animation || 'bouncy'}
         animateOnly={['transform']}
         onPress={onPress}
+        debug="verbose"
         size={104}
         borderColor="$borderColor"
         borderWidth={1}

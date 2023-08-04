@@ -906,7 +906,7 @@ export type UseAnimationHook = (props: {
     delay?: number;
 }) => null | {
     style?: StackStylePropsBase | StackStylePropsBase[];
-    updatePseudoState?: (state: Partial<Pick<TamaguiComponentState, 'hover' | 'press' | 'focus'>>) => void;
+    updateState?: (state: Partial<Pick<TamaguiComponentState, 'hover' | 'press' | 'focus'>>) => void;
 };
 export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export type RulesToInsert = StyleObject[];

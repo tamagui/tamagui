@@ -1977,7 +1977,7 @@ export type UseAnimationHook = (props: {
   delay?: number
 }) => null | {
   style?: StackStylePropsBase | StackStylePropsBase[]
-  updatePseudoState?: (
+  updateState?: (
     state: Partial<Pick<TamaguiComponentState, 'hover' | 'press' | 'focus'>>
   ) => void
 }

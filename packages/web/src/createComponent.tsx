@@ -540,9 +540,9 @@ export function createComponent<
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
-    let updatePseudoStateForAnimations: NonNullable<
+    let updateStateForAnimations: NonNullable<
       ReturnType<NonNullable<typeof useAnimations>>
-    >['updatePseudoState']
+    >['updateState']
     if (willBeAnimated && useAnimations && !isHOC) {
       const animations = useAnimations({
         props: propsWithAnimation,
@@ -559,14 +559,14 @@ export function createComponent<
         staticConfig,
       })
 
-      updatePseudoStateForAnimations = animations?.updatePseudoState
+      updateStateForAnimations = animations?.updateState
 
-      if (updatePseudoStateForAnimations) {
+      if (updateStateForAnimations) {
         setStateShallow = (next) => {
           if ('unmounted' in next) {
             setStateShallowOriginal(next)
           } else {
-            updatePseudoStateForAnimations!(next)
+            updateStateForAnimations!(next)
             stateRef.current.pendingState ||= {}
             Object.assign(stateRef.current.pendingState, next)
           }

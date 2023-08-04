@@ -1,5 +1,6 @@
 import '../lib/wdyr'
 
+import { AnimationsDemo } from '@tamagui/demos'
 // debug
 import { memo } from 'react'
 import { Platform } from 'react-native'
@@ -17,7 +18,7 @@ export default memo(() => {
         flex: 1,
       }}
     >
-      <Input accessibilityLabel="ok" placeholder="search" />
+      <AnimationsDemo />
     </div>
   )
 })

@@ -165,7 +165,6 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
             animate: final,
             transition,
             styles,
-            moti,
             dontAnimate,
             isExiting,
             animateStr,
@@ -186,7 +185,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
 
       return {
         style: [dontAnimate, moti.style],
-        updatePseudoState(next) {
+        updateState(next) {
           pseudoState.value = Object.assign({}, pseudoState.value, next)
         },
       }
