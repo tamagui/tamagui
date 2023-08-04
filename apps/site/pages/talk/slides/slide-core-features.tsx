@@ -42,7 +42,7 @@ export default memo(() => {
                           marginTop: 60,
                           display: 'inline-flex',
                         },
-                        content: `Psuedo styles`,
+                        content: `Pseudo styles`,
                       },
                     ],
                   },

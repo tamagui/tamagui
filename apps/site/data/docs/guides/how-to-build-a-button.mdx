@@ -489,7 +489,7 @@ What the hell is `ButtonText.styleable` and `ButtonFrame.styleable`?
 
 Well, while it's explained in [the styled docs](/docs/core/styled#styleable) but the short of it is if you want a functional component that returns a styled component _to then be able to be styled again_, well, you need `styleable`.
 
-That's because merging things like themes, animations, variants, media queries, and psuedo queries is quite complex, and if Tamagui doesn't know that there is a functional component in between some styled components it can lead to unexpected merging of styles.
+That's because merging things like themes, animations, variants, media queries, and pseudo queries is quite complex, and if Tamagui doesn't know that there is a functional component in between some styled components it can lead to unexpected merging of styles.
 
 More importantly, the above code is once again verbose, duplicative, and brittle. For example sharing more than just `size` across these components would require a pretty significant refactor of the context with a lot of logic memoizing the context value properly. And, once again, by moving into functional components, your base level views now won't be as optimized by the compiler.
 
