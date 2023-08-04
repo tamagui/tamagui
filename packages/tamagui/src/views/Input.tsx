@@ -1,13 +1,12 @@
 import {
   ColorStyleProp,
   GetProps,
-  GetRef,
+  isWeb,
   setupReactNative,
   styled,
   useTheme,
 } from '@tamagui/core'
 import { useFocusable } from '@tamagui/focusable'
-import React, { useRef } from 'react'
 import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
@@ -22,7 +21,15 @@ export const defaultStyles = {
   borderWidth: 1,
   outlineWidth: 0,
   color: '$color',
-  focusable: true,
+
+  ...(isWeb
+    ? {
+        tabIndex: 0,
+      }
+    : {
+        focusable: true,
+      }),
+
   borderColor: '$borderColor',
   backgroundColor: '$background',
 
