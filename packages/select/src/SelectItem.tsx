@@ -177,12 +177,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           <ListItem
             tag="div"
             componentName={ITEM_NAME}
-            backgrounded
-            pressTheme
-            hoverTheme
-            focusTheme
-            cursor="default"
-            outlineWidth={0}
             ref={composedRefs}
             aria-labelledby={textId}
             aria-selected={isSelected}
@@ -190,7 +184,16 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
             aria-disabled={disabled || undefined}
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
-            size={size}
+            {...(!props.unstyled && {
+              backgrounded: true,
+              pressTheme: true,
+              hoverTheme: true,
+              focusTheme: true,
+              cursor: 'default',
+              outlineWidth: 0,
+              size,
+              ellipse: true,
+            })}
             {...itemProps}
             {...selectItemProps}
           />

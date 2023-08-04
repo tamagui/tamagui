@@ -7,6 +7,7 @@ export type TextContextStyles = {
     fontStyle?: SizableTextProps['fontStyle'];
     letterSpacing?: SizableTextProps['letterSpacing'];
     textAlign?: SizableTextProps['textAlign'];
+    ellipse?: SizableTextProps['ellipse'];
 };
 export type TextParentStyles = TextContextStyles & {
     textProps?: Partial<SizableTextProps>;

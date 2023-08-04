@@ -77,7 +77,10 @@ const SelectValue = SelectValueFrame.styleable<SelectValueProps>(function Select
 
   return (
     <SelectValueFrame
-      size={itemParentContext.size as any}
+      {...(!props.unstyled && {
+        size: itemParentContext.size as any,
+        ellipse: true,
+      })}
       ref={composedRefs}
       // we don't want events from the portalled `SelectValue` children to bubble
       // through the item they came from
@@ -128,6 +131,7 @@ export const SelectItemTextFrame = styled(SizableText, {
       false: {
         userSelect: 'none',
         color: '$color',
+        ellipse: true,
       },
     },
   } as const,
