@@ -38,6 +38,7 @@ export function useFocusScope(
 ) {
   const {
     loop = false,
+    enabled = true,
     trapped = false,
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
@@ -63,6 +64,7 @@ export function useFocusScope(
 
   // Takes care of trapping focus if focus is moved outside programmatically for example
   React.useEffect(() => {
+    if (!enabled) return
     if (!trapped) return
     function handleFocusIn(event: FocusEvent) {
       if (focusScope.paused || !container) return
@@ -90,9 +92,10 @@ export function useFocusScope(
   }, [trapped, forceUnmount, container, focusScope.paused])
 
   React.useEffect(() => {
-    if (!trapped) return
+    if (!enabled) return
     if (!container) return
     if (forceUnmount) return
+
     focusScopesStack.add(focusScope)
     const previouslyFocusedElement = document.activeElement as HTMLElement | null
     const hasFocusedCandidate = container.contains(previouslyFocusedElement)
@@ -123,7 +126,7 @@ export function useFocusScope(
 
       focusScopesStack.remove(focusScope)
     }
-  }, [container, forceUnmount, onMountAutoFocus, onUnmountAutoFocus, focusScope])
+  }, [enabled, container, forceUnmount, onMountAutoFocus, onUnmountAutoFocus, focusScope])
 
   // Takes care of looping focus (when tabbing whilst at the edges)
   const handleKeyDown = React.useCallback(

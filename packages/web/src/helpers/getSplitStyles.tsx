@@ -1099,7 +1099,7 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (!isReactNative) {
+    if (isWeb && !isReactNative) {
       if (viewProps.tabIndex == null) {
         const isFocusable = viewProps.focusable ?? viewProps.accessible
 
