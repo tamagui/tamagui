@@ -7,6 +7,5 @@ export type ThemeProviderProps = {
     children?: any;
     reset?: boolean;
 };
-export declare const ThemeProviderRootContext: import("react").Context<Pick<ThemeProviderProps, "defaultTheme"> | null>;
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
 //# sourceMappingURL=ThemeProvider.d.ts.map

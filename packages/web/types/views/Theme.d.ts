@@ -8,9 +8,10 @@ export declare function useThemedChildren(themeState: ChangedThemeResponse, chil
     passPropsToChildren?: boolean;
     debug?: DebugProp;
 }, isRoot?: boolean): any;
-export declare function wrapThemeElements({ children, themeState, forceClassName, }: {
+export declare function wrapThemeElements({ children, themeState, forceClassName, isRoot, }: {
     children?: React.ReactNode;
     themeState: ChangedThemeResponse;
     forceClassName?: boolean;
-}): JSX.Element;
+    isRoot?: boolean;
+}): string | number | boolean | React.ReactFragment | JSX.Element | null | undefined;
 //# sourceMappingURL=Theme.d.ts.map

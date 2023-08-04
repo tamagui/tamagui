@@ -94,9 +94,9 @@ export function getThemeCSSRules(props: {
 
             // for light/dark/light:
             selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
-            // selectorsSet.add(
-            //   `${parentSelectors.join(' ')} ${nextChildSelector}.t_sub_theme`.trim()
-            // )
+            selectorsSet.add(
+              `${parentSelectors.join(' ')} ${nextChildSelector}.t_sub_theme`.trim()
+            )
           }
         }
       }

@@ -174,7 +174,7 @@ export class ThemeManager {
 }
 
 function getNextThemeClassName(name: string) {
-  const next = `${THEME_CLASSNAME_PREFIX}${name}`
+  const next = `t_sub_theme ${THEME_CLASSNAME_PREFIX}${name}`
   return next.replace('light_', '').replace('dark_', '')
 }
 

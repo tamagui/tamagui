@@ -1,13 +1,5 @@
 import { isWeb } from '@tamagui/constants'
-import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  useEffect,
-  useId,
-  useRef,
-} from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
@@ -112,6 +104,7 @@ export function useThemedChildren(
       children: elementsWithContext,
       themeState,
       forceClassName,
+      isRoot,
     })
   }
 
@@ -122,11 +115,17 @@ export function wrapThemeElements({
   children,
   themeState,
   forceClassName,
+  isRoot,
 }: {
   children?: React.ReactNode
   themeState: ChangedThemeResponse
   forceClassName?: boolean
+  isRoot?: boolean
 }) {
+  if (isRoot && forceClassName === false) {
+    return children
+  }
+
   if (!themeState.isNewTheme && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }

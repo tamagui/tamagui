@@ -1,97 +1,83 @@
 // import './wdyr'
 
-import { Menu } from '@tamagui/lucide-icons'
-import { memo } from 'react'
+import { ComponentRef, useState } from 'react'
+import { Platform } from 'react-native'
 import {
-  Adapt,
   Button,
   Paragraph,
-  Popover,
   SizableText,
-  Square,
   Text,
+  Theme,
+  ThemeName,
   YStack,
   styled,
 } from 'tamagui'
+import { Input as TamaguiInput, variableToString } from 'tamagui'
 
-const PopoverRenderTest = memo(() => {
-  return (
-    <Popover keepChildrenMounted size="$5" stayInFrame={{ padding: 20 }}>
-      <Popover.Trigger asChild>
-        <Button
-          size="$3"
-          chromeless
-          circular
-          hoverStyle={{
-            bc: 'transparent',
-          }}
-          noTextWrap
-        >
-          <Menu size={16} color="var(--color)" />
-        </Button>
-      </Popover.Trigger>
+type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
-      <Adapt platform="touch" when="sm">
-        <Popover.Sheet
-          zIndex={100000000}
-          modal
-          dismissOnSnapToBottom
-          animationConfig={{
-            type: 'spring',
-            damping: 20,
-            mass: 1.2,
-            stiffness: 250,
-          }}
-        >
-          <Popover.Sheet.Frame>
-            <Popover.Sheet.ScrollView>
-              <Adapt.Contents />
-            </Popover.Sheet.ScrollView>
-          </Popover.Sheet.Frame>
-          <Popover.Sheet.Overlay zIndex={100} />
-        </Popover.Sheet>
-      </Adapt>
-
-      <Popover.Content
-        bw={1}
-        boc="$borderColor"
-        enterStyle={{ x: 0, y: -10, o: 0 }}
-        exitStyle={{ x: 0, y: -10, o: 0 }}
-        x={0}
-        y={0}
-        o={1}
-        animation={[
-          'quick',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
+const TextInput = styled(
+  TamaguiInput,
+  {
+    fontSize: 16,
+    fontFamily: '$body',
+    color: '$color12',
+    minWidth: 0,
+    borderWidth: 0,
+    borderColor: 'transparent',
+    variants: {
+      unset: {
+        false: {
+          borderWidth: 2,
+          py: '$2',
+          px: '$3',
+          borderRadius: 6,
+          bg: '$color3',
+          focusStyle: {
+            bg: '$color4',
+            margin: 0,
           },
-        ]}
-        animateOnly={['transform', 'opacity']}
-        p={0}
-        maxHeight="80vh"
-        elevate
-        zIndex={100000000}
-      >
-        <Popover.Arrow borderWidth={1} boc="$borderColor" />
+        },
+      },
+    } as const,
+    defaultVariants: {
+      unset: false,
+    },
+  },
+  {
+    inlineProps: new Set(['id', 'testID']),
+  }
+)
 
-        <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-          <YStack miw={230} p="$3" ai="flex-end">
-            <Square size={100} bc="red" />
-          </YStack>
-        </Popover.ScrollView>
-      </Popover.Content>
-    </Popover>
+export const Input = TamaguiInput.styleable<
+  RequireField<React.ComponentProps<typeof TextInput>, 'accessibilityLabel'>
+>(function MyInput(props, ref) {
+  return (
+    <TextInput
+      unstyled
+      placeholderTextColor={'$color9'}
+      keyboardAppearance={'dark'}
+      testID={props.testID ?? props.id}
+      {...props}
+      id={Platform.select({
+        // on native, this leads to duplicates?
+        web: props.id,
+      })}
+      ref={ref}
+    />
   )
 })
 
+export type Input = ComponentRef<typeof Input>
+
 export const Sandbox = () => {
+  const [theme, setTheme] = useState('blue' as ThemeName)
   // need to test all these they seem to be all working:
 
   return (
     <>
-      <PopoverRenderTest />
+      <TextInput theme={theme} />
+      <Button onPress={() => setTheme('red')}>asdsad</Button>
 
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />
@@ -290,3 +276,75 @@ const DrawListRow = styled(View, {
   rowGap: '$3',
   px: '$3',
 })
+
+// const PopoverRenderTest = memo(() => {
+//   return (
+//     <Popover keepChildrenMounted size="$5" stayInFrame={{ padding: 20 }}>
+//       <Popover.Trigger asChild>
+//         <Button
+//           size="$3"
+//           chromeless
+//           circular
+//           hoverStyle={{
+//             bc: 'transparent',
+//           }}
+//           noTextWrap
+//         >
+//           <Menu size={16} color="var(--color)" />
+//         </Button>
+//       </Popover.Trigger>
+
+//       <Adapt platform="touch" when="sm">
+//         <Popover.Sheet
+//           zIndex={100000000}
+//           modal
+//           dismissOnSnapToBottom
+//           animationConfig={{
+//             type: 'spring',
+//             damping: 20,
+//             mass: 1.2,
+//             stiffness: 250,
+//           }}
+//         >
+//           <Popover.Sheet.Frame>
+//             <Popover.Sheet.ScrollView>
+//               <Adapt.Contents />
+//             </Popover.Sheet.ScrollView>
+//           </Popover.Sheet.Frame>
+//           <Popover.Sheet.Overlay zIndex={100} />
+//         </Popover.Sheet>
+//       </Adapt>
+
+//       <Popover.Content
+//         bw={1}
+//         boc="$borderColor"
+//         enterStyle={{ x: 0, y: -10, o: 0 }}
+//         exitStyle={{ x: 0, y: -10, o: 0 }}
+//         x={0}
+//         y={0}
+//         o={1}
+//         animation={[
+//           'quick',
+//           {
+//             opacity: {
+//               overshootClamping: true,
+//             },
+//           },
+//         ]}
+//         animateOnly={['transform', 'opacity']}
+//         p={0}
+//         maxHeight="80vh"
+//         elevate
+//         zIndex={100000000}
+//       >
+//         <Popover.Arrow borderWidth={1} boc="$borderColor" />
+
+//         <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+//           <YStack miw={230} p="$3" ai="flex-end">
+//             <Square size={100} bc="red" />
+//           </YStack>
+//         </Popover.ScrollView>
+//       </Popover.Content>
+//     </Popover>
+//   )
+// })
