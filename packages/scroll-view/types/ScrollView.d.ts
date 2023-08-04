@@ -13,5 +13,6 @@ export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import(
     prototype: ScrollViewNative;
     contextType: import("react").Context<any> | undefined;
 }>;
+export type ScrollView = Pick<ScrollViewNative, 'scrollTo'>;
 export type ScrollViewProps = GetProps<typeof ScrollView>;
 //# sourceMappingURL=ScrollView.d.ts.map
