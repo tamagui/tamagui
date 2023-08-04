@@ -348,7 +348,7 @@ export declare const ListItemTitle: import("@tamagui/web").TamaguiComponent<(Omi
         readonly unstyled?: boolean | undefined;
     };
 }>;
-export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title, }?: {
+export declare const useListItem: (propsIn: ListItemProps, { Text, Subtitle, Title, }?: {
     Title?: any;
     Subtitle?: any;
     Text?: any;
@@ -356,6 +356,37 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
     props: {
         children: JSX.Element;
         fontStyle?: "normal" | "italic" | undefined;
+        textProps?: Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly size?: FontSizeTokens | undefined;
+        } & import("@tamagui/web").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly size?: FontSizeTokens | undefined;
+        }>> & import("@tamagui/web").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseTextProps & import("@tamagui/web").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/web").StyleProp<import("react-native").TextStyle | React.CSSProperties | (React.CSSProperties & import("react-native").TextStyle)>;
+        } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly size?: FontSizeTokens | undefined;
+        }>>> | undefined;
+        display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
+        onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
+        onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+        onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
+        onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+        onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
+        style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         hitSlop?: import("react-native").Insets | (import("react-native").Insets & number) | undefined;
         id?: string | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | undefined;
@@ -397,26 +428,26 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             label?: string | undefined;
         }>[] | undefined;
         accessibilityLabel?: string | undefined;
-        'aria-label'?: string | undefined;
+        "aria-label"?: string | undefined;
         accessibilityRole?: import("react-native").AccessibilityRole | undefined;
         accessibilityState?: import("react-native").AccessibilityState | undefined;
-        'aria-busy'?: boolean | undefined;
-        'aria-checked'?: boolean | "mixed" | undefined;
-        'aria-disabled'?: boolean | undefined;
-        'aria-expanded'?: boolean | undefined;
-        'aria-selected'?: boolean | undefined;
-        'aria-labelledby'?: string | undefined;
+        "aria-busy"?: boolean | undefined;
+        "aria-checked"?: boolean | "mixed" | undefined;
+        "aria-disabled"?: boolean | undefined;
+        "aria-expanded"?: boolean | undefined;
+        "aria-selected"?: boolean | undefined;
+        "aria-labelledby"?: string | undefined;
         accessibilityHint?: string | undefined;
         accessibilityValue?: import("react-native").AccessibilityValue | undefined;
-        'aria-valuemax'?: number | undefined;
-        'aria-valuemin'?: number | undefined;
-        'aria-valuenow'?: number | undefined;
-        'aria-valuetext'?: string | undefined;
+        "aria-valuemax"?: number | undefined;
+        "aria-valuemin"?: number | undefined;
+        "aria-valuenow"?: number | undefined;
+        "aria-valuetext"?: string | undefined;
         onAccessibilityAction?: ((event: import("react-native").AccessibilityActionEvent) => void) | undefined;
         importantForAccessibility?: "auto" | "yes" | "no" | "no-hide-descendants" | undefined;
-        'aria-hidden'?: boolean | undefined;
-        'aria-live'?: "polite" | "assertive" | "off" | undefined;
-        'aria-modal'?: boolean | undefined;
+        "aria-hidden"?: boolean | undefined;
+        "aria-live"?: "polite" | "assertive" | "off" | undefined;
+        "aria-modal"?: boolean | undefined;
         role?: "separator" | "none" | "alert" | "alertdialog" | "application" | "article" | "banner" | "button" | "cell" | "checkbox" | "columnheader" | "combobox" | "complementary" | "contentinfo" | "definition" | "dialog" | "directory" | "document" | "feed" | "figure" | "form" | "grid" | "group" | "heading" | "img" | "link" | "list" | "listitem" | "log" | "main" | "marquee" | "math" | "menu" | "menubar" | "menuitem" | "meter" | "navigation" | "note" | "option" | "presentation" | "progressbar" | "radio" | "radiogroup" | "region" | "row" | "rowgroup" | "rowheader" | "scrollbar" | "searchbox" | "slider" | "spinbutton" | "status" | "summary" | "switch" | "tab" | "table" | "tablist" | "tabpanel" | "term" | "timer" | "toolbar" | "tooltip" | "tree" | "treegrid" | "treeitem" | undefined;
         accessibilityLiveRegion?: "none" | "polite" | "assertive" | undefined;
         accessibilityLabelledBy?: string | string[] | undefined;
@@ -427,33 +458,21 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         onMagicTap?: (() => void) | undefined;
         accessibilityIgnoresInvertColors?: boolean | undefined;
         accessibilityLanguage?: string | undefined;
-        target?: string | undefined;
-        asChild?: boolean | "except-style" | undefined;
-        dangerouslySetInnerHTML?: {
-            __html: string;
-        } | undefined;
-        debug?: import("@tamagui/web").DebugProp | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        themeShallow?: boolean | undefined;
-        tag?: string | undefined;
-        componentName?: string | undefined;
-        tabIndex?: string | number | undefined;
-        disableOptimization?: boolean | undefined;
-        forceStyle?: "hover" | "press" | "focus" | undefined;
-        onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        onLongPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
-        onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onMouseUp?: React.MouseEventHandler<HTMLDivElement> | undefined;
-        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
-        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
-        style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
+        elevation?: SizeTokens | undefined;
+        gap?: import("@tamagui/web").SpaceValue | undefined;
+        columnGap?: import("@tamagui/web").SpaceValue | undefined;
+        rowGap?: import("@tamagui/web").SpaceValue | undefined;
+        contain?: import("csstype").Property.Contain | undefined;
+        cursor?: import("csstype").Property.Cursor | undefined;
+        outlineColor?: import("csstype").Property.OutlineColor | undefined;
+        outlineOffset?: import("@tamagui/web").SpaceValue | undefined;
+        outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
+        outlineWidth?: import("@tamagui/web").SpaceValue | undefined;
+        spaceDirection?: import("@tamagui/web").SpaceDirection | undefined;
+        separator?: React.ReactNode;
+        animation?: import("@tamagui/web").AnimationProp | null | undefined;
+        animateOnly?: string[] | undefined;
+        userSelect?: import("csstype").Property.UserSelect | undefined;
         backgroundColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor | import("react-native").OpaqueColorValue | undefined;
         borderBlockColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor | import("react-native").OpaqueColorValue | undefined;
         borderBlockEndColor?: import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor | import("react-native").OpaqueColorValue | undefined;
@@ -550,60 +569,6 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         scaleY?: boolean | (import("react-native").AnimatableNumericValue & number) | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
         translateX?: import("react-native").AnimatableNumericValue | undefined;
         translateY?: import("react-native").AnimatableNumericValue | undefined;
-        x?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
-        y?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
-        perspective?: number | undefined;
-        scale?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
-        skewX?: string | undefined;
-        skewY?: string | undefined;
-        matrix?: number[] | undefined;
-        rotate?: string | undefined;
-        rotateY?: string | undefined;
-        rotateX?: string | undefined;
-        rotateZ?: string | undefined;
-        columnGap?: import("@tamagui/web").SpaceValue | undefined;
-        contain?: import("csstype").Property.Contain | undefined;
-        cursor?: import("csstype").Property.Cursor | undefined;
-        display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
-        gap?: import("@tamagui/web").SpaceValue | undefined;
-        outlineColor?: import("csstype").Property.OutlineColor | undefined;
-        outlineOffset?: import("@tamagui/web").SpaceValue | undefined;
-        outlineStyle?: import("csstype").Property.OutlineStyle | undefined;
-        outlineWidth?: import("@tamagui/web").SpaceValue | undefined;
-        rowGap?: import("@tamagui/web").SpaceValue | undefined;
-        spaceDirection?: import("@tamagui/web").SpaceDirection | undefined;
-        separator?: React.ReactNode;
-        animation?: import("@tamagui/web").AnimationProp | null | undefined;
-        animateOnly?: string[] | undefined;
-        userSelect?: import("csstype").Property.UserSelect | undefined;
-        rel?: any;
-        download?: any;
-        onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        dataSet?: Record<string, string | number | null | undefined> | undefined;
-        onScrollShouldSetResponder?: unknown;
-        onScrollShouldSetResponderCapture?: unknown;
-        onSelectionChangeShouldSetResponder?: unknown;
-        onSelectionChangeShouldSetResponderCapture?: unknown;
-        onLayout?: ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
-        href?: string | undefined;
-        hrefAttrs?: {
-            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
-            rel?: string | undefined;
-            download?: boolean | undefined;
-        } | undefined;
-        elevationAndroid?: string | number | undefined;
-        elevation?: SizeTokens | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
         hoverTheme?: boolean | undefined;
@@ -616,8 +581,43 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
         padded?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
-        size?: SizeTokens | undefined;
-        active?: boolean | undefined;
+        x?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
+        y?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
+        perspective?: number | undefined;
+        scale?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | undefined;
+        skewX?: string | undefined;
+        skewY?: string | undefined;
+        matrix?: number[] | undefined;
+        rotate?: string | undefined;
+        rotateY?: string | undefined;
+        rotateX?: string | undefined;
+        rotateZ?: string | undefined;
+        onPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressIn?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onPressOut?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        onLongPress?: ((event: import("react-native").GestureResponderEvent) => void) | null | undefined;
+        disabled?: boolean | undefined;
+        target?: string | undefined;
+        asChild?: boolean | "except-style" | undefined;
+        dangerouslySetInnerHTML?: {
+            __html: string;
+        } | undefined;
+        debug?: import("@tamagui/web").DebugProp | undefined;
+        className?: string | undefined;
+        themeShallow?: boolean | undefined;
+        tag?: string | undefined;
+        componentName?: string | undefined;
+        tabIndex?: string | number | undefined;
+        disableOptimization?: boolean | undefined;
+        forceStyle?: "hover" | "press" | "focus" | undefined;
+        onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onMouseUp?: React.MouseEventHandler<HTMLDivElement> | undefined;
+        onFocus?: ((event: React.FocusEvent<HTMLDivElement, Element>) => void) | undefined;
+        onScroll?: ((event: React.UIEvent<HTMLDivElement, UIEvent>) => void) | undefined;
         hoverStyle?: Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
             style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
         } & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
@@ -733,9 +733,24 @@ export declare const useListItem: (props: ListItemProps, { Text, Subtitle, Title
             readonly active?: boolean | undefined;
             readonly disabled?: boolean | undefined;
         }> | null | undefined;
+        size?: SizeTokens | undefined;
+        rel?: any;
+        download?: any;
+        dataSet?: Record<string, string | number | null | undefined> | undefined;
+        onScrollShouldSetResponder?: unknown;
+        onScrollShouldSetResponderCapture?: unknown;
+        onSelectionChangeShouldSetResponder?: unknown;
+        onSelectionChangeShouldSetResponderCapture?: unknown;
+        href?: string | undefined;
+        hrefAttrs?: {
+            target?: "top" | "_blank" | "_self" | "_top" | "blank" | "self" | undefined;
+            rel?: string | undefined;
+            download?: boolean | undefined;
+        } | undefined;
+        elevationAndroid?: string | number | undefined;
+        active?: boolean | undefined;
         themeInverse?: boolean | undefined;
         themeReset?: boolean | undefined;
-        fontFamily: `$${string}` | import("@tamagui/web").Variable<any> | undefined;
     };
 };
 export declare const listItemStaticConfig: {
@@ -909,7 +924,7 @@ export declare const ListItem: import("@tamagui/web").ReactComponentWithRef<Omit
     readonly size?: SizeTokens | undefined;
     readonly active?: boolean | undefined;
     readonly disabled?: boolean | undefined;
-}>>, "noTextWrap" | "color" | "fontWeight" | "fontSize" | "fontFamily" | "fontStyle" | "letterSpacing" | "textAlign" | "textProps" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "transparent" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "fullscreen" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "size" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "elevationAndroid" | "unstyled" | "active" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, import("@tamagui/web").TamaguiElement> & {
+}>>, "noTextWrap" | "color" | "fontWeight" | "fontSize" | "fontFamily" | "fontStyle" | "letterSpacing" | "textAlign" | "ellipse" | "textProps" | "display" | "children" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "style" | "hitSlop" | "id" | "pointerEvents" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "space" | "spaceDirection" | "separator" | "animation" | "animateOnly" | "userSelect" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "transparent" | "circular" | "hoverTheme" | "pressTheme" | "focusTheme" | "elevate" | "bordered" | "backgrounded" | "radiused" | "padded" | "chromeless" | "fullscreen" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "disabled" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "className" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "size" | "rel" | "download" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "href" | "hrefAttrs" | "elevationAndroid" | "unstyled" | "active" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace" | "title" | "subTitle">, import("@tamagui/web").TamaguiElement> & {
     staticConfig: import("@tamagui/web").StaticConfig;
     styleable: import("@tamagui/web").Styleable<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/web").ExtendBaseStackProps & import("@tamagui/web").TamaguiComponentPropsBase & {
         style?: import("@tamagui/web").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;

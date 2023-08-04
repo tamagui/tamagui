@@ -173,7 +173,7 @@ export const ListItemTitle = styled(ListItemText, {
 })
 
 export const useListItem = (
-  props: ListItemProps,
+  propsIn: ListItemProps,
   {
     Text = ListItemText,
     Subtitle = ListItemSubtitle,
@@ -185,6 +185,8 @@ export const useListItem = (
   } = { Text: ListItemText, Subtitle: ListItemSubtitle, Title: ListItemTitle }
 ) => {
   // careful not to desctructure and re-order props, order is important
+  const props = useProps(propsIn)
+
   const {
     children,
     icon,
@@ -197,39 +199,42 @@ export const useListItem = (
     scaleSpace = 1,
     unstyled = false,
     subTitle,
+    title,
 
     // text props
     color,
     fontWeight,
-    letterSpacing,
     fontSize,
     fontFamily,
+    letterSpacing,
     textAlign,
-    textProps,
-    title,
+    ellipse,
+
     ...rest
   } = props
 
-  const mediaActiveProps = useProps({
-    scaleIcon,
-    scaleSpace,
-    unstyled,
-    ...props,
-  })
+  const textProps = {
+    color,
+    fontWeight,
+    fontSize,
+    fontFamily,
+    letterSpacing,
+    textAlign,
+    ellipse,
+    children,
+  }
 
-  const size = mediaActiveProps.size || '$true'
+  const size = props.size || '$true'
   const iconSize = getFontSize(size as any) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize =
-    getVariableValue(getTokens().space[mediaActiveProps.space as any] ?? iconSize) *
-    scaleSpace
-  // @ts-ignore noTextWrap = all is ok
-  const contents = wrapChildrenInText(Text, mediaActiveProps)
+    getVariableValue(getTokens().space[props.space as any] ?? iconSize) * scaleSpace
+
+  const contents = wrapChildrenInText(Text, textProps)
 
   return {
     props: {
-      fontFamily,
       ...rest,
       children: (
         <>
@@ -249,7 +254,7 @@ export const useListItem = (
                   {typeof subTitle === 'string' && noTextWrap !== 'all' ? (
                     // TODO can use theme but we need to standardize to alt themes
                     // or standardize on subtle colors in themes
-                    <Subtitle unstyled={mediaActiveProps.unstyled} size={size}>
+                    <Subtitle unstyled={unstyled} size={size}>
                       {subTitle}
                     </Subtitle>
                   ) : (
@@ -291,6 +296,7 @@ export const listItemStaticConfig = {
     'fontFamily',
     'letterSpacing',
     'textAlign',
+    'ellipse',
   ]),
 }
 
