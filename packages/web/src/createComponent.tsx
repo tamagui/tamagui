@@ -167,16 +167,17 @@ export function createComponent<
     // order is after default props but before props
     let styledContextProps: Object | undefined
     let overriddenContextProps: Object | undefined
+    let contextValue: Object | null | undefined
     const { context } = staticConfig
     if (context) {
-      const contextValue = useContext(context)
+      contextValue = useContext(context)
       const { inverseShorthands } = getConfig()
       for (const key in context.props) {
         const propVal =
           // because its after default props but before props this annoying amount of checks
-          propsIn[key] ||
-          propsIn[inverseShorthands[key]] ||
-          defaultProps?.[key] ||
+          propsIn[key] ??
+          propsIn[inverseShorthands[key]] ??
+          defaultProps?.[key] ??
           defaultProps?.[inverseShorthands[key]]
         // if not set, use context
         if (propVal === undefined) {
@@ -893,7 +894,11 @@ export function createComponent<
 
     if (overriddenContextProps) {
       const Provider = staticConfig.context!.Provider!
-      content = <Provider {...overriddenContextProps}>{content}</Provider>
+      content = (
+        <Provider {...contextValue} {...overriddenContextProps}>
+          {content}
+        </Provider>
+      )
     }
 
     if (process.env.NODE_ENV === 'development') {
