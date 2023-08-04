@@ -17,4 +17,6 @@ export const ScrollView = styled(ScrollViewNative, {
   } as const,
 })
 
+export type ScrollView = Pick<ScrollViewNative, 'scrollTo'>
+
 export type ScrollViewProps = GetProps<typeof ScrollView>
