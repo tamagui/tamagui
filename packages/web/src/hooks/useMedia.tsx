@@ -65,7 +65,7 @@ export const getMediaKeyImportance = (key: string) => {
     return defaultMediaImportance
   }
 
-  // + 100 because we set base usedKeys=1, psuedos are 2-N (however many we have)
+  // + 100 because we set base usedKeys=1, pseudos are 2-N (however many we have)
   // all media go above all pseudos so we need to pad it based on that
   // right now theres 5 pseudos but in the future could be a few more
   return mediaKeysOrdered.indexOf(key) + 100

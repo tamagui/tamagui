@@ -273,7 +273,7 @@ This advanced usage is necessary if you are doing a pattern like the following:
 const StyledText = styled(Text)
 
 // 2. you create a wrapper component that adds some logic
-//    but still returns a styled component that recieves the props
+//    but still returns a styled component that receives the props
 const HigherOrderStyledText = (props) => <StyledText {...props} />
 
 // 3. you want that wrapper component itself to be able to use with `styled`

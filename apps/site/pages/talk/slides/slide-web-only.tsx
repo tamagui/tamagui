@@ -72,7 +72,7 @@ export default memo(() => {
 
                     content: (
                       <>
-                        <strong>Psuedo styles</strong> for now, onPress, onFocus, etc
+                        <strong>Pseudo styles</strong> for now, onPress, onFocus, etc
                       </>
                     ),
                   },

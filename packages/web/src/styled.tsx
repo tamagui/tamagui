@@ -190,8 +190,8 @@ export function styled<
    *
    * type OurPropsBase = OurPropsBaseBase & PseudoProps<Partial<OurPropsBaseBase>>
    * and then below in type Props you would remove the PseudoProps line
-   * that would give you nicely merged psuedo sub-styles but its just too much for TS
-   * so now psuedos wont be nicely typed inside media queries, but at least we can nest
+   * that would give you nicely merged pseudo sub-styles but its just too much for TS
+   * so now pseudos wont be nicely typed inside media queries, but at least we can nest
    */
 
   type OurPropsBase = OurPropsBaseBase
@@ -200,7 +200,7 @@ export function styled<
     ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBase &
-        // add in psuedo
+        // add in pseudo
         PseudoProps<Partial<OurPropsBaseBase>> &
         // add in media
         MediaProps<Partial<OurPropsBase>>
