@@ -576,7 +576,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       <>
         <FocusScope
           loop
-          trapped={context.open && trapFocus}
+          enabled={context.open}
+          trapped={trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
           forceUnmount={!context.open}
           onUnmountAutoFocus={onCloseAutoFocus}

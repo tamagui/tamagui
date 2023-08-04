@@ -1,13 +1,7 @@
+/// <reference types="react" />
 import { ColorStyleProp, GetProps } from '@tamagui/core';
-import React from 'react';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
-    readonly size: "$true";
-    readonly fontFamily: "$body";
-    readonly borderWidth: 1;
-    readonly outlineWidth: 0;
-    readonly color: "$color";
-    readonly focusable: true;
     readonly borderColor: "$borderColor";
     readonly backgroundColor: "$background";
     readonly minWidth: 0;
@@ -20,6 +14,31 @@ export declare const defaultStyles: {
         readonly outlineStyle: "solid";
         readonly borderColor: "$borderColorFocus";
     };
+    readonly tabIndex: number;
+    readonly size: "$true";
+    readonly fontFamily: "$body";
+    readonly borderWidth: 1;
+    readonly outlineWidth: 0;
+    readonly color: "$color";
+} | {
+    readonly borderColor: "$borderColor";
+    readonly backgroundColor: "$background";
+    readonly minWidth: 0;
+    readonly hoverStyle: {
+        readonly borderColor: "$borderColorHover";
+    };
+    readonly focusStyle: {
+        readonly outlineColor: "$borderColorFocus";
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly borderColor: "$borderColorFocus";
+    };
+    readonly focusable: boolean;
+    readonly size: "$true";
+    readonly fontFamily: "$body";
+    readonly borderWidth: 1;
+    readonly outlineWidth: 0;
+    readonly color: "$color";
 };
 export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
@@ -36,7 +55,7 @@ export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import
 }, {
     prototype: TextInput;
     State: import("react-native").TextInputState;
-    contextType: React.Context<any> | undefined;
+    contextType: import("react").Context<any> | undefined;
 }>;
 export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
     placeholderTextColor?: ColorStyleProp;
@@ -85,11 +104,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     size?: import("@tamagui/core").SizeTokens | undefined;
     space?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | undefined;
     zIndex?: import("@tamagui/core").ZIndexTokens | import("@tamagui/core").ThemeValueFallbackZIndex | undefined;
-    children?: React.ReactNode;
+    children?: import("react").ReactNode;
     className?: string | undefined;
     style?: import("react-native").StyleProp<import("react-native").TextStyle>;
     ellipse?: boolean | undefined;
-    separator?: React.ReactNode;
+    separator?: import("react").ReactNode;
     left?: number | boolean | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | null | undefined;
     right?: number | boolean | import("react-native").Animated.AnimatedNode | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | null | undefined;
     width?: number | import("react-native").Animated.AnimatedNode | import("@tamagui/core").Variable<any> | import("@tamagui/core").SizeTokens | null | undefined;
@@ -353,12 +372,12 @@ export declare function useInputProps(props: InputProps, ref: any): {
     tabIndex?: string | number | undefined;
     disableOptimization?: boolean | undefined;
     forceStyle?: "hover" | "press" | "focus" | undefined;
-    onHoverIn?: React.MouseEventHandler<HTMLDivElement> | undefined;
-    onHoverOut?: React.MouseEventHandler<HTMLDivElement> | undefined;
-    onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined;
-    onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined;
-    onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;
-    onMouseUp?: React.MouseEventHandler<HTMLDivElement> | undefined;
+    onHoverIn?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+    onHoverOut?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+    onMouseEnter?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+    onMouseLeave?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+    onMouseDown?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
+    onMouseUp?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
     onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
     hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {

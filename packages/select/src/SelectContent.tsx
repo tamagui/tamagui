@@ -48,7 +48,7 @@ export const SelectContent = ({
         style={{ zIndex, pointerEvents: context.open ? 'auto' : 'none' }}
         lockScroll={!!context.open && !touch}
       >
-        <FocusScope loop trapped={!!context.open} {...focusScopeProps}>
+        <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
           {contents}
         </FocusScope>
       </FloatingOverlay>

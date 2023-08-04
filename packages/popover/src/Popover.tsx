@@ -397,7 +397,8 @@ const PopoverContentImpl = React.forwardRef<
           >
             <FocusScope
               loop
-              trapped={trapFocus ?? open}
+              enabled={open}
+              trapped={trapFocus}
               onMountAutoFocus={onOpenAutoFocus}
               onUnmountAutoFocus={onCloseAutoFocus}
             >
