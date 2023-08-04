@@ -10,12 +10,21 @@ import { getAllSelectors } from './insertStyleRule'
 
 // only doing this on web on native it accepts pixel values
 
+const stylePropsAllPlusTransforms = {
+  ...stylePropsAll,
+  translateX: true,
+  translateY: true,
+}
+
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (!isWeb) return value
   if (typeof value === 'boolean') {
     return value
   }
-  if (property && (property in stylePropsUnitless || !(property in stylePropsAll))) {
+  if (property && property in stylePropsUnitless) {
+    return value
+  }
+  if (property && !(property in stylePropsAllPlusTransforms)) {
     return value
   }
   let res = value
