@@ -18,7 +18,7 @@ export function LucideIconsDemo() {
   const iconsMemo = useMemo(
     () =>
       lucideIcons
-        .filter((x) => x.key.startsWith(search.toLowerCase()))
+        .filter((x) => x.key.includes(search.toLowerCase()))
         .map(({ Icon, name }) => (
           <YStack
             height={size + 20}
