@@ -19,6 +19,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/constants": "1.49.6",
     "@tamagui/simple-hash": "1.49.6"
   },
   "devDependencies": {
