@@ -4,7 +4,7 @@
  */
 
 import { isWeb } from '@tamagui/constants'
-import { stylePropsUnitless, validStyles } from '@tamagui/helpers'
+import { stylePropsAll, stylePropsUnitless, validStyles } from '@tamagui/helpers'
 
 import { getAllSelectors } from './insertStyleRule'
 
@@ -15,10 +15,7 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   if (typeof value === 'boolean') {
     return value
   }
-  if (property && property in stylePropsUnitless) {
-    return value
-  }
-  if (property && !(property in validStyles)) {
+  if (property && (property in stylePropsUnitless || !(property in stylePropsAll))) {
     return value
   }
   let res = value
