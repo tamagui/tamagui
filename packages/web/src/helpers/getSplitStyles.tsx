@@ -515,7 +515,8 @@ export const getSplitStyles: StyleSplitter = (
     const shouldPassProp =
       !isStyleProp ||
       // is in parent variants
-      (isHOC && parentStaticConfig?.variants && keyInit in parentStaticConfig.variants)
+      (isHOC && parentStaticConfig?.variants && keyInit in parentStaticConfig.variants) ||
+      inlineProps?.has(keyInit)
 
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
