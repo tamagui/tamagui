@@ -1,9 +1,17 @@
-import '../lib/wdyr'
+// import '../lib/wdyr'
 
 // debug
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { Platform } from 'react-native'
-import { Input as TamaguiInput, styled, useThemeName } from 'tamagui'
+import {
+  Switch as TSwitch,
+  Input as TamaguiInput,
+  createStyledContext,
+  styled,
+  useThemeName,
+} from 'tamagui'
+
+import { ThemeToggle } from '../components/ThemeToggle'
 
 export default memo(() => {
   console.warn('rendereingasd')
@@ -17,10 +25,93 @@ export default memo(() => {
         flex: 1,
       }}
     >
-      <Input accessibilityLabel="ok" placeholder="search" />
+      <div
+        style={{
+          position: 'absolute',
+          top: 20,
+          right: 20,
+        }}
+      >
+        <ThemeToggle />
+      </div>
+      <Switch />
     </div>
   )
 })
+
+const context = createStyledContext({
+  checked: false,
+})
+
+const padding = 2
+
+const thumbSize = 20
+
+const width = thumbSize * 2 + padding * 2
+const height = thumbSize + padding * 2
+
+const Thumb = styled(TSwitch.Thumb, {
+  unstyled: true,
+  bg: '$color12',
+  height: thumbSize,
+  width: thumbSize,
+  br: '$4',
+  animation: '100ms',
+  // animateOnly: ['transform'],
+  variants: {
+    checked: {
+      true: {
+        bg: '$color2',
+        x: width - thumbSize - padding,
+      },
+      false: {
+        bg: '$color11',
+        x: padding,
+      },
+    },
+  } as const,
+})
+
+const Frame = styled(TSwitch, {
+  unstyled: true,
+  borderRadius: '$4',
+  borderWidth: 0,
+  padding: 0,
+  ai: 'center',
+  width: width,
+  cur: 'pointer',
+  height,
+  minHeight: 0,
+  variants: {
+    checked: {
+      true: {
+        bg: 'green',
+      },
+      false: {
+        bg: 'red',
+      },
+    },
+  } as const,
+})
+
+export const Switch = ({
+  checked,
+  onCheckedChange,
+  id,
+}: {
+  checked: boolean
+  onCheckedChange: (checked: boolean) => void
+  id?: string
+}) => {
+  const [x, setX] = useState(true)
+  return (
+    <Frame checked={x} id={id} onCheckedChange={setX} height={height}>
+      <Thumb checked={checked} />
+    </Frame>
+  )
+}
+
+// text input test font family
 
 type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 

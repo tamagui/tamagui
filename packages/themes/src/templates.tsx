@@ -3,7 +3,7 @@ import { MaskOptions } from '@tamagui/create-theme'
 import { palettes } from './palettes'
 
 export const { templates, maskOptions } = (() => {
-  const templateColors = {
+  const templateColorsSpecific = {
     color1: 1,
     color2: 2,
     color3: 3,
@@ -21,7 +21,7 @@ export const { templates, maskOptions } = (() => {
   // templates use the palette and specify index
   // negative goes backwards from end so -1 is the last item
   const template = {
-    ...templateColors,
+    ...templateColorsSpecific,
     // the background, color, etc keys here work like generics - they make it so you
     // can publish components for others to use without mandating a specific color scale
     // the @tamagui/button Button component looks for `$background`, so you set the
@@ -79,16 +79,16 @@ export const { templates, maskOptions } = (() => {
     min: 1,
   }
 
-  const skipShadowsAndColors = {
+  const skipShadowsAndSpecificColors = {
     ...overrideShadows,
-    ...templateColors,
+    ...templateColorsSpecific,
   }
 
   const maskOptions = {
     component: {
       ...baseMaskOptions,
       override: overrideWithColors,
-      skip: skipShadowsAndColors,
+      skip: skipShadowsAndSpecificColors,
     },
     alt: {
       ...baseMaskOptions,
@@ -100,7 +100,7 @@ export const { templates, maskOptions } = (() => {
         borderColor: 'transparent',
         borderColorHover: 'transparent',
       },
-      skip: skipShadowsAndColors,
+      skip: skipShadowsAndSpecificColors,
     },
   } satisfies Record<string, MaskOptions>
 

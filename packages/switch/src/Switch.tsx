@@ -95,7 +95,6 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
       return (
         <SwitchThumbFrame
           unstyled={unstyled}
-          theme={checked ? 'active' : null}
           size={size}
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
@@ -291,7 +290,11 @@ const SwitchComponent = SwitchFrame.extractable(
         </SwitchProvider>
       )
     }
-  )
+  ),
+  {
+    // because they may set a variant to be checked, we need to make it also pass checked down
+    inlineProps: new Set(['checked']),
+  }
 )
 
 export const Switch = withStaticProperties(SwitchComponent, {
