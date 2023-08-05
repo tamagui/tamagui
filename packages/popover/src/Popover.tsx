@@ -266,9 +266,15 @@ export interface PopoverContentImplProps
     Omit<DismissableProps, 'onDismiss' | 'children'> {
   /**
    * Whether focus should be trapped within the `Popover`
-   * (default: false)
+   * @default false
    */
   trapFocus?: FocusScopeProps['trapped']
+
+  /**
+   * Whether popover should not focus contents on open
+   * @default false
+   */
+  disableFocusScope?: boolean
 
   /**
    * Event handler called when auto-focusing on open.
@@ -296,6 +302,7 @@ const PopoverContentImpl = React.forwardRef<
     onOpenAutoFocus,
     onCloseAutoFocus,
     disableOutsidePointerEvents,
+    disableFocusScope,
     onEscapeKeyDown,
     onPointerDownOutside,
     onFocusOutside,
@@ -397,7 +404,7 @@ const PopoverContentImpl = React.forwardRef<
           >
             <FocusScope
               loop
-              enabled={open}
+              enabled={disableFocusScope ? false : open}
               trapped={trapFocus}
               onMountAutoFocus={onOpenAutoFocus}
               onUnmountAutoFocus={onCloseAutoFocus}

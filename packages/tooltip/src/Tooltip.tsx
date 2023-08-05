@@ -52,7 +52,7 @@ const TooltipContent = PopperContentFrame.extractable(
         <PopoverContent
           componentName="Tooltip"
           disableRemoveScroll
-          trapFocus={false}
+          disableFocusScope
           {...(!props.unstyled && {
             padding,
           })}
