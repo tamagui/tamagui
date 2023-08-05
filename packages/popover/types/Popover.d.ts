@@ -62,9 +62,14 @@ export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverCont
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children'> {
     /**
      * Whether focus should be trapped within the `Popover`
-     * (default: false)
+     * @default false
      */
     trapFocus?: FocusScopeProps['trapped'];
+    /**
+     * Whether popover should not focus contents on open
+     * @default false
+     */
+    disableFocusScope?: boolean;
     /**
      * Event handler called when auto-focusing on open.
      * Can be prevented.

@@ -126,7 +126,7 @@ async function buildTsc() {
     shouldSkipInitialTypes = false
     return
   }
-
+  
   const targetDir = 'types'
   try {
     // typescripts build cache messes up when doing declarationOnly
@@ -140,6 +140,7 @@ async function buildTsc() {
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
+    // rome-ignore lint/nursery/noConsoleLog: <explanation>
     console.log(err.message)
     if (!shouldWatch) {
       process.exit(1)
