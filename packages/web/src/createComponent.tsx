@@ -974,28 +974,29 @@ export function createComponent<
 
   res.staticConfig = staticConfig
 
-  function extendStyledConfig() {
+  function extendStyledConfig(extended: Partial<StaticConfig>) {
     return {
       ...staticConfig,
+      ...extended,
       neverFlatten: true,
       isHOC: true,
     }
   }
 
-  function extractable(Component: any) {
-    Component.staticConfig = extendStyledConfig()
+  function extractable(Component: any, extended: Partial<StaticConfig>) {
+    Component.staticConfig = extendStyledConfig(extended)
     Component.styleable = styleable
     return Component
   }
 
-  function styleable(Component: any) {
+  function styleable(Component: any, extended: Partial<StaticConfig>) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
       : // memo because theme changes otherwise would always re-render
         memo(forwardRef(Component as any))
 
-    const extendedConfig = extendStyledConfig()
+    const extendedConfig = extendStyledConfig(extended)
     const out = themeable(ComponentForwardedRef, extendedConfig) as any
     out.staticConfig = extendedConfig
     out.styleable = styleable
