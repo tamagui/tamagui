@@ -1239,7 +1239,8 @@ export type Styleable<Props, Ref> = <
     Props & CustomProps
   >
 >(
-  a: X
+  a: X,
+  staticConfig?: Partial<StaticConfig>
 ) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
   staticConfig: StaticConfig
   styleable: Styleable<Props, Ref>
@@ -1262,7 +1263,7 @@ type StaticComponentObject<Props, Ref> = {
   staticConfig: StaticConfig
 
   /** @deprecated use `styleable` instead (same functionality, better name) */
-  extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X
+  extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X
   /*
    * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
    */

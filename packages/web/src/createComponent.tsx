@@ -974,7 +974,7 @@ export function createComponent<
 
   res.staticConfig = staticConfig
 
-  function extendStyledConfig(extended: Partial<StaticConfig>) {
+  function extendStyledConfig(extended?: Partial<StaticConfig>) {
     return {
       ...staticConfig,
       ...extended,
@@ -983,13 +983,13 @@ export function createComponent<
     }
   }
 
-  function extractable(Component: any, extended: Partial<StaticConfig>) {
+  function extractable(Component: any, extended?: Partial<StaticConfig>) {
     Component.staticConfig = extendStyledConfig(extended)
     Component.styleable = styleable
     return Component
   }
 
-  function styleable(Component: any, extended: Partial<StaticConfig>) {
+  function styleable(Component: any, extended?: Partial<StaticConfig>) {
     const isForwardedRefAlready = Component.render?.length === 2
     const ComponentForwardedRef = isForwardedRefAlready
       ? (Component as any)
