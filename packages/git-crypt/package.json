@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/git-crypt",
-  "version": "1.49.7",
+  "version": "1.49.8",
   "bin": {
     "git-crypt-bin": "./git-crypt-bin"
   },
