@@ -121,7 +121,9 @@ export function wrapThemeElements({
     return children
   }
 
-  if (!themeState.isNewTheme && !themeState.state.inverse && !forceClassName) {
+  const inverse = themeState.state.inverse
+
+  if (!themeState.isNewTheme && !inverse && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 
@@ -148,14 +150,24 @@ export function wrapThemeElements({
     </span>
   )
 
-  if (themeState.state.inverse) {
-    const scheme = themeState.state.name.startsWith('light')
-      ? 'light'
-      : themeState.state.name.startsWith('dark')
-      ? 'dark'
-      : ''
+  // to prevent tree structure changes always render this if inverse is true or false
+  if (inverse != null) {
     themedChildren = (
-      <span className={`t_${scheme} _dsp_contents is_inversed`}>{themedChildren}</span>
+      <span
+        className={
+          inverse
+            ? `${
+                themeState.state.name.startsWith('light')
+                  ? 't_light'
+                  : themeState.state.name.startsWith('dark')
+                  ? 't_dark'
+                  : ''
+              } _dsp_contents is_inversed`
+            : `_dsp_contents`
+        }
+      >
+        {themedChildren}
+      </span>
     )
   }
 
