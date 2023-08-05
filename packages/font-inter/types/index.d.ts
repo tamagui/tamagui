@@ -1,4 +1,5 @@
 import { FillInFont, GenericFont } from '@tamagui/core';
+export { GenericFont, FillInFont } from '@tamagui/core';
 export declare const createInterFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
     sizeLineHeight?: ((fontSize: number) => number) | undefined;
     sizeSize?: ((size: number) => number) | undefined;
@@ -22,5 +23,4 @@ declare const defaultSizes: {
     readonly 15: 114;
     readonly 16: 134;
 };
-export {};
 //# sourceMappingURL=index.d.ts.map

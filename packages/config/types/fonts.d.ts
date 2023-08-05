@@ -1,6 +1,6 @@
 export * from './animations';
 export declare const fonts: {
-    heading: import("@tamagui/web").FillInFont<{
+    heading: import("@tamagui/font-inter").FillInFont<{
         size: {
             5: number;
             6: number;
@@ -42,7 +42,7 @@ export declare const fonts: {
             };
         };
     }, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
     mono: {
         weight: {
             1: string;
@@ -66,6 +66,6 @@ export declare const fonts: {
             16: number;
         };
     };
-    silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
 };
 //# sourceMappingURL=fonts.d.ts.map

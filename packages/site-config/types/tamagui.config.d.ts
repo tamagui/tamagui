@@ -1,7 +1,7 @@
 import { themes as themesIn } from '@tamagui/themes';
 export { animations } from './animations.reanimated';
-export declare const cherryBombFont: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-export declare const munroFont: import("@tamagui/web").GenericFont;
+export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+export declare const munroFont: import("@tamagui/font-inter").GenericFont;
 export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
@@ -793,7 +793,7 @@ export declare const config: {
         autocompleteSpecificTokens: "except-special";
     };
     fonts: {
-        heading: import("@tamagui/web").FillInFont<{
+        heading: import("@tamagui/font-inter").FillInFont<{
             size: {
                 5: number;
                 6: number;
@@ -836,7 +836,7 @@ export declare const config: {
                 };
             };
         }, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -860,9 +860,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
-        munro: import("@tamagui/web").GenericFont;
-        cherryBomb: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        munro: import("@tamagui/font-inter").GenericFont;
+        cherryBomb: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

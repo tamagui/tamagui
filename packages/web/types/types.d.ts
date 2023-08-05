@@ -603,7 +603,7 @@ export type TextNonStyleProps = Omit<ReactTextProps, 'children' | OmitRemovedNon
 export type TextPropsBase = TextNonStyleProps & WithThemeAndShorthands<TextStylePropsBase>;
 export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyleProps;
-export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
+export type Styleable<Props, Ref> = <CustomProps extends Object, X extends FunctionComponent<Props & CustomProps> = FunctionComponent<Props & CustomProps>>(a: X, staticConfig?: Partial<StaticConfig>) => ReactComponentWithRef<CustomProps & Omit<Props, keyof CustomProps>, Ref> & {
     staticConfig: StaticConfig;
     styleable: Styleable<Props, Ref>;
 };
@@ -614,7 +614,7 @@ export type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProp
 type StaticComponentObject<Props, Ref> = {
     staticConfig: StaticConfig;
     /** @deprecated use `styleable` instead (same functionality, better name) */
-    extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
+    extractable: <X>(a: X, staticConfig?: Partial<StaticConfig>) => X;
     styleable: Styleable<Props, Ref>;
 };
 export type TamaguiComponentExpectingVariants<Props = {}, Variants = {}> = TamaguiComponent<Props, any, any, Variants>;
