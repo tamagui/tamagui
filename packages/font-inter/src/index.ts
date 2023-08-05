@@ -6,6 +6,9 @@ import {
   isWeb,
 } from '@tamagui/core'
 
+// fix type portability issue?
+export { GenericFont, FillInFont } from '@tamagui/core'
+
 export const createInterFont = <A extends GenericFont>(
   font: Partial<A> = {},
   {
