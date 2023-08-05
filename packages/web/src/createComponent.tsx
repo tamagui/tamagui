@@ -362,6 +362,7 @@ export function createComponent<
       inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
+      shallow: stateRef.current.themeShallow,
       shouldUpdate: () => {
         // only forces when defined
         return stateRef.current.isListeningToTheme
@@ -857,10 +858,7 @@ export function createComponent<
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
-      : useThemedChildren(themeState, content, {
-          shallow: stateRef.current.themeShallow,
-          // passPropsToChildren: true,
-        })
+      : useThemedChildren(themeState, content, themeStateProps)
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'visualize') {
       content = (

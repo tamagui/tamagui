@@ -225,6 +225,7 @@ export interface ThemeProps {
     inverse?: boolean;
     forceClassName?: boolean;
     shouldUpdate?: () => boolean | undefined;
+    shallow?: boolean;
 }
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;

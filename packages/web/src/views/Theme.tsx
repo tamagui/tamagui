@@ -49,12 +49,7 @@ Theme['avoidForwardRef'] = true
 export function useThemedChildren(
   themeState: ChangedThemeResponse,
   children: any,
-  props: {
-    forceClassName?: boolean
-    shallow?: boolean
-    passPropsToChildren?: boolean
-    debug?: DebugProp
-  },
+  props: ThemeProps,
   isRoot = false
 ) {
   const { themeManager, isNewTheme } = themeState
@@ -65,7 +60,7 @@ export function useThemedChildren(
   }
 
   const shouldRenderChildrenWithTheme =
-    isNewTheme || hasEverThemed.current || forceClassName || isRoot
+    isNewTheme || props.inverse || hasEverThemed.current || forceClassName || isRoot
 
   if (!shouldRenderChildrenWithTheme) {
     return children
@@ -99,7 +94,7 @@ export function useThemedChildren(
     return elementsWithContext
   }
 
-  if (isWeb && !props.passPropsToChildren) {
+  if (isWeb) {
     return wrapThemeElements({
       children: elementsWithContext,
       themeState,
@@ -126,7 +121,7 @@ export function wrapThemeElements({
     return children
   }
 
-  if (!themeState.isNewTheme && !forceClassName) {
+  if (!themeState.isNewTheme && !themeState.state.inverse && !forceClassName) {
     return <span className="_dsp_contents is_Theme">{children}</span>
   }
 

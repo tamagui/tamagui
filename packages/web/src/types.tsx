@@ -456,6 +456,9 @@ export interface ThemeProps {
   forceClassName?: boolean
   // allows for forcing the auto-update behavior
   shouldUpdate?: () => boolean | undefined
+
+  // used internally for shallow themes
+  shallow?: boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
