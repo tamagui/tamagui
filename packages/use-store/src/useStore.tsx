@@ -1,4 +1,4 @@
-import { useCallback, useRef, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -19,7 +19,6 @@ import {
   disableTracking,
   setDisableStoreTracking,
 } from './Store'
-import { useAsyncExternalStore } from './useAsyncExternalStore'
 import { DebugStores, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
@@ -27,7 +26,7 @@ const idFn = (_) => _
 // no singleton, just react
 export function useStore<A extends Store<B>, B extends Object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
-  props?: B,
+  props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
 ): A {
   const selectorCb = useCallback(options.selector || idFn, [])
@@ -279,8 +278,6 @@ function useStoreFromInfo(
     }
     setDisableStoreTracking(store, false)
 
-    // const isUnchanged = false
-
     // this wasn't updating in AnimationsStore
     const isUnchanged =
       typeof last !== 'undefined' &&
@@ -291,7 +288,7 @@ function useStoreFromInfo(
     if (shouldPrintDebug) {
       // prettier-ignore
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('🌑 getSnapshot', { userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
+      console.log('🌑 getSnapshot', { storeState: selectKeys(store, Object.keys(store)), userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
     }
 
     if (isUnchanged) {
@@ -303,10 +300,7 @@ function useStoreFromInfo(
   }, [])
 
   // sync by default
-  // rome-ignore lint/nursery/noConstantCondition: <explanation>
-  const state = true
-    ? useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
-    : useAsyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+  const state = useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
   if (userSelector) {
     return state
@@ -516,6 +510,8 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
     return val
   }
 
+  let isTriggering = false
+
   const proxiedStore = new Proxy(storeInstance, {
     // GET
     get(_, key) {
@@ -602,14 +598,18 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
             console.log('(debug) SET', res, key, value)
           }
         }
-        if (process.env.NODE_ENV === 'development' && DebugStores.has(constr)) {
+        if (process.env.NODE_ENV === 'development' && shouldDebug) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
           console.log('SET...', { key, value, isInAction })
         }
         if (isInAction) {
           didSet = true
         } else {
-          storeInstance[TRIGGER_UPDATE]?.()
+          isTriggering = true
+          queueMicrotask(() => {
+            storeInstance[TRIGGER_UPDATE]?.()
+            isTriggering = false
+          })
         }
       }
       return res

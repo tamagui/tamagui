@@ -1,6 +1,6 @@
 import { Selector, UseStoreOptions } from './interfaces';
 import { Store } from './Store';
-export declare function useStore<A extends Store<B>, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B, options?: UseStoreOptions<A, any>): A;
+export declare function useStore<A extends Store<B>, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B | null, options?: UseStoreOptions<A, any>): A;
 export declare function useStoreDebug<A extends Store<B>, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B): A;
 export declare function createStore<A extends Store<B>, B extends Object>(StoreKlass: new (props: B) => A | (new () => A), props?: B, options?: UseStoreOptions<A, any>): A;
 export declare function useGlobalStore<A extends Store<B>, B extends Object>(instance: A, debug?: boolean): A;

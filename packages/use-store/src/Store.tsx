@@ -41,32 +41,6 @@ export class Store<Props extends Object = {}> {
     }
   }
 
-  // [ADD_TRACKER](tracker: StoreTracker) {
-  //   this._trackers.add(tracker)
-  //   return () => {
-  //     this._trackers.delete(tracker)
-  //   }
-  // }
-
-  // [TRACK](key: string, debug?: boolean) {
-  //   if (key[0] === '_' || key[0] === '$' || key === 'props' || key === 'toJSON') {
-  //     return
-  //   }
-  //   if (debug) {
-  //     // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  //     console.log('(debug) CHECK TRACKERS FOR', key)
-  //   }
-  //   for (const tracker of this._trackers) {
-  //     if (tracker.isTracking) {
-  //       tracker.tracked.add(key)
-  //       if (debug) {
-  //         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  //         console.log('(debug) TRACK', key, tracker)
-  //       }
-  //     }
-  //   }
-  // }
-
   [SHOULD_DEBUG]() {
     const info = { storeInstance: this }
     return [...this._trackers].some(
