@@ -14,6 +14,7 @@ interface PresenceChildProps {
   presenceAffectsLayout: boolean
   exitVariant?: string | null
   enterVariant?: string | null
+  enterExitVariant?: string | null
 }
 
 export const PresenceChild = ({
@@ -23,6 +24,7 @@ export const PresenceChild = ({
   onExitComplete,
   exitVariant,
   enterVariant,
+  enterExitVariant,
   presenceAffectsLayout,
 }: PresenceChildProps) => {
   const presenceChildren = React.useMemo(newChildrenMap, [])
@@ -36,6 +38,7 @@ export const PresenceChild = ({
         isPresent,
         exitVariant,
         enterVariant,
+        enterExitVariant,
         onExitComplete: (id: string) => {
           presenceChildren.set(id, true)
           for (const isComplete of presenceChildren.values()) {

@@ -104,6 +104,7 @@ export const AnimatePresence: React.FunctionComponent<
   children,
   enterVariant,
   exitVariant,
+  enterExitVariant,
   initial = true,
   onExitComplete,
   exitBeforeEnter,
@@ -161,6 +162,7 @@ export const AnimatePresence: React.FunctionComponent<
           <PresenceChild
             key={getChildKey(child)}
             isPresent={Boolean(isClientMounted ? true : isMounted.current)}
+            enterExitVariant={enterExitVariant}
             exitVariant={exitVariant}
             enterVariant={enterVariant}
             initial={initial ? undefined : false}
@@ -235,6 +237,7 @@ export const AnimatePresence: React.FunctionComponent<
         }}
         exitVariant={exitVariant}
         enterVariant={enterVariant}
+        enterExitVariant={enterExitVariant}
         presenceAffectsLayout={presenceAffectsLayout}
       >
         {child}
@@ -254,6 +257,7 @@ export const AnimatePresence: React.FunctionComponent<
         isPresent
         exitVariant={exitVariant}
         enterVariant={enterVariant}
+        enterExitVariant={enterExitVariant}
         presenceAffectsLayout={presenceAffectsLayout}
       >
         {child}

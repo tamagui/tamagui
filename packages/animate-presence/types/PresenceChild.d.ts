@@ -9,7 +9,8 @@ interface PresenceChildProps {
     presenceAffectsLayout: boolean;
     exitVariant?: string | null;
     enterVariant?: string | null;
+    enterExitVariant?: string | null;
 }
-export declare const PresenceChild: ({ children, initial, isPresent, onExitComplete, exitVariant, enterVariant, presenceAffectsLayout, }: PresenceChildProps) => JSX.Element;
+export declare const PresenceChild: ({ children, initial, isPresent, onExitComplete, exitVariant, enterVariant, enterExitVariant, presenceAffectsLayout, }: PresenceChildProps) => JSX.Element;
 export {};
 //# sourceMappingURL=PresenceChild.d.ts.map
