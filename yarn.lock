@@ -6273,6 +6273,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/sheet@workspace:packages/sheet"
   dependencies:
+    "@tamagui/animate-presence": 1.49.10
     "@tamagui/animations-react-native": 1.49.10
     "@tamagui/build": 1.49.10
     "@tamagui/compose-refs": 1.49.10

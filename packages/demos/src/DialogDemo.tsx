@@ -40,7 +40,11 @@ function DialogInstance() {
           <Sheet.Frame padding="$4" space>
             <Adapt.Contents />
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Adapt>
 

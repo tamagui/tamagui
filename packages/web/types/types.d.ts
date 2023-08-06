@@ -845,6 +845,7 @@ export interface PresenceContextProps {
     custom?: any;
     exitVariant?: string | null;
     enterVariant?: string | null;
+    enterExitVariant?: string | null;
 }
 type SafeToRemoveCallback = () => void;
 type AlwaysPresent = [true, null, null];

@@ -30,7 +30,11 @@ export const SheetDemo = () => {
         zIndex={100_000}
         animation="bouncy"
       >
-        <Sheet.Overlay />
+        <Sheet.Overlay
+          animation="lazy"
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
         <Sheet.Handle />
         <Sheet.Frame
           flex={1}

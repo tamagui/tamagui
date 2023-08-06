@@ -388,11 +388,6 @@ Ali:
 
 - Separator orientation="vertical" deprecate boolean `vertical`
 
-const SheetOverlay = styled(Sheet.Overlay, {
-  backgroundColor: '$bgoverlay',
-})
-
-- sheet background animation regression
 - https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
 - hoverTheme={false} works, make hoverStyle={false} to unset

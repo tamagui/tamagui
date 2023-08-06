@@ -77,7 +77,6 @@ export function createSheet<
         () => (
           // @ts-ignore
           <Overlay
-            open={context.open && !context.hidden}
             {...props}
             onPress={mergeEvent(
               props.onPress as any,
@@ -89,7 +88,7 @@ export function createSheet<
             )}
           />
         ),
-        [context.open, propsIn, context.hidden, context.dismissOnOverlayPress]
+        [props.onPress, context.dismissOnOverlayPress]
       )
 
       useIsomorphicLayoutEffect(() => {

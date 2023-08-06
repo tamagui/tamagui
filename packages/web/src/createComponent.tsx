@@ -331,11 +331,23 @@ export function createComponent<
     if (isAnimated && presence) {
       const presenceState = presence[2]
       if (presenceState) {
-        if (state.unmounted && presenceState.enterVariant) {
-          props[presenceState.enterVariant] = true
+        const isEntering = state.unmounted
+        const isExiting = !presenceState.isPresent
+        const enterExitVariant = presenceState.enterExitVariant
+        const enterVariant = enterExitVariant ?? presenceState.enterVariant
+        const exitVariant = enterExitVariant ?? presenceState.exitVariant
+
+        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+          console.warn(
+            `Animating presence (enter: ${isEntering} variant "${enterVariant}", exit: ${isExiting} variant "${exitVariant}")`
+          )
         }
-        if (!presenceState.isPresent && presenceState.exitVariant) {
-          props[presenceState.exitVariant] = true
+
+        if (isEntering && enterVariant) {
+          props[enterVariant] = true
+        }
+        if (isExiting && exitVariant) {
+          props[exitVariant] = enterExitVariant ? false : true
         }
       }
     }

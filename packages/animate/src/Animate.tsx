@@ -44,6 +44,7 @@ export function Animate({ children, type, ...props }: AnimateProps) {
           onExitComplete={props.onExitComplete}
           enterVariant={props.enterVariant}
           exitVariant={props.exitVariant}
+          enterExitVariant={props.enterExitVariant}
           presenceAffectsLayout={props.presenceAffectsLayout || true}
           isPresent={props.present}
         >

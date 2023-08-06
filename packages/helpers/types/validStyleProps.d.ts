@@ -1,3 +1,6 @@
+export declare const validStylesOnBaseProps: {
+    placeholderTextColor: boolean;
+};
 export declare const tokenCategories: {
     radius: {
         borderRadius: boolean;
@@ -18,6 +21,10 @@ export declare const tokenCategories: {
         zIndex: boolean;
     };
     color: {
+        outlineColor?: boolean | undefined;
+        textDecorationColor: boolean;
+        textShadowColor: boolean;
+        placeholderTextColor: boolean;
         color: boolean;
         backgroundColor: boolean;
         borderColor: boolean;
@@ -25,6 +32,9 @@ export declare const tokenCategories: {
         borderTopColor: boolean;
         borderLeftColor: boolean;
         borderRightColor: boolean;
+        borderEndColor: boolean;
+        borderStartColor: boolean;
+        shadowColor: boolean;
     };
 };
 export declare const stylePropsUnitless: {
@@ -79,9 +89,6 @@ export declare const stylePropsTransform: {
     rotateX: boolean;
     rotateZ: boolean;
 };
-export declare const validStylesOnBaseProps: {
-    placeholderTextColor: boolean;
-};
 export declare const stylePropsView: {
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
@@ -96,7 +103,6 @@ export declare const stylePropsView: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
-    outlineColor?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -157,6 +163,9 @@ export declare const stylePropsView: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+    outlineColor?: boolean | undefined;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
     color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
@@ -164,14 +173,15 @@ export declare const stylePropsView: {
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
+    borderEndColor: boolean;
+    borderStartColor: boolean;
+    shadowColor: boolean;
     backfaceVisibility: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
-    borderEndColor: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
-    borderStartColor: boolean;
     borderStyle: boolean;
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
@@ -218,7 +228,6 @@ export declare const stylePropsView: {
     start: boolean;
     top: boolean;
     direction: boolean;
-    shadowColor: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
 };
@@ -241,13 +250,15 @@ export declare const stylePropsTextOnly: {
     cursor?: boolean | undefined;
     WebkitLineClamp?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
+    textShadowOffset: boolean;
+    textShadowRadius: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
+    placeholderTextColor: boolean;
+    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
-    textShadowOffset: boolean;
-    textShadowRadius: boolean;
     fontFamily: boolean;
     fontSize: boolean;
     fontStyle: boolean;
@@ -255,7 +266,6 @@ export declare const stylePropsTextOnly: {
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
-    color: boolean;
 };
 export declare const stylePropsText: {
     whiteSpace?: boolean | undefined;
@@ -267,13 +277,15 @@ export declare const stylePropsText: {
     cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadowOffset: boolean;
+    textShadowRadius: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
+    placeholderTextColor: boolean;
+    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
-    textShadowOffset: boolean;
-    textShadowRadius: boolean;
     fontFamily: boolean;
     fontSize: boolean;
     fontStyle: boolean;
@@ -281,7 +293,6 @@ export declare const stylePropsText: {
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
-    color: boolean;
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
@@ -293,7 +304,6 @@ export declare const stylePropsText: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
-    outlineColor?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -340,7 +350,6 @@ export declare const stylePropsText: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -352,20 +361,22 @@ export declare const stylePropsText: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+    outlineColor?: boolean | undefined;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBottomColor: boolean;
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
+    borderEndColor: boolean;
+    borderStartColor: boolean;
+    shadowColor: boolean;
     backfaceVisibility: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
-    borderEndColor: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
-    borderStartColor: boolean;
     borderStyle: boolean;
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
@@ -412,7 +423,6 @@ export declare const stylePropsText: {
     start: boolean;
     top: boolean;
     direction: boolean;
-    shadowColor: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
 };
@@ -426,13 +436,15 @@ export declare const stylePropsAll: {
     cursor?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadowOffset: boolean;
+    textShadowRadius: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
+    placeholderTextColor: boolean;
+    color: boolean;
     textAlign: boolean;
     textDecorationLine: boolean;
     textDecorationStyle: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
-    textShadowOffset: boolean;
-    textShadowRadius: boolean;
     fontFamily: boolean;
     fontSize: boolean;
     fontStyle: boolean;
@@ -440,7 +452,6 @@ export declare const stylePropsAll: {
     letterSpacing: boolean;
     lineHeight: boolean;
     textTransform: boolean;
-    color: boolean;
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
     borderTopStyle?: boolean | undefined;
@@ -452,7 +463,6 @@ export declare const stylePropsAll: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
-    outlineColor?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -499,7 +509,6 @@ export declare const stylePropsAll: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-    placeholderTextColor: boolean;
     borderRadius: boolean;
     borderTopLeftRadius: boolean;
     borderTopRightRadius: boolean;
@@ -511,20 +520,22 @@ export declare const stylePropsAll: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+    outlineColor?: boolean | undefined;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBottomColor: boolean;
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
+    borderEndColor: boolean;
+    borderStartColor: boolean;
+    shadowColor: boolean;
     backfaceVisibility: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
-    borderEndColor: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
-    borderStartColor: boolean;
     borderStyle: boolean;
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
@@ -571,7 +582,6 @@ export declare const stylePropsAll: {
     start: boolean;
     top: boolean;
     direction: boolean;
-    shadowColor: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
 };
@@ -596,7 +606,6 @@ export declare const validStyles: {
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
     boxShadow?: boolean | undefined;
-    outlineColor?: boolean | undefined;
     outlineStyle?: boolean | undefined;
     outlineOffset?: boolean | undefined;
     outlineWidth?: boolean | undefined;
@@ -657,6 +666,9 @@ export declare const validStyles: {
     minHeight: boolean;
     maxWidth: boolean;
     maxHeight: boolean;
+    outlineColor?: boolean | undefined;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
     color: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
@@ -664,14 +676,15 @@ export declare const validStyles: {
     borderTopColor: boolean;
     borderLeftColor: boolean;
     borderRightColor: boolean;
+    borderEndColor: boolean;
+    borderStartColor: boolean;
+    shadowColor: boolean;
     backfaceVisibility: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
-    borderEndColor: boolean;
     borderLeftWidth: boolean;
     borderRightWidth: boolean;
-    borderStartColor: boolean;
     borderStyle: boolean;
     borderTopEndRadius: boolean;
     borderTopStartRadius: boolean;
@@ -718,7 +731,6 @@ export declare const validStyles: {
     start: boolean;
     top: boolean;
     direction: boolean;
-    shadowColor: boolean;
     shadowOffset: boolean;
     shadowRadius: boolean;
     enterStyle: boolean;

@@ -37,7 +37,7 @@ export function SelectDemoItem(props: SelectProps) {
 
   return (
     <Select id="food" value={val} onValueChange={setVal} {...props}>
-      <Select.Trigger width={180} iconAfter={ChevronDown}>
+      <Select.Trigger width={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
@@ -58,7 +58,11 @@ export function SelectDemoItem(props: SelectProps) {
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Adapt>
 

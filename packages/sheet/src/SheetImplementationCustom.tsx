@@ -1,4 +1,5 @@
 import { AdaptParentContext } from '@tamagui/adapt'
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Theme,
@@ -364,7 +365,9 @@ export const SheetImplementationCustom = themeable(
     const contents = (
       <ParentSheetContext.Provider value={nextParentContext}>
         <SheetProvider {...providerProps}>
-          {shouldHideParentSheet ? null : overlayComponent}
+          <AnimatePresence enterExitVariant="open">
+            {shouldHideParentSheet || !open ? null : overlayComponent}
+          </AnimatePresence>
 
           <AnimatedView
             ref={ref}

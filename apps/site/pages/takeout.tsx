@@ -1213,7 +1213,11 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Dialog.Adapt>
 
@@ -2155,7 +2159,11 @@ const FaqModal = () => {
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Dialog.Adapt>
 
@@ -2348,7 +2356,11 @@ const AgreementModal = () => {
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
-          <Sheet.Overlay />
+          <Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
         </Sheet>
       </Dialog.Adapt>
 

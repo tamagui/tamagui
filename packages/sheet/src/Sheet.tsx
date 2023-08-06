@@ -72,6 +72,7 @@ export const Overlay = styled(ThemeableStack, {
         position: 'absolute',
         backgrounded: true,
         zIndex: 100_000 - 1,
+        pointerEvents: 'auto',
       },
     },
   } as const,
