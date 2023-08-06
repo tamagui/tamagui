@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { isEqualSubsetShallow } from './comparators'
 import { UNWRAP_PROXY } from './constants'
 import { StoreInfo } from './interfaces'
-import { setIsInReaction, trackStoresAccess } from './useStore'
+import { trackStoresAccess } from './useStore'
 
 // TODO i think we can just replace reaction() with this, its not worse in any way
 
@@ -26,46 +26,46 @@ const logUpdate =
       }
     : null
 
-// TODO test this works the same as useSelector
-export function selector(fn: () => any) {
-  let prev = runStoreSelector(fn)
-  let disposeValue: Function | null = null
-  const subscribe = () => {
-    return subscribeToStores([...prev.stores], () => {
-      try {
-        disposeValue?.()
-        setIsInReaction(true)
-        const next = runStoreSelector(fn)
-        if (typeof next.value === 'function') {
-          disposeValue = next.value
-          if (process.env.NODE_ENV === 'development') {
-            logUpdate!(fn, [...next.stores], '(fn)', '(fn)')
-          }
-          return
-        }
-        if (
-          isEqualSubsetShallow(prev.stores, next.stores) &&
-          isEqualSubsetShallow(prev.value, next.value)
-        ) {
-          return
-        }
-        if (process.env.NODE_ENV === 'development') {
-          logUpdate!(fn, [...next.stores], prev.value, next.value)
-        }
-        prev = next
-        dispose()
-        dispose = subscribe()
-      } finally {
-        setIsInReaction(false)
-      }
-    })
-  }
-  let dispose = subscribe()
-  return () => {
-    dispose()
-    disposeValue?.()
-  }
-}
+// // TODO test this works the same as useSelector
+// export function selector(fn: () => any) {
+//   let prev = runStoreSelector(fn)
+//   let disposeValue: Function | null = null
+//   const subscribe = () => {
+//     return subscribeToStores([...prev.storeInfos], () => {
+//       try {
+//         disposeValue?.()
+//         setIsInReaction(true)
+//         const next = runStoreSelector(fn)
+//         if (typeof next.value === 'function') {
+//           disposeValue = next.value
+//           if (process.env.NODE_ENV === 'development') {
+//             logUpdate!(fn, [...next.storeInfos], '(fn)', '(fn)')
+//           }
+//           return
+//         }
+//         if (
+//           isEqualSubsetShallow(prev.stores, next.stores) &&
+//           isEqualSubsetShallow(prev.value, next.value)
+//         ) {
+//           return
+//         }
+//         if (process.env.NODE_ENV === 'development') {
+//           logUpdate!(fn, [...next.stores], prev.value, next.value)
+//         }
+//         prev = next
+//         dispose()
+//         dispose = subscribe()
+//       } finally {
+//         setIsInReaction(false)
+//       }
+//     })
+//   }
+//   let dispose = subscribe()
+//   return () => {
+//     dispose()
+//     disposeValue?.()
+//   }
+// }
 
 export function useSelector<A>(fn: () => A): A {
   const [state, setState] = useState(() => {

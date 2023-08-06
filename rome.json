@@ -41,7 +41,8 @@
         "noSvgWithoutTitle": "off",
         "useMediaCaption": "off",
         "noHeaderScope": "off",
-        "useAltText": "off"
+        "useAltText": "off",
+        "useButtonType": "off"
       },
       "nursery": {
         "noBannedTypes": "off",

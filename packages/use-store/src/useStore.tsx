@@ -58,11 +58,7 @@ export function useGlobalStore<A, B extends Object>(instance: A, debug?: boolean
   return useStoreFromInfo(info, undefined, { debug })
 }
 
-export function useGlobalStoreSelector<
-  A extends Store<B>,
-  B extends Object,
-  Selector extends (store: A) => any
->(
+export function useGlobalStoreSelector<A, Selector extends (store: A) => any>(
   instance: A,
   selector: Selector,
   debug?: boolean
@@ -626,7 +622,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
         if (!isTriggering) {
           // trigger only once per event loop
           isTriggering = true
-          queueMicrotask(() => {
+          waitForEventLoop(() => {
             storeInfo.triggerUpdate()
             isTriggering = false
           })
@@ -652,6 +648,9 @@ function createProxiedStore(storeInfo: StoreInfo) {
 
   return proxiedStore
 }
+
+const waitForEventLoop =
+  process.env.NODE_ENV === 'test' ? (cb: Function) => cb() : queueMicrotask
 
 let counter = 0
 
