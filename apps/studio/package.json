@@ -21,7 +21,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/linear-gradient": "1.49.10",
+    "@tamagui/lucide-icons": "1.49.10",
     "@tamagui/use-store": "1.49.10",
+    "color2k": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.6",

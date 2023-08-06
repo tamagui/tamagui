@@ -1,5 +1,5 @@
-import { FillInFont, GenericFont } from '@tamagui/core';
-export { GenericFont, FillInFont } from '@tamagui/core';
+import type { FillInFont, GenericFont } from '@tamagui/core';
+export type { GenericFont, FillInFont } from '@tamagui/core';
 export declare const createInterFont: <A extends GenericFont>(font?: Partial<A>, { sizeLineHeight, sizeSize, }?: {
     sizeLineHeight?: ((fontSize: number) => number) | undefined;
     sizeSize?: ((size: number) => number) | undefined;

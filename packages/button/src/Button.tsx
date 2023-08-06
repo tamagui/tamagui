@@ -149,6 +149,7 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
+
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   return getThemedIcon(children)
 }
@@ -220,6 +221,7 @@ function useButton<Props extends ButtonProps>(
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
+
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = propsActive.space ?? getVariableValue(iconSize) * scaleSpace
