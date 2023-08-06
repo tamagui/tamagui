@@ -470,6 +470,10 @@ export const Select = withStaticProperties(
       transition: true,
     })
 
+    React.useEffect(() => {
+      emitValue(value)
+    }, [open])
+
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
 
     const [emitValue, valueSubscribe] = useEmitter<any>()
@@ -496,7 +500,7 @@ export const Select = withStaticProperties(
       <AdaptProvider>
         <SelectItemParentProvider
           scope={__scopeSelect}
-          initialValue={React.useMemo(() => value, [value])}
+          initialValue={React.useMemo(() => value, [])}
           size={sizeProp}
           activeIndexSubscribe={activeIndexSubscribe}
           valueSubscribe={valueSubscribe}
