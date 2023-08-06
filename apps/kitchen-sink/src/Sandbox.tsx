@@ -6,14 +6,27 @@ import {
   Button,
   Paragraph,
   SizableText,
+  Input as TamaguiInput,
   Text,
-  Theme,
   ThemeName,
   YStack,
   styled,
 } from 'tamagui'
-import { Input as TamaguiInput, variableToString } from 'tamagui'
 
+export const MyButton = styled(Button, {
+  name: 'MyButton',
+
+  variants: {
+    test: {
+      true: {
+        backgroundColor: 'yellow',
+        pressStyle: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  } as const,
+})
 type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
 const TextInput = styled(
@@ -77,7 +90,10 @@ export const Sandbox = () => {
   return (
     <>
       <TextInput theme={theme} />
-      <Button onPress={() => setTheme('red')}>asdsad</Button>
+      {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
+
+      {/* TODO REALLY NEED TO TEST THIS SORT OF STUFF ON NATIVE */}
+      <MyButton test>ok</MyButton>
 
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />

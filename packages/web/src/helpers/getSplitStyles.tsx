@@ -330,20 +330,8 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit === 'style' || (keyInit[0] === '_' && keyInit.startsWith('_style'))) {
-      if (!valInit) continue
-      const styles = [].concat(valInit).flat()
-      for (const cur of styles) {
-        if (!cur) continue
-        const isRNW = cur['$$css']
-        if (isRNW) {
-          Object.assign(classNames, cur)
-        } else {
-          for (const key in cur) {
-            style[key] = cur[key]
-          }
-        }
-      }
+    if (keyInit.startsWith('_style')) {
+      mergeStyleProp(styleState, valInit)
       continue
     }
 
@@ -616,25 +604,29 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('  💠 expanded', keyInit, valInit)
-      if (!isServer && isDevTools) {
-        // prettier-ignore
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log({
-          expanded,
-          styleProps,
-          componentState,
-          isVariant,
-          variant: variants?.[keyInit],
-          shouldPassProp,
-          isHOCShouldPassThrough,
-          theme,
-          usedKeys: { ...usedKeys },
-          curProps: { ...styleState.curProps },
-        });
-        // rome-ignore lint/nursery/noConsoleLog: ok
-        console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
-          ...style,
-        })
+      try {
+        if (!isServer && isDevTools) {
+          // prettier-ignore
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log({
+            expanded,
+            styleProps,
+            componentState,
+            isVariant,
+            variant: variants?.[keyInit],
+            shouldPassProp,
+            isHOCShouldPassThrough,
+            theme,
+            usedKeys: { ...usedKeys },
+            curProps: { ...styleState.curProps },
+          });
+          // rome-ignore lint/nursery/noConsoleLog: ok
+          console.log('expanded', expanded, '\nusedKeys', { ...usedKeys }, '\ncurrent', {
+            ...style,
+          })
+        }
+      } catch {
+        // rn can run into PayloadTooLargeError: request entity too large
       }
       console.groupEnd()
     }
@@ -794,6 +786,7 @@ export const getSplitStyles: StyleSplitter = (
                 mergeStyle(styleState, pkey, val)
                 usedKeys[pkey] ||= 1
               }
+
               if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
                 // prettier-ignore
                 // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -973,12 +966,25 @@ export const getSplitStyles: StyleSplitter = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed(` ✔️ expand complete`, keyInit)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('style', { ...style })
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('viewProps', { ...viewProps })
+      try {
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('style', { ...style })
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('viewProps', { ...viewProps })
+      } catch {
+        // RN can run into PayloadTooLargeError: request entity too large
+      }
       console.groupEnd()
     }
+  } // end prop loop
+
+  // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
+  // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
+  // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
+  // also it makes sense that props.style is basically the last to apply,
+  // at least more sense than "it applies at the position its defined in the prop loop"
+  if (props.style) {
+    mergeStyleProp(styleState, props.style)
   }
 
   fixStyles(style)
@@ -1185,19 +1191,23 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (isDevTools) {
       console.groupCollapsed('  🔹 ===>')
-      // prettier-ignore
-      const logs = {
-        ...result,
-        componentState,
-        transforms,
-        viewProps,
-        viewPropsOrder: Object.keys(viewProps),
-        rulesToInsert,
-        parentSplitStyles,
-      };
-      for (const key in logs) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
-        console.log(key, logs[key])
+      try {
+        // prettier-ignore
+        const logs = {
+          ...result,
+          componentState,
+          transforms,
+          viewProps,
+          viewPropsOrder: Object.keys(viewProps),
+          rulesToInsert,
+          parentSplitStyles,
+        };
+        for (const key in logs) {
+          // rome-ignore lint/nursery/noConsoleLog: ok
+          console.log(key, logs[key])
+        }
+      } catch {
+        // RN can run into PayloadTooLargeError: request entity too large
       }
       console.groupEnd()
     }
@@ -1287,6 +1297,25 @@ export const getSubStyle = (
   return styleOut
 }
 
+function mergeStyleProp(styleState: GetStyleState, val: any) {
+  if (!val) return
+  const styles = [].concat(val).flat()
+  for (const cur of styles) {
+    if (!cur) continue
+    const isRNW = cur['$$css']
+    if (isRNW) {
+      Object.assign(styleState.classNames, cur)
+    } else {
+      for (const key in cur) {
+        if (key in styleState.usedKeys) {
+          continue
+        }
+        mergeStyle(styleState, key, cur[key])
+      }
+    }
+  }
+}
+
 // on native no need to insert any css
 const useInsertEffectCompat = isWeb
   ? useInsertionEffect || useIsomorphicLayoutEffect
@@ -1357,6 +1386,7 @@ const skipProps = {
   componentName: 1,
   disableOptimization: 1,
   tag: 1,
+  style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
 }
 
 if (process.env.NODE_ENV === 'test') {

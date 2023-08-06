@@ -143,7 +143,8 @@ export function getThemeProxied(
               ) {
                 keys.push(keyString)
                 if (process.env.NODE_ENV === 'development' && debug) {
-                  console.warn(` 🎨 useTheme() tracking new key: ${keyString}`)
+                  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                  console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
                 }
               }
               if (subkey === 'get') {

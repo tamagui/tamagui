@@ -8,14 +8,11 @@ module.exports = function (api) {
         {
           components: ['tamagui', '@tamagui/sandbox-ui'],
           config: './src/tamagui.config.ts',
+          // disable: true,
+          // disableExtraction: true,
         },
       ],
-      [
-        'transform-inline-environment-variables',
-        {
-          include: 'TAMAGUI_TARGET',
-        },
-      ],
+      'transform-inline-environment-variables',
       'react-native-reanimated/plugin',
     ],
   }

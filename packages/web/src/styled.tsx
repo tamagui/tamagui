@@ -135,13 +135,6 @@ export function styled<
           isReactNative ||
           (parentStaticConfig?.isHOC && parentStaticConfig?.acceptsClassName))
 
-      if (process.env.NODE_ENV === 'development') {
-        // dont inherit the debug prop so we can debug specific styled() more accurately
-        if (parentStaticConfig?.defaultProps?.debug && !options.debug) {
-          delete defaultProps.debug
-        }
-      }
-
       const conf: Partial<StaticConfig> = {
         ...parentStaticConfig,
         ...staticExtractionOptions,

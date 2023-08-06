@@ -914,48 +914,52 @@ export function createComponent<
       if (debugProp && debugProp !== 'profile') {
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('viewProps', viewProps)
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('viewPropsOrder', Object.keys(viewProps))
-        for (const key in viewProps) {
+        try {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log(' - ', key, viewProps[key])
-        }
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('children', content)
-        if (typeof window !== 'undefined') {
-          // prettier-ignore
+          console.log('viewProps', viewProps)
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log({
-            state,
-            styleProps,
-            themeState,
-            isAnimated,
-            isAnimatedReactNativeWeb,
-            defaultProps,
-            viewProps,
-            splitStyles,
-            animationStyles,
-            handlesPressEvents,
-            willBeAnimated,
-            isStringElement,
-            classNamesIn: props.className?.split(" "),
-            classNamesOut: viewProps.className?.split(" "),
-            events,
-            shouldAttach,
-            pseudos,
-            content,
-            shouldAvoidClasses,
-            animation: props.animation,
-            style: splitStylesStyle,
-            staticConfig,
-            tamaguiConfig,
-            shouldForcePseudo,
-            elementType,
-            initialState,
-            classNames,
-          });
+          console.log('viewPropsOrder', Object.keys(viewProps))
+          for (const key in viewProps) {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log(' - ', key, viewProps[key])
+          }
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log('children', content)
+          if (typeof window !== 'undefined') {
+            // prettier-ignore
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log({
+              viewProps,
+              state,
+              styleProps,
+              themeState,
+              isAnimated,
+              isAnimatedReactNativeWeb,
+              defaultProps,
+              splitStyles,
+              animationStyles,
+              handlesPressEvents,
+              willBeAnimated,
+              isStringElement,
+              classNamesIn: props.className?.split(" "),
+              classNamesOut: viewProps.className?.split(" "),
+              events,
+              shouldAttach,
+              pseudos,
+              content,
+              shouldAvoidClasses,
+              animation: props.animation,
+              splitStylesStyle,
+              staticConfig,
+              tamaguiConfig,
+              shouldForcePseudo,
+              elementType,
+              initialState,
+              classNames,
+            });
+          }
+        } catch {
+          // RN can run into PayloadTooLargeError: request entity too large
         }
         console.groupEnd()
         console.groupEnd()
