@@ -1,4 +1,21 @@
-import { isAndroid } from '@tamagui/constants'
+import { isAndroid, isWeb } from '@tamagui/constants'
+
+// generally organizing this so we don't duplicate things so its a bit weird
+
+const placeHolderTextColors = {
+  placeholderTextColor: true,
+}
+
+export const validStylesOnBaseProps = {
+  ...placeHolderTextColors,
+}
+
+const textColors = {
+  color: true,
+  ...placeHolderTextColors,
+  textDecorationColor: true,
+  textShadowColor: true,
+}
 
 // used for propMapping to find the right token category
 // just specificy the least costly, all else go to `space` (most keys - we can exclude)
@@ -22,13 +39,19 @@ export const tokenCategories = {
     zIndex: true,
   },
   color: {
-    color: true,
     backgroundColor: true,
     borderColor: true,
     borderBottomColor: true,
     borderTopColor: true,
     borderLeftColor: true,
     borderRightColor: true,
+    borderEndColor: true,
+    borderStartColor: true,
+    shadowColor: true,
+    ...textColors,
+    ...(process.env.TAMAGUI_TARGET === 'web' && {
+      outlineColor: true,
+    }),
   },
 }
 
@@ -86,19 +109,13 @@ export const stylePropsTransform = {
   rotateZ: true,
 }
 
-export const validStylesOnBaseProps = {
-  placeholderTextColor: true,
-}
-
 export const stylePropsView = {
   backfaceVisibility: true,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
-  borderEndColor: true,
   borderLeftWidth: true,
   borderRightWidth: true,
-  borderStartColor: true,
   borderStyle: true,
   borderTopEndRadius: true,
   borderTopStartRadius: true,
@@ -145,7 +162,6 @@ export const stylePropsView = {
   start: true,
   top: true,
   direction: true,
-  shadowColor: true,
   shadowOffset: true,
   shadowRadius: true,
   ...tokenCategories.color,
@@ -173,7 +189,6 @@ export const stylePropsView = {
     pointerEvents: true,
     boxSizing: true,
     boxShadow: true,
-    outlineColor: true,
     outlineStyle: true,
     outlineOffset: true,
     outlineWidth: true,
@@ -192,13 +207,11 @@ export const stylePropsFont = {
 }
 
 export const stylePropsTextOnly = {
-  color: true,
   ...stylePropsFont,
   textAlign: true,
   textDecorationLine: true,
   textDecorationStyle: true,
-  textDecorationColor: true,
-  textShadowColor: true,
+  ...textColors,
   textShadowOffset: true,
   textShadowRadius: true,
 
