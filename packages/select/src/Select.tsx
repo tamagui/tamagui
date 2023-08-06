@@ -471,7 +471,9 @@ export const Select = withStaticProperties(
     })
 
     React.useEffect(() => {
-      emitValue(value)
+      if (open) {
+        emitValue(value)
+      }
     }, [open])
 
     const [activeIndex, setActiveIndex] = React.useState<number | null>(0)
