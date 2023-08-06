@@ -1,21 +1,17 @@
-import { getSize } from '@tamagui/get-token'
-import { ArrowLeft, ArrowRight, Dot, Hammer, X } from '@tamagui/lucide-icons'
-import { Store, createUseStore } from '@tamagui/use-store'
+import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
+import { createUseStore } from '@tamagui/use-store'
 import Image, { ImageProps } from 'next/image'
 import { useEffect } from 'react'
 import {
   AnimatePresence,
   Button,
-  Circle,
   Dialog,
-  FontSizeTokens,
   H6,
   Paragraph,
   Spacer,
   StackProps,
   Unspaced,
   XStack,
-  XStackProps,
   YStack,
   styled,
 } from 'tamagui'
@@ -93,7 +89,7 @@ const takeoutIosImageIdx = 0
 const takeoutWebImageIdx = takeoutIosImageIdx + iosImages.length + 1
 const takeoutAndroidImageIdx = takeoutWebImageIdx + webImages.length + 1
 
-class GalleryStore extends Store {
+class GalleryStore {
   galleryOpen = false
   galleryImageIdx = 0
   galleryDirection = 0

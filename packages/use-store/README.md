@@ -3,9 +3,9 @@
 Simplish reactive classes in react. It doesn't do granular deep object reaction, just the top level set.
 
 ```tsx
-import { Store } from '@tamagui/use-store'
+import { createUseStore, createStoreInstance, useStore, useGlobalStore } from '@tamagui/use-store'
 
-class X extends Store {
+class X {
   y = 0
 
   add() {

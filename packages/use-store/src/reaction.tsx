@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { UNWRAP_PROXY } from './constants'
-import { Store } from './Store'
-import { setIsInReaction } from './useStore'
+import { StoreInfo } from './interfaces'
+import { getStoreInfo, setIsInReaction } from './useStore'
 
 const dispose = (d: any) => {
   if (typeof d === 'function') {
@@ -11,26 +11,28 @@ const dispose = (d: any) => {
   }
 }
 
-export function useReaction<
-  StoreInstance extends Store<any>,
-  Selector extends (a: StoreInstance) => any
->(
+export function useReaction<StoreInstance, Selector extends (a: StoreInstance) => any>(
   store: StoreInstance,
   selector: Selector,
   receiver: Selector extends (a: StoreInstance) => infer Derived
     ? (a: Derived) => any
     : unknown,
+  props?: Record<string, any>,
   equalityFn: (a: any, b: any) => boolean = isEqualSubsetShallow,
   memoArgs?: any[]
 ) {
-  return useMemo(() => reaction(store, selector, receiver, equalityFn), [memoArgs])
+  const storeInfo = getStoreInfo(store, props)
+  return useMemo(
+    () => reaction(storeInfo, selector as any, receiver, equalityFn),
+    [memoArgs]
+  )
 }
 
 export function reaction<
-  StoreInstance extends Store<any>,
+  StoreInstance extends StoreInfo,
   Selector extends (a: StoreInstance) => any
 >(
-  store: StoreInstance,
+  { store, subscribe }: StoreInstance,
   selector: Selector,
   receiver: Selector extends (a: StoreInstance) => infer Derived
     ? (a: Derived) => any
@@ -69,7 +71,7 @@ export function reaction<
     }
   }
 
-  const disposeSubscribe = store.subscribe(updateReaction)
+  const disposeSubscribe = subscribe(updateReaction)
   updateReaction()
 
   return () => {

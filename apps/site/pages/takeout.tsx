@@ -13,13 +13,12 @@ import {
   CheckCircle,
   Dot,
   Hammer,
-  Info,
   PlayCircle,
   X,
   XCircle,
 } from '@tamagui/lucide-icons'
 import { useClientValue } from '@tamagui/use-did-finish-ssr'
-import { Store, createUseStore } from '@tamagui/use-store'
+import { createUseStore } from '@tamagui/use-store'
 import { ContainerXL } from 'components/Container'
 import { useUser } from 'hooks/useUser'
 import { GetStaticProps } from 'next'
@@ -59,7 +58,6 @@ import {
   TabsTabProps,
   Theme,
   ThemeName,
-  TooltipSimple,
   Unspaced,
   XStack,
   XStackProps,
@@ -1118,7 +1116,7 @@ const IconFrame = styled(Stack, {
   bc: 'rgba(255, 255, 255, 0.035)',
 })
 
-class TakeoutStore extends Store {
+class TakeoutStore {
   showPurchase = false
   showFaq = false
   showAgreement = false

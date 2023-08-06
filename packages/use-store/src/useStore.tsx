@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useCallback, useRef, useSyncExternalStore } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { configureOpts } from './configureUseStore'
@@ -10,21 +10,13 @@ import {
   getStoreUid,
   simpleStr,
 } from './helpers'
-import { Selector, StoreInfo, UseStoreOptions } from './interfaces'
-import {
-  SHOULD_DEBUG,
-  Store,
-  StoreTracker,
-  TRIGGER_UPDATE,
-  disableTracking,
-  setDisableStoreTracking,
-} from './Store'
-import { DebugStores, useCurrentComponent } from './useStoreDebug'
+import { Selector, Store, StoreInfo, UseStoreOptions } from './interfaces'
+import { DebugStores, shouldDebug, useCurrentComponent } from './useStoreDebug'
 
 const idFn = (_) => _
 
 // no singleton, just react
-export function useStore<A extends Store<B>, B extends Object>(
+export function useStore<A, B extends Object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
@@ -35,7 +27,7 @@ export function useStore<A extends Store<B>, B extends Object>(
   return useStoreFromInfo(info, selector, options)
 }
 
-export function useStoreDebug<A extends Store<B>, B extends Object>(
+export function useStoreDebug<A, B extends Object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   props?: B
 ): A {
@@ -43,7 +35,7 @@ export function useStoreDebug<A extends Store<B>, B extends Object>(
 }
 
 // singleton
-export function createStore<A extends Store<B>, B extends Object>(
+export function createStore<A, B extends Object>(
   StoreKlass: new (props: B) => A | (new () => A),
   props?: B,
   options?: UseStoreOptions<A, any>
@@ -56,10 +48,7 @@ export function createStore<A extends Store<B>, B extends Object>(
 // use singleton with react
 // TODO selector support with types...
 
-export function useGlobalStore<A extends Store<B>, B extends Object>(
-  instance: A,
-  debug?: boolean
-): A {
+export function useGlobalStore<A, B extends Object>(instance: A, debug?: boolean): A {
   const store = instance[UNWRAP_PROXY]
   const uid = getStoreUid(store.constructor, store.props)
   const info = cache.get(uid)
@@ -127,7 +116,7 @@ export function useStoreSelector<
   return useStore(StoreKlass, props, { selector }) as any
 }
 
-type StoreAccessTracker = (store: any) => void
+type StoreAccessTracker = (store: StoreInfo) => void
 const storeAccessTrackers = new Set<StoreAccessTracker>()
 export function trackStoresAccess(cb: StoreAccessTracker) {
   storeAccessTrackers.add(cb)
@@ -136,27 +125,38 @@ export function trackStoresAccess(cb: StoreAccessTracker) {
   }
 }
 
-// get non-singleton outside react (weird)
-export function getStore<A extends Store<B>, B extends Object>(
+export function getStore<A, B extends Object>(
   StoreKlass: (new (props: B) => A) | (new () => A),
   props?: B
 ): A {
-  return getOrCreateStoreInfo(StoreKlass, props).store as any
+  return getStoreInfo(StoreKlass, props).store as any
+}
+
+// just like getOrCreateStoreInfo but refuses to create
+export function getStoreInfo(StoreKlass: any, props: any) {
+  return getOrCreateStoreInfo(StoreKlass, props, {
+    refuseCreation: true,
+  })
 }
 
 function getOrCreateStoreInfo(
   StoreKlass: any,
   props: any,
-  options?: UseStoreOptions & { avoidCache?: boolean },
+  options?: UseStoreOptions & { avoidCache?: boolean; refuseCreation?: boolean },
   propsKeyCalculated?: string
 ) {
   const uid = getStoreUid(StoreKlass, propsKeyCalculated ?? props)
   if (!options?.avoidCache && cache.has(uid)) {
     return cache.get(uid)!
   }
+  if (options?.refuseCreation) {
+    throw new Error(`No store exists (${StoreKlass.name}) with props: ${props}`)
+  }
 
   // init
   const storeInstance = new StoreKlass(props!)
+  // add props
+  storeInstance.props = props
 
   const getters = {}
   const actions = {}
@@ -177,22 +177,44 @@ function getOrCreateStoreInfo(
   }
 
   const keyComparators = storeInstance['_comparators']
+  const listeners = new Set<Function>()
+
   const storeInfo = {
+    uid: Math.random(),
     keyComparators,
     storeInstance,
     getters,
     stateKeys,
     actions,
     debug: options?.debug,
+    disableTracking: false,
     gettersState: {
       getCache: new Map<string, any>(),
       depsToGetter: new Map<string, Set<string>>(),
       curGetKeys: new Set<string>(),
       isGetting: false,
     },
-  }
+    listeners,
+    trackers: new Set(),
+    version: 0,
+    subscribe: (onChanged: Function) => {
+      listeners.add(onChanged)
+      return () => {
+        listeners.delete(onChanged)
+      }
+    },
+    triggerUpdate: () => {
+      storeInfo.version = (storeInfo.version + 1) % Number.MAX_SAFE_INTEGER
+      for (const cb of listeners) {
+        cb()
+      }
+    },
+  } satisfies Omit<StoreInfo, 'store'>
 
-  const store = createProxiedStore(storeInfo)
+  const store = createProxiedStore(
+    // we assign store right after and proxiedStore never accesses it until later on
+    storeInfo as any as StoreInfo
+  )
 
   // uses more memory when on
   if (process.env.NODE_ENV === 'development') {
@@ -202,15 +224,15 @@ function getOrCreateStoreInfo(
   // if has a mount function call it
   store.mount?.()
 
-  const value: StoreInfo = {
-    ...storeInfo,
-    store,
-  }
+  // @ts-ignore
+  storeInfo.store = store
+
+  const result = storeInfo as any as StoreInfo
 
   // still set even when avoidCache is true (hmr)
-  cache.set(uid, value)
+  cache.set(uid, result)
 
-  return value
+  return result
 }
 
 export const allStores = {}
@@ -257,7 +279,7 @@ function useStoreFromInfo(
   const getSnapshot = useCallback(() => {
     const curInternal = internal.current!
     const keys = [...(!curInternal.tracked.size ? info.stateKeys : curInternal.tracked)]
-    const nextKeys = `${store._version}${keys.join('')}${userSelector || ''}`
+    const nextKeys = `${info.version}${keys.join('')}${userSelector || ''}`
     const lastKeys = curInternal.lastKeys
 
     // avoid updates
@@ -269,14 +291,14 @@ function useStoreFromInfo(
 
     let snap: any
     // dont track during selector
-    setDisableStoreTracking(store, true)
+    info.disableTracking = true
     const last = curInternal.last
     if (userSelector) {
       snap = userSelector(store)
     } else {
       snap = selectKeys(store, keys)
     }
-    setDisableStoreTracking(store, false)
+    info.disableTracking = false
 
     // this wasn't updating in AnimationsStore
     const isUnchanged =
@@ -300,7 +322,7 @@ function useStoreFromInfo(
   }, [])
 
   // sync by default
-  const state = useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
+  const state = useSyncExternalStore(info.subscribe, getSnapshot, getSnapshot)
 
   if (userSelector) {
     return state
@@ -315,6 +337,7 @@ function useStoreFromInfo(
         return curVal
       }
       const keyString = key as string // fine for our uses
+
       if (info.stateKeys.has(keyString) || keyString in info.getters) {
         if (shouldPrintDebug) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -333,14 +356,13 @@ function useStoreFromInfo(
 let setters = new Set<any>()
 const logStack = new Set<Set<any[]> | 'end'>()
 
-function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
+function createProxiedStore(storeInfo: StoreInfo) {
   const { actions, storeInstance, getters, gettersState } = storeInfo
   const { getCache, curGetKeys, depsToGetter } = gettersState
   const constr = storeInstance.constructor
   const shouldDebug = storeInfo.debug ?? DebugStores.has(constr)
 
   let didSet = false
-  let isInAction = false
   const wrappedActions = {}
 
   // pre-setup actions
@@ -364,10 +386,8 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       }
       if (process.env.NODE_ENV === 'development' && shouldDebug) {
         // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('(debug) startAction', key, { isInAction })
+        console.log('(debug) startAction', key)
       }
-      // dumb for now
-      isInAction = true
       res = Reflect.apply(actionFn, proxiedStore, args)
       if (res instanceof Promise) {
         return res.then(finishAction)
@@ -502,9 +522,8 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
     }
-    isInAction = false
     if (didSet) {
-      storeInstance[TRIGGER_UPDATE]?.()
+      storeInfo.triggerUpdate()
       didSet = false
     }
     return val
@@ -528,11 +547,11 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
       if (key === UNWRAP_STORE_INFO) {
         return storeInfo
       }
-      const trackingDisabled = disableTracking.get(storeInstance)
+      const trackingDisabled = storeInfo.disableTracking
       if (!trackingDisabled) {
         if (storeAccessTrackers.size && !storeAccessTrackers.has(storeInstance)) {
           for (const t of storeAccessTrackers) {
-            t(storeInstance)
+            t(storeInfo)
           }
         }
       }
@@ -585,6 +604,7 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
     set(target, key, value, receiver) {
       const cur = Reflect.get(target, key)
       const res = Reflect.set(target, key, value, receiver)
+
       // only update if changed, simple compare
       if (res && cur !== value) {
         // clear getters cache that rely on this
@@ -593,21 +613,21 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
         }
         if (shouldDebug) {
           setters.add({ key, value })
-          if (storeInstance[SHOULD_DEBUG]()) {
+          if (getShouldDebug(storeInfo)) {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log('(debug) SET', res, key, value)
           }
         }
         if (process.env.NODE_ENV === 'development' && shouldDebug) {
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log('SET...', { key, value, isInAction })
+          console.log('SET...', { key, value })
         }
-        if (isInAction) {
-          didSet = true
-        } else {
+
+        if (!isTriggering) {
+          // trigger only once per event loop
           isTriggering = true
           queueMicrotask(() => {
-            storeInstance[TRIGGER_UPDATE]?.()
+            storeInfo.triggerUpdate()
             isTriggering = false
           })
         }
@@ -617,12 +637,12 @@ function createProxiedStore(storeInfo: Omit<StoreInfo, 'store' | 'source'>) {
   })
 
   function clearGetterCache(setKey: string) {
-    const getters = depsToGetter.get(setKey)
+    const parentGetters = depsToGetter.get(setKey)
     getCache.delete(setKey)
-    if (!getters) {
+    if (!parentGetters) {
       return
     }
-    for (const gk of getters) {
+    for (const gk of parentGetters) {
       getCache.delete(gk)
       if (depsToGetter.has(gk)) {
         clearGetterCache(gk)
@@ -642,4 +662,19 @@ const passThroughKeys = {
   $$typeof: true,
   _listeners: true,
   _enableTracking: true,
+}
+
+export type StoreTracker = {
+  tracked: Set<string>
+  component?: any
+  last?: any
+  lastKeys?: any
+}
+
+function getShouldDebug(storeInfo: StoreInfo) {
+  const info = { storeInstance: storeInfo.store }
+  const trackers = storeInfo.trackers
+  return [...trackers].some(
+    (tracker) => tracker.component && shouldDebug(tracker.component, info)
+  )
 }

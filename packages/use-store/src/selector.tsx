@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { isEqualSubsetShallow } from './comparators'
 import { UNWRAP_PROXY } from './constants'
+import { StoreInfo } from './interfaces'
 import { setIsInReaction, trackStoresAccess } from './useStore'
 
 // TODO i think we can just replace reaction() with this, its not worse in any way
@@ -73,26 +74,30 @@ export function useSelector<A>(fn: () => A): A {
 
   useEffect(() => {
     let dispose
-    const unsub = subscribeToStores([...state.stores], () => {
+    const unsub = subscribeToStores([...state.storeInfos], () => {
       dispose?.()
       const next = runStoreSelector(fn)
+
+      const nextStoreInfos = [...next.storeInfos]
+      const prevStoreInfos = [...state.storeInfos]
+
       // return function === return disposable
       if (typeof next.value === 'function') {
         if (process.env.NODE_ENV === 'development') {
-          logUpdate!(fn, [...next.stores], '(fn)', '(fn)')
+          logUpdate!(fn, nextStoreInfos, '(fn)', '(fn)')
         }
         dispose = next.value
         return
       }
       setState((prev) => {
         if (
-          isEqualSubsetShallow(prev.stores, next.stores) &&
+          isEqualSubsetShallow(prevStoreInfos, nextStoreInfos) &&
           isEqualSubsetShallow(prev.value, next.value)
         ) {
           return prev
         }
         if (process.env.NODE_ENV === 'development') {
-          logUpdate!(fn, [...next.stores], prev.value, next.value)
+          logUpdate!(fn, nextStoreInfos, prev.value, next.value)
         }
         return next
       })
@@ -101,25 +106,28 @@ export function useSelector<A>(fn: () => A): A {
       unsub()
       dispose?.()
     }
-  }, [...state.stores])
+  }, [[...state.storeInfos].map((i) => i.uid).join(',')])
 
   return state.value
 }
 
-function runStoreSelector<A>(selector: () => A): { value: A; stores: Set<any> } {
-  const stores = new Set()
-  const dispose = trackStoresAccess((store) => {
-    stores.add(store)
+function runStoreSelector<A>(selector: () => A): {
+  value: A
+  storeInfos: Set<StoreInfo>
+} {
+  const storeInfos = new Set<StoreInfo>()
+  const dispose = trackStoresAccess((storeInfo) => {
+    storeInfos.add(storeInfo)
   })
   const value = selector()
   dispose()
   return {
     value,
-    stores,
+    storeInfos,
   }
 }
 
-function subscribeToStores(stores: any[], onUpdate: () => any) {
+function subscribeToStores(stores: StoreInfo[], onUpdate: () => any) {
   const disposes: Function[] = []
   for (const store of stores) {
     disposes.push(store.subscribe(onUpdate))
