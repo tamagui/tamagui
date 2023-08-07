@@ -337,16 +337,17 @@ export function createComponent<
         const enterVariant = enterExitVariant ?? presenceState.enterVariant
         const exitVariant = enterExitVariant ?? presenceState.exitVariant
 
-        if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-          console.warn(
-            `Animating presence (enter: ${isEntering} variant "${enterVariant}", exit: ${isExiting} variant "${exitVariant}")`
-          )
-        }
-
         if (isEntering && enterVariant) {
+          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+            console.warn(`Animating presence ENTER "${enterVariant}"`)
+          }
+
           props[enterVariant] = true
-        }
-        if (isExiting && exitVariant) {
+        } else if (isExiting && exitVariant) {
+          if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
+            console.warn(`Animating presence EXIT "${enterVariant}"`)
+          }
+
           props[exitVariant] = enterExitVariant ? false : true
         }
       }

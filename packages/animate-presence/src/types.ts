@@ -75,14 +75,8 @@ export interface AnimatePresenceProps {
    */
   presenceAffectsLayout?: boolean
 
-  /**
-   * @deprecated prefer enterExitVariant which looks for a boolean true/false variant
-   */
   exitVariant?: string | null
 
-  /**
-   * @deprecated prefer enterExitVariant which looks for a boolean true/false variant
-   */
   enterVariant?: string | null
 
   /**

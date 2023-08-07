@@ -67,13 +67,7 @@ export interface AnimatePresenceProps {
      * @internal
      */
     presenceAffectsLayout?: boolean;
-    /**
-     * @deprecated prefer enterExitVariant which looks for a boolean true/false variant
-     */
     exitVariant?: string | null;
-    /**
-     * @deprecated prefer enterExitVariant which looks for a boolean true/false variant
-     */
     enterVariant?: string | null;
     /**
      * Will use a variant on the child component and apply the true styles for when its entering, false styles for when its exiting
