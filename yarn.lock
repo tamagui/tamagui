@@ -6581,6 +6581,7 @@ __metadata:
     "@tamagui/build": 1.50.2
     "@tamagui/linear-gradient": 1.50.2
     "@tamagui/lucide-icons": 1.50.2
+    "@tamagui/theme-builder": 1.50.2
     "@tamagui/use-store": 1.50.2
     color2k: ^2.0.2
     react: ^18.2.0
@@ -6675,7 +6676,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-builder@workspace:packages/theme-builder":
+"@tamagui/theme-builder@1.50.2, @tamagui/theme-builder@workspace:packages/theme-builder":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-builder@workspace:packages/theme-builder"
   dependencies:

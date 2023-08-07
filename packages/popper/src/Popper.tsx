@@ -110,8 +110,8 @@ export function Popper(props: PopperProps) {
   }, [anchorRef])
 
   if (isWeb) {
-    React.useEffect(() => {
-      if (open === false) return
+    useIsomorphicLayoutEffect(() => {
+      if (!open) return
       if (!(refs.reference.current && refs.floating.current)) {
         return
       }
