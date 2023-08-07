@@ -13,7 +13,6 @@ export const animationsCSS = createAnimationsCSS({
   tooltip: 'ease-in 400ms',
 })
 
-
 export const animationsMoti = createAnimationsMoti({
   bouncy: {
     type: 'spring',
@@ -96,16 +95,16 @@ const tamaConf = createTamagui({
   ...config,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
-    : search.includes('animationDriver=moti')
-      ? animationsMoti
-      : animationsNative, // search.includes('animationDriver=native')
+    : search.includes('animationDriver=native')
+    ? animationsNative
+    : animationsMoti, // default moti
   themeClassNameOnRoot: false,
 })
 
 export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf { }
+  interface TamaguiCustomConfig extends Conf {}
 }
 
 export default tamaConf
