@@ -1,3 +1,8 @@
+// @ts-ignore
+// let reactNative = require_ReactNative()
+
+console.log('what is', require('react-native'))
+
 import { AppRegistry, View } from 'react-native'
 
 AppRegistry.registerComponent('main', () => Root)

@@ -4,6 +4,7 @@ import type { Plugin } from 'vite';
  * For some reason envPlugin doesnt work for vitest, but process: { env: {} } breaks vitest
  */
 export declare function tamaguiPlugin(options: TamaguiOptions & {
+    target?: 'web' | 'native';
     useReactNativeWebLite?: boolean;
     disableWatchTamaguiConfig?: boolean;
 }): Plugin;

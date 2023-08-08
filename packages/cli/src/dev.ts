@@ -2,8 +2,8 @@ import { readFile } from 'fs/promises'
 import { AddressInfo } from 'net'
 import { join } from 'path'
 
-import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
+import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import fs, { ensureDir } from 'fs-extra'
 import { build, createServer } from 'vite'
@@ -16,91 +16,23 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   process.chdir(process.cwd())
 
-  const { tamaguiPlugin, nativePlugin, nativePrebuild } = require('@tamagui/vite-plugin')
-
   // build react-native
   await nativePrebuild()
 
   const plugins = [
     tamaguiPlugin({
       components: ['tamagui'],
+      target: 'native',
     }),
     nativePlugin(),
   ]
 
-  async function getBundle() {
-    console.log('get bundle')
-    const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
-    const outputCode = await getBundleCode()
-    // debug out each time
-    fs.writeFile(outputJsPath, outputCode)
-    return outputCode
-  }
-
   const rootFile = join(root, 'src/test-tamagui-stack.tsx')
 
-  async function getBundleCode() {
-    // build app
-    const buildOutput = await build({
-      // @ts-ignore
-      plugins,
-      appType: 'custom',
-      root,
-      build: {
-        ssr: true,
-      },
-      ssr: {
-        format: 'cjs',
-        target: 'node',
-      },
-      mode: 'development',
-      define: {
-        __DEV__: 'true',
-        'process.env.NODE_ENV': `"development"`,
-      },
-    })
-
-    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
-
-    if (!appCode) {
-      throw `❌`
-    }
-
-    const [react, reactJsxRuntime, reactNative] = await Promise.all([
-      readFile(join(process.cwd(), 'testing-area', 'react.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'testing-area', 'react-native.js'), 'utf-8'),
-    ])
-
-    const reactCode = react.replace(
-      `module.exports = require_react_development();`,
-      `return require_react_development()`
-    )
-
-    const reactJSXRuntimeCode = reactJsxRuntime.replace(
-      `module.exports = require_react_jsx_runtime_production_min();`,
-      `return require_react_jsx_runtime_production_min()`
-    )
-
-    const reactNativeCode = reactNative
-      .replace(
-        `module.exports = require_react_native();`,
-        `return require_react_native()`
-      )
-      .replace(
-        `renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
-        ``
-      )
-
-    return (await readFile('template.js', 'utf-8'))
-      .replace(`// -- react --`, reactCode)
-      .replace(`// -- react-native --`, reactNativeCode)
-      .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-      .replace(`// -- app --`, appCode)
-  }
+  console.log('root', root, rootFile)
 
   const server = await createServer({
-    root,
+    root: rootFile,
     mode: 'development',
     plugins,
     server: {
@@ -188,4 +120,79 @@ export const dev = async (options: CLIResolvedOptions) => {
   // await res?.context.dispose()
 
   console.log('closed')
+
+  async function getBundle() {
+    console.log('get bundle')
+    const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
+    const outputCode = await getBundleCode()
+    // debug out each time
+    fs.writeFile(outputJsPath, outputCode)
+    return outputCode
+  }
+
+  async function getBundleCode() {
+    // build app
+    const buildOutput = await build({
+      // @ts-ignore
+      plugins,
+      appType: 'custom',
+      root,
+      build: {
+        ssr: true,
+      },
+      ssr: {
+        format: 'cjs',
+        target: 'node',
+      },
+      mode: 'development',
+      define: {
+        __DEV__: 'true',
+        'process.env.NODE_ENV': `"development"`,
+      },
+    })
+
+    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
+
+    console.log('built', appCode)
+
+    if (!appCode) {
+      throw `❌`
+    }
+
+    const [react, reactJsxRuntime, reactNative] = await Promise.all([
+      readFile(join(process.cwd(), 'testing-area', 'react.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'), 'utf-8'),
+      readFile(join(process.cwd(), 'testing-area', 'react-native.js'), 'utf-8'),
+    ])
+
+    const reactCode = react.replace(
+      `module.exports = require_react_development();`,
+      `return require_react_development()`
+    )
+
+    const reactJSXRuntimeCode = reactJsxRuntime.replace(
+      `module.exports = require_react_jsx_runtime_production_min();`,
+      `return require_react_jsx_runtime_production_min()`
+    )
+
+    const reactNativeCode = reactNative
+      .replace(
+        `module.exports = require_react_native();`,
+        `return require_react_native()`
+      )
+      .replace(
+        `renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
+        ``
+      )
+
+    const templateFile = join(__dirname, '..', 'react-native-template.js')
+
+    console.log('reding template', templateFile)
+
+    return (await readFile(templateFile, 'utf-8'))
+      .replace(`// -- react --`, reactCode)
+      .replace(`// -- react-native --`, reactNativeCode)
+      .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
+      .replace(`// -- app --`, appCode)
+  }
 }
