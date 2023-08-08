@@ -42,9 +42,9 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   try {
     execSync(
       `cd ${tamaguiDir} &&
-      git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}
-      cd ${repoName}
-      git sparse-checkout set --no-cone meta
+      git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName} &&
+      cd ${repoName} &&
+      git sparse-checkout set --no-cone meta &&
       git checkout`
     )
   } catch (error) {
