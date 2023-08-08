@@ -89,7 +89,7 @@ You may potentially want to have the native module transpiled for the next app. 
 
 ### Deploying to Vercel
 
-- Root: `./apps/next`
+- Root: `apps/next`
 - Install command to be `yarn set version berry && yarn install`
 - Build command: leave default setting
 - Output dir: leave default setting
