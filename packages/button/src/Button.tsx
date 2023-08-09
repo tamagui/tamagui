@@ -94,12 +94,35 @@ const ButtonFrame = styled(ThemeableStack, {
         pressTheme: true,
         backgrounded: true,
         borderWidth: 1,
-        borderColor: '$borderColor',
+        borderColor: 'transparent',
 
         focusStyle: {
           outlineColor: '$borderColorFocus',
           outlineStyle: 'solid',
           outlineWidth: 2,
+        },
+      },
+    },
+
+    variant: {
+      outlined: {
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderColor: '$borderColor',
+
+        hoverStyle: {
+          backgroundColor: 'transparent',
+          borderColor: '$borderColorHover',
+        },
+
+        pressStyle: {
+          backgroundColor: 'transparent',
+          borderColor: '$borderColorPress',
+        },
+
+        focusStyle: {
+          backgroundColor: 'transparent',
+          borderColor: '$borderColorFocus',
         },
       },
     },
