@@ -88,6 +88,9 @@ const handler: NextApiHandler = async (req, res) => {
   // if stripe customer doesn't exist, create one and insert it into supabase
 
   const stripeSession = await stripe.checkout.sessions.create({
+    automatic_tax: {
+      enabled: true,
+    },
     line_items: products.data.map((product) => {
       // can use ! cause we've checked before
       const queryPriceId = req.query[`price-${product.id}`]
@@ -108,7 +111,8 @@ const handler: NextApiHandler = async (req, res) => {
     // @ts-ignore
     custom_text: {
       submit: {
-        message: 'A 50% coupon will be automatically applied on your subscription for future renewals.',
+        message:
+          'A 50% coupon will be automatically applied on your subscription for future renewals.',
       },
     },
     customer: stripeCustomerId,
