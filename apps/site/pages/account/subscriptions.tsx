@@ -3,12 +3,13 @@ import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from '@discordjs/c
 import { getDefaultLayout } from '@lib/getDefaultLayout'
 import { Database, Json } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { ArrowUpRight, Search } from '@tamagui/lucide-icons'
+import { Search } from '@tamagui/lucide-icons'
 import { ButtonLink } from 'components/Link'
 import { UserGuard, useUser } from 'hooks/useUser'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import type { DiscordChannelStatus } from 'pages/api/discord/channel'
 import { useState } from 'react'
 import useSWR, { mutate, useSWRConfig } from 'swr'
 import useSWRMutation from 'swr/mutation'
@@ -431,7 +432,7 @@ const BotInstallPanel = ({
 }
 
 const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
-  const groupInfoSwr = useSWR<{ current: number; max: number }>(
+  const groupInfoSwr = useSWR<DiscordChannelStatus>(
     `/api/discord/channel?${new URLSearchParams({ subscription_id: subscriptionId })}`,
     (url) =>
       fetch(url, { headers: { 'Content-Type': 'application/json' } }).then((res) =>
@@ -485,7 +486,7 @@ const DiscordPanel = ({ subscriptionId }: { subscriptionId: string }) => {
         <H6>
           Discord Access{' '}
           {!!groupInfoSwr.data &&
-            `(${groupInfoSwr.data?.current}/${groupInfoSwr.data?.max})`}
+            `(${groupInfoSwr.data?.currentlyOccupiedSeats}/${groupInfoSwr.data?.discordSeats})`}
         </H6>
         <Button
           size="$2"

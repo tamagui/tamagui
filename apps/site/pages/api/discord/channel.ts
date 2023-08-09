@@ -10,9 +10,15 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
+
 import { getTakeoutPriceInfo } from '../../../lib/getProductInfo'
 
 const roleBitField = '1024' // VIEW_CHANNEL
+
+export type DiscordChannelStatus = {
+  discordSeats: number
+  currentlyOccupiedSeats: number
+}
 
 const handler: NextApiHandler = async (req, res) => {
   const supabase = createServerSupabaseClient<Database>({ req, res })
@@ -74,17 +80,19 @@ const handler: NextApiHandler = async (req, res) => {
 
   const pricingDescription = getSingle(starterSubItem.prices)?.description?.toLowerCase()
   const currentlyOccupiedSeats = discordInvites.data.length
-  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(pricingDescription ?? "")
+  const { hasDiscordPrivateChannels, discordSeats } = getTakeoutPriceInfo(
+    pricingDescription ?? ''
+  )
 
   if (req.method === 'GET') {
     return res.json({
       currentlyOccupiedSeats,
       discordSeats,
-    })
+    } satisfies DiscordChannelStatus)
   }
 
-  let discordChannelId: string | null = (subscription.data.metadata as Record<string, any>)
-    ?.discord_channel || null
+  let discordChannelId: string | null =
+    (subscription.data.metadata as Record<string, any>)?.discord_channel || null
   if (hasDiscordPrivateChannels && !discordChannelId) {
     let channelName = subscription.data.id
     try {
@@ -94,7 +102,7 @@ const handler: NextApiHandler = async (req, res) => {
         },
       }).then((res) => res.json())
       channelName = githubData.data.login
-    } catch (error) { }
+    } catch (error) {}
 
     const discordChannel = await discordClient.api.guilds.createChannel(
       TAMAGUI_DISCORD_GUILD_ID,
