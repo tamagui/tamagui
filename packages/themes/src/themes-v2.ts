@@ -1,6 +1,6 @@
 import { createThemeBuilder } from '@tamagui/theme-builder'
 
-import { componentThemeDefinitions } from './componentThemeDefinitions'
+import { overlayThemeDefinitions } from './componentThemeDefinitions'
 import { masks } from './masks'
 import { palettes } from './palettes'
 import { shadows } from './shadows'
@@ -57,26 +57,117 @@ const themesBuilder = createThemeBuilder()
       ...maskOptions.alt,
     },
     alt2: {
-      mask: 'soften2',
+      mask: 'soften2Border1',
       ...maskOptions.alt,
     },
     active: {
-      mask: 'soften3',
+      mask: 'soften3FlatBorder',
       skip: {
         color: 1,
-        borderColor: 1,
-        borderColorPress: 1,
-        borderColorHover: 1,
-        borderColorFocus: 1,
       },
     },
   })
   .addChildThemes(
     {
-      ...componentThemeDefinitions,
+      ListItem: [
+        {
+          parent: 'light',
+          mask: 'strengthen',
+          ...maskOptions.component,
+        },
+        {
+          parent: 'dark',
+          mask: 'identity',
+          ...maskOptions.component,
+        },
+      ],
+
+      Card: {
+        mask: 'soften',
+        ...maskOptions.component,
+      },
 
       Button: {
-        mask: 'soften2',
+        mask: 'soften2Border1',
+        ...maskOptions.component,
+      },
+
+      Checkbox: {
+        mask: 'softenBorder2',
+        ...maskOptions.component,
+      },
+
+      Switch: {
+        mask: 'soften2Border1',
+        ...maskOptions.component,
+      },
+
+      SwitchThumb: {
+        mask: 'inverseStrengthen2',
+        ...maskOptions.component,
+      },
+
+      TooltipContent: {
+        mask: 'soften2Border1',
+        ...maskOptions.component,
+      },
+
+      DrawerFrame: {
+        mask: 'soften',
+        ...maskOptions.component,
+      },
+
+      Progress: {
+        mask: 'soften',
+        ...maskOptions.component,
+      },
+
+      RadioGroupItem: {
+        mask: 'softenBorder2',
+        ...maskOptions.component,
+      },
+
+      TooltipArrow: {
+        mask: 'soften',
+        ...maskOptions.component,
+      },
+
+      SliderTrackActive: {
+        mask: 'inverseSoften',
+        ...maskOptions.component,
+      },
+
+      SliderTrack: {
+        mask: 'soften2Border1',
+        ...maskOptions.component,
+      },
+
+      SliderThumb: {
+        mask: 'inverse',
+        ...maskOptions.component,
+      },
+
+      Tooltip: {
+        mask: 'inverse',
+        ...maskOptions.component,
+      },
+
+      ProgressIndicator: {
+        mask: 'inverse',
+        ...maskOptions.component,
+      },
+
+      SheetOverlay: overlayThemeDefinitions,
+      DialogOverlay: overlayThemeDefinitions,
+      ModalOverlay: overlayThemeDefinitions,
+
+      Input: {
+        mask: 'softenBorder2',
+        ...maskOptions.component,
+      },
+
+      TextArea: {
+        mask: 'softenBorder2',
         ...maskOptions.component,
       },
     },
