@@ -3,7 +3,7 @@ import { createInterFont } from '@tamagui/font-inter'
 import { createMunroFont } from '@tamagui/font-munro'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
-import { themes as themesIn, tokens } from '@tamagui/themes'
+import { themes as themesIn, tokens } from '@tamagui/themes/v2'
 import { CreateTamaguiProps } from '@tamagui/web'
 
 import { animations } from './animations.reanimated'

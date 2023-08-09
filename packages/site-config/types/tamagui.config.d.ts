@@ -1,4 +1,4 @@
-import { themes as themesIn } from '@tamagui/themes';
+import { themes as themesIn } from '@tamagui/themes/v2';
 export { animations } from './animations.reanimated';
 export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/font-inter").GenericFont;
