@@ -152,6 +152,10 @@ export function wrapThemeElements({
 
   let className = themeState.state.className || ''
 
+  if (isRoot) {
+    className = className.replace('t_sub_theme', '')
+  }
+
   let themedChildren = (
     <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
       {children}

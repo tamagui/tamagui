@@ -56,41 +56,45 @@ export function getThemeCSSRules(props: {
         }
 
         const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
-        const order = isDark ? ['dark', 'light'] : ['light', 'dark']
-        if (isDarkOrLightBase) {
-          order.reverse()
-        }
-        const [stronger, weaker] = order
-        const numSelectors = Math.round(maxDepth * 1.5)
 
-        for (let depth = 0; depth < numSelectors; depth++) {
-          const isOdd = depth % 2 === 1
+        const [altLightDark] = [isDark ? ['dark', 'light'] : ['light', 'dark']]
 
-          // wtf is this continue:
-          if (isOdd && depth < 3) {
-            continue
+        for (const order of [altLightDark]) {
+          if (isDarkOrLightBase) {
+            order.reverse()
           }
+          const [stronger, weaker] = order
+          const numSelectors = Math.round(maxDepth * 1.5)
 
-          const parents = new Array(depth + 1).fill(0).map((_, psi) => {
-            return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
-          })
+          for (let depth = 0; depth < numSelectors; depth++) {
+            const isOdd = depth % 2 === 1
 
-          let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
+            // wtf is this continue:
+            if (isOdd && depth < 3) {
+              continue
+            }
 
-          if (isOdd) {
-            const [_first, second, ...rest] = parentSelectors
-            parentSelectors = [second, ...rest, second]
+            const parents = new Array(depth + 1).fill(0).map((_, psi) => {
+              return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+            })
+
+            let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
+
+            if (isOdd) {
+              const [_first, second, ...rest] = parentSelectors
+              parentSelectors = [second, ...rest, second]
+            }
+
+            const lastParentSelector = parentSelectors[parentSelectors.length - 1]
+            const nextChildSelector =
+              childSelector === lastParentSelector ? '' : childSelector
+
+            // for light/dark/light:
+            selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+            selectorsSet.add(
+              `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
+            )
           }
-
-          const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-          const nextChildSelector =
-            childSelector === lastParentSelector ? '' : childSelector
-
-          // for light/dark/light:
-          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
-          selectorsSet.add(
-            `${parentSelectors.join(' ')} ${nextChildSelector}.t_sub_theme`.trim()
-          )
         }
       }
     }
