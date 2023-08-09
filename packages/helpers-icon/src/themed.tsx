@@ -1,4 +1,4 @@
-import { getTokenValue, getVariable, useProps, useTheme } from '@tamagui/core'
+import { getConfig, getTokenValue, getVariable, useProps, useTheme } from '@tamagui/core'
 import React from 'react'
 
 import { IconProps } from './IconProps'
@@ -20,10 +20,13 @@ export function themed(
   const wrapped = (propsIn: IconProps) => {
     const props = useProps(propsIn)
     const theme = useTheme()
+    const config = getConfig()
 
     const defaultColor = props.color ?? opts.defaultThemeColor
     const color = getVariable(
-      (defaultColor ? theme[defaultColor] : undefined) ||
+      (defaultColor
+        ? theme[defaultColor] || config.tokensParsed.color[defaultColor]
+        : undefined) ||
         props.color ||
         (!props.disableTheme ? theme.color : null) ||
         opts.fallbackColor
