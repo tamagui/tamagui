@@ -10,6 +10,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -649,7 +650,10 @@ export function createComponent<
     const shouldSetMounted = needsMount && state.unmounted
 
     // combined multiple effects into one for performance so be careful with logic
-    useIsomorphicLayoutEffect(() => {
+    // should not be a layout effect because otherwise it wont render the initial state
+    // for example css driver needs to render once with the first styles, then again with the next
+    // if its a layout effect it will just skip that first render output
+    useEffect(() => {
       if (shouldSetMounted) {
         const unmounted =
           state.unmounted === true && hasEnterStyle ? 'should-enter' : false

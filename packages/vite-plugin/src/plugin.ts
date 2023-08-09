@@ -8,6 +8,7 @@ import type { Plugin } from 'vite'
 
 export function tamaguiPlugin(
   options: TamaguiOptions & {
+    target?: 'web' | 'native'
     useReactNativeWebLite?: boolean
     disableWatchTamaguiConfig?: boolean
   }
@@ -107,7 +108,9 @@ export function tamaguiPlugin(
             'react-native/Libraries/Utilities/codegenNativeComponent':
               '@tamagui/proxy-worm',
             'react-native-svg': '@tamagui/react-native-svg',
-            'react-native': 'react-native-web',
+            ...(options.target !== 'native' && {
+              'react-native': 'react-native-web',
+            }),
             ...(options.useReactNativeWebLite && {
               'react-native': 'react-native-web-lite',
               'react-native-web': 'react-native-web-lite',

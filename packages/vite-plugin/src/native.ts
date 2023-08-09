@@ -39,7 +39,7 @@ export function nativePlugin(): Plugin {
         'react-native/Libraries/Utilities/codegenNativeComponent':
           'react-native/Libraries/Utilities/codegenNativeComponent',
         'react-native-svg': 'react-native-svg',
-        'react-native-web': 'react-native',
+        // 'react-native-web': 'react-native',
         'react-native': 'react-native',
       }
 

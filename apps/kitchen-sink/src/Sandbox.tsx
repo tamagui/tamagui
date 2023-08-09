@@ -6,6 +6,7 @@ import {
   Button,
   Paragraph,
   SizableText,
+  Square,
   Input as TamaguiInput,
   Text,
   ThemeName,
@@ -89,11 +90,24 @@ export const Sandbox = () => {
 
   return (
     <>
-      <TextInput theme={theme} />
+      <Square
+        debug="verbose"
+        enterStyle={{
+          y: 15,
+          o: 0,
+        }}
+        y={0}
+        o={1}
+        animation="quick"
+        size={100}
+        bc="red"
+      />
+
+      {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
 
       {/* TODO REALLY NEED TO TEST THIS SORT OF STUFF ON NATIVE */}
-      <MyButton test>ok</MyButton>
+      {/* <MyButton test>ok</MyButton> */}
 
       {/* <DrawListRow debug="verbose">
         <Square size={100} bc="red" />

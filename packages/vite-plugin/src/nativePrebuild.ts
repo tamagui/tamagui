@@ -7,10 +7,10 @@ import { extensions } from './extensions'
 
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  console.log(`Prebuilding React Native (one time cost...)`)
+  console.log(
+    `Prebuilding React Native (one time cost...) note: disabling we have committed pre-built files to repo`
+  )
 
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  console.log('note: disabling we have committed pre-built files to repo')
   return
 
   await Promise.all([
