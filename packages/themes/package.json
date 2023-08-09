@@ -11,7 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "generate": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "generate": "yarn generate:v1 && yarn generate:v2",
+    "generate:v1": "tamagui generate-themes ./src/themes-new.ts ./src/generated-new.ts",
+    "generate:v2": "tamagui generate-themes ./src/themes-v2.ts ./src/generated-v2.ts",
     "build": "tamagui-build",
     "watch": "yarn build --watch",
     "lint": "../../node_modules/.bin/rome check src",
@@ -26,6 +28,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./v2": {
+      "types": "./types/v2.d.ts",
+      "import": "./dist/esm/v2.js",
+      "require": "./dist/cjs/v2.js"
     }
   },
   "dependencies": {

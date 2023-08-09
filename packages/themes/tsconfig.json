@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
   },
   "exclude": ["generate.ts", "types"],
   "references": [
