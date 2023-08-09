@@ -1,10 +1,17 @@
 import { isWeb } from '@tamagui/constants'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import React, {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useMemo,
+  useRef,
+} from 'react'
 
 import { variableToString } from '../createVariable'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import { ChangedThemeResponse, useChangeThemeEffect } from '../hooks/useTheme'
-import type { DebugProp, ThemeProps } from '../types'
+import type { ThemeProps } from '../types'
 import { ThemeDebug } from './ThemeDebug'
 
 export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
@@ -14,32 +21,37 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   }
 
   const isRoot = !!props['_isRoot']
+  const disableDirectChildTheme = props['disable-child-theme']
   const themeState = useChangeThemeEffect(props, isRoot)
 
-  let children = props['disable-child-theme']
-    ? Children.map(props.children, (child) =>
-        cloneElement(child, { ['data-disable-theme']: true })
-      )
-    : props.children
+  const children = useMemo(() => {
+    let children = disableDirectChildTheme
+      ? Children.map(props.children, (child) =>
+          cloneElement(child, { ['data-disable-theme']: true })
+        )
+      : props.children
 
-  if (ref) {
-    try {
-      React.Children.only(children)
-      children = cloneElement(children, { ref })
-    } catch {
-      //ok
+    if (ref) {
+      try {
+        React.Children.only(children)
+        children = cloneElement(children, { ref })
+      } catch {
+        //ok
+      }
     }
-  }
 
-  if (process.env.NODE_ENV === 'development') {
-    if (props.debug === 'visualize') {
-      children = (
-        <ThemeDebug themeState={themeState} themeProps={props}>
-          {children}
-        </ThemeDebug>
-      )
+    if (process.env.NODE_ENV === 'development') {
+      if (props.debug === 'visualize') {
+        children = (
+          <ThemeDebug themeState={themeState} themeProps={props}>
+            {children}
+          </ThemeDebug>
+        )
+      }
     }
-  }
+
+    return children
+  }, [props.children, disableDirectChildTheme])
 
   return useThemedChildren(themeState, children, props, isRoot)
 })
@@ -139,10 +151,6 @@ export function wrapThemeElements({
     : undefined
 
   let className = themeState.state.className || ''
-
-  if (isRoot) {
-    className = className.replace('t_sub_theme', '')
-  }
 
   let themedChildren = (
     <span className={`${className} _dsp_contents is_Theme`} style={colorStyle}>
