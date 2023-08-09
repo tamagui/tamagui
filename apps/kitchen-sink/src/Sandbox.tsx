@@ -1,18 +1,7 @@
 // import './wdyr'
 
-import { ComponentRef, useState } from 'react'
-import { Platform } from 'react-native'
-import {
-  Button,
-  Paragraph,
-  SizableText,
-  Square,
-  Input as TamaguiInput,
-  Text,
-  ThemeName,
-  YStack,
-  styled,
-} from 'tamagui'
+import { useState } from 'react'
+import { Button, Paragraph, SizableText, Text, ThemeName, YStack, styled } from 'tamagui'
 
 export const MyButton = styled(Button, {
   name: 'MyButton',
@@ -28,61 +17,6 @@ export const MyButton = styled(Button, {
     },
   } as const,
 })
-type RequireField<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
-
-const TextInput = styled(
-  TamaguiInput,
-  {
-    fontSize: 16,
-    fontFamily: '$body',
-    color: '$color12',
-    minWidth: 0,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    variants: {
-      unset: {
-        false: {
-          borderWidth: 2,
-          py: '$2',
-          px: '$3',
-          borderRadius: 6,
-          bg: '$color3',
-          focusStyle: {
-            bg: '$color4',
-            margin: 0,
-          },
-        },
-      },
-    } as const,
-    defaultVariants: {
-      unset: false,
-    },
-  },
-  {
-    inlineProps: new Set(['id', 'testID']),
-  }
-)
-
-export const Input = TamaguiInput.styleable<
-  RequireField<React.ComponentProps<typeof TextInput>, 'accessibilityLabel'>
->(function MyInput(props, ref) {
-  return (
-    <TextInput
-      unstyled
-      placeholderTextColor={'$color9'}
-      keyboardAppearance={'dark'}
-      testID={props.testID ?? props.id}
-      {...props}
-      id={Platform.select({
-        // on native, this leads to duplicates?
-        web: props.id,
-      })}
-      ref={ref}
-    />
-  )
-})
-
-export type Input = ComponentRef<typeof Input>
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('blue' as ThemeName)
@@ -90,19 +24,6 @@ export const Sandbox = () => {
 
   return (
     <>
-      <Square
-        debug="verbose"
-        enterStyle={{
-          y: 15,
-          o: 0,
-        }}
-        y={0}
-        o={1}
-        animation="quick"
-        size={100}
-        bc="red"
-      />
-
       {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
 

@@ -21,6 +21,7 @@ export { StyledButtonVariantPseudoMerge } from './StyledButtonVariantPseudoMerge
 export { StyledCheckboxTheme } from './StyledCheckboxTheme'
 export { StyledInputFocusStyle } from './StyledInputFocusStyle'
 export { StyledOverridePsuedo } from './StyledOverridePsuedo'
+export { StyledStyleableInputVariant } from './StyledStyleableInputVariant'
 export { ThemeChange } from './ThemeChange'
 export { ToastCase } from './ToastCase'
 export { UseCases } from './UseCases'

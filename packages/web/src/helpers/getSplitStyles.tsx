@@ -951,8 +951,11 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (
-        key in validStyleProps ||
-        (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation')
+        // is HOC we can just pass through the styles as props
+        // this fixes issues where style prop got merged with wrong priority
+        !isHOC &&
+        (key in validStyleProps ||
+          (process.env.TAMAGUI_TARGET === 'native' && isAndroid && key === 'elevation'))
       ) {
         mergeStyle(styleState, key, val)
         continue
