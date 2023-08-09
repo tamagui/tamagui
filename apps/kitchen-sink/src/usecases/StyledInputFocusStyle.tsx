@@ -7,11 +7,10 @@ const StyledInput = styled(Input, {
   variants: {
     test: {
       true: {
-        borderColor: 'green',
-        // focusStyle: {
-        //   borderWidth: 10,
-        //   borderColor: 'blue',
-        // },
+        focusStyle: {
+          borderWidth: 10,
+          borderColor: 'blue',
+        },
       },
     },
   },
