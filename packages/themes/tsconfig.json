@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": true,
   },
-  "exclude": ["generate.ts", "types"],
+  "exclude": ["generate.ts", "types", "v2.d.ts", "v2.js"],
   "references": [
     {
       "path": "../colors"

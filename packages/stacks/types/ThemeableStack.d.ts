@@ -78,22 +78,34 @@ export declare const themeableVariants: {
             backgroundColor: string;
             borderColor: string;
             shadowColor: string;
+            hoverStyle: {
+                borderColor: string;
+            };
         };
         readonly all: {
             readonly hoverStyle: {
                 backgroundColor: string;
                 borderColor: string;
                 shadowColor: string;
+                hoverStyle: {
+                    borderColor: string;
+                };
             };
             readonly pressStyle: {
                 backgroundColor: string;
                 borderColor: string;
                 shadowColor: string;
+                hoverStyle: {
+                    borderColor: string;
+                };
             };
             readonly focusStyle: {
                 backgroundColor: string;
                 borderColor: string;
                 shadowColor: string;
+                hoverStyle: {
+                    borderColor: string;
+                };
             };
             readonly backgroundColor: string;
             readonly borderColor: string;
