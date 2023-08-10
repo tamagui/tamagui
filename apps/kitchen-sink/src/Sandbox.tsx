@@ -1,7 +1,18 @@
 // import './wdyr'
 
+import { CheckboxWithLabel, SwitchWithLabel } from '@tamagui/demos'
 import { useState } from 'react'
-import { Button, Paragraph, SizableText, Text, ThemeName, YStack, styled } from 'tamagui'
+import {
+  Button,
+  H3,
+  Paragraph,
+  SizableText,
+  Text,
+  Theme,
+  ThemeName,
+  YStack,
+  styled,
+} from 'tamagui'
 
 export const MyButton = styled(Button, {
   name: 'MyButton',
@@ -18,12 +29,47 @@ export const MyButton = styled(Button, {
   } as const,
 })
 
+const QuickPreviewSection = () => {
+  return (
+    <YStack f={1}>
+      <YStack
+        bw={1}
+        boc="$borderColor"
+        bc="$backgroundStrong"
+        f={1}
+        br="$6"
+        p="$4"
+        gap="$2"
+      >
+        <H3>Preview</H3>
+        <Paragraph>
+          Occaecat tempor et et nostrud laboris eiusmod aliquip et est irure in
+          adipisicing.
+        </Paragraph>
+
+        <SwitchWithLabel size="$3" />
+        <CheckboxWithLabel defaultChecked size="$4" />
+
+        <Button>Hello</Button>
+      </YStack>
+    </YStack>
+  )
+}
+
 export const Sandbox = () => {
-  const [theme, setTheme] = useState('blue' as ThemeName)
+  const [theme, setTheme] = useState('light' as ThemeName)
   // need to test all these they seem to be all working:
 
   return (
     <>
+      <Theme name={theme}>
+        <Theme name="red">
+          <QuickPreviewSection />
+          <Button onPress={() => setTheme((x) => (x === 'light' ? 'dark' : 'light'))}>
+            ok
+          </Button>
+        </Theme>
+      </Theme>
       {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
 

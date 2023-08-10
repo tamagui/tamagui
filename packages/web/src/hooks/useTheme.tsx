@@ -12,7 +12,7 @@ import {
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
 import type { DebugProp, ThemeParsed, ThemeProps } from '../types'
-import { GetThemeUnwrapped, getThemeUnwrapped } from './getThemeUnwrapped'
+import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
   state: ThemeManagerState
@@ -222,14 +222,7 @@ export const useChangeThemeEffect = (
         activeThemeManagers.add(themeManager)
       }
 
-      const nextState = getShouldUpdateTheme(themeManager)
-
-      // if (nextState && isNewTheme) {
-      //   // if it's a new theme we can just update + publish to children
-      //   themeManager.updateState(nextState, true)
-      // }
-
-      if (nextState || isNewTheme) {
+      if (isNewTheme || getShouldUpdateTheme(themeManager)) {
         setThemeState(createState)
       }
 
