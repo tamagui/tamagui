@@ -1,11 +1,19 @@
-import { Stack, styled } from '@tamagui/core'
+import { Stack, Text, styled } from '@tamagui/core'
 
 const Parent = styled(Stack, {
-  width: 24,
-  height: 24,
-
   variants: {
     variant: {
+      red: {
+        backgroundColor: 'red',
+      },
+    },
+  },
+})
+
+const Child = styled(Parent, {
+  backgroundColor: 'yellow',
+  variants: {
+    otherVariant: {
       green: {
         backgroundColor: 'green',
       },
@@ -13,17 +21,33 @@ const Parent = styled(Stack, {
   },
 })
 
-const Child = styled(Parent, {
-  backgroundColor: 'red',
-})
-
 export const Sandbox = () => {
   return (
     <Stack flex={1}>
-      {/* this should be red */}
-      <Child />
-      {/* this should be red too, because backgroundColor: 'red' must override styles from variant */}
-      <Child variant="green" />
+      <Child>
+        <Text>This should be yellow</Text>
+      </Child>
+      <Child variant="red">
+        <Text>This should be yellow too</Text>
+      </Child>
+      <Child otherVariant="green">
+        <Text>This should be green</Text>
+      </Child>
+      <Child otherVariant="green" variant="red">
+        <Text>This should also be green</Text>
+      </Child>
+      <Child variant="red" otherVariant="green">
+        <Text>And this should be green too</Text>
+      </Child>
+      <Child backgroundColor="magenta" variant="red" otherVariant="green">
+        <Text>This should be magenta</Text>
+      </Child>
+      <Child variant="red" backgroundColor="magenta" otherVariant="green">
+        <Text>As well as this</Text>
+      </Child>
+      <Child variant="red" otherVariant="green" backgroundColor="magenta">
+        <Text>And this</Text>
+      </Child>
     </Stack>
   )
 }
