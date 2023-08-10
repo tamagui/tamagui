@@ -227,9 +227,10 @@ export const manageSubscriptionStatusChange = async (
       throw userModel.error
     }
 
-    sendTakeoutWelcomeEmail(email, {
+    await sendTakeoutWelcomeEmail(email, {
       name: userModel.data.full_name ?? email.split('@').shift()!,
     })
+    console.log(`Welcome email request sent to Postmark for ${email}`)
   }
 }
 
