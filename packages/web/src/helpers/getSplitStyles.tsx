@@ -819,7 +819,12 @@ export const getSplitStyles: StyleSplitter = (
         const isPlatformMedia = key.startsWith('$platform-')
         if (isPlatformMedia) {
           const platform = key.slice(10)
-          if (platform !== currentPlatform) {
+          if (
+            // supports web, ios, android
+            platform !== currentPlatform &&
+            // supports web, native
+            platform !== process.env.TAMAGUI_TARGET
+          ) {
             continue
           }
         }
