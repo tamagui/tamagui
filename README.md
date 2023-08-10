@@ -16,7 +16,6 @@
   Style React Native and Web with an optimizing compiler
 </h1>
 
-
 - `@tamagui/core` - Universal style system for both web and React Native.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
 - `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
@@ -70,6 +69,10 @@ yarn kitchen-sink:build:ios
 After the build has been completed, run:
 
 ```
+# Build all packages
+yarn build
+
+# Start application
 yarn kitchen-sink
 ```
 
