@@ -26,7 +26,7 @@ import {
   SizableText,
   Spinner,
   XStack,
-  YStack
+  YStack,
 } from 'tamagui'
 
 export default function Page() {
@@ -60,6 +60,8 @@ const Account = () => {
         <Avatar circular size="$10">
           <Avatar.Image
             source={{
+              width: 104,
+              height: 104,
               uri:
                 userDetails?.avatar_url ??
                 getDefaultAvatarImage(userDetails?.full_name ?? user?.email ?? 'User'),
