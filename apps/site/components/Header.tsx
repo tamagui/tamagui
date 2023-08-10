@@ -224,11 +224,13 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
                 <Avatar circular size="$2">
                   <Avatar.Image
                     source={{
+                      width: 28,
+                      height: 28,
                       uri:
-                        userSwr.data.userDetails?.avatar_url ??
+                        userSwr.data.userDetails?.avatar_url ||
                         getDefaultAvatarImage(
-                          userSwr.data?.userDetails?.full_name ??
-                            userSwr.data?.session?.user?.email ??
+                          userSwr.data?.userDetails?.full_name ||
+                            userSwr.data?.session?.user?.email ||
                             'User'
                         ),
                     }}

@@ -55,13 +55,22 @@ const handler: NextApiHandler = async (req, res) => {
       break
 
     case 'customer.subscription.created':
-    case 'customer.subscription.updated':
-      const subscription = event.data.object as Stripe.Subscription
+      const createdSub = event.data.object as Stripe.Subscription
       await manageSubscriptionStatusChange(
-        subscription.id,
-        typeof subscription.customer === 'string'
-          ? subscription.customer
-          : subscription.customer.id
+        createdSub.id,
+        typeof createdSub.customer === 'string'
+          ? createdSub.customer
+          : createdSub.customer.id,
+        true
+      )
+      break
+    case 'customer.subscription.updated':
+      const updatedSub = event.data.object as Stripe.Subscription
+      await manageSubscriptionStatusChange(
+        updatedSub.id,
+        typeof updatedSub.customer === 'string'
+          ? updatedSub.customer
+          : updatedSub.customer.id
       )
       break
     case 'customer.subscription.deleted':

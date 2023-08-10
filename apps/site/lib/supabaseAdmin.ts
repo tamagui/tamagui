@@ -2,9 +2,12 @@ import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 import { Price, Product } from 'types'
 
+import { sendTakeoutWelcomeEmail } from './email'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import { Database } from './supabase-types'
+import { getSingle } from './supabase-utils'
+
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
 export const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -128,10 +131,10 @@ export const manageSubscriptionStatusChange = async (
     .select('id')
     .eq('stripe_customer_id', customerId)
     .single()
+
   if (noCustomerError) throw noCustomerError
 
   const { id: uuid } = customerData || {}
-  // sendTakeoutWelcomeEmail()
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['default_payment_method'],
   })
@@ -197,10 +200,38 @@ export const manageSubscriptionStatusChange = async (
 
   const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
 
-  if (renewalCouponId)
+  if (renewalCouponId) {
     await stripe.subscriptions.update(subscription.id, {
       coupon: renewalCouponId,
     })
+  }
+
+  if (createAction) {
+    const user = await supabaseAdmin.auth.admin.getUserById(customerData.id)
+
+    if (user.error) {
+      throw user.error
+    }
+    const email = user.data.user.email
+    if (!email) {
+      throw new Error(`No email found for user ${user.data.user.id}`)
+    }
+
+    const userModel = await supabaseAdmin
+      .from('users')
+      .select('id, full_name')
+      .eq('id', user.data.user.id)
+      .single()
+
+    if (userModel.error) {
+      throw userModel.error
+    }
+
+    await sendTakeoutWelcomeEmail(email, {
+      name: userModel.data.full_name ?? email.split('@').shift()!,
+    })
+    console.log(`Welcome email request sent to Postmark for ${email}`)
+  }
 }
 
 export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
