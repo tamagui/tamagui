@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@tamagui/linear-gradient": "1.52.1",
+    "@tamagui/theme": "1.52.1",
     "@tamagui/lucide-icons": "1.52.1",
     "@tamagui/theme-builder": "1.52.1",
     "@tamagui/themes": "1.52.1",

@@ -7,5 +7,5 @@ export function addTheme(props: {
   theme: Partial<Record<keyof ThemeDefinition, any>>
   insertCSS?: boolean
 }) {
-  return _mutateTheme({ ...props })
+  return _mutateTheme({ ...props, insertCSS: true, mutationType: 'add' })
 }
