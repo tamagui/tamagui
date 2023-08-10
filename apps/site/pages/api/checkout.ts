@@ -108,8 +108,15 @@ const handler: NextApiHandler = async (req, res) => {
     // @ts-ignore
     custom_text: {
       submit: {
-        message: 'A 50% coupon will be automatically applied on your subscription for future renewals.',
+        message:
+          'A 50% coupon will be automatically applied on your subscription for future renewals.',
       },
+    },
+    customer_update: {
+      address: 'auto',
+    },
+    automatic_tax: {
+      enabled: true,
     },
     customer: stripeCustomerId,
     mode: 'subscription',
