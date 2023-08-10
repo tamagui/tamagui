@@ -98,13 +98,13 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
           size={size}
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
-          {...thumbProps}
           x={
             checked
               ? getVariableValue(getSwitchWidth(size)) -
                 getVariableValue(getSwitchHeight(size))
               : 0
           }
+          {...thumbProps}
           ref={forwardedRef}
         />
       )
