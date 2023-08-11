@@ -41,11 +41,13 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   }
   try {
     execSync(
-      `cd ${tamaguiDir} &&
-      git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName} &&
-      cd ${repoName} &&
-      git sparse-checkout set --no-cone meta &&
-      git checkout`
+      [
+        `cd "${tamaguiDir}"`,
+        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`,
+        `cd ${repoName}`,
+        `git sparse-checkout set --no-cone meta`,
+        `git checkout`,
+      ].join(' && ')
     )
   } catch (error) {
     if (error instanceof Error) {
@@ -100,9 +102,11 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   const packageDir = path.join(tempDir, 'packages', packageName)
 
   execSync(
-    `cd ${tempDir} &&
-    git sparse-checkout set --no-cone packages/${packageName}
-    git checkout`
+    [
+      `cd "${tempDir}"`,
+      `git sparse-checkout set --no-cone packages/${packageName}`,
+      `git checkout`,
+    ].join(' && ')
   )
   const finalDir = path.join(packagesPath, packageName)
   await ensureDir(packagesPath)
