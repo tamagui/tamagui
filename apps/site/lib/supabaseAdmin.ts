@@ -191,16 +191,16 @@ export const manageSubscriptionStatusChange = async (
   console.log(`Inserted/updated subscription [${subscription.id}] for user [${uuid}]`)
   // For a new subscription copy the billing details to the customer object.
   // NOTE: This is a costly operation and should happen at the very end.
-  if (createAction && subscription.default_payment_method && uuid)
+  if (createAction && subscription.default_payment_method && uuid) {
     //@ts-ignore
     await copyBillingDetailsToCustomer(
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     )
-
+  }
   const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
 
-  if (renewalCouponId) {
+  if (createAction && renewalCouponId) {
     await stripe.subscriptions.update(subscription.id, {
       coupon: renewalCouponId,
     })
