@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
-    "esbuild": "^0.17.17",
+    "esbuild": "^0.19.0",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.1.0",

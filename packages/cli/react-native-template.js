@@ -7,6 +7,8 @@ const global =
     ? window
     : this
 
+globalThis['global'] = global
+
 global.performance = {
   now: () => Date.now(),
 }
@@ -16,14 +18,14 @@ global.ErrorUtils = {
     console.log('args', args)
   },
   reportFatalError: (err) => {
-    alert(err)
+    console.log('err', err)
   },
 }
 
 globalThis['require'] = function require(_mod) {
   if (_mod === 'react') return React
   if (_mod === 'react-native') return RequireReactNative
-  if (_mod === 'react/jsx-runtime') return RequireReactJSXRuntime
+  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
 }
 
 const React = (function () {

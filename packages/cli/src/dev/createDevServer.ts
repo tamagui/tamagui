@@ -61,7 +61,7 @@ export async function createDevServer(
       return {
         compiler: {
           getAsset: async (filename, platform, sendProgress) => {
-            console.log('get asset', filename)
+            console.log('[GET] - ', filename)
             if (filename === 'index.bundle') {
               return await getIndexBundle()
             }

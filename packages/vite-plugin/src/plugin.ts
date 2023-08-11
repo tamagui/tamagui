@@ -62,7 +62,8 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include: ['styleq', 'react-native-reanimated'],
+          include:
+            options.target !== 'native' ? ['styleq', 'react-native-reanimated'] : [],
           esbuildOptions: {
             jsx: 'transform',
             // plugins: [
@@ -104,16 +105,16 @@ export function tamaguiPlugin(
             '.mjs',
           ],
           alias: {
-            'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
-            'react-native/Libraries/Utilities/codegenNativeComponent':
-              '@tamagui/proxy-worm',
-            'react-native-svg': '@tamagui/react-native-svg',
             ...(options.target !== 'native' && {
+              'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
+              'react-native/Libraries/Utilities/codegenNativeComponent':
+                '@tamagui/proxy-worm',
+              'react-native-svg': '@tamagui/react-native-svg',
               'react-native': 'react-native-web',
-            }),
-            ...(options.useReactNativeWebLite && {
-              'react-native': 'react-native-web-lite',
-              'react-native-web': 'react-native-web-lite',
+              ...(options.useReactNativeWebLite && {
+                'react-native': 'react-native-web-lite',
+                'react-native-web': 'react-native-web-lite',
+              }),
             }),
           },
         },

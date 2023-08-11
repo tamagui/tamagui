@@ -34,13 +34,13 @@ export function nativePlugin(): Plugin {
       config.resolve.alias ??= {}
       config.resolve.alias = {
         ...config.resolve.alias,
-        'react-native/Libraries/Renderer/shims/ReactFabric':
-          'react-native/Libraries/Renderer/shims/ReactFabric',
-        'react-native/Libraries/Utilities/codegenNativeComponent':
-          'react-native/Libraries/Utilities/codegenNativeComponent',
-        'react-native-svg': 'react-native-svg',
-        // 'react-native-web': 'react-native',
-        'react-native': 'react-native',
+        // 'react-native/Libraries/Renderer/shims/ReactFabric':
+        //   'react-native/Libraries/Renderer/shims/ReactFabric',
+        // 'react-native/Libraries/Utilities/codegenNativeComponent':
+        //   'react-native/Libraries/Utilities/codegenNativeComponent',
+        // 'react-native-svg': 'react-native-svg',
+        // // 'react-native-web': 'react-native',
+        // 'react-native': 'react-native',
       }
 
       config.optimizeDeps ??= {}
@@ -50,7 +50,7 @@ export function nativePlugin(): Plugin {
       config.optimizeDeps.esbuildOptions.plugins ??= []
       config.optimizeDeps.esbuildOptions.plugins.push(
         esbuildFlowPlugin(
-          /node_modules\/(react-native\/|@react-native\/assets)/,
+          /node_modules\/(react-native\/|@react-native\/)/,
           (_) => 'jsx',
           {
             all: true,
@@ -90,7 +90,12 @@ export function nativePlugin(): Plugin {
 
       config.build.rollupOptions.plugins ??= []
 
-      config.build.rollupOptions.external = ['react-native', 'react', 'react/jsx-runtime']
+      config.build.rollupOptions.external = [
+        'react-native',
+        'react',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+      ]
 
       if (!Array.isArray(config.build.rollupOptions.plugins)) {
         throw `x`

@@ -1,6 +1,9 @@
 {
   "eslint.enable": false,
   "typescript.tsdk": "node_modules/typescript/lib",
+
+  "nandorojo-tamagui.configPath": "apps/site",
+
   "search.exclude": {
     "**/node_modules": true,
     "**/bower_components": true,

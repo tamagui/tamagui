@@ -2,7 +2,7 @@
   "name": "@tamagui/stack",
   "version": "1.52.2",
   "private": true,
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
     "dev": "tama dev"
   },

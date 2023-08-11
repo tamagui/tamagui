@@ -5,7 +5,7 @@ import { join } from 'path'
 import { CLIResolvedOptions } from '@tamagui/types'
 import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
-import fs, { ensureDir } from 'fs-extra'
+import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
 
 import { createDevServer } from './dev/createDevServer'
@@ -16,14 +16,16 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   process.chdir(process.cwd())
 
+  const packageRootDir = join(__dirname, '..')
+
   // build react-native
   await nativePrebuild()
 
   const plugins = [
-    tamaguiPlugin({
-      components: ['tamagui'],
-      target: 'native',
-    }),
+    // tamaguiPlugin({
+    //   components: ['tamagui'],
+    //   target: 'native',
+    // }),
     nativePlugin(),
   ]
 
@@ -119,10 +121,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   // await res?.context.dispose()
 
-  console.log('closed')
-
   async function getBundle() {
-    console.log('get bundle')
     const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
     const outputCode = await getBundleCode()
     // debug out each time
@@ -131,6 +130,15 @@ export const dev = async (options: CLIResolvedOptions) => {
   }
 
   async function getBundleCode() {
+    console.log('root1', root)
+
+    // for easier quick testing things:
+    const tmpBundle = join(packageRootDir, 'bundle.tmp.js')
+    if (await pathExists(tmpBundle)) {
+      console.log('returning temp bundle', tmpBundle)
+      return await readFile(tmpBundle, 'utf-8')
+    }
+
     // build app
     const buildOutput = await build({
       // @ts-ignore
@@ -185,9 +193,7 @@ export const dev = async (options: CLIResolvedOptions) => {
         ``
       )
 
-    const templateFile = join(__dirname, '..', 'react-native-template.js')
-
-    console.log('reding template', templateFile)
+    const templateFile = join(packageRootDir, 'react-native-template.js')
 
     return (await readFile(templateFile, 'utf-8'))
       .replace(`// -- react --`, reactCode)

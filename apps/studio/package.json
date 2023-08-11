@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "1.52.2",
-    "vite": "^4.4.8"
+    "vite": "^4.4.9"
   }
 }

@@ -1,26 +1,25 @@
 import { readFile } from 'fs/promises'
+import { join } from 'path'
 
+import * as babel from '@babel/core'
 import { build } from 'esbuild'
-import flowRemoveTypes from 'flow-remove-types'
 
 import { extensions } from './extensions'
 
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  console.log(
-    `Prebuilding React Native (one time cost...) note: disabling we have committed pre-built files to repo`
-  )
+  console.log(`Prebuilding React Native (one time cost...)`)
 
-  return
+  const outdir = join(process.cwd(), 'testing-area')
 
   await Promise.all([
     // react
     build({
       bundle: true,
       entryPoints: ['react'],
-      outfile: 'react.js',
+      outfile: join(outdir, 'react.js'),
       format: 'cjs',
-      target: 'node14',
+      target: 'node20',
       jsx: 'transform',
       jsxFactory: 'react',
       allowOverwrite: true,
@@ -36,9 +35,9 @@ export async function nativePrebuild() {
     build({
       bundle: true,
       entryPoints: ['react/jsx-runtime'],
-      outfile: 'react-jsx-runtime.js',
+      outfile: join(outdir, 'react-jsx-runtime.js'),
       format: 'cjs',
-      target: 'node14',
+      target: 'node20',
       jsx: 'transform',
       jsxFactory: 'react',
       external: ['react'],
@@ -56,9 +55,9 @@ export async function nativePrebuild() {
     build({
       bundle: true,
       entryPoints: ['/Users/n8/tamagui/node_modules/react-native/index.js'],
-      outfile: 'react-native.js',
+      outfile: join(outdir, 'react-native.js'),
       format: 'cjs',
-      target: 'node14',
+      target: 'node20',
       jsx: 'transform',
       jsxFactory: 'react',
       allowOverwrite: true,
@@ -88,11 +87,17 @@ export async function nativePrebuild() {
                 if (!input.path.includes('react-native')) {
                   return
                 }
+
                 const code = await readFile(input.path, 'utf-8')
-                const output = flowRemoveTypes(code, { pretty: true })
-                const contents = output.toString().replace(/static\s+\+/g, 'static ')
+
+                // omg so ugly but no class support?
+                const outagain = babel.transformSync(code, {
+                  presets: ['module:metro-react-native-babel-preset'],
+                })
+
+                // const contents = output.toString().replace(/static\s+\+/g, 'static ')
                 return {
-                  contents,
+                  contents: outagain.code,
                   loader: 'jsx',
                 }
               }
