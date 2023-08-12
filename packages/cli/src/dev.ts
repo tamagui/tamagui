@@ -20,8 +20,6 @@ import { registerDispose } from './utils'
 export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options
 
-  process.chdir(process.cwd())
-
   const packageRootDir = join(__dirname, '..')
 
   // build react-native
@@ -44,12 +42,13 @@ export const dev = async (options: CLIResolvedOptions) => {
     }),
   ]
 
-  const rootFile = join(root, 'src/test-tamagui-stack.tsx')
   const server = await createServer({
-    root: rootFile,
+    root,
     mode: 'development',
     plugins,
     server: {
+      hmr: true,
+      cors: true,
       port: options.port,
       host: options.host || 'localhost',
     },
@@ -57,10 +56,8 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   await server.listen()
 
-  await ensureDir(options.paths.dotDir)
+  // await ensureDir(options.paths.dotDir)
   // const res = await watchTamaguiConfig(options.tamaguiOptions)
-
-  const info = server.httpServer?.address() as AddressInfo
 
   const defaultResponse = {
     name: 'myapp',
