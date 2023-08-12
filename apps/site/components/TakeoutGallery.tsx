@@ -113,7 +113,7 @@ export default function TakeoutGallery() {
       <ImageGallery />
 
       <XStack
-        mx="$-8"
+        mx="$-4"
         ai="center"
         jc="center"
         gap="$4"

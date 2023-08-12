@@ -277,15 +277,19 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       scale={1}
       $xxs={{
         scale: 0.35,
+        y: '40%',
       }}
       $xs={{
         scale: 0.45,
+        y: '35%',
       }}
       $sm={{
         scale: 0.65,
+        y: '25%',
       }}
       $md={{
         scale: 0.85,
+        y: '20%',
       }}
       // ref={glow.parentRef as any}
     >
@@ -568,7 +572,7 @@ export default function TakeoutPage({
             <TakeoutHero coupon={coupon} />
           </YStack>
 
-          <YStack t={heroHeight - 1000} l={-100} pos="absolute" b={0} zi={-3}>
+          <YStack t={heroHeight - 1300} l={-100} pos="absolute" b={0} zi={-3}>
             <Separator o={0.75} vertical h={4100} pos="absolute" l={0.5} />
             <Separator o={0.75} vertical h={4100} pos="absolute" r={0} />
 
@@ -609,12 +613,6 @@ export default function TakeoutPage({
               $md={{
                 flexDirection: 'column-reverse',
               }}
-              $lg={{
-                p: '$6',
-              }}
-              $sm={{
-                p: '$4',
-              }}
             >
               <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
@@ -623,11 +621,11 @@ export default function TakeoutPage({
               <YStack f={1} space="$5">
                 <MunroP
                   className="mix-blend pixelate"
-                  mt={-350}
+                  mt={-400}
                   mb={-20}
                   size="$7"
-                  ls={4}
-                  o={0.5}
+                  ls={3}
+                  o={0.25}
                   $sm={{
                     size: '$4',
                   }}
@@ -653,7 +651,7 @@ export default function TakeoutPage({
                     }}
                     $lg={{
                       size: '$10',
-                      mr: 50,
+                      mr: '8%',
                     }}
                     $sm={{
                       size: '$9',
@@ -673,6 +671,7 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <MunroP
+                    className="text-wrap-balance"
                     style={{ textShadow: '0 1px 1px var(--color9)' }}
                     size="$9"
                     fow="400"
@@ -685,19 +684,15 @@ export default function TakeoutPage({
 
                 <HeartsRow />
 
-                <Paragraph size="$9" $sm={{ size: '$8' }} $xs={{ size: '$7' }} fow="400">
-                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
-                  together a better React Native and web stack.
-                </Paragraph>
-
                 <Paragraph
-                  theme="alt1"
+                  className="text-wrap-balance"
                   size="$8"
-                  $sm={{ size: '$7' }}
-                  $xs={{ size: '$6' }}
+                  $sm={{ size: '$8' }}
+                  $xs={{ size: '$7' }}
                   fow="400"
                 >
-                  Powered by{' '}
+                  Takeout 🥡 is a bootstrap that delivers on years of effort to put
+                  together a better React Native and web stack. Powered by{' '}
                   <LogoWords tag="span" display="inline-flex" mx="$3" scale={1.1} />,
                   within an hour you'll be deploying on the web to Vercel and to
                   iOS/Android app stores via Expo EAS. Featuring all new themes, 150 new
@@ -910,18 +905,19 @@ export default function TakeoutPage({
                     </Paragraph>
 
                     <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
-                      Takeout is a template repo *and a bot* that's designed with
-                      pluggable, well-isolated features. Whenever we make significant
-                      updates, we trigger the TakeoutBot to send over a PR.
+                      Takeout is a template repo <b>with a GitHub bot</b> that lets us
+                      send PRs easily thanks to a pluggable, well-isolated architecture.
+                      Whenever we make significant updates, we trigger TakeoutBot to
+                      send&nbsp;a&nbsp;PR.
                     </Paragraph>
 
                     <ThemeTintAlt>
                       <Paragraph
-                        className="text-shadow"
+                        className="text-shadow text-wrap-balance"
                         size="$8"
                         $sm={{ size: '$7' }}
-                        fow="400"
                         color="$color9"
+                        fow="800"
                       >
                         That means you get constant improvements to your codebase.
                       </Paragraph>
@@ -935,8 +931,13 @@ export default function TakeoutPage({
                       period.
                     </Paragraph>
 
-                    <Paragraph size="$7" $sm={{ size: '$6' }} fow="400">
-                      Here's what we're planning, to come auomatically as a PR to your
+                    <Paragraph
+                      className="text-shadow text-wrap-balance"
+                      size="$7"
+                      $sm={{ size: '$6' }}
+                      fow="400"
+                    >
+                      Here's what we're working on, coming automatically as a PR to your
                       repo:
                     </Paragraph>
 
@@ -961,6 +962,7 @@ export default function TakeoutPage({
                         <Bullet>Improved CI/CD and caching</Bullet>
                         <Bullet>Generator for MDX support</Bullet>
                         <Bullet>Generator for Replicache support</Bullet>
+                        <Bullet>Much more (suggest in the #takeout channel)</Bullet>
                       </XStack>
                     </ThemeTintAlt>
 
@@ -972,10 +974,10 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <Paragraph
-                    className="text-3d"
+                    className="rainbow clip-text"
                     als="center"
                     fontFamily="$cherryBomb"
-                    size="$10"
+                    size="$9"
                   >
                     Take a peek
                   </Paragraph>
@@ -2796,8 +2798,8 @@ const PromoVideo = () => {
       {...(open && {
         scale: 1,
         rotate: '0deg',
-        x: 600,
-        y: -120,
+        x: 400,
+        y: -80,
       })}
       cursor="pointer"
       onPress={() => {
@@ -2883,7 +2885,7 @@ const Bullet = ({
       f={1}
       {...props}
       w="100%"
-      $gtSm={{ w: 'calc(50% - 20px)' }}
+      $gtLg={{ w: 'calc(50% - 20px)' }}
     >
       <YStack y={-1}>
         <Circle size={42} my={-6} boc="$borderColor" bw={1}>
