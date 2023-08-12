@@ -7,7 +7,7 @@ type ThemeBuilderState = {
     masks?: MaskDefinitions;
 };
 type ObjectStringKeys<A extends Object | undefined> = A extends Object ? Exclude<keyof A, symbol | number> : never;
-type GetGeneratedThemeFromTemplate<Template> = {
+type GetGeneratedThemeFromTemplate<Template, TD> = {
     [key in keyof Template]: string;
 };
 type GetParentTheme<P, Themes extends ThemeDefinitions | undefined> = P extends string ? P extends keyof Themes ? Themes[P] : GetParentName<P> extends keyof Themes ? Themes[GetParentName<P>] : GetParentName<GetParentName<P>> extends keyof Themes ? Themes[GetParentName<GetParentName<P>>] : GetParentName<GetParentName<GetParentName<P>>> extends keyof Themes ? Themes[GetParentName<GetParentName<GetParentName<P>>>] : never : never;
@@ -17,7 +17,7 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
     parent: infer P;
 } ? GetGeneratedTheme<GetParentTheme<P, S['themes']>, S> : TD extends {
     template: infer T;
-} ? T extends keyof S['templates'] ? GetGeneratedThemeFromTemplate<S['templates'][T]> : TD : TD;
+} ? T extends keyof S['templates'] ? GetGeneratedThemeFromTemplate<S['templates'][T], TD> : TD : TD;
 type ThemeBuilderBuildResult<S extends ThemeBuilderState> = {
     [Key in keyof S['themes']]: GetGeneratedTheme<S['themes'][Key], S>;
 };
@@ -34,7 +34,7 @@ export declare class ThemeBuilder<State extends ThemeBuilderState> {
     addMasks<const M extends MaskDefinitions>(masks: M): ThemeBuilder<State & {
         masks: M;
     }>;
-    addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<State & {
+    addThemes<const T extends ThemeDefinitions<ObjectStringKeys<State['masks']>>>(themes: T): ThemeBuilder<Omit<State, "themes"> & {
         themes: T;
     }>;
     addChildThemes<CTD extends Narrow<ThemeDefinitions<ObjectStringKeys<State['masks']>>>, const AvoidNestingWithin extends string[] = []>(childThemeDefinition: CTD, options?: {

@@ -4,6 +4,7 @@ import {
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
+  ThemeUsingTemplate,
   applyMask,
   createMask,
   createTheme,
@@ -11,7 +12,7 @@ import {
   objectFromEntries,
   objectKeys,
 } from '@tamagui/create-theme'
-import type { Narrow } from '@tamagui/web'
+import type { Narrow, ThemeDefinition, UnionableString } from '@tamagui/web'
 
 type ThemeBuilderState = {
   palettes?: PaletteDefinitions
@@ -24,7 +25,13 @@ type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
 
-type GetGeneratedThemeFromTemplate<Template> = {
+type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
+  ? X extends { [key: string]: any }
+    ? keyof X
+    : never
+  : never
+
+type GetGeneratedThemeFromTemplate<Template, TD> = {
   [key in keyof Template]: string
 }
 
@@ -45,11 +52,10 @@ type GetGeneratedTheme<TD, S extends ThemeBuilderState> = TD extends {
 }
   ? T
   : TD extends { parent: infer P }
-  ? // ? GetGeneratedThemeFromTemplate<GetParentTheme<P, S['templates']>>
-    GetGeneratedTheme<GetParentTheme<P, S['themes']>, S>
+  ? GetGeneratedTheme<GetParentTheme<P, S['themes']>, S>
   : TD extends { template: infer T }
   ? T extends keyof S['templates']
-    ? GetGeneratedThemeFromTemplate<S['templates'][T]>
+    ? GetGeneratedThemeFromTemplate<S['templates'][T], TD>
     : TD
   : TD
 
@@ -120,8 +126,21 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       ...(this.state.themes as {}),
       ...themes,
     }
+
+    type TemplateToTheme<X> = State['templates'] extends {}
+      ? X extends { template: infer Y; nonInheritedValues: infer Z }
+        ? Y extends keyof State['templates']
+          ? { theme: Record<keyof State['templates'][Y] | keyof Z, string> }
+          : X
+        : X
+      : X
+
     return this as any as ThemeBuilder<
-      State & {
+      Omit<State, 'themes'> & {
+        // lets infer template themes directly onto here to avoid some type nesting issues later one
+        // themes: {
+        //   [Key in keyof T]: TemplateToTheme<T[Key]>
+        // } & State['themes']
         themes: T
       }
     >
@@ -147,8 +166,8 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     type CurrentNames = Exclude<keyof typeof currentThemes, symbol | number>
     type ChildNames = Exclude<keyof CTD, symbol | number>
 
-    const currentThemeNames = objectKeys(currentThemes) as CurrentNames[]
-    const incomingThemeNames = objectKeys(childThemeDefinition) as ChildNames[]
+    const currentThemeNames = Object.keys(currentThemes) as CurrentNames[]
+    const incomingThemeNames = Object.keys(childThemeDefinition) as ChildNames[]
 
     const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
       if (options?.avoidNestingWithin) {
@@ -174,7 +193,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       }
     }
 
-    const childThemes = objectFromEntries(namesWithDefinitions) as ChildThemes
+    const childThemes = Object.fromEntries(namesWithDefinitions) as any as ChildThemes
 
     const next = {
       // as {} prevents generic string key merge messing up types
