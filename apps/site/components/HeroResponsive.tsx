@@ -203,7 +203,6 @@ export const HeroResponsive = memo(() => {
           <YStack
             zi={2}
             className="unselectable"
-            contain="paint layout"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}

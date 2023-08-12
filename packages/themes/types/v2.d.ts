@@ -1,5 +1,3 @@
-import * as themes from './generated-v2';
-export { themes };
 export * from './tokens';
 export * from './masks';
 export * from './componentThemeDefinitions';
