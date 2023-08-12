@@ -112,8 +112,10 @@ export async function createDevServer(
         },
 
         hmr: {
-          getUriPath: () => '/__hmr',
+          getUriPath: () => '/hot',
           onClientConnected: (platform, clientId) => {
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log('client connected to hot')
             // todo
             const lastStats = {}
 
@@ -135,11 +137,8 @@ export async function createDevServer(
             const logEntry = makeLogEntryFromFastifyLog(log)
             logEntry.issuer = 'DevServer'
             // error DevServer, warn DevServer
-            console.log(
-              logEntry.type,
-              logEntry.issuer,
-              JSON.stringify(logEntry.message, null, 2)
-            )
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log('[logger]', logEntry.type, logEntry.issuer, logEntry.message)
             // reporter.process(logEntry)
           },
         },

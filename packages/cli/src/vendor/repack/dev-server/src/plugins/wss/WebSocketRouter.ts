@@ -32,11 +32,21 @@ export class WebSocketRouter {
         const { pathname } = new URL(request.url || '', 'http://localhost')
         let matched = false
 
-        console.log('check for upgrade', pathname, 'servers?')
+        if (pathname === '/inspector/device') {
+          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          console.log('ignoring', pathname)
+          // socket.destroy()
+          return
+        }
+
+        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        console.log('check for upgrade', pathname)
 
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {
             matched = true
+            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            console.log('matched', pathname)
             server.upgrade(request, socket, head)
             break
           }
@@ -48,6 +58,7 @@ export class WebSocketRouter {
             pathname,
           })
           socket.destroy()
+        } else {
         }
       }
     )

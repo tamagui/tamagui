@@ -1,2 +1,2 @@
-export declare function nativePrebuild(): Promise<void>;
+export declare function nativePrebuild(): Promise<null>;
 //# sourceMappingURL=nativePrebuild.d.ts.map

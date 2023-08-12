@@ -98,13 +98,24 @@ export const dev = async (options: CLIResolvedOptions) => {
     mainModuleName: 'index',
     __flipperHack: 'React Native packager is running',
     hostUri: `127.0.0.1:${port}`,
-    bundleUrl: `http://127.0.0.1:${port}/index.bundle?platform=ios&dev=true&hot=false`,
+    bundleUrl: `http://127.0.0.1:${port}/index.bundle?platform=ios&dev=true&hot=false&lazy=true`,
     id: '@anonymous/myapp-473c4543-3c36-4786-9db1-c66a62ac9b78',
   }
 
   // new server
+  const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
+
   const dispose = await createDevServer(options, {
-    getIndexBundle: getBundle,
+    getIndexBundle: async function getBundle() {
+      const outputCode = await getBundleCode()
+
+      // so you can debug output easier
+      setTimeout(() => {
+        fs.writeFile(outputJsPath, outputCode)
+      })
+
+      return outputCode
+    },
     indexJson: defaultResponse,
   })
 
@@ -119,22 +130,11 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   await new Promise((res) => server.httpServer?.on('close', res))
 
-  // await res?.context.dispose()
-
-  async function getBundle() {
-    const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
-    const outputCode = await getBundleCode()
-    // debug out each time
-    fs.writeFile(outputJsPath, outputCode)
-    return outputCode
-  }
-
   async function getBundleCode() {
-    console.log('root1', root)
-
     // for easier quick testing things:
     const tmpBundle = join(packageRootDir, 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
+      // rome-ignore lint/nursery/noConsoleLog: <explanation>
       console.log('returning temp bundle', tmpBundle)
       return await readFile(tmpBundle, 'utf-8')
     }
@@ -160,8 +160,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     })
 
     const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
-
-    console.log('built', appCode)
 
     if (!appCode) {
       throw `❌`

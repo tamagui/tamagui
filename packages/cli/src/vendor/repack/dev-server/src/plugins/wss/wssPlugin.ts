@@ -38,8 +38,6 @@ async function wssPlugin(
 ) {
   const router = new WebSocketRouter(instance)
 
-  console.log('setting up websocket')
-
   const debuggerServer = new WebSocketDebuggerServer(instance)
   const devClientServer = new WebSocketDevClientServer(instance)
   const messageServer = new WebSocketMessageServer(instance)
