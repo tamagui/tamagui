@@ -15,6 +15,7 @@ import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
 
 import { createDevServer } from './dev/createDevServer'
+import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
@@ -42,6 +43,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     }),
   ]
 
+  const hmrListeners: HMRListener[] = []
+
   const server = await createServer({
     root,
     mode: 'development',
@@ -58,10 +61,18 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
           console.log('handle hot update', file)
           try {
-            const contents = await read()
-            const built = await nativeBabelTransform(contents)
+            const raw = await read()
+            const contents = await nativeBabelTransform(raw)
+
             // send
-            console.log('send', built)
+            console.log('send', contents, hmrListeners.length)
+
+            for (const listener of hmrListeners) {
+              listener({
+                file,
+                contents,
+              })
+            }
           } catch (err) {
             console.log('error hmring', err)
           }
@@ -134,6 +145,9 @@ export const dev = async (options: CLIResolvedOptions) => {
   const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
 
   const dispose = await createDevServer(options, {
+    listenForHMR(cb) {
+      hmrListeners.push(cb)
+    },
     getIndexBundle: async function getBundle() {
       const outputCode = await getBundleCode()
 

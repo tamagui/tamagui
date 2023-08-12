@@ -22,6 +22,7 @@ export function nativePlugin(options: { port: number }): Plugin {
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
       )
+      config.define['process.env.REACT_NATIVE_PLATFORM'] = JSON.stringify(`ios`)
 
       if (!config.build) config.build = {}
 

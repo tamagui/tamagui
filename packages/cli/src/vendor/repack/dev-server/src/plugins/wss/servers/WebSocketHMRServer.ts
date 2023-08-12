@@ -38,12 +38,16 @@ export class WebSocketHMRServer extends WebSocketServer {
     const data = typeof event === 'string' ? event : JSON.stringify(event)
 
     for (const [key, socket] of this.clients) {
+      console.log('sending hmr to', key, key.platform, platform)
+
       if (
         key.platform !== platform ||
         !(clientIds ?? [key.clientId]).includes(key.clientId)
       ) {
-        return
+        continue
       }
+
+      console.log('send')
 
       try {
         socket.send(data)
@@ -65,7 +69,7 @@ export class WebSocketHMRServer extends WebSocketServer {
    */
   onConnection(socket: WebSocket, request: IncomingMessage) {
     const { searchParams } = new URL(request.url || '', 'http://localhost')
-    const platform = searchParams.get('platform')
+    const platform = searchParams.get('platform') || 'ios'
 
     if (!platform) {
       this.fastify.log.info({

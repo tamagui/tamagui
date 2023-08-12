@@ -54,6 +54,9 @@ export async function createServer(config: Server.Config) {
       })
     },
     broadcastToHmrClients: (event, platform, clientIds) => {
+      console.log('sending via hmr server', {
+        clientIds,
+      })
       instance.wss.hmrServer.send(event, platform, clientIds)
     },
     broadcastToMessageClients: ({ method, params }) => {

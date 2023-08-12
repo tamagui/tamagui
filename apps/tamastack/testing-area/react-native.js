@@ -15794,7 +15794,7 @@ var require_hmr_client = __commonJS({
         (0, _classCallCheck2.default)(this, HMRClient2);
         this.app = app;
         this.lastHash = "";
-        this.url = `ws://${(0, import_getDevServerLocation.getDevServerLocation)().hostname}:${"8081"}/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM}`;
+        this.url = `ws://${(0, import_getDevServerLocation.getDevServerLocation)().hostname}:${"8081"}/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM || "ios"}`;
         this.socket = new WebSocket(this.url);
         console.log("[HMRClient] Connecting...", { url: this.url });
         this.socket.onopen = function() {
@@ -15808,7 +15808,9 @@ var require_hmr_client = __commonJS({
         };
         this.socket.onmessage = function(event) {
           try {
-            _this.processMessage(JSON.parse(event.data.toString()));
+            var data = JSON.parse(event.data.toString());
+            console.log(`[HMRClient] Got message`, data);
+            _this.processMessage(data);
           } catch (error) {
             console.warn("[HMRClient] Invalid HMR message", { event, error });
           }

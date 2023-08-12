@@ -1,7 +1,9 @@
 import { CLIResolvedOptions } from '@tamagui/types';
-export declare function createDevServer(options: CLIResolvedOptions, { indexJson, getIndexBundle, }: {
+import { HMRListener } from './types';
+export declare function createDevServer(options: CLIResolvedOptions, { indexJson, listenForHMR, getIndexBundle, }: {
     indexJson: Object;
     getIndexBundle: () => Promise<string>;
+    listenForHMR: (cb: HMRListener) => void;
 }): Promise<() => Promise<void>>;
 /**
  * Represent Hot Module Replacement Update body.

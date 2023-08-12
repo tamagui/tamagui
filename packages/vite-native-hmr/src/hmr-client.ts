@@ -41,7 +41,7 @@ class HMRClient {
   ) {
     this.url = `ws://${getDevServerLocation().hostname}:${
       process.env.REACT_NATIVE_SERVER_PUBLIC_PORT
-    }/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM}`
+    }/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM || 'ios'}`
     this.socket = new WebSocket(this.url)
 
     console.log('[HMRClient] Connecting...', {
@@ -62,7 +62,9 @@ class HMRClient {
 
     this.socket.onmessage = (event) => {
       try {
-        this.processMessage(JSON.parse(event.data.toString()))
+        const data = JSON.parse(event.data.toString())
+        console.log(`[HMRClient] Got message`, data)
+        this.processMessage(data)
       } catch (error) {
         console.warn('[HMRClient] Invalid HMR message', { event, error })
       }

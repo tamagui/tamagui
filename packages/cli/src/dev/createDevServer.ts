@@ -3,13 +3,19 @@ import mime from 'mime/lite'
 
 import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
+import { HMRListener } from './types'
 
 export async function createDevServer(
   options: CLIResolvedOptions,
   {
     indexJson,
+    listenForHMR,
     getIndexBundle,
-  }: { indexJson: Object; getIndexBundle: () => Promise<string> }
+  }: {
+    indexJson: Object
+    getIndexBundle: () => Promise<string>
+    listenForHMR: (cb: HMRListener) => void
+  }
 ) {
   const { start, stop } = await createServer({
     options: {
@@ -47,17 +53,25 @@ export async function createDevServer(
       //   ctx.broadcastToHmrClients({ action: 'building' }, platform)
       // })
 
-      // compiler.on(
-      //   'done',
-      //   ({ platform, stats }: { platform: string; stats: webpack.StatsCompilation }) => {
-      //     ctx.notifyBuildEnd(platform)
-      //     lastStats = stats
-      //     ctx.broadcastToHmrClients(
-      //       { action: 'built', body: createHmrBody(stats) },
-      //       platform
-      //     )
-      //   }
-      // )
+      const platform = 'ios'
+      listenForHMR((update) => {
+        console.log('send update')
+        ctx.notifyBuildEnd(platform)
+        ctx.broadcastToHmrClients(
+          {
+            action: 'built',
+            body: createHmrBody({
+              errors: [],
+              warnings: [],
+              hash: `${Math.random()}`,
+              modules: {},
+              name: '',
+              time: 0,
+            }),
+          },
+          platform
+        )
+      })
 
       return {
         compiler: {
@@ -117,11 +131,12 @@ export async function createDevServer(
             // todo
             const lastStats = {}
 
-            ctx.broadcastToHmrClients(
-              { action: 'sync', body: createHmrBody(lastStats) },
-              platform,
-              [clientId]
-            )
+            console.log('disable sending last states')
+            // ctx.broadcastToHmrClients(
+            //   { action: 'sync', body: createHmrBody(lastStats) },
+            //   platform,
+            //   [clientId]
+            // )
           },
         },
 
@@ -181,27 +196,8 @@ export async function createDevServer(
   }
 }
 
-function createHmrBody(stats?: any): HMRMessageBody | null {
-  if (!stats) {
-    return null
-  }
-
-  const modules: Record<string, string> = {}
-  for (const module of stats.modules ?? []) {
-    const { identifier, name } = module
-    if (identifier !== undefined && name) {
-      modules[identifier] = name
-    }
-  }
-
-  return {
-    name: stats.name ?? '',
-    time: stats.time ?? 0,
-    hash: stats.hash ?? '',
-    warnings: stats.warnings || [],
-    errors: stats.errors || [],
-    modules,
-  }
+function createHmrBody(body: HMRMessageBody): HMRMessageBody | null {
+  return body
 }
 
 /**
