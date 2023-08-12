@@ -109,6 +109,9 @@ export class WebSocketMessageServer extends WebSocketServer {
     }
     try {
       const message = JSON.parse(data) as Partial<ReactNativeMessage>
+
+      console.log('message', message)
+
       if (message.version === WebSocketMessageServer.PROTOCOL_VERSION.toString()) {
         return message
       }

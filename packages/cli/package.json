@@ -57,6 +57,7 @@
     "marked": "^5.1.0",
     "marked-terminal": "^5.2.0",
     "metro-inspector-proxy": "^0.71.0",
+    "mime": "^3.0.0",
     "morgan": "^1.10.0",
     "open": "^8.4.0",
     "open-editor": "^4.0.0",

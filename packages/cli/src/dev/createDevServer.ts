@@ -1,4 +1,5 @@
 import { CLIResolvedOptions } from '@tamagui/types'
+import mime from 'mime/lite'
 
 import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
@@ -70,9 +71,7 @@ export async function createDevServer(
           },
 
           getMimeType: (filename) => {
-            console.log('getMimeType', filename)
-            return 'application/javascript'
-            // return compiler.getMimeType(filename)
+            return mime.getType(filename) || 'application/javascript'
           },
 
           inferPlatform: (uri) => {
@@ -112,7 +111,7 @@ export async function createDevServer(
         },
 
         hmr: {
-          getUriPath: () => '/hot',
+          getUriPath: () => '/__hmr',
           onClientConnected: (platform, clientId) => {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log('client connected to hot')

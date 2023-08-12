@@ -82,12 +82,13 @@ export async function createServer(config: Server.Config) {
     options: config.options,
   })
 
-  console.warn('disable debugger-ui + favicon for now')
-  // await instance.register(fastifyStatic, {
-  //   root: debuggerAppPath,
-  //   prefix: '/debugger-ui',
-  //   prefixAvoidTrailingSlash: true,
-  // })
+  const debuggerAppPath = (await import('@callstack/repack-debugger-app')).default
+
+  await instance.register(fastifyStatic, {
+    root: debuggerAppPath,
+    prefix: '/debugger-ui',
+    prefixAvoidTrailingSlash: true,
+  })
 
   // below is to prevent showing `GET 400 /favicon.ico`
   // errors in console when requesting the bundle via browser
@@ -105,7 +106,6 @@ export async function createServer(config: Server.Config) {
   })
 
   // Register routes
-  instance.head('/', async () => '')
   instance.get('/', async () => delegate.messages.getHello())
   instance.get('/status', async () => delegate.messages.getStatus())
 

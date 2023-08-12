@@ -29,6 +29,7 @@ export class WebSocketApiServer extends WebSocketServer {
    * @param event Event string or object to send.
    */
   send(event: any) {
+    console.log('api send', event.clientId, event.msg)
     const data = typeof event === 'string' ? event : JSON.stringify(event)
 
     for (const [, socket] of this.clients.entries()) {
@@ -60,7 +61,10 @@ export class WebSocketApiServer extends WebSocketServer {
       this.clients.delete(clientId)
     }
 
-    socket.addEventListener('error', onClose)
+    socket.addEventListener('error', () => {
+      console.log('error1')
+      onClose()
+    })
     socket.addEventListener('close', onClose)
   }
 }

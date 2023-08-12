@@ -46,7 +46,6 @@ export class WebSocketRouter {
           if (server.shouldUpgrade(pathname)) {
             matched = true
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('matched', pathname)
             server.upgrade(request, socket, head)
             break
           }

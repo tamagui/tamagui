@@ -82,6 +82,26 @@ export function nativePlugin(): Plugin {
         },
       })
 
+      // config.optimizeDeps.esbuildOptions.plugins.push({
+      //   name: 'react-native-hmr',
+      //   setup(build) {
+      //     build.onResolve(
+      //       {
+      //         filter: /Utilities\/HMRClient/,
+      //       },
+      //       async ({ path, namespace }) => {
+      //         if (path.endsWith(`Utilities/HMRClient`)) {
+      //           console.log('swaping it out')
+      //           return {
+      //             path: '@tamagui/vite-native-hmr',
+      //             external: true,
+      //           }
+      //         }
+      //       }
+      //     )
+      //   },
+      // })
+
       config.build.rollupOptions ??= {}
 
       config.build.rollupOptions.input = config.root
@@ -110,36 +130,51 @@ export function nativePlugin(): Plugin {
       }
 
       config.build.rollupOptions.plugins.push({
-        name: `swap-react-native`,
+        name: `swap-react-native-hmr`,
         async load(id) {
-          if (id.endsWith('react-native/index.js')) {
-            const bundled = await readFile(
-              join(process.cwd(), 'react-native.js'),
-              'utf-8'
-            )
-            const code = bundled
-            return {
-              code: `
-const run = () => {  
-  ${bundled.replace(
-    `module.exports = require_react_native();`,
-    `return require_react_native();`
-  )}
-}
-
-const RN = run()
-
-${RNExportNames.map(
-  (name) =>
-    // adding exports
-    `export const ${name} = RN.${name}`
-).join('\n')}
-
-`,
-            }
-          }
+          console.log('wtf', id)
         },
       })
+
+      // see nativePrebuild for now
+      //       config.build.rollupOptions.plugins.push({
+      //         name: `swap-react-native-hmr`,
+      //         async load(id) {
+      //           console.log('wtf', id)
+      //         },
+      //       })
+
+      //       config.build.rollupOptions.plugins.push({
+      //         name: `swap-react-native`,
+      //         async load(id) {
+      //           if (id.endsWith('react-native/index.js')) {
+      //             const bundled = await readFile(
+      //               join(process.cwd(), 'react-native.js'),
+      //               'utf-8'
+      //             )
+      //             const code = bundled
+      //             return {
+      //               code: `
+      // const run = () => {
+      //   ${bundled.replace(
+      //     `module.exports = require_react_native();`,
+      //     `return require_react_native();`
+      //   )}
+      // }
+
+      // const RN = run()
+
+      // ${RNExportNames.map(
+      //   (name) =>
+      //     // adding exports
+      //     `export const ${name} = RN.${name}`
+      // ).join('\n')}
+
+      // `,
+      //             }
+      //           }
+      //         },
+      //       })
 
       const updateOutputOptions = (out: OutputOptions) => {
         // Ensure that as many resources as possible are inlined.

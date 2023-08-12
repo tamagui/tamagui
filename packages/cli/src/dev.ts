@@ -132,10 +132,13 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   async function getBundleCode() {
     // for easier quick testing things:
-    const tmpBundle = join(packageRootDir, 'bundle.tmp.js')
+    const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log('returning temp bundle', tmpBundle)
+      console.log(
+        '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
+        tmpBundle
+      )
       return await readFile(tmpBundle, 'utf-8')
     }
 
@@ -165,11 +168,17 @@ export const dev = async (options: CLIResolvedOptions) => {
       throw `❌`
     }
 
-    const [react, reactJsxRuntime, reactNative] = await Promise.all([
-      readFile(join(process.cwd(), 'testing-area', 'react.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'), 'utf-8'),
-      readFile(join(process.cwd(), 'testing-area', 'react-native.js'), 'utf-8'),
-    ])
+    const paths = [
+      join(process.cwd(), 'testing-area', 'react.js'),
+      join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
+      join(process.cwd(), 'testing-area', 'react-native.js'),
+    ]
+
+    console.log('paths', paths)
+
+    const [react, reactJsxRuntime, reactNative] = await Promise.all(
+      paths.map((p) => readFile(p, 'utf-8'))
+    )
 
     const reactCode = react.replace(
       `module.exports = require_react_development();`,

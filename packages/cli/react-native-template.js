@@ -9,6 +9,8 @@ const global =
 
 globalThis['global'] = global
 
+console._isPolyfilled = true
+
 global.performance = {
   now: () => Date.now(),
 }
