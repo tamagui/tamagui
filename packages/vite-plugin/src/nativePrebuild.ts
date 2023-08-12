@@ -6,6 +6,21 @@ import { build } from 'esbuild'
 
 import { extensions } from './extensions'
 
+export async function nativeBabelTransform(input: string) {
+  return await new Promise<string>((res, rej) => {
+    babel.transform(
+      input,
+      {
+        presets: ['module:metro-react-native-babel-preset'],
+      },
+      (err: any, { code }) => {
+        if (err) rej(err)
+        res(code)
+      }
+    )
+  })
+}
+
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
 
@@ -115,13 +130,11 @@ export async function nativePrebuild() {
                 const code = await readFile(input.path, 'utf-8')
 
                 // omg so ugly but no class support?
-                const outagain = babel.transformSync(code, {
-                  presets: ['module:metro-react-native-babel-preset'],
-                })
+                const outagain = await nativeBabelTransform(code)
 
                 // const contents = output.toString().replace(/static\s+\+/g, 'static ')
                 return {
-                  contents: outagain.code,
+                  contents: outagain,
                   loader: 'jsx',
                 }
               }

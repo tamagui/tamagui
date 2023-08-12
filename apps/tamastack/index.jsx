@@ -1,17 +1,8 @@
-import { AppRegistry, LogBox, View } from 'react-native'
+import { AppRegistry, LogBox } from 'react-native'
+import { App } from './src/App'
 
-AppRegistry.registerComponent('main', () => Root)
+AppRegistry.registerComponent('main', () => App)
 
 LogBox.install()
 
 console.log('loading hmr client')
-
-function Root() {
-  console.log('🍄🍄🍄')
-  
-  return (
-    <>
-      <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
-    </>
-  )
-}

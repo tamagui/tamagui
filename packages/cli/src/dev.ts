@@ -4,7 +4,12 @@ import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin from '@tamagui/vite-native-swc'
-import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
+import {
+  nativeBabelTransform,
+  nativePlugin,
+  nativePrebuild,
+  tamaguiPlugin,
+} from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
@@ -162,11 +167,13 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
+    const appCodeIn = 'output' in buildOutput ? buildOutput.output[0].code : null
 
-    if (!appCode) {
+    if (!appCodeIn) {
       throw `❌`
     }
+
+    const appCode = await nativeBabelTransform(appCodeIn)
 
     const paths = [
       join(process.cwd(), 'testing-area', 'react.js'),

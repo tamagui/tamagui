@@ -203,9 +203,9 @@ const transformWithOptions = async (
       swcrc: false,
       configFile: false,
       sourceMaps: true,
-      module: {
-        type: 'commonjs',
-      },
+      // module: {
+      //   type: 'commonjs',
+      // },
       jsc: {
         target,
         parser,
