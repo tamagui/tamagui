@@ -10,6 +10,8 @@ export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
   console.log(`Prebuilding React Native (one time cost...)`)
 
+  // return
+
   const outdir = join(process.cwd(), 'testing-area')
 
   await Promise.all([
@@ -71,6 +73,8 @@ export async function nativePrebuild() {
       define: {
         __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
+        // TODO
+        'process.env.REACT_NATIVE_SERVER_PUBLIC_PORT': JSON.stringify('8081'),
       },
       logLevel: 'warning',
       resolveExtensions: extensions,

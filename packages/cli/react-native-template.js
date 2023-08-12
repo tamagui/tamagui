@@ -28,6 +28,7 @@ globalThis['require'] = function require(_mod) {
   if (_mod === 'react') return React
   if (_mod === 'react-native') return RequireReactNative
   if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
+  throw new Error(`Not found: ${_mod}`)
 }
 
 const React = (function () {

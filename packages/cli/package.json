@@ -35,6 +35,7 @@
     "@tamagui/vite-plugin": "1.52.2",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
+    "@vitejs/plugin-react": "^4.0.4",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "arg": "^5.0.2",
     "chalk": "^4.1.2",

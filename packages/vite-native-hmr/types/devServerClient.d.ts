@@ -1,8 +1,6 @@
-export declare const devServerClient: {
-    setup(): void;
-    enable(): void;
-    disable(): void;
-    registerBundle(): void;
-    log(level: string, data: any[]): void;
-};
+export declare const setup: () => void;
+export declare const enable: () => void;
+export declare const disable: () => void;
+export declare const registerBundle: () => void;
+export declare const log: (level: string, data: any[]) => void;
 //# sourceMappingURL=devServerClient.d.ts.map

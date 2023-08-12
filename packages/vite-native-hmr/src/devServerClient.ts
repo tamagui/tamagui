@@ -1,6 +1,10 @@
 import prettyFormat from 'pretty-format'
 
 import { getDevServerLocation } from './getDevServerLocation'
+import { loadHMRClient } from './hmr-client'
+
+// force import hmr client hacky
+loadHMRClient()
 
 /**
  * With Webpack we don't use built-in metro-specific HMR client,
@@ -89,12 +93,10 @@ class DevServerClient {
 
 const client = new DevServerClient()
 
-export const devServerClient = {
-  setup() {},
-  enable() {},
-  disable() {},
-  registerBundle() {},
-  log(level: string, data: any[]) {
-    client.log(level, data)
-  },
+export const setup = () => {}
+export const enable = () => {}
+export const disable = () => {}
+export const registerBundle = () => {}
+export const log = (level: string, data: any[]) => {
+  client.log(level, data)
 }

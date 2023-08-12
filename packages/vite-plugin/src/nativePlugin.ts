@@ -1,18 +1,38 @@
-import { readFile } from 'fs/promises'
-import { join } from 'path'
-
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
 import { extensions } from './extensions'
 
-export function nativePlugin(): Plugin {
+export function nativePlugin(options: { port: number }): Plugin {
   return {
     name: 'tamagui-native',
     enforce: 'post',
 
     config: (config) => {
+      config.plugins ||= []
+
+      // custom hmr server handling
+      config.plugins.push({
+        name: `hot-update`,
+        handleHotUpdate(ctx) {
+          console.log('handle hot update', ctx)
+        },
+      })
+
+      // // add hmr client
+      // config.plugins.push({
+      //   name: 'add-hmr-client',
+      //   generateBundle(x) {
+      //     x.
+      //   }
+      // })
+
+      config.define ||= {}
+      config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
+        `${options.port}`
+      )
+
       if (!config.build) config.build = {}
 
       config.build.modulePreload = { polyfill: false }
@@ -31,17 +51,17 @@ export function nativePlugin(): Plugin {
 
       config.resolve.extensions = extensions
 
-      config.resolve.alias ??= {}
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        // 'react-native/Libraries/Renderer/shims/ReactFabric':
-        //   'react-native/Libraries/Renderer/shims/ReactFabric',
-        // 'react-native/Libraries/Utilities/codegenNativeComponent':
-        //   'react-native/Libraries/Utilities/codegenNativeComponent',
-        // 'react-native-svg': 'react-native-svg',
-        // // 'react-native-web': 'react-native',
-        // 'react-native': 'react-native',
-      }
+      // config.resolve.alias ??= {}
+      // config.resolve.alias = {
+      //   ...config.resolve.alias,
+      //   // 'react-native/Libraries/Renderer/shims/ReactFabric':
+      //   //   'react-native/Libraries/Renderer/shims/ReactFabric',
+      //   // 'react-native/Libraries/Utilities/codegenNativeComponent':
+      //   //   'react-native/Libraries/Utilities/codegenNativeComponent',
+      //   // 'react-native-svg': 'react-native-svg',
+      //   // // 'react-native-web': 'react-native',
+      //   // 'react-native': 'react-native',
+      // }
 
       config.optimizeDeps ??= {}
       config.optimizeDeps.esbuildOptions ??= {}

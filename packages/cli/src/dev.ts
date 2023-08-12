@@ -4,6 +4,7 @@ import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
+import viteReactPlugin from '@vitejs/plugin-react'
 import chalk from 'chalk'
 import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
@@ -21,18 +22,25 @@ export const dev = async (options: CLIResolvedOptions) => {
   // build react-native
   await nativePrebuild()
 
+  // react native port (it scans 19000 +5)
+  const port = options.port || 8081
+
   const plugins = [
     // tamaguiPlugin({
     //   components: ['tamagui'],
     //   target: 'native',
     // }),
-    nativePlugin(),
+    viteReactPlugin({
+      babel: {
+        presets: ['module:metro-react-native-babel-preset'],
+      },
+    }),
+    nativePlugin({
+      port,
+    }),
   ]
 
   const rootFile = join(root, 'src/test-tamagui-stack.tsx')
-
-  console.log('root', root, rootFile)
-
   const server = await createServer({
     root: rootFile,
     mode: 'development',
@@ -49,9 +57,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
   const info = server.httpServer?.address() as AddressInfo
-
-  // react native port (it scans 19000 +5)
-  const port = 8081
 
   const defaultResponse = {
     name: 'myapp',

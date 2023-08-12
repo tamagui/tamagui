@@ -15444,9 +15444,489 @@ var require_getDevServerLocation = __commonJS({
   }
 });
 
-// ../../packages/vite-native-hmr/dist/cjs/index.js
-var require_cjs = __commonJS({
-  "../../packages/vite-native-hmr/dist/cjs/index.js"(exports, module2) {
+// ../../node_modules/react-native/Libraries/Utilities/DebugEnvironment.js
+var require_DebugEnvironment = __commonJS({
+  "../../node_modules/react-native/Libraries/Utilities/DebugEnvironment.js"(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.isAsyncDebugging = void 0;
+    var isAsyncDebugging = false;
+    exports.isAsyncDebugging = isAsyncDebugging;
+    if (true) {
+      exports.isAsyncDebugging = isAsyncDebugging = !global.nativeExtensions && !global.nativeCallSyncHook && !global.RN$Bridgeless;
+    }
+  }
+});
+
+// ../../node_modules/react-native/Libraries/Utilities/NativeAppearance.js
+var require_NativeAppearance = __commonJS({
+  "../../node_modules/react-native/Libraries/Utilities/NativeAppearance.js"(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = void 0;
+    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
+    function _getRequireWildcardCache(nodeInterop) {
+      if (typeof WeakMap !== "function")
+        return null;
+      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
+      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
+      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
+        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
+      })(nodeInterop);
+    }
+    function _interopRequireWildcard(obj, nodeInterop) {
+      if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return { default: obj };
+      }
+      var cache = _getRequireWildcardCache(nodeInterop);
+      if (cache && cache.has(obj)) {
+        return cache.get(obj);
+      }
+      var newObj = {};
+      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+      for (var key in obj) {
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+          if (desc && (desc.get || desc.set)) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+      newObj.default = obj;
+      if (cache) {
+        cache.set(obj, newObj);
+      }
+      return newObj;
+    }
+    var _default = TurboModuleRegistry.get("Appearance");
+    exports.default = _default;
+  }
+});
+
+// ../../node_modules/react-native/Libraries/Utilities/Appearance.js
+var require_Appearance = __commonJS({
+  "../../node_modules/react-native/Libraries/Utilities/Appearance.js"(exports, module2) {
+    var _interopRequireDefault = require_interopRequireDefault();
+    var _NativeEventEmitter = _interopRequireDefault(require_NativeEventEmitter());
+    var _Platform = _interopRequireDefault(require_Platform_ios());
+    var _EventEmitter = _interopRequireDefault(require_EventEmitter());
+    var _DebugEnvironment = require_DebugEnvironment();
+    var _NativeAppearance = _interopRequireDefault(require_NativeAppearance());
+    var _invariant = _interopRequireDefault(require_invariant());
+    var eventEmitter = new _EventEmitter.default();
+    if (_NativeAppearance.default) {
+      nativeEventEmitter = new _NativeEventEmitter.default(_Platform.default.OS !== "ios" ? null : _NativeAppearance.default);
+      nativeEventEmitter.addListener("appearanceChanged", function(newAppearance) {
+        var colorScheme = newAppearance.colorScheme;
+        (0, _invariant.default)(colorScheme === "dark" || colorScheme === "light" || colorScheme == null, "Unrecognized color scheme. Did you mean 'dark' or 'light'?");
+        eventEmitter.emit("change", { colorScheme });
+      });
+    }
+    var nativeEventEmitter;
+    module2.exports = { getColorScheme: function getColorScheme() {
+      if (true) {
+        if (_DebugEnvironment.isAsyncDebugging) {
+          return "light";
+        }
+      }
+      var nativeColorScheme = _NativeAppearance.default == null ? null : _NativeAppearance.default.getColorScheme() || null;
+      (0, _invariant.default)(nativeColorScheme === "dark" || nativeColorScheme === "light" || nativeColorScheme == null, "Unrecognized color scheme. Did you mean 'dark' or 'light'?");
+      return nativeColorScheme;
+    }, setColorScheme: function setColorScheme(colorScheme) {
+      var nativeColorScheme = colorScheme == null ? "unspecified" : colorScheme;
+      (0, _invariant.default)(colorScheme === "dark" || colorScheme === "light" || colorScheme == null, "Unrecognized color scheme. Did you mean 'dark', 'light' or null?");
+      if (_NativeAppearance.default != null && _NativeAppearance.default.setColorScheme != null) {
+        _NativeAppearance.default.setColorScheme(nativeColorScheme);
+      }
+    }, addChangeListener: function addChangeListener(listener) {
+      return eventEmitter.addListener("change", listener);
+    } };
+  }
+});
+
+// ../../node_modules/react-native/Libraries/Utilities/NativeDevLoadingView.js
+var require_NativeDevLoadingView = __commonJS({
+  "../../node_modules/react-native/Libraries/Utilities/NativeDevLoadingView.js"(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = void 0;
+    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
+    function _getRequireWildcardCache(nodeInterop) {
+      if (typeof WeakMap !== "function")
+        return null;
+      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
+      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
+      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
+        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
+      })(nodeInterop);
+    }
+    function _interopRequireWildcard(obj, nodeInterop) {
+      if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return { default: obj };
+      }
+      var cache = _getRequireWildcardCache(nodeInterop);
+      if (cache && cache.has(obj)) {
+        return cache.get(obj);
+      }
+      var newObj = {};
+      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+      for (var key in obj) {
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+          if (desc && (desc.get || desc.set)) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+      newObj.default = obj;
+      if (cache) {
+        cache.set(obj, newObj);
+      }
+      return newObj;
+    }
+    var _default = TurboModuleRegistry.get("DevLoadingView");
+    exports.default = _default;
+  }
+});
+
+// ../../node_modules/react-native/Libraries/Utilities/LoadingView.ios.js
+var require_LoadingView_ios = __commonJS({
+  "../../node_modules/react-native/Libraries/Utilities/LoadingView.ios.js"(exports, module2) {
+    var _interopRequireDefault = require_interopRequireDefault();
+    var _processColor = _interopRequireDefault(require_processColor());
+    var _Appearance = _interopRequireDefault(require_Appearance());
+    var _NativeDevLoadingView = _interopRequireDefault(require_NativeDevLoadingView());
+    module2.exports = { showMessage: function showMessage(message, type) {
+      if (_NativeDevLoadingView.default) {
+        if (type === "refresh") {
+          var backgroundColor = (0, _processColor.default)("#2584e8");
+          var textColor = (0, _processColor.default)("#ffffff");
+          _NativeDevLoadingView.default.showMessage(message, typeof textColor === "number" ? textColor : null, typeof backgroundColor === "number" ? backgroundColor : null);
+        } else if (type === "load") {
+          var _backgroundColor;
+          var _textColor;
+          if (_Appearance.default.getColorScheme() === "dark") {
+            _backgroundColor = (0, _processColor.default)("#fafafa");
+            _textColor = (0, _processColor.default)("#242526");
+          } else {
+            _backgroundColor = (0, _processColor.default)("#404040");
+            _textColor = (0, _processColor.default)("#ffffff");
+          }
+          _NativeDevLoadingView.default.showMessage(message, typeof _textColor === "number" ? _textColor : null, typeof _backgroundColor === "number" ? _backgroundColor : null);
+        }
+      }
+    }, hide: function hide() {
+      _NativeDevLoadingView.default && _NativeDevLoadingView.default.hide();
+    } };
+  }
+});
+
+// ../../node_modules/react-native/Libraries/NativeModules/specs/NativeRedBox.js
+var require_NativeRedBox = __commonJS({
+  "../../node_modules/react-native/Libraries/NativeModules/specs/NativeRedBox.js"(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = void 0;
+    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
+    function _getRequireWildcardCache(nodeInterop) {
+      if (typeof WeakMap !== "function")
+        return null;
+      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
+      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
+      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
+        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
+      })(nodeInterop);
+    }
+    function _interopRequireWildcard(obj, nodeInterop) {
+      if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return { default: obj };
+      }
+      var cache = _getRequireWildcardCache(nodeInterop);
+      if (cache && cache.has(obj)) {
+        return cache.get(obj);
+      }
+      var newObj = {};
+      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+      for (var key in obj) {
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+          if (desc && (desc.get || desc.set)) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+      newObj.default = obj;
+      if (cache) {
+        cache.set(obj, newObj);
+      }
+      return newObj;
+    }
+    var _default = TurboModuleRegistry.get("RedBox");
+    exports.default = _default;
+  }
+});
+
+// ../../node_modules/react-native/Libraries/Core/NativeExceptionsManager.js
+var require_NativeExceptionsManager = __commonJS({
+  "../../node_modules/react-native/Libraries/Core/NativeExceptionsManager.js"(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = void 0;
+    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
+    function _getRequireWildcardCache(nodeInterop) {
+      if (typeof WeakMap !== "function")
+        return null;
+      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
+      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
+      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
+        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
+      })(nodeInterop);
+    }
+    function _interopRequireWildcard(obj, nodeInterop) {
+      if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return { default: obj };
+      }
+      var cache = _getRequireWildcardCache(nodeInterop);
+      if (cache && cache.has(obj)) {
+        return cache.get(obj);
+      }
+      var newObj = {};
+      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+      for (var key in obj) {
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+          if (desc && (desc.get || desc.set)) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+      newObj.default = obj;
+      if (cache) {
+        cache.set(obj, newObj);
+      }
+      return newObj;
+    }
+    var Platform = require_Platform_ios();
+    var NativeModule = TurboModuleRegistry.getEnforcing("ExceptionsManager");
+    var ExceptionsManager = { reportFatalException: function reportFatalException(message, stack, exceptionId) {
+      NativeModule.reportFatalException(message, stack, exceptionId);
+    }, reportSoftException: function reportSoftException(message, stack, exceptionId) {
+      NativeModule.reportSoftException(message, stack, exceptionId);
+    }, updateExceptionMessage: function updateExceptionMessage(message, stack, exceptionId) {
+      NativeModule.updateExceptionMessage(message, stack, exceptionId);
+    }, dismissRedbox: function dismissRedbox() {
+      if (Platform.OS !== "ios" && NativeModule.dismissRedbox) {
+        NativeModule.dismissRedbox();
+      }
+    }, reportException: function reportException(data) {
+      if (NativeModule.reportException) {
+        NativeModule.reportException(data);
+        return;
+      }
+      if (data.isFatal) {
+        ExceptionsManager.reportFatalException(data.message, data.stack, data.id);
+      } else {
+        ExceptionsManager.reportSoftException(data.message, data.stack, data.id);
+      }
+    } };
+    var _default = ExceptionsManager;
+    exports.default = _default;
+  }
+});
+
+// ../../packages/vite-native-hmr/dist/cjs/hmr-client.js
+var require_hmr_client = __commonJS({
+  "../../packages/vite-native-hmr/dist/cjs/hmr-client.js"(exports, module2) {
+    "use strict";
+    var _interopRequireDefault = require_interopRequireDefault();
+    var _asyncToGenerator2 = _interopRequireDefault(require_asyncToGenerator());
+    var _classCallCheck2 = _interopRequireDefault(require_classCallCheck());
+    var _createClass2 = _interopRequireDefault(require_createClass());
+    var __defProp = Object.defineProperty;
+    var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp = Object.prototype.hasOwnProperty;
+    var __export = function __export2(target, all) {
+      for (var name in all)
+        __defProp(target, name, { get: all[name], enumerable: true });
+    };
+    var __copyProps = function __copyProps2(to, from, except, desc) {
+      if (from && typeof from === "object" || typeof from === "function") {
+        var _loop = function _loop2(key2) {
+          if (!__hasOwnProp.call(to, key2) && key2 !== except)
+            __defProp(to, key2, { get: function get() {
+              return from[key2];
+            }, enumerable: !(desc = __getOwnPropDesc(from, key2)) || desc.enumerable });
+        };
+        for (var key of __getOwnPropNames2(from)) {
+          _loop(key);
+        }
+      }
+      return to;
+    };
+    var __toCommonJS = function __toCommonJS2(mod) {
+      return __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+    };
+    var hmr_client_exports = {};
+    __export(hmr_client_exports, { loadHMRClient: function loadHMRClient() {
+      return _loadHMRClient;
+    } });
+    module2.exports = __toCommonJS(hmr_client_exports);
+    var import_getDevServerLocation = require_getDevServerLocation();
+    var HMRClient = function() {
+      function HMRClient2(app) {
+        var _this = this;
+        (0, _classCallCheck2.default)(this, HMRClient2);
+        this.app = app;
+        this.lastHash = "";
+        this.url = `ws://${(0, import_getDevServerLocation.getDevServerLocation)().hostname}:${"8081"}/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM}`;
+        this.socket = new WebSocket(this.url);
+        console.log("[HMRClient] Connecting...", { url: this.url });
+        this.socket.onopen = function() {
+          console.log("[HMRClient] Connected");
+        };
+        this.socket.onclose = function() {
+          console.log(`[HMRClient] Disconnected ${_this.url}`);
+        };
+        this.socket.onerror = function(event) {
+          console.log("[HMRClient] Error", event);
+        };
+        this.socket.onmessage = function(event) {
+          try {
+            _this.processMessage(JSON.parse(event.data.toString()));
+          } catch (error) {
+            console.warn("[HMRClient] Invalid HMR message", { event, error });
+          }
+        };
+      }
+      (0, _createClass2.default)(HMRClient2, [{ key: "upToDate", value: function upToDate(hash) {
+        if (hash) {
+          this.lastHash = hash;
+        }
+        return this.lastHash === __webpack_hash__;
+      } }, { key: "processMessage", value: function processMessage(message) {
+        var _a, _b, _c, _d, _e;
+        switch (message.action) {
+          case "building":
+            this.app.LoadingView.showMessage("Rebuilding...", "refresh");
+            console.log("[HMRClient] Bundle rebuilding", { name: (_a = message.body) == null ? void 0 : _a.name });
+            break;
+          case "built":
+            console.log("[HMRClient] Bundle rebuilt", { name: (_b = message.body) == null ? void 0 : _b.name, time: (_c = message.body) == null ? void 0 : _c.time });
+          case "sync":
+            if (!message.body) {
+              console.warn("[HMRClient] HMR message body is empty");
+              return;
+            }
+            if ((_d = message.body.errors) == null ? void 0 : _d.length) {
+              message.body.errors.forEach(function(error) {
+                console.error("Cannot apply update due to error:", error);
+              });
+              this.app.LoadingView.hide();
+              return;
+            }
+            if ((_e = message.body.warnings) == null ? void 0 : _e.length) {
+              message.body.warnings.forEach(function(warning) {
+                console.warn("[HMRClient] Bundle contains warnings:", warning);
+              });
+            }
+            this.applyUpdate(message.body);
+        }
+      } }, { key: "applyUpdate", value: function applyUpdate(update) {
+        if (!module2.hot) {
+          throw new Error("[HMRClient] Hot Module Replacement is disabled.");
+        }
+        if (!this.upToDate(update.hash) && module2.hot.status() === "idle") {
+          console.log("[HMRClient] Checking for updates on the server...");
+          this.checkUpdates(update);
+        }
+      } }, { key: "checkUpdates", value: function() {
+        var _checkUpdates = (0, _asyncToGenerator2.default)(function* (update) {
+          var _a, _b, _c, _d;
+          try {
+            this.app.LoadingView.showMessage("Refreshing...", "refresh");
+            var updatedModules = yield (_a = module2.hot) == null ? void 0 : _a.check(false);
+            if (!updatedModules) {
+              console.warn("[HMRClient] Cannot find update - full reload needed");
+              this.app.reload();
+              return;
+            }
+            var renewedModules = yield (_b = module2.hot) == null ? void 0 : _b.apply({ ignoreDeclined: true, ignoreUnaccepted: false, ignoreErrored: false, onDeclined: function onDeclined(data) {
+              console.warn("[HMRClient] Ignored an update due to declined module", { chain: data.chain });
+            } });
+            if (!this.upToDate()) {
+              this.checkUpdates(update);
+            }
+            var unacceptedModules = updatedModules.filter(function(moduleId) {
+              return renewedModules && renewedModules.indexOf(moduleId) < 0;
+            });
+            if (unacceptedModules.length) {
+              console.warn("[HMRClient] Not every module was accepted - full reload needed", { unacceptedModules });
+              this.app.reload();
+            } else {
+              console.log("[HMRClient] Renewed modules - app is up to date", { renewedModules });
+              this.app.dismissErrors();
+            }
+          } catch (error) {
+            if (((_c = module2.hot) == null ? void 0 : _c.status()) === "fail" || ((_d = module2.hot) == null ? void 0 : _d.status()) === "abort") {
+              console.warn("[HMRClient] Cannot check for update - full reload needed");
+              console.warn("[HMRClient]", error);
+              this.app.reload();
+            } else {
+              console.warn("[HMRClient] Update check failed", { error });
+            }
+          } finally {
+            this.app.LoadingView.hide();
+          }
+        });
+        function checkUpdates(_x) {
+          return _checkUpdates.apply(this, arguments);
+        }
+        return checkUpdates;
+      }() }]);
+      return HMRClient2;
+    }();
+    var _loadHMRClient = function _loadHMRClient2() {
+      var _require = require_react_native(), DevSettings = _require.DevSettings, Platform = _require.Platform;
+      var LoadingView = require_LoadingView_ios();
+      var reload = function reload2() {
+        return DevSettings.reload();
+      };
+      var dismissErrors = function dismissErrors2() {
+        var _a;
+        if (Platform.OS === "ios") {
+          var NativeRedBox = require_NativeRedBox().default;
+          (_a = NativeRedBox == null ? void 0 : NativeRedBox.dismiss) == null ? void 0 : _a.call(NativeRedBox);
+        } else {
+          var NativeExceptionsManager = require_NativeExceptionsManager().default;
+          NativeExceptionsManager == null ? void 0 : NativeExceptionsManager.dismissRedbox();
+        }
+        var LogBoxData = require_LogBoxData();
+        LogBoxData.clear();
+      };
+      new HMRClient({ reload, dismissErrors, LoadingView });
+    };
+  }
+});
+
+// ../../packages/vite-native-hmr/dist/cjs/devServerClient.js
+var require_devServerClient = __commonJS({
+  "../../packages/vite-native-hmr/dist/cjs/devServerClient.js"(exports, module2) {
     "use strict";
     var _interopRequireDefault = require_interopRequireDefault();
     var _classCallCheck2 = _interopRequireDefault(require_classCallCheck());
@@ -15457,6 +15937,10 @@ var require_cjs = __commonJS({
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
     var __getProtoOf = Object.getPrototypeOf;
     var __hasOwnProp = Object.prototype.hasOwnProperty;
+    var __export = function __export2(target, all) {
+      for (var name in all)
+        __defProp(target, name, { get: all[name], enumerable: true });
+    };
     var __copyProps = function __copyProps2(to, from, except, desc) {
       if (from && typeof from === "object" || typeof from === "function") {
         var _loop = function _loop2(key2) {
@@ -15474,8 +15958,26 @@ var require_cjs = __commonJS({
     var __toESM = function __toESM2(mod, isNodeMode, target) {
       return target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod);
     };
+    var __toCommonJS = function __toCommonJS2(mod) {
+      return __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+    };
+    var devServerClient_exports = {};
+    __export(devServerClient_exports, { disable: function disable() {
+      return _disable;
+    }, enable: function enable() {
+      return _enable;
+    }, log: function log() {
+      return _log;
+    }, registerBundle: function registerBundle() {
+      return _registerBundle;
+    }, setup: function setup() {
+      return _setup;
+    } });
+    module2.exports = __toCommonJS(devServerClient_exports);
     var import_pretty_format = __toESM(require_build2());
     var import_getDevServerLocation = require_getDevServerLocation();
+    var import_hmr_client = require_hmr_client();
+    (0, import_hmr_client.loadHMRClient)();
     var DevServerClient = function() {
       function DevServerClient2() {
         var _this = this;
@@ -15524,13 +16026,51 @@ var require_cjs = __commonJS({
       return DevServerClient2;
     }();
     var client = new DevServerClient();
-    module2.exports = { setup: function setup() {
-    }, enable: function enable() {
-    }, disable: function disable() {
-    }, registerBundle: function registerBundle() {
-    }, log: function log(level, data) {
+    var _setup = function _setup2() {
+    };
+    var _enable = function _enable2() {
+    };
+    var _disable = function _disable2() {
+    };
+    var _registerBundle = function _registerBundle2() {
+    };
+    var _log = function _log2(level, data) {
       client.log(level, data);
-    } };
+    };
+  }
+});
+
+// ../../packages/vite-native-hmr/dist/cjs/index.js
+var require_cjs = __commonJS({
+  "../../packages/vite-native-hmr/dist/cjs/index.js"(exports, module2) {
+    "use strict";
+    var __defProp = Object.defineProperty;
+    var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+    var __getOwnPropNames2 = Object.getOwnPropertyNames;
+    var __hasOwnProp = Object.prototype.hasOwnProperty;
+    var __copyProps = function __copyProps2(to, from, except, desc) {
+      if (from && typeof from === "object" || typeof from === "function") {
+        var _loop = function _loop2(key2) {
+          if (!__hasOwnProp.call(to, key2) && key2 !== except)
+            __defProp(to, key2, { get: function get() {
+              return from[key2];
+            }, enumerable: !(desc = __getOwnPropDesc(from, key2)) || desc.enumerable });
+        };
+        for (var key of __getOwnPropNames2(from)) {
+          _loop(key);
+        }
+      }
+      return to;
+    };
+    var __reExport = function __reExport2(target, mod, secondTarget) {
+      return __copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default");
+    };
+    var __toCommonJS = function __toCommonJS2(mod) {
+      return __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+    };
+    var src_exports = {};
+    module2.exports = __toCommonJS(src_exports);
+    __reExport(src_exports, require_devServerClient(), module2.exports);
   }
 });
 
@@ -31389,55 +31929,6 @@ var require_setUpDeveloperTools = __commonJS({
     var JSInspector;
     var isLikelyARealBrowser;
     var HMRClient;
-  }
-});
-
-// ../../node_modules/react-native/Libraries/NativeModules/specs/NativeRedBox.js
-var require_NativeRedBox = __commonJS({
-  "../../node_modules/react-native/Libraries/NativeModules/specs/NativeRedBox.js"(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = void 0;
-    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
-    function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== "function")
-        return null;
-      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
-      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
-      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
-        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
-      })(nodeInterop);
-    }
-    function _interopRequireWildcard(obj, nodeInterop) {
-      if (!nodeInterop && obj && obj.__esModule) {
-        return obj;
-      }
-      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
-        return { default: obj };
-      }
-      var cache = _getRequireWildcardCache(nodeInterop);
-      if (cache && cache.has(obj)) {
-        return cache.get(obj);
-      }
-      var newObj = {};
-      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-      for (var key in obj) {
-        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-          if (desc && (desc.get || desc.set)) {
-            Object.defineProperty(newObj, key, desc);
-          } else {
-            newObj[key] = obj[key];
-          }
-        }
-      }
-      newObj.default = obj;
-      if (cache) {
-        cache.set(obj, newObj);
-      }
-      return newObj;
-    }
-    var _default = TurboModuleRegistry.get("RedBox");
-    exports.default = _default;
   }
 });
 
@@ -79562,109 +80053,6 @@ var require_ActionSheetIOS = __commonJS({
       }
     } };
     module2.exports = ActionSheetIOS;
-  }
-});
-
-// ../../node_modules/react-native/Libraries/Utilities/DebugEnvironment.js
-var require_DebugEnvironment = __commonJS({
-  "../../node_modules/react-native/Libraries/Utilities/DebugEnvironment.js"(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.isAsyncDebugging = void 0;
-    var isAsyncDebugging = false;
-    exports.isAsyncDebugging = isAsyncDebugging;
-    if (true) {
-      exports.isAsyncDebugging = isAsyncDebugging = !global.nativeExtensions && !global.nativeCallSyncHook && !global.RN$Bridgeless;
-    }
-  }
-});
-
-// ../../node_modules/react-native/Libraries/Utilities/NativeAppearance.js
-var require_NativeAppearance = __commonJS({
-  "../../node_modules/react-native/Libraries/Utilities/NativeAppearance.js"(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = void 0;
-    var TurboModuleRegistry = _interopRequireWildcard(require_TurboModuleRegistry());
-    function _getRequireWildcardCache(nodeInterop) {
-      if (typeof WeakMap !== "function")
-        return null;
-      var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
-      var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
-      return (_getRequireWildcardCache = function _getRequireWildcardCache2(nodeInterop2) {
-        return nodeInterop2 ? cacheNodeInterop : cacheBabelInterop;
-      })(nodeInterop);
-    }
-    function _interopRequireWildcard(obj, nodeInterop) {
-      if (!nodeInterop && obj && obj.__esModule) {
-        return obj;
-      }
-      if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
-        return { default: obj };
-      }
-      var cache = _getRequireWildcardCache(nodeInterop);
-      if (cache && cache.has(obj)) {
-        return cache.get(obj);
-      }
-      var newObj = {};
-      var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-      for (var key in obj) {
-        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-          var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-          if (desc && (desc.get || desc.set)) {
-            Object.defineProperty(newObj, key, desc);
-          } else {
-            newObj[key] = obj[key];
-          }
-        }
-      }
-      newObj.default = obj;
-      if (cache) {
-        cache.set(obj, newObj);
-      }
-      return newObj;
-    }
-    var _default = TurboModuleRegistry.get("Appearance");
-    exports.default = _default;
-  }
-});
-
-// ../../node_modules/react-native/Libraries/Utilities/Appearance.js
-var require_Appearance = __commonJS({
-  "../../node_modules/react-native/Libraries/Utilities/Appearance.js"(exports, module2) {
-    var _interopRequireDefault = require_interopRequireDefault();
-    var _NativeEventEmitter = _interopRequireDefault(require_NativeEventEmitter());
-    var _Platform = _interopRequireDefault(require_Platform_ios());
-    var _EventEmitter = _interopRequireDefault(require_EventEmitter());
-    var _DebugEnvironment = require_DebugEnvironment();
-    var _NativeAppearance = _interopRequireDefault(require_NativeAppearance());
-    var _invariant = _interopRequireDefault(require_invariant());
-    var eventEmitter = new _EventEmitter.default();
-    if (_NativeAppearance.default) {
-      nativeEventEmitter = new _NativeEventEmitter.default(_Platform.default.OS !== "ios" ? null : _NativeAppearance.default);
-      nativeEventEmitter.addListener("appearanceChanged", function(newAppearance) {
-        var colorScheme = newAppearance.colorScheme;
-        (0, _invariant.default)(colorScheme === "dark" || colorScheme === "light" || colorScheme == null, "Unrecognized color scheme. Did you mean 'dark' or 'light'?");
-        eventEmitter.emit("change", { colorScheme });
-      });
-    }
-    var nativeEventEmitter;
-    module2.exports = { getColorScheme: function getColorScheme() {
-      if (true) {
-        if (_DebugEnvironment.isAsyncDebugging) {
-          return "light";
-        }
-      }
-      var nativeColorScheme = _NativeAppearance.default == null ? null : _NativeAppearance.default.getColorScheme() || null;
-      (0, _invariant.default)(nativeColorScheme === "dark" || nativeColorScheme === "light" || nativeColorScheme == null, "Unrecognized color scheme. Did you mean 'dark' or 'light'?");
-      return nativeColorScheme;
-    }, setColorScheme: function setColorScheme(colorScheme) {
-      var nativeColorScheme = colorScheme == null ? "unspecified" : colorScheme;
-      (0, _invariant.default)(colorScheme === "dark" || colorScheme === "light" || colorScheme == null, "Unrecognized color scheme. Did you mean 'dark', 'light' or null?");
-      if (_NativeAppearance.default != null && _NativeAppearance.default.setColorScheme != null) {
-        _NativeAppearance.default.setColorScheme(nativeColorScheme);
-      }
-    }, addChangeListener: function addChangeListener(listener) {
-      return eventEmitter.addListener("change", listener);
-    } };
   }
 });
 

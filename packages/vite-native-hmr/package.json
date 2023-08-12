@@ -23,6 +23,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./hmr-client": {
+      "types": "./types/hmr-client.d.ts",
+      "import": "./dist/esm/hmr-client.js",
+      "require": "./dist/cjs/hmr-client.js"
     }
   },
   "dependencies": {

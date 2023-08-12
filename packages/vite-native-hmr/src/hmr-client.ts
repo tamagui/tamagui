@@ -53,7 +53,7 @@ class HMRClient {
     }
 
     this.socket.onclose = () => {
-      console.log('[HMRClient] Disconnected')
+      console.log(`[HMRClient] Disconnected ${this.url}`)
     }
 
     this.socket.onerror = (event) => {
@@ -182,7 +182,7 @@ class HMRClient {
   }
 }
 
-if (process.env.NODE_ENV === 'development' && module.hot) {
+export const loadHMRClient = () => {
   const { DevSettings, Platform } = require('react-native')
   const LoadingView = require('react-native/Libraries/Utilities/LoadingView')
 
