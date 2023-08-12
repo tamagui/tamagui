@@ -8,9 +8,14 @@ import { extensions } from './extensions'
 
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
-  console.log(`Prebuilding React Native (one time cost...)`)
 
-  // return
+  if (process.env.SKIP_PREBUILD_RN) {
+    console.log(`⚠️ skipping pre build of rn`)
+
+    return
+  }
+
+  console.log(`Prebuilding React Native (one time cost...)`)
 
   const outdir = join(process.cwd(), 'testing-area')
 

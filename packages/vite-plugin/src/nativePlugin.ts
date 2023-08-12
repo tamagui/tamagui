@@ -149,12 +149,12 @@ export function nativePlugin(options: { port: number }): Plugin {
         include: /node_modules\/react\//,
       }
 
-      config.build.rollupOptions.plugins.push({
-        name: `swap-react-native-hmr`,
-        async load(id) {
-          console.log('wtf', id)
-        },
-      })
+      // config.build.rollupOptions.plugins.push({
+      //   name: `swap-react-native-hmr`,
+      //   async load(id) {
+      //     console.log('wtf', id)
+      //   },
+      // })
 
       // see nativePrebuild for now
       //       config.build.rollupOptions.plugins.push({

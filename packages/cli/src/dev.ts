@@ -3,8 +3,8 @@ import { AddressInfo } from 'net'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
+import viteReactPlugin from '@tamagui/vite-native-swc'
 import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
-import viteReactPlugin from '@vitejs/plugin-react'
 import chalk from 'chalk'
 import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
@@ -31,9 +31,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     //   target: 'native',
     // }),
     viteReactPlugin({
-      babel: {
-        presets: ['module:metro-react-native-babel-preset'],
-      },
+      tsDecorators: true,
+      plugins: [],
     }),
     nativePlugin({
       port,
@@ -154,11 +153,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       appType: 'custom',
       root,
       build: {
-        ssr: true,
-      },
-      ssr: {
-        format: 'cjs',
-        target: 'node',
+        ssr: false,
       },
       mode: 'development',
       define: {
@@ -177,11 +172,12 @@ export const dev = async (options: CLIResolvedOptions) => {
       join(process.cwd(), 'testing-area', 'react.js'),
       join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
       join(process.cwd(), 'testing-area', 'react-native.js'),
+      join(require.resolve('@tamagui/vite-native-swc'), '..', 'refresh-runtime.js'),
     ]
 
     console.log('paths', paths)
 
-    const [react, reactJsxRuntime, reactNative] = await Promise.all(
+    const [react, reactJsxRuntime, reactNative, refreshCode] = await Promise.all(
       paths.map((p) => readFile(p, 'utf-8'))
     )
 
@@ -209,6 +205,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
     return (await readFile(templateFile, 'utf-8'))
       .replace(`// -- react --`, reactCode)
+      .replace(`// -- refresh-runtime --`, refreshCode)
       .replace(`// -- react-native --`, reactNativeCode)
       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
       .replace(`// -- app --`, appCode)

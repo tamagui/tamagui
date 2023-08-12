@@ -32,6 +32,8 @@
     "@tamagui/generate-themes": "1.52.2",
     "@tamagui/static": "1.52.2",
     "@tamagui/types": "1.52.2",
+    "@tamagui/vite-native-hmr": "1.52.2",
+    "@tamagui/vite-native-swc": "1.52.2",
     "@tamagui/vite-plugin": "1.52.2",
     "@types/compression": "^1.7.2",
     "@types/morgan": "^1.9.3",
