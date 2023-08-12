@@ -12,7 +12,7 @@ import {
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { TamaguiProvider, Text, useDebounceValue } from 'tamagui'
+import { TamaguiProvider, Text, useDebounceValue, useDidFinishSSR } from 'tamagui'
 
 import { LoadCherryBomb, LoadInter900, LoadMunro } from '../components/LoadFont'
 import config from '../tamagui.config'
@@ -83,8 +83,10 @@ function AppContents(
     setTheme: React.Dispatch<React.SetStateAction<ColorScheme>>
   }
 ) {
+  const didHydrate = useDidFinishSSR()
+  const didHydrateDelayed = useDebounceValue(didHydrate, 500)
   const [didInteract, setDidInteract] = useState(false)
-  const didInteraceDelayed = useDebounceValue(didInteract, 100)
+  const didInteractDelayed = useDebounceValue(didInteract, 100)
 
   useEffect(() => {
     const onDown = () => {
@@ -111,15 +113,22 @@ function AppContents(
         }}
       />
 
+      {didHydrateDelayed && (
+        <>
+          <LoadCherryBomb />
+        </>
+      )}
+
       {/* this will lazy load the font for /studio and /takeout pages */}
       {/* load it after first interaction to avoid clogging the first click even */}
-      {didInteraceDelayed && (
+      {didInteractDelayed && (
         <>
           <LoadInter900 />
           <LoadMunro />
           <LoadCherryBomb />
         </>
       )}
+
       <TamaguiProvider
         config={config}
         disableInjectCSS
