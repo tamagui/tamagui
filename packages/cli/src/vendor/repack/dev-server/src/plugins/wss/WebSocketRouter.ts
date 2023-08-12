@@ -39,9 +39,6 @@ export class WebSocketRouter {
           return
         }
 
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('check for upgrade', pathname)
-
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {
             matched = true

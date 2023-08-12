@@ -29,7 +29,6 @@ export class WebSocketApiServer extends WebSocketServer {
    * @param event Event string or object to send.
    */
   send(event: any) {
-    console.log('api send', event.clientId, event.msg)
     const data = typeof event === 'string' ? event : JSON.stringify(event)
 
     for (const [, socket] of this.clients.entries()) {

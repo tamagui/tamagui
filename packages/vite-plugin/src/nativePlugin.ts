@@ -10,16 +10,6 @@ export function nativePlugin(options: { port: number }): Plugin {
     enforce: 'post',
 
     config: (config) => {
-      config.plugins ||= []
-
-      // custom hmr server handling
-      config.plugins.push({
-        name: `hot-update`,
-        handleHotUpdate(ctx) {
-          console.log('handle hot update', ctx)
-        },
-      })
-
       // // add hmr client
       // config.plugins.push({
       //   name: 'add-hmr-client',

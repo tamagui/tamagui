@@ -45,7 +45,29 @@ export const dev = async (options: CLIResolvedOptions) => {
   const server = await createServer({
     root,
     mode: 'development',
-    plugins,
+    clearScreen: false,
+    plugins: [
+      ...plugins,
+      // custom hmr server handling
+      {
+        name: `tamagui-hot-update`,
+        async handleHotUpdate({ file, read }) {
+          // idk why but its giving me dist asset stuff
+          if (file.includes('/dist/') || file.includes('.tamagui')) {
+            return
+          }
+          console.log('handle hot update', file)
+          try {
+            const contents = await read()
+            const built = await nativeBabelTransform(contents)
+            // send
+            console.log('send', built)
+          } catch (err) {
+            console.log('error hmring', err)
+          }
+        },
+      },
+    ],
     server: {
       hmr: true,
       cors: true,
@@ -154,6 +176,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       plugins,
       appType: 'custom',
       root,
+      clearScreen: false,
       build: {
         ssr: false,
       },
@@ -178,8 +201,6 @@ export const dev = async (options: CLIResolvedOptions) => {
       join(process.cwd(), 'testing-area', 'react-native.js'),
       join(require.resolve('@tamagui/vite-native-swc'), '..', 'refresh-runtime.js'),
     ]
-
-    console.log('paths', paths)
 
     const [react, reactJsxRuntime, reactNative, refreshCode] = await Promise.all(
       paths.map((p) => readFile(p, 'utf-8'))
