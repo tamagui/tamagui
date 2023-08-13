@@ -15798,7 +15798,7 @@ var require_hmr_client = __commonJS({
         this.socket = new WebSocket(this.url);
         console.log("[HMRClient] Connecting...", { url: this.url });
         this.socket.onopen = function() {
-          console.log("[HMRClient] Connected", _this.url);
+          console.log("[HMRClient] Connected");
         };
         this.socket.onclose = function() {
           console.log(`[HMRClient] Disconnected ${_this.url}`);
@@ -15808,7 +15808,6 @@ var require_hmr_client = __commonJS({
         };
         this.socket.onmessage = function(event) {
           try {
-            console.log(`[HMRClient] Got message`, event.data.toString());
             var data = JSON.parse(event.data.toString());
             _this.processMessage(data);
           } catch (error) {

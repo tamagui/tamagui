@@ -59,13 +59,10 @@ export const dev = async (options: CLIResolvedOptions) => {
           if (file.includes('/dist/') || file.includes('.tamagui')) {
             return
           }
-          console.log('handle hot update', file)
+
           try {
             const raw = await read()
             const contents = await nativeBabelFlowTransform(raw)
-
-            // send
-            console.log('send to', hmrListeners.length)
 
             for (const listener of hmrListeners) {
               listener({
@@ -73,8 +70,6 @@ export const dev = async (options: CLIResolvedOptions) => {
                 contents,
               })
             }
-
-            console.log('vite clients', server.ws.clients.size)
           } catch (err) {
             console.log('error hmring', err)
           }

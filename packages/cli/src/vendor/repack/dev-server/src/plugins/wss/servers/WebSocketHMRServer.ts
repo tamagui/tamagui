@@ -38,8 +38,6 @@ export class WebSocketHMRServer extends WebSocketServer {
     const data = typeof event === 'string' ? event : JSON.stringify(event)
 
     for (const [key, socket] of this.clients) {
-      console.log('sending hmr to', key, key.platform, platform)
-
       if (
         key.platform !== platform ||
         !(clientIds ?? [key.clientId]).includes(key.clientId)

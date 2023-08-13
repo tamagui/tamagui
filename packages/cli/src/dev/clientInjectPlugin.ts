@@ -85,11 +85,11 @@ export function clientInjectionsPlugin(config: ResolvedConfig): Plugin {
         // replace process.env.NODE_ENV instead of defining a global
         // for it to avoid shimming a `process` object during dev,
         // avoiding inconsistencies between dev and build
-        return code.replace(
-          process_env_NODE_ENV_RE,
-          config.define?.['process.env.NODE_ENV'] ||
-            JSON.stringify(process.env.NODE_ENV || config.mode)
-        )
+        // return code.replace(
+        //   process_env_NODE_ENV_RE,
+        //   config.define?.['process.env.NODE_ENV'] ||
+        //     JSON.stringify(process.env.NODE_ENV || config.mode)
+        // )
       }
     },
   }

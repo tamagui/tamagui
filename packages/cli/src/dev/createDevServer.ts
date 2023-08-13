@@ -108,7 +108,6 @@ export async function createDevServer(
             return ''
           },
           getSourceMap: async (fileUrl) => {
-            console.log('get source map', fileUrl)
             // const { filename, platform } = parseFileUrl(fileUrl)
             // if (!platform) {
             //   throw new Error('Cannot infer platform for file URL')
@@ -156,8 +155,7 @@ export async function createDevServer(
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(
               '[logger]',
-              logEntry.type,
-              logEntry.issuer,
+              logEntry.type === 'info' ? '' : logEntry.type,
               logEntry.message
                 .map((m) => {
                   return `${m.msg}`

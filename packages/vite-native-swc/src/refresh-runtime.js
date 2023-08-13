@@ -620,7 +620,11 @@ function predicateOnExport(moduleExports, predicate) {
 
 // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
 // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
-export const __hmr_import = (module) => import(/* @vite-ignore */ module);
+export const __hmr_import = (module) => {
+  console.log('SHOULD HMR IMPORT', module)
+
+  return Promise.resolve({})
+};
 
 // For backwards compatibility with @vitejs/plugin-react.
 export default { injectIntoGlobalHook };

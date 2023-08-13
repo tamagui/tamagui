@@ -39,8 +39,6 @@ const messageBuffer: string[] = []
 let socket: WebSocket
 
 globalThis['startViteHMR'] = () => {
-  console.log(`🥡 ${serverHost} ${hmrPort} ${socketHost} ${socketProtocol}`)
-
   try {
     let fallback: (() => void) | undefined
     // only use fallback when port is inferred to prevent confusion
@@ -86,10 +84,13 @@ function setupWebSocket(
   const socket = new WebSocket(endpoint, 'vite-hmr')
   let isOpened = false
 
+  /**
+   * WARNING: passing an async function as a callback to socket listeners silently fails on native
+   */
+
   socket.addEventListener(
     'open',
     () => {
-      console.log('socket open 🥡', endpoint)
       isOpened = true
       notifyListeners('vite:ws:connect', { webSocket: socket })
     },
@@ -98,7 +99,7 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', ({ data }) => {
-    console.log(`socket message 🥡 ${data}`)
+    console.log(`🥡 ${data}`)
     handleMessage(JSON.parse(data))
   })
 
@@ -184,7 +185,7 @@ async function handleMessage(payload: HMRPayload) {
         isFirstUpdate = false
       }
       await Promise.all(
-        payload.updates.map(async (update): Promise<void> => {
+        payload.updates.map((update) => {
           if (update.type === 'js-update') {
             return queueUpdate(fetchUpdate(update))
           }
@@ -345,6 +346,7 @@ async function fetchUpdate({
   explicitImportRequired,
 }: Update) {
   const mod = hotModulesMap.get(path)
+
   if (!mod) {
     // In a code-splitting project,
     // it is common that the hot-updating module is not loaded yet.
@@ -365,6 +367,15 @@ async function fetchUpdate({
     if (disposer) await disposer(dataMap.get(acceptedPath))
     const [acceptedPathWithoutQuery, query] = acceptedPath.split(`?`)
     try {
+      console.log(
+        'TODO import this via fetch and exec instead' /* @vite-ignore */,
+        base +
+          acceptedPathWithoutQuery.slice(1) +
+          `?${explicitImportRequired ? 'import&' : ''}t=${timestamp}${
+            query ? `&${query}` : ''
+          }`
+      )
+
       fetchedModule = await import(
         /* @vite-ignore */
         base +
@@ -414,7 +425,11 @@ const dataMap = new Map<string, any>()
 const customListenersMap: CustomListenersMap = new Map()
 const ctxToListenersMap = new Map<string, CustomListenersMap>()
 
-export function createHotContext(ownerPath: string): ViteHotContext {
+globalThis['createHotContext'] = function createHotContext(
+  ownerPath: string
+): ViteHotContext {
+  console.log('creating hot context', ownerPath)
+
   if (!dataMap.has(ownerPath)) {
     dataMap.set(ownerPath, {})
   }
@@ -444,6 +459,8 @@ export function createHotContext(ownerPath: string): ViteHotContext {
   ctxToListenersMap.set(ownerPath, newListeners)
 
   function acceptDeps(deps: string[], callback: HotCallback['fn'] = () => {}) {
+    console.log('accepting deps' + deps.join(','))
+
     const mod: HotModule = hotModulesMap.get(ownerPath) || {
       id: ownerPath,
       callbacks: [],

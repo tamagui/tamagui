@@ -50,7 +50,7 @@ class HMRClient {
     })
 
     this.socket.onopen = () => {
-      console.log('[HMRClient] Connected', this.url)
+      console.log('[HMRClient] Connected')
     }
 
     this.socket.onclose = () => {
@@ -63,7 +63,6 @@ class HMRClient {
 
     this.socket.onmessage = (event) => {
       try {
-        console.log(`[HMRClient] Got message`, event.data.toString())
         const data = JSON.parse(event.data.toString())
         this.processMessage(data)
       } catch (error) {

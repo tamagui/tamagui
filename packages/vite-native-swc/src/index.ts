@@ -126,12 +126,12 @@ globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
 
 ${result.code}
 
-if (import.meta.hot) {
+if (module.hot) {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
-  RefreshRuntime.__hmr_import('TODO:import.meta.url').then((currentExports) => {
+  RefreshRuntime.__hmr_import(module.url).then((currentExports) => {
     RefreshRuntime.registerExportsForReactRefresh("${id}", currentExports);
-    import.meta.hot.accept((nextExports) => {
+    module.hot.accept((nextExports) => {
       if (!nextExports) return;
       const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
       if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);

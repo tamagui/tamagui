@@ -10,6 +10,10 @@ const global =
 globalThis['global'] = global
 
 global['exports'] = {}
+global['module'] = {}
+
+globalThis['setImmediate'] = cb => cb()
+//cb => Promise.resolve().then(() => cb())
 
 console._isPolyfilled = true
 
@@ -58,7 +62,6 @@ global['React'] = React
 const RequireReactNative = (function () {
   // -- react-native --
 })()
-
 
 // -- app --
 

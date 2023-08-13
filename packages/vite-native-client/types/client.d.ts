@@ -1,3 +1,2 @@
-import type { ViteHotContext } from './hot';
-export declare function createHotContext(ownerPath: string): ViteHotContext;
+export {};
 //# sourceMappingURL=client.d.ts.map

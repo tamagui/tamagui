@@ -1,11 +1,11 @@
 import { View } from 'react-native'
 
+module.url = './src/App.tsx'
+module.hot = createHotContext(module.url)
+
 export function App() {
   globalThis['startViteHMR']()
   console.log('🍄🍄🍄')
-
-  x = new WebSocket('ws://127.0.0.1:5173/', 'vite-hmr')
-  x.onmessage = (y) => console.log(`gotem`)
 
   return (
     <>
@@ -17,12 +17,4 @@ export function App() {
 2
 22
 22
-22
-22
-22
-22
-22
-22
-22
-2
-22
+222
