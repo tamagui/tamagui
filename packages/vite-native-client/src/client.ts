@@ -27,7 +27,7 @@ const importMetaUrl = {
 const serverHost = __SERVER_HOST__
 const socketProtocol =
   __HMR_PROTOCOL__ || (importMetaUrl.protocol === 'https:' ? 'wss' : 'ws')
-const hmrPort = __HMR_PORT__
+const hmrPort = __HMR_PORT__ || 5173
 
 const socketHost = `${__HMR_HOSTNAME__ || importMetaUrl.hostname}:${
   hmrPort || importMetaUrl.port
@@ -39,7 +39,7 @@ const messageBuffer: string[] = []
 let socket: WebSocket
 
 globalThis['startViteHMR'] = () => {
-  console.log('🥡', serverHost, hmrPort)
+  console.log(`🥡 ${serverHost} ${hmrPort} ${socketHost} ${socketProtocol}`)
 
   try {
     let fallback: (() => void) | undefined
@@ -97,8 +97,8 @@ function setupWebSocket(
   )
 
   // Listen for messages
-  socket.addEventListener('message', async ({ data }) => {
-    console.log('socket message 🥡', data)
+  socket.addEventListener('message', ({ data }) => {
+    console.log(`socket message 🥡 ${data}`)
     handleMessage(JSON.parse(data))
   })
 
@@ -107,7 +107,7 @@ function setupWebSocket(
   })
 
   // ping server
-  socket.addEventListener('close', async ({ wasClean }) => {
+  socket.addEventListener('close', ({ wasClean }) => {
     console.log('scoket close')
 
     if (wasClean) return
@@ -120,8 +120,10 @@ function setupWebSocket(
     notifyListeners('vite:ws:disconnect', { webSocket: socket })
 
     console.log(`[vite] server connection lost. polling for restart...`)
-    await waitForSuccessfulPing(protocol, hostAndPath)
-    location.reload()
+    waitForSuccessfulPing(protocol, hostAndPath).then(() => {
+      console.log('shuld reload')
+      // location.reload()
+    })
   })
 
   return socket
