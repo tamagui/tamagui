@@ -22,7 +22,9 @@ globalThis['_tmpLogs'] = []
   globalThis['_ogConsole' + level] = og
   const ogConsole = og.bind(globalThis['console'])
   globalThis['console'][level] = (...data) => {
-    globalThis['_tmpLogs'].push({ level, data })
+    if (globalThis['_tmpLogs']) {
+      globalThis['_tmpLogs'].push({ level, data })
+    }
     return ogConsole(...data)
   }
 })

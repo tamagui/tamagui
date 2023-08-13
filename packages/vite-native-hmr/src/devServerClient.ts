@@ -98,21 +98,6 @@ class DevServerClient {
 
   flushBuffer() {
     if (globalThis['_tmpLogs']) {
-      // restore
-      ;[
-        'trace',
-        'info',
-        'warn',
-        'error',
-        'log',
-        'group',
-        'groupCollapsed',
-        'groupEnd',
-        'debug',
-      ].forEach((level) => {
-        const og = globalThis['_ogConsole' + level]
-        console[level] = og
-      })
       globalThis['_tmpLogs'].forEach(({ level, data }) => {
         this.buffer.push({ level, data })
       })

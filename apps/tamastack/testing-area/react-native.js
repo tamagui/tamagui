@@ -16022,11 +16022,6 @@ var require_devServerClient = __commonJS({
       } }, { key: "flushBuffer", value: function flushBuffer() {
         var _this2 = this;
         if (globalThis["_tmpLogs"]) {
-          ;
-          ["trace", "info", "warn", "error", "log", "group", "groupCollapsed", "groupEnd", "debug"].forEach(function(level2) {
-            var og = globalThis["_ogConsole" + level2];
-            console[level2] = og;
-          });
           globalThis["_tmpLogs"].forEach(function(_ref) {
             var level2 = _ref.level, data2 = _ref.data;
             _this2.buffer.push({ level: level2, data: data2 });
