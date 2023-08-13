@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 
-module.url = './src/App.tsx'
+module.url = '/src/App.tsx'
 module.hot = createHotContext(module.url)
 
 export function App() {
@@ -18,3 +18,14 @@ export function App() {
 22
 22
 222
+22
+2
+22
+22
+22
+22
+2
+22
+22
+222222
+22

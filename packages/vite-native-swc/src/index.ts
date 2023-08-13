@@ -126,6 +126,15 @@ globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
 
 ${result.code}
 
+// this lets us connect and accept it in browser so vite treats it as hmr for native
+if (import.meta.hot) {
+  RefreshRuntime.__hmr_import(import.meta.url).then(() => {
+    import.meta.hot.accept(() => {
+  
+    })
+  })
+}
+
 if (module.hot) {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;

@@ -99,7 +99,7 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', ({ data }) => {
-    console.log(`🥡 ${data}`)
+    console.log(`🥡 (msg) ${data}`)
     handleMessage(JSON.parse(data))
   })
 
@@ -158,6 +158,8 @@ const debounceReload = (time: number) => {
 const pageReload = debounceReload(50)
 
 async function handleMessage(payload: HMRPayload) {
+  console.log(`handle ${payload.type}`)
+
   switch (payload.type) {
     case 'connected':
       console.log(`[vite] connected.`)
@@ -171,12 +173,15 @@ async function handleMessage(payload: HMRPayload) {
       }, __HMR_TIMEOUT__)
       break
     case 'update':
+      console.log('1')
       notifyListeners('vite:beforeUpdate', payload)
       // if this is the first update and there's already an error overlay, it
       // means the page opened with existing server compile error and the whole
       // module script failed to load (since one of the nested imports is 500).
       // in this case a normal update won't work and a full reload is needed.
+      console.log('2')
       if (isFirstUpdate && hasErrorOverlay()) {
+        console.log('3')
         // !
         // window.location.reload()
         return
@@ -184,6 +189,7 @@ async function handleMessage(payload: HMRPayload) {
         clearErrorOverlay()
         isFirstUpdate = false
       }
+      console.log('4')
       await Promise.all(
         payload.updates.map((update) => {
           if (update.type === 'js-update') {
@@ -347,6 +353,8 @@ async function fetchUpdate({
 }: Update) {
   const mod = hotModulesMap.get(path)
 
+  console.log(`fetching update: ${JSON.stringify({ path, mod })}`)
+
   if (!mod) {
     // In a code-splitting project,
     // it is common that the hot-updating module is not loaded yet.
@@ -367,23 +375,19 @@ async function fetchUpdate({
     if (disposer) await disposer(dataMap.get(acceptedPath))
     const [acceptedPathWithoutQuery, query] = acceptedPath.split(`?`)
     try {
-      console.log(
-        'TODO import this via fetch and exec instead' /* @vite-ignore */,
-        base +
-          acceptedPathWithoutQuery.slice(1) +
-          `?${explicitImportRequired ? 'import&' : ''}t=${timestamp}${
-            query ? `&${query}` : ''
-          }`
-      )
+      const scriptUrl =
+        `http://${serverHost}` +
+        acceptedPathWithoutQuery.slice(1) +
+        `?${explicitImportRequired ? 'import&' : ''}t=${timestamp}${
+          query ? `&${query}` : ''
+        }`
 
-      fetchedModule = await import(
-        /* @vite-ignore */
-        base +
-          acceptedPathWithoutQuery.slice(1) +
-          `?${explicitImportRequired ? 'import&' : ''}t=${timestamp}${
-            query ? `&${query}` : ''
-          }`
-      )
+      const source = await fetch(scriptUrl).then((res) => res.text())
+      console.log('source', source)
+      const evaluatedModule = eval(source)
+      console.log(`evaluatedModule: ${evaluatedModule}`)
+
+      fetchedModule = evaluatedModule
     } catch (e) {
       warnFailedFetch(e as any, acceptedPath)
     }
