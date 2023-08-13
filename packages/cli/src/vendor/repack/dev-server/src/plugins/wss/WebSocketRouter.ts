@@ -33,8 +33,8 @@ export class WebSocketRouter {
         let matched = false
 
         if (pathname === '/inspector/device') {
+          // ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log('ignoring', pathname)
           // socket.destroy()
           return
         }

@@ -1,18 +1,17 @@
 import { readFile } from 'fs/promises'
-import { AddressInfo } from 'net'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin from '@tamagui/vite-native-swc'
 import {
+  nativeBabelFlowTransform,
   nativeBabelTransform,
   nativePlugin,
   nativePrebuild,
-  tamaguiPlugin,
 } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
-import fs, { ensureDir, pathExists } from 'fs-extra'
-import { build, createServer } from 'vite'
+import fs, { pathExists } from 'fs-extra'
+import { InlineConfig, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
@@ -42,12 +41,11 @@ export const dev = async (options: CLIResolvedOptions) => {
     nativePlugin({
       port,
     }),
-    clientInjectionsPlugin(),
   ]
 
   const hmrListeners: HMRListener[] = []
 
-  const server = await createServer({
+  let serverConfig = {
     root,
     mode: 'development',
     clearScreen: false,
@@ -64,7 +62,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           console.log('handle hot update', file)
           try {
             const raw = await read()
-            const contents = await nativeBabelTransform(raw)
+            const contents = await nativeBabelFlowTransform(raw)
 
             // send
             console.log('send', contents, hmrListeners.length)
@@ -82,12 +80,28 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     ],
     server: {
-      hmr: true,
+      hmr: {
+        host: 'localhost',
+        port: 5173,
+      },
       cors: true,
       port: options.port,
       host: options.host || 'localhost',
     },
-  })
+  } satisfies InlineConfig
+
+  // first resolve config so we can pass into client plugin, then add client plugin:
+  const resolvedConfig = await resolveConfig(serverConfig, 'serve')
+  const viteRNClient = clientInjectionsPlugin(resolvedConfig)
+
+  plugins.push(viteRNClient)
+
+  serverConfig = {
+    ...serverConfig,
+    plugins: [...serverConfig.plugins],
+  }
+
+  const server = await createServer(serverConfig)
 
   await server.listen()
 
@@ -249,6 +263,6 @@ export const dev = async (options: CLIResolvedOptions) => {
       .replace(`// -- refresh-runtime --`, refreshCode)
       .replace(`// -- react-native --`, reactNativeCode)
       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-      .replace(`// -- app --`, appCode)
+      .replace(`// -- app --`, appCode.replace('"use strict";', ''))
   }
 }

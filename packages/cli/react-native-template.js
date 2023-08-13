@@ -26,7 +26,6 @@ global.ErrorUtils = {
   },
 }
 
-
 globalThis['require'] = function require(_mod) {
   if (_mod === 'react') return React
   if (_mod === 'react-native') return RequireReactNative
@@ -60,4 +59,6 @@ const RequireReactNative = (function () {
   // -- react-native --
 })()
 
+
 // -- app --
+

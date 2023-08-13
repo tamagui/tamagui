@@ -15,12 +15,12 @@ declare const __HMR_BASE__: string
 declare const __HMR_TIMEOUT__: number
 declare const __HMR_ENABLE_OVERLAY__: boolean
 
-console.debug('[vite] connecting...')
+console.log('[vite] connecting...')
 
 const importMetaUrl = {
-  hostname: 'localhost',
+  hostname: '127.0.0.1',
   protocol: 'http',
-  port: 8081,
+  port: 5173,
 }
 
 // use server configuration, then fallback to inference
@@ -28,6 +28,7 @@ const serverHost = __SERVER_HOST__
 const socketProtocol =
   __HMR_PROTOCOL__ || (importMetaUrl.protocol === 'https:' ? 'wss' : 'ws')
 const hmrPort = __HMR_PORT__
+
 const socketHost = `${__HMR_HOSTNAME__ || importMetaUrl.hostname}:${
   hmrPort || importMetaUrl.port
 }${__HMR_BASE__}`
@@ -37,39 +38,43 @@ const messageBuffer: string[] = []
 
 let socket: WebSocket
 
-try {
-  let fallback: (() => void) | undefined
-  // only use fallback when port is inferred to prevent confusion
-  if (!hmrPort) {
-    fallback = () => {
-      // fallback to connecting directly to the hmr server
-      // for servers which does not support proxying websocket
-      socket = setupWebSocket(socketProtocol, directSocketHost, () => {
-        console.error(
-          '[vite] failed to connect to websocket.\n' +
-            'your current setup:\n' +
-            `  (browser) ${JSON.stringify(
-              importMetaUrl
-            )} <--[HTTP]--> ${serverHost} (server)\n` +
-            `  (browser) ${socketHost} <--[WebSocket (failing)]--> ${directSocketHost} (server)\n` +
-            'Check out your Vite / network configuration and https://vitejs.dev/config/server-options.html#server-hmr .'
-        )
-      })
-      socket.addEventListener(
-        'open',
-        () => {
-          console.info(
-            '[vite] Direct websocket connection fallback. Check out https://vitejs.dev/config/server-options.html#server-hmr to remove the previous connection error.'
-          )
-        },
-        { once: true }
-      )
-    }
-  }
+globalThis['startViteHMR'] = () => {
+  console.log('🥡', serverHost, hmrPort)
 
-  socket = setupWebSocket(socketProtocol, socketHost, fallback)
-} catch (error) {
-  console.error(`[vite] failed to connect to websocket (${error}). `)
+  try {
+    let fallback: (() => void) | undefined
+    // only use fallback when port is inferred to prevent confusion
+    if (!hmrPort) {
+      fallback = () => {
+        // fallback to connecting directly to the hmr server
+        // for servers which does not support proxying websocket
+        socket = setupWebSocket(socketProtocol, directSocketHost, () => {
+          console.error(
+            '[vite] failed to connect to websocket.\n' +
+              'your current setup:\n' +
+              `  (browser) ${JSON.stringify(
+                importMetaUrl
+              )} <--[HTTP]--> ${serverHost} (server)\n` +
+              `  (browser) ${socketHost} <--[WebSocket (failing)]--> ${directSocketHost} (server)\n` +
+              'Check out your Vite / network configuration and https://vitejs.dev/config/server-options.html#server-hmr .'
+          )
+        })
+        socket.addEventListener(
+          'open',
+          () => {
+            console.log(
+              '[vite] Direct websocket connection fallback. Check out https://vitejs.dev/config/server-options.html#server-hmr to remove the previous connection error.'
+            )
+          },
+          { once: true }
+        )
+      }
+    }
+
+    socket = setupWebSocket(socketProtocol, socketHost, fallback)
+  } catch (error) {
+    console.error(`[vite] failed to connect to websocket (${error}). `)
+  }
 }
 
 function setupWebSocket(
@@ -83,6 +88,7 @@ function setupWebSocket(
   socket.addEventListener(
     'open',
     () => {
+      console.log('socket open 🥡')
       isOpened = true
       notifyListeners('vite:ws:connect', { webSocket: socket })
     },
@@ -91,11 +97,14 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', async ({ data }) => {
+    console.log('socket message', data)
     handleMessage(JSON.parse(data))
   })
 
   // ping server
   socket.addEventListener('close', async ({ wasClean }) => {
+    console.log('scoket close')
+
     if (wasClean) return
 
     if (!isOpened && onCloseWithoutOpen) {
@@ -143,7 +152,7 @@ const pageReload = debounceReload(50)
 async function handleMessage(payload: HMRPayload) {
   switch (payload.type) {
     case 'connected':
-      console.debug(`[vite] connected.`)
+      console.log(`[vite] connected.`)
       sendMessageBuffer()
       // proxy(nginx, docker) hmr ws maybe caused timeout,
       // so send ping package let ws keep alive.
@@ -367,7 +376,7 @@ async function fetchUpdate({
       fn(deps.map((dep) => (dep === acceptedPath ? fetchedModule : undefined)))
     }
     const loggedPath = isSelfUpdate ? path : `${acceptedPath} via ${path}`
-    console.debug(`[vite] hot updated: ${loggedPath}`)
+    console.log(`[vite] hot updated: ${loggedPath}`)
   }
 }
 
@@ -481,7 +490,7 @@ export function createHotContext(ownerPath: string): ViteHotContext {
     invalidate(message) {
       notifyListeners('vite:invalidate', { path: ownerPath, message })
       this.send('vite:invalidate', { path: ownerPath, message })
-      console.debug(`[vite] invalidate ${ownerPath}${message ? `: ${message}` : ''}`)
+      console.log(`[vite] invalidate ${ownerPath}${message ? `: ${message}` : ''}`)
     },
 
     // custom events

@@ -10,28 +10,18 @@ const isObject = (x: any): x is Object => x && typeof x === 'object'
  * some values used by the client needs to be dynamically injected by the server
  * @server-only
  */
-export function clientInjectionsPlugin(): Plugin {
+export function clientInjectionsPlugin(config: ResolvedConfig): Plugin {
   let injectConfigValues: (code: string) => string
-
-  let config: UserConfig
 
   return {
     name: 'vite:client-inject',
 
-    config(_) {
-      config = _
-    },
-
     async buildStart() {
-      if (!config.server) {
-        return
-      }
-
-      const resolvedServerHostname = 'localhost'
+      const resolvedServerHostname = '127.0.0.1'
       // (await resolveHostname(config.server.host))
       //   .name
-      const resolvedServerPort = config.server!.port!
-      const devBase = config.base || 'base'
+      const resolvedServerPort = config.server!.port! || 5173
+      const devBase = config.base || '/'
 
       const serverHost = `${resolvedServerHostname}:${resolvedServerPort}${devBase}`
 
@@ -47,6 +37,11 @@ export function clientInjectionsPlugin(): Plugin {
       // hmr.clientPort -> hmr.port
       // -> (24678 if middleware mode and HMR server is not specified) -> new URL(import.meta.url).port
       let port = hmrConfig?.clientPort || hmrConfig?.port || null
+
+      if (!port) {
+        throw new Error(`no port..`)
+      }
+
       if (config.server.middlewareMode && !isHmrServerSpecified) {
         port ||= 24678
       }
@@ -89,8 +84,8 @@ export function clientInjectionsPlugin(): Plugin {
           .replace(`__HMR_ENABLE_OVERLAY__`, hmrEnableOverlayReplacement)
       }
     },
+
     transform(code, id, options) {
-      console.log('id', id)
       if (id.endsWith('vite-native-client/dist/esm/client.js')) {
         return injectConfigValues(code)
       } else if (!options?.ssr && code.includes('process.env.NODE_ENV')) {
