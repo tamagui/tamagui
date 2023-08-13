@@ -52,11 +52,6 @@ globalThis['require'] = function require(_mod) {
   throw new Error(`Not found: ${_mod}`)
 }
 
-const RefreshRuntime = (function (module) {
-  // -- refresh-runtime --
-  return refresh_runtime_exports
-})({})
-
 const React = (function () {
   // -- react --
 })()
@@ -76,6 +71,19 @@ global['React'] = React
 const RequireReactNative = (function () {
   // -- react-native --
 })()
+
+const RefreshRuntime = (function (module) {
+  // -- refresh-runtime --
+  return refresh_runtime_exports
+})({})
+
+console.log('🤨 inject')
+// // react native refresh global hook
+// const { injectIntoGlobalHook } = RefreshRuntime
+// injectIntoGlobalHook(globalThis);
+// globalThis.$RefreshReg$ = () => {};
+// globalThis.$RefreshSig$ = () => (type) => type;
+
 
 // -- app --
 

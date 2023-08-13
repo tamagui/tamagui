@@ -98,7 +98,9 @@ const react = (_options?: Options): PluginOption[] => {
         },
       ],
       async transform(code, _id, transformOptions) {
-        const id = _id.split('?')[0]
+        // todo hack
+        const id = _id.split('?')[0].replace('/Users/n8/tamagui/apps/tamastack', '')
+
         // const refresh = !transformOptions?.ssr && !hmrDisabled
         // only change for now:
         const refresh = true

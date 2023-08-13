@@ -9,7 +9,7 @@ export function App() {
 
   return (
     <>
-      <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
+      <View style={{ backgroundColor: 'yellow', width: 100, height: 100 }} />
     </>
   )
 }
