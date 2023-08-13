@@ -1,10 +1,14 @@
 import prettyFormat from 'pretty-format'
 
 import { getDevServerLocation } from './getDevServerLocation'
-import { loadHMRClient } from './hmr-client'
+import * as hmrClient from './hmr-client'
+
+console.log('hmrClient', hmrClient)
+
+// import { loadHMRClient } from './hmr-client'
 
 // force import hmr client hacky
-loadHMRClient()
+// loadHMRClient()
 
 /**
  * With Webpack we don't use built-in metro-specific HMR client,

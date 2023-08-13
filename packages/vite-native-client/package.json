@@ -1,9 +1,12 @@
 {
-  "name": "@tamagui/vite-native-hmr",
+  "name": "@tamagui/vite-native-client",
   "version": "1.52.2",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "sideEffects": [
+    "*"
+  ],
   "files": [
     "src",
     "types",
@@ -23,20 +26,7 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    },
-    "./hmr-client": {
-      "types": "./types/hmr-client.d.ts",
-      "import": "./dist/esm/hmr-client.js",
-      "require": "./dist/cjs/hmr-client.js"
-    },
-    "./hmr-vite": {
-      "types": "./types/client.d.ts",
-      "import": "./dist/esm/client.js",
-      "require": "./dist/cjs/client.js"
     }
-  },
-  "dependencies": {
-    "pretty-format": "^28.1.0"
   },
   "devDependencies": {
     "@tamagui/build": "1.52.2"

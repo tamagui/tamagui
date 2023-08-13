@@ -11,6 +11,25 @@ export async function nativeBabelTransform(input: string) {
     babel.transform(
       input,
       {
+        plugins: ['@babel/plugin-transform-modules-commonjs'],
+      },
+      (err: any, { code }) => {
+        if (err) {
+          console.error('error', err)
+        }
+
+        if (err) rej(err)
+        res(code)
+      }
+    )
+  })
+}
+
+export async function nativeBabelFlowTransform(input: string) {
+  return await new Promise<string>((res, rej) => {
+    babel.transform(
+      input,
+      {
         presets: ['module:metro-react-native-babel-preset'],
       },
       (err: any, { code }) => {
@@ -108,7 +127,6 @@ export async function nativePrebuild() {
                 filter: /HMRClient/,
               },
               async (input) => {
-                console.log('swapping', input)
                 return {
                   path: require.resolve('@tamagui/vite-native-hmr'),
                 }
@@ -130,7 +148,7 @@ export async function nativePrebuild() {
                 const code = await readFile(input.path, 'utf-8')
 
                 // omg so ugly but no class support?
-                const outagain = await nativeBabelTransform(code)
+                const outagain = await nativeBabelFlowTransform(code)
 
                 // const contents = output.toString().replace(/static\s+\+/g, 'static ')
                 return {

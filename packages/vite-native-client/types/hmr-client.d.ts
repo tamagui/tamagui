@@ -20,4 +20,5 @@ export interface HMRMessage {
     action: 'building' | 'built' | 'sync';
     body: HMRMessageBody | null;
 }
-//# sourceMappingURL=hmrClient.d.ts.map
+export declare const loadHMRClient: () => void;
+//# sourceMappingURL=hmr-client.d.ts.map

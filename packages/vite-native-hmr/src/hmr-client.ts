@@ -62,11 +62,11 @@ class HMRClient {
 
     this.socket.onmessage = (event) => {
       try {
+        console.log(`[HMRClient] Got message`, event.data.toString())
         const data = JSON.parse(event.data.toString())
-        console.log(`[HMRClient] Got message`, data)
         this.processMessage(data)
       } catch (error) {
-        console.warn('[HMRClient] Invalid HMR message', { event, error })
+        console.warn('[HMRClient] Invalid HMR message', error)
       }
     }
   }
@@ -121,6 +121,13 @@ class HMRClient {
     if (!module.hot) {
       throw new Error('[HMRClient] Hot Module Replacement is disabled.')
     }
+
+    console.log(
+      'applying update',
+      update,
+      this.upToDate(update.hash),
+      module.hot.status()
+    )
 
     if (!this.upToDate(update.hash) && module.hot.status() === 'idle') {
       console.log('[HMRClient] Checking for updates on the server...')

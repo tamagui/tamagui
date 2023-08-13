@@ -14,6 +14,7 @@ import chalk from 'chalk'
 import fs, { ensureDir, pathExists } from 'fs-extra'
 import { build, createServer } from 'vite'
 
+import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
 import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
@@ -41,6 +42,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     nativePlugin({
       port,
     }),
+    clientInjectionsPlugin(),
   ]
 
   const hmrListeners: HMRListener[] = []

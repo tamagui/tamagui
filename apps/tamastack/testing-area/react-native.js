@@ -15808,11 +15808,11 @@ var require_hmr_client = __commonJS({
         };
         this.socket.onmessage = function(event) {
           try {
+            console.log(`[HMRClient] Got message`, event.data.toString());
             var data = JSON.parse(event.data.toString());
-            console.log(`[HMRClient] Got message`, data);
             _this.processMessage(data);
           } catch (error) {
-            console.warn("[HMRClient] Invalid HMR message", { event, error });
+            console.warn("[HMRClient] Invalid HMR message", error);
           }
         };
       }
@@ -15853,6 +15853,7 @@ var require_hmr_client = __commonJS({
         if (!module2.hot) {
           throw new Error("[HMRClient] Hot Module Replacement is disabled.");
         }
+        console.log("applying update", update, this.upToDate(update.hash), module2.hot.status());
         if (!this.upToDate(update.hash) && module2.hot.status() === "idle") {
           console.log("[HMRClient] Checking for updates on the server...");
           this.checkUpdates(update);
@@ -15978,8 +15979,8 @@ var require_devServerClient = __commonJS({
     module2.exports = __toCommonJS(devServerClient_exports);
     var import_pretty_format = __toESM(require_build2());
     var import_getDevServerLocation = require_getDevServerLocation();
-    var import_hmr_client = require_hmr_client();
-    (0, import_hmr_client.loadHMRClient)();
+    var hmrClient = __toESM(require_hmr_client());
+    console.log("hmrClient", hmrClient);
     var DevServerClient = function() {
       function DevServerClient2() {
         var _this = this;
