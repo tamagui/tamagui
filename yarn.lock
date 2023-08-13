@@ -7433,6 +7433,7 @@ __metadata:
   resolution: "@tamagui/vite-native-client@workspace:packages/vite-native-client"
   dependencies:
     "@tamagui/build": 1.52.2
+    react-native: ^0.72.1
   peerDependencies:
     react-native: "*"
   languageName: unknown
@@ -7444,6 +7445,7 @@ __metadata:
   dependencies:
     "@tamagui/build": 1.52.2
     pretty-format: ^28.1.0
+    react-native: ^0.72.1
   peerDependencies:
     react-native: "*"
   languageName: unknown
@@ -7455,6 +7457,7 @@ __metadata:
   dependencies:
     "@swc/core": ^1.3.74
     "@tamagui/build": 1.52.2
+    react-native: ^0.72.1
   peerDependencies:
     react-native: "*"
   languageName: unknown

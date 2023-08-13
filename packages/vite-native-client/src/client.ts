@@ -82,13 +82,14 @@ function setupWebSocket(
   hostAndPath: string,
   onCloseWithoutOpen?: () => void
 ) {
-  const socket = new WebSocket(`${protocol}://${hostAndPath}`, 'vite-hmr')
+  const endpoint = `${protocol}://${hostAndPath}`
+  const socket = new WebSocket(endpoint, 'vite-hmr')
   let isOpened = false
 
   socket.addEventListener(
     'open',
     () => {
-      console.log('socket open 🥡')
+      console.log('socket open 🥡', endpoint)
       isOpened = true
       notifyListeners('vite:ws:connect', { webSocket: socket })
     },
@@ -97,8 +98,12 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', async ({ data }) => {
-    console.log('socket message', data)
+    console.log('socket message 🥡', data)
     handleMessage(JSON.parse(data))
+  })
+
+  socket.addEventListener('error', (err) => {
+    console.log('err', err)
   })
 
   // ping server

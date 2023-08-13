@@ -15798,7 +15798,7 @@ var require_hmr_client = __commonJS({
         this.socket = new WebSocket(this.url);
         console.log("[HMRClient] Connecting...", { url: this.url });
         this.socket.onopen = function() {
-          console.log("[HMRClient] Connected");
+          console.log("[HMRClient] Connected", _this.url);
         };
         this.socket.onclose = function() {
           console.log(`[HMRClient] Disconnected ${_this.url}`);
@@ -15979,8 +15979,8 @@ var require_devServerClient = __commonJS({
     module2.exports = __toCommonJS(devServerClient_exports);
     var import_pretty_format = __toESM(require_build2());
     var import_getDevServerLocation = require_getDevServerLocation();
-    var hmrClient = __toESM(require_hmr_client());
-    console.log("hmrClient", hmrClient);
+    var import_hmr_client = require_hmr_client();
+    (0, import_hmr_client.loadHMRClient)();
     var DevServerClient = function() {
       function DevServerClient2() {
         var _this = this;

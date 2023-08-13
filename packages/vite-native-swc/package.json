@@ -29,7 +29,8 @@
     "@swc/core": "^1.3.74"
   },
   "devDependencies": {
-    "@tamagui/build": "1.52.2"
+    "@tamagui/build": "1.52.2",
+    "react-native": "^0.72.1"
   },
   "peerDependencies": {
     "react-native": "*"

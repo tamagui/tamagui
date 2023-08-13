@@ -55,7 +55,6 @@ export async function createDevServer(
 
       const platform = 'ios'
       listenForHMR((update) => {
-        console.log('send update')
         ctx.notifyBuildEnd(platform)
         ctx.broadcastToHmrClients(
           {

@@ -47,8 +47,6 @@ export class WebSocketHMRServer extends WebSocketServer {
         continue
       }
 
-      console.log('send')
-
       try {
         socket.send(data)
       } catch (error) {

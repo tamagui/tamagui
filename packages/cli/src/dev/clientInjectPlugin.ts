@@ -18,8 +18,6 @@ export function clientInjectionsPlugin(config: ResolvedConfig): Plugin {
 
     async buildStart() {
       const resolvedServerHostname = '127.0.0.1'
-      // (await resolveHostname(config.server.host))
-      //   .name
       const resolvedServerPort = config.server!.port! || 5173
       const devBase = config.base || '/'
 
@@ -37,11 +35,6 @@ export function clientInjectionsPlugin(config: ResolvedConfig): Plugin {
       // hmr.clientPort -> hmr.port
       // -> (24678 if middleware mode and HMR server is not specified) -> new URL(import.meta.url).port
       let port = hmrConfig?.clientPort || hmrConfig?.port || null
-
-      if (!port) {
-        throw new Error(`no port..`)
-      }
-
       if (config.server.middlewareMode && !isHmrServerSpecified) {
         port ||= 24678
       }

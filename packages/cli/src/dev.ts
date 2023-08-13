@@ -54,7 +54,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       // custom hmr server handling
       {
         name: `tamagui-hot-update`,
-        async handleHotUpdate({ file, read }) {
+        async handleHotUpdate({ file, read, server }) {
           // idk why but its giving me dist asset stuff
           if (file.includes('/dist/') || file.includes('.tamagui')) {
             return
@@ -65,7 +65,7 @@ export const dev = async (options: CLIResolvedOptions) => {
             const contents = await nativeBabelFlowTransform(raw)
 
             // send
-            console.log('send', contents, hmrListeners.length)
+            console.log('send to', hmrListeners.length)
 
             for (const listener of hmrListeners) {
               listener({
@@ -73,6 +73,8 @@ export const dev = async (options: CLIResolvedOptions) => {
                 contents,
               })
             }
+
+            console.log('vite clients', server.ws.clients.size)
           } catch (err) {
             console.log('error hmring', err)
           }
@@ -80,13 +82,13 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     ],
     server: {
-      hmr: {
-        host: 'localhost',
-        port: 5173,
-      },
+      // hmr: {
+      //   host: '127.0.0.1',
+      //   port: 5173,
+      // },
       cors: true,
       port: options.port,
-      host: options.host || 'localhost',
+      host: options.host || '127.0.0.1',
     },
   } satisfies InlineConfig
 
@@ -108,55 +110,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   // await ensureDir(options.paths.dotDir)
   // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
-  const defaultResponse = {
-    name: 'myapp',
-    slug: 'myapp',
-    scheme: 'myapp',
-    version: '1.0.0',
-    jsEngine: 'jsc',
-    orientation: 'portrait',
-    icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
-    splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-      imageUrl: 'http://127.0.0.1:8081/assets/./assets/splash.png',
-    },
-    updates: { fallbackToCacheTimeout: 0 },
-    assetBundlePatterns: ['**/*'],
-    ios: { supportsTablet: true, bundleIdentifier: 'com.natew.myapp' },
-    android: {
-      package: 'com.tamagui.myapp',
-      adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#FFFFFF',
-        foregroundImageUrl: 'http://127.0.0.1:8081/assets/./assets/adaptive-icon.png',
-      },
-    },
-    web: { favicon: './assets/favicon.png' },
-    extra: { eas: { projectId: '061b4470-78c7-4d6a-b850-8167fb0a3434' } },
-    _internal: {
-      isDebug: false,
-      projectRoot: '/Users/n8/tamagui/apps/kitchen-sink',
-      dynamicConfigPath: null,
-      staticConfigPath: '/Users/n8/tamagui/apps/kitchen-sink/app.json',
-      packageJsonPath: '/Users/n8/tamagui/apps/kitchen-sink/package.json',
-    },
-    sdkVersion: '47.0.0',
-    platforms: ['ios', 'android', 'web'],
-    iconUrl: `http://127.0.0.1:${port}/assets/./assets/icon.png`,
-    debuggerHost: `127.0.0.1:${port}`,
-    logUrl: `http://127.0.0.1:${port}/logs`,
-    developer: { tool: 'expo-cli', projectRoot: '/Users/n8/tamagui/apps/kitchen-sink' },
-    packagerOpts: { dev: true },
-    mainModuleName: 'index',
-    __flipperHack: 'React Native packager is running',
-    hostUri: `127.0.0.1:${port}`,
-    bundleUrl: `http://127.0.0.1:${port}/index.bundle?platform=ios&dev=true&hot=false&lazy=true`,
-    id: '@anonymous/myapp-473c4543-3c36-4786-9db1-c66a62ac9b78',
-  }
-
   // new server
   const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
 
@@ -174,7 +127,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
       return outputCode
     },
-    indexJson: defaultResponse,
+    indexJson: getIndexJsonReponse({ port }),
   })
 
   // rome-ignore lint/nursery/noConsoleLog: ok
@@ -264,5 +217,56 @@ export const dev = async (options: CLIResolvedOptions) => {
       .replace(`// -- react-native --`, reactNativeCode)
       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
       .replace(`// -- app --`, appCode.replace('"use strict";', ''))
+  }
+}
+
+function getIndexJsonReponse({ port }: { port: number | string }) {
+  return {
+    name: 'myapp',
+    slug: 'myapp',
+    scheme: 'myapp',
+    version: '1.0.0',
+    jsEngine: 'jsc',
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    userInterfaceStyle: 'light',
+    splash: {
+      image: './assets/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
+      imageUrl: 'http://127.0.0.1:8081/assets/./assets/splash.png',
+    },
+    updates: { fallbackToCacheTimeout: 0 },
+    assetBundlePatterns: ['**/*'],
+    ios: { supportsTablet: true, bundleIdentifier: 'com.natew.myapp' },
+    android: {
+      package: 'com.tamagui.myapp',
+      adaptiveIcon: {
+        foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#FFFFFF',
+        foregroundImageUrl: 'http://127.0.0.1:8081/assets/./assets/adaptive-icon.png',
+      },
+    },
+    web: { favicon: './assets/favicon.png' },
+    extra: { eas: { projectId: '061b4470-78c7-4d6a-b850-8167fb0a3434' } },
+    _internal: {
+      isDebug: false,
+      projectRoot: '/Users/n8/tamagui/apps/kitchen-sink',
+      dynamicConfigPath: null,
+      staticConfigPath: '/Users/n8/tamagui/apps/kitchen-sink/app.json',
+      packageJsonPath: '/Users/n8/tamagui/apps/kitchen-sink/package.json',
+    },
+    sdkVersion: '47.0.0',
+    platforms: ['ios', 'android', 'web'],
+    iconUrl: `http://127.0.0.1:${port}/assets/./assets/icon.png`,
+    debuggerHost: `127.0.0.1:${port}`,
+    logUrl: `http://127.0.0.1:${port}/logs`,
+    developer: { tool: 'expo-cli', projectRoot: '/Users/n8/tamagui/apps/kitchen-sink' },
+    packagerOpts: { dev: true },
+    mainModuleName: 'index',
+    __flipperHack: 'React Native packager is running',
+    hostUri: `127.0.0.1:${port}`,
+    bundleUrl: `http://127.0.0.1:${port}/index.bundle?platform=ios&dev=true&hot=false&lazy=true`,
+    id: '@anonymous/myapp-473c4543-3c36-4786-9db1-c66a62ac9b78',
   }
 }

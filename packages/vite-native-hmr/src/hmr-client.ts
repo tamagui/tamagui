@@ -42,6 +42,7 @@ class HMRClient {
     this.url = `ws://${getDevServerLocation().hostname}:${
       process.env.REACT_NATIVE_SERVER_PUBLIC_PORT
     }/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM || 'ios'}`
+
     this.socket = new WebSocket(this.url)
 
     console.log('[HMRClient] Connecting...', {
@@ -49,7 +50,7 @@ class HMRClient {
     })
 
     this.socket.onopen = () => {
-      console.log('[HMRClient] Connected')
+      console.log('[HMRClient] Connected', this.url)
     }
 
     this.socket.onclose = () => {
