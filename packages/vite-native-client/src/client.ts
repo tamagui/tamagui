@@ -134,6 +134,7 @@ function warnFailedFetch(err: Error, path: string | string[]) {
   if (!err.message.match('fetch')) {
     console.error(err)
   }
+  console.error(`${err}`)
   console.error(
     `[hmr] Failed to reload ${path}. ` +
       `This could be due to syntax errors or importing non-existent ` +
@@ -375,17 +376,20 @@ async function fetchUpdate({
     if (disposer) await disposer(dataMap.get(acceptedPath))
     const [acceptedPathWithoutQuery, query] = acceptedPath.split(`?`)
     try {
+      const filePath = acceptedPathWithoutQuery
+      const finalQuery = `file?file=${encodeURIComponent(filePath)}&${
+        explicitImportRequired ? 'import&' : ''
+      }t=${timestamp}${query ? `&${query}` : ''}`
+
       const scriptUrl =
-        `http://${serverHost}` +
-        acceptedPathWithoutQuery.slice(1) +
-        `?${explicitImportRequired ? 'import&' : ''}t=${timestamp}${
-          query ? `&${query}` : ''
-        }`
+        // re-route to our cjs endpoint
+        `http://${serverHost.replace('5173', '8081')}` + finalQuery
 
       const source = await fetch(scriptUrl).then((res) => res.text())
+
       console.log('source', source)
+
       const evaluatedModule = eval(source)
-      console.log(`evaluatedModule: ${evaluatedModule}`)
 
       fetchedModule = evaluatedModule
     } catch (e) {
@@ -394,7 +398,12 @@ async function fetchUpdate({
   }
 
   return () => {
+    console.log('LOOP DEPS' + acceptedPath + qualifiedCallbacks.length)
+    console.log('fetchedModule' + Object.keys(fetchedModule as any))
+
     for (const { deps, fn } of qualifiedCallbacks) {
+      console.log('deps..' + deps.join(','))
+
       fn(deps.map((dep) => (dep === acceptedPath ? fetchedModule : undefined)))
     }
     const loggedPath = isSelfUpdate ? path : `${acceptedPath} via ${path}`
@@ -432,8 +441,6 @@ const ctxToListenersMap = new Map<string, CustomListenersMap>()
 globalThis['createHotContext'] = function createHotContext(
   ownerPath: string
 ): ViteHotContext {
-  console.log('creating hot context', ownerPath)
-
   if (!dataMap.has(ownerPath)) {
     dataMap.set(ownerPath, {})
   }
@@ -463,7 +470,7 @@ globalThis['createHotContext'] = function createHotContext(
   ctxToListenersMap.set(ownerPath, newListeners)
 
   function acceptDeps(deps: string[], callback: HotCallback['fn'] = () => {}) {
-    console.log('accepting deps' + deps.join(','))
+    console.log('accepting deps for' + ownerPath + ' ' + deps.join(','))
 
     const mod: HotModule = hotModulesMap.get(ownerPath) || {
       id: ownerPath,

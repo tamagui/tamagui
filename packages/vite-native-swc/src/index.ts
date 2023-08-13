@@ -116,38 +116,7 @@ const react = (_options?: Options): PluginOption[] => {
           return result
         }
 
-        result.code = `const RefreshRuntime = require("${runtimePublicPath}");
-
-// if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
-const prevRefreshReg = globalThis.$RefreshReg$;
-const prevRefreshSig = globalThis.$RefreshSig$;
-globalThis.$RefreshReg$ = RefreshRuntime.getRefreshReg("${id}");
-globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
-
-${result.code}
-
-// this lets us connect and accept it in browser so vite treats it as hmr for native
-if (import.meta.hot) {
-  RefreshRuntime.__hmr_import(import.meta.url).then(() => {
-    import.meta.hot.accept(() => {
-  
-    })
-  })
-}
-
-if (module.hot) {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-  RefreshRuntime.__hmr_import(module.url).then((currentExports) => {
-    RefreshRuntime.registerExportsForReactRefresh("${id}", currentExports);
-    module.hot.accept((nextExports) => {
-      if (!nextExports) return;
-      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
-      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
-    });
-  });
-}
-`
+        result.code = wrapSourceInRefreshRuntime(id, result.code)
 
         const sourceMap: SourceMapPayload = JSON.parse(result.map!)
         sourceMap.mappings = ';;;;;;;;' + sourceMap.mappings
@@ -183,6 +152,49 @@ if (module.hot) {
           }),
         },
   ]
+}
+
+export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
+  return `const RefreshRuntime = require("${runtimePublicPath}");
+
+  // if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
+  const prevRefreshReg = globalThis.$RefreshReg$;
+  const prevRefreshSig = globalThis.$RefreshSig$;
+  globalThis.$RefreshReg$ = RefreshRuntime.getRefreshReg("${id}");
+  globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+  
+  ${code}
+  
+  ${
+    cjs
+      ? ''
+      : `// this lets us connect and accept it in browser so vite treats it as hmr for native
+  if (import.meta.hot) {
+    RefreshRuntime.__hmr_import(import.meta.url).then(() => {
+      import.meta.hot.accept(() => {
+    
+      })
+    })
+  }`
+  }
+  
+  if (module.hot) {
+    globalThis.$RefreshReg$ = prevRefreshReg;
+    globalThis.$RefreshSig$ = prevRefreshSig;
+    globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
+    RefreshRuntime.__hmr_import(module.url, exports).then((currentExports) => {
+      console.log("HMRimport" + JSON.stringify(Object.keys(currentExports)) + JSON.stringify(Object.keys(exports)))
+      RefreshRuntime.registerExportsForReactRefresh("${id}", currentExports);
+      module.hot.accept((nextExports) => {
+        console.log("ACEPT" + Object.keys(nextExports))
+        if (!nextExports) return;
+        const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
+        console.log("invalidateMessage", + invalidateMessage)
+        if (invalidateMessage) module.hot.invalidate(invalidateMessage);
+      });
+    });
+  }
+  `
 }
 
 const transformWithOptions = async (

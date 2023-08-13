@@ -15852,7 +15852,6 @@ var require_hmr_client = __commonJS({
         if (!module2.hot) {
           throw new Error("[HMRClient] Hot Module Replacement is disabled.");
         }
-        console.log("applying update", update, this.upToDate(update.hash), module2.hot.status());
         if (!this.upToDate(update.hash) && module2.hot.status() === "idle") {
           console.log("[HMRClient] Checking for updates on the server...");
           this.checkUpdates(update);
@@ -16003,17 +16002,40 @@ var require_devServerClient = __commonJS({
         }
       }
       (0, _createClass2.default)(DevServerClient2, [{ key: "send", value: function send(level, data) {
-        var _a;
+        var _a, _b, _c;
         try {
           (_a = this.socket) == null ? void 0 : _a.send(JSON.stringify({ type: "client-log", level, data: data.map(function(item) {
             return typeof item === "string" ? item : (0, import_pretty_format.default)(item, { escapeString: true, highlight: true, maxDepth: 3, min: true, plugins: [import_pretty_format.default.plugins.ReactElement] });
           }) }));
         } catch (_unused) {
+          try {
+            (_b = this.socket) == null ? void 0 : _b.send(JSON.stringify({ type: "client-log", level, data: data.map(function(item) {
+              return typeof item === "string" ? item : JSON.stringify(item);
+            }) }));
+          } catch (err) {
+            try {
+              (_c = this.socket) == null ? void 0 : _c.send(JSON.stringify({ type: "client-log", level: "error", data: ["error sending client log: " + err] }));
+            } catch (_unused2) {
+            }
+          }
         }
       } }, { key: "flushBuffer", value: function flushBuffer() {
-        for (var _ref of this.buffer) {
-          var level = _ref.level;
-          var data = _ref.data;
+        var _this2 = this;
+        if (globalThis["_tmpLogs"]) {
+          ;
+          ["trace", "info", "warn", "error", "log", "group", "groupCollapsed", "groupEnd", "debug"].forEach(function(level2) {
+            var og = globalThis["_ogConsole" + level2];
+            console[level2] = og;
+          });
+          globalThis["_tmpLogs"].forEach(function(_ref) {
+            var level2 = _ref.level, data2 = _ref.data;
+            _this2.buffer.push({ level: level2, data: data2 });
+          });
+          globalThis["_tmpLogs"] = null;
+        }
+        for (var _ref2 of this.buffer) {
+          var level = _ref2.level;
+          var data = _ref2.data;
           this.send(level, data);
         }
         this.buffer = [];

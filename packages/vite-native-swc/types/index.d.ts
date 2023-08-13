@@ -17,5 +17,6 @@ type Options = {
     plugins?: [string, Record<string, any>][];
 };
 declare const react: (_options?: Options) => PluginOption[];
+export declare function wrapSourceInRefreshRuntime(id: string, code: string, cjs?: boolean): string;
 export default react;
 //# sourceMappingURL=index.d.ts.map

@@ -36,6 +36,9 @@ export declare namespace Server {
      * A complete delegate with implementations for all server functionalities.
      */
     interface Delegate {
+        hotFiles: {
+            getSource: (path: string) => string;
+        };
         /** A compiler delegate. */
         compiler: CompilerDelegate;
         /** A symbolicator delegate. */

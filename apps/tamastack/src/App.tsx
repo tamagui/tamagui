@@ -5,7 +5,7 @@ module.hot = createHotContext(module.url)
 
 export function App() {
   globalThis['startViteHMR']()
-  console.log('🍄🍄🍄')
+  console.log('🍄🍄🍄', globalThis['lastHmrExports'])
 
   return (
     <>
@@ -13,19 +13,8 @@ export function App() {
     </>
   )
 }
+
+if (!exports.App) {
+  exports = { App }
+}
 2
-2
-22
-22
-222
-22
-2
-22
-22
-22
-22
-2
-22
-22
-222222
-22

@@ -15,6 +15,18 @@ global['module'] = {}
 globalThis['setImmediate'] = cb => cb()
 //cb => Promise.resolve().then(() => cb())
 
+// idk why
+globalThis['_tmpLogs'] = []
+;["trace", "info", "warn", "error", "log", "group", "groupCollapsed", "groupEnd", "debug"].forEach(level => {
+  const og = globalThis['console'][level]
+  globalThis['_ogConsole' + level] = og
+  const ogConsole = og.bind(globalThis['console'])
+  globalThis['console'][level] = (...data) => {
+    globalThis['_tmpLogs'].push({ level, data })
+    return ogConsole(...data)
+  }
+})
+
 console._isPolyfilled = true
 
 global.performance = {

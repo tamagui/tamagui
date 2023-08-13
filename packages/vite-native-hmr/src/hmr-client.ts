@@ -122,13 +122,6 @@ class HMRClient {
       throw new Error('[HMRClient] Hot Module Replacement is disabled.')
     }
 
-    console.log(
-      'applying update',
-      update,
-      this.upToDate(update.hash),
-      module.hot.status()
-    )
-
     if (!this.upToDate(update.hash) && module.hot.status() === 'idle') {
       console.log('[HMRClient] Checking for updates on the server...')
       this.checkUpdates(update)

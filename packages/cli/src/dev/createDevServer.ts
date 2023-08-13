@@ -11,10 +11,12 @@ export async function createDevServer(
     indexJson,
     listenForHMR,
     getIndexBundle,
+    hotUpdatedCJSFiles,
   }: {
     indexJson: Object
     getIndexBundle: () => Promise<string>
     listenForHMR: (cb: HMRListener) => void
+    hotUpdatedCJSFiles: Map<string, string>
   }
 ) {
   const { start, stop } = await createServer({
@@ -73,6 +75,12 @@ export async function createDevServer(
       })
 
       return {
+        hotFiles: {
+          getSource: (path) => {
+            return hotUpdatedCJSFiles.get(path)!
+          },
+        },
+
         compiler: {
           getAsset: async (filename, platform, sendProgress) => {
             console.log('[GET] - ', filename)
@@ -127,9 +135,7 @@ export async function createDevServer(
           onClientConnected: (platform, clientId) => {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             // todo
-            const lastStats = {}
-
-            console.log('disable sending last states')
+            // const lastStats = {}
             // ctx.broadcastToHmrClients(
             //   { action: 'sync', body: createHmrBody(lastStats) },
             //   platform,

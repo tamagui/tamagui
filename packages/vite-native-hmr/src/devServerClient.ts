@@ -69,15 +69,59 @@ class DevServerClient {
         })
       )
     } catch {
+      try {
+        this.socket?.send(
+          JSON.stringify({
+            type: 'client-log',
+            level,
+            data: data.map((item: any) =>
+              typeof item === 'string' ? item : JSON.stringify(item)
+            ),
+          })
+        )
+      } catch (err) {
+        try {
+          this.socket?.send(
+            JSON.stringify({
+              type: 'client-log',
+              level: 'error',
+              data: ['error sending client log: ' + err],
+            })
+          )
+        } catch {
+          // final err
+        }
+      }
       // Ignore error
     }
   }
 
   flushBuffer() {
+    if (globalThis['_tmpLogs']) {
+      // restore
+      ;[
+        'trace',
+        'info',
+        'warn',
+        'error',
+        'log',
+        'group',
+        'groupCollapsed',
+        'groupEnd',
+        'debug',
+      ].forEach((level) => {
+        const og = globalThis['_ogConsole' + level]
+        console[level] = og
+      })
+      globalThis['_tmpLogs'].forEach(({ level, data }) => {
+        this.buffer.push({ level, data })
+      })
+      globalThis['_tmpLogs'] = null
+    }
+
     for (const { level, data } of this.buffer) {
       this.send(level, data)
     }
-
     this.buffer = []
   }
 

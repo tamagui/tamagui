@@ -131,6 +131,8 @@ function getProperty(object, property) {
 }
 
 function performReactRefresh() {
+  console.log('performing react refresh' + pendingUpdates.length +  isPerformingRefresh)
+  
   if (pendingUpdates.length === 0) {
     return null;
   }
@@ -184,6 +186,8 @@ function performReactRefresh() {
     const mountedRootsSnapshot = new Set(mountedRoots);
     const helpersByRootSnapshot = new Map(helpersByRoot);
 
+    console.log('checkkk' + failedRootsSnapshot.size + '/' + mountedRootsSnapshot.size)
+    
     failedRootsSnapshot.forEach((root) => {
       const helpers = helpersByRootSnapshot.get(root);
       if (helpers === undefined) {
@@ -213,6 +217,7 @@ function performReactRefresh() {
     });
     mountedRootsSnapshot.forEach((root) => {
       const helpers = helpersByRootSnapshot.get(root);
+      console.log('helpers', + helpers)
       if (helpers === undefined) {
         throw new Error(
           "Could not find helpers for a root. This is a bug in React Refresh.",
@@ -222,6 +227,7 @@ function performReactRefresh() {
         // No longer mounted.
       }
       try {
+        console.log('schedule refresh')
         helpers.scheduleRefresh(root, update);
       } catch (err) {
         if (!didError) {
@@ -231,6 +237,7 @@ function performReactRefresh() {
         // Keep trying other roots.
       }
     });
+    console.log('didError' + didError)
     if (didError) {
       throw firstError;
     }
@@ -241,6 +248,8 @@ function performReactRefresh() {
 }
 
 function register(type, id) {
+  console.log('refresh register' + type + id)
+  
   if (type === null) {
     return;
   }
@@ -258,10 +267,15 @@ function register(type, id) {
   // None of this bookkeeping affects reconciliation
   // until the first performReactRefresh() call above.
   let family = allFamiliesByID.get(id);
+
+  console.log('family' + family)
+  
   if (family === undefined) {
     family = { current: type };
+    console.log('set--' + id)
     allFamiliesByID.set(id, family);
   } else {
+    console.log('pending push' + family)
     pendingUpdates.push([family, type]);
   }
   allFamiliesByType.set(type, family);
@@ -560,6 +574,7 @@ export function getRefreshReg(filename) {
 // Taken from https://github.com/pmmmwh/react-refresh-webpack-plugin/blob/main/lib/runtime/RefreshUtils.js#L141
 // This allows to resister components not detected by SWC like styled component
 export function registerExportsForReactRefresh(filename, moduleExports) {
+  console.log('registerExportsForReactRefresh' + Object.keys(moduleExports).join(','))
   for (const key in moduleExports) {
     if (key === "__esModule") continue;
     const exportValue = moduleExports[key];
@@ -587,6 +602,11 @@ export function validateRefreshBoundaryAndEnqueueUpdate(
   prevExports,
   nextExports,
 ) {
+  console.log("HMR COMPARE" + JSON.stringify({
+    prevExports: Object.keys(prevExports),
+    nextExports: Object.keys(nextExports),
+  }))
+  
   if (!predicateOnExport(prevExports, (key) => !!nextExports[key])) {
     return "Could not Fast Refresh (export removed)";
   }
@@ -601,6 +621,9 @@ export function validateRefreshBoundaryAndEnqueueUpdate(
       return prevExports[key] === nextExports[key];
     },
   );
+
+  console.log('allExportsAreComponentsOrUnchanged' + + hasExports + allExportsAreComponentsOrUnchanged)
+  
   if (hasExports && allExportsAreComponentsOrUnchanged) {
     enqueueUpdate();
   } else {
@@ -620,10 +643,9 @@ function predicateOnExport(moduleExports, predicate) {
 
 // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
 // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
-export const __hmr_import = (module) => {
-  console.log('SHOULD HMR IMPORT', module)
-
-  return Promise.resolve({})
+export const __hmr_import = (module, exported) => {
+  console.log('SHOULD HMR IMPORT' + JSON.stringify(Object.keys(exported)))
+  return Promise.resolve(exported)
 };
 
 // For backwards compatibility with @vitejs/plugin-react.

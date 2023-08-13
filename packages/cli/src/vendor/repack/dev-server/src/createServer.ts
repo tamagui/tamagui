@@ -61,6 +61,15 @@ export async function createServer(config: Server.Config) {
     },
   })
 
+  // fuck delegates
+  instance.register(async (inst) => {
+    inst.get('/file', async (req, reply) => {
+      const query = req.query as Record<string, string>
+      const source = delegate.hotFiles.getSource(query.file)
+      reply.send(source)
+    })
+  })
+
   // Register plugins
   await instance.register(fastifySensible)
   await instance.register(wssPlugin, {

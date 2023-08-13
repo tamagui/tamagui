@@ -2,7 +2,7 @@ import { readFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin from '@tamagui/vite-native-swc'
+import viteReactPlugin, { wrapSourceInRefreshRuntime } from '@tamagui/vite-native-swc'
 import {
   nativeBabelFlowTransform,
   nativeBabelTransform,
@@ -41,9 +41,20 @@ export const dev = async (options: CLIResolvedOptions) => {
     nativePlugin({
       port,
     }),
+    // {
+    //   name: 'native-cjs',
+    //   async transform(code, path) {
+    //     console.log('cjs', path)
+    //     // hardcoding this for now..
+    //     if (path.includes('/src/')) {
+    //       return await nativeBabelTransform(code)
+    //     }
+    //   },
+    // },
   ]
 
   const hmrListeners: HMRListener[] = []
+  const hotUpdatedCJSFiles = new Map<string, string>()
 
   let serverConfig = {
     root,
@@ -51,25 +62,38 @@ export const dev = async (options: CLIResolvedOptions) => {
     clearScreen: false,
     plugins: [
       ...plugins,
-      // custom hmr server handling
+
       {
         name: `tamagui-hot-update`,
-        async handleHotUpdate({ file, read, server }) {
+        async handleHotUpdate({ file, read, modules }) {
           // idk why but its giving me dist asset stuff
-          if (file.includes('/dist/') || file.includes('.tamagui')) {
+          if (!file.includes('/src/')) {
             return
           }
 
           try {
             const raw = await read()
-            const contents = await nativeBabelFlowTransform(raw)
 
-            for (const listener of hmrListeners) {
-              listener({
-                file,
-                contents,
-              })
-            }
+            let contents = wrapSourceInRefreshRuntime(
+              modules[0].url!,
+              await nativeBabelFlowTransform(raw),
+              true
+            )
+
+            contents = `exports = ((exports) => { ${contents}; return exports })({})`
+
+            console.log('contents', contents)
+
+            // set here to be fetched next
+            // i'd have just sent it in the websocket but maybe theres some size limits
+            hotUpdatedCJSFiles.set(modules[0].url, contents)
+
+            // for (const listener of hmrListeners) {
+            //   listener({
+            //     file,
+            //     contents,
+            //   })
+            // }
           } catch (err) {
             console.log('error hmring', err)
           }
@@ -109,6 +133,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
 
   const dispose = await createDevServer(options, {
+    hotUpdatedCJSFiles,
     listenForHMR(cb) {
       hmrListeners.push(cb)
     },
