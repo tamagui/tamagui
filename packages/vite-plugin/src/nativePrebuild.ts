@@ -150,7 +150,6 @@ export async function nativePrebuild() {
                 // omg so ugly but no class support?
                 const outagain = await nativeBabelFlowTransform(code)
 
-                // const contents = output.toString().replace(/static\s+\+/g, 'static ')
                 return {
                   contents: outagain,
                   loader: 'jsx',

@@ -73,27 +73,10 @@ const RequireReactNative = (function () {
   // -- react-native --
 })()
 
-console.log('done with react native')
-console.log('exists?' + !!global['_ReactRefreshRuntime'] + globalThis['_waht'])
-// console.log('exists?' + typeof globalThis['_ReactRefreshRuntime'] + Object.keys(globalThis['_ReactRefreshRuntime']).length)
-
-// console.log('???' + console._ReactRefreshRuntime)
-// Promise.resolve().then(() => {
-//   console.log('???2' + console._ReactRefreshRuntime)
-// })
-
 const RefreshRuntime = (function (module) {
   // -- refresh-runtime --
   return refresh_runtime_exports
 })({})
-
-console.log('🤨 inject')
-// // react native refresh global hook
-// const { injectIntoGlobalHook } = RefreshRuntime
-// injectIntoGlobalHook(globalThis);
-// globalThis.$RefreshReg$ = () => {};
-// globalThis.$RefreshSig$ = () => (type) => type;
-
 
 // -- app --
 

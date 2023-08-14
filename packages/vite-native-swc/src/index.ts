@@ -202,20 +202,9 @@ export function wrapSourceInRefreshRuntime(filename: string, code: string, cjs =
     globalThis.$RefreshReg$ = prevRefreshReg;
     globalThis.$RefreshSig$ = prevRefreshSig;
     globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
-    // RefreshRuntime.__hmr_import(module.url, exports).then((currentExports) => {
-    //   console.log("HMRimport" + JSON.stringify(Object.keys(currentExports)) + JSON.stringify(Object.keys(exports)))
-    //   RefreshRuntime.registerExportsForReactRefresh("${filename}", currentExports);
       module.hot.accept((nextExports) => {
-        console.log("ACEPT" + Object.keys(nextExports))
-        // if (!nextExports) return;
-
         RefreshRuntime.performReactRefresh()
-        
-        // const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
-        // console.log("invalidateMessage", + invalidateMessage)
-        // if (invalidateMessage) module.hot.invalidate(invalidateMessage);
       });
-    // });
   }
   `
 }

@@ -2,10 +2,7 @@ import { readFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin, {
-  swcTransform,
-  wrapSourceInRefreshRuntime,
-} from '@tamagui/vite-native-swc'
+import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
 import { nativeBabelTransform, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import fs, { pathExists } from 'fs-extra'
@@ -39,16 +36,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     nativePlugin({
       port,
     }),
-    // {
-    //   name: 'native-cjs',
-    //   async transform(code, path) {
-    //     console.log('cjs', path)
-    //     // hardcoding this for now..
-    //     if (path.includes('/src/')) {
-    //       return await nativeBabelTransform(code)
-    //     }
-    //   },
-    // },
   ]
 
   const hmrListeners: HMRListener[] = []
@@ -89,8 +76,6 @@ export const dev = async (options: CLIResolvedOptions) => {
             let contents = await nativeBabelTransform(swcout.code)
 
             contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-            console.log('>>>', contents)
 
             // set here to be fetched next
             // i'd have just sent it in the websocket but maybe theres some size limits
