@@ -98,31 +98,7 @@ const react = (_options?: Options): PluginOption[] => {
         },
       ],
       async transform(code, _id, transformOptions) {
-        // todo hack
-        const id = _id.split('?')[0].replace('/Users/n8/tamagui/apps/tamastack', '')
-
-        // const refresh = !transformOptions?.ssr && !hmrDisabled
-        // only change for now:
-        const refresh = true
-
-        const result = await transformWithOptions(id, code, 'es2020', options, {
-          refresh,
-          development: true,
-          runtime: 'automatic',
-          importSource: options.jsxImportSource,
-        })
-
-        if (!result) return
-
-        if (!refresh || !refreshContentRE.test(result.code)) {
-          return result
-        }
-
-        result.code = wrapSourceInRefreshRuntime(id, result.code)
-
-        const sourceMap: SourceMapPayload = JSON.parse(result.map!)
-        sourceMap.mappings = ';;;;;;;;' + sourceMap.mappings
-        return { code: result.code, map: sourceMap }
+        return await swcTransform(_id, code, options)
       },
     },
     options.plugins
@@ -133,11 +109,20 @@ const react = (_options?: Options): PluginOption[] => {
           config: (userConfig) => ({
             build: silenceUseClientWarning(userConfig),
           }),
-          transform: (code, _id) =>
-            transformWithOptions(_id.split('?')[0], code, 'esnext', options, {
-              runtime: 'automatic',
-              importSource: options.jsxImportSource,
-            }),
+          transform: async (code, _id) => {
+            const out = await transformWithOptions(
+              _id.split('?')[0],
+              code,
+              'esnext',
+              options,
+              {
+                runtime: 'automatic',
+                importSource: options.jsxImportSource,
+              }
+            )
+            console.log('??--', out?.code)
+            return out
+          },
         }
       : {
           name: 'vite:react-swc',
@@ -156,13 +141,46 @@ const react = (_options?: Options): PluginOption[] => {
   ]
 }
 
-export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
+export async function swcTransform(
+  _id: string,
+  code: string,
+  options: Options,
+  cjs = false
+) {
+  // todo hack
+  const id = _id.split('?')[0].replace('/Users/n8/tamagui/apps/tamastack', '')
+
+  // const refresh = !transformOptions?.ssr && !hmrDisabled
+  // only change for now:
+  const refresh = true
+
+  const result = await transformWithOptions(id, code, 'es2020', options, {
+    refresh,
+    development: true,
+    runtime: 'automatic',
+    importSource: options.jsxImportSource,
+  })
+
+  if (!result) return
+
+  if (!refresh || !refreshContentRE.test(result.code)) {
+    return result
+  }
+
+  result.code = wrapSourceInRefreshRuntime(id, result.code, cjs)
+
+  const sourceMap: SourceMapPayload = JSON.parse(result.map!)
+  sourceMap.mappings = ';;;;;;;;' + sourceMap.mappings
+  return { code: result.code, map: sourceMap }
+}
+
+export function wrapSourceInRefreshRuntime(filename: string, code: string, cjs = false) {
   return `const RefreshRuntime = require("${runtimePublicPath}");
 
   // if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
   const prevRefreshReg = globalThis.$RefreshReg$;
   const prevRefreshSig = globalThis.$RefreshSig$;
-  globalThis.$RefreshReg$ = RefreshRuntime.getRefreshReg("${id}");
+  globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${filename}" + " " + id);
   globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
   
   ${code}
@@ -184,22 +202,25 @@ export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false
     globalThis.$RefreshReg$ = prevRefreshReg;
     globalThis.$RefreshSig$ = prevRefreshSig;
     globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
-    RefreshRuntime.__hmr_import(module.url, exports).then((currentExports) => {
-      console.log("HMRimport" + JSON.stringify(Object.keys(currentExports)) + JSON.stringify(Object.keys(exports)))
-      RefreshRuntime.registerExportsForReactRefresh("${id}", currentExports);
+    // RefreshRuntime.__hmr_import(module.url, exports).then((currentExports) => {
+    //   console.log("HMRimport" + JSON.stringify(Object.keys(currentExports)) + JSON.stringify(Object.keys(exports)))
+    //   RefreshRuntime.registerExportsForReactRefresh("${filename}", currentExports);
       module.hot.accept((nextExports) => {
         console.log("ACEPT" + Object.keys(nextExports))
-        if (!nextExports) return;
-        const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
-        console.log("invalidateMessage", + invalidateMessage)
-        if (invalidateMessage) module.hot.invalidate(invalidateMessage);
+        // if (!nextExports) return;
+
+        RefreshRuntime.performReactRefresh()
+        
+        // const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate(currentExports, nextExports);
+        // console.log("invalidateMessage", + invalidateMessage)
+        // if (invalidateMessage) module.hot.invalidate(invalidateMessage);
       });
-    });
+    // });
   }
   `
 }
 
-const transformWithOptions = async (
+export const transformWithOptions = async (
   id: string,
   code: string,
   target: JscTarget,

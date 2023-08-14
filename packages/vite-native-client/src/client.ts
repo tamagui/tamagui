@@ -174,15 +174,14 @@ async function handleMessage(payload: HMRPayload) {
       }, __HMR_TIMEOUT__)
       break
     case 'update':
-      console.log('1')
+      console.log('1221' + JSON.stringify(payload))
+
       notifyListeners('vite:beforeUpdate', payload)
       // if this is the first update and there's already an error overlay, it
       // means the page opened with existing server compile error and the whole
       // module script failed to load (since one of the nested imports is 500).
       // in this case a normal update won't work and a full reload is needed.
-      console.log('2')
       if (isFirstUpdate && hasErrorOverlay()) {
-        console.log('3')
         // !
         // window.location.reload()
         return
@@ -190,7 +189,6 @@ async function handleMessage(payload: HMRPayload) {
         clearErrorOverlay()
         isFirstUpdate = false
       }
-      console.log('4')
       await Promise.all(
         payload.updates.map((update) => {
           if (update.type === 'js-update') {
@@ -274,7 +272,6 @@ function createErrorOverlay(err: ErrorPayload['err']) {
 }
 
 function clearErrorOverlay() {
-  console.log('closee error')
   // document.querySelectorAll(overlayId).forEach((n) => (n as ErrorOverlay).close())
 }
 
@@ -370,6 +367,8 @@ async function fetchUpdate({
   const qualifiedCallbacks = mod.callbacks.filter(({ deps }) =>
     deps.includes(acceptedPath)
   )
+
+  console.log('wtf', isSelfUpdate, qualifiedCallbacks.length > 0)
 
   if (isSelfUpdate || qualifiedCallbacks.length > 0) {
     const disposer = disposeMap.get(acceptedPath)
@@ -489,6 +488,8 @@ globalThis['createHotContext'] = function createHotContext(
     },
 
     accept(deps?: any, callback?: any) {
+      console.log('calling accept' + JSON.stringify({ deps }))
+
       if (typeof deps === 'function' || !deps) {
         // self-accept: hot.accept(() => {})
         acceptDeps([ownerPath], ([mod]) => deps?.(mod))

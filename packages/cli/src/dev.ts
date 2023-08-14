@@ -2,13 +2,11 @@ import { readFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin, { wrapSourceInRefreshRuntime } from '@tamagui/vite-native-swc'
-import {
-  nativeBabelFlowTransform,
-  nativeBabelTransform,
-  nativePlugin,
-  nativePrebuild,
-} from '@tamagui/vite-plugin'
+import viteReactPlugin, {
+  swcTransform,
+  wrapSourceInRefreshRuntime,
+} from '@tamagui/vite-native-swc'
+import { nativeBabelTransform, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import fs, { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, resolveConfig } from 'vite'
@@ -74,15 +72,25 @@ export const dev = async (options: CLIResolvedOptions) => {
           try {
             const raw = await read()
 
-            let contents = wrapSourceInRefreshRuntime(
-              modules[0].url!,
-              await nativeBabelFlowTransform(raw),
+            // swc isnt applied here weird
+            const swcout = await swcTransform(
+              file,
+              raw,
+              {
+                tsDecorators: true,
+              },
               true
             )
 
+            if (!swcout) {
+              throw 'sadsad'
+            }
+
+            let contents = await nativeBabelTransform(swcout.code)
+
             contents = `exports = ((exports) => { ${contents}; return exports })({})`
 
-            console.log('contents', contents)
+            console.log('>>>', contents)
 
             // set here to be fetched next
             // i'd have just sent it in the websocket but maybe theres some size limits
@@ -217,16 +225,19 @@ export const dev = async (options: CLIResolvedOptions) => {
     const reactJSXRuntimeCode = reactJsxRuntime.replace(
       `module.exports = require_react_jsx_runtime_production_min();`,
       `return require_react_jsx_runtime_production_min()`
+      // `module.exports = require_react_jsx_dev_runtime_development();`,
+      // `return require_react_jsx_dev_runtime_development();`
     )
 
     const reactNativeCode = reactNative
       .replace(
         `module.exports = require_react_native();`,
-        `return require_react_native()`
+        `require_ReactNative(); return require_react_native()`
       )
+      // forcing onto global so i can re-thread it into require
       .replace(
-        `renderable = /* @__PURE__ */ react(RootComponentWithMeaningfulName, null, renderable);`,
-        ``
+        `ReactRefreshRuntime.injectIntoGlobalHook(global);`,
+        `globalThis['_ReactRefreshRuntime'] = ReactRefreshRuntime; ReactRefreshRuntime.injectIntoGlobalHook(global);`
       )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')

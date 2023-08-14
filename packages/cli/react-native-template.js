@@ -48,7 +48,7 @@ globalThis['require'] = function require(_mod) {
   if (_mod === 'react') return React
   if (_mod === 'react-native') return RequireReactNative
   if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
-  if (_mod === '/@react-refresh') return RefreshRuntime
+  if (_mod === '/@react-refresh') return globalThis['_ReactRefreshRuntime']
   throw new Error(`Not found: ${_mod}`)
 }
 
@@ -62,6 +62,7 @@ const RequireReactJSXRuntime = (function () {
 
 // rn fix
 const jsx = RequireReactJSXRuntime.jsx
+RequireReactJSXRuntime.jsxDEV = RequireReactJSXRuntime.jsxDEV || RequireReactJSXRuntime.jsx
 global['react'] = (type, props, children) => {
   return jsx(type, { children, ...props })
 }
@@ -71,6 +72,15 @@ global['React'] = React
 const RequireReactNative = (function () {
   // -- react-native --
 })()
+
+console.log('done with react native')
+console.log('exists?' + !!global['_ReactRefreshRuntime'] + globalThis['_waht'])
+// console.log('exists?' + typeof globalThis['_ReactRefreshRuntime'] + Object.keys(globalThis['_ReactRefreshRuntime']).length)
+
+// console.log('???' + console._ReactRefreshRuntime)
+// Promise.resolve().then(() => {
+//   console.log('???2' + console._ReactRefreshRuntime)
+// })
 
 const RefreshRuntime = (function (module) {
   // -- refresh-runtime --
