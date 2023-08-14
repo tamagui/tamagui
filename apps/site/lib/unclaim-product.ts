@@ -16,34 +16,35 @@ export async function unclaimSubscription(subscription: Stripe.Subscription) {
     .from('claims')
     .select('*')
     .eq('subscription_id', subscription.id)
-    .single()
   if (claimRes.error) throw claimRes.error
-
-  const claim = claimRes.data
-  const subscriptionRes = await supabaseAdmin.from('subscriptions').select('*').single()
+  const subscriptionRes = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('id', subscription.id)
+    .single()
   if (subscriptionRes.error) throw subscriptionRes.error
 
   const userId = subscriptionRes.data?.user_id
-
   const userRes = await supabaseAdmin.auth.admin.getUserById(userId)
   if (userRes.error) throw userRes.error
+
   const { user } = userRes.data
+  for (const claim of claimRes.data) {
+    const claimData = claim.data
+    if (typeof claimData !== 'object' || !claimData || Array.isArray(claimData)) {
+      throw new Error('bad `data` on claim row')
+    }
 
-  const claimData = claim.data
-  if (typeof claimData !== 'object' || !claimData || Array.isArray(claimData)) {
-    throw new Error('bad `data` on claim row')
+    switch (claimData.claim_type) {
+      case 'repo_access':
+      default:
+        unclaimRepoAccess({ data: claimData, claim, user })
+        break
+    }
+    await supabaseAdmin.from('claims').update({
+      unclaimed_at: Number(new Date()).toString(),
+    })
   }
-
-  switch (claimData.claim_type) {
-    case 'repo_access':
-      unclaimRepoAccess({ data: claimData, claim, user })
-      break
-    default:
-      break
-  }
-  await supabaseAdmin.from('claims').update({
-    unclaimed_at: Number(new Date()).toString(),
-  })
 }
 
 type UnclaimFunction = (args: {
@@ -55,25 +56,16 @@ type UnclaimFunction = (args: {
 }) => Promise<void>
 
 const unclaimRepoAccess: UnclaimFunction = async ({ data, user }) => {
-  if (typeof data.repository_name !== 'string') {
+  const repoName = data.repository_name || data.repo_name
+  if (typeof repoName !== 'string') {
     throw new Error(`repository_name is not set on product metadata or is not correct`)
   }
-
-  const userPrivate = await supabaseAdmin
-    .from('users_private')
-    .select()
-    .eq('id', user.id)
-    .single()
-
-  if (userPrivate.error) {
-    throw new Error(userPrivate.error.message)
+  const githubId = (data.user_github as any)?.id as number | undefined
+  if (!githubId) {
+    throw new Error(`user_github.id is not set on product metadata or is not correct`)
   }
-
-  const userGithubToken = userPrivate.data.github_token
-
-  const githubUser = await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${userGithubToken}` },
-  }).then((res) => res.json())
-
-  removeCollaboratorFromRepo(data.repository_name, githubUser)
+  const githubUser = await fetch(`https://api.github.com/user/${githubId}`).then((res) =>
+    res.json()
+  )
+  removeCollaboratorFromRepo(repoName, githubUser.login)
 }

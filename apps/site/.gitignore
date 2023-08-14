@@ -3,3 +3,4 @@
 .vercel
 .turbo
 out
+.env*.local
