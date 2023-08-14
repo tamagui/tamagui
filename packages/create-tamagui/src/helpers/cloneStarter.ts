@@ -39,7 +39,7 @@ export const cloneStarter = async (
   //   process.exit(1)
   // }
   await copy(starterDir, resolvedProjectPath)
-  rimraf(`${resolvedProjectPath}/.git`)
+  await rimraf(`${resolvedProjectPath}/.git`)
 
   console.log(chalk.green(`${projectName} created!`))
   console.log()
