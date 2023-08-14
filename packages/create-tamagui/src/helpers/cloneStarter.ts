@@ -4,6 +4,7 @@ import { join } from 'path'
 
 import chalk from 'chalk'
 import { copy, ensureDir, pathExists, remove } from 'fs-extra'
+import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
 import { IS_TEST } from '../constants'
@@ -38,7 +39,7 @@ export const cloneStarter = async (
   //   process.exit(1)
   // }
   await copy(starterDir, resolvedProjectPath)
-  execSync(`rm -rf ${resolvedProjectPath}/.git`)
+  await rimraf(`${resolvedProjectPath}/.git`)
 
   console.log(chalk.green(`${projectName} created!`))
   console.log()
