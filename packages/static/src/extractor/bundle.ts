@@ -64,7 +64,12 @@ function getESBuildConfig(
               external: true,
             }
           })
-
+          build.onResolve({ filter: /react-native\/package.json$/ }, (args) => {
+            return {
+              path: 'react-native/package.json',
+              external: true,
+            }
+          })
           build.onResolve({ filter: /@tamagui\/web/ }, (args) => {
             return {
               path: '@tamagui/core-node',
