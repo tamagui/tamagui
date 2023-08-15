@@ -127,9 +127,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   // await ensureDir(options.paths.dotDir)
   // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
-  // new server
-  const outputJsPath = join(process.cwd(), '.tamagui', 'bundle.js')
-
   const dispose = await createDevServer(options, {
     hotUpdatedCJSFiles,
     listenForHMR(cb) {
@@ -137,11 +134,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     },
     getIndexBundle: async function getBundle() {
       const outputCode = await getBundleCode()
-
-      // so you can debug output easier
-      setTimeout(() => {
-        fs.writeFile(outputJsPath, outputCode)
-      })
 
       return outputCode
     },
