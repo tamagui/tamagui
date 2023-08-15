@@ -211,6 +211,11 @@ The `createTamagui` function receives a configuration object:
 - `defaultProps`: For more advanced uses, you can override all named `styled()` components initial values. These merge downwards, so `styled(Text, { name: 'Paragraph' })` will get any defaultProps set for `Text`.
 - `onlyAllowShorthands` when set to true will ensure that if you define shorthands, they override existing long-form style props.
 
+<Notice>
+  On Android you need to set the `face` option in `createFont` or else fonts wont pick up
+  different weights, due to a React Native restriction.
+</Notice>
+
 Note, for `tamagui` (not core), it expects you to define a `true` token that maps to your default size, this way it knows what token to use by default. So you'd do something like this:
 
 ```tsx

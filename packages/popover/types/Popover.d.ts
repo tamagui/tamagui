@@ -6,7 +6,7 @@ import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popp
 import { RemoveScrollProps } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import { ScrollView, ScrollViewProps } from 'react-native';
+import { ScrollView } from 'react-native';
 export type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -296,11 +296,11 @@ export declare const Popover: React.FC<PopoverProps> & {
             readonly open?: boolean | undefined;
             readonly unstyled?: boolean | undefined;
         }>>>) => JSX.Element | null;
-        ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & Omit<StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        ScrollView: React.ForwardRefExoticComponent<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        } & import("@tamagui/core").PseudoProps<Partial<ScrollViewProps & Omit<StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        } & import("@tamagui/core").PseudoProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
-        }>> & import("@tamagui/core").MediaProps<Partial<ScrollViewProps & Omit<StackProps, keyof ScrollViewProps> & Omit<{}, "fullscreen"> & {
+        }>> & import("@tamagui/core").MediaProps<Partial<import("react-native").ScrollViewProps & Omit<StackProps, keyof import("react-native").ScrollViewProps> & Omit<{}, "fullscreen"> & {
             readonly fullscreen?: boolean | undefined;
         }>> & React.RefAttributes<ScrollView>>;
     };
