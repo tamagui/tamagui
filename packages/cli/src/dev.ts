@@ -13,6 +13,7 @@ import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options
+  const projectRoot = root
 
   process.chdir(process.cwd())
 
@@ -83,17 +84,17 @@ export const dev = async (options: CLIResolvedOptions) => {
     extra: { eas: { projectId: '061b4470-78c7-4d6a-b850-8167fb0a3434' } },
     _internal: {
       isDebug: false,
-      projectRoot: '/Users/n8/tamagui/apps/kitchen-sink',
+      projectRoot: projectRoot,
       dynamicConfigPath: null,
-      staticConfigPath: '/Users/n8/tamagui/apps/kitchen-sink/app.json',
-      packageJsonPath: '/Users/n8/tamagui/apps/kitchen-sink/package.json',
+      staticConfigPath: join(projectRoot, `app.json`),
+      packageJsonPath: join(projectRoot, `package.json`),
     },
     sdkVersion: '47.0.0',
     platforms: ['ios', 'android', 'web'],
     iconUrl: `http://127.0.0.1:${port}/assets/./assets/icon.png`,
     debuggerHost: `127.0.0.1:${port}`,
     logUrl: `http://127.0.0.1:${port}/logs`,
-    developer: { tool: 'expo-cli', projectRoot: '/Users/n8/tamagui/apps/kitchen-sink' },
+    developer: { tool: 'expo-cli', projectRoot: projectRoot },
     packagerOpts: { dev: true },
     mainModuleName: 'index',
     __flipperHack: 'React Native packager is running',
