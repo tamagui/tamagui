@@ -1,11 +1,9 @@
-import { AppRegistry, View } from 'react-native'
+import '@tamagui/vite-native-client'
 
-AppRegistry.registerComponent('main', () => Root)
+import { AppRegistry, LogBox } from 'react-native'
+import { App } from './src/App'
 
-function Root() {
-  return (
-    <>
-      <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
-    </>
-  )
-}
+AppRegistry.registerComponent('main', () => App)
+
+LogBox.install()
+

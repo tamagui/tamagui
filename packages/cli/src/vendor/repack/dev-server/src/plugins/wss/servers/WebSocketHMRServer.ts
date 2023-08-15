@@ -42,7 +42,7 @@ export class WebSocketHMRServer extends WebSocketServer {
         key.platform !== platform ||
         !(clientIds ?? [key.clientId]).includes(key.clientId)
       ) {
-        return
+        continue
       }
 
       try {
@@ -65,7 +65,7 @@ export class WebSocketHMRServer extends WebSocketServer {
    */
   onConnection(socket: WebSocket, request: IncomingMessage) {
     const { searchParams } = new URL(request.url || '', 'http://localhost')
-    const platform = searchParams.get('platform')
+    const platform = searchParams.get('platform') || 'ios'
 
     if (!platform) {
       this.fastify.log.info({

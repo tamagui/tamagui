@@ -33,20 +33,16 @@ export class WebSocketRouter {
         let matched = false
 
         if (pathname === '/inspector/device') {
+          // ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
-          console.log('ignoring', pathname)
           // socket.destroy()
           return
         }
-
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log('check for upgrade', pathname)
 
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {
             matched = true
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('matched', pathname)
             server.upgrade(request, socket, head)
             break
           }

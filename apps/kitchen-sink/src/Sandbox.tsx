@@ -43,7 +43,7 @@ const QuickPreviewSection = () => {
       >
         <H3>Preview</H3>
         <Paragraph>
-          Occaecat tempor et et nostrud laboris eiusmod aliquip et est irure in
+          Occaecat tempor2 et et nostrud laboris eiusmod aliquip et est irure in
           adipisicing.
         </Paragraph>
 

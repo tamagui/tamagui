@@ -69,6 +69,9 @@ export class WebSocketEventsServer extends WebSocketServer {
   parseMessage(data: string): Command | undefined {
     try {
       const message = JSON.parse(data)
+
+      console.log('event message', message)
+
       if (message.version === WebSocketEventsServer.PROTOCOL_VERSION) {
         return message
       }

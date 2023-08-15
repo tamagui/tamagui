@@ -1,18 +1,29 @@
-import { readFile } from 'fs/promises'
-import { join } from 'path'
-
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
 import { extensions } from './extensions'
 
-export function nativePlugin(): Plugin {
+export function nativePlugin(options: { port: number }): Plugin {
   return {
     name: 'tamagui-native',
     enforce: 'post',
 
     config: (config) => {
+      // // add hmr client
+      // config.plugins.push({
+      //   name: 'add-hmr-client',
+      //   generateBundle(x) {
+      //     x.
+      //   }
+      // })
+
+      config.define ||= {}
+      config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
+        `${options.port}`
+      )
+      config.define['process.env.REACT_NATIVE_PLATFORM'] = JSON.stringify(`ios`)
+
       if (!config.build) config.build = {}
 
       config.build.modulePreload = { polyfill: false }
@@ -31,19 +42,23 @@ export function nativePlugin(): Plugin {
 
       config.resolve.extensions = extensions
 
-      config.resolve.alias ??= {}
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        // 'react-native/Libraries/Renderer/shims/ReactFabric':
-        //   'react-native/Libraries/Renderer/shims/ReactFabric',
-        // 'react-native/Libraries/Utilities/codegenNativeComponent':
-        //   'react-native/Libraries/Utilities/codegenNativeComponent',
-        // 'react-native-svg': 'react-native-svg',
-        // // 'react-native-web': 'react-native',
-        // 'react-native': 'react-native',
-      }
+      // config.resolve.alias ??= {}
+      // config.resolve.alias = {
+      //   ...config.resolve.alias,
+      //   // 'react-native/Libraries/Renderer/shims/ReactFabric':
+      //   //   'react-native/Libraries/Renderer/shims/ReactFabric',
+      //   // 'react-native/Libraries/Utilities/codegenNativeComponent':
+      //   //   'react-native/Libraries/Utilities/codegenNativeComponent',
+      //   // 'react-native-svg': 'react-native-svg',
+      //   // // 'react-native-web': 'react-native',
+      //   // 'react-native': 'react-native',
+      // }
 
       config.optimizeDeps ??= {}
+
+      config.optimizeDeps.needsInterop ??= []
+      config.optimizeDeps.needsInterop.push('react-native')
+
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 
@@ -108,38 +123,6 @@ export function nativePlugin(): Plugin {
       config.build.commonjsOptions = {
         include: /node_modules\/react\//,
       }
-
-      config.build.rollupOptions.plugins.push({
-        name: `swap-react-native`,
-        async load(id) {
-          if (id.endsWith('react-native/index.js')) {
-            const bundled = await readFile(
-              join(process.cwd(), 'react-native.js'),
-              'utf-8'
-            )
-            const code = bundled
-            return {
-              code: `
-const run = () => {  
-  ${bundled.replace(
-    `module.exports = require_react_native();`,
-    `return require_react_native();`
-  )}
-}
-
-const RN = run()
-
-${RNExportNames.map(
-  (name) =>
-    // adding exports
-    `export const ${name} = RN.${name}`
-).join('\n')}
-
-`,
-            }
-          }
-        },
-      })
 
       const updateOutputOptions = (out: OutputOptions) => {
         // Ensure that as many resources as possible are inlined.

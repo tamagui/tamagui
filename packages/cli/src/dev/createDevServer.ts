@@ -1,14 +1,23 @@
 import { CLIResolvedOptions } from '@tamagui/types'
+import mime from 'mime/lite'
 
 import { DEFAULT_PORT } from '../utils/constants'
 import { Server, createServer } from '../vendor/repack/dev-server/src'
+import { HMRListener } from './types'
 
 export async function createDevServer(
   options: CLIResolvedOptions,
   {
     indexJson,
+    listenForHMR,
     getIndexBundle,
-  }: { indexJson: Object; getIndexBundle: () => Promise<string> }
+    hotUpdatedCJSFiles,
+  }: {
+    indexJson: Object
+    getIndexBundle: () => Promise<string>
+    listenForHMR: (cb: HMRListener) => void
+    hotUpdatedCJSFiles: Map<string, string>
+  }
 ) {
   const { start, stop } = await createServer({
     options: {
@@ -46,19 +55,34 @@ export async function createDevServer(
       //   ctx.broadcastToHmrClients({ action: 'building' }, platform)
       // })
 
-      // compiler.on(
-      //   'done',
-      //   ({ platform, stats }: { platform: string; stats: webpack.StatsCompilation }) => {
-      //     ctx.notifyBuildEnd(platform)
-      //     lastStats = stats
-      //     ctx.broadcastToHmrClients(
-      //       { action: 'built', body: createHmrBody(stats) },
-      //       platform
-      //     )
-      //   }
-      // )
+      const platform = 'ios'
+      listenForHMR((update) => {
+        ctx.notifyBuildEnd(platform)
+        ctx.broadcastToHmrClients(
+          {
+            action: 'built',
+            body: createHmrBody({
+              errors: [],
+              warnings: [],
+              hash: `${Math.random()}`,
+              modules: {},
+              name: '',
+              time: 0,
+            }),
+          },
+          platform
+        )
+      })
 
       return {
+        hotFiles: {
+          getSource: (path) => {
+            const next = hotUpdatedCJSFiles.get(path)
+            hotUpdatedCJSFiles.delete(path) // memory leak prevent
+            return next || ''
+          },
+        },
+
         compiler: {
           getAsset: async (filename, platform, sendProgress) => {
             console.log('[GET] - ', filename)
@@ -70,9 +94,7 @@ export async function createDevServer(
           },
 
           getMimeType: (filename) => {
-            console.log('getMimeType', filename)
-            return 'application/javascript'
-            // return compiler.getMimeType(filename)
+            return mime.getType(filename) || 'application/javascript'
           },
 
           inferPlatform: (uri) => {
@@ -96,7 +118,6 @@ export async function createDevServer(
             return ''
           },
           getSourceMap: async (fileUrl) => {
-            console.log('get source map', fileUrl)
             // const { filename, platform } = parseFileUrl(fileUrl)
             // if (!platform) {
             //   throw new Error('Cannot infer platform for file URL')
@@ -112,18 +133,16 @@ export async function createDevServer(
         },
 
         hmr: {
-          getUriPath: () => '/hot',
+          getUriPath: () => '/__hmr',
           onClientConnected: (platform, clientId) => {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('client connected to hot')
             // todo
-            const lastStats = {}
-
-            ctx.broadcastToHmrClients(
-              { action: 'sync', body: createHmrBody(lastStats) },
-              platform,
-              [clientId]
-            )
+            // const lastStats = {}
+            // ctx.broadcastToHmrClients(
+            //   { action: 'sync', body: createHmrBody(lastStats) },
+            //   platform,
+            //   [clientId]
+            // )
           },
         },
 
@@ -136,9 +155,21 @@ export async function createDevServer(
           onMessage: (log) => {
             const logEntry = makeLogEntryFromFastifyLog(log)
             logEntry.issuer = 'DevServer'
+
+            // ignore for now
+            if (logEntry.type === 'debug') return
+
             // error DevServer, warn DevServer
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
-            console.log('[logger]', logEntry.type, logEntry.issuer, logEntry.message)
+            console.log(
+              '[logger]',
+              logEntry.type === 'info' ? '' : logEntry.type,
+              logEntry.message
+                .map((m) => {
+                  return `${m.msg}`
+                })
+                .join(', ')
+            )
             // reporter.process(logEntry)
           },
         },
@@ -170,27 +201,8 @@ export async function createDevServer(
   }
 }
 
-function createHmrBody(stats?: any): HMRMessageBody | null {
-  if (!stats) {
-    return null
-  }
-
-  const modules: Record<string, string> = {}
-  for (const module of stats.modules ?? []) {
-    const { identifier, name } = module
-    if (identifier !== undefined && name) {
-      modules[identifier] = name
-    }
-  }
-
-  return {
-    name: stats.name ?? '',
-    time: stats.time ?? 0,
-    hash: stats.hash ?? '',
-    warnings: stats.warnings || [],
-    errors: stats.errors || [],
-    modules,
-  }
+function createHmrBody(body: HMRMessageBody): HMRMessageBody | null {
+  return body
 }
 
 /**

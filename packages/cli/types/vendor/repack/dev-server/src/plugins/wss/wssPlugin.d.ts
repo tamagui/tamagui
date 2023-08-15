@@ -1,4 +1,5 @@
 import type { Server } from '../../types';
+import { HermesInspectorProxy } from './servers/HermesInspectorProxy';
 import { WebSocketApiServer } from './servers/WebSocketApiServer';
 import { WebSocketDebuggerServer } from './servers/WebSocketDebuggerServer';
 import { WebSocketDevClientServer } from './servers/WebSocketDevClientServer';
@@ -13,6 +14,7 @@ declare module 'fastify' {
             devClientServer: WebSocketDevClientServer;
             messageServer: WebSocketMessageServer;
             eventsServer: WebSocketEventsServer;
+            hermesInspectorProxy: HermesInspectorProxy;
             apiServer: WebSocketApiServer;
             hmrServer: WebSocketHMRServer;
             router: WebSocketRouter;
