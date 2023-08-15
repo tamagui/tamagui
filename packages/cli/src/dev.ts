@@ -145,7 +145,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
       return outputCode
     },
-    indexJson: getIndexJsonReponse({ port }),
+    indexJson: getIndexJsonReponse({ port, root }),
   })
 
   // rome-ignore lint/nursery/noConsoleLog: ok
@@ -239,7 +239,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   }
 }
 
-function getIndexJsonReponse({ port }: { port: number | string }) {
+function getIndexJsonReponse({ port, root }: { port: number | string; root }) {
   return {
     name: 'myapp',
     slug: 'myapp',
@@ -270,17 +270,17 @@ function getIndexJsonReponse({ port }: { port: number | string }) {
     extra: { eas: { projectId: '061b4470-78c7-4d6a-b850-8167fb0a3434' } },
     _internal: {
       isDebug: false,
-      projectRoot: '/Users/n8/tamagui/apps/kitchen-sink',
+      projectRoot: root,
       dynamicConfigPath: null,
-      staticConfigPath: '/Users/n8/tamagui/apps/kitchen-sink/app.json',
-      packageJsonPath: '/Users/n8/tamagui/apps/kitchen-sink/package.json',
+      staticConfigPath: join(root, 'app.json'),
+      packageJsonPath: join(root, 'package.json'),
     },
     sdkVersion: '47.0.0',
     platforms: ['ios', 'android', 'web'],
     iconUrl: `http://127.0.0.1:${port}/assets/./assets/icon.png`,
     debuggerHost: `127.0.0.1:${port}`,
     logUrl: `http://127.0.0.1:${port}/logs`,
-    developer: { tool: 'expo-cli', projectRoot: '/Users/n8/tamagui/apps/kitchen-sink' },
+    developer: { tool: 'expo-cli', projectRoot: root },
     packagerOpts: { dev: true },
     mainModuleName: 'index',
     __flipperHack: 'React Native packager is running',
