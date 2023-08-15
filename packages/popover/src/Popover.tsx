@@ -14,7 +14,6 @@ import {
   View,
   composeEventHandlers,
   createStyledContext,
-  isClient,
   isWeb,
   useEvent,
   useGet,
@@ -34,7 +33,6 @@ import {
   PopperContentFrame,
   PopperContentProps,
   PopperContext,
-  PopperContextValue,
   PopperProps,
   usePopperContext,
 } from '@tamagui/popper'
@@ -45,7 +43,7 @@ import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Freeze } from 'react-freeze'
-import { Platform, ScrollView, ScrollViewProps } from 'react-native'
+import { Platform, ScrollView } from 'react-native'
 
 import { useFloatingContext } from './useFloatingContext'
 

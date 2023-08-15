@@ -5989,6 +5989,7 @@ __metadata:
     "@floating-ui/react-native": ^0.10.1
     "@tamagui/build": 1.52.4
     react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
     react: "*"
@@ -6502,8 +6503,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popper@workspace:packages/popper"
   dependencies:
-    "@floating-ui/react-dom": ^2.0.1
-    "@floating-ui/react-native": ^0.10.1
     "@tamagui/build": 1.52.4
     "@tamagui/compose-refs": 1.52.4
     "@tamagui/core": 1.52.4
@@ -6512,11 +6511,9 @@ __metadata:
     "@tamagui/stacks": 1.52.4
     "@tamagui/use-controllable-state": 1.52.4
     react: ^18.2.0
-    react-dom: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
     react: "*"
-    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -6719,7 +6716,6 @@ __metadata:
     react-native: ^0.72.1
   peerDependencies:
     react: "*"
-    react-dom: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
