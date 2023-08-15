@@ -15,6 +15,7 @@ import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root, mode, paths } = options
+  const projectRoot = root
 
   const packageRootDir = join(__dirname, '..')
 
