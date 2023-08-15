@@ -55,9 +55,10 @@ export const dev = async (options: CLIResolvedOptions) => {
             return
           }
 
-          const id = modules[0]?.url
+          const id = modules[0]?.url || file.replace(root, '')
+
           if (!id) {
-            console.log('⚠️ no modules?')
+            console.log('⚠️ no modules?', file)
             return
           }
 
@@ -99,10 +100,6 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     ],
     server: {
-      // hmr: {
-      //   host: '127.0.0.1',
-      //   port: 5173,
-      // },
       cors: true,
       port: options.port,
       host: options.host || '127.0.0.1',
@@ -124,6 +121,29 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   await server.listen()
 
+  // need to simulate browser fetching a file so vite loads module into module graph and hmr works
+  // no luck yet:
+
+  // trying to see whats going on with this:
+  // server.moduleGraph = new Proxy(server.moduleGraph, {
+  //   get(t, p) {
+  //     console.log('get', p)
+  //     const out = Reflect.get(t, p)
+  //     if (typeof out === 'function') {
+  //       return new Proxy(out, {
+  //         apply(a, b, c) {
+  //           console.log('apply', p, c)
+  //           return Reflect.apply(a as any, b, c)
+  //         },
+  //       })
+  //     }
+  //     return out
+  //   },
+  // })
+
+  // server.moduleGraph.resolveUrl('/src/App.tsx')
+  // server.moduleGraph.getModuleByUrl('/src/App.tsx')
+  // server.moduleGraph.ensureEntryFromUrl('/src/App.tsx', false)
   // await ensureDir(options.paths.dotDir)
   // const res = await watchTamaguiConfig(options.tamaguiOptions)
 

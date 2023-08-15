@@ -112,7 +112,6 @@ export async function swcTransform(
 ) {
   // todo hack
   const id = _id.split('?')[0].replace(process.cwd(), '')
-  console.log('id', id)
 
   // const refresh = !transformOptions?.ssr && !hmrDisabled
   // only change for now:

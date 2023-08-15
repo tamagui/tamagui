@@ -97,6 +97,7 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', ({ data }) => {
+    console.log('🌶️' + data)
     handleMessage(JSON.parse(data))
   })
 
@@ -106,8 +107,6 @@ function setupWebSocket(
 
   // ping server
   socket.addEventListener('close', ({ wasClean }) => {
-    console.log('scoket close')
-
     if (wasClean) return
 
     if (!isOpened && onCloseWithoutOpen) {
