@@ -65,6 +65,7 @@ export async function createServer(config: Server.Config) {
   instance.register(async (inst) => {
     inst.get('/file', async (req, reply) => {
       const query = req.query as Record<string, string>
+      console.log('getting', query.file)
       const source = delegate.hotFiles.getSource(query.file)
       reply.send(source)
     })

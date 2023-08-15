@@ -45,9 +45,7 @@ class HMRClient {
 
     this.socket = new WebSocket(this.url)
 
-    console.log('[HMRClient] Connecting...', {
-      url: this.url,
-    })
+    console.log('[HMRClient] Connecting...')
 
     this.socket.onopen = () => {
       console.log('[HMRClient] Connected')

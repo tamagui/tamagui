@@ -101,43 +101,6 @@ const react = (_options?: Options): PluginOption[] => {
         return await swcTransform(_id, code, options)
       },
     },
-    options.plugins
-      ? {
-          name: 'vite:react-swc',
-          apply: 'build',
-          enforce: 'pre', // Run before esbuild
-          config: (userConfig) => ({
-            build: silenceUseClientWarning(userConfig),
-          }),
-          transform: async (code, _id) => {
-            const out = await transformWithOptions(
-              _id.split('?')[0],
-              code,
-              'esnext',
-              options,
-              {
-                runtime: 'automatic',
-                importSource: options.jsxImportSource,
-              }
-            )
-            console.log('??--', out?.code)
-            return out
-          },
-        }
-      : {
-          name: 'vite:react-swc',
-          apply: 'build',
-          config: (userConfig) => ({
-            build: silenceUseClientWarning(userConfig),
-            esbuild: {
-              jsx: 'automatic',
-              jsxImportSource: options.jsxImportSource,
-              tsconfigRaw: {
-                compilerOptions: { useDefineForClassFields: true },
-              },
-            },
-          }),
-        },
   ]
 }
 
@@ -148,7 +111,8 @@ export async function swcTransform(
   cjs = false
 ) {
   // todo hack
-  const id = _id.split('?')[0].replace('/Users/n8/tamagui/apps/tamastack', '')
+  const id = _id.split('?')[0].replace(process.cwd(), '')
+  console.log('id', id)
 
   // const refresh = !transformOptions?.ssr && !hmrDisabled
   // only change for now:
@@ -174,14 +138,17 @@ export async function swcTransform(
   return { code: result.code, map: sourceMap }
 }
 
-export function wrapSourceInRefreshRuntime(filename: string, code: string, cjs = false) {
+export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
   return `const RefreshRuntime = require("${runtimePublicPath}");
 
   // if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
   const prevRefreshReg = globalThis.$RefreshReg$;
   const prevRefreshSig = globalThis.$RefreshSig$;
-  globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${filename}" + " " + id);
+  globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
   globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+
+  module.url = '${id}'
+  module.hot = createHotContext(module.url)
   
   ${code}
   

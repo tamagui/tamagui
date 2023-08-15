@@ -24,7 +24,7 @@ export declare function swcTransform(_id: string, code: string, options: Options
     code: string;
     map: SourceMapPayload;
 } | undefined>;
-export declare function wrapSourceInRefreshRuntime(filename: string, code: string, cjs?: boolean): string;
+export declare function wrapSourceInRefreshRuntime(id: string, code: string, cjs?: boolean): string;
 export declare const transformWithOptions: (id: string, code: string, target: JscTarget, options: Options, reactConfig: ReactConfig) => Promise<Output | undefined>;
 export default react;
 //# sourceMappingURL=index.d.ts.map

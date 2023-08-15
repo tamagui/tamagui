@@ -97,11 +97,11 @@ class DevServerClient {
   }
 
   flushBuffer() {
-    if (globalThis['_tmpLogs']) {
-      globalThis['_tmpLogs'].forEach(({ level, data }) => {
+    if (console['_tmpLogs']) {
+      console['_tmpLogs'].forEach(({ level, data }) => {
         this.buffer.push({ level, data })
       })
-      globalThis['_tmpLogs'] = null
+      delete console['_tmpLogs']
     }
 
     for (const { level, data } of this.buffer) {
@@ -115,6 +115,7 @@ class DevServerClient {
       this.flushBuffer()
       this.send(level, data)
     } else {
+      if (console['_tmpLogs']) return
       this.buffer.push({ level, data })
     }
   }

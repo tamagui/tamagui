@@ -37,7 +37,7 @@ export type ThemeUsingMask<Masks = string> = MaskOptions & {
   mask: Masks
 }
 
-type ThemeUsingTemplate = CreateThemeOptions & {
+export type ThemeUsingTemplate = CreateThemeOptions & {
   palette: string
   template: string
 }

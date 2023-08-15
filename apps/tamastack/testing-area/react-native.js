@@ -15796,7 +15796,7 @@ var require_hmr_client = __commonJS({
         this.lastHash = "";
         this.url = `ws://${(0, import_getDevServerLocation.getDevServerLocation)().hostname}:${"8081"}/__hmr?platform=${process.env.REACT_NATIVE_PLATFORM || "ios"}`;
         this.socket = new WebSocket(this.url);
-        console.log("[HMRClient] Connecting...", { url: this.url });
+        console.log("[HMRClient] Connecting...");
         this.socket.onopen = function() {
           console.log("[HMRClient] Connected");
         };
@@ -16021,12 +16021,12 @@ var require_devServerClient = __commonJS({
         }
       } }, { key: "flushBuffer", value: function flushBuffer() {
         var _this2 = this;
-        if (globalThis["_tmpLogs"]) {
-          globalThis["_tmpLogs"].forEach(function(_ref) {
+        if (console["_tmpLogs"]) {
+          console["_tmpLogs"].forEach(function(_ref) {
             var level2 = _ref.level, data2 = _ref.data;
             _this2.buffer.push({ level: level2, data: data2 });
           });
-          globalThis["_tmpLogs"] = null;
+          delete console["_tmpLogs"];
         }
         for (var _ref2 of this.buffer) {
           var level = _ref2.level;
@@ -16039,6 +16039,8 @@ var require_devServerClient = __commonJS({
           this.flushBuffer();
           this.send(level, data);
         } else {
+          if (console["_tmpLogs"])
+            return;
           this.buffer.push({ level, data });
         }
       } }]);

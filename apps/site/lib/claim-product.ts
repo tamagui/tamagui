@@ -28,7 +28,7 @@ export const claimProductAccess = async (
   await supabaseAdmin.from('claims').insert({
     product_id: product.id,
     subscription_id: subscription.id,
-    data: claimData.data,
+    data: { claim_type: metadata.claim_type, ...claimData.data },
   })
 
   return claimData
@@ -49,7 +49,7 @@ type ClaimFunction = (args: {
   /**
    * Will be saved to DB and be used for un-claiming - be careful with changing the shape of this
    */
-  data: Json
+  data: { [key: string]: Json | undefined }
 }>
 
 const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
@@ -88,7 +88,7 @@ const claimRepositoryAccess: ClaimFunction = async ({ user, metadata }) => {
         node_id: githubUser.node_id,
         login: githubUser.login,
       },
-      repo_name: repoName,
+      repository_name: repoName,
       permission,
     },
     message: 'Check your email for an invitation to the repository.',

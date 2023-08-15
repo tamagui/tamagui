@@ -38,41 +38,39 @@ const messageBuffer: string[] = []
 
 let socket: WebSocket
 
-globalThis['startViteHMR'] = () => {
-  try {
-    let fallback: (() => void) | undefined
-    // only use fallback when port is inferred to prevent confusion
-    if (!hmrPort) {
-      fallback = () => {
-        // fallback to connecting directly to the hmr server
-        // for servers which does not support proxying websocket
-        socket = setupWebSocket(socketProtocol, directSocketHost, () => {
-          console.error(
-            '[vite] failed to connect to websocket.\n' +
-              'your current setup:\n' +
-              `  (browser) ${JSON.stringify(
-                importMetaUrl
-              )} <--[HTTP]--> ${serverHost} (server)\n` +
-              `  (browser) ${socketHost} <--[WebSocket (failing)]--> ${directSocketHost} (server)\n` +
-              'Check out your Vite / network configuration and https://vitejs.dev/config/server-options.html#server-hmr .'
-          )
-        })
-        socket.addEventListener(
-          'open',
-          () => {
-            console.log(
-              '[vite] Direct websocket connection fallback. Check out https://vitejs.dev/config/server-options.html#server-hmr to remove the previous connection error.'
-            )
-          },
-          { once: true }
+try {
+  let fallback: (() => void) | undefined
+  // only use fallback when port is inferred to prevent confusion
+  if (!hmrPort) {
+    fallback = () => {
+      // fallback to connecting directly to the hmr server
+      // for servers which does not support proxying websocket
+      socket = setupWebSocket(socketProtocol, directSocketHost, () => {
+        console.error(
+          '[vite] failed to connect to websocket.\n' +
+            'your current setup:\n' +
+            `  (browser) ${JSON.stringify(
+              importMetaUrl
+            )} <--[HTTP]--> ${serverHost} (server)\n` +
+            `  (browser) ${socketHost} <--[WebSocket (failing)]--> ${directSocketHost} (server)\n` +
+            'Check out your Vite / network configuration and https://vitejs.dev/config/server-options.html#server-hmr .'
         )
-      }
+      })
+      socket.addEventListener(
+        'open',
+        () => {
+          console.log(
+            '[vite] Direct websocket connection fallback. Check out https://vitejs.dev/config/server-options.html#server-hmr to remove the previous connection error.'
+          )
+        },
+        { once: true }
+      )
     }
-
-    socket = setupWebSocket(socketProtocol, socketHost, fallback)
-  } catch (error) {
-    console.error(`[vite] failed to connect to websocket (${error}). `)
   }
+
+  socket = setupWebSocket(socketProtocol, socketHost, fallback)
+} catch (error) {
+  console.error(`[vite] failed to connect to websocket (${error}). `)
 }
 
 function setupWebSocket(
@@ -99,12 +97,11 @@ function setupWebSocket(
 
   // Listen for messages
   socket.addEventListener('message', ({ data }) => {
-    console.log(`🥡 (msg) ${data}`)
     handleMessage(JSON.parse(data))
   })
 
   socket.addEventListener('error', (err) => {
-    console.log('err', err)
+    console.log('err' + err['message'] + err['stack'])
   })
 
   // ping server
@@ -159,8 +156,6 @@ const debounceReload = (time: number) => {
 const pageReload = debounceReload(50)
 
 async function handleMessage(payload: HMRPayload) {
-  console.log(`handle ${payload.type}`)
-
   switch (payload.type) {
     case 'connected':
       console.log(`[vite] connected.`)
@@ -174,8 +169,6 @@ async function handleMessage(payload: HMRPayload) {
       }, __HMR_TIMEOUT__)
       break
     case 'update':
-      console.log('1221' + JSON.stringify(payload))
-
       notifyListeners('vite:beforeUpdate', payload)
       // if this is the first update and there's already an error overlay, it
       // means the page opened with existing server compile error and the whole
@@ -368,8 +361,6 @@ async function fetchUpdate({
     deps.includes(acceptedPath)
   )
 
-  console.log('wtf', isSelfUpdate, qualifiedCallbacks.length > 0)
-
   if (isSelfUpdate || qualifiedCallbacks.length > 0) {
     const disposer = disposeMap.get(acceptedPath)
     if (disposer) await disposer(dataMap.get(acceptedPath))
@@ -386,8 +377,6 @@ async function fetchUpdate({
 
       const source = await fetch(scriptUrl).then((res) => res.text())
 
-      console.log('source', source)
-
       const evaluatedModule = eval(source)
 
       fetchedModule = evaluatedModule
@@ -397,12 +386,7 @@ async function fetchUpdate({
   }
 
   return () => {
-    console.log('LOOP DEPS' + acceptedPath + qualifiedCallbacks.length)
-    console.log('fetchedModule' + Object.keys(fetchedModule as any))
-
     for (const { deps, fn } of qualifiedCallbacks) {
-      console.log('deps..' + deps.join(','))
-
       fn(deps.map((dep) => (dep === acceptedPath ? fetchedModule : undefined)))
     }
     const loggedPath = isSelfUpdate ? path : `${acceptedPath} via ${path}`
@@ -469,8 +453,6 @@ globalThis['createHotContext'] = function createHotContext(
   ctxToListenersMap.set(ownerPath, newListeners)
 
   function acceptDeps(deps: string[], callback: HotCallback['fn'] = () => {}) {
-    console.log('accepting deps for' + ownerPath + ' ' + deps.join(','))
-
     const mod: HotModule = hotModulesMap.get(ownerPath) || {
       id: ownerPath,
       callbacks: [],
@@ -488,8 +470,6 @@ globalThis['createHotContext'] = function createHotContext(
     },
 
     accept(deps?: any, callback?: any) {
-      console.log('calling accept' + JSON.stringify({ deps }))
-
       if (typeof deps === 'function' || !deps) {
         // self-accept: hot.accept(() => {})
         acceptDeps([ownerPath], ([mod]) => deps?.(mod))

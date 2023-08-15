@@ -35,6 +35,7 @@ export function registerRequire() {
   }
 }
 
+const packageJson = require('react-native-web/package.json')
 const IGNORES = process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS
 const extraIgnores =
   IGNORES === 'true' ? [] : process.env.TAMAGUI_IGNORE_BUNDLE_ERRORS?.split(',')
@@ -57,6 +58,9 @@ function tamaguiRequire(this: any, path: string) {
     path === '@expo/vector-icons'
   ) {
     return proxyWorm
+  }
+  if (path === 'react-native/package.json') {
+    return packageJson
   }
   if (
     path === 'react-native-web-lite' ||

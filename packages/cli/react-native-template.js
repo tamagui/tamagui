@@ -16,14 +16,14 @@ globalThis['setImmediate'] = cb => cb()
 //cb => Promise.resolve().then(() => cb())
 
 // idk why
-globalThis['_tmpLogs'] = []
+console._tmpLogs = []
 ;["trace", "info", "warn", "error", "log", "group", "groupCollapsed", "groupEnd", "debug"].forEach(level => {
   const og = globalThis['console'][level]
   globalThis['_ogConsole' + level] = og
   const ogConsole = og.bind(globalThis['console'])
   globalThis['console'][level] = (...data) => {
-    if (globalThis['_tmpLogs']) {
-      globalThis['_tmpLogs'].push({ level, data })
+    if (console._tmpLogs) {
+      console._tmpLogs.push({ level, data })
     }
     return ogConsole(...data)
   }
@@ -36,11 +36,9 @@ global.performance = {
 }
 
 global.ErrorUtils = {
-  setGlobalHandler: (...args) => {
-    console.log('args', args)
-  },
+  setGlobalHandler: () => {},
   reportFatalError: (err) => {
-    console.log('err', err)
+    console.log('err' + err['message'] + err['stack'])
   },
 }
 
@@ -72,11 +70,6 @@ global['React'] = React
 const RequireReactNative = (function () {
   // -- react-native --
 })()
-
-const RefreshRuntime = (function (module) {
-  // -- refresh-runtime --
-  return refresh_runtime_exports
-})({})
 
 // -- app --
 

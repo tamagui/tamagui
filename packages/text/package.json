@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.52.2",
+  "version": "1.52.4",
   "sideEffects": [
     "*.css"
   ],
@@ -31,15 +31,15 @@
     }
   },
   "dependencies": {
-    "@tamagui/get-font-sized": "1.52.2",
-    "@tamagui/helpers-tamagui": "1.52.2",
-    "@tamagui/web": "1.52.2"
+    "@tamagui/get-font-sized": "1.52.4",
+    "@tamagui/helpers-tamagui": "1.52.4",
+    "@tamagui/web": "1.52.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.52.2",
+    "@tamagui/build": "1.52.4",
     "react": "^18.2.0"
   },
   "publishConfig": {

@@ -20,6 +20,17 @@ const colorThemeDefinition = (colorName: string) => [
   },
 ]
 
+const nonInherited = {
+  light: {
+    ...lightColors,
+    ...shadows.light,
+  },
+  dark: {
+    ...darkColors,
+    ...shadows.dark,
+  },
+}
+
 const themesBuilder = createThemeBuilder()
   .addPalettes(palettes)
   .addTemplates(templates)
@@ -28,18 +39,12 @@ const themesBuilder = createThemeBuilder()
     light: {
       template: 'base',
       palette: 'light',
-      nonInheritedValues: {
-        ...lightColors,
-        ...shadows.light,
-      },
+      nonInheritedValues: nonInherited.light,
     },
     dark: {
       template: 'base',
       palette: 'dark',
-      nonInheritedValues: {
-        ...darkColors,
-        ...shadows.dark,
-      },
+      nonInheritedValues: nonInherited.dark,
     },
   })
   .addChildThemes({
@@ -177,4 +182,13 @@ const themesBuilder = createThemeBuilder()
     }
   )
 
-export const themes = themesBuilder.build()
+const themesIn = themesBuilder.build()
+
+// stupid typescript too deep types fix :/
+type ThemesIn = typeof themesIn
+type ThemesOut = Omit<ThemesIn, 'light' | 'dark'> & {
+  light: ThemesIn['light'] & typeof nonInherited.light
+  dark: ThemesIn['dark'] & typeof nonInherited.dark
+}
+
+export const themes = themesIn as ThemesOut

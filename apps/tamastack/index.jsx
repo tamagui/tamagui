@@ -7,4 +7,3 @@ AppRegistry.registerComponent('main', () => App)
 
 LogBox.install()
 
-console.log('loading hmr client')

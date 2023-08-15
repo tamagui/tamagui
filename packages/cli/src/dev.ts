@@ -31,7 +31,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     // }),
     viteReactPlugin({
       tsDecorators: true,
-      plugins: [],
     }),
     nativePlugin({
       port,
@@ -53,6 +52,12 @@ export const dev = async (options: CLIResolvedOptions) => {
         async handleHotUpdate({ file, read, modules }) {
           // idk why but its giving me dist asset stuff
           if (!file.includes('/src/')) {
+            return
+          }
+
+          const id = modules[0]?.url
+          if (!id) {
+            console.log('⚠️ no modules?')
             return
           }
 
@@ -79,7 +84,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             // set here to be fetched next
             // i'd have just sent it in the websocket but maybe theres some size limits
-            hotUpdatedCJSFiles.set(modules[0].url, contents)
+            hotUpdatedCJSFiles.set(id, contents)
 
             // for (const listener of hmrListeners) {
             //   listener({
@@ -195,10 +200,9 @@ export const dev = async (options: CLIResolvedOptions) => {
       join(process.cwd(), 'testing-area', 'react.js'),
       join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
       join(process.cwd(), 'testing-area', 'react-native.js'),
-      join(require.resolve('@tamagui/vite-native-swc'), '..', 'refresh-runtime.js'),
     ]
 
-    const [react, reactJsxRuntime, reactNative, refreshCode] = await Promise.all(
+    const [react, reactJsxRuntime, reactNative] = await Promise.all(
       paths.map((p) => readFile(p, 'utf-8'))
     )
 
@@ -229,7 +233,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
     return (await readFile(templateFile, 'utf-8'))
       .replace(`// -- react --`, reactCode)
-      .replace(`// -- refresh-runtime --`, refreshCode)
       .replace(`// -- react-native --`, reactNativeCode)
       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
       .replace(`// -- app --`, appCode.replace('"use strict";', ''))
