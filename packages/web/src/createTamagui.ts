@@ -87,37 +87,39 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const cssRuleSets: string[] = []
 
     if (process.env.TAMAGUI_DOES_SSR_CSS !== 'true') {
-      if (isWeb) {
-        const declarations: string[] = []
-        const fontDeclarations: Record<
-          string,
-          { name: string; declarations: string[]; language?: string }
-        > = {}
+      const declarations: string[] = []
+      const fontDeclarations: Record<
+        string,
+        { name: string; declarations: string[]; language?: string }
+      > = {}
 
-        for (const key in configIn.tokens) {
-          for (const skey in configIn.tokens[key]) {
-            const variable = configIn.tokens[key][skey] as Variable
+      for (const key in configIn.tokens) {
+        for (const skey in configIn.tokens[key]) {
+          const variable = configIn.tokens[key][skey] as Variable
 
-            // set specific tokens (like $size.sm)
-            specificTokens[`$${key}.${skey}`] = variable
+          // set specific tokens (like $size.sm)
+          specificTokens[`$${key}.${skey}`] = variable
 
-            if (process.env.NODE_ENV === 'development') {
-              if (typeof variable === 'undefined') {
-                throw new Error(
-                  `No value for tokens.${key}.${skey}:\n${JSON.stringify(
-                    variable,
-                    null,
-                    2
-                  )}`
-                )
-              }
+          if (process.env.NODE_ENV === 'development') {
+            if (typeof variable === 'undefined') {
+              throw new Error(
+                `No value for tokens.${key}.${skey}:\n${JSON.stringify(
+                  variable,
+                  null,
+                  2
+                )}`
+              )
             }
+          }
 
+          if (isWeb) {
             registerCSSVariable(variable)
             declarations.push(variableToCSS(variable, key === 'zIndex'))
           }
         }
+      }
 
+      if (isWeb) {
         for (const key in fontsParsed) {
           const fontParsed = fontsParsed[key]
           const [name, language] = key.includes('_') ? key.split('_') : [key]
