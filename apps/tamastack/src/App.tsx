@@ -7,7 +7,7 @@ export function App() {
   console.log('🍄🍄🍄')
   return (
     <>
-      <View style={{ backgroundColor: 'green', width: 200, height: 200 }} />
+      <View style={{ backgroundColor: 'red', width: 200, height: 200 }} />
       {/* <Test /> */}
     </>
   )
