@@ -5,34 +5,16 @@
     // for jumping to things properly in vscode
     "baseUrl": ".",
     "paths": {
-      "tamagui": [
-        "../tamagui"
-      ],
-      "@tamagui/*": [
-        "../../packages/*"
-      ],
-      "@components/*": [
-        "./components/*"
-      ],
-      "@lib/*": [
-        "./lib/*"
-      ],
-      "@protected/*": [
-        "./studio/(protected)/*"
-      ],
-      "@data/*": [
-        "./data/*"
-      ],
-      "react-native": [
-        "react-native-web"
-      ]
+      "tamagui": ["../tamagui"],
+      "@tamagui/*": ["../../packages/*"],
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@protected/*": ["./studio/(protected)/*"],
+      "@data/*": ["./data/*"],
+      "react-native": ["react-native-web"]
     },
     "target": "es2021",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "strict": false,
     "allowJs": true,
     "noEmit": true,
@@ -47,6 +29,11 @@
     "plugins": [
       {
         "name": "next"
+      },
+      {
+        "name": "@nderscore/tamagui-typescript-plugin",
+        "pathToApp": "apps/site",
+        "defaultTheme": "light"
       }
     ]
   },
@@ -57,12 +44,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".turbo",
-    "out"
-  ],
+  "exclude": ["node_modules", ".next", ".turbo", "out"],
   "references": [
     {
       "path": "../../packages/colors"

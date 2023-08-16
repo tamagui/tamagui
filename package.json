@@ -91,6 +91,7 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.1",
+    "@nderscore/tamagui-typescript-plugin": "^0.3.1",
     "@vercel/og": "^0.5.8",
     "check-dependency-version-consistency": "^3.0.3",
     "import-sort-style-module": "^6.0.0",

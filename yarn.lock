@@ -3824,6 +3824,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nderscore/tamagui-typescript-plugin@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@nderscore/tamagui-typescript-plugin@npm:0.3.1"
+  dependencies:
+    color: 4.2.3
+  peerDependencies:
+    "@tamagui/core": "*"
+    "@tamagui/helpers": "*"
+    typescript: ">=4.8"
+  checksum: 5aab2be1cc2bd09e303914c1a90e1a61963941d41e50e3cdaec73e447066eabfa8e680db0489019dc7d2cf9c06d49d44f179b8d942e49844576879e8fb56fd22
+  languageName: node
+  linkType: hard
+
 "@next/bundle-analyzer@npm:^12.2.0":
   version: 12.3.4
   resolution: "@next/bundle-analyzer@npm:12.3.4"
@@ -10974,7 +10987,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color@npm:^4.2.3":
+"color@npm:4.2.3, color@npm:^4.2.3":
   version: 4.2.3
   resolution: "color@npm:4.2.3"
   dependencies:
@@ -24284,6 +24297,7 @@ __metadata:
   resolution: "tamagui-monorepo@workspace:."
   dependencies:
     "@manypkg/cli": ^0.19.1
+    "@nderscore/tamagui-typescript-plugin": ^0.3.1
     "@vercel/og": ^0.5.8
     check-dependency-version-consistency: ^3.0.3
     import-sort-style-module: ^6.0.0

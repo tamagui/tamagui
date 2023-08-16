@@ -15,8 +15,15 @@
       ],
       "@takeout/*": [
         "takeout/*"
-      ]
+      ],
     },
+    "plugins": [
+      {
+        "name": "@nderscore/tamagui-typescript-plugin",
+        "pathToApp": "apps/site",
+        "defaultTheme": "light"
+      }
+    ],
     "outDir": "dist",
     "importHelpers": true,
     "allowJs": false,
