@@ -28,6 +28,7 @@
     "test": "yarn test:web"
   },
   "dependencies": {
+    "@expo-google-fonts/lato": "^0.2.3",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native/polyfills": "^2.0.0",
     "@react-navigation/native": "^6.0.11",
