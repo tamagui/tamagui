@@ -962,6 +962,9 @@ export default function TakeoutPage({
                         <Bullet>Improved CI/CD and caching</Bullet>
                         <Bullet>Generator for MDX support</Bullet>
                         <Bullet>Generator for Replicache support</Bullet>
+                        <Bullet>Generator for other databases</Bullet>
+                        <Bullet>Generator and examples for Expo Deep links</Bullet>
+                        <Bullet>Generator for native modules</Bullet>
                         <Bullet>Much more (suggest in the #takeout channel)</Bullet>
                       </XStack>
                     </ThemeTintAlt>
