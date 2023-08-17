@@ -967,6 +967,7 @@ export default function TakeoutPage({
                         <Bullet>Generator for native modules</Bullet>
                         <Bullet>Million.js opt-in and configuration</Bullet>
                         <Bullet>Virtual lists with swipeable items and sorting</Bullet>
+                        <Bullet>Native menus with Zeego</Bullet>
                         <Bullet>Much more (suggest in the #takeout channel)</Bullet>
                       </XStack>
                     </ThemeTintAlt>
