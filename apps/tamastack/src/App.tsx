@@ -1,14 +1,14 @@
+// import { Stack, TamaguiProvider } from '@tamagui/core'
 import { View } from 'react-native'
 
-// todo next
-// import { Test } from './Test'
+// import { default as config } from './tamagui.config'
 
 export function App() {
   console.log('🍄🍄🍄')
   return (
-    <>
-      <View style={{ backgroundColor: 'red', width: 200, height: 200 }} />
-      {/* <Test /> */}
-    </>
+    // <TamaguiProvider config={config}>
+    <View style={{ backgroundColor: 'red', width: 200, height: 200 }} />
+    // <Stack bc="green" width={100} height={100} />
+    // </TamaguiProvider>
   )
 }

@@ -11,7 +11,10 @@ export async function nativeBabelTransform(input: string) {
     babel.transform(
       input,
       {
-        plugins: ['@babel/plugin-transform-modules-commonjs'],
+        plugins: [
+          '@babel/plugin-transform-modules-commonjs',
+          '@babel/plugin-transform-classes',
+        ],
       },
       (err: any, { code }) => {
         if (err) {

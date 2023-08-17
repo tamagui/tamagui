@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "tama dev"
+    "dev": "TAMAGUI_TARGET=native tama dev"
   },
   "dependencies": {
     "@tamagui/colors": "1.52.5",

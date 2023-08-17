@@ -78,7 +78,7 @@ export async function createDevServer(
         hotFiles: {
           getSource: (path) => {
             const next = hotUpdatedCJSFiles.get(path)
-            hotUpdatedCJSFiles.delete(path) // memory leak prevent
+            // hotUpdatedCJSFiles.delete(path) // memory leak prevent
             return next || ''
           },
         },

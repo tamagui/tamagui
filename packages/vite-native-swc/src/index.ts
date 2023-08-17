@@ -98,7 +98,7 @@ const react = (_options?: Options): PluginOption[] => {
         },
       ],
       async transform(code, _id, transformOptions) {
-        return await swcTransform(_id, code, options)
+        return await swcTransform(_id, code, options, true)
       },
     },
   ]
@@ -117,14 +117,16 @@ export async function swcTransform(
   // only change for now:
   const refresh = true
 
-  const result = await transformWithOptions(id, code, 'es2020', options, {
+  const result = await transformWithOptions(id, code, 'es5', options, {
     refresh,
     development: true,
     runtime: 'automatic',
     importSource: options.jsxImportSource,
   })
 
-  if (!result) return
+  if (!result) {
+    return
+  }
 
   if (!refresh || !refreshContentRE.test(result.code)) {
     return result
@@ -139,39 +141,26 @@ export async function swcTransform(
 
 export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
   return `const RefreshRuntime = require("${runtimePublicPath}");
+const prevRefreshReg = globalThis.$RefreshReg$;
+const prevRefreshSig = globalThis.$RefreshSig$;
+globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
+globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
 
-  // if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
-  const prevRefreshReg = globalThis.$RefreshReg$;
-  const prevRefreshSig = globalThis.$RefreshSig$;
-  globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
-  globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+module.url = '${id}'
+module.hot = createHotContext(module.url)
 
-  module.url = '${id}'
-  module.hot = createHotContext(module.url)
-  
-  ${code}
-  
-  ${
-    cjs
-      ? ''
-      : `// this lets us connect and accept it in browser so vite treats it as hmr for native
-  if (import.meta.hot) {
-    RefreshRuntime.__hmr_import(import.meta.url).then(() => {
-      import.meta.hot.accept(() => {
-    
-      })
-    })
-  }`
-  }
-  
-  if (module.hot) {
-    globalThis.$RefreshReg$ = prevRefreshReg;
-    globalThis.$RefreshSig$ = prevRefreshSig;
-    globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
-      module.hot.accept((nextExports) => {
-        RefreshRuntime.performReactRefresh()
-      });
-  }
+${code}
+
+import.meta.hot.accept(() => {})
+
+if (module.hot) {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+  globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
+    module.hot.accept((nextExports) => {
+      RefreshRuntime.performReactRefresh()
+    });
+}
   `
 }
 
@@ -202,9 +191,6 @@ export const transformWithOptions = async (
       swcrc: false,
       configFile: false,
       sourceMaps: true,
-      // module: {
-      //   type: 'commonjs',
-      // },
       jsc: {
         target,
         parser,

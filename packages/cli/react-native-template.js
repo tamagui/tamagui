@@ -7,6 +7,9 @@ const global =
     ? window
     : this
 
+// to avoid it looking like browser...
+delete globalThis['window']
+
 globalThis['global'] = global
 
 global['exports'] = {}
@@ -47,6 +50,9 @@ globalThis['require'] = function require(_mod) {
   if (_mod === 'react-native') return RequireReactNative
   if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
   if (_mod === '/@react-refresh') return globalThis['_ReactRefreshRuntime']
+  RequireReactNative.TouchableOpacity.hi
+  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['ReactPressability']()
+  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['ReactUsePressability']()
   throw new Error(`Not found: ${_mod}`)
 }
 

@@ -343,8 +343,6 @@ async function fetchUpdate({
 }: Update) {
   const mod = hotModulesMap.get(path)
 
-  console.log(`fetching update: ${JSON.stringify({ path, mod })}`)
-
   if (!mod) {
     // In a code-splitting project,
     // it is common that the hot-updating module is not loaded yet.
@@ -373,6 +371,8 @@ async function fetchUpdate({
       const scriptUrl =
         // re-route to our cjs endpoint
         `http://${serverHost.replace('5173', '8081')}` + finalQuery
+
+      console.log(`fetching update: ${JSON.stringify({ path, mod, scriptUrl })}`)
 
       const source = await fetch(scriptUrl).then((res) => res.text())
 

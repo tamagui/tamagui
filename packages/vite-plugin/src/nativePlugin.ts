@@ -56,6 +56,11 @@ export function nativePlugin(options: { port: number }): Plugin {
 
       config.optimizeDeps ??= {}
 
+      // externals
+      // breaks
+      // config.optimizeDeps.exclude ??= []
+      // config.optimizeDeps.exclude.push('react-native')
+
       config.optimizeDeps.needsInterop ??= []
       config.optimizeDeps.needsInterop.push('react-native')
 
@@ -63,6 +68,7 @@ export function nativePlugin(options: { port: number }): Plugin {
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
+
       config.optimizeDeps.esbuildOptions.plugins.push(
         esbuildFlowPlugin(
           /node_modules\/(react-native\/|@react-native\/)/,

@@ -3,7 +3,12 @@ import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
-import { nativeBabelTransform, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
+import {
+  nativeBabelTransform,
+  nativePlugin,
+  nativePrebuild,
+  tamaguiPlugin,
+} from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import fs, { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, resolveConfig } from 'vite'
@@ -26,10 +31,10 @@ export const dev = async (options: CLIResolvedOptions) => {
   const port = options.port || 8081
 
   const plugins = [
-    // tamaguiPlugin({
-    //   components: ['tamagui'],
-    //   target: 'native',
-    // }),
+    tamaguiPlugin({
+      ...options.tamaguiOptions,
+      target: 'native',
+    }),
     viteReactPlugin({
       tsDecorators: true,
     }),
@@ -38,6 +43,12 @@ export const dev = async (options: CLIResolvedOptions) => {
     }),
   ]
 
+  if (process.env.IS_TAMAGUI_DEV) {
+    const inspect = require('vite-plugin-inspect')
+    console.log('🐞 enabling inspect plugin')
+    plugins.push(inspect())
+  }
+
   const hmrListeners: HMRListener[] = []
   const hotUpdatedCJSFiles = new Map<string, string>()
 
@@ -45,61 +56,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     root,
     mode: 'development',
     clearScreen: false,
-    plugins: [
-      ...plugins,
-
-      {
-        name: `tamagui-hot-update`,
-        async handleHotUpdate({ file, read, modules }) {
-          // idk why but its giving me dist asset stuff
-          if (!file.includes('/src/')) {
-            return
-          }
-
-          const id = modules[0]?.url || file.replace(root, '')
-
-          if (!id) {
-            console.log('⚠️ no modules?', file)
-            return
-          }
-
-          try {
-            const raw = await read()
-
-            // swc isnt applied here weird
-            const swcout = await swcTransform(
-              file,
-              raw,
-              {
-                tsDecorators: true,
-              },
-              true
-            )
-
-            if (!swcout) {
-              throw 'sadsad'
-            }
-
-            let contents = await nativeBabelTransform(swcout.code)
-
-            contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-            // set here to be fetched next
-            // i'd have just sent it in the websocket but maybe theres some size limits
-            hotUpdatedCJSFiles.set(id, contents)
-
-            // for (const listener of hmrListeners) {
-            //   listener({
-            //     file,
-            //     contents,
-            //   })
-            // }
-          } catch (err) {
-            console.log('error hmring', err)
-          }
-        },
-      },
-    ],
+    appType: 'custom',
+    plugins,
     server: {
       cors: true,
       port: options.port,
@@ -120,33 +78,40 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const server = await createServer(serverConfig)
 
+  // @ts-ignore
+  resolvedConfig.plugins = resolvedConfig.plugins.filter((x) => {
+    if (x.name === 'vite:import-analysis') {
+      return false
+    }
+    return true
+  })
+
+  server.watcher.addListener('change', async (path) => {
+    const id = path.replace(process.cwd(), '')
+
+    if (!id.endsWith('tsx') && !id.endsWith('jsx')) {
+      return
+    }
+
+    const out = await server.transformRequest(id)
+    if (!out) return
+
+    let contents = await nativeBabelTransform(out.code)
+
+    contents = contents
+      .replace('import.meta.hot.accept(() => {})', '')
+      .replace('react_jsx-dev-runtime', 'react/jsx-dev-runtime')
+      .replace(/\.js\?v=[0-9a-z]+"/gi, '"')
+      .replaceAll('/node_modules/.vite/deps/', '')
+      .replace(`import.meta.hot = (0, _client.createHotContext)("/src/App.tsx");`, '')
+      .replace('var _client = require("/@vite/client");', '')
+
+    contents = `exports = ((exports) => { ${contents}; return exports })({})`
+
+    hotUpdatedCJSFiles.set(id, contents)
+  })
+
   await server.listen()
-
-  // need to simulate browser fetching a file so vite loads module into module graph and hmr works
-  // no luck yet:
-
-  // trying to see whats going on with this:
-  // server.moduleGraph = new Proxy(server.moduleGraph, {
-  //   get(t, p) {
-  //     console.log('get', p)
-  //     const out = Reflect.get(t, p)
-  //     if (typeof out === 'function') {
-  //       return new Proxy(out, {
-  //         apply(a, b, c) {
-  //           console.log('apply', p, c)
-  //           return Reflect.apply(a as any, b, c)
-  //         },
-  //       })
-  //     }
-  //     return out
-  //   },
-  // })
-
-  // server.moduleGraph.resolveUrl('/src/App.tsx')
-  // server.moduleGraph.getModuleByUrl('/src/App.tsx')
-  // server.moduleGraph.ensureEntryFromUrl('/src/App.tsx', false)
-  // await ensureDir(options.paths.dotDir)
-  // const res = await watchTamaguiConfig(options.tamaguiOptions)
 
   const dispose = await createDevServer(options, {
     hotUpdatedCJSFiles,
@@ -186,7 +151,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
     // build app
     const buildOutput = await build({
-      // @ts-ignore
       plugins,
       appType: 'custom',
       root,
@@ -234,7 +198,10 @@ export const dev = async (options: CLIResolvedOptions) => {
     const reactNativeCode = reactNative
       .replace(
         `module.exports = require_react_native();`,
-        `require_ReactNative(); return require_react_native()`
+        `require_ReactNative();
+globalThis["ReactPressability"] = require_Pressability;
+globalThis["ReactUsePressability"] = require_usePressability;
+return require_react_native()`
       )
       // forcing onto global so i can re-thread it into require
       .replace(
@@ -248,7 +215,10 @@ export const dev = async (options: CLIResolvedOptions) => {
       .replace(`// -- react --`, reactCode)
       .replace(`// -- react-native --`, reactNativeCode)
       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-      .replace(`// -- app --`, appCode.replace('"use strict";', ''))
+      .replace(
+        `// -- app --`,
+        appCode.replace('"use strict";', '').replace('undefined.accept(() => {})', '')
+      )
   }
 }
 
