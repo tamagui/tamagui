@@ -33,6 +33,7 @@
     "react-native-web": "^0.19.6",
     "react-router-dom": "^6.14.1",
     "tamagui": "1.52.5",
+    "tinybase": "^4.0.4",
     "victory": "^36.6.11"
   },
   "devDependencies": {
