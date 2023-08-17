@@ -19,10 +19,6 @@ export const skipMask: CreateMask = {
         .map(([k, v]) => [k, applyOverrides(k, v, opts)])
     ) as typeof template
 
-    if (opts.overrideStrategy) {
-      console.log('wtf', template, opts, result)
-    }
-
     return result
   },
 }
@@ -74,7 +70,6 @@ export const createShiftMask = (
         strength = 1,
       } = { ...defaultOptions, ...opts }
       const values = Object.entries(template)
-      if (overrideStrategy === 'swap') debugger
       const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
       const out = {}
       for (const [key, value] of values) {
@@ -82,9 +77,6 @@ export const createShiftMask = (
         if (typeof override?.[key] === 'number') {
           const overrideVal = override[key] as number
           out[key] = overrideStrategy === 'shift' ? value + overrideVal : overrideVal
-          if (overrideStrategy === 'swap') {
-            debugger
-          }
           continue
         } else if (typeof override?.[key] === 'string') {
           out[key] = override[key]
