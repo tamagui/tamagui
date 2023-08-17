@@ -11,12 +11,31 @@ export const createMask = <C extends CreateMask | MaskFunction>(
 
 export const skipMask: CreateMask = {
   name: 'skip-mask',
-  mask: (template, { skip }) => {
-    if (!skip) return template
-    return Object.fromEntries(
-      Object.entries(template).filter(([k]) => !(k in skip))
+  mask: (template, opts) => {
+    const { skip } = opts
+    const result = Object.fromEntries(
+      Object.entries(template)
+        .filter(([k]) => !skip || !(k in skip))
+        .map(([k, v]) => [k, applyOverrides(k, v, opts)])
     ) as typeof template
+
+    if (opts.overrideStrategy) {
+      console.log('wtf', template, opts, result)
+    }
+
+    return result
   },
+}
+
+function applyOverrides(key: string, value: number | string, opts: MaskOptions) {
+  if (!opts.override) return value
+  const override = opts.override[key]
+  if (typeof override === 'undefined') return value
+  if (typeof override === 'string') return value
+  if (opts.overrideStrategy === 'swap') {
+    return override
+  }
+  return value
 }
 
 export const createIdentityMask = (): CreateMask => ({
@@ -48,19 +67,24 @@ export const createShiftMask = (
     mask: (template, opts) => {
       const {
         override,
+        overrideStrategy = 'shift',
         max: maxIn,
         palette,
         min = 0,
         strength = 1,
       } = { ...defaultOptions, ...opts }
       const values = Object.entries(template)
+      if (overrideStrategy === 'swap') debugger
       const max = maxIn ?? (palette ? Object.values(palette).length - 1 : Infinity)
       const out = {}
       for (const [key, value] of values) {
         if (typeof value === 'string') continue
         if (typeof override?.[key] === 'number') {
-          const overrideShift = override[key] as number
-          out[key] = value + overrideShift
+          const overrideVal = override[key] as number
+          out[key] = overrideStrategy === 'shift' ? value + overrideVal : overrideVal
+          if (overrideStrategy === 'swap') {
+            debugger
+          }
           continue
         } else if (typeof override?.[key] === 'string') {
           out[key] = override[key]

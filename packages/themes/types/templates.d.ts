@@ -59,7 +59,8 @@ export declare const templates: {
         color11: number;
         color12: number;
     };
-}, maskOptions: {
+};
+export declare const maskOptions: {
     component: {
         override: {
             color: number;

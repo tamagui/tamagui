@@ -7,6 +7,7 @@ export type ThemeMask = Record<string, string | number>
 export type MaskOptions = {
   palette?: CreateThemePalette
   override?: Partial<ThemeMask>
+  overrideStrategy?: 'shift' | 'swap'
   skip?: Partial<ThemeMask>
   strength?: number
   max?: number
@@ -35,6 +36,9 @@ export type Template = {
 
 export type ThemeUsingMask<Masks = string> = MaskOptions & {
   mask: Masks
+  childOptions?: MaskOptions & {
+    mask?: Masks
+  }
 }
 
 export type ThemeUsingTemplate = CreateThemeOptions & {
