@@ -1,4 +1,4 @@
-import { getToken } from '../config'
+import { getToken, getTokenObject, getTokens } from '../config'
 import { GetThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { DedupedThemes, ThemeParsed } from '../types'
 
@@ -51,7 +51,15 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
   return new Proxy(theme, {
     get(target, key) {
       if (key === GetThemeUnwrapped) return theme
-      if (Reflect.has(target, key)) return Reflect.get(target, key)
+      if (
+        key == null ||
+        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
+        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
+        key == 'undefined' ||
+        Reflect.has(target, key)
+      ) {
+        return Reflect.get(target, key)
+      }
       // check parents
       for (let i = numParents - 1; i >= 0; i--) {
         const parent = themesRaw[parents[i]]
@@ -60,7 +68,7 @@ export function proxyThemeToParents(themeName: string, theme: ThemeParsed) {
           return Reflect.get(parent, key)
         }
       }
-      return getToken(key as any) ?? Reflect.get(target, key)
+      return getTokenObject(key as any) ?? Reflect.get(target, key)
     },
   })
 }

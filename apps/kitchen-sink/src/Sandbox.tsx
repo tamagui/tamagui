@@ -10,9 +10,16 @@ import {
   Text,
   Theme,
   ThemeName,
+  Tokens,
   YStack,
+  getConfig,
+  getThemes,
+  getToken,
+  getTokens,
   styled,
+  useTheme,
 } from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export const MyButton = styled(Button, {
   name: 'MyButton',
@@ -62,12 +69,15 @@ export const Sandbox = () => {
 
   return (
     <>
+      <LinearGradient
+        width={200}
+        height={100}
+        colors={['$blue10Dark', '$testsomethingdifferent']}
+      />
+
       <Theme name={theme}>
         <Theme name="red">
           <QuickPreviewSection />
-          <Button onPress={() => setTheme((x) => (x === 'light' ? 'dark' : 'light'))}>
-            ok
-          </Button>
         </Theme>
       </Theme>
       {/* <TextInput theme={theme} /> */}

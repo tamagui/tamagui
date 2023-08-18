@@ -2,12 +2,14 @@ import { ConfigListener, TamaguiInternalConfig, Token, Tokens, TokensMerged } fr
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;
+export declare function setTokens(_: TokensMerged): void;
 export declare const getTokens: ({ prefixed, }?: {
     /**
      * Force either with $ or without $ prefix
      */
     prefixed?: boolean | undefined;
 }) => TokensMerged;
+export declare const getTokenObject: (value: Token, group?: keyof Tokens) => import("./createVariable").Variable<any>;
 export declare const getToken: (value: Token, group?: keyof Tokens, useVariable?: boolean) => any;
 export declare const getTokenValue: (value: Token, group?: keyof Tokens) => any;
 /**

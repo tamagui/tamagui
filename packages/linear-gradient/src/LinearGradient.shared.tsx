@@ -24,7 +24,12 @@ export const LinearGradient = YStack.styleable<LinearGradientProps>((propsIn, re
   const props = useProps(propsIn)
 
   const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
-  const colors = useThemeColors(colorsProp || [])
+  const theme = useTheme()
+  const colors =
+    props.colors?.map((c) => {
+      return theme[c]?.get() ?? c
+    }) || []
+
   return (
     <LinearGradientFrame ref={ref as any} {...stackProps}>
       <ExpoLinearGradient
@@ -53,14 +58,3 @@ const LinearGradientFrame = styled(YStack, {
   overflow: 'hidden',
   position: 'relative',
 })
-
-// resolve tamagui theme values
-const useThemeColors = (colors: string[]) => {
-  const theme = useTheme()
-  return colors.map((color) => {
-    if (color[0] === '$') {
-      return getVariable(theme[color] || color)
-    }
-    return color
-  })
-}
