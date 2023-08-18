@@ -1,3 +1,5 @@
+- option to disable ssr mode to avoid extra renders on SPA
+
 -  button circular + ai not working <Button
             theme={contrastThemeName}
             circular
