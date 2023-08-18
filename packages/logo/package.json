@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "1.52.5",
+  "version": "1.52.6",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,10 +20,10 @@
     "react": "*"
   },
   "dependencies": {
-    "tamagui": "1.52.5"
+    "tamagui": "1.52.6"
   },
   "devDependencies": {
-    "@tamagui/build": "1.52.5",
+    "@tamagui/build": "1.52.6",
     "react": "^18.2.0"
   },
   "publishConfig": {
