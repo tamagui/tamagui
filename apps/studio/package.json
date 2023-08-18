@@ -15,7 +15,8 @@
   },
   "scripts": {
     "dev": "../../node_modules/.bin/tama studio",
-    "build": "../../node_modules/.bin/tama studio --build",
+    "build": "tamagui-build",
+    "ci:build": "../../node_modules/.bin/tama studio --build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
