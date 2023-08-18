@@ -7155,6 +7155,7 @@ __metadata:
   resolution: "@tamagui/studio@workspace:apps/studio"
   dependencies:
     "@tamagui/build": 1.52.6
+    "@tamagui/cli": 1.52.6
     "@tamagui/linear-gradient": 1.52.6
     "@tamagui/lucide-icons": 1.52.6
     "@tamagui/theme": 1.52.6
