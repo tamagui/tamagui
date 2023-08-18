@@ -10,13 +10,17 @@ import chalk from 'chalk'
 import express from 'express'
 import fs, { ensureDir } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { createServer } from 'vite'
+import { InlineConfig, build, createServer } from 'vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
-export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
+export const studio = async (
+  options: CLIResolvedOptions,
+  isRemote = false,
+  isBuild = false
+) => {
   process.env.TAMAGUI_TARGET = 'web'
 
   await ensureDir(options.paths.dotDir)
@@ -45,13 +49,16 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
       }),
     ])
 
-    const server = await createServer({
+    const viteConfig: InlineConfig = {
       root,
       server: {
         host: options.host,
         port: vitePort,
         hmr: true,
         cors: true,
+      },
+      build: {
+        rollupOptions: {},
       },
       plugins: [
         tamaguiPlugin({
@@ -63,7 +70,14 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
       define: {
         'process.env.TAMAGUI_KEEP_THEMES': 'true',
       },
-    })
+    }
+    console.log(isBuild)
+    if (isBuild) {
+      console.log('we building')
+      return await build(viteConfig)
+    }
+
+    const server = await createServer(viteConfig)
 
     // these can be lazy loaded (eventually should put in own process)
     await server.listen()

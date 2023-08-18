@@ -69,6 +69,7 @@
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:next && yarn upgrade:starters:simple-web",
     "vercel:build": "TAMAGUI_TARGET=web yarn build:js && cd apps/site && yarn ci:build",
+    "vercel:build-studio": "TAMAGUI_TARGET=web yarn build:js && cd apps/studio && yarn build",
     "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",

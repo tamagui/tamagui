@@ -117,6 +117,7 @@ const COMMAND_MAP = {
       '--debug': Boolean,
       '--verbose': Boolean,
       '--remote': Boolean,
+      '--build': Boolean,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
@@ -124,7 +125,7 @@ const COMMAND_MAP = {
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
       })
-      await studio(options, flags['--remote'])
+      await studio(options, flags['--remote'], flags['--build'])
     },
   },
 }
