@@ -51,8 +51,8 @@ export const getTokens = ({
     if (!conf) throw new Error(`Haven't called createTamagui yet`)
   }
   const { tokens, tokensParsed } = conf!
-  if (prefixed === false) return tokens
-  if (prefixed === true) return tokensParsed
+  if (prefixed === false) return tokens as any
+  if (prefixed === true) return tokensParsed as any
   return tokensMerged
 }
 

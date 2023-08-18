@@ -11,7 +11,14 @@ import {
   getHasThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import type { DebugProp, ThemeParsed, ThemeProps, Tokens, VariableVal } from '../types'
+import type {
+  DebugProp,
+  ThemeParsed,
+  ThemeProps,
+  Tokens,
+  VariableVal,
+  VariableValGeneric,
+} from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
@@ -34,7 +41,9 @@ type ThemeGettable<Val> = Val & {
   get: () =>
     | string
     | (Val extends Variable<infer X>
-        ? X
+        ? X extends VariableValGeneric
+          ? any
+          : X
         : Val extends VariableVal
         ? string | number
         : unknown)

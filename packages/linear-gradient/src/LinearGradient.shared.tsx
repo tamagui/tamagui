@@ -25,9 +25,10 @@ export const LinearGradient = YStack.styleable<LinearGradientProps>((propsIn, re
 
   const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
   const theme = useTheme()
+
   const colors =
     props.colors?.map((c) => {
-      return theme[c]?.get() ?? c
+      return (theme[c]?.get() as string) ?? c
     }) || []
 
   return (

@@ -1,7 +1,6 @@
 // import './wdyr'
 
 import { CheckboxWithLabel, SwitchWithLabel } from '@tamagui/demos'
-import Router from 'next/router'
 import { forwardRef, useState } from 'react'
 import { Platform } from 'react-native'
 import {

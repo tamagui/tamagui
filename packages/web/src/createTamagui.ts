@@ -109,7 +109,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       for (const key in tokens) {
         for (const skey in tokens[key]) {
-          const variable = tokens[key][skey] as Variable
+          const variable = tokens[key][skey] as any as Variable
 
           // set specific tokens (like $size.sm)
           specificTokens[`$${key}.${skey}`] = variable
@@ -254,7 +254,7 @@ ${runtimeStyles}`
     animations: {} as any,
     media: {},
     ...configIn,
-    tokens,
+    tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,
     inverseShorthands: shorthands

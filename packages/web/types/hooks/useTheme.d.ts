@@ -1,6 +1,6 @@
 import { Variable } from '../createVariable';
 import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
-import type { DebugProp, ThemeParsed, ThemeProps, Tokens, VariableVal } from '../types';
+import type { DebugProp, ThemeParsed, ThemeProps, Tokens, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state: ThemeManagerState;
     themeManager: ThemeManager;
@@ -8,7 +8,7 @@ export type ChangedThemeResponse = {
     mounted?: boolean;
 };
 type ThemeGettable<Val> = Val & {
-    get: () => string | (Val extends Variable<infer X> ? X : Val extends VariableVal ? string | number : unknown);
+    get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : X : Val extends VariableVal ? string | number : unknown);
 };
 type UseThemeResult = {
     [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;

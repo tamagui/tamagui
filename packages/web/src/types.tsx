@@ -191,7 +191,7 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export type VariableVal = number | string | Variable
+export type VariableVal = number | string | Variable | VariableValGeneric
 export type VariableColorVal = string | Variable
 
 type GenericKey = string
@@ -245,6 +245,8 @@ export type TamaguiBaseTheme = {
   shadowColorPress: VariableColorVal
   shadowColorFocus: VariableColorVal
 }
+
+export type VariableValGeneric = { __generic: 1 }
 
 type GenericTokens = CreateTokens
 type GenericThemes = {

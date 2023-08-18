@@ -75,7 +75,7 @@ export type TamaguiComponentPropsBase = {
 };
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
-export type VariableVal = number | string | Variable;
+export type VariableVal = number | string | Variable | VariableValGeneric;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
@@ -126,6 +126,9 @@ export type TamaguiBaseTheme = {
     shadowColorHover: VariableColorVal;
     shadowColorPress: VariableColorVal;
     shadowColorFocus: VariableColorVal;
+};
+export type VariableValGeneric = {
+    __generic: 1;
 };
 type GenericTokens = CreateTokens;
 type GenericThemes = {
