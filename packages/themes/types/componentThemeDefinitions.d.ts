@@ -35,6 +35,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -71,6 +72,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -108,6 +110,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -146,6 +149,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -182,6 +186,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -218,6 +223,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -254,6 +260,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -290,6 +297,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -326,6 +334,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -362,6 +371,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -398,6 +408,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -434,6 +445,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -470,6 +482,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -506,6 +519,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -542,6 +556,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -578,6 +593,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -614,6 +630,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -668,6 +685,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -704,6 +722,7 @@ export declare const componentThemeDefinitions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;

@@ -91,6 +91,7 @@ export declare const maskOptions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -99,6 +100,7 @@ export declare const maskOptions: {
     alt: {
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         override?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         skip?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
@@ -137,6 +139,7 @@ export declare const maskOptions: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
