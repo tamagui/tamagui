@@ -1,23 +1,21 @@
 // import './wdyr'
 
 import { CheckboxWithLabel, SwitchWithLabel } from '@tamagui/demos'
-import { useState } from 'react'
+import Router from 'next/router'
+import { forwardRef, useState } from 'react'
+import { Platform } from 'react-native'
 import {
   Button,
   H3,
   Paragraph,
   SizableText,
+  TamaguiElement,
   Text,
   Theme,
   ThemeName,
-  Tokens,
   YStack,
-  getConfig,
-  getThemes,
-  getToken,
-  getTokens,
   styled,
-  useTheme,
+  withStaticProperties,
 } from 'tamagui'
 import { LinearGradient } from 'tamagui/linear-gradient'
 
@@ -63,12 +61,36 @@ const QuickPreviewSection = () => {
   )
 }
 
+export const LinkButton = withStaticProperties(
+  forwardRef(function LinkButton(
+    { ...props }: Omit<React.ComponentProps<typeof Button>, 'href' | 'target'>,
+    ref: React.Ref<TamaguiElement>
+  ) {
+    return (
+      <Button
+        ref={ref}
+        {...props}
+        {...(props.disabled && Platform.OS === 'web' && { href: undefined })}
+        tag="a"
+      />
+    )
+  }),
+  {
+    Text: Button.Text,
+    Icon: Button.Icon,
+  }
+)
+
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as ThemeName)
   // need to test all these they seem to be all working:
 
   return (
     <>
+      <YStack tag="a" w={100} h={100} bc="red" />
+
+      <LinkButton>hlleo</LinkButton>
+
       <LinearGradient
         width={200}
         height={100}

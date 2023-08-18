@@ -11,6 +11,8 @@ import {
   Separator,
   Spacer,
   Switch,
+  TamaguiConfig,
+  ThemeParsed,
   YGroup,
   YStack,
   useTheme,

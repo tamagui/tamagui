@@ -160,7 +160,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     tokens: A;
     themes: {
         [Name in keyof B]: {
-            [Key in keyof B[Name]]: Variable;
+            [Key in keyof B[Name]]: Variable<B[Name][Key]>;
         };
     };
     shorthands: C;
@@ -195,7 +195,7 @@ type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['theme
 export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
-    [key in ThemeKeys]: Variable<any>;
+    [key in ThemeKeys]: ThemeDefinition[key];
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {

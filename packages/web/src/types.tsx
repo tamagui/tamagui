@@ -317,7 +317,7 @@ export type CreateTamaguiConfig<
   // parsed
   themes: {
     [Name in keyof B]: {
-      [Key in keyof B[Name]]: Variable
+      [Key in keyof B[Name]]: Variable<B[Name][Key]>
     }
   }
   shorthands: C
@@ -411,7 +411,7 @@ export type ThemeDefinition = BaseThemeDefinitions extends never
   : BaseThemeDefinitions
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
-  [key in ThemeKeys]: Variable<any>
+  [key in ThemeKeys]: ThemeDefinition[key]
 }
 
 export type Tokens = TamaguiConfig['tokens']

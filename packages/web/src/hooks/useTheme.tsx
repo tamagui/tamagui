@@ -3,7 +3,7 @@ import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../config'
-import { getVariable } from '../createVariable'
+import { Variable, getVariable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
 import {
   ThemeManager,
@@ -11,7 +11,7 @@ import {
   getHasThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import type { DebugProp, ThemeParsed, ThemeProps, Tokens } from '../types'
+import type { DebugProp, ThemeParsed, ThemeProps, Tokens, VariableVal } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
@@ -31,7 +31,13 @@ function getDefaultThemeProxied() {
 }
 
 type ThemeGettable<Val> = Val & {
-  get: () => string | Val
+  get: () =>
+    | string
+    | (Val extends Variable<infer X>
+        ? X
+        : Val extends VariableVal
+        ? string | number
+        : unknown)
 }
 
 type UseThemeResult = {
