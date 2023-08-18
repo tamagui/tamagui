@@ -128,6 +128,15 @@ export function getStore<A, B extends Object>(
   return getStoreInfo(StoreKlass, props).store as any
 }
 
+export function getOrCreateStore<A, B extends Object>(
+  StoreKlass: (new (props: B) => A) | (new () => A),
+  props?: B
+): A {
+  return getOrCreateStoreInfo(StoreKlass, props, {
+    refuseCreation: false,
+  }).store as any
+}
+
 // just like getOrCreateStoreInfo but refuses to create
 export function getStoreInfo(StoreKlass: any, props: any) {
   return getOrCreateStoreInfo(StoreKlass, props, {
