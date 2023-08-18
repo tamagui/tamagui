@@ -1,15 +1,18 @@
 import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
-import type { DebugProp, ThemeParsed, ThemeProps } from '../types';
+import type { DebugProp, ThemeParsed, ThemeProps, Tokens } from '../types';
 export type ChangedThemeResponse = {
     state: ThemeManagerState;
     themeManager: ThemeManager;
     isNewTheme: boolean;
     mounted?: boolean;
 };
+type ThemeGettable<Val> = Val & {
+    get: () => string | Val;
+};
 type UseThemeResult = {
-    [key in keyof ThemeParsed]: ThemeParsed[key] & {
-        get: () => string | ThemeParsed[key]['val'];
-    };
+    [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
+} & {
+    [Key in keyof Tokens['color']]: ThemeGettable<string>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResponse, ThemeParsed];

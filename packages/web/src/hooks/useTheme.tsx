@@ -11,7 +11,7 @@ import {
   getHasThemeUpdatingProps,
 } from '../helpers/ThemeManager'
 import { ThemeManagerContext } from '../helpers/ThemeManagerContext'
-import type { DebugProp, ThemeParsed, ThemeProps } from '../types'
+import type { DebugProp, ThemeParsed, ThemeProps, Tokens } from '../types'
 import { GetThemeUnwrapped } from './getThemeUnwrapped'
 
 export type ChangedThemeResponse = {
@@ -30,10 +30,14 @@ function getDefaultThemeProxied() {
   })
 }
 
+type ThemeGettable<Val> = Val & {
+  get: () => string | Val
+}
+
 type UseThemeResult = {
-  [key in keyof ThemeParsed]: ThemeParsed[key] & {
-    get: () => string | ThemeParsed[key]['val']
-  }
+  [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
+} & {
+  [Key in keyof Tokens['color']]: ThemeGettable<string>
 }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
@@ -125,7 +129,13 @@ export function getThemeProxied(
       if (key === GetThemeUnwrapped) {
         return theme
       }
-      if (typeof key === 'string' && keys) {
+      if (
+        // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
+        // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
+        key !== 'undefined' &&
+        typeof key === 'string' &&
+        keys
+      ) {
         // auto convert variables to plain
         const keyString = key[0] === '$' ? key.slice(1) : key
         const val = theme[keyString]
