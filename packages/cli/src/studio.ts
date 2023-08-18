@@ -69,6 +69,7 @@ export const studio = async (
       ],
       define: {
         'process.env.TAMAGUI_KEEP_THEMES': 'true',
+        global: 'window',
       },
     }
     console.log(isBuild)
