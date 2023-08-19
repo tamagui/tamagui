@@ -8,6 +8,7 @@ import {
   H3,
   Paragraph,
   SizableText,
+  Square,
   TamaguiElement,
   Text,
   Theme,
@@ -80,12 +81,31 @@ export const LinkButton = withStaticProperties(
   }
 )
 
-export const Sandbox = () => {
-  const [theme, setTheme] = useState('light' as ThemeName)
-  // need to test all these they seem to be all working:
+const theme = 'light'
 
+// @ts-ignore
+createTamagui({
+  containerNames: ['goated'],
+})
+
+export const Sandbox = () => {
   return (
     <>
+      {/* @ts-ignore */}
+      <YStack group="goated" bc="red" gap="$2">
+        {/* @ts-ignore */}
+        <Square
+          size={20}
+          bc="white"
+          $group-goated={{
+            size: 100,
+          }}
+          $group-goated-hovered={{
+            size: 100,
+          }}
+        />
+      </YStack>
+
       <YStack tag="a" w={100} h={100} bc="red" />
 
       <LinkButton>hlleo</LinkButton>
