@@ -139,6 +139,11 @@ const CheckboxIndicator = CheckboxIndicatorFrame.extractable(
         disablePassStyles,
         ...indicatorProps
       } = props
+      if (process.env.NODE_ENV === 'development' && !childrenProp) {
+        console.warn(
+          `Warning: You created a Checkbox.Indicator without passing an child prop for it to use as an icon.`
+        )
+      }
       const context = useCheckboxContext(INDICATOR_NAME, __scopeCheckbox)
       const styledContext = React.useContext(CheckboxStyledContext)
       const iconSize =
@@ -241,6 +246,10 @@ export interface CheckboxProps
   checked?: CheckedState
   defaultChecked?: CheckedState
   required?: boolean
+  /**
+   *
+   * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
+   */
   onCheckedChange?(checked: CheckedState): void
   labelledBy?: string
   name?: string

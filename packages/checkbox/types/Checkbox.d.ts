@@ -294,6 +294,10 @@ export interface CheckboxProps extends Omit<CheckboxFrameProps, 'checked' | 'def
     checked?: CheckedState;
     defaultChecked?: CheckedState;
     required?: boolean;
+    /**
+     *
+     * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
+     */
     onCheckedChange?(checked: CheckedState): void;
     labelledBy?: string;
     name?: string;
