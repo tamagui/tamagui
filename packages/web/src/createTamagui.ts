@@ -100,7 +100,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeConfig = (() => {
     const cssRuleSets: string[] = []
 
-    if (process.env.TAMAGUI_DOES_SSR_CSS !== 'true') {
+    if (
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'true' &&
+      // we can leave this out if mutating, only need the js for getThemeCSSRules
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'mutates-themes'
+    ) {
       const declarations: string[] = []
       const fontDeclarations: Record<
         string,
