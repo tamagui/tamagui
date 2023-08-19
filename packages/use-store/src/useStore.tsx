@@ -40,10 +40,7 @@ export function createStore<A, B extends Object>(
   props?: B,
   options?: UseStoreOptions<A, any>
 ): A {
-  return getOrCreateStoreInfo(StoreKlass, props, {
-    ...options,
-    avoidCache: true,
-  }).store as any
+  return getOrCreateStoreInfo(StoreKlass, props, options).store as any
 }
 // use singleton with react
 // TODO selector support with types...

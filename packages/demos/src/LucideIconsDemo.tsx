@@ -3,7 +3,10 @@ import { useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Grid, Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
 
-const lucideIcons = Object.keys(LucideIcons).map((name) => ({
+const lucideIcons = Object.keys(
+  // vite tree shaking workaround
+  typeof LucideIcons !== 'undefined' ? LucideIcons : {}
+).map((name) => ({
   key: name.toLowerCase(),
   name,
   Icon: LucideIcons[name],

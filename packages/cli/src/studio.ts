@@ -11,6 +11,8 @@ import express from 'express'
 import fs, { ensureDir } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { InlineConfig, build, createServer } from 'vite'
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
+import viteInspect from 'vite-plugin-inspect'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
@@ -49,7 +51,13 @@ export const studio = async (
       }),
     ])
 
-    const viteConfig: InlineConfig = {
+    const targets = [
+      resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+      resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+    ]
+    console.log('targets', targets)
+
+    const viteConfig = {
       root,
       server: {
         host: options.host,
@@ -68,12 +76,17 @@ export const studio = async (
           tsDecorators: true,
         }),
         viteTsConfigPaths(),
+        await entryShakingPlugin({
+          targets,
+        }),
+        viteInspect(),
       ],
       define: {
         'process.env.TAMAGUI_KEEP_THEMES': 'true',
         global: 'window',
       },
-    }
+    } satisfies InlineConfig
+
     console.log(isBuild)
     if (isBuild) {
       console.log('we building')

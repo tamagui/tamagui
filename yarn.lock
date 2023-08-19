@@ -5764,6 +5764,7 @@ __metadata:
     typescript: ^5.1.3
     url: ^0.11.0
     vite: ^4.4.9
+    vite-plugin-entry-shaking: ^0.3.2
     vite-plugin-inspect: ^0.7.38
     vite-tsconfig-paths: ^4.2.0
     ws: ^8.7.0
@@ -7513,6 +7514,7 @@ __metadata:
   resolution: "@tamagui/use-store@workspace:packages/use-store"
   dependencies:
     "@tamagui/build": 1.52.7
+    "@tamagui/simple-hash": 1.52.7
     "@testing-library/react": ^13.4.0
     react: ^18.2.0
     vitest: ^0.26.3
@@ -12874,6 +12876,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-module-lexer@npm:^1.0.3":
+  version: 1.3.0
+  resolution: "es-module-lexer@npm:1.3.0"
+  checksum: 48fd9f504a9d2a894126f75c8b7ccc6273a289983e9b67255f165bfd9ae765d50100218251e94e702ca567826905ea2f7b3b4a0c4d74d3ce99cce3a2a606a238
+  languageName: node
+  linkType: hard
+
 "es-module-lexer@npm:^1.2.1":
   version: 1.2.1
   resolution: "es-module-lexer@npm:1.2.1"
@@ -18061,6 +18070,15 @@ __metadata:
     "@types/three": ">=0.144.0"
     three: ">=0.144.0"
   checksum: dfe2321a2a0c3ca80455d01bf2e98eb55b06abfdacd386ebe577f20d9eec9fa30ac7208d303362832fdfb8ffdfddbe0309e13e6e6eac17efd35353bbee9bcde6
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.26.3":
+  version: 0.26.7
+  resolution: "magic-string@npm:0.26.7"
+  dependencies:
+    sourcemap-codec: ^1.4.8
+  checksum: 89b0d60cbb32bbf3d1e23c46ea93db082d18a8230b972027aecb10a40bba51be519ecce0674f995571e3affe917b76b09f59d8dbc9a1b2c9c4102a2b6e8a2b01
   languageName: node
   linkType: hard
 
@@ -24029,6 +24047,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sourcemap-codec@npm:^1.4.8":
+  version: 1.4.8
+  resolution: "sourcemap-codec@npm:1.4.8"
+  checksum: b57981c05611afef31605732b598ccf65124a9fcb03b833532659ac4d29ac0f7bfacbc0d6c5a28a03e84c7510e7e556d758d0bb57786e214660016fb94279316
+  languageName: node
+  linkType: hard
+
 "space-separated-tokens@npm:^2.0.0":
   version: 2.0.2
   resolution: "space-separated-tokens@npm:2.0.2"
@@ -26855,6 +26880,18 @@ __metadata:
   peerDependencies:
     vite: ^4.3.9
   checksum: e6de979c914c68ea43fae79d14bb5b23a836d51dc2e9b4bc963bc8c524dd72da9aae37274d0a304e4fde142bd2e39caf0c9cabda07b07478eaf78ae63b4bc9d3
+  languageName: node
+  linkType: hard
+
+"vite-plugin-entry-shaking@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "vite-plugin-entry-shaking@npm:0.3.2"
+  dependencies:
+    es-module-lexer: ^1.0.3
+    magic-string: ^0.26.3
+  peerDependencies:
+    vite: ">=2.0.0"
+  checksum: 1c0cb85cb856302447e3d65440a2f50a1188939a0d7ea13764dcda7c320f872ff83f2136f06f7d89792b60ec59690236a2917d2259d0260e0e4de210439b9a28
   languageName: node
   linkType: hard
 
