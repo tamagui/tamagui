@@ -64,7 +64,9 @@ export const studio = async (
         tamaguiPlugin({
           components: ['tamagui'],
         }),
-        viteReactPlugin(),
+        viteReactPlugin({
+          tsDecorators: true,
+        }),
         viteTsConfigPaths(),
       ],
       define: {

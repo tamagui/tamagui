@@ -11,11 +11,12 @@ export interface Store<Props = Record<string, any> | null | undefined> {
     props: Props;
 }
 export type StoreInfo<A = Store> = {
-    uid: number;
+    uid: string;
     keyComparators?: {
         [key: string]: (a: any, b: any) => boolean;
     };
     store: A;
+    props: Record<string, any> | null;
     storeInstance: any;
     getters: {
         [key: string]: any;

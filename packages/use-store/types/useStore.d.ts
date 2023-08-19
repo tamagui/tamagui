@@ -12,6 +12,8 @@ export declare function trackStoresAccess(cb: StoreAccessTracker): () => void;
 export declare function getStore<A, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B): A;
 export declare function getOrCreateStore<A, B extends Object>(StoreKlass: (new (props: B) => A) | (new () => A), props?: B): A;
 export declare function getStoreInfo(StoreKlass: any, props: any): StoreInfo;
+export type CreateStoreListener = (storeInfo: StoreInfo) => void;
+export declare function onCreateStore(cb: CreateStoreListener): () => void;
 export declare const allStores: {};
 export declare const setIsInReaction: (val: boolean) => void;
 export type StoreTracker = {

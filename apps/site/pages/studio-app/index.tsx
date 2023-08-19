@@ -13,7 +13,7 @@ export default function Page() {
 // import { rootStore } from '@protected/studio/state/RootStore'
 // import { themesStore } from '@protected/studio/state/ThemesStore'
 // import { Tab } from '@protected/studio/state/types'
-// import { useSelector } from '@tamagui/use-store'
+// import { useObserve } from '@tamagui/use-store'
 // import { useRouter } from 'next/router'
 // import React, { Suspense, memo, useEffect, useMemo, useState, useTransition } from 'react'
 // import { isLocal } from 'studio/constants'
@@ -22,7 +22,7 @@ export default function Page() {
 // export default function Page() {
 //   const hydrated = useDidFinishSSR()
 
-//   const fsReadSucceeded = useSelector(() => rootStore.fsReadSucceeded)
+//   const fsReadSucceeded = useObserve(() => rootStore.fsReadSucceeded)
 
 //   // disable ssr
 //   if (!hydrated) {

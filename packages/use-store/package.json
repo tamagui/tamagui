@@ -26,6 +26,9 @@
       "require": "./dist/cjs/index.js"
     }
   },
+  "dependencies": {
+    "@tamagui/simple-hash": "1.52.7"
+  },
   "devDependencies": {
     "@tamagui/build": "1.52.7",
     "@testing-library/react": "^13.4.0",

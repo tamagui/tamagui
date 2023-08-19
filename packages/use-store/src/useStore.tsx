@@ -144,6 +144,17 @@ export function getStoreInfo(StoreKlass: any, props: any) {
   })
 }
 
+export type CreateStoreListener = (storeInfo: StoreInfo) => void
+
+const onCreateListeners = new Set<CreateStoreListener>()
+
+export function onCreateStore(cb: CreateStoreListener) {
+  onCreateListeners.add(cb)
+  return () => {
+    onCreateListeners.delete(cb)
+  }
+}
+
 function getOrCreateStoreInfo(
   StoreKlass: any,
   props: any,
@@ -185,11 +196,12 @@ function getOrCreateStoreInfo(
   const listeners = new Set<Function>()
 
   const storeInfo = {
-    uid: Math.random(),
+    uid,
     keyComparators,
     storeInstance,
     getters,
     stateKeys,
+    props,
     actions,
     debug: options?.debug,
     disableTracking: false,
@@ -236,6 +248,8 @@ function getOrCreateStoreInfo(
 
   // still set even when avoidCache is true (hmr)
   cache.set(uid, result)
+
+  onCreateListeners.forEach((cb) => cb(result))
 
   return result
 }
@@ -552,13 +566,8 @@ function createProxiedStore(storeInfo: StoreInfo) {
       if (key === UNWRAP_STORE_INFO) {
         return storeInfo
       }
-      const trackingDisabled = storeInfo.disableTracking
-      if (!trackingDisabled) {
-        if (storeAccessTrackers.size && !storeAccessTrackers.has(storeInstance)) {
-          for (const t of storeAccessTrackers) {
-            t(storeInfo)
-          }
-        }
+      if (storeAccessTrackers.size) {
+        storeAccessTrackers.forEach((cb) => cb(storeInfo))
       }
       if (typeof key !== 'string') {
         return Reflect.get(storeInstance, key)
@@ -566,7 +575,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
 
       // non-actions...
 
-      if (!trackingDisabled) {
+      if (!storeInfo.disableTracking) {
         if (gettersState.isGetting) {
           gettersState.curGetKeys.add(key)
         } else {

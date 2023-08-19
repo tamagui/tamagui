@@ -5,8 +5,6 @@ import { UNWRAP_PROXY } from './constants'
 import { StoreInfo } from './interfaces'
 import { trackStoresAccess } from './useStore'
 
-// TODO i think we can just replace reaction() with this, its not worse in any way
-
 const logUpdate =
   process.env.NODE_ENV === 'development'
     ? (fn: any, stores: any[], last: any, next: any) => {
@@ -26,57 +24,59 @@ const logUpdate =
       }
     : null
 
-// // TODO test this works the same as useSelector
-// export function selector(fn: () => any) {
-//   let prev = runStoreSelector(fn)
-//   let disposeValue: Function | null = null
-//   const subscribe = () => {
-//     return subscribeToStores([...prev.storeInfos], () => {
-//       try {
-//         disposeValue?.()
-//         setIsInReaction(true)
-//         const next = runStoreSelector(fn)
-//         if (typeof next.value === 'function') {
-//           disposeValue = next.value
-//           if (process.env.NODE_ENV === 'development') {
-//             logUpdate!(fn, [...next.storeInfos], '(fn)', '(fn)')
-//           }
-//           return
-//         }
-//         if (
-//           isEqualSubsetShallow(prev.stores, next.stores) &&
-//           isEqualSubsetShallow(prev.value, next.value)
-//         ) {
-//           return
-//         }
-//         if (process.env.NODE_ENV === 'development') {
-//           logUpdate!(fn, [...next.stores], prev.value, next.value)
-//         }
-//         prev = next
-//         dispose()
-//         dispose = subscribe()
-//       } finally {
-//         setIsInReaction(false)
-//       }
-//     })
-//   }
-//   let dispose = subscribe()
-//   return () => {
-//     dispose()
-//     disposeValue?.()
-//   }
-// }
+export function observe(fn: () => any) {
+  let prev = getObserverValueAndStoresAccessed(fn)
+  let disposeValue: Function | null = null
 
-export function useSelector<A>(fn: () => A): A {
+  const subscribe = () => {
+    const stores = [...prev.storeInfos]
+    return subscribeToStores(stores, () => {
+      disposeValue?.()
+      const next = getObserverValueAndStoresAccessed(fn)
+
+      if (typeof next.value === 'function') {
+        disposeValue = next.value
+        if (process.env.NODE_ENV === 'development') {
+          logUpdate!(fn, [...next.storeInfos], '(fn)', '(fn)')
+        }
+        return
+      }
+      if (
+        isEqualSubsetShallow(prev.storeInfos, next.storeInfos) &&
+        isEqualSubsetShallow(prev.value, next.value)
+      ) {
+        return
+      }
+      if (process.env.NODE_ENV === 'development') {
+        logUpdate!(fn, [...next.storeInfos], prev.value, next.value)
+      }
+      prev = next
+      dispose()
+      dispose = subscribe()
+    })
+  }
+
+  let dispose = subscribe()
+
+  return {
+    dispose: () => {
+      dispose()
+      disposeValue?.()
+    },
+    getValue: () => prev.value,
+  }
+}
+
+export function useObserve<A>(fn: () => A): A {
   const [state, setState] = useState(() => {
-    return runStoreSelector(fn)
+    return getObserverValueAndStoresAccessed(fn)
   })
 
   useEffect(() => {
     let dispose
     const unsub = subscribeToStores([...state.storeInfos], () => {
       dispose?.()
-      const next = runStoreSelector(fn)
+      const next = getObserverValueAndStoresAccessed(fn)
 
       const nextStoreInfos = [...next.storeInfos]
       const prevStoreInfos = [...state.storeInfos]
@@ -89,6 +89,7 @@ export function useSelector<A>(fn: () => A): A {
         dispose = next.value
         return
       }
+
       setState((prev) => {
         if (
           isEqualSubsetShallow(prevStoreInfos, nextStoreInfos) &&
@@ -102,6 +103,7 @@ export function useSelector<A>(fn: () => A): A {
         return next
       })
     })
+
     return () => {
       unsub()
       dispose?.()
@@ -111,7 +113,7 @@ export function useSelector<A>(fn: () => A): A {
   return state.value
 }
 
-function runStoreSelector<A>(selector: () => A): {
+function getObserverValueAndStoresAccessed<A>(selector: () => A): {
   value: A
   storeInfos: Set<StoreInfo>
 } {
@@ -127,10 +129,31 @@ function runStoreSelector<A>(selector: () => A): {
   }
 }
 
-function subscribeToStores(stores: StoreInfo[], onUpdate: () => any) {
+function subscribeToStores(storeInfos: StoreInfo[], onUpdate: () => any) {
   const disposes: Function[] = []
-  for (const store of stores) {
-    disposes.push(store.subscribe(onUpdate))
+
+  // wrap onUpdate to avoid waterfall calls + avoid tracking during onUpdate
+  let isUpdating = false
+  const onUpdateDebouncedWithoutTracking = () => {
+    if (isUpdating) return
+    isUpdating = true
+    queueMicrotask(() => {
+      try {
+        for (const storeInfo of storeInfos) {
+          storeInfo.disableTracking = true
+        }
+        onUpdate()
+      } finally {
+        isUpdating = false
+        for (const storeInfo of storeInfos) {
+          storeInfo.disableTracking = false
+        }
+      }
+    })
+  }
+
+  for (const storeInfo of storeInfos) {
+    disposes.push(storeInfo.subscribe(onUpdateDebouncedWithoutTracking))
   }
   return () => {
     disposes.forEach((x) => x())
