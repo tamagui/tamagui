@@ -21,29 +21,37 @@ export const Theme = forwardRef(function Theme(props: ThemeProps, ref) {
   }
 
   const isRoot = !!props['_isRoot']
+  const disableDirectChildTheme = props['disable-child-theme']
   const themeState = useChangeThemeEffect(props, isRoot)
 
   const children = useMemo(() => {
-    let _ = props.children
+    let children = disableDirectChildTheme
+      ? Children.map(props.children, (child) =>
+          cloneElement(child, { ['data-disable-theme']: true })
+        )
+      : props.children
+
     if (ref) {
       try {
-        React.Children.only(_)
-        _ = cloneElement(_, { ref })
+        React.Children.only(children)
+        children = cloneElement(children, { ref })
       } catch {
         //ok
       }
     }
+
     if (process.env.NODE_ENV === 'development') {
       if (props.debug === 'visualize') {
-        _ = (
+        children = (
           <ThemeDebug themeState={themeState} themeProps={props}>
-            {_}
+            {children}
           </ThemeDebug>
         )
       }
     }
-    return _
-  }, [props.children, props.debug])
+
+    return children
+  }, [props.children, disableDirectChildTheme])
 
   return useThemedChildren(themeState, children, props, isRoot)
 })

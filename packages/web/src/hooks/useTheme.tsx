@@ -261,6 +261,7 @@ export const useChangeThemeEffect = (
       const disposeChangeListener = parentManager?.onChangeTheme((name, manager) => {
         const force = shouldUpdate?.()
         const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
+
         if (process.env.NODE_ENV === 'development' && props.debug) {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: <explanation>
@@ -362,7 +363,7 @@ export const useChangeThemeEffect = (
           if (!prev.isNewTheme || !isWeb) {
             themeManager = getNewThemeManager()
           } else {
-            themeManager.updateState(nextState, true)
+            themeManager.updateState(nextState)
           }
         } else {
           if (prev.isNewTheme) {

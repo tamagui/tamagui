@@ -87,8 +87,8 @@ export const Sandbox = () => {
     <>
       {/* @ts-ignore */}
       <XStack>
-        <Button size="$10" f={1} fb={0} theme="active">
-          Facebook
+        <Button theme="pink" size="$10" f={1} fb={0}>
+          <Button.Text>Facebook</Button.Text>
         </Button>
       </XStack>
 

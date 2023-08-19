@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef } from 'react'
 
 import { DebugProp, StaticConfig, ThemeName } from '../types'
 import { Theme } from '../views/Theme'
@@ -18,18 +18,17 @@ export function themeable<Component extends (props: any) => any>(
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
-    const element = useMemo(() => {
-      return React.createElement(component, {
-        ...rest,
-        ref,
-        'data-disable-theme': true,
-      } as any)
-    }, [ref, props])
+    const element = React.createElement(component, {
+      ...rest,
+      ref,
+      'data-disable-theme': true,
+    } as any)
 
     let contents = (
       <Theme
         componentName={componentName || staticConfig?.componentName}
         name={(theme as any) || null}
+        disable-child-theme
         debug={props.debug}
         inverse={themeInverse}
         reset={themeReset}

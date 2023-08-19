@@ -46,7 +46,7 @@ export class ThemeManager {
     parentManagerIn?: ThemeManager | 'root' | null | undefined
   ) {
     if (parentManagerIn === 'root') {
-      this.updateState(props, false)
+      this.updateStateFromProps(props, false)
       return
     }
 
@@ -66,51 +66,47 @@ export class ThemeManager {
 
     this.parentManager = parentManagerIn
 
-    if (this.updateState(props, false)) {
+    if (this.updateStateFromProps(props, false)) {
       return
     }
 
     return parentManagerIn || this
   }
 
-  updateState(
+  updateStateFromProps(
     props: ThemeProps & { forceTheme?: ThemeParsed } = this.props || {},
     shouldNotify = true
   ) {
-    const isChanging = (() => {
-      if (props.forceTheme) {
-        this.state.theme = props.forceTheme
-        this.state.name = props.name || ''
-        return true
-      }
-      const nextState = this.getStateIfChanged(props)
-      if (nextState) {
-        this.props = props
-        this.state = nextState
-        return true
-      }
-    })()
-
-    if (isChanging) {
-      const names = this.state.name.split('_')
-      const lastName = names[names.length - 1][0]
-      this.isComponent = lastName[0] === lastName[0].toUpperCase()
-      this._allKeys = null
-      this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
-
-      if (process.env.NODE_ENV === 'development') {
-        this['_numChangeEventsSent'] ??= 0
-        this['_numChangeEventsSent']++
-      }
-
-      if (shouldNotify) {
-        queueMicrotask(() => {
-          this.notify(!!props.forceTheme)
-        })
-      }
-
-      return this.state
+    this.props = props
+    if (props.forceTheme) {
+      this.state.theme = props.forceTheme
+      this.state.name = props.name || ''
+      return true
     }
+    const nextState = this.getStateIfChanged(props)
+    if (nextState) {
+      this.updateState(nextState, shouldNotify)
+      return nextState
+    }
+  }
+
+  updateState(nextState: ThemeManagerState, shouldNotify = true) {
+    this.state = nextState
+    const names = this.state.name.split('_')
+    const lastName = names[names.length - 1][0]
+    this.isComponent = lastName[0] === lastName[0].toUpperCase()
+    this._allKeys = null
+    this.scheme = names[0] === 'light' ? 'light' : names[0] === 'dark' ? 'dark' : null
+    if (process.env.NODE_ENV === 'development') {
+      this['_numChangeEventsSent'] ??= 0
+      this['_numChangeEventsSent']++
+    }
+    if (shouldNotify) {
+      queueMicrotask(() => {
+        this.notify()
+      })
+    }
+    return this.state
   }
 
   getStateIfChanged(
@@ -119,6 +115,7 @@ export class ThemeManager {
     parentManager = this.parentManager
   ) {
     const _ = this.getState(props, parentManager)
+
     // is removing
     if (state && state !== emptyState && !_) {
       return parentManager?.state
