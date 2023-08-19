@@ -13,6 +13,7 @@ import {
   Text,
   Theme,
   ThemeName,
+  XStack,
   YStack,
   styled,
   withStaticProperties,
@@ -81,46 +82,16 @@ export const LinkButton = withStaticProperties(
   }
 )
 
-const theme = 'light'
-
-// @ts-ignore
-createTamagui({
-  containerNames: ['goated'],
-})
-
 export const Sandbox = () => {
   return (
     <>
       {/* @ts-ignore */}
-      <YStack group="goated" bc="red" gap="$2">
-        {/* @ts-ignore */}
-        <Square
-          size={20}
-          bc="white"
-          $group-goated={{
-            size: 100,
-          }}
-          $group-goated-hovered={{
-            size: 100,
-          }}
-        />
-      </YStack>
+      <XStack>
+        <Button size="$10" f={1} fb={0} theme="active">
+          Facebook
+        </Button>
+      </XStack>
 
-      <YStack tag="a" w={100} h={100} bc="red" />
-
-      <LinkButton>hlleo</LinkButton>
-
-      <LinearGradient
-        width={200}
-        height={100}
-        colors={['$blue10Dark', '$testsomethingdifferent']}
-      />
-
-      <Theme name={theme}>
-        <Theme name="red">
-          <QuickPreviewSection />
-        </Theme>
-      </Theme>
       {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
 

@@ -17,7 +17,7 @@ export function ThemeDebug({
   children: any
 }) {
   // disabled
-  if (themeProps['disable-child-theme']) {
+  if (themeProps['data-disable-theme']) {
     return children
   }
 
