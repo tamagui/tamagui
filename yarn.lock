@@ -7650,6 +7650,7 @@ __metadata:
     outdent: ^0.8.0
     rollup: ">=3.7.0"
     vite-plugin-commonjs-externals: ^0.1.3
+    vite-plugin-externals: ^0.6.2
   languageName: unknown
   linkType: soft
 
@@ -9186,6 +9187,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: f790b99a1bf63ef160c967e23c46feea7787e531292bb827126334612c234ed489a0dc2c7ba33156416f0ffa8d25bf2b0fdb7f35c2ba60eb3e960572bece4001
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.4.0":
+  version: 8.10.0
+  resolution: "acorn@npm:8.10.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 538ba38af0cc9e5ef983aee196c4b8b4d87c0c94532334fa7e065b2c8a1f85863467bb774231aae91613fcda5e68740c15d97b1967ae3394d20faddddd8af61d
   languageName: node
   linkType: hard
 
@@ -12905,6 +12915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-module-lexer@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "es-module-lexer@npm:0.4.1"
+  checksum: c33ee30390812df875e419783cf37f3a32b73daabbb1f8a08fe9282fe0777b0a8064a219a34a253cb954b3308bbd4227e17da9e8ec253d309a83b4c90b2e9388
+  languageName: node
+  linkType: hard
+
 "es-module-lexer@npm:^1.0.3":
   version: 1.3.0
   resolution: "es-module-lexer@npm:1.3.0"
@@ -14908,6 +14925,17 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^1.0.0
   checksum: c4269fbfd8d8d2a1edca4257fa28545caf7e5ad218d264f723c338a154d3624d2ef098c19915b9436d3186b7ac45d5b032371a2004008ec0cd4072512e853aa8
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "fs-extra@npm:10.1.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
   languageName: node
   linkType: hard
 
@@ -18120,6 +18148,15 @@ __metadata:
     "@types/three": ">=0.144.0"
     three: ">=0.144.0"
   checksum: dfe2321a2a0c3ca80455d01bf2e98eb55b06abfdacd386ebe577f20d9eec9fa30ac7208d303362832fdfb8ffdfddbe0309e13e6e6eac17efd35353bbee9bcde6
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.25.7":
+  version: 0.25.9
+  resolution: "magic-string@npm:0.25.9"
+  dependencies:
+    sourcemap-codec: ^1.4.8
+  checksum: 9a0e55a15c7303fc360f9572a71cffba1f61451bc92c5602b1206c9d17f492403bf96f946dfce7483e66822d6b74607262e24392e87b0ac27b786e69a40e9b1a
   languageName: node
   linkType: hard
 
@@ -26942,6 +26979,20 @@ __metadata:
   peerDependencies:
     vite: ">=2.0.0"
   checksum: 1c0cb85cb856302447e3d65440a2f50a1188939a0d7ea13764dcda7c320f872ff83f2136f06f7d89792b60ec59690236a2917d2259d0260e0e4de210439b9a28
+  languageName: node
+  linkType: hard
+
+"vite-plugin-externals@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "vite-plugin-externals@npm:0.6.2"
+  dependencies:
+    acorn: ^8.4.0
+    es-module-lexer: ^0.4.1
+    fs-extra: ^10.0.0
+    magic-string: ^0.25.7
+  peerDependencies:
+    vite: ">=2.0.0"
+  checksum: 585dcc432a7c3032b32516d8c30cd58e79578925a535eef0e9fe5a0d06c0efdd47bfe700129e89a2c6008380546f68427a3f122e48d0e602c775dec84737df96
   languageName: node
   linkType: hard
 

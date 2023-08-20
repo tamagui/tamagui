@@ -3,6 +3,7 @@ import { readFile } from 'fs/promises'
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
 import { nativeBabelTransform, prebuiltFiles } from './nativePrebuild'
@@ -137,6 +138,19 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             }
           },
         })
+
+        config.build.rollupOptions.plugins.push(
+          viteExternalsPlugin(
+            {
+              react: '____react____',
+              'react/jsx-runtime': '____jsx____',
+              'react/jsx-dev-runtime': '____jsx____',
+            },
+            {
+              useWindow: false,
+            }
+          )
+        )
 
         config.build.rollupOptions.plugins.push({
           name: `babel-transform`,

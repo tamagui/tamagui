@@ -18,8 +18,22 @@ globalThis['require'] = function require(_mod) {
     mod.jsxDEV = mod.jsxDEV || mod.jsx
     return mod
   }
+  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
+  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
   throw new Error(`Not found: ${_mod}`)
 }
+
+Object.defineProperty(globalThis, '____react____', {
+  get() {
+    return require('react')
+  }
+})
+
+Object.defineProperty(globalThis, '____jsx____', {
+  get() {
+    return require('react/jsx-runtime')
+  }
+})
 
 globalThis['global'] = global
 global['react'] = {}

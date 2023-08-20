@@ -204,6 +204,14 @@ export const dev = async (options: CLIResolvedOptions) => {
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
       )
+      .replace(
+        `var require_Pressability = `,
+        `var require_Pressability = globalThis['__ReactPressability__'] =`
+      )
+      .replace(
+        `var require_usePressability = `,
+        `var require_usePressability = globalThis['__ReactUsePressability__'] =`
+      )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
