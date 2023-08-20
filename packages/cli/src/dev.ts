@@ -1,4 +1,5 @@
 import { readFile, writeFile } from 'fs/promises'
+import { createRequire } from 'module'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
@@ -10,6 +11,7 @@ import {
   tamaguiPlugin,
 } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
+import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, resolveConfig } from 'vite'
 
@@ -17,6 +19,9 @@ import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
 import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
+
+const resolve =
+  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
@@ -69,15 +74,53 @@ export const dev = async (options: CLIResolvedOptions) => {
           if (!file.includes('/src/')) {
             return
           }
+
           const id = modules[0]?.url || file.replace(root, '')
           if (!id) {
             console.log('⚠️ no modules?', file)
             return
           }
-          try {
-            const raw = await read()
 
-            const swcout = await swcTransform(file, raw, {
+          try {
+            let source = await read()
+
+            // parse imports of modules into ids:
+            // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
+            const imports = parse(source)
+
+            let accumulatedSliceOffset = 0
+
+            for (const importSpecifier of imports) {
+              if (typeof importSpecifier === 'boolean') continue
+              const [details] = importSpecifier
+              if ('ln' in details) {
+                continue // export
+              }
+              const { n: importName, s: start, se: end } = details
+
+              // except the ones we already handle using global require
+              if (
+                importName === 'react-native' ||
+                importName === 'react' ||
+                importName === 'react/jsx-runtime'
+              ) {
+                continue
+              }
+
+              if (importName && importName[0] !== '.') {
+                const id = resolve(importName)
+                // replace module name with id for hmr
+                const len = importName.length
+                const extraLen = id.length - len
+                source =
+                  source.slice(0, start + accumulatedSliceOffset) +
+                  id +
+                  source.slice(start + accumulatedSliceOffset + len)
+                accumulatedSliceOffset += extraLen
+              }
+            }
+
+            const swcout = await swcTransform(file, source, {
               mode: 'serve',
             })
 

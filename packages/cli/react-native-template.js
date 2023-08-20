@@ -39,6 +39,7 @@ globalThis['global'] = global
 global['react'] = {}
 global['exports'] = {}
 global['module'] = {}
+global['___modules___'] = {}
 
 globalThis['setImmediate'] = cb => cb()
 //cb => Promise.resolve().then(() => cb())
