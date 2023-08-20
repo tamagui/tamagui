@@ -86,6 +86,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             console.log('source1', source)
 
+            // we have to remove jsx before we can parse imports...
             source =
               (
                 await swcTransform(file, source, {
@@ -131,6 +132,7 @@ export const dev = async (options: CLIResolvedOptions) => {
               }
             }
 
+            // then we have to convert to commonjs..
             source = await nativeBabelTransform(source)
             source = source.replace(`import.meta.hot.accept(() => {});`, ``)
             source = `exports = ((exports) => { ${source}; return exports })({})`
@@ -175,6 +177,8 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   await server.listen()
 
+  let isBuilding: Promise<string> | null = null
+
   const dispose = await createDevServer(options, {
     hotUpdatedCJSFiles,
     listenForHMR(cb) {
@@ -196,6 +200,15 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
+    if (isBuilding) {
+      return await isBuilding
+    }
+
+    let done
+    isBuilding = new Promise((res) => {
+      done = res
+    })
+
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
@@ -279,7 +292,11 @@ __commonJS = (cb, mod) => {
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
-    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+
+    void writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+
+    done(out)
+
     return out
   }
 }
