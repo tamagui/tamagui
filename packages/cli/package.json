@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@babel/code-frame": "^7.21.4",
+    "@babel/plugin-transform-react-jsx": "^7.22.5",
     "@callstack/repack-debugger-app": "^1.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^5.0.2",
@@ -51,6 +52,7 @@
     "fastify": "^3.29.0",
     "fastify-favicon": "^3.2.0",
     "fastify-plugin": "^3.0.1",
+    "flow-remove-types": "^2.214.0",
     "fs-extra": "^11.1.0",
     "get-port": "^6.1.2",
     "graphology": "^0.24.1",

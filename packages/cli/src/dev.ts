@@ -38,9 +38,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     viteReactPlugin({
       tsDecorators: true,
     }),
-    nativePlugin({
-      port,
-    }),
   ]
 
   if (process.env.IS_TAMAGUI_DEV) {
@@ -57,7 +54,13 @@ export const dev = async (options: CLIResolvedOptions) => {
     mode: 'development',
     clearScreen: false,
     appType: 'custom',
-    plugins,
+    plugins: [
+      ...plugins,
+      nativePlugin({
+        port,
+        mode: 'serve',
+      }),
+    ],
     server: {
       cors: true,
       port: options.port,
@@ -135,6 +138,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     server.close()
   })
 
+  // build once on startup
+  void getBundleCode()
+
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
@@ -150,8 +156,15 @@ export const dev = async (options: CLIResolvedOptions) => {
     }
 
     // build app
+    console.log('building')
     const buildOutput = await build({
-      plugins,
+      plugins: [
+        ...plugins,
+        nativePlugin({
+          port,
+          mode: 'build',
+        }),
+      ],
       appType: 'custom',
       root,
       clearScreen: false,
@@ -165,13 +178,13 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    const appCodeIn = 'output' in buildOutput ? buildOutput.output[0].code : null
+    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
 
-    if (!appCodeIn) {
+    console.log('appCodeIn', appCode)
+
+    if (!appCode) {
       throw `❌`
     }
-
-    const appCode = await nativeBabelTransform(appCodeIn)
 
     const paths = [
       join(process.cwd(), 'testing-area', 'react.js'),

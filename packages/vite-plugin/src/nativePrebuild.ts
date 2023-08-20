@@ -43,6 +43,35 @@ export async function nativeBabelFlowTransform(input: string) {
   })
 }
 
+export async function nativeBabelRemoveJSX(input: string) {
+  return await new Promise<string>((res, rej) => {
+    babel.transform(
+      input,
+      {
+        plugins: [
+          [
+            '@babel/plugin-transform-react-jsx',
+            {
+              runtime: 'automatic',
+            },
+          ],
+        ],
+      },
+      (err: any, { code }) => {
+        if (err) rej(err)
+        res(code)
+      }
+    )
+  })
+}
+
+const prebuiltDir = join(process.cwd(), 'testing-area')
+export const prebuiltFiles = {
+  react: join(prebuiltDir, 'react.js'),
+  reactJSXRuntime: join(prebuiltDir, 'react-jsx-runtime.js'),
+  reactNative: join(prebuiltDir, 'react-native.js'),
+}
+
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
 
@@ -54,14 +83,12 @@ export async function nativePrebuild() {
 
   console.log(`Prebuilding React Native (one time cost...)`)
 
-  const outdir = join(process.cwd(), 'testing-area')
-
   await Promise.all([
     // react
     build({
       bundle: true,
       entryPoints: ['react'],
-      outfile: join(outdir, 'react.js'),
+      outfile: prebuiltFiles.react,
       format: 'cjs',
       target: 'node20',
       jsx: 'transform',
@@ -79,7 +106,7 @@ export async function nativePrebuild() {
     build({
       bundle: true,
       entryPoints: ['react/jsx-runtime'],
-      outfile: join(outdir, 'react-jsx-runtime.js'),
+      outfile: prebuiltFiles.reactJSXRuntime,
       format: 'cjs',
       target: 'node20',
       jsx: 'transform',
@@ -99,7 +126,7 @@ export async function nativePrebuild() {
     build({
       bundle: true,
       entryPoints: ['/Users/n8/tamagui/node_modules/react-native/index.js'],
-      outfile: join(outdir, 'react-native.js'),
+      outfile: prebuiltFiles.reactNative,
       format: 'cjs',
       target: 'node20',
       jsx: 'transform',

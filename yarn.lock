@@ -1225,6 +1225,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-syntax-jsx@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/plugin-syntax-jsx@npm:7.22.5"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.22.5
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 8829d30c2617ab31393d99cec2978e41f014f4ac6f01a1cecf4c4dd8320c3ec12fdc3ce121126b2d8d32f6887e99ca1a0bad53dedb1e6ad165640b92b24980ce
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-syntax-logical-assignment-operators@npm:^7.10.4":
   version: 7.10.4
   resolution: "@babel/plugin-syntax-logical-assignment-operators@npm:7.10.4"
@@ -1770,6 +1781,21 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: fe25e612d02a14ede13fa9c03a0c448ce06bc527fe9f71a82953ad4bb7f4c05c1978b2928cb1405c282dfc6d8ef85d9a658b7b970893921c1f99fd0d7e438c5f
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-react-jsx@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/plugin-transform-react-jsx@npm:7.22.5"
+  dependencies:
+    "@babel/helper-annotate-as-pure": ^7.22.5
+    "@babel/helper-module-imports": ^7.22.5
+    "@babel/helper-plugin-utils": ^7.22.5
+    "@babel/plugin-syntax-jsx": ^7.22.5
+    "@babel/types": ^7.22.5
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: c8f93f29f32cf79683ca2b8958fd62f38155674846ef27a7d4b6fbeb8713c37257418391731b58ff8024ec37b888bed5960e615a3f552e28245d2082e7f2a2df
   languageName: node
   linkType: hard
 
@@ -4787,9 +4813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-commonjs@npm:^24.0.1":
-  version: 24.1.0
-  resolution: "@rollup/plugin-commonjs@npm:24.1.0"
+"@rollup/plugin-commonjs@npm:^25.0.4":
+  version: 25.0.4
+  resolution: "@rollup/plugin-commonjs@npm:25.0.4"
   dependencies:
     "@rollup/pluginutils": ^5.0.1
     commondir: ^1.0.1
@@ -4802,7 +4828,7 @@ __metadata:
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 42faafc9bc8e04d75c86bb50d693ebb9c5eee19bf9ab3c09780b872547d12ff5ea85cfec7da75f5176d0aa4b5233101f667f44b85b331450a7bb14c95180852e
+  checksum: 073b92b765a1f8ab8db8e1aa216c1950e62f6c0c41210d10bb7530c4fc63670a16c19c0bbbf73e2752467c4468ad4c8134cf4724924388c3eed83df45630fda6
   languageName: node
   linkType: hard
 
@@ -5716,6 +5742,7 @@ __metadata:
   resolution: "@tamagui/cli@workspace:packages/cli"
   dependencies:
     "@babel/code-frame": ^7.21.4
+    "@babel/plugin-transform-react-jsx": ^7.22.5
     "@callstack/repack-debugger-app": ^1.0.0
     "@fastify/sensible": ^4.1.0
     "@fastify/static": ^5.0.2
@@ -5744,6 +5771,7 @@ __metadata:
     fastify: ^3.29.0
     fastify-favicon: ^3.2.0
     fastify-plugin: ^3.0.1
+    flow-remove-types: ^2.214.0
     fs-extra: ^11.1.0
     get-port: ^6.1.2
     graphology: ^0.24.1
@@ -7607,7 +7635,7 @@ __metadata:
     "@babel/plugin-transform-modules-commonjs": ^7.22.5
     "@bunchtogether/vite-plugin-flow": ^1.0.2
     "@rollup/plugin-babel": ^6.0.3
-    "@rollup/plugin-commonjs": ^24.0.1
+    "@rollup/plugin-commonjs": ^25.0.4
     "@rollup/plugin-node-resolve": ^15.0.1
     "@tamagui/build": 1.52.9
     "@tamagui/fake-react-native": 1.52.9
@@ -14670,6 +14698,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flow-parser@npm:^0.214.0":
+  version: 0.214.0
+  resolution: "flow-parser@npm:0.214.0"
+  checksum: c7aab94b25622e811af65c1f3197f07e4f518266758fadc798847146611bbbd7bb9a423d022efa62e535cc87beb9841023b0650f9cdc725c41c6f84932133cb7
+  languageName: node
+  linkType: hard
+
 "flow-remove-types@npm:^2.158.0":
   version: 2.204.0
   resolution: "flow-remove-types@npm:2.204.0"
@@ -14681,6 +14716,20 @@ __metadata:
     flow-node: flow-node
     flow-remove-types: flow-remove-types
   checksum: e894685c9df27ad6ded38ac46ff7e6858525c972a55e61f76f94ad0004015f10ca1295c5ea797c99558e3cb5ba2e3388ee4a48e9a1426b0f0253b4a746d34ebc
+  languageName: node
+  linkType: hard
+
+"flow-remove-types@npm:^2.214.0":
+  version: 2.214.0
+  resolution: "flow-remove-types@npm:2.214.0"
+  dependencies:
+    flow-parser: ^0.214.0
+    pirates: ^3.0.2
+    vlq: ^0.2.1
+  bin:
+    flow-node: flow-node
+    flow-remove-types: flow-remove-types
+  checksum: a23e8b8a90389432d9a3ea7913a884e04784c3486926d7697b47827144c8790a6681f880e5b644ed93134083b9e2e122490ed89c996072a13221d1e2c407cc49
   languageName: node
   linkType: hard
 

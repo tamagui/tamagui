@@ -1,10 +1,15 @@
+import { readFile } from 'fs/promises'
+
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
+import commonJs from '@rollup/plugin-commonjs'
+import flowRemoveTypes from 'flow-remove-types'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
 import { extensions } from './extensions'
+import { nativeBabelRemoveJSX, prebuiltFiles } from './nativePrebuild'
 
-export function nativePlugin(options: { port: number }): Plugin {
+export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
     name: 'tamagui-native',
     enforce: 'post',
@@ -78,7 +83,6 @@ export function nativePlugin(options: { port: number }): Plugin {
           }
         )
       )
-      // config.optimizeDeps.esbuildOptions.plugins.push(esbuildCommonjs(['react-native']))
 
       config.optimizeDeps.include ??= []
       config.optimizeDeps.include.push('react-native')
@@ -111,15 +115,109 @@ export function nativePlugin(options: { port: number }): Plugin {
 
       config.build.rollupOptions.plugins ??= []
 
-      config.build.rollupOptions.external = [
-        'react-native',
-        'react',
-        'react/jsx-runtime',
-        'react/jsx-dev-runtime',
-      ]
+      if (options.mode === 'serve') {
+        config.build.rollupOptions.external = [
+          'react-native',
+          'react',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+        ]
+      }
 
       if (!Array.isArray(config.build.rollupOptions.plugins)) {
         throw `x`
+      }
+
+      if (options.mode === 'build') {
+        config.build.rollupOptions.plugins.push({
+          name: `swap-react-native`,
+          async load(id) {
+            if (id.endsWith('react-native/index.js')) {
+              const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
+              return {
+                code: `
+  const run = () => {  
+    ${bundled.replace(
+      `module.exports = require_react_native();`,
+      `return require_react_native();`
+    )}
+  }
+  
+  const RN = run()
+  
+  ${RNExportNames.map(
+    (name) =>
+      // adding exports
+      `export const ${name} = RN.${name}`
+  ).join('\n')}
+  
+  `,
+              }
+            }
+          },
+        })
+
+        //         config.build.rollupOptions.plugins.push({
+        //           name: 'flow-remove-types',
+        //           transform: async (codeIn, id) => {
+        //             if (!id.includes('node_modules')) {
+        //               return
+        //             }
+        //             const flowRemoved = flowRemoveTypes(codeIn).toString()
+        //             let jsxRemoved = await nativeBabelRemoveJSX(flowRemoved)
+
+        //             if (id.includes('BackHandler')) {
+        //               jsxRemoved = jsxRemoved.replace(
+        //                 `module.exports = require('../Components/UnimplementedViews/UnimplementedView');`,
+        //                 ''
+        //               )
+        //             }
+
+        //             if (jsxRemoved.includes(`module.exports = `)) {
+        //               jsxRemoved = jsxRemoved.replace(
+        //                 /\nmodule.exports = /gi,
+        //                 `\nexport default `
+        //               )
+        //             }
+
+        //             if (id.endsWith('ReactNativeViewConfigRegistry.js')) {
+        //               jsxRemoved =
+        //                 jsxRemoved +
+        //                 `\nconst allExports = {...exports }; export default allExports;`
+        //             }
+
+        //             if (id.endsWith('ExceptionsManager.js')) {
+        //               console.log('huh', id)
+        //               jsxRemoved = jsxRemoved
+        //                 .replace(/\nfunction /g, 'export function')
+        //                 .replace('class SynthenticEvent', 'export class SyntheticEvent')
+        //                 .replace(
+        //                   `module.exports = {
+        //   decoratedExtraDataKey,
+        //   handleException,
+        //   installConsoleErrorReporter,
+        //   SyntheticError,
+        //   unstable_setExceptionDecorator,
+        // };`,
+        //                   ``
+        //                 )
+        //             }
+
+        //             return {
+        //               code: jsxRemoved,
+        //               map: null,
+        //             }
+        //           },
+        //         })
+
+        // config.build.rollupOptions.plugins.push(
+        //   commonJs({
+        //     include: ['**/node_modules/react-native/**', '**/node_modules/base64-js/**'],
+        //     // ignoreGlobal: true,
+        //     transformMixedEsModules: true,
+        //     defaultIsModuleExports: true,
+        //   }) as any
+        // )
       }
 
       if (process.env.DEBUG) {
