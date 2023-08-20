@@ -296,7 +296,7 @@ const App = (props) => {
           code: `const _cn = " _bc-1g6456j _d-6koalj _fd-eqz5dr _fs-1q142lx _bc--hover-57dg7b _bc-_gtSm_1542mo4 _bc-_gtSm_-active-98uye2 _bc-_gtSm_abc1234"
 import { YStack } from 'tamagui'
 
-const App = (props) => <div className={_cn + (props.shrinks ? ' _bc-_gtSm_abc1234' : '')} />`,
+const App = (props) => <div className={_cn + (props.shrinks ? ' _transform-_sm_scale0d0t539907' : '')} />`,
           language: 'tsx',
         },
         {
@@ -309,7 +309,7 @@ const App = (props) => <div className={_cn + (props.shrinks ? ' _bc-_gtSm_abc123
 @media not all and (hover: none) { :root  ._bc--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
 @media (min-width: 861px) { :root:root ._bc-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
 @media (min-width: 861px) { :root:root ._bc-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }
-@media (min-width: 861px) { :root:root ._bc-_gtSm_abc1234{background-color:rgba(0,128,0,1.00);} }`,
+@media (max-width: 861px) { :root:root ._transform-_sm_scale0d0t539907{transform:scale(0.5);} }`,
           language: 'css',
         },
       ],
