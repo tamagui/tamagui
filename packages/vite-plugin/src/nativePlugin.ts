@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises'
 
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
+import { transform } from '@swc/core'
 import { ModuleInfo, OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
@@ -145,7 +146,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         )
 
         config.build.rollupOptions.plugins.push({
-          name: `babel-transform`,
+          name: `native-transform`,
 
           async transform(code, id) {
             if (
@@ -160,14 +161,30 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             ) {
               return
             }
-            let out = await nativeBabelTransform(code, false)
 
-            // out += `
-            // Object.assign(global['___modules___'], {
-            //   "${id}": module.exports2
-            // })
-            // `
-            // console.log('out', id, out)
+            let out = await transform(code, {
+              filename: id,
+              swcrc: false,
+              configFile: false,
+              sourceMaps: true,
+              jsc: {
+                target: 'es5',
+                parser: id.endsWith('.tsx')
+                  ? { syntax: 'typescript', tsx: true, decorators: true }
+                  : id.endsWith('.ts')
+                  ? { syntax: 'typescript', tsx: false, decorators: true }
+                  : id.endsWith('.jsx')
+                  ? { syntax: 'ecmascript', jsx: true }
+                  : { syntax: 'ecmascript' },
+                transform: {
+                  useDefineForClassFields: true,
+                  react: {
+                    development: true,
+                    runtime: 'automatic',
+                  },
+                },
+              },
+            })
 
             return out
           },

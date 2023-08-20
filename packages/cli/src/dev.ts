@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'fs/promises'
 import { createRequire } from 'module'
-import { join } from 'path'
+import { join, relative } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
@@ -84,31 +84,42 @@ export const dev = async (options: CLIResolvedOptions) => {
           try {
             let source = await read()
 
+            console.log('source1', source)
+
+            source =
+              (
+                await swcTransform(file, source, {
+                  mode: 'serve',
+                })
+              )?.code || ''
+
+            console.log('source2', source)
+
+            if (!source) {
+              throw '❌'
+            }
+
             // parse imports of modules into ids:
             // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
-            const imports = parse(source)
+            const [imports] = parse(source)
 
             let accumulatedSliceOffset = 0
 
-            for (const importSpecifier of imports) {
-              if (typeof importSpecifier === 'boolean') continue
-              const [details] = importSpecifier
-              if ('ln' in details) {
-                continue // export
-              }
-              const { n: importName, s: start, se: end } = details
+            for (const specifier of imports) {
+              const { n: importName, s: start, se: end } = specifier
 
               // except the ones we already handle using global require
               if (
                 importName === 'react-native' ||
                 importName === 'react' ||
-                importName === 'react/jsx-runtime'
+                importName === 'react/jsx-runtime' ||
+                importName === 'react/jsx-dev-runtime'
               ) {
                 continue
               }
 
               if (importName && importName[0] !== '.') {
-                const id = resolve(importName)
+                const id = relative(process.cwd(), resolve(importName))
                 // replace module name with id for hmr
                 const len = importName.length
                 const extraLen = id.length - len
@@ -120,19 +131,11 @@ export const dev = async (options: CLIResolvedOptions) => {
               }
             }
 
-            const swcout = await swcTransform(file, source, {
-              mode: 'serve',
-            })
+            source = await nativeBabelTransform(source)
+            source = source.replace(`import.meta.hot.accept(() => {});`, ``)
+            source = `exports = ((exports) => { ${source}; return exports })({})`
 
-            if (!swcout) {
-              throw '❌'
-            }
-
-            let contents = await nativeBabelTransform(swcout.code)
-            contents = contents.replace(`import.meta.hot.accept(() => {});`, ``)
-            contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-            hotUpdatedCJSFiles.set(id, contents)
+            hotUpdatedCJSFiles.set(id, source)
           } catch (err) {
             console.log('error hmring', err)
           }
@@ -222,6 +225,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       clearScreen: false,
       build: {
         ssr: false,
+        minify: false,
       },
       mode: 'development',
       define: {
@@ -239,6 +243,22 @@ export const dev = async (options: CLIResolvedOptions) => {
     appCode = appCode
       // this can be done in the individual file transform
       .replace('undefined.accept(() => {})', '')
+      .replace('undefined.accept(function() {});', '') // swc
+      .replace(
+        `var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};`,
+        `var __commonJSOg = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
+__commonJS = (cb, mod) => {
+  // expose it to require()
+  const id = __getOwnPropNames(cb)[0]
+  const output = __commonJSOg(cb, mod)
+  ___modules___[id] = output
+  return output
+}`
+      )
       .replace(
         `if (hasRequiredReact) return react.exports;`,
         `if (react.exports && react.exports.createElement) return react.exports;`

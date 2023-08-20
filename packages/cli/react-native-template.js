@@ -20,6 +20,10 @@ globalThis['require'] = function require(_mod) {
   }
   if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
   if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
+  const found = ___modules___[_mod]
+  if (found) {
+    return found
+  }
   throw new Error(`Not found: ${_mod}`)
 }
 
