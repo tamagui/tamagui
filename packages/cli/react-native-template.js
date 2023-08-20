@@ -12,28 +12,36 @@ delete globalThis['window']
 
 const cachedModules = {}
 
-globalThis['require'] = function require(_mod) {
-  if (_mod === 'react-native') return RN
-  if (_mod === 'react') return global['__React__']()
-  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
-    const mod = global['__JSX__']()
-    mod.jsxDEV = mod.jsxDEV || mod.jsx
-    return mod
-  }
-  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
-  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
-  // handles relative imports rollup outputs
-  let found = ___modules___[_mod] || ___modules___[require.__importsMap[_mod]]
-  if (found) {
-    if (!cachedModules[found]) {
-      const exported = { exports: {} }
-      found(exported)
-      cachedModules[found] = exported
+// just used for entry, the rest use createRequire
+function require(mod) {
+  return ___modules___[mod]({ exports: {} })
+}
+
+function createRequire(importsMap) {
+  return function require(_mod) {
+    if (_mod === 'react-native') return RN
+    if (_mod === 'react') return global['__React__']()
+    if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
+      const mod = global['__JSX__']()
+      mod.jsxDEV = mod.jsxDEV || mod.jsx
+      return mod
     }
-    return cachedModules[_mod]
+    if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
+    if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
+
+    // handles relative imports rollup outputs
+    let found = ___modules___[importsMap[_mod]] || ___modules___[_mod]
+    if (found) {
+      if (!cachedModules[found]) {
+        const exported = { exports: {} }
+        found(exported)
+        cachedModules[found] = exported.exports
+      }
+      return cachedModules[found]
+    }
+    
+    throw new Error(`Not found: ${_mod}`)
   }
-  
-  throw new Error(`Not found: ${_mod}`)
 }
 
 Object.defineProperty(globalThis, '____react____', {

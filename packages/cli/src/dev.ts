@@ -273,7 +273,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
           return `
 ___modules___["${module.fileName}"] = ((exports) => {
-  require.__importsMap = ${JSON.stringify(importsMap)}
+  const require = createRequire(${JSON.stringify(importsMap)})
 
   ${module.code}
 })
@@ -300,25 +300,6 @@ require("${module.fileName}")
       .replace('undefined.accept(() => {})', '')
       .replace('undefined.accept(function() {});', '') // swc
       .replace(
-        `var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};`,
-        `var __commonJSOg = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-__commonJS = (cb, mod) => {
-  // expose it to require()
-  const id = __getOwnPropNames(cb)[0]
-  const output = __commonJSOg(cb, mod)
-  ___modules___[id] = output
-  return output
-}`
-      )
-      .replace(
-        `if (hasRequiredReact) return react.exports;`,
-        `if (react.exports && react.exports.createElement) return react.exports;`
-      )
-      .replace(
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
       )
@@ -335,9 +316,10 @@ __commonJS = (cb, mod) => {
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
 
-    void writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
 
     done(out)
+    isBuilding = null
 
     return out
   }
