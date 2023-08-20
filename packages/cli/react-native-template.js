@@ -17,6 +17,11 @@ function __specialRequire(_mod) {
     return globalThis['__ReactPressability__']()
   if (_mod === 'react-native/Libraries/Pressability/usePressability')
     return globalThis['__ReactUsePressability__']()
+  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
+    const mod = global['__JSX__']()
+    mod.jsxDEV = mod.jsxDEV || mod.jsx
+    return mod
+  }
   if (___modules___[_mod]) {
     return ___modules___[_mod]({ exports: {} })
   }
