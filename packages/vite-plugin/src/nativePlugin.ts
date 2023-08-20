@@ -13,14 +13,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     enforce: 'post',
 
     config: (config) => {
-      // // add hmr client
-      // config.plugins.push({
-      //   name: 'add-hmr-client',
-      //   generateBundle(x) {
-      //     x.
-      //   }
-      // })
-
       config.define ||= {}
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
@@ -44,18 +36,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.resolve ??= {}
 
       config.resolve.extensions = extensions
-
-      // config.resolve.alias ??= {}
-      // config.resolve.alias = {
-      //   ...config.resolve.alias,
-      //   // 'react-native/Libraries/Renderer/shims/ReactFabric':
-      //   //   'react-native/Libraries/Renderer/shims/ReactFabric',
-      //   // 'react-native/Libraries/Utilities/codegenNativeComponent':
-      //   //   'react-native/Libraries/Utilities/codegenNativeComponent',
-      //   // 'react-native-svg': 'react-native-svg',
-      //   // // 'react-native-web': 'react-native',
-      //   // 'react-native': 'react-native',
-      // }
 
       config.optimizeDeps ??= {}
 
@@ -81,9 +61,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           }
         )
       )
-
-      config.optimizeDeps.include ??= []
-      // config.optimizeDeps.include.push('react-native')
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
@@ -127,31 +104,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (options.mode === 'build') {
-        // config.build.rollupOptions.plugins.push({
-        //   name: `swap-react`,
-        //   async load(id) {
-        //     if (id.endsWith('react/index.js')) {
-        //       const code = await readFile(prebuiltFiles.react, 'utf-8')
-        //       console.log('sawppign')
-        //       return {
-        //         code,
-        //       }
-        //     }
-        //   },
-        // })
-
-        // config.build.rollupOptions.plugins.push({
-        //   name: `swap-react-jsx`,
-        //   async load(id) {
-        //     if (id.endsWith('react/jsx-dev-runtime.js')) {
-        //       const code = await readFile(prebuiltFiles.reactJSXRuntime, 'utf-8')
-        //       return {
-        //         code,
-        //       }
-        //     }
-        //   },
-        // })
-
         config.build.rollupOptions.plugins.push({
           name: `swap-react-native`,
           async load(id) {

@@ -34,9 +34,6 @@ export const dev = async (options: CLIResolvedOptions) => {
       ...options.tamaguiOptions,
       target: 'native',
     }),
-    viteReactPlugin({
-      tsDecorators: true,
-    }),
   ]
 
   if (process.env.IS_TAMAGUI_DEV) {
@@ -56,6 +53,10 @@ export const dev = async (options: CLIResolvedOptions) => {
     appType: 'custom',
     plugins: [
       ...plugins,
+      viteReactPlugin({
+        tsDecorators: true,
+        mode: 'serve',
+      }),
       nativePlugin({
         port,
         mode: 'serve',
@@ -80,14 +81,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   }
 
   const server = await createServer(serverConfig)
-
-  // @ts-ignore
-  resolvedConfig.plugins = resolvedConfig.plugins.filter((x) => {
-    if (x.name === 'vite:import-analysis') {
-      return false
-    }
-    return true
-  })
 
   server.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
@@ -156,6 +149,10 @@ export const dev = async (options: CLIResolvedOptions) => {
           port,
           mode: 'build',
         }),
+        viteReactPlugin({
+          tsDecorators: true,
+          mode: 'build',
+        }),
       ],
       appType: 'custom',
       root,
@@ -191,54 +188,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
-
     await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
-
     return out
-
-    //     const paths = [
-    //       join(process.cwd(), 'testing-area', 'react.js'),
-    //       join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
-    //       join(process.cwd(), 'testing-area', 'react-native.js'),
-    //     ]
-
-    //     const [react, reactJsxRuntime, reactNative] = await Promise.all(
-    //       paths.map((p) => readFile(p, 'utf-8'))
-    //     )
-
-    //     const reactCode = react.replace(
-    //       `module.exports = require_react_development();`,
-    //       `return require_react_development()`
-    //     )
-
-    //     const reactJSXRuntimeCode = reactJsxRuntime.replace(
-    //       `module.exports = require_react_jsx_runtime_production_min();`,
-    //       `return require_react_jsx_runtime_production_min()`
-    //       // `module.exports = require_react_jsx_dev_runtime_development();`,
-    //       // `return require_react_jsx_dev_runtime_development();`
-    //     )
-
-    //     const reactNativeCode = reactNative
-    //       .replace(
-    //         `module.exports = require_react_native();`,
-    //         `require_ReactNative();
-    // globalThis["ReactPressability"] = require_Pressability;
-    // globalThis["ReactUsePressability"] = require_usePressability;
-    // return require_react_native()`
-    //       )
-    //       // forcing onto global so i can re-thread it into require
-    //       .replace(
-    //         `ReactRefreshRuntime.injectIntoGlobalHook(global);`,
-    //         `globalThis['_ReactRefreshRuntime'] = ReactRefreshRuntime; ReactRefreshRuntime.injectIntoGlobalHook(global);`
-    //       )
-
-    //     const templateFile = join(packageRootDir, 'react-native-template.js')
-
-    //     return (await readFile(templateFile, 'utf-8'))
-    //       .replace(`// -- react --`, reactCode)
-    //       .replace(`// -- react-native --`, reactNativeCode)
-    //       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-    //       .replace(`// -- app --`, appCode)
   }
 }
 

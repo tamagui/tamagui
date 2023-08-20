@@ -9,6 +9,8 @@ const resolve = createRequire(
 const refreshContentRE = /\$Refresh(?:Reg|Sig)\$\(/
 
 type Options = {
+  mode: 'serve' | 'build'
+
   /**
    * Control where the JSX factory is imported from.
    * @default "react"
@@ -28,8 +30,9 @@ type Options = {
 
 const isWebContainer = globalThis.process?.versions?.webcontainer
 
-const react = (_options?: Options): PluginOption[] => {
+export default (_options?: Options): PluginOption[] => {
   const options = {
+    mode: _options?.mode ?? 'serve',
     jsxImportSource: _options?.jsxImportSource ?? 'react',
     tsDecorators: _options?.tsDecorators,
     plugins: _options?.plugins
@@ -70,19 +73,14 @@ const react = (_options?: Options): PluginOption[] => {
         ) {
           return
         }
-        const out = await swcTransform(_id, code, options, true)
+        const out = await swcTransform(_id, code, options)
         return out
       },
     },
   ]
 }
 
-export async function swcTransform(
-  _id: string,
-  code: string,
-  options: Options,
-  cjs = false
-) {
+export async function swcTransform(_id: string, code: string, options: Options) {
   // todo hack
   const id = _id.split('?')[0].replace(process.cwd(), '')
 
@@ -105,19 +103,30 @@ export async function swcTransform(
     return result
   }
 
-  result.code = wrapSourceInRefreshRuntime(id, result.code, cjs)
+  result.code = wrapSourceInRefreshRuntime(id, result.code, options)
 
   const sourceMap: SourceMapPayload = JSON.parse(result.map!)
   sourceMap.mappings = ';;;;;;;;' + sourceMap.mappings
   return { code: result.code, map: sourceMap }
 }
 
-export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
+export function wrapSourceInRefreshRuntime(id: string, code: string, options: Options) {
+  const prefixCode =
+    options.mode === 'build'
+      ? `
+  // ensure it loads the react native js before the hmr js
+  import * as ____rn____ from 'react-native'
+  import '@tamagui/vite-native-client'
+  `
+      : ``
+
   return `const RefreshRuntime = globalThis['__RequireReactRefreshRuntime__']();
 const prevRefreshReg = globalThis.$RefreshReg$;
 const prevRefreshSig = globalThis.$RefreshSig$;
 globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
 globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+
+${prefixCode}
 
 module.url = '${id}'
 module.hot = createHotContext(module.url)
@@ -189,23 +198,3 @@ export const transformWithOptions = async (
 
   return result
 }
-
-const silenceUseClientWarning = (userConfig: UserConfig): BuildOptions => ({
-  rollupOptions: {
-    onwarn(warning, defaultHandler) {
-      if (
-        warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
-        warning.message.includes('use client')
-      ) {
-        return
-      }
-      if (userConfig.build?.rollupOptions?.onwarn) {
-        userConfig.build.rollupOptions.onwarn(warning, defaultHandler)
-      } else {
-        defaultHandler(warning)
-      }
-    },
-  },
-})
-
-export default react
