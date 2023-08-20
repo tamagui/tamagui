@@ -188,12 +188,12 @@ Outside of flat style properties, Tamagui adds the following props:
     {
       name: 'debug',
       required: false,
-      type: `boolean | 'verbose' | 'break'`,
+      type: `boolean | 'verbose' | 'break' | borders`,
       description: (
         <span>
           When set Tamagui will output a variety of helpful information on how it parsed and
           applied styling. Verbose will output more information, and break will hit a debugger at
-          the start of render in development mode.
+          the start of render in development mode. Borders will add a border to the element for visual debugging.
         </span>
       ),
     },
