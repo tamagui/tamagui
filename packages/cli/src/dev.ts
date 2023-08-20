@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
@@ -10,7 +10,7 @@ import {
   tamaguiPlugin,
 } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
-import fs, { pathExists } from 'fs-extra'
+import { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
@@ -19,8 +19,7 @@ import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
-  const { root, mode, paths } = options
-  const projectRoot = root
+  const { root } = options
 
   const packageRootDir = join(__dirname, '..')
 
@@ -34,12 +33,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     tamaguiPlugin({
       ...options.tamaguiOptions,
       target: 'native',
-    }),
-    viteReactPlugin({
-      tsDecorators: true,
-    }),
-    nativePlugin({
-      port,
     }),
   ]
 
@@ -55,9 +48,54 @@ export const dev = async (options: CLIResolvedOptions) => {
   let serverConfig = {
     root,
     mode: 'development',
+    esbuild: false,
     clearScreen: false,
     appType: 'custom',
-    plugins,
+    plugins: [
+      ...plugins,
+      viteReactPlugin({
+        tsDecorators: true,
+        mode: 'serve',
+      }),
+      nativePlugin({
+        port,
+        mode: 'serve',
+      }),
+
+      {
+        name: `tamagui-hot-update`,
+        async handleHotUpdate({ file, read, modules }) {
+          // idk why but its giving me dist asset stuff
+          if (!file.includes('/src/')) {
+            return
+          }
+          const id = modules[0]?.url || file.replace(root, '')
+          if (!id) {
+            console.log('⚠️ no modules?', file)
+            return
+          }
+          try {
+            const raw = await read()
+
+            const swcout = await swcTransform(file, raw, {
+              mode: 'serve',
+            })
+
+            if (!swcout) {
+              throw '❌'
+            }
+
+            let contents = await nativeBabelTransform(swcout.code)
+            contents = contents.replace(`import.meta.hot.accept(() => {});`, ``)
+            contents = `exports = ((exports) => { ${contents}; return exports })({})`
+
+            hotUpdatedCJSFiles.set(id, contents)
+          } catch (err) {
+            console.log('error hmring', err)
+          }
+        },
+      },
+    ],
     server: {
       cors: true,
       port: options.port,
@@ -78,14 +116,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const server = await createServer(serverConfig)
 
-  // @ts-ignore
-  resolvedConfig.plugins = resolvedConfig.plugins.filter((x) => {
-    if (x.name === 'vite:import-analysis') {
-      return false
-    }
-    return true
-  })
-
   server.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
 
@@ -93,22 +123,8 @@ export const dev = async (options: CLIResolvedOptions) => {
       return
     }
 
-    const out = await server.transformRequest(id)
-    if (!out) return
-
-    let contents = await nativeBabelTransform(out.code)
-
-    contents = contents
-      .replace('import.meta.hot.accept(() => {})', '')
-      .replace('react_jsx-dev-runtime', 'react/jsx-dev-runtime')
-      .replace(/\.js\?v=[0-9a-z]+"/gi, '"')
-      .replaceAll('/node_modules/.vite/deps/', '')
-      .replace(`import.meta.hot = (0, _client.createHotContext)("/src/App.tsx");`, '')
-      .replace('var _client = require("/@vite/client");', '')
-
-    contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-    hotUpdatedCJSFiles.set(id, contents)
+    // just so it thinks its loaded
+    void server.transformRequest(id)
   })
 
   await server.listen()
@@ -118,11 +134,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     listenForHMR(cb) {
       hmrListeners.push(cb)
     },
-    getIndexBundle: async function getBundle() {
-      const outputCode = await getBundleCode()
-
-      return outputCode
-    },
+    getIndexBundle: getBundleCode,
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
@@ -151,7 +163,17 @@ export const dev = async (options: CLIResolvedOptions) => {
 
     // build app
     const buildOutput = await build({
-      plugins,
+      plugins: [
+        ...plugins,
+        nativePlugin({
+          port,
+          mode: 'build',
+        }),
+        viteReactPlugin({
+          tsDecorators: true,
+          mode: 'build',
+        }),
+      ],
       appType: 'custom',
       root,
       clearScreen: false,
@@ -165,60 +187,37 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    const appCodeIn = 'output' in buildOutput ? buildOutput.output[0].code : null
+    let appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
 
-    if (!appCodeIn) {
+    if (!appCode) {
       throw `❌`
     }
 
-    const appCode = await nativeBabelTransform(appCodeIn)
-
-    const paths = [
-      join(process.cwd(), 'testing-area', 'react.js'),
-      join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
-      join(process.cwd(), 'testing-area', 'react-native.js'),
-    ]
-
-    const [react, reactJsxRuntime, reactNative] = await Promise.all(
-      paths.map((p) => readFile(p, 'utf-8'))
-    )
-
-    const reactCode = react.replace(
-      `module.exports = require_react_development();`,
-      `return require_react_development()`
-    )
-
-    const reactJSXRuntimeCode = reactJsxRuntime.replace(
-      `module.exports = require_react_jsx_runtime_production_min();`,
-      `return require_react_jsx_runtime_production_min()`
-      // `module.exports = require_react_jsx_dev_runtime_development();`,
-      // `return require_react_jsx_dev_runtime_development();`
-    )
-
-    const reactNativeCode = reactNative
+    appCode = appCode
+      // this can be done in the individual file transform
+      .replace('undefined.accept(() => {})', '')
       .replace(
-        `module.exports = require_react_native();`,
-        `require_ReactNative();
-globalThis["ReactPressability"] = require_Pressability;
-globalThis["ReactUsePressability"] = require_usePressability;
-return require_react_native()`
+        `if (hasRequiredReact) return react.exports;`,
+        `if (react.exports && react.exports.createElement) return react.exports;`
       )
-      // forcing onto global so i can re-thread it into require
       .replace(
-        `ReactRefreshRuntime.injectIntoGlobalHook(global);`,
-        `globalThis['_ReactRefreshRuntime'] = ReactRefreshRuntime; ReactRefreshRuntime.injectIntoGlobalHook(global);`
+        `var require_react_refresh_runtime_development =`,
+        `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
+      )
+      .replace(
+        `var require_Pressability = `,
+        `var require_Pressability = globalThis['__ReactPressability__'] =`
+      )
+      .replace(
+        `var require_usePressability = `,
+        `var require_usePressability = globalThis['__ReactUsePressability__'] =`
       )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
-    return (await readFile(templateFile, 'utf-8'))
-      .replace(`// -- react --`, reactCode)
-      .replace(`// -- react-native --`, reactNativeCode)
-      .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-      .replace(
-        `// -- app --`,
-        appCode.replace('"use strict";', '').replace('undefined.accept(() => {})', '')
-      )
+    const out = (await readFile(templateFile, 'utf-8')) + appCode
+    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+    return out
   }
 }
 

@@ -10,8 +10,33 @@ const global =
 // to avoid it looking like browser...
 delete globalThis['window']
 
-globalThis['global'] = global
+globalThis['require'] = function require(_mod) {
+  if (_mod === 'react-native') return RN
+  if (_mod === 'react') return global['__React__']()
+  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
+    const mod = global['__JSX__']()
+    mod.jsxDEV = mod.jsxDEV || mod.jsx
+    return mod
+  }
+  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
+  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
+  throw new Error(`Not found: ${_mod}`)
+}
 
+Object.defineProperty(globalThis, '____react____', {
+  get() {
+    return require('react')
+  }
+})
+
+Object.defineProperty(globalThis, '____jsx____', {
+  get() {
+    return require('react/jsx-runtime')
+  }
+})
+
+globalThis['global'] = global
+global['react'] = {}
 global['exports'] = {}
 global['module'] = {}
 
@@ -44,38 +69,3 @@ global.ErrorUtils = {
     console.log('err' + err['message'] + err['stack'])
   },
 }
-
-globalThis['require'] = function require(_mod) {
-  if (_mod === 'react') return React
-  if (_mod === 'react-native') return RequireReactNative
-  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
-  if (_mod === '/@react-refresh') return globalThis['_ReactRefreshRuntime']
-  RequireReactNative.TouchableOpacity.hi
-  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['ReactPressability']()
-  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['ReactUsePressability']()
-  throw new Error(`Not found: ${_mod}`)
-}
-
-const React = (function () {
-  // -- react --
-})()
-
-const RequireReactJSXRuntime = (function () {
-  // -- react/jsx-runtime --
-})()
-
-// rn fix
-const jsx = RequireReactJSXRuntime.jsx
-RequireReactJSXRuntime.jsxDEV = RequireReactJSXRuntime.jsxDEV || RequireReactJSXRuntime.jsx
-global['react'] = (type, props, children) => {
-  return jsx(type, { children, ...props })
-}
-
-global['React'] = React
-
-const RequireReactNative = (function () {
-  // -- react-native --
-})()
-
-// -- app --
-

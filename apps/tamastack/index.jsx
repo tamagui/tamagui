@@ -1,5 +1,3 @@
-import '@tamagui/vite-native-client'
-
 import { AppRegistry, LogBox } from 'react-native'
 import { App } from './src/App'
 

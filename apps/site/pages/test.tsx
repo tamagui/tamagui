@@ -29,9 +29,9 @@ export default memo(() => {
   )
 })
 
-export async function getStaticProps() {
-  return {
-    revalidate: 0.00001,
-    props: {},
-  }
-}
+// export async function getStaticProps() {
+//   return {
+//     revalidate: 0.00001,
+//     props: {},
+//   }
+// }
