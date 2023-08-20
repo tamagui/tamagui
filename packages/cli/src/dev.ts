@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
+import viteReactPlugin from '@tamagui/vite-native-swc'
 import {
   nativeBabelTransform,
   nativePlugin,
@@ -10,7 +10,7 @@ import {
   tamaguiPlugin,
 } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
-import fs, { pathExists } from 'fs-extra'
+import { pathExists } from 'fs-extra'
 import { InlineConfig, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
@@ -19,8 +19,7 @@ import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
 
 export const dev = async (options: CLIResolvedOptions) => {
-  const { root, mode, paths } = options
-  const projectRoot = root
+  const { root } = options
 
   const packageRootDir = join(__dirname, '..')
 
@@ -52,6 +51,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   let serverConfig = {
     root,
     mode: 'development',
+    esbuild: false,
     clearScreen: false,
     appType: 'custom',
     plugins: [
@@ -190,7 +190,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
-    const out = (await readFile(templateFile, 'utf-8')).replace(`// -- app --`, appCode)
+    const out = (await readFile(templateFile, 'utf-8')) + appCode
 
     await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
 

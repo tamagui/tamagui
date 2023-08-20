@@ -7,7 +7,7 @@ export function App() {
   console.log('🍄🍄🍄')
   return (
     // <TamaguiProvider config={config}>
-    <View style={{ backgroundColor: 'red', width: 200, height: 200 }} />
+    <View style={{ backgroundColor: 'pink', width: 200, height: 200 }} />
     // <Stack bc="green" width={100} height={100} />
     // </TamaguiProvider>
   )

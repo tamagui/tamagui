@@ -42,9 +42,6 @@ const react = (_options?: Options): PluginOption[] => {
       name: 'vite:react-swc',
       config: () => ({
         esbuild: false,
-        optimizeDeps: {
-          include: [`${options.jsxImportSource}/jsx-dev-runtime`],
-        },
       }),
       configResolved(config) {
         const mdxIndex = config.plugins.findIndex((p) => p.name === '@mdx-js/rollup')
@@ -63,7 +60,18 @@ const react = (_options?: Options): PluginOption[] => {
         }
       },
       async transform(code, _id, transformOptions) {
-        return await swcTransform(_id, code, options, true)
+        if (
+          _id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
+          _id.includes(`node_modules/react/index.js`) ||
+          _id.includes(`node_modules/react/cjs/react.development.js`) ||
+          _id.includes(`node_modules/react-native/index.js`) ||
+          _id.includes(`node_modules/react/cjs/react-jsx-dev-runtime.development.js`) ||
+          _id.includes(`packages/vite-native-client/`)
+        ) {
+          return
+        }
+        const out = await swcTransform(_id, code, options, true)
+        return out
       },
     },
   ]
