@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin from '@tamagui/vite-native-swc'
+import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
 import {
   nativeBabelTransform,
   nativePlugin,
@@ -61,6 +61,47 @@ export const dev = async (options: CLIResolvedOptions) => {
         port,
         mode: 'serve',
       }),
+
+      // {
+      //   name: `tamagui-hot-update`,
+      //   async handleHotUpdate({ file, read, modules }) {
+      //     // idk why but its giving me dist asset stuff
+      //     if (!file.includes('/src/')) {
+      //       return
+      //     }
+      //     const id = modules[0]?.url || file.replace(root, '')
+      //     if (!id) {
+      //       console.log('⚠️ no modules?', file)
+      //       return
+      //     }
+      //     try {
+      //       const raw = await read()
+
+      //       console.log('raw', raw)
+
+      //       const swcout = await swcTransform(file, raw, {
+      //         mode: 'build',
+      //       })
+
+      //       console.log('swcout', swcout)
+
+      //       if (!swcout) {
+      //         throw '❌'
+      //       }
+
+      //       console.log('wtf', swcout.code)
+
+      //       let contents = await nativeBabelTransform(swcout.code)
+
+      //       console.log('contents', contents)
+
+      //       contents = `exports = ((exports) => { ${contents}; return exports })({})`
+      //       hotUpdatedCJSFiles.set(id, contents)
+      //     } catch (err) {
+      //       console.log('error hmring', err)
+      //     }
+      //   },
+      // },
     ],
     server: {
       cors: true,
@@ -89,22 +130,8 @@ export const dev = async (options: CLIResolvedOptions) => {
       return
     }
 
-    const out = await server.transformRequest(id)
-    if (!out) return
-
-    let contents = await nativeBabelTransform(out.code)
-
-    contents = contents
-      .replace('import.meta.hot.accept(() => {})', '')
-      .replace('react_jsx-dev-runtime', 'react/jsx-dev-runtime')
-      .replace(/\.js\?v=[0-9a-z]+"/gi, '"')
-      .replaceAll('/node_modules/.vite/deps/', '')
-      .replace(`import.meta.hot = (0, _client.createHotContext)("/src/App.tsx");`, '')
-      .replace('var _client = require("/@vite/client");', '')
-
-    contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-    hotUpdatedCJSFiles.set(id, contents)
+    // just so it thinks its loaded
+    void server.transformRequest(id)
   })
 
   await server.listen()

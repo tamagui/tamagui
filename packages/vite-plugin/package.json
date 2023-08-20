@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@babel/core": "^7.21.8",
     "@babel/plugin-transform-classes": "^7.22.6",
     "@babel/plugin-transform-modules-commonjs": "^7.22.5",
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
