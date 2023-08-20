@@ -221,13 +221,11 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       const updateOutputOptions = (out: OutputOptions) => {
         out.preserveModules = true
+
         out.entryFileNames = (chunkInfo) => {
-          if (chunkInfo.name.includes('node_modules')) {
-            return chunkInfo.name.replace('node_modules', 'external') + '.js'
-          }
+          // ensures we have clean names for our require paths
           return '[name].js'
         }
-
         // Ensure that as many resources as possible are inlined.
         // out.inlineDynamicImports = true
 

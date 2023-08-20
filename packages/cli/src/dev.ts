@@ -8,7 +8,7 @@ import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugi
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
-import { InlineConfig, build, createServer, resolveConfig } from 'vite'
+import { InlineConfig, Plugin, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
@@ -66,30 +66,19 @@ export const dev = async (options: CLIResolvedOptions) => {
         mode: 'serve',
       }),
 
-      // {
-      //   name: 'remove-import-analysis',
-
-      //   configResolved(config) {
-      //     // @ts-ignore
-      //     config.plugins = config.plugins.filter((x) => {
-      //       console.log('x.name', x.name)
-      //       if (x.name === 'vite:import-analysis') {
-      //         return false
-      //       }
-      //       return true
-      //     })
-      //   },
-      // },
-
       {
-        name: 'client-transform',
+        name: 'tamagui-client-transform',
 
         async handleHotUpdate({ read, modules, file }) {
           if (!file.includes('/src/')) {
             return
           }
 
-          const id = modules[0]?.url || file.replace(root, '')
+          const [module] = modules
+          if (!module) return
+
+          const id = module?.url || file.replace(root, '')
+
           const code = await read()
 
           if (code.startsWith(`'use strict';`)) return
@@ -99,6 +88,8 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
 
           let source = code
+
+          const importsMap = {}
 
           // parse imports of modules into ids:
           // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
@@ -112,11 +103,10 @@ export const dev = async (options: CLIResolvedOptions) => {
             if (importName) {
               let id = importName
               if (id[0] !== '.') {
-                id = relative(process.cwd(), resolve(id)).replace(
-                  '/node_modules/',
-                  '/external/'
-                )
+                id = relative(process.cwd(), resolve(id))
               }
+
+              importsMap[id] = id.replace(/^(\.\.\/)+/, '')
 
               // replace module name with id for hmr
               const len = importName.length
@@ -144,10 +134,10 @@ export const dev = async (options: CLIResolvedOptions) => {
             throw '❌ no source'
           }
 
-          const hotUpdateSource = `exports = ((exports) => { ${source.replace(
-            `import.meta.hot.accept(() => {});`,
-            ``
-          )}; return exports })({})`
+          const hotUpdateSource = `exports = ((exports) => {
+            const require = createRequire(${JSON.stringify(importsMap)})
+            ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+            return exports })({})`
 
           console.log('source', id, hotUpdateSource)
 
@@ -183,7 +173,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       return
     }
     // just so it thinks its loaded
-    await server.transformRequest(id)
+    void server.transformRequest(id)
   })
 
   await server.listen()
@@ -199,6 +189,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
+  void getBundleCode()
+
   // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
@@ -208,13 +200,12 @@ export const dev = async (options: CLIResolvedOptions) => {
     server.close()
   })
 
-  getBundleCode()
-
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
     if (isBuilding) {
-      return await isBuilding
+      const res = await isBuilding
+      return res
     }
 
     let done
