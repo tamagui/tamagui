@@ -56,10 +56,10 @@ export const dev = async (options: CLIResolvedOptions) => {
     plugins: [
       ...plugins,
 
-      // viteReactPlugin({
-      //   tsDecorators: true,
-      //   mode: 'serve',
-      // }),
+      viteReactPlugin({
+        tsDecorators: true,
+        mode: 'serve',
+      }),
 
       nativePlugin({
         port,
@@ -136,7 +136,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           source =
             (
               await swcTransform(id, source, {
-                mode: 'serve',
+                mode: 'serve-cjs',
               })
             )?.code || ''
 
@@ -148,6 +148,8 @@ export const dev = async (options: CLIResolvedOptions) => {
             `import.meta.hot.accept(() => {});`,
             ``
           )}; return exports })({})`
+
+          console.log('source', id, hotUpdateSource)
 
           hotUpdatedCJSFiles.set(id, hotUpdateSource)
         },

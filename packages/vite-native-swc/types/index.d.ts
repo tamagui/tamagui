@@ -3,7 +3,7 @@ import { SourceMapPayload } from 'module';
 import { JscTarget, Output, ReactConfig } from '@swc/core';
 import { PluginOption } from 'vite';
 type Options = {
-    mode: 'serve' | 'build';
+    mode: 'serve' | 'serve-cjs' | 'build';
     /**
      * Control where the JSX factory is imported from.
      * @default "react"

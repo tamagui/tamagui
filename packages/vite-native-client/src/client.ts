@@ -127,9 +127,6 @@ function setupWebSocket(
 }
 
 function warnFailedFetch(err: Error, path: string | string[]) {
-  if (!err.message.match('fetch')) {
-    console.error(err)
-  }
   console.error(`${err}`)
   console.error(
     `[hmr] Failed to reload ${path}. ` +
@@ -374,9 +371,15 @@ async function fetchUpdate({
 
       console.log(`fetching update: ${JSON.stringify({ path, mod, scriptUrl })}`)
 
+      console.log('run fetch')
+
       const source = await fetch(scriptUrl).then((res) => res.text())
 
+      console.log(`got source`, source)
+
       const evaluatedModule = eval(source)
+
+      console.log('ran new module!')
 
       fetchedModule = evaluatedModule
     } catch (e) {

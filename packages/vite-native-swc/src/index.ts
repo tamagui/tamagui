@@ -9,7 +9,7 @@ const resolve = createRequire(
 const refreshContentRE = /\$Refresh(?:Reg|Sig)\$\(/
 
 type Options = {
-  mode: 'serve' | 'build'
+  mode: 'serve' | 'serve-cjs' | 'build'
 
   /**
    * Control where the JSX factory is imported from.
@@ -200,7 +200,7 @@ export const transformWithOptions = async (
       configFile: false,
       sourceMaps: true,
       module: {
-        type: options.mode === 'serve' ? 'commonjs' : 'nodenext',
+        type: options.mode === 'serve-cjs' ? 'commonjs' : 'nodenext',
       },
       jsc: {
         target,

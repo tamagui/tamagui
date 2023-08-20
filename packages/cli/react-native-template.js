@@ -13,17 +13,21 @@ delete globalThis['window']
 const __cachedModules = {}
 
 function __specialRequire(_mod) {
-  if (_mod === 'react-native/Libraries/Pressability/Pressability')
-    return globalThis['__ReactPressability__']()
-  if (_mod === 'react-native/Libraries/Pressability/usePressability')
-    return globalThis['__ReactUsePressability__']()
-  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
-    const mod = global['__JSX__']()
-    mod.jsxDEV = mod.jsxDEV || mod.jsx
-    return mod
-  }
-  if (___modules___[_mod]) {
-    return ___modules___[_mod]({ exports: {} })
+  try {
+    if (_mod === 'react-native/Libraries/Pressability/Pressability')
+      return globalThis['__ReactPressability__']()
+    if (_mod === 'react-native/Libraries/Pressability/usePressability')
+      return globalThis['__ReactUsePressability__']()
+    if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
+      const mod = global['__JSX__']()
+      mod.jsxDEV = mod.jsxDEV || mod.jsx
+      return mod
+    }
+    if (___modules___[_mod]) {
+      return ___modules___[_mod]({ exports: {} })
+    }
+  } catch(err) {
+    console.log(`Error... ${err}`)
   }
 }
 
