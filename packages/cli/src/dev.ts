@@ -180,8 +180,12 @@ export const dev = async (options: CLIResolvedOptions) => {
       // this can be done in the individual file transform
       .replace('undefined.accept(() => {})', '')
       .replace(
+        `if (hasRequiredReact) return react.exports;`,
+        `if (react.exports && react.exports.createElement) return react.exports;`
+      )
+      .replace(
         `var require_react_refresh_runtime_development =`,
-        `globalThis['__RequireReactRefreshRuntime__'] = require_react_refresh_runtime_development; var require_react_refresh_runtime_development =`
+        `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
       )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')

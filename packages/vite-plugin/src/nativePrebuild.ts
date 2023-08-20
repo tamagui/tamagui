@@ -116,8 +116,8 @@ export async function nativePrebuild() {
       platform: 'node',
       define: {
         // metro serves this in production mode
-        __DEV__: 'false',
-        'process.env.NODE_ENV': `"production"`,
+        __DEV__: 'true',
+        'process.env.NODE_ENV': `"development"`,
       },
       logLevel: 'warning',
       resolveExtensions: extensions,

@@ -51,26 +51,5 @@ globalThis['require'] = function require(_mod) {
   throw new Error(`Not found: ${_mod}`)
 }
 
-// const React = (function () {
-//   // -- react --
-// })()
-
-// const RequireReactJSXRuntime = (function () {
-//   // -- react/jsx-runtime --
-// })()
-
-// // rn fix
-// const jsx = RequireReactJSXRuntime.jsx
-// RequireReactJSXRuntime.jsxDEV = RequireReactJSXRuntime.jsxDEV || RequireReactJSXRuntime.jsx
-// global['react'] = (type, props, children) => {
-//   return jsx(type, { children, ...props })
-// }
-
-// global['React'] = React
-
-// const RequireReactNative = (function () {
-//   // -- react-native --
-// })()
-
 // -- app --
 

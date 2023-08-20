@@ -3061,9 +3061,17 @@ var require_LogBox = __commonJS({
 
 // ../../node_modules/react-native/Libraries/Core/ExceptionsManager.js
 var require_ExceptionsManager = __commonJS({
-  "../../node_modules/react-native/Libraries/Core/ExceptionsManager.js"(exports, module2) {
+  "../../node_modules/react-native/Libraries/Core/ExceptionsManager.js"(exports) {
     "use strict";
     var _interopRequireDefault = require_interopRequireDefault();
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.SyntheticError = void 0;
+    exports.handleException = handleException;
+    exports.installConsoleErrorReporter = installConsoleErrorReporter;
+    exports.preprocessException = preprocessException;
+    exports.reactConsoleErrorHandler = reactConsoleErrorHandler;
+    exports.reportException = reportException;
+    exports.unstable_setExceptionDecorator = unstable_setExceptionDecorator;
     var _createClass2 = _interopRequireDefault(require_createClass());
     var _classCallCheck2 = _interopRequireDefault(require_classCallCheck());
     var _inherits2 = _interopRequireDefault(require_inherits());
@@ -3113,6 +3121,7 @@ var require_ExceptionsManager = __commonJS({
       }
       return (0, _createClass2.default)(SyntheticError2);
     }((0, _wrapNativeSuper2.default)(Error));
+    exports.SyntheticError = SyntheticError;
     var userExceptionDecorator;
     var inUserExceptionDecorator = false;
     var decoratedExtraDataKey = Symbol("decoratedExtraDataKey");
@@ -3216,7 +3225,6 @@ This error is located at:${e.componentStack}`;
         console.reportErrorsAsExceptions = true;
       }
     }
-    module2.exports = { decoratedExtraDataKey, handleException, installConsoleErrorReporter, SyntheticError, unstable_setExceptionDecorator };
   }
 });
 
