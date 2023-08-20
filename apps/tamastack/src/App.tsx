@@ -1,5 +1,5 @@
 // import { Stack, TamaguiProvider } from '@tamagui/core'
-import { View } from 'react-native'
+import { BackHandler, View } from 'react-native'
 
 // import { default as config } from './tamagui.config'
 

@@ -10,6 +10,8 @@ const global =
 // to avoid it looking like browser...
 delete globalThis['window']
 
+const cachedModules = {}
+
 globalThis['require'] = function require(_mod) {
   if (_mod === 'react-native') return RN
   if (_mod === 'react') return global['__React__']()
@@ -20,10 +22,17 @@ globalThis['require'] = function require(_mod) {
   }
   if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
   if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
-  const found = ___modules___[_mod]
+  // handles relative imports rollup outputs
+  let found = ___modules___[_mod] || ___modules___[require.__importsMap[_mod]]
   if (found) {
-    return found
+    if (!cachedModules[found]) {
+      const exported = { exports: {} }
+      found(exported)
+      cachedModules[found] = exported
+    }
+    return cachedModules[_mod]
   }
+  
   throw new Error(`Not found: ${_mod}`)
 }
 

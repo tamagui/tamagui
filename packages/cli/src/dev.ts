@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'fs/promises'
 import { createRequire } from 'module'
-import { join, relative } from 'path'
+import { dirname, join, relative } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
@@ -84,7 +84,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           try {
             let source = await read()
 
-            console.log('source1', source)
+            console.log('from', source)
 
             // we have to remove jsx before we can parse imports...
             source =
@@ -97,7 +97,7 @@ export const dev = async (options: CLIResolvedOptions) => {
             console.log('source2', source)
 
             if (!source) {
-              throw '❌'
+              throw '❌ no source'
             }
 
             // parse imports of modules into ids:
@@ -153,6 +153,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   // first resolve config so we can pass into client plugin, then add client plugin:
   const resolvedConfig = await resolveConfig(serverConfig, 'serve')
+
   const viteRNClient = clientInjectionsPlugin(resolvedConfig)
 
   plugins.push(viteRNClient)
@@ -197,6 +198,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     server.close()
   })
 
+  getBundleCode()
+
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
@@ -239,6 +242,12 @@ export const dev = async (options: CLIResolvedOptions) => {
       build: {
         ssr: false,
         minify: false,
+        rollupOptions: {
+          preserveEntrySignatures: 'strict',
+          output: {
+            format: 'cjs',
+          },
+        },
       },
       mode: 'development',
       define: {
@@ -247,7 +256,40 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    let appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
+    if (!('output' in buildOutput)) {
+      throw `❌`
+    }
+
+    let appCode = buildOutput.output
+      // entry last
+      .sort((a, b) => (a['isEntry'] ? 1 : -1))
+      .map((module) => {
+        if (module.type == 'chunk') {
+          const importsMap = {}
+          for (const imp of module.imports) {
+            const relativePath = relative(dirname(module.fileName), imp)
+            importsMap[relativePath[0] === '.' ? relativePath : './' + relativePath] = imp
+          }
+
+          return `
+___modules___["${module.fileName}"] = ((exports) => {
+  require.__importsMap = ${JSON.stringify(importsMap)}
+
+  ${module.code}
+})
+
+${
+  module.isEntry
+    ? `
+// run entry
+require("${module.fileName}")
+`
+    : ''
+}
+`
+        }
+      })
+      .join('\n')
 
     if (!appCode) {
       throw `❌`

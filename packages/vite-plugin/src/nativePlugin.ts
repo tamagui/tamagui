@@ -2,6 +2,7 @@ import { readFile } from 'fs/promises'
 
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { transform } from '@swc/core'
+import { parse } from 'es-module-lexer'
 import { ModuleInfo, OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
@@ -103,6 +104,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       if (options.mode === 'build') {
         config.build.rollupOptions.plugins.push({
           name: `swap-react-native`,
+
           async load(id) {
             if (id.endsWith('/react-native/index.js')) {
               const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
@@ -144,6 +146,22 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             }
           )
         )
+
+        config.build.rollupOptions.plugins.push({
+          name: `force-export-all`,
+
+          async transform(code) {
+            const [_imports, exports] = parse(code)
+
+            const forceExports = exports
+              .map((e) => {
+                return `globalThis.____forceExport = ${e.n};`
+              })
+              .join(';')
+
+            return code + '\n' + forceExports
+          },
+        })
 
         config.build.rollupOptions.plugins.push({
           name: `native-transform`,
@@ -200,8 +218,16 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
+        out.preserveModules = true
+        out.entryFileNames = (chunkInfo) => {
+          if (chunkInfo.name.includes('node_modules')) {
+            return chunkInfo.name.replace('node_modules', 'external') + '.js'
+          }
+          return '[name].js'
+        }
+
         // Ensure that as many resources as possible are inlined.
-        out.inlineDynamicImports = true
+        // out.inlineDynamicImports = true
 
         // added by me (nate):
         out.manualChunks = undefined
