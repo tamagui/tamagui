@@ -62,46 +62,39 @@ export const dev = async (options: CLIResolvedOptions) => {
         mode: 'serve',
       }),
 
-      // {
-      //   name: `tamagui-hot-update`,
-      //   async handleHotUpdate({ file, read, modules }) {
-      //     // idk why but its giving me dist asset stuff
-      //     if (!file.includes('/src/')) {
-      //       return
-      //     }
-      //     const id = modules[0]?.url || file.replace(root, '')
-      //     if (!id) {
-      //       console.log('⚠️ no modules?', file)
-      //       return
-      //     }
-      //     try {
-      //       const raw = await read()
+      {
+        name: `tamagui-hot-update`,
+        async handleHotUpdate({ file, read, modules }) {
+          // idk why but its giving me dist asset stuff
+          if (!file.includes('/src/')) {
+            return
+          }
+          const id = modules[0]?.url || file.replace(root, '')
+          if (!id) {
+            console.log('⚠️ no modules?', file)
+            return
+          }
+          try {
+            const raw = await read()
 
-      //       console.log('raw', raw)
+            const swcout = await swcTransform(file, raw, {
+              mode: 'serve',
+            })
 
-      //       const swcout = await swcTransform(file, raw, {
-      //         mode: 'build',
-      //       })
+            if (!swcout) {
+              throw '❌'
+            }
 
-      //       console.log('swcout', swcout)
+            let contents = await nativeBabelTransform(swcout.code)
+            contents = contents.replace(`import.meta.hot.accept(() => {});`, ``)
+            contents = `exports = ((exports) => { ${contents}; return exports })({})`
 
-      //       if (!swcout) {
-      //         throw '❌'
-      //       }
-
-      //       console.log('wtf', swcout.code)
-
-      //       let contents = await nativeBabelTransform(swcout.code)
-
-      //       console.log('contents', contents)
-
-      //       contents = `exports = ((exports) => { ${contents}; return exports })({})`
-      //       hotUpdatedCJSFiles.set(id, contents)
-      //     } catch (err) {
-      //       console.log('error hmring', err)
-      //     }
-      //   },
-      // },
+            hotUpdatedCJSFiles.set(id, contents)
+          } catch (err) {
+            console.log('error hmring', err)
+          }
+        },
+      },
     ],
     server: {
       cors: true,

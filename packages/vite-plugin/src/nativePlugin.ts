@@ -41,8 +41,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       // externals
       // breaks
-      config.optimizeDeps.exclude ??= []
-      config.optimizeDeps.exclude.push('react-native')
+      // config.optimizeDeps.exclude ??= []
+      // config.optimizeDeps.exclude.push('react-native')
 
       config.optimizeDeps.needsInterop ??= []
       config.optimizeDeps.needsInterop.push('react-native')

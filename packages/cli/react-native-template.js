@@ -10,6 +10,17 @@ const global =
 // to avoid it looking like browser...
 delete globalThis['window']
 
+globalThis['require'] = function require(_mod) {
+  if (_mod === 'react-native') return RN
+  if (_mod === 'react') return global['__React__']()
+  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
+    const mod = global['__JSX__']()
+    mod.jsxDEV = mod.jsxDEV || mod.jsx
+    return mod
+  }
+  throw new Error(`Not found: ${_mod}`)
+}
+
 globalThis['global'] = global
 global['react'] = {}
 global['exports'] = {}
