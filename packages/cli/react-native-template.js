@@ -11,7 +11,7 @@ const global =
 delete globalThis['window']
 
 globalThis['global'] = global
-
+global['react'] = {}
 global['exports'] = {}
 global['module'] = {}
 
@@ -46,36 +46,31 @@ global.ErrorUtils = {
 }
 
 globalThis['require'] = function require(_mod) {
-  if (_mod === 'react') return React
-  if (_mod === 'react-native') return RequireReactNative
-  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return RequireReactJSXRuntime
-  if (_mod === '/@react-refresh') return globalThis['_ReactRefreshRuntime']
-  RequireReactNative.TouchableOpacity.hi
-  if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['ReactPressability']()
-  if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['ReactUsePressability']()
+  if (_mod === 'react') return requireReact()
+  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return jsxDevRuntimeExports
   throw new Error(`Not found: ${_mod}`)
 }
 
-const React = (function () {
-  // -- react --
-})()
+// const React = (function () {
+//   // -- react --
+// })()
 
-const RequireReactJSXRuntime = (function () {
-  // -- react/jsx-runtime --
-})()
+// const RequireReactJSXRuntime = (function () {
+//   // -- react/jsx-runtime --
+// })()
 
-// rn fix
-const jsx = RequireReactJSXRuntime.jsx
-RequireReactJSXRuntime.jsxDEV = RequireReactJSXRuntime.jsxDEV || RequireReactJSXRuntime.jsx
-global['react'] = (type, props, children) => {
-  return jsx(type, { children, ...props })
-}
+// // rn fix
+// const jsx = RequireReactJSXRuntime.jsx
+// RequireReactJSXRuntime.jsxDEV = RequireReactJSXRuntime.jsxDEV || RequireReactJSXRuntime.jsx
+// global['react'] = (type, props, children) => {
+//   return jsx(type, { children, ...props })
+// }
 
-global['React'] = React
+// global['React'] = React
 
-const RequireReactNative = (function () {
-  // -- react-native --
-})()
+// const RequireReactNative = (function () {
+//   // -- react-native --
+// })()
 
 // -- app --
 

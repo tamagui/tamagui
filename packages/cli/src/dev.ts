@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
@@ -121,11 +121,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     listenForHMR(cb) {
       hmrListeners.push(cb)
     },
-    getIndexBundle: async function getBundle() {
-      const outputCode = await getBundleCode()
-
-      return outputCode
-    },
+    getIndexBundle: getBundleCode,
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
@@ -137,9 +133,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     dispose()
     server.close()
   })
-
-  // build once on startup
-  void getBundleCode()
 
   await new Promise((res) => server.httpServer?.on('close', res))
 
@@ -156,7 +149,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     }
 
     // build app
-    console.log('building')
     const buildOutput = await build({
       plugins: [
         ...plugins,
@@ -178,60 +170,71 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    const appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
-
-    console.log('appCodeIn', appCode)
+    let appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
 
     if (!appCode) {
       throw `❌`
     }
 
-    const paths = [
-      join(process.cwd(), 'testing-area', 'react.js'),
-      join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
-      join(process.cwd(), 'testing-area', 'react-native.js'),
-    ]
-
-    const [react, reactJsxRuntime, reactNative] = await Promise.all(
-      paths.map((p) => readFile(p, 'utf-8'))
-    )
-
-    const reactCode = react.replace(
-      `module.exports = require_react_development();`,
-      `return require_react_development()`
-    )
-
-    const reactJSXRuntimeCode = reactJsxRuntime.replace(
-      `module.exports = require_react_jsx_runtime_production_min();`,
-      `return require_react_jsx_runtime_production_min()`
-      // `module.exports = require_react_jsx_dev_runtime_development();`,
-      // `return require_react_jsx_dev_runtime_development();`
-    )
-
-    const reactNativeCode = reactNative
+    appCode = appCode
+      // this can be done in the individual file transform
+      .replace('undefined.accept(() => {})', '')
       .replace(
-        `module.exports = require_react_native();`,
-        `require_ReactNative();
-globalThis["ReactPressability"] = require_Pressability;
-globalThis["ReactUsePressability"] = require_usePressability;
-return require_react_native()`
-      )
-      // forcing onto global so i can re-thread it into require
-      .replace(
-        `ReactRefreshRuntime.injectIntoGlobalHook(global);`,
-        `globalThis['_ReactRefreshRuntime'] = ReactRefreshRuntime; ReactRefreshRuntime.injectIntoGlobalHook(global);`
+        `var require_react_refresh_runtime_development =`,
+        `globalThis['__RequireReactRefreshRuntime__'] = require_react_refresh_runtime_development; var require_react_refresh_runtime_development =`
       )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
-    return (await readFile(templateFile, 'utf-8'))
-      .replace(`// -- react --`, reactCode)
-      .replace(`// -- react-native --`, reactNativeCode)
-      .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
-      .replace(
-        `// -- app --`,
-        appCode.replace('"use strict";', '').replace('undefined.accept(() => {})', '')
-      )
+    const out = (await readFile(templateFile, 'utf-8')).replace(`// -- app --`, appCode)
+
+    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+
+    return out
+
+    //     const paths = [
+    //       join(process.cwd(), 'testing-area', 'react.js'),
+    //       join(process.cwd(), 'testing-area', 'react-jsx-runtime.js'),
+    //       join(process.cwd(), 'testing-area', 'react-native.js'),
+    //     ]
+
+    //     const [react, reactJsxRuntime, reactNative] = await Promise.all(
+    //       paths.map((p) => readFile(p, 'utf-8'))
+    //     )
+
+    //     const reactCode = react.replace(
+    //       `module.exports = require_react_development();`,
+    //       `return require_react_development()`
+    //     )
+
+    //     const reactJSXRuntimeCode = reactJsxRuntime.replace(
+    //       `module.exports = require_react_jsx_runtime_production_min();`,
+    //       `return require_react_jsx_runtime_production_min()`
+    //       // `module.exports = require_react_jsx_dev_runtime_development();`,
+    //       // `return require_react_jsx_dev_runtime_development();`
+    //     )
+
+    //     const reactNativeCode = reactNative
+    //       .replace(
+    //         `module.exports = require_react_native();`,
+    //         `require_ReactNative();
+    // globalThis["ReactPressability"] = require_Pressability;
+    // globalThis["ReactUsePressability"] = require_usePressability;
+    // return require_react_native()`
+    //       )
+    //       // forcing onto global so i can re-thread it into require
+    //       .replace(
+    //         `ReactRefreshRuntime.injectIntoGlobalHook(global);`,
+    //         `globalThis['_ReactRefreshRuntime'] = ReactRefreshRuntime; ReactRefreshRuntime.injectIntoGlobalHook(global);`
+    //       )
+
+    //     const templateFile = join(packageRootDir, 'react-native-template.js')
+
+    //     return (await readFile(templateFile, 'utf-8'))
+    //       .replace(`// -- react --`, reactCode)
+    //       .replace(`// -- react-native --`, reactNativeCode)
+    //       .replace(`// -- react/jsx-runtime --`, reactJSXRuntimeCode)
+    //       .replace(`// -- app --`, appCode)
   }
 }
 

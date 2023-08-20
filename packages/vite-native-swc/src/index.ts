@@ -1,21 +1,8 @@
-import { readFileSync } from 'fs'
-import { SourceMapPayload } from 'module'
-import { createRequire } from 'module'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { SourceMapPayload, createRequire } from 'module'
 
 import { JscTarget, Output, ParserConfig, ReactConfig, transform } from '@swc/core'
 import { BuildOptions, PluginOption, UserConfig } from 'vite'
 
-const runtimePublicPath = '/@react-refresh'
-
-const preambleCode = `import { injectIntoGlobalHook } from "__PATH__";
-injectIntoGlobalHook(globalThis);
-globalThis.$RefreshReg$ = () => {};
-globalThis.$RefreshSig$ = () => (type) => type;`
-
-const _dirname =
-  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url))
 const resolve = createRequire(
   typeof __filename !== 'undefined' ? __filename : import.meta.url
 ).resolve
@@ -52,19 +39,7 @@ const react = (_options?: Options): PluginOption[] => {
 
   return [
     {
-      name: 'vite:react-swc:resolve-runtime',
-      // apply: 'serve',
-      enforce: 'pre', // Run before Vite default resolve to avoid syscalls
-      resolveId: (id) => (id === runtimePublicPath ? id : undefined),
-      load: (id) => {
-        return id === runtimePublicPath
-          ? readFileSync(join(_dirname, 'refresh-runtime.js'), 'utf-8')
-          : undefined
-      },
-    },
-    {
       name: 'vite:react-swc',
-      // apply: 'serve',
       config: () => ({
         esbuild: false,
         optimizeDeps: {
@@ -87,16 +62,6 @@ const react = (_options?: Options): PluginOption[] => {
           )
         }
       },
-      transformIndexHtml: (_, config) => [
-        {
-          tag: 'script',
-          attrs: { type: 'module' },
-          children: preambleCode.replace(
-            '__PATH__',
-            config.server!.config.base + runtimePublicPath.slice(1)
-          ),
-        },
-      ],
       async transform(code, _id, transformOptions) {
         return await swcTransform(_id, code, options, true)
       },
@@ -140,7 +105,7 @@ export async function swcTransform(
 }
 
 export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
-  return `const RefreshRuntime = require("${runtimePublicPath}");
+  return `const RefreshRuntime = globalThis['__RequireReactRefreshRuntime__']();
 const prevRefreshReg = globalThis.$RefreshReg$;
 const prevRefreshSig = globalThis.$RefreshSig$;
 globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);

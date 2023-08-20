@@ -1,13 +1,11 @@
 import { readFile } from 'fs/promises'
 
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
-import commonJs from '@rollup/plugin-commonjs'
-import flowRemoveTypes from 'flow-remove-types'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
 import { extensions } from './extensions'
-import { nativeBabelRemoveJSX, prebuiltFiles } from './nativePrebuild'
+import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
@@ -130,9 +128,34 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       if (options.mode === 'build') {
         config.build.rollupOptions.plugins.push({
+          name: `swap-react`,
+          async load(id) {
+            if (id.endsWith('react/index.js')) {
+              const code = await readFile(prebuiltFiles.react, 'utf-8')
+              console.log('sawppign')
+              return {
+                code,
+              }
+            }
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
+          name: `swap-react-jsx`,
+          async load(id) {
+            if (id.endsWith('react/jsx-dev-runtime.js')) {
+              const code = await readFile(prebuiltFiles.reactJSXRuntime, 'utf-8')
+              return {
+                code,
+              }
+            }
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
           name: `swap-react-native`,
           async load(id) {
-            if (id.endsWith('react-native/index.js')) {
+            if (id.endsWith('/react-native/index.js')) {
               const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
               return {
                 code: `
@@ -156,68 +179,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             }
           },
         })
-
-        //         config.build.rollupOptions.plugins.push({
-        //           name: 'flow-remove-types',
-        //           transform: async (codeIn, id) => {
-        //             if (!id.includes('node_modules')) {
-        //               return
-        //             }
-        //             const flowRemoved = flowRemoveTypes(codeIn).toString()
-        //             let jsxRemoved = await nativeBabelRemoveJSX(flowRemoved)
-
-        //             if (id.includes('BackHandler')) {
-        //               jsxRemoved = jsxRemoved.replace(
-        //                 `module.exports = require('../Components/UnimplementedViews/UnimplementedView');`,
-        //                 ''
-        //               )
-        //             }
-
-        //             if (jsxRemoved.includes(`module.exports = `)) {
-        //               jsxRemoved = jsxRemoved.replace(
-        //                 /\nmodule.exports = /gi,
-        //                 `\nexport default `
-        //               )
-        //             }
-
-        //             if (id.endsWith('ReactNativeViewConfigRegistry.js')) {
-        //               jsxRemoved =
-        //                 jsxRemoved +
-        //                 `\nconst allExports = {...exports }; export default allExports;`
-        //             }
-
-        //             if (id.endsWith('ExceptionsManager.js')) {
-        //               console.log('huh', id)
-        //               jsxRemoved = jsxRemoved
-        //                 .replace(/\nfunction /g, 'export function')
-        //                 .replace('class SynthenticEvent', 'export class SyntheticEvent')
-        //                 .replace(
-        //                   `module.exports = {
-        //   decoratedExtraDataKey,
-        //   handleException,
-        //   installConsoleErrorReporter,
-        //   SyntheticError,
-        //   unstable_setExceptionDecorator,
-        // };`,
-        //                   ``
-        //                 )
-        //             }
-
-        //             return {
-        //               code: jsxRemoved,
-        //               map: null,
-        //             }
-        //           },
-        //         })
-
-        // config.build.rollupOptions.plugins.push(
-        //   commonJs({
-        //     include: ['**/node_modules/react-native/**', '**/node_modules/base64-js/**'],
-        //     // ignoreGlobal: true,
-        //     transformMixedEsModules: true,
-        //     defaultIsModuleExports: true,
-        //   }) as any
-        // )
       }
 
       if (process.env.DEBUG) {
@@ -250,23 +211,19 @@ const RNExportNames = [
   'AccessibilityInfo',
   'ActivityIndicator',
   'Button',
-  'DatePickerIOS',
   'DrawerLayoutAndroid',
   'FlatList',
   'Image',
   'ImageBackground',
   'InputAccessoryView',
   'KeyboardAvoidingView',
-  'MaskedViewIOS',
   'Modal',
   'Pressable',
   'ProgressBarAndroid',
-  'ProgressViewIOS',
   'RefreshControl',
   'SafeAreaView',
   'ScrollView',
   'SectionList',
-  'Slider',
   'StatusBar',
   'Switch',
   'Text',
@@ -285,7 +242,6 @@ const RNExportNames = [
   'Appearance',
   'AppRegistry',
   'AppState',
-  'AsyncStorage',
   'BackHandler',
   'Clipboard',
   'DeviceInfo',
@@ -294,7 +250,6 @@ const RNExportNames = [
   'Easing',
   'findNodeHandle',
   'I18nManager',
-  'ImagePickerIOS',
   'InteractionManager',
   'Keyboard',
   'LayoutAnimation',
@@ -335,3 +290,67 @@ const RNExportNames = [
   // 'PointPropType',
   // 'ViewPropTypes',
 ]
+
+// failed attempt to get vite to bundle rn, after a bunch of hacks still trouble
+
+//         config.build.rollupOptions.plugins.push({
+//           name: 'flow-remove-types',
+//           transform: async (codeIn, id) => {
+//             if (!id.includes('node_modules')) {
+//               return
+//             }
+//             const flowRemoved = flowRemoveTypes(codeIn).toString()
+//             let jsxRemoved = await nativeBabelRemoveJSX(flowRemoved)
+
+//             if (id.includes('BackHandler')) {
+//               jsxRemoved = jsxRemoved.replace(
+//                 `module.exports = require('../Components/UnimplementedViews/UnimplementedView');`,
+//                 ''
+//               )
+//             }
+
+//             if (jsxRemoved.includes(`module.exports = `)) {
+//               jsxRemoved = jsxRemoved.replace(
+//                 /\nmodule.exports = /gi,
+//                 `\nexport default `
+//               )
+//             }
+
+//             if (id.endsWith('ReactNativeViewConfigRegistry.js')) {
+//               jsxRemoved =
+//                 jsxRemoved +
+//                 `\nconst allExports = {...exports }; export default allExports;`
+//             }
+
+//             if (id.endsWith('ExceptionsManager.js')) {
+//               console.log('huh', id)
+//               jsxRemoved = jsxRemoved
+//                 .replace(/\nfunction /g, 'export function')
+//                 .replace('class SynthenticEvent', 'export class SyntheticEvent')
+//                 .replace(
+//                   `module.exports = {
+//   decoratedExtraDataKey,
+//   handleException,
+//   installConsoleErrorReporter,
+//   SyntheticError,
+//   unstable_setExceptionDecorator,
+// };`,
+//                   ``
+//                 )
+//             }
+
+//             return {
+//               code: jsxRemoved,
+//               map: null,
+//             }
+//           },
+//         })
+
+// config.build.rollupOptions.plugins.push(
+//   commonJs({
+//     include: ['**/node_modules/react-native/**', '**/node_modules/base64-js/**'],
+//     // ignoreGlobal: true,
+//     transformMixedEsModules: true,
+//     defaultIsModuleExports: true,
+//   }) as any
+// )
