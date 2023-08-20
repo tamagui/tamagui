@@ -24,11 +24,13 @@ const variants = {
 } as const
 
 export const YStack = styled(Stack, {
+  name: 'YStack',
   flexDirection: 'column',
   variants,
 })
 
 export const XStack = styled(Stack, {
+  name: 'XStack',
   flexDirection: 'row',
   variants,
 })
@@ -36,6 +38,7 @@ export const XStack = styled(Stack, {
 export const ZStack = styled(
   YStack,
   {
+    name: 'ZStack',
     position: 'relative',
   },
   {
