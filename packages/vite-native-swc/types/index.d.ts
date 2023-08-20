@@ -3,7 +3,7 @@ import { SourceMapPayload } from 'module';
 import { JscTarget, Output, ReactConfig } from '@swc/core';
 import { PluginOption } from 'vite';
 type Options = {
-    mode: 'serve' | 'build';
+    mode: 'serve' | 'serve-cjs' | 'build';
     /**
      * Control where the JSX factory is imported from.
      * @default "react"
@@ -27,5 +27,6 @@ export declare function swcTransform(_id: string, code: string, options: Options
     map: SourceMapPayload;
 } | undefined>;
 export declare function wrapSourceInRefreshRuntime(id: string, code: string, options: Options): string;
+export declare const transformForBuild: (id: string, code: string) => Promise<Output>;
 export declare const transformWithOptions: (id: string, code: string, target: JscTarget, options: Options, reactConfig: ReactConfig) => Promise<Output | undefined>;
 //# sourceMappingURL=index.d.ts.map

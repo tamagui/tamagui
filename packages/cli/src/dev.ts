@@ -1,22 +1,22 @@
 import { readFile, writeFile } from 'fs/promises'
-import { join } from 'path'
+import { createRequire } from 'module'
+import { dirname, join, relative } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
-import {
-  nativeBabelTransform,
-  nativePlugin,
-  nativePrebuild,
-  tamaguiPlugin,
-} from '@tamagui/vite-plugin'
+import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
+import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
-import { InlineConfig, build, createServer, resolveConfig } from 'vite'
+import { InlineConfig, Plugin, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
 import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
+
+const resolve =
+  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
@@ -30,15 +30,16 @@ export const dev = async (options: CLIResolvedOptions) => {
   const port = options.port || 8081
 
   const plugins = [
-    tamaguiPlugin({
-      ...options.tamaguiOptions,
-      target: 'native',
-    }),
+    // tamaguiPlugin({
+    //   ...options.tamaguiOptions,
+    //   target: 'native',
+    // }),
   ]
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
     console.log('🐞 enabling inspect plugin')
+    // @ts-ignore
     plugins.push(inspect())
   }
 
@@ -51,48 +52,96 @@ export const dev = async (options: CLIResolvedOptions) => {
     esbuild: false,
     clearScreen: false,
     appType: 'custom',
+
     plugins: [
       ...plugins,
+
       viteReactPlugin({
         tsDecorators: true,
         mode: 'serve',
       }),
+
       nativePlugin({
         port,
         mode: 'serve',
       }),
 
       {
-        name: `tamagui-hot-update`,
-        async handleHotUpdate({ file, read, modules }) {
-          // idk why but its giving me dist asset stuff
+        name: 'tamagui-client-transform',
+
+        async handleHotUpdate({ read, modules, file }) {
           if (!file.includes('/src/')) {
             return
           }
-          const id = modules[0]?.url || file.replace(root, '')
-          if (!id) {
-            console.log('⚠️ no modules?', file)
+
+          const [module] = modules
+          if (!module) return
+
+          const id = module?.url || file.replace(root, '')
+
+          const code = await read()
+
+          if (code.startsWith(`'use strict';`)) return
+
+          if (!code) {
             return
           }
-          try {
-            const raw = await read()
 
-            const swcout = await swcTransform(file, raw, {
-              mode: 'serve',
-            })
+          let source = code
 
-            if (!swcout) {
-              throw '❌'
+          const importsMap = {}
+
+          // parse imports of modules into ids:
+          // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
+          const [imports] = parse(source)
+
+          let accumulatedSliceOffset = 0
+
+          for (const specifier of imports) {
+            const { n: importName, s: start, se: end } = specifier
+
+            if (importName) {
+              let id = importName
+              if (id[0] !== '.') {
+                id = relative(process.cwd(), resolve(id))
+              }
+
+              importsMap[id] = id.replace(/^(\.\.\/)+/, '')
+
+              // replace module name with id for hmr
+              const len = importName.length
+              const extraLen = id.length - len
+              source =
+                source.slice(0, start + accumulatedSliceOffset) +
+                id +
+                source.slice(start + accumulatedSliceOffset + len)
+              accumulatedSliceOffset += extraLen
             }
-
-            let contents = await nativeBabelTransform(swcout.code)
-            contents = contents.replace(`import.meta.hot.accept(() => {});`, ``)
-            contents = `exports = ((exports) => { ${contents}; return exports })({})`
-
-            hotUpdatedCJSFiles.set(id, contents)
-          } catch (err) {
-            console.log('error hmring', err)
           }
+
+          // then we have to convert to commonjs..
+          // source = await nativeBabelTransform(source)
+
+          // we have to remove jsx before we can parse imports...
+          source =
+            (
+              await swcTransform(id, source, {
+                mode: 'serve-cjs',
+              })
+            )?.code || ''
+
+          if (!source) {
+            throw '❌ no source'
+          }
+
+          const hotUpdateSource = `exports = ((exports) => {
+            const require = createRequire(${JSON.stringify(importsMap)})
+            ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+            return exports })({})`
+
+          console.log('source', id, hotUpdateSource)
+
+          hotUpdatedCJSFiles.set(id, hotUpdateSource)
         },
       },
     ],
@@ -105,8 +154,10 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   // first resolve config so we can pass into client plugin, then add client plugin:
   const resolvedConfig = await resolveConfig(serverConfig, 'serve')
+
   const viteRNClient = clientInjectionsPlugin(resolvedConfig)
 
+  // @ts-ignore
   plugins.push(viteRNClient)
 
   serverConfig = {
@@ -118,16 +169,16 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   server.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
-
     if (!id.endsWith('tsx') && !id.endsWith('jsx')) {
       return
     }
-
     // just so it thinks its loaded
     void server.transformRequest(id)
   })
 
   await server.listen()
+
+  let isBuilding: Promise<string> | null = null
 
   const dispose = await createDevServer(options, {
     hotUpdatedCJSFiles,
@@ -137,6 +188,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     getIndexBundle: getBundleCode,
     indexJson: getIndexJsonReponse({ port, root }),
   })
+
+  void getBundleCode()
 
   // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
@@ -150,6 +203,16 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
+    if (isBuilding) {
+      const res = await isBuilding
+      return res
+    }
+
+    let done
+    isBuilding = new Promise((res) => {
+      done = res
+    })
+
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
@@ -179,6 +242,13 @@ export const dev = async (options: CLIResolvedOptions) => {
       clearScreen: false,
       build: {
         ssr: false,
+        minify: false,
+        rollupOptions: {
+          preserveEntrySignatures: 'strict',
+          output: {
+            format: 'cjs',
+          },
+        },
       },
       mode: 'development',
       define: {
@@ -187,7 +257,41 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     })
 
-    let appCode = 'output' in buildOutput ? buildOutput.output[0].code : null
+    if (!('output' in buildOutput)) {
+      throw `❌`
+    }
+
+    let appCode = buildOutput.output
+      // entry last
+      .sort((a, b) => (a['isEntry'] ? 1 : -1))
+      .map((module) => {
+        if (module.type == 'chunk') {
+          const importsMap = {}
+          for (const imp of module.imports) {
+            const relativePath = relative(dirname(module.fileName), imp)
+            importsMap[relativePath[0] === '.' ? relativePath : './' + relativePath] = imp
+          }
+
+          return `
+___modules___["${module.fileName}"] = ((exports) => {
+  const require = createRequire(${JSON.stringify(importsMap)})
+
+  ${module.code.replace(`'use strict';`, '')}
+})
+
+${
+  module.isEntry
+    ? `
+// run entry
+__specialRequire("external/react-native/index.js")
+__specialRequire("${module.fileName}")
+`
+    : ''
+}
+`
+        }
+      })
+      .join('\n')
 
     if (!appCode) {
       throw `❌`
@@ -196,10 +300,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     appCode = appCode
       // this can be done in the individual file transform
       .replace('undefined.accept(() => {})', '')
-      .replace(
-        `if (hasRequiredReact) return react.exports;`,
-        `if (react.exports && react.exports.createElement) return react.exports;`
-      )
+      .replace('undefined.accept(function() {});', '') // swc
       .replace(
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
@@ -216,7 +317,12 @@ export const dev = async (options: CLIResolvedOptions) => {
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
+
     await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+
+    done(out)
+    isBuilding = null
+
     return out
   }
 }

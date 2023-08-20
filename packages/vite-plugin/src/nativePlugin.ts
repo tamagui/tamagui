@@ -1,12 +1,14 @@
 import { readFile } from 'fs/promises'
 
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
+import { transform } from '@swc/core'
+import { parse } from 'es-module-lexer'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
-import { nativeBabelTransform, prebuiltFiles } from './nativePrebuild'
+import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
@@ -40,13 +42,10 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps ??= {}
 
-      // externals
-      // breaks
-      // config.optimizeDeps.exclude ??= []
-      // config.optimizeDeps.exclude.push('react-native')
-
       config.optimizeDeps.needsInterop ??= []
       config.optimizeDeps.needsInterop.push('react-native')
+
+      // config.esbuild = false
 
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
@@ -107,33 +106,31 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       if (options.mode === 'build') {
         config.build.rollupOptions.plugins.push({
           name: `swap-react-native`,
+
           async load(id) {
             if (id.endsWith('/react-native/index.js')) {
               const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
+              const code = `
+              const run = () => {  
+                ${bundled
+                  .replace(
+                    `module.exports = require_react_native();`,
+                    `return require_react_native();`
+                  )
+                  .replace(
+                    `var require_jsx_runtime = `,
+                    `var require_jsx_runtime = global['__JSX__'] = `
+                  )
+                  .replace(
+                    `var require_react = `,
+                    `var require_react = global['__React__'] = `
+                  )}
+              }
+              const RN = run()
+              ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
+              `
               return {
-                code: `
-  const run = () => {  
-    ${bundled
-      .replace(
-        `module.exports = require_react_native();`,
-        `return require_react_native();`
-      )
-      .replace(
-        `var require_jsx_runtime = `,
-        `var require_jsx_runtime = global['__JSX__'] = `
-      )
-      .replace(`var require_react = `, `var require_react = global['__React__'] = `)}
-  }
-  
-  const RN = run()
-  
-  ${RNExportNames.map(
-    (name) =>
-      // adding exports
-      `export const ${name} = RN.${name}`
-  ).join('\n')}
-  
-  `,
+                code,
               }
             }
           },
@@ -153,7 +150,24 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         )
 
         config.build.rollupOptions.plugins.push({
-          name: `babel-transform`,
+          name: `force-export-all`,
+
+          async transform(code) {
+            const [_imports, exports] = parse(code)
+
+            const forceExports = exports
+              .map((e) => {
+                return `globalThis.____forceExport = ${e.n};`
+              })
+              .join(';')
+
+            return code + '\n' + forceExports
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
+          name: `native-transform`,
+
           async transform(code, id) {
             if (
               id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
@@ -167,7 +181,32 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             ) {
               return
             }
-            return await nativeBabelTransform(code, false)
+
+            let out = await transform(code, {
+              filename: id,
+              swcrc: false,
+              configFile: false,
+              sourceMaps: true,
+              jsc: {
+                target: 'es5',
+                parser: id.endsWith('.tsx')
+                  ? { syntax: 'typescript', tsx: true, decorators: true }
+                  : id.endsWith('.ts')
+                  ? { syntax: 'typescript', tsx: false, decorators: true }
+                  : id.endsWith('.jsx')
+                  ? { syntax: 'ecmascript', jsx: true }
+                  : { syntax: 'ecmascript' },
+                transform: {
+                  useDefineForClassFields: true,
+                  react: {
+                    development: true,
+                    runtime: 'automatic',
+                  },
+                },
+              },
+            })
+
+            return out
           },
         })
       }
@@ -181,8 +220,14 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
+        out.preserveModules = true
+
+        out.entryFileNames = (chunkInfo) => {
+          // ensures we have clean names for our require paths
+          return '[name].js'
+        }
         // Ensure that as many resources as possible are inlined.
-        out.inlineDynamicImports = true
+        // out.inlineDynamicImports = true
 
         // added by me (nate):
         out.manualChunks = undefined

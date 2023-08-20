@@ -6,56 +6,12 @@ import { build } from 'esbuild'
 
 import { extensions } from './extensions'
 
-export async function nativeBabelTransform(input: string, cjs = true) {
-  return await new Promise<string>((res, rej) => {
-    babel.transform(
-      input,
-      {
-        plugins: [
-          cjs ? '@babel/plugin-transform-modules-commonjs' : null,
-          '@babel/plugin-transform-classes',
-        ].filter(Boolean),
-      },
-      (err: any, { code }) => {
-        if (err) {
-          console.error('error', err)
-        }
-
-        if (err) rej(err)
-        res(code)
-      }
-    )
-  })
-}
-
-export async function nativeBabelFlowTransform(input: string) {
+async function nativeBabelFlowTransform(input: string) {
   return await new Promise<string>((res, rej) => {
     babel.transform(
       input,
       {
         presets: ['module:metro-react-native-babel-preset'],
-      },
-      (err: any, { code }) => {
-        if (err) rej(err)
-        res(code)
-      }
-    )
-  })
-}
-
-export async function nativeBabelRemoveJSX(input: string) {
-  return await new Promise<string>((res, rej) => {
-    babel.transform(
-      input,
-      {
-        plugins: [
-          [
-            '@babel/plugin-transform-react-jsx',
-            {
-              runtime: 'automatic',
-            },
-          ],
-        ],
       },
       (err: any, { code }) => {
         if (err) rej(err)

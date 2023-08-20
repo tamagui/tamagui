@@ -5764,6 +5764,7 @@ __metadata:
     change-case: ^4.1.2
     chokidar: ^3.5.2
     compression: ^1.7.4
+    es-module-lexer: ^1.3.0
     esbuild: ^0.19.0
     execa: ^5.0.0
     express: ^4.18.1
@@ -12922,7 +12923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^1.0.3":
+"es-module-lexer@npm:^1.0.3, es-module-lexer@npm:^1.3.0":
   version: 1.3.0
   resolution: "es-module-lexer@npm:1.3.0"
   checksum: 48fd9f504a9d2a894126f75c8b7ccc6273a289983e9b67255f165bfd9ae765d50100218251e94e702ca567826905ea2f7b3b4a0c4d74d3ce99cce3a2a606a238

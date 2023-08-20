@@ -1,7 +1,7 @@
 import { SourceMapPayload, createRequire } from 'module'
 
 import { JscTarget, Output, ParserConfig, ReactConfig, transform } from '@swc/core'
-import { BuildOptions, PluginOption, UserConfig } from 'vite'
+import { PluginOption } from 'vite'
 
 const resolve = createRequire(
   typeof __filename !== 'undefined' ? __filename : import.meta.url
@@ -9,7 +9,7 @@ const resolve = createRequire(
 const refreshContentRE = /\$Refresh(?:Reg|Sig)\$\(/
 
 type Options = {
-  mode: 'serve' | 'build'
+  mode: 'serve' | 'serve-cjs' | 'build'
 
   /**
    * Control where the JSX factory is imported from.
@@ -146,6 +146,32 @@ if (module.hot) {
   `
 }
 
+export const transformForBuild = async (id: string, code: string) => {
+  return await transform(code, {
+    filename: id,
+    swcrc: false,
+    configFile: false,
+    sourceMaps: true,
+    jsc: {
+      target: 'es5',
+      parser: id.endsWith('.tsx')
+        ? { syntax: 'typescript', tsx: true, decorators: true }
+        : id.endsWith('.ts')
+        ? { syntax: 'typescript', tsx: false, decorators: true }
+        : id.endsWith('.jsx')
+        ? { syntax: 'ecmascript', jsx: true }
+        : { syntax: 'ecmascript' },
+      transform: {
+        useDefineForClassFields: true,
+        react: {
+          development: true,
+          runtime: 'automatic',
+        },
+      },
+    },
+  })
+}
+
 export const transformWithOptions = async (
   id: string,
   code: string,
@@ -173,6 +199,9 @@ export const transformWithOptions = async (
       swcrc: false,
       configFile: false,
       sourceMaps: true,
+      module: {
+        type: options.mode === 'serve-cjs' ? 'commonjs' : 'nodenext',
+      },
       jsc: {
         target,
         parser,
