@@ -1,4 +1,4 @@
-export declare function nativeBabelTransform(input: string): Promise<string>;
+export declare function nativeBabelTransform(input: string, cjs?: boolean): Promise<string>;
 export declare function nativeBabelFlowTransform(input: string): Promise<string>;
 export declare function nativeBabelRemoveJSX(input: string): Promise<string>;
 export declare const prebuiltFiles: {

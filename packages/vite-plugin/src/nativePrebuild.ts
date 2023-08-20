@@ -6,15 +6,15 @@ import { build } from 'esbuild'
 
 import { extensions } from './extensions'
 
-export async function nativeBabelTransform(input: string) {
+export async function nativeBabelTransform(input: string, cjs = true) {
   return await new Promise<string>((res, rej) => {
     babel.transform(
       input,
       {
         plugins: [
-          '@babel/plugin-transform-modules-commonjs',
+          cjs ? '@babel/plugin-transform-modules-commonjs' : null,
           '@babel/plugin-transform-classes',
-        ],
+        ].filter(Boolean),
       },
       (err: any, { code }) => {
         if (err) {

@@ -5,7 +5,7 @@ import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
 import { extensions } from './extensions'
-import { prebuiltFiles } from './nativePrebuild'
+import { nativeBabelTransform, prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
@@ -135,6 +135,25 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
   `,
               }
             }
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
+          name: `babel-transform`,
+          async transform(code, id) {
+            if (
+              id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
+              id.includes(`node_modules/react/index.js`) ||
+              id.includes(`node_modules/react/cjs/react.development.js`) ||
+              id.includes(`node_modules/react-native/index.js`) ||
+              id.includes(
+                `node_modules/react/cjs/react-jsx-dev-runtime.development.js`
+              ) ||
+              id.includes(`packages/vite-native-client/`)
+            ) {
+              return
+            }
+            return await nativeBabelTransform(code, false)
           },
         })
       }
