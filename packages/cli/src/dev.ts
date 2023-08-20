@@ -4,12 +4,7 @@ import { dirname, join, relative } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
-import {
-  nativeBabelTransform,
-  nativePlugin,
-  nativePrebuild,
-  tamaguiPlugin,
-} from '@tamagui/vite-plugin'
+import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
@@ -35,15 +30,16 @@ export const dev = async (options: CLIResolvedOptions) => {
   const port = options.port || 8081
 
   const plugins = [
-    tamaguiPlugin({
-      ...options.tamaguiOptions,
-      target: 'native',
-    }),
+    // tamaguiPlugin({
+    //   ...options.tamaguiOptions,
+    //   target: 'native',
+    // }),
   ]
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
     console.log('🐞 enabling inspect plugin')
+    // @ts-ignore
     plugins.push(inspect())
   }
 
@@ -60,29 +56,48 @@ export const dev = async (options: CLIResolvedOptions) => {
     plugins: [
       ...plugins,
 
+      // viteReactPlugin({
+      //   tsDecorators: true,
+      //   mode: 'serve',
+      // }),
+
       nativePlugin({
         port,
         mode: 'serve',
       }),
 
-      {
-        name: 'remove-import-analysis',
+      // {
+      //   name: 'remove-import-analysis',
 
-        configResolved(config) {
-          // @ts-ignore
-          config.plugins = config.plugins.filter((x) => {
-            if (x.name === 'vite:import-analysis') {
-              return false
-            }
-            return true
-          })
-        },
-      },
+      //   configResolved(config) {
+      //     // @ts-ignore
+      //     config.plugins = config.plugins.filter((x) => {
+      //       console.log('x.name', x.name)
+      //       if (x.name === 'vite:import-analysis') {
+      //         return false
+      //       }
+      //       return true
+      //     })
+      //   },
+      // },
 
       {
         name: 'client-transform',
 
-        async transform(code, id) {
+        async handleHotUpdate({ read, modules, file }) {
+          if (!file.includes('/src/')) {
+            return
+          }
+
+          const id = modules[0]?.url || file.replace(root, '')
+          const code = await read()
+
+          if (code.startsWith(`'use strict';`)) return
+
+          if (!code) {
+            return
+          }
+
           let source = code
 
           // parse imports of modules into ids:
@@ -96,8 +111,8 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             if (importName) {
               let id = importName
-              if (importName[0] !== '.') {
-                id = relative(process.cwd(), resolve(importName)).replace(
+              if (id[0] !== '.') {
+                id = relative(process.cwd(), resolve(id)).replace(
                   '/node_modules/',
                   '/external/'
                 )
@@ -135,8 +150,6 @@ export const dev = async (options: CLIResolvedOptions) => {
           )}; return exports })({})`
 
           hotUpdatedCJSFiles.set(id, hotUpdateSource)
-
-          return source
         },
       },
     ],
@@ -152,6 +165,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const viteRNClient = clientInjectionsPlugin(resolvedConfig)
 
+  // @ts-ignore
   plugins.push(viteRNClient)
 
   serverConfig = {

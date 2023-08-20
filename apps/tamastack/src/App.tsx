@@ -1,8 +1,6 @@
 // import { Stack, TamaguiProvider } from '@tamagui/core'
 import { View } from 'react-native'
 
-console.log('❌ ??????????')
-
 // import { default as config } from './tamagui.config'
 
 export function App() {

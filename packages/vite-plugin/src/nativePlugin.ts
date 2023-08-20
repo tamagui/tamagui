@@ -3,12 +3,12 @@ import { readFile } from 'fs/promises'
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
-import { ModuleInfo, OutputOptions } from 'rollup'
+import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
-import { nativeBabelTransform, prebuiltFiles } from './nativePrebuild'
+import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
