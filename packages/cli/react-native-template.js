@@ -10,49 +10,56 @@ const global =
 // to avoid it looking like browser...
 delete globalThis['window']
 
-const cachedModules = {}
+const __cachedModules = {}
 
-// just used for entry, the rest use createRequire
-function require(mod) {
-  return ___modules___[mod]({ exports: {} })
+function __specialRequire(_mod) {
+  if (_mod === 'react-native/Libraries/Pressability/Pressability')
+    return globalThis['__ReactPressability__']()
+  if (_mod === 'react-native/Libraries/Pressability/usePressability')
+    return globalThis['__ReactUsePressability__']()
+  if (___modules___[_mod]) {
+    return ___modules___[_mod]({ exports: {} })
+  }
 }
 
-function createRequire(importsMap) {
-  return function require(_mod) {
-    if (_mod === 'react-native') return RN
-    if (_mod === 'react') return global['__React__']()
-    if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') {
-      const mod = global['__JSX__']()
-      mod.jsxDEV = mod.jsxDEV || mod.jsx
-      return mod
-    }
-    if (_mod === 'react-native/Libraries/Pressability/Pressability') return globalThis['__ReactPressability__']()
-    if (_mod === 'react-native/Libraries/Pressability/usePressability') return globalThis['__ReactUsePressability__']()
-
+function createRequire(importsMap) {  
+  return function require(_mod) {    
+    const special = __specialRequire(_mod)
+    if (special) return special
+    
     // handles relative imports rollup outputs
-    let found = ___modules___[importsMap[_mod]] || ___modules___[_mod]
-    if (found) {
-      if (!cachedModules[found]) {
-        const exported = { exports: {} }
-        found(exported)
-        cachedModules[found] = exported.exports
-      }
-      return cachedModules[found]
+    const absPath = importsMap[_mod] || _mod
+    let found = ___modules___[absPath]
+
+    console.log('requireinsdsad' + absPath)
+
+    if (!found) {
+      throw new Error(`Not found: ${_mod} ${absPath}`)
     }
     
-    throw new Error(`Not found: ${_mod}`)
+    try {
+      if (!__cachedModules[absPath]) {
+        const exported = {}
+        found(exported)
+        __cachedModules[absPath] = exported
+      }
+
+      return __cachedModules[absPath]
+    } catch(err) {
+      throw new Error(`Error running module ${_mod} ${absPath} ${err}`)
+    }
   }
 }
 
 Object.defineProperty(globalThis, '____react____', {
   get() {
-    return require('react')
+    return __specialRequire('react')
   }
 })
 
 Object.defineProperty(globalThis, '____jsx____', {
   get() {
-    return require('react/jsx-runtime')
+    return __specialRequire('react/jsx-runtime')
   }
 })
 

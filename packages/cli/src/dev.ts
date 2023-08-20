@@ -84,7 +84,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           try {
             let source = await read()
 
-            console.log('from', source)
+            // console.log('from', source)
 
             // we have to remove jsx before we can parse imports...
             source =
@@ -94,7 +94,7 @@ export const dev = async (options: CLIResolvedOptions) => {
                 })
               )?.code || ''
 
-            console.log('source2', source)
+            // console.log('source2', source)
 
             if (!source) {
               throw '❌ no source'
@@ -275,14 +275,15 @@ export const dev = async (options: CLIResolvedOptions) => {
 ___modules___["${module.fileName}"] = ((exports) => {
   const require = createRequire(${JSON.stringify(importsMap)})
 
-  ${module.code}
+  ${module.code.replace(`'use strict';`, '')}
 })
 
 ${
   module.isEntry
     ? `
 // run entry
-require("${module.fileName}")
+__specialRequire("external/react-native/index.js")
+__specialRequire("${module.fileName}")
 `
     : ''
 }

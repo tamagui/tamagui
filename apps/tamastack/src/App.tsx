@@ -1,5 +1,7 @@
 // import { Stack, TamaguiProvider } from '@tamagui/core'
-import { BackHandler, View } from 'react-native'
+import { View } from 'react-native'
+
+console.log('❌ ??????????')
 
 // import { default as config } from './tamagui.config'
 
