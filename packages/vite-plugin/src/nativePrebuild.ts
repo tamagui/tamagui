@@ -85,43 +85,43 @@ export async function nativePrebuild() {
 
   await Promise.all([
     // react
-    build({
-      bundle: true,
-      entryPoints: ['react'],
-      outfile: prebuiltFiles.react,
-      format: 'cjs',
-      target: 'node20',
-      jsx: 'transform',
-      jsxFactory: 'react',
-      allowOverwrite: true,
-      platform: 'node',
-      define: {
-        __DEV__: 'true',
-        'process.env.NODE_ENV': `"development"`,
-      },
-      logLevel: 'warning',
-      resolveExtensions: extensions,
-    }),
-    // react-jsx-runtime
-    build({
-      bundle: true,
-      entryPoints: ['react/jsx-runtime'],
-      outfile: prebuiltFiles.reactJSXRuntime,
-      format: 'cjs',
-      target: 'node20',
-      jsx: 'transform',
-      jsxFactory: 'react',
-      external: ['react'],
-      allowOverwrite: true,
-      platform: 'node',
-      define: {
-        // metro serves this in production mode
-        __DEV__: 'true',
-        'process.env.NODE_ENV': `"development"`,
-      },
-      logLevel: 'warning',
-      resolveExtensions: extensions,
-    }),
+    // build({
+    //   bundle: true,
+    //   entryPoints: [],
+    //   outfile: prebuiltFiles.react,
+    //   format: 'cjs',
+    //   target: 'node20',
+    //   jsx: 'transform',
+    //   jsxFactory: 'react',
+    //   allowOverwrite: true,
+    //   platform: 'node',
+    //   define: {
+    //     __DEV__: 'true',
+    //     'process.env.NODE_ENV': `"development"`,
+    //   },
+    //   logLevel: 'warning',
+    //   resolveExtensions: extensions,
+    // }),
+    // // react-jsx-runtime
+    // build({
+    //   bundle: true,
+    //   entryPoints: [],
+    //   outfile: prebuiltFiles.reactJSXRuntime,
+    //   format: 'cjs',
+    //   target: 'node20',
+    //   jsx: 'transform',
+    //   jsxFactory: 'react',
+    //   external: ['react'],
+    //   allowOverwrite: true,
+    //   platform: 'node',
+    //   define: {
+    //     // metro serves this in production mode
+    //     __DEV__: 'true',
+    //     'process.env.NODE_ENV': `"development"`,
+    //   },
+    //   logLevel: 'warning',
+    //   resolveExtensions: extensions,
+    // }),
     // react native
     build({
       bundle: true,
@@ -147,7 +147,7 @@ export async function nativePrebuild() {
       },
       logLevel: 'warning',
       resolveExtensions: extensions,
-      external: ['react', 'react/jsx-runtime.js', 'react/jsx-runtime'],
+      // external: ['react', 'react/jsx-runtime.js', 'react/jsx-runtime'],
       plugins: [
         {
           name: 'remove-flow',

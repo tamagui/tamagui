@@ -45,11 +45,11 @@ global.ErrorUtils = {
   },
 }
 
-globalThis['require'] = function require(_mod) {
-  if (_mod === 'react') return requireReact()
-  if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return jsxDevRuntimeExports
-  throw new Error(`Not found: ${_mod}`)
-}
+// globalThis['require'] = function require(_mod) {
+//   if (_mod === 'react') return requireReact()
+//   if (_mod === 'react/jsx-runtime' || _mod === 'react/jsx-dev-runtime') return jsxDevRuntimeExports
+//   throw new Error(`Not found: ${_mod}`)
+// }
 
 // -- app --
 

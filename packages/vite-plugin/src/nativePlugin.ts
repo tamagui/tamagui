@@ -13,14 +13,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     enforce: 'post',
 
     config: (config) => {
-      // // add hmr client
-      // config.plugins.push({
-      //   name: 'add-hmr-client',
-      //   generateBundle(x) {
-      //     x.
-      //   }
-      // })
-
       config.define ||= {}
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
@@ -45,45 +37,12 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.resolve.extensions = extensions
 
-      // config.resolve.alias ??= {}
-      // config.resolve.alias = {
-      //   ...config.resolve.alias,
-      //   // 'react-native/Libraries/Renderer/shims/ReactFabric':
-      //   //   'react-native/Libraries/Renderer/shims/ReactFabric',
-      //   // 'react-native/Libraries/Utilities/codegenNativeComponent':
-      //   //   'react-native/Libraries/Utilities/codegenNativeComponent',
-      //   // 'react-native-svg': 'react-native-svg',
-      //   // // 'react-native-web': 'react-native',
-      //   // 'react-native': 'react-native',
-      // }
-
       config.optimizeDeps ??= {}
-
-      // externals
-      // breaks
-      // config.optimizeDeps.exclude ??= []
-      // config.optimizeDeps.exclude.push('react-native')
-
-      config.optimizeDeps.needsInterop ??= []
-      config.optimizeDeps.needsInterop.push('react-native')
 
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
-
-      config.optimizeDeps.esbuildOptions.plugins.push(
-        esbuildFlowPlugin(
-          /node_modules\/(react-native\/|@react-native\/)/,
-          (_) => 'jsx',
-          {
-            all: true,
-          }
-        )
-      )
-
-      config.optimizeDeps.include ??= []
-      config.optimizeDeps.include.push('react-native')
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
@@ -127,54 +86,60 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (options.mode === 'build') {
-        config.build.rollupOptions.plugins.push({
-          name: `swap-react`,
-          async load(id) {
-            if (id.endsWith('react/index.js')) {
-              const code = await readFile(prebuiltFiles.react, 'utf-8')
-              console.log('sawppign')
-              return {
-                code,
-              }
-            }
-          },
-        })
+        // config.build.rollupOptions.plugins.push({
+        //   name: `swap-react`,
+        //   async load(id) {
+        //     if (id.endsWith('react/index.js')) {
+        //       const code = await readFile(prebuiltFiles.react, 'utf-8')
+        //       console.log('sawppign')
+        //       return {
+        //         code,
+        //       }
+        //     }
+        //   },
+        // })
 
-        config.build.rollupOptions.plugins.push({
-          name: `swap-react-jsx`,
-          async load(id) {
-            if (id.endsWith('react/jsx-dev-runtime.js')) {
-              const code = await readFile(prebuiltFiles.reactJSXRuntime, 'utf-8')
-              return {
-                code,
-              }
-            }
-          },
-        })
+        // config.build.rollupOptions.plugins.push({
+        //   name: `swap-react-jsx`,
+        //   async load(id) {
+        //     if (id.endsWith('react/jsx-dev-runtime.js')) {
+        //       const code = await readFile(prebuiltFiles.reactJSXRuntime, 'utf-8')
+        //       return {
+        //         code,
+        //       }
+        //     }
+        //   },
+        // })
 
         config.build.rollupOptions.plugins.push({
           name: `swap-react-native`,
           async load(id) {
             if (id.endsWith('/react-native/index.js')) {
               const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
+              const code = `
+              const run = () => {  
+                ${bundled
+                  .replace(
+                    `module.exports = require_react_native();`,
+                    `return require_react_native();`
+                  )
+                  .replace(
+                    `var require_jsx_runtime = `,
+                    `var require_jsx_runtime = global['__JSX__'] = `
+                  )
+                  .replace(
+                    `var require_react = `,
+                    `var require_react = global['__React__'] = `
+                  )}
+              }
+              
+              const RN = run()
+              
+              // add exports
+              ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}`
+
               return {
-                code: `
-  const run = () => {  
-    ${bundled.replace(
-      `module.exports = require_react_native();`,
-      `return require_react_native();`
-    )}
-  }
-  
-  const RN = run()
-  
-  ${RNExportNames.map(
-    (name) =>
-      // adding exports
-      `export const ${name} = RN.${name}`
-  ).join('\n')}
-  
-  `,
+                code,
               }
             }
           },
@@ -183,10 +148,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       if (process.env.DEBUG) {
         console.log('config..', config)
-      }
-
-      config.build.commonjsOptions = {
-        include: /node_modules\/react\//,
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
