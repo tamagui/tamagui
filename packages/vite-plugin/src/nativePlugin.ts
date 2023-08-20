@@ -8,6 +8,7 @@ import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
+import { getVitePath } from './getVitePath'
 import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
@@ -152,12 +153,41 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
 
-          async transform(code) {
-            const [_imports, exports] = parse(code)
+          async transform(code, id) {
+            const [imports, exports] = parse(code)
 
-            const forceExports = exports
+            let forceExports = ''
+
+            // note that es-module-lexer parses export * from as an import (twice) for some reason
+            // let counts = {}
+            // for (const imp of imports) {
+            //   if (imp.n && imp.n[0] !== '.') {
+            //     counts[imp.n] ||= 0
+            //     counts[imp.n]++
+            //     if (counts[imp.n] == 2) {
+            //       // star export
+            //       console.log('check', imp.n)
+            //       const path = await getVitePath(id, imp.n)
+            //       console.log(imp.n, '=>', path)
+            //       forceExports += `Object.assign(exports, require("${path}"));`
+            //     }
+            //   }
+            // }
+
+            if (code.includes(`useEvents(`)) console.log('exports', exports, imports)
+
+            forceExports += exports
               .map((e) => {
-                return `globalThis.____forceExport = ${e.n};`
+                if (e.n === 'default') {
+                  return ''
+                }
+                let out = ''
+                if (e.ln !== e.n) {
+                  // forces the "as x" to be referenced so it gets exported
+                  out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
+                }
+                out += `globalThis.____forceExport = ${e.ln}`
+                return out
               })
               .join(';')
 

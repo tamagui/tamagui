@@ -29,6 +29,7 @@
     "@babel/plugin-transform-classes": "^7.22.6",
     "@babel/plugin-transform-modules-commonjs": "^7.22.5",
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
+    "esm-resolve": "^1.0.8",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-node-resolve": "^15.0.1",

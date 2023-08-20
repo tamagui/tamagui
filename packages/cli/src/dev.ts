@@ -1,22 +1,21 @@
 import { readFile, writeFile } from 'fs/promises'
-import { createRequire } from 'module'
 import { dirname, join, relative } from 'path'
 
 import { CLIResolvedOptions } from '@tamagui/types'
-import viteReactPlugin, { swcTransform } from '@tamagui/vite-native-swc'
-import { nativePlugin, nativePrebuild, tamaguiPlugin } from '@tamagui/vite-plugin'
+import viteReactPlugin, {
+  swcTransform,
+  transformForBuild,
+} from '@tamagui/vite-native-swc'
+import { getVitePath, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
-import { InlineConfig, Plugin, build, createServer, resolveConfig } from 'vite'
+import { InlineConfig, build, createServer, resolveConfig } from 'vite'
 
 import { clientInjectionsPlugin } from './dev/clientInjectPlugin'
 import { createDevServer } from './dev/createDevServer'
 import { HMRListener } from './dev/types'
 import { registerDispose } from './utils'
-
-const resolve =
-  'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
 export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
@@ -34,7 +33,17 @@ export const dev = async (options: CLIResolvedOptions) => {
     //   ...options.tamaguiOptions,
     //   target: 'native',
     // }),
-  ]
+    {
+      name: 'tamagui',
+      config() {
+        return {
+          define: {
+            'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
+          },
+        }
+      },
+    },
+  ] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
@@ -70,78 +79,82 @@ export const dev = async (options: CLIResolvedOptions) => {
         name: 'tamagui-client-transform',
 
         async handleHotUpdate({ read, modules, file }) {
-          if (!file.includes('/src/')) {
-            return
-          }
-
-          const [module] = modules
-          if (!module) return
-
-          const id = module?.url || file.replace(root, '')
-
-          const code = await read()
-
-          if (code.startsWith(`'use strict';`)) return
-
-          if (!code) {
-            return
-          }
-
-          let source = code
-
-          const importsMap = {}
-
-          // parse imports of modules into ids:
-          // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
-          const [imports] = parse(source)
-
-          let accumulatedSliceOffset = 0
-
-          for (const specifier of imports) {
-            const { n: importName, s: start, se: end } = specifier
-
-            if (importName) {
-              let id = importName
-              if (id[0] !== '.') {
-                id = relative(process.cwd(), resolve(id))
-              }
-
-              importsMap[id] = id.replace(/^(\.\.\/)+/, '')
-
-              // replace module name with id for hmr
-              const len = importName.length
-              const extraLen = id.length - len
-              source =
-                source.slice(0, start + accumulatedSliceOffset) +
-                id +
-                source.slice(start + accumulatedSliceOffset + len)
-              accumulatedSliceOffset += extraLen
+          try {
+            if (!file.includes('/src/')) {
+              return
             }
+
+            const [module] = modules
+            if (!module) return
+
+            const id = module?.url || file.replace(root, '')
+
+            const code = await read()
+
+            // got a weird pre compiled file on startup
+            if (code.startsWith(`'use strict';`)) return
+
+            if (!code) {
+              return
+            }
+
+            let source = code
+
+            // we have to remove jsx before we can parse imports...
+            source = (await transformForBuild(id, source))?.code || ''
+
+            const importsMap = {}
+
+            // parse imports of modules into ids:
+            // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
+            const [imports] = parse(source)
+
+            let accumulatedSliceOffset = 0
+
+            for (const specifier of imports) {
+              const { n: importName, s: start } = specifier
+
+              if (importName) {
+                const id = await getVitePath(file, importName)
+                if (!id) {
+                  console.warn('???')
+                  continue
+                }
+
+                importsMap[id] = id.replace(/^(\.\.\/)+/, '')
+
+                // replace module name with id for hmr
+                const len = importName.length
+                const extraLen = id.length - len
+                source =
+                  source.slice(0, start + accumulatedSliceOffset) +
+                  id +
+                  source.slice(start + accumulatedSliceOffset + len)
+                accumulatedSliceOffset += extraLen
+              }
+            }
+
+            // then we have to convert to commonjs..
+            source =
+              (
+                await swcTransform(id, source, {
+                  mode: 'serve-cjs',
+                })
+              )?.code || ''
+
+            if (!source) {
+              throw '❌ no source'
+            }
+
+            const hotUpdateSource = `exports = ((exports) => {
+              const require = createRequire(${JSON.stringify(importsMap)})
+              ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+              return exports })({})`
+
+            hotUpdatedCJSFiles.set(id, hotUpdateSource)
+          } catch (err) {
+            console.log(`Error processing hmr update:`, err)
           }
-
-          // then we have to convert to commonjs..
-          // source = await nativeBabelTransform(source)
-
-          // we have to remove jsx before we can parse imports...
-          source =
-            (
-              await swcTransform(id, source, {
-                mode: 'serve-cjs',
-              })
-            )?.code || ''
-
-          if (!source) {
-            throw '❌ no source'
-          }
-
-          const hotUpdateSource = `exports = ((exports) => {
-            const require = createRequire(${JSON.stringify(importsMap)})
-            ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
-            return exports })({})`
-
-          console.log('source', id, hotUpdateSource)
-
-          hotUpdatedCJSFiles.set(id, hotUpdateSource)
         },
       },
     ],
@@ -273,10 +286,12 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
 
           return `
-___modules___["${module.fileName}"] = ((exports) => {
+___modules___["${module.fileName}"] = ((exports, module2) => {
   const require = createRequire(${JSON.stringify(importsMap)})
 
-  ${module.code.replace(`'use strict';`, '')}
+  ${module.code
+    .replace(`'use strict';`, '')
+    .replace('module.exports = ', 'module2.exports = ')}
 })
 
 ${
@@ -304,6 +319,10 @@ __specialRequire("${module.fileName}")
       .replace(
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
+      )
+      .replace(
+        `var require_Pressability = `,
+        `var require_Pressability = globalThis['__ReactPressability__'] =`
       )
       .replace(
         `var require_Pressability = `,
