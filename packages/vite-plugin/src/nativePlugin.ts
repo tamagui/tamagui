@@ -45,6 +45,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.optimizeDeps.needsInterop ??= []
       config.optimizeDeps.needsInterop.push('react-native')
 
+      config.esbuild = false
+
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 

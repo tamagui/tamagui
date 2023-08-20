@@ -56,91 +56,87 @@ export const dev = async (options: CLIResolvedOptions) => {
     esbuild: false,
     clearScreen: false,
     appType: 'custom',
+
     plugins: [
       ...plugins,
-      viteReactPlugin({
-        tsDecorators: true,
-        mode: 'serve',
-      }),
+
       nativePlugin({
         port,
         mode: 'serve',
       }),
 
       {
-        name: `tamagui-hot-update`,
-        async handleHotUpdate({ file, read, modules }) {
-          // idk why but its giving me dist asset stuff
-          if (!file.includes('/src/')) {
-            return
-          }
+        name: 'remove-import-analysis',
 
-          const id = modules[0]?.url || file.replace(root, '')
-          if (!id) {
-            console.log('⚠️ no modules?', file)
-            return
-          }
-
-          try {
-            let source = await read()
-
-            // console.log('from', source)
-
-            // we have to remove jsx before we can parse imports...
-            source =
-              (
-                await swcTransform(file, source, {
-                  mode: 'serve',
-                })
-              )?.code || ''
-
-            // console.log('source2', source)
-
-            if (!source) {
-              throw '❌ no source'
+        configResolved(config) {
+          // @ts-ignore
+          config.plugins = config.plugins.filter((x) => {
+            if (x.name === 'vite:import-analysis') {
+              return false
             }
+            return true
+          })
+        },
+      },
 
-            // parse imports of modules into ids:
-            // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
-            const [imports] = parse(source)
+      {
+        name: 'client-transform',
 
-            let accumulatedSliceOffset = 0
+        async transform(code, id) {
+          let source = code
 
-            for (const specifier of imports) {
-              const { n: importName, s: start, se: end } = specifier
+          // parse imports of modules into ids:
+          // eg `import x from '@tamagui/core'` => `import x from '/me/node_modules/@tamagui/core/index.js'`
+          const [imports] = parse(source)
 
-              // except the ones we already handle using global require
-              if (
-                importName === 'react-native' ||
-                importName === 'react' ||
-                importName === 'react/jsx-runtime' ||
-                importName === 'react/jsx-dev-runtime'
-              ) {
-                continue
+          let accumulatedSliceOffset = 0
+
+          for (const specifier of imports) {
+            const { n: importName, s: start, se: end } = specifier
+
+            if (importName) {
+              let id = importName
+              if (importName[0] !== '.') {
+                id = relative(process.cwd(), resolve(importName)).replace(
+                  '/node_modules/',
+                  '/external/'
+                )
               }
 
-              if (importName && importName[0] !== '.') {
-                const id = relative(process.cwd(), resolve(importName))
-                // replace module name with id for hmr
-                const len = importName.length
-                const extraLen = id.length - len
-                source =
-                  source.slice(0, start + accumulatedSliceOffset) +
-                  id +
-                  source.slice(start + accumulatedSliceOffset + len)
-                accumulatedSliceOffset += extraLen
-              }
+              // replace module name with id for hmr
+              const len = importName.length
+              const extraLen = id.length - len
+              source =
+                source.slice(0, start + accumulatedSliceOffset) +
+                id +
+                source.slice(start + accumulatedSliceOffset + len)
+              accumulatedSliceOffset += extraLen
             }
-
-            // then we have to convert to commonjs..
-            source = await nativeBabelTransform(source)
-            source = source.replace(`import.meta.hot.accept(() => {});`, ``)
-            source = `exports = ((exports) => { ${source}; return exports })({})`
-
-            hotUpdatedCJSFiles.set(id, source)
-          } catch (err) {
-            console.log('error hmring', err)
           }
+
+          // then we have to convert to commonjs..
+          // source = await nativeBabelTransform(source)
+
+          // we have to remove jsx before we can parse imports...
+          source =
+            (
+              await swcTransform(id, source, {
+                mode: 'serve',
+              })
+            )?.code || ''
+
+          if (!source) {
+            throw '❌ no source'
+          }
+
+          const hotUpdateSource = `exports = ((exports) => { ${source.replace(
+            `import.meta.hot.accept(() => {});`,
+            ``
+          )}; return exports })({})`
+
+          hotUpdatedCJSFiles.set(id, hotUpdateSource)
+
+          return source
         },
       },
     ],
@@ -167,13 +163,11 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   server.watcher.addListener('change', async (path) => {
     const id = path.replace(process.cwd(), '')
-
     if (!id.endsWith('tsx') && !id.endsWith('jsx')) {
       return
     }
-
     // just so it thinks its loaded
-    void server.transformRequest(id)
+    await server.transformRequest(id)
   })
 
   await server.listen()

@@ -199,6 +199,9 @@ export const transformWithOptions = async (
       swcrc: false,
       configFile: false,
       sourceMaps: true,
+      module: {
+        type: options.mode === 'serve' ? 'commonjs' : 'nodenext',
+      },
       jsc: {
         target,
         parser,
