@@ -5785,6 +5785,7 @@ __metadata:
     url: ^0.11.0
     vite: ^4.4.9
     vite-plugin-entry-shaking: ^0.3.2
+    vite-plugin-externals: ^0.6.2
     vite-plugin-inspect: ^0.7.38
     vite-tsconfig-paths: ^4.2.0
     ws: ^8.7.0
