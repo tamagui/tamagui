@@ -27,7 +27,7 @@
     "@tamagui/create-context": "1.52.9",
     "@tamagui/stacks": "1.52.9",
     "@tamagui/use-controllable-state": "1.52.9",
-    "reforest": "^0.12.1"
+    "reforest": "^0.13.0"
   },
   "peerDependencies": {
     "react": "*"

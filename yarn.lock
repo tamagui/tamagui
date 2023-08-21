@@ -6311,7 +6311,7 @@ __metadata:
     "@tamagui/stacks": 1.52.9
     "@tamagui/use-controllable-state": 1.52.9
     react: ^18.2.0
-    reforest: ^0.12.1
+    reforest: ^0.13.0
   peerDependencies:
     react: "*"
   languageName: unknown
@@ -22548,15 +22548,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reforest@npm:^0.12.1":
-  version: 0.12.3
-  resolution: "reforest@npm:0.12.3"
+"reforest@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "reforest@npm:0.13.0"
   dependencies:
     performant-array-to-tree: ^1.11.0
-    zustand: ^4.3.3
+    zustand: ^4.3.8
   peerDependencies:
     react: ">=16.8"
-  checksum: c61e57901eb3ae8b5f391a3076a4d664ca4836b6cb38d1e2061641d9bdf46d693f3919ff2bd85b41277711f5fb6346eeec92b48b8d5fea0556a6b83700346679
+  checksum: f962b00d3223b1ce85c34c2879fc3fcb2e150215b67efcff1675b19f5a84ef054999aa2f70ad633ebc3ca98c10f94a6772e817a78babc59cb436674e731f1f27
   languageName: node
   linkType: hard
 
@@ -24912,7 +24912,7 @@ __metadata:
     "@tamagui/visually-hidden": 1.52.9
     react: ^18.2.0
     react-native-web: ^0.19.6
-    reforest: ^0.12.1
+    reforest: ^0.13.0
   peerDependencies:
     react: "*"
     react-native-web: "*"
@@ -28033,20 +28033,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.3.3":
-  version: 4.3.7
-  resolution: "zustand@npm:4.3.7"
+"zustand@npm:^4.3.8":
+  version: 4.4.1
+  resolution: "zustand@npm:4.4.1"
   dependencies:
     use-sync-external-store: 1.2.0
   peerDependencies:
+    "@types/react": ">=16.8"
     immer: ">=9.0"
     react: ">=16.8"
   peerDependenciesMeta:
+    "@types/react":
+      optional: true
     immer:
       optional: true
     react:
       optional: true
-  checksum: 355b414ba4830b6106bcb888077c5f90f40ed649e4127e337eff4fb4ea90e88bf5cccf32344711d743cb92a676a0643a6ab3674ddc60ed49f17ea1bc8e3f58e2
+  checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
   languageName: node
   linkType: hard
 
