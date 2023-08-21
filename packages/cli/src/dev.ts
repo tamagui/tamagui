@@ -20,6 +20,10 @@ import { registerDispose } from './utils'
 export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
 
+  process.on('uncaughtException', (err) => {
+    console.log(err?.message || err)
+  })
+
   const packageRootDir = join(__dirname, '..')
 
   // build react-native
@@ -47,7 +51,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
-    console.log('🐞 enabling inspect plugin')
     // @ts-ignore
     plugins.push(inspect())
   }
@@ -186,7 +189,12 @@ export const dev = async (options: CLIResolvedOptions) => {
       return
     }
     // just so it thinks its loaded
-    void server.transformRequest(id)
+    try {
+      void server.transformRequest(id)
+    } catch(err) {
+      // ok
+      console.log('err', err)
+    }
   })
 
   await server.listen()
@@ -202,7 +210,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  void getBundleCode()
+  getBundleCode()
 
   // rome-ignore lint/nursery/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))

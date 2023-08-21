@@ -1,10 +1,9 @@
 import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 
-import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
-import { ModuleInfo, OutputOptions } from 'rollup'
+import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 

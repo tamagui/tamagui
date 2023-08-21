@@ -59,8 +59,6 @@ export async function nativePrebuild() {
   // })
 
   if (process.env.SKIP_PREBUILD_RN) {
-    console.log(`⚠️ skipping pre build of rn`)
-
     return
   }
 

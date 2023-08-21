@@ -205,7 +205,6 @@ export const transformWithOptions = async (
       jsc: {
         target,
         parser,
-        experimental: { plugins: options.plugins },
         transform: {
           useDefineForClassFields: true,
           react: reactConfig,
