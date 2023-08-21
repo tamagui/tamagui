@@ -22,6 +22,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@supabase/auth-helpers-shared": "^0.4.1",
     "@tamagui/cli": "1.52.9",
     "@tamagui/linear-gradient": "1.52.9",
     "@tamagui/lucide-icons": "1.52.9",
