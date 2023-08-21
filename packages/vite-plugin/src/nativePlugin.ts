@@ -46,8 +46,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.disabled = true
 
-      config.optimizeDeps.needsInterop ??= []
-      config.optimizeDeps.needsInterop.push('react-native')
+      // config.optimizeDeps.needsInterop ??= []
+      // config.optimizeDeps.needsInterop.push('react-native')
 
       // config.esbuild = false
 
@@ -56,15 +56,19 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
 
-      config.optimizeDeps.esbuildOptions.plugins.push(
-        esbuildFlowPlugin(
-          /node_modules\/(react-native\/|@react-native\/)/,
-          (_) => 'jsx',
-          {
-            all: true,
-          }
-        )
-      )
+      config.optimizeDeps.esbuildOptions.alias = {
+        'react-native': '@tamagui/proxy-worm'
+      }
+      
+      // config.optimizeDeps.esbuildOptions.plugins.push(
+      //   esbuildFlowPlugin(
+      //     /node_modules\/(react-native\/|@react-native\/)/,
+      //     (_) => 'jsx',
+      //     {
+      //       all: true,
+      //     }
+      //   )
+      // )
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
