@@ -373,11 +373,7 @@ async function fetchUpdate({
 
       const source = await fetch(scriptUrl).then((res) => res.text())
 
-      // console.log(`got source`, source)
-
       const evaluatedModule = eval(source)
-
-      console.log('ran new module!')
 
       fetchedModule = evaluatedModule
     } catch (e) {

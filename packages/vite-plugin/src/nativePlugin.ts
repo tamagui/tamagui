@@ -1,9 +1,10 @@
 import { readFile } from 'fs/promises'
+import { dirname } from 'path'
 
 import { esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
-import { OutputOptions } from 'rollup'
+import { ModuleInfo, OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
@@ -42,6 +43,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.resolve.extensions = extensions
 
       config.optimizeDeps ??= {}
+
+      config.optimizeDeps.disabled = true
 
       config.optimizeDeps.needsInterop ??= []
       config.optimizeDeps.needsInterop.push('react-native')
@@ -159,22 +162,18 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             let forceExports = ''
 
             // note that es-module-lexer parses export * from as an import (twice) for some reason
-            // let counts = {}
-            // for (const imp of imports) {
-            //   if (imp.n && imp.n[0] !== '.') {
-            //     counts[imp.n] ||= 0
-            //     counts[imp.n]++
-            //     if (counts[imp.n] == 2) {
-            //       // star export
-            //       console.log('check', imp.n)
-            //       const path = await getVitePath(id, imp.n)
-            //       console.log(imp.n, '=>', path)
-            //       forceExports += `Object.assign(exports, require("${path}"));`
-            //     }
-            //   }
-            // }
-
-            if (code.includes(`useEvents(`)) console.log('exports', exports, imports)
+            let counts = {}
+            for (const imp of imports) {
+              if (imp.n && imp.n[0] !== '.') {
+                counts[imp.n] ||= 0
+                counts[imp.n]++
+                if (counts[imp.n] == 2) {
+                  // star export
+                  const path = await getVitePath(dirname(id), imp.n)
+                  forceExports += `Object.assign(exports, require("${path}"));`
+                }
+              }
+            }
 
             forceExports += exports
               .map((e) => {

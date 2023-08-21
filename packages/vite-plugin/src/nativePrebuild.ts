@@ -31,6 +31,33 @@ export const prebuiltFiles = {
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
 
+  // await build({
+  //   bundle: true,
+  //   entryPoints: [require.resolve('@tamagui/core')],
+  //   outfile: prebuiltFiles.reactNative,
+  //   format: 'cjs',
+  //   target: 'node20',
+  //   jsx: 'transform',
+  //   jsxFactory: 'react',
+  //   allowOverwrite: true,
+  //   platform: 'node',
+  //   external: ['react-native', 'react', 'react/jsx-runtime'],
+  //   loader: {
+  //     '.png': 'dataurl',
+  //     '.jpg': 'dataurl',
+  //     '.jpeg': 'dataurl',
+  //     '.gif': 'dataurl',
+  //   },
+  //   define: {
+  //     __DEV__: 'true',
+  //     'process.env.NODE_ENV': `"development"`,
+  //     // TODO
+  //     'process.env.REACT_NATIVE_SERVER_PUBLIC_PORT': JSON.stringify('8081'),
+  //   },
+  //   logLevel: 'warning',
+  //   resolveExtensions: extensions,
+  // })
+
   if (process.env.SKIP_PREBUILD_RN) {
     console.log(`⚠️ skipping pre build of rn`)
 
@@ -42,7 +69,7 @@ export async function nativePrebuild() {
   await Promise.all([
     build({
       bundle: true,
-      entryPoints: ['/Users/n8/tamagui/node_modules/react-native/index.js'],
+      entryPoints: [require.resolve('react-native')],
       outfile: prebuiltFiles.reactNative,
       format: 'cjs',
       target: 'node20',
@@ -106,5 +133,7 @@ export async function nativePrebuild() {
         },
       ],
     }),
+
+    ,
   ])
 }

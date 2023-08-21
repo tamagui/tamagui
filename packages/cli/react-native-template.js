@@ -7,6 +7,11 @@ const global =
     ? window
     : this;
 
+globalThis["global"] = global;
+global["react"] = {};
+global["exports"] = {};
+global["module"] = {};
+global["___modules___"] = {};
 // to avoid it looking like browser...
 delete globalThis["window"];
 
@@ -47,7 +52,6 @@ function __specialRequire(_mod) {
       }
       return output
     }
-
     if (___modules___[_mod]) {
       return __getRequire(_mod)
     }
@@ -66,7 +70,7 @@ function createRequire(importsMap) {
     const absPath = importsMap[_mod] || _mod;
     try {
       if (!___modules___[absPath]) {
-        throw new Error(`Not found: ${absPath}`);
+        throw new Error(`Not found: ${_mod} => ${absPath}`);
       }
       return __getRequire(absPath)
     } catch (err) {
@@ -86,12 +90,6 @@ Object.defineProperty(globalThis, "____jsx____", {
     return __specialRequire("react/jsx-runtime");
   },
 });
-
-globalThis["global"] = global;
-global["react"] = {};
-global["exports"] = {};
-global["module"] = {};
-global["___modules___"] = {};
 
 globalThis["setImmediate"] = (cb) => cb();
 //cb => Promise.resolve().then(() => cb())

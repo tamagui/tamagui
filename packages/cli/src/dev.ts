@@ -147,7 +147,7 @@ export const dev = async (options: CLIResolvedOptions) => {
             }
 
             const hotUpdateSource = `exports = ((exports) => {
-              const require = createRequire(${JSON.stringify(importsMap)})
+              const require = createRequire(${JSON.stringify(importsMap, null, 2)})
               ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
               return exports })({})`
 
@@ -257,6 +257,7 @@ export const dev = async (options: CLIResolvedOptions) => {
         ssr: false,
         minify: false,
         rollupOptions: {
+          treeshake: false,
           preserveEntrySignatures: 'strict',
           output: {
             format: 'cjs',
@@ -287,7 +288,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
           return `
 ___modules___["${module.fileName}"] = ((exports, module2) => {
-  const require = createRequire(${JSON.stringify(importsMap)})
+  const require = createRequire(${JSON.stringify(importsMap, null, 2)})
 
   ${module.code
     .replace(`'use strict';`, '')
@@ -298,7 +299,7 @@ ${
   module.isEntry
     ? `
 // run entry
-__specialRequire("external/react-native/index.js")
+__specialRequire("node_modules/react-native/index.js")
 __specialRequire("${module.fileName}")
 `
     : ''
