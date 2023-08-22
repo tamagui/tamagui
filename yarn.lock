@@ -2931,13 +2931,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo-google-fonts/lato@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@expo-google-fonts/lato@npm:0.2.3"
-  checksum: b0e9a1675bdf6eca84918f893069bae8adccb2bba8477a7603cc4b11a43df608915af466219819db012fb60ec429574fc18fc56d604255d1d6373849c5ce735e
-  languageName: node
-  linkType: hard
-
 "@expo/bunyan@npm:4.0.0, @expo/bunyan@npm:^4.0.0":
   version: 4.0.0
   resolution: "@expo/bunyan@npm:4.0.0"
@@ -6395,7 +6388,6 @@ __metadata:
   resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
     "@babel/core": ^7.21.8
-    "@expo-google-fonts/lato": ^0.2.3
     "@playwright/test": ^1.29.0
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@react-native-async-storage/async-storage": 1.18.2

@@ -2,7 +2,7 @@ import { createAnimations as createAnimationsCSS } from '@tamagui/animations-css
 import { createAnimations as createAnimationsMoti } from '@tamagui/animations-moti'
 import { createAnimations as createAnimationsNative } from '@tamagui/animations-react-native'
 import { config } from '@tamagui/config'
-import { createFont, createTamagui } from 'tamagui'
+import { createTamagui } from 'tamagui'
 
 export const animationsCSS = createAnimationsCSS({
   '100ms': 'ease-in 100ms',
@@ -89,93 +89,10 @@ config.themes = {
   },
 }
 
-const heading = createFont({
-  size: {
-    6: 15,
-  },
-  transform: {
-    6: 'uppercase',
-    7: 'none',
-  },
-  weight: {
-    6: '400',
-    7: '700',
-  },
-  color: {
-    6: '$colorFocus',
-    7: '$color',
-  },
-  letterSpacing: {
-    5: 2,
-    6: 1,
-    7: 0,
-    8: -1,
-    9: -2,
-    10: -3,
-    12: -4,
-    14: -5,
-    15: -6,
-  },
-  face: {
-    700: { normal: 'LatoBold' },
-    900: { normal: 'LatoBlack' },
-  },
-})
-
-const body = createFont({
-  family: 'Lato',
-  size: {
-    6: 15,
-    7: 18,
-    10: 32,
-  },
-  transform: {
-    6: 'uppercase',
-    7: 'none',
-  },
-  weight: {
-    6: '400',
-    7: '700',
-  },
-  color: {
-    6: '$colorFocus',
-    7: '$color',
-  },
-  letterSpacing: {
-    5: 2,
-    6: 1,
-    7: 0,
-    8: -1,
-    9: -2,
-    10: -3,
-    12: -4,
-    14: -5,
-    15: -6,
-  },
-  face: {
-    400: { normal: 'Lato' },
-    700: { normal: 'LatoBold' },
-    900: { normal: 'LatoBlack' },
-  },
-})
-
 const search = (typeof window !== 'undefined' && globalThis.location?.search) || ''
-
-const tokens = {
-  ...config.tokens,
-  color: {
-    ...config.tokens.color,
-    testsomethingdifferent: '#ff0000',
-  },
-}
 
 const tamaConf = createTamagui({
   ...config,
-  fonts: {
-    body,
-    heading,
-  },
-  tokens,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')

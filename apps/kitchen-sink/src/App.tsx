@@ -1,4 +1,3 @@
-import { Lato_400Regular, Lato_700Bold, Lato_900Black } from '@expo-google-fonts/lato'
 import { ToastViewport } from '@tamagui/sandbox-ui'
 import { useFonts } from 'expo-font'
 import { useEffect, useMemo, useState } from 'react'
@@ -18,9 +17,6 @@ export default function App() {
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
-    Lato: Lato_400Regular,
-    LatoBold: Lato_700Bold,
-    LatoBlack: Lato_900Black,
   })
 
   const colorScheme = useColorScheme()
