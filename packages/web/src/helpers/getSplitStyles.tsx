@@ -1390,6 +1390,7 @@ const skipProps = {
   animation: 1,
   space: 1,
   animateOnly: 1,
+  disableClassName: 1,
   debug: 1,
   componentName: 1,
   disableOptimization: 1,

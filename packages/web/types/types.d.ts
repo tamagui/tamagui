@@ -44,13 +44,38 @@ export type TamaguiComponentPropsBase = {
     children?: any | any[];
     debug?: DebugProp;
     disabled?: boolean;
+    /**
+     * Same as the web className property, useful for applying styles from CSS on web only
+     */
     className?: string;
+    /**
+     * If given a theme it will only apply to this element, instead of passing down to children
+     */
     themeShallow?: boolean;
+    /**
+     * Same as the web id property for setting a uid on an element
+     */
     id?: string;
+    /**
+     * Controls the output tag on web
+     */
     tag?: string;
+    /**
+     * Applies a theme to this element
+     */
     theme?: ThemeName | null;
+    /**
+     * Equivalent to "name" property on styled() for automatically applying a theme
+     */
     componentName?: string;
+    /**
+     * Used for controlling the order of focus with keyboard or assistive device enavigation
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+     */
     tabIndex?: string | number;
+    /**
+     * Equivalent to role="" attribute on web for accesibility
+     */
     role?: Role;
     /**
      * Disable all compiler optimization
@@ -60,6 +85,10 @@ export type TamaguiComponentPropsBase = {
      * Forces the pseudo style state to be on
      */
     forceStyle?: 'hover' | 'press' | 'focus';
+    /**
+     * Disables className output of styles, instead using only inline styles
+     */
+    disableClassName?: boolean;
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];

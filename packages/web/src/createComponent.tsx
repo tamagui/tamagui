@@ -357,7 +357,7 @@ export function createComponent<
     const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
     const shouldAvoidClasses = Boolean(
-      !isWeb || isAnimated || !staticConfig.acceptsClassName
+      !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
     )
 
     const shouldForcePseudo = !!propsIn.forceStyle
