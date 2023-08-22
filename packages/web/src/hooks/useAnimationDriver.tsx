@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
+import { ComponentContext } from '../contexts/ComponentContext'
 import { getAnimationDriver } from '../helpers/getAnimationDriver'
 
 export const useAnimationDriver = () => {
-  return useContext(AnimationDriverContext) ?? getAnimationDriver()
+  return useContext(ComponentContext).animationDriver ?? getAnimationDriver()
 }

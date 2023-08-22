@@ -148,7 +148,7 @@ export type TamaguiComponentPropsBase = {
   children?: any | any[]
 
   debug?: DebugProp
-  
+
   disabled?: boolean
 
   /**
@@ -206,7 +206,7 @@ export type TamaguiComponentPropsBase = {
    * Disables className output of styles, instead using only inline styles
    */
   disableClassName?: boolean
-  
+
   onPress?: PressableProps['onPress']
   onLongPress?: PressableProps['onLongPress']
   onPressIn?: PressableProps['onPress']
@@ -226,6 +226,12 @@ export type TamaguiComponentPropsBase = {
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
   Props & RefAttributes<Ref>
 >
+
+export type ComponentContextI = {
+  inText: boolean
+  language: LanguageContextType | null
+  animationDriver: AnimationDriver | null
+}
 
 export type ConfigListener = (conf: TamaguiInternalConfig) => void
 
@@ -1335,12 +1341,12 @@ export type GetStyleState = {
   staticConfig: StaticConfig
   theme: ThemeParsed
   props: Record<string, any>
+  context?: ComponentContextI
   curProps: Record<string, any>
   viewProps: Record<string, any>
   styleProps: SplitStyleProps
   componentState: TamaguiComponentState
   conf: TamaguiInternalConfig
-  languageContext?: FontLanguageProps
   avoidMergeTransform?: boolean
   fontFamily?: string
   debug?: DebugProp

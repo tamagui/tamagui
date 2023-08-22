@@ -5,7 +5,7 @@ import type { GestureResponderHandlers, PressableProps, Text as RNText, TextProp
 import type { Variable } from './createVariable';
 import { StyledContext } from './helpers/createStyledContext';
 import type { ResolveVariableTypes } from './helpers/propMapper';
-import type { FontLanguageProps } from './views/FontLanguage.types';
+import type { LanguageContextType } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
@@ -103,6 +103,11 @@ export type TamaguiComponentPropsBase = {
     onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
+export type ComponentContextI = {
+    inText: boolean;
+    language: LanguageContextType | null;
+    animationDriver: AnimationDriver | null;
+};
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable | VariableValGeneric;
 export type VariableColorVal = string | Variable;
@@ -664,12 +669,12 @@ export type GetStyleState = {
     staticConfig: StaticConfig;
     theme: ThemeParsed;
     props: Record<string, any>;
+    context?: ComponentContextI;
     curProps: Record<string, any>;
     viewProps: Record<string, any>;
     styleProps: SplitStyleProps;
     componentState: TamaguiComponentState;
     conf: TamaguiInternalConfig;
-    languageContext?: FontLanguageProps;
     avoidMergeTransform?: boolean;
     fontFamily?: string;
     debug?: DebugProp;

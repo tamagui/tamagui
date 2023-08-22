@@ -23,6 +23,8 @@ export {
 
 export * from './constants/constants'
 
+export * from './contexts/ComponentContext'
+
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
 export * from './helpers/propMapper'
@@ -45,11 +47,8 @@ export * from './helpers/themes'
 export * from './helpers/useShallowSetState'
 export * from './helpers/withStaticProperties'
 
-export * from './contexts/ButtonNestingContext'
-
 export {
   configureMedia,
-  getMedia,
   mediaState,
   useMedia,
   useMediaPropsActive,
@@ -67,7 +66,6 @@ export * from './views/Slot'
 export * from './views/Stack'
 export * from './views/View'
 export * from './views/Text'
-export * from './contexts/TextAncestorContext'
 export * from './views/Theme'
 export * from './views/ThemeProvider'
 export * from './views/FontLanguage'

@@ -1,4 +1,4 @@
-import { AnimationDriverContext } from '../contexts/AnimationDriverContext'
+import { ComponentContext } from '../contexts/ComponentContext'
 import type { AnimationDriver } from '../types'
 
 interface AnimationDriverProviderProps {
@@ -9,8 +9,8 @@ interface AnimationDriverProviderProps {
 // the public provider for users
 export const AnimationDriverProvider = (props: AnimationDriverProviderProps) => {
   return (
-    <AnimationDriverContext.Provider value={props.driver}>
+    <ComponentContext.Provider animationDriver={props.driver}>
       {props.children}
-    </AnimationDriverContext.Provider>
+    </ComponentContext.Provider>
   )
 }
