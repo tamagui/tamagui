@@ -1,11 +1,11 @@
 import { getURL } from '@lib/helpers'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient({ req, res })
+  const supabase = createPagesServerClient({ req, res })
 
   const {
     data: { session },
@@ -108,7 +108,8 @@ const handler: NextApiHandler = async (req, res) => {
     // @ts-ignore
     custom_text: {
       submit: {
-        message: 'A 50% coupon will be automatically applied on your subscription for future renewals.',
+        message:
+          'A 50% coupon will be automatically applied on your subscription for future renewals.',
       },
     },
     customer: stripeCustomerId,

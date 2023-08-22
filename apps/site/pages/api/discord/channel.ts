@@ -8,7 +8,7 @@ import {
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 import { getTakeoutPriceInfo } from '../../../lib/getProductInfo'
@@ -21,7 +21,7 @@ export type DiscordChannelStatus = {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+  const supabase = createPagesServerClient<Database>({ req, res })
   const {
     data: { session },
   } = await supabase.auth.getSession()

@@ -129,7 +129,7 @@ export default function Page() {
 // // export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 // //   // Create authenticated Supabase Client
-// //   const supabase = createServerSupabaseClient(ctx)
+// //   const supabase = createPagesServerClient(ctx)
 // //   // Check if we have a session
 // //   const {
 // //     data: { session },

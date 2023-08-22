@@ -1,11 +1,11 @@
 import { claimProductAccess } from '@lib/claim-product'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+  const supabase = createPagesServerClient<Database>({ req, res })
 
   const {
     data: { session },
