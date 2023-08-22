@@ -271,14 +271,15 @@ const SponsorshipContent = () => {
   return (
     <YStack gap="$4">
       <YStack>
-        {teams.personal?.is_active && <Paragraph>You are a personal sponsor.</Paragraph>}
+        {teams.personal?.is_active && (
+          <Paragraph>You are a personal sponsor. Thank you!</Paragraph>
+        )}
         {teams.orgs?.map((org) => (
           <Paragraph key={org.id}>
             You are a member of a sponsoring organization, {org.name}.
           </Paragraph>
         ))}
       </YStack>
-      <SyncSponsorshipButton />
     </YStack>
   )
 }

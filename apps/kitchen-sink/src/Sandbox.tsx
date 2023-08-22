@@ -1,12 +1,30 @@
 // import './wdyr'
 
-import { useState } from 'react'
-import { Paragraph, ThemeName, YStack } from 'tamagui'
+import { forwardRef } from 'react'
+import { Platform } from 'react-native'
+import { Button, Paragraph, TamaguiElement, YStack, withStaticProperties } from 'tamagui'
+
+export const LinkButton = withStaticProperties(
+  forwardRef(function LinkButton(
+    { ...props }: Omit<React.ComponentProps<typeof Button>, 'href' | 'target'>,
+    ref: React.Ref<TamaguiElement>
+  ) {
+    return (
+      <Button
+        ref={ref}
+        {...props}
+        {...(props.disabled && Platform.OS === 'web' && { href: undefined })}
+        tag="a"
+      />
+    )
+  }),
+  {
+    Text: Button.Text,
+    Icon: Button.Icon,
+  }
+)
 
 export const Sandbox = () => {
-  const [theme, setTheme] = useState('light' as ThemeName)
-  // need to test all these they seem to be all working:
-
   return (
     <YStack>
       <Paragraph size="$10" ta="center">

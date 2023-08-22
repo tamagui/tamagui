@@ -1,5 +1,5 @@
 import { Database } from '@lib/supabase-types'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
   SessionContextProviderProps,
@@ -19,7 +19,7 @@ export const SupabaseProvider = ({
   isStudio?: boolean
 }) => {
   const [supabaseClient] = useState(() =>
-    createBrowserSupabaseClient<Database>({
+    createPagesBrowserClient<Database>({
       // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       cookieOptions: isStudio
         ? undefined
@@ -28,7 +28,7 @@ export const SupabaseProvider = ({
             maxAge: 1000 * 60 * 60 * 24 * 365,
             path: '/',
             sameSite: 'lax',
-            secure: true,
+            secure: false,
           },
     })
   )

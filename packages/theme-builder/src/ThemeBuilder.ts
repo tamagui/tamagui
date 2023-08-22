@@ -286,10 +286,19 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       }
 
       const { mask: maskName, ...options } = mask
-      const maskFunction = this.state.masks?.[maskName]
+      let maskFunction = this.state.masks?.[maskName]
 
       if (!maskFunction) {
         throw new Error(`No mask ${maskFunction}`)
+      }
+
+      const parentTheme = this.state.themes[parentName]
+      if (parentTheme && 'childOptions' in parentTheme) {
+        const { mask, ...childOpts } = parentTheme.childOptions as any
+        if (mask) {
+          maskFunction = this.state.masks?.[mask]
+        }
+        Object.assign(options, childOpts)
       }
 
       out[themeName] = applyMask(

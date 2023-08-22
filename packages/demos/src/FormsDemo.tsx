@@ -1,7 +1,5 @@
-import { stat } from 'fs'
-
 import { useEffect, useState } from 'react'
-import { Button, Form, H4, SizeTokens, Spinner, XStack, YStack } from 'tamagui'
+import { Button, Form, H4, SizeTokens, Spinner } from 'tamagui'
 
 export function FormsDemo(props: { size: SizeTokens }) {
   const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
@@ -19,7 +17,7 @@ export function FormsDemo(props: { size: SizeTokens }) {
     <Form
       alignItems="center"
       minWidth={300}
-      space
+      gap
       onSubmit={() => setStatus('submitting')}
       borderWidth={1}
       borderRadius="$4"

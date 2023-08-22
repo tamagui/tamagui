@@ -23,7 +23,6 @@ const handler: NextApiHandler = async (req, res) => {
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  console.log(session)
   const user = session?.user
 
   if (!user) {
@@ -33,9 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
     })
   }
 
-  const [userGithubToken] = await Promise.all([
-    githubTokenSync(session),
-  ])
+  const [userGithubToken] = await Promise.all([githubTokenSync(session)])
 
   const githubLogin =
     session.user?.user_metadata.user_name ??
@@ -72,26 +69,49 @@ const handler: NextApiHandler = async (req, res) => {
   const userPersonalTeam = userTeams?.find((team) => team?.is_personal)
 
   if (!userPersonalTeam) {
-    // create a new personal team for the user if the user doesn't have one
-    const team = await supabaseAdmin
+    const personalTeamResults = await supabaseAdmin
       .from('teams')
-      .upsert({
-        github_id: githubStatus.personal.meta.id,
-        name: githubLogin,
-        is_personal: true,
-        owner_id: user.id,
-        tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
-        is_active: githubStatus.personal.isSponsoring,
-      })
+      .upsert(
+        {
+          github_id: githubStatus.personal.meta.id,
+          name: githubLogin,
+          is_personal: true,
+          owner_id: user.id,
+          tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
+          is_active: githubStatus.personal.isSponsoring,
+        },
+        {}
+      )
       .select('id')
       .single()
-    if (team.error) {
-      throw new Error(team.error.message)
+
+    if (personalTeamResults.error) {
+      throw new Error(personalTeamResults.error.message)
     }
     await supabaseAdmin.from('memberships').upsert({
-      team_id: team.data.id,
+      team_id: personalTeamResults.data.id,
       user_id: user.id,
     })
+  } else {
+    const personalTeamResults = await supabaseAdmin
+      .from('teams')
+      .update(
+        {
+          github_id: githubStatus.personal.meta.id,
+          name: githubLogin,
+          is_personal: true,
+          tier: githubStatus.personal.isSponsoring ? githubStatus.personal.tier.id : null,
+          is_active: githubStatus.personal.isSponsoring,
+        },
+        {}
+      )
+      .eq('id', userPersonalTeam.id)
+      .select('id')
+      .single()
+
+    if (personalTeamResults.error) {
+      throw new Error(personalTeamResults.error.message)
+    }
   }
 
   // these are the teams user should be a part of but might or might not be at the moment

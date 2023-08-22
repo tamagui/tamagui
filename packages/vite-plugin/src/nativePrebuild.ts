@@ -6,26 +6,7 @@ import { build } from 'esbuild'
 
 import { extensions } from './extensions'
 
-export async function nativeBabelTransform(input: string) {
-  return await new Promise<string>((res, rej) => {
-    babel.transform(
-      input,
-      {
-        plugins: ['@babel/plugin-transform-modules-commonjs'],
-      },
-      (err: any, { code }) => {
-        if (err) {
-          console.error('error', err)
-        }
-
-        if (err) rej(err)
-        res(code)
-      }
-    )
-  })
-}
-
-export async function nativeBabelFlowTransform(input: string) {
+async function nativeBabelFlowTransform(input: string) {
   return await new Promise<string>((res, rej) => {
     babel.transform(
       input,
@@ -40,63 +21,54 @@ export async function nativeBabelFlowTransform(input: string) {
   })
 }
 
+const prebuiltDir = join(process.cwd(), 'testing-area')
+export const prebuiltFiles = {
+  react: join(prebuiltDir, 'react.js'),
+  reactJSXRuntime: join(prebuiltDir, 'react-jsx-runtime.js'),
+  reactNative: join(prebuiltDir, 'react-native.js'),
+}
+
 export async function nativePrebuild() {
   // rome-ignore lint/nursery/noConsoleLog: <explanation>
 
-  if (process.env.SKIP_PREBUILD_RN) {
-    console.log(`⚠️ skipping pre build of rn`)
+  // await build({
+  //   bundle: true,
+  //   entryPoints: [require.resolve('@tamagui/core')],
+  //   outfile: prebuiltFiles.reactNative,
+  //   format: 'cjs',
+  //   target: 'node20',
+  //   jsx: 'transform',
+  //   jsxFactory: 'react',
+  //   allowOverwrite: true,
+  //   platform: 'node',
+  //   external: ['react-native', 'react', 'react/jsx-runtime'],
+  //   loader: {
+  //     '.png': 'dataurl',
+  //     '.jpg': 'dataurl',
+  //     '.jpeg': 'dataurl',
+  //     '.gif': 'dataurl',
+  //   },
+  //   define: {
+  //     __DEV__: 'true',
+  //     'process.env.NODE_ENV': `"development"`,
+  //     // TODO
+  //     'process.env.REACT_NATIVE_SERVER_PUBLIC_PORT': JSON.stringify('8081'),
+  //   },
+  //   logLevel: 'warning',
+  //   resolveExtensions: extensions,
+  // })
 
+  if (process.env.SKIP_PREBUILD_RN) {
     return
   }
 
   console.log(`Prebuilding React Native (one time cost...)`)
 
-  const outdir = join(process.cwd(), 'testing-area')
-
   await Promise.all([
-    // react
     build({
       bundle: true,
-      entryPoints: ['react'],
-      outfile: join(outdir, 'react.js'),
-      format: 'cjs',
-      target: 'node20',
-      jsx: 'transform',
-      jsxFactory: 'react',
-      allowOverwrite: true,
-      platform: 'node',
-      define: {
-        __DEV__: 'true',
-        'process.env.NODE_ENV': `"development"`,
-      },
-      logLevel: 'warning',
-      resolveExtensions: extensions,
-    }),
-    // react-jsx-runtime
-    build({
-      bundle: true,
-      entryPoints: ['react/jsx-runtime'],
-      outfile: join(outdir, 'react-jsx-runtime.js'),
-      format: 'cjs',
-      target: 'node20',
-      jsx: 'transform',
-      jsxFactory: 'react',
-      external: ['react'],
-      allowOverwrite: true,
-      platform: 'node',
-      define: {
-        // metro serves this in production mode
-        __DEV__: 'false',
-        'process.env.NODE_ENV': `"production"`,
-      },
-      logLevel: 'warning',
-      resolveExtensions: extensions,
-    }),
-    // react native
-    build({
-      bundle: true,
-      entryPoints: ['/Users/n8/tamagui/node_modules/react-native/index.js'],
-      outfile: join(outdir, 'react-native.js'),
+      entryPoints: [require.resolve('react-native')],
+      outfile: prebuiltFiles.reactNative,
       format: 'cjs',
       target: 'node20',
       jsx: 'transform',
@@ -117,7 +89,6 @@ export async function nativePrebuild() {
       },
       logLevel: 'warning',
       resolveExtensions: extensions,
-      external: ['react', 'react/jsx-runtime.js', 'react/jsx-runtime'],
       plugins: [
         {
           name: 'remove-flow',
@@ -160,5 +131,7 @@ export async function nativePrebuild() {
         },
       ],
     }),
+
+    ,
   ])
 }

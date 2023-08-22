@@ -1,4 +1,1 @@
-import { StoreInfo } from './interfaces';
-export declare function useReaction<StoreInstance, Selector extends (a: StoreInstance) => any>(store: StoreInstance, selector: Selector, receiver: Selector extends (a: StoreInstance) => infer Derived ? (a: Derived) => any : unknown, props?: Record<string, any>, equalityFn?: (a: any, b: any) => boolean, memoArgs?: any[]): () => void;
-export declare function reaction<StoreInstance extends StoreInfo, Selector extends (a: StoreInstance) => any>({ store, subscribe }: StoreInstance, selector: Selector, receiver: Selector extends (a: StoreInstance) => infer Derived ? (a: Derived) => any : unknown, equalityFn?: (a: any, b: any) => boolean): () => void;
 //# sourceMappingURL=reaction.d.ts.map

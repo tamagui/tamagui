@@ -25,9 +25,10 @@ export declare class ThemeManager {
     state: ThemeManagerState;
     scheme: 'light' | 'dark' | null;
     constructor(props?: ThemeProps, parentManagerIn?: ThemeManager | 'root' | null | undefined);
-    updateState(props?: ThemeProps & {
+    updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
-    }, shouldNotify?: boolean): ThemeManagerState | undefined;
+    }, shouldNotify?: boolean): true | ThemeManagerState | undefined;
+    updateState(nextState: ThemeManagerState, shouldNotify?: boolean): ThemeManagerState;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;

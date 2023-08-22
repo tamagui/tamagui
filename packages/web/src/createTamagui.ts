@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 
-import { configListeners, setConfig } from './config'
-import { Variable } from './createVariable'
+import { configListeners, setConfig, setTokens } from './config'
+import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -24,6 +24,8 @@ import {
   TamaguiInternalConfig,
   ThemeParsed,
   ThemesLikeObject,
+  TokensMerged,
+  TokensParsed,
 } from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
@@ -48,13 +50,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  // faster $lookups
-  const tokensParsed: any = Object.fromEntries(
-    Object.entries(configIn.tokens).map(([k, v]) => {
-      const val = Object.fromEntries(Object.entries(v).map(([k, v]) => [`$${k}`, v]))
-      return [k, val]
-    })
-  )
+  // ensure variables
+  const tokens = createVariables(configIn.tokens)
+
+  // faster lookups
+  const tokensParsed: TokensParsed = {} as any
+  const tokensMerged: TokensMerged = {} as any
+  for (const cat in tokens) {
+    tokensParsed[cat] = {}
+    tokensMerged[cat] = {}
+    const tokenCat = tokens[cat]
+    for (const key in tokenCat) {
+      const val = tokenCat[key]
+      const prefixedKey = `$${key}`
+      tokensParsed[cat][prefixedKey] = val as any
+      tokensMerged[cat][prefixedKey] = val as any
+      tokensMerged[cat][key] = val as any
+    }
+  }
+  setTokens(tokensMerged)
 
   const noThemes = Object.keys(configIn.themes).length === 0
   const foundThemes = scanAllSheets(noThemes, tokensParsed)
@@ -86,38 +100,44 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeConfig = (() => {
     const cssRuleSets: string[] = []
 
-    if (process.env.TAMAGUI_DOES_SSR_CSS !== 'true') {
-      if (isWeb) {
-        const declarations: string[] = []
-        const fontDeclarations: Record<
-          string,
-          { name: string; declarations: string[]; language?: string }
-        > = {}
+    if (
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'true' &&
+      // we can leave this out if mutating, only need the js for getThemeCSSRules
+      process.env.TAMAGUI_DOES_SSR_CSS !== 'mutates-themes'
+    ) {
+      const declarations: string[] = []
+      const fontDeclarations: Record<
+        string,
+        { name: string; declarations: string[]; language?: string }
+      > = {}
 
-        for (const key in configIn.tokens) {
-          for (const skey in configIn.tokens[key]) {
-            const variable = configIn.tokens[key][skey] as Variable
+      for (const key in tokens) {
+        for (const skey in tokens[key]) {
+          const variable = tokens[key][skey] as any as Variable
 
-            // set specific tokens (like $size.sm)
-            specificTokens[`$${key}.${skey}`] = variable
+          // set specific tokens (like $size.sm)
+          specificTokens[`$${key}.${skey}`] = variable
 
-            if (process.env.NODE_ENV === 'development') {
-              if (typeof variable === 'undefined') {
-                throw new Error(
-                  `No value for tokens.${key}.${skey}:\n${JSON.stringify(
-                    variable,
-                    null,
-                    2
-                  )}`
-                )
-              }
+          if (process.env.NODE_ENV === 'development') {
+            if (typeof variable === 'undefined') {
+              throw new Error(
+                `No value for tokens.${key}.${skey}:\n${JSON.stringify(
+                  variable,
+                  null,
+                  2
+                )}`
+              )
             }
+          }
 
+          if (isWeb) {
             registerCSSVariable(variable)
             declarations.push(variableToCSS(variable, key === 'zIndex'))
           }
         }
+      }
 
+      if (isWeb) {
         for (const key in fontsParsed) {
           const fontParsed = fontsParsed[key]
           const [name, language] = key.includes('_') ? key.split('_') : [key]
@@ -238,8 +258,7 @@ ${runtimeStyles}`
     animations: {} as any,
     media: {},
     ...configIn,
-    // already processed by createTokens()
-    tokens: configIn.tokens as any,
+    tokens: tokens as any,
     // vite made this into a function if it wasn't set
     shorthands,
     inverseShorthands: shorthands
@@ -248,7 +267,7 @@ ${runtimeStyles}`
     themes: themeConfig.themes as any,
     fontsParsed,
     themeConfig,
-    tokensParsed,
+    tokensParsed: tokensParsed as any,
     parsed: true,
     getNewCSS,
     getCSS,

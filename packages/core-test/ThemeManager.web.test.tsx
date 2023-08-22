@@ -165,7 +165,7 @@ describe('ThemeManager', () => {
       },
       'root'
     )
-    const newState = parent.updateState({
+    const newState = parent.updateStateFromProps({
       name: 'dark',
     })
     expect(newState).toMatchInlineSnapshot(`

@@ -1,14 +1,24 @@
-import { View } from 'react-native'
+import { Stack, TamaguiProvider, Text } from '@tamagui/core'
 
-// todo next
-// import { Test } from './Test'
+import { default as config } from './tamagui.config'
 
 export function App() {
-  console.log('🍄🍄🍄')
   return (
-    <>
-      <View style={{ backgroundColor: 'red', width: 200, height: 200 }} />
-      {/* <Test /> */}
-    </>
+    <TamaguiProvider config={config}>
+      <Stack
+        f={1}
+        w="100%"
+        ai="center"
+        jc="center"
+        als="center"
+        m="auto"
+        bg="#3FB9C2"
+        h={400}
+      >
+        <Text color="#8C4D86" fow="800" fos={70} ta="center">
+          vite + rn = ❤️
+        </Text>
+      </Stack>
+    </TamaguiProvider>
   )
 }

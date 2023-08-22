@@ -1,36 +1,44 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { useState } from 'react'
-import { ScaledSize, useWindowDimensions as useWindowDimensionsRN } from 'react-native'
+import { isWeb } from '@tamagui/constants'
+import { useSyncExternalStore } from 'react'
+import { Dimensions, ScaledSize } from 'react-native'
 
 /**
  * SSR safe useWindowDimensions
  */
 
-const initialValue: ScaledSize = {
-  fontScale: 1,
-  height: 800,
-  width: 600,
-  scale: 1,
+type Size = {
+  width: number
+  height: number
 }
 
-export function configureInitialWindowDimensions(next: Partial<ScaledSize>) {
+const initialValue: Size = {
+  height: 800,
+  width: 600,
+}
+
+export function configureInitialWindowDimensions(next: Size) {
   Object.assign(initialValue, next)
 }
 
-export function useWindowDimensions({ initial }: { initial?: Partial<ScaledSize> } = {}) {
-  const current = useWindowDimensionsRN()
+Dimensions.addEventListener('change', () => {
+  cbs.forEach((cb) => cb(window))
+})
 
-  if (process.env.TAMAGUI_TARGET != 'web') {
-    return current
-  }
+const cbs = new Set<Function>()
 
-  const [state, setState] = useState(
-    initial ? { ...initialValue, ...initial } : initialValue
+type WindowSizeListener = ({ window }: { window: ScaledSize }) => void
+
+function subscribe(cb: WindowSizeListener) {
+  cbs.add(cb)
+  return () => cbs.delete(cb)
+}
+
+export function useWindowDimensions({
+  serverValue = initialValue,
+}: { serverValue?: Size } = {}) {
+  return useSyncExternalStore(
+    subscribe,
+    () => Dimensions.get('window'),
+    () => (isWeb ? serverValue : Dimensions.get('window'))
   )
-
-  useIsomorphicLayoutEffect(() => {
-    setState(current)
-  }, Object.values(current))
-
-  return state
 }

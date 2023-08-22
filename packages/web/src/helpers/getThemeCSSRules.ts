@@ -13,7 +13,11 @@ export function getThemeCSSRules(props: {
 }) {
   const cssRuleSets: string[] = []
 
-  if (process.env.TAMAGUI_DOES_SSR_CSS !== 'true') {
+  if (
+    !process.env.TAMAGUI_DOES_SSR_CSS ||
+    process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
+    process.env.TAMAGUI_DOES_SSR_CSS === 'false'
+  ) {
     const { config, themeName, theme, names } = props
 
     // special case for SSR

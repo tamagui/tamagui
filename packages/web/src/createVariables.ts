@@ -14,18 +14,25 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
     : never
 }
 
+const cache = new WeakMap()
+
+// recursive...
+
 export const createVariables = <A extends DeepTokenObject>(
   tokens: A,
   parentPath = '',
   isFont = false
 ): DeepVariableObject<A> => {
+  if (cache.has(tokens)) return tokens
+
   const res: any = {}
   let i = 0
   for (let keyIn in tokens) {
     i++
     const val = tokens[keyIn]
-    const keyWithPrefix = keyIn[0] === '$' ? keyIn : `$${keyIn}`
-    const key = keyWithPrefix.slice(1)
+    const isPrefixed = keyIn[0] === '$'
+    const keyWithPrefix = isPrefixed ? keyIn : `$${keyIn}`
+    const key = isPrefixed ? keyWithPrefix.slice(1) : keyIn
     if (isVariable(val)) {
       res[key] = val
       continue
@@ -35,11 +42,15 @@ export const createVariables = <A extends DeepTokenObject>(
     name = parentPath ? `${parentPath}-${name}` : niceKey
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(tokens[key] as any, name)
+      res[key] = createVariables(tokens[key] as any, name, isFont)
       continue
     }
-    res[key] = isVariable(val) ? val : createVariable({ val, name, key: keyWithPrefix })
+    const finalValue = isVariable(val)
+      ? val
+      : createVariable({ val, name, key: keyWithPrefix })
+    res[key] = finalValue
   }
 
+  cache.set(res, true)
   return res
 }

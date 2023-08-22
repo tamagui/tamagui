@@ -18,7 +18,11 @@ export function themeable<Component extends (props: any) => any>(
   const withThemeComponent = forwardRef(function WithTheme(props: ThemeableProps, ref) {
     const { themeInverse, theme, componentName, themeReset, ...rest } = props
 
-    const element = React.createElement(component, { ...rest, ref } as any)
+    const element = React.createElement(component, {
+      ...rest,
+      ref,
+      'data-disable-theme': true,
+    } as any)
 
     let contents = (
       <Theme

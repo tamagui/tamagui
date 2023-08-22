@@ -1,6 +1,7 @@
 import type { MediaQueryList } from '@tamagui/web'
-import mediaQuery from 'css-mediaquery'
 import { Dimensions } from 'react-native'
+
+import { matchQuery } from './matchQuery'
 
 type Orientation = 'landscape' | 'portrait'
 
@@ -38,7 +39,7 @@ export class NativeMediaQueryList implements MediaQueryList {
 
   get matches(): boolean {
     const windowDimensions = Dimensions.get('window')
-    const matches = mediaQuery.match(this.query, {
+    const matches = matchQuery(this.query, {
       type: 'screen',
       orientation: this.orientation,
       ...windowDimensions,

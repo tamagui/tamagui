@@ -24,3 +24,69 @@ body {
   opacity: 1;
 }
 
+
+.all {
+  transition-property: all;
+}
+.transform {
+  transition-property: transform;
+}
+.opacity {
+  transition-property: opacity;
+}
+.background {
+  transition-property: background;
+}
+.color {
+  transition-property: color;
+}
+.top {
+  transition-property: top;
+}
+.bottom {
+  transition-property: bottom;
+}
+.left {
+  transition-property: left;
+}
+.right {
+  transition-property: right;
+}
+
+.linear {
+  transition-timing-function: linear;
+}
+.ease-in {
+  transition-timing-function: ease-in;
+}
+.ease-in-out {
+  transition-timing-function: ease-in-out;
+}
+.ease-out {
+  transition-timing-function: ease-out;
+}
+
+.ms50 {
+  transition-duration: 50ms;
+}
+.ms100 {
+  transition-duration: 100ms;
+}
+.ms150 {
+  transition-duration: 150ms;
+}
+.ms200 {
+  transition-duration: 200ms;
+}
+.ms300 {
+  transition-duration: 300ms;
+}
+.s1, .ms1000 {
+  transition-duration: 1s;
+}
+.s2 {
+  transition-duration: 2s;
+}
+.s5 {
+  transition-duration: 5s;
+}

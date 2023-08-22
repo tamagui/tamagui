@@ -56,7 +56,7 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
     );
   }
 
-  if (variants && key in variants && value != null) {
+  if (variants && key in variants) {
     styleState.curProps[key] = value
 
     const variantValue = resolveVariants(key, value, styleProps, styleState, '')

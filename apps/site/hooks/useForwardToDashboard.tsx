@@ -11,11 +11,18 @@ export function useForwardToDashboard() {
   useEffect(() => {
     const main = async () => {
       if (user && !isLoading) {
-        await router.replace(
-          typeof router.query.redirect_to === 'string'
-            ? router.query.redirect_to
-            : '/account'
-        )
+        if (router.query.studio) {
+          location.href =
+            process.env.NODE_ENV === 'development'
+              ? 'http://localhost:1421'
+              : 'https://studio.tamagui.dev'
+        } else {
+          await router.replace(
+            typeof router.query.redirect_to === 'string'
+              ? router.query.redirect_to
+              : '/account'
+          )
+        }
       }
     }
     main()

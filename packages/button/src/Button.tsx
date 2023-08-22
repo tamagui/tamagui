@@ -144,7 +144,7 @@ const ButtonFrame = styled(ThemeableStack, {
 })
 
 const ButtonText = styled(SizableText, {
-  name: 'Button',
+  name: 'Button', // same name as the frame so they can share a single theme
   context: ButtonContext,
 
   variants: {
@@ -253,7 +253,7 @@ function useButton<Props extends ButtonProps>(
     propsActive,
     Text === ButtonText && propsIn.unstyled !== true
       ? {
-          unstyled: true,
+          unstyled: false,
           size,
         }
       : undefined

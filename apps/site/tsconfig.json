@@ -26,16 +26,16 @@
     "resolveJsonModule": true,
     "incremental": true,
     "strictNullChecks": true,
-    "plugins": [
-      {
-        "name": "next"
-      },
-      {
-        "name": "@nderscore/tamagui-typescript-plugin",
-        "pathToApp": "apps/site",
-        "defaultTheme": "light"
-      }
-    ]
+    // "plugins": [
+    //   {
+    //     "name": "next"
+    //   },
+    //   {
+    //     "name": "@nderscore/tamagui-typescript-plugin",
+    //     "pathToApp": "apps/site",
+    //     "defaultTheme": "light"
+    //   }
+    // ]
   },
   "include": [
     "next-env.d.ts",

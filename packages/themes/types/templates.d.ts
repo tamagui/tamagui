@@ -59,7 +59,8 @@ export declare const templates: {
         color11: number;
         color12: number;
     };
-}, maskOptions: {
+};
+export declare const maskOptions: {
     component: {
         override: {
             color: number;
@@ -90,6 +91,7 @@ export declare const templates: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;
@@ -98,6 +100,7 @@ export declare const templates: {
     alt: {
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
         override?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         skip?: Partial<import("@tamagui/create-theme").ThemeMask> | undefined;
         strength?: number | undefined;
         max?: number | undefined;
@@ -136,6 +139,7 @@ export declare const templates: {
             shadowColorFocus: number;
         };
         palette?: import("@tamagui/create-theme").CreateThemePalette | undefined;
+        overrideStrategy?: "shift" | "swap" | undefined;
         strength?: number | undefined;
         max?: number | undefined;
         min?: number | undefined;

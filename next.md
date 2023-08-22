@@ -1,3 +1,16 @@
+- TODO this could definitely be done better by at the very minimum
+  - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
+
+- option to disable ssr mode to avoid extra renders on SPA
+
+-  button circular + ai not working <Button
+            theme={contrastThemeName}
+            circular
+            jc="center"
+            ai="center"
+            icon={Send}
+          />
+
 - next seems to be extracting for server and web, but likely we can leave it off for server since the style should be identical
 
 - deprecate rnw-lite when we can after making sure all tests / animation drivers pass on rnw

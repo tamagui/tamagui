@@ -1,16 +1,13 @@
 import { isClient } from '@tamagui/constants'
 
-import { getConfig } from '../config'
-import { Variable, createVariable } from '../createVariable'
+import { createVariable } from '../createVariable'
 import type {
   DedupedTheme,
   DedupedThemes,
   RulesToInsert,
   ThemeParsed,
-  Tokens,
   TokensParsed,
 } from '../types'
-import { ensureThemeVariable } from './themes'
 
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
@@ -255,7 +252,7 @@ function addThemesFromCSS(cssStyleRule: CSSStyleRule, tokens?: TokensParsed) {
         val: value,
       },
       true
-    )
+    ) as any
   }
 
   const dedupedEntry: DedupedTheme = {

@@ -10,11 +10,13 @@ import {
   Spacer,
   Text,
   Theme,
+  ThemeParsed,
   TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
   styled,
+  useTheme,
 } from 'tamagui'
 
 import { ContainerLarge } from './Container'

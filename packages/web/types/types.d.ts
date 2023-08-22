@@ -44,13 +44,38 @@ export type TamaguiComponentPropsBase = {
     children?: any | any[];
     debug?: DebugProp;
     disabled?: boolean;
+    /**
+     * Same as the web className property, useful for applying styles from CSS on web only
+     */
     className?: string;
+    /**
+     * If given a theme it will only apply to this element, instead of passing down to children
+     */
     themeShallow?: boolean;
+    /**
+     * Same as the web id property for setting a uid on an element
+     */
     id?: string;
+    /**
+     * Controls the output tag on web
+     */
     tag?: string;
+    /**
+     * Applies a theme to this element
+     */
     theme?: ThemeName | null;
+    /**
+     * Equivalent to "name" property on styled() for automatically applying a theme
+     */
     componentName?: string;
+    /**
+     * Used for controlling the order of focus with keyboard or assistive device enavigation
+     * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+     */
     tabIndex?: string | number;
+    /**
+     * Equivalent to role="" attribute on web for accesibility
+     */
     role?: Role;
     /**
      * Disable all compiler optimization
@@ -60,6 +85,10 @@ export type TamaguiComponentPropsBase = {
      * Forces the pseudo style state to be on
      */
     forceStyle?: 'hover' | 'press' | 'focus';
+    /**
+     * Disables className output of styles, instead using only inline styles
+     */
+    disableClassName?: boolean;
     onPress?: PressableProps['onPress'];
     onLongPress?: PressableProps['onLongPress'];
     onPressIn?: PressableProps['onPress'];
@@ -75,7 +104,7 @@ export type TamaguiComponentPropsBase = {
 };
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
-export type VariableVal = number | string | Variable;
+export type VariableVal = number | string | Variable | VariableValGeneric;
 export type VariableColorVal = string | Variable;
 type GenericKey = string;
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<string, {
@@ -127,6 +156,9 @@ export type TamaguiBaseTheme = {
     shadowColorPress: VariableColorVal;
     shadowColorFocus: VariableColorVal;
 };
+export type VariableValGeneric = {
+    __generic: 1;
+};
 type GenericTokens = CreateTokens;
 type GenericThemes = {
     [key: string]: (Partial<TamaguiBaseTheme> & {
@@ -160,7 +192,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     tokens: A;
     themes: {
         [Name in keyof B]: {
-            [Key in keyof B[Name]]: Variable;
+            [Key in keyof B[Name]]: Variable<B[Name][Key]>;
         };
     };
     shorthands: C;
@@ -195,7 +227,7 @@ type GenericThemeDefinition = TamaguiConfig['themes'][keyof TamaguiConfig['theme
 export type ThemeDefinition = BaseThemeDefinitions extends never ? GenericThemeDefinition : BaseThemeDefinitions;
 export type ThemeKeys = keyof ThemeDefinition;
 export type ThemeParsed = {
-    [key in ThemeKeys]: Variable<any>;
+    [key in ThemeKeys]: ThemeDefinition[key];
 };
 export type Tokens = TamaguiConfig['tokens'];
 export type TokensParsed = {

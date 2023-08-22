@@ -1,27 +1,16 @@
-import { readFileSync } from 'fs'
-import { SourceMapPayload } from 'module'
-import { createRequire } from 'module'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { SourceMapPayload, createRequire } from 'module'
 
 import { JscTarget, Output, ParserConfig, ReactConfig, transform } from '@swc/core'
-import { BuildOptions, PluginOption, UserConfig } from 'vite'
+import { PluginOption } from 'vite'
 
-const runtimePublicPath = '/@react-refresh'
-
-const preambleCode = `import { injectIntoGlobalHook } from "__PATH__";
-injectIntoGlobalHook(globalThis);
-globalThis.$RefreshReg$ = () => {};
-globalThis.$RefreshSig$ = () => (type) => type;`
-
-const _dirname =
-  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url))
 const resolve = createRequire(
   typeof __filename !== 'undefined' ? __filename : import.meta.url
 ).resolve
 const refreshContentRE = /\$Refresh(?:Reg|Sig)\$\(/
 
 type Options = {
+  mode: 'serve' | 'serve-cjs' | 'build'
+
   /**
    * Control where the JSX factory is imported from.
    * @default "react"
@@ -41,8 +30,9 @@ type Options = {
 
 const isWebContainer = globalThis.process?.versions?.webcontainer
 
-const react = (_options?: Options): PluginOption[] => {
+export default (_options?: Options): PluginOption[] => {
   const options = {
+    mode: _options?.mode ?? 'serve',
     jsxImportSource: _options?.jsxImportSource ?? 'react',
     tsDecorators: _options?.tsDecorators,
     plugins: _options?.plugins
@@ -52,24 +42,9 @@ const react = (_options?: Options): PluginOption[] => {
 
   return [
     {
-      name: 'vite:react-swc:resolve-runtime',
-      // apply: 'serve',
-      enforce: 'pre', // Run before Vite default resolve to avoid syscalls
-      resolveId: (id) => (id === runtimePublicPath ? id : undefined),
-      load: (id) => {
-        return id === runtimePublicPath
-          ? readFileSync(join(_dirname, 'refresh-runtime.js'), 'utf-8')
-          : undefined
-      },
-    },
-    {
       name: 'vite:react-swc',
-      // apply: 'serve',
       config: () => ({
         esbuild: false,
-        optimizeDeps: {
-          include: [`${options.jsxImportSource}/jsx-dev-runtime`],
-        },
       }),
       configResolved(config) {
         const mdxIndex = config.plugins.findIndex((p) => p.name === '@mdx-js/rollup')
@@ -87,29 +62,25 @@ const react = (_options?: Options): PluginOption[] => {
           )
         }
       },
-      transformIndexHtml: (_, config) => [
-        {
-          tag: 'script',
-          attrs: { type: 'module' },
-          children: preambleCode.replace(
-            '__PATH__',
-            config.server!.config.base + runtimePublicPath.slice(1)
-          ),
-        },
-      ],
       async transform(code, _id, transformOptions) {
-        return await swcTransform(_id, code, options)
+        if (
+          _id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
+          _id.includes(`node_modules/react/index.js`) ||
+          _id.includes(`node_modules/react/cjs/react.development.js`) ||
+          _id.includes(`node_modules/react-native/index.js`) ||
+          _id.includes(`node_modules/react/cjs/react-jsx-dev-runtime.development.js`) ||
+          _id.includes(`packages/vite-native-client/`)
+        ) {
+          return
+        }
+        const out = await swcTransform(_id, code, options)
+        return out
       },
     },
   ]
 }
 
-export async function swcTransform(
-  _id: string,
-  code: string,
-  options: Options,
-  cjs = false
-) {
+export async function swcTransform(_id: string, code: string, options: Options) {
   // todo hack
   const id = _id.split('?')[0].replace(process.cwd(), '')
 
@@ -117,62 +88,88 @@ export async function swcTransform(
   // only change for now:
   const refresh = true
 
-  const result = await transformWithOptions(id, code, 'es2020', options, {
+  const result = await transformWithOptions(id, code, 'es5', options, {
     refresh,
     development: true,
     runtime: 'automatic',
     importSource: options.jsxImportSource,
   })
 
-  if (!result) return
+  if (!result) {
+    return
+  }
 
   if (!refresh || !refreshContentRE.test(result.code)) {
     return result
   }
 
-  result.code = wrapSourceInRefreshRuntime(id, result.code, cjs)
+  result.code = wrapSourceInRefreshRuntime(id, result.code, options)
 
   const sourceMap: SourceMapPayload = JSON.parse(result.map!)
   sourceMap.mappings = ';;;;;;;;' + sourceMap.mappings
   return { code: result.code, map: sourceMap }
 }
 
-export function wrapSourceInRefreshRuntime(id: string, code: string, cjs = false) {
-  return `const RefreshRuntime = require("${runtimePublicPath}");
-
-  // if (!globalThis.$RefreshReg$) throw new Error("React refresh preamble was not loaded. Something is wrong.");
-  const prevRefreshReg = globalThis.$RefreshReg$;
-  const prevRefreshSig = globalThis.$RefreshSig$;
-  globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
-  globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
-
-  module.url = '${id}'
-  module.hot = createHotContext(module.url)
-  
-  ${code}
-  
-  ${
-    cjs
-      ? ''
-      : `// this lets us connect and accept it in browser so vite treats it as hmr for native
-  if (import.meta.hot) {
-    RefreshRuntime.__hmr_import(import.meta.url).then(() => {
-      import.meta.hot.accept(() => {
-    
-      })
-    })
-  }`
-  }
-  
-  if (module.hot) {
-    globalThis.$RefreshReg$ = prevRefreshReg;
-    globalThis.$RefreshSig$ = prevRefreshSig;
-    globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
-      module.hot.accept((nextExports) => {
-        RefreshRuntime.performReactRefresh()
-      });
-  }
+export function wrapSourceInRefreshRuntime(id: string, code: string, options: Options) {
+  const prefixCode =
+    options.mode === 'build'
+      ? `
+  // ensure it loads the react native js before the hmr js
+  import * as ____rn____ from 'react-native'
+  import '@tamagui/vite-native-client'
   `
+      : ``
+
+  return `const RefreshRuntime = globalThis['__RequireReactRefreshRuntime__']();
+const prevRefreshReg = globalThis.$RefreshReg$;
+const prevRefreshSig = globalThis.$RefreshSig$;
+globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
+globalThis.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+
+${prefixCode}
+
+module.url = '${id}'
+module.hot = createHotContext(module.url)
+
+${code}
+
+import.meta.hot.accept(() => {})
+
+if (module.hot) {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+  globalThis['lastHmrExports'] = JSON.stringify(Object.keys(exports))
+    module.hot.accept((nextExports) => {
+      RefreshRuntime.performReactRefresh()
+    });
+}
+  `
+}
+
+export const transformForBuild = async (id: string, code: string) => {
+  return await transform(code, {
+    filename: id,
+    swcrc: false,
+    configFile: false,
+    sourceMaps: true,
+    jsc: {
+      target: 'es5',
+      parser: id.endsWith('.tsx')
+        ? { syntax: 'typescript', tsx: true, decorators: true }
+        : id.endsWith('.ts')
+        ? { syntax: 'typescript', tsx: false, decorators: true }
+        : id.endsWith('.jsx')
+        ? { syntax: 'ecmascript', jsx: true }
+        : { syntax: 'ecmascript' },
+      transform: {
+        useDefineForClassFields: true,
+        react: {
+          development: true,
+          runtime: 'automatic',
+        },
+      },
+    },
+  })
 }
 
 export const transformWithOptions = async (
@@ -202,13 +199,12 @@ export const transformWithOptions = async (
       swcrc: false,
       configFile: false,
       sourceMaps: true,
-      // module: {
-      //   type: 'commonjs',
-      // },
+      module: {
+        type: options.mode === 'serve-cjs' ? 'commonjs' : 'nodenext',
+      },
       jsc: {
         target,
         parser,
-        experimental: { plugins: options.plugins },
         transform: {
           useDefineForClassFields: true,
           react: reactConfig,
@@ -230,23 +226,3 @@ export const transformWithOptions = async (
 
   return result
 }
-
-const silenceUseClientWarning = (userConfig: UserConfig): BuildOptions => ({
-  rollupOptions: {
-    onwarn(warning, defaultHandler) {
-      if (
-        warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
-        warning.message.includes('use client')
-      ) {
-        return
-      }
-      if (userConfig.build?.rollupOptions?.onwarn) {
-        userConfig.build.rollupOptions.onwarn(warning, defaultHandler)
-      } else {
-        defaultHandler(warning)
-      }
-    },
-  },
-})
-
-export default react

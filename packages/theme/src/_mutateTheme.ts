@@ -140,7 +140,7 @@ function updateThemeConfig(themeName: string, theme: ThemeParsed) {
 function notifyThemeManagersOfUpdate(themeName: string, theme: ThemeParsed) {
   activeThemeManagers.forEach((manager) => {
     if (manager.state.name === themeName) {
-      manager.updateState(
+      manager.updateStateFromProps(
         {
           name: themeName,
           forceTheme: theme,

@@ -15,12 +15,13 @@ export interface Store<Props = Record<string, any> | null | undefined> {
 }
 
 export type StoreInfo<A = Store> = {
-  uid: number
+  uid: string
   keyComparators?: {
     [key: string]: (a: any, b: any) => boolean
   }
   // proxied store
   store: A
+  props: Record<string, any> | null
   storeInstance: any
   getters: { [key: string]: any }
   actions: any

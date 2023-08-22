@@ -21,14 +21,17 @@ export const createCherryBombFont = <A extends GenericFont>(
     Object.entries({
       ...defaultSizes,
       ...font.size,
-    }).map(([k, v]) => [k, sizeSize(+v)])
+    }).map(([k, v]) => [k, Math.round(sizeSize(+v))])
   )
   return createFont({
     family: isWeb
       ? '"Cherry Bomb", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
       : '"Cherry Bomb"',
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
+      Object.entries(size).map(([k, v]) => [
+        k,
+        Math.round(sizeLineHeight(getVariableValue(v))),
+      ])
     ),
     weight: {
       4: '300',

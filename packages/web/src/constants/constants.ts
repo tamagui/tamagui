@@ -1,5 +1,3 @@
-import { isWeb } from '@tamagui/constants'
-
 export const THEME_NAME_SEPARATOR = '_'
 export const THEME_CLASSNAME_PREFIX = 't_'
 

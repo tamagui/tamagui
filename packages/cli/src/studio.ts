@@ -10,13 +10,19 @@ import chalk from 'chalk'
 import express from 'express'
 import fs, { ensureDir } from 'fs-extra'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { createServer } from 'vite'
+import { InlineConfig, build, createServer } from 'vite'
+import entryShakingPlugin from 'vite-plugin-entry-shaking'
+import viteInspect from 'vite-plugin-inspect'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 const resolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve
 
-export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
+export const studio = async (
+  options: CLIResolvedOptions,
+  isRemote = false,
+  isBuild = false
+) => {
   process.env.TAMAGUI_TARGET = 'web'
 
   await ensureDir(options.paths.dotDir)
@@ -45,7 +51,13 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
       }),
     ])
 
-    const server = await createServer({
+    const targets = [
+      resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
+      resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
+    ]
+    console.log('targets', targets)
+
+    const viteConfig = {
       root,
       server: {
         host: options.host,
@@ -53,17 +65,35 @@ export const studio = async (options: CLIResolvedOptions, isRemote = false) => {
         hmr: true,
         cors: true,
       },
+      build: {
+        rollupOptions: {},
+      },
       plugins: [
         tamaguiPlugin({
           components: ['tamagui'],
         }),
-        viteReactPlugin(),
+        viteReactPlugin({
+          tsDecorators: true,
+        }),
         viteTsConfigPaths(),
+        await entryShakingPlugin({
+          targets,
+        }),
+        viteInspect(),
       ],
       define: {
         'process.env.TAMAGUI_KEEP_THEMES': 'true',
+        global: 'window',
       },
-    })
+    } satisfies InlineConfig
+
+    console.log(isBuild)
+    if (isBuild) {
+      console.log('we building')
+      return await build(viteConfig)
+    }
+
+    const server = await createServer(viteConfig)
 
     // these can be lazy loaded (eventually should put in own process)
     await server.listen()
