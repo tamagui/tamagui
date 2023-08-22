@@ -137,30 +137,6 @@ module.exports = function (name, { defaultConfig }) {
     },
     assetPrefix:
       process.env.VERCEL_GIT_COMMIT_REF === 'master' ? 'https://tamagui.dev' : undefined,
-    async rewrites() {
-      return {
-        beforeFiles: [
-          {
-            source: '/:path*',
-            has: [
-              {
-                type: 'host',
-                value: 'studio.tamagui.dev',
-              },
-            ],
-            destination: '/studio-app/:path*',
-          },
-          {
-            source: '/studio-app/api/:path*',
-            destination: '/api/:path*',
-          },
-          {
-            source: '/studio-app/_next/:path*',
-            destination: '/_next/:path*',
-          },
-        ],
-      }
-    },
 
     // Next.js config
     async redirects() {

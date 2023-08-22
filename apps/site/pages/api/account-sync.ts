@@ -1,6 +1,6 @@
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { Session, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { Session, createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
@@ -19,7 +19,7 @@ async function githubTokenSync(session: Session) {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient({ req, res })
+  const supabase = createPagesServerClient({ req, res })
   const {
     data: { session },
   } = await supabase.auth.getSession()

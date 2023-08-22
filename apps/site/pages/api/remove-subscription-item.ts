@@ -1,10 +1,10 @@
 import { stripe } from '@lib/stripe'
 import { Database } from '@lib/supabase-types'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+  const supabase = createPagesServerClient<Database>({ req, res })
 
   const {
     data: { session },
@@ -38,7 +38,9 @@ const handler: NextApiHandler = async (req, res) => {
     console.log(error)
     res
       .status(404)
-      .json({ message: 'no subscription item found with the provided id that belongs to you' })
+      .json({
+        message: 'no subscription item found with the provided id that belongs to you',
+      })
   }
 
   const { deleted } = await stripe.subscriptionItems.del(subItemId)

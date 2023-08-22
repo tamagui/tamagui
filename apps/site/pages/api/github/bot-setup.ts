@@ -1,11 +1,11 @@
 import { Database } from '@lib/supabase-types'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 // is called after bot is installed
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createServerSupabaseClient<Database>({ req, res })
+  const supabase = createPagesServerClient<Database>({ req, res })
 
   const {
     data: { session },
@@ -42,7 +42,8 @@ const handler: NextApiHandler = async (req, res) => {
   const installation = await supabaseAdmin
     .from('app_installations')
     .select('id, subscription_item_id')
-    .eq('id', state).single()
+    .eq('id', state)
+    .single()
 
   if (installation.error) {
     res.status(404).json({ message: 'installation not found' })

@@ -81,13 +81,7 @@ function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: Provider) => {
-    const redirectTo = `${window.location.origin}/login?${new URLSearchParams(
-      typeof router.query.redirect_to === 'string'
-        ? {
-            redirect_to: router.query.redirect_to,
-          }
-        : undefined
-    ).toString()}`
+    const redirectTo = `${window.location.origin}${router.asPath}`
     setLoading(true)
 
     const { error } = await supabaseClient.auth.signInWithOAuth({
