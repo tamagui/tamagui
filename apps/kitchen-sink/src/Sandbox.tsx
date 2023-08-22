@@ -27,10 +27,10 @@ export const LinkButton = withStaticProperties(
 export const Sandbox = () => {
   return (
     <YStack>
-      <Paragraph size="$10" ta="center">
+      <Paragraph debug="verbose" fontSize={100} ta="center" fontWeight={'900'}>
         Text test with bold
       </Paragraph>
-      <Paragraph ta="center" fontSize={40} lh={40}>
+      <Paragraph fontSize={100} ta="center" fontWeight={'100'}>
         Text test default
       </Paragraph>
     </YStack>
