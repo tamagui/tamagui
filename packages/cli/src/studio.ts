@@ -55,7 +55,6 @@ export const studio = async (
       resolve('@tamagui/lucide-icons').replace('/dist/cjs/index.js', ''),
       resolve('@tamagui/demos').replace('/dist/cjs/index.js', ''),
     ]
-    console.log('targets', targets)
 
     const viteConfig = {
       root,
@@ -87,9 +86,7 @@ export const studio = async (
       },
     } satisfies InlineConfig
 
-    console.log(isBuild)
     if (isBuild) {
-      console.log('we building')
       return await build(viteConfig)
     }
 
@@ -138,7 +135,6 @@ export const studio = async (
     })
 
     const target = `http://${info.address}:${vitePort}`
-    console.log('target', target)
     app.use(
       '/',
       createProxyMiddleware({
