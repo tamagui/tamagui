@@ -1,14 +1,15 @@
 // import './wdyr'
 
+import { Stack } from '@tamagui/web'
 import { forwardRef } from 'react'
 import { Platform } from 'react-native'
 import {
   Button,
   Paragraph,
   SizableText,
+  Square,
   TamaguiElement,
   Text,
-  XStack,
   YStack,
   styled,
   useTheme,
@@ -30,35 +31,28 @@ export const MyButton = styled(Button, {
   } as const,
 })
 
-export const LinkButton = withStaticProperties(
-  forwardRef(function LinkButton(
-    { ...props }: Omit<React.ComponentProps<typeof Button>, 'href' | 'target'>,
-    ref: React.Ref<TamaguiElement>
-  ) {
-    return (
-      <Button
-        ref={ref}
-        {...props}
-        {...(props.disabled && Platform.OS === 'web' && { href: undefined })}
-        tag="a"
-      />
-    )
-  }),
-  {
-    Text: Button.Text,
-    Icon: Button.Icon,
-  }
-)
-
 export const Sandbox = () => {
+  const theme = useTheme().color.val
+
   return (
     <>
-      {/* @ts-ignore */}
-      <XStack>
-        <Button theme="pink" size="$10" f={1} fb={0}>
-          <Button.Text>Facebook</Button.Text>
-        </Button>
-      </XStack>
+      <Stack group="testy">
+        <Square
+          size={100}
+          bc="green"
+          $group-testy={{ bc: 'red' }}
+          $group-testy-hovered={{
+            bc: 'pink',
+          }}
+          $group-testy-pressed={{
+            bc: 'black',
+          }}
+        />
+      </Stack>
+
+      <Stack>
+        <Square size={100} bc="yellow" $group-testy={{ bc: 'red' }} />
+      </Stack>
 
       {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
@@ -335,3 +329,23 @@ const DrawListRow = styled(View, {
 //     </Popover>
 //   )
 // })
+
+export const LinkButton = withStaticProperties(
+  forwardRef(function LinkButton(
+    { ...props }: Omit<React.ComponentProps<typeof Button>, 'href' | 'target'>,
+    ref: React.Ref<TamaguiElement>
+  ) {
+    return (
+      <Button
+        ref={ref}
+        {...props}
+        {...(props.disabled && Platform.OS === 'web' && { href: undefined })}
+        tag="a"
+      />
+    )
+  }),
+  {
+    Text: Button.Text,
+    Icon: Button.Icon,
+  }
+)

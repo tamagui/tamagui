@@ -6408,6 +6408,7 @@ __metadata:
     "@tamagui/lucide-icons": 1.53.2
     "@tamagui/shorthands": 1.53.2
     "@tamagui/themes": 1.53.2
+    "@tamagui/web": 1.53.2
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.10.0

@@ -1,16 +1,11 @@
-// TODO split this into own package @tamagui/types to share with animations packages
-
 import type { StyleObject } from '@tamagui/helpers'
 import type { Properties } from 'csstype'
 import {
-  Component,
   ComponentType,
   ForwardRefExoticComponent,
   FunctionComponent,
   HTMLAttributes,
-  JSXElementConstructor,
   ReactNode,
-  Ref,
   RefAttributes,
   RefObject,
 } from 'react'
@@ -28,7 +23,9 @@ import type {
 import type { Variable } from './createVariable'
 import { StyledContext } from './helpers/createStyledContext'
 import type { ResolveVariableTypes } from './helpers/propMapper'
-import type { FontLanguageProps, LanguageContextType } from './views/FontLanguage.types'
+import { CSSColorNames } from './interfaces/CSSColorNames'
+import { Role } from './interfaces/Role'
+import type { LanguageContextType } from './views/FontLanguage.types'
 import type { ThemeProviderProps } from './views/ThemeProvider'
 
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers'
@@ -39,106 +36,6 @@ export type TamaguiElement = HTMLElement | View
 export type TamaguiTextElement = HTMLElement | RNText
 
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile'
-
-/**
- * For static / studio
- */
-
-type NameToPaths = {
-  [key: string]: Set<string>
-}
-
-export type LoadedComponents = {
-  moduleName: string
-  nameToInfo: Record<
-    string,
-    {
-      staticConfig: StaticConfig
-    }
-  >
-}
-
-export type TamaguiProjectInfo = {
-  components: LoadedComponents[]
-  tamaguiConfig: TamaguiInternalConfig
-  nameToPaths: NameToPaths
-}
-
-// from react-native Accessibility.d.ts
-export type Role =
-  | 'alert'
-  | 'alertdialog'
-  | 'application'
-  | 'article'
-  | 'banner'
-  | 'button'
-  | 'cell'
-  | 'checkbox'
-  | 'columnheader'
-  | 'combobox'
-  | 'complementary'
-  | 'contentinfo'
-  | 'definition'
-  | 'dialog'
-  | 'directory'
-  | 'document'
-  | 'feed'
-  | 'figure'
-  | 'form'
-  | 'grid'
-  | 'group'
-  | 'heading'
-  | 'img'
-  | 'link'
-  | 'list'
-  | 'listitem'
-  | 'log'
-  | 'main'
-  | 'marquee'
-  | 'math'
-  | 'menu'
-  | 'menubar'
-  | 'menuitem'
-  | 'meter'
-  | 'navigation'
-  | 'none'
-  | 'note'
-  | 'option'
-  | 'presentation'
-  | 'progressbar'
-  | 'radio'
-  | 'radiogroup'
-  | 'region'
-  | 'row'
-  | 'rowgroup'
-  | 'rowheader'
-  | 'scrollbar'
-  | 'searchbox'
-  | 'separator'
-  | 'slider'
-  | 'spinbutton'
-  | 'status'
-  | 'summary'
-  | 'switch'
-  | 'tab'
-  | 'table'
-  | 'tablist'
-  | 'tabpanel'
-  | 'term'
-  | 'timer'
-  | 'toolbar'
-  | 'tooltip'
-  | 'tree'
-  | 'treegrid'
-  | 'treeitem'
-
-// base props that are accepted by createComponent (additional to react-native-web)
-
-type DivAttributes = HTMLAttributes<HTMLDivElement>
-
-export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
-  type: TamaguiComponent
-}
 
 export type TamaguiComponentPropsBase = {
   target?: string
@@ -175,6 +72,11 @@ export type TamaguiComponentPropsBase = {
    * Applies a theme to this element
    */
   theme?: ThemeName | null
+
+  /**
+   * Marks this component as a group for use in styling children based on parents named group
+   */
+  group?: GroupNames
 
   /**
    * Equivalent to "name" property on styled() for automatically applying a theme
@@ -223,6 +125,38 @@ export type TamaguiComponentPropsBase = {
   onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
 }
 
+/**
+ * For static / studio
+ */
+
+type NameToPaths = {
+  [key: string]: Set<string>
+}
+
+export type LoadedComponents = {
+  moduleName: string
+  nameToInfo: Record<
+    string,
+    {
+      staticConfig: StaticConfig
+    }
+  >
+}
+
+export type TamaguiProjectInfo = {
+  components: LoadedComponents[]
+  tamaguiConfig: TamaguiInternalConfig
+  nameToPaths: NameToPaths
+}
+
+// base props that are accepted by createComponent (additional to react-native-web)
+
+type DivAttributes = HTMLAttributes<HTMLDivElement>
+
+export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
+  type: TamaguiComponent
+}
+
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
   Props & RefAttributes<Ref>
 >
@@ -231,7 +165,27 @@ export type ComponentContextI = {
   inText: boolean
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
+  groups: GroupContextType
 }
+
+// this object must stay referentially the same always to avoid every component re-rendering
+// instead `state` is mutated and only used on initial mount, after that emit/subscribe
+export type GroupContextType = {
+  emit: GroupStateListener
+  subscribe: (cb: GroupStateListener) => DisposeFn
+  state: Record<string, GroupState>
+}
+
+export type GroupStateListener = (name: string, state: GroupState) => void
+
+// could just be TamaguiComponentState likely
+type GroupState = {
+  hover?: boolean
+  press?: boolean
+  focus?: boolean
+}
+
+export type DisposeFn = () => void
 
 export type ConfigListener = (conf: TamaguiInternalConfig) => void
 
@@ -753,8 +707,21 @@ export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
 
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`
 
+export interface Group {
+  names(): string | number
+}
+
+export type GroupNames = ReturnType<Group['names']>
+
+type ParentMediaStates = 'hovered' | 'pressed' | 'focused'
+
+// can't use it, TS complains of "too complex to represent"
+export type GroupMediaKeys = GroupNames extends number
+  ? never
+  : `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`
+
 export type MediaProps<A> = {
-  [key in MediaPropKeys | ThemeMediaKeys | PlatformMediaKeys]?: A
+  [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A
 }
 
 export type MediaQueries = {
@@ -1770,148 +1737,6 @@ type SpaceKeys =
   | 'bottom'
   | 'shadowOffset'
 
-type CSSColorNames =
-  | 'aliceblue'
-  | 'antiquewhite'
-  | 'aqua'
-  | 'aquamarine'
-  | 'azure'
-  | 'beige'
-  | 'bisque'
-  | 'black'
-  | 'blanchedalmond'
-  | 'blue'
-  | 'blueviolet'
-  | 'brown'
-  | 'burlywood'
-  | 'cadetblue'
-  | 'chartreuse'
-  | 'chocolate'
-  | 'coral'
-  | 'cornflowerblue'
-  | 'cornsilk'
-  | 'crimson'
-  | 'cyan'
-  | 'darkblue'
-  | 'darkcyan'
-  | 'darkgoldenrod'
-  | 'darkgray'
-  | 'darkgreen'
-  | 'darkkhaki'
-  | 'darkmagenta'
-  | 'darkolivegreen'
-  | 'darkorange'
-  | 'darkorchid'
-  | 'darkred'
-  | 'darksalmon'
-  | 'darkseagreen'
-  | 'darkslateblue'
-  | 'darkslategray'
-  | 'darkturquoise'
-  | 'darkviolet'
-  | 'deeppink'
-  | 'deepskyblue'
-  | 'dimgray'
-  | 'dodgerblue'
-  | 'firebrick'
-  | 'floralwhite'
-  | 'forestgreen'
-  | 'fuchsia'
-  | 'gainsboro'
-  | 'ghostwhite'
-  | 'gold'
-  | 'goldenrod'
-  | 'gray'
-  | 'green'
-  | 'greenyellow'
-  | 'honeydew'
-  | 'hotpink'
-  | 'indianred '
-  | 'indigo  '
-  | 'ivory'
-  | 'khaki'
-  | 'lavender'
-  | 'lavenderblush'
-  | 'lawngreen'
-  | 'lemonchiffon'
-  | 'lightblue'
-  | 'lightcoral'
-  | 'lightcyan'
-  | 'lightgoldenrodyellow'
-  | 'lightgrey'
-  | 'lightgreen'
-  | 'lightpink'
-  | 'lightsalmon'
-  | 'lightseagreen'
-  | 'lightskyblue'
-  | 'lightslategray'
-  | 'lightsteelblue'
-  | 'lightyellow'
-  | 'lime'
-  | 'limegreen'
-  | 'linen'
-  | 'magenta'
-  | 'maroon'
-  | 'mediumaquamarine'
-  | 'mediumblue'
-  | 'mediumorchid'
-  | 'mediumpurple'
-  | 'mediumseagreen'
-  | 'mediumslateblue'
-  | 'mediumspringgreen'
-  | 'mediumturquoise'
-  | 'mediumvioletred'
-  | 'midnightblue'
-  | 'mintcream'
-  | 'mistyrose'
-  | 'moccasin'
-  | 'navajowhite'
-  | 'navy'
-  | 'oldlace'
-  | 'olive'
-  | 'olivedrab'
-  | 'orange'
-  | 'orangered'
-  | 'orchid'
-  | 'palegoldenrod'
-  | 'palegreen'
-  | 'paleturquoise'
-  | 'palevioletred'
-  | 'papayawhip'
-  | 'peachpuff'
-  | 'peru'
-  | 'pink'
-  | 'plum'
-  | 'powderblue'
-  | 'purple'
-  | 'red'
-  | 'rosybrown'
-  | 'royalblue'
-  | 'saddlebrown'
-  | 'salmon'
-  | 'sandybrown'
-  | 'seagreen'
-  | 'seashell'
-  | 'sienna'
-  | 'silver'
-  | 'skyblue'
-  | 'slateblue'
-  | 'slategray'
-  | 'snow'
-  | 'springgreen'
-  | 'steelblue'
-  | 'tan'
-  | 'teal'
-  | 'thistle'
-  | 'tomato'
-  | 'turquoise'
-  | 'violet'
-  | 'wheat'
-  | 'white'
-  | 'whitesmoke'
-  | 'yellow'
-  | 'yellowgreen'
-
 export type TamaguiComponentState = {
   hover: boolean
   press: boolean
@@ -1922,6 +1747,7 @@ export type TamaguiComponentState = {
     style?: any
     avoidClasses?: boolean
   }
+  group?: Record<string, GroupState>
 }
 
 export type SplitStyleProps = {
@@ -2050,6 +1876,7 @@ export type GetStyleResult = {
   space?: any // SpaceTokens?
   hasMedia: boolean | string[]
   dynamicThemeAccess?: boolean
+  pseudoGroups?: Set<string>
 }
 
 export type ClassNamesObject = Record<string, string>
@@ -2145,25 +1972,6 @@ type FillInFontValues<
         ? Exclude<A[K][Key], Variable>
         : any
     }
-
-// gets the ref type of any type of react component
-export type GetRef<C> = C extends TamaguiComponent<any, infer Ref>
-  ? Ref
-  : C extends new (props: any) => Component
-  ? InstanceType<C>
-  : C extends abstract new (...args: any) => any
-  ? InstanceType<C>
-  : C extends Component
-  ? C
-  : (
-      C extends JSXElementConstructor<{ ref?: infer R }>
-        ? R
-        : C extends keyof JSX.IntrinsicElements
-        ? JSX.IntrinsicElements[C]['ref']
-        : unknown
-    ) extends Ref<infer T> | string | undefined
-  ? T
-  : unknown
 
 export type ThemesLikeObject = Record<string, Record<string, string>>
 

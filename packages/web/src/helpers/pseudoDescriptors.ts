@@ -17,6 +17,13 @@ export const pseudoDescriptorsBase = {
   },
 } as const
 
+// MATCH TO ABOVE but note that press = press not active
+export const pseudoPriorities = {
+  hover: 1,
+  press: 2,
+  focus: 3,
+}
+
 export const pseudoDescriptors: Record<
   'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
   PseudoDescriptor

@@ -9,7 +9,6 @@ import {
   wrapChildrenInText,
 } from '@tamagui/text'
 import {
-  ButtonNestingContext,
   FontSizeTokens,
   GetProps,
   SizeTokens,
@@ -21,7 +20,7 @@ import {
   useProps,
   withStaticProperties,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent, createContext, useContext } from 'react'
 
 export const ButtonContext = createStyledContext<
   TextContextStyles & {
@@ -204,6 +203,8 @@ const Button = withStaticProperties(ButtonComponent, {
   Text: ButtonText,
   Icon: ButtonIcon,
 })
+
+export const ButtonNestingContext = createContext(false)
 
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button

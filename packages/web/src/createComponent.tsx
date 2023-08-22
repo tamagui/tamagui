@@ -12,6 +12,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -20,25 +21,29 @@ import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
+import { createShallowSetState } from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
-import { useShallowSetState } from './helpers/useShallowSetState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
 import {
   DebugProp,
+  DisposeFn,
+  GroupContextType,
   SpaceDirection,
   SpaceValue,
   SpacerProps,
+  StackProps,
   StaticConfig,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
   TamaguiElement,
   TamaguiInternalConfig,
+  TextProps,
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
@@ -95,7 +100,7 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 export function createComponent<
-  ComponentPropTypes extends Object = {},
+  ComponentPropTypes extends StackProps | TextProps = {},
   Ref = TamaguiElement,
   BaseProps = never
 >(staticConfig: StaticConfig) {
@@ -140,7 +145,7 @@ export function createComponent<
     }
   }
 
-  const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+  const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {
@@ -204,7 +209,7 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: any
+    let props: StackProps | TextProps
     if (curDefaultProps) {
       props = mergeProps(curDefaultProps, propsIn)
     } else {
@@ -283,8 +288,24 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
-    const setStateShallow = useShallowSetState(setState)
+    let setStateShallow = createShallowSetState(setState)
+
+    const groupName = props.group as string
+    if (groupName) {
+      // when we set state we also set our group state and emit an event for children listening:
+      const groupContextState = componentContext.groups.state
+      const og = setStateShallow
+      setStateShallow = (state) => {
+        og(state)
+        componentContext.groups.emit(groupName, state)
+        // and mutate the current since its concurrent safe (children throw it in useState on mount)
+        const next = {
+          ...groupContextState[groupName],
+          ...state,
+        }
+        groupContextState[groupName] = next
+      }
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -308,6 +329,7 @@ export function createComponent<
       : props.componentName
       ? `is_${props.componentName}`
       : defaultComponentClassName
+
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
@@ -371,8 +393,6 @@ export function createComponent<
     const themeStateProps = {
       name: props.theme,
       componentName,
-      reset: props.reset,
-      inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
@@ -557,7 +577,6 @@ export function createComponent<
         styleProps,
         theme: themeState.state.theme!,
         pseudos: pseudos || null,
-        onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
       })
@@ -599,7 +618,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    const disabled = props.accessibilityState?.disabled || props.accessibilityDisabled
+    const disabled =
+      props.accessibilityState?.disabled ||
+      // @ts-expect-error (comes from core)
+      props.accessibilityDisabled
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
@@ -645,12 +667,12 @@ export function createComponent<
       })
     }, [])
 
-    const shouldSetMounted = needsMount && state.unmounted
-
     // combined multiple effects into one for performance so be careful with logic
     // should not be a layout effect because otherwise it wont render the initial state
     // for example css driver needs to render once with the first styles, then again with the next
     // if its a layout effect it will just skip that first render output
+    const shouldSetMounted = needsMount && state.unmounted
+    const { pseudoGroups } = splitStyles
     useEffect(() => {
       if (shouldSetMounted) {
         const unmounted =
@@ -662,10 +684,35 @@ export function createComponent<
         // no need for mouseUp removal effect if its not even mounted yet
       }
 
+      // parent group pseudo listening
+      let disposeGroupsListener: DisposeFn | undefined
+      if (pseudoGroups) {
+        const current = {}
+        disposeGroupsListener = componentContext.groups.subscribe((name, next) => {
+          if (pseudoGroups.has(name)) {
+            // merge because we emit a partial of the state each time
+            Object.assign(current, next)
+            const group = {
+              ...state.group,
+              [name]: current,
+            }
+            setStateShallow({
+              // force it to be referentially different so it always updates
+              group,
+            })
+          }
+        })
+      }
+
       return () => {
+        disposeGroupsListener?.()
         mouseUps.delete(unPress)
       }
-    }, [shouldSetMounted, state.unmounted])
+    }, [
+      shouldSetMounted,
+      state.unmounted,
+      pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+    ])
 
     const avoidAnimationStyle = keepStyleSSR && state.unmounted === true
 
@@ -688,6 +735,7 @@ export function createComponent<
         componentName ? componentClassName : '',
         fontFamilyClassName,
         classNames ? Object.values(classNames).join(' ') : '',
+        props.group ? `t_group_${props.group}` : '',
       ]
       className = classList.join(' ')
 
@@ -722,14 +770,29 @@ export function createComponent<
       viewProps.style = style
     }
 
+    // if its a group its gotta listen for pseudos to emit them to children
+
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const attachPress = Boolean(
-      runtimePressStyle || onPress || onPressOut || onPressIn || onLongPress || onClick
+      groupName ||
+        runtimePressStyle ||
+        onPress ||
+        onPressOut ||
+        onPressIn ||
+        onLongPress ||
+        onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
       isWeb &&
-      !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+      !!(
+        groupName ||
+        runtimeHoverStyle ||
+        onHoverIn ||
+        onHoverOut ||
+        onMouseEnter ||
+        onMouseLeave
+      )
 
     const handlesPressEvents = !(isWeb || asChild)
 
@@ -783,7 +846,6 @@ export function createComponent<
                   setStateShallow({
                     press: true,
                     pressIn: true,
-                    hover: false,
                   })
                   onPressIn?.(e)
                   onMouseDown?.(e)
@@ -869,6 +931,28 @@ export function createComponent<
     }
 
     content = createElement(elementType, viewProps, content)
+
+    // must override context so siblings don't clobber initial state
+    const subGroupContext = useMemo(() => {
+      if (!groupName) return null
+      // change reference so context value updates
+      return {
+        ...componentContext.groups,
+        // change reference so as we mutate it doesn't affect siblings etc
+        state: {
+          ...componentContext.groups.state,
+          [groupName]: initialState,
+        },
+      }
+    }, [groupName])
+
+    if (groupName && subGroupContext) {
+      content = (
+        <ComponentContext.Provider groups={subGroupContext}>
+          {content}
+        </ComponentContext.Provider>
+      )
+    }
 
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
@@ -1036,7 +1120,7 @@ Unspaced['isUnspaced'] = true
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
-
+// @ts-expect-error we override
 export const Spacer = createComponent<SpacerProps>({
   acceptsClassName: true,
   memo: true,

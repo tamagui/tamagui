@@ -252,6 +252,7 @@ ${runtimeStyles}`
   const defaultFont = `$${defaultFontName}`
 
   const config: TamaguiInternalConfig = {
+    groupNames: [],
     settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],

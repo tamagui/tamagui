@@ -42,7 +42,10 @@ export const mediaKeys = new Set<string>() // with $ prefix
 
 export const isMediaKey = (key: string) =>
   mediaKeys.has(key) ||
-  (key[0] === '$' && (key.startsWith('$platform-') || key.startsWith('$theme-')))
+  (key[0] === '$' &&
+    (key.startsWith('$platform-') ||
+      key.startsWith('$theme-') ||
+      key.startsWith('$group-')))
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -304,14 +307,18 @@ export function mergeMediaByImportance(
   key: string,
   value: any,
   importancesUsed: Record<string, number>,
-  isSizeMedia: boolean
+  isSizeMedia: boolean,
+  importanceBump?: number
 ) {
-  const importance = getMediaImportanceIfMoreImportant(
+  let importance = getMediaImportanceIfMoreImportant(
     mediaKey,
     key,
     importancesUsed,
     isSizeMedia
   )
+  if (importanceBump) {
+    importance = (importance || 0) + importanceBump
+  }
   if (importance === null) {
     return false
   }
