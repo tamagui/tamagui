@@ -28,16 +28,19 @@ export * from '@tamagui/web'
 
 // adds extra types to Stack/Text:
 
+type RNViewPropsExclusive = Omit<RNViewProps, keyof StackProps>
+type RNTextPropsExclusive = Omit<RNTextProps, keyof TextProps>
+
 export const Stack = WebStack as TamaguiComponent<
-  StackProps & RNViewProps,
+  StackProps & RNViewPropsExclusive,
   TamaguiElement,
-  StackPropsBase & RNViewProps
+  StackPropsBase & RNViewPropsExclusive
 >
 
 export const Text = WebText as TamaguiComponent<
-  TextProps & RNTextProps,
+  TextProps & RNTextPropsExclusive,
   TamaguiTextElement,
-  TextPropsBase & RNTextProps
+  TextPropsBase & RNTextPropsExclusive
 >
 
 // setup internal hooks:

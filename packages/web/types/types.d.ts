@@ -1,10 +1,12 @@
 import type { StyleObject } from '@tamagui/helpers';
 import type { Properties } from 'csstype';
-import { Component, ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, JSXElementConstructor, ReactNode, Ref, RefAttributes, RefObject } from 'react';
+import { ComponentType, ForwardRefExoticComponent, FunctionComponent, HTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 import type { GestureResponderHandlers, PressableProps, Text as RNText, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import type { Variable } from './createVariable';
 import { StyledContext } from './helpers/createStyledContext';
 import type { ResolveVariableTypes } from './helpers/propMapper';
+import { CSSColorNames } from './interfaces/CSSColorNames';
+import { Role } from './interfaces/Role';
 import type { LanguageContextType } from './views/FontLanguage.types';
 import type { ThemeProviderProps } from './views/ThemeProvider';
 export type { MediaStyleObject, StyleObject } from '@tamagui/helpers';
@@ -12,28 +14,6 @@ export type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export type TamaguiElement = HTMLElement | View;
 export type TamaguiTextElement = HTMLElement | RNText;
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile';
-/**
- * For static / studio
- */
-type NameToPaths = {
-    [key: string]: Set<string>;
-};
-export type LoadedComponents = {
-    moduleName: string;
-    nameToInfo: Record<string, {
-        staticConfig: StaticConfig;
-    }>;
-};
-export type TamaguiProjectInfo = {
-    components: LoadedComponents[];
-    tamaguiConfig: TamaguiInternalConfig;
-    nameToPaths: NameToPaths;
-};
-export type Role = 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'complementary' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'grid' | 'group' | 'heading' | 'img' | 'link' | 'list' | 'listitem' | 'log' | 'main' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'region' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'searchbox' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'summary' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem';
-type DivAttributes = HTMLAttributes<HTMLDivElement>;
-export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
-    type: TamaguiComponent;
-};
 export type TamaguiComponentPropsBase = {
     target?: string;
     hitSlop?: PressableProps['hitSlop'];
@@ -64,6 +44,10 @@ export type TamaguiComponentPropsBase = {
      * Applies a theme to this element
      */
     theme?: ThemeName | null;
+    /**
+     * Marks this component as a group for use in styling children based on parents named group
+     */
+    group?: GroupNames;
     /**
      * Equivalent to "name" property on styled() for automatically applying a theme
      */
@@ -102,12 +86,46 @@ export type TamaguiComponentPropsBase = {
     onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
     onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
+/**
+ * For static / studio
+ */
+type NameToPaths = {
+    [key: string]: Set<string>;
+};
+export type LoadedComponents = {
+    moduleName: string;
+    nameToInfo: Record<string, {
+        staticConfig: StaticConfig;
+    }>;
+};
+export type TamaguiProjectInfo = {
+    components: LoadedComponents[];
+    tamaguiConfig: TamaguiInternalConfig;
+    nameToPaths: NameToPaths;
+};
+type DivAttributes = HTMLAttributes<HTMLDivElement>;
+export type TamaguiReactElement<P = {}> = React.ReactElement<P> & {
+    type: TamaguiComponent;
+};
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentContextI = {
     inText: boolean;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
+    groups: GroupContextType;
 };
+export type GroupContextType = {
+    emit: GroupStateListener;
+    subscribe: (cb: GroupStateListener) => DisposeFn;
+    state: Record<string, GroupState>;
+};
+export type GroupStateListener = (name: string, state: GroupState) => void;
+type GroupState = {
+    hover?: boolean;
+    press?: boolean;
+    focus?: boolean;
+};
+export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export type VariableVal = number | string | Variable | VariableValGeneric;
 export type VariableColorVal = string | Variable;
@@ -448,8 +466,14 @@ export type MediaQueryState = {
 };
 export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = `$theme-${TK extends `${string}_${string}` ? never : TK}`;
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
+export interface Group {
+    names(): string | number;
+}
+export type GroupNames = ReturnType<Group['names']>;
+type ParentMediaStates = 'hovered' | 'pressed' | 'focused';
+export type GroupMediaKeys = GroupNames extends number ? never : `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`;
 export type MediaProps<A> = {
-    [key in MediaPropKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
+    [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
 };
 export type MediaQueries = {
     [key in MediaQueryKey]: MediaQueryObject;
@@ -849,7 +873,6 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
 type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor';
 type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'x' | 'y' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset';
-type CSSColorNames = 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure' | 'beige' | 'bisque' | 'black' | 'blanchedalmond' | 'blue' | 'blueviolet' | 'brown' | 'burlywood' | 'cadetblue' | 'chartreuse' | 'chocolate' | 'coral' | 'cornflowerblue' | 'cornsilk' | 'crimson' | 'cyan' | 'darkblue' | 'darkcyan' | 'darkgoldenrod' | 'darkgray' | 'darkgreen' | 'darkkhaki' | 'darkmagenta' | 'darkolivegreen' | 'darkorange' | 'darkorchid' | 'darkred' | 'darksalmon' | 'darkseagreen' | 'darkslateblue' | 'darkslategray' | 'darkturquoise' | 'darkviolet' | 'deeppink' | 'deepskyblue' | 'dimgray' | 'dodgerblue' | 'firebrick' | 'floralwhite' | 'forestgreen' | 'fuchsia' | 'gainsboro' | 'ghostwhite' | 'gold' | 'goldenrod' | 'gray' | 'green' | 'greenyellow' | 'honeydew' | 'hotpink' | 'indianred ' | 'indigo  ' | 'ivory' | 'khaki' | 'lavender' | 'lavenderblush' | 'lawngreen' | 'lemonchiffon' | 'lightblue' | 'lightcoral' | 'lightcyan' | 'lightgoldenrodyellow' | 'lightgrey' | 'lightgreen' | 'lightpink' | 'lightsalmon' | 'lightseagreen' | 'lightskyblue' | 'lightslategray' | 'lightsteelblue' | 'lightyellow' | 'lime' | 'limegreen' | 'linen' | 'magenta' | 'maroon' | 'mediumaquamarine' | 'mediumblue' | 'mediumorchid' | 'mediumpurple' | 'mediumseagreen' | 'mediumslateblue' | 'mediumspringgreen' | 'mediumturquoise' | 'mediumvioletred' | 'midnightblue' | 'mintcream' | 'mistyrose' | 'moccasin' | 'navajowhite' | 'navy' | 'oldlace' | 'olive' | 'olivedrab' | 'orange' | 'orangered' | 'orchid' | 'palegoldenrod' | 'palegreen' | 'paleturquoise' | 'palevioletred' | 'papayawhip' | 'peachpuff' | 'peru' | 'pink' | 'plum' | 'powderblue' | 'purple' | 'red' | 'rosybrown' | 'royalblue' | 'saddlebrown' | 'salmon' | 'sandybrown' | 'seagreen' | 'seashell' | 'sienna' | 'silver' | 'skyblue' | 'slateblue' | 'slategray' | 'snow' | 'springgreen' | 'steelblue' | 'tan' | 'teal' | 'thistle' | 'tomato' | 'turquoise' | 'violet' | 'wheat' | 'white' | 'whitesmoke' | 'yellow' | 'yellowgreen';
 export type TamaguiComponentState = {
     hover: boolean;
     press: boolean;
@@ -860,6 +883,7 @@ export type TamaguiComponentState = {
         style?: any;
         avoidClasses?: boolean;
     };
+    group?: Record<string, GroupState>;
 };
 export type SplitStyleProps = {
     mediaState?: Record<string, boolean>;
@@ -956,6 +980,7 @@ export type GetStyleResult = {
     space?: any;
     hasMedia: boolean | string[];
     dynamicThemeAccess?: boolean;
+    pseudoGroups?: Set<string>;
 };
 export type ClassNamesObject = Record<string, string>;
 export type TamaguiComponentEvents = {
@@ -1015,9 +1040,6 @@ type FillInFontValues<A extends GenericFont, K extends keyof A, DefaultKeys exte
 } : {
     [Key in keyof A[K] | DefaultKeys]: Key extends keyof A[K] ? Exclude<A[K][Key], Variable> : any;
 };
-export type GetRef<C> = C extends TamaguiComponent<any, infer Ref> ? Ref : C extends new (props: any) => Component ? InstanceType<C> : C extends abstract new (...args: any) => any ? InstanceType<C> : C extends Component ? C : (C extends JSXElementConstructor<{
-    ref?: infer R;
-}> ? R : C extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[C]['ref'] : unknown) extends Ref<infer T> | string | undefined ? T : unknown;
 export type ThemesLikeObject = Record<string, Record<string, string>>;
 export type DedupedTheme = {
     names: string[];

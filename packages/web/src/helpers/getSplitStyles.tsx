@@ -67,7 +67,7 @@ import {
   reverseMapClassNameToValue,
 } from './normalizeValueWithProperty'
 import { getPropMappedFontFamily, propMapper } from './propMapper'
-import { pseudoDescriptors } from './pseudoDescriptors'
+import { pseudoDescriptors, pseudoPriorities } from './pseudoDescriptors'
 
 const fontFamilyKey = 'fontFamily'
 
@@ -151,6 +151,7 @@ export const getSplitStyles: StyleSplitter = (
   let space: SpaceTokens | null = props.space
   let hasMedia: boolean | string[] = false
   let dynamicThemeAccess: boolean | undefined
+  let pseudoGroups: Set<string> | undefined
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
 
   let style: ViewStyleWithPseudos = {}
@@ -595,7 +596,7 @@ export const getSplitStyles: StyleSplitter = (
           (typeof valInit === 'string' && valInit[0] !== '$')))
 
     const expanded = avoidPropMap
-      ? [[keyInit, valInit]]
+      ? ([[keyInit, valInit]] as const)
       : propMapper(keyInit, valInit, styleState)
 
     const next = getPropMappedFontFamily(expanded)
@@ -848,7 +849,7 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           // rome-ignore lint/nursery/noConsoleLog: ok
-          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses });
+          console.log(`  📺 ${key}`, { key, val, mediaStyle, props, shouldDoClasses, componentState });
         }
 
         // for some reason 'space' in val upsetting next ssr during prod build
@@ -902,33 +903,56 @@ export const getSplitStyles: StyleSplitter = (
             mergeClassName(transforms, classNames, fullKey, out.identifier, true, true)
           }
         } else {
-          const isThemeMedia = mediaKeyShort.startsWith('theme-')
-          const isPlatformMedia = mediaKeyShort.startsWith('platform-')
+          const isThemeMedia = !isPlatformMedia && mediaKeyShort.startsWith('theme-')
+          const isGroupMedia =
+            !isPlatformMedia && !isThemeMedia && mediaKeyShort.startsWith('group-')
 
-          if (!isThemeMedia && !isPlatformMedia) {
+          if (!isThemeMedia && !isPlatformMedia && !isGroupMedia) {
             if (!mediaState[mediaKeyShort]) {
               continue
             }
           }
 
+          let importanceBump = 0
+
           if (isThemeMedia) {
             // needed to get updates when theme changes
             dynamicThemeAccess = true
-
             const mediaThemeName = mediaKeyShort.slice(6)
             if (!(themeName === mediaThemeName || themeName.startsWith(mediaThemeName))) {
               continue
             }
+          } else if (isGroupMedia) {
+            const [_, groupName, groupPseudoKey] = mediaKeyShort.split('-')
+
+            // $group-x
+            if (!context?.groups.state[groupName]) {
+              if (process.env.NODE_ENV === 'development' && debug) {
+                console.warn(`No parent with group prop, skipping styles: ${groupName}`)
+              }
+              continue
+            }
+
+            // $group-x-hovered
+            pseudoGroups ||= new Set()
+            pseudoGroups.add(groupName)
+            if (groupPseudoKey) {
+              const groupPseudoKeyShort = groupPseudoKey.replace('ed', '')
+              const groupState =
+                componentState.group?.[groupName] ||
+                // fallback to context initially
+                context.groups.state[groupName]
+
+              const isActive = groupState?.[groupPseudoKeyShort]
+              if (!isActive) {
+                continue
+              }
+              const priority = pseudoPriorities[groupPseudoKeyShort]
+              importanceBump = priority
+            }
           }
 
           for (const subKey in mediaStyle) {
-            const importance = getMediaImportanceIfMoreImportant(
-              mediaKeyShort,
-              subKey,
-              usedKeys,
-              mediaState[mediaKeyShort]
-            )
-            if (importance === null) continue
             if (subKey === 'space') {
               space = valInit.space
               continue
@@ -939,7 +963,8 @@ export const getSplitStyles: StyleSplitter = (
               subKey,
               mediaStyle[subKey],
               usedKeys,
-              mediaState[mediaKeyShort]
+              mediaState[mediaKeyShort],
+              importanceBump
             )
             if (key === fontFamilyKey) {
               styleState.fontFamily = mediaStyle.fontFamily as string
@@ -1172,6 +1197,7 @@ export const getSplitStyles: StyleSplitter = (
     classNames,
     rulesToInsert,
     dynamicThemeAccess,
+    pseudoGroups,
   }
 
   // native: swap out the right family based on weight/style
@@ -1400,6 +1426,7 @@ const skipProps = {
   disableOptimization: 1,
   tag: 1,
   style: 1, // handled after loop so pseudos set usedKeys and override it if necessary
+  group: 1,
 }
 
 if (process.env.NODE_ENV === 'test') {

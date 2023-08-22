@@ -360,7 +360,7 @@ const getToken = (
     } else {
       switch (key) {
         case 'fontFamily': {
-          const fontsParsed = context.language
+          const fontsParsed = context?.language
             ? getFontsForLanguage(conf.fontsParsed, context.language)
             : conf.fontsParsed
           valOrVar = fontsParsed[value]?.family || value
@@ -373,7 +373,7 @@ const getToken = (
         case 'fontWeight': {
           const fam = fontFamily || styleState.conf.defaultFont
           if (fam) {
-            const fontsParsed = context.language
+            const fontsParsed = context?.language
               ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
             const font = fontsParsed[fam]

@@ -6,7 +6,7 @@ import { createProxy } from './createProxy'
 export function getVariantExtras(styleState: GetStyleState) {
   const { curProps, conf, context, theme } = styleState
   let fonts = conf.fontsParsed
-  if (context.language) {
+  if (context?.language) {
     fonts = getFontsForLanguage(conf.fontsParsed, context.language)
   }
 

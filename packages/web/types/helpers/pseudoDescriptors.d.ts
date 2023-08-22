@@ -13,6 +13,11 @@ export declare const pseudoDescriptorsBase: {
         readonly priority: 3;
     };
 };
+export declare const pseudoPriorities: {
+    hover: number;
+    press: number;
+    focus: number;
+};
 export declare const pseudoDescriptors: Record<'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle', PseudoDescriptor>;
 export type PseudoDescriptor = {
     name: string;

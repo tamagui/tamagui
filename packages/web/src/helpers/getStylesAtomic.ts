@@ -58,7 +58,7 @@ export const generateAtomicStyles = (
 
     // transform
     if (key === 'transform' && Array.isArray(style.transform)) {
-      val = val
+      val = (val as any[])
         .map(
           // { scale: 2 } => 'scale(2)'
           // { translateX: 20 } => 'translateX(20px)'

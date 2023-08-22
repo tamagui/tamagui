@@ -9,6 +9,12 @@ export const MEDIA_SEP = '_'
 let prefixes: Record<string, string> | null = null
 let selectors: Record<string, string> | null = null
 
+const parentPseudoToSelector = {
+  hovered: ':hover',
+  focused: ':focus',
+  pressed: ':active',
+}
+
 export const createMediaStyle = (
   { property, identifier, rules }: StyleObject,
   mediaKey: string,
@@ -20,7 +26,8 @@ export const createMediaStyle = (
   const enableMediaPropOrder = conf.settings.mediaPropOrder
   const isThemeMedia = mediaKey.startsWith('theme-')
   const isPlatformMedia = !isThemeMedia && mediaKey.startsWith('platform-')
-  const isThemeOrPlatform = isThemeMedia || isPlatformMedia
+  const isGroupMedia = !isThemeMedia && !isPlatformMedia && mediaKey.startsWith('group-')
+  const isNonWindowMedia = isThemeMedia || isPlatformMedia || isGroupMedia
   const negKey = negate ? '0' : ''
   const ogPrefix = identifier.slice(0, identifier.indexOf('-') + 1)
 
@@ -29,19 +36,21 @@ export const createMediaStyle = (
   const id = `${ogPrefix}${MEDIA_SEP}${mediaKey.replace('-', '')}${negKey}${MEDIA_SEP}`
   const nextIdentifier = identifier.replace(ogPrefix, id)
 
-  if (isThemeOrPlatform) {
+  if (isNonWindowMedia) {
     const precedencePrefix = new Array(priority).fill(':root').join('')
     const styleInner = rules
       .map((rule) => rule.replace(identifier, nextIdentifier))
       .join(';')
 
-    if (isThemeMedia) {
-      const key = mediaKey.split('-')[1]
+    if (isThemeMedia || isGroupMedia) {
+      const keyParts = mediaKey.split('-')
+      const name = (isGroupMedia ? 'group_' : '') + keyParts[1]
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
       const precedenceSpace = conf.themeClassNameOnRoot ? '' : ' '
-      const nextSelector = `:root${precedencePrefix}${precedenceSpace}.t_${key} ${selector.replace(
+      const pseudoSelector = parentPseudoToSelector[keyParts[2]] || ''
+      const nextSelector = `:root${precedencePrefix}${precedenceSpace}.t_${name}${pseudoSelector} ${selector.replace(
         ':root',
         ''
       )}`
