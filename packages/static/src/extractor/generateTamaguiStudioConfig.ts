@@ -48,6 +48,10 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
   // because this runs in parallel (its cheap) lets avoid logging a bunch, so check to see if changed:
   const hasChanged = await (async () => {
     try {
+      const themeBuilderJsonExists = await fs.pathExists(
+        join(tamaguiDir, 'theme-builder.json')
+      )
+      if (!themeBuilderJsonExists) return true
       if (!generatedOutput) return false
       const next = generatedOutput.generated
       const current = await readFile(outPath, 'utf-8')
