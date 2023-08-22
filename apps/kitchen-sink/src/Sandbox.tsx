@@ -1,7 +1,7 @@
 // import './wdyr'
 
 import { forwardRef } from 'react'
-import { Platform, Text } from 'react-native'
+import { Platform } from 'react-native'
 import { Button, Paragraph, TamaguiElement, YStack, withStaticProperties } from 'tamagui'
 
 export const LinkButton = withStaticProperties(
@@ -27,7 +27,6 @@ export const LinkButton = withStaticProperties(
 export const Sandbox = () => {
   return (
     <YStack>
-      <Text style={{ fontFamily: 'LatoBlack', fontSize: 100 }}>Text test with bold</Text>
       <Paragraph debug="verbose" fontSize={100} ta="center" fontWeight={'900'}>
         Text test with bold
       </Paragraph>
