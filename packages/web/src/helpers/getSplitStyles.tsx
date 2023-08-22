@@ -1183,6 +1183,8 @@ export const getSplitStyles: StyleSplitter = (
         if (overrideFace) {
           style.fontFamily = overrideFace
           styleState.fontFamily = overrideFace
+          delete style.fontWeight
+          delete style.fontStyle
         }
       }
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
