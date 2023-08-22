@@ -172,7 +172,6 @@ const tokens = {
 const tamaConf = createTamagui({
   ...config,
   fonts: {
-    ...config.fonts,
     body,
     heading,
   },
