@@ -1183,6 +1183,9 @@ export const getSplitStyles: StyleSplitter = (
         if (overrideFace) {
           style.fontFamily = overrideFace
           styleState.fontFamily = overrideFace
+          // If we pass both font family (e.g. InterBold) and a font weight (e.g. 900), android gets confused and just shows the default font, so we remove these:
+          delete style.fontWeight
+          delete style.fontStyle
         }
       }
       if (process.env.NODE_ENV === 'development' && debug && debug !== 'profile') {
