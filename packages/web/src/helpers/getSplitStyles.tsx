@@ -33,6 +33,7 @@ import {
 } from '../hooks/useMedia'
 import type {
   ClassNamesObject,
+  ComponentContextI,
   DebugProp,
   GetStyleResult,
   GetStyleState,
@@ -89,7 +90,7 @@ type StyleSplitter = (
   componentState: TamaguiComponentState,
   styleProps: SplitStyleProps,
   parentSplitStyles?: GetStyleResult | null,
-  languageContext?: LanguageContextType,
+  context?: ComponentContextI,
   // web-only
   elementType?: string,
   debug?: DebugProp
@@ -126,7 +127,7 @@ export const getSplitStyles: StyleSplitter = (
   componentState,
   styleProps,
   parentSplitStyles,
-  languageContext,
+  context,
   elementType,
   debug
 ) => {
@@ -166,7 +167,7 @@ export const getSplitStyles: StyleSplitter = (
    * Not the biggest fan of creating this object but it is a nice API
    */
   const styleState: GetStyleState = {
-    curProps: { ...props },
+    curProps: Object.assign({}, props),
     classNames,
     conf,
     props,
@@ -177,7 +178,7 @@ export const getSplitStyles: StyleSplitter = (
     theme,
     usedKeys,
     viewProps,
-    languageContext,
+    context,
     debug,
   }
 

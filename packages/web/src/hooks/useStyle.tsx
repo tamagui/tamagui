@@ -1,8 +1,6 @@
-import { isWeb } from '@tamagui/constants'
 import { useContext } from 'react'
 
-import { FontLanguageContext } from '../contexts/FontLanguageContext'
-import { TextAncestorContext } from '../contexts/TextAncestorContext'
+import { ComponentContext } from '../contexts/ComponentContext'
 import { defaultComponentState } from '../createComponent'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import {
@@ -24,8 +22,7 @@ export function useStyle<
   options?: Partial<SplitStyleProps> & { debug?: DebugProp }
 ) {
   const isText = base.staticConfig.isText
-  const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-  const languageContext = useContext(FontLanguageContext)
+  const componentContext = useContext(ComponentContext)
   const [themeState] = useThemeWithState({})
   const media = useMedia()
   const out = useSplitStyles(
@@ -37,11 +34,10 @@ export function useStyle<
     {
       ...(options as any),
       mediaState: media,
-      hasTextAncestor,
       resolveVariablesAs: 'auto',
     },
     null,
-    languageContext || undefined,
+    componentContext,
     isText ? 'span' : 'div',
     options?.debug
   )

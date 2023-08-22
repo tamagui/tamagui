@@ -341,7 +341,7 @@ const getToken = (
   styleProps: SplitStyleProps,
   styleState: GetStyleState
 ) => {
-  const { theme, conf, languageContext, fontFamily } = styleState
+  const { theme, conf, context, fontFamily } = styleState
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
@@ -360,8 +360,8 @@ const getToken = (
     } else {
       switch (key) {
         case 'fontFamily': {
-          const fontsParsed = languageContext
-            ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          const fontsParsed = context.language
+            ? getFontsForLanguage(conf.fontsParsed, context.language)
             : conf.fontsParsed
           valOrVar = fontsParsed[value]?.family || value
           hasSet = true
@@ -373,8 +373,8 @@ const getToken = (
         case 'fontWeight': {
           const fam = fontFamily || styleState.conf.defaultFont
           if (fam) {
-            const fontsParsed = languageContext
-              ? getFontsForLanguage(conf.fontsParsed, languageContext)
+            const fontsParsed = context.language
+              ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
             const font = fontsParsed[fam]
             valOrVar = font?.[fontShorthand[key] || key]?.[value] || value

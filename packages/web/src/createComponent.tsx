@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isClient, isServer, isWeb } from '@tamagui/constants'
 import { validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
@@ -18,15 +18,13 @@ import React, {
 
 import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
-import { FontLanguageContext } from './contexts/FontLanguageContext'
-import { TextAncestorContext } from './contexts/TextAncestorContext'
+import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
 import { useShallowSetState } from './helpers/useShallowSetState'
-import { useAnimationDriver } from './hooks/useAnimationDriver'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
@@ -163,6 +161,8 @@ export function createComponent<
       }
     }
 
+    const componentContext = useContext(ComponentContext)
+
     // set variants through context
     // order is after default props but before props
     let styledContextProps: Object | undefined
@@ -244,7 +244,7 @@ export function createComponent<
     /**
      * Component state for tracking animations, pseudos
      */
-    const animationsConfig = useAnimationDriver()
+    const animationsConfig = componentContext.animationDriver
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
 
     // after we get states mount we need to turn off isAnimated for server side
@@ -308,8 +308,7 @@ export function createComponent<
       : props.componentName
       ? `is_${props.componentName}`
       : defaultComponentClassName
-    const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const languageContext = useContext(FontLanguageContext)
+    const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
@@ -464,7 +463,6 @@ export function createComponent<
     const styleProps = {
       mediaState,
       noClassNames,
-      hasTextAncestor,
       resolveVariablesAs,
       isExiting,
       isAnimated,
@@ -479,7 +477,7 @@ export function createComponent<
       state,
       styleProps,
       null,
-      languageContext || undefined,
+      componentContext,
       elementType,
       debugProp
     )
