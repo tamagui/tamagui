@@ -94,10 +94,9 @@ const points = {
     'Script that sets up both local and remote dev environments.',
   ],
   screens: [
-    'A variety of navigation screen types adapted to each platform.',
+    'Variety of screen types adapted to each platform.',
     'Onboarding, auth, account, settings, profile, feed, edit profile.',
-    // 'Adapted to each platform.',
-    'Universal form system + validation.',
+    'Universal forms + zod validation.',
   ],
   assets: [
     '+150 icon packs, adapted to use themes, sizing, and tree shaking.',
@@ -107,8 +106,7 @@ const points = {
     'Image upload and Supabase utils.',
     'Reanimated, Solito, React Query, Zod & more',
     'TakeoutBot ongoing updates.',
-    // 'Test, lint, CI/CD.',
-    'Private Discord channel.',
+    'Private Discord.',
   ],
 }
 
@@ -150,10 +148,10 @@ const TakeoutCard2Frame = styled(YStack, {
   className: 'blur-8',
   borderWidth: 1,
   borderColor: '$borderColor',
-  minWidth: 302,
-  maxWidth: 302,
-  minHeight: 302,
-  maxHeight: 302,
+  minWidth: 282,
+  maxWidth: 282,
+  minHeight: 312,
+  maxHeight: 312,
   overflow: 'hidden',
 
   variants: {
@@ -191,39 +189,44 @@ const TakeoutCard = ({ children, title, icon, ...props }: TakeoutCardFrameProps)
     },
   })
 
-  const borderGlow = useHoverGlow({
-    resist: 0,
-    size: 200,
-    strategy: 'blur',
-    blurPct: 100,
-    color: 'var(--color11)',
-    opacity: 1,
-    background: 'transparent',
-  })
+  // const borderGlow = useHoverGlow({
+  //   resist: 0,
+  //   size: 200,
+  //   strategy: 'blur',
+  //   blurPct: 100,
+  //   color: 'var(--color11)',
+  //   opacity: 1,
+  //   background: 'transparent',
+  // })
 
   return (
     <>
       <TakeoutCard2Frame
         {...props}
-        ref={composeRefs(borderGlow.parentRef, innerGlow.parentRef) as any}
+        ref={
+          composeRefs(
+            // borderGlow.parentRef,
+            innerGlow.parentRef
+          ) as any
+        }
       >
-        <svg width="0" height="0">
+        {/* <svg width="0" height="0">
           <defs>
             <clipPath id="myClip">
               <path d="M285,0 C293.284271,-1.52179594e-15 300,6.71572875 300,15 L300,285 C300,293.284271 293.284271,300 285,300 L15,300 C6.71572875,300 1.01453063e-15,293.284271 0,285 L0,15 C-1.01453063e-15,6.71572875 6.71572875,1.52179594e-15 15,0 L285,0 Z M285,1 L15,1 C7.2680135,1 1,7.2680135 1,15 L1,15 L1,285 C1,292.731986 7.2680135,299 15,299 L15,299 L285,299 C292.731986,299 299,292.731986 299,285 L299,285 L299,15 C299,7.2680135 292.731986,1 285,1 L285,1 Z"></path>
             </clipPath>
           </defs>
-        </svg>
+        </svg> */}
 
         <innerGlow.Component />
-        <YStack
+        {/* <YStack
           fullscreen
           style={{
             clipPath: `url(#myClip)`,
           }}
         >
           <borderGlow.Component />
-        </YStack>
+        </YStack> */}
 
         <YStack f={1} space zi={100}>
           <H2 color="$color10" fontFamily="$munro" size="$10" my={-8}>
@@ -278,9 +281,11 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       $xxs={{
         scale: 0.35,
         y: '40%',
+        my: -100,
       }}
       $xs={{
         scale: 0.45,
+        my: -50,
         y: '35%',
       }}
       $sm={{
@@ -298,16 +303,17 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
       </ThemeTint> */}
 
       {/* animated borders shine */}
-      {/* <YStack pos="absolute" y={5}>
+      {/* super expensive chrome gpu :/ */}
+      {/* <YStack pos="absolute" y={0} zi={100}>
         <ThemeTintAlt>
-          <TAKEOUT className="theme-shadow clip-slice" zi={100} color="transparent" />
+          <TAKEOUT className="theme-shadow clip-slice" color="transparent" />
         </ThemeTintAlt>
       </YStack> */}
 
       <YStack
         pos="absolute"
         style={{
-          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 90% 0, 10% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 0%, 100% 100%, 100% 0%, 100% 0, 6.5% 100%)`,
         }}
       >
         <ThemeTint>
@@ -319,7 +325,7 @@ const TakeoutHero = ({ coupon }: Pick<TakeoutPageProps, 'coupon'>) => {
         mt={0}
         className="mix-blend"
         style={{
-          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 90% 0, 10% 100%)`,
+          clipPath: `polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%, 100% 0, 6.5% 100%)`,
         }}
       >
         <TAKEOUT zi={1000} />
@@ -613,6 +619,13 @@ export default function TakeoutPage({
               $md={{
                 flexDirection: 'column-reverse',
               }}
+              $sm={{
+                px: '$4',
+              }}
+              $xxs={{
+                mt: -200,
+                px: '$2',
+              }}
             >
               <YStack mt={-500} $md={{ mt: 0 }} ml={20} mr={0}>
                 <StarterCard product={starter} />
@@ -628,6 +641,7 @@ export default function TakeoutPage({
                   o={0.25}
                   $sm={{
                     size: '$4',
+                    ls: 1,
                   }}
                 >
                   Universal React Native + Web Starter Kit
@@ -886,6 +900,7 @@ export default function TakeoutPage({
                         $sm={{ dsp: 'none' }}
                         fow="800"
                         ta="center"
+                        o={0.5}
                       >
                         (...but don't forget the long run)
                       </Paragraph>
@@ -895,16 +910,19 @@ export default function TakeoutPage({
                       fontFamily="$cherryBomb"
                       size="$9"
                       color="$color11"
-                      className="text-3d"
+                      className="text-3d text-wrap-balance"
                       ls={-1}
-                      $sm={{ size: '$8' }}
+                      $lg={{ size: '$8' }}
+                      $md={{ size: '$7' }}
+                      $sm={{ size: '$6' }}
+                      $xs={{ size: '$5' }}
                       fow="400"
                       mb="$4"
                     >
                       It's not just about shipping fast.
                     </Paragraph>
 
-                    <Paragraph size="$8" $sm={{ size: '$7' }} fow="400">
+                    <Paragraph size="$8" lh="$9" $sm={{ size: '$7' }} fow="400">
                       Takeout is a template repo <b>with a GitHub bot</b> that lets us
                       send PRs easily thanks to a pluggable, well-isolated architecture.
                       Whenever we make significant updates, we trigger TakeoutBot to
@@ -945,9 +963,7 @@ export default function TakeoutPage({
                       <XStack tag="ul" fw="wrap" gap="$5" my="$4">
                         <Bullet status="done">Storybook</Bullet>
                         <Bullet status="done">tRPC</Bullet>
-                        <Bullet status="done">
-                          CLI to easily create Screens + Components
-                        </Bullet>
+                        <Bullet status="done">Screens + Components generators</Bullet>
                         <Bullet status="done">Reanimated</Bullet>
                         <Bullet status="building">Maestro integration tests</Bullet>
                         <Bullet status="building">Simple state management system</Bullet>
@@ -963,10 +979,10 @@ export default function TakeoutPage({
                         <Bullet>Generator for MDX support</Bullet>
                         <Bullet>Generator for Replicache support</Bullet>
                         <Bullet>Generator for other databases</Bullet>
-                        <Bullet>Generator and examples for Expo Deep links</Bullet>
+                        <Bullet>Generators for Expo Deep links</Bullet>
                         <Bullet>Generator for native modules</Bullet>
                         <Bullet>Million.js opt-in and configuration</Bullet>
-                        <Bullet>Virtual lists with swipeable items and sorting</Bullet>
+                        <Bullet>Virtual lists, swipeable + sorting</Bullet>
                         <Bullet>Native menus with Zeego</Bullet>
                         <Bullet>Much more (suggest in the #takeout channel)</Bullet>
                       </XStack>
@@ -980,7 +996,7 @@ export default function TakeoutPage({
 
                 <ThemeTint>
                   <Paragraph
-                    className="rainbow clip-text"
+                    className="theme-shadow"
                     als="center"
                     fontFamily="$cherryBomb"
                     size="$9"
@@ -1049,7 +1065,7 @@ export default function TakeoutPage({
 
                 <HeartsRow />
 
-                <MunroP size="$10" $sm={{ size: '$9' }} color="$yellow10">
+                <MunroP size="$9" $sm={{ size: '$8' }} color="$yellow10">
                   We hope you enjoy.
                 </MunroP>
 
@@ -1687,7 +1703,7 @@ const StarterCard = memo(({ product }: { product: TakeoutPageProps['starter'] })
       <ThemeTint>
         <TakeoutCardFrame
           className="blur-medium"
-          zi={1000}
+          zi={100000}
           maw={310}
           als="center"
           shadowRadius={30}
