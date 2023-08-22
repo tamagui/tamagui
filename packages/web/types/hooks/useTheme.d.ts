@@ -1,6 +1,6 @@
 import { Variable } from '../createVariable';
 import { ThemeManager, ThemeManagerState } from '../helpers/ThemeManager';
-import type { DebugProp, ThemeParsed, ThemeProps, Tokens, VariableVal, VariableValGeneric } from '../types';
+import type { DebugProp, ThemeParsed, ThemeProps, VariableVal, VariableValGeneric } from '../types';
 export type ChangedThemeResponse = {
     state: ThemeManagerState;
     themeManager: ThemeManager;
@@ -12,8 +12,6 @@ type ThemeGettable<Val> = Val & {
 };
 type UseThemeResult = {
     [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
-} & {
-    [Key in keyof Tokens['color']]: ThemeGettable<string>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResponse, ThemeParsed];
