@@ -4,15 +4,11 @@ import { UseLinkProps, useLink } from 'solito/link'
 // import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
-  H1,
   ListItem,
   ListItemProps,
-  Paragraph,
   Separator,
   Spacer,
   Switch,
-  TamaguiConfig,
-  ThemeParsed,
   YGroup,
   YStack,
   useTheme,

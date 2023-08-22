@@ -97,10 +97,8 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
       return null
     }
 
-    const {
-      style: { scrollbarWidth, listStyleType, overflow, ...restStyle },
-      ...floatingProps
-    } = itemContext.interactions.getFloatingProps()
+    const { style, ...floatingProps } = itemContext.interactions.getFloatingProps()
+    const { scrollbarWidth, listStyleType, overflow, ...restStyle } = style
 
     return (
       <>
@@ -115,6 +113,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportProps>
           <AnimatePresence>
             {context.open ? (
               <SelectViewportFrame
+                disableClassName
                 key="select-viewport"
                 size={itemContext.size}
                 // @ts-ignore
