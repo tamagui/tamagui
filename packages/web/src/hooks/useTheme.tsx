@@ -51,8 +51,6 @@ type ThemeGettable<Val> = Val & {
 
 type UseThemeResult = {
   [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
-} & {
-  [Key in keyof Tokens['color']]: ThemeGettable<string>
 }
 
 export const useTheme = (props: ThemeProps = emptyProps) => {
