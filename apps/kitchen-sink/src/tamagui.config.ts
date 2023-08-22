@@ -93,6 +93,7 @@ const search = (typeof window !== 'undefined' && globalThis.location?.search) ||
 
 const tamaConf = createTamagui({
   ...config,
+  tokens,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
     : search.includes('animationDriver=native')

@@ -1,18 +1,36 @@
 // import './wdyr'
 
 import { CheckboxWithLabel, SwitchWithLabel } from '@tamagui/demos'
+<<<<<<< HEAD
 import { useState } from 'react'
+=======
+import { forwardRef, useState } from 'react'
+import { Platform } from 'react-native'
+>>>>>>> parent of d073a8aebc (Merge branch 'master' into android-weight-issue)
 import {
   Button,
   H3,
   Paragraph,
   SizableText,
+<<<<<<< HEAD
   Text,
   Theme,
   ThemeName,
   YStack,
   styled,
 } from 'tamagui'
+=======
+  Square,
+  TamaguiElement,
+  Text,
+  Theme,
+  ThemeName,
+  XStack,
+  YStack,
+  styled,
+  withStaticProperties,
+} from 'tamagui'
+import { LinearGradient } from 'tamagui/linear-gradient'
 
 export const MyButton = styled(Button, {
   name: 'MyButton',
@@ -31,6 +49,50 @@ export const MyButton = styled(Button, {
 
 const QuickPreviewSection = () => {
   return (
+    <YStack f={1}>
+      <YStack
+        bw={1}
+        boc="$borderColor"
+        bc="$backgroundStrong"
+        f={1}
+        br="$6"
+        p="$4"
+        gap="$2"
+      >
+        <H3>Preview</H3>
+        <Paragraph>
+          Occaecat tempor2 et et nostrud laboris eiusmod aliquip et est irure in
+          adipisicing.
+        </Paragraph>
+
+        <SwitchWithLabel size="$3" />
+        <CheckboxWithLabel defaultChecked size="$4" />
+
+        <Button>Hello</Button>
+      </YStack>
+    </YStack>
+  )
+}
+>>>>>>> parent of d073a8aebc (Merge branch 'master' into android-weight-issue)
+
+export const MyButton = styled(Button, {
+  name: 'MyButton',
+
+  variants: {
+    test: {
+      true: {
+        backgroundColor: 'yellow',
+        pressStyle: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  } as const,
+})
+
+const QuickPreviewSection = () => {
+  return (
+<<<<<<< HEAD
     <YStack f={1}>
       <YStack
         bw={1}
@@ -148,6 +210,97 @@ export const Sandbox = () => {
   )
 }
 
+=======
+    <>
+      {/* @ts-ignore */}
+      <XStack>
+        <Button theme="pink" size="$10" f={1} fb={0}>
+          <Button.Text>Facebook</Button.Text>
+        </Button>
+      </XStack>
+
+      {/* <TextInput theme={theme} /> */}
+      {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}
+
+      {/* TODO REALLY NEED TO TEST THIS SORT OF STUFF ON NATIVE */}
+      {/* <MyButton test>ok</MyButton> */}
+
+      {/* <DrawListRow debug="verbose">
+        <Square size={100} bc="red" />
+      </DrawListRow> */}
+
+      {/* <BenchmarkSelect /> */}
+
+      {/* TODO test this one at diff sizes make sure:
+    
+      - font size is right at each size
+      - textTransform + lineHeight too etc
+    
+    */}
+      {/* <H1
+        ta="left"
+        size="$10"
+        maw={500}
+        h={130}
+        // FOR CLS IMPORTANT TO SET EXACT HEIGHT IDK WHY LINE HEIGHT SHOULD BE STABLE
+        $gtSm={{
+          mx: 0,
+          maxWidth: 800,
+          size: '$13',
+          h: 190,
+          ta: 'center',
+          als: 'center',
+        }}
+        $gtMd={{
+          maxWidth: 900,
+          size: '$14',
+          h: 240,
+        }}
+        $gtLg={{
+          size: '$16',
+          lh: '$15',
+          maxWidth: 1200,
+          h: 290,
+        }}
+      >
+        <span className="all ease-in ms250 rainbow clip-text">Write less,</span>
+        <br />
+        runs&nbsp;faster
+      </H1> */}
+
+      {/* <Subtitle debug="verbose">hello</Subtitle> */}
+      {/* <Paragraph size="$15" pos="absolute" rotate="-10deg" ta="center" ff="$silkscreen">
+        WATCH THE VIDEO
+      </Paragraph> */}
+
+      {/* <Button.Text fontWeight="900">test out</Button.Text> */}
+      {/* <H2
+        ff="$mono"
+        size="$12"
+        $lg={{
+          size: '$9',
+        }}
+        $sm={{
+          ff: '$mono',
+          size: '$8',
+        }}
+      >
+        test
+      </H2> */}
+      {/* <ChangeWeight>Default</ChangeWeight>
+      <ChangeWeight weight="low">low</ChangeWeight>
+      <ChangeWeight weight="high">high</ChangeWeight> */}
+      {/* <ChangeFamilyVariant debug="verbose" size="$15">
+        Test
+      </ChangeFamilyVariant>
+      <ChangeFamilyVariant size="$15" isHeading>
+        Test
+      </ChangeFamilyVariant> */}
+    </>
+  )
+}
+
+>>>>>>> parent of d073a8aebc (Merge branch 'master' into android-weight-issue)
 const ChangeWeight = styled(Text, {
   fontFamily: '$heading',
   fontWeight: '500',
