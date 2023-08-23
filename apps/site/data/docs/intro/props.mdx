@@ -334,7 +334,7 @@ Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns 
   ]}
 />
 
-### Parent based styling
+## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent being one of: platform, screen size, theme, or group. All of these styles use the same pattern, they use a `$` prefix for their styles, and they nest styles as a sub-object.
 
@@ -362,7 +362,7 @@ Then you can use it like:
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
 
-#### Theme
+### Theme
 
 Theme style props let you style a child based on a parent theme. At the moment, they only can target your top level themes, so if you have `light`, and `light_subtle` themes, then only `light` can be targeted.
 
@@ -372,7 +372,7 @@ Use them like so:
 <Text $theme-dark={{ color: 'white' }} />
 ```
 
-#### Platform
+### Platform
 
 Platform style props let you style a child based on the platform the app is running on. This can be one of `ios`, `android`, `web`, or `native` (ios and android).
 
@@ -382,7 +382,7 @@ Use it like so:
 <Text $platform-ios={{ color: 'white' }} />
 ```
 
-#### Group
+### Group
 
 Groups are a new feature in beta that lets you define a named group, and then style children based on that name.
 
