@@ -1,4 +1,4 @@
-export { animations } from './animations.reanimated';
+export { animations } from './animations';
 export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/font-inter").GenericFont;
 export declare const config: {
@@ -7,45 +7,45 @@ export declare const config: {
     themeClassNameOnRoot: true;
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
-            type: string;
+            type: "timing";
             duration: number;
         };
         superBouncy: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         lazy: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         slow: {
-            type: string;
+            type: "spring";
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
         };
         quicker: {
-            type: string;
+            type: "spring";
             damping: number;
             mass: number;
             stiffness: number;
