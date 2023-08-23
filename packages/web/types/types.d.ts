@@ -215,7 +215,7 @@ export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes
     tokens: A;
     themes: {
         [Name in keyof B]: {
-            [Key in keyof B[Name]]: Variable<B[Name][Key]>;
+            [Key in keyof B[Name]]: B[Name][Key] extends Variable ? B[Name][Key] : Variable<B[Name][Key]>;
         };
     };
     shorthands: C;
