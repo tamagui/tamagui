@@ -41,10 +41,10 @@ export const Sandbox = () => {
           size={100}
           bc="green"
           $group-testy={{ bc: 'red' }}
-          $group-testy-hovered={{
+          $group-testy-hover={{
             bc: 'pink',
           }}
-          $group-testy-pressed={{
+          $group-testy-press={{
             bc: 'black',
           }}
         />

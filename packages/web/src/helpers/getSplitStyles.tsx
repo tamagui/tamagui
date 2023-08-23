@@ -933,11 +933,11 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
 
-            // $group-x-hovered
+            // $group-x-hover
             pseudoGroups ||= new Set()
             pseudoGroups.add(groupName)
             if (groupPseudoKey) {
-              const groupPseudoKeyShort = groupPseudoKey.replace('ed', '')
+              const groupPseudoKeyShort = groupPseudoKey
               const groupState =
                 componentState.group?.[groupName] ||
                 // fallback to context initially

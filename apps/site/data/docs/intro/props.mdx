@@ -398,11 +398,11 @@ They also allow for targeting the parent pseudo state:
 
 ```tsx
 <Stack group="card">
-  <Text $group-card-hovered={{ color: 'white' }} />
+  <Text $group-card-hover={{ color: 'white' }} />
 </Stack>
 ```
 
-This means when the parent Stack is hovered, the Text will turn white. The allowed psuedo modifiers are `hovered` (web only), `pressed`, and `focused`.
+This means when the parent Stack is hovered, the Text will turn white. The allowed psuedo modifiers are `hover` (web only), `press`, and `focus`.
 
 If you need types for these props you can define it alongside your tamagui type override:
 

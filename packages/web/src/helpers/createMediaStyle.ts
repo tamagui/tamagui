@@ -10,9 +10,7 @@ let prefixes: Record<string, string> | null = null
 let selectors: Record<string, string> | null = null
 
 const parentPseudoToSelector = {
-  hovered: ':hover',
-  focused: ':focus',
-  pressed: ':active',
+  press: 'active',
 }
 
 export const createMediaStyle = (
@@ -43,13 +41,14 @@ export const createMediaStyle = (
       .join(';')
 
     if (isThemeMedia || isGroupMedia) {
-      const keyParts = mediaKey.split('-')
-      const name = (isGroupMedia ? 'group_' : '') + keyParts[1]
+      const [_, groupName, groupPseudo] = mediaKey.split('-')
+      const name = (isGroupMedia ? 'group_' : '') + groupName
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
       const precedenceSpace = conf.themeClassNameOnRoot ? '' : ' '
-      const pseudoSelector = parentPseudoToSelector[keyParts[2]] || ''
+      const pseudoSelectorName = parentPseudoToSelector[groupPseudo] || groupPseudo
+      const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
       const nextSelector = `:root${precedencePrefix}${precedenceSpace}.t_${name}${pseudoSelector} ${selector.replace(
         ':root',
         ''
