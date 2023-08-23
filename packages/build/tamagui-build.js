@@ -23,6 +23,7 @@ const shouldWatch = process.argv.includes('--watch')
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
+const tsProject = process.argv.includes('--ts-project')
 const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
 
 const pkg = fs.readJSONSync('./package.json')
@@ -135,7 +136,8 @@ async function buildTsc() {
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
     const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
-    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
+    const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
