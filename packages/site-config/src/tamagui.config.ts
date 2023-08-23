@@ -7,11 +7,11 @@ import { tokens } from '@tamagui/themes/v2'
 import { themes as themesIn } from '@tamagui/themes/v2-themes'
 import { CreateTamaguiProps } from '@tamagui/web'
 
-import { animations } from './animations'
+import { animations } from './animations.reanimated'
 import { createGenericFont } from './createGenericFont'
 import { media, mediaQueryDefaultActive } from './media'
 
-export { animations } from './animations'
+export { animations } from './animations.reanimated'
 
 export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()
