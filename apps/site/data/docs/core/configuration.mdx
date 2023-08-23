@@ -197,6 +197,11 @@ type AppConfig = typeof config
 // note - if using your own design system, put the package name here instead of tamagui
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
+
+  // if you want types for group styling props, define them like so:
+  interface Group {
+    names(): 'a' | 'b' | 'c'
+  }
 }
 
 export default config

@@ -334,7 +334,15 @@ Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns 
   ]}
 />
 
-### Media query style props
+### Parent based styling
+
+Tamagui has a variety of ways to style a child based on the "parent", a parent being one of: platform, screen size, theme, or group. All of these styles use the same pattern, they use a `$` prefix for their styles, and they nest styles as a sub-object.
+
+For example you can target `$theme-light`, `$platform-ios`, or `$group-header`. For screen size, which we call media queries, they have no prefix. Instead you define media queries on `createTamagui`. For example, if you define a media query named `large`, then `$large` is the prop name.
+
+These parent style props accept all the Tamagui style props in their value object.
+
+#### Media query
 
 Based on whatever media queries you define in `createTamagui`, you can now use any of them to apply styling on native and web using the `$` prefix.
 
@@ -354,7 +362,62 @@ Then you can use it like:
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
 
-### Press Events
+#### Theme
+
+Theme style props let you style a child based on a parent theme. At the moment, they only can target your top level themes, so if you have `light`, and `light_subtle` themes, then only `light` can be targeted.
+
+Use them like so:
+
+```tsx
+<Text $theme-dark={{ color: 'white' }} />
+```
+
+#### Platform
+
+Platform style props let you style a child based on the platform the app is running on. This can be one of `ios`, `android`, `web`, or `native` (ios and android).
+
+Use it like so:
+
+```tsx
+<Text $platform-ios={{ color: 'white' }} />
+```
+
+#### Group
+
+Groups are a new feature in beta that lets you define a named group, and then style children based on that name.
+
+A short example:
+
+```tsx
+<Stack group="header">
+  <Text $group-header={{ color: 'white' }} />
+</Stack>
+```
+
+They also allow for targeting the parent pseudo state:
+
+```tsx
+<Stack group="card">
+  <Text $group-card-hovered={{ color: 'white' }} />
+</Stack>
+```
+
+This means when the parent Stack is hovered, the Text will turn white. The allowed psuedo modifiers are `hovered` (web only), `pressed`, and `focused`.
+
+If you need types for these props you can define it alongside your tamagui type override:
+
+```tsx
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends AppConfig {}
+
+  // if you want types for group styling props, define them like so:
+  interface Group {
+    names(): 'a' | 'b' | 'c'
+  }
+}
+```
+
+### Press events
 
 Press events come along for easy single-touch events:
 
@@ -386,7 +449,7 @@ Press events come along for easy single-touch events:
 
 Note: Internally Tamagui Stack and Text implement press events through [React Native Pressable](https://reactnative.dev/docs/pressable) - which includes some important details on how it works.
 
-### Hover Events
+### Hover events
 
 Tamagui adds events above the typical react-native/react-native-web View/Text props. These are:
 
