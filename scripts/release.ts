@@ -373,14 +373,15 @@ async function run() {
     const gitTag = `${tagPrefix}${version}`
 
     if (!rePublish || reRun || finish) {
+      await spawnify(`git add -A`)
+      await spawnify(`git commit -m ${gitTag}`)
+      await spawnify(`git tag ${gitTag}`)
+
       if (!dirty) {
         // pull once more before pushing so if there was a push in interim we get it
         await spawnify(`git pull --rebase origin master`)
       }
 
-      await spawnify(`git add -A`)
-      await spawnify(`git commit -m ${gitTag}`)
-      await spawnify(`git tag ${gitTag}`)
       await spawnify(`git push origin head`)
       await spawnify(`git push origin ${gitTag}`)
       // rome-ignore lint/nursery/noConsoleLog: <explanation>
