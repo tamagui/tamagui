@@ -67,6 +67,11 @@ export const studio = async (
       build: {
         rollupOptions: {},
       },
+      resolve: {
+        alias: {
+          '@tamagui/animations-moti': '@tamagui/animations-react-native',
+        },
+      },
       plugins: [
         tamaguiPlugin({
           components: ['tamagui'],
