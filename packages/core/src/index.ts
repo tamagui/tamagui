@@ -20,7 +20,7 @@ import type { RefObject } from 'react'
 import { getBaseViews } from './getBaseViews'
 import { useElementLayout } from './hooks/useElementLayout'
 import { usePlatformMethods } from './hooks/usePlatformMethods'
-import { RNTextProps, RNViewProps } from './reactNativeTypes'
+import { RNViewProps } from './reactNativeTypes'
 import { usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks
@@ -28,19 +28,16 @@ export * from '@tamagui/web'
 
 // adds extra types to Stack/Text:
 
-type RNViewPropsExclusive = Omit<RNViewProps, keyof StackProps>
-type RNTextPropsExclusive = Omit<RNTextProps, keyof TextProps>
-
 export const Stack = WebStack as TamaguiComponent<
-  StackProps & RNViewPropsExclusive,
+  StackProps & RNViewProps,
   TamaguiElement,
-  StackPropsBase & RNViewPropsExclusive
+  StackPropsBase & RNViewProps
 >
 
 export const Text = WebText as TamaguiComponent<
-  TextProps & RNTextPropsExclusive,
+  TextProps & TextProps,
   TamaguiTextElement,
-  TextPropsBase & RNTextPropsExclusive
+  TextPropsBase & TextProps
 >
 
 // setup internal hooks:

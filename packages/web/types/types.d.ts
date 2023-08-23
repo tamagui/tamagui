@@ -466,12 +466,12 @@ export type MediaQueryState = {
 };
 export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = `$theme-${TK extends `${string}_${string}` ? never : TK}`;
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
-export interface Group {
-    names(): string | number;
+export interface TypeOverride {
+    groupNames(): 1;
 }
-export type GroupNames = ReturnType<Group['names']>;
+export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
 type ParentMediaStates = 'hovered' | 'pressed' | 'focused';
-export type GroupMediaKeys = GroupNames extends number ? never : `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`;
+export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`;
 export type MediaProps<A> = {
     [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
 };

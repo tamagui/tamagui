@@ -411,8 +411,8 @@ declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
   // if you want types for group styling props, define them like so:
-  interface Group {
-    names(): 'a' | 'b' | 'c'
+  interface TypeOverride {
+    groupNames(): 'a' | 'b' | 'c'
   }
 }
 ```

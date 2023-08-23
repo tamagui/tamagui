@@ -90,7 +90,7 @@ export type {
   SpacerProps,
   SpaceTokens,
   SpecificTokens,
-  Group,
+  TypeOverride,
   GroupNames,
   StackNonStyleProps,
   StackProps,

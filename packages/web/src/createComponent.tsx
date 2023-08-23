@@ -290,7 +290,7 @@ export function createComponent<
 
     let setStateShallow = createShallowSetState(setState)
 
-    const groupName = props.group as string
+    const groupName = props.group as any as string
     if (groupName) {
       // when we set state we also set our group state and emit an event for children listening:
       const groupContextState = componentContext.groups.state

@@ -115,8 +115,8 @@ export type Conf = typeof tamaConf
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
 
-  interface Group {
-    names(): 'testy'
+  interface TypeOverride {
+    groupNames(): 'testy'
   }
 }
 
