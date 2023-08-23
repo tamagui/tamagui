@@ -32,18 +32,16 @@ const handler: NextApiHandler = async (req, res) => {
     })
     return
   }
-  await new Promise((resolve) => setTimeout(() => resolve(''), 10000))
 
-  const teamsResult = await supabaseAdmin
-    .from('memberships')
-    .select('id, teams(*)')
-    .eq('user_id', user.id)
+  // uncomment to block out non-sponsors:
+  // const teamsResult = await supabase.from('teams').select('id, name, is_active')
+  // if (teamsResult.error) {
+  //   throw teamsResult.error
+  // }
+  // const teams = getArray(teamsResult.data)
+  // const hasAccess = teams.some((team) => team.is_active)
 
-  const teams = getArray(teamsResult.data)
-    .filter((t) => t?.teams)
-    .map((t) => getSingle(t!.teams!))
-
-  const hasAccess = teams.some((team) => team.is_active)
+  const hasAccess = true
 
   if (!hasAccess) {
     res.status(403).json({
