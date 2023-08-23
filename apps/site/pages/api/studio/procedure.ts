@@ -3,9 +3,22 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import * as apis from '@tamagui/studio/api'
-import { NextApiHandler } from 'next'
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+
+function setupCors(req: NextApiRequest, res: NextApiResponse) {
+  const origin = req.headers.origin
+  if (
+    typeof origin === 'string' &&
+    (origin.endsWith('tamagui.dev') || origin.endsWith('localhost:1421'))
+  ) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+    res.setHeader('Access-Control-Allow-Credentials', 'true')
+  }
+}
 
 const handler: NextApiHandler = async (req, res) => {
+  setupCors(req, res)
+
   const supabase = createPagesServerClient<Database>({ req, res })
 
   const {
@@ -19,7 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
     })
     return
   }
-  res.json(user)
+  await new Promise((resolve) => setTimeout(() => resolve(''), 10000))
 
   const teamsResult = await supabaseAdmin
     .from('memberships')
