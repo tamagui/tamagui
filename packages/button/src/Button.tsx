@@ -23,19 +23,12 @@ import {
 import { FunctionComponent, createContext, useContext } from 'react'
 
 export const ButtonContext = createStyledContext<
-  TextContextStyles & {
-    size: SizeTokens
-  }
->({
-  size: '$true',
-  color: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  textAlign: undefined,
-})
+  Partial<
+    TextContextStyles & {
+      size: SizeTokens
+    }
+  >
+>({})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -168,6 +161,7 @@ const ButtonText = styled(SizableText, {
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
   const { size, color } = useContext(ButtonContext)
+
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
@@ -241,7 +235,8 @@ function useButton<Props extends ButtonProps>(
 
   const isNested = useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn) as any as ButtonProps
-  const size = propsActive.size || '$true'
+  const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
+
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
