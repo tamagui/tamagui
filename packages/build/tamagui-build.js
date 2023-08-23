@@ -23,8 +23,9 @@ const shouldWatch = process.argv.includes('--watch')
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
-const tsProject = process.argv.includes('--ts-project')
+const tsProjectIndex = process.argv.indexOf('--ts-project')
 const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
+const tsProject = tsProjectIndex > -1 ? process.argv[tsProjectIndex] : null
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
