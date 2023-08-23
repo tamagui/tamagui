@@ -24,8 +24,8 @@ const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
 const tsProjectIndex = process.argv.indexOf('--ts-project')
-const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
-const tsProject = tsProjectIndex > -1 ? process.argv[tsProjectIndex] : null
+const baseUrl = baseUrlIndex > -1 && process.argv[baseUrlIndex + 1] ? process.argv[baseUrlIndex + 1] : '.'
+const tsProject = tsProjectIndex > -1 && process.argv[tsProjectIndex + 1] ? process.argv[tsProjectIndex + 1] : null
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
