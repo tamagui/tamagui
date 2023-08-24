@@ -1,23 +1,11 @@
-import { Database } from '@lib/supabase-types'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 // is called after bot is installed
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
+  const { supabase } = await await protectApiRoute(req, res)
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    return
-  }
   let state: number
   let installationId: number
   // example: installation_id=00000000&setup_action=install&state=foobar

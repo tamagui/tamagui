@@ -1,23 +1,13 @@
 import { claimProductAccess } from '@lib/claim-product'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
+  const { supabase } = await protectApiRoute(req, res)
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    return
-  }
   const subscriptionId = req.body['subscription_id']
   const productId = req.body['product_id']
   if (typeof subscriptionId === 'undefined') {
