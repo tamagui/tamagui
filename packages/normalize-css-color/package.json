@@ -19,6 +19,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@react-native/normalize-color": "^2.1.0"
+  },
   "devDependencies": {
     "@tamagui/build": "1.55.1"
   },

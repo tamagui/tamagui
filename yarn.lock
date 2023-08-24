@@ -6582,6 +6582,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/normalize-css-color@workspace:packages/normalize-css-color"
   dependencies:
+    "@react-native/normalize-color": ^2.1.0
     "@tamagui/build": 1.55.1
   languageName: unknown
   linkType: soft
