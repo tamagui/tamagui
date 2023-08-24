@@ -1,20 +1,9 @@
 import { TAMAGUI_DISCORD_GUILD_ID, discordClient } from '@lib/discord'
-import { Database } from '@lib/supabase-types'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    res.status(401).json({
-      error: 'you are not authenticated',
-    })
-  }
+  await protectApiRoute(req, res)
 
   const query = req.query.query
 
