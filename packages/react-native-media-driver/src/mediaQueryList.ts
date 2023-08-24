@@ -37,6 +37,15 @@ export class NativeMediaQueryList implements MediaQueryList {
     if (index !== -1) this.listeners.splice(index, 1)
   }
 
+  match(query: string, { width, height }: { width: number; height: number }) {
+    return matchQuery(query, {
+      type: 'screen',
+      orientation: height > width ? 'portrait' : 'landscape',
+      'device-width': width,
+      'device-height': height,
+    })
+  }
+
   get matches(): boolean {
     const windowDimensions = Dimensions.get('window')
     const matches = matchQuery(this.query, {

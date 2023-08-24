@@ -240,12 +240,15 @@ function searchCache(moduleName, callback) {
   // @ts-ignore
   if (mod && (mod = require.cache[mod]) !== undefined) {
     // Recursively go over the results
-    ;(function traverse(mod) {
+    ;(function traverse(mod, depth = 0) {
+      // avoid recursing too much
+      if (depth > 10) return
+
       // Go over each of the module's children and
       // traverse them
       // @ts-ignore
       mod.children.forEach(function (child) {
-        traverse(child)
+        traverse(child, depth + 1)
       })
 
       // Call the specified callback providing the

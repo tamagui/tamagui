@@ -12,7 +12,6 @@ import {
   Stack as WebStack,
   Text as WebText,
   composeEventHandlers,
-  mergeEvent,
   setupHooks,
 } from '@tamagui/web'
 import type { RefObject } from 'react'
@@ -123,10 +122,10 @@ setupHooks({
     if (process.env.TAMAGUI_TARGET === 'native') {
       const attachFocus = !!pseudos?.focusStyle
       if (attachFocus) {
-        viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
+        viewProps.onFocus = composeEventHandlers(viewProps.onFocus, () => {
           setStateShallow({ focus: true })
         })
-        viewProps.onBlur = mergeEvent(viewProps.onBlur, () => {
+        viewProps.onBlur = composeEventHandlers(viewProps.onBlur, () => {
           setStateShallow({ focus: false })
         })
       }
@@ -139,12 +138,16 @@ setupHooks({
 
       const pressability = usePressability(events || null)
 
-      if (events?.onPress) {
-        for (const key in pressability) {
-          const og = viewProps[key]
-          const val = pressability[key]
-          viewProps[key] =
-            og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
+      if (events) {
+        if (events.onPress) {
+          for (const key in pressability) {
+            const og = viewProps[key]
+            const val = pressability[key]
+            viewProps[key] =
+              og && !dontComposePressabilityKeys[key]
+                ? composeEventHandlers(og, val)
+                : val
+          }
         }
       }
     }

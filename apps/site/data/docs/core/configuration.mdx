@@ -162,8 +162,8 @@ const config = createTamagui({
   // For web-only, media queries work out of the box and you can avoid the
   // `createMedia` call here by passing the media object directly.
 
-  // If targeting React Native, add this driver and `createMedia` call.
-  // `tamagui` and `config` do this for you automatically.
+  // If targeting React Native, add this driver and use this `createMedia` helper.
+  // If web-only you can leave out `createMedia` and just use an object.
   media: createMedia({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },

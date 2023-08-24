@@ -35,6 +35,11 @@ export declare function useMediaPropsActive<A extends Object>(props: A, opts?: {
 };
 export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, importancesUsed: Record<string, number>, isSizeMedia: boolean) => number | null;
 export declare function mergeMediaByImportance(onto: Record<string, any>, mediaKey: string, key: string, value: any, importancesUsed: Record<string, number>, isSizeMedia: boolean, importanceBump?: number): boolean;
-export declare function mediaObjectToString(query: string | MediaQueryObject): string;
+export declare function mediaObjectToString(query: string | MediaQueryObject, key?: string): string;
+export declare function mediaKeyToQuery(key: string): string;
+export declare function mediaKeyMatch(key: string, dimensions: {
+    width: number;
+    height: number;
+}): boolean;
 export {};
 //# sourceMappingURL=useMedia.d.ts.map

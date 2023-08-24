@@ -113,7 +113,7 @@ export function setupMediaListeners() {
   unlisten()
 
   for (const key in mediaQueryConfig) {
-    const str = mediaObjectToString(mediaQueryConfig[key])
+    const str = mediaObjectToString(mediaQueryConfig[key], key)
     const getMatch = () => matchMedia(str)
     const match = getMatch()
     if (!match) {
@@ -331,11 +331,17 @@ function camelToHyphen(str: string) {
   return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 }
 
-export function mediaObjectToString(query: string | MediaQueryObject) {
+const cache = new WeakMap<any, string>()
+const cachedMediaKeyToQuery: Record<string, string> = {}
+
+export function mediaObjectToString(query: string | MediaQueryObject, key?: string) {
   if (typeof query === 'string') {
     return query
   }
-  return Object.entries(query)
+  if (cache.has(query)) {
+    return cache.get(query)!
+  }
+  const res = Object.entries(query)
     .map(([feature, value]) => {
       feature = camelToHyphen(feature)
       if (typeof value === 'string') {
@@ -347,4 +353,29 @@ export function mediaObjectToString(query: string | MediaQueryObject) {
       return `(${feature}: ${value})`
     })
     .join(' and ')
+  if (key) {
+    cachedMediaKeyToQuery[key] = res
+  }
+  cache.set(query, res)
+  return res
+}
+
+export function mediaKeyToQuery(key: string) {
+  return cachedMediaKeyToQuery[key] || mediaObjectToString(mediaQueryConfig[key], key)
+}
+
+export function mediaKeyMatch(
+  key: string,
+  dimensions: { width: number; height: number }
+) {
+  const mediaQueries = mediaQueryConfig[key]
+  const result = Object.keys(mediaQueries).every((query) => {
+    const expectedVal = +mediaQueries[query]
+    const isMax = query.startsWith('max')
+    const isWidth = query.endsWith('Width')
+    const givenVal = dimensions[isWidth ? 'width' : 'height']
+    // if not max then min
+    return isMax ? givenVal < expectedVal : givenVal > expectedVal
+  })
+  return result
 }

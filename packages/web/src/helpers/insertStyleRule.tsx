@@ -9,6 +9,10 @@ import type {
   TokensParsed,
 } from '../types'
 
+// only cache tamagui styles
+// TODO merge totalSelectorsInserted and allSelectors?
+const scannedCache = new WeakMap<CSSStyleSheet, string>()
+const totalSelectorsInserted = new Map<string, number>()
 const allSelectors: Record<string, string> = {}
 const allRules: Record<string, string> = {}
 export const insertedTransforms = {}
@@ -43,10 +47,6 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
 //   3. used now for merging transforms atomically
 
 // multiple sheets could have the same ids so we have to count
-
-// only cache tamagui styles
-const scannedCache = new WeakMap<CSSStyleSheet, string>()
-const totalSelectorsInserted = new Map<string, number>()
 
 export function listenForSheetChanges() {
   if (!isClient) return
@@ -378,6 +378,18 @@ export function shouldInsertStyleRules(identifier: string) {
     return true
   }
   const total = totalSelectorsInserted.get(identifier)
-  // note, -1, we are being conservative and leaving some in
+
+  if (process.env.NODE_ENV === 'development') {
+    if (
+      totalSelectorsInserted.size >
+      +(process.env.TAMAGUI_STYLE_INSERTION_WARNING_LIMIT || 50000)
+    ) {
+      console.warn(
+        `Warning: inserting many CSS rules, you may be animating something and generating many CSS insertions, which can degrade performance. Instead, try using the "disableClassName" property on elements that change styles often. To disable this warning set TAMAGUI_STYLE_INSERTION_WARNING_LIMIT from 50000 to something higher`
+      )
+    }
+  }
+
+  // note we are being conservative allowing duplicates
   return total === undefined || total < 2
 }

@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb } from '@tamagui/constants'
-import { validStyles } from '@tamagui/helpers'
+import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
@@ -21,18 +21,23 @@ import { getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
-import { createShallowSetState } from './helpers/createShallowSetState'
+import {
+  createShallowSetState,
+  mergeIfNotShallowEqual,
+} from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
-import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
 import {
+  ComponentContextI,
   DebugProp,
   DisposeFn,
-  GroupContextType,
+  GroupState,
+  LayoutEvent,
   SpaceDirection,
   SpaceValue,
   SpacerProps,
@@ -235,6 +240,7 @@ export function createComponent<
     // [animated, inversed]
     const stateRef = useRef(
       undefined as any as {
+        hasMeasured?: boolean
         hasAnimated?: boolean
         themeShallow?: boolean
         isListeningToTheme?: boolean
@@ -291,13 +297,17 @@ export function createComponent<
     let setStateShallow = createShallowSetState(setState)
 
     const groupName = props.group as any as string
+    const groupClassName = groupName ? `t_group_${props.group}` : ''
+
     if (groupName) {
       // when we set state we also set our group state and emit an event for children listening:
       const groupContextState = componentContext.groups.state
       const og = setStateShallow
       setStateShallow = (state) => {
         og(state)
-        componentContext.groups.emit(groupName, state)
+        componentContext.groups.emit(groupName, {
+          pseudo: state,
+        })
         // and mutate the current since its concurrent safe (children throw it in useState on mount)
         const next = {
           ...groupContextState[groupName],
@@ -502,6 +512,11 @@ export function createComponent<
       debugProp
     )
 
+    // hide strategy will set this opacity = 0 until measured
+    if (props.group && props.untilMeasured === 'hide' && !stateRef.current.hasMeasured) {
+      splitStyles.style.opacity = 0
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
     stateRef.current.isListeningToTheme = splitStyles.dynamicThemeAccess
@@ -616,6 +631,12 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
+    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
+      console.warn(
+        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use the $group- prop.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
+      )
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
     const disabled =
@@ -629,6 +650,24 @@ export function createComponent<
 
     if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
+    }
+
+    if (groupName) {
+      nonTamaguiProps.onLayout = composeEventHandlers(
+        nonTamaguiProps.onLayout,
+        (e: LayoutEvent) => {
+          componentContext.groups.emit(groupName, {
+            layout: e.nativeEvent.layout,
+          })
+
+          // force re-render if measure strategy is hide
+          if (!stateRef.current.hasMeasured && props.untilMeasured === 'hide') {
+            setState((prev) => ({ ...prev }))
+          }
+
+          stateRef.current.hasMeasured = true
+        }
+      )
     }
 
     // if react-native-web view just pass all props down
@@ -672,7 +711,8 @@ export function createComponent<
     // for example css driver needs to render once with the first styles, then again with the next
     // if its a layout effect it will just skip that first render output
     const shouldSetMounted = needsMount && state.unmounted
-    const { pseudoGroups } = splitStyles
+    const { pseudoGroups, mediaGroups } = splitStyles
+
     useEffect(() => {
       if (shouldSetMounted) {
         const unmounted =
@@ -686,22 +726,36 @@ export function createComponent<
 
       // parent group pseudo listening
       let disposeGroupsListener: DisposeFn | undefined
-      if (pseudoGroups) {
-        const current = {}
-        disposeGroupsListener = componentContext.groups.subscribe((name, next) => {
-          if (pseudoGroups.has(name)) {
-            // merge because we emit a partial of the state each time
-            Object.assign(current, next)
-            const group = {
-              ...state.group,
-              [name]: current,
+      if (pseudoGroups || mediaGroups) {
+        const current = {
+          pseudo: {},
+          media: {},
+        } satisfies GroupState
+        disposeGroupsListener = componentContext.groups.subscribe(
+          (name, { layout, pseudo }) => {
+            if (pseudo && pseudoGroups?.has(name)) {
+              // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
+              Object.assign(current.pseudo, pseudo)
+              persist()
+            } else if (layout && mediaGroups) {
+              const mediaState = getMediaState(mediaGroups, layout)
+              const next = mergeIfNotShallowEqual(current.media, mediaState)
+              if (next !== current.media) {
+                Object.assign(current.media, next)
+                persist()
+              }
             }
-            setStateShallow({
-              // force it to be referentially different so it always updates
-              group,
-            })
+            function persist() {
+              setStateShallow({
+                // force it to be referentially different so it always updates
+                group: {
+                  ...state.group,
+                  [name]: current,
+                },
+              })
+            }
           }
-        })
+        )
       }
 
       return () => {
@@ -712,6 +766,7 @@ export function createComponent<
       shouldSetMounted,
       state.unmounted,
       pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+      mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
     ])
 
     const avoidAnimationStyle = keepStyleSSR && state.unmounted === true
@@ -735,7 +790,7 @@ export function createComponent<
         componentName ? componentClassName : '',
         fontFamilyClassName,
         classNames ? Object.values(classNames).join(' ') : '',
-        props.group ? `t_group_${props.group}` : '',
+        groupClassName,
       ]
       className = classList.join(' ')
 
@@ -934,16 +989,24 @@ export function createComponent<
 
     // must override context so siblings don't clobber initial state
     const subGroupContext = useMemo(() => {
-      if (!groupName) return null
+      if (!groupName) return
       // change reference so context value updates
       return {
         ...componentContext.groups,
         // change reference so as we mutate it doesn't affect siblings etc
         state: {
           ...componentContext.groups.state,
-          [groupName]: initialState,
+          [groupName]: {
+            pseudo: initialState,
+            // capture just initial width and height if they exist
+            // will have top, left, width, height (not x, y)
+            layout: {
+              width: fromPx(splitStyles.style.width as any),
+              height: fromPx(splitStyles.style.height as any),
+            } as any,
+          },
         },
-      }
+      } satisfies ComponentContextI['groups']
     }, [groupName])
 
     if (groupName && subGroupContext) {
@@ -971,7 +1034,7 @@ export function createComponent<
       if (events || isAnimatedReactNativeWeb) {
         content = (
           <span
-            className={`${isAnimatedReactNativeWeb ? className : ''}  _dsp_contents`}
+            className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
             {...(events && {
               onMouseEnter: events.onMouseEnter,
               onMouseLeave: events.onMouseLeave,
@@ -1320,3 +1383,17 @@ function hasAnimatedStyleValue(style: Object) {
     return val && typeof val === 'object' && '_animation' in val
   })
 }
+
+function getMediaState(
+  mediaGroups: Set<string>,
+  layout: LayoutEvent['nativeEvent']['layout']
+) {
+  return Object.fromEntries(
+    [...mediaGroups].map((mediaKey) => {
+      return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
+    })
+  )
+}
+
+const fromPx = (val?: number | string) =>
+  typeof val !== 'string' ? val : +val.replace('px', '')
