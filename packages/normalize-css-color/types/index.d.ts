@@ -1,5 +1,4 @@
-export { names } from './names';
-export declare function normalizeCSSColor(color: string): number | null;
+export declare const normalizeCSSColor: (color: string) => number | null;
 export declare function rgba(colorInt: number): {
     r: number;
     g: number;
