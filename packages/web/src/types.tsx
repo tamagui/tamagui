@@ -719,7 +719,7 @@ export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1
   ? never
   : ReturnType<TypeOverride['groupNames']>
 
-type ParentMediaStates = 'hovered' | 'pressed' | 'focused'
+type ParentMediaStates = 'hover' | 'press' | 'focus'
 
 export type GroupMediaKeys =
   | `$group-${GroupNames}`

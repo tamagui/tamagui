@@ -470,7 +470,7 @@ export interface TypeOverride {
     groupNames(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
-type ParentMediaStates = 'hovered' | 'pressed' | 'focused';
+type ParentMediaStates = 'hover' | 'press' | 'focus';
 export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`;
 export type MediaProps<A> = {
     [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
