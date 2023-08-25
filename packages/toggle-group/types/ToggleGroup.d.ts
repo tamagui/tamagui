@@ -578,9 +578,7 @@ declare const ToggleGroupImplElementFrame: import("@tamagui/web").TamaguiCompone
     readonly orientation?: "horizontal" | "vertical" | undefined;
 }, {
     displayName: string | undefined;
-    Item: (props: {
-        children: React.ReactNode;
-    } & {
+    Item: (props: import("@tamagui/group").GroupItemProps & {
         __scopeGroup?: Scope;
     }) => any;
 }>;
