@@ -55,16 +55,18 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
       '...': () => null,
     },
 
-    selectable: {
-      true: {
-        userSelect: 'text',
-        cursor: 'text',
+    ...(process.env.TAMAGUI_TARGET === 'web' && {
+      selectable: {
+        true: {
+          userSelect: 'text',
+          cursor: 'text',
+        },
+        false: {
+          userSelect: 'none',
+          cursor: 'default',
+        },
       },
-      false: {
-        userSelect: 'none',
-        cursor: 'default',
-      },
-    },
+    }),
 
     ellipse: {
       true:
