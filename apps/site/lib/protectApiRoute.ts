@@ -14,10 +14,12 @@ export async function protectApiRoute(req: NextApiRequest, res: NextApiResponse)
   } = await supabase.auth.getSession()
   const user = session?.user
 
-  if (!user) {
+  if (!session || !user) {
     res.status(401).json({
       error: 'The user is not authenticated',
     })
+    throw new Error('The user is not authenticated')
   }
-  return { supabase, session }
+
+  return { supabase, session, user: user! }
 }
