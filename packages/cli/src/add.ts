@@ -23,7 +23,7 @@ const tamaguiDir = path.join(home, '.tamagui')
 
 export const generatedPackageTypes = ['font', 'icon'] as const
 export const installGeneratedPackage = async (type: string, packagesPath?: string) => {
-  packagesPath = packagesPath || 'packages'
+  packagesPath = packagesPath || path.join(process.cwd(), 'packages')
   if (!generatedPackageTypes.includes(type as (typeof generatedPackageTypes)[number])) {
     throw new Error(
       `${
@@ -40,15 +40,13 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     rmSync(tempDir, { recursive: true })
   }
   try {
+    process.chdir(tamaguiDir)
     execSync(
-      [
-        `cd "${tamaguiDir}"`,
-        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`,
-        `cd ${repoName}`,
-        `git sparse-checkout set --no-cone meta`,
-        `git checkout`,
-      ].join(' && ')
+      `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
     )
+
+    process.chdir(tempDir)
+    execSync([`git sparse-checkout set --no-cone meta`, `git checkout`].join(' && '))
   } catch (error) {
     if (error instanceof Error) {
       if ((error as any)?.stderr.includes('Repository not found')) {
@@ -86,7 +84,6 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
         : type === 'font'
         ? `Pick a font:`
         : `Pick one:`,
-
     choices: Object.entries<any>(meta).map(([slug, data]) => ({
       title:
         type === 'font'
@@ -100,13 +97,11 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
 
   const packageName = `${type}-${result.packageName}`
   const packageDir = path.join(tempDir, 'packages', packageName)
-
+  process.chdir(tempDir)
   execSync(
-    [
-      `cd "${tempDir}"`,
-      `git sparse-checkout set --no-cone packages/${packageName}`,
-      `git checkout`,
-    ].join(' && ')
+    [`git sparse-checkout set --no-cone packages/${packageName}`, `git checkout`].join(
+      ' && '
+    )
   )
   const finalDir = path.join(packagesPath, packageName)
   await ensureDir(packagesPath)
