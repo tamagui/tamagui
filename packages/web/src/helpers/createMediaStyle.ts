@@ -1,6 +1,7 @@
 import { getConfig } from '../config'
 import { mediaObjectToString } from '../hooks/useMedia'
 import type { MediaQueries, MediaStyleObject, StyleObject } from '../types'
+import { getGroupPropParts } from './getGroupPropParts'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
@@ -9,47 +10,60 @@ export const MEDIA_SEP = '_'
 let prefixes: Record<string, string> | null = null
 let selectors: Record<string, string> | null = null
 
-const parentPseudoToSelector = {
+const groupPseudoToPseudoCSSMap = {
   press: 'active',
 }
 
 export const createMediaStyle = (
-  { property, identifier, rules }: StyleObject,
-  mediaKey: string,
+  styleObject: StyleObject,
+  mediaKeyIn: string,
   mediaQueries: MediaQueries,
   negate?: boolean,
   priority?: number
 ): MediaStyleObject => {
+  const { property, identifier, rules } = styleObject
   const conf = getConfig()
   const enableMediaPropOrder = conf.settings.mediaPropOrder
-  const isThemeMedia = mediaKey.startsWith('theme-')
-  const isPlatformMedia = !isThemeMedia && mediaKey.startsWith('platform-')
-  const isGroupMedia = !isThemeMedia && !isPlatformMedia && mediaKey.startsWith('group-')
-  const isNonWindowMedia = isThemeMedia || isPlatformMedia || isGroupMedia
+  const isThemeMedia = mediaKeyIn.startsWith('theme-')
+  const isPlatformMedia = !isThemeMedia && mediaKeyIn.startsWith('platform-')
+  const isGroup = !isThemeMedia && !isPlatformMedia && mediaKeyIn.startsWith('group-')
+  const isNonWindowMedia = isThemeMedia || isPlatformMedia || isGroup
   const negKey = negate ? '0' : ''
   const ogPrefix = identifier.slice(0, identifier.indexOf('-') + 1)
+  const id = `${ogPrefix}${MEDIA_SEP}${mediaKeyIn.replace('-', '')}${negKey}${MEDIA_SEP}`
 
-  let styleRule: string
-
-  const id = `${ogPrefix}${MEDIA_SEP}${mediaKey.replace('-', '')}${negKey}${MEDIA_SEP}`
-  const nextIdentifier = identifier.replace(ogPrefix, id)
+  let styleRule = ''
+  let groupMediaKey: string | undefined
+  let containerName: string | undefined
+  let nextIdentifier = identifier.replace(ogPrefix, id)
+  let styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
 
   if (isNonWindowMedia) {
-    const precedencePrefix = new Array(priority).fill(':root').join('')
-    const styleInner = rules
-      .map((rule) => rule.replace(identifier, nextIdentifier))
-      .join(';')
+    const precedenceImportancePrefix = new Array((priority || 0) + (isGroup ? 1 : 0))
+      .fill(':root')
+      .join('')
 
-    if (isThemeMedia || isGroupMedia) {
-      const [_, groupName, groupPseudo] = mediaKey.split('-')
-      const name = (isGroupMedia ? 'group_' : '') + groupName
+    if (isThemeMedia || isGroup) {
+      const groupInfo = getGroupPropParts(mediaKeyIn)
+      const mediaName = groupInfo?.name
+      groupMediaKey = groupInfo?.media
+      if (isGroup) {
+        containerName = mediaName
+      }
+      const name = (isGroup ? 'group_' : '') + mediaName
+
       const selectorStart = styleInner.indexOf(':root')
       const selectorEnd = styleInner.lastIndexOf('{')
       const selector = styleInner.slice(selectorStart, selectorEnd)
       const precedenceSpace = conf.themeClassNameOnRoot ? '' : ' '
-      const pseudoSelectorName = parentPseudoToSelector[groupPseudo] || groupPseudo
+      const pseudoSelectorName = groupInfo.pseudo
+        ? groupPseudoToPseudoCSSMap[groupInfo.pseudo] || groupInfo.pseudo
+        : undefined
+
       const pseudoSelector = pseudoSelectorName ? `:${pseudoSelectorName}` : ''
-      const nextSelector = `:root${precedencePrefix}${precedenceSpace}.t_${name}${pseudoSelector} ${selector.replace(
+      const presedencePrefix = `:root${precedenceImportancePrefix}${precedenceSpace}`
+      const mediaSelector = `.t_${name}${pseudoSelector}`
+      const nextSelector = `${presedencePrefix}${mediaSelector} ${selector.replace(
         ':root',
         ''
       )}`
@@ -57,48 +71,48 @@ export const createMediaStyle = (
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${precedencePrefix}${styleInner}`
+      styleRule = `${precedenceImportancePrefix}${styleInner}`
     }
-  } else {
+  }
+
+  if (!isNonWindowMedia || groupMediaKey) {
+    // one time cost:
+    // TODO MOVE THIS INTO SETUP AREA AND EXPORT IT
     if (!selectors) {
-      if (enableMediaPropOrder) {
-        const mediaKeys = Object.keys(mediaQueries)
-        selectors = Object.fromEntries(
-          mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
-        )
-      } else {
-        const mediaKeys = Object.keys(mediaQueries)
+      const mediaKeys = Object.keys(mediaQueries)
+      selectors = Object.fromEntries(
+        mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+      )
+      if (!enableMediaPropOrder) {
         prefixes = Object.fromEntries(
-          mediaKeys.map((key, index) => [
-            key,
-            new Array(index + 1).fill(':root').join(''),
-          ])
-        )
-        selectors = Object.fromEntries(
-          mediaKeys.map((key) => [key, mediaObjectToString(mediaQueries[key])])
+          mediaKeys.map((k, index) => [k, new Array(index + 1).fill(':root').join('')])
         )
       }
     }
 
-    const precedencePrefix = enableMediaPropOrder
+    const mediaKey = groupMediaKey || mediaKeyIn
+    const mediaSelector = selectors[mediaKey]
+    const screenStr = negate ? 'not all and' : ''
+    const mediaQuery = `${screenStr} ${mediaSelector}`
+    const precedenceImportancePrefix = groupMediaKey
+      ? ''
+      : enableMediaPropOrder
       ? // this new array should be cached
         new Array(priority).fill(':root').join('')
       : // @ts-ignore
         prefixes[mediaKey]
+    const prefix = groupMediaKey ? `@container ${containerName}` : '@media'
 
-    const mediaSelector = selectors[mediaKey]
-    const screenStr = negate ? 'not all and' : ''
-    const mediaQuery = `${screenStr} ${mediaSelector}`
-    const styleInner = rules
-      .map((rule) => rule.replace(identifier, nextIdentifier))
-      .join(';')
+    if (groupMediaKey) {
+      styleInner = styleRule
+    }
 
     // combines media queries if they already exist
-    if (styleInner.includes('@media')) {
+    if (styleInner.includes(prefix)) {
       // combine
       styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
     } else {
-      styleRule = `@media ${mediaQuery}{${precedencePrefix}${styleInner}}`
+      styleRule = `${prefix} ${mediaQuery}{${precedenceImportancePrefix}${styleInner}}`
     }
   }
 

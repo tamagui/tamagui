@@ -28,6 +28,8 @@ import {
   getMediaImportanceIfMoreImportant,
   mediaState as globalMediaState,
   isMediaKey,
+  mediaKeyMatch,
+  mediaKeyToQuery,
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
@@ -54,6 +56,7 @@ import type {
 import type { LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
+import { getGroupPropParts } from './getGroupPropParts'
 import { generateAtomicStyles, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRules,
@@ -145,27 +148,27 @@ export const getSplitStyles: StyleSplitter = (
   } = staticConfig
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
-  let pseudos: PseudoStyles | null = null
   const mediaState = styleProps.mediaState || globalMediaState
   const usedKeys: Record<string, number> = {}
-  let space: SpaceTokens | null = props.space
-  let hasMedia: boolean | string[] = false
-  let dynamicThemeAccess: boolean | undefined
-  let pseudoGroups: Set<string> | undefined
   const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClassNames
-
-  let style: ViewStyleWithPseudos = {}
   const rulesToInsert: RulesToInsert = []
   const classNames: ClassNamesObject = {}
-  let className = '' // existing classNames
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
+  let pseudos: PseudoStyles | null = null
+  let space: SpaceTokens | null = props.space
+  let hasMedia: boolean | string[] = false
+  let dynamicThemeAccess: boolean | undefined
+  let pseudoGroups: Set<string> | undefined
+  let mediaGroups: Set<string> | undefined
+  let style: ViewStyleWithPseudos = {}
+  let className = '' // existing classNames
   let mediaStylesSeen = 0
 
   /**
-   * Not the biggest fan of creating this object but it is a nice API
+   * Not the biggest fan of creating an object but it is a nice API
    */
   const styleState: GetStyleState = {
     curProps: Object.assign({}, props),
@@ -246,7 +249,21 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') continue // handled above
     if (keyInit in usedKeys) continue
-    if (keyInit in skipProps && !isHOC) continue
+    if (keyInit in skipProps && !isHOC) {
+      if (keyInit === 'group') {
+        // add container style
+        const identifier = `t_group_${valInit}`
+        const containerCSS = {
+          identifier,
+          property: 'container',
+          rules: [
+            `.${identifier} { container-name: ${valInit}; container-type: inline-size; }`,
+          ],
+        }
+        addStyleToInsertRules(rulesToInsert, containerCSS)
+      }
+      continue
+    }
 
     styleState.curProps[keyInit] = valInit
 
@@ -669,6 +686,7 @@ export const getSplitStyles: StyleSplitter = (
         if (!val) continue
 
         // TODO can avoid processing this if !shouldDoClasses + state is off
+        // (note: can't because we need to set defaults on enter/exit or else enforce that they should)
         const pseudoStyleObject = getSubStyle(
           styleState,
           key,
@@ -865,6 +883,7 @@ export const getSplitStyles: StyleSplitter = (
         if (shouldDoClasses) {
           if (hasSpace) {
             delete mediaStyle['space']
+            // TODO group/theme/platform + space support (or just make it official not supported in favor of gap)
             if (mediaState[mediaKeyShort]) {
               const importance = getMediaImportanceIfMoreImportant(
                 mediaKeyShort,
@@ -923,31 +942,46 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
           } else if (isGroupMedia) {
-            const [_, groupName, groupPseudoKey] = mediaKeyShort.split('-')
+            const groupInfo = getGroupPropParts(mediaKeyShort)
+            const groupName = groupInfo.name
 
             // $group-x
-            if (!context?.groups.state[groupName]) {
+            const groupContext = context?.groups.state[groupName]
+            if (!groupContext) {
               if (process.env.NODE_ENV === 'development' && debug) {
                 console.warn(`No parent with group prop, skipping styles: ${groupName}`)
               }
               continue
             }
 
-            // $group-x-hover
-            pseudoGroups ||= new Set()
-            pseudoGroups.add(groupName)
+            const groupPseudoKey = groupInfo.pseudo
+            const groupMediaKey = groupInfo.media
+            const componentGroupState = componentState.group?.[groupName]
+
+            if (groupMediaKey) {
+              mediaGroups ||= new Set()
+              mediaGroups.add(groupMediaKey)
+              const mediaState = componentGroupState?.media
+              let isActive = mediaState?.[groupMediaKey]
+              // use parent styles if width and height hardcoded we can do an inline media match and avoid double render
+              if (!mediaState && groupContext.layout) {
+                isActive = mediaKeyMatch(groupMediaKey, groupContext.layout)
+              }
+              if (!isActive) continue
+              importanceBump = 2
+            }
+
             if (groupPseudoKey) {
-              const groupPseudoKeyShort = groupPseudoKey
-              const groupState =
-                componentState.group?.[groupName] ||
+              pseudoGroups ||= new Set()
+              pseudoGroups.add(groupName)
+              const componentGroupPseudoState = (
+                componentGroupState ||
                 // fallback to context initially
                 context.groups.state[groupName]
-
-              const isActive = groupState?.[groupPseudoKeyShort]
-              if (!isActive) {
-                continue
-              }
-              const priority = pseudoPriorities[groupPseudoKeyShort]
+              ).pseudo
+              const isActive = componentGroupPseudoState?.[groupPseudoKey]
+              if (!isActive) continue
+              const priority = pseudoPriorities[groupPseudoKey]
               importanceBump = priority
             }
           }
@@ -1198,6 +1232,7 @@ export const getSplitStyles: StyleSplitter = (
     rulesToInsert,
     dynamicThemeAccess,
     pseudoGroups,
+    mediaGroups,
   }
 
   // native: swap out the right family based on weight/style
@@ -1417,6 +1452,7 @@ const mapTransformKeys = {
 }
 
 const skipProps = {
+  untilMeasured: 1,
   animation: 1,
   space: 1,
   animateOnly: 1,

@@ -27,7 +27,7 @@ export function matchQuery(mediaQuery: string, values) {
       return false
     }
 
-    const expressionsMatch = query.expressions.every(function (expression) {
+    const expressionsMatch = query.expressions.every((expression) => {
       const feature = expression.feature
       const modifier = expression.modifier
       let expValue = expression.value

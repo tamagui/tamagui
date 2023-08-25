@@ -34,8 +34,7 @@
     "@tamagui/core": "1.55.2",
     "@tamagui/image": "1.55.2",
     "@tamagui/shapes": "1.55.2",
-    "@tamagui/text": "1.55.2",
-    "@tamagui/use-event": "1.55.2"
+    "@tamagui/text": "1.55.2"
   },
   "peerDependencies": {
     "react": "*",

@@ -10,7 +10,7 @@ export function composeEventHandlers<E extends Events>(
   if (!og || !next) {
     return next || og
   }
-  return function composedEventHandler(event: E) {
+  return function (event: E) {
     og?.(event)
     if (
       !event ||

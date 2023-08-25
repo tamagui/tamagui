@@ -5,7 +5,7 @@ import {
   StackProps,
   TamaguiComponent,
   TamaguiComponentExpectingVariants,
-  mergeEvent,
+  composeEventHandlers,
   useDidFinishSSR,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -78,8 +78,8 @@ export function createSheet<
           // @ts-ignore
           <Overlay
             {...props}
-            onPress={mergeEvent(
-              props.onPress as any,
+            onPress={composeEventHandlers(
+              props.onPress,
               context.dismissOnOverlayPress
                 ? () => {
                     context.setOpen(false)

@@ -13,6 +13,7 @@
     "dist"
   ],
   "dependencies": {
+    "@tamagui/use-force-update": "1.55.2",
     "@tamagui/use-presence": "1.55.2",
     "@tamagui/web": "1.55.2"
   },

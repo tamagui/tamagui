@@ -36,23 +36,28 @@ export const Sandbox = () => {
 
   return (
     <>
-      <Stack group="testy">
+      <Stack f={1} group="testy">
         <Square
           size={100}
           bc="green"
-          $group-testy={{ bc: 'red' }}
-          $group-testy-hover={{
-            bc: 'pink',
+          // $group-testy={{
+          //   bc: 'brown',
+          // }}
+          // $group-testy-hover={{
+          //   bc: 'black',
+          // }}
+          $group-testy-sm={{
+            bc: 'red',
           }}
-          $group-testy-press={{
-            bc: 'black',
+          $group-testy-sm-hover={{
+            bc: 'palegoldenrod',
           }}
         />
       </Stack>
-
+      {/* 
       <Stack>
         <Square size={100} bc="yellow" $group-testy={{ bc: 'red' }} />
-      </Stack>
+      </Stack> */}
 
       {/* <TextInput theme={theme} /> */}
       {/* <Button onPress={() => setTheme('red')}>asdsad</Button> */}

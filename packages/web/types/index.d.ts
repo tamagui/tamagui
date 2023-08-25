@@ -52,7 +52,6 @@ export * from './views/ThemeProvider';
 export * from './views/FontLanguage';
 export * from './views/TamaguiProvider';
 export * from './views/AnimationDriverProvider';
-export * from '@tamagui/use-force-update';
 export * from '@tamagui/use-did-finish-ssr';
 export * from '@tamagui/use-event';
 export * from '@tamagui/compose-refs';

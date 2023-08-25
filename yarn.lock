@@ -5536,6 +5536,7 @@ __metadata:
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
   dependencies:
     "@tamagui/build": 1.55.2
+    "@tamagui/use-force-update": 1.55.2
     "@tamagui/use-presence": 1.55.2
     "@tamagui/web": 1.55.2
   languageName: unknown
@@ -5617,7 +5618,6 @@ __metadata:
     "@tamagui/image": 1.55.2
     "@tamagui/shapes": 1.55.2
     "@tamagui/text": 1.55.2
-    "@tamagui/use-event": 1.55.2
     react: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
@@ -7662,7 +7662,6 @@ __metadata:
     "@tamagui/normalize-css-color": 1.55.2
     "@tamagui/timer": 1.55.2
     "@tamagui/use-did-finish-ssr": 1.55.2
-    "@tamagui/use-event": 1.55.2
     "@tamagui/use-force-update": 1.55.2
     "@testing-library/react": ^13.4.0
     csstype: ^3.0.10
@@ -24918,7 +24917,6 @@ __metadata:
     "@tamagui/tooltip": 1.55.2
     "@tamagui/use-controllable-state": 1.55.2
     "@tamagui/use-debounce": 1.55.2
-    "@tamagui/use-event": 1.55.2
     "@tamagui/use-force-update": 1.55.2
     "@tamagui/use-window-dimensions": 1.55.2
     "@tamagui/visually-hidden": 1.55.2

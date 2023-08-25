@@ -46,8 +46,14 @@ export type TamaguiComponentPropsBase = {
     theme?: ThemeName | null;
     /**
      * Marks this component as a group for use in styling children based on parents named group
+     * See: https://tamagui.dev/docs/intro/props
      */
     group?: GroupNames;
+    /**
+     * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
+     * See: https://tamagui.dev/docs/intro/props
+     */
+    untilMeasured?: 'hide' | 'show';
     /**
      * Equivalent to "name" property on styled() for automatically applying a theme
      */
@@ -114,16 +120,39 @@ export type ComponentContextI = {
     animationDriver: AnimationDriver | null;
     groups: GroupContextType;
 };
+type ComponentGroupEvent = {
+    pseudo?: PseudoGroupState;
+    layout?: LayoutValue;
+};
 export type GroupContextType = {
     emit: GroupStateListener;
     subscribe: (cb: GroupStateListener) => DisposeFn;
-    state: Record<string, GroupState>;
+    state: Record<string, ComponentGroupEvent>;
 };
-export type GroupStateListener = (name: string, state: GroupState) => void;
-type GroupState = {
+export type GroupStateListener = (name: string, state: ComponentGroupEvent) => void;
+type PseudoGroupState = {
     hover?: boolean;
     press?: boolean;
     focus?: boolean;
+};
+export type GroupState = {
+    pseudo?: PseudoGroupState;
+    media?: Record<MediaQueryKey, boolean>;
+};
+export type LayoutEvent = {
+    nativeEvent: {
+        layout: LayoutValue;
+        target: any;
+    };
+    timeStamp: number;
+};
+type LayoutValue = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    left: number;
+    top: number;
 };
 export type DisposeFn = () => void;
 export type ConfigListener = (conf: TamaguiInternalConfig) => void;
@@ -471,7 +500,9 @@ export interface TypeOverride {
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
 type ParentMediaStates = 'hover' | 'press' | 'focus';
-export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}`;
+
+export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`;
+
 export type MediaProps<A> = {
     [key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: A;
 };
@@ -481,6 +512,10 @@ export type MediaQueries = {
 export interface MediaQueryList {
     addListener(listener?: any): void;
     removeListener(listener?: any): void;
+    match?: (query: string, dimensions: {
+        width: number;
+        height: number;
+    }) => boolean;
     matches: boolean;
 }
 export type MatchMedia = (query: string) => MediaQueryList;
@@ -981,6 +1016,7 @@ export type GetStyleResult = {
     hasMedia: boolean | string[];
     dynamicThemeAccess?: boolean;
     pseudoGroups?: Set<string>;
+    mediaGroups?: Set<string>;
 };
 export type ClassNamesObject = Record<string, string>;
 export type TamaguiComponentEvents = {

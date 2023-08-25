@@ -33,7 +33,6 @@
     "@tamagui/normalize-css-color": "1.55.2",
     "@tamagui/timer": "1.55.2",
     "@tamagui/use-did-finish-ssr": "1.55.2",
-    "@tamagui/use-event": "1.55.2",
     "@tamagui/use-force-update": "1.55.2"
   },
   "peerDependencies": {
