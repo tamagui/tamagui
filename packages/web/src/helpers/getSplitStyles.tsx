@@ -294,6 +294,13 @@ export const getSplitStyles: StyleSplitter = (
         if (keyInit === 'elevationAndroid') continue
       }
 
+      // we have a custom `selectable` variant on tamagui's <Text> component but `selectable` is also a native Text prop
+      // here we make sure the native prop gets through
+      if (keyInit === 'selectable' && isText) {
+        viewProps[keyInit] = valInit
+        continue
+      }
+
       // map userSelect to native prop
       if (keyInit === 'userSelect') {
         keyInit = 'selectable'
