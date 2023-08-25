@@ -24,7 +24,7 @@ export const SupabaseProvider = ({
       cookieOptions: isStudio
         ? undefined
         : {
-            domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
+            domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
             maxAge: 1000 * 60 * 60 * 24 * 365,
             path: '/',
             sameSite: 'None',
