@@ -7,6 +7,15 @@ import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   const { supabase } = await protectApiRoute(req, res)
+  const userRes = await supabase.auth.getUser()
+  const user = userRes.data.user
+
+  if (!user) {
+    res.status(401).json({
+      error: 'The user is not authenticated',
+    })
+    return
+  }
 
   const subscriptionId = req.body['subscription_id']
   const productId = req.body['product_id']
