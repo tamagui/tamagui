@@ -40,6 +40,15 @@ export function GroupUseCases() {
         <XGroup.Item>
           <Button>is</Button>
         </XGroup.Item>
+        <XGroup.Item forcePlacement="first">
+          <Button testID="composite-api-force-placement-first">first</Button>
+        </XGroup.Item>
+        <XGroup.Item forcePlacement="center">
+          <Button testID="composite-api-force-placement-center">center</Button>
+        </XGroup.Item>
+        <XGroup.Item forcePlacement="last">
+          <Button testID="composite-api-force-placement-last">last</Button>
+        </XGroup.Item>
         <XGroup.Item>
           <Button>composite</Button>
         </XGroup.Item>
