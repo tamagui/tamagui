@@ -6,6 +6,7 @@ import {
   GetProps,
   SizeTokens,
   TamaguiElement,
+  createShallowSetState,
   getTokens,
   getVariableValue,
   isClient,
@@ -71,7 +72,8 @@ const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
     const sliderRef = React.useRef<View>(null)
-    const [state, setState] = React.useState(() => ({ size: 0, offset: 0 }))
+    const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
+    const setState = createShallowSetState(setState_)
 
     function getValueFromPointer(pointerPosition: number) {
       const input: [number, number] = [0, state.size]
@@ -166,7 +168,8 @@ const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
       onSlideEnd,
       ...sliderProps
     } = props
-    const [state, setState] = React.useState(() => ({ size: 0, offset: 0 }))
+    const [state, setState_] = React.useState(() => ({ size: 0, offset: 0 }))
+    const setState = createShallowSetState(setState_)
     const sliderRef = React.useRef<View>(null)
 
     function getValueFromPointer(pointerPosition: number) {

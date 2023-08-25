@@ -1,6 +1,6 @@
-// import '../lib/wdyr'
+import '../lib/wdyr'
 
-import { UpdateThemeDemo } from '@tamagui/demos'
+import { SliderDemo, UpdateThemeDemo } from '@tamagui/demos'
 // debug
 import { memo } from 'react'
 
@@ -16,15 +16,7 @@ export default memo(() => {
         flex: 1,
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: 20,
-          right: 20,
-        }}
-      >
-        <UpdateThemeDemo />
-      </div>
+      <SliderDemo />
     </div>
   )
 })

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { TamaguiComponentState } from '../types'
 
-export function createShallowSetState<State extends TamaguiComponentState>(
+export function createShallowSetState<State extends Object>(
   setter: React.Dispatch<React.SetStateAction<State>>
 ) {
   return (next: Partial<State>) => setter((prev) => mergeIfNotShallowEqual(prev, next))
