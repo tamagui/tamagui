@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { OutputOptions } from 'rollup'
@@ -46,7 +46,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.disabled = false
       // config.optimizeDeps.force = true
-      // config.optimizeDeps.include = ['escape-string-regexp']
+      config.optimizeDeps.include = ['escape-string-regexp']
+      config.optimizeDeps.exclude = ['react-native']
 
       // config.optimizeDeps.needsInterop ??= []
       // config.optimizeDeps.needsInterop.push('react-native')
@@ -84,7 +85,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
               filter: /react-native.*/,
             },
             async ({ path, namespace }) => {
-              console.log('wtf', path)
               return {
                 path: require.resolve('@tamagui/proxy-worm'),
               }
@@ -133,11 +133,70 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       if (options.mode === 'build') {
         config.plugins ||= []
-        config.plugins.push(
-          viteCommonjs({
-            include: ['escape-string-regexp'],
-          })
+        // config.plugins.push(
+        //   viteCommonjs({
+        //     include: ['escape-string-regexp'],
+        //   })
+        // )
+        // config.plugins.push(
+        //   commonjs({
+        //     filter(id) {
+        //       console.log('id', id)
+        //       return true
+        //     },
+        //   })
+        // )
+
+        config.build.rollupOptions.plugins.push(
+          commonjs({
+            transformMixedEsModules: true,
+            include:
+              /node_modules\/(escape-regex|use-latest-callback|react-is|react-native-screens|warn-once|color|@bacons\/react-views|invariant|expo-modules-core|qs|url-parse|@expo)\//,
+          }) as any
         )
+
+        config.build.rollupOptions.plugins.unshift({
+          name: `swap-react-native-screens`,
+
+          async transform(code, id) {
+            // HACK
+            if (id.includes('react-native-screens/lib/module/index.native.js')) {
+              return (
+                code +
+                `
+              export { 
+                ScreenStackHeaderBackButtonImage,
+                Screen,
+                ScreenContainer,
+                ScreenContext,
+                ScreenStack,
+                InnerScreen,
+                SearchBar,
+                FullWindowOverlay,
+                ScreenStackHeaderRightView,
+                ScreenStackHeaderLeftView,
+                ScreenStackHeaderCenterView,
+                ScreenStackHeaderSearchBarView,
+                enableScreens,
+                enableFreeze,
+                screensEnabled,
+                shouldUseActivityState,
+                useTransitionProgress,
+                isSearchBarAvailableForCurrentPlatform,
+                isNewBackTitleImplementation,
+                executeNativeBackPress
+              }
+              export const NativeScreen = ScreensNativeModules.NativeScreen;
+              export const NativeScreenContainer = ScreensNativeModules.NativeScreenContainer;
+              export const NativeScreenNavigationContainer = NativeScreenNavigationContainer;
+              export const ScreenStackHeaderConfig = ScreensNativeModules.NativeScreenStackHeaderConfig;
+              export const ScreenStackHeaderSubview = NativeScreenStackHeaderSubview;
+              export const SearchBarCommands = ScreensNativeModules.NativeSearchBarCommands;
+`
+              )
+            }
+          },
+        })
 
         const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
         const rnCode = `
@@ -164,6 +223,11 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `swap-react-native`,
 
           async load(id) {
+            // TODO we need to resolve these to the inner deps...
+            if (id.includes('react-native/Libraries')) {
+              return `export default function() {}`
+            }
+
             if (id.includes('node_modules/react-native/') && id.endsWith('.js')) {
               return {
                 code: rnCode,

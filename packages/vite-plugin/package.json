@@ -27,7 +27,6 @@
   "dependencies": {
     "@babel/core": "^7.21.8",
     "@babel/plugin-transform-classes": "^7.22.6",
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-node-resolve": "^15.0.1",
@@ -42,6 +41,7 @@
     "micromatch": ">=4.0.0",
     "outdent": "^0.8.0",
     "rollup": ">=3.7.0",
+    "vite-plugin-commonjs": "^0.9.0",
     "vite-plugin-commonjs-externals": "^0.1.3",
     "vite-plugin-externals": "^0.6.2"
   },
