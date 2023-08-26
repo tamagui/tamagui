@@ -993,16 +993,17 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
-    if (process.env.TAMAGUI_TARGET === 'native') {
-      // perf - unwrap View
-      if (elementType === BaseText || elementType === BaseView) {
-        // instead of rendering a whole sub component, just grab the contents directly
-        // since these components dont use hooks we can do this...
-        viewProps.children = content
-        content = elementType.render(viewProps)
-      } else {
-        content = createElement(elementType, viewProps, content)
-      }
+    // perf - unwrap View
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      (elementType === BaseText || elementType === BaseView)
+    ) {
+      // instead of rendering a whole sub component, just grab the contents directly
+      // since these components dont use hooks we can do this...
+      viewProps.children = content
+      content = elementType.render(viewProps)
+    } else {
+      content = createElement(elementType, viewProps, content)
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
