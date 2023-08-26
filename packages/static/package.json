@@ -76,7 +76,7 @@
     "react": "^18.2.0",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
-    "typescript": "^5.1.3",
+    "typescript": "^5.2.2",
     "vitest": "^0.26.3",
     "webpack": "^5.88.2"
   },

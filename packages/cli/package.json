@@ -72,7 +72,7 @@
     "prompts": "2.1.0",
     "source-map": "^0.7.3",
     "ts-morph": "^15.1.0",
-    "typescript": "^5.1.3",
+    "typescript": "^5.2.2",
     "url": "^0.11.0",
     "vite": "^4.4.9",
     "vite-plugin-entry-shaking": "^0.3.2",

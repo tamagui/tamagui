@@ -1000,6 +1000,7 @@ export function createComponent<
     ) {
       // instead of rendering a whole sub component, just grab the contents directly
       // since these components dont use hooks we can do this...
+      // we could further improve this performance by actually just doing this ourselves, but it wouldn't be a ton
       viewProps.children = content
       content = elementType.render(viewProps)
     } else {
