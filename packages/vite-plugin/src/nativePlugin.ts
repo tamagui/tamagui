@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { OutputOptions } from 'rollup'
@@ -16,7 +17,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     name: 'tamagui-native',
     enforce: 'post',
 
-    config: (config) => {
+    config: async (config) => {
       config.define ||= {}
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
@@ -43,7 +44,9 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps ??= {}
 
-      config.optimizeDeps.disabled = true
+      config.optimizeDeps.disabled = false
+      // config.optimizeDeps.force = true
+      // config.optimizeDeps.include = ['escape-string-regexp']
 
       // config.optimizeDeps.needsInterop ??= []
       // config.optimizeDeps.needsInterop.push('react-native')
@@ -56,9 +59,9 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.optimizeDeps.esbuildOptions.plugins ??= []
 
       config.optimizeDeps.esbuildOptions.alias = {
-        'react-native': '@tamagui/proxy-worm'
+        'react-native': '@tamagui/proxy-worm',
       }
-      
+
       // config.optimizeDeps.esbuildOptions.plugins.push(
       //   esbuildFlowPlugin(
       //     /node_modules\/(react-native\/|@react-native\/)/,
@@ -71,6 +74,24 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
+
+      // console.log('>/')
+      config.optimizeDeps.esbuildOptions.plugins.push({
+        name: 'react-native-subpath-import',
+        setup(build) {
+          build.onResolve(
+            {
+              filter: /react-native.*/,
+            },
+            async ({ path, namespace }) => {
+              console.log('wtf', path)
+              return {
+                path: require.resolve('@tamagui/proxy-worm'),
+              }
+            }
+          )
+        },
+      })
 
       config.optimizeDeps.esbuildOptions.plugins.push({
         name: 'react-native-assets',
@@ -107,17 +128,19 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (!Array.isArray(config.build.rollupOptions.plugins)) {
-        throw `x`
+        throw `xxxxx`
       }
 
       if (options.mode === 'build') {
-        config.build.rollupOptions.plugins.push({
-          name: `swap-react-native`,
+        config.plugins ||= []
+        config.plugins.push(
+          viteCommonjs({
+            include: ['escape-string-regexp'],
+          })
+        )
 
-          async load(id) {
-            if (id.endsWith('/react-native/index.js')) {
-              const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
-              const code = `
+        const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
+        const rnCode = `
               const run = () => {  
                 ${bundled
                   .replace(
@@ -136,8 +159,14 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
               const RN = run()
               ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
               `
+
+        config.build.rollupOptions.plugins.push({
+          name: `swap-react-native`,
+
+          async load(id) {
+            if (id.includes('node_modules/react-native/') && id.endsWith('.js')) {
               return {
-                code,
+                code: rnCode,
               }
             }
           },
@@ -160,40 +189,44 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `force-export-all`,
 
           async transform(code, id) {
-            const [imports, exports] = parse(code)
+            try {
+              const [imports, exports] = parse(code)
 
-            let forceExports = ''
+              let forceExports = ''
 
-            // note that es-module-lexer parses export * from as an import (twice) for some reason
-            let counts = {}
-            for (const imp of imports) {
-              if (imp.n && imp.n[0] !== '.') {
-                counts[imp.n] ||= 0
-                counts[imp.n]++
-                if (counts[imp.n] == 2) {
-                  // star export
-                  const path = await getVitePath(dirname(id), imp.n)
-                  forceExports += `Object.assign(exports, require("${path}"));`
+              // note that es-module-lexer parses export * from as an import (twice) for some reason
+              let counts = {}
+              for (const imp of imports) {
+                if (imp.n && imp.n[0] !== '.') {
+                  counts[imp.n] ||= 0
+                  counts[imp.n]++
+                  if (counts[imp.n] == 2) {
+                    // star export
+                    const path = await getVitePath(dirname(id), imp.n)
+                    forceExports += `Object.assign(exports, require("${path}"));`
+                  }
                 }
               }
+
+              forceExports += exports
+                .map((e) => {
+                  if (e.n === 'default') {
+                    return ''
+                  }
+                  let out = ''
+                  if (e.ln !== e.n) {
+                    // forces the "as x" to be referenced so it gets exported
+                    out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
+                  }
+                  out += `globalThis.____forceExport = ${e.ln}`
+                  return out
+                })
+                .join(';')
+
+              return code + '\n' + forceExports
+            } catch (err) {
+              console.log(`Error forcing exports for id ${id} ${err}`)
             }
-
-            forceExports += exports
-              .map((e) => {
-                if (e.n === 'default') {
-                  return ''
-                }
-                let out = ''
-                if (e.ln !== e.n) {
-                  // forces the "as x" to be referenced so it gets exported
-                  out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
-                }
-                out += `globalThis.____forceExport = ${e.ln}`
-                return out
-              })
-              .join(';')
-
-            return code + '\n' + forceExports
           },
         })
 
@@ -214,31 +247,44 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
               return
             }
 
-            let out = await transform(code, {
-              filename: id,
-              swcrc: false,
-              configFile: false,
-              sourceMaps: true,
-              jsc: {
-                target: 'es5',
-                parser: id.endsWith('.tsx')
-                  ? { syntax: 'typescript', tsx: true, decorators: true }
-                  : id.endsWith('.ts')
-                  ? { syntax: 'typescript', tsx: false, decorators: true }
-                  : id.endsWith('.jsx')
-                  ? { syntax: 'ecmascript', jsx: true }
-                  : { syntax: 'ecmascript' },
-                transform: {
-                  useDefineForClassFields: true,
-                  react: {
-                    development: true,
-                    runtime: 'automatic',
+            try {
+              let out = await transform(code, {
+                filename: id,
+                swcrc: false,
+                configFile: false,
+                sourceMaps: true,
+                jsc: {
+                  target: 'es5',
+                  parser: id.endsWith('.tsx')
+                    ? { syntax: 'typescript', tsx: true, decorators: true }
+                    : id.endsWith('.ts')
+                    ? { syntax: 'typescript', tsx: false, decorators: true }
+                    : id.endsWith('.jsx')
+                    ? { syntax: 'ecmascript', jsx: true }
+                    : { syntax: 'ecmascript' },
+                  transform: {
+                    useDefineForClassFields: true,
+                    react: {
+                      development: true,
+                      runtime: 'automatic',
+                    },
                   },
                 },
-              },
-            })
+              })
 
-            return out
+              return out
+            } catch (e: any) {
+              const message: string = e.message
+              const fileStartIndex = message.indexOf('╭─[')
+              if (fileStartIndex !== -1) {
+                const match = message.slice(fileStartIndex).match(/:(\d+):(\d+)]/)
+                if (match) {
+                  e.line = match[1]
+                  e.column = match[2]
+                }
+              }
+              throw e
+            }
           },
         })
       }
@@ -248,7 +294,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       config.build.commonjsOptions = {
-        include: /node_modules\/react\//,
+        include: [/node_modules\/react\//],
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
