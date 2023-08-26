@@ -1,4 +1,5 @@
 import { Text } from '@tamagui/core'
+import { Stack } from '@tamagui/web'
 import { useLayoutEffect, useState } from 'react'
 
 export function TimedRender(props) {
@@ -10,9 +11,9 @@ export function TimedRender(props) {
   }, [])
 
   return (
-    <>
+    <Stack w="100%" ov="hidden">
       {!!end && <Text>Took {start - end}ms</Text>}
-      {props.children}
-    </>
+      <Stack flexDirection="row">{props.children}</Stack>
+    </Stack>
   )
 }

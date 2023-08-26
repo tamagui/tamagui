@@ -223,45 +223,45 @@ const Subtitle = styled(Paragraph, {
 //   )
 // }
 
-export const View = styled(YStack, {
-  variants: {
-    center: {
-      true: {
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    },
-    absolute: {
-      true: {
-        position: 'absolute',
-      },
-    },
-    stretch: {
-      true: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      },
-    },
-  } as const,
-})
+// export const View = styled(YStack, {
+//   variants: {
+//     center: {
+//       true: {
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//       },
+//     },
+//     absolute: {
+//       true: {
+//         position: 'absolute',
+//       },
+//     },
+//     stretch: {
+//       true: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         right: 0,
+//         bottom: 0,
+//       },
+//     },
+//   } as const,
+// })
 
-const DrawListRow = styled(View, {
-  fd: 'row',
-  columnGap: '$3',
-  ai: 'flex-start',
-  $md: {
-    ai: 'center',
-    columnGap: '$1',
-  },
-  $lg: {
-    columnGap: '$3',
-  },
-  rowGap: '$3',
-  px: '$3',
-})
+// const DrawListRow = styled(View, {
+//   fd: 'row',
+//   columnGap: '$3',
+//   ai: 'flex-start',
+//   $md: {
+//     ai: 'center',
+//     columnGap: '$1',
+//   },
+//   $lg: {
+//     columnGap: '$3',
+//   },
+//   rowGap: '$3',
+//   px: '$3',
+// })
 
 // const PopoverRenderTest = memo(() => {
 //   return (
