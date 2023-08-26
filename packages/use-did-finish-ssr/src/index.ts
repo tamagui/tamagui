@@ -4,6 +4,11 @@ const emptyFn = () => {}
 const emptyFnFn = () => emptyFn
 
 export function useDidFinishSSR<A = boolean>(value?: A): A | false {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // @ts-expect-error
+    return value ?? true
+  }
+
   return useSyncExternalStore(
     emptyFnFn,
     () => (value == undefined ? true : value),

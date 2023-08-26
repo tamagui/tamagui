@@ -236,6 +236,8 @@ export function createComponent<
 
     const isHydrated = useDidFinishSSR()
 
+    if (process.env.NODE_ENV === 'development' && time) time`did-finish-ssr`
+
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
@@ -699,12 +701,16 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
-    const unPress = useCallback(() => {
+    let unPress = () =>
       setStateShallow({
         press: false,
         pressIn: false,
       })
-    }, [])
+
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      // needs to be referentially stable for web as we add to mouseUps
+      unPress = useCallback(unPress, [])
+    }
 
     // combined multiple effects into one for performance so be careful with logic
     // should not be a layout effect because otherwise it wont render the initial state
@@ -985,6 +991,8 @@ export function createComponent<
       })
     }
 
+    if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       // perf - unwrap View
       if (elementType === BaseText || elementType === BaseView) {
@@ -996,6 +1004,8 @@ export function createComponent<
         content = createElement(elementType, viewProps, content)
       }
     }
+
+    if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
     // must override context so siblings don't clobber initial state
     const subGroupContext = useMemo(() => {
@@ -1027,10 +1037,14 @@ export function createComponent<
       )
     }
 
+    if (process.env.NODE_ENV === 'development' && time) time`group-context`
+
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
       : useThemedChildren(themeState, content, themeStateProps)
+
+    if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'visualize') {
       content = (

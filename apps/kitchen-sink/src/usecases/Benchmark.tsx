@@ -1,5 +1,5 @@
 import { ThemeProvider, createBox, createTheme } from '@shopify/restyle'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Stack, Text, XStack, YStack, styled } from 'tamagui'
 
@@ -68,27 +68,33 @@ const BenchmarkOne = ({ name }) => {
 
   return (
     <>
-      <Text style={{ marginTop: 20 }}>{name}</Text>
-      <Button onPress={() => setX(Math.random())}>Go</Button>
-      <YStack ov="hidden">
+      {useMemo(() => {
+        return (
+          <>
+            <Text style={{ marginTop: 20 }}>{name}</Text>
+            <Button onPress={() => setX(Math.random())}>Go</Button>
+          </>
+        )
+      }, [])}
+      <>
         {name === 'rn' && (
-          <XStack>
+          <>
             <BenchRN key={x} />
-          </XStack>
+          </>
         )}
         {name === 'restyle' && (
-          <XStack>
+          <>
             <ThemeProvider theme={theme}>
               <BenchRestyle key={x} />
             </ThemeProvider>
-          </XStack>
+          </>
         )}
         {name === 'tama' && (
-          <XStack>
+          <>
             <BenchTama key={x} />
-          </XStack>
+          </>
         )}
-      </YStack>
+      </>
     </>
   )
 }
@@ -96,7 +102,7 @@ const BenchmarkOne = ({ name }) => {
 const BenchTama = () => {
   return (
     <TimedRender>
-      {new Array(1000).fill(0).map((_, i) => (
+      {new Array(500).fill(0).map((_, i) => (
         <StyledStack key={i} />
       ))}
     </TimedRender>
@@ -106,7 +112,7 @@ const BenchTama = () => {
 const BenchRestyle = () => {
   return (
     <TimedRender>
-      {new Array(1000).fill(0).map((_, i) => (
+      {new Array(500).fill(0).map((_, i) => (
         <Box borderColor="red" borderWidth={2} padding="s" key={i} />
       ))}
     </TimedRender>
@@ -124,7 +130,7 @@ const styles = StyleSheet.create({
 const BenchRN = () => {
   return (
     <TimedRender>
-      {new Array(1000).fill(0).map((_, i) => (
+      {new Array(500).fill(0).map((_, i) => (
         <View style={styles.style} key={i} />
       ))}
     </TimedRender>
