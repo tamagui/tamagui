@@ -1,11 +1,10 @@
-import '../lib/wdyr'
+// import '../lib/wdyr'
 
-import { SliderDemo, UpdateThemeDemo } from '@tamagui/demos'
-// debug
 import { memo } from 'react'
 
+import { ThemeToggle } from '../components/ThemeToggle'
+
 export default memo(() => {
-  console.warn('rendereingasd')
   return (
     <div
       style={{
@@ -16,7 +15,12 @@ export default memo(() => {
         flex: 1,
       }}
     >
-      <SliderDemo />
+      <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
+        <ThemeToggle />
+      </div>
+      <>
+        <></>
+      </>
     </div>
   )
 })
