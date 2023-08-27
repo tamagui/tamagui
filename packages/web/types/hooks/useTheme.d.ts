@@ -15,10 +15,7 @@ type UseThemeResult = {
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResponse, ThemeParsed];
-export declare function getThemeProxied({ theme, themeManager, }: {
-    theme: ThemeParsed;
-    themeManager?: ThemeManager;
-}, keys?: string[], debug?: DebugProp): UseThemeResult;
+export declare function getThemeProxied(theme: ThemeParsed, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
 export {};

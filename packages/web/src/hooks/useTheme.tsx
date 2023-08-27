@@ -32,9 +32,7 @@ const emptyProps = { name: null }
 
 function getDefaultThemeProxied() {
   const config = getConfig()
-  return getThemeProxied({
-    theme: config.themes[Object.keys(config.themes)[0]],
-  })
+  return getThemeProxied(config.themes[Object.keys(config.themes)[0]])
 }
 
 type ThemeGettable<Val> = Val & {
@@ -99,14 +97,7 @@ export const useThemeWithState = (
   }
 
   const themeProxied = useMemo(() => {
-    return getThemeProxied(
-      {
-        theme,
-        themeManager,
-      },
-      keys.current,
-      props.debug
-    )
+    return getThemeProxied(theme, themeManager, keys.current, props.debug)
   }, [theme, name, className, themeManager])
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
@@ -120,13 +111,8 @@ export const useThemeWithState = (
 }
 
 export function getThemeProxied(
-  {
-    theme,
-    themeManager,
-  }: {
-    theme: ThemeParsed
-    themeManager?: ThemeManager
-  },
+  theme: ThemeParsed,
+  themeManager?: ThemeManager,
   keys?: string[],
   debug?: DebugProp
 ): UseThemeResult {
@@ -198,7 +184,6 @@ export const useChangeThemeEffect = (
   } = props
 
   const parentManager = useContext(ThemeManagerContext)
-  const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
   if (disable) {
     if (!parentManager) throw `❌ 2`
@@ -232,7 +217,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     // listen for parent change + notify children change
-    useLayoutEffect(() => {
+    useEffect(() => {
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
@@ -330,13 +315,13 @@ export const useChangeThemeEffect = (
     //  returns previous theme manager if no change
     let themeManager: ThemeManager = parentManager!
     let state: ThemeManagerState | undefined
+    const hasThemeUpdatingProps = getHasThemeUpdatingProps(props)
 
-    const getNewThemeManager = () => {
-      return new ThemeManager(props, root ? 'root' : parentManager)
-    }
-
-    // only if has updating theme props
     if (hasThemeUpdatingProps) {
+      const getNewThemeManager = () => {
+        return new ThemeManager(props, root ? 'root' : parentManager)
+      }
+
       if (prev?.themeManager) {
         themeManager = prev.themeManager
 

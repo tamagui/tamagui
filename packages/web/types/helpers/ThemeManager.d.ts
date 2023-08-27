@@ -15,7 +15,7 @@ export type ThemeManagerState = {
     componentName?: string;
     inverse?: boolean;
 };
-export declare function getHasThemeUpdatingProps(props: ThemeProps): boolean;
+export declare function getHasThemeUpdatingProps(props: ThemeProps): string | boolean | undefined;
 export declare class ThemeManager {
     props: ThemeProps;
     id: number;
@@ -28,7 +28,7 @@ export declare class ThemeManager {
     updateStateFromProps(props?: ThemeProps & {
         forceTheme?: ThemeParsed;
     }, shouldNotify?: boolean): true | ThemeManagerState | undefined;
-    updateState(nextState: ThemeManagerState, shouldNotify?: boolean): ThemeManagerState;
+    updateState(nextState: ThemeManagerState, shouldNotify?: boolean): void;
     getStateIfChanged(props?: ThemeProps, state?: ThemeManagerState | null, parentManager?: ThemeManager | null): ThemeManagerState | null | undefined;
     getStateShouldChange(nextState: ThemeManagerState | null, state?: ThemeManagerState | null): boolean;
     getState(props?: ThemeProps, parentManager?: ThemeManager | null): ThemeManagerState | null;

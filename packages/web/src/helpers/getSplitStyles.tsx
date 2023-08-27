@@ -134,16 +134,6 @@ export const getSplitStyles: StyleSplitter = (
   elementType,
   debug
 ) => {
-  let time: any
-  if (
-    !process.env.TAMAGUI_IS_CORE_NODE &&
-    process.env.NODE_ENV === 'development' &&
-    debug === 'profile'
-  ) {
-    const timer = require('@tamagui/timer').timer()
-    time = timer.start()
-  }
-
   conf = conf || getConfig()
   const { shorthands } = conf
   const {
@@ -195,8 +185,6 @@ export const getSplitStyles: StyleSplitter = (
     context,
     debug,
   }
-
-  if (process.env.NODE_ENV === 'development' && time) time`style:setup`
 
   if (
     process.env.NODE_ENV === 'development' &&
@@ -250,10 +238,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && time) time`style:loop:start`
   for (const keyOg in props) {
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:start1`
-
     let keyInit = keyOg
     let valInit = props[keyOg]
 
@@ -266,16 +251,18 @@ export const getSplitStyles: StyleSplitter = (
     if (keyInit in usedKeys) continue
     if (keyInit in skipProps && !isHOC) {
       if (keyInit === 'group') {
-        // add container style
-        const identifier = `t_group_${valInit}`
-        const containerCSS = {
-          identifier,
-          property: 'container',
-          rules: [
-            `.${identifier} { container-name: ${valInit}; container-type: inline-size; }`,
-          ],
+        if (process.env.TAMAGUI_TARGET === 'web') {
+          // add container style
+          const identifier = `t_group_${valInit}`
+          const containerCSS = {
+            identifier,
+            property: 'container',
+            rules: [
+              `.${identifier} { container-name: ${valInit}; container-type: inline-size; }`,
+            ],
+          }
+          addStyleToInsertRules(rulesToInsert, containerCSS)
         }
-        addStyleToInsertRules(rulesToInsert, containerCSS)
       }
       continue
     }
@@ -283,7 +270,6 @@ export const getSplitStyles: StyleSplitter = (
     const valInitType = typeof valInit
 
     styleState.curProps[keyInit] = valInit
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:set-cur-prop`
 
     // TODO this is duplicated! but seems to be fixing some bugs so leaving got now
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -359,8 +345,6 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
     }
-
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:accessibility-map`
 
     if (keyInit === 'dataSet') {
       for (const keyInit in valInit) {
@@ -636,13 +620,9 @@ export const getSplitStyles: StyleSplitter = (
 
     const avoidPropMap = isMediaOrPseudo || (!isVariant && !isValidStyleKeyInit)
 
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:setup`
-
     const expanded = avoidPropMap
       ? ([[keyInit, valInit]] as const)
       : propMapper(keyInit, valInit, styleState)
-
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:propMapper`
 
     const next = getPropMappedFontFamily(expanded)
     if (next) {
@@ -680,11 +660,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (!expanded) continue
 
-    if (process.env.NODE_ENV === 'development' && time) time`style:loop:pre-expand`
-
     for (const [key, val] of expanded) {
-      if (process.env.NODE_ENV === 'development' && time) time`style:loop:expand:start`
-
       if (val == null) continue
       if (key in usedKeys) continue
 
@@ -692,9 +668,6 @@ export const getSplitStyles: StyleSplitter = (
       isMedia = !isPseudo && !isValidStyleKeyInit && isMediaKey(key)
       isMediaOrPseudo = isMedia || isPseudo
       isVariant = variants && key in variants
-
-      if (process.env.NODE_ENV === 'development' && time)
-        time`style:loop:expand:is-checks`
 
       if (inlineProps?.has(key) || (IS_STATIC && inlineWhenUnflattened?.has(key))) {
         viewProps[key] = props[key] ?? val
@@ -1081,8 +1054,6 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
-  if (process.env.NODE_ENV === 'development' && time) time`style:loop`
-
   // merge after the prop loop - this way pseudos apply and set usedKeys and then this wont clobber them
   // otherwise styled(styleable(), { bg: 'red', pressStyle: { bg: 'pink' } })
   // will pass down a style={} + pressStyle={} but pressStyle will go behind style depending on how you pass it
@@ -1257,8 +1228,6 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && time) time`style:after-loop`
-
   const result: GetStyleResult = {
     space,
     hasMedia,
@@ -1273,8 +1242,6 @@ export const getSplitStyles: StyleSplitter = (
     pseudoGroups,
     mediaGroups,
   }
-
-  if (process.env.NODE_ENV === 'development' && time) time`style:create-result`
 
   // native: swap out the right family based on weight/style
   if (process.env.TAMAGUI_TARGET === 'native') {
@@ -1325,11 +1292,6 @@ export const getSplitStyles: StyleSplitter = (
       }
       console.groupEnd()
     }
-  }
-
-  if (process.env.NODE_ENV === 'development' && time) {
-    time`rest`
-    time.print()
   }
 
   return result

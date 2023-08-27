@@ -1,3 +1,5 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { ThemeParsed, ThemeProps } from '../types'
@@ -28,7 +30,7 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function getHasThemeUpdatingProps(props: ThemeProps) {
-  return Boolean(props.name || props.componentName || props.inverse || props.reset)
+  return props.name || props.componentName || props.inverse || props.reset
 }
 
 let uid = 0
@@ -57,11 +59,6 @@ export class ThemeManager {
         )
       }
       throw `❌ 0`
-    }
-
-    // no change no props
-    if (!getHasThemeUpdatingProps(props)) {
-      return parentManagerIn
     }
 
     this.parentManager = parentManagerIn
@@ -106,7 +103,6 @@ export class ThemeManager {
         this.notify()
       })
     }
-    return this.state
   }
 
   getStateIfChanged(
@@ -305,7 +301,7 @@ function getState(
       result = {
         name: found,
         theme: themes[found],
-        className: getNextThemeClassName(found),
+        className: isWeb ? getNextThemeClassName(found) : '',
         parentName,
         componentName,
         inverse: props.inverse,
