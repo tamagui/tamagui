@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.57.2",
+  "version": "1.57.3",
   "main": "./src/index.js",
   "types": "./types/index.d.ts",
   "files": [
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.21.5",
-    "@tamagui/core": "1.57.2",
-    "@tamagui/helpers": "1.57.2"
+    "@tamagui/core": "1.57.3",
+    "@tamagui/helpers": "1.57.3"
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
