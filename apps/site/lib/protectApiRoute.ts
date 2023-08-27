@@ -15,10 +15,14 @@ export async function protectApiRoute(req: NextApiRequest, res: NextApiResponse)
   const user = session?.user
 
   if (!session || !user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    throw new Error('The user is not authenticated')
+    if (process.env.IS_TAMAGUI_DEV) {
+      console.warn(`Not authenticated but IS_TAMAGUI_DEV is set so allowing route.`)
+    } else {
+      res.status(401).json({
+        error: 'The user is not authenticated',
+      })
+      throw new Error('The user is not authenticated')
+    }
   }
 
   return { supabase, session, user: user! }
