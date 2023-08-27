@@ -68,6 +68,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     plugins: [
       ...plugins,
 
+      // can we comment this out now?
       viteReactPlugin({
         tsDecorators: true,
         mode: 'serve',
@@ -191,7 +192,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     // just so it thinks its loaded
     try {
       void server.transformRequest(id)
-    } catch(err) {
+    } catch (err) {
       // ok
       console.log('err', err)
     }
@@ -341,6 +342,8 @@ __specialRequire("${module.fileName}")
         `var require_usePressability = `,
         `var require_usePressability = globalThis['__ReactUsePressability__'] =`
       )
+      // why is react refresh being added??
+      .replaceAll(`undefined.accept(function() {})`, ``)
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 

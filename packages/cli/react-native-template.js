@@ -63,6 +63,11 @@ function __specialRequire(_mod) {
 
 function createRequire(importsMap) {
   return function require(_mod) {
+    if (_mod.endsWith('.png')) {
+      // for now..
+      return {}
+    }
+    
     const special = __specialRequire(_mod);
     if (special) return special;
 

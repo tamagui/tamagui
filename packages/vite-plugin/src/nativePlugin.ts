@@ -151,12 +151,12 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           commonjs({
             transformMixedEsModules: true,
             include:
-              /node_modules\/(escape-regex|use-latest-callback|react-is|react-native-screens|warn-once|color|@bacons\/react-views|invariant|expo-modules-core|qs|url-parse|@expo)\//,
+              /node_modules\/(escape-regex|use-latest-callback|react-is|react-native-screens|warn-once|color|@bacons\/react-views|invariant|expo-modules-core|qs|url-parse|@expo|color-string)\//,
           }) as any
         )
 
         config.build.rollupOptions.plugins.unshift({
-          name: `swap-react-native-screens`,
+          name: `swap-react-native-modules`,
 
           async transform(code, id) {
             // HACK
@@ -250,9 +250,72 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         )
 
         config.build.rollupOptions.plugins.push({
+          name: `native-transform`,
+
+          async transform(code, id) {
+            if (
+              id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
+              id.includes(`node_modules/react/index.js`) ||
+              id.includes(`node_modules/react/cjs/react.development.js`) ||
+              id.includes(`node_modules/react-native/index.js`) ||
+              id.includes(
+                `node_modules/react/cjs/react-jsx-dev-runtime.development.js`
+              ) ||
+              id.includes(`packages/vite-native-client/`)
+            ) {
+              return
+            }
+
+            try {
+              let out = await transform(code, {
+                filename: id,
+                swcrc: false,
+                configFile: false,
+                sourceMaps: true,
+                jsc: {
+                  target: 'es5',
+                  parser: id.endsWith('.tsx')
+                    ? { syntax: 'typescript', tsx: true, decorators: true }
+                    : id.endsWith('.ts')
+                    ? { syntax: 'typescript', tsx: false, decorators: true }
+                    : id.endsWith('.jsx')
+                    ? { syntax: 'ecmascript', jsx: true }
+                    : { syntax: 'ecmascript' },
+                  transform: {
+                    useDefineForClassFields: true,
+                    react: {
+                      development: true,
+                      refresh: false,
+                      runtime: 'automatic',
+                    },
+                  },
+                },
+              })
+
+              return out
+            } catch (e: any) {
+              const message: string = e.message
+              const fileStartIndex = message.indexOf('╭─[')
+              if (fileStartIndex !== -1) {
+                const match = message.slice(fileStartIndex).match(/:(\d+):(\d+)]/)
+                if (match) {
+                  e.line = match[1]
+                  e.column = match[2]
+                }
+              }
+              throw e
+            }
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
 
           async transform(code, id) {
+            if (!id.endsWith('.js')) {
+              return
+            }
+
             try {
               const [imports, exports] = parse(code)
 
@@ -294,60 +357,13 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           },
         })
 
-        config.build.rollupOptions.plugins.push({
-          name: `native-transform`,
+        config.build.rollupOptions.plugins.unshift({
+          name: `swap-expo-router`,
 
           async transform(code, id) {
-            if (
-              id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
-              id.includes(`node_modules/react/index.js`) ||
-              id.includes(`node_modules/react/cjs/react.development.js`) ||
-              id.includes(`node_modules/react-native/index.js`) ||
-              id.includes(
-                `node_modules/react/cjs/react-jsx-dev-runtime.development.js`
-              ) ||
-              id.includes(`packages/vite-native-client/`)
-            ) {
-              return
-            }
-
-            try {
-              let out = await transform(code, {
-                filename: id,
-                swcrc: false,
-                configFile: false,
-                sourceMaps: true,
-                jsc: {
-                  target: 'es5',
-                  parser: id.endsWith('.tsx')
-                    ? { syntax: 'typescript', tsx: true, decorators: true }
-                    : id.endsWith('.ts')
-                    ? { syntax: 'typescript', tsx: false, decorators: true }
-                    : id.endsWith('.jsx')
-                    ? { syntax: 'ecmascript', jsx: true }
-                    : { syntax: 'ecmascript' },
-                  transform: {
-                    useDefineForClassFields: true,
-                    react: {
-                      development: true,
-                      runtime: 'automatic',
-                    },
-                  },
-                },
-              })
-
-              return out
-            } catch (e: any) {
-              const message: string = e.message
-              const fileStartIndex = message.indexOf('╭─[')
-              if (fileStartIndex !== -1) {
-                const match = message.slice(fileStartIndex).match(/:(\d+):(\d+)]/)
-                if (match) {
-                  e.line = match[1]
-                  e.column = match[2]
-                }
-              }
-              throw e
+            if (id.endsWith('expo-router/src/views/Try.tsx')) {
+              // force this type only export
+              return code + `\nexport const ErrorBoundaryProps = {}`
             }
           },
         })
@@ -358,7 +374,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       config.build.commonjsOptions = {
-        include: [/node_modules\/react\//],
+        include: [/node_modules\/react\/|query-string/],
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
