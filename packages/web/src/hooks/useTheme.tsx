@@ -217,7 +217,7 @@ export const useChangeThemeEffect = (
 
   if (!isServer) {
     // listen for parent change + notify children change
-    useEffect(() => {
+    useLayoutEffect(() => {
       // SSR safe inverse (because server can't know prefers scheme)
       // could be done through fancy selectors like how we do prefers-media
       // but may be a bit of explosion of selectors
