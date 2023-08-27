@@ -12,7 +12,12 @@ const nameMap = {
 
 export function TestScreen() {
   const [id] = useParam('id')
-  const name = id!
+
+  if (!id) {
+    return null
+  }
+
+  const name = id
     .split('-')
     .map((segment) => {
       return segment[0].toUpperCase() + segment.slice(1)
