@@ -1,8 +1,8 @@
 import * as normalizeColor from '@react-native/normalize-color'
 
-export const normalizeCSSColor = normalizeColor.default as (
-  color: string
-) => number | null
+// vite/webpack compat
+const norm = normalizeColor.default || normalizeColor
+export const normalizeCSSColor = norm as (color: string) => number | null
 
 export function rgba(colorInt: number) {
   var r = Math.round((colorInt & 0xff000000) >>> 24)
