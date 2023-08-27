@@ -1,7 +1,7 @@
 // import './wdyr'
 
 import { Stack } from '@tamagui/web'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { Platform } from 'react-native'
 import {
   Button,
@@ -10,7 +10,6 @@ import {
   Square,
   TamaguiElement,
   Text,
-  YStack,
   styled,
   useTheme,
   withStaticProperties,
@@ -33,10 +32,15 @@ export const MyButton = styled(Button, {
 
 export const Sandbox = () => {
   const theme = useTheme().color.val
+  const ref = useRef<any>()
+
+  useEffect(() => {
+    console.log('ref', ref.current)
+  }, [])
 
   return (
     <>
-      <Stack f={1} group="testy">
+      <Stack ref={ref} f={1} group="testy">
         <Square
           size={100}
           bc="green"

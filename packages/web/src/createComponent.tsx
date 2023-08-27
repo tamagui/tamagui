@@ -684,7 +684,8 @@ export function createComponent<
       viewProps = nonTamaguiProps
     }
 
-    viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
+    const composedRef = useComposedRefs(hostRef as any, forwardedRef)
+    viewProps.ref = composedRef
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
@@ -1002,7 +1003,7 @@ export function createComponent<
       // since these components dont use hooks we can do this...
       // we could further improve this performance by actually just doing this ourselves
       viewProps.children = content
-      content = elementType.render(viewProps)
+      content = elementType.render(viewProps, viewProps.ref)
     } else {
       content = createElement(elementType, viewProps, content)
     }
