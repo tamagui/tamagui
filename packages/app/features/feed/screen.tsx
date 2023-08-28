@@ -10,7 +10,7 @@ import {
   isWeb,
 } from '@my/ui'
 
-import { useState } from 'react'
+import { ClimbsTab } from './climbs-tab'
 
 export function FeedScreen() {
   return (
@@ -51,7 +51,7 @@ const HorizontalTabs = () => {
       </Tabs.List>
       <Separator />
       <TabsContent value="tab1">
-        <H5>Climbs</H5>
+        <ClimbsTab />
       </TabsContent>
       <TabsContent value="tab2">
         <H5>Your Climbs</H5>
