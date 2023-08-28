@@ -59,7 +59,9 @@ const HorizontalTabs = () => {
     </Tabs>
   )
 }
+
 const TabsContent = (props: TabsContentProps) => {
+  const { children, ...rest } = props
   return (
     <Tabs.Content
       backgroundColor="$background"
@@ -73,9 +75,9 @@ const TabsContent = (props: TabsContentProps) => {
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
       borderWidth="$2"
-      {...props}
+      {...rest}
     >
-      {props.children}
+      {children}
     </Tabs.Content>
   )
 }

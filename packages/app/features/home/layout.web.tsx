@@ -179,7 +179,7 @@ const CtaButton = (props: ButtonProps) => (
       br="$10"
       {...props}
     >
-      Create
+      Climb
     </Button>
   </Theme>
 )
