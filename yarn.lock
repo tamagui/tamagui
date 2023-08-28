@@ -7920,6 +7920,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@supabase/auth-helpers-nextjs@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@supabase/auth-helpers-nextjs@npm:0.6.1"
+  dependencies:
+    "@supabase/auth-helpers-shared": 0.3.4
+  peerDependencies:
+    "@supabase/supabase-js": ^2.0.4
+  checksum: b04f71170056d3b4101f70dd9c41d10d413d5f9a02dd223927fccdd42e4cc1de8713c88e5e07e8bc25f658a88c92888fca45763f96a833e65ad00cb214291570
+  languageName: node
+  linkType: hard
+
 "@supabase/auth-helpers-nextjs@npm:^0.7.4":
   version: 0.7.4
   resolution: "@supabase/auth-helpers-nextjs@npm:0.7.4"
@@ -7932,12 +7943,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-react@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@supabase/auth-helpers-react@npm:0.4.2"
+"@supabase/auth-helpers-react@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@supabase/auth-helpers-react@npm:0.3.1"
   peerDependencies:
-    "@supabase/supabase-js": ^2.19.0
-  checksum: e521c5a62444e2f013f1d8af7386abf1a9a35fc4a1160b7e1e3834e1cf9b48c8a77e706b0f322ce9946d7ccfdfd9f0f8d071bfa138d648ac707327b4f530c789
+    "@supabase/supabase-js": ^2.0.4
+  checksum: 7974d1f913e95fb331ca84868d8bbee5806a2b381b67a1c7f69da7d2bbd5fe0e005df82572960d4e425ae7e9cdcad684095ae96566e4e2a6132e5de908756c85
+  languageName: node
+  linkType: hard
+
+"@supabase/auth-helpers-shared@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@supabase/auth-helpers-shared@npm:0.3.4"
+  dependencies:
+    jose: ^4.14.0
+  peerDependencies:
+    "@supabase/supabase-js": ^2.0.4
+  checksum: 6042f06d3bdf240b1a84112f6e0ea397affb1c045453136b7cb0421945ac0aac62986c794dbd38db89f13422d753e43cca34df4adc49eb2ba8ac04e5f64fb885
   languageName: node
   linkType: hard
 
@@ -7979,14 +8001,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:^2.7.3":
-  version: 2.7.3
-  resolution: "@supabase/realtime-js@npm:2.7.3"
+"@supabase/realtime-js@npm:^2.7.4":
+  version: 2.7.4
+  resolution: "@supabase/realtime-js@npm:2.7.4"
   dependencies:
     "@types/phoenix": ^1.5.4
     "@types/websocket": ^1.0.3
     websocket: ^1.0.34
-  checksum: a6e789098ef7c388faf3a3b483ae91e1d45f8b7d02ae4ae1ad8ef0d7246678777aab1e0f3f2cbaf25549b27926c94bce9adc5c90f3f2693e1ccf780d5941411d
+  checksum: f718dd2a9fbf9068a6cdbda45fc0d8b14198424a1901fec942913b07d1206ac8e0abebfb7ad84bb16325a1e4bfa36bf6a14b1c71fca05ad038a82f6d210f1e8c
   languageName: node
   linkType: hard
 
@@ -7999,17 +8021,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.32.0":
-  version: 2.32.0
-  resolution: "@supabase/supabase-js@npm:2.32.0"
+"@supabase/supabase-js@npm:^2.21.0":
+  version: 2.33.1
+  resolution: "@supabase/supabase-js@npm:2.33.1"
   dependencies:
     "@supabase/functions-js": ^2.1.0
     "@supabase/gotrue-js": ^2.46.1
     "@supabase/postgrest-js": ^1.8.0
-    "@supabase/realtime-js": ^2.7.3
+    "@supabase/realtime-js": ^2.7.4
     "@supabase/storage-js": ^2.5.1
     cross-fetch: ^3.1.5
-  checksum: 1b4cb5b07a66d05e718f778a33d88c0c56e133135be99fcc25e7f69087f9ed9fa6cebc45ecb69766d337c1d6a0f0b0299bbf5375e57ea41dfcb24aa5d3ed0e6f
+  checksum: dcfdcc344f1830ee27e80df889687e0e7a35922a7a068d11b0515739375cc0fec7d8f873c94cac5e22d57032926b6c7a4e725bc3fbbc34e51c63020ba292ff61
   languageName: node
   linkType: hard
 
@@ -12236,9 +12258,9 @@ __metadata:
     "@my/supabase": "*"
     "@my/ui": "*"
     "@react-native-async-storage/async-storage": 1.18.2
-    "@supabase/auth-helpers-nextjs": ^0.7.4
-    "@supabase/auth-helpers-react": ^0.4.2
-    "@supabase/supabase-js": ^2.32.0
+    "@supabase/auth-helpers-nextjs": ^0.6.1
+    "@supabase/auth-helpers-react": ^0.3.1
+    "@supabase/supabase-js": ^2.21.0
     "@tamagui/animations-react-native": latest
     "@tamagui/colors": latest
     "@tamagui/font-inter": latest
@@ -21776,7 +21798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.14.3":
+"jose@npm:^4.14.0, jose@npm:^4.14.3":
   version: 4.14.4
   resolution: "jose@npm:4.14.4"
   checksum: 2d820a91a8fd97c05d8bc8eedc373b944a0cd7f5fe41063086da233d0473c73fb523912a9f026ea870782bd221f4a515f441a2d3af4de48c6f2c76dac5082377
