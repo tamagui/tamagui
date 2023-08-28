@@ -1,4 +1,4 @@
-import { HomeScreen } from 'app/features/home/screen'
+import { FeedScreen } from 'app/features/feed/screen'
 import { HomeLayout } from 'app/features/home/layout.web'
 import Head from 'next/head'
 import { userProtectedGetSSP } from 'utils/userProtected'
@@ -10,7 +10,7 @@ export const Page: NextPageWithLayout = () => {
       <Head>
         <title>Home</title>
       </Head>
-      <HomeScreen />
+      <FeedScreen />
     </>
   )
 }
