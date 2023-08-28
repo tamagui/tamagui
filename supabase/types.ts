@@ -11,22 +11,31 @@ export interface Database {
     Tables: {
       profiles: {
         Row: {
-          about: string | null
           avatar_url: string | null
+          bio: string | null
+          climb_type: Database["public"]["Enums"]["climb_type"][] | null
+          first_name: string
           id: string
-          name: string | null
+          last_name: string
+          username: string | null
         }
         Insert: {
-          about?: string | null
           avatar_url?: string | null
+          bio?: string | null
+          climb_type?: Database["public"]["Enums"]["climb_type"][] | null
+          first_name: string
           id: string
-          name?: string | null
+          last_name: string
+          username?: string | null
         }
         Update: {
-          about?: string | null
           avatar_url?: string | null
+          bio?: string | null
+          climb_type?: Database["public"]["Enums"]["climb_type"][] | null
+          first_name?: string
           id?: string
-          name?: string | null
+          last_name?: string
+          username?: string | null
         }
       }
     }
@@ -37,7 +46,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      climb_type: "top_rope" | "lead_rope" | "boulder"
     }
     CompositeTypes: {
       [_ in never]: never
