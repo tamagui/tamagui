@@ -14,7 +14,7 @@
     "@tamagui/lucide-icons": "latest",
     "@tamagui/shorthands": "latest",
     "@tamagui/themes": "latest",
-    "burnt": "^0.10.0",
+    "burnt": "^0.11.0",
     "expo-constants": "^14.2.1",
     "expo-linking": "^4.0.1",
     "react-native-safe-area-context": "^4.5.2",

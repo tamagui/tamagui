@@ -44,7 +44,7 @@
     "@tamagui/shorthands": "1.57.3",
     "@tamagui/themes": "1.57.3",
     "@tamagui/web": "1.57.3",
-    "burnt": "^0.10.0",
+    "burnt": "^0.11.0",
     "expo": "^49.0.5",
     "expo-dev-client": "~2.4.6",
     "expo-font": "~11.4.0",

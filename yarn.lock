@@ -6411,7 +6411,7 @@ __metadata:
     "@tamagui/web": 1.57.3
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-plugin-transform-inline-environment-variables: ^0.4.4
-    burnt: ^0.10.0
+    burnt: ^0.11.0
     expo: ^49.0.5
     expo-dev-client: ~2.4.6
     expo-font: ~11.4.0
@@ -10424,19 +10424,6 @@ __metadata:
   dependencies:
     run-applescript: ^5.0.0
   checksum: edf2b1fbe6096ed32e7566947ace2ea937ee427391744d7510a2880c4b9a5b3543d3f6c551236a29e5c87d3195f8e2912516290e638c15bcbede7b37cc375615
-  languageName: node
-  linkType: hard
-
-"burnt@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "burnt@npm:0.10.0"
-  dependencies:
-    sf-symbols-typescript: ^1.0.0
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
   languageName: node
   linkType: hard
 
