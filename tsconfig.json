@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "app/*": ["./packages/app/*"],
+      "@my/ui/*": ["./packages/ui/*"]
+    },
+    "plugins": [
+      {
+        // docs: https://github.com/nderscore/tamagui-typescript-plugin#readme
+        "name": "@nderscore/tamagui-typescript-plugin",
+        "pathToApp": "apps/next"
+      }
+    ]
+  },
+  "extends": "expo/tsconfig.base"
+}

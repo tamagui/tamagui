@@ -1,0 +1,6 @@
+{
+  "$schema": "https://tamagui.dev/api/json-schema/takeout-app",
+  "updateBot": {
+    "sendPullRequests": true
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@my/ui",
+  "version": "0.0.1",
+  "sideEffects": [
+    "*.css"
+  ],
+  "private": true,
+  "types": "./types/index",
+  "main": "src/index.tsx",
+  "module:jsx": "src",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build ./src",
+    "watch": "tamagui-build --watch",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "generate-theme": "tamagui generate-themes ./src/themes/theme.ts ./src/themes/theme-generated.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.1.0",
+    "@tamagui/animations-moti": "latest",
+    "@tamagui/animations-react-native": "latest",
+    "@tamagui/cli": "latest",
+    "@tamagui/create-theme": "latest",
+    "@tamagui/font-inter": "latest",
+    "@tamagui/helpers-icon": "latest",
+    "@tamagui/react-native-media-driver": "latest",
+    "@tamagui/shorthands": "latest",
+    "@tamagui/theme-builder": "latest",
+    "@tamagui/themes": "latest",
+    "@tamagui/toast": "latest",
+    "@ts-react/form": "^1.6.4",
+    "moti": "^0.25.3",
+    "react-hook-form": "^7.44.3",
+    "tamagui": "latest",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@tamagui/build": "latest",
+    "eslint": "^8.46.0",
+    "eslint-config-custom": "*"
+  }
+}

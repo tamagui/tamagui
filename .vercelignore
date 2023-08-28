@@ -1,0 +1,4 @@
+# not ignoring this dir wil result in the `Error: Invalid request: `files` should NOT have more than 15000 items...` error - mostly because of the android/ and ios/ folders
+
+./apps/expo/android
+./apps/expo/ios

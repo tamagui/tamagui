@@ -1,0 +1,17 @@
+{
+  "version": "0.0.0",
+  "name": "@my/api",
+  "main": "src/index.ts",
+  "private": true,
+  "dependencies": {
+    "@my/supabase": "*",
+    "@tanstack/react-query": "4.18.0",
+    "@trpc/client": "^10.36.0",
+    "@trpc/next": "^10.36.0",
+    "@trpc/react-query": "^10.36.0",
+    "@trpc/server": "^10.36.0",
+    "app": "*",
+    "superjson": "^1.13.1",
+    "zod": "^3.21.4"
+  }
+}

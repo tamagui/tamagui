@@ -1,0 +1,46 @@
+import { TRPCError } from '@trpc/server'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
+import { z } from 'zod'
+
+export const {{ camelCase name }}Router = createTRPCRouter({
+  getCount: publicProcedure.query(({ ctx: { supabase } }) => {
+    return 0
+  }),
+  getMany: protectedProcedure
+    .input(
+      z.object({
+        after: z.number(),
+        limit: z.number(),
+      })
+    )
+    .query(({ ctx: { supabase }, input }) => {
+      return []
+    }),
+  getOne: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(({ ctx: { supabase }, input }) => {
+      const results = null
+      if (!results) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No results found.' })
+      }
+      return results
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(({ ctx: { supabase }, input }) => {
+      const supabaseQuery = { error: new Error('errored'), data: null }
+      if (supabaseQuery.error) {
+        throw new TRPCError({ code: 'FORBIDDEN' })
+      }
+      const updatedResults = {}
+      return updatedResults
+    }),
+})

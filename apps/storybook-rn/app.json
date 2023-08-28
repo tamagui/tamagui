@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "myapp-sb",
+    "slug": "myapp-sb",
+    "scheme": "myapp-sb",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.acme.myapp-sb"
+    },
+    "android": {
+      "package": "com.acme.myapp-sb"
+    }
+  }
+}

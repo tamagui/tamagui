@@ -1,0 +1,30 @@
+{
+  "cli": {
+    "version": ">= 3.14.0"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      },
+      "env": {
+        "TAMAGUI_TARGET": "native"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "TAMAGUI_TARGET": "native"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

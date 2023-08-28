@@ -1,0 +1,42 @@
+{
+  "name": "next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "yarn with-env next dev",
+    "build": "cd ../.. && yarn build && cd apps/next && yarn next:build",
+    "next:build": "yarn with-env next build",
+    "start": "yarn with-env next start",
+    "serve": "NODE_ENV=production yarn with-env next start --port 8151",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "with-env": "TAMAGUI_TARGET=web dotenv -e ../../.env -c --"
+  },
+  "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.7.4",
+    "@tamagui/next-theme": "latest",
+    "@tanstack/react-query": "4.18.0",
+    "@trpc/client": "^10.36.0",
+    "@trpc/next": "^10.36.0",
+    "@trpc/react-query": "^10.36.0",
+    "@trpc/server": "^10.36.0",
+    "app": "*",
+    "next": "^13.2.4",
+    "raf": "^3.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "0.72.3",
+    "react-native-reanimated": "~3.3.0",
+    "react-native-web": "~0.19.6",
+    "react-native-web-lite": "latest",
+    "vercel": "latest",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@tamagui/next-plugin": "latest",
+    "@types/node": "^18.6.4",
+    "dotenv-cli": "^6.0.0",
+    "eslint": "^8.46.0",
+    "eslint-config-next": "^13.4.12"
+  }
+}

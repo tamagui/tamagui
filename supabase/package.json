@@ -1,0 +1,27 @@
+{
+  "name": "@my/supabase",
+  "version": "0.0.0",
+  "files": [
+    "./types.ts"
+  ],
+  "scripts": {
+    "_with-env": "dotenv -e ../.env -c -- ",
+    "_link-project": "npx supabase link --project-ref $NEXT_PUBLIC_SUPABASE_PROJECT_ID --workdir ../",
+    "link-project": "yarn _with-env yarn _link-project",
+    "_generate:remote": "npx supabase gen types typescript --project-id $NEXT_PUBLIC_SUPABASE_PROJECT_ID --schema public > ./types.ts",
+    "generate:remote": "yarn _with-env yarn _generate:remote",
+    "generate": "npx supabase gen types typescript --local --schema public > ./types.ts",
+    "g": "yarn generate",
+    "migration:diff": "npx supabase db diff -f ",
+    "start": "npx supabase start",
+    "stop": "npx supabase stop",
+    "reset": "npx supabase db reset && npx supabase start",
+    "status": "npx supabase status",
+    "_deploy": "yarn link-project && npx supabase db push",
+    "deploy": "yarn _with-env yarn _deploy"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^6.0.0",
+    "supabase": ">=1.8.1"
+  }
+}
