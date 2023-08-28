@@ -14,6 +14,9 @@ const { useParams, useUpdateParams } = createParam<{ email?: string }>()
 const SignUpSchema = z.object({
   email: formFields.text.email().describe('Email // your@email.acme'),
   password: formFields.text.min(6).describe('Password // Choose a password'),
+  firstName: formFields.text.describe('First Name // John'),
+  lastName: formFields.text.describe('Last Name // Doe'),
+  username: formFields.text.describe('Username // johndoe'),
 })
 
 // change it to true if you're doing email confirms
@@ -33,15 +36,22 @@ export const SignUpScreen = () => {
 
   const form = useForm<z.infer<typeof SignUpSchema>>()
 
-  async function signUpWithEmail({ email, password }: z.infer<typeof SignUpSchema>) {
+  async function signUpWithEmail({
+    email,
+    password,
+    firstName,
+    lastName,
+    username,
+  }: z.infer<typeof SignUpSchema>) {
     const { error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
         // To take user's name other info
         data: {
-          // first_name: firstName, // coming from state
-          // last_name: lastName,
+          first_name: firstName, // coming from state
+          last_name: lastName,
+          username,
         },
       },
     })

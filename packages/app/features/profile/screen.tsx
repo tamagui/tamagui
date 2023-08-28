@@ -18,8 +18,8 @@ import { Link, useLink } from 'solito/link'
 
 export function ProfileScreen() {
   const { profile, avatarUrl } = useUser()
-  const name = profile?.name
-  const about = profile?.about
+  const name = `${profile?.first_name} ${profile?.last_name}`.trim()
+  const about = profile?.bio
 
   const insets = useSafeAreaInsets()
   return (

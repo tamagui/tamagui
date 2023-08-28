@@ -31,7 +31,7 @@ export const useUser = () => {
     if (typeof user?.user_metadata.avatar_url === 'string') return user.user_metadata.avatar_url
 
     const params = new URLSearchParams()
-    const name = profile?.name || user?.email || ''
+    const name = profile?.first_name || user?.email || ''
     params.append('name', name)
     params.append('size', '256') // will be resized again by NextImage/SolitoImage
     return `https://ui-avatars.com/api.jpg?${params.toString()}`

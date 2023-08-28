@@ -2,8 +2,8 @@ import { TRPCError } from '@trpc/server'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 function getTimeOfDay() {
-  var today = new Date()
-  var curHr = today.getHours()
+  const today = new Date()
+  const curHr = today.getHours()
 
   if (curHr < 4) {
     return 'night'
@@ -22,7 +22,7 @@ export const greetingRouter = createTRPCRouter({
     if (profile.error) {
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
     }
-    const name = profile.data.name
+    const name = profile.data.first_name
     return `Good ${getTimeOfDay()}${name ? `, ${name}!` : '!'}`
   }),
 })

@@ -196,7 +196,7 @@ const WithUserDetail = ({ children, ...props }: StackProps) => {
   return (
     <XStack gap="$2" {...props}>
       <YStack ai="flex-end">
-        <SizableText size="$5">{profile?.name}</SizableText>
+        <SizableText size="$5">{profile?.first_name}</SizableText>
         <SizableText theme="alt1">{user?.email}</SizableText>
       </YStack>
       {children}

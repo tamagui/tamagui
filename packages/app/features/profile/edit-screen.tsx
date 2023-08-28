@@ -16,7 +16,9 @@ export const EditProfileScreen = () => {
   if (!profile || !user?.id) {
     return <FullscreenSpinner />
   }
-  return <EditProfileForm userId={user.id} initial={{ name: profile.name, about: profile.about }} />
+  return (
+    <EditProfileForm userId={user.id} initial={{ name: profile.first_name, about: profile.bio }} />
+  )
 }
 
 const ProfileSchema = z.object({
@@ -40,7 +42,7 @@ const EditProfileForm = ({
     async mutationFn(data: z.infer<typeof ProfileSchema>) {
       await supabase
         .from('profiles')
-        .update({ name: data.name, about: data.about })
+        .update({ first_name: data.name, bio: data.about })
         .eq('id', userId)
     },
     async onSuccess() {
