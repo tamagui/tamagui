@@ -7342,7 +7342,7 @@ __metadata:
     "@tamagui/text": 1.57.3
     "@tamagui/use-controllable-state": 1.57.3
     "@tamagui/visually-hidden": 1.57.3
-    burnt: ^0.10.0
+    burnt: ^0.11.0
     react: ^18.2.0
     react-native: ^0.72.1
   peerDependencies:
@@ -10437,6 +10437,20 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
+  languageName: node
+  linkType: hard
+
+"burnt@npm:^0.11.0":
+  version: 0.11.7
+  resolution: "burnt@npm:0.11.7"
+  dependencies:
+    sf-symbols-typescript: ^1.0.0
+    sonner: ^0.3.5
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 4b7d74e0400a2a81712ec0d11d2e41175304d95dae425fe5bbc1fa560103d1d51455a53c33f8b7196c28506c853c8b4b0c303ea04a34cbb1009079a35ae37c35
   languageName: node
   linkType: hard
 
@@ -24038,6 +24052,16 @@ __metadata:
     atomic-sleep: ^1.0.0
     flatstr: ^1.0.12
   checksum: 189fa8fe5c2dc05d3513fc1a4926a2f16f132fa6fa0b511745a436010cdcd9c1d3b3cb6a9d7c05bd32a965dc77673a5ac0eb0992e920bdedd16330d95323124f
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "sonner@npm:0.3.5"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: c0c564eddef03edb61d5a9ba4993d2a2d05a1e24e7ac9bdd4fa461e8b1fceeef69b99d4da0ffa23b3e8cbffdb660eb54327d583a9131aca34eb436a88a063691
   languageName: node
   linkType: hard
 
