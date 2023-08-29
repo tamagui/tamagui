@@ -1,48 +1,31 @@
 import { H2, Paragraph, SubmitButton, Theme, YStack, isWeb } from '@my/ui'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { z } from 'zod'
+// Monday - Friday
+// 7AM - 11PM
+
+// Saturday + Sunday
+// 9AM - 10PM
 
 export const CreateScreen = () => {
   return (
     <SchemaForm
-      onSubmit={console.log}
+      onSubmit={(values) => {
+        console.log('submit')
+        console.log(values)
+      }}
       schema={z.object({
-        title: formFields.text.min(10).describe("Name // Your project's name"),
-        description: formFields.textarea.describe(
-          'Description // I need a mobile app for this one customer...'
-        ),
-        numOfDays: formFields.number.min(2).max(200).describe('Number of Days // 60 '),
-        paidProject: formFields.boolean.describe('Paid Project'),
-        billingAddress: formFields.address.describe('Billing Address'),
-        type: formFields.select.describe('Project Type'),
+        title: formFields.text.min(10).describe('Name // Afternoon Top Rope 5.9+'),
+        // billingAddress: formFields.address.describe('Billing Address'),
+        climb: formFields.climb,
+        certified: formFields.boolean.describe('I am lead / top rope certified'),
       })}
       defaultValues={{
         title: '',
-        description: '',
-        numOfDays: 10,
-        paidProject: false,
-        billingAddress: {
-          street: '',
-          zipCode: '',
-        },
-        type: 'code',
-      }}
-      props={{
-        type: {
-          options: [
-            {
-              name: 'Code',
-              value: 'code',
-            },
-            {
-              name: 'Design',
-              value: 'design',
-            },
-            {
-              name: 'Consulting',
-              value: 'consulting',
-            },
-          ],
+        certified: false,
+        climb: {
+          type: 'top_rope',
+          location: 'Gowanus',
         },
       }}
       renderAfter={({ submit }) => (

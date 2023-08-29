@@ -3,6 +3,8 @@ import { createTsForm, createUniqueFieldSchema } from '@ts-react/form'
 import {
   AddressField,
   AddressSchema,
+  ClimbSchema,
+  ClimbField,
   BooleanCheckboxField,
   BooleanField,
   BooleanSwitchField,
@@ -48,6 +50,7 @@ export const formFields = {
    * example of how to handle more complex fields
    */
   address: createUniqueFieldSchema(AddressSchema, 'address'),
+  climb: createUniqueFieldSchema(ClimbSchema, 'climb'),
 }
 
 // function createFormSchema<T extends ZodRawShape>(getData: (fields: typeof formFields) => T) {
@@ -63,6 +66,7 @@ const mapping = [
   [formFields.boolean_checkbox, BooleanCheckboxField] as const,
   [formFields.select, SelectField] as const,
   [formFields.address, AddressField] as const,
+  [formFields.climb, ClimbField] as const,
 ] as const
 
 const FormComponent = (props: FormProps) => {

@@ -30,7 +30,8 @@ export const SelectField = ({
   ...props
 }: {
   options: SelectItem[]
-} & Pick<SelectProps, 'size' | 'native'>) => {
+  disabled?: boolean
+} & Pick<SelectProps, 'size' | 'native' | 'defaultValue'>) => {
   const {
     field,
     error,
@@ -39,7 +40,7 @@ export const SelectField = ({
   const { label, isOptional } = useFieldInfo()
   const themeName = useThemeName()
   const id = useId()
-  const disabled = isSubmitting
+  const disabled = isSubmitting || props.disabled
 
   return (
     <Theme name={error ? 'red' : themeName} forceClassName>

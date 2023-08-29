@@ -21,6 +21,10 @@ async function createClimbs(supabase: SupabaseClient<Database>, user: AuthRespon
   // the start time should be between 7am and 10pm, and the duration should be between 20 minutes and 5 hours, but the climb cannot end after 10pm
 
   const climbs = Array.from({ length: 10 }).map((_, i) => {
+
+    // past date between now and 1 week ago
+
+
     const start = add(faker.date.between(
       {
         from: new Date(),
@@ -113,8 +117,6 @@ async function main() {
     return
   }
   const benjaminsClimbs = await createClimbs(supabaseInstance, benjamin.user)
-  console.log(benjaminsClimbs)
-  console.log(users)
 }
 
 
