@@ -24,6 +24,9 @@ import { usePressability } from './vendor/Pressability'
 
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
+// fixes issues with TS saying internal type usage is breaking
+// see https://discord.com/channels/909986013848412191/1146150253490348112/1146150253490348112
+export * from './reactNativeTypes'
 
 // adds extra types to Stack/Text:
 
