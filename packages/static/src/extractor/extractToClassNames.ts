@@ -53,6 +53,10 @@ export async function extractToClassNames({
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
 
+  if (sourcePath?.includes('node_modules')) {
+    return null
+  }
+
   if (shouldPrintDebug) {
     console.warn(`--- ${sourcePath} --- \n\n`)
   }
@@ -83,7 +87,7 @@ export async function extractToClassNames({
   let ast: t.File
 
   try {
-    ast = babelParse(source)
+    ast = babelParse(source, sourcePath)
   } catch (err) {
     console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err

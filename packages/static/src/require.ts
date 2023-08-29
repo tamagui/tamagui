@@ -2,8 +2,6 @@ import { relative, sep } from 'path'
 
 const nameToPaths = {}
 const Module = require('module')
-const og = Module.prototype.require
-globalThis['ogRequire'] = og
 
 export const getNameToPaths = () => nameToPaths
 
@@ -13,6 +11,7 @@ const rnw = require('react-native-web')
 const core = require('@tamagui/core-node')
 
 let isRegistered = false
+let og: any
 
 export function registerRequire() {
   // already registered
@@ -24,6 +23,7 @@ export function registerRequire() {
     hookIgnoreNodeModules: false,
   })
 
+  og = Module.prototype.require // capture esbuild require
   isRegistered = true
 
   Module.prototype.require = tamaguiRequire

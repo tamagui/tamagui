@@ -273,7 +273,7 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
         if (isDynamic) {
           writtenContents = forceExports
             ? esbuildit(
-                transformAddExports(babelParse(esbuildit(fileContents, 'modern')))
+                transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
               )
             : esbuildit(fileContents)
 

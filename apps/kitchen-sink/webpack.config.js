@@ -33,6 +33,7 @@ module.exports = {
     alias: {
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
+      '@expo/vector-icons': '@tamagui/proxy-worm'
     },
   },
   devServer: {
