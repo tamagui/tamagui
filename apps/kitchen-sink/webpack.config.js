@@ -51,20 +51,6 @@ module.exports = {
     rules: [
       {
         oneOf: [
-          // fix reanimated :/
-          // {
-          //   test: /.*\.[tj]sx?$/,
-          //   use: [
-          //     {
-          //       loader: 'babel-loader',
-          //       options: {
-          //         plugins: ['@babel/plugin-transform-flow-strip-types'],
-          //         presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          //       },
-          //     },
-          //   ],
-          // },
-
           {
             test: /\.(ts|js)x?$/,
             use: [
@@ -85,7 +71,7 @@ module.exports = {
           },
 
           {
-            test: /\.(png|jpg|gif|woff|woff2)$/i,
+            test: /\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp|png|jpg|gif|woff|woff2)$/i,
             use: [
               {
                 loader: 'url-loader',
@@ -105,6 +91,7 @@ module.exports = {
       config: './src/tamagui.config.ts',
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
+      // disable: true,
       disableExtraction,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',

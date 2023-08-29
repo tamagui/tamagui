@@ -48,7 +48,7 @@ const knownIgnorableModules = {
 const hasWarnedForModules = new Set<string>()
 
 function tamaguiRequire(this: any, path: string) {
-  if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/.test(path)) {
+  if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/i.test(path)) {
     return {}
   }
   if (

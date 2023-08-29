@@ -6,6 +6,6 @@ export * from './SandboxHeading'
 export * from './views'
 
 // test breaking exports
-// export * from './TestSolito'
-// export * from '@expo/vector-icons'
+export * from './TestSolito'
+export * from './TestExpoVectorIcons'
 export * from 'expo-constants'

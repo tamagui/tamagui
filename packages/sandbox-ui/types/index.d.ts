@@ -3,5 +3,7 @@ export * from 'tamagui';
 export * from '@tamagui/toast';
 export * from './SandboxHeading';
 export * from './views';
+export * from './TestSolito';
+export * from './TestExpoVectorIcons';
 export * from 'expo-constants';
 //# sourceMappingURL=index.d.ts.map

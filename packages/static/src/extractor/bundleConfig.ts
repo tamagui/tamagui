@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import path, { basename, dirname, extname, join, relative, sep } from 'path'
+import { basename, dirname, extname, join, relative, sep } from 'path'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
@@ -14,8 +14,6 @@ import { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
-
-let loggedOutputInfo = false
 
 type NameToPaths = {
   [key: string]: Set<string>

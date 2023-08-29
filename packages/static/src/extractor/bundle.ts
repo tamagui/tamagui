@@ -52,6 +52,17 @@ function getESBuildConfig(
     tsconfig,
     loader: {
       '.js': 'jsx',
+      '.png': 'dataurl',
+      '.jpg': 'dataurl',
+      '.jpeg': 'dataurl',
+      '.svg': 'dataurl',
+      '.gif': 'dataurl',
+      '.webp': 'dataurl',
+      '.woff2': 'dataurl',
+      '.woff': 'dataurl',
+      '.eot': 'dataurl',
+      '.otf': 'dataurl',
+      '.ttf': 'dataurl',
     },
     logLevel: 'warning',
     plugins: [
@@ -97,7 +108,8 @@ function getESBuildConfig(
 
 export async function bundle(props: Props, aliases?: Record<string, string>) {
   await asyncLock(props)
-  return esbuild.build(getESBuildConfig(props, aliases))
+  const config = getESBuildConfig(props, aliases)
+  return esbuild.build(config)
 }
 
 export function bundleSync(props: Props, aliases?: Record<string, string>) {
