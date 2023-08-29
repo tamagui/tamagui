@@ -35,6 +35,26 @@ export interface Database {
           type?: Database["public"]["Enums"]["climb_type"]
         }
       }
+      profile_climbs: {
+        Row: {
+          climb_id: number
+          created_at: string | null
+          id: number
+          profile_id: string
+        }
+        Insert: {
+          climb_id: number
+          created_at?: string | null
+          id?: number
+          profile_id: string
+        }
+        Update: {
+          climb_id?: number
+          created_at?: string | null
+          id?: number
+          profile_id?: string
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null
