@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/generate-themes",
-  "version": "1.57.5",
+  "version": "1.57.6",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -28,12 +28,12 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/create-theme": "1.57.5",
-    "@tamagui/types": "1.57.5",
+    "@tamagui/create-theme": "1.57.6",
+    "@tamagui/types": "1.57.6",
     "esbuild-register": "^3.4.2",
     "fs-extra": "^11.1.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.57.5"
+    "@tamagui/build": "1.57.6"
   }
 }
