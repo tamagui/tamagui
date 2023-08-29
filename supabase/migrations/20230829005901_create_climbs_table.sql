@@ -10,6 +10,7 @@ create table public.climbs (
       (now() at time zone 'utc'::text) + '00:35:00'::interval
     ),
     created_by uuid not null,
+    name text not null,
     constraint climbs_created_by_fkey foreign key (created_by) references profiles (id),
     constraint climbs_pkey primary key (id)
 ) tablespace pg_default;
