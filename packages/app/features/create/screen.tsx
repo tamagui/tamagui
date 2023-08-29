@@ -12,6 +12,7 @@ import {
   roundToNearestMinutes,
   formatDuration,
 } from 'date-fns'
+import { api } from 'app/utils/api'
 
 export function getTimeSelections(
   day: Date,
@@ -100,11 +101,20 @@ export function getDurationSelections() {
 }
 
 export const CreateScreen = () => {
+  const createClimbMutation = api.climb.create.useMutation()
   return (
     <SchemaForm
-      onSubmit={console.log}
+      onSubmit={(bag) => {
+        createClimbMutation.mutate({
+          name: bag.name,
+          type: bag.type,
+          start: bag.start,
+          duration: bag.duration,
+          location: bag.location,
+        })
+      }}
       schema={z.object({
-        title: formFields.text.min(10).describe('Name // Afternoon Top Rope 5.9+'),
+        name: formFields.text.min(10).describe('Name // Afternoon Top Rope 5.9+'),
         type: formFields.select.describe('Climb Type'),
         start: formFields.select.describe('Start Time'),
         // Will always be in minutes, and 15 minute increments
@@ -112,7 +122,7 @@ export const CreateScreen = () => {
         location: formFields.select.describe('Location'),
       })}
       defaultValues={{
-        title: '',
+        name: '',
         start: getTimeSelections(new Date(), 15)[0].value,
         duration: getDurationSelections()[1].value,
         location: 'gowanus',

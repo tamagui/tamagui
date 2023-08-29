@@ -5271,6 +5271,7 @@ __metadata:
     "@trpc/react-query": ^10.36.0
     "@trpc/server": ^10.36.0
     app: "*"
+    date-fns: ^2.30.0
     superjson: ^1.13.1
     zod: ^3.21.4
   languageName: unknown
@@ -5310,7 +5311,6 @@ __metadata:
     "@tamagui/themes": latest
     "@tamagui/toast": latest
     "@ts-react/form": ^1.6.4
-    app: "*"
     date-fns: ^2.30.0
     eslint: ^8.46.0
     eslint-config-custom: "*"

@@ -1,8 +1,10 @@
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { createTRPCRouter } from '../trpc'
 import { greetingRouter } from './greeting'
+import { climbRouter } from './climb'
 export const appRouter = createTRPCRouter({
   greeting: greetingRouter,
+  climb: climbRouter
 })
 // export type definition of API
 export type AppRouter = typeof appRouter
