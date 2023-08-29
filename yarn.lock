@@ -5310,6 +5310,8 @@ __metadata:
     "@tamagui/themes": latest
     "@tamagui/toast": latest
     "@ts-react/form": ^1.6.4
+    app: "*"
+    date-fns: ^2.30.0
     eslint: ^8.46.0
     eslint-config-custom: "*"
     moti: ^0.25.3

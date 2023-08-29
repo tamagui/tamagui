@@ -37,10 +37,13 @@ export const SelectField = ({
     error,
     formState: { isSubmitting },
   } = useTsController<string>()
-  const { label, isOptional } = useFieldInfo()
+  const { label, isOptional, zodType } = useFieldInfo()
   const themeName = useThemeName()
   const id = useId()
   const disabled = isSubmitting || props.disabled
+  console.log(field)
+  console.log(error)
+  console.log(zodType)
 
   return (
     <Theme name={error ? 'red' : themeName} forceClassName>
