@@ -6358,7 +6358,7 @@ __metadata:
     "@tamagui/themes": latest
     "@types/react": ^18.0.27
     "@types/react-native": ^0.71.3
-    burnt: ^0.10.0
+    burnt: ^0.11.0
     expo-constants: ^14.2.1
     expo-linking: ^4.0.1
     react-native-safe-area-context: ^4.5.2
@@ -7157,16 +7157,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"burnt@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "burnt@npm:0.10.0"
+"burnt@npm:^0.11.0":
+  version: 0.11.7
+  resolution: "burnt@npm:0.11.7"
   dependencies:
     sf-symbols-typescript: ^1.0.0
+    sonner: ^0.3.5
   peerDependencies:
     expo: "*"
     react: "*"
     react-native: "*"
-  checksum: b33a84b0a57be34cc37d18f50710d46fb72e8d8eb2c5d5ae687a22dad41a1c6a42a49d507a71065480b5286729c887e3ee281f47af1325321f63fdc15e3af913
+  checksum: 4b7d74e0400a2a81712ec0d11d2e41175304d95dae425fe5bbc1fa560103d1d51455a53c33f8b7196c28506c853c8b4b0c303ea04a34cbb1009079a35ae37c35
   languageName: node
   linkType: hard
 
@@ -9971,7 +9972,7 @@ __metadata:
     app: 0.0.0
     babel-plugin-module-resolver: ^4.1.0
     babel-plugin-transform-inline-environment-variables: ^0.4.4
-    burnt: ^0.10.0
+    burnt: ^0.11.0
     expo: ^48.0.7
     expo-constants: ^14.2.1
     expo-dev-client: ^2.1.5
@@ -17733,6 +17734,16 @@ __metadata:
   version: 3.2.6
   resolution: "solito@npm:3.2.6"
   checksum: c8ff1732b969748b7be71037a284927d7e57965fca1b405d168a6bf288ea9810baa8e19413752d06d71edc51799879db657ec894ebb9a354d3cf57fa4d7c629a
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "sonner@npm:0.3.5"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: c0c564eddef03edb61d5a9ba4993d2a2d05a1e24e7ac9bdd4fa461e8b1fceeef69b99d4da0ffa23b3e8cbffdb660eb54327d583a9131aca34eb436a88a063691
   languageName: node
   linkType: hard
 
