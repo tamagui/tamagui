@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      climbs: {
+        Row: {
+          created_at: string
+          created_by: string
+          duration: string
+          id: number
+          start: string
+          type: Database["public"]["Enums"]["climb_type"]
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          duration?: string
+          id?: number
+          start?: string
+          type: Database["public"]["Enums"]["climb_type"]
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          duration?: string
+          id?: number
+          start?: string
+          type?: Database["public"]["Enums"]["climb_type"]
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null

@@ -15,7 +15,7 @@
     "migration:diff": "npx supabase db diff -f ",
     "start": "npx supabase start",
     "stop": "npx supabase stop",
-    "reset": "npx supabase db reset && npx supabase start",
+    "reset": "npx supabase db reset && npx supabase start && yarn generate",
     "status": "npx supabase status",
     "_deploy": "yarn link-project && npx supabase db push",
     "deploy": "yarn _with-env yarn _deploy"
