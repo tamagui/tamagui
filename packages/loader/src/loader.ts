@@ -6,8 +6,6 @@ import {
 } from '@tamagui/static'
 import type { LoaderContext } from 'webpack'
 
-import { extractedInfoByFile, stylePathToFilePath } from './css'
-
 Error.stackTraceLimit = Infinity
 
 // pass loader as path
@@ -22,15 +20,13 @@ process.env.TAMAGUI_TARGET = 'web'
 
 export const loader = async function loader(
   this: LoaderContext<TamaguiOptions>,
-  sourceIn: Buffer | string,
-  info
+  sourceIn: Buffer | string
 ) {
   this.cacheable(true)
   const callback = this.async()
   const source = sourceIn.toString()
 
   try {
-    const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
     const sourcePath = `${this.resourcePath}`
 
@@ -52,9 +48,7 @@ export const loader = async function loader(
       return callback(null, source)
     }
 
-    const cssPath = threaded
-      ? `${sourcePath}.tamagui.css`
-      : `${sourcePath}.${index++}.tamagui.css`
+    const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
     const extracted = await extractToClassNames({
       extractor,
@@ -70,20 +64,10 @@ export const loader = async function loader(
 
     // add import to css
     if (extracted.styles) {
-      const cssQuery = threaded
-        ? `cssData=${Buffer.from(extracted.styles).toString('base64')}`
-        : `cssPath=${cssPath}`
+      const cssQuery = `cssData=${Buffer.from(extracted.styles).toString('base64')}`
       const remReq = this.remainingRequest
       const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
       extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
-    }
-
-    extractedInfoByFile.set(sourcePath, extracted)
-
-    if (!threaded) {
-      if (extracted.stylesPath) {
-        stylePathToFilePath.set(extracted.stylesPath, sourcePath)
-      }
     }
 
     callback(null, extracted.js, extracted.map)
