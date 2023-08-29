@@ -71,8 +71,6 @@ const bodyFont = createInterFont(
   }
 )
 
-type x = (typeof bodyFont)['size']
-
 const monoFont = createGenericFont(
   `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`,
   {

@@ -17,7 +17,7 @@ const idFn = (_) => _
 
 // no singleton, just react
 export function useStore<A, B extends Object>(
-  StoreKlass: (new (props: B) => A) | (new () => A),
+  StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B | null,
   options: UseStoreOptions<A, any> = defaultOptions
 ): A {
@@ -36,11 +36,11 @@ export function useStoreDebug<A, B extends Object>(
 
 // singleton
 export function createStore<A, B extends Object>(
-  StoreKlass: new (props: B) => A | (new () => A),
+  StoreKlass: new (props: B) => A | (new () => A) | null | undefined,
   props?: B,
   options?: UseStoreOptions<A, any>
 ): A {
-  return getOrCreateStoreInfo(StoreKlass, props, options).store as any
+  return getOrCreateStoreInfo(StoreKlass, props, options)?.store as any
 }
 // use singleton with react
 // TODO selector support with types...
@@ -119,19 +119,19 @@ export function trackStoresAccess(cb: StoreAccessTracker) {
 }
 
 export function getStore<A, B extends Object>(
-  StoreKlass: (new (props: B) => A) | (new () => A),
+  StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B
 ): A {
-  return getStoreInfo(StoreKlass, props).store as any
+  return getStoreInfo(StoreKlass, props)?.store as any
 }
 
 export function getOrCreateStore<A, B extends Object>(
-  StoreKlass: (new (props: B) => A) | (new () => A),
+  StoreKlass: (new (props: B) => A) | (new () => A) | null | undefined,
   props?: B
 ): A {
   return getOrCreateStoreInfo(StoreKlass, props, {
     refuseCreation: false,
-  }).store as any
+  })?.store as any
 }
 
 // just like getOrCreateStoreInfo but refuses to create
@@ -158,6 +158,9 @@ function getOrCreateStoreInfo(
   options?: UseStoreOptions & { avoidCache?: boolean; refuseCreation?: boolean },
   propsKeyCalculated?: string
 ) {
+  if (!StoreKlass) {
+    return null
+  }
   const uid = getStoreUid(StoreKlass, propsKeyCalculated ?? props)
   if (!options?.avoidCache && cache.has(uid)) {
     return cache.get(uid)!
@@ -271,14 +274,11 @@ export const setIsInReaction = (val: boolean) => {
 }
 
 function useStoreFromInfo(
-  info: StoreInfo,
+  info: StoreInfo | null | undefined,
   userSelector?: Selector<any> | undefined,
   options?: UseStoreOptions
 ): any {
-  const { store } = info
-  if (!store) {
-    return null
-  }
+  const store = info?.store
   const internal = useRef<StoreTracker>()
   const component = useCurrentComponent()
   if (!internal.current) {
@@ -293,6 +293,7 @@ function useStoreFromInfo(
   const shouldPrintDebug = options?.debug
 
   const getSnapshot = useCallback(() => {
+    if (!info || !store) return
     const curInternal = internal.current!
     const keys = [...(!curInternal.tracked.size ? info.stateKeys : curInternal.tracked)]
     const nextKeys = `${info.version}${keys.join('')}${userSelector || ''}`
@@ -335,10 +336,14 @@ function useStoreFromInfo(
 
     curInternal.last = snap
     return snap
-  }, [])
+  }, [store])
 
   // sync by default
-  const state = useSyncExternalStore(info.subscribe, getSnapshot, getSnapshot)
+  const state = useSyncExternalStore(info?.subscribe || idFn, getSnapshot, getSnapshot)
+
+  if (!info || !store || !state) {
+    return state
+  }
 
   if (userSelector) {
     return state
