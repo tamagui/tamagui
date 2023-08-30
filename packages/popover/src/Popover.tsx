@@ -261,7 +261,7 @@ type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
 
 export interface PopoverContentImplProps
   extends PopperContentProps,
-    Omit<DismissableProps, 'onDismiss' | 'children'> {
+    Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
   /**
    * Whether focus should be trapped within the `Popover`
    * @default false
