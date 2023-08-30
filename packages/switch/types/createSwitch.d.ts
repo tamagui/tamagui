@@ -25,9 +25,10 @@ export type SwitchExtraProps = {
     onCheckedChange?(checked: boolean): void;
 };
 type SwitchProps = SwitchBaseProps & SwitchExtraProps;
-export declare function createSwitch<F extends TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>, T extends TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>>({ Frame, Thumb }: {
+export declare function createSwitch<F extends TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>, T extends TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>>({ Frame, Thumb, acceptsUnstyled }: {
     Frame: F;
     Thumb: T;
+    acceptsUnstyled?: boolean;
 }): React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children" | ("onLayout" | keyof import("react-native").GestureResponderHandlers) | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
 } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & SwitchSharedProps & SwitchExtraProps & React.RefAttributes<TamaguiElement>> & {
