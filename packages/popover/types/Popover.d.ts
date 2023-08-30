@@ -59,7 +59,7 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
-export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children'> {
+export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> {
     /**
      * Whether focus should be trapped within the `Popover`
      * @default false

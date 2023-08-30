@@ -202,20 +202,16 @@ export function createSwitch<
             value={value}
             {...switchProps}
             ref={composedRefs}
-            onPress={composeEventHandlers(
-              // @ts-expect-error TODO
-              props.onPress,
-              (event) => {
-                setChecked((prevChecked) => !prevChecked)
-                if (isWeb && isFormControl) {
-                  hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-                  // if switch is in a form, stop propagation from the button so that we only propagate
-                  // one click event (from the input). We propagate changes from an input so that native
-                  // form validation works and form events reflect switch updates.
-                  if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-                }
+            onPress={composeEventHandlers(props.onPress, (event) => {
+              setChecked((prevChecked) => !prevChecked)
+              if (isWeb && isFormControl) {
+                hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                // if switch is in a form, stop propagation from the button so that we only propagate
+                // one click event (from the input). We propagate changes from an input so that native
+                // form validation works and form events reflect switch updates.
+                if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
               }
-            )}
+            })}
             // @ts-ignore
             onLayout={composeEventHandlers(props.onLayout, (e) =>
               // @ts-ignore

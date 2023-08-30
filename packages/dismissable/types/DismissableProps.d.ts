@@ -36,6 +36,9 @@ export interface DismissableProps {
      * When using animations on exit, may want to simualte force unmount early
      */
     forceUnmount?: boolean;
+    onPointerDownCapture?: any;
+    onBlurCapture?: any;
+    onFocusCapture?: any;
     children?: React.ReactNode;
 }
 export interface DismissableBranchProps {

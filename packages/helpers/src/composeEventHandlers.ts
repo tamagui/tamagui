@@ -8,7 +8,7 @@ export function composeEventHandlers<E extends Events>(
   { checkDefaultPrevented = true } = {}
 ) {
   if (!og || !next) {
-    return next || og
+    return next || og || undefined
   }
   return function (event: E) {
     og?.(event)
