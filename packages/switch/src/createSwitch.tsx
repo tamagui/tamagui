@@ -65,24 +65,15 @@ export function createSwitch<
     SwitchSharedProps & SwitchExtraProps
   >,
   T extends TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>
->({ Frame, Thumb }: { Frame: F; Thumb: T }) {
+>({ Frame, Thumb, acceptsUnstyled }: { Frame: F; Thumb: T; acceptsUnstyled?: boolean }) {
   const SwitchThumb = Thumb.styleable(function SwitchThumb(props, forwardedRef) {
     const { size: sizeProp, ...thumbProps } = props
-    const {
-      size: sizeContext,
-      disabled,
-      checked,
-      unstyled,
-      frameWidth,
-    } = React.useContext(SwitchContext)
+    const { disabled, checked, unstyled, frameWidth } = React.useContext(SwitchContext)
     const [thumbWidth, setThumbWidth] = React.useState(0)
-    const size = sizeProp ?? sizeContext
     return (
       // @ts-ignore
       <Thumb
-        unstyled={unstyled}
-        theme={checked ? 'active' : null}
-        size={size}
+        theme={unstyled === false && checked ? 'active' : null}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
         x={checked ? frameWidth - thumbWidth : 0}
@@ -102,6 +93,7 @@ export function createSwitch<
       propsIn,
       forwardedRef
     ) {
+      const styledContext = React.useContext(SwitchContext)
       const props = useProps(propsIn)
       const {
         labeledBy: ariaLabelledby,
@@ -112,8 +104,8 @@ export function createSwitch<
         disabled,
         value = 'on',
         onCheckedChange,
-        size = '$true',
-        unstyled = false,
+        size = styledContext.size ?? '$true',
+        unstyled = styledContext.unstyled ?? false,
         native: nativeProp,
         nativeProps,
         ...switchProps
@@ -126,7 +118,7 @@ export function createSwitch<
             _ = switchProps[key]
           }
         }
-        if (_ === undefined && unstyled === false) {
+        if (acceptsUnstyled && _ === undefined && unstyled === false) {
           _ = 2 // default we use for styled
         }
         if (typeof _ === 'string') {

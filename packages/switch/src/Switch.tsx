@@ -90,4 +90,5 @@ export const SwitchFrame = styled(XStack, {
 export const Switch = createSwitch({
   Frame: SwitchFrame,
   Thumb: SwitchThumb,
+  acceptsUnstyled: true,
 })
