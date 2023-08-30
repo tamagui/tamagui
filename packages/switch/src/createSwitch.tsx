@@ -81,6 +81,7 @@ export function createSwitch<
       // @ts-ignore
       <Thumb
         unstyled={unstyled}
+        theme={checked ? 'active' : null}
         size={size}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
