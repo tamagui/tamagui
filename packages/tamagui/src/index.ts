@@ -1,9 +1,7 @@
 import './setup.js'
 
-import { useCallback, useReducer, useState } from 'react'
-
-export * from '@tamagui/adapt'
 export * from '@tamagui/accordion'
+export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
 export * from '@tamagui/animate-presence'
 export * from '@tamagui/avatar'
@@ -46,8 +44,8 @@ export * from '@tamagui/visually-hidden'
 
 export * from './createTamagui'
 
-export * from './views/TamaguiProvider'
 export * from './viewTypes'
+export * from './views/TamaguiProvider'
 
 export * from './views/Anchor'
 export * from './views/EnsureFlexed'
@@ -82,6 +80,7 @@ export type {
   GetProps,
   GetRef,
   GetVariantProps,
+  GroupNames,
   Longhands,
   Media,
   MediaPropKeys,
@@ -89,11 +88,9 @@ export type {
   MediaQueryState,
   Shorthands,
   SizeTokens,
-  SpacerProps,
   SpaceTokens,
+  SpacerProps,
   SpecificTokens,
-  TypeOverride,
-  GroupNames,
   StackNonStyleProps,
   StackProps,
   StackPropsBase,
@@ -116,76 +113,77 @@ export type {
   ThemeName,
   ThemeParsed,
   ThemeProps,
-  Themes,
   ThemeTokens,
   ThemeValueFallback,
+  Themes,
   Token,
   Tokens,
   TransformStyleProps,
+  TypeOverride,
   VariantSpreadExtras,
   VariantSpreadFunction,
   ZIndexTokens,
 } from '@tamagui/core'
 
 export {
+  AnimationDriverProvider,
+  ComponentContext,
+  FontLanguage,
   // components
   Spacer,
   Stack,
-  View,
   Text,
   Theme,
-  AnimationDriverProvider,
-  FontLanguage,
   Unspaced,
-  ComponentContext,
+  View,
+  createComponent,
+  createFont,
+  createShorthands,
+  createStyledContext,
+  createTheme,
+  createTokens,
+  createVariable,
+  getAnimationDriver,
+  getConfig,
+  getMedia,
+  getStylesAtomic,
+  getThemes,
+  getToken,
+  getTokenValue,
+  getTokens,
+  getVariable,
+  getVariableName,
+  getVariableValue,
+  insertFont,
   // constants
   isChrome,
   isClient,
   isServer,
+  isTamaguiComponent,
+  isTamaguiElement,
   isTouchable,
+  isVariable,
   isWeb,
   isWebTouchable,
-  mediaQueryConfig,
-  createComponent,
-  createFont,
-  createShorthands,
-  createTheme,
-  createTokens,
-  createVariable,
-  createStyledContext,
-  getConfig,
-  getAnimationDriver,
-  getMedia,
-  getStylesAtomic,
-  getThemes,
-  getTokens,
-  getToken,
-  getTokenValue,
-  getVariable,
-  variableToString,
-  getVariableValue,
-  getVariableName,
-  insertFont,
-  isTamaguiElement,
-  isTamaguiComponent,
-  isVariable,
   matchMedia,
   mediaObjectToString,
+  mediaQueryConfig,
   mediaState,
   spacedChildren,
   styled,
   themeable,
-  useStyle,
-  withStaticProperties,
+  useDidFinishSSR,
+  useEvent,
   // hooks
   useGet,
-  useEvent,
-  useDidFinishSSR,
-  useIsomorphicLayoutEffect,
   useIsTouchDevice,
+  useIsomorphicLayoutEffect,
   useMedia,
+  useMediaPropsActive,
+  useProps,
+  useStyle,
   useTheme,
   useThemeName,
-  useProps,
-  useMediaPropsActive,
+  variableToString,
+  withStaticProperties,
 } from '@tamagui/core'

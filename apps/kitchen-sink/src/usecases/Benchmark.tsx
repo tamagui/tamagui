@@ -28,7 +28,7 @@ const palette = {
   white: '#F0F2F3',
 }
 
-const theme = createTheme({
+const theme = {
   colors: {
     red: 'red',
     mainBackground: palette.white,
@@ -53,7 +53,7 @@ const theme = createTheme({
       // We can define a default text variant here.
     },
   },
-})
+}
 
 const Box = createBox<any>()
 

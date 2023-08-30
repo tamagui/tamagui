@@ -41,7 +41,7 @@ type ThemeGettable<Val> = Val & {
     | (Val extends Variable<infer X>
         ? X extends VariableValGeneric
           ? any
-          : X
+          : Exclude<X, Variable>
         : Val extends VariableVal
         ? string | number
         : unknown)

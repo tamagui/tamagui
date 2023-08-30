@@ -15,14 +15,14 @@ If you just want to dive in and copy a complete theme, check out the [Quick Star
   [Read the guide](/docs/guides/theme-builder).
 </Notice>
 
-You make a theme with `createTheme`, like so:
+You can define a theme like this:
 
 ```tsx
-const dark = createTheme({
+const dark = {
   background: '#000',
   color: '#fff',
   // define any key to any string or number value
-})
+}
 ```
 
 ### Using tokens
@@ -41,10 +41,10 @@ const tokens = createTokens({
 Then, you can use them in any theme:
 
 ```tsx
-const dark = createTheme({
+const dark = {
   background: tokens.color.black,
   color: tokens.color.white,
-})
+}
 ```
 
 Think of tokens as your base constants that share downwards.
@@ -94,15 +94,15 @@ The `name` attribute will be removed from the defaultProps and used internally b
 Now you can create the default theme for all Circle components at any level of nesting:
 
 ```tsx
-const dark_Circle = createTheme({
+const dark_Circle = {
   background: 'darkred',
   color: 'white',
-})
+}
 
-const light_Circle = createTheme({
+const light_Circle = {
   background: 'lightred',
   color: 'black',
-})
+}
 ```
 
 <Notice>Component themes must have the first letter capitalized.</Notice>
@@ -270,14 +270,12 @@ export const App = () => (
 
 ## Ensuring valid types
 
-Here's what we've landed on which helps ensure everything is typed properly. Use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. Keep themes in a separate `themes.ts` file, and structure it like this:
+Here's what we've landed on which helps ensure everything is typed properly. Keep themes in a separate `themes.ts` file, and structure it like this:
 
 ```tsx
-import { createTheme } from 'tamagui'
-
 import { tokens } from './tokens'
 
-const light = createTheme({
+const light = {
   background: '#fff',
   backgroundHover: tokens.color.gray3,
   backgroundPress: tokens.color.gray4,
@@ -290,7 +288,7 @@ const light = createTheme({
   colorFocus: tokens.color.gray6,
   shadowColor: tokens.color.grayA5,
   shadowColorHover: tokens.color.grayA6,
-})
+}
 
 // note: we set up a single consistent base type to validate the rest:
 type BaseTheme = typeof light
@@ -311,22 +309,21 @@ const dark: BaseTheme = {
   shadowColorHover: tokens.color.grayA7,
 }
 
-// if you need to add non-token values, use createTheme
-const dark_translucent: BaseTheme = createTheme({
+const dark_translucent: BaseTheme = {
   ...dark,
   background: 'rgba(0,0,0,0.7)',
   backgroundHover: 'rgba(0,0,0,0.5)',
   backgroundPress: 'rgba(0,0,0,0.25)',
   backgroundFocus: 'rgba(0,0,0,0.1)',
-})
+}
 
-const light_translucent: BaseTheme = createTheme({
+const light_translucent: BaseTheme = {
   ...light,
   background: 'rgba(255,255,255,0.85)',
   backgroundHover: 'rgba(250,250,250,0.85)',
   backgroundPress: 'rgba(240,240,240,0.85)',
   backgroundFocus: 'rgba(240,240,240,0.7)',
-})
+}
 
 // note the steps here
 // we recommend doing this because it avoids a category of confusing type errors
