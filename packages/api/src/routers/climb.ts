@@ -3,16 +3,20 @@ import { createTRPCRouter, protectedProcedure } from '../trpc'
 import { z } from 'zod'
 
 import {
-  startOfDay,
   add,
-  isAfter,
-  addMinutes,
-  format,
-  addHours,
-  roundToNearestMinutes,
-  formatDuration,
 } from 'date-fns'
+
 export const climbRouter = createTRPCRouter({
+  read: protectedProcedure.query(async ({ ctx: { supabase } }) => {
+    const climbs = await supabase.from('climbs').select()
+
+    if (climbs.error) {
+      console.log(climbs.error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    return climbs.data
+  }),
   create: protectedProcedure.input(z.object({
     name: z.string(),
     type: z.string(),
@@ -39,5 +43,6 @@ export const climbRouter = createTRPCRouter({
     }
 
     console.log(profile)
+    return true
   }),
 })

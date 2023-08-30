@@ -1,16 +1,7 @@
-import {
-  Button,
-  H5,
-  Separator,
-  SizableText,
-  Tabs,
-  TabsContentProps,
-  XStack,
-  YStack,
-  isWeb,
-} from '@my/ui'
+import { H5, Separator, SizableText, Tabs, TabsContentProps, YStack, isWeb } from '@my/ui'
 
 import { ClimbsTab } from './climbs-tab'
+import { MyClimbsTab } from './myclimbs-tab'
 
 export function FeedScreen() {
   return (
@@ -54,7 +45,7 @@ const HorizontalTabs = () => {
         <ClimbsTab />
       </TabsContent>
       <TabsContent value="tab2">
-        <H5>Your Climbs</H5>
+        <MyClimbsTab />
       </TabsContent>
     </Tabs>
   )

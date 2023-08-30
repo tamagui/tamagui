@@ -1,9 +1,9 @@
 import { H5, Paragraph, YStack } from '@my/ui'
 import { api } from 'app/utils/api'
 
-export function ClimbsTab() {
+export function MyClimbsTab() {
   // TODO: Get Climbs
-  const climbsQuery = api.climb.read.useQuery()
+  const climbsQuery = api.me.climbs.useQuery()
   console.log(climbsQuery)
   return (
     <YStack>
