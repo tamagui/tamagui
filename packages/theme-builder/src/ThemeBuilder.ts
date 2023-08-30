@@ -237,7 +237,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         : definitions
 
       if (!themeDefinition) {
-        console.log(`No parent for ${themeName}: ${parentName} - Continuing...`)
+        // `No parent for ${themeName}: ${parentName} - Continuing...`
         continue
       }
 
@@ -282,10 +282,7 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       const parent = out[parentName]
 
       if (!parent) {
-        console.log({ out, parent, parentName, themeName })
-        console.log(
-          `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target - Continuing...`
-        )
+        // `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target - Continuing...`
         continue
       }
 
