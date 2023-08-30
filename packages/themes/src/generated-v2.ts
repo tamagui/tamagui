@@ -131,7 +131,7 @@ type Theme = {
 }
 
 function t(a) {
-  let res = {}
+  let res: Record<string, string> = {}
   for (const [ki, vi] of a) {
     res[ks[ki]] = vs[vi]
   }
@@ -1515,7 +1515,6 @@ const n191 = t([[12, 5],[13, 4],[14, 3],[15, 2],[16, 6],[17, 7],[19, 4],[20, 3],
 export const light_active_SliderTrackActive = n191 as Theme
 const n192 = t([[12, 7],[13, 6],[14, 5],[15, 4],[16, 8],[17, 9],[19, 4],[20, 3],[21, 4],[22, 2],[23, 5],[24, 4],[25, 6],[26, 5],[27, 6]]) as Theme
 
-export const light_active_SliderThumb = n192 as Theme
 export const light_active_Tooltip = n192 as Theme
 export const light_active_ProgressIndicator = n192 as Theme
 const n193 = t([[12, 113],[13, 114],[14, 115],[15, 116],[16, 112],[17, 111],[18, 120],[19, 119],[20, 120],[21, 119],[22, 120],[23, 116],[24, 117],[25, 115],[26, 116],[27, 116]]) as Theme
@@ -1602,7 +1601,6 @@ const n209 = t([[12, 115],[13, 114],[14, 113],[15, 112],[16, 116],[17, 117],[19,
 export const dark_active_SliderTrackActive = n209 as Theme
 const n210 = t([[12, 117],[13, 116],[14, 115],[15, 114],[16, 118],[17, 119],[19, 114],[20, 113],[21, 114],[22, 112],[23, 115],[24, 114],[25, 116],[26, 115],[27, 116]]) as Theme
 
-export const dark_active_SliderThumb = n210 as Theme
 export const dark_active_Tooltip = n210 as Theme
 export const dark_active_ProgressIndicator = n210 as Theme
 const n211 = t([[12, 49],[13, 50],[14, 51],[15, 52],[16, 48],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 57]]) as Theme
@@ -1698,7 +1696,6 @@ const n230 = t([[12, 53],[13, 52],[14, 51],[15, 50],[16, 55],[17, 56],[19, 52],[
 export const light_orange_active_SliderTrackActive = n230 as Theme
 const n231 = t([[12, 56],[13, 55],[14, 53],[15, 52],[16, 57],[17, 58],[19, 52],[20, 51],[21, 52],[22, 50],[23, 55],[24, 53],[25, 55],[26, 55],[27, 55]]) as Theme
 
-export const light_orange_active_SliderThumb = n231 as Theme
 export const light_orange_active_Tooltip = n231 as Theme
 export const light_orange_active_ProgressIndicator = n231 as Theme
 const n232 = t([[12, 97],[13, 98],[14, 99],[15, 100],[16, 96],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 105]]) as Theme
@@ -1794,7 +1791,6 @@ const n251 = t([[12, 101],[13, 100],[14, 99],[15, 98],[16, 103],[17, 104],[19, 1
 export const light_yellow_active_SliderTrackActive = n251 as Theme
 const n252 = t([[12, 104],[13, 103],[14, 101],[15, 100],[16, 105],[17, 106],[19, 100],[20, 99],[21, 100],[22, 98],[23, 103],[24, 101],[25, 103],[26, 103],[27, 103]]) as Theme
 
-export const light_yellow_active_SliderThumb = n252 as Theme
 export const light_yellow_active_Tooltip = n252 as Theme
 export const light_yellow_active_ProgressIndicator = n252 as Theme
 const n253 = t([[12, 37],[13, 38],[14, 39],[15, 40],[16, 36],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 45]]) as Theme
@@ -1890,7 +1886,6 @@ const n272 = t([[12, 41],[13, 40],[14, 39],[15, 38],[16, 43],[17, 44],[19, 40],[
 export const light_green_active_SliderTrackActive = n272 as Theme
 const n273 = t([[12, 44],[13, 43],[14, 41],[15, 40],[16, 45],[17, 46],[19, 40],[20, 39],[21, 40],[22, 38],[23, 43],[24, 41],[25, 43],[26, 43],[27, 43]]) as Theme
 
-export const light_green_active_SliderThumb = n273 as Theme
 export const light_green_active_Tooltip = n273 as Theme
 export const light_green_active_ProgressIndicator = n273 as Theme
 const n274 = t([[12, 15],[13, 16],[14, 17],[15, 18],[16, 14],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 23]]) as Theme
@@ -1986,7 +1981,6 @@ const n293 = t([[12, 19],[13, 18],[14, 17],[15, 16],[16, 21],[17, 22],[19, 18],[
 export const light_blue_active_SliderTrackActive = n293 as Theme
 const n294 = t([[12, 22],[13, 21],[14, 19],[15, 18],[16, 23],[17, 24],[19, 18],[20, 17],[21, 18],[22, 16],[23, 21],[24, 19],[25, 21],[26, 21],[27, 21]]) as Theme
 
-export const light_blue_active_SliderThumb = n294 as Theme
 export const light_blue_active_Tooltip = n294 as Theme
 export const light_blue_active_ProgressIndicator = n294 as Theme
 const n295 = t([[12, 73],[13, 74],[14, 75],[15, 76],[16, 72],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 81]]) as Theme
@@ -2082,7 +2076,6 @@ const n314 = t([[12, 77],[13, 76],[14, 75],[15, 74],[16, 79],[17, 80],[19, 76],[
 export const light_purple_active_SliderTrackActive = n314 as Theme
 const n315 = t([[12, 80],[13, 79],[14, 77],[15, 76],[16, 81],[17, 82],[19, 76],[20, 75],[21, 76],[22, 74],[23, 79],[24, 77],[25, 79],[26, 79],[27, 79]]) as Theme
 
-export const light_purple_active_SliderThumb = n315 as Theme
 export const light_purple_active_Tooltip = n315 as Theme
 export const light_purple_active_ProgressIndicator = n315 as Theme
 const n316 = t([[12, 61],[13, 62],[14, 63],[15, 64],[16, 60],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 69]]) as Theme
@@ -2178,7 +2171,6 @@ const n335 = t([[12, 65],[13, 64],[14, 63],[15, 62],[16, 67],[17, 68],[19, 64],[
 export const light_pink_active_SliderTrackActive = n335 as Theme
 const n336 = t([[12, 68],[13, 67],[14, 65],[15, 64],[16, 69],[17, 70],[19, 64],[20, 63],[21, 64],[22, 62],[23, 67],[24, 65],[25, 67],[26, 67],[27, 67]]) as Theme
 
-export const light_pink_active_SliderThumb = n336 as Theme
 export const light_pink_active_Tooltip = n336 as Theme
 export const light_pink_active_ProgressIndicator = n336 as Theme
 const n337 = t([[12, 85],[13, 86],[14, 87],[15, 88],[16, 84],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 93]]) as Theme
@@ -2274,7 +2266,6 @@ const n356 = t([[12, 89],[13, 88],[14, 87],[15, 86],[16, 91],[17, 92],[19, 88],[
 export const light_red_active_SliderTrackActive = n356 as Theme
 const n357 = t([[12, 92],[13, 91],[14, 89],[15, 88],[16, 93],[17, 94],[19, 88],[20, 87],[21, 88],[22, 86],[23, 91],[24, 89],[25, 91],[26, 91],[27, 91]]) as Theme
 
-export const light_red_active_SliderThumb = n357 as Theme
 export const light_red_active_Tooltip = n357 as Theme
 export const light_red_active_ProgressIndicator = n357 as Theme
 const n358 = t([[12, 157],[13, 158],[14, 159],[15, 161],[16, 156],[17, 155],[18, 164],[19, 163],[20, 164],[21, 163],[22, 164],[23, 161],[24, 56],[25, 159],[26, 161],[27, 161]]) as Theme
@@ -2361,7 +2352,6 @@ const n374 = t([[12, 159],[13, 158],[14, 157],[15, 156],[16, 161],[17, 56],[19, 
 export const dark_orange_active_SliderTrackActive = n374 as Theme
 const n375 = t([[12, 56],[13, 161],[14, 159],[15, 158],[16, 162],[17, 163],[19, 158],[20, 157],[21, 158],[22, 156],[23, 159],[24, 158],[25, 161],[26, 159],[27, 161]]) as Theme
 
-export const dark_orange_active_SliderThumb = n375 as Theme
 export const dark_orange_active_Tooltip = n375 as Theme
 export const dark_orange_active_ProgressIndicator = n375 as Theme
 const n376 = t([[12, 201],[13, 202],[14, 203],[15, 205],[16, 200],[17, 199],[18, 208],[19, 207],[20, 208],[21, 207],[22, 208],[23, 205],[24, 104],[25, 203],[26, 205],[27, 205]]) as Theme
@@ -2448,7 +2438,6 @@ const n392 = t([[12, 203],[13, 202],[14, 201],[15, 200],[16, 205],[17, 104],[19,
 export const dark_yellow_active_SliderTrackActive = n392 as Theme
 const n393 = t([[12, 104],[13, 205],[14, 203],[15, 202],[16, 206],[17, 207],[19, 202],[20, 201],[21, 202],[22, 200],[23, 203],[24, 202],[25, 205],[26, 203],[27, 205]]) as Theme
 
-export const dark_yellow_active_SliderThumb = n393 as Theme
 export const dark_yellow_active_Tooltip = n393 as Theme
 export const dark_yellow_active_ProgressIndicator = n393 as Theme
 const n394 = t([[12, 146],[13, 147],[14, 148],[15, 150],[16, 145],[17, 144],[18, 153],[19, 152],[20, 153],[21, 152],[22, 153],[23, 150],[24, 44],[25, 148],[26, 150],[27, 150]]) as Theme
@@ -2535,7 +2524,6 @@ const n410 = t([[12, 148],[13, 147],[14, 146],[15, 145],[16, 150],[17, 44],[19, 
 export const dark_green_active_SliderTrackActive = n410 as Theme
 const n411 = t([[12, 44],[13, 150],[14, 148],[15, 147],[16, 151],[17, 152],[19, 147],[20, 146],[21, 147],[22, 145],[23, 148],[24, 147],[25, 150],[26, 148],[27, 150]]) as Theme
 
-export const dark_green_active_SliderThumb = n411 as Theme
 export const dark_green_active_Tooltip = n411 as Theme
 export const dark_green_active_ProgressIndicator = n411 as Theme
 const n412 = t([[12, 124],[13, 125],[14, 126],[15, 128],[16, 123],[17, 122],[18, 131],[19, 130],[20, 131],[21, 130],[22, 131],[23, 128],[24, 22],[25, 126],[26, 128],[27, 128]]) as Theme
@@ -2622,7 +2610,6 @@ const n428 = t([[12, 126],[13, 125],[14, 124],[15, 123],[16, 128],[17, 22],[19, 
 export const dark_blue_active_SliderTrackActive = n428 as Theme
 const n429 = t([[12, 22],[13, 128],[14, 126],[15, 125],[16, 129],[17, 130],[19, 125],[20, 124],[21, 125],[22, 123],[23, 126],[24, 125],[25, 128],[26, 126],[27, 128]]) as Theme
 
-export const dark_blue_active_SliderThumb = n429 as Theme
 export const dark_blue_active_Tooltip = n429 as Theme
 export const dark_blue_active_ProgressIndicator = n429 as Theme
 const n430 = t([[12, 179],[13, 180],[14, 181],[15, 183],[16, 178],[17, 177],[18, 186],[19, 185],[20, 186],[21, 185],[22, 186],[23, 183],[24, 80],[25, 181],[26, 183],[27, 183]]) as Theme
@@ -2709,7 +2696,6 @@ const n446 = t([[12, 181],[13, 180],[14, 179],[15, 178],[16, 183],[17, 80],[19, 
 export const dark_purple_active_SliderTrackActive = n446 as Theme
 const n447 = t([[12, 80],[13, 183],[14, 181],[15, 180],[16, 184],[17, 185],[19, 180],[20, 179],[21, 180],[22, 178],[23, 181],[24, 180],[25, 183],[26, 181],[27, 183]]) as Theme
 
-export const dark_purple_active_SliderThumb = n447 as Theme
 export const dark_purple_active_Tooltip = n447 as Theme
 export const dark_purple_active_ProgressIndicator = n447 as Theme
 const n448 = t([[12, 168],[13, 169],[14, 170],[15, 172],[16, 167],[17, 166],[18, 175],[19, 174],[20, 175],[21, 174],[22, 175],[23, 172],[24, 68],[25, 170],[26, 172],[27, 172]]) as Theme
@@ -2796,7 +2782,6 @@ const n464 = t([[12, 170],[13, 169],[14, 168],[15, 167],[16, 172],[17, 68],[19, 
 export const dark_pink_active_SliderTrackActive = n464 as Theme
 const n465 = t([[12, 68],[13, 172],[14, 170],[15, 169],[16, 173],[17, 174],[19, 169],[20, 168],[21, 169],[22, 167],[23, 170],[24, 169],[25, 172],[26, 170],[27, 172]]) as Theme
 
-export const dark_pink_active_SliderThumb = n465 as Theme
 export const dark_pink_active_Tooltip = n465 as Theme
 export const dark_pink_active_ProgressIndicator = n465 as Theme
 const n466 = t([[12, 190],[13, 191],[14, 192],[15, 194],[16, 189],[17, 188],[18, 197],[19, 196],[20, 197],[21, 196],[22, 197],[23, 194],[24, 92],[25, 192],[26, 194],[27, 194]]) as Theme
@@ -2883,6 +2868,5 @@ const n482 = t([[12, 192],[13, 191],[14, 190],[15, 189],[16, 194],[17, 92],[19, 
 export const dark_red_active_SliderTrackActive = n482 as Theme
 const n483 = t([[12, 92],[13, 194],[14, 192],[15, 191],[16, 195],[17, 196],[19, 191],[20, 190],[21, 191],[22, 189],[23, 192],[24, 191],[25, 194],[26, 192],[27, 194]]) as Theme
 
-export const dark_red_active_SliderThumb = n483 as Theme
 export const dark_red_active_Tooltip = n483 as Theme
 export const dark_red_active_ProgressIndicator = n483 as Theme

@@ -83,6 +83,9 @@ export function useThemedChildren(
   // each children of these children wont get the theme
   if (shallow && themeManager) {
     let next = Children.toArray(children)
+
+    console.log('resetting???', themeManager.state.parentName)
+
     next = next.map((child) => {
       return isValidElement(child)
         ? cloneElement(
