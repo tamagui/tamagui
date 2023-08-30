@@ -78,15 +78,11 @@ export function useThemedChildren(
     return children
   }
 
-  // be sure to memoize shouldReset to avoid reparenting
+  let next = children
 
   // each children of these children wont get the theme
   if (shallow && themeManager) {
-    let next = Children.toArray(children)
-
-    console.log('resetting???', themeManager.state.parentName)
-
-    next = next.map((child) => {
+    next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
             child,
@@ -101,7 +97,7 @@ export function useThemedChildren(
 
   const elementsWithContext = (
     <ThemeManagerContext.Provider value={themeManager}>
-      {children}
+      {next}
     </ThemeManagerContext.Provider>
   )
 
