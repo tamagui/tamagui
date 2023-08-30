@@ -109,7 +109,6 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     return (
       <LabelProvider id={id} controlRef={controlRef}>
         <LabelFrame
-          role="heading"
           id={id}
           // @ts-ignore
           htmlFor={htmlFor}
