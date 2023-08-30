@@ -4,15 +4,13 @@ import {
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
-  ThemeUsingTemplate,
   applyMask,
   createMask,
   createTheme,
   objectEntries,
   objectFromEntries,
-  objectKeys,
 } from '@tamagui/create-theme'
-import type { Narrow, ThemeDefinition, UnionableString } from '@tamagui/web'
+import type { Narrow } from '@tamagui/web'
 
 type ThemeBuilderState = {
   palettes?: PaletteDefinitions
@@ -245,11 +243,16 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         ? (() => {
             const found = definitions.find((d) => parentName.startsWith(d.parent!))
             if (!found) {
-              throw new Error(`No parent for ${themeName}: ${parentName}`)
+              return null
             }
             return found
           })()
         : definitions
+
+      if (!themeDefinition) {
+        // `No parent for ${themeName}: ${parentName} - Continuing...`
+        continue
+      }
 
       if ('theme' in themeDefinition) {
         out[themeName] = themeDefinition.theme
@@ -269,7 +272,6 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         }
 
         let palette = this.state.palettes[paletteName]
-
         if (!palette) {
           const fullPaletteName = `${parentName}_${paletteName}`
           palette = this.state.palettes[fullPaletteName]
@@ -293,9 +295,8 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       const parent = out[parentName]
 
       if (!parent) {
-        throw new Error(
-          `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target`
-        )
+        // `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target - Continuing...`
+        continue
       }
 
       const { mask: maskName, ...options } = mask
