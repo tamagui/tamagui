@@ -169,8 +169,6 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     const currentThemeNames = Object.keys(currentThemes) as CurrentNames[]
     const incomingThemeNames = Object.keys(childThemeDefinition) as ChildNames[]
 
-    let log = false
-
     const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
       const avoidNestingWithin = options?.avoidNestingWithin
       if (avoidNestingWithin) {
@@ -193,7 +191,6 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
             if (
               avoidNest.some((name) => prefix.startsWith(name) || prefix.endsWith(name))
             ) {
-              log = true
               return null as never
             }
           }
@@ -210,8 +207,6 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     }
 
     const childThemes = Object.fromEntries(namesWithDefinitions) as any as ChildThemes
-
-    if (log) console.log('childThemes', childThemes)
 
     const next = {
       // as {} prevents generic string key merge messing up types
