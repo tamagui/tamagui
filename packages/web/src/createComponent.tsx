@@ -402,6 +402,10 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
+    if (props.themeShallow) {
+      stateRef.current.themeShallow = true
+    }
+
     const themeStateProps = {
       name: props.theme,
       componentName,
@@ -957,11 +961,6 @@ export function createComponent<
 
     // EVENTS native
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)
-
-    const shouldReset = !!(themeShallow && themeState.isNewTheme)
-    if (shouldReset) {
-      stateRef.current.themeShallow = true
-    }
 
     const direction = props.spaceDirection || 'both'
 

@@ -25,11 +25,11 @@ type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
 
-type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
-  ? X extends { [key: string]: any }
-    ? keyof X
-    : never
-  : never
+// type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
+//   ? X extends { [key: string]: any }
+//     ? keyof X
+//     : never
+//   : never
 
 type GetGeneratedThemeFromTemplate<Template, TD> = {
   [key in keyof Template]: string
@@ -169,10 +169,13 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     const currentThemeNames = Object.keys(currentThemes) as CurrentNames[]
     const incomingThemeNames = Object.keys(childThemeDefinition) as ChildNames[]
 
+    let log = false
+
     const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
-      if (options?.avoidNestingWithin) {
+      const avoidNestingWithin = options?.avoidNestingWithin
+      if (avoidNestingWithin) {
         if (
-          options.avoidNestingWithin.some(
+          avoidNestingWithin.some(
             (avoidName) => prefix.startsWith(avoidName) || prefix.endsWith(avoidName)
           )
         ) {
@@ -180,11 +183,24 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         }
       }
 
-      return incomingThemeNames.map((subName) => {
-        const fullName = `${prefix}_${subName}`
-        const definition = childThemeDefinition[subName]
-        return [fullName, definition] as const
-      })
+      return incomingThemeNames
+        .map((subName) => {
+          const fullName = `${prefix}_${subName}`
+          const definition = childThemeDefinition[subName]
+
+          if ('avoidNestingWithin' in definition) {
+            const avoidNest = definition.avoidNestingWithin as string[]
+            if (
+              avoidNest.some((name) => prefix.startsWith(name) || prefix.endsWith(name))
+            ) {
+              log = true
+              return null as never
+            }
+          }
+
+          return [fullName, definition] as const
+        })
+        .filter(Boolean)
     })
 
     type ChildThemes = {
@@ -194,6 +210,8 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     }
 
     const childThemes = Object.fromEntries(namesWithDefinitions) as any as ChildThemes
+
+    if (log) console.log('childThemes', childThemes)
 
     const next = {
       // as {} prevents generic string key merge messing up types

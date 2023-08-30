@@ -77,11 +77,13 @@ const themesBuilder = createThemeBuilder()
       ListItem: [
         {
           parent: 'light',
+          avoidNestingWithin: ['active'],
           mask: 'strengthen',
           ...maskOptions.component,
         },
         {
           parent: 'dark',
+          avoidNestingWithin: ['active'],
           mask: 'identity',
           ...maskOptions.component,
         },
@@ -89,6 +91,7 @@ const themesBuilder = createThemeBuilder()
 
       Card: {
         mask: 'soften',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
@@ -109,31 +112,37 @@ const themesBuilder = createThemeBuilder()
 
       SwitchThumb: {
         mask: 'inverseStrengthen2',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       TooltipContent: {
         mask: 'soften2Border1',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       DrawerFrame: {
         mask: 'soften',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       Progress: {
         mask: 'soften',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       RadioGroupItem: {
         mask: 'softenBorder2',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       TooltipArrow: {
         mask: 'soften',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
@@ -144,21 +153,25 @@ const themesBuilder = createThemeBuilder()
 
       SliderTrack: {
         mask: 'soften2Border1',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       SliderThumb: {
         mask: 'inverse',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       Tooltip: {
         mask: 'inverse',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
       ProgressIndicator: {
         mask: 'inverse',
+        avoidNestingWithin: ['active'],
         ...maskOptions.component,
       },
 
