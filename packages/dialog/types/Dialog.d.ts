@@ -404,7 +404,7 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<Omit<
     };
 }>;
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
-interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context'> {
+interface DialogContentProps extends DialogContentFrameProps, Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
     /**
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
