@@ -24,7 +24,7 @@ export type SwitchExtraProps = {
     nativeProps?: NativeSwitchProps;
     onCheckedChange?(checked: boolean): void;
 };
-type SwitchProps = SwitchBaseProps & SwitchExtraProps;
+export type SwitchProps = SwitchBaseProps & SwitchExtraProps;
 export declare function createSwitch<F extends TamaguiComponentExpectingVariants<SwitchProps, SwitchSharedProps & SwitchExtraProps>, T extends TamaguiComponentExpectingVariants<SwitchBaseProps, SwitchSharedProps>>({ Frame, Thumb, acceptsUnstyled }: {
     Frame: F;
     Thumb: T;

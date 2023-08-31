@@ -57,7 +57,7 @@ export type SwitchExtraProps = {
   onCheckedChange?(checked: boolean): void
 }
 
-type SwitchProps = SwitchBaseProps & SwitchExtraProps
+export type SwitchProps = SwitchBaseProps & SwitchExtraProps
 
 export function createSwitch<
   F extends TamaguiComponentExpectingVariants<
