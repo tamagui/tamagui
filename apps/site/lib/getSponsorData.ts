@@ -48,7 +48,7 @@ export async function getSponsorData(
     res,
     maxAge: 60 * 2,
     httpOnly: true,
-    domain: '.tamagui.dev',
+    domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
   })
 
   return payload
