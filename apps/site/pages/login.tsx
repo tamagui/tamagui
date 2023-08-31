@@ -35,7 +35,7 @@ function SignIn() {
     type: '',
     content: '',
   })
-  const { data } = useUser()
+  const { data, isLoading } = useUser()
   const user = data?.session?.user
   const emailRef = useRef(null)
 
@@ -95,6 +95,14 @@ function SignIn() {
       setMessage({ type: 'error', content: error.message })
     }
     setLoading(false)
+  }
+
+  if (isLoading) {
+    return (
+      <YStack ai="center" flex={1} jc="center">
+        <Spinner size="large" />
+      </YStack>
+    )
   }
 
   if (!user)
