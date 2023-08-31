@@ -84,6 +84,7 @@ let tamaguiConfig: TamaguiInternalConfig
 let AnimatedText: any
 let AnimatedView: any
 let initialTheme: any
+let time: any
 
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
@@ -224,15 +225,16 @@ export function createComponent<
     const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
-    let time: any
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&
       process.env.NODE_ENV === 'development' &&
-      debugProp === 'profile'
+      debugProp === 'profile' &&
+      !time
     ) {
       const timer = require('@tamagui/timer').timer()
       time = timer.start()
     }
+    if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
     const isHydrated = useDidFinishSSR()
 
@@ -998,11 +1000,12 @@ export function createComponent<
       process.env.TAMAGUI_TARGET === 'native' &&
       (elementType === BaseText || elementType === BaseView)
     ) {
-      // instead of rendering a whole sub component, just grab the contents directly
-      // since these components dont use hooks we can do this...
-      // we could further improve this performance by actually just doing this ourselves
-      viewProps.children = content
-      content = elementType.render(viewProps, viewProps.ref)
+      if (elementType === BaseView) {
+        // instead of rendering a whole sub component, just grab the contents directly
+        // we could further improve this performance by actually just doing this ourselves
+        viewProps.children = content
+        content = elementType.render(viewProps, viewProps.ref)
+      }
     } else {
       content = createElement(elementType, viewProps, content)
     }
@@ -1144,7 +1147,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) {
       time`rest`
-      time.print()
+      if (!globalThis['willPrint']) {
+        globalThis['willPrint'] = true
+        setTimeout(() => {
+          delete globalThis['willPrint']
+          time.print()
+          time = null
+        }, 50)
+      }
     }
 
     return content

@@ -303,14 +303,9 @@ export const getSplitStyles: StyleSplitter = (
         keyInit = 'selectable'
         valInit = valInit === 'none' ? false : true
       } else if (keyInit === 'role') {
-        if (valInit === 'list') {
-          // role = "list"
-          viewProps[keyInit] = valInit
-        } else if (accessibilityWebRoleToNativeRole[valInit]) {
-          viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
-            valInit
-          ] as GetStyleResult['viewProps']['AccessibilityRole']
-        }
+        viewProps['accessibilityRole'] = accessibilityWebRoleToNativeRole[
+          valInit
+        ] as GetStyleResult['viewProps']['AccessibilityRole']
         continue
       } else if (keyInit.startsWith('aria-')) {
         if (webToNativeAccessibilityDirectMap[keyInit]) {

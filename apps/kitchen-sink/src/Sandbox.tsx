@@ -15,33 +15,13 @@ import {
   withStaticProperties,
 } from 'tamagui'
 
-export const MyButton = styled(Button, {
-  name: 'MyButton',
-
-  variants: {
-    test: {
-      true: {
-        backgroundColor: 'yellow',
-        pressStyle: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  } as const,
-})
-
 export const Sandbox = () => {
   const theme = useTheme().color.val
   const ref = useRef<any>()
 
-  useEffect(() => {
-    console.log('ref', ref.current)
-  }, [])
-
   return (
     <>
-      <Stack ref={ref} f={1} group="testy">
-        <Button> test a123</Button>
+      {/* <Stack ref={ref} f={1} group="testy">
         <Square
           size={100}
           bc="green"
@@ -58,7 +38,26 @@ export const Sandbox = () => {
             bc: 'palegoldenrod',
           }}
         />
-      </Stack>
+      </Stack> */}
+
+      <Square
+        size={100}
+        debug
+        bc="green"
+        // $group-testy={{
+        //   bc: 'brown',
+        // }}
+        // $group-testy-hover={{
+        //   bc: 'black',
+        // }}
+        $group-testy-sm={{
+          bc: 'red',
+        }}
+        $group-testy-sm-hover={{
+          bc: 'palegoldenrod',
+        }}
+      />
+
       {/* 
       <Stack>
         <Square size={100} bc="yellow" $group-testy={{ bc: 'red' }} />

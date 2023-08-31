@@ -30,9 +30,13 @@ export type ChangedThemeResponse = {
 
 const emptyProps = { name: null }
 
+let cached: any
 function getDefaultThemeProxied() {
+  if (cached) return cached
   const config = getConfig()
-  return getThemeProxied(config.themes[Object.keys(config.themes)[0]])
+  const defaultTheme = config.themes.light ?? config.themes[Object.keys(config.themes)[0]]
+  cached = getThemeProxied(defaultTheme)
+  return cached
 }
 
 type ThemeGettable<Val> = Val & {
@@ -70,7 +74,11 @@ export const useThemeWithState = (
       ? () => {
           const next =
             props.shouldUpdate?.() ?? (keys.current.length > 0 ? true : undefined)
-          if (process.env.NODE_ENV === 'development' && props.debug) {
+          if (
+            process.env.NODE_ENV === 'development' &&
+            props.debug &&
+            props.debug !== 'profile'
+          ) {
             // rome-ignore lint/nursery/noConsoleLog: <explanation>
             console.log(`  🎨 useTheme() shouldUpdate?`, next, {
               shouldUpdateProp: props.shouldUpdate?.(),
@@ -118,11 +126,13 @@ export function getThemeProxied(
 ): UseThemeResult {
   return createProxy(theme, {
     has(_, key) {
+      if (Reflect.has(theme, key)) {
+        return true
+      }
       if (typeof key === 'string') {
         if (key[0] === '$') key = key.slice(1)
         return themeManager?.allKeys.has(key)
       }
-      return Reflect.has(theme, key)
     },
     get(_, key) {
       if (key === GetThemeUnwrapped) {
@@ -132,8 +142,7 @@ export function getThemeProxied(
         // dont ask me, idk why but on hermes you can see that useTheme()[undefined] passes in STRING undefined to proxy
         // if someone is crazy enough to use "undefined" as a theme key then this not working is on them
         key !== 'undefined' &&
-        typeof key === 'string' &&
-        keys
+        typeof key === 'string'
       ) {
         // auto convert variables to plain
         const keyString = key[0] === '$' ? key.slice(1) : key
@@ -146,14 +155,16 @@ export function getThemeProxied(
             // if its a variable (web), its ignored!
             get(_, subkey) {
               // trigger read key that makes it track updates
-              if (
-                (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
-                !keys.includes(keyString)
-              ) {
-                keys.push(keyString)
-                if (process.env.NODE_ENV === 'development' && debug) {
-                  // rome-ignore lint/nursery/noConsoleLog: <explanation>
-                  console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
+              if (keys) {
+                if (
+                  (subkey === 'val' || (subkey === 'get' && !isWeb)) &&
+                  !keys.includes(keyString)
+                ) {
+                  keys.push(keyString)
+                  if (process.env.NODE_ENV === 'development' && debug) {
+                    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                    console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
+                  }
                 }
               }
               if (subkey === 'get') {
@@ -194,6 +205,19 @@ export const useChangeThemeEffect = (
     }
   }
 
+  // for testing performance can bail it out early with this fake response:
+  // i found most of the cost was just having a useState at all, at least 30%
+  // if (!disable && parentManager) {
+  //   return {
+  //     isNewTheme: false,
+  //     state: {
+  //       name: 'light',
+  //       theme: getConfig().themes.light,
+  //     },
+  //     themeManager: parentManager!,
+  //   }
+  // }
+
   const [themeState, setThemeState] = useState<ChangedThemeResponse>(createState)
   const { state, mounted, isNewTheme, themeManager } = themeState
   const isInversingOnMount = Boolean(!themeState.mounted && props.inverse)
@@ -209,8 +233,8 @@ export const useChangeThemeEffect = (
     const next = nextState || manager.getState(props, parentManager)
     if (forceShouldChange) return next
     if (!next) return
-    if (forceUpdate !== true) {
-      if (!manager.getStateShouldChange(next, prevState)) return
+    if (forceUpdate !== true && !manager.getStateShouldChange(next, prevState)) {
+      return
     }
     return next
   }
@@ -278,7 +302,7 @@ export const useChangeThemeEffect = (
       mounted,
     ])
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && props.debug !== 'profile') {
       useEffect(() => {
         globalThis['TamaguiThemeManagers'] ??= new Set()
         globalThis['TamaguiThemeManagers'].add(themeManager)
@@ -369,7 +393,7 @@ export const useChangeThemeEffect = (
 
     if (!state) {
       if (isNewTheme) {
-        state = { ...themeManager.state }
+        state = themeManager.state
       } else {
         state = parentManager!.state
         themeManager = parentManager!

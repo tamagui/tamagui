@@ -29,7 +29,6 @@ export function timer() {
 
   return {
     start(opts?: { quiet?: boolean }) {
-      let start = performance.now()
       const quiet = opts?.quiet ?? true
 
       function time(strings: TemplateStringsArray, ...vars: any[]) {
@@ -50,6 +49,7 @@ export function timer() {
         }
       }
 
+      let start = performance.now()
       time['print'] = print
 
       return time

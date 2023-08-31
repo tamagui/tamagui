@@ -34,6 +34,7 @@
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
