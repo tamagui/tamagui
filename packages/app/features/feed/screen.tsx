@@ -7,7 +7,6 @@ export function FeedScreen() {
   return (
     <YStack
       flex={1}
-      paddingHorizontal="$4"
       {...(isWeb && {
         // Should fix in core
         position: 'unset' as any,
@@ -23,10 +22,8 @@ const HorizontalTabs = () => {
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      borderRadius="$4"
-      borderWidth="$0.25"
       overflow="hidden"
-      borderColor="$borderColor"
+      f={1}
     >
       <Tabs.List
         separator={<Separator vertical />}
@@ -55,17 +52,10 @@ const TabsContent = (props: TabsContentProps) => {
   const { children, ...rest } = props
   return (
     <Tabs.Content
-      backgroundColor="$background"
       key="tab3"
-      padding="$2"
       alignItems="center"
       justifyContent="center"
-      flex={1}
       borderColor="$background"
-      borderRadius="$2"
-      borderTopLeftRadius={0}
-      borderTopRightRadius={0}
-      borderWidth="$2"
       {...rest}
     >
       {children}

@@ -8,14 +8,19 @@ import {
 
 export const climbRouter = createTRPCRouter({
   read: protectedProcedure.query(async ({ ctx: { supabase } }) => {
-    const climbs = await supabase.from('climbs').select()
+    const climbs = await supabase.from('climbs').select(`*, climber:profiles(*)`)
 
     if (climbs.error) {
       console.log(climbs.error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
     }
 
-    return climbs.data
+    return climbs.data.map((climb) => {
+      return {
+        ...climb,
+        climber: Array.isArray(climb.climber) ? climb.climber[0] : climb.climber
+      };
+    })
   }),
   create: protectedProcedure.input(z.object({
     name: z.string(),

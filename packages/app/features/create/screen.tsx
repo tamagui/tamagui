@@ -123,7 +123,7 @@ export const CreateScreen = () => {
       })}
       defaultValues={{
         name: '',
-        start: getTimeSelections(new Date(), 15)[0].value,
+        // start: getTimeSelections(new Date(), 15)[0].value,
         duration: getDurationSelections()[1].value,
         location: 'gowanus',
         type: 'top_rope',

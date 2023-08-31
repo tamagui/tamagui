@@ -28,6 +28,7 @@
     "@trpc/client": "^10.36.0",
     "base64-arraybuffer": "^1.0.2",
     "burnt": "^0.10.0",
+    "date-fns": "^2.30.0",
     "expo-constants": "~14.4.2",
     "expo-image-picker": "~14.3.1",
     "expo-linking": "~5.0.2",

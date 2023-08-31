@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useSessionContext } from './supabase/useSessionContext'
 import { useSupabase } from './supabase/useSupabase'
-
+export type User = ReturnType<typeof useUser>
 export const useUser = () => {
   const { session, isLoading: isLoadingSession } = useSessionContext()
   const user = session?.user
