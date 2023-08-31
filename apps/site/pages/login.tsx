@@ -1,6 +1,6 @@
 import { SupabaseProvider } from '@components/SupabaseProvider'
 import { getDefaultLayout } from '@lib/getDefaultLayout'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/logo'
 import { useUser } from 'hooks/useUser'
@@ -27,6 +27,7 @@ export default function SignInPage(props) {
 function SignIn() {
   const router = useRouter()
   const supabaseClient = useSupabaseClient()
+  const supabaseSession = useSessionContext()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPasswordInput, setShowPasswordInput] = useState(false)
@@ -35,7 +36,7 @@ function SignIn() {
     type: '',
     content: '',
   })
-  const { data, isLoading } = useUser()
+  const { data } = useUser()
   const user = data?.session?.user
   const emailRef = useRef(null)
 
@@ -97,7 +98,7 @@ function SignIn() {
     setLoading(false)
   }
 
-  if (isLoading) {
+  if (supabaseSession.isLoading) {
     return (
       <YStack ai="center" flex={1} jc="center">
         <Spinner size="large" />
