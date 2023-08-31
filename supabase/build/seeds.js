@@ -36,50 +36,76 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// require('ts-node').register()
 var faker_1 = require("@faker-js/faker");
 var date_fns_1 = require("date-fns");
 var supabase_js_1 = require("@supabase/supabase-js");
 var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54321", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0");
-function createClimbs(supabase, user) {
+function createClimbs(supabase, users, admin) {
     return __awaiter(this, void 0, void 0, function () {
-        var climbs, _a, data, error;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var usersClimbs, error;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    climbs = Array.from({ length: 10 }).map(function (_, i) {
-                        // past date between now and 1 week ago
-                        var start = (0, date_fns_1.add)(faker_1.faker.date.between({
-                            from: new Date(),
-                            to: (0, date_fns_1.add)(new Date(), { weeks: 3 }),
-                        }), {
-                            hours: faker_1.faker.number.int({ min: 0, max: 4 }),
-                            minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
+                    // Create 10 climbs from faker data with the Shape of Tables['climbs'] and Enums['climb_type']
+                    // created at should be now to 1 week ago
+                    // created by should be the user id from the auth response
+                    // start should be in the future, a time between now and 3 weeks from now
+                    // duration should be between 20 minutes and 5 hours after start
+                    // type should be one of the climb types enum
+                    // id should be an auto incrementing integer starting at 1
+                    // name should be a random string of 10-25 characters with the user's first name in it and fake verb
+                    // the start time should be between 7am and 10pm, and the duration should be between 20 minutes and 5 hours, but the climb cannot end after 10pm
+                    if (!admin) {
+                        throw new Error('no admin');
+                    }
+                    usersClimbs = users.map(function (user) {
+                        var _a;
+                        var climbs = Array.from({ length: 4 }).map(function (_, i) {
+                            var _a, _b, _c;
+                            var start = (0, date_fns_1.add)(faker_1.faker.date.between({
+                                from: new Date(),
+                                to: (0, date_fns_1.add)(new Date(), { weeks: 3 }),
+                            }), {
+                                hours: faker_1.faker.number.int({ min: 0, max: 4 }),
+                                minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
+                            });
+                            return {
+                                created_at: faker_1.faker.date.between({
+                                    from: (0, date_fns_1.add)(new Date(), { weeks: -1 }),
+                                    to: new Date(),
+                                }).toISOString(),
+                                created_by: (_a = user === null || user === void 0 ? void 0 : user.data.user) === null || _a === void 0 ? void 0 : _a.id,
+                                start: start.toISOString(),
+                                duration: (0, date_fns_1.add)(start, {
+                                    hours: faker_1.faker.number.int({ min: 0, max: 4 }),
+                                    minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
+                                }).toISOString(),
+                                type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
+                                name: "".concat((_c = (_b = user === null || user === void 0 ? void 0 : user.data) === null || _b === void 0 ? void 0 : _b.user) === null || _c === void 0 ? void 0 : _c.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                            };
                         });
-                        return {
+                        // make sure admin has a climb from every user
+                        climbs.push({
                             created_at: faker_1.faker.date.between({
                                 from: (0, date_fns_1.add)(new Date(), { weeks: -1 }),
                                 to: new Date(),
                             }).toISOString(),
-                            created_by: user === null || user === void 0 ? void 0 : user.id,
-                            start: start.toISOString(),
-                            duration: (0, date_fns_1.add)(start, {
-                                hours: faker_1.faker.number.int({ min: 0, max: 4 }),
-                                minutes: faker_1.faker.number.int({ min: 0, max: 59 }),
-                            }).toISOString(),
+                            created_by: admin === null || admin === void 0 ? void 0 : admin.id,
+                            start: (0, date_fns_1.add)(new Date(), { days: -1 }).toISOString(),
+                            duration: (0, date_fns_1.add)(new Date(), { days: -1, hours: 1 }).toISOString(),
                             type: faker_1.faker.helpers.arrayElement(['boulder', 'lead_rope', 'top_rope']),
-                            id: i + 1,
-                            name: "".concat(user === null || user === void 0 ? void 0 : user.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
-                        };
-                    });
-                    return [4 /*yield*/, supabase.from('climbs').insert(climbs)];
+                            name: "".concat((_a = user === null || user === void 0 ? void 0 : user.data.user) === null || _a === void 0 ? void 0 : _a.user_metadata.first_name, " ").concat(faker_1.faker.helpers.arrayElement(['climbs', 'sends', 'projects', 'attempts']), " ").concat(faker_1.faker.helpers.arrayElement(['a', 'the', 'my']), " ").concat(faker_1.faker.helpers.arrayElement(['red', 'blue', 'green', 'yellow', 'purple', 'black']), " ").concat(faker_1.faker.helpers.arrayElement(['route', 'problem', 'boulder'])),
+                        });
+                        return climbs;
+                    }).flatMap(function (climbs) { return climbs; });
+                    return [4 /*yield*/, supabase.from('climbs').insert(usersClimbs)];
                 case 1:
-                    _a = _b.sent(), data = _a.data, error = _a.error;
+                    error = (_a.sent()).error;
                     if (error) {
                         console.log(error);
                         return [2 /*return*/];
                     }
-                    return [2 /*return*/, data];
+                    return [2 /*return*/];
             }
         });
     });
@@ -141,26 +167,91 @@ function createUsers(supabase, count) {
         });
     });
 }
-function main() {
+function createProfileClimbs(supabase, climbs, profiles, admin) {
     return __awaiter(this, void 0, void 0, function () {
-        var benjamin, users, benjaminsClimbs;
+        var profileClimbs, error;
         return __generator(this, function (_a) {
             switch (_a.label) {
+                case 0:
+                    // Create a single profile climb for every climb for every profile
+                    // Every other profile should have 2 profile climbs for every climb
+                    // The profile climbs should be created in the last 2 weeks and 2 weeks in the future
+                    // The first profile climb should be created by the user who created the climb
+                    // The second profile climb should be created by a random user
+                    if (!admin) {
+                        throw new Error('no admin');
+                    }
+                    profileClimbs = climbs.map(function (climb) {
+                        var result = [];
+                        var created_at = faker_1.faker.date.between({
+                            from: (0, date_fns_1.add)(new Date(), { weeks: -2 }),
+                            to: (0, date_fns_1.add)(new Date(), { weeks: 2 }),
+                        }).toISOString();
+                        // first profile climb, the user who created the climb
+                        result.push({
+                            created_at: created_at,
+                            profile_id: climb.created_by,
+                            climb_id: climb.id,
+                        });
+                        // second profile climb, a random user
+                        // every other climb should have 2 profile climbs
+                        if (climb.id % 3 === 0) {
+                            result.push({
+                                created_at: created_at,
+                                profile_id: admin.id,
+                                climb_id: climb.id,
+                            });
+                        }
+                        else if (climb.id % 2 === 0) {
+                            result.push({
+                                created_at: created_at,
+                                profile_id: faker_1.faker.helpers.arrayElement(profiles).id,
+                                climb_id: climb.id,
+                            });
+                        }
+                        return result;
+                    }).flatMap(function (climbs) { return climbs; });
+                    return [4 /*yield*/, supabase.from('profile_climbs').insert(profileClimbs)];
+                case 1:
+                    error = (_a.sent()).error;
+                    if (error) {
+                        console.log(error);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function main() {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function () {
+        var benjamin, users, climbs, profiles;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     console.log('Running seeds with faker data');
                     return [4 /*yield*/, createBenjamin(supabaseInstance)];
                 case 1:
-                    benjamin = _a.sent();
+                    benjamin = _c.sent();
                     return [4 /*yield*/, createUsers(supabaseInstance, 10)];
                 case 2:
-                    users = _a.sent();
+                    users = _c.sent();
                     if (!benjamin) {
                         console.log('no benjamin');
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, createClimbs(supabaseInstance, benjamin.user)];
+                    return [4 /*yield*/, createClimbs(supabaseInstance, users, benjamin.user)];
                 case 3:
-                    benjaminsClimbs = _a.sent();
+                    _c.sent();
+                    return [4 /*yield*/, supabaseInstance.from('climbs').select('*')];
+                case 4:
+                    climbs = _c.sent();
+                    return [4 /*yield*/, supabaseInstance.from('profiles').select('*')];
+                case 5:
+                    profiles = _c.sent();
+                    return [4 /*yield*/, createProfileClimbs(supabaseInstance, (_a = climbs === null || climbs === void 0 ? void 0 : climbs.data) !== null && _a !== void 0 ? _a : [], (_b = profiles.data) !== null && _b !== void 0 ? _b : [], benjamin.user)];
+                case 6:
+                    _c.sent();
                     return [2 /*return*/];
             }
         });

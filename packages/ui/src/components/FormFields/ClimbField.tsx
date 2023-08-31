@@ -184,7 +184,7 @@ export const ClimbField = (props: Pick<InputProps, 'size'>) => {
             <FieldError message={error?.location?.errorMessage} />
           </Fieldset>
         </Theme>
-        <Theme name={error?.start ? 'red' : themeName} forceClassName>
+        {/* <Theme name={error?.start ? 'red' : themeName} forceClassName>
           <Fieldset $gtSm={{ fb: 0 }} f={1}>
             <Label theme="alt1" size={props.size || '$3'} htmlFor={`${id}-zip-code`}>
               Start
@@ -205,7 +205,7 @@ export const ClimbField = (props: Pick<InputProps, 'size'>) => {
             </Shake>
             <FieldError message={error?.location?.errorMessage} />
           </Fieldset>
-        </Theme>
+        </Theme> */}
       </XStack>
     </Fieldset>
   )
