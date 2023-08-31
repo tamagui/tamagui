@@ -1000,12 +1000,10 @@ export function createComponent<
       process.env.TAMAGUI_TARGET === 'native' &&
       (elementType === BaseText || elementType === BaseView)
     ) {
-      if (elementType === BaseView) {
-        // instead of rendering a whole sub component, just grab the contents directly
-        // we could further improve this performance by actually just doing this ourselves
-        viewProps.children = content
-        content = elementType.render(viewProps, viewProps.ref)
-      }
+      // instead of rendering a whole sub component, just grab the contents directly
+      // we could further improve this performance by actually just doing this ourselves
+      viewProps.children = content
+      content = elementType.render(viewProps, viewProps.ref)
     } else {
       content = createElement(elementType, viewProps, content)
     }
