@@ -1,26 +1,17 @@
 import { setupCors } from '@lib/cors'
+import { getSponsorData } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import * as apis from '@tamagui/studio/api'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   setupCors(req, res)
-  await protectApiRoute(req, res)
-  // uncomment to block out non-sponsors:
-  // const teamsResult = await supabase.from('teams').select('id, name, is_active')
-  // if (teamsResult.error) {
-  //   throw teamsResult.error
-  // }
-  // const teams = getArray(teamsResult.data)
-  // const hasAccess = teams.some((team) => team.is_active)
-
-  const hasAccess = true
-
-  if (!hasAccess) {
+  const { supabase } = await protectApiRoute(req, res)
+  const { hasStudioAccess } = await getSponsorData(req, res, supabase)
+  if (!hasStudioAccess) {
     res.status(403).json({
-      error: "You don't have access to this part of studio.",
+      message: "You don't have access to this part of the studio.",
     })
-    return
   }
 
   const procedureName = req.query.procedure
