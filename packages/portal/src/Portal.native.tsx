@@ -21,19 +21,9 @@ export const Portal = (props: PortalProps) => {
     />
   )
 
-  if (Platform.OS === 'android') {
+  if (Platform.OS === 'android' || !rootTag) {
     return <PortalItem hostName="root">{contents}</PortalItem>
   }
 
-  if (rootTag) {
-    return createPortal(contents, rootTag)
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    console.warn(
-      `Missing rootTag, this is a bug - you may need a different React Native version, or to avoid using "modal" on native.`
-    )
-  }
-
-  return null
+  return createPortal(contents, rootTag)
 }
