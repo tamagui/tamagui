@@ -317,7 +317,7 @@ function getTamaguiSelector(
 }
 
 const getIdentifierFromTamaguiSelector = (selector: string) => {
-  let res = selector.slice(8)
+  let res = selector.slice(7)
   if (selector.includes(':')) {
     return res.replace(/:[a-z]+$/, '')
   }
