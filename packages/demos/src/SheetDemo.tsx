@@ -8,13 +8,20 @@ export const SheetDemo = () => {
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(true)
   const [innerOpen, setInnerOpen] = useState(false)
+  const [snapPointsMode, setSnapPointsMode] = useState<'percent' | 'constant'>('percent')
+  const isPercent = snapPointsMode === 'percent'
 
   return (
     <>
-      <XStack space>
+      <XStack space $sm={{ flexDirection: 'column', alignItems: 'center' }}>
         <Button onPress={() => setOpen(true)}>Open</Button>
         <Button onPress={() => setModal((x) => !x)}>
           {modal ? 'Type: Modal' : 'Type: Inline'}
+        </Button>
+        <Button onPress={() => setSnapPointsMode(isPercent ? 'constant' : 'percent')}>
+          {snapPointsMode === 'percent'
+            ? 'Snap Points: Percent'
+            : 'Snap Points: Constant'}
         </Button>
       </XStack>
 
@@ -23,7 +30,8 @@ export const SheetDemo = () => {
         modal={modal}
         open={open}
         onOpenChange={setOpen}
-        snapPoints={[85, 50, 25]}
+        snapPoints={isPercent ? [85, 50, 25] : [256, 190]}
+        snapPointsMode={snapPointsMode}
         dismissOnSnapToBottom
         position={position}
         onPositionChange={setPosition}
@@ -45,7 +53,7 @@ export const SheetDemo = () => {
         >
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />
-          {modal && (
+          {modal && isPercent && (
             <>
               <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
               <Button

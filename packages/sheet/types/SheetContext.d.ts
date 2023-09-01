@@ -28,6 +28,8 @@ export declare const SheetProvider: {
         scope: import("@tamagui/create-context").Scope<any>;
         position: number;
         snapPoints: number[];
+        snapPointsMode: import("./types").SnapPointsMode;
+        setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
         onlyShowFrame: boolean;
@@ -50,6 +52,8 @@ export declare const SheetProvider: {
             scope: import("@tamagui/create-context").Scope<any>;
             position: number;
             snapPoints: number[];
+            snapPointsMode: import("./types").SnapPointsMode;
+            setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
             setPosition: (next: number) => void;
             setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
             onlyShowFrame: boolean;
@@ -75,6 +79,8 @@ export declare const SheetProvider: {
     scope: import("@tamagui/create-context").Scope<any>;
     position: number;
     snapPoints: number[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
@@ -98,6 +104,8 @@ export declare const SheetProvider: {
         scope: import("@tamagui/create-context").Scope<any>;
         position: number;
         snapPoints: number[];
+        snapPointsMode: import("./types").SnapPointsMode;
+        setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
         setPosition: (next: number) => void;
         setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
         onlyShowFrame: boolean;
@@ -120,6 +128,8 @@ export declare const SheetProvider: {
     scope: import("@tamagui/create-context").Scope<any>;
     position: number;
     snapPoints: number[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: import("react").Dispatch<import("react").SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;

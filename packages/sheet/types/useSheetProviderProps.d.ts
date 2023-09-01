@@ -23,6 +23,8 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     scope: import("@tamagui/create-context").Scope<any>;
     position: number;
     snapPoints: number[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: React.Dispatch<React.SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
     onlyShowFrame: boolean;

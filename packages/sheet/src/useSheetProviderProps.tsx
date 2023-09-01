@@ -17,7 +17,9 @@ export function useSheetProviderProps(
 ) {
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = useState<number>(0)
+  const [maxContentSize, setMaxContentSize] = useState<number>(0)
   const snapPointsProp = props.snapPoints || [80]
+  const snapPointsMode = props.snapPointsMode ?? 'percent'
 
   const snapPoints = useMemo(
     () => (props.dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
@@ -51,9 +53,14 @@ export function useSheetProviderProps(
   )
 
   if (process.env.NODE_ENV === 'development') {
-    if (snapPoints.some((p) => p < 0 || p > 100)) {
+    if (snapPointsMode === 'constant' && snapPoints.some((p) => p < 0)) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame'
+        '⚠️ Invalid snapPoint given, snapPoints must be positive values when snapPointsMode is constant'
+      )
+    }
+    if (snapPointsMode === 'percent' && snapPoints.some((p) => p < 0 || p > 100)) {
+      console.warn(
+        '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame when snapPointsMode is percent'
       )
     }
   }
@@ -90,7 +97,8 @@ export function useSheetProviderProps(
   const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal)
 
   const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
-  const screenSize = frameSize / (maxSnapPoint / 100)
+  const screenSize =
+    snapPointsMode === 'constant' ? maxContentSize : frameSize / (maxSnapPoint / 100)
 
   const providerProps = {
     screenSize,
@@ -110,6 +118,8 @@ export function useSheetProviderProps(
     scope: props.__scopeSheet,
     position,
     snapPoints,
+    snapPointsMode,
+    setMaxContentSize,
     setPosition,
     setPositionImmediate,
     onlyShowFrame: false,

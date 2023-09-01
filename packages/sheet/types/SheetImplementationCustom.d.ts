@@ -1,5 +1,6 @@
 /// <reference types="react" />
 import { View } from 'react-native';
+import { SnapPointsMode } from './types';
 export declare const SheetImplementationCustom: (props: Omit<{
     open?: boolean | undefined;
     defaultOpen?: boolean | undefined;
@@ -7,6 +8,7 @@ export declare const SheetImplementationCustom: (props: Omit<{
     position?: number | undefined;
     defaultPosition?: number | undefined;
     snapPoints?: number[] | undefined;
+    snapPointsMode?: SnapPointsMode | undefined;
     onPositionChange?: import("./types").PositionChangeHandler | undefined;
     children?: import("react").ReactNode;
     dismissOnOverlayPress?: boolean | undefined;

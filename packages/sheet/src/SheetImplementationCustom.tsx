@@ -36,7 +36,7 @@ import { SHEET_HIDDEN_STYLESHEET } from './constants'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
-import { SheetProps } from './types'
+import { SheetProps, SnapPointsMode } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -65,10 +65,12 @@ export const SheetImplementationCustom = themeable(
       frameSize,
       setFrameSize,
       snapPoints,
+      snapPointsMode,
       position,
       setPosition,
       scrollBridge,
       screenSize,
+      setMaxContentSize,
       maxSnapPoint,
     } = providerProps
     const { open, controller, isHidden } = state
@@ -87,8 +89,8 @@ export const SheetImplementationCustom = themeable(
     }, [])
 
     const positions = useMemo(
-      () => snapPoints.map((point) => getPercentSize(point, screenSize)),
-      [frameSize, snapPoints]
+      () => snapPoints.map((point) => getYPositions(point, screenSize, snapPointsMode)),
+      [screenSize, snapPoints, snapPointsMode]
     )
 
     const driver = useAnimationDriver()
@@ -314,6 +316,15 @@ export const SheetImplementationCustom = themeable(
       [keyboardIsVisible]
     )
 
+    const handleMaxContentViewLayout = useCallback(
+      (e: LayoutChangeEvent) => {
+        const next = e.nativeEvent?.layout.height
+        if (!next) return
+        setMaxContentSize(next)
+      },
+      [keyboardIsVisible]
+    )
+
     const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
       'worklet'
       const translateY = frameSize === 0 ? hiddenSize : val
@@ -369,6 +380,21 @@ export const SheetImplementationCustom = themeable(
             {shouldHideParentSheet || !open ? null : overlayComponent}
           </AnimatePresence>
 
+          {snapPointsMode === 'constant' && (
+            <View
+              style={{
+                opacity: 0,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                pointerEvents: 'none',
+              }}
+              pointerEvents="none"
+              onLayout={handleMaxContentViewLayout}
+            />
+          )}
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
@@ -381,8 +407,9 @@ export const SheetImplementationCustom = themeable(
                 position: 'absolute',
                 zIndex,
                 width: '100%',
-                height: `${maxSnapPoint}%`,
-                minHeight: `${maxSnapPoint}%`,
+                height: snapPointsMode === 'constant' ? maxSnapPoint : `${maxSnapPoint}%`,
+                minHeight:
+                  snapPointsMode === 'constant' ? maxSnapPoint : `${maxSnapPoint}%`,
                 opacity,
               },
               animatedStyle,
@@ -428,11 +455,14 @@ export const SheetImplementationCustom = themeable(
   })
 )
 
-function getPercentSize(point?: number, screenSize?: number) {
+function getYPositions(point?: number, screenSize?: number, mode?: SnapPointsMode) {
   if (!screenSize) return 0
   if (point === undefined) {
     console.warn('No snapPoint')
     return 0
+  }
+  if (mode === 'constant') {
+    return screenSize - Math.min(screenSize, Math.max(0, point))
   }
   const pct = point / 100
   const next = Math.round(screenSize - pct * screenSize)

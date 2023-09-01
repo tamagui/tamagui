@@ -199,6 +199,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     position?: number | undefined;
     defaultPosition?: number | undefined;
     snapPoints?: number[] | undefined;
+    snapPointsMode?: import("./types").SnapPointsMode | undefined;
     onPositionChange?: import("./types").PositionChangeHandler | undefined;
     children?: import("react").ReactNode;
     dismissOnOverlayPress?: boolean | undefined;
