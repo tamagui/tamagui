@@ -928,15 +928,20 @@ export function createComponent<
                   // @ts-ignore
                   isWeb && onClick?.(e)
                   onPress?.(e)
-                }
-              : undefined,
-            onLongPress:
-              attachPress && onLongPress
-                ? (e) => {
-                    unPress()
+                  if (process.env.TAMAGUI_TARGET === 'web') {
                     onLongPress?.(e)
                   }
-                : undefined,
+                }
+              : undefined,
+            ...(process.env.TAMAGUI_TARGET === 'native' && {
+              onLongPress:
+                attachPress && onLongPress
+                  ? (e) => {
+                      unPress()
+                      onLongPress?.(e)
+                    }
+                  : undefined,
+            }),
           }
         : null
 

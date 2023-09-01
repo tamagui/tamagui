@@ -1,7 +1,12 @@
+// debug
 // import '../lib/wdyr'
 
+import { Tamagui } from '@tamagui/core'
+import { TamaguiLogo } from '@tamagui/logo'
 import { memo } from 'react'
+import { XStack, YStack } from 'tamagui'
 
+import { Header } from '../components/Header'
 import { ThemeToggle } from '../components/ThemeToggle'
 
 export default memo(() => {
@@ -19,7 +24,7 @@ export default memo(() => {
         <ThemeToggle />
       </div>
       <>
-        <></>
+        <TamaguiLogo />
       </>
     </div>
   )
