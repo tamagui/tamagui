@@ -27,7 +27,7 @@ export const SupabaseProvider = ({
             domain: process.env.NODE_ENV === 'production' ? '.tamagui.dev' : 'localhost',
             maxAge: 1000 * 60 * 60 * 24 * 365,
             path: '/',
-            sameSite: 'None',
+            sameSite: 'none',
             secure: true,
           },
     })
