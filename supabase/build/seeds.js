@@ -124,6 +124,7 @@ function createBenjamin(supabase) {
                                 first_name: 'Benjamin',
                                 last_name: 'Schachter',
                                 username: 'benschac',
+                                avatar_url: 'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4'
                             }
                         }
                     })];

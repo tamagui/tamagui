@@ -1,7 +1,7 @@
 import { H5, Separator, SizableText, Tabs, TabsContentProps, YStack, isWeb } from '@my/ui'
 
-import { ClimbsTab } from './climbs-tab'
 import { MyClimbsTab } from './myclimbs-tab'
+import { ClimbsTab } from './climbs-tab'
 
 export function FeedScreen() {
   return (

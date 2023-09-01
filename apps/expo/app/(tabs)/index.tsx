@@ -1,4 +1,3 @@
-import { HomeScreen } from 'app/features/home/screen'
 import { FeedScreen } from 'app/features/feed/screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 

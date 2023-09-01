@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "_with-env": "dotenv -e ../.env -c -- ",
-    "_link-project": "npx supabase link --project-ref $NEXT_PUBLIC_SUPABASE_PROJECT_ID --workdir ../",
+    "_link-project": "npx supabase link --project-ref slwmxbbwegsfgxepfjlg --workdir ../",
     "link-project": "yarn _with-env yarn _link-project",
-    "_generate:remote": "npx supabase gen types typescript --project-id $NEXT_PUBLIC_SUPABASE_PROJECT_ID --schema public > ./types.ts",
+    "_generate:remote": "npx supabase gen types typescript --project-id slwmxbbwegsfgxepfjlg --schema public > ./types.ts",
     "generate:remote": "yarn _with-env yarn _generate:remote",
     "generate": "npx supabase gen types typescript --local --schema public > ./types.ts",
     "g": "yarn generate",

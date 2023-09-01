@@ -1,21 +1,10 @@
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
-import {
-  Avatar,
-  Card,
-  H2,
-  H3,
-  H5,
-  Paragraph,
-  Spacer,
-  Theme,
-  ThemeName,
-  XStack,
-  YStack,
-} from '@my/ui'
+import { Avatar, Card, H2, H3, Paragraph, Spacer, Theme, ThemeName, XStack, YStack } from '@my/ui'
 import { api } from 'app/utils/api'
 import { format } from 'date-fns'
 
+import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
 
 const displayName = {
@@ -23,17 +12,19 @@ const displayName = {
   lead_rope: 'Lead Rope',
   boulder: 'Boulder',
 } as const
-function Climb({
-  climb,
-  profile,
+
+function MyClimb({
+  profileClimb,
   user,
 }: {
-  climb: Tables<'climbs'>
-  profile: Tables<'profiles'> | undefined
+  profileClimb: Tables<'profile_climbs'> & {
+    climb: Tables<'climbs'>
+    profile: Tables<'profiles'> | undefined
+  }
   user: User
 }) {
   let color: ThemeName
-  switch (climb.type) {
+  switch (profileClimb.climb.type) {
     case 'lead_rope': {
       color = 'orange'
       break
@@ -43,89 +34,87 @@ function Climb({
       break
     }
     case 'boulder': {
-      color = 'purple'
+      color = 'light_purple'
       break
     }
     default: {
       throw Error(':(')
     }
   }
+
   return (
     <Theme name={color}>
       <Card
-        position="relative"
-        height={200}
-        width="100%"
-        onPress={() => {
-          // setOpen()
-          // onJoin(climb)
-        }}
+        overflow="visible"
+        height={220}
+        minWidth={320}
+        padding="$4"
+        elevation="$1"
+        shadowRadius={6}
+        shadowOpacity={0.1}
+        marginHorizontal="$3"
+        br={10}
       >
         <YStack
           position="absolute"
           right={0}
+          top={0}
           p="$3"
           bg="$backgroundPress"
+          borderStyle="solid"
+          borderWidth={3}
+          borderTopWidth={0}
+          borderRightWidth={0}
+          borderColor="$background"
           borderTopRightRadius="$3"
           borderBottomLeftRadius="$3"
-          top={0}
         >
           <Paragraph size="$2" fontWeight="300">
-            {displayName[climb.type]}
+            {displayName[profileClimb.climb.type]}
           </Paragraph>
         </YStack>
-        <Card.Header>
-          <H2 size="$5" ellipse textTransform="capitalize">
-            {profile?.first_name}
-          </H2>
+        <Card.Header f={1}>
+          <YStack>
+            <YStack pos="relative" mt="$4" ml="$3">
+              <Avatar circular pos={'absolute'} top={-18} left={-25} size="$5">
+                {user.avatarUrl && <Avatar.Image src={user.avatarUrl} />}
+              </Avatar>
+              <Avatar circular pos={'absolute'} size="$5">
+                {profileClimb.profile?.avatar_url && (
+                  <Avatar.Image src={profileClimb.profile?.avatar_url} />
+                )}
+              </Avatar>
+            </YStack>
+          </YStack>
         </Card.Header>
-        {/* <Avatar
-          borderColor="$backgroundPress"
-          borderWidth={1}
-          borderStyle="solid"
-          circular
-          size="$8"
-        >
-          {user.avatarUrl && <Avatar.Image src={user.avatarUrl} bg="$background" />}
-          <Avatar.Fallback jc="center" ai="center" bc="$background"></Avatar.Fallback>
-        </Avatar>
-        <H3 size="$12" fontWeight="200">
-          +
-        </H3>
-        <Spacer size="$2" />
-        <Avatar
-          borderColor="$backgroundPress"
-          borderWidth={1}
-          borderStyle="solid"
-          circular
-          size="$8"
-        >
-          {profile?.avatar_url && <Avatar.Image src={profile?.avatar_url ?? ''} bg="$background" />}
-          <Avatar.Fallback jc="center" ai="center" bc="$background">
-            <H2 fontWeight="400">
-              {profile?.first_name}
-              {profile?.last_name[0]}
-            </H2>
-          </Avatar.Fallback>
-        </Avatar> */}
-        <Paragraph size="$1" fontWeight="300">
-          {climb.name}
-        </Paragraph>
-        <Spacer size="$1" />
-        <Card.Footer
-          position="absolute"
-          bottom={0}
-          right={0}
-          bg="$backgroundFocus"
-          padding="$2"
-          paddingHorizontal="$3"
-          borderTopLeftRadius="$3"
-          borderBottomRightRadius="$3"
-        >
-          <Paragraph color="$backgroundTransparent" fontWeight="300">
-            {format(new Date(climb.start), 'EEEE')} @ {format(new Date(climb.start), 'h:mmaaa')}
+        <YStack f={1}>
+          <H3 textTransform="uppercase" size="$5">
+            {profileClimb.profile?.first_name ?? 'unknown climber'} + You
+          </H3>
+          <Paragraph size="$1" fontWeight="400" ellipse>
+            {profileClimb.climb.name}
           </Paragraph>
+        </YStack>
+
+        <Card.Footer ai="baseline">
+          <Paragraph theme="alt2" size="$1" fontWeight="400">
+            {format(new Date(profileClimb.climb.start), 'EEEE')} @{' '}
+            {format(new Date(profileClimb.climb.start), 'h:mmaaa')}
+          </Paragraph>
+          <Spacer flex />
         </Card.Footer>
+        <Card.Background>
+          <LinearGradient
+            width="100%"
+            height="100%"
+            borderRadius="$3"
+            zIndex={-1}
+            colors={['$red10', '$yellow10']}
+            opacity={0.15}
+            start={[1, 1]}
+            end={[0, 0]}
+          />
+        </Card.Background>
       </Card>
     </Theme>
   )
@@ -136,16 +125,14 @@ export function MyClimbsTab() {
   const user = useUser()
   console.log(climbsQuery.data)
   return (
-    <YStack>
-      <YStack gap="$5">
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={climbsQuery.data}
-          renderItem={({ item }) => <Climb climb={item.climb} profile={item.profile} user={user} />}
-          keyExtractor={(item) => `${item.id}`}
-          ItemSeparatorComponent={() => <Spacer size="$10" />}
-        />
-      </YStack>
+    <YStack overflow="visible" gap="$5">
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={climbsQuery.data}
+        renderItem={({ item }) => <MyClimb profileClimb={item} user={user} />}
+        keyExtractor={(item) => `${item.id}`}
+        ItemSeparatorComponent={() => <Spacer size="$5" />}
+      />
     </YStack>
   )
 }

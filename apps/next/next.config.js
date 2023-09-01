@@ -10,12 +10,11 @@ const boolVals = {
 const disableExtraction =
   boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
-
 const plugins = [
   withTamagui({
     themeBuilder: {
-      input: "../../packages/ui/src/themes/theme.ts",
-      output: "../../packages/ui/src/themes/theme-generated.ts",
+      input: '../../packages/ui/src/themes/theme.ts',
+      output: '../../packages/ui/src/themes/theme-generated.ts',
     },
     config: './tamagui.config.ts',
     components: ['tamagui', '@my/ui'],
@@ -40,15 +39,18 @@ module.exports = function () {
     images: {
       remotePatterns: [
         {
-          hostname: "ui-avatars.com"
+          hostname: 'ui-avatars.com',
         },
         {
-          hostname: 'localhost'
+          hostname: 'localhost',
         },
         {
           hostname: '192.168.0.23',
-        }
-      ]
+        },
+        {
+          hostname: 'avatars.githubusercontent.com',
+        },
+      ],
     },
     // typescript: {
     //   ignoreBuildErrors: true,
