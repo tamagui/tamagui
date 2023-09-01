@@ -4,7 +4,7 @@ import { NextApiHandler } from 'next'
 
 // is called after bot is installed
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase } = await await protectApiRoute(req, res)
+  const { supabase } = await protectApiRoute({ req, res })
 
   let state: number
   let installationId: number

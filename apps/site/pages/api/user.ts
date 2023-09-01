@@ -24,7 +24,7 @@ export type UserContextType = {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase, session } = await protectApiRoute(req, res)
+  const { supabase, session } = await protectApiRoute({ req, res })
 
   const userRes = await supabase.auth.getUser()
 

@@ -3,7 +3,7 @@ import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  await protectApiRoute(req, res)
+  await protectApiRoute({ req, res })
 
   const query = req.query.query
 

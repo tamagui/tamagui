@@ -3,7 +3,7 @@ import { stripe } from '@lib/stripe'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase } = await protectApiRoute(req, res)
+  const { supabase } = await protectApiRoute({ req, res })
 
   const subItemId = req.body['subscription_item_id']
   if (typeof subItemId === 'undefined') {

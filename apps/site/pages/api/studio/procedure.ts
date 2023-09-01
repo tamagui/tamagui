@@ -6,8 +6,8 @@ import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   setupCors(req, res)
-  const { supabase } = await protectApiRoute(req, res)
-  const { hasStudioAccess } = await getSponsorData(req, res, supabase)
+  const { supabase } = await protectApiRoute({ req, res })
+  const { hasStudioAccess } = await getSponsorData({ req, res, supabase })
   if (!hasStudioAccess) {
     res.status(403).json({
       message: "You don't have access to this part of the studio.",

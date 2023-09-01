@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  await protectApiRoute(req, res)
+  await protectApiRoute({ req, res })
 
   if (typeof req.query.subscription_item_id !== 'string') {
     res.status(400).json({ message: `subscription_item_id is not provided` })

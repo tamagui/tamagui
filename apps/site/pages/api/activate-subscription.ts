@@ -4,7 +4,7 @@ import { NextApiHandler } from 'next'
 import Stripe from 'stripe'
 
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase } = await protectApiRoute(req, res)
+  const { supabase } = await protectApiRoute({ req, res })
   const subId = req.body['subscription_id']
   if (typeof subId === 'undefined') {
     res.status(400).json({

@@ -4,7 +4,7 @@ import { getArray, getSingle } from '@lib/supabase-utils'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase, user } = await protectApiRoute(req, res)
+  const { supabase, user } = await protectApiRoute({ req, res })
 
   const subscriptionId = req.body['subscription_id']
   const productId = req.body['product_id']

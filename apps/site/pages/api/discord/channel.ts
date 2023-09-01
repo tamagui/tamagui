@@ -20,7 +20,7 @@ export type DiscordChannelStatus = {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-  const { supabase, session } = await protectApiRoute(req, res)
+  const { supabase, session } = await protectApiRoute({ req, res })
 
   const userPrivate = await supabaseAdmin
     .from('users_private')

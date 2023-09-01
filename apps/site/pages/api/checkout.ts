@@ -1,22 +1,12 @@
 import { getURL } from '@lib/helpers'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient({ req, res })
+  const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    const params = new URLSearchParams({ redirect_to: req.url ?? '' })
-    res.redirect(303, `/login?${params.toString()}`)
-    return
-  }
   // let priceId: string
 
   // const quantity =

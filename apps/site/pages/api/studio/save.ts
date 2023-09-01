@@ -4,7 +4,7 @@ import { NextApiHandler } from 'next'
 
 const handler: NextApiHandler = async (req, res) => {
   setupCors(req, res)
-  const { supabase } = await protectApiRoute(req, res)
+  const { supabase } = await protectApiRoute({ req, res })
 
   let body = {}
   try {
