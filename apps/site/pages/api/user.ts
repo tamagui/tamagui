@@ -1,4 +1,4 @@
-import { protectApiRoute } from '@lib/protectApiRoute'
+import { apiRoute, protectApiRoute } from '@lib/protectApiRoute'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
@@ -23,7 +23,7 @@ export type UserContextType = {
   }
 }
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { supabase, session } = await protectApiRoute({ req, res })
 
   const userRes = await supabase.auth.getUser()
@@ -59,9 +59,7 @@ const handler: NextApiHandler = async (req, res) => {
       github: !!privateInfo.github_token,
     },
   } satisfies UserContextType)
-}
-
-export default handler
+})
 
 const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()

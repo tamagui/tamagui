@@ -34,12 +34,13 @@ export async function protectApiRoute({
           redirect_to: req.url ?? '',
         }).toString()}`
       )
+      throw new HandledResponseTermination(`Redirecting to login`)
     } else {
       res.status(401).json({
         error: 'The user is not authenticated',
       })
+      throw new HandledResponseTermination(`Not authed`)
     }
-    throw new HandledResponseTermination()
   }
 
   return { supabase, session: session!, user: user! }
@@ -50,9 +51,13 @@ class HandledResponseTermination extends Error {}
 export function apiRoute(handler: NextApiHandler) {
   return (async (req, res) => {
     try {
-      return handler(req, res)
+      const result = handler(req, res)
+      return result instanceof Promise ? await result : result
     } catch (err) {
       if (err instanceof HandledResponseTermination) {
+        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log(`Handled termination ${err.message}`)
+        return
         // ok we handled it
       } else {
         throw err
