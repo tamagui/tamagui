@@ -852,9 +852,9 @@ export declare const config: {
         xs: boolean;
         xxs: boolean;
     };
-    selectionStyles: (theme: import("@tamagui/web").ThemeParsed) => {
-        backgroundColor: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
-        color: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
     } | null;
 };
 //# sourceMappingURL=index.reanimated.d.ts.map

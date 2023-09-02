@@ -393,9 +393,9 @@ export type CreateTamaguiProps = {
     /**
      * Web-only: define text-selection CSS
      */
-    selectionStyles?: (theme: ThemeParsed) => null | {
-        backgroundColor?: ColorStyleProp;
-        color?: ColorStyleProp;
+    selectionStyles?: (theme: Record<string, string>) => null | {
+        backgroundColor?: any;
+        color?: any;
     };
     /**
      * *Advanced use case* For all CSS extracted views, this has no effect.
@@ -421,7 +421,7 @@ export type CreateTamaguiProps = {
         Text?: TextProps;
         Spacer?: SpacerProps;
     };
-    mediaQueryDefaultActive?: Record<MediaQueryKey, boolean>;
+    mediaQueryDefaultActive?: Record<string, boolean>;
     cssStyleSeparator?: string;
     maxDarkLightNesting?: number;
     shouldAddPrefersColorThemes?: boolean;

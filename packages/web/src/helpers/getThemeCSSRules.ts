@@ -145,7 +145,7 @@ export function getThemeCSSRules(props: {
 
     if (config.selectionStyles) {
       const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
-      const rules = config.selectionStyles(theme)
+      const rules = config.selectionStyles(theme as any)
       if (rules) {
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>
