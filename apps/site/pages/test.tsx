@@ -2,7 +2,6 @@
 // import '../lib/wdyr'
 
 import { memo } from 'react'
-import { MyComponent } from 'tamagui'
 
 import { ThemeToggle } from '../components/ThemeToggle'
 
@@ -20,10 +19,6 @@ export default memo(() => {
       <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
         <ThemeToggle />
       </div>
-      <>
-        <MyComponent />
-        <MyComponent fullbleed />
-      </>
     </div>
   )
 })
