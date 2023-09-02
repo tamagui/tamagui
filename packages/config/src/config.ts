@@ -16,16 +16,12 @@ export const configWithoutAnimations = {
   shorthands,
   tokens,
   fonts,
+  mediaQueryDefaultActive: mediaQueryDefaultActive,
+  selectionStyles: (theme) =>
+    theme.color5
+      ? {
+          backgroundColor: theme.color5,
+          color: theme.color11,
+        }
+      : null,
 } satisfies CreateTamaguiProps
-
-// @ts-ignore
-configWithoutAnimations.selectionStyles = (theme) =>
-  theme.color5
-    ? {
-        backgroundColor: theme.color5,
-        color: theme.color11,
-      }
-    : null
-
-// @ts-ignore bad types
-configWithoutAnimations.mediaQueryDefaultActive = mediaQueryDefaultActive

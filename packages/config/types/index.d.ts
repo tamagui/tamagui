@@ -1,7 +1,9 @@
+import { themes } from '@tamagui/themes';
 export * from './media';
 export * from './createGenericFont';
 export * from './animations';
 export declare const config: {
+    themes: typeof themes;
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
             type: "timing";
@@ -34,7 +36,6 @@ export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
     themeClassNameOnRoot: true;
-    themes: typeof import("@tamagui/themes/types/generated-new");
     media: {
         xl: {
             maxWidth: number;
@@ -839,5 +840,17 @@ export declare const config: {
         };
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    selectionStyles: (theme: import("@tamagui/web").ThemeParsed) => {
+        backgroundColor: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
+        color: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
+    } | null;
 };
 //# sourceMappingURL=index.d.ts.map

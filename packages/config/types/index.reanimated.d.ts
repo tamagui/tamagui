@@ -844,5 +844,17 @@ export declare const config: {
         };
         silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    selectionStyles: (theme: import("@tamagui/web").ThemeParsed) => {
+        backgroundColor: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
+        color: import("@tamagui/web").Variable<import("@tamagui/web").VariableVal>;
+    } | null;
 };
 //# sourceMappingURL=index.reanimated.d.ts.map
