@@ -11,7 +11,7 @@ export type SheetProps = ScopedProps<
     onOpenChange?: OpenChangeHandler
     position?: number
     defaultPosition?: number
-    snapPoints?: number[]
+    snapPoints?: (string | number)[]
     snapPointsMode?: SnapPointsMode
     onPositionChange?: PositionChangeHandler
     children?: ReactNode
@@ -55,7 +55,7 @@ type OpenChangeHandler =
 
 export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
-export type SnapPointsMode = 'percent' | 'constant'
+export type SnapPointsMode = 'percent' | 'constant' | 'fit' | 'mixed'
 
 export type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>
 

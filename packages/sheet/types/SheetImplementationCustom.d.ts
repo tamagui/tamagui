@@ -7,7 +7,7 @@ export declare const SheetImplementationCustom: (props: Omit<{
     onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;
     position?: number | undefined;
     defaultPosition?: number | undefined;
-    snapPoints?: number[] | undefined;
+    snapPoints?: (string | number)[] | undefined;
     snapPointsMode?: SnapPointsMode | undefined;
     onPositionChange?: import("./types").PositionChangeHandler | undefined;
     children?: import("react").ReactNode;

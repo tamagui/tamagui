@@ -11,8 +11,15 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { RemoveScroll } from '@tamagui/remove-scroll'
-import { FunctionComponent, RefAttributes, forwardRef, memo, useMemo } from 'react'
-import { Platform, View } from 'react-native'
+import {
+  FunctionComponent,
+  RefAttributes,
+  forwardRef,
+  memo,
+  useCallback,
+  useMemo,
+} from 'react'
+import { LayoutChangeEvent, Platform, View } from 'react-native'
 
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
@@ -126,10 +133,21 @@ export function createSheet<
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
 
+        const handleLayoutChange = useCallback((e: LayoutChangeEvent) => {
+          const next = e.nativeEvent?.layout.height
+          if (!next) return
+          context.setFrameSize(next)
+        }, [])
+
         const sheetContents = useMemo(() => {
           return (
             // @ts-ignore
-            <Frame ref={composedContentRef} height={frameSize} {...props}>
+            <Frame
+              ref={composedContentRef}
+              height={context.hasFit ? undefined : frameSize}
+              onLayout={context.hasFit ? handleLayoutChange : undefined}
+              {...props}
+            >
               {children}
               <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             </Frame>

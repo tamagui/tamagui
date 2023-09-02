@@ -18,8 +18,15 @@ export function useSheetProviderProps(
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = useState<number>(0)
   const [maxContentSize, setMaxContentSize] = useState<number>(0)
-  const snapPointsProp = props.snapPoints || [80]
   const snapPointsMode = props.snapPointsMode ?? 'percent'
+  const snapPointsProp: (string | number)[] =
+    props.snapPoints ??
+    (snapPointsMode === 'percent'
+      ? [80]
+      : snapPointsMode === 'constant'
+      ? [256]
+      : ['fit'])
+  const hasFit = snapPointsProp[0] === 'fit'
 
   const snapPoints = useMemo(
     () => (props.dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
@@ -53,14 +60,54 @@ export function useSheetProviderProps(
   )
 
   if (process.env.NODE_ENV === 'development') {
-    if (snapPointsMode === 'constant' && snapPoints.some((p) => p < 0)) {
+    if (
+      snapPointsMode === 'mixed' &&
+      snapPoints.some((p) => {
+        if (typeof p === 'string') {
+          if (p === 'fit') {
+            return false
+          }
+          if (p.endsWith('%')) {
+            const n = Number(p.slice(0, -1))
+            return n < 0 || n > 100
+          }
+          return true
+        }
+        return typeof p !== 'number' || p < 0
+      })
+    ) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be positive values when snapPointsMode is constant'
+        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values, string percentages between 0-100%, or "fit" when snapPointsMode is mixed'
       )
     }
-    if (snapPointsMode === 'percent' && snapPoints.some((p) => p < 0 || p > 100)) {
+    if (snapPointsMode === 'mixed' && snapPoints.indexOf('fit') > 0) {
       console.warn(
-        '⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame when snapPointsMode is percent'
+        '⚠️ Invalid snapPoint given, "fit" must be the first/largest snap point when snapPointsMode is mixed'
+      )
+    }
+    if (
+      snapPointsMode === 'fit' &&
+      (snapPoints.length !== (props.dismissOnSnapToBottom ? 2 : 1) ||
+        snapPoints[0] !== 'fit')
+    ) {
+      console.warn(
+        '⚠️ Invalid snapPoint given, there are no snap points when snapPointsMode is fit'
+      )
+    }
+    if (
+      snapPointsMode === 'constant' &&
+      snapPoints.some((p) => typeof p !== 'number' || p < 0)
+    ) {
+      console.warn(
+        '⚠️ Invalid snapPoint given, snapPoints must be positive numeric values when snapPointsMode is constant'
+      )
+    }
+    if (
+      snapPointsMode === 'percent' &&
+      snapPoints.some((p) => typeof p !== 'number' || p < 0 || p > 100)
+    ) {
+      console.warn(
+        '⚠️ Invalid snapPoint given, snapPoints must be numeric values between 0 and 100 when snapPointsMode is percent'
       )
     }
   }
@@ -96,9 +143,11 @@ export function useSheetProviderProps(
 
   const removeScrollEnabled = props.forceRemoveScrollEnabled ?? (open && props.modal)
 
-  const maxSnapPoint = snapPoints.reduce((prev, cur) => Math.max(prev, cur))
+  const maxSnapPoint = snapPoints[0]
   const screenSize =
-    snapPointsMode === 'constant' ? maxContentSize : frameSize / (maxSnapPoint / 100)
+    snapPointsMode === 'percent'
+      ? frameSize / ((typeof maxSnapPoint === 'number' ? maxSnapPoint : 100) / 100)
+      : maxContentSize
 
   const providerProps = {
     screenSize,
@@ -116,6 +165,7 @@ export function useSheetProviderProps(
     dismissOnSnapToBottom: props.dismissOnSnapToBottom ?? false,
     onOverlayComponent: options.onOverlayComponent,
     scope: props.__scopeSheet,
+    hasFit,
     position,
     snapPoints,
     snapPointsMode,

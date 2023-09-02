@@ -1,36 +1,77 @@
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { Sheet, SheetProps, useSheet } from '@tamagui/sheet'
 import { useState } from 'react'
-import { Button, H1, H2, Input, Paragraph, XStack } from 'tamagui'
+import { Button, H1, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+
+const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(true)
   const [innerOpen, setInnerOpen] = useState(false)
-  const [snapPointsMode, setSnapPointsMode] = useState<'percent' | 'constant'>('percent')
+  const [snapPointsMode, setSnapPointsMode] =
+    useState<(typeof spModes)[number]>('percent')
+  const [mixedFitDemo, setMixedFitDemo] = useState(false)
+
   const isPercent = snapPointsMode === 'percent'
+  const isConstant = snapPointsMode === 'constant'
+  const isFit = snapPointsMode === 'fit'
+  const isMixed = snapPointsMode === 'mixed'
+  const hasFit = isFit || (isMixed && mixedFitDemo)
+  const snapPoints = isPercent
+    ? [85, 50, 25]
+    : isConstant
+    ? [256, 190]
+    : isFit
+    ? undefined
+    : mixedFitDemo
+    ? ['fit', 190]
+    : ['80%', 256, 190]
 
   return (
     <>
-      <XStack space $sm={{ flexDirection: 'column', alignItems: 'center' }}>
-        <Button onPress={() => setOpen(true)}>Open</Button>
-        <Button onPress={() => setModal((x) => !x)}>
-          {modal ? 'Type: Modal' : 'Type: Inline'}
-        </Button>
-        <Button onPress={() => setSnapPointsMode(isPercent ? 'constant' : 'percent')}>
-          {snapPointsMode === 'percent'
-            ? 'Snap Points: Percent'
-            : 'Snap Points: Constant'}
-        </Button>
-      </XStack>
+      <YStack space>
+        <XStack space $sm={{ flexDirection: 'column', alignItems: 'center' }}>
+          <Button onPress={() => setOpen(true)}>Open</Button>
+          <Button onPress={() => setModal((x) => !x)}>
+            {modal ? 'Type: Modal' : 'Type: Inline'}
+          </Button>
+          <Button
+            onPress={() =>
+              setSnapPointsMode(
+                (prev) => spModes[(spModes.indexOf(prev) + 1) % spModes.length]
+              )
+            }
+          >
+            {`Mode: ${
+              { percent: 'Percentage', constant: 'Constant', fit: 'Fit', mixed: 'Mixed' }[
+                snapPointsMode
+              ]
+            }`}
+          </Button>
+        </XStack>
+        {isMixed ? (
+          <Button onPress={() => setMixedFitDemo((x) => !x)}>
+            {`Snap Points: ${JSON.stringify(snapPoints)}`}
+          </Button>
+        ) : (
+          <XStack paddingVertical="$2.5" justifyContent="center">
+            <Paragraph>{`Snap Points: ${
+              isFit ? '(none)' : JSON.stringify(snapPoints)
+            }`}</Paragraph>
+          </XStack>
+        )}
+      </YStack>
 
       <Sheet
+        // force remount when switching to fit modes to avoid weird measurement loop
+        key={hasFit ? 'fit' : 'no-fit'}
         forceRemoveScrollEnabled={open}
         modal={modal}
         open={open}
         onOpenChange={setOpen}
-        snapPoints={isPercent ? [85, 50, 25] : [256, 190]}
+        snapPoints={snapPoints}
         snapPointsMode={snapPointsMode}
         dismissOnSnapToBottom
         position={position}
@@ -50,6 +91,7 @@ export const SheetDemo = () => {
           justifyContent="center"
           alignItems="center"
           space="$5"
+          {...(hasFit && { minHeight: 320, flexShrink: 0 })}
         >
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />
