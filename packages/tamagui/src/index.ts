@@ -155,6 +155,7 @@ export {
   getTokenValue,
   getTokens,
   getVariable,
+  setupReactNative,
   getVariableName,
   getVariableValue,
   insertFont,
