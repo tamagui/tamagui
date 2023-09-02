@@ -118,7 +118,7 @@ export default apiRoute(async (req, res) => {
   //   .upsert({ id: user.id, stripe_customer_id: stripeSession.customer })
 
   if (stripeSession.url) {
-    res.redirect(303, stripeSession.url)
+    return res.redirect(303, stripeSession.url)
   }
 
   throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)
