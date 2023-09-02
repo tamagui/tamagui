@@ -1,5 +1,5 @@
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 import { Database } from './supabase-types'
 import { supabaseCookieOptions } from './supabase-utils'
@@ -27,24 +27,36 @@ export async function protectApiRoute({
   const user = session?.user
 
   if (!session || !user) {
-    if (process.env.IS_TAMAGUI_DEV) {
-      console.warn(`Not authenticated but IS_TAMAGUI_DEV is set so allowing route.`)
+    if (shouldRedirect) {
+      res.redirect(
+        303,
+        `/login?${new URLSearchParams({
+          redirect_to: req.url ?? '',
+        }).toString()}`
+      )
     } else {
-      if (shouldRedirect) {
-        res.redirect(
-          303,
-          `/login?${new URLSearchParams({
-            redirect_to: req.url ?? '',
-          }).toString()}`
-        )
-      } else {
-        res.status(401).json({
-          error: 'The user is not authenticated',
-        })
-      }
-      throw new Error('The user is not authenticated')
+      res.status(401).json({
+        error: 'The user is not authenticated',
+      })
     }
+    throw new HandledResponseTermination()
   }
 
   return { supabase, session: session!, user: user! }
+}
+
+class HandledResponseTermination extends Error {}
+
+export async function apiRoute(handler: NextApiHandler) {
+  return (async (req, res) => {
+    try {
+      return handler(req, res)
+    } catch (err) {
+      if (err instanceof HandledResponseTermination) {
+        // ok we handled it
+      } else {
+        throw err
+      }
+    }
+  }) satisfies NextApiHandler
 }

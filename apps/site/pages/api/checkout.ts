@@ -1,10 +1,10 @@
 import { getURL } from '@lib/helpers'
-import { protectApiRoute } from '@lib/protectApiRoute'
+import { apiRoute, protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
 import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
 
   // let priceId: string
@@ -122,6 +122,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   res.status(500)
-}
-
-export default handler
+})
