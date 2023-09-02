@@ -47,7 +47,7 @@ export async function protectApiRoute({
 
 class HandledResponseTermination extends Error {}
 
-export async function apiRoute(handler: NextApiHandler) {
+export function apiRoute(handler: NextApiHandler) {
   return (async (req, res) => {
     try {
       return handler(req, res)
