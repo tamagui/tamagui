@@ -16,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tamagui.kitchensink"
@@ -33,8 +35,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "061b4470-78c7-4d6a-b850-8167fb0a3434"
+        "projectId": "91d57846-ff75-4601-8612-85584322ff35"
       }
-    }
+    },
+    "owner": "tamagui"
   }
 }
