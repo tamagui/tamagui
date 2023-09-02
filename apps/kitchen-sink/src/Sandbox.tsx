@@ -21,6 +21,14 @@ export const Sandbox = () => {
 
   return (
     <>
+      <Button
+        onPress={() => {
+          console.log('button pressed')
+        }}
+      >
+        asdsad
+      </Button>
+
       {/* <Stack ref={ref} f={1} group="testy">
         <Square
           size={100}

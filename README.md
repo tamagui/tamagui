@@ -23,13 +23,11 @@
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
 
-Tamagui lets you share more code between web and native apps at once making your code simpler and performance better - things that typically get worse as you share more code between platforms.
+Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer: performance or code quality.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations, plus a rich CSS in JS style system that can turn even dense logic into clean, flat DOM (or on native, hoisted style objects and View/Text).
+It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused inline styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler also completely optional, as Tamagui also works entirely at runtime.
 
-The compiler generates atomic CSS and nets significant runtime performance. It can evaluate across module boundaries, adding helpful debugging information to your emitted code. It's also completely optional, as Tamagui also works entirely at runtime.
-
-Within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 inline styled components are flattened to their defined tags like `div`. The front page the site gains nearly 10-20% in Lighthouse scores depending on the weather.
+For example, within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 of the 55 or so inline styled components are flattened to a `div`. The homepage gains nearly 15% on the Lighthouse score just by turning on the compiler.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
@@ -47,6 +45,8 @@ While developing, you'll want to run the build watcher in a dedicated terminal:
 yarn watch:build
 ```
 
+Note: you may see some errors around "studio" as you run build - this is fine, we encrypt some of the non-open-source projects in the repo. The errors shouldn't block anything.
+
 It's easiest to use the `sandbox` project to test and develop things for web:
 
 ```
@@ -55,7 +55,7 @@ yarn sandbox
 
 This runs a client-side only vite build of tamagui, with a complete configuration already set up.
 
-To test on native, `kitchen-sink` is equally light weight and well set up.
+To test on native, `kitchen-sink` is equally well set up.
 
 You'll need to create a [development build](https://docs.expo.dev/develop/development-builds/create-a-build/) to run this.
 
@@ -73,9 +73,9 @@ After the build has been completed, run:
 yarn kitchen-sink
 ```
 
-Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static`.
+Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static-tests`, other tests live in `apps/kitchen-sink/tests` or in other `-tests` packages.
 
-Before submitting a PR, check everything works across every combination of environments.
+Before submitting a PR, please check everything works across every combination of environments.
 
 To do so, run the site, first in development to test if it works entirely at runtime:
 
@@ -85,7 +85,7 @@ To do so, run the site, first in development to test if it works entirely at run
 yarn site
 ```
 
-You replace \_app.tsx to return just your component/use case. If it looks good, try running again with the compiler on:
+You use `pages/test.tsx` as an easy way to load things. If it looks good, try running again with the compiler on:
 
 ```
 yarn site:extract
@@ -98,5 +98,3 @@ yarn site:prod
 ```
 
 This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with the compiler both on and off.
-
-Our plan is to add integration tests to cover all this and more soon!
