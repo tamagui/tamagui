@@ -32,7 +32,7 @@ export const climbRouter = createTRPCRouter({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
     }
 
-    if (climb?.data?.requested >= climb.data.joined) {
+    if (climb.data.joined >= climb?.data?.requested) {
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Climb is full' })
     }
 

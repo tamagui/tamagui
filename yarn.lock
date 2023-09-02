@@ -6399,17 +6399,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-nextjs@npm:^0.6.1":
-  version: 0.6.1
-  resolution: "@supabase/auth-helpers-nextjs@npm:0.6.1"
-  dependencies:
-    "@supabase/auth-helpers-shared": 0.3.4
-  peerDependencies:
-    "@supabase/supabase-js": ^2.0.4
-  checksum: b04f71170056d3b4101f70dd9c41d10d413d5f9a02dd223927fccdd42e4cc1de8713c88e5e07e8bc25f658a88c92888fca45763f96a833e65ad00cb214291570
-  languageName: node
-  linkType: hard
-
 "@supabase/auth-helpers-nextjs@npm:^0.7.4":
   version: 0.7.4
   resolution: "@supabase/auth-helpers-nextjs@npm:0.7.4"
@@ -6428,17 +6417,6 @@ __metadata:
   peerDependencies:
     "@supabase/supabase-js": ^2.19.0
   checksum: e521c5a62444e2f013f1d8af7386abf1a9a35fc4a1160b7e1e3834e1cf9b48c8a77e706b0f322ce9946d7ccfdfd9f0f8d071bfa138d648ac707327b4f530c789
-  languageName: node
-  linkType: hard
-
-"@supabase/auth-helpers-shared@npm:0.3.4":
-  version: 0.3.4
-  resolution: "@supabase/auth-helpers-shared@npm:0.3.4"
-  dependencies:
-    jose: ^4.14.0
-  peerDependencies:
-    "@supabase/supabase-js": ^2.0.4
-  checksum: 6042f06d3bdf240b1a84112f6e0ea397affb1c045453136b7cb0421945ac0aac62986c794dbd38db89f13422d753e43cca34df4adc49eb2ba8ac04e5f64fb885
   languageName: node
   linkType: hard
 
@@ -18885,13 +18863,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.14.0":
-  version: 4.14.4
-  resolution: "jose@npm:4.14.4"
-  checksum: 2d820a91a8fd97c05d8bc8eedc373b944a0cd7f5fe41063086da233d0473c73fb523912a9f026ea870782bd221f4a515f441a2d3af4de48c6f2c76dac5082377
-  languageName: node
-  linkType: hard
-
 "jose@npm:^4.14.3":
   version: 4.14.5
   resolution: "jose@npm:4.14.5"
@@ -20907,7 +20878,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-app@workspace:apps/next"
   dependencies:
-    "@supabase/auth-helpers-nextjs": ^0.6.1
+    "@supabase/auth-helpers-nextjs": ^0.7.4
     "@tamagui/next-plugin": latest
     "@tamagui/next-theme": latest
     "@tanstack/react-query": 4.18.0

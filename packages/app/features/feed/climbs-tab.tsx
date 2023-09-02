@@ -255,7 +255,7 @@ export const SheetDemo = ({
                 onPress={() => {
                   setOpen(false)
                   if (!climb) return
-                  joinMutation.mutate(climb.id)
+                  joinMutation.mutate({ climb_id: climb?.id ?? 0 })
                   alert('Request sent!')
                 }}
               >
