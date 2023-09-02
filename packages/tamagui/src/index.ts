@@ -190,20 +190,3 @@ export {
   variableToString,
   withStaticProperties,
 } from '@tamagui/core'
-
-export const MyComponent = styled(YStack, {
-  name: 'MyComponent',
-
-  variants: {
-    fullbleed: {
-      true: {},
-      false: {
-        padding: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    fullbleed: false,
-  },
-})
