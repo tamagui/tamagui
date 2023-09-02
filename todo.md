@@ -1,2 +1,3 @@
 - [x] postgres fn to push climb on create to profiles_climbs table
 - [x] add reqested / joined fields to climbs table
+- [ ] update form on web to create climb

@@ -22,18 +22,58 @@ export const climbRouter = createTRPCRouter({
       };
     })
   }),
+  join: protectedProcedure.input(z.object({
+    climb_id: z.number(),
+    profile_id: z.string(),
+
+  })).mutation(async ({ ctx: { supabase, session }, input }) => {
+
+    const climb = await supabase.from('climbs').select(`*`).eq('id', input.climb_id).single()
+    if (climb.error) {
+      console.log(climb.error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    if (climb?.data?.requested >= climb.data.joined) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Climb is full' })
+    }
+    const updatedClimb = await supabase.from('climbs').update({
+      joined: climb.data?.joined + 1,
+    }).eq('id', input.climb_id)
+
+    if (updatedClimb.error) {
+      console.log(updatedClimb.error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const profileClimb = await supabase.from("profile_climbs").insert({
+      profile_id: input.profile_id,
+      climb_id: input.climb_id,
+    })
+
+    if (profileClimb.error) {
+      console.log(profileClimb.error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    return true
+
+  }),
   create: protectedProcedure.input(z.object({
     name: z.string(),
     type: z.string(),
     start: z.string(),
     duration: z.string(),
     location: z.string(),
+    day: z.string(),
   })).mutation(async ({ ctx: { supabase, session }, input }) => {
 
     const profile = await supabase.from('climbs').insert([{
       name: input.name,
       type: input.type as any,
-      start: input.start,
+      start: add(new Date(input.start), {
+        days: Number(input.day)
+      }).toISOString(),
       duration: add(new Date(input.start), {
         minutes: Number(input.duration)
       }).toISOString(),

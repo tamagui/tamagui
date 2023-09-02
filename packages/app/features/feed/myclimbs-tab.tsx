@@ -1,11 +1,12 @@
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
-import { Avatar, Card, H2, H3, Paragraph, Spacer, Theme, ThemeName, XStack, YStack } from '@my/ui'
+import { Avatar, Card, H3, Paragraph, Spacer, Theme, ThemeName, YStack } from '@my/ui'
 import { api } from 'app/utils/api'
 import { format } from 'date-fns'
 
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
+import { ShieldQuestion } from '@tamagui/lucide-icons'
 
 const displayName = {
   top_rope: 'Top Rope',
@@ -77,11 +78,22 @@ function MyClimb({
           <YStack>
             <YStack pos="relative" mt="$4" ml="$3">
               <Avatar circular pos={'absolute'} top={-18} left={-25} size="$5">
-                {user.avatarUrl && <Avatar.Image src={user.avatarUrl} />}
+                {/* {user.avatarUrl && user.user?.id !== profileClimb.profile?.id && ( */}
+                <Avatar.Image src={undefined} />
+                {/* )} */}
+                <Avatar.Fallback>
+                  <YStack jc="center" ai="center">
+                    <ShieldQuestion size={24} />
+                  </YStack>
+                </Avatar.Fallback>
               </Avatar>
-              <Avatar circular pos={'absolute'} size="$5">
+              {/* <Avatar circular pos={'absolute'} size="$5">
                 {profileClimb.profile?.avatar_url && (
                   <Avatar.Image src={profileClimb.profile?.avatar_url} />
+                )} */}
+              <Avatar circular pos={'absolute'} size="$5">
+                {profileClimb.profile?.avatar_url && (
+                  <Avatar.Image src={profileClimb.profile.avatar_url} />
                 )}
               </Avatar>
             </YStack>

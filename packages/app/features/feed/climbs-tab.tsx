@@ -251,6 +251,10 @@ export const SheetDemo = ({
                 elevation="$1"
                 shadowRadius={6}
                 shadowOpacity={0.1}
+                onPress={() => {
+                  setOpen(false)
+                  alert('Request sent!')
+                }}
               >
                 Request
               </Button>
