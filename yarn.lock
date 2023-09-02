@@ -6784,7 +6784,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox-ui@workspace:packages/sandbox-ui":
+"@tamagui/sandbox-ui@1.58.4, @tamagui/sandbox-ui@workspace:packages/sandbox-ui":
   version: 0.0.0-use.local
   resolution: "@tamagui/sandbox-ui@workspace:packages/sandbox-ui"
   dependencies:
@@ -7096,6 +7096,7 @@ __metadata:
   dependencies:
     "@babel/plugin-syntax-typescript": ^7.21.4
     "@babel/types": ^7.21.5
+    "@tamagui/sandbox-ui": 1.58.4
     "@tamagui/test-design-system": 1.58.4
     "@testing-library/react": ^14.0.0
     "@types/babel__generator": ^7.6.4

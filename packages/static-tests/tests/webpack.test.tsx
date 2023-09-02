@@ -118,7 +118,7 @@ describe('webpack-tests', () => {
     expect(classList).toMatchSnapshot()
   })
 
-  test('12. ternary multiple on same key', async () => {
+  test('12. te  rnary multiple on same key', async () => {
     const test12 = getTest('Test12')
     expect(test12.renderer.toJSON()).toMatchSnapshot()
   })
@@ -145,5 +145,16 @@ describe('webpack-tests', () => {
     const test16 = getTest('Test16')
     const out = test16.renderer.toJSON()
     expect(out).toMatchSnapshot()
+  })
+
+  test('17. variant default false flattens properly', () => {
+    const out = getTest('TestVariantDefaultFalseOn').renderer.toJSON()
+    const outCn = out.children[0].children[0].props.className
+
+    const out2 = getTest('TestVariantDefaultFalseOff').renderer.toJSON()
+    const out2Cn = out2.children[0].children[0].props.className
+
+    expect(outCn).to.not.contain(`_pt-1316330145`)
+    expect(out2Cn).to.contain(`_pt-1316330145`)
   })
 })

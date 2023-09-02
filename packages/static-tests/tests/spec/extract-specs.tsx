@@ -47,13 +47,12 @@ export const Card = (props: any) => (
   />
 )
 
-export function TestVariantFalse() {
-  return (
-    <>
-      <Test14Component />
-      <Test14Component fullbleed />
-    </>
-  )
+export function TestVariantDefaultFalseOn(props: TestProps) {
+  return <Test14Component fullbleed />
+}
+
+export function TestVariantDefaultFalseOff(props: TestProps) {
+  return <Test14Component />
 }
 
 export function TestMediaQuery() {

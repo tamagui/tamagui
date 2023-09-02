@@ -12,6 +12,7 @@ const alias = {
   'react-native-reanimated$': '@tamagui/proxy-worm',
   'react-native-gesture-handler$': '@tamagui/proxy-worm',
   'react-native-safe-area-context$': '@tamagui/fake-react-native',
+  'react-native-svg': '@tamagui/react-native-svg',
 }
 
 // @ts-ignore

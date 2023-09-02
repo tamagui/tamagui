@@ -9,7 +9,7 @@ export * from './views'
 
 // test breaking exports
 // export * from './TestSolito'
-export * from './TestExpoVectorIcons'
+// export * from './TestExpoVectorIcons'
 export * from 'expo-constants'
 
 export const Test14Component = styled(YStack, {

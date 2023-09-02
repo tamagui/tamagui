@@ -1901,67 +1901,6 @@ export function createExtractor(
             }
           }
 
-          attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-            if (cur.type === 'style') {
-              const key = Object.keys(cur.value)[0]
-              const value = cur.value[key]
-
-              const shouldKeepOriginalAttr =
-                // !isStyleAndAttr[key] &&
-                !shouldFlatten &&
-                // de-opt if non-style
-                !validStyles[key] &&
-                !pseudoDescriptors[key] &&
-                !(key.startsWith('data-') || key.startsWith('aria-'))
-
-              if (shouldKeepOriginalAttr) {
-                if (shouldPrintDebug) {
-                  logger.info(['     - keeping as non-style', key].join(' '))
-                }
-                prev = cur
-                acc.push({
-                  type: 'attr',
-                  value: t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(
-                      typeof value === 'string'
-                        ? t.stringLiteral(value)
-                        : literalToAst(value)
-                    )
-                  ),
-                })
-                acc.push(cur)
-                return acc
-              }
-
-              if (prev?.type === 'style') {
-                mergeStyles(prev.value, cur.value)
-                return acc
-              }
-            }
-
-            prev = cur
-            acc.push(cur)
-            return acc
-          }, [])
-
-          if (shouldPrintDebug) {
-            logger.info(
-              [
-                '  - attrs (combined 🔀): \n',
-                logLines(attrs.map(attrStr).join(', ')),
-              ].join(' ')
-            )
-            logger.info(
-              ['  - defaultProps: \n', logLines(objToStr(defaultProps))].join(' ')
-            )
-            // prettier-ignore
-            logger.info(['  - foundStaticProps: \n', logLines(objToStr(foundStaticProps))].join(' '))
-            logger.info(
-              ['  - completeProps: \n', logLines(objToStr(completeProps))].join(' ')
-            )
-          }
-
           // post process
           const getProps = (
             props: Object | null,
@@ -2024,6 +1963,67 @@ export function createExtractor(
               logger.info(['error', err.message, err.stack].join(' '))
               return {}
             }
+          }
+
+          // add default props
+          if (shouldFlatten) {
+            attrs.unshift({
+              type: 'style',
+              value: defaultProps,
+            })
+          }
+
+          attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+            if (cur.type === 'style') {
+              const key = Object.keys(cur.value)[0]
+              const value = cur.value[key]
+
+              const shouldKeepOriginalAttr =
+                // !isStyleAndAttr[key] &&
+                !shouldFlatten &&
+                // de-opt if non-style
+                !validStyles[key] &&
+                !pseudoDescriptors[key] &&
+                !(key.startsWith('data-') || key.startsWith('aria-'))
+
+              if (shouldKeepOriginalAttr) {
+                if (shouldPrintDebug) {
+                  logger.info(['     - keeping as non-style', key].join(' '))
+                }
+                prev = cur
+                acc.push({
+                  type: 'attr',
+                  value: t.jsxAttribute(
+                    t.jsxIdentifier(key),
+                    t.jsxExpressionContainer(
+                      typeof value === 'string'
+                        ? t.stringLiteral(value)
+                        : literalToAst(value)
+                    )
+                  ),
+                })
+                acc.push(cur)
+                return acc
+              }
+
+              if (prev?.type === 'style') {
+                mergeStyles(prev.value, cur.value)
+                return acc
+              }
+            }
+
+            prev = cur
+            acc.push(cur)
+            return acc
+          }, [])
+
+          if (shouldPrintDebug) {
+            logger.info(
+              [
+                '  - attrs (combined 🔀): \n',
+                logLines(attrs.map(attrStr).join(', ')),
+              ].join(' ')
+            )
           }
 
           let getStyleError: any = null
@@ -2097,14 +2097,6 @@ export function createExtractor(
               // any error de-opt
               getStyleError = err
             }
-          }
-
-          // add default props
-          if (shouldFlatten) {
-            attrs.unshift({
-              type: 'style',
-              value: getProps(defaultProps) as any,
-            })
           }
 
           if (shouldPrintDebug) {
