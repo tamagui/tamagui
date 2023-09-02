@@ -24,8 +24,6 @@ export const climbRouter = createTRPCRouter({
   }),
   join: protectedProcedure.input(z.object({
     climb_id: z.number(),
-    profile_id: z.string(),
-
   })).mutation(async ({ ctx: { supabase, session }, input }) => {
 
     const climb = await supabase.from('climbs').select(`*`).eq('id', input.climb_id).single()
@@ -37,8 +35,10 @@ export const climbRouter = createTRPCRouter({
     if (climb?.data?.requested >= climb.data.joined) {
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Climb is full' })
     }
+
+    climb.data
     const updatedClimb = await supabase.from('climbs').update({
-      joined: climb.data?.joined + 1,
+      joined: climb.data.joined + 1,
     }).eq('id', input.climb_id)
 
     if (updatedClimb.error) {
@@ -47,7 +47,7 @@ export const climbRouter = createTRPCRouter({
     }
 
     const profileClimb = await supabase.from("profile_climbs").insert({
-      profile_id: input.profile_id,
+      profile_id: session?.user.id,
       climb_id: input.climb_id,
     })
 

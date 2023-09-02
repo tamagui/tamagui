@@ -180,6 +180,7 @@ export const SheetDemo = ({
 }) => {
   const [position, setPosition] = useState(0)
   const [modal, setModal] = useState(true)
+  const joinMutation = api.climb.join.useMutation()
   // const [innerOpen, setInnerOpen] = useState(false)
 
   let color: ThemeName = 'orange'
@@ -253,6 +254,8 @@ export const SheetDemo = ({
                 shadowOpacity={0.1}
                 onPress={() => {
                   setOpen(false)
+                  if (!climb) return
+                  joinMutation.mutate(climb.id)
                   alert('Request sent!')
                 }}
               >

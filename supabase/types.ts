@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -43,6 +43,14 @@ export interface Database {
           start?: string
           type?: Database["public"]["Enums"]["climb_type"]
         }
+        Relationships: [
+          {
+            foreignKeyName: "climbs_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       profile_climbs: {
         Row: {
@@ -63,6 +71,20 @@ export interface Database {
           id?: number
           profile_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "profile_climbs_climb_id_fkey"
+            columns: ["climb_id"]
+            referencedRelation: "climbs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_climbs_profile_id_fkey"
+            columns: ["profile_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       profiles: {
         Row: {
@@ -92,6 +114,14 @@ export interface Database {
           last_name?: string
           username?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
