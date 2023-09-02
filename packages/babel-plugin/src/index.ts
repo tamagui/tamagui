@@ -203,7 +203,11 @@ export default declare(function snackBabelPlugin(
                   props.node.attributes.push(
                     t.jsxAttribute(
                       t.jsxIdentifier('style'),
-                      t.jsxExpressionContainer(stylesExpr)
+                      t.jsxExpressionContainer(
+                        stylesExpr.elements.length === 1
+                          ? (stylesExpr.elements[0] as any)
+                          : stylesExpr
+                      )
                     )
                   )
                 }

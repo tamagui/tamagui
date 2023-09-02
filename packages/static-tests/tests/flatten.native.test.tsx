@@ -42,7 +42,7 @@ describe('flatten-tests', () => {
     const defs = code.slice(start + startStr.length, end + 1)
     const sheetStyles = JSON.parse(defs)
 
-    expect(sheetStyles['1']).toEqual({
+    expect(sheetStyles['0']).toEqual({
       transform: [
         {
           translateY: 10,
@@ -58,7 +58,7 @@ describe('flatten-tests', () => {
       alignItems: 'stretch',
     })
 
-    expect(sheetStyles['2']).toEqual({
+    expect(sheetStyles['1']).toEqual({
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
       borderBottomRightRadius: 10,
@@ -70,11 +70,11 @@ describe('flatten-tests', () => {
       ],
     })
 
-    expect(sheetStyles['4']).toEqual({
+    expect(sheetStyles['3']).toEqual({
       backgroundColor: 'red',
     })
 
-    expect(sheetStyles['6']).toEqual({
+    expect(sheetStyles['5']).toEqual({
       backgroundColor: 'blue',
     })
   })

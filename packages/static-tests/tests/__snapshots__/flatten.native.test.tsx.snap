@@ -3,8 +3,7 @@
 exports[`flatten-tests > flattened media queries 1`] = `
 "import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 const _sheet = ReactNativeStyleSheet.create({
-  \\"0\\": {},
-  \\"1\\": {
+  \\"0\\": {
     \\"alignItems\\": \\"stretch\\",
     \\"flexDirection\\": \\"column\\",
     \\"transform\\": [{
@@ -15,7 +14,7 @@ const _sheet = ReactNativeStyleSheet.create({
       \\"rotate\\": \\"10deg\\"
     }]
   },
-  \\"2\\": {
+  \\"1\\": {
     \\"borderTopLeftRadius\\": 10,
     \\"borderTopRightRadius\\": 10,
     \\"borderBottomRightRadius\\": 10,
@@ -24,21 +23,21 @@ const _sheet = ReactNativeStyleSheet.create({
       \\"scale\\": 2
     }]
   },
-  \\"3\\": {},
-  \\"4\\": {
+  \\"2\\": {},
+  \\"3\\": {
     \\"backgroundColor\\": \\"red\\"
   },
-  \\"5\\": {},
-  \\"6\\": {
+  \\"4\\": {},
+  \\"5\\": {
     \\"backgroundColor\\": \\"blue\\"
   },
-  \\"7\\": {}
+  \\"6\\": {}
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 import { YStack } from 'tamagui/src/YStack';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <__ReactNativeView style={[_sheet[\\"0\\"], _sheet[\\"1\\"], media.sm ? _sheet[\\"2\\"] : _sheet[\\"3\\"], media.sm && isLoading ? _sheet[\\"4\\"] : _sheet[\\"5\\"], media.sm && !isLoading ? _sheet[\\"6\\"] : _sheet[\\"7\\"]]} />;
+  return <__ReactNativeView style={[_sheet[\\"0\\"], media.sm ? _sheet[\\"1\\"] : _sheet[\\"2\\"], media.sm && isLoading ? _sheet[\\"3\\"] : _sheet[\\"4\\"], media.sm && !isLoading ? _sheet[\\"5\\"] : _sheet[\\"6\\"]]} />;
 }"
 `;
