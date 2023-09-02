@@ -1,0 +1,2 @@
+- [ ] postgres fn to push climb on create to profiles_climbs table
+- [ ] add reqested / joined fields to climbs table
