@@ -182,7 +182,13 @@ export async function getOptions({
   debug,
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   const dotDir = join(root, '.tamagui')
-  const pkgJson = await readJSON(join(root, 'package.json'))
+  let pkgJson = {}
+
+  try {
+    pkgJson = await readJSON(join(root, 'package.json'))
+  } catch (err) {
+    // ok
+  }
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',

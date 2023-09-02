@@ -23,10 +23,11 @@ export async function getOptions({
   const tsConfigFilePath = join(root, tsconfigPath)
   ensure(await fs.pathExists(tsConfigFilePath), `No tsconfig found: ${tsConfigFilePath}`)
   const dotDir = join(root, '.tamagui')
-  const pkgJson = await readJSON(join(root, 'package.json'))
+  let pkgJson = {}
   let config = ''
   try {
     config = await getDefaultTamaguiConfigPath()
+    pkgJson = await readJSON(join(root, 'package.json'))
   } catch {
     // ok
   }
