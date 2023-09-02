@@ -15,7 +15,9 @@ export interface Database {
           created_by: string
           duration: string
           id: number
+          joined: number
           name: string
+          requested: number
           start: string
           type: Database["public"]["Enums"]["climb_type"]
         }
@@ -24,7 +26,9 @@ export interface Database {
           created_by: string
           duration?: string
           id?: number
+          joined?: number
           name: string
+          requested?: number
           start?: string
           type: Database["public"]["Enums"]["climb_type"]
         }
@@ -33,7 +37,9 @@ export interface Database {
           created_by?: string
           duration?: string
           id?: number
+          joined?: number
           name?: string
+          requested?: number
           start?: string
           type?: Database["public"]["Enums"]["climb_type"]
         }

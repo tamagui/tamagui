@@ -198,7 +198,7 @@ async function main() {
   await createClimbs(supabaseInstance, users, benjamin.user)
   const climbs = await supabaseInstance.from('climbs').select('*');
   const profiles = await supabaseInstance.from('profiles').select('*');
-  await createProfileClimbs(supabaseInstance, climbs?.data ?? [], profiles.data ?? [], benjamin.user)
+  // await createProfileClimbs(supabaseInstance, climbs?.data ?? [], profiles.data ?? [], benjamin.user)
 }
 
 
