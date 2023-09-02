@@ -13,23 +13,23 @@
 <br/>
 
 <h1 align="center">
-  Style React Native and Web with an optimizing compiler
+  Style and UI for React (web + native), with an optimizing compiler
 </h1>
 
 
-- `@tamagui/core` - Universal style system for both web and React Native.
+- `@tamagui/core` - Universal style library for React (web and native).
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
-- `tamagui` - Complete universal UI kit built on top of `@tamagui/core`.
+- `tamagui` - Complete UI kit that adapts to each platform.
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
 
-Tamagui lets you **share more code between web and native apps while improving, rather than sacrificing, DX, performance, and code maintainability**.
+Tamagui lets you share more code between web and native apps at once making your code simpler and performance better - things that typically get worse as you share more code between platforms.
 
-It does this with an optimizing compiler that outputs platform-specific optimizations and understands a rich "CSS-in-JS" style system with support for turning even inline styles with logic into flattened nodes.
+It does this with an optimizing compiler that outputs platform-specific optimizations, plus a rich CSS in JS style system that can turn even dense logic into clean, flat DOM (or on native, hoisted style objects and View/Text).
 
-The compiler generates atomic CSS and partially evaluated code that gains significant runtime performance. It evaluates across module boundaries, flattening a large % of styled components in your app (with easy to follow rules and debug tools to know when its working and not)
+The compiler generates atomic CSS and nets significant runtime performance. It can evaluate across module boundaries, adding helpful debugging information to your emitted code. It's also completely optional, as Tamagui also works entirely at runtime.
 
-Within the ~500x² responsive browser section on [the homepage](https://tamagui.dev), 49 inline styled components are flattened to their defined tags like `div`. The front page the site gains nearly 10-20% in Lighthouse scores depending on the weather.
+Within the ~500px² responsive browser section on [the homepage](https://tamagui.dev), 49 inline styled components are flattened to their defined tags like `div`. The front page the site gains nearly 10-20% in Lighthouse scores depending on the weather.
 
 [Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
