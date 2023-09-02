@@ -11,10 +11,10 @@
     "test": "yarn test:web && yarn test:native"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "^6.1.2",
     "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
-    "jsdom": "^21.1.1",
+    "jsdom": "^22.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
