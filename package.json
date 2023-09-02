@@ -51,7 +51,7 @@
     "@nderscore/tamagui-typescript-plugin": "^0.5.1",
     "@tamagui/cli": "latest",
     "check-dependency-version-consistency": "^3.0.3",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.46.0",
     "node-gyp": "^9.3.1",
