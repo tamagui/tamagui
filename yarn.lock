@@ -6410,12 +6410,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-helpers-react@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@supabase/auth-helpers-react@npm:0.3.1"
+"@supabase/auth-helpers-nextjs@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "@supabase/auth-helpers-nextjs@npm:0.7.4"
+  dependencies:
+    "@supabase/auth-helpers-shared": 0.4.1
+    set-cookie-parser: ^2.6.0
   peerDependencies:
-    "@supabase/supabase-js": ^2.0.4
-  checksum: 7974d1f913e95fb331ca84868d8bbee5806a2b381b67a1c7f69da7d2bbd5fe0e005df82572960d4e425ae7e9cdcad684095ae96566e4e2a6132e5de908756c85
+    "@supabase/supabase-js": ^2.19.0
+  checksum: eaf9ff6b4259fc21bd5204c9862068c86d30636fc1f5ab9cc1baa989762402eb84bd2dc0ba3e5350e14a71d4e527867e3f003de6681ed606bb27bf863bea12c9
+  languageName: node
+  linkType: hard
+
+"@supabase/auth-helpers-react@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@supabase/auth-helpers-react@npm:0.4.2"
+  peerDependencies:
+    "@supabase/supabase-js": ^2.19.0
+  checksum: e521c5a62444e2f013f1d8af7386abf1a9a35fc4a1160b7e1e3834e1cf9b48c8a77e706b0f322ce9946d7ccfdfd9f0f8d071bfa138d648ac707327b4f530c789
   languageName: node
   linkType: hard
 
@@ -6427,6 +6439,17 @@ __metadata:
   peerDependencies:
     "@supabase/supabase-js": ^2.0.4
   checksum: 6042f06d3bdf240b1a84112f6e0ea397affb1c045453136b7cb0421945ac0aac62986c794dbd38db89f13422d753e43cca34df4adc49eb2ba8ac04e5f64fb885
+  languageName: node
+  linkType: hard
+
+"@supabase/auth-helpers-shared@npm:0.4.1":
+  version: 0.4.1
+  resolution: "@supabase/auth-helpers-shared@npm:0.4.1"
+  dependencies:
+    jose: ^4.14.3
+  peerDependencies:
+    "@supabase/supabase-js": ^2.19.0
+  checksum: 07e29f12127b297bb3a11ca5d411ca20c3944a6cadda0d3266ff59bffd85d676116447f70de34116e1773fac0229fd8e944865597d8c044c8f979fa26db4d9f9
   languageName: node
   linkType: hard
 
@@ -6486,7 +6509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.21.0":
+"@supabase/supabase-js@npm:^2.21.0, @supabase/supabase-js@npm:^2.33.1":
   version: 2.33.1
   resolution: "@supabase/supabase-js@npm:2.33.1"
   dependencies:
@@ -10312,9 +10335,9 @@ __metadata:
     "@my/supabase": "*"
     "@my/ui": "*"
     "@react-native-async-storage/async-storage": 1.18.2
-    "@supabase/auth-helpers-nextjs": ^0.6.1
-    "@supabase/auth-helpers-react": ^0.3.1
-    "@supabase/supabase-js": ^2.21.0
+    "@supabase/auth-helpers-nextjs": ^0.7.4
+    "@supabase/auth-helpers-react": ^0.4.2
+    "@supabase/supabase-js": ^2.33.1
     "@tamagui/animations-react-native": latest
     "@tamagui/colors": latest
     "@tamagui/font-inter": latest
@@ -18869,6 +18892,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^4.14.3":
+  version: 4.14.5
+  resolution: "jose@npm:4.14.5"
+  checksum: 6fd42cd8c56efe28326549b05fc385f484b93424738a430c0ff776e80846b35a6e1af9648a5c1958eaefa8636b989e71cb6687155f1751721c0a9d17fc281a6f
+  languageName: node
+  linkType: hard
+
 "jotai@npm:^2.0.2":
   version: 2.4.1
   resolution: "jotai@npm:2.4.1"
@@ -24630,7 +24660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"set-cookie-parser@npm:^2.4.1":
+"set-cookie-parser@npm:^2.4.1, set-cookie-parser@npm:^2.6.0":
   version: 2.6.0
   resolution: "set-cookie-parser@npm:2.6.0"
   checksum: bf11ebc594c53d84588f1b4c04f1b8ce14e0498b1c011b3d76b5c6d5aac481bbc3f7c5260ec4ce99bdc1d9aed19f9fc315e73166a36ca74d0f12349a73f6bdc9
