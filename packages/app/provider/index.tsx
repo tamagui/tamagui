@@ -11,7 +11,7 @@ export function Provider({
   initialSession,
   children,
 }: {
-  initialSession?: Session | null
+  initialSession?: Session | undefined
   children: React.ReactNode
 }) {
   return (
