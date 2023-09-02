@@ -1,4 +1,8 @@
 {
+  "$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -12,6 +16,7 @@
         "noExplicitAny": "off",
         "noArrayIndexKey": "off",
         "noDoubleEquals": "off",
+        "noConsoleLog": "error",
         "noAssignInExpressions": "off",
         "noRedeclare": "off"
       },
@@ -34,6 +39,7 @@
         "noDelete": "off"
       },
       "complexity": {
+        "useLiteralKeys": "off",
         "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
       },
@@ -46,14 +52,12 @@
       },
       "nursery": {
         "noBannedTypes": "off",
-        "noConsoleLog": "error",
-        "useLiteralKeys": "off",
         "useExhaustiveDependencies": "off"
       }
     }
   },
   "formatter": {
-    "enabled": true,
+    "enabled": false,
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentSize": 2,

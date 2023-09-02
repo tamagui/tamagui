@@ -7,7 +7,6 @@
  *
  * @format
  */
-'use strict'
 
 import { useDebugValue, useEffect, useRef } from 'react'
 

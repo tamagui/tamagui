@@ -143,7 +143,7 @@ async function buildTsc() {
     // console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err.message)
     if (!shouldWatch) {
       process.exit(1)

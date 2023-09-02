@@ -30,7 +30,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
   }
   res = [...res, ...generateAtomicStyles(stylesIn)]
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res

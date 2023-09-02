@@ -30,7 +30,7 @@ export async function readTamaguiOptions({ cwd = '.' }: { cwd: string }) {
       },
     }
   } catch (err: any) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.error(`Error reading tamagui.json: ${err.message} ${err.stack}`)
 
     return {

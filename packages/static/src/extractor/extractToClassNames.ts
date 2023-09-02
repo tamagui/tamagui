@@ -109,7 +109,7 @@ export async function extractToClassNames({
     onStyleRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // rome-ignore lint/suspicious/noConsoleLog: ok
         console.log(`adding styled() rule: .${identifier} ${css}`)
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
@@ -136,7 +136,7 @@ export async function extractToClassNames({
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
         if (shouldPrintDebug) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // rome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`bail, acceptsClassName is false`)
         }
         return
@@ -218,7 +218,7 @@ export async function extractToClassNames({
                 // replace existing font_ with new one
                 if (newFontFamily) {
                   if (shouldPrintDebug) {
-                    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
                     console.log(` newFontFamily: ${newFontFamily}`)
                   }
                   previous = previous.replace(/font_[a-z]+/i, '')
@@ -270,7 +270,7 @@ export async function extractToClassNames({
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // rome-ignore lint/nursery/noConsoleLog: ok
+                // rome-ignore lint/suspicious/noConsoleLog: ok
                 console.log(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
@@ -331,7 +331,7 @@ export async function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // rome-ignore lint/suspicious/noConsoleLog: ok
         console.log(
           '  finalClassNames\n',
           logLines(finalClassNames.map((x) => x['value']).join(' '))
@@ -414,7 +414,7 @@ export async function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log('no res or none modified', res)
     }
     return null
@@ -440,7 +440,7 @@ export async function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
       '\n -------- output code ------- \n\n',
       result.code
@@ -448,7 +448,7 @@ export async function extractToClassNames({
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
@@ -472,7 +472,7 @@ export async function extractToClassNames({
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
       `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
     )

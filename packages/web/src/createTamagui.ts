@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig, setTokens } from './config'
-import { Variable, createVariable, isVariable } from './createVariable'
+import { Variable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -291,7 +291,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {

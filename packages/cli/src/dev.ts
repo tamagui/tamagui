@@ -191,7 +191,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     // just so it thinks its loaded
     try {
       void server.transformRequest(id)
-    } catch(err) {
+    } catch (err) {
       // ok
       console.log('err', err)
     }
@@ -212,7 +212,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   getBundleCode()
 
-  // rome-ignore lint/nursery/noConsoleLog: ok
+  // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 
@@ -237,7 +237,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(
         '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
         tmpBundle

@@ -38,7 +38,7 @@ export function extractMediaStyle(
     getStyleObj(ternary.alternate, true),
   ].filter(isPresent)
   if (shouldPrintDebug && !styleOpts.length) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log('  media query, no styles?')
     return null
   }
@@ -91,7 +91,7 @@ export function extractMediaStyle(
     })
     if (shouldPrintDebug === 'verbose') {
       // prettier-ignore
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
     }
     // add to output

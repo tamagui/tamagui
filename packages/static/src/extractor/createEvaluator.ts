@@ -35,7 +35,7 @@ export function createEvaluator({
     ) {
       const key = n.property.name
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // rome-ignore lint/suspicious/noConsoleLog: ok
         console.log('    > found theme prop', key)
       }
       return createCSSVariable(key)
@@ -52,7 +52,7 @@ export function createEvaluator({
       .code.replace(/;\n$/, '')
 
     if (shouldPrintDebug) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log('evaluating', code)
     }
     return vm.runInContext(code, evalContext)

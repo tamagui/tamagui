@@ -135,7 +135,7 @@ export async function createDevServer(
         hmr: {
           getUriPath: () => '/__hmr',
           onClientConnected: (platform, clientId) => {
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
             // todo
             // const lastStats = {}
             // ctx.broadcastToHmrClients(
@@ -160,7 +160,7 @@ export async function createDevServer(
             if (logEntry.type === 'debug') return
 
             // error DevServer, warn DevServer
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(
               '[logger]',
               logEntry.type === 'info' ? '' : logEntry.type,

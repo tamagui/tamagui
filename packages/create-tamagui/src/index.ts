@@ -24,7 +24,7 @@ import { validateNpmName } from './helpers/validateNpmPackage'
 let projectPath = ''
 
 if (IS_TEST) {
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 

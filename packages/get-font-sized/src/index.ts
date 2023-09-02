@@ -44,7 +44,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   if (process.env.NODE_ENV === 'development') {
     if (props['debug'] && props['debug'] === 'verbose') {
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log({ style, props, font })
       console.groupEnd()
     }

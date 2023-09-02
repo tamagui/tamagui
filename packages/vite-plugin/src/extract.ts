@@ -53,7 +53,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
     writeBundle(this, options, bundle) {
       setTimeout(() => {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // rome-ignore lint/suspicious/noConsoleLog: ok
         console.warn('some sort of dangling process or osmethign, exit for now...')
         process.exit(0)
       }, 100)

@@ -103,7 +103,7 @@ const removePortal = (
   portalName: string
 ) => {
   if (!(hostName in state)) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
       `Failed to remove portal '${portalName}', '${hostName}' was not registered!`
     )

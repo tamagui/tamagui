@@ -16,7 +16,7 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName, projectPath }) => {
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`
 ${tamaguiRainbowAsciiArt
   .split('\n')
@@ -26,7 +26,7 @@ ${takeoutAsciiArt}
 
 `)
 
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log()
   const { setupSupabase } = await prompts({
     name: 'setupSupabase',
@@ -36,7 +36,7 @@ ${takeoutAsciiArt}
   })
 
   if (setupSupabase) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log()
     const { startLocalSupabase } = await prompts({
       name: 'startLocalSupabase',
@@ -49,7 +49,7 @@ ${takeoutAsciiArt}
       const supabaseStarted = await runRetryableCommand(`yarn supa start`)
 
       if (supabaseStarted) {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log()
         const { setUpSupabaseEnv } = await prompts({
           name: 'setUpSupabaseEnv',
@@ -82,7 +82,7 @@ ${takeoutAsciiArt}
       }
     }
 
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log()
     const { setupRemoteSupabase } = await prompts({
       name: 'setupRemoteSupabase',
@@ -94,7 +94,7 @@ ${takeoutAsciiArt}
 
     if (setupRemoteSupabase) {
       await runRetryableCommand(`npx supabase login`)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log()
       await linkSupabase()
 
@@ -116,7 +116,7 @@ cd into the project using:
   `)
   }
 
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}

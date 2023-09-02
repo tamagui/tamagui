@@ -10,7 +10,7 @@ export const spawnify = async (
     avoidLog?: boolean
   }
 ): Promise<string> => {
-  // rome-ignore lint/nursery/noConsoleLog: ok
+  // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {

@@ -56,7 +56,7 @@ function __specialRequire(_mod) {
       return __getRequire(_mod)
     }
   } catch (err) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`Error... ${err}`);
   }
 }
@@ -119,7 +119,7 @@ global.performance = {
 global.ErrorUtils = {
   setGlobalHandler: () => {},
   reportFatalError: (err) => {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log("err" + err["message"] + err["stack"]);
   },
 };

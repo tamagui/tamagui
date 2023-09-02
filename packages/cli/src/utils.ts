@@ -15,7 +15,7 @@ export async function getOptions({
 }: Partial<CLIUserOptions> = {}): Promise<CLIResolvedOptions> {
   //
   if (root.includes('tamagui/apps/studio')) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`Running in studio mode, loading the site config`)
     root = root.replace('apps/studio', 'apps/site')
   }

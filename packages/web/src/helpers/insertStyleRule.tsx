@@ -363,7 +363,7 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
           console.groupCollapsed(
             `Error inserting rule into CSSStyleSheet: ${String(err)}`
           )
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log({ rule, rulesToInsert })
           console.trace()
           console.groupEnd()

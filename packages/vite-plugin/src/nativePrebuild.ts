@@ -29,7 +29,7 @@ export const prebuiltFiles = {
 }
 
 export async function nativePrebuild() {
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
 
   // await build({
   //   bundle: true,

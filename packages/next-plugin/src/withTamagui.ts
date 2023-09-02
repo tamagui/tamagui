@@ -65,7 +65,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // rome-ignore lint/nursery/noConsoleLog: ok
+                // rome-ignore lint/suspicious/noConsoleLog: ok
                 console.log(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
@@ -161,7 +161,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // rome-ignore lint/suspicious/noConsoleLog: ok
           console.log('Tamagui alias:', alias)
         }
 
@@ -212,7 +212,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // rome-ignore lint/nursery/noConsoleLog: ok
+            // rome-ignore lint/suspicious/noConsoleLog: ok
             console.log(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {

@@ -13,6 +13,6 @@ try {
   Object.assign(exports, all)
   process.env.IS_STATIC = undefined
 } catch (err) {
-  // rome-ignore lint/nursery/noConsoleLog: ok
+  // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log('Error loading @tamagui/core-node', err)
 }

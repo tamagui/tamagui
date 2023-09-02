@@ -11,7 +11,7 @@ export const useMemoDebug: typeof useMemo = (fn, args) => {
   }, args)
 
   if (run === 1) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('saved a run')
   }
 

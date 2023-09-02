@@ -9,7 +9,7 @@ const runCommand = (scriptName: string) =>
   `${packageManager} ${useYarn ? '' : 'run '}${scriptName}`
 
 const main: ExtraSteps = async ({ isFullClone, projectName }) => {
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   if (isFullClone) {
     console.log(`
   ${chalk.green.bold('Done!')} created a new project under ./${projectName}

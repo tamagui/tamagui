@@ -14,7 +14,7 @@ export function removeUnusedHooks(
   // check the top level statements
   let bodyStatements = compFn?.get('body')
   if (!bodyStatements) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log('no body statemnts?', compFn)
     return
   }
@@ -75,7 +75,7 @@ export function removeUnusedHooks(
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // rome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`  [🪝] removed ${id.node['name'] ?? ''}`)
         }
       }

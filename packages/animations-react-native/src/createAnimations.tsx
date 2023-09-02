@@ -342,7 +342,7 @@ export function createAnimations<A extends AnimationsConfig>(
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'] === 'verbose') {
               // prettier-ignore
-              // rome-ignore lint/nursery/noConsoleLog: ok
+              // rome-ignore lint/suspicious/noConsoleLog: ok
               console.log(' 💠 animate',key,`from (${value['_value']}) to`, valIn, `(${val})`, 'type',type,'interpolate',interpolateArgs)
             }
           }
@@ -368,7 +368,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // rome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`Returning animated`, res, 'given style', style)
         }
       }

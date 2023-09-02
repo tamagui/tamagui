@@ -10,7 +10,7 @@ const path = require('path')
 const { join } = require('path')
 
 async function build() {
-  // rome-ignore lint/nursery/noConsoleLog: ok
+  // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log('building core-node...')
   try {
     const outPath = path.join(tmpDir, 'core-node')

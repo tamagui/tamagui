@@ -123,7 +123,7 @@ export default class AppRegistry {
       const params = { ...appParameters }
       params.rootTag = `#${params.rootTag.id}`
 
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // rome-ignore lint/suspicious/noConsoleLog: ok
       console.log(
         `Running application "${appKey}" with appParams:\n`,
         params,
