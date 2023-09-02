@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "true",
-    "test:web": "TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
+    "test:web": "TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=web vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.web.test.tsx",
+    "test:native": "TEST_ENVIRONMENT=jsdom TAMAGUI_TARGET=native vitest --run --config ../vite-plugin-internal/src/vite.config.ts **/*.native.test.tsx",
     "test": "yarn test:web && yarn test:native"
   },
   "devDependencies": {

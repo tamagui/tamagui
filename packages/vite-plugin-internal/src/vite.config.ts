@@ -33,7 +33,7 @@ export default defineConfig({
     globals: true,
     setupFiles: [join(__dirname, 'test-setup.ts')],
     // happy-dom has issues with components-test
-    environment: 'happy-dom',
+    environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {
       inline: [/^(?!.*vitest).*$/],

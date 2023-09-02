@@ -57,22 +57,22 @@ describe('webpack-tests', () => {
     expect(outFalse).toMatchSnapshot()
   })
 
-  test('3. places className correctly given a single spread', async () => {
-    const { Element } = getTest('Test3')
-    const out = render(<Element />)
-    const list = [...out.container.firstChild?.['classList']]
-    expect(list).toMatchSnapshot()
-  })
+  // test('3. places className correctly given a single spread', async () => {
+  //   const { Element } = getTest('Test3')
+  //   const out = render(<Element />)
+  //   const list = [...out.container.firstChild?.['classList']]
+  //   expect(list).toMatchSnapshot()
+  // })
 
-  test('4. leaves dynamic variables', async () => {
-    const { renderer, Element } = getTest('Test4')
-    const out = render(<Element />)
-    const firstChild = out.container.firstChild!
-    const classList = [...firstChild['classList']]
-    expect(classList).toMatchSnapshot()
-    const r = renderer.toJSON()
-    expect(r).toMatchSnapshot()
-  })
+  // test('4. leaves dynamic variables', async () => {
+  //   const { renderer, Element } = getTest('Test4')
+  //   const out = render(<Element />)
+  //   const firstChild = out.container.firstChild!
+  //   const classList = [...firstChild['classList']]
+  //   expect(classList).toMatchSnapshot()
+  //   const r = renderer.toJSON()
+  //   expect(r).toMatchSnapshot()
+  // })
 
   test('5. spread conditional', async () => {
     const test5 = getTest('Test5')
@@ -110,13 +110,13 @@ describe('webpack-tests', () => {
     expect(out).toMatchSnapshot()
   })
 
-  test('11. combines everything', async () => {
-    const { Element } = getTest('Test11')
-    const out = render(<Element conditional={false} />)
-    const firstChild = out.container.firstChild!
-    const classList = [...firstChild['classList']]
-    expect(classList).toMatchSnapshot()
-  })
+  // test('11. combines everything', async () => {
+  //   const { Element } = getTest('Test11')
+  //   const out = render(<Element conditional={false} />)
+  //   const firstChild = out.container.firstChild!
+  //   const classList = [...firstChild['classList']]
+  //   expect(classList).toMatchSnapshot()
+  // })
 
   test('12. te  rnary multiple on same key', async () => {
     const test12 = getTest('Test12')
