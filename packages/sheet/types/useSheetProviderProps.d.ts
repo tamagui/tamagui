@@ -7,7 +7,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     onOverlayComponent?: (comp: any) => void;
 }): {
     screenSize: number;
-    maxSnapPoint: number;
+    maxSnapPoint: string | number;
     removeScrollEnabled: boolean | undefined;
     scrollBridge: ScrollBridge;
     modal: boolean;
@@ -21,8 +21,11 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     dismissOnSnapToBottom: boolean;
     onOverlayComponent: ((comp: any) => void) | undefined;
     scope: import("@tamagui/create-context").Scope<any>;
+    hasFit: boolean;
     position: number;
-    snapPoints: number[];
+    snapPoints: (string | number)[];
+    snapPointsMode: import("./types").SnapPointsMode;
+    setMaxContentSize: React.Dispatch<React.SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
     onlyShowFrame: boolean;
