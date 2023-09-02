@@ -36,7 +36,7 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {
-      inline: ['react-native-web', /tamagui/],
+      inline: [/^(?!.*vitest).*$/],
     },
   },
 })

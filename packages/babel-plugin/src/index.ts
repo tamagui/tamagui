@@ -1,5 +1,3 @@
-process.env.TAMAGUI_COMPILE_PROCESS = '1'
-
 import { basename } from 'path'
 
 import generator from '@babel/generator'

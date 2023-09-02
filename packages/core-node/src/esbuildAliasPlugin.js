@@ -31,7 +31,7 @@ const aliasPlugin = (config) => {
         build.onResolve({ filter: new RegExp(`^.*${k}$`) }, (args) => {
           return main(k, args)
         })
-        build.onResolve({ filter: new RegExp(`^.*${k}\\/.*$`) }, (args) => {
+        build.onResolve({ filter: new RegExp(`^.*\\/${k}\\/.*$`) }, (args) => {
           return main(k, args)
         })
       })

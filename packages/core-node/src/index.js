@@ -1,9 +1,5 @@
 // see core/static
 
-if (process.env.TAMAGUI_COMPILE_PROCESS !== '1') {
-  process.env.TAMAGUI_COMPILE_PROCESS = '1'
-}
-
 process.env.IS_STATIC = 'is_static'
 process.env.TAMAGUI_IS_SERVER = 'true'
 

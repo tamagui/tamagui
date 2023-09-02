@@ -1,7 +1,18 @@
-import * as React from 'react'
-import { Spacer, Text, XStack, YStack, useMedia } from 'tamagui'
+// debug
 
-import Tamagui from '../lib/tamagui.config.cjs'
+import { config } from '@tamagui/config'
+import {
+  Spacer,
+  TamaguiProvider,
+  Test14Component,
+  Text,
+  XStack,
+  YStack,
+  createTamagui,
+  useMedia,
+} from '@tamagui/sandbox-ui'
+import React from 'react'
+
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 
@@ -12,7 +23,11 @@ type TestProps = {
   altConditional?: boolean
 }
 
-export const Provider = (props) => <Tamagui.Provider>{props.children}</Tamagui.Provider>
+const tamaguiConfig = createTamagui(config)
+
+export const Provider = (props) => (
+  <TamaguiProvider config={tamaguiConfig}>{props.children}</TamaguiProvider>
+)
 
 const child = <Text>hello world</Text>
 
@@ -31,6 +46,15 @@ export const Card = (props: any) => (
     {...props}
   />
 )
+
+export function TestVariantFalse() {
+  return (
+    <>
+      <Test14Component />
+      <Test14Component fullbleed />
+    </>
+  )
+}
 
 export function TestMediaQuery() {
   const media = useMedia() // should extract

@@ -14,14 +14,15 @@ const alias = {
   'react-native-safe-area-context$': '@tamagui/fake-react-native',
 }
 
+// @ts-ignore
 process.env.NODE_ENV = 'test'
+process.env.TAMAGUI_TARGET = 'web'
 
 const defines = {
   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   __DEV__: JSON.stringify(false),
   'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
   'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
-  'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
 }
 
 async function extractStaticWebpackApp() {
@@ -65,7 +66,7 @@ async function extractStaticWebpackApp() {
               loader: require.resolve('tamagui-loader'),
               options: {
                 config: './tests/lib/tamagui.config.cjs',
-                components: ['tamagui'],
+                components: ['@tamagui/sandbox-ui'],
                 importsWhitelist: ['constants.js'],
               },
             },
@@ -81,6 +82,7 @@ async function extractStaticWebpackApp() {
   })
 
   await new Promise((res) => {
+    console.log('building webpack')
     compiler.run((err, result) => {
       console.log({ err })
       console.log(result?.toString())
@@ -96,10 +98,17 @@ export async function preTest() {
   // )
   // return
 
+  console.log('process.env.DISABLE_PRE_TEST', process.env.DISABLE_PRE_TEST)
+
   if (process.env.DISABLE_PRE_TEST) {
     return
   }
   await extractStaticWebpackApp()
   process.env.IS_STATIC = undefined
-  process.exit(0)
+}
+
+if (process.env.RUN_PRETEST) {
+  preTest().then(() => {
+    process.exit(0)
+  })
 }

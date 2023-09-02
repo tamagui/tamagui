@@ -4,9 +4,10 @@
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
-    "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "yarn test:native && yarn test:web",
+    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
+    "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
+    "test:webpack": "yarn pretest && TAMAGUI_TARGET=web yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
     "test:web": "TAMAGUI_TARGET=web yarn test:run tests/*.web.test.tsx",
     "test:native": "TAMAGUI_TARGET=native yarn test:run tests/*.native.test.tsx"
   },
@@ -20,8 +21,9 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
+    "@tamagui/sandbox-ui": "1.58.4",
     "@tamagui/test-design-system": "1.58.4",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
@@ -38,7 +40,7 @@
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
     "typescript": "^5.2.2",
-    "vitest": "^0.26.3",
+    "vitest": "^0.34.3",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

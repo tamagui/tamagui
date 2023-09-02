@@ -26,7 +26,7 @@
     "@tamagui/build": "1.58.4",
     "react": "^18.2.0",
     "react-native": "^0.72.1",
-    "vitest": "^0.26.3"
+    "vitest": "^0.34.3"
   },
   "peerDependencies": {
     "react": "*",

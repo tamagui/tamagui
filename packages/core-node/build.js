@@ -17,6 +17,15 @@ async function build() {
     await fs.remove(outPath)
     await fs.mkdir(outPath)
     const inPath = path.join(__dirname, '..', 'core', 'src', 'index.ts')
+
+    const aliasPlugin = alias({
+      'react-native': require.resolve('@tamagui/fake-react-native'),
+      'react-native-safe-area-context': require.resolve(
+        '@tamagui/fake-react-native'
+      ),
+      'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+    })
+    
     await Promise.all([
       esbuild.build({
         bundle: true,
@@ -33,14 +42,9 @@ async function build() {
           'process.env.ENABLE_RSC': 'undefined',
           'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
         },
+        external: ['react', 'react-dom'],
         plugins: [
-          alias({
-            'react-native': require.resolve('@tamagui/fake-react-native'),
-            'react-native-safe-area-context': require.resolve(
-              '@tamagui/fake-react-native'
-            ),
-            'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-          }),
+          aliasPlugin,
         ],
       }),
       esbuild.build({
@@ -58,14 +62,9 @@ async function build() {
           'process.env.ENABLE_RSC': 'undefined',
           'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
         },
+        external: ['react', 'react-dom'],
         plugins: [
-          alias({
-            'react-native': require.resolve('@tamagui/fake-react-native'),
-            'react-native-safe-area-context': require.resolve(
-              '@tamagui/fake-react-native'
-            ),
-            'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-          }),
+          aliasPlugin,
         ],
       }),
     ])

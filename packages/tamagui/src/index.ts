@@ -1,5 +1,8 @@
 import './setup.js'
 
+import { styled } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
+
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
@@ -187,3 +190,20 @@ export {
   variableToString,
   withStaticProperties,
 } from '@tamagui/core'
+
+export const MyComponent = styled(YStack, {
+  name: 'MyComponent',
+
+  variants: {
+    fullbleed: {
+      true: {},
+      false: {
+        padding: '$4',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    fullbleed: false,
+  },
+})
