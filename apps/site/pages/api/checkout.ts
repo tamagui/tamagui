@@ -121,5 +121,5 @@ export default apiRoute(async (req, res) => {
     res.redirect(303, stripeSession.url)
   }
 
-  res.status(500)
+  throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)
 })
