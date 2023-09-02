@@ -141,7 +141,6 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
 }
 export function ClimbsTab() {
   const climbsQuery = api.climb.read.useQuery()
-  console.log(climbsQuery.data, 'climbs')
   const [open, setOpen] = useState(false)
   const [selectedClimb, setSelectedClimb] = useState<ListClimb | null>(null)
   const onSelect = useCallback((climb: ListClimb) => {
