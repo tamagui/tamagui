@@ -4,6 +4,7 @@ export type WithTamaguiProps = TamaguiOptions & {
     enableLegacyFontSupport?: boolean;
     aliasReactPackages?: boolean;
     includeCSSTest?: RegExp | ((path: string) => boolean);
+    doesMutateThemes?: boolean;
     shouldExtract?: (path: string, projectRoot: string) => boolean | undefined;
     shouldExcludeFromServer?: (props: {
         context: string;
