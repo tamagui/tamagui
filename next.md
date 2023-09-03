@@ -21,18 +21,8 @@
   - move dialog/alertdialog over to createStyledContext would reduce a lot of depth
 
 - sheet snappoints not consistent on mobile web vs other platforms (maybe dvh or maybe just different?)
-- sheet feature to have it snap to content size
-- node memory leak causing slowdowns
-- sheet breakpoints esp on mobile web
 - move simple-web to themeBuilder
-- add themeBuilder to compile time options in starters
 - make it so specific tokens can be omitted from types where theres a default token category
-
-- being able to limit fallback value better:
-  - only number | `${string}%` | SpaceToken
-  - right now its either allowing random strings or not allowing % strings, both which we don't want
-  - eventually could also make "color-like" strings easier:
-    - `#${string}` | `rgb(${string})` | `rgba(${string})` | `hsl(${string})` | `hsla(${string})` | NamedColors | 'transparent'
 
 - Popover.Close inside Sheet
 
@@ -55,71 +45,10 @@
 - add just early return hooks eslint check
 - Sheet.Close, Sheet imperative close
 
-high level:
-
-  - automate sponsors a bit better (link discord on tamagui site)
-  - private canary packages on github
-  - tiered line system for studio
-  - improve tests and docs
-  - make themes and sizing easier, simpler, better documented, more controllable
-  - headless
-  - studio
-  - takeout
-  - income:
-    - font packages + font package builder ui
-    - merch
-    - outlined, pastel, neon themes, other theme drops (gumroad cheap)
-    - auth/account/profile drop
-    - better monorepo pro drop
-
----
-
-via #gwun:
-
-- if you have light_blue_Button but no light_blue theme, causes update issues when you switch
-
-- defining a theme and componentName on a Stack/View should make the instantiated components inside inherit:
-
-  ```tsx
-  <Theme name=(theme}>
-    <YStack
-      theme="none"
-      componentName="GaContainer"
-      backgroundColor="$background"?
-      <GaScrollView bg="$backgroundSoft"›
-      </GaScrollView>
-    </YStack>
-  </Theme>
-  ```
-
-  After upgrading to latest, just on native, the "$background" in the
-  YStack works as expected but the child <GaScrollView
-  bg="$backgroundSoft" does not. Same applies if replaced with a
-  <Stack> or anv other component.
-
-- <Theme name="blue"><Theme reset><Button theme="orange" /></Theme></Theme>
-
-something like this i believe, where native is correct but web the button isn't orange
-
-
 ---
 
 - `tamagui [clone|eject] Sheet ./packages/sheet`
   - clones the sheet package into your repo somewhere
-
-- $web / $native / $ios / $android
-
-starter
-- feed
-- more work on profile
-- cropper on web, potentially
-- add users to github repo
-- template github action
-
-takeout
-- checkout
-- page for showing all purchased products / subscriptions
-- discord integration
 
 studio
 - templates working
@@ -271,12 +200,6 @@ a package.json etc etc + zip file
 
 - getVariableValue(props.fontFamily) doesn't look right
 
-- slider track - light theme blends in with bg i think
-
-- Button and other similar ones - make the hover/press/focusStyle zIndex 2, 3, 4 (or all 2) by default
-
-- createInterFont the default weight/letterSpacing should use `true` rather than `4` key (small change just need to test make sure it doens't break)
-
 - cli
   - `tamagui doctor` command to check for version mismatch
 
@@ -285,26 +208,11 @@ https://reactnative.dev/blog/2023/01/12/version-071#web-inspired-props-for-acces
 
 Ali:
 
-- [ ] moti driver
-- [ ] Studio
-  - [ ] Host on vercel
-  - [ ] plugins automatically watch and build
-    - [ ] babel-plugin, webpack-loader, vite all share @tamagui/static
-      - [ ] @tamagui/static just needs to add a call to the watch that studio.ts uses
-    - [ ] if weird or hard:
-      - [ ] `tama studio` comment out and instead
-        - [ ] `tama studio --serve` add flag and hide vite stuff behind there
-        - [ ] `tama studio` just builds once
-        - [ ] `tama studio --watch` watches
-- [ ] skipProps on getSplitStyle working with width={} but not styled()'s width:
-- [ ] https://discord.com/channels/909986013848412191/1095303038786342983/1095303038786342983
 - [ ] document keyboard avoiding view in `Sheet.mdx`
 - [ ] input bug 
-  - [ ] https://discord.com/channels/909986013848412191/1091749199378387065/1091909256023904377
 - [ ] @tamagui/change-animation-driver document
 - [ ] Disable warning ENV + configuration.md docs
   - [ ] (nate) make focusStyle border darker
-- [ ] WARN  Sending onAnimatedValueUpdate with no listeners registered
 - [ ] bezier on css animations
   - [ ] disablePassBorderRadius feels like a weird thing to need by default
     - change Group's disablePassBorderRadius to something else - perhaps the negation, passBorderRadius? i'm not sure. what do you think about this @natew 
@@ -320,58 +228,14 @@ Ali:
 
 ### PR
 
-  - release hoverglow
-  - release use-store
-  - tabs demo
   - animated colors demo
   - studio preview video
   - plus studio landing page with invite system
   - theme inverse shows off generic themes
 
-- refactor getSplitStyles to share getSubStyle / logic with main style logic
-  - "When I place style: backgroundGradient outside of variants, it works"
-
 ---
 
-- site polish: 
-  - make the text selection match the theme
-  - make the link underline match the theme
-
 - website toggle for css/spring doesn't animate? we can keep it outside of the provider ideally so its always spring
-
-
-- in card : `if (isTamaguiElement(child) && !child.props.size) {` lets convert to context?
-  - can we come up with a nicer pattern to avoid having to rewrite from styled() to component here? like some sort of standard way to provide context between components?... thinking out loud:
-    - we could have a generic ComponentContext internally in createComponent
-    - we can export a createStyledContext()
-    - `const CardVariants = createStyledContext<{ size: number }>()`
-    - then in Card or any parent you can do `<CardVariants size={} />`
-    - finally, in `styled({ provider: CardVariants })`
-
-    <CardVariants.Provider size="$10">
-      <Card />
-    </CardVariants.Provider>
-
-    .for_Card.size_10 .is_Card { ... }
-
-    <Variants skeleton>
-      <Card />
-    </Variants>
-
-    variants: {
-      skeleton: {
-        true: {
-          beforeStyle: [
-            {
-              background: 'grey',
-            }
-          ]
-        }
-      }
-    }
-
-- themes: outlined, contrast
-
 
 - light/dark theme buttons bad colors (contrast + pressStyle borders)
 
@@ -397,10 +261,6 @@ Ali:
 
 ----
 
-- check why styled() of a HOC is failing:
-
-- Separator orientation="vertical" deprecate boolean `vertical`
-
 - https://github.com/tamagui/tamagui/issues/478
 - default light mode theme + not changing
 - hoverTheme={false} works, make hoverStyle={false} to unset
@@ -420,8 +280,6 @@ Ali:
   - instead of passing ThemeManager in context just pass a UID
     - useChangeTheme can then do listen(UID)
 - vertical slider native can be janky
-- react native action sheet hooks/logic adapt
-- testing native - https://maestro.mobile.dev
 - styled('div')
 - tooltip auto pass down accessibilityLabel
 - accessibility keyboard navigation (Menu component potentially)
@@ -431,7 +289,6 @@ Ali:
 - CD on github
 - home page sponsors with sizing and better logos
   - https://github.com/JamesIves/github-sponsors-readme-action
-- algolia not indexing some new content
 - keyboard search select bug
 - variants intellisense autocomplete not suggesting, but types are right
 - improve native integration test
@@ -542,10 +399,6 @@ Ali:
 - <Icon />
   - use theme values and size values
   - can swap for other icon packs (use createTamagui({ icons }))
-- <Toast />
-- <Toggle><Group><Toggle.Item><Item /></Toggle.Item></Group></Toggle>
-- <Tabs />
-- <Accordion />
 - <Autocomplete />
 - <Select.SearchInput />
 - <Text fontSize="parent" />
@@ -560,12 +413,8 @@ Ali:
     - focusStyle={{ after: { fullscreen: true, border... } }}
     - allows for proper focused borders that don't require super hacks
     - see Switch
-- <Avatar />
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom
-- <Accordion />
-- <Carousel />
-- <Video />, <Spinner />
 - <SizableFrame />, <EnsureFlexed />
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
@@ -591,103 +440,6 @@ Ali:
 
 ---
 
-## Descendent Styles
-
-ideas:
-
-```tsx
-const Child = styled(Stack, {
-  $Parent: [
-    {
-      backgroundColor: 'green'
-    },
-    {
-      when: 'small',
-      backgroundColor: 'red',
-    },
-  ],
-})
-```
-
-```tsx
-styled(Stack, {
-  $sm$dark$Parent: { ... }
-})
-```
-
-```tsx
-const Child = styled(Stack, {
-  $sm: { ... },
-  $dark: { ... },
-  $Parent: { ... },
-  compounds: [
-    {
-       media: '$sm',
-       theme: 'dark',
-       parent: 'Parent',
-       styles: {
-          // ...
-       }
-    }
-  ]
-});
-```
-
-
-### On the parent:
-
-```tsx
-const ButtonFrame = styled(Stack, {
-  ButtonText: {
-    color: 'red',
-  },
-
-  hoverStyle: {
-    ButtonText: {
-      color: 'green'
-    }
-  },
-
-  $small: {
-    hoverStyle: {
-      ButtonText: {
-        color: 'blue'
-      }
-    }
-  }
-})
-
-const ButtonText = styled(Stack, {
-  name: 'ButtonText',
-})
-```
-
-### On the child:
-
-```tsx
-const ButtonFrame = styled(Stack, {})
-
-const ButtonText = styled(Stack, {
-  name: 'ButtonText',
-
-  in_ButtonFrame: {
-    color: 'red',
-
-    hoverStyle: {
-      color: 'green',
-    },
-
-    $small: {
-      hoverStyle: {
-        color: 'blue'
-      }
-    }
-  },
-})
-```
-
----
-
 <Skeleton />
 
 ```tsx
@@ -707,34 +459,6 @@ const Skeleton = styled(Stack, {
     colors: ['$color2', '$color3', '$color2']
   }
 })
-```
-
----
-
-<Variants />
-
-```tsx
-export default () => (
-  <MySquare.Variant skeleton>
-    <MySquare />
-  </MySquare.Variant>
-)
-
-const MySquare = styled(Square, {
-  variants: {
-    skeleton: {
-      true: {
-        backgroundColor: 'grey',
-      }
-    }
-  }
-})
-```
-
-and if you want multiple:
-
-```tsx
-const SkeletonVariants = composeVariantProviders(MySquare)
 ```
 
 ---
