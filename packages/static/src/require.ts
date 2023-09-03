@@ -109,7 +109,7 @@ function tamaguiRequire(this: any, path: string) {
     // }
     return out
   } catch (err: any) {
-    if (IGNORES === 'true') {
+    if (allowedIgnores[path] || IGNORES === 'true') {
       // ignore
     } else if (!process.env.TAMAGUI_SHOW_FULL_BUNDLE_ERRORS) {
       if (hasWarnedForModules.has(path)) {
@@ -143,4 +143,8 @@ function tamaguiRequire(this: any, path: string) {
 
     return proxyWorm
   }
+}
+
+const allowedIgnores = {
+  'expo-constants': true,
 }
