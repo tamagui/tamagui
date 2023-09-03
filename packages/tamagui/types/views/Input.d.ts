@@ -411,7 +411,7 @@ export declare function useInputProps(props: InputProps, ref: any): {
     caretHidden?: boolean | undefined;
     contextMenuHidden?: boolean | undefined;
     defaultValue?: string | undefined;
-    editable?: boolean | undefined;
+    editable: boolean;
     keyboardType?: import("react-native").KeyboardTypeOptions | undefined;
     inputMode?: import("react-native").InputModeOptions | undefined;
     maxLength?: number | undefined;
