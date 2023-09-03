@@ -16,7 +16,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     name: 'tamagui-native',
     enforce: 'post',
 
-    config: (config) => {
+    config: async (config) => {
       config.define ||= {}
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
@@ -56,9 +56,9 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.optimizeDeps.esbuildOptions.plugins ??= []
 
       config.optimizeDeps.esbuildOptions.alias = {
-        'react-native': '@tamagui/proxy-worm'
+        'react-native': '@tamagui/proxy-worm',
       }
-      
+
       // config.optimizeDeps.esbuildOptions.plugins.push(
       //   esbuildFlowPlugin(
       //     /node_modules\/(react-native\/|@react-native\/)/,
@@ -115,27 +115,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `swap-react-native`,
 
           async load(id) {
-            if (id.endsWith('/react-native/index.js')) {
-              const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
-              const code = `
-              const run = () => {  
-                ${bundled
-                  .replace(
-                    `module.exports = require_react_native();`,
-                    `return require_react_native();`
-                  )
-                  .replace(
-                    `var require_jsx_runtime = `,
-                    `var require_jsx_runtime = global['__JSX__'] = `
-                  )
-                  .replace(
-                    `var require_react = `,
-                    `var require_react = global['__React__'] = `
-                  )}
-              }
-              const RN = run()
-              ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
-              `
+            if (id.includes('/react-native/')) {
+              console.log('swapping in react native', id)
               return {
                 code,
               }
@@ -160,40 +141,44 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `force-export-all`,
 
           async transform(code, id) {
-            const [imports, exports] = parse(code)
+            try {
+              const [imports, exports] = parse(code)
 
-            let forceExports = ''
+              let forceExports = ''
 
-            // note that es-module-lexer parses export * from as an import (twice) for some reason
-            let counts = {}
-            for (const imp of imports) {
-              if (imp.n && imp.n[0] !== '.') {
-                counts[imp.n] ||= 0
-                counts[imp.n]++
-                if (counts[imp.n] == 2) {
-                  // star export
-                  const path = await getVitePath(dirname(id), imp.n)
-                  forceExports += `Object.assign(exports, require("${path}"));`
+              // note that es-module-lexer parses export * from as an import (twice) for some reason
+              let counts = {}
+              for (const imp of imports) {
+                if (imp.n && imp.n[0] !== '.') {
+                  counts[imp.n] ||= 0
+                  counts[imp.n]++
+                  if (counts[imp.n] == 2) {
+                    // star export
+                    const path = await getVitePath(dirname(id), imp.n)
+                    forceExports += `Object.assign(exports, require("${path}"));`
+                  }
                 }
               }
+
+              forceExports += exports
+                .map((e) => {
+                  if (e.n === 'default') {
+                    return ''
+                  }
+                  let out = ''
+                  if (e.ln !== e.n) {
+                    // forces the "as x" to be referenced so it gets exported
+                    out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
+                  }
+                  out += `globalThis.____forceExport = ${e.ln}`
+                  return out
+                })
+                .join(';')
+
+              return code + '\n' + forceExports
+            } catch (err) {
+              console.warn(`Error forcing exports, probably ok`, id)
             }
-
-            forceExports += exports
-              .map((e) => {
-                if (e.n === 'default') {
-                  return ''
-                }
-                let out = ''
-                if (e.ln !== e.n) {
-                  // forces the "as x" to be referenced so it gets exported
-                  out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
-                }
-                out += `globalThis.____forceExport = ${e.ln}`
-                return out
-              })
-              .join(';')
-
-            return code + '\n' + forceExports
           },
         })
 
@@ -274,88 +259,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     },
   }
 }
-
-const RNExportNames = [
-  'AccessibilityInfo',
-  'ActivityIndicator',
-  'Button',
-  'DrawerLayoutAndroid',
-  'FlatList',
-  'Image',
-  'ImageBackground',
-  'InputAccessoryView',
-  'KeyboardAvoidingView',
-  'Modal',
-  'Pressable',
-  'RefreshControl',
-  'SafeAreaView',
-  'ScrollView',
-  'SectionList',
-  'StatusBar',
-  'Switch',
-  'Text',
-  'TextInput',
-  'Touchable',
-  'TouchableHighlight',
-  'TouchableNativeFeedback',
-  'TouchableOpacity',
-  'TouchableWithoutFeedback',
-  'View',
-  'VirtualizedList',
-  'VirtualizedSectionList',
-  'ActionSheetIOS',
-  'Alert',
-  'Animated',
-  'Appearance',
-  'AppRegistry',
-  'AppState',
-  'BackHandler',
-  'DeviceInfo',
-  'DevSettings',
-  'Dimensions',
-  'Easing',
-  'findNodeHandle',
-  'I18nManager',
-  'InteractionManager',
-  'Keyboard',
-  'LayoutAnimation',
-  'Linking',
-  'LogBox',
-  'NativeDialogManagerAndroid',
-  'NativeEventEmitter',
-  'Networking',
-  'PanResponder',
-  'PermissionsAndroid',
-  'PixelRatio',
-  // 'PushNotificationIOS',
-  'Settings',
-  'Share',
-  'StyleSheet',
-  'Systrace',
-  'ToastAndroid',
-  'TurboModuleRegistry',
-  'UIManager',
-  'unstable_batchedUpdates',
-  'useColorScheme',
-  'useWindowDimensions',
-  'UTFSequence',
-  'Vibration',
-  'YellowBox',
-  'DeviceEventEmitter',
-  'DynamicColorIOS',
-  'NativeAppEventEmitter',
-  'NativeModules',
-  'Platform',
-  'PlatformColor',
-  'processColor',
-  'requireNativeComponent',
-  'RootTagContext',
-  // 'unstable_enableLogBox',
-  // 'ColorPropType',
-  // 'EdgeInsetsPropType',
-  // 'PointPropType',
-  // 'ViewPropTypes',
-]
 
 // failed attempt to get vite to bundle rn, after a bunch of hacks still trouble
 

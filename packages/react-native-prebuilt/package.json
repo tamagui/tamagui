@@ -1,0 +1,10 @@
+{
+  "name": "@tamagui/react-native-prebuilt",
+  "version": "1.59.2",
+  "main": "index.js",
+  "license": "MIT",
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}
