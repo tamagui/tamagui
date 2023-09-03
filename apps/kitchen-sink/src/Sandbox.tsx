@@ -23,7 +23,7 @@ export const Sandbox = () => {
 
   return (
     <>
-      <Input debug="verbose" testID="something" />
+      <Input disabled testID="something" />
 
       {/* <Stack ref={ref} f={1} group="testy">
         <Square
