@@ -377,7 +377,7 @@ export const getSplitStyles: StyleSplitter = (
       }
 
       if (keyInit === 'testID') {
-        viewProps[isReactNative ? 'testId' : 'data-testid'] = valInit
+        viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
         continue
       }
 

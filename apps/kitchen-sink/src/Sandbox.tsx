@@ -1,3 +1,4 @@
+// debug
 // import './wdyr'
 
 import { Stack, createTheme } from '@tamagui/web'
@@ -5,6 +6,7 @@ import { forwardRef, useEffect, useRef } from 'react'
 import { Platform } from 'react-native'
 import {
   Button,
+  Input,
   Paragraph,
   SizableText,
   Square,
@@ -21,13 +23,7 @@ export const Sandbox = () => {
 
   return (
     <>
-      <Button
-        onPress={() => {
-          console.log('button pressed')
-        }}
-      >
-        asdsad
-      </Button>
+      <Input debug="verbose" testID="something" />
 
       {/* <Stack ref={ref} f={1} group="testy">
         <Square
