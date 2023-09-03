@@ -12,9 +12,13 @@
 
 <br/>
 
-<h1 align="center">
-  Style and UI for React (web + native), with an optimizing compiler
-</h1>
+<h2 align="center">
+  A faster style system for React with an optimizing compiler
+</h2>
+
+<h5 align="center">
+  Style and UI for React Native and Web, without downsides
+</h5>
 
 
 - `@tamagui/core` - Universal style library for React (web and native).
