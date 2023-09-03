@@ -39,11 +39,10 @@ const HorizontalTabs = () => {
       </Tabs.List>
       <Separator />
       <TabsContent value="tab1">
-        <ClimbsTab />
+        {' '}
+        <ClimbsTab />{' '}
       </TabsContent>
-      <TabsContent value="tab2">
-        <MyClimbsTab />
-      </TabsContent>
+      <TabsContent value="tab2">{/* <MyClimbsTab /> */}</TabsContent>
     </Tabs>
   )
 }

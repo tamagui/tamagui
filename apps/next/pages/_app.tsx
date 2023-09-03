@@ -5,6 +5,7 @@ import { ColorScheme, NextThemeProvider, useRootTheme } from '@tamagui/next-them
 import { Provider } from 'app/provider'
 import { AuthProviderProps } from 'app/provider/auth'
 import { api } from 'app/utils/api'
+import ErrorBoundary from 'components/ErrorBoundary'
 import { NextPage } from 'next'
 import Head from 'next/head'
 
@@ -36,15 +37,17 @@ function MyApp({
         <meta name="description" content="Tamagui Universal Starter" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <NextThemeProvider
-        onChangeTheme={(next) => {
-          setTheme(next as ColorScheme)
-        }}
-      >
-        <Provider initialSession={pageProps.initialSession}>
-          {getLayout(<Component {...pageProps} />)}
-        </Provider>
-      </NextThemeProvider>
+      <ErrorBoundary>
+        <NextThemeProvider
+          onChangeTheme={(next) => {
+            setTheme(next as ColorScheme)
+          }}
+        >
+          <Provider initialSession={pageProps.initialSession}>
+            {getLayout(<Component {...pageProps} />)}
+          </Provider>
+        </NextThemeProvider>
+      </ErrorBoundary>
     </>
   )
 }

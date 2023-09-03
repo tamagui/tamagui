@@ -12,6 +12,7 @@ import {
   XStack,
   Sheet,
   H5,
+  H1,
 } from '@my/ui'
 import { api } from 'app/utils/api'
 import { format } from 'date-fns'
@@ -149,22 +150,21 @@ export function ClimbsTab() {
   }, [])
 
   return (
-    <>
-      <YStack overflow="visible" ai="center" gap="$10">
-        <FlatList
-          style={{
-            flex: 1,
-            overflow: 'visible',
-          }}
-          data={climbsQuery.data}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => <Climb onSelect={onSelect} climb={item} />}
-          ItemSeparatorComponent={() => <Spacer size="$6" />}
-        />
-      </YStack>
+    <YStack overflow="visible" ai="center" gap="$10">
+      <H1>Fuck</H1>
+      <FlatList
+        style={{
+          flex: 1,
+          overflow: 'visible',
+        }}
+        data={climbsQuery.data}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => `${item.id}`}
+        renderItem={({ item }) => <Climb onSelect={onSelect} climb={item} />}
+        ItemSeparatorComponent={() => <Spacer size="$6" />}
+      />
       {climbsQuery.data && <SheetDemo climb={selectedClimb} open={open} setOpen={setOpen} />}
-    </>
+    </YStack>
   )
 }
 

@@ -13,15 +13,18 @@
       },
       "env": {
         "TAMAGUI_TARGET": "native"
-      }
+      },
+      "channel": "development"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "preview"
     },
     "production": {
       "env": {
         "TAMAGUI_TARGET": "native"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {
