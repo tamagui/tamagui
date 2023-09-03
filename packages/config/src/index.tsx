@@ -1,6 +1,6 @@
 import { themes } from '@tamagui/themes'
 
-import { animations } from './animations'
+import { animations } from './animations.css'
 import { configWithoutAnimations } from './config'
 
 export * from './media'

@@ -6,7 +6,13 @@ import viteReactPlugin, {
   swcTransform,
   transformForBuild,
 } from '@tamagui/vite-native-swc'
-import { getVitePath, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
+import {
+  getVitePath,
+  nativePlugin,
+  nativePrebuild,
+  tamaguiPlugin,
+} from '@tamagui/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
@@ -32,22 +38,13 @@ export const dev = async (options: CLIResolvedOptions) => {
   // react native port (it scans 19000 +5)
   const port = options.port || 8081
 
-  const plugins = [
-    // tamaguiPlugin({
-    //   ...options.tamaguiOptions,
-    //   target: 'native',
-    // }),
-    {
-      name: 'tamagui',
-      config() {
-        return {
-          define: {
-            'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
-          },
-        }
-      },
-    },
-  ] satisfies InlineConfig['plugins']
+  const tamaguiVitePlugin = tamaguiPlugin({
+    ...options.tamaguiOptions,
+    useReactNativeWebLite: true,
+    target: 'web',
+  })
+
+  const plugins = [tamaguiVitePlugin] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
@@ -63,20 +60,11 @@ export const dev = async (options: CLIResolvedOptions) => {
     mode: 'development',
     esbuild: false,
     clearScreen: false,
-    appType: 'custom',
 
     plugins: [
       ...plugins,
 
-      viteReactPlugin({
-        tsDecorators: true,
-        mode: 'serve',
-      }),
-
-      nativePlugin({
-        port,
-        mode: 'serve',
-      }),
+      react(),
 
       {
         name: 'tamagui-client-transform',
@@ -156,6 +144,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {
+            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(`Error processing hmr update:`, err)
           }
         },
@@ -171,10 +160,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   // first resolve config so we can pass into client plugin, then add client plugin:
   const resolvedConfig = await resolveConfig(serverConfig, 'serve')
 
-  const viteRNClient = clientInjectionsPlugin(resolvedConfig)
-
-  // @ts-ignore
-  plugins.push(viteRNClient)
+  const viteRNClientPlugin = clientInjectionsPlugin(resolvedConfig)
 
   serverConfig = {
     ...serverConfig,
@@ -193,6 +179,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       void server.transformRequest(id)
     } catch (err) {
       // ok
+      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('err', err)
     }
   })
@@ -210,7 +197,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  getBundleCode()
+  // getBundleCode()
 
   // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
@@ -248,7 +235,29 @@ export const dev = async (options: CLIResolvedOptions) => {
     // build app
     const buildOutput = await build({
       plugins: [
-        ...plugins,
+        {
+          name: 'tamagui-env-native',
+          config() {
+            return {
+              define: {
+                'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
+              },
+            }
+          },
+        },
+
+        viteRNClientPlugin,
+
+        // viteReactPlugin({
+        //   tsDecorators: true,
+        //   mode: 'serve',
+        // }),
+
+        // nativePlugin({
+        //   port,
+        //   mode: 'serve',
+        // }),
+
         nativePlugin({
           port,
           mode: 'build',

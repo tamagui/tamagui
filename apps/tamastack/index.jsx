@@ -4,4 +4,3 @@ import { App } from './src/App'
 AppRegistry.registerComponent('main', () => App)
 
 LogBox.install()
-

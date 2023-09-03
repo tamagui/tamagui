@@ -1,3 +1,4 @@
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 import type { TamaguiOptions } from '@tamagui/static'
 import { watchTamaguiConfig } from '@tamagui/static'
 import type { Plugin } from 'vite'
@@ -62,20 +63,20 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include:
-            options.target !== 'native' ? ['styleq', 'react-native-reanimated'] : [],
+          include: options.target !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
-            // plugins: [
-            //   esbuildCommonjs([
-            //     'styleq',
-            //     'inline-style-prefixer',
-            //     'create-react-class',
-            //     'copy-to-clipboard',
-            //   ]),
-            // ],
+            plugins: [
+              esbuildCommonjs([
+                'styleq',
+                'inline-style-prefixer',
+                'create-react-class',
+                'copy-to-clipboard',
+              ]),
+            ],
             resolveExtensions: [
               '.web.js',
+              '.web.jsx',
               '.web.ts',
               '.web.tsx',
               '.js',
@@ -95,6 +96,7 @@ export function tamaguiPlugin(
           // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext', 'main'],
           extensions: [
             '.web.js',
+            '.web.jsx',
             '.web.ts',
             '.web.tsx',
             '.js',

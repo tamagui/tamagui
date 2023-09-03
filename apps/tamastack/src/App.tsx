@@ -8,15 +8,15 @@ export function App() {
       <Stack
         f={1}
         w="100%"
+        h="100%"
         ai="center"
         jc="center"
         als="center"
         m="auto"
-        bg="#3FB9C2"
-        h={400}
+        bg="#B3FF00"
       >
-        <Text color="#8C4D86" fow="800" fos={70} ta="center">
-          vite + rn = ❤️
+        <Text color="#AA12A2" fow="800" fos={100} ta="center">
+          💥
         </Text>
       </Stack>
     </TamaguiProvider>
