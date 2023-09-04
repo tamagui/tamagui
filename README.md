@@ -2,7 +2,9 @@
   <img margin="auto" width="572px" src="https://github.com/tamagui/tamagui/raw/master/apps/site/public/social.png" alt="Tamagui">
 </div>
 
-<br/>
+<h3 align="center">
+  Style and UI for React (web and native) meet an optimizing compiler
+</h3>
 
 <div align="center">
   <img alt="NPM downloads" src="https://img.shields.io/npm/dw/@tamagui/core?logo=npm&label=NPM%20downloads&cacheSeconds=3600"/>
@@ -10,24 +12,18 @@
   <img alt="Commits per month" src="https://img.shields.io/discord/909986013848412191?logo=discord&label=Discord&cacheSeconds=3600" />
 </div>
 
-<br/>
+<br />
+<br />
 
-<h2 align="center">
-  A faster style system for React with an optimizing compiler
-</h2>
-
-<h5 align="center">
-  Style and UI for React Native and Web, without downsides
-</h5>
-
-
-- `@tamagui/core` - Universal style library for React (web and native).
+- `@tamagui/core` - Universal style library for React.
 - `@tamagui/static` - Optimizing compiler that works with `core` and `tamagui`.
-- `tamagui` - Complete UI kit that adapts to each platform.
+- `tamagui` - UI kit that adapts to every platform.
 
-See [tamagui.dev](https://tamagui.dev) for documentation.
+<br />
 
-Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer: performance and code quality.
+**See [tamagui.dev](https://tamagui.dev) for documentation.**
+
+Tamagui lets you share more code between web and native apps without sacrificing the two things that typically suffer when you do: performance and code quality.
 
 It does this with an optimizing compiler that outputs platform-specific optimizations, turning even cross-module-imported, logic-infused inline styled components into clean, flat DOM + CSS on the web, or on native, hoisted style objects and View/Text. The compiler is also completely optional, as Tamagui also works entirely at runtime.
 
