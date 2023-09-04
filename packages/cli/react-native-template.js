@@ -29,7 +29,7 @@ function __getRequire(absPath) {
 }
 
 const __specialRequireMap = {
-  'react-native':  'node_modules/react-native/index.js',
+  'react-native':  '_virtual/virtual_react-native.js',
   'react':  '__React__',
   'react-native/Libraries/Pressability/Pressability': '__ReactPressability__',
   'react-native/Libraries/Pressability/usePressability': '__ReactUsePressability__',

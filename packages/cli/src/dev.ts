@@ -6,12 +6,7 @@ import viteReactPlugin, {
   swcTransform,
   transformForBuild,
 } from '@tamagui/vite-native-swc'
-import {
-  getVitePath,
-  nativePlugin,
-  nativePrebuild,
-  tamaguiPlugin,
-} from '@tamagui/vite-plugin'
+import { getVitePath, nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
@@ -27,13 +22,11 @@ export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
 
   process.on('uncaughtException', (err) => {
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err?.message || err)
   })
 
   const packageRootDir = join(__dirname, '..')
-
-  // build react-native
-  await nativePrebuild()
 
   // react native port (it scans 19000 +5)
   const port = options.port || 8081
@@ -197,7 +190,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  // getBundleCode()
+  getBundleCode()
 
   // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
@@ -233,7 +226,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     }
 
     // build app
-    const buildOutput = await build({
+    const buildConfig = {
       plugins: [
         {
           name: 'tamagui-env-native',
@@ -286,7 +279,12 @@ export const dev = async (options: CLIResolvedOptions) => {
         __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
-    })
+    } satisfies InlineConfig
+
+    // this fixes my swap-react-native plugin not being called pre 😳
+    await resolveConfig(buildConfig, 'build')
+
+    const buildOutput = await build(buildConfig)
 
     if (!('output' in buildOutput)) {
       throw `❌`

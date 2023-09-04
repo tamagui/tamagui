@@ -1,11 +1,12 @@
 import { readFile } from 'fs/promises'
-import { join } from 'path'
 
 import * as babel from '@babel/core'
 import { build } from 'esbuild'
 import { writeFile } from 'fs-extra'
 
-import { extensions } from './extensions'
+const outPath = 'react-native.js'
+
+run()
 
 async function nativeBabelFlowTransform(input: string) {
   return await new Promise<string>((res, rej) => {
@@ -22,54 +23,14 @@ async function nativeBabelFlowTransform(input: string) {
   })
 }
 
-const prebuiltDir = join(process.cwd(), 'testing-area')
-export const prebuiltFiles = {
-  react: join(prebuiltDir, 'react.js'),
-  reactJSXRuntime: join(prebuiltDir, 'react-jsx-runtime.js'),
-  reactNative: join(prebuiltDir, 'react-native.js'),
-}
-
-export async function nativePrebuild() {
-  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
-
-  // await build({
-  //   bundle: true,
-  //   entryPoints: [require.resolve('@tamagui/core')],
-  //   outfile: prebuiltFiles.reactNative,
-  //   format: 'cjs',
-  //   target: 'node20',
-  //   jsx: 'transform',
-  //   jsxFactory: 'react',
-  //   allowOverwrite: true,
-  //   platform: 'node',
-  //   external: ['react-native', 'react', 'react/jsx-runtime'],
-  //   loader: {
-  //     '.png': 'dataurl',
-  //     '.jpg': 'dataurl',
-  //     '.jpeg': 'dataurl',
-  //     '.gif': 'dataurl',
-  //   },
-  //   define: {
-  //     __DEV__: 'true',
-  //     'process.env.NODE_ENV': `"development"`,
-  //     // TODO
-  //     'process.env.REACT_NATIVE_SERVER_PUBLIC_PORT': JSON.stringify('8081'),
-  //   },
-  //   logLevel: 'warning',
-  //   resolveExtensions: extensions,
-  // })
-
-  if (process.env.SKIP_PREBUILD_RN) {
-    return
-  }
-
+async function run() {
   // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`Prebuilding React Native (one time cost...)`)
 
   await build({
     bundle: true,
     entryPoints: [require.resolve('react-native')],
-    outfile: prebuiltFiles.reactNative,
+    outfile: outPath,
     format: 'cjs',
     target: 'node20',
     jsx: 'transform',
@@ -85,11 +46,20 @@ export async function nativePrebuild() {
     define: {
       __DEV__: 'true',
       'process.env.NODE_ENV': `"development"`,
-      // TODO
-      'process.env.REACT_NATIVE_SERVER_PUBLIC_PORT': JSON.stringify('8081'),
     },
     logLevel: 'warning',
-    resolveExtensions: extensions,
+    resolveExtensions: [
+      '.ios.js',
+      '.native.js',
+      '.native.ts',
+      '.native.tsx',
+      '.js',
+      '.jsx',
+      '.json',
+      '.ts',
+      '.tsx',
+      '.mjs',
+    ],
     plugins: [
       {
         name: 'remove-flow',
@@ -135,7 +105,7 @@ export async function nativePrebuild() {
 
   // now make our modifications:
 
-  const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
+  const bundled = await readFile(outPath, 'utf-8')
   const outCode = `
   const run = () => {  
     ${bundled
@@ -153,7 +123,7 @@ export async function nativePrebuild() {
   ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
   `
 
-  await writeFile(prebuiltFiles.reactNative, outCode)
+  await writeFile(outPath, outCode)
 }
 
 const RNExportNames = [

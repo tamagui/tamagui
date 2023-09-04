@@ -1,15 +1,14 @@
-import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
+import { readFile } from 'fs-extra'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
 import { getVitePath } from './getVitePath'
-import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
@@ -111,15 +110,24 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (options.mode === 'build') {
-        config.build.rollupOptions.plugins.push({
-          name: `swap-react-native`,
+        const virtualModuleId = 'virtual:react-native'
+        const reactNativePrebuiltPath = require.resolve('@tamagui/react-native-prebuilt')
+        const reactNativePrebuilt = await readFile(reactNativePrebuiltPath, 'utf-8')
 
-          async load(id) {
-            if (id.includes('/react-native/')) {
-              console.log('swapping in react native', id)
-              return {
-                code,
-              }
+        config.plugins ||= []
+        config.plugins.unshift({
+          name: `swap-react-native`,
+          enforce: 'pre',
+
+          resolveId(id) {
+            if (id === 'react-native' || id.includes('/react-native/')) {
+              return virtualModuleId
+            }
+          },
+
+          load(id) {
+            if (id === virtualModuleId) {
+              return reactNativePrebuilt
             }
           },
         })
