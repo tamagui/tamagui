@@ -6623,6 +6623,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/plugin@workspace:packages/plugin":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/plugin@workspace:packages/plugin"
+  dependencies:
+    "@floating-ui/react": ^0.24.7
+    "@tamagui/adapt": 1.59.3
+    "@tamagui/animate": 1.59.3
+    "@tamagui/aria-hidden": 1.59.3
+    "@tamagui/build": 1.59.3
+    "@tamagui/compose-refs": 1.59.3
+    "@tamagui/core": 1.59.3
+    "@tamagui/dismissable": 1.59.3
+    "@tamagui/floating": 1.59.3
+    "@tamagui/focus-scope": 1.59.3
+    "@tamagui/polyfill-dev": 1.59.3
+    "@tamagui/popper": 1.59.3
+    "@tamagui/portal": 1.59.3
+    "@tamagui/remove-scroll": 1.59.3
+    "@tamagui/scroll-view": 1.59.3
+    "@tamagui/sheet": 1.59.3
+    "@tamagui/stacks": 1.59.3
+    "@tamagui/use-controllable-state": 1.59.3
+    react: ^18.2.0
+    react-freeze: ^1.0.3
+    react-native: ^0.72.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/polyfill-dev@1.59.3, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
