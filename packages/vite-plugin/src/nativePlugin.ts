@@ -43,7 +43,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps ??= {}
 
-      config.optimizeDeps.disabled = false
+      config.optimizeDeps.disabled = true
       // config.optimizeDeps.include = ['react-native']
 
       // config.optimizeDeps.needsInterop ??= []
@@ -103,14 +103,12 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.build.rollupOptions.plugins ??= []
 
-      if (options.mode === 'serve') {
-        config.build.rollupOptions.external = [
-          'react-native',
-          'react',
-          'react/jsx-runtime',
-          'react/jsx-dev-runtime',
-        ]
-      }
+      // config.build.rollupOptions.external = [
+      //   'react-native',
+      //   'react',
+      //   'react/jsx-runtime',
+      //   'react/jsx-dev-runtime',
+      // ]
 
       if (!Array.isArray(config.build.rollupOptions.plugins)) {
         throw `x`
@@ -130,46 +128,74 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         //   })
         // )
 
-        const virtualModuleId = 'virtual:react-native'
-        const reactNativePrebuiltPath = require.resolve('@tamagui/react-native-prebuilt')
-        const reactNativePrebuilt = await readFile(reactNativePrebuiltPath, 'utf-8')
-
         // config.resolve.alias = {
         //   ...config.resolve.alias,
         //   'react-native': virtualModuleId,
         // }
+
+        const jsxRuntime = {
+          alias: 'virtual:react-jsx',
+          contents: await readFile(
+            require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
+            'utf-8'
+          ),
+        } as const
+
+        const virtualModules = {
+          'react-native': {
+            alias: 'virtual:react-native',
+            contents: await readFile(
+              require.resolve('@tamagui/react-native-prebuilt'),
+              'utf-8'
+            ),
+          },
+          react: {
+            alias: 'virtual:react',
+            contents: await readFile(
+              require.resolve('@tamagui/react-native-prebuilt/react'),
+              'utf-8'
+            ),
+          },
+          'react/jsx-runtime': jsxRuntime,
+          'react/jsx-dev-runtime': jsxRuntime,
+        } as const
 
         config.plugins.unshift({
           name: `swap-react-native`,
           enforce: 'pre',
 
           resolveId(id) {
-            if (id === 'react-native' || id.includes('/react-native/')) {
-              console.log('resolving...', id, 'to', virtualModuleId)
-              return virtualModuleId
+            for (const targetId in virtualModules) {
+              if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
+                const info = virtualModules[targetId]
+                console.log('resolving...', id, 'to', info.alias)
+                return info.alias
+              }
             }
           },
 
           load(id) {
-            if (id === virtualModuleId) {
-              console.log('returning prebuilt')
-              return reactNativePrebuilt
+            for (const targetId in virtualModules) {
+              const info = virtualModules[targetId as keyof typeof virtualModules]
+              if (id === info.alias) {
+                return info.contents
+              }
             }
           },
         })
 
-        config.build.rollupOptions.plugins.push(
-          viteExternalsPlugin(
-            {
-              react: '____react____',
-              'react/jsx-runtime': '____jsx____',
-              'react/jsx-dev-runtime': '____jsx____',
-            },
-            {
-              useWindow: false,
-            }
-          )
-        )
+        // config.build.rollupOptions.plugins.push(
+        //   viteExternalsPlugin(
+        //     {
+        //       react: '____react____',
+        //       'react/jsx-runtime': '____jsx____',
+        //       'react/jsx-dev-runtime': '____jsx____',
+        //     },
+        //     {
+        //       useWindow: false,
+        //     }
+        //   )
+        // )
 
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,

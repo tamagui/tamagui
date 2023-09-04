@@ -318,7 +318,7 @@ ${
   module.isEntry
     ? `
 // run entry
-__specialRequire("node_modules/react-native/index.js")
+__specialRequire("react-native")
 __specialRequire("${module.fileName}")
 `
     : ''

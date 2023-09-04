@@ -30,12 +30,12 @@ function __getRequire(absPath) {
 
 const __specialRequireMap = {
   'react-native':  '_virtual/virtual_react-native.js',
-  'react':  '__React__',
+  'react':  '_virtual/virtual_react.js',
   'react-native/Libraries/Pressability/Pressability': '__ReactPressability__',
   'react-native/Libraries/Pressability/usePressability': '__ReactUsePressability__',
-  'react/jsx-runtime': '__JSX__',
-  'react/jsx-dev-runtime': '__JSX__',
-  '../../node_modules/react/jsx-dev-runtime.js': '__JSX__'
+  'react/jsx-runtime': '_virtual/virtual_react-jsx.js',
+  'react/jsx-dev-runtime': '_virtual/virtual_react-jsx.js',
+  '../../node_modules/react/jsx-dev-runtime.js': '_virtual/virtual_react-jsx.js'
 }
 
 function __specialRequire(_mod) {
@@ -78,18 +78,6 @@ function createRequire(importsMap) {
     }
   };
 }
-
-Object.defineProperty(globalThis, "____react____", {
-  get() {
-    return __specialRequire("react");
-  },
-});
-
-Object.defineProperty(globalThis, "____jsx____", {
-  get() {
-    return __specialRequire("react/jsx-runtime");
-  },
-});
 
 globalThis["setImmediate"] = (cb) => cb();
 //cb => Promise.resolve().then(() => cb())
