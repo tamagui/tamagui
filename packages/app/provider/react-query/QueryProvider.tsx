@@ -1,4 +1,6 @@
 import { QueryClient, QueryClientProvider as QueryClientProviderOG } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 import { useState } from 'react'
 
 export const QueryClientProvider = ({ children }: { children: React.ReactNode }) => {
@@ -7,5 +9,10 @@ export const QueryClientProvider = ({ children }: { children: React.ReactNode })
       // web query config
     })
   )
-  return <QueryClientProviderOG client={queryClient}>{children}</QueryClientProviderOG>
+  return (
+    <QueryClientProviderOG client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      {children}
+    </QueryClientProviderOG>
+  )
 }

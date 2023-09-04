@@ -5,3 +5,4 @@
 - [x] add: caldendar module to send cal invite for climb
 - [ ] add: notifs module to send push notif for climb
 - [ ] add: toasts for success / failure + redirect to home
+- [x] filter: only climbs with one joined climber

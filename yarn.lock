@@ -8096,10 +8096,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/match-sorter-utils@npm:^8.7.0":
+  version: 8.8.4
+  resolution: "@tanstack/match-sorter-utils@npm:8.8.4"
+  dependencies:
+    remove-accents: 0.4.2
+  checksum: d005f500754f52ef94966cbbe4217f26e7e3c07291faa2578b06bca9a5abe01689569994c37a1d01c6e783addf5ffbb28fa82eba7961d36eabf43ec43d1e496b
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-core@npm:4.18.0":
   version: 4.18.0
   resolution: "@tanstack/query-core@npm:4.18.0"
   checksum: 2d3f253809e2fc0927bbab25e7a61cf1fa957c993006f219a8dcc615acfe68003629e612c7d914198457d0b1bfd2b6d5738093fc45a82369b1d3beee14395a28
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^4.33.0":
+  version: 4.33.0
+  resolution: "@tanstack/react-query-devtools@npm:4.33.0"
+  dependencies:
+    "@tanstack/match-sorter-utils": ^8.7.0
+    superjson: ^1.10.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    "@tanstack/react-query": ^4.33.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: f8160f95363c67223a1da802e1f396d27006ab4eb098ba84fb1e84a43ab197153840b0404d0fedea3cdfd20efa08aefa26ada1d7664ce53e6c0de8dc686b211b
   languageName: node
   linkType: hard
 
@@ -10346,6 +10370,7 @@ __metadata:
     "@tamagui/shorthands": latest
     "@tamagui/themes": latest
     "@tanstack/react-query": 4.18.0
+    "@tanstack/react-query-devtools": ^4.33.0
     "@trpc/client": ^10.36.0
     "@types/react": ^18.0.27
     base64-arraybuffer: ^1.0.2
@@ -20905,6 +20930,7 @@ __metadata:
     "@tamagui/next-plugin": latest
     "@tamagui/next-theme": latest
     "@tanstack/react-query": 4.18.0
+    "@tanstack/react-query-devtools": ^4.33.0
     "@trpc/client": ^10.36.0
     "@trpc/next": ^10.36.0
     "@trpc/react-query": ^10.36.0
@@ -23848,6 +23874,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remove-accents@npm:0.4.2":
+  version: 0.4.2
+  resolution: "remove-accents@npm:0.4.2"
+  checksum: 84a6988555dea24115e2d1954db99509588d43fe55a1590f0b5894802776f7b488b3151c37ceb9e4f4b646f26b80b7325dcea2fae58bc3865df146e1fa606711
+  languageName: node
+  linkType: hard
+
 "remove-trailing-separator@npm:^1.0.1":
   version: 1.1.0
   resolution: "remove-trailing-separator@npm:1.1.0"
@@ -25748,7 +25781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superjson@npm:^1.13.1":
+"superjson@npm:^1.10.0, superjson@npm:^1.13.1":
   version: 1.13.1
   resolution: "superjson@npm:1.13.1"
   dependencies:

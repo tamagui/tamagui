@@ -8,7 +8,11 @@ import {
 
 export const climbRouter = createTRPCRouter({
   read: protectedProcedure.query(async ({ ctx: { supabase } }) => {
-    const climbs = await supabase.from('climbs').select(`*, climber:profiles(*)`)
+    // const climbs = await supabase.from('climbs').select(`*, climber:profiles(*)`).filter('requested', 'lte', 'joined').order('created_at', { ascending: false })
+    const climbs = await supabase
+      .from('climbs')
+      .select(`*, climber:profiles(*)`)
+      .lt('joined', 2)
 
     if (climbs.error) {
       console.log(climbs.error)
@@ -36,7 +40,6 @@ export const climbRouter = createTRPCRouter({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Climb is full' })
     }
 
-    climb.data
     const updatedClimb = await supabase.from('climbs').update({
       joined: climb.data.joined + 1,
     }).eq('id', input.climb_id)

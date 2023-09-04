@@ -16,6 +16,7 @@
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@tamagui/next-theme": "latest",
     "@tanstack/react-query": "4.18.0",
+    "@tanstack/react-query-devtools": "^4.33.0",
     "@trpc/client": "^10.36.0",
     "@trpc/next": "^10.36.0",
     "@trpc/react-query": "^10.36.0",

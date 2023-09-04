@@ -23,6 +23,7 @@ import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
 import { WebView } from 'react-native-webview'
+import { useQueryClient } from '@tanstack/react-query'
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
 }
@@ -189,6 +190,7 @@ export const SheetDemo = ({
   const [position, setPosition] = useState(0)
   const [modal, setModal] = useState(true)
   const joinMutation = api.climb.join.useMutation()
+  const queryClient = useQueryClient()
   // const [innerOpen, setInnerOpen] = useState(false)
 
   let color: ThemeName = 'orange'
@@ -313,10 +315,27 @@ export const SheetDemo = ({
                 elevation="$1"
                 shadowRadius={6}
                 shadowOpacity={0.1}
-                onPress={() => {
+                onPress={async () => {
                   setOpen(false)
                   if (!climb) return
-                  joinMutation.mutate({ climb_id: climb?.id ?? 0 })
+                  await joinMutation.mutateAsync(
+                    { climb_id: climb?.id ?? 0 },
+                    {
+                      onSuccess: () => {
+                        console.log('success')
+                        queryClient.setQueryData(
+                          [['climb', 'read'], { type: 'query' }],
+                          (climbs: ListClimb[]) => {
+                            return climbs?.filter((c) => c.id !== climb.id)
+                          }
+                        )
+                      },
+                      onError: (error) => {
+                        console.log(error)
+                      },
+                    }
+                  )
+
                   alert('Request sent!')
                 }}
               >

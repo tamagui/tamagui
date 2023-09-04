@@ -25,6 +25,7 @@
     "@tamagui/shorthands": "latest",
     "@tamagui/themes": "latest",
     "@tanstack/react-query": "4.18.0",
+    "@tanstack/react-query-devtools": "^4.33.0",
     "@trpc/client": "^10.36.0",
     "base64-arraybuffer": "^1.0.2",
     "burnt": "^0.10.0",
