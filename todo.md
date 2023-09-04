@@ -1,3 +1,7 @@
 - [x] postgres fn to push climb on create to profiles_climbs table
 - [x] add reqested / joined fields to climbs table
-- [ ] update form on web to create climb
+- [x] update form on web to create climb
+- [ ] get API requests working on native
+- [x] add: caldendar module to send cal invite for climb
+- [ ] add: notifs module to send push notif for climb
+- [ ] add: toasts for success / failure + redirect to home

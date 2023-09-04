@@ -34,6 +34,7 @@
     "@tamagui/themes": "latest",
     "@tamagui/toast": "latest",
     "@ts-react/form": "^1.6.4",
+    "add-to-calendar-button-react": "^2.4.1",
     "date-fns": "^2.30.0",
     "moti": "^0.25.3",
     "react-hook-form": "^7.44.3",

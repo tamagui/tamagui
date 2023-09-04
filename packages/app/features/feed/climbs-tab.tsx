@@ -13,15 +13,16 @@ import {
   Sheet,
   H5,
   H1,
+  isWeb,
+  AddToCalendarButton,
 } from '@my/ui'
 import { api } from 'app/utils/api'
-import { format } from 'date-fns'
+import { add, format, intervalToDuration } from 'date-fns'
 import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
-
 import { useCallback, useState } from 'react'
-
+import { WebView } from 'react-native-webview'
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
 }
@@ -148,10 +149,18 @@ export function ClimbsTab() {
     setSelectedClimb(climb)
     setOpen(true)
   }, [])
-
+  // const config = {
+  //   name: '[Reminder] Test the Add to Calendar Button',
+  //   description:
+  //     'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
+  //   startDate: '2023-09-07',
+  //   startTime: '10:15',
+  //   endTime: '23:30',
+  //   options: ['Google|My custom label', 'iCal'],
+  //   timeZone: 'America/Los_Angeles',
+  // }
   return (
     <YStack overflow="visible" ai="center" gap="$10">
-      <H1>Fuck</H1>
       <FlatList
         style={{
           flex: 1,
@@ -173,7 +182,7 @@ export const SheetDemo = ({
   open,
   setOpen,
 }: {
-  climb: ListClimb | null
+  climb: ListClimb | undefined
   open: boolean
   setOpen: (state: boolean) => void
 }) => {
@@ -197,6 +206,45 @@ export const SheetDemo = ({
       break
     }
   }
+  const config = {
+    name: '[Reminder] Test the Add to Calendar Button',
+    description:
+      'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
+    startDate: '2023-09-07',
+    startTime: '10:15',
+    endTime: '23:30',
+    options: ['Google|My custom label', 'iCal'],
+    timeZone: 'America/Los_Angeles',
+  }
+  console.log(climb)
+  const reminderConfig = {
+    name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
+    description: climb?.name ?? '',
+    startDate: format(new Date(climb?.start ?? 0), 'yyyy-MM-dd'),
+    startTime: format(new Date(climb?.start ?? 0), 'hh:mm'),
+    endTime: format(
+      add(new Date(climb?.start ?? 0), {
+        minutes: intervalToDuration({
+          start: new Date(climb?.start ?? 0),
+          end: new Date(climb?.duration ?? 0),
+        }).minutes,
+      }),
+      'hh:mm'
+    ),
+
+    // add(new Date(climb?.start ?? 0), {
+    //   minutes: intervalToDuration({
+    //     start: new Date(climb?.start ?? 0),
+    //     end: new Date(climb?.duration ?? 0),
+    //   }),
+    //   'hh:mm'),
+    // })
+
+    options: ['Google', 'iCal'],
+    timeZone: 'America/Los_Angeles',
+  }
+
+  console.log('reminder', reminderConfig, 'config', config)
 
   return (
     <Theme name={color}>
@@ -224,6 +272,20 @@ export const SheetDemo = ({
         >
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}
           {/* <Input width={200} /> */}
+
+          {isWeb && (
+            <AddToCalendarButton
+              // name={climb?.name ?? ''}
+              // description="test"
+              // startTime={climb?.start}
+              // startDate={new Date(climb?.start ?? 0).getDate().toString()}
+              // options={['Google', 'iCal']}
+              // endTime={add(new Date(climb?.start ?? 0), {
+              //   minutes: Number(climb?.duration),
+              // }).toISOString()}
+              {...reminderConfig}
+            />
+          )}
           <YStack height={450}>
             {climb?.climber?.first_name && (
               <H3 fontSize="$8" pt="$0.5">

@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   ButtonProps,
+  Paragraph,
   Popover,
   Separator,
   SizableText,
@@ -14,7 +15,6 @@ import {
   useThemeName,
 } from '@my/ui'
 
-import React, { Component, ErrorInfo, ReactNode } from 'react'
 import { Menu, Plus } from '@tamagui/lucide-icons'
 import { useUser } from 'app/utils/useUser'
 import { useRouter as useNextRouter } from 'next/router'
@@ -121,18 +121,14 @@ export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
         />
       </Popover.Trigger>
 
-      <ErrorBoundary>
-        {/* <Adapt platform="web" when="sm"> */}
-        {/* <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
-          <Popover.Sheet.Frame>
-            <Popover.Sheet.ScrollView>
-              <Adapt.Contents />
-            </Popover.Sheet.ScrollView>
-          </Popover.Sheet.Frame>
-          <Popover.Sheet.Overlay zIndex={100} />
-        </Popover.Sheet> */}
-        {/* </Adapt> */}
-      </ErrorBoundary>
+      {/* <Adapt platform="web" when="sm"> */}
+      <Popover.Sheet zIndex={100000000} modal dismissOnSnapToBottom>
+        <Popover.Sheet.Frame>
+          <Popover.Sheet.ScrollView></Popover.Sheet.ScrollView>
+        </Popover.Sheet.Frame>
+        <Popover.Sheet.Overlay zIndex={100} />
+      </Popover.Sheet>
+      {/* </Adapt> */}
 
       <Popover.Content
         bw={1}
@@ -158,12 +154,7 @@ export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
         <Popover.Arrow borderWidth={1} boc="$borderColor" />
 
         <Popover.ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-          <YStack
-            miw={230}
-            p="$3"
-            ai="flex-end"
-            // display={open ? 'flex' : 'none'}
-          >
+          <YStack miw={230} p="$3" ai="flex-end" display={open ? 'flex' : 'none'}>
             {children}
           </YStack>
         </Popover.ScrollView>
@@ -207,39 +198,3 @@ const WithUserDetail = ({ children, ...props }: StackProps) => {
     </XStack>
   )
 }
-
-interface Props {
-  children?: ReactNode
-}
-
-interface State {
-  hasError: boolean
-  error?: Error
-}
-
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-  }
-
-  public static getDerivedStateFromError(e: Error): State {
-    // Update state so the next render will show the fallback UI.
-    console.error('getDerivedStateFromError', e)
-    return { hasError: true, error: e }
-  }
-
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo)
-  }
-
-  public render() {
-    console.log(this.state.error)
-    if (this.state.hasError) {
-      return <h1>Sorry.. this is fucked</h1>
-    }
-
-    return this.props.children
-  }
-}
-
-export default ErrorBoundary
