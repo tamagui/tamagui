@@ -37,7 +37,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     target: 'web',
   })
 
-  const plugins = [tamaguiVitePlugin] satisfies InlineConfig['plugins']
+  const plugins = [
+    // tamaguiVitePlugin
+] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
@@ -255,6 +257,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           port,
           mode: 'build',
         }),
+
         viteReactPlugin({
           tsDecorators: true,
           mode: 'build',

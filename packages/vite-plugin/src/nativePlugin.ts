@@ -1,5 +1,6 @@
 import { dirname } from 'path'
 
+import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { readFile } from 'fs-extra'
@@ -13,7 +14,7 @@ import { getVitePath } from './getVitePath'
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
     name: 'tamagui-native',
-    enforce: 'post',
+    enforce: 'pre',
 
     config: async (config) => {
       config.define ||= {}
@@ -42,7 +43,8 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps ??= {}
 
-      config.optimizeDeps.disabled = true
+      config.optimizeDeps.disabled = false
+      // config.optimizeDeps.include = ['react-native']
 
       // config.optimizeDeps.needsInterop ??= []
       // config.optimizeDeps.needsInterop.push('react-native')
@@ -54,9 +56,14 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
 
-      config.optimizeDeps.esbuildOptions.alias = {
-        'react-native': '@tamagui/proxy-worm',
-      }
+      // CANT DO THIS BECAUSE TAMAGUI PLUGIN DOES THIS! they clobber each other!
+      // config.optimizeDeps.esbuildOptions.plugins.push(
+      //   esbuildCommonjs(['escape-string-regexp'])
+      // )
+
+      // config.optimizeDeps.esbuildOptions.alias = {
+      //   'react-native': '@tamagui/proxy-worm',
+      // }
 
       // config.optimizeDeps.esbuildOptions.plugins.push(
       //   esbuildFlowPlugin(
@@ -110,23 +117,42 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (options.mode === 'build') {
+        config.plugins ||= []
+
+        // https://vitejs.dev/config/dep-optimization-options.html
+        // config.build.commonjsOptions ||= {}
+        // config.build.commonjsOptions.include = []
+
+        // CANT DO THIS BECAUSE TAMAGUI PLUGIN DOES THIS! they clobber each other!
+        // config.plugins.push(
+        //   viteCommonjs({
+        //     include: ['escape-string-regexp'],
+        //   })
+        // )
+
         const virtualModuleId = 'virtual:react-native'
         const reactNativePrebuiltPath = require.resolve('@tamagui/react-native-prebuilt')
         const reactNativePrebuilt = await readFile(reactNativePrebuiltPath, 'utf-8')
 
-        config.plugins ||= []
+        // config.resolve.alias = {
+        //   ...config.resolve.alias,
+        //   'react-native': virtualModuleId,
+        // }
+
         config.plugins.unshift({
           name: `swap-react-native`,
           enforce: 'pre',
 
           resolveId(id) {
             if (id === 'react-native' || id.includes('/react-native/')) {
+              console.log('resolving...', id, 'to', virtualModuleId)
               return virtualModuleId
             }
           },
 
           load(id) {
             if (id === virtualModuleId) {
+              console.log('returning prebuilt')
               return reactNativePrebuilt
             }
           },
@@ -237,12 +263,13 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (process.env.DEBUG) {
+        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('config..', config)
       }
 
-      config.build.commonjsOptions = {
-        include: /node_modules\/react\//,
-      }
+      // config.build.commonjsOptions = {
+      //   include: /node_modules\/react\//,
+      // }
 
       const updateOutputOptions = (out: OutputOptions) => {
         out.preserveModules = true
