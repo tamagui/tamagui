@@ -1,10 +1,10 @@
 // import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
 import { Stack, TamaguiProvider, Text } from '@tamagui/core'
-import * as React from 'react'
 
 import { default as config } from './tamagui.config'
+// import * as React from 'react'
 
-console.log('React', React)
+// console.log('React', React)
 
 // const linking = {
 //   prefixes: [
