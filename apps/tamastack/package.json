@@ -7,20 +7,14 @@
     "dev": "TAMAGUI_TARGET=native tama dev"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@react-navigation/native": "^6.1.7",
-=======
->>>>>>> master
     "@tamagui/colors": "1.59.3",
     "@tamagui/config": "1.59.3",
     "@tamagui/core": "1.59.3",
     "@tamagui/shorthands": "1.59.3",
     "@tamagui/themes": "1.59.3",
     "@tamagui/vite-native-client": "1.59.3",
-<<<<<<< HEAD
     "expo-router": "^2.0.5",
-=======
->>>>>>> master
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1"
