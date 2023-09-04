@@ -38,8 +38,9 @@ export const dev = async (options: CLIResolvedOptions) => {
   })
 
   const plugins = [
-    // tamaguiVitePlugin
-] satisfies InlineConfig['plugins']
+    //
+    tamaguiVitePlugin,
+  ] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
