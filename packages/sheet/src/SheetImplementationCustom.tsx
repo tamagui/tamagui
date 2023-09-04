@@ -378,7 +378,7 @@ export const SheetImplementationCustom = themeable(
     }, [open])
 
     const forcedContentHeight = hasFit
-      ? frameSize
+      ? undefined
       : snapPointsMode === 'percent'
       ? `${maxSnapPoint}%`
       : maxSnapPoint
@@ -408,7 +408,7 @@ export const SheetImplementationCustom = themeable(
           <AnimatedView
             ref={ref}
             {...panResponder?.panHandlers}
-            onLayout={hasFit ? undefined : handleAnimationViewLayout}
+            onLayout={handleAnimationViewLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
             //  @ts-ignore
             animation={props.animation}

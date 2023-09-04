@@ -21,24 +21,24 @@ export const useSheetOffscreenSize = ({
   if (snapPointsMode === 'percent') {
     const maxPercentOpened = Number(snapPoints[0]) / 100
     const percentOpened = Number(snapPoints[position] ?? 0) / 100
-    const percentHidden = 1 - maxPercentOpened - percentOpened
+    const percentHidden = maxPercentOpened - percentOpened
     const offscreenSize = percentHidden * screenSize
     return offscreenSize
   }
 
   // mixed:
   const maxSnapPoint = snapPoints[0]
+  if (maxSnapPoint === 'fit') {
+    return 0
+  }
+
   const maxSize =
-    maxSnapPoint === 'fit'
-      ? frameSize
-      : typeof maxSnapPoint === 'string'
+    typeof maxSnapPoint === 'string'
       ? (Number(maxSnapPoint.slice(0, -1)) / 100) * screenSize
       : maxSnapPoint
   const currentSnapPoint = snapPoints[position] ?? 0
   const currentSize =
-    currentSnapPoint === 'fit'
-      ? frameSize
-      : typeof currentSnapPoint === 'string'
+    typeof currentSnapPoint === 'string'
       ? (Number(currentSnapPoint.slice(0, -1)) / 100) * screenSize
       : currentSnapPoint
   const offscreenSize = maxSize - currentSize
