@@ -41,7 +41,6 @@ export function tamaguiPlugin(
         ],
         define: {
           // reanimated support
-          'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
           __DEV__: `${env.mode === 'development' ? true : false}`,
@@ -66,14 +65,15 @@ export function tamaguiPlugin(
           include: options.target !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
-            plugins: [
-              esbuildCommonjs([
-                'styleq',
-                'inline-style-prefixer',
-                'create-react-class',
-                'copy-to-clipboard',
-              ]),
-            ],
+            // plugins: [
+            //   esbuildCommonjs([
+            //     'styleq',
+            //     'inline-style-prefixer',
+            //     'create-react-class',
+            //     'copy-to-clipboard',
+            //     'escape-string-regexp',
+            //   ]),
+            // ],
             resolveExtensions: [
               '.web.js',
               '.web.jsx',
