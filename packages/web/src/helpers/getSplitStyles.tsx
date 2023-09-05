@@ -1238,22 +1238,6 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.NODE_ENV === 'development' && debug === 'borders') {
-    console.log('parentSplitStyles', parentSplitStyles)
-    console.log({
-      space,
-      hasMedia,
-      fontFamily: styleState.fontFamily,
-      viewProps,
-      style,
-      pseudos,
-      classNames,
-      rulesToInsert,
-      dynamicThemeAccess,
-      pseudoGroups,
-      mediaGroups,
-    })
-    console.log('qqqqqqq')
-
     const name = `${
       componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
     }`

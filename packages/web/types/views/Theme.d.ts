@@ -8,5 +8,5 @@ export declare function wrapThemeElements({ children, themeState, forceClassName
     themeState: ChangedThemeResponse;
     forceClassName?: boolean;
     isRoot?: boolean;
-}): string | number | boolean | React.ReactFragment | JSX.Element | null | undefined;
+}): string | number | boolean | Iterable<React.ReactNode> | import("react/jsx-runtime").JSX.Element | null | undefined;
 //# sourceMappingURL=Theme.d.ts.map

@@ -102,6 +102,84 @@ export type TamaguiComponentPropsBase = {
   onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 export type DebugProp = boolean | 'break' | 'verbose' | 'visualize' | 'profile' | 'borders';
+export type TamaguiComponentPropsBase = {
+  target?: string;
+  hitSlop?: PressableProps['hitSlop'];
+  asChild?: boolean | 'except-style';
+  dangerouslySetInnerHTML?: {
+    __html: string;
+  };
+  children?: any | any[];
+  debug?: DebugProp;
+  disabled?: boolean;
+  /**
+   * Same as the web className property, useful for applying styles from CSS on web only
+   */
+  className?: string;
+  /**
+   * If given a theme it will only apply to this element, instead of passing down to children
+   */
+  themeShallow?: boolean;
+  /**
+   * Same as the web id property for setting a uid on an element
+   */
+  id?: string;
+  /**
+   * Controls the output tag on web
+   */
+  tag?: string;
+  /**
+   * Applies a theme to this element
+   */
+  theme?: ThemeName | null;
+  /**
+   * Marks this component as a group for use in styling children based on parents named group
+   * See: https://tamagui.dev/docs/intro/props
+   */
+  group?: GroupNames;
+  /**
+   * Works only alongside group, when children of the group are using container based sizing on native you can hide them until parent is measured.
+   * See: https://tamagui.dev/docs/intro/props
+   */
+  untilMeasured?: 'hide' | 'show';
+  /**
+   * Equivalent to "name" property on styled() for automatically applying a theme
+   */
+  componentName?: string;
+  /**
+   * Used for controlling the order of focus with keyboard or assistive device enavigation
+   * See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
+   */
+  tabIndex?: string | number;
+  /**
+   * Equivalent to role="" attribute on web for accesibility
+   */
+  role?: Role;
+  /**
+   * Disable all compiler optimization
+   */
+  disableOptimization?: boolean;
+  /**
+   * Forces the pseudo style state to be on
+   */
+  forceStyle?: 'hover' | 'press' | 'focus';
+  /**
+   * Disables className output of styles, instead using only inline styles
+   */
+  disableClassName?: boolean;
+  onPress?: PressableProps['onPress'];
+  onLongPress?: PressableProps['onLongPress'];
+  onPressIn?: PressableProps['onPress'];
+  onPressOut?: PressableProps['onPress'];
+  onHoverIn?: DivAttributes['onMouseEnter'];
+  onHoverOut?: DivAttributes['onMouseLeave'];
+  onMouseEnter?: DivAttributes['onMouseEnter'];
+  onMouseLeave?: DivAttributes['onMouseLeave'];
+  onMouseDown?: DivAttributes['onMouseDown'];
+  onMouseUp?: DivAttributes['onMouseUp'];
+  onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
+  onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+};
 /**
  * For static / studio
  */
@@ -634,12 +712,16 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
 } : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export type WithThemeValues<T extends object> = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
   } ? Val extends true | undefined ? SpecificTokens : never : never);
 =======
   [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings['autocompleteSpecificTokens'] extends true | undefined ? SpecificTokens : never);
 >>>>>>> 5258d222bc (update: add requested changes)
+=======
+    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings['autocompleteSpecificTokens'] extends true | undefined ? SpecificTokens : never);
+>>>>>>> e8226a5798 (remove console logs)
 };
 type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
@@ -941,6 +1023,7 @@ export type TamaguiComponentState = {
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none';
 export type SplitStyleProps = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   mediaState?: Record<string, boolean>;
   noClassNames?: boolean;
   noExpand?: boolean;
@@ -966,6 +1049,18 @@ export type SplitStyleProps = {
   enterVariant?: string;
   keepStyleSSR?: boolean;
 >>>>>>> 5258d222bc (update: add requested changes)
+=======
+    mediaState?: Record<string, boolean>;
+    noClassNames?: boolean;
+    resolveVariablesAs?: ResolveVariableTypes;
+    fallbackProps?: Record<string, any>;
+    hasTextAncestor?: boolean;
+    isAnimated: boolean;
+    isExiting?: boolean;
+    exitVariant?: string;
+    enterVariant?: string;
+    keepStyleSSR?: boolean;
+>>>>>>> e8226a5798 (remove console logs)
 };
 export interface PresenceContextProps {
   id: string;
