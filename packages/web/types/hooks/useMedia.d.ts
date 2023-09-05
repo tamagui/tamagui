@@ -18,6 +18,7 @@ type UpdateState = {
 };
 export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
 export declare function useMedia(uid?: any): UseMediaState;
+export type ResolveThemeValueOpt = boolean | 'value';
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
@@ -30,6 +31,7 @@ export declare function useMedia(uid?: any): UseMediaState;
  * */
 export declare function useMediaPropsActive<A extends Object>(props: A, opts?: {
     expandShorthands?: boolean;
+    resolveThemeValues?: ResolveThemeValueOpt;
 }): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };

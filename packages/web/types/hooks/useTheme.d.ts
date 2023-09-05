@@ -10,7 +10,7 @@ export type ChangedThemeResponse = {
 type ThemeGettable<Val> = Val & {
     get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
-type UseThemeResult = {
+export type UseThemeResult = {
     [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;

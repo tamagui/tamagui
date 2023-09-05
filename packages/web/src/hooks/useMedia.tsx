@@ -12,6 +12,7 @@ import type {
   MediaQueryState,
   TamaguiInternalConfig,
 } from '../types'
+import { UseThemeResult, useTheme } from './useTheme'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -231,6 +232,8 @@ export function useMedia(uid?: any): UseMediaState {
   })
 }
 
+export type ResolveThemeValueOpt = boolean | 'value'
+
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
@@ -243,12 +246,17 @@ export function useMedia(uid?: any): UseMediaState {
  * */
 export function useMediaPropsActive<A extends Object>(
   props: A,
-  opts?: { expandShorthands?: boolean }
+  opts?: {
+    expandShorthands?: boolean
+    resolveThemeValues?: ResolveThemeValueOpt
+  }
 ): {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
+  const resolveThemeValueOpt = opts?.resolveThemeValues
+  const theme = resolveThemeValueOpt ? useTheme() : null
   const shouldExpandShorthands = opts?.expandShorthands
 
   return useMemo(() => {
@@ -268,7 +276,7 @@ export function useMediaPropsActive<A extends Object>(
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             let subKey = subKeys[j]
-            const value = val[subKey]
+            const value = getThemeValue(val[subKey], theme, resolveThemeValueOpt)
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
@@ -279,12 +287,29 @@ export function useMediaPropsActive<A extends Object>(
         if (shouldExpandShorthands) {
           key = config.shorthands[key] || key
         }
-        mergeMediaByImportance(next, '', key, val, importancesUsed, true)
+        mergeMediaByImportance(
+          next,
+          '',
+          key,
+          getThemeValue(val, theme, resolveThemeValueOpt),
+          importancesUsed,
+          true
+        )
       }
     }
 
     return next
-  }, [media, props])
+  }, [media, props, theme, resolveThemeValueOpt])
+}
+
+const getThemeValue = (
+  value?: any,
+  theme?: UseThemeResult | null,
+  resolveThemeValueOpt?: ResolveThemeValueOpt
+) => {
+  if (!resolveThemeValueOpt || !theme || !(value in theme)) return value
+  const themeValue = theme[value]
+  return resolveThemeValueOpt === 'value' ? themeValue.val : themeValue.get()
 }
 
 export const getMediaImportanceIfMoreImportant = (

@@ -6,6 +6,7 @@
  * */
 export declare function useProps<A extends Object>(props: A, opts?: {
     disableExpandShorthands?: boolean;
+    resolveThemeValues?: boolean | 'value';
 }): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };

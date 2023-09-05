@@ -50,7 +50,7 @@ type ThemeGettable<Val> = Val & {
         : unknown)
 }
 
-type UseThemeResult = {
+export type UseThemeResult = {
   [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
 }
 

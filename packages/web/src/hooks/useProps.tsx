@@ -10,6 +10,7 @@ export function useProps<A extends Object>(
   props: A,
   opts?: {
     disableExpandShorthands?: boolean
+    resolveThemeValues?: boolean | 'value'
   }
 ): {
   // remove all media
@@ -17,5 +18,6 @@ export function useProps<A extends Object>(
 } {
   return useMediaPropsActive(props, {
     expandShorthands: !opts?.disableExpandShorthands,
+    resolveThemeValues: opts?.resolveThemeValues,
   })
 }
