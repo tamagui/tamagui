@@ -207,16 +207,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
-    if (isBuilding) {
-      const res = await isBuilding
-      return res
-    }
-
-    let done
-    isBuilding = new Promise((res) => {
-      done = res
-    })
-
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
@@ -227,6 +217,16 @@ export const dev = async (options: CLIResolvedOptions) => {
       )
       return await readFile(tmpBundle, 'utf-8')
     }
+
+    if (isBuilding) {
+      const res = await isBuilding
+      return res
+    }
+
+    let done
+    isBuilding = new Promise((res) => {
+      done = res
+    })
 
     // build app
     const buildConfig = {
@@ -318,8 +318,9 @@ ${
   module.isEntry
     ? `
 // run entry
-__specialRequire("react-native")
-__specialRequire("${module.fileName}")
+const __require = createRequire({})
+__require("react-native")
+__require("${module.fileName}")
 `
     : ''
 }

@@ -2,6 +2,7 @@
 import { Stack, TamaguiProvider, Text } from '@tamagui/core'
 
 import { default as config } from './tamagui.config'
+
 // import * as React from 'react'
 
 // console.log('React', React)
@@ -31,7 +32,7 @@ export function App() {
         bg="#B3FF00"
       >
         <Text color="#AA12A2" fow="800" fos={100} ta="center">
-          💥
+          💥222hi
         </Text>
       </Stack>
     </TamaguiProvider>

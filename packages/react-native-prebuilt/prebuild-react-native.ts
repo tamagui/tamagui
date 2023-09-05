@@ -15,9 +15,9 @@ async function nativeBabelFlowTransform(input: string) {
       {
         presets: ['module:metro-react-native-babel-preset'],
       },
-      (err: any, { code }) => {
-        if (err) rej(err)
-        res(code)
+      (err: any, result) => {
+        if (!result || err) rej(err || 'no res')
+        res(result!.code!)
       }
     )
   })
@@ -29,6 +29,7 @@ async function run() {
 
   const reactOutPath = './react.js'
   const reactJsxOutPath = './react-jsx-runtime.js'
+  const external = ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime']
 
   await Promise.all([
     build({
@@ -36,7 +37,7 @@ async function run() {
       entryPoints: [require.resolve('react')],
       outfile: reactOutPath,
       format: 'cjs',
-      target: 'node20',
+      target: 'node16',
       jsx: 'transform',
       jsxFactory: 'react',
       allowOverwrite: true,
@@ -46,7 +47,7 @@ async function run() {
         'process.env.NODE_ENV': `"development"`,
       },
       logLevel: 'warning',
-      external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
+      external,
     }).then(async () => {
       // manual force exports
       const bundled = await readFile(reactOutPath, 'utf-8')
@@ -65,10 +66,10 @@ async function run() {
     }),
     build({
       bundle: true,
-      entryPoints: [require.resolve('react/jsx-runtime')],
+      entryPoints: [require.resolve('react/jsx-dev-runtime')],
       outfile: reactJsxOutPath,
       format: 'cjs',
-      target: 'node20',
+      target: 'node16',
       jsx: 'transform',
       jsxFactory: 'react',
       allowOverwrite: true,
@@ -77,6 +78,7 @@ async function run() {
         __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
+      external,
       logLevel: 'warning',
     }).then(async () => {
       // manual force exports
@@ -84,13 +86,13 @@ async function run() {
       const outCode = `
       const run = () => {  
         ${bundled.replace(
-          `module.exports = require_react_jsx_runtime_development();`,
-          `return require_react_jsx_runtime_development();`
+          `module.exports = require_react_jsx_dev_runtime_development();`,
+          `return require_react_jsx_dev_runtime_development();`
         )}
       }
       const __mod__ = run()
       ${['jsx', 'jsxs', 'jsxDEV', 'Fragment']
-        .map((n) => `export const ${n} = __mod__.${n}`)
+        .map((n) => `export const ${n} = __mod__.${n} || __mod__.jsx || __mod__.jsxDEV`)
         .join('\n')}
       `
       await writeFile(reactJsxOutPath, outCode)
@@ -105,7 +107,7 @@ async function run() {
       jsxFactory: 'react',
       allowOverwrite: true,
       platform: 'node',
-
+      external,
       loader: {
         '.png': 'dataurl',
         '.jpg': 'dataurl',
@@ -117,7 +119,6 @@ async function run() {
         'process.env.NODE_ENV': `"development"`,
       },
       logLevel: 'warning',
-      external: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
       resolveExtensions: [
         '.ios.js',
         '.native.js',
