@@ -143,6 +143,7 @@ export const getSplitStyles: StyleSplitter = (
     inlineWhenUnflattened,
     parentStaticConfig,
     acceptsClassName,
+    Component,
   } = staticConfig
   const validStyleProps = isText ? stylePropsText : validStyles
   const viewProps: GetStyleResult['viewProps'] = {}
@@ -154,6 +155,7 @@ export const getSplitStyles: StyleSplitter = (
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   const transforms: Record<TransformNamespaceKey, [string, string]> = {}
+  const componentName = props.componentName || staticConfig.componentName
 
   let pseudos: PseudoStyles | null = null
   let space: SpaceTokens | null = props.space
@@ -1235,6 +1237,45 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && debug === 'borders') {
+    console.log('parentSplitStyles', parentSplitStyles)
+    console.log({
+      space,
+      hasMedia,
+      fontFamily: styleState.fontFamily,
+      viewProps,
+      style,
+      pseudos,
+      classNames,
+      rulesToInsert,
+      dynamicThemeAccess,
+      pseudoGroups,
+      mediaGroups,
+    })
+    console.log('qqqqqqq')
+
+    const name = `${
+      componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
+    }`
+
+    switch (name) {
+      case 'XStack':
+        style.borderColor = 'red'
+        break
+      case 'YStack':
+        style.borderColor = 'blue'
+        break
+      case '[Unnamed Component]':
+        style.borderColor = 'purple'
+        break
+      default: {
+        style.borderColor = 'green'
+      }
+    }
+    style.borderWidth = 0.5
+    style.borderStyle = 'solid'
+  }
+
   const result: GetStyleResult = {
     space,
     hasMedia,
@@ -1242,7 +1283,6 @@ export const getSplitStyles: StyleSplitter = (
     viewProps,
     // @ts-expect-error
     style,
-    pseudos,
     classNames,
     rulesToInsert,
     dynamicThemeAccess,

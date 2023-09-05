@@ -599,30 +599,6 @@ export function createComponent<
       keepStyleSSR,
     } as const
 
-    if (process.env.NODE_ENV === 'development' && debugProp === 'borders') {
-      props.borderStyle = 'solid'
-      props.borderWidth = 0.5
-
-      const name = `${
-        componentName ||
-        Component?.displayName ||
-        Component?.name ||
-        '[Unnamed Component]'
-      }`
-
-      switch (name) {
-        case 'XStack':
-          props.borderColor = 'red'
-          break
-        case 'YStack':
-          props.borderColor = 'blue'
-          break
-        default: {
-          props.borderColor = 'green'
-        }
-      }
-    }
-
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
