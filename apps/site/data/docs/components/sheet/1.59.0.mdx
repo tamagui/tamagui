@@ -55,15 +55,17 @@ export default () => (
 By default, snap points are treated as percentages.
 
 ```tsx
-<Sheet snapPoints={[85, 50]} /> // 85% and 50%
+<Sheet snapPoints={[85, 50]}> // 85% and 50%
 ```
 
 The behavior of snap points can be changed by setting the `snapPointsMode` prop to any of these values:
 
-- **percent** (default) - Snap points are treated as percentages of the parent container or screen
-- **constant** - Snap points are treated as raw pixel values
-- **fit** - Snap points are ignored and the sheet is constrained to the content height
+- **percent** (default) - Snap points are percentages of the parent container or screen as numbers
+- **constant** - Snap points are raw pixel values as numbers
+- **fit** - The sheet is constrained to the content's natural height without the `snapPoints` prop
 - **mixed** - Snap points can be either numbers (pixels), percentages as strings (ex: `"50%"`), or `"fit"` for fit behavior
+
+Snap points should be ordered from largest to smallest (most visible to least visible). When using `mixed` mode with the `"fit"` as a snap point, it must be the first and largest snap point.
 
 ## Unstyled
 
@@ -177,15 +179,15 @@ Contains every component for the sheet.
     },
     {
       name: 'snapPoints',
-      type: '(number | string)[]',
+      type: '(number | string)[] | undefined',
       default: `[80]`,
-      description: `Array of values representing different sizes for the sheet to snap to. Values should be ordered most visible to least visible. Use "open" prop for fully closed.`,
+      description: `Array of values representing different sizes for the sheet to snap to. Not used in 'fit' mode. See docs above for usage information.`,
     },
     {
       name: 'snapPointsMode',
       type: '"percent" | "constant" | "fit" | "mixed"',
       default: '"percent"',
-      description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`
+      description: `Alters the behavior of the 'snapPoints' prop. See docs above for usage information.`,
     },
     {
       name: 'onPositionChange',

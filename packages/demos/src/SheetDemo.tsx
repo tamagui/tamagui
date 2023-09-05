@@ -26,7 +26,7 @@ export const SheetDemo = () => {
     : isFit
     ? undefined
     : mixedFitDemo
-    ? ['fit', 190]
+    ? ['fit', 110]
     : ['80%', 256, 190]
 
   return (
@@ -65,8 +65,6 @@ export const SheetDemo = () => {
       </YStack>
 
       <Sheet
-        // force remount when switching to fit modes to avoid weird measurement loop
-        key={hasFit ? 'fit' : 'no-fit'}
         forceRemoveScrollEnabled={open}
         modal={modal}
         open={open}
@@ -85,14 +83,7 @@ export const SheetDemo = () => {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle />
-        <Sheet.Frame
-          flex={1}
-          padding="$4"
-          justifyContent="center"
-          alignItems="center"
-          space="$5"
-          {...(hasFit && { minHeight: 320, flexShrink: 0 })}
-        >
+        <Sheet.Frame padding="$4" justifyContent="center" alignItems="center" space="$5">
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />
           {modal && isPercent && (
