@@ -33,7 +33,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const tamaguiVitePlugin = tamaguiPlugin({
     ...options.tamaguiOptions,
-    useReactNativeWebLite: true,
+    // useReactNativeWebLite: true,
     target: 'web',
   })
 
