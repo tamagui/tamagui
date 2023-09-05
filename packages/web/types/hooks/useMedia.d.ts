@@ -1,3 +1,4 @@
+import { ResolveVariableAs } from '../helpers/propMapper';
 import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
@@ -31,7 +32,7 @@ export type ResolveThemeValueOpt = boolean | 'value';
  * */
 export declare function useMediaPropsActive<A extends Object>(props: A, opts?: {
     expandShorthands?: boolean;
-    resolveThemeValues?: ResolveThemeValueOpt;
+    resolveValues?: ResolveVariableAs;
 }): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };

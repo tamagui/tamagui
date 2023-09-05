@@ -7,7 +7,7 @@ export type ChangedThemeResponse = {
     isNewTheme: boolean;
     mounted?: boolean;
 };
-type ThemeGettable<Val> = Val & {
+export type ThemeGettable<Val> = Val & {
     get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
 export type UseThemeResult = {
@@ -18,5 +18,4 @@ export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResp
 export declare function getThemeProxied(theme: ThemeParsed, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
-export {};
 //# sourceMappingURL=useTheme.d.ts.map

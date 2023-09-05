@@ -1,6 +1,7 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
+import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
@@ -17,7 +18,7 @@ import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
-export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
+export type ResolveVariableAs = 'auto' | 'value' | 'variable'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -75,9 +76,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   if (value) {
     if (value[0] === '$') {
-      value = getToken(key, value, styleProps, styleState)
+      value = getTokenForKey(key, value, styleProps.resolveVariablesAs, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(value, styleProps)
+      value = resolveVariableValue(value, styleProps.resolveVariablesAs)
     }
   }
 
@@ -237,7 +238,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       if (parentVariantKey && parentVariantKey === key) {
         res[fKey] =
           // SYNC WITH *1
-          val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
+          val[0] === '$'
+            ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+            : val
       } else {
         const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
 
@@ -258,14 +261,16 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isVariable(val)) {
-      res[fKey] = resolveVariableValue(val, styleProps)
+      res[fKey] = resolveVariableValue(val, styleProps.resolveVariablesAs)
       continue
     }
 
     if (typeof val === 'string') {
       const fVal =
         // SYNC WITH *1
-        val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
+        val[0] === '$'
+          ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+          : val
       res[fKey] = fVal
       continue
     }
@@ -335,18 +340,18 @@ const fontShorthand = {
   fontWeight: 'weight',
 }
 
-const getToken = (
+export const getTokenForKey = (
   key: string,
   value: string,
-  styleProps: SplitStyleProps,
-  styleState: GetStyleState
+  resolveAs: SplitStyleProps['resolveVariablesAs'],
+  styleState: Partial<GetStyleState>
 ) => {
-  const { theme, conf, context, fontFamily } = styleState
+  const { theme, conf = getConfig(), context, fontFamily } = styleState
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
-  if (value in theme) {
+  if (theme && value in theme) {
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       // rome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(` - getting theme value for ${key} from ${value}`)
@@ -371,7 +376,7 @@ const getToken = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const fam = fontFamily || styleState.conf.defaultFont
+          const fam = fontFamily || conf.defaultFont
           if (fam) {
             const fontsParsed = context?.language
               ? getFontsForLanguage(conf.fontsParsed, context.language)
@@ -403,7 +408,7 @@ const getToken = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(valOrVar, styleProps)
+    const out = resolveVariableValue(valOrVar, resolveAs)
     return out
   }
 
@@ -414,7 +419,7 @@ const getToken = (
   ) {
     console.groupCollapsed('  ﹒ propMap (val)', key, value)
     // rome-ignore lint/suspicious/noConsoleLog: ok
-    console.log({ valOrVar, theme, hasSet }, theme[key])
+    console.log({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
     console.groupEnd()
   }
 
@@ -423,7 +428,7 @@ const getToken = (
 
 function resolveVariableValue(
   valOrVar: Variable | any,
-  { resolveVariablesAs }: SplitStyleProps
+  resolveVariablesAs: SplitStyleProps['resolveVariablesAs']
 ) {
   if (isVariable(valOrVar)) {
     if (!isWeb || resolveVariablesAs === 'value') {

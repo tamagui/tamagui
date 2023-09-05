@@ -1,3 +1,4 @@
+import { ResolveVariableAs } from '../helpers/propMapper'
 import { useMediaPropsActive } from './useMedia'
 
 /**
@@ -10,7 +11,7 @@ export function useProps<A extends Object>(
   props: A,
   opts?: {
     disableExpandShorthands?: boolean
-    resolveThemeValues?: boolean | 'value'
+    resolveValues?: ResolveVariableAs
   }
 ): {
   // remove all media
@@ -18,6 +19,6 @@ export function useProps<A extends Object>(
 } {
   return useMediaPropsActive(props, {
     expandShorthands: !opts?.disableExpandShorthands,
-    resolveThemeValues: opts?.resolveThemeValues,
+    resolveValues: opts?.resolveValues,
   })
 }

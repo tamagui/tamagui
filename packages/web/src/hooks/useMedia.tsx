@@ -1,18 +1,22 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useMemo, useRef, useSyncExternalStore } from 'react'
 
-import { getConfig } from '../config'
+import { getConfig, getToken } from '../config'
+import { Variable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
+import { ResolveVariableAs, getTokenForKey } from '../helpers/propMapper'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
+  GetStyleState,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
+  VariableVal,
 } from '../types'
-import { UseThemeResult, useTheme } from './useTheme'
+import { ThemeGettable, UseThemeResult, useTheme } from './useTheme'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -248,15 +252,16 @@ export function useMediaPropsActive<A extends Object>(
   props: A,
   opts?: {
     expandShorthands?: boolean
-    resolveThemeValues?: ResolveThemeValueOpt
+    resolveValues?: ResolveVariableAs
   }
 ): {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
-  const resolveThemeValueOpt = opts?.resolveThemeValues
+  const resolveThemeValueOpt = opts?.resolveValues
   const theme = resolveThemeValueOpt ? useTheme() : null
+  const styleState = { theme } as Partial<GetStyleState>
   const shouldExpandShorthands = opts?.expandShorthands
 
   return useMemo(() => {
@@ -276,7 +281,12 @@ export function useMediaPropsActive<A extends Object>(
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             let subKey = subKeys[j]
-            const value = getThemeValue(val[subKey], theme, resolveThemeValueOpt)
+            const value = getTokenForKey(
+              subKey,
+              val[subKey],
+              resolveThemeValueOpt,
+              styleState
+            )
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
@@ -291,7 +301,7 @@ export function useMediaPropsActive<A extends Object>(
           next,
           '',
           key,
-          getThemeValue(val, theme, resolveThemeValueOpt),
+          getTokenForKey(key, val, resolveThemeValueOpt, styleState),
           importancesUsed,
           true
         )
@@ -300,16 +310,6 @@ export function useMediaPropsActive<A extends Object>(
 
     return next
   }, [media, props, theme, resolveThemeValueOpt])
-}
-
-const getThemeValue = (
-  value?: any,
-  theme?: UseThemeResult | null,
-  resolveThemeValueOpt?: ResolveThemeValueOpt
-) => {
-  if (!resolveThemeValueOpt || !theme || !(value in theme)) return value
-  const themeValue = theme[value]
-  return resolveThemeValueOpt === 'value' ? themeValue.val : themeValue.get()
 }
 
 export const getMediaImportanceIfMoreImportant = (

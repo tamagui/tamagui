@@ -38,7 +38,7 @@ function getDefaultThemeProxied() {
   return cached
 }
 
-type ThemeGettable<Val> = Val & {
+export type ThemeGettable<Val> = Val & {
   get: () =>
     | string
     | (Val extends Variable<infer X>
