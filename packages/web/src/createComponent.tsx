@@ -1002,6 +1002,8 @@ export function createComponent<
 
     // perf - unwrap View
     if (
+      // in test mode disable perf unwrapping so react-testing-library finds Text properly
+      process.env.NODE_ENV !== 'test' &&
       process.env.TAMAGUI_TARGET === 'native' &&
       (elementType === BaseText || elementType === BaseView)
     ) {

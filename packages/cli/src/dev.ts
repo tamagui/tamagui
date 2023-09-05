@@ -6,12 +6,7 @@ import viteReactPlugin, {
   swcTransform,
   transformForBuild,
 } from '@tamagui/vite-native-swc'
-import {
-  getVitePath,
-  nativePlugin,
-  nativePrebuild,
-  tamaguiPlugin,
-} from '@tamagui/vite-plugin'
+import { getVitePath, nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import react from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
@@ -27,24 +22,25 @@ export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
 
   process.on('uncaughtException', (err) => {
+    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err?.message || err)
   })
 
   const packageRootDir = join(__dirname, '..')
-
-  // build react-native
-  await nativePrebuild()
 
   // react native port (it scans 19000 +5)
   const port = options.port || 8081
 
   const tamaguiVitePlugin = tamaguiPlugin({
     ...options.tamaguiOptions,
-    useReactNativeWebLite: true,
+    // useReactNativeWebLite: true,
     target: 'web',
   })
 
-  const plugins = [tamaguiVitePlugin] satisfies InlineConfig['plugins']
+  const plugins = [
+    //
+    tamaguiVitePlugin,
+  ] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
     const inspect = require('vite-plugin-inspect')
@@ -58,8 +54,26 @@ export const dev = async (options: CLIResolvedOptions) => {
   let serverConfig = {
     root,
     mode: 'development',
-    esbuild: false,
     clearScreen: false,
+
+    // for expo-router
+    // optimizeDeps: {
+    //   disabled: false,
+    //   include: [
+    //     'escape-string-regexp',
+    //     'use-latest-callback',
+    //     'react-is',
+    //     'color',
+    //     'warn-once',
+    //     '@bacons/react-views',
+    //     'invariant',
+    //     'compare-versions',
+    //     'expo-constants',
+    //     'url-parse',
+    //     'qs',
+    //     '@expo/metro-runtime',
+    //   ],
+    // },
 
     plugins: [
       ...plugins,
@@ -94,6 +108,9 @@ export const dev = async (options: CLIResolvedOptions) => {
             // we have to remove jsx before we can parse imports...
             source = (await transformForBuild(id, source))?.code || ''
 
+            console.log('FROM-----', code)
+            console.log('TO------', source)
+
             const importsMap = {}
 
             // parse imports of modules into ids:
@@ -107,6 +124,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
               if (importName) {
                 const id = await getVitePath(file, importName)
+                console.log('replace', importName, id)
                 if (!id) {
                   console.warn('???')
                   continue
@@ -141,6 +159,8 @@ export const dev = async (options: CLIResolvedOptions) => {
               const require = createRequire(${JSON.stringify(importsMap, null, 2)})
               ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
               return exports })({})`
+
+            console.log('hotUpdateSource', hotUpdateSource)
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {
@@ -197,8 +217,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  // getBundleCode()
-
   // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
@@ -211,16 +229,6 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
-    if (isBuilding) {
-      const res = await isBuilding
-      return res
-    }
-
-    let done
-    isBuilding = new Promise((res) => {
-      done = res
-    })
-
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
@@ -232,8 +240,18 @@ export const dev = async (options: CLIResolvedOptions) => {
       return await readFile(tmpBundle, 'utf-8')
     }
 
+    if (isBuilding) {
+      const res = await isBuilding
+      return res
+    }
+
+    let done
+    isBuilding = new Promise((res) => {
+      done = res
+    })
+
     // build app
-    const buildOutput = await build({
+    const buildConfig = {
       plugins: [
         {
           name: 'tamagui-env-native',
@@ -262,6 +280,7 @@ export const dev = async (options: CLIResolvedOptions) => {
           port,
           mode: 'build',
         }),
+
         viteReactPlugin({
           tsDecorators: true,
           mode: 'build',
@@ -286,7 +305,12 @@ export const dev = async (options: CLIResolvedOptions) => {
         __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
-    })
+    } satisfies InlineConfig
+
+    // this fixes my swap-react-native plugin not being called pre 😳
+    await resolveConfig(buildConfig, 'build')
+
+    const buildOutput = await build(buildConfig)
 
     if (!('output' in buildOutput)) {
       throw `❌`
@@ -316,8 +340,9 @@ ${
   module.isEntry
     ? `
 // run entry
-__specialRequire("node_modules/react-native/index.js")
-__specialRequire("${module.fileName}")
+const __require = createRequire({})
+__require("react-native")
+__require("${module.fileName}")
 `
     : ''
 }

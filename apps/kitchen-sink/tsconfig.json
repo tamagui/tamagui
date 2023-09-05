@@ -1,4 +1,6 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "noEmit": true
+  },
   "extends": "../../tsconfig"
 }

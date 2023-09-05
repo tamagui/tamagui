@@ -29,46 +29,30 @@ function __getRequire(absPath) {
 }
 
 const __specialRequireMap = {
-  'react-native':  'node_modules/react-native/index.js',
-  'react':  '__React__',
+  'react-native': '_virtual/virtual_react-native.js',
+  'react': '_virtual/virtual_react.js',
+  'react/jsx-runtime': '_virtual/virtual_react-jsx.js',
+  'react/jsx-dev-runtime': '_virtual/virtual_react-jsx.js',
   'react-native/Libraries/Pressability/Pressability': '__ReactPressability__',
   'react-native/Libraries/Pressability/usePressability': '__ReactUsePressability__',
-  'react/jsx-runtime': '__JSX__',
-  'react/jsx-dev-runtime': '__JSX__',
-  '../../node_modules/react/jsx-dev-runtime.js': '__JSX__'
-}
-
-function __specialRequire(_mod) {
-  try {
-    // TODO this is sketch - also isnt it running it a whole second time?
-    const cached = __cachedModules[__specialRequireMap[_mod]]
-    if (cached) return cached
-    const found = __specialRequireMap[_mod]
-    if (found) {
-      const output = globalThis[found]()  
-      __cachedModules[_mod] = output
-      if (_mod === "react/jsx-runtime" || _mod === "react/jsx-dev-runtime") {
-        output.jsxDEV = output.jsxDEV || output.jsx;
-      }
-      return output
-    }
-    if (___modules___[_mod]) {
-      return __getRequire(_mod)
-    }
-  } catch (err) {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
-    console.log(`Error... ${err}`);
-  }
 }
 
 function createRequire(importsMap) {
   return function require(_mod) {
-    const special = __specialRequire(_mod);
-    if (special) return special;
-
-    // handles relative imports rollup outputs
-    const absPath = importsMap[_mod] || _mod;
     try {
+      const cached = __cachedModules[__specialRequireMap[_mod]]
+      if (cached) return cached
+      const found = __specialRequireMap[_mod]
+      if (___modules___[found]) {
+        return __getRequire(found)
+      }
+      if (found && globalThis[found]) {
+        const output = globalThis[found]()  
+        __cachedModules[_mod] = output
+        return output
+      }
+      // handles relative imports rollup outputs
+      const absPath = importsMap[_mod] || _mod;
       if (!___modules___[absPath]) {
         throw new Error(`Not found: ${_mod} => ${absPath}`);
       }
@@ -78,18 +62,6 @@ function createRequire(importsMap) {
     }
   };
 }
-
-Object.defineProperty(globalThis, "____react____", {
-  get() {
-    return __specialRequire("react");
-  },
-});
-
-Object.defineProperty(globalThis, "____jsx____", {
-  get() {
-    return __specialRequire("react/jsx-runtime");
-  },
-});
 
 globalThis["setImmediate"] = (cb) => cb();
 //cb => Promise.resolve().then(() => cb())

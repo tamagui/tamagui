@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shapes",
-  "version": "1.59.2",
+  "version": "1.59.4",
   "sideEffects": [
     "*.css"
   ],
@@ -31,14 +31,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/stacks": "1.59.2",
-    "@tamagui/web": "1.59.2"
+    "@tamagui/stacks": "1.59.4",
+    "@tamagui/web": "1.59.4"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.59.2",
+    "@tamagui/build": "1.59.4",
     "react": "^18.2.0"
   },
   "publishConfig": {
