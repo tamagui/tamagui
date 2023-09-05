@@ -12,7 +12,6 @@ import {
   XStack,
   Sheet,
   H5,
-  H1,
   isWeb,
   AddToCalendarButton,
 } from '@my/ui'
@@ -22,7 +21,6 @@ import { Tables } from '@my/supabase/helpers'
 import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
-import { WebView } from 'react-native-webview'
 import { useQueryClient } from '@tanstack/react-query'
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
@@ -56,16 +54,21 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
   return (
     <Theme name={color}>
       <Card
-        f={1}
         overflow="visible"
+        removeClippedSubviews={true}
         minWidth={320}
         position="relative"
         height={220}
         padding="$4"
-        elevation="$1"
-        shadowRadius={6}
-        shadowOpacity={0.1}
-        onPress={() => onSelect?.(climb)}
+        // Fix andriod shadow
+        marginHorizontal="$4"
+        elevation="$0.5"
+        shadowRadius={7}
+        shadowOpacity={0.2}
+        onPress={() => {
+          console.log('hiiiiiii')
+          onSelect?.(climb)
+        }}
       >
         <Avatar
           borderColor="$backgroundPress"
@@ -161,7 +164,7 @@ export function ClimbsTab() {
   //   timeZone: 'America/Los_Angeles',
   // }
   return (
-    <YStack overflow="visible" ai="center" gap="$10">
+    <YStack overflow="visible" ai="center" gap="$10" removeClippedSubviews={true}>
       <FlatList
         style={{
           flex: 1,
@@ -169,6 +172,7 @@ export function ClimbsTab() {
         }}
         data={climbsQuery.data}
         showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
         keyExtractor={(item) => `${item.id}`}
         renderItem={({ item }) => <Climb onSelect={onSelect} climb={item} />}
         ItemSeparatorComponent={() => <Spacer size="$6" />}

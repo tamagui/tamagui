@@ -3,19 +3,19 @@ import { createClient } from '@supabase/supabase-js'
 import * as SecureStore from 'expo-secure-store'
 import { replaceLocalhost } from '../getLocalhost.native'
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+if (!process.env.EXPO_PUBLIC_SUPABASE_URL) {
   throw new Error(
-    `NEXT_PUBLIC_SUPABASE_URL is not set. Please update the root .env.local and restart the server.`
+    `EXPO_PUBLIC_SUPABASE_URL is not set. Please update the root .env.local and restart the server.`
   )
 }
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+if (!process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY) {
   throw new Error(
-    `NEXT_PUBLIC_SUPABASE_ANON_KEY is not set. Please update the root .env.local and restart the server.`
+    `EXPO_PUBLIC_SUPABASE_ANON_KEY is not set. Please update the root .env.local and restart the server.`
   )
 }
 
-const supabaseUrl = replaceLocalhost(process.env.NEXT_PUBLIC_SUPABASE_URL)
+const supabaseUrl = replaceLocalhost(process.env.EXPO_PUBLIC_SUPABASE_URL)
 
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
@@ -31,7 +31,7 @@ const ExpoSecureStoreAdapter = {
 
 export const supabase = createClient<Database>(
   supabaseUrl,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   {
     auth: {
       storage: ExpoSecureStoreAdapter,

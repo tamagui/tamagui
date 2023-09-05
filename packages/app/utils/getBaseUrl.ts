@@ -7,10 +7,10 @@ export function _getBaseUrl() {
     // browser should use relative path
     return ''
   }
-
+  console.log(process.env.url, 'fffffffff')
   if (process.env.URL) {
     // overwrites the rest - set this on your native app deployment
-    return `https://${process.env.URL}`
+    return `https://${process.env.EXPO_PUBLIC_URL}`
   }
 
   if (process.env.VERCEL_URL) {
