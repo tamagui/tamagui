@@ -1,12 +1,11 @@
 import { dirname } from 'path'
 
-import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
+// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { readFile } from 'fs-extra'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 import { extensions } from './extensions'
 import { getVitePath } from './getVitePath'
@@ -44,7 +43,10 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.optimizeDeps ??= {}
 
       config.optimizeDeps.disabled = true
-      // config.optimizeDeps.include = ['react-native']
+      // config.optimizeDeps.include = ['escape-string-regexp']
+
+      // config.plugins ||= []
+      // config.plugins.push(viteCommonjs())
 
       // config.optimizeDeps.needsInterop ??= []
       // config.optimizeDeps.needsInterop.push('react-native')
@@ -183,19 +185,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             }
           },
         })
-
-        // config.build.rollupOptions.plugins.push(
-        //   viteExternalsPlugin(
-        //     {
-        //       react: '____react____',
-        //       'react/jsx-runtime': '____jsx____',
-        //       'react/jsx-dev-runtime': '____jsx____',
-        //     },
-        //     {
-        //       useWindow: false,
-        //     }
-        //   )
-        // )
 
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,

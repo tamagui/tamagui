@@ -3,6 +3,9 @@ import { Stack, TamaguiProvider, Text } from '@tamagui/core'
 
 import { default as config } from './tamagui.config'
 
+// import { ExpoRoot } from 'expo-router'
+// console.log('ExpoRoot', ExpoRoot)
+
 // test RN
 // import { View } from 'react-native'
 // export function App() {
