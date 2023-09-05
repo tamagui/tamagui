@@ -4,8 +4,6 @@ import * as babel from '@babel/core'
 import { build } from 'esbuild'
 import { writeFile } from 'fs-extra'
 
-const outPath = 'react-native.js'
-
 run()
 
 async function nativeBabelFlowTransform(input: string) {
@@ -27,8 +25,9 @@ async function run() {
   // rome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`Prebuilding React Native (one time cost...)`)
 
-  const reactOutPath = './react.js'
-  const reactJsxOutPath = './react-jsx-runtime.js'
+  const outPath = './dist/react-native.js'
+  const reactOutPath = './dist/react.js'
+  const reactJsxOutPath = './dist/react-jsx-runtime.js'
   const external = ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime']
 
   await Promise.all([
