@@ -65,15 +65,15 @@ export function tamaguiPlugin(
           include: options.target !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
-            // plugins: [
-            //   esbuildCommonjs([
-            //     'styleq',
-            //     'inline-style-prefixer',
-            //     'create-react-class',
-            //     'copy-to-clipboard',
-            //     'escape-string-regexp',
-            //   ]),
-            // ],
+            plugins: [
+              esbuildCommonjs([
+                'styleq',
+                'inline-style-prefixer',
+                'create-react-class',
+                'copy-to-clipboard',
+                'escape-string-regexp',
+              ]),
+            ],
             resolveExtensions: [
               '.web.js',
               '.web.jsx',
