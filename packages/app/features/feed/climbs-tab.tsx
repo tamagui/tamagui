@@ -145,7 +145,7 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
 export function ClimbsTab() {
   const climbsQuery = api.climb.read.useQuery()
   const [open, setOpen] = useState(false)
-  const [selectedClimb, setSelectedClimb] = useState<ListClimb | null>(null)
+  const [selectedClimb, setSelectedClimb] = useState<ListClimb | undefined>(undefined)
   const onSelect = useCallback((climb: ListClimb) => {
     setSelectedClimb(climb)
     setOpen(true)
@@ -325,7 +325,7 @@ export const SheetDemo = ({
                         console.log('success')
                         queryClient.setQueryData(
                           [['climb', 'read'], { type: 'query' }],
-                          (climbs: ListClimb[]) => {
+                          (climbs: ListClimb[] | undefined) => {
                             return climbs?.filter((c) => c.id !== climb.id)
                           }
                         )

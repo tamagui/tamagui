@@ -1,30 +1,36 @@
-import { useQuery } from '@tanstack/react-query'
+// import { useQuery } from '@tanstack/react-query'
 import { useSessionContext } from './supabase/useSessionContext'
-import { useSupabase } from './supabase/useSupabase'
+// import { useSupabase } from './supabase/useSupabase'
+
+import { api } from 'app/utils/api'
 export type User = ReturnType<typeof useUser>
 export const useUser = () => {
   const { session, isLoading: isLoadingSession } = useSessionContext()
   const user = session?.user
-  const supabase = useSupabase()
-  const {
-    data: profile,
-    isLoading: isLoadingProfile,
-    refetch,
-  } = useQuery(['profile'], {
-    queryFn: async () => {
-      if (!user?.id) return null
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-      if (error) {
-        // no rows - edge case of user being deleted
-        if (error.code === 'PGRST116') {
-          await supabase.auth.signOut()
-          return null
-        }
-        throw new Error(error.message)
-      }
-      return data
-    },
-  })
+  // const supabase = useSupabase()
+
+  // const {
+  //   data: profile,
+  //   isLoading: isLoadingProfile,
+  //   refetch,
+  // } = useQuery(['profile'], {
+  //   queryFn: async () => {
+  //     if (!user?.id) return null
+  //     const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+  //     if (error) {
+  //       // no rows - edge case of user being deleted
+  //       if (error.code === 'PGRST116') {
+  //         await supabase.auth.signOut()
+  //         return null
+  //       }
+  //       throw new Error(error.message)
+  //     }
+  //     return data
+  //   },
+  // })
+
+
+  const { data: profile, isLoading: isLoadingProfile, refetch } = api.me.profile.useQuery()
 
   const avatarUrl = (function () {
     if (profile?.avatar_url) return profile.avatar_url

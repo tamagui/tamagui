@@ -4,6 +4,18 @@ import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 
 export const meRouter = createTRPCRouter({
+  profile: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+    if (error) {
+      // no rows - edge case of user being deleted
+      if (error.code === 'PGRST116') {
+        await supabase.auth.signOut()
+        return null
+      }
+      throw new Error(error.message)
+    }
+    return data
+  }),
   climbs: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
     // const climbs = await supabase.from('profile_climbs').select('*').eq('created_by', session.user.id)
     // if (climbs.error) {
