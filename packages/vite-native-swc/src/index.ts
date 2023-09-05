@@ -114,8 +114,9 @@ export function wrapSourceInRefreshRuntime(id: string, code: string, options: Op
   const prefixCode =
     options.mode === 'build'
       ? `
-  // ensure it loads the react native js before the hmr js
-  import * as ____rn____ from 'react-native'
+  // ensure it loads react, react native, vite client
+  import 'react-native'
+  import 'react'
   import '@tamagui/vite-native-client'
   `
       : ``
@@ -153,7 +154,7 @@ export const transformForBuild = async (id: string, code: string) => {
     configFile: false,
     sourceMaps: true,
     jsc: {
-      target: 'es5',
+      target: 'es2019',
       parser: id.endsWith('.tsx')
         ? { syntax: 'typescript', tsx: true, decorators: true }
         : id.endsWith('.ts')
@@ -200,8 +201,15 @@ export const transformWithOptions = async (
       configFile: false,
       sourceMaps: true,
       module: {
-        type: options.mode === 'serve-cjs' ? 'commonjs' : 'nodenext',
+        type: 'nodenext',
       },
+      ...(options.mode === 'serve-cjs' && {
+        module: {
+          type: 'commonjs',
+          strict: true,
+          importInterop: 'node',
+        },
+      }),
       jsc: {
         target,
         parser,

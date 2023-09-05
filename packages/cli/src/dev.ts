@@ -90,6 +90,9 @@ export const dev = async (options: CLIResolvedOptions) => {
             // we have to remove jsx before we can parse imports...
             source = (await transformForBuild(id, source))?.code || ''
 
+            console.log('FROM-----', code)
+            console.log('TO------', source)
+
             const importsMap = {}
 
             // parse imports of modules into ids:
@@ -103,6 +106,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
               if (importName) {
                 const id = await getVitePath(file, importName)
+                console.log('replace', importName, id)
                 if (!id) {
                   console.warn('???')
                   continue
@@ -137,6 +141,8 @@ export const dev = async (options: CLIResolvedOptions) => {
               const require = createRequire(${JSON.stringify(importsMap, null, 2)})
               ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
               return exports })({})`
+
+            console.log('hotUpdateSource', hotUpdateSource)
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {

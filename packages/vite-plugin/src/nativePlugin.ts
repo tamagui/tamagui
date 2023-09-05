@@ -201,9 +201,9 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `force-export-all`,
 
           async transform(code, id) {
-            if (!id.includes('/node_modules/')) {
-              return
-            }
+            // if (!id.includes('/node_modules/')) {
+            //   return
+            // }
 
             try {
               const [imports, exports] = parse(code)

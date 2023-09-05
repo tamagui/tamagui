@@ -8,6 +8,20 @@ export async function getVitePath(
   moduleName: string,
   absolute = false
 ) {
+  // our virtual modules
+  if (moduleName === 'react-native') {
+    return 'react-native'
+  }
+  if (moduleName === 'react') {
+    return 'react'
+  }
+  if (moduleName === 'react/jsx-runtime') {
+    return 'react/jsx-runtime'
+  }
+  if (moduleName === 'react/jsx-dev-runtime') {
+    return 'react/jsx-dev-runtime'
+  }
+
   if (moduleName[0] === '.') {
     // hardcode for now. :/
     return join(`apps/tamastack/src`, moduleName) + '.js'
