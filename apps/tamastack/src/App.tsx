@@ -20,7 +20,6 @@ const linking = {
 } satisfies LinkingOptions<any>
 
 export function App() {
-  console.log('abc' + !!TamaguiProvider + !!Stack + !!Text)
   return (
     <NavigationContainer linking={linking}>
       <TamaguiProvider config={config}>

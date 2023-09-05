@@ -199,8 +199,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  getBundleCode()
-
   // rome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()

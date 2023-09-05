@@ -41,7 +41,6 @@ export function tamaguiPlugin(
         ],
         define: {
           // reanimated support
-          'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
           __DEV__: `${env.mode === 'development' ? true : false}`,
