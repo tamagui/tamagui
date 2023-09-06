@@ -1,9 +1,14 @@
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
 import { Stack, TamaguiProvider, Text } from '@tamagui/core'
+import { LogBox } from 'react-native'
 
 import { default as config } from './tamagui.config'
 
-// import { ExpoRoot } from 'expo-router'
+LogBox.ignoreAllLogs()
+console.clear()
+
+// import { ExpoRoot } from '@tamagui/expo-router'
+
 // console.log('ExpoRoot', ExpoRoot)
 
 // test RN
