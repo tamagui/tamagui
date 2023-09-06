@@ -284,10 +284,9 @@ export const dev = async (options: CLIResolvedOptions) => {
       enforce: 'pre',
 
       resolveId(id) {
-        console.log('id, id', id)
-
         if (id.startsWith('react-native/Libraries')) {
-          return 'virtual:rn-internals'
+          console.log('GOGOOGOGO')
+          return `virtual:rn-internals:${id}`
         }
 
         for (const targetId in virtualModules) {
@@ -299,10 +298,11 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
 
       load(id) {
-        if (id === 'virtual:rn-internals') {
-          // TODO make this work by modifying our pre built rn and then adapting react-native-template require function to map to the right place:
-          return `export default {}
-          export const PressabilityDebugView = () => null`
+        if (id.startsWith('virtual:rn-internals')) {
+          const idOut = id.replace('virtual:rn-internals:', '')
+          return `const val = __cachedModules["${idOut}"]
+          export const PressabilityDebugView = val.PressabilityDebugView
+          export default val ? val.default || val : val`
         }
 
         for (const targetId in virtualModules) {
@@ -420,18 +420,6 @@ __require("${module.fileName}")
       .replace(
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_usePressability = `,
-        `var require_usePressability = globalThis['__ReactUsePressability__'] =`
       )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
