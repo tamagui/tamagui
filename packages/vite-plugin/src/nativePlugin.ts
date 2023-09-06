@@ -170,7 +170,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             for (const targetId in virtualModules) {
               if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
                 const info = virtualModules[targetId]
-                console.log('resolving...', id, 'to', info.alias)
                 return info.alias
               }
             }

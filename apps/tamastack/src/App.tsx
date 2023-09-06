@@ -1,10 +1,14 @@
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
-import { Stack, TamaguiProvider, Text } from '@tamagui/core'
+import { Stack, TamaguiProvider, Text, useChangeThemeEffect } from '@tamagui/core'
 import { ExpoRoot } from '@tamagui/expo-router'
+import { useEffect } from 'react'
 
 import { default as config } from './tamagui.config'
 
-console.log('ExpoRoot', ExpoRoot)
+// @ts-ignore
+const modules = import.meta.glob('../app/**/*.tsx')
+
+console.log('ExpoRoot', ExpoRoot, modules)
 
 // test RN
 // import { View } from 'react-native'
@@ -23,6 +27,14 @@ const linking = {
 } satisfies LinkingOptions<any>
 
 export function App() {
+  useEffect(() => {
+    const home = modules['../app/home.tsx']()
+
+    home.then((res) => {
+      console.log('got page', res.default)
+    })
+  }, [])
+
   return (
     <NavigationContainer linking={linking}>
       <TamaguiProvider config={config}>

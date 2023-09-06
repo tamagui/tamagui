@@ -226,6 +226,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     server.close()
   })
 
+  getBundleCode()
+
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
@@ -250,9 +252,72 @@ export const dev = async (options: CLIResolvedOptions) => {
       done = res
     })
 
+    const jsxRuntime = {
+      alias: 'virtual:react-jsx',
+      contents: await readFile(
+        require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
+        'utf-8'
+      ),
+    } as const
+
+    const virtualModules = {
+      'react-native': {
+        alias: 'virtual:react-native',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt'),
+          'utf-8'
+        ),
+      },
+      react: {
+        alias: 'virtual:react',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt/react'),
+          'utf-8'
+        ),
+      },
+      'react/jsx-runtime': jsxRuntime,
+      'react/jsx-dev-runtime': jsxRuntime,
+    } as const
+
+    const swapRnPlugin = {
+      name: `swap-react-native`,
+      enforce: 'pre',
+
+      resolveId(id) {
+        console.log('id, id', id)
+
+        if (id.startsWith('react-native/Libraries')) {
+          return 'virtual:rn-internals'
+        }
+
+        for (const targetId in virtualModules) {
+          if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
+            const info = virtualModules[targetId]
+            return info.alias
+          }
+        }
+      },
+
+      load(id) {
+        if (id === 'virtual:rn-internals') {
+          return `export default {}
+          export const PressabilityDebugView = () => null`
+        }
+
+        for (const targetId in virtualModules) {
+          const info = virtualModules[targetId as keyof typeof virtualModules]
+          if (id === info.alias) {
+            return info.contents
+          }
+        }
+      },
+    } as const
+
     // build app
     const buildConfig = {
       plugins: [
+        swapRnPlugin,
+
         {
           name: 'tamagui-env-native',
           config() {
@@ -265,16 +330,6 @@ export const dev = async (options: CLIResolvedOptions) => {
         },
 
         viteRNClientPlugin,
-
-        // viteReactPlugin({
-        //   tsDecorators: true,
-        //   mode: 'serve',
-        // }),
-
-        // nativePlugin({
-        //   port,
-        //   mode: 'serve',
-        // }),
 
         nativePlugin({
           port,
@@ -308,7 +363,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     } satisfies InlineConfig
 
     // this fixes my swap-react-native plugin not being called pre 😳
-    await resolveConfig(buildConfig, 'build')
+    const resolved = await resolveConfig(buildConfig, 'build')
+
+    console.log('resolved', resolved)
 
     const buildOutput = await build(buildConfig)
 
