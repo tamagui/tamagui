@@ -109,9 +109,6 @@ export const dev = async (options: CLIResolvedOptions) => {
             // we have to remove jsx before we can parse imports...
             source = (await transformForBuild(id, source))?.code || ''
 
-            console.log('FROM-----', code)
-            console.log('TO------', source)
-
             const importsMap = {}
 
             // parse imports of modules into ids:
@@ -445,10 +442,6 @@ __require("${module.fileName}")
       // this can be done in the individual file transform
       .replaceAll('undefined.accept(() => {})', '')
       .replaceAll('undefined.accept(function() {});', '') // swc
-      .replace(
-        `var require_react_refresh_runtime_development =`,
-        `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
-      )
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 

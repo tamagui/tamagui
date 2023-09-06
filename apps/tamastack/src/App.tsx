@@ -6,9 +6,9 @@ import { useEffect } from 'react'
 import { default as config } from './tamagui.config'
 
 // @ts-ignore
-const modules = import.meta.glob('../app/**/*.tsx')
+// const modules = import.meta.glob('../app/**/*.tsx')
 
-console.log('ExpoRoot', ExpoRoot, modules)
+console.log('ExpoRoot', ExpoRoot)
 
 // test RN
 // import { View } from 'react-native'
@@ -27,13 +27,13 @@ const linking = {
 } satisfies LinkingOptions<any>
 
 export function App() {
-  useEffect(() => {
-    const home = modules['../app/home.tsx']()
+  // useEffect(() => {
+  //   const home = modules['../app/home.tsx']()
 
-    home.then((res) => {
-      console.log('got page', res.default)
-    })
-  }, [])
+  //   home.then((res) => {
+  //     console.log('got page', res.default)
+  //   })
+  // }, [])
 
   return (
     <NavigationContainer linking={linking}>

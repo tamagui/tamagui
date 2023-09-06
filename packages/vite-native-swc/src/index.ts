@@ -121,7 +121,7 @@ export function wrapSourceInRefreshRuntime(id: string, code: string, options: Op
   `
       : ``
 
-  return `const RefreshRuntime = globalThis['__RequireReactRefreshRuntime__']();
+  return `const RefreshRuntime = __cachedModules["react-native/node_modules/react-refresh/cjs/react-refresh-runtime.development"];
 const prevRefreshReg = globalThis.$RefreshReg$;
 const prevRefreshSig = globalThis.$RefreshSig$;
 globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
