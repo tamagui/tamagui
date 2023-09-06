@@ -5,7 +5,7 @@ import { getConfig, getToken } from '../config'
 import { Variable } from '../createVariable'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
-import { ResolveVariableAs, getTokenForKey } from '../helpers/propMapper'
+import { getTokenForKey } from '../helpers/propMapper'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
   GetStyleState,
@@ -13,6 +13,7 @@ import type {
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
+  ResolveVariableAs,
   TamaguiInternalConfig,
   VariableVal,
 } from '../types'
@@ -236,8 +237,6 @@ export function useMedia(uid?: any): UseMediaState {
   })
 }
 
-export type ResolveThemeValueOpt = boolean | 'value'
-
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)
@@ -259,8 +258,8 @@ export function useMediaPropsActive<A extends Object>(
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
-  const resolveThemeValueOpt = opts?.resolveValues
-  const theme = resolveThemeValueOpt ? useTheme() : null
+  const resolveAs = opts?.resolveValues || 'none'
+  const theme = resolveAs ? useTheme() : null
   const styleState = { theme } as Partial<GetStyleState>
   const shouldExpandShorthands = opts?.expandShorthands
 
@@ -281,12 +280,7 @@ export function useMediaPropsActive<A extends Object>(
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             let subKey = subKeys[j]
-            const value = getTokenForKey(
-              subKey,
-              val[subKey],
-              resolveThemeValueOpt,
-              styleState
-            )
+            const value = getTokenForKey(subKey, val[subKey], resolveAs, styleState)
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
@@ -301,7 +295,7 @@ export function useMediaPropsActive<A extends Object>(
           next,
           '',
           key,
-          getTokenForKey(key, val, resolveThemeValueOpt, styleState),
+          getTokenForKey(key, val, resolveAs, styleState),
           importancesUsed,
           true
         )
@@ -309,7 +303,7 @@ export function useMediaPropsActive<A extends Object>(
     }
 
     return next
-  }, [media, props, theme, resolveThemeValueOpt])
+  }, [media, props, theme, resolveAs])
 }
 
 export const getMediaImportanceIfMoreImportant = (

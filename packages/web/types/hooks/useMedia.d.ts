@@ -1,5 +1,4 @@
-import { ResolveVariableAs } from '../helpers/propMapper';
-import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, TamaguiInternalConfig } from '../types';
+import type { MediaQueries, MediaQueryKey, MediaQueryObject, MediaQueryState, ResolveVariableAs, TamaguiInternalConfig } from '../types';
 export declare let mediaState: MediaQueryState;
 export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
@@ -19,7 +18,6 @@ type UpdateState = {
 };
 export declare function setMediaShouldUpdate(ref: any, props: UpdateState): WeakMap<any, UpdateState>;
 export declare function useMedia(uid?: any): UseMediaState;
-export type ResolveThemeValueOpt = boolean | 'value';
 /**
  *
  * @deprecated use useProps instead which is the same but also expands shorthands (which you can disable)

@@ -1,4 +1,4 @@
-import { ResolveVariableAs } from '../helpers/propMapper'
+import { ResolveVariableAs } from '../types'
 import { useMediaPropsActive } from './useMedia'
 
 /**

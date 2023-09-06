@@ -7,6 +7,7 @@ import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,
+  ResolveVariableAs,
   SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
@@ -17,8 +18,6 @@ import { expandStylesAndRemoveNullishValues } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
-
-export type ResolveVariableAs = 'auto' | 'value' | 'variable'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -343,9 +342,13 @@ const fontShorthand = {
 export const getTokenForKey = (
   key: string,
   value: string,
-  resolveAs: SplitStyleProps['resolveVariablesAs'],
+  resolveAs: ResolveVariableAs = 'none',
   styleState: Partial<GetStyleState>
 ) => {
+  if (resolveAs === 'none') {
+    return value
+  }
+
   const { theme, conf = getConfig(), context, fontFamily } = styleState
 
   const tokensParsed = conf.tokensParsed
@@ -428,8 +431,9 @@ export const getTokenForKey = (
 
 function resolveVariableValue(
   valOrVar: Variable | any,
-  resolveVariablesAs: SplitStyleProps['resolveVariablesAs']
+  resolveVariablesAs?: ResolveVariableAs
 ) {
+  if (resolveVariablesAs === 'none') return valOrVar
   if (isVariable(valOrVar)) {
     if (!isWeb || resolveVariablesAs === 'value') {
       return valOrVar.val
