@@ -6,7 +6,6 @@ import { sendTakeoutWelcomeEmail } from './email'
 import { toDateTime } from './helpers'
 import { stripe } from './stripe'
 import { Database } from './supabase-types'
-import { getSingle } from './supabase-utils'
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!
@@ -46,7 +45,7 @@ export const upsertPriceRecord = async (price: Stripe.Price) => {
     currency: price.currency,
     description: price.nickname ?? undefined,
     type: price.type,
-    unit_amount: price.unit_amount ?? undefined,
+    unit_amount: price.unit_amount! / 2, // 50%
     interval: price.recurring?.interval,
     interval_count: price.recurring?.interval_count,
     trial_period_days: price.recurring?.trial_period_days,
@@ -238,6 +237,84 @@ export async function deleteSubscriptionRecord(sub: Stripe.Subscription) {
   const { error } = await supabaseAdmin.from('subscriptions').delete().eq('id', sub.id)
   if (error) throw error
   console.log(`Deleted subscription: ${sub.id}`)
+}
+
+export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.Session) {
+  const session = await stripe.checkout.sessions.retrieve(sessionFromEvent.id, {
+    expand: ['line_items'],
+  })
+
+  const prices = await Promise.all(
+    session.line_items!.data.map((lineItem) =>
+      stripe.prices.retrieve(lineItem.price!.id, {
+        expand: ['product'],
+      })
+    )
+  )
+
+  const renewalPriceIds: string[] = []
+  const customerId =
+    typeof session.customer === 'string' ? session.customer : session.customer!.id
+  for (const price of prices) {
+    if (typeof price.product === 'string' || price.product.deleted) {
+      continue
+    }
+    if (!price.product.metadata.has_renewals) {
+      continue
+    }
+    let renewalPriceId = price.metadata.renewal_price_id
+    if (!price.metadata.renewal_price_id) {
+      const subscriptionPrice = await stripe.prices.create({
+        product: typeof price.product === 'string' ? price.product : price.product.id,
+        currency: 'USD',
+        nickname: `Subscription for ${price.id} (Auto-generated)`,
+        recurring: { interval: 'year', interval_count: 1 },
+        unit_amount: price.unit_amount ?? undefined,
+        metadata: {
+          hide_from_lists: 1,
+        },
+      })
+      renewalPriceId = subscriptionPrice.id
+      await stripe.prices.update(price.id, {
+        metadata: {
+          ...price.metadata,
+          renewal_price_id: subscriptionPrice.id,
+        },
+      })
+    }
+
+    renewalPriceIds.push(renewalPriceId)
+  }
+  console.log('creating the sub...', renewalPriceIds)
+  if (renewalPriceIds.length > 0) {
+    const cardPaymentMethods = await stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+    })
+    const paymentMethod = cardPaymentMethods.data[0]
+    const collectionMethod = paymentMethod ? 'charge_automatically' : 'send_invoice'
+    const renewalSub = await stripe.subscriptions.create({
+      customer: customerId,
+      collection_method: collectionMethod,
+      ...(collectionMethod === 'charge_automatically'
+        ? {
+            default_payment_method: paymentMethod.id,
+          }
+        : {
+            days_until_due: 5,
+          }),
+
+      billing_cycle_anchor: (function () {
+        const date = new Date()
+        date.setFullYear(date.getFullYear() + 1)
+        return Math.floor(Number(date) / 1000)
+      })(),
+      items: renewalPriceIds.map((id) => ({
+        price: id,
+      })),
+    })
+    console.log(renewalSub)
+  }
 }
 
 // commented cause supabase code is outdated

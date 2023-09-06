@@ -2,11 +2,9 @@ import { getURL } from '@lib/helpers'
 import { apiRoute, protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
 
 export default apiRoute(async (req, res) => {
   const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
-
   // let priceId: string
 
   // const quantity =
@@ -95,21 +93,14 @@ export default apiRoute(async (req, res) => {
         quantity: 1,
       }
     }),
-    // @ts-ignore
-    custom_text: {
-      submit: {
-        message:
-          'A 50% coupon will be automatically applied on your subscription for future renewals.',
-      },
-    },
     customer: stripeCustomerId,
-    mode: 'subscription',
     discounts: promoCodeId
       ? [{ promotion_code: promoCodeId }]
       : couponId
       ? [{ coupon: couponId }]
       : undefined,
-    success_url: `${getURL()}/account/subscriptions`,
+    mode: 'payment',
+    success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
   })
 
