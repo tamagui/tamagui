@@ -10,16 +10,6 @@ const modules = import.meta.glob('../app/**/*.tsx')
 
 console.log('ExpoRoot', ExpoRoot)
 
-const linking = {
-  prefixes: [
-    /* your linking prefixes */
-  ],
-  config: {
-    screens: {},
-    /* configuration for matching screens with paths */
-  },
-} satisfies LinkingOptions<any>
-
 export function App() {
   const [Home, setHome] = useState<any>(null)
 
@@ -53,3 +43,13 @@ export function App() {
     </NavigationContainer>
   )
 }
+
+const linking = {
+  prefixes: [
+    /* your linking prefixes */
+  ],
+  config: {
+    screens: {},
+    /* configuration for matching screens with paths */
+  },
+} satisfies LinkingOptions<any>
