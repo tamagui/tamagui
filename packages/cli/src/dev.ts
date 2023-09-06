@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 import { dirname, join, relative } from 'path'
 
+import * as babel from '@babel/core'
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, {
   swcTransform,
@@ -313,10 +314,37 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
     } as const
 
+    async function babelReanimated(input: string, filename: string) {
+      return await new Promise<string>((res, rej) => {
+        babel.transform(
+          input,
+          {
+            plugins: ['react-native-reanimated/plugin'],
+            filename,
+          },
+          (err: any, result) => {
+            if (!result || err) rej(err || 'no res')
+            res(result!.code!)
+          }
+        )
+      })
+    }
+
     // build app
     const buildConfig = {
       plugins: [
         swapRnPlugin,
+
+        {
+          name: 'reanimated',
+
+          async transform(code, id) {
+            if (code.includes('worklet')) {
+              const out = await babelReanimated(code, id)
+              return out
+            }
+          },
+        },
 
         {
           name: 'tamagui-env-native',
@@ -361,7 +389,6 @@ export const dev = async (options: CLIResolvedOptions) => {
       },
       mode: 'development',
       define: {
-        __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
     } satisfies InlineConfig

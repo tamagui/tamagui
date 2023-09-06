@@ -11,6 +11,7 @@ globalThis["global"] = global;
 global["react"] = {};
 global["exports"] = {};
 global["module"] = {};
+global["__DEV__"] = true;
 global["___modules___"] = {};
 // to avoid it looking like browser...
 delete globalThis["window"];
