@@ -19,11 +19,13 @@ delete globalThis["window"];
 globalThis['__cachedModules'] = {};
 
 function __getRequire(absPath) {
-  const runModule = ___modules___[absPath];
   if (!__cachedModules[absPath]) {
-    const mod = { exports: {} };
-    runModule(mod.exports, mod);
-    __cachedModules[absPath] = mod.exports || mod
+    const runModule = ___modules___[absPath];
+    if (runModule) {
+      const mod = { exports: {} };
+      runModule(mod.exports, mod);
+      __cachedModules[absPath] = mod.exports || mod
+    }
   }
   return __cachedModules[absPath];
 }
@@ -48,6 +50,18 @@ function createRequire(importsMap) {
         __cachedModules[_mod] = output
         return output
       }
+
+      // find our import.meta.glob which don't get the nice path addition, for now hardcode but this shouldnt be hard to fix properly:
+      const foundGlob = __getRequire(
+        path
+          .replace('../app', 'apps/tamastack/app')
+          .replace('.tsx', '.js')
+          .replace('.ts', '.js')
+      )
+      if (foundGlob) {
+        return foundGlob
+      }
+      
       throw new Error(`Not found: ${_mod} => ${absPath}`);
     } catch (err) {
       throw new Error(`\n◆ ${_mod} "${err}"`.replace('Error: ', '').replaceAll('"', ''));

@@ -155,10 +155,11 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             const hotUpdateSource = `exports = ((exports) => {
               const require = createRequire(${JSON.stringify(importsMap, null, 2)})
-              ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+              ${source
+                .replace(`import.meta.hot.accept(() => {})`, ``)
+                // replace import.meta.glob with empty array in hot reloads
+                .replaceAll(/import.meta.glob\(.*\)/gi, 'Promise.resolve([])')};
               return exports })({})`
-
-            console.log('hotUpdateSource', hotUpdateSource)
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {

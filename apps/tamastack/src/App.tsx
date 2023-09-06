@@ -1,20 +1,14 @@
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
-import { Stack, TamaguiProvider, Text, useChangeThemeEffect } from '@tamagui/core'
+import { Stack, TamaguiProvider, Text } from '@tamagui/core'
 import { ExpoRoot } from '@tamagui/expo-router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { default as config } from './tamagui.config'
 
 // @ts-ignore
-// const modules = import.meta.glob('../app/**/*.tsx')
+const modules = import.meta.glob('../app/**/*.tsx')
 
 console.log('ExpoRoot', ExpoRoot)
-
-// test RN
-// import { View } from 'react-native'
-// export function App() {
-//   return <View style={{ backgroundColor: 'red', width: 222, height: 200 }} />
-// }
 
 const linking = {
   prefixes: [
@@ -27,13 +21,14 @@ const linking = {
 } satisfies LinkingOptions<any>
 
 export function App() {
-  // useEffect(() => {
-  //   const home = modules['../app/home.tsx']()
+  const [Home, setHome] = useState<any>(null)
 
-  //   home.then((res) => {
-  //     console.log('got page', res.default)
-  //   })
-  // }, [])
+  useEffect(() => {
+    const home = modules['../app/home.tsx']()
+    home.then((res) => {
+      setHome(res.default)
+    })
+  }, [])
 
   return (
     <NavigationContainer linking={linking}>
@@ -49,8 +44,10 @@ export function App() {
           bg="#B3FF00"
         >
           <Text color="#AA12A2" fow="800" fos={100} ta="center">
-            💥
+            💥2
           </Text>
+
+          {Home ? Home : null}
         </Stack>
       </TamaguiProvider>
     </NavigationContainer>
