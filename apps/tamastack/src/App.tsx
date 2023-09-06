@@ -1,28 +1,25 @@
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
 import { Stack, TamaguiProvider, Text } from '@tamagui/core'
+import { ExpoRoot } from '@tamagui/expo-router'
+import { useEffect, useState } from 'react'
 
 import { default as config } from './tamagui.config'
 
-// import { ExpoRoot } from 'expo-router'
-// console.log('ExpoRoot', ExpoRoot)
+// @ts-ignore
+const modules = import.meta.glob('../app/**/*.tsx')
 
-// test RN
-// import { View } from 'react-native'
-// export function App() {
-//   return <View style={{ backgroundColor: 'red', width: 222, height: 200 }} />
-// }
-
-const linking = {
-  prefixes: [
-    /* your linking prefixes */
-  ],
-  config: {
-    screens: {},
-    /* configuration for matching screens with paths */
-  },
-} satisfies LinkingOptions<any>
+console.log('ExpoRoot', ExpoRoot)
 
 export function App() {
+  const [Home, setHome] = useState<any>(null)
+
+  useEffect(() => {
+    const home = modules['../app/home.tsx']()
+    home.then((res) => {
+      setHome(res.default)
+    })
+  }, [])
+
   return (
     <NavigationContainer linking={linking}>
       <TamaguiProvider config={config}>
@@ -37,10 +34,22 @@ export function App() {
           bg="#B3FF00"
         >
           <Text color="#AA12A2" fow="800" fos={100} ta="center">
-            💥
+            💥2
           </Text>
+
+          {Home ? Home : null}
         </Stack>
       </TamaguiProvider>
     </NavigationContainer>
   )
 }
+
+const linking = {
+  prefixes: [
+    /* your linking prefixes */
+  ],
+  config: {
+    screens: {},
+    /* configuration for matching screens with paths */
+  },
+} satisfies LinkingOptions<any>

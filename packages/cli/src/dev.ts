@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 import { dirname, join, relative } from 'path'
 
+import * as babel from '@babel/core'
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, {
   swcTransform,
@@ -108,9 +109,6 @@ export const dev = async (options: CLIResolvedOptions) => {
             // we have to remove jsx before we can parse imports...
             source = (await transformForBuild(id, source))?.code || ''
 
-            console.log('FROM-----', code)
-            console.log('TO------', source)
-
             const importsMap = {}
 
             // parse imports of modules into ids:
@@ -157,10 +155,11 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             const hotUpdateSource = `exports = ((exports) => {
               const require = createRequire(${JSON.stringify(importsMap, null, 2)})
-              ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+              ${source
+                .replace(`import.meta.hot.accept(() => {})`, ``)
+                // replace import.meta.glob with empty array in hot reloads
+                .replaceAll(/import.meta.glob\(.*\)/gi, 'Promise.resolve([])')};
               return exports })({})`
-
-            console.log('hotUpdateSource', hotUpdateSource)
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {
@@ -226,6 +225,8 @@ export const dev = async (options: CLIResolvedOptions) => {
     server.close()
   })
 
+  getBundleCode()
+
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
@@ -250,9 +251,99 @@ export const dev = async (options: CLIResolvedOptions) => {
       done = res
     })
 
+    const jsxRuntime = {
+      alias: 'virtual:react-jsx',
+      contents: await readFile(
+        require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
+        'utf-8'
+      ),
+    } as const
+
+    const virtualModules = {
+      'react-native': {
+        alias: 'virtual:react-native',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt'),
+          'utf-8'
+        ),
+      },
+      react: {
+        alias: 'virtual:react',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt/react'),
+          'utf-8'
+        ),
+      },
+      'react/jsx-runtime': jsxRuntime,
+      'react/jsx-dev-runtime': jsxRuntime,
+    } as const
+
+    const swapRnPlugin = {
+      name: `swap-react-native`,
+      enforce: 'pre',
+
+      resolveId(id) {
+        if (id.startsWith('react-native/Libraries')) {
+          return `virtual:rn-internals:${id}`
+        }
+
+        for (const targetId in virtualModules) {
+          if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
+            const info = virtualModules[targetId]
+            return info.alias
+          }
+        }
+      },
+
+      load(id) {
+        if (id.startsWith('virtual:rn-internals')) {
+          const idOut = id.replace('virtual:rn-internals:', '')
+          return `const val = __cachedModules["${idOut}"]
+          export const PressabilityDebugView = val.PressabilityDebugView
+          export default val ? val.default || val : val`
+        }
+
+        for (const targetId in virtualModules) {
+          const info = virtualModules[targetId as keyof typeof virtualModules]
+          if (id === info.alias) {
+            return info.contents
+          }
+        }
+      },
+    } as const
+
+    async function babelReanimated(input: string, filename: string) {
+      return await new Promise<string>((res, rej) => {
+        babel.transform(
+          input,
+          {
+            plugins: ['react-native-reanimated/plugin'],
+            filename,
+          },
+          (err: any, result) => {
+            if (!result || err) rej(err || 'no res')
+            res(result!.code!)
+          }
+        )
+      })
+    }
+
     // build app
     const buildConfig = {
       plugins: [
+        swapRnPlugin,
+
+        {
+          name: 'reanimated',
+
+          async transform(code, id) {
+            if (code.includes('worklet')) {
+              const out = await babelReanimated(code, id)
+              return out
+            }
+          },
+        },
+
         {
           name: 'tamagui-env-native',
           config() {
@@ -265,16 +356,6 @@ export const dev = async (options: CLIResolvedOptions) => {
         },
 
         viteRNClientPlugin,
-
-        // viteReactPlugin({
-        //   tsDecorators: true,
-        //   mode: 'serve',
-        // }),
-
-        // nativePlugin({
-        //   port,
-        //   mode: 'serve',
-        // }),
 
         nativePlugin({
           port,
@@ -292,23 +373,28 @@ export const dev = async (options: CLIResolvedOptions) => {
       build: {
         ssr: false,
         minify: false,
+        commonjsOptions: {
+          transformMixedEsModules: true,
+        },
         rollupOptions: {
           treeshake: false,
           preserveEntrySignatures: 'strict',
           output: {
+            preserveModules: true,
             format: 'cjs',
           },
         },
       },
       mode: 'development',
       define: {
-        __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
     } satisfies InlineConfig
 
     // this fixes my swap-react-native plugin not being called pre 😳
-    await resolveConfig(buildConfig, 'build')
+    const resolved = await resolveConfig(buildConfig, 'build')
+
+    console.log('resolved', resolved)
 
     const buildOutput = await build(buildConfig)
 
@@ -328,12 +414,10 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
 
           return `
-___modules___["${module.fileName}"] = ((exports, module2) => {
+___modules___["${module.fileName}"] = ((exports, module) => {
   const require = createRequire(${JSON.stringify(importsMap, null, 2)})
 
-  ${module.code
-    .replace(`'use strict';`, '')
-    .replace('module.exports = ', 'module2.exports = ')}
+  ${module.code}
 })
 
 ${
@@ -357,24 +441,8 @@ __require("${module.fileName}")
 
     appCode = appCode
       // this can be done in the individual file transform
-      .replace('undefined.accept(() => {})', '')
-      .replace('undefined.accept(function() {});', '') // swc
-      .replace(
-        `var require_react_refresh_runtime_development =`,
-        `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_usePressability = `,
-        `var require_usePressability = globalThis['__ReactUsePressability__'] =`
-      )
+      .replaceAll('undefined.accept(() => {})', '')
+      .replaceAll('undefined.accept(function() {});', '') // swc
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 

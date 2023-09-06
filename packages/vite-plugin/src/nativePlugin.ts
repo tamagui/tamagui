@@ -3,7 +3,6 @@ import { dirname } from 'path'
 // import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
-import { readFile } from 'fs-extra'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
 
@@ -43,39 +42,11 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       config.optimizeDeps ??= {}
 
       config.optimizeDeps.disabled = true
-      // config.optimizeDeps.include = ['escape-string-regexp']
-
-      // config.plugins ||= []
-      // config.plugins.push(viteCommonjs())
-
-      // config.optimizeDeps.needsInterop ??= []
-      // config.optimizeDeps.needsInterop.push('react-native')
-
-      // config.esbuild = false
 
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
-
-      // CANT DO THIS BECAUSE TAMAGUI PLUGIN DOES THIS! they clobber each other!
-      // config.optimizeDeps.esbuildOptions.plugins.push(
-      //   esbuildCommonjs(['escape-string-regexp'])
-      // )
-
-      // config.optimizeDeps.esbuildOptions.alias = {
-      //   'react-native': '@tamagui/proxy-worm',
-      // }
-
-      // config.optimizeDeps.esbuildOptions.plugins.push(
-      //   esbuildFlowPlugin(
-      //     /node_modules\/(react-native\/|@react-native\/)/,
-      //     (_) => 'jsx',
-      //     {
-      //       all: true,
-      //     }
-      //   )
-      // )
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
@@ -134,57 +105,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         //   ...config.resolve.alias,
         //   'react-native': virtualModuleId,
         // }
-
-        const jsxRuntime = {
-          alias: 'virtual:react-jsx',
-          contents: await readFile(
-            require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
-            'utf-8'
-          ),
-        } as const
-
-        const virtualModules = {
-          'react-native': {
-            alias: 'virtual:react-native',
-            contents: await readFile(
-              require.resolve('@tamagui/react-native-prebuilt'),
-              'utf-8'
-            ),
-          },
-          react: {
-            alias: 'virtual:react',
-            contents: await readFile(
-              require.resolve('@tamagui/react-native-prebuilt/react'),
-              'utf-8'
-            ),
-          },
-          'react/jsx-runtime': jsxRuntime,
-          'react/jsx-dev-runtime': jsxRuntime,
-        } as const
-
-        config.plugins.unshift({
-          name: `swap-react-native`,
-          enforce: 'pre',
-
-          resolveId(id) {
-            for (const targetId in virtualModules) {
-              if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
-                const info = virtualModules[targetId]
-                console.log('resolving...', id, 'to', info.alias)
-                return info.alias
-              }
-            }
-          },
-
-          load(id) {
-            for (const targetId in virtualModules) {
-              const info = virtualModules[targetId as keyof typeof virtualModules]
-              if (id === info.alias) {
-                return info.contents
-              }
-            }
-          },
-        })
 
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
@@ -286,10 +206,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         console.log('config..', config)
       }
 
-      // config.build.commonjsOptions = {
-      //   include: /node_modules\/react\//,
-      // }
-
       const updateOutputOptions = (out: OutputOptions) => {
         out.preserveModules = true
 
@@ -313,67 +229,3 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     },
   }
 }
-
-// failed attempt to get vite to bundle rn, after a bunch of hacks still trouble
-
-//         config.build.rollupOptions.plugins.push({
-//           name: 'flow-remove-types',
-//           transform: async (codeIn, id) => {
-//             if (!id.includes('node_modules')) {
-//               return
-//             }
-//             const flowRemoved = flowRemoveTypes(codeIn).toString()
-//             let jsxRemoved = await nativeBabelRemoveJSX(flowRemoved)
-
-//             if (id.includes('BackHandler')) {
-//               jsxRemoved = jsxRemoved.replace(
-//                 `module.exports = require('../Components/UnimplementedViews/UnimplementedView');`,
-//                 ''
-//               )
-//             }
-
-//             if (jsxRemoved.includes(`module.exports = `)) {
-//               jsxRemoved = jsxRemoved.replace(
-//                 /\nmodule.exports = /gi,
-//                 `\nexport default `
-//               )
-//             }
-
-//             if (id.endsWith('ReactNativeViewConfigRegistry.js')) {
-//               jsxRemoved =
-//                 jsxRemoved +
-//                 `\nconst allExports = {...exports }; export default allExports;`
-//             }
-
-//             if (id.endsWith('ExceptionsManager.js')) {
-//               console.log('huh', id)
-//               jsxRemoved = jsxRemoved
-//                 .replace(/\nfunction /g, 'export function')
-//                 .replace('class SynthenticEvent', 'export class SyntheticEvent')
-//                 .replace(
-//                   `module.exports = {
-//   decoratedExtraDataKey,
-//   handleException,
-//   installConsoleErrorReporter,
-//   SyntheticError,
-//   unstable_setExceptionDecorator,
-// };`,
-//                   ``
-//                 )
-//             }
-
-//             return {
-//               code: jsxRemoved,
-//               map: null,
-//             }
-//           },
-//         })
-
-// config.build.rollupOptions.plugins.push(
-//   commonJs({
-//     include: ['**/node_modules/react-native/**', '**/node_modules/base64-js/**'],
-//     // ignoreGlobal: true,
-//     transformMixedEsModules: true,
-//     defaultIsModuleExports: true,
-//   }) as any
-// )

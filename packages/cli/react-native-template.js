@@ -11,19 +11,21 @@ globalThis["global"] = global;
 global["react"] = {};
 global["exports"] = {};
 global["module"] = {};
+global["__DEV__"] = true;
 global["___modules___"] = {};
 // to avoid it looking like browser...
 delete globalThis["window"];
 
-const __cachedModules = {};
+globalThis['__cachedModules'] = {};
 
 function __getRequire(absPath) {
-  const found = ___modules___[absPath];
   if (!__cachedModules[absPath]) {
-    const exported = {};
-    const defaultExported = {};
-    found(exported, defaultExported);
-    __cachedModules[absPath] = defaultExported.exports || exported
+    const runModule = ___modules___[absPath];
+    if (runModule) {
+      const mod = { exports: {} };
+      runModule(mod.exports, mod);
+      __cachedModules[absPath] = mod.exports || mod
+    }
   }
   return __cachedModules[absPath];
 }
@@ -33,32 +35,36 @@ const __specialRequireMap = {
   'react': '_virtual/virtual_react.js',
   'react/jsx-runtime': '_virtual/virtual_react-jsx.js',
   'react/jsx-dev-runtime': '_virtual/virtual_react-jsx.js',
-  'react-native/Libraries/Pressability/Pressability': '__ReactPressability__',
-  'react-native/Libraries/Pressability/usePressability': '__ReactUsePressability__',
 }
 
 function createRequire(importsMap) {
   return function require(_mod) {
     try {
-      const cached = __cachedModules[__specialRequireMap[_mod]]
-      if (cached) return cached
-      const found = __specialRequireMap[_mod]
-      if (___modules___[found]) {
-        return __getRequire(found)
+      const path = __specialRequireMap[_mod] || importsMap[_mod] || _mod
+      const found = __getRequire(path)
+      if (found) {
+        return found
       }
-      if (found && globalThis[found]) {
-        const output = globalThis[found]()  
+      if (globalThis[path]) {
+        const output = globalThis[path]()  
         __cachedModules[_mod] = output
         return output
       }
-      // handles relative imports rollup outputs
-      const absPath = importsMap[_mod] || _mod;
-      if (!___modules___[absPath]) {
-        throw new Error(`Not found: ${_mod} => ${absPath}`);
+
+      // find our import.meta.glob which don't get the nice path addition, for now hardcode but this shouldnt be hard to fix properly:
+      const foundGlob = __getRequire(
+        path
+          .replace('../app', 'apps/tamastack/app')
+          .replace('.tsx', '.js')
+          .replace('.ts', '.js')
+      )
+      if (foundGlob) {
+        return foundGlob
       }
-      return __getRequire(absPath)
+      
+      throw new Error(`Not found: ${_mod} => ${absPath}`);
     } catch (err) {
-      throw new Error(`Error running module ${_mod} "${err}"`);
+      throw new Error(`\n◆ ${_mod} "${err}"`.replace('Error: ', '').replaceAll('"', ''));
     }
   };
 }

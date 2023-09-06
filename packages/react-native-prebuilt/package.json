@@ -8,9 +8,9 @@
     "prebuild": "node -r esbuild-register ./prebuild-react-native.ts"
   },
   "exports": {
-    ".": "./react-native.js",
-    "./react": "./react.js",
-    "./jsx-runtime": "./react-jsx-runtime.js"
+    ".": "./dist/react-native.js",
+    "./react": "./dist/react.js",
+    "./jsx-runtime": "./dist/react-jsx-runtime.js"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",

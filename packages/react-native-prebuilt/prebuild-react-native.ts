@@ -176,10 +176,30 @@ async function run() {
       const bundled = await readFile(outPath, 'utf-8')
       const outCode = `
       const run = () => {  
-        ${bundled.replace(
-          `module.exports = require_react_native();`,
-          `return require_react_native();`
-        )}
+        ${bundled
+          .replace(
+            esbuildCommonJSFunction,
+            `
+// replaced commonjs function to allow importing internals
+var __commonJS = (cb, mod) => function __require() {
+  if (mod) return mod
+  const path = __getOwnPropNames(cb)[0]
+  const moduleFn = cb[path]
+  mod = { exports: {} }
+  moduleFn(mod.exports, mod)
+  mod = mod.exports
+
+  // this is our patch basically allowing importing the inner contents:
+  globalThis['__cachedModules'][path.replace('../../node_modules/', '').replace('.js', '')] = mod
+  
+  return mod
+};
+`
+          )
+          .replace(
+            `module.exports = require_react_native();`,
+            `return require_react_native();`
+          )}
       }
       const RN = run()
       ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
@@ -187,9 +207,11 @@ async function run() {
       await writeFile(outPath, outCode)
     }),
   ])
-
-  // now make our modifications:
 }
+
+const esbuildCommonJSFunction = `var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};`
 
 const RNExportNames = [
   'AccessibilityInfo',
@@ -243,7 +265,6 @@ const RNExportNames = [
   'PanResponder',
   'PermissionsAndroid',
   'PixelRatio',
-  // 'PushNotificationIOS',
   'Settings',
   'Share',
   'StyleSheet',
@@ -266,11 +287,6 @@ const RNExportNames = [
   'processColor',
   'requireNativeComponent',
   'RootTagContext',
-  // 'unstable_enableLogBox',
-  // 'ColorPropType',
-  // 'EdgeInsetsPropType',
-  // 'PointPropType',
-  // 'ViewPropTypes',
 ]
 
 const RExports = [
