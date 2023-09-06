@@ -23,7 +23,7 @@ module.exports = {
   stats: 'normal', // 'detailed'
   mode: NODE_ENV,
   entry: ['./src/index.web.tsx'],
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   optimization: {
     concatenateModules: false,
     minimize: false,
@@ -92,7 +92,6 @@ module.exports = {
       config: './src/tamagui.config.ts',
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
-      // disable: true,
       disableExtraction,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',

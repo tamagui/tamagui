@@ -1,8 +1,5 @@
 import './setup.js'
 
-import { styled } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
-
 export * from '@tamagui/accordion'
 export * from '@tamagui/adapt'
 export * from '@tamagui/alert-dialog'
@@ -53,7 +50,6 @@ export * from './views/TamaguiProvider'
 export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
-export * from './views/Grid'
 export * from './views/Input'
 export * from './views/Layouts'
 export * from './views/Spinner'
