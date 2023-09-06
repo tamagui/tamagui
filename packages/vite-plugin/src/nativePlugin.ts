@@ -135,56 +135,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         //   'react-native': virtualModuleId,
         // }
 
-        const jsxRuntime = {
-          alias: 'virtual:react-jsx',
-          contents: await readFile(
-            require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
-            'utf-8'
-          ),
-        } as const
-
-        const virtualModules = {
-          'react-native': {
-            alias: 'virtual:react-native',
-            contents: await readFile(
-              require.resolve('@tamagui/react-native-prebuilt'),
-              'utf-8'
-            ),
-          },
-          react: {
-            alias: 'virtual:react',
-            contents: await readFile(
-              require.resolve('@tamagui/react-native-prebuilt/react'),
-              'utf-8'
-            ),
-          },
-          'react/jsx-runtime': jsxRuntime,
-          'react/jsx-dev-runtime': jsxRuntime,
-        } as const
-
-        config.plugins.unshift({
-          name: `swap-react-native`,
-          enforce: 'pre',
-
-          resolveId(id) {
-            for (const targetId in virtualModules) {
-              if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
-                const info = virtualModules[targetId]
-                return info.alias
-              }
-            }
-          },
-
-          load(id) {
-            for (const targetId in virtualModules) {
-              const info = virtualModules[targetId as keyof typeof virtualModules]
-              if (id === info.alias) {
-                return info.contents
-              }
-            }
-          },
-        })
-
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
 
