@@ -285,7 +285,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
       resolveId(id) {
         if (id.startsWith('react-native/Libraries')) {
-          console.log('GOGOOGOGO')
           return `virtual:rn-internals:${id}`
         }
 
@@ -348,10 +347,14 @@ export const dev = async (options: CLIResolvedOptions) => {
       build: {
         ssr: false,
         minify: false,
+        commonjsOptions: {
+          transformMixedEsModules: true,
+        },
         rollupOptions: {
           treeshake: false,
           preserveEntrySignatures: 'strict',
           output: {
+            preserveModules: true,
             format: 'cjs',
           },
         },
