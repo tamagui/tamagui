@@ -133,11 +133,17 @@ function MyButton(props) {
 }
 ```
 
-You can pass a second option to disable the shorthands expansion
+You can pass an option to disable the shorthands expansion, and another option to resolve any token strings into their respective theme or token value:
 
 ```tsx
 function MyButton(props) {
-  const activeProps = useProps(props, { disableExpandShorthands: true })
+  const activeProps = useProps(props, {
+    disableExpandShorthands: true,
+    // 'value' resolves to the actual theme/token value on all platforms
+    // 'auto' resolves to CSS variable on web, value on native
+    // 'varaible' resolves to CSS variable on all platforms
+    resolveValues: 'value'
+  })
 }
 ```
 

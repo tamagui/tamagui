@@ -1,3 +1,4 @@
+import { ResolveVariableAs } from '../helpers/propMapper';
 /**
  * Will flatten any media styles down + expand all shorthands.
  *
@@ -6,6 +7,7 @@
  * */
 export declare function useProps<A extends Object>(props: A, opts?: {
     disableExpandShorthands?: boolean;
+    resolveValues?: ResolveVariableAs;
 }): {
     [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key];
 };

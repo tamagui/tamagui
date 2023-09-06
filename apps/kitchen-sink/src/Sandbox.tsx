@@ -1,8 +1,8 @@
 // debug
 // import './wdyr'
 
-import { Stack, createTheme } from '@tamagui/web'
-import { forwardRef, useEffect, useRef } from 'react'
+import { useProps } from '@tamagui/web'
+import { forwardRef, useRef } from 'react'
 import { Platform } from 'react-native'
 import {
   Button,
@@ -20,6 +20,18 @@ import {
 export const Sandbox = () => {
   const theme = useTheme().color.val
   const ref = useRef<any>()
+
+  const props = useProps(
+    {
+      color: '$background',
+      width: '$4',
+    },
+    {
+      resolveValues: 'value',
+    }
+  )
+
+  console.log('props', props)
 
   return (
     <>

@@ -38,7 +38,7 @@ function getDefaultThemeProxied() {
   return cached
 }
 
-type ThemeGettable<Val> = Val & {
+export type ThemeGettable<Val> = Val & {
   get: () =>
     | string
     | (Val extends Variable<infer X>
@@ -50,7 +50,7 @@ type ThemeGettable<Val> = Val & {
         : unknown)
 }
 
-type UseThemeResult = {
+export type UseThemeResult = {
   [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>
 }
 

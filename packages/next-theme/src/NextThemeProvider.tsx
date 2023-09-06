@@ -13,7 +13,7 @@ import { ThemeProviderProps, UseThemeProps } from './UseThemeProps'
 export const NextThemeProvider = memo(
   ({
     forcedTheme,
-    disableTransitionOnChange = true,
+    disableTransitionOnChange = false,
     enableSystem = true,
     enableColorScheme = true,
     storageKey = 'theme',
@@ -30,22 +30,20 @@ export const NextThemeProvider = memo(
   }: ThemeProviderProps) => {
     const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
     const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
-    // const resolvedTheme = React.useDeferredValue(resolvedThemeFast)
     const attrs = !value ? themes : Object.values(value)
 
     const handleMediaQuery = useEvent((e?) => {
-      const systemTheme = getSystemTheme(e)
-      React.startTransition(() => {
-        setResolvedTheme(systemTheme)
-      })
+      const _ = getSystemTheme(e)
+      const update = () => setResolvedTheme(_)
+      if (disableTransitionOnChange) {
+        update()
+      } else {
+        React.startTransition(() => update())
+      }
       if (theme === 'system' && !forcedTheme) {
-        handleChangeTheme(systemTheme, false)
+        handleChangeTheme(_, false)
       }
     })
-
-    // Ref hack to avoid adding handleMediaQuery as a dep
-    const mediaListener = useRef(handleMediaQuery)
-    mediaListener.current = handleMediaQuery
 
     const handleChangeTheme = useEvent(
       (theme, updateStorage = true, updateDOM = true) => {
@@ -79,14 +77,13 @@ export const NextThemeProvider = memo(
     )
 
     useIsomorphicLayoutEffect(() => {
-      const handler = (...args: any) => mediaListener.current(...args)
       // Always listen to System preference
       const media = window.matchMedia(MEDIA)
       // Intentionally use deprecated listener methods to support iOS & old browsers
-      media.addListener(handler)
-      handler(media)
+      media.addListener(handleMediaQuery)
+      handleMediaQuery(media)
       return () => {
-        media.removeListener(handler)
+        media.removeListener(handleMediaQuery)
       }
     }, [])
 
@@ -157,7 +154,6 @@ export const NextThemeProvider = memo(
       set(next)
     })
 
-    const contextResolvedTheme = theme === 'system' ? resolvedTheme : theme
     const systemTheme = (enableSystem ? resolvedTheme : undefined) as
       | 'light'
       | 'dark'
@@ -170,7 +166,7 @@ export const NextThemeProvider = memo(
         set,
         toggle,
         forcedTheme,
-        resolvedTheme: contextResolvedTheme,
+        resolvedTheme: theme === 'system' ? resolvedTheme : theme,
         themes: enableSystem ? [...themes, 'system'] : themes,
         systemTheme,
       } as const
@@ -180,7 +176,7 @@ export const NextThemeProvider = memo(
       set,
       toggle,
       forcedTheme,
-      contextResolvedTheme,
+      resolvedTheme,
       enableSystem,
       themes,
       systemTheme,

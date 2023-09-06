@@ -22,7 +22,7 @@ import type {
 
 import type { Variable } from './createVariable'
 import { StyledContext } from './helpers/createStyledContext'
-import type { ResolveVariableTypes } from './helpers/propMapper'
+import type { ResolveVariableAs } from './helpers/propMapper'
 import { CSSColorNames } from './interfaces/CSSColorNames'
 import { Role } from './interfaces/Role'
 import type { LanguageContextType } from './views/FontLanguage.types'
@@ -1794,7 +1794,7 @@ export type TamaguiComponentState = {
 export type SplitStyleProps = {
   mediaState?: Record<string, boolean>
   noClassNames?: boolean
-  resolveVariablesAs?: ResolveVariableTypes
+  resolveVariablesAs?: ResolveVariableAs
   fallbackProps?: Record<string, any>
   hasTextAncestor?: boolean
   // for animations
