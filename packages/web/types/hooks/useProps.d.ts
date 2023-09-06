@@ -1,4 +1,4 @@
-import { ResolveVariableAs } from '../helpers/propMapper';
+import { ResolveVariableAs } from '../types';
 /**
  * Will flatten any media styles down + expand all shorthands.
  *

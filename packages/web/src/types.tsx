@@ -22,7 +22,6 @@ import type {
 
 import type { Variable } from './createVariable'
 import { StyledContext } from './helpers/createStyledContext'
-import type { ResolveVariableAs } from './helpers/propMapper'
 import { CSSColorNames } from './interfaces/CSSColorNames'
 import { Role } from './interfaces/Role'
 import type { LanguageContextType } from './views/FontLanguage.types'
@@ -1790,6 +1789,8 @@ export type TamaguiComponentState = {
   // for groups:
   group?: Record<string, GroupState>
 }
+
+export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none'
 
 export type SplitStyleProps = {
   mediaState?: Record<string, boolean>
