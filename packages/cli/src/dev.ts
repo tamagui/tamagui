@@ -416,12 +416,10 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
 
           return `
-___modules___["${module.fileName}"] = ((exports, module2) => {
+___modules___["${module.fileName}"] = ((exports, module) => {
   const require = createRequire(${JSON.stringify(importsMap, null, 2)})
 
-  ${module.code
-    .replace(`'use strict';`, '')
-    .replace('module.exports = ', 'module2.exports = ')}
+  ${module.code}
 })
 
 ${
@@ -445,8 +443,8 @@ __require("${module.fileName}")
 
     appCode = appCode
       // this can be done in the individual file transform
-      .replace('undefined.accept(() => {})', '')
-      .replace('undefined.accept(function() {});', '') // swc
+      .replaceAll('undefined.accept(() => {})', '')
+      .replaceAll('undefined.accept(function() {});', '') // swc
       .replace(
         `var require_react_refresh_runtime_development =`,
         `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
