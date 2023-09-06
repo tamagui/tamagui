@@ -14617,13 +14617,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-modules-core@npm:1.5.8":
-  version: 1.5.8
-  resolution: "expo-modules-core@npm:1.5.8"
+"expo-modules-core@npm:1.7.0":
+  version: 1.7.0
+  resolution: "expo-modules-core@npm:1.7.0"
   dependencies:
     compare-versions: ^3.4.0
     invariant: ^2.2.4
-  checksum: 4eedc1f1c4c57707ef1c1b9dc4add3b8ba09880fdc4c89d701ebd53c7dae4b62b2a2898770113c4912b3b073a4389020ec19895d2d3be196b0bbad2d9f15e935
+  checksum: f851d7eb5cda55f918abd9acc5f74c1e842d9429ec92c04e0847cb6e6e541bebbdbbaf8550659c8d88f8e38752274b3dad9cd8c94e171ad2752bbabacb608124
   languageName: node
   linkType: hard
 

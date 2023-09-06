@@ -2,24 +2,13 @@ import Constants from 'expo-constants'
 import { StatusBar } from 'expo-status-bar'
 import React, { Fragment, FunctionComponent, ReactNode } from 'react'
 import { Platform } from 'react-native'
+import { GestureHandlerRootView as _GestureHandlerRootView } from 'react-native-gesture-handler'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import UpstreamNavigationContainer from './fork/NavigationContainer'
+import { useInitializeExpoRouter } from './global-state/router-store'
 import { RequireContext } from './types'
-
-// import { useInitializeExpoRouter } from './global-state/router-store'
-// import { RequireContext } from './types'
-// import { SplashScreen } from './views/Splash'
-// import { SafeAreaProvider } from 'react-native-safe-area-context'
-// import { GestureHandlerRootView as _GestureHandlerRootView } from 'react-native-gesture-handler'
-
-Constants
-StatusBar
-Fragment
-Platform
-// SafeAreaProvider
-// UpstreamNavigationContainer
-// useInitializeExpoRouter
-// SplashScreen
+import { SplashScreen } from './views/Splash'
 
 export type ExpoRootProps = {
   context: RequireContext
@@ -27,27 +16,27 @@ export type ExpoRootProps = {
   wrapper?: FunctionComponent<{ children: ReactNode }>
 }
 
-// function getGestureHandlerRootView() {
-//   try {
-//     if (!_GestureHandlerRootView) {
-//       return React.Fragment
-//     }
+function getGestureHandlerRootView() {
+  try {
+    if (!_GestureHandlerRootView) {
+      return React.Fragment
+    }
 
-//     // eslint-disable-next-line no-inner-declarations
-//     function GestureHandler(props: any) {
-//       return <_GestureHandlerRootView style={{ flex: 1 }} {...props} />
-//     }
-//     if (process.env.NODE_ENV === 'development') {
-//       // @ts-expect-error
-//       GestureHandler.displayName = 'GestureHandlerRootView'
-//     }
-//     return GestureHandler
-//   } catch {
-//     return React.Fragment
-//   }
-// }
+    // eslint-disable-next-line no-inner-declarations
+    function GestureHandler(props: any) {
+      return <_GestureHandlerRootView style={{ flex: 1 }} {...props} />
+    }
+    if (process.env.NODE_ENV === 'development') {
+      // @ts-expect-error
+      GestureHandler.displayName = 'GestureHandlerRootView'
+    }
+    return GestureHandler
+  } catch {
+    return React.Fragment
+  }
+}
 
-// const GestureHandlerRootView = getGestureHandlerRootView()
+const GestureHandlerRootView = getGestureHandlerRootView()
 
 const INITIAL_METRICS = {
   frame: { x: 0, y: 0, width: 0, height: 0 },
@@ -67,17 +56,17 @@ export function ExpoRoot({ wrapper: ParentWrapper = Fragment, ...props }: ExpoRo
   const wrapper: ExpoRootProps['wrapper'] = ({ children }) => {
     return (
       <ParentWrapper>
-        {/* <GestureHandlerRootView> */}
-        {/* <SafeAreaProvider
+        <GestureHandlerRootView>
+          <SafeAreaProvider
             // SSR support
             initialMetrics={INITIAL_METRICS}
-          > */}
-        {children}
+          >
+            {children}
 
-        {/* Users can override this by adding another StatusBar element anywhere higher in the component tree. */}
-        {!hasViewControllerBasedStatusBarAppearance && <StatusBar style="auto" />}
-        {/* </SafeAreaProvider> */}
-        {/* </GestureHandlerRootView> */}
+            {/* Users can override this by adding another StatusBar element anywhere higher in the component tree. */}
+            {!hasViewControllerBasedStatusBarAppearance && <StatusBar style="auto" />}
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
       </ParentWrapper>
     )
   }
@@ -95,25 +84,24 @@ function ContextNavigator({
   location: initialLocation = initialUrl,
   wrapper: WrapperComponent = Fragment,
 }: ExpoRootProps) {
-  // const store = useInitializeExpoRouter(context, initialLocation)
-  const store = {} as any
+  const store = useInitializeExpoRouter(context, initialLocation)
 
-  // if (store.shouldShowTutorial()) {
-  //   SplashScreen.hideAsync()
-  //   if (process.env.NODE_ENV === 'development') {
-  //     const Tutorial = require('./onboard/Tutorial').Tutorial
-  //     return (
-  //       <WrapperComponent>
-  //         <Tutorial />
-  //       </WrapperComponent>
-  //     )
-  //   } else {
-  //     // Ensure tutorial styles are stripped in production.
-  //     return null
-  //   }
-  // }
+  if (store.shouldShowTutorial()) {
+    SplashScreen.hideAsync()
+    if (process.env.NODE_ENV === 'development') {
+      const Tutorial = require('./onboard/Tutorial').Tutorial
+      return (
+        <WrapperComponent>
+          <Tutorial />
+        </WrapperComponent>
+      )
+    } else {
+      // Ensure tutorial styles are stripped in production.
+      return null
+    }
+  }
 
-  const Component = () => null //store.rootComponent
+  const Component = store.rootComponent
 
   return (
     <UpstreamNavigationContainer
