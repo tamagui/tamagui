@@ -300,6 +300,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
       load(id) {
         if (id === 'virtual:rn-internals') {
+          // TODO make this work by modifying our pre built rn and then adapting react-native-template require function to map to the right place:
           return `export default {}
           export const PressabilityDebugView = () => null`
         }
