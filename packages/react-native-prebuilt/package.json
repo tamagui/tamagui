@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-prebuilt",
-  "version": "1.61.0",
+  "version": "1.61.1",
   "main": "react-native.js",
   "license": "MIT",
   "sideEffects": true,
