@@ -41,7 +41,9 @@ const HorizontalTabs = () => {
       <TabsContent value="tab1">
         <ClimbsTab />
       </TabsContent>
-      <TabsContent value="tab2">{/* <MyClimbsTab /> */}</TabsContent>
+      <TabsContent value="tab2">
+        <MyClimbsTab />
+      </TabsContent>
     </Tabs>
   )
 }

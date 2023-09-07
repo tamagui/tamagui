@@ -60,11 +60,10 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
         position="relative"
         height={220}
         padding="$4"
-        // Fix andriod shadow
-        marginHorizontal="$4"
         elevation="$0.5"
         shadowRadius={7}
         shadowOpacity={0.2}
+        jc="flex-start"
         onPress={() => {
           console.log('hiiiiiii')
           onSelect?.(climb)
@@ -72,8 +71,8 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
       >
         <Avatar
           borderColor="$backgroundPress"
-          borderWidth={1}
-          borderStyle="solid"
+          // borderWidth={1}
+          borderStyle="dotted"
           circular
           size="$7"
         >
@@ -110,8 +109,7 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
           </Paragraph>
         </YStack>
 
-        <Spacer size="$3" />
-        <Card.Header f={1}>
+        <Card.Header paddingHorizontal={0} jc="center" ai="flex-start">
           <H3 textTransform="uppercase" size="$5">
             {climb.climber.first_name ?? 'unknown climber'}
           </H3>
@@ -212,17 +210,7 @@ export const SheetDemo = ({
       break
     }
   }
-  const config = {
-    name: '[Reminder] Test the Add to Calendar Button',
-    description:
-      'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
-    startDate: '2023-09-07',
-    startTime: '10:15',
-    endTime: '23:30',
-    options: ['Google|My custom label', 'iCal'],
-    timeZone: 'America/Los_Angeles',
-  }
-  console.log(climb)
+
   const reminderConfig = {
     name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
     description: climb?.name ?? '',
@@ -249,8 +237,6 @@ export const SheetDemo = ({
     options: ['Google', 'iCal'],
     timeZone: 'America/Los_Angeles',
   }
-
-  console.log('reminder', reminderConfig, 'config', config)
 
   return (
     <Theme name={color}>
@@ -317,8 +303,8 @@ export const SheetDemo = ({
                 themeInverse
                 borderRadius="$3"
                 elevation="$1"
-                shadowRadius={6}
-                shadowOpacity={0.1}
+                shadowRadius={10}
+                shadowOpacity={0.9}
                 onPress={async () => {
                   setOpen(false)
                   if (!climb) return

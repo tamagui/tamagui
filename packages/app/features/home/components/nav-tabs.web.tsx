@@ -60,7 +60,7 @@ export const NavTabs = (props: TabsProps) => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {activeAt && (
+        {/* {activeAt && (
           <TabsRovingIndicator
             zIndex={1}
             key="active-indicator"
@@ -81,9 +81,9 @@ export const NavTabs = (props: TabsProps) => {
                   width: activeAt.width,
                 })}
           />
-        )}
+        )} */}
       </AnimatePresence>
-      <Tabs.List
+      {/* <Tabs.List
         unstyled
         aria-label="Navigate through the pages"
         disablePassBorderRadius
@@ -95,7 +95,7 @@ export const NavTabs = (props: TabsProps) => {
         <Tab value="/" onInteraction={handleOnInteraction}>
           Home
         </Tab>
-      </Tabs.List>
+      </Tabs.List> */}
     </Tabs>
   )
 }
