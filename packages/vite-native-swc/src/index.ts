@@ -40,12 +40,58 @@ export default (_options?: Options): PluginOption[] => {
       : undefined,
   }
 
+  const hasTransformed = {}
+
   return [
     {
       name: 'vite:react-swc',
-      config: () => ({
-        esbuild: false,
-      }),
+
+      config: (config) => {
+        return {
+          esbuild: false,
+
+          build: {
+            // idk why i need both..
+            rollupOptions: {
+              plugins: [
+                {
+                  name: `native-transform`,
+
+                  async transform(code, id) {
+                    let out = await transform(code, {
+                      filename: id,
+                      swcrc: false,
+                      configFile: false,
+                      sourceMaps: true,
+                      jsc: {
+                        target: 'es5',
+                        parser: id.endsWith('.tsx')
+                          ? { syntax: 'typescript', tsx: true, decorators: true }
+                          : id.endsWith('.ts')
+                          ? { syntax: 'typescript', tsx: false, decorators: true }
+                          : id.endsWith('.jsx')
+                          ? { syntax: 'ecmascript', jsx: true }
+                          : { syntax: 'ecmascript' },
+                        transform: {
+                          useDefineForClassFields: true,
+                          react: {
+                            development: true,
+                            runtime: 'automatic',
+                          },
+                        },
+                      },
+                    })
+
+                    hasTransformed[id] = true
+                    return out
+                  },
+                },
+              ],
+            },
+          },
+        }
+      },
+
       configResolved(config) {
         const mdxIndex = config.plugins.findIndex((p) => p.name === '@mdx-js/rollup')
         if (
@@ -62,11 +108,14 @@ export default (_options?: Options): PluginOption[] => {
           )
         }
       },
+
       async transform(code, _id, transformOptions) {
+        if (hasTransformed[_id]) return
         if (_id.includes(`virtual:`)) {
           return
         }
         const out = await swcTransform(_id, code, options)
+        hasTransformed[_id] = true
         return out
       },
     },
@@ -81,18 +130,12 @@ export async function swcTransform(_id: string, code: string, options: Options) 
   // only change for now:
   const refresh = true
 
-  const result = await transformWithOptions(
-    id,
-    code,
-    code.includes('class ') ? 'es5' : 'es2016',
-    options,
-    {
-      refresh,
-      development: true,
-      runtime: 'automatic',
-      importSource: options.jsxImportSource,
-    }
-  )
+  const result = await transformWithOptions(id, code, 'es5', options, {
+    refresh,
+    development: true,
+    runtime: 'automatic',
+    importSource: options.jsxImportSource,
+  })
 
   if (!result) {
     return
