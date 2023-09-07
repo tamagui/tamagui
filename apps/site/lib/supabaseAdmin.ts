@@ -258,9 +258,11 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
     typeof session.customer === 'string' ? session.customer : session.customer!.id
   for (const price of prices) {
     if (typeof price.product === 'string' || price.product.deleted) {
+      console.warn('no product object - returning')
       continue
     }
     if (!price.product.metadata.has_renewals) {
+      console.warn('no has_renewals metadata found - returning')
       continue
     }
     let renewalPriceId = price.metadata.renewal_price_id
