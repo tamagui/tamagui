@@ -46,6 +46,12 @@ A URL friendly text that may be used for querying. e.g. universal-starter, icon-
 
 If present, we will hide the price from the site
 
+#### `renewal_price_id`
+
+Set on one-time prices to reference a recurring price. If `has_renewals` is set on the one-time price, we automatically create the recurring price and reference its id under this metadata key.
+
+IMPORTANT: Don't just remove auto-generated prices. If you want to remove them, make sure to remove this metadata on the one-time price as well.
+
 ## Special Promotion Code
 
 The active promotion code called "SITE" will be shown on the takeout landing page.
