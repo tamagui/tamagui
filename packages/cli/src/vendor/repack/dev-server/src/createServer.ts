@@ -42,14 +42,12 @@ export async function createServer(config: Server.Config) {
   })
 
   async function startServer() {
-    console.log('starting')
     const serverPath = join(config.options.rootDir, 'server.ts')
     if (await pathExists(serverPath)) {
       const { register } = require('esbuild-register/dist/node')
       const { unregister } = register()
       try {
         const serverEndpoint = require(serverPath).default
-        console.log('got server endpoint', serverEndpoint)
         serverEndpoint(instance)
       } finally {
         unregister()

@@ -50,27 +50,13 @@ export default function TamaguiViteTalk() {
           Slide1,
           () => (
             <Slide
-              theme="orange"
-              steps={[
-                [
-                  {
-                    type: 'callout',
-                    size: '$15',
-                    content: `What if we could...`,
-                  },
-                ],
-              ]}
-            />
-          ),
-          () => (
-            <Slide
               theme="yellow"
               steps={[
                 [
                   {
                     type: 'callout',
-                    size: '$15',
-                    content: `Write native and web apps with...`,
+                    size: '$13',
+                    content: `What if... we could write native and web apps with`,
                   },
                 ],
               ]}
@@ -112,7 +98,7 @@ export default function TamaguiViteTalk() {
                   {
                     type: 'callout',
                     size: '$15',
-                    content: `...a single set of routes...`,
+                    content: `...a single set of file routes...`,
                   },
                 ],
               ]}
@@ -126,27 +112,55 @@ export default function TamaguiViteTalk() {
                   {
                     type: 'callout',
                     size: '$14',
-                    content: `...and a single data abstraction...`,
-                  },
-                ],
-              ]}
-            />
-          ),
-          () => (
-            <Slide
-              theme="red"
-              steps={[
-                [
-                  {
-                    type: 'callout',
-                    size: '$15',
-                    content: `...without sacrifice?`,
+                    content: `...and (maybe) a single data abstraction...`,
                   },
                 ],
               ]}
             />
           ),
           () => <Slide title="How?" theme="purple" steps={[bp4, bp3, bp1, bp2]} />,
+          () => (
+            <Slide
+              theme="pink"
+              steps={[
+                [
+                  {
+                    type: 'horizontal',
+                    content: [
+                      {
+                        type: 'code-inline',
+                        props: {
+                          fontSize: 200,
+                        },
+                        content: 'V',
+                      },
+                      {
+                        type: 'code-inline',
+                        props: {
+                          fontSize: 200,
+                        },
+                        content: 'E',
+                      },
+                      {
+                        type: 'code-inline',
+                        props: {
+                          fontSize: 200,
+                        },
+                        content: 'R',
+                      },
+                      {
+                        type: 'code-inline',
+                        props: {
+                          fontSize: 200,
+                        },
+                        content: 'T',
+                      },
+                    ],
+                  },
+                ],
+              ]}
+            />
+          ),
         ]}
       />
     </YStack>
@@ -166,7 +180,10 @@ const bp1 = [
       },
       {
         type: 'text',
-        content: 'Single platform for native and web.',
+        props: {
+          fontSize: 60,
+        },
+        content: 'Single platform.',
       },
     ],
   } satisfies SlideStepItem,
@@ -185,7 +202,10 @@ const bp2 = [
       },
       {
         type: 'text',
-        content: 'Single performant UI kit for native and web.',
+        props: {
+          fontSize: 60,
+        },
+        content: 'Single performant UI kit.',
       },
     ],
   } satisfies SlideStepItem,
@@ -204,7 +224,10 @@ const bp3 = [
       },
       {
         type: 'text',
-        content: 'Single file system routes for native and web.',
+        props: {
+          fontSize: 60,
+        },
+        content: 'Single FS routes.',
       },
     ],
   } satisfies SlideStepItem,
@@ -223,7 +246,10 @@ const bp4 = [
       },
       {
         type: 'text',
-        content: 'Single bundler for native and web.',
+        props: {
+          fontSize: 60,
+        },
+        content: 'Single bundler.',
       },
     ],
   } satisfies SlideStepItem,
