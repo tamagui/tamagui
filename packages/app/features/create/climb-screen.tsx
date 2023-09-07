@@ -126,6 +126,11 @@ export function getTimeSelections(
       hours: 22,
       minutes: 30,
     })
+
+    weekendEnd = add(currentStartOfDay, {
+      hours: 21,
+      minutes: 30,
+    }) // 9:30PM
   }
 
   const formattedDayOfWeek = format(day, 'EEEE').toLowerCase()
