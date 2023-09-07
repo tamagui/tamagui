@@ -17,14 +17,16 @@ type PayloadShape = {
 /**
  * checks is the user has sponsor access and sets a jwt cookie for subsequent requests to be faster
  */
-export async function getSponsorData({
+export async function checkSponsorAccess({
   req,
   res,
   supabase,
+  throwIfNoAccess = false,
 }: {
   req: NextApiRequest
   res: NextApiResponse
   supabase: SupabaseClient<Database>
+  throwIfNoAccess?: boolean
 }): Promise<PayloadShape> {
   const oldJwt = getCookie(STUDIO_COOKIE_NAME, { req, res })
   if (oldJwt) {
@@ -43,6 +45,13 @@ export async function getSponsorData({
   const teams = getArray(teamsResult.data)
   const teamsWithAccess = teams.filter((team) => team.is_active)
   const hasStudioAccess = teamsWithAccess.length > 0
+
+  if (throwIfNoAccess && !hasStudioAccess) {
+    res.status(403).json({
+      message: "You don't have access to this part of the studio.",
+    })
+    throw new Error('User does not have access to studio.')
+  }
 
   const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }
   const newJwt = jwt.sign(payload, JWT_SECRET)
