@@ -2,10 +2,17 @@ import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 // @ts-ignore
 import { Platform, RootTagContext } from 'react-native'
-import { createPortal } from 'react-native/Libraries/Renderer/shims/ReactNative'
 
 import { PortalItem } from './GorhomPortal'
 import { PortalProps } from './PortalProps'
+
+const isFabric = global?.nativeFabricUIManager
+let createPortal
+if (isFabric) {
+  createPortal = require('react-native/Libraries/Renderer/shims/ReactFabric').createPortal
+} else {
+  createPortal = require('react-native/Libraries/Renderer/shims/ReactNative').createPortal
+}
 
 export const Portal = (props: PortalProps) => {
   const rootTag = React.useContext(RootTagContext)
