@@ -8,5 +8,5 @@
  * @format
  */
 export type PressResponderConfig = any;
-export declare function usePressEvents(config?: any): any;
+export declare function usePressEvents(hostRef: any, config?: any): any;
 //# sourceMappingURL=index.d.ts.map
