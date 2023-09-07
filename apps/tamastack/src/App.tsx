@@ -1,6 +1,6 @@
-import { TamaguiProvider } from '@tamagui/core'
 import { ExpoRoot } from '@tamagui/expo-router'
 import { useEffect, useState } from 'react'
+import { Button, TamaguiProvider } from 'tamagui'
 
 import { default as config } from './tamagui.config'
 

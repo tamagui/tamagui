@@ -62,7 +62,8 @@ function createRequire(importsMap) {
         return foundGlob
       }
       
-      throw new Error(`Not found: ${_mod} => ${absPath}`);
+      console.error(`Not found: ${_mod}`);
+      return {}
     } catch (err) {
       throw new Error(`\n◆ ${_mod} "${err}"`.replace('Error: ', '').replaceAll('"', ''));
     }

@@ -1,5 +1,5 @@
-import { Stack, Text } from '@tamagui/core'
 import { Link } from '@tamagui/expo-router'
+import { Button, Stack, Text } from 'tamagui'
 
 export default () => (
   <>
@@ -7,12 +7,13 @@ export default () => (
       <Text>hi from home</Text>
     </Stack>
     <Link
+      asChild
       href={{
         pathname: '/[user]',
         params: { user: 'abc' },
       }}
     >
-      Go to "other"
+      <Button>Go to "other"</Button>
     </Link>
   </>
 )

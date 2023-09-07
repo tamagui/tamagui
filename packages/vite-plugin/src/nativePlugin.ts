@@ -116,6 +116,38 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
         // }
 
         config.build.rollupOptions.plugins.push({
+          name: `native-transform`,
+
+          async transform(code, id) {
+            let out = await transform(code, {
+              filename: id,
+              swcrc: false,
+              configFile: false,
+              sourceMaps: true,
+              jsc: {
+                target: 'es5',
+                parser: id.endsWith('.tsx')
+                  ? { syntax: 'typescript', tsx: true, decorators: true }
+                  : id.endsWith('.ts')
+                  ? { syntax: 'typescript', tsx: false, decorators: true }
+                  : id.endsWith('.jsx')
+                  ? { syntax: 'ecmascript', jsx: true }
+                  : { syntax: 'ecmascript' },
+                transform: {
+                  useDefineForClassFields: true,
+                  react: {
+                    development: true,
+                    runtime: 'automatic',
+                  },
+                },
+              },
+            })
+
+            return out
+          },
+        })
+
+        config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
 
           async transform(code, id) {
@@ -161,38 +193,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
             } catch (err) {
               console.warn(`Error forcing exports, probably ok`, id)
             }
-          },
-        })
-
-        config.build.rollupOptions.plugins.push({
-          name: `native-transform`,
-
-          async transform(code, id) {
-            let out = await transform(code, {
-              filename: id,
-              swcrc: false,
-              configFile: false,
-              sourceMaps: true,
-              jsc: {
-                target: 'es5',
-                parser: id.endsWith('.tsx')
-                  ? { syntax: 'typescript', tsx: true, decorators: true }
-                  : id.endsWith('.ts')
-                  ? { syntax: 'typescript', tsx: false, decorators: true }
-                  : id.endsWith('.jsx')
-                  ? { syntax: 'ecmascript', jsx: true }
-                  : { syntax: 'ecmascript' },
-                transform: {
-                  useDefineForClassFields: true,
-                  react: {
-                    development: true,
-                    runtime: 'automatic',
-                  },
-                },
-              },
-            })
-
-            return out
           },
         })
       }

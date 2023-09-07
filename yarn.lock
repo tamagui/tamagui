@@ -7240,6 +7240,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native: ^0.72.1
+    tamagui: 1.61.1
   languageName: unknown
   linkType: soft
 
