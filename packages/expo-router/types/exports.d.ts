@@ -6,7 +6,6 @@ export { withLayoutContext } from './layouts/withLayoutContext';
 export { Navigator, Slot };
 export { ExpoRoot } from './ExpoRoot';
 export { Unmatched } from './views/Unmatched';
-export { ErrorBoundaryProps } from './views/Try';
 export { ErrorBoundary } from './views/ErrorBoundary';
 export { SplashScreen } from './views/Splash';
 export { useNavigation } from './useNavigation';

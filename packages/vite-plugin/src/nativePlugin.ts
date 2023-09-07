@@ -5,6 +5,7 @@ import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
+import commonjs from 'vite-plugin-commonjs'
 
 import { extensions } from './extensions'
 import { getVitePath } from './getVitePath'
@@ -90,6 +91,14 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       if (options.mode === 'build') {
         config.plugins ||= []
 
+        config.plugins.push(
+          commonjs({
+            filter: (id) => {
+              return id.includes('react-native-screens/lib/module')
+            },
+          })
+        )
+
         // https://vitejs.dev/config/dep-optimization-options.html
         // config.build.commonjsOptions ||= {}
         // config.build.commonjsOptions.include = []
@@ -159,19 +168,6 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
           name: `native-transform`,
 
           async transform(code, id) {
-            if (
-              id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
-              id.includes(`node_modules/react/index.js`) ||
-              id.includes(`node_modules/react/cjs/react.development.js`) ||
-              id.includes(`node_modules/react-native/index.js`) ||
-              id.includes(
-                `node_modules/react/cjs/react-jsx-dev-runtime.development.js`
-              ) ||
-              id.includes(`packages/vite-native-client/`)
-            ) {
-              return
-            }
-
             let out = await transform(code, {
               filename: id,
               swcrc: false,

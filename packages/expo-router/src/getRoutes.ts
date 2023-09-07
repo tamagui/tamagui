@@ -10,6 +10,9 @@ import {
 } from './matchers'
 import type { DynamicConvention, RouteNode } from './Route'
 import type { RequireContext } from './types'
+import { DefaultNavigator } from './views/Navigator'
+import * as SitemapAll from './views/Sitemap'
+import { Unmatched } from './views/Unmatched'
 
 export type FileNode = Pick<RouteNode, 'contextKey' | 'loadRoute'> & {
   /** Like `(tab)/index` */
@@ -421,7 +424,7 @@ function appendSitemapRoute(routes: RouteNode) {
   ) {
     return routes
   }
-  const { Sitemap, getNavOptions } = require('./views/Sitemap')
+  const { Sitemap, getNavOptions } = SitemapAll
   routes.children.push({
     loadRoute() {
       return { default: Sitemap, getNavOptions }
@@ -442,7 +445,7 @@ function appendUnmatchedRoute(routes: RouteNode) {
   if (!userDefinedDynamicRoute) {
     routes.children.push({
       loadRoute() {
-        return { default: require('./views/Unmatched').Unmatched }
+        return { default: Unmatched }
       },
       route: '[...404]',
       contextKey: './[...404].tsx',
@@ -490,8 +493,7 @@ function withOptionalRootLayout(routes: RouteNode[] | null): RouteNode | null {
 
   return {
     loadRoute: () => ({
-      default: (require('./views/Navigator') as typeof import('./views/Navigator'))
-        .DefaultNavigator,
+      default: DefaultNavigator,
     }),
     // Generate a fake file name for the directory
     contextKey: './_layout.tsx',

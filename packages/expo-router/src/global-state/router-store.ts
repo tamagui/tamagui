@@ -64,6 +64,8 @@ export class RouterStore {
 
     this.routeNode = getRoutes(context)
 
+    if (this.routeNode) console.log('got', Object.keys(this.routeNode))
+
     this.rootComponent = this.routeNode
       ? getQualifiedRouteComponent(this.routeNode)
       : Fragment

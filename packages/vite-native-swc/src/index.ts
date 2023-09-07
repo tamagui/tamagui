@@ -63,14 +63,7 @@ export default (_options?: Options): PluginOption[] => {
         }
       },
       async transform(code, _id, transformOptions) {
-        if (
-          _id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
-          _id.includes(`node_modules/react/index.js`) ||
-          _id.includes(`node_modules/react/cjs/react.development.js`) ||
-          _id.includes(`node_modules/react-native/index.js`) ||
-          _id.includes(`node_modules/react/cjs/react-jsx-dev-runtime.development.js`) ||
-          _id.includes(`packages/vite-native-client/`)
-        ) {
+        if (_id.includes(`virtual:`)) {
           return
         }
         const out = await swcTransform(_id, code, options)
@@ -88,12 +81,18 @@ export async function swcTransform(_id: string, code: string, options: Options) 
   // only change for now:
   const refresh = true
 
-  const result = await transformWithOptions(id, code, 'es5', options, {
-    refresh,
-    development: true,
-    runtime: 'automatic',
-    importSource: options.jsxImportSource,
-  })
+  const result = await transformWithOptions(
+    id,
+    code,
+    code.includes('class ') ? 'es5' : 'es2016',
+    options,
+    {
+      refresh,
+      development: true,
+      runtime: 'automatic',
+      importSource: options.jsxImportSource,
+    }
+  )
 
   if (!result) {
     return

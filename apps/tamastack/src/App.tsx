@@ -1,5 +1,4 @@
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
-import { Stack, TamaguiProvider, Text } from '@tamagui/core'
+import { TamaguiProvider } from '@tamagui/core'
 import { ExpoRoot } from '@tamagui/expo-router'
 import { useEffect, useState } from 'react'
 
@@ -8,48 +7,47 @@ import { default as config } from './tamagui.config'
 // @ts-ignore
 const modules = import.meta.glob('../app/**/*.tsx')
 
-console.log('ExpoRoot', ExpoRoot)
-
 export function App() {
-  const [Home, setHome] = useState<any>(null)
+  const context = useExpoContext(modules)
 
-  useEffect(() => {
-    const home = modules['../app/home.tsx']()
-    home.then((res) => {
-      setHome(res.default)
-    })
-  }, [])
+  if (!context) {
+    return null
+  }
 
   return (
-    <NavigationContainer linking={linking}>
-      <TamaguiProvider config={config}>
-        <Stack
-          f={1}
-          w="100%"
-          h="100%"
-          ai="center"
-          jc="center"
-          als="center"
-          m="auto"
-          bg="#B3FF00"
-        >
-          <Text color="#AA12A2" fow="800" fos={100} ta="center">
-            💥2
-          </Text>
-
-          {Home ? Home : null}
-        </Stack>
-      </TamaguiProvider>
-    </NavigationContainer>
+    <TamaguiProvider config={config}>
+      <ExpoRoot context={context} />
+    </TamaguiProvider>
   )
 }
 
-const linking = {
-  prefixes: [
-    /* your linking prefixes */
-  ],
-  config: {
-    screens: {},
-    /* configuration for matching screens with paths */
-  },
-} satisfies LinkingOptions<any>
+// for some reason putting it in state doesnt even re-render
+let ctx
+function useExpoContext(modules: any) {
+  const [_, setState] = useState(0)
+
+  useEffect(() => {
+    async function run() {
+      // make it look like webpack context
+      const modulesSync = {}
+      await Promise.all(
+        Object.keys(modules).map(async (path) => {
+          modulesSync[path.replace('../app/', './')] = await modules[path]()
+        })
+      )
+      const moduleKeys = Object.keys(modulesSync)
+      function next(id: string) {
+        return modulesSync[id]
+      }
+      next.keys = () => moduleKeys
+      next.id = ''
+      next.resolve = (id: string) => id
+      ctx = next
+      setState(Math.random())
+    }
+
+    run()
+  }, [])
+
+  return ctx
+}
