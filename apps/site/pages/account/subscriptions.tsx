@@ -62,9 +62,15 @@ const Subscriptions = () => {
       <H2>Subscriptions</H2>
       <YStack gap="$8">
         {subscriptions.length === 0 && (
-          <Paragraph ta="center" theme="alt1">
-            You don't have any subscriptions.
-          </Paragraph>
+          <YStack gap="$1">
+            <Paragraph ta="center" theme="alt1">
+              You don't have any subscriptions.
+            </Paragraph>
+            <Paragraph ta="center" theme="alt2">
+              You may need to refresh your page after a few seconds to see the new
+              subscriptions.
+            </Paragraph>
+          </YStack>
         )}
         {subscriptions.map((sub) => {
           return <SubscriptionDetail key={sub.id} subscription={sub} />

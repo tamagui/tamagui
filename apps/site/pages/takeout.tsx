@@ -2891,15 +2891,21 @@ const getTakeoutProducts = async (): Promise<TakeoutPageProps> => {
   return {
     starter: {
       ...products[0].data!,
-      prices: getArray(products[0].data!.prices!).filter((p) => p.active),
+      prices: getArray(products[0].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
     },
     iconsPack: {
       ...products[1].data!,
-      prices: getArray(products[1].data!.prices!).filter((p) => p.active),
+      prices: getArray(products[1].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
     },
     fontsPack: {
       ...products[2].data!,
-      prices: getArray(products[2].data!.prices!).filter((p) => p.active),
+      prices: getArray(products[2].data!.prices!).filter(
+        (p) => p.active && !(p.metadata as Record<string, any>).hide_from_lists
+      ),
     },
     coupon,
   }
