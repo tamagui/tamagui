@@ -14,6 +14,7 @@
     "@tamagui/shorthands": "1.61.1",
     "@tamagui/themes": "1.61.1",
     "@tamagui/vite-native-client": "1.61.1",
+    "grats": "^0.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.72.1",

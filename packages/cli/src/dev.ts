@@ -57,25 +57,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     mode: 'development',
     clearScreen: false,
 
-    // for expo-router
-    // optimizeDeps: {
-    //   disabled: false,
-    //   include: [
-    //     'escape-string-regexp',
-    //     'use-latest-callback',
-    //     'react-is',
-    //     'color',
-    //     'warn-once',
-    //     '@bacons/react-views',
-    //     'invariant',
-    //     'compare-versions',
-    //     'expo-constants',
-    //     'url-parse',
-    //     'qs',
-    //     '@expo/metro-runtime',
-    //   ],
-    // },
-
     plugins: [
       ...plugins,
 
