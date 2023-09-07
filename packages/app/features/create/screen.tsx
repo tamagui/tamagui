@@ -105,13 +105,13 @@ export const CreateScreen = () => {
   return (
     <SchemaForm
       onSubmit={(bag) => {
-        createClimbMutation.mutate({
-          name: bag.name,
-          type: bag.type,
-          start: bag.start,
-          duration: bag.duration,
-          location: bag.location,
-        })
+        // createClimbMutation.mutate({
+        //   name: bag.name,
+        //   type: bag.type,
+        //   start: bag.start,
+        //   duration: bag.duration,
+        //   location: bag.location,
+        // })
       }}
       schema={z.object({
         name: formFields.text.min(10).describe('Name // Afternoon Top Rope 5.9+'),
@@ -124,7 +124,7 @@ export const CreateScreen = () => {
       defaultValues={{
         name: '',
         // start: getTimeSelections(new Date(), 15)[0].value,
-        duration: getDurationSelections()[1].value,
+        duration: getDurationSelections()?.[1]?.value,
         location: 'gowanus',
         type: 'top_rope',
       }}

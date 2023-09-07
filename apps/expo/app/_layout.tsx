@@ -18,13 +18,13 @@ export default function HomeLayout() {
   })
 
   const [sessionLoadAttempted, setSessionLoadAttempted] = useState(false)
-  const [initialSession, setInitialSession] = useState<Session | null>(null)
+  const [initialSession, setInitialSession] = useState<Session>()
   useEffect(() => {
     supabase.auth
       .getSession()
       .then(({ data }) => {
         if (data) {
-          setInitialSession(data.session)
+          setInitialSession(data?.session ?? undefined)
         }
       })
       .finally(() => {

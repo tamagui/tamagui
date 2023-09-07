@@ -6,7 +6,7 @@ import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@my/supabase/types'
 
 export type AuthProviderProps = {
-  initialSession?: Session
+  initialSession: Session | undefined
   children?: React.ReactNode
 }
 
