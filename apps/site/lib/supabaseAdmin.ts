@@ -197,13 +197,14 @@ export const manageSubscriptionStatusChange = async (
       subscription.default_payment_method as Stripe.PaymentMethod
     )
   }
-  const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
 
-  if (createAction && renewalCouponId) {
-    await stripe.subscriptions.update(subscription.id, {
-      coupon: renewalCouponId,
-    })
-  }
+  // legacy way of handling 50% renewals:
+  // const renewalCouponId = process.env.TAKEOUT_RENEWAL_COUPON_ID
+  // if (createAction && renewalCouponId) {
+  //   await stripe.subscriptions.update(subscription.id, {
+  //     coupon: renewalCouponId,
+  //   })
+  // }
 
   if (createAction) {
     const user = await supabaseAdmin.auth.admin.getUserById(customerData.id)
