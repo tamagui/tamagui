@@ -265,6 +265,43 @@ export interface Database {
         }
         Relationships: []
       }
+      studio_themes: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: number
+          team_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          id?: number
+          team_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          id?: number
+          team_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_themes_team_id_fkey"
+            columns: ["team_id"]
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_themes_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       subscription_items: {
         Row: {
           id: string
