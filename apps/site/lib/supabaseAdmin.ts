@@ -45,7 +45,7 @@ export const upsertPriceRecord = async (price: Stripe.Price) => {
     currency: price.currency,
     description: price.nickname ?? undefined,
     type: price.type,
-    unit_amount: price.unit_amount! / 2, // 50%
+    unit_amount: price.unit_amount!,
     interval: price.recurring?.interval,
     interval_count: price.recurring?.interval_count,
     trial_period_days: price.recurring?.trial_period_days,
@@ -272,7 +272,7 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
         currency: 'USD',
         nickname: `Subscription for ${price.id} (Auto-generated)`,
         recurring: { interval: 'year', interval_count: 1 },
-        unit_amount: price.unit_amount ?? undefined,
+        unit_amount: price.unit_amount! / 2, // 50%
         metadata: {
           hide_from_lists: 1,
         },
