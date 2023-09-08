@@ -1,6 +1,6 @@
 import { SizeTokens, getVariableValue, styled } from '@tamagui/core'
 import { getSize } from '@tamagui/get-token'
-import { ThemeableStack, XStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 
 import { SwitchContext, createSwitch } from './createSwitch'
 
@@ -38,7 +38,7 @@ const getSwitchHeight = (val: SizeTokens) =>
 
 const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
-export const SwitchFrame = styled(XStack, {
+export const SwitchFrame = styled(YStack, {
   name: 'Switch',
   tag: 'button',
   context: SwitchContext,
