@@ -56,8 +56,6 @@ export function HeroContainer({
       py={50}
       pos="relative"
       minHeight={300}
-      contain="paint layout"
-      y={0}
       borderRadius="$4"
       {...(noPad && {
         py: 0,
