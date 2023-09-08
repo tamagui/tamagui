@@ -6,11 +6,8 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*",
-    "apps/starter/apps/*",
-    "apps/starter/packages/*",
-    "takeout/*"
+    "./apps/*",
+    "./packages/*"
   ],
   "packageManager": "yarn@3.5.0",
   "scripts": {
