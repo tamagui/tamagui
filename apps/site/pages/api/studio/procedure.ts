@@ -1,18 +1,22 @@
+import { apiRoute } from '@lib/apiRoute'
 import { setupCors } from '@lib/cors'
 import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import * as apis from '@tamagui/studio/api'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   setupCors(req, res)
   const { supabase } = await protectApiRoute({ req, res })
-  await checkSponsorAccess({
+  const { hasStudioAccess } = await checkSponsorAccess({
     req,
     res,
     supabase,
-    throwIfNoAccess: true,
   })
+  if (!hasStudioAccess) {
+    res.status(403).json({
+      message: "You don't have access to this part of the studio.",
+    })
+  }
 
   const procedureName = req.query.procedure
 
@@ -35,6 +39,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   res.status(405).json({})
-}
-
-export default handler
+})

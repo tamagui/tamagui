@@ -1,9 +1,9 @@
-import { apiRoute, protectApiRoute } from '@lib/protectApiRoute'
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
-import { NextApiHandler } from 'next'
 import { tiersPriority } from 'protected/constants'
 
 export type UserContextType = {

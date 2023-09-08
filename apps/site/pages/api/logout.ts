@@ -1,7 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { session, supabase } = await protectApiRoute({ req, res })
   const user = session?.user
 
@@ -11,6 +12,4 @@ const handler: NextApiHandler = async (req, res) => {
 
   await supabase.auth.signOut()
   res.redirect('/login')
-}
-
-export default handler
+})

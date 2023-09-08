@@ -1,9 +1,9 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { NextApiHandler } from 'next'
 import Stripe from 'stripe'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { supabase } = await protectApiRoute({ req, res })
   const subId = req.body['subscription_id']
   if (typeof subId === 'undefined') {
@@ -41,6 +41,4 @@ const handler: NextApiHandler = async (req, res) => {
       res.status(error.statusCode || 500).json({ message: error.message })
     }
   }
-}
-
-export default handler
+})

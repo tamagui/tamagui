@@ -1,8 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
 import { Session } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
 
@@ -19,7 +19,7 @@ async function githubTokenSync(session: Session) {
   return token
 }
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { session, user } = await protectApiRoute({ req, res })
 
   const [userGithubToken] = await Promise.all([githubTokenSync(session)])
@@ -188,6 +188,4 @@ const handler: NextApiHandler = async (req, res) => {
   //   } satisfies UserAccessStatus)
 
   res.json({ done: true })
-}
-
-export default handler
+})

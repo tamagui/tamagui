@@ -1,14 +1,13 @@
+import { apiRoute } from '@lib/apiRoute'
 import { setupCors } from '@lib/cors'
 import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import type { ThemeRow } from '@tamagui/studio/src/store/tb-store'
-import { NextApiHandler } from 'next'
 
 export type StoreData = Array<{
   themes: Record<string, ThemeRow>
 }>
-
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   setupCors(req, res)
   const { supabase, user } = await protectApiRoute({ req, res })
   const { teamId } = await checkSponsorAccess({
@@ -48,6 +47,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
   console.log('store state: ', JSON.stringify(body, null, 2))
   res.json({ message: 'successfully saved' })
-}
-
-export default handler
+})

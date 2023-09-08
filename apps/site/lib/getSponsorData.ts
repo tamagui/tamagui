@@ -3,6 +3,7 @@ import { getCookie, setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { HandledResponseTermination } from './apiRoute'
 import { Database } from './supabase-types'
 import { getArray } from './supabase-utils'
 
@@ -52,7 +53,7 @@ export async function checkSponsorAccess({
     res.status(403).json({
       message: "You don't have access to this part of the studio.",
     })
-    return payload
+    throw new HandledResponseTermination("User doesn't have access to studio.")
   }
 
   const newJwt = jwt.sign(payload, JWT_SECRET)

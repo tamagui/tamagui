@@ -1,8 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   await protectApiRoute({ req, res })
 
   if (typeof req.query.subscription_item_id !== 'string') {
@@ -21,6 +21,4 @@ const handler: NextApiHandler = async (req, res) => {
   if (data?.id) {
     res.redirect(`https://github.com/apps/tamaguibot/installations/new?state=${data.id}`)
   }
-}
-
-export default handler
+})

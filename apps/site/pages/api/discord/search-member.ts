@@ -1,8 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { TAMAGUI_DISCORD_GUILD_ID, discordClient } from '@lib/discord'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   await protectApiRoute({ req, res })
 
   const query = req.query.query
@@ -20,6 +20,4 @@ const handler: NextApiHandler = async (req, res) => {
   )
 
   res.json(results)
-}
-
-export default handler
+})

@@ -1,9 +1,9 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { NextApiHandler } from 'next'
 
 // is called after bot is installed
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { supabase } = await protectApiRoute({ req, res })
 
   let state: number
@@ -68,6 +68,4 @@ const handler: NextApiHandler = async (req, res) => {
       github_app_installed: '1',
     })}`
   )
-}
-
-export default handler
+})

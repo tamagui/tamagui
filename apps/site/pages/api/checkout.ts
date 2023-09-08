@@ -1,5 +1,6 @@
+import { apiRoute } from '@lib/apiRoute'
 import { getURL } from '@lib/helpers'
-import { apiRoute, protectApiRoute } from '@lib/protectApiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
 

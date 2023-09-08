@@ -1,8 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { supabase } = await protectApiRoute({ req, res })
 
   const subItemId = req.body['subscription_item_id']
@@ -33,6 +33,4 @@ const handler: NextApiHandler = async (req, res) => {
   if (deleted) {
     res.json({ message: 'deleted successfully' })
   }
-}
-
-export default handler
+})

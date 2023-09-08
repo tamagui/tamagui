@@ -1,9 +1,9 @@
+import { apiRoute } from '@lib/apiRoute'
 import { claimProductAccess } from '@lib/claim-product'
 import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
+export default apiRoute(async (req, res) => {
   const { supabase, user } = await protectApiRoute({ req, res })
 
   const subscriptionId = req.body['subscription_id']
@@ -66,6 +66,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   res.status(404).json({ error: 'no product matched' })
-}
-
-export default handler
+})

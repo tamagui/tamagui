@@ -1,6 +1,7 @@
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 
+import { HandledResponseTermination } from './apiRoute'
 import { Database } from './supabase-types'
 import { supabaseCookieOptions } from './supabase-utils'
 
@@ -44,24 +45,4 @@ export async function protectApiRoute({
   }
 
   return { supabase, session: session!, user: user! }
-}
-
-class HandledResponseTermination extends Error {}
-
-export function apiRoute(handler: NextApiHandler) {
-  return (async (req, res) => {
-    try {
-      const result = handler(req, res)
-      return result instanceof Promise ? await result : result
-    } catch (err) {
-      if (err instanceof HandledResponseTermination) {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`Handled termination ${err.message}`)
-        return
-        // ok we handled it
-      } else {
-        throw err
-      }
-    }
-  }) satisfies NextApiHandler
 }
