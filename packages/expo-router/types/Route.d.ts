@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import type { ErrorBoundaryProps } from './exports';
+import type { ErrorBoundaryProps } from './views/Try';
 export type DynamicConvention = {
     name: string;
     deep: boolean;

@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react'
 
-import type { ErrorBoundaryProps } from './exports'
+import type { ErrorBoundaryProps } from './views/Try'
 import { getContextKey, matchGroupName } from './matchers'
 
 export type DynamicConvention = { name: string; deep: boolean }

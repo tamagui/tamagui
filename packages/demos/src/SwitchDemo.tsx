@@ -34,7 +34,7 @@ export function SwitchWithLabel(props: { size: SizeTokens; defaultChecked?: bool
         size={props.size}
         htmlFor={id}
       >
-        Dark mode
+        Accept
       </Label>
       <Separator minHeight={20} vertical />
       <Switch id={id} size={props.size} defaultChecked={props.defaultChecked}>
