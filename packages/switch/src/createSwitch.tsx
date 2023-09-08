@@ -34,7 +34,7 @@ export const SwitchContext = createStyledContext<{
   checked: false,
   disabled: false,
   size: undefined,
-  frameWidth: 60,
+  frameWidth: 0,
   unstyled: false,
 })
 
@@ -70,13 +70,16 @@ export function createSwitch<
     const { size: sizeProp, ...thumbProps } = props
     const { disabled, checked, unstyled, frameWidth } = React.useContext(SwitchContext)
     const [thumbWidth, setThumbWidth] = React.useState(0)
+    const initialChecked = React.useRef(checked).current
+    const distance = frameWidth - thumbWidth
     return (
       // @ts-ignore
       <Thumb
         theme={unstyled === false && checked ? 'active' : null}
         data-state={getState(checked)}
         data-disabled={disabled ? '' : undefined}
-        x={checked ? frameWidth - thumbWidth : 0}
+        alignSelf={initialChecked ? 'flex-end' : 'flex-start'}
+        x={initialChecked ? (checked ? 0 : -distance) : checked ? distance : 0}
         {...thumbProps}
         // @ts-ignore
         onLayout={composeEventHandlers(props.onLayout, (e) =>
@@ -147,8 +150,7 @@ export function createSwitch<
           : true
         : false
 
-      // just guess some value
-      const [frameWidth, setFrameWidth] = React.useState(60)
+      const [frameWidth, setFrameWidth] = React.useState(0)
 
       const [checked = false, setChecked] = useControllableState({
         prop: checkedProp,
@@ -187,7 +189,7 @@ export function createSwitch<
             size={size}
             checked={checked}
             disabled={disabled}
-            frameWidth={frameWidth - leftBorderWidth * 2}
+            frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
             theme={checked ? 'active' : null}
             themeShallow
             role="switch"
