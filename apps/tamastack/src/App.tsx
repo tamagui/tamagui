@@ -8,15 +8,15 @@ LogBox.ignoreAllLogs()
 export function App() {
   return (
     <TamaguiProvider config={config}>
-      <Stack gap="$5" flex={1} bg="plum" jc="center" p="$8">
-        <Text
-          textAlign="center"
-          fontSize="$9"
-          color="palegoldenrod"
-          fow="$9"
-          letterSpacing={-1}
-        >
-          tamagui.dev/vite
+      <Stack
+        gap="$5"
+        f={1}
+        bg="pink"
+        jc="center"
+        p="$8"
+      >
+        <Text ta="center" fos="$9" col="#fff" fow="bold">
+          hello
         </Text>
       </Stack>
     </TamaguiProvider>

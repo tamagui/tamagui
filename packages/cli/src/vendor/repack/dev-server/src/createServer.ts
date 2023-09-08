@@ -55,7 +55,8 @@ export async function createServer(config: Server.Config) {
     }
   }
 
-  void startServer()
+  // disable for demo
+  // void startServer()
 
   delegate = config.delegate({
     log: instance.log,
