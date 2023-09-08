@@ -7,16 +7,12 @@ import * as apis from '@tamagui/studio/api'
 export default apiRoute(async (req, res) => {
   setupCors(req, res)
   const { supabase } = await protectApiRoute({ req, res })
-  const { hasStudioAccess } = await checkSponsorAccess({
+  await checkSponsorAccess({
     req,
     res,
     supabase,
+    throwIfNoAccess: true,
   })
-  if (!hasStudioAccess) {
-    res.status(403).json({
-      message: "You don't have access to this part of the studio.",
-    })
-  }
 
   const procedureName = req.query.procedure
 
