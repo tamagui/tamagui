@@ -3340,6 +3340,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@my/shared-env@workspace:*, @my/shared-env@workspace:packages/shared-env":
+  version: 0.0.0-use.local
+  resolution: "@my/shared-env@workspace:packages/shared-env"
+  dependencies:
+    expo-constants: ~14.4.2
+    expo-updates: ~0.18.10
+  languageName: unknown
+  linkType: soft
+
 "@my/supabase@*, @my/supabase@workspace:supabase":
   version: 0.0.0-use.local
   resolution: "@my/supabase@workspace:supabase"
@@ -10356,6 +10365,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:packages/app"
   dependencies:
+    "@my/shared-env": "workspace:*"
     "@my/supabase": "*"
     "@my/ui": "*"
     "@react-native-async-storage/async-storage": 1.18.2

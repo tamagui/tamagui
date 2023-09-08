@@ -2,20 +2,21 @@ import { Database } from '@my/supabase/types'
 import { createClient } from '@supabase/supabase-js'
 import * as SecureStore from 'expo-secure-store'
 import { replaceLocalhost } from '../getLocalhost.native'
+import { Config } from '@my/shared-env'
 
-if (!process.env.EXPO_PUBLIC_SUPABASE_URL) {
+if (!Config.supabaseUrl) {
   throw new Error(
     `EXPO_PUBLIC_SUPABASE_URL is not set. Please update the root .env.local and restart the server.`
   )
 }
 
-if (!process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY) {
+if (!Config.supabaseAnonKey) {
   throw new Error(
     `EXPO_PUBLIC_SUPABASE_ANON_KEY is not set. Please update the root .env.local and restart the server.`
   )
 }
 
-const supabaseUrl = replaceLocalhost(process.env.EXPO_PUBLIC_SUPABASE_URL)
+const supabaseUrl = replaceLocalhost(Config.supabaseUrl)
 
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
@@ -31,7 +32,7 @@ const ExpoSecureStoreAdapter = {
 
 export const supabase = createClient<Database>(
   supabaseUrl,
-  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+  Config.supabaseAnonKey,
   {
     auth: {
       storage: ExpoSecureStoreAdapter,

@@ -5,7 +5,10 @@
   "private": true,
   "scripts": {
     "clean": "react-native-clean-project",
-    "start": "TAMAGUI_TARGET=native expo start --dev-client",
+    "start:dev": "NODE_ENV=development yarn start",
+    "start:prod": "NODE_ENV=production yarn start",
+    "start:test": "NODE_ENV=test yarn start",
+    "start": "TAMAGUI_TARGET=native expo start --dev-client -c",
     "android": "TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
     "lint": "eslint ./app",

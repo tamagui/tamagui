@@ -1,0 +1,8 @@
+{
+  "name": "@my/shared-env",
+  "main": "index.ts",
+  "dependencies": {
+    "expo-constants": "~14.4.2",
+    "expo-updates": "~0.18.10"
+  }
+}

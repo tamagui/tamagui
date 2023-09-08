@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@my/shared-env": "workspace:*",
     "@my/supabase": "*",
     "@my/ui": "*",
     "@react-native-async-storage/async-storage": "1.18.2",

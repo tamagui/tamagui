@@ -7,6 +7,7 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { createParam } from 'solito'
 import { useRouter } from 'solito/router'
 import { z } from 'zod'
+import { Config } from '@my/shared-env'
 
 const { useParams, useUpdateParams } = createParam<{ email?: string }>()
 
@@ -67,6 +68,22 @@ export const SignInScreen = () => {
         renderAfter={({ submit }) => {
           return (
             <>
+              <Theme>
+                <SubmitButton
+                  onPress={() => {
+                    alert(
+                      JSON.stringify(
+                        { Config: Config.publicUrl, env: process.env.NODE_ENV, ting: 'fff' },
+                        null,
+                        2
+                      )
+                    )
+                  }}
+                  borderRadius="$10"
+                >
+                  Debuggg
+                </SubmitButton>
+              </Theme>
               <Theme inverse>
                 <SubmitButton onPress={() => submit()} borderRadius="$10">
                   Sign In
