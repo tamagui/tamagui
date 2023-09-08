@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { createSchema, createYoga } from 'graphql-yoga'
 import { extractGratsSchemaAtRuntime } from 'grats'
 
-import { Query } from './graph/user'
+import * as resolvers from './graph/user'
 
 // extract the GraphQL schema.
 const schema = extractGratsSchemaAtRuntime({
@@ -12,7 +12,12 @@ const schema = extractGratsSchemaAtRuntime({
 const yogaSchema = createSchema({
   typeDefs: schema,
   resolvers: {
-    Query: new Query(),
+    Query: {
+      hello(...args) {
+        console.log('args', args)
+        return `hi`
+      },
+    },
   },
 })
 
@@ -31,6 +36,8 @@ export default (app: FastifyInstance) => {
       error: (...args) => args.forEach((arg) => app.log.error(arg)),
     },
   })
+
+  console.log('graphql at', yoga.graphqlEndpoint)
 
   app.route({
     // Bind to the Yoga's endpoint to avoid rendering on any path
