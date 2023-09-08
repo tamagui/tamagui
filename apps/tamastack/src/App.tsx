@@ -11,12 +11,13 @@ export function App() {
       <Stack
         gap="$5"
         f={1}
-        bg="pink"
+        bg="limegreen"
         jc="center"
         p="$8"
+        height="100%"
       >
-        <Text ta="center" fos="$9" col="#fff" fow="bold">
-          hello
+        <Text ta="center" fontSize={50} col="#9DFFC8" fow="bold">
+          👋
         </Text>
       </Stack>
     </TamaguiProvider>
