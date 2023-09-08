@@ -99,8 +99,7 @@ function assertDeprecatedFormat(tree: TreeNode) {
 
 function getTreeNodesAsRouteNodes(nodes: TreeNode[]): RouteNode[] {
   return nodes
-    .map((node) => treeNodeToRouteNode(node))
-    .flat()
+    .flatMap((node) => treeNodeToRouteNode(node))
     .filter(Boolean) as RouteNode[]
 }
 

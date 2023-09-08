@@ -118,8 +118,7 @@ export function getMatchableRouteConfigs<ParamList extends object>(
 
   // Create a normalized configs array which will be easier to use.
   const converted = Object.keys(screens)
-    .map((key) => createNormalizedConfigs(key, screens, [], initialRoutes))
-    .flat()
+    .flatMap((key) => createNormalizedConfigs(key, screens, [], initialRoutes))
 
   const resolvedInitialPatterns = initialRoutes.map((route) =>
     joinPaths(...route.parentScreens, route.initialRouteName)

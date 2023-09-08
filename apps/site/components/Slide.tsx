@@ -95,6 +95,11 @@ export type SlideStepItem =
       content: SlideStepItem[]
     }
   | {
+      type: 'horizontal'
+      title?: any
+      content: SlideStepItem[]
+    }
+  | {
       type: 'text-overlay'
       props?: SizableTextProps
       variant?: 'good' | 'bad'
@@ -367,6 +372,18 @@ function getTextContent(
                   )}
                   {getTextContent(item.content)}
                 </YStack>
+              )
+
+            case 'horizontal':
+              return (
+                <XStack ai="center" jc="center" h="100%">
+                  {!!item.title && (
+                    <H4 size="$10" als="center" mb="$4" color="$color9">
+                      {item.title}
+                    </H4>
+                  )}
+                  <XStack>{getTextContent(item.content)}</XStack>
+                </XStack>
               )
 
             case 'split-horizontal':

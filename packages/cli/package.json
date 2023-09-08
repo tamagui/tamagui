@@ -58,6 +58,8 @@
     "fs-extra": "^11.1.0",
     "get-port": "^6.1.2",
     "graphology": "^0.24.1",
+    "graphql": "^16.8.0",
+    "graphql-yoga": "^4.0.4",
     "http-proxy-middleware": "^2.0.6",
     "kill-port": "^2.0.1",
     "lodash.debounce": "^4.0.8",

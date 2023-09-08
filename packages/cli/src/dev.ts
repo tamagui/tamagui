@@ -57,25 +57,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     mode: 'development',
     clearScreen: false,
 
-    // for expo-router
-    // optimizeDeps: {
-    //   disabled: false,
-    //   include: [
-    //     'escape-string-regexp',
-    //     'use-latest-callback',
-    //     'react-is',
-    //     'color',
-    //     'warn-once',
-    //     '@bacons/react-views',
-    //     'invariant',
-    //     'compare-versions',
-    //     'expo-constants',
-    //     'url-parse',
-    //     'qs',
-    //     '@expo/metro-runtime',
-    //   ],
-    // },
-
     plugins: [
       ...plugins,
 
@@ -122,7 +103,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
               if (importName) {
                 const id = await getVitePath(file, importName)
-                console.log('replace', importName, id)
                 if (!id) {
                   console.warn('???')
                   continue
@@ -158,7 +138,10 @@ export const dev = async (options: CLIResolvedOptions) => {
               ${source
                 .replace(`import.meta.hot.accept(() => {})`, ``)
                 // replace import.meta.glob with empty array in hot reloads
-                .replaceAll(/import.meta.glob\(.*\)/gi, 'Promise.resolve([])')};
+                .replaceAll(
+                  /import.meta.glob\(.*\)/gi,
+                  `globalThis['__importMetaGlobbed'] || {}`
+                )};
               return exports })({})`
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
@@ -224,8 +207,6 @@ export const dev = async (options: CLIResolvedOptions) => {
     dispose()
     server.close()
   })
-
-  getBundleCode()
 
   await new Promise((res) => server.httpServer?.on('close', res))
 
@@ -392,9 +373,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     } satisfies InlineConfig
 
     // this fixes my swap-react-native plugin not being called pre 😳
-    const resolved = await resolveConfig(buildConfig, 'build')
-
-    console.log('resolved', resolved)
+    await resolveConfig(buildConfig, 'build')
 
     const buildOutput = await build(buildConfig)
 
@@ -448,7 +427,7 @@ __require("${module.fileName}")
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
 
-    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+    void writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
 
     done(out)
     isBuilding = null

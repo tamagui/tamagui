@@ -26,7 +26,7 @@ export class RouterStore {
   routeNode!: RouteNode | null
   rootComponent!: ComponentType
   linking: ExpoLinkingOptions | undefined
-  private hasAttemptedToHideSplash: boolean = false
+  private hasAttemptedToHideSplash = false
 
   initialState: ResultState | undefined
   rootState: ResultState | undefined
@@ -63,8 +63,6 @@ export class RouterStore {
     this.storeSubscribers.clear()
 
     this.routeNode = getRoutes(context)
-
-    if (this.routeNode) console.log('got', Object.keys(this.routeNode))
 
     this.rootComponent = this.routeNode
       ? getQualifiedRouteComponent(this.routeNode)
