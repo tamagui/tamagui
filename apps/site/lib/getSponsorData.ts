@@ -46,16 +46,16 @@ export async function checkSponsorAccess({
   const teamsWithAccess = teams.filter((team) => team.is_active)
   const hasStudioAccess = teamsWithAccess.length > 0
 
+  const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }
+
   if (throwIfNoAccess && !hasStudioAccess) {
     res.status(403).json({
       message: "You don't have access to this part of the studio.",
     })
-    throw new Error('User does not have access to studio.')
+    return payload
   }
 
-  const payload: PayloadShape = { hasStudioAccess, teamId: teamsWithAccess[0]?.id }
   const newJwt = jwt.sign(payload, JWT_SECRET)
-
   setCookie(STUDIO_COOKIE_NAME, newJwt, {
     req,
     res,
