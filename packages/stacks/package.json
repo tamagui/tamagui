@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.61.2",
+  "version": "1.61.3",
   "sideEffects": [
     "*.css"
   ],
@@ -29,14 +29,14 @@
     }
   },
   "dependencies": {
-    "@tamagui/core": "1.61.2"
+    "@tamagui/core": "1.61.3"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.61.2",
-    "@tamagui/get-button-sized": "1.61.2",
+    "@tamagui/build": "1.61.3",
+    "@tamagui/get-button-sized": "1.61.3",
     "react": "^18.2.0"
   },
   "publishConfig": {

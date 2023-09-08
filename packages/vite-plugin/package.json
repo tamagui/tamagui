@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "1.61.2",
+  "version": "1.61.3",
   "types": "./types/index.d.ts",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -32,10 +32,10 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@tamagui/fake-react-native": "1.61.2",
-    "@tamagui/proxy-worm": "1.61.2",
-    "@tamagui/react-native-svg": "1.61.2",
-    "@tamagui/static": "1.61.2",
+    "@tamagui/fake-react-native": "1.61.3",
+    "@tamagui/proxy-worm": "1.61.3",
+    "@tamagui/react-native-svg": "1.61.3",
+    "@tamagui/static": "1.61.3",
     "esbuild": "^0.19.0",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.1.0",
@@ -48,7 +48,7 @@
     "vite-plugin-externals": "^0.6.2"
   },
   "devDependencies": {
-    "@tamagui/build": "1.61.2"
+    "@tamagui/build": "1.61.3"
   },
   "publishConfig": {
     "access": "public"
