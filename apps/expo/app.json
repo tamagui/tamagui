@@ -3,9 +3,9 @@
     "name": "belaytionship.rocks",
     "slug": "belaytionship",
     "scheme": "belaytionship",
-    "version": "1.0.4",
+    "version": "1.0.6",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Belaytionship-180.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
