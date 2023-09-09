@@ -342,7 +342,7 @@ Masks do one thing: they take an existing template, apply transformation, and re
 ```tsx
 {
   background: 0,
-  color: 11,
+  color: 6,
 }
 ```
 
@@ -351,12 +351,12 @@ And does this:
 ```tsx
 shiftRightMask({
   background: 0,
-  color: 11,
+  color: 5,
 })
 /**
  * => {
  *   background: 1,
- *   color: 12
+ *   color: 6
  * }
  */
 ```
@@ -382,7 +382,7 @@ const darkPalette = ['black', '#222', '#444', '#666', '#888', '#aaa', 'white']
 
 const baseTemplate = {
   background: 0,
-  color: 11,
+  color: 6,
 }
 
 const dark = createTheme(baseTemplate, darkPalette)

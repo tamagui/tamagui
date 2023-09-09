@@ -4,10 +4,10 @@ import * as util from 'util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'
-import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import type { ViewStyle } from 'react-native'
 
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
@@ -52,6 +52,7 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
+  const { getStylesAtomic } = requireTamaguiCore('web')
 
   if (sourcePath?.includes('node_modules')) {
     return null

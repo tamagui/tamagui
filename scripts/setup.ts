@@ -2,7 +2,7 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import { readlink } from 'fs-extra'
+import { readJSON, readlink } from 'fs-extra'
 
 import { spawnify } from './spawnify'
 
@@ -26,20 +26,56 @@ async function setup() {
   await Promise.all(
     packagePaths.map(async ({ location, name }) => {
       const cwd = join(process.cwd(), location)
-      const romeConfig = join(cwd, 'rome.json')
-      try {
-        await readlink(romeConfig)
-      } catch (err) {
-        if (`${err}`.includes(`no such file or directory`)) {
-          // rome-ignore lint/suspicious/noConsoleLog: ok
-          console.log(`No rome.json found for ${name}, linking from monorepo root`)
-          await spawnify(`ln -s ../../rome.json ./rome.json`, {
-            cwd,
-          })
-        }
-      }
+      await Promise.all([
+        // // add react-native exports
+        // async () => {
+        //   // only packages
+        //   if (!location.includes('packages/')) {
+        //     return
+        //   }
+        //   const pkgJson = await readJSON(join(cwd, 'package.json'))
+        //   if (!pkgJson.exports) return
 
-      // run format
+        //   if (!pkgJson.exports['.']) return
+
+        //   const mainExports = pkgJson.exports['.']
+        //   if (typeof mainExports === 'string') {
+        //     console.warn('?', pkgJson.exports)
+        //     return
+        //   }
+
+        //   const next: any = {}
+
+        //   for (const key in mainExports) {
+        //     const val = mainExports[key]
+
+        //     // add react-native
+        //     if (key === 'require') {
+        //       next['react-native'] = val.replace('/cjs/', '/react-native/')
+        //     }
+
+        //     next[key] = val
+        //   }
+
+        //   pkgJson.exports['.'] = next
+        // },
+        // ensure rome.json
+        async () => {
+          const romeConfig = join(cwd, 'rome.json')
+
+          try {
+            await readlink(romeConfig)
+          } catch (err) {
+            if (`${err}`.includes(`no such file or directory`)) {
+              // rome-ignore lint/suspicious/noConsoleLog: ok
+              console.log(`No rome.json found for ${name}, linking from monorepo root`)
+              await spawnify(`ln -s ../../rome.json ./rome.json`, {
+                cwd,
+              })
+            }
+          }
+        },
+      ])
     })
   )
 }

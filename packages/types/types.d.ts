@@ -1,4 +1,6 @@
 export interface TamaguiOptions {
+  platform: 'native' | 'web'
+
   /**
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */

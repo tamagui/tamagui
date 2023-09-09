@@ -5,7 +5,6 @@ import { extractForNative } from './lib/extract'
 
 Error.stackTraceLimit = Infinity
 process.env.TAMAGUI_TARGET = 'native'
-process.env.IS_STATIC = ''
 
 window['React'] = React
 
@@ -32,6 +31,7 @@ describe('flatten-tests', () => {
         )
       }
     `)
+
     const code = output?.code ?? ''
 
     expect(code).toMatchSnapshot()

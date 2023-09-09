@@ -4,6 +4,9 @@
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "tamagui": {
+    "bundleNative": "./src/native.ts"
+  },
   "types": "./types/index.d.ts",
   "license": "MIT",
   "author": {
@@ -51,6 +54,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/native.js",
+      "require": "./dist/native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",

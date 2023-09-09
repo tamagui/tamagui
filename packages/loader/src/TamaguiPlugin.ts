@@ -17,6 +17,7 @@ export class TamaguiPlugin {
 
   constructor(
     public options: PluginOptions = {
+      platform: 'web',
       components: ['@tamagui/core'],
     }
   ) {}

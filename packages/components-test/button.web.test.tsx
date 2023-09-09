@@ -8,8 +8,6 @@ import { RenderResult, render } from '@testing-library/react'
 import * as React from 'react'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-process.env.TAMAGUI_TARGET = 'web'
-
 const conf = createTamagui(getDefaultTamaguiConfig())
 
 function ButtonTest(props: React.ComponentProps<typeof Button>) {

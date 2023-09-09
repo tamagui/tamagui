@@ -3,8 +3,11 @@
   "compilerOptions": {
     "composite": true,
     "strict": true,
-    
   },
+  "exclude": [
+    "./native.d.ts",
+    "./types"
+  ],
   "references": [
     {
       "path": "../helpers"

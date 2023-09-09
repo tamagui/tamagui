@@ -1,5 +1,3 @@
-// SEE config-default-node
-
 import { createFont, createTamagui, createTokens } from '@tamagui/core'
 import { shorthands } from '@tamagui/shorthands'
 
@@ -169,6 +167,10 @@ export function getDefaultTamaguiConfig() {
     dark_yellow_Button: {
       background: 'brown',
       color: '#ccc',
+    },
+    dark_red_active_ListItem: {
+      background: 'darkred',
+      color: 'red',
     },
     dark_red_alt2: {
       background: 'darkred',

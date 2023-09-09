@@ -23,8 +23,6 @@ export const studio = async (
   isRemote = false,
   isBuild = false
 ) => {
-  process.env.TAMAGUI_TARGET = 'web'
-
   await ensureDir(options.paths.dotDir)
   const configWatchPromise = watchTamaguiConfig(options.tamaguiOptions)
 
