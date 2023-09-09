@@ -16,9 +16,9 @@
       },
       "channel": "development"
     },
-    "preview": {
+    "test": {
       "distribution": "internal",
-      "channel": "preview"
+      "channel": "test"
     },
     "production": {
       "env": {
