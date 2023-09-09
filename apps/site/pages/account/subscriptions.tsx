@@ -159,6 +159,8 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       setIsLoading(false)
     }
   }
+  // override "trialing" cause we use it for handling several things but may get users confused so we just show "active"
+  const status = subscription.status === 'trialing' ? 'active' : subscription.status
 
   return (
     <YStack
@@ -213,9 +215,9 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
             <SizableText>Status: </SizableText>
             <SizableText
               textTransform="capitalize"
-              color={subscription.status === 'active' ? '$green9' : '$yellow9'}
+              color={status === 'active' ? '$green9' : '$yellow9'}
             >
-              {subscription.status}
+              {status}
             </SizableText>
           </SizableText>
         </XStack>

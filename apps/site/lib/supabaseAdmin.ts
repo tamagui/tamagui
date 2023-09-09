@@ -306,12 +306,12 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
         : {
             days_until_due: 5,
           }),
-
-      billing_cycle_anchor: (function () {
-        const date = new Date()
-        date.setFullYear(date.getFullYear() + 1)
-        return Math.floor(Number(date) / 1000)
-      })(),
+      trial_period_days: 365,
+      // billing_cycle_anchor: (function () {
+      //   const date = new Date()
+      //   date.setFullYear(date.getFullYear() + 1)
+      //   return Math.floor(Number(date) / 1000)
+      // })(),
       items: renewalPriceIds.map((id) => ({
         price: id,
       })),
