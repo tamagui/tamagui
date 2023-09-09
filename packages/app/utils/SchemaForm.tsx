@@ -96,9 +96,9 @@ export const SchemaForm = forwardRef<TamaguiComponent, React.ComponentProps<type
         }
         {...props}
       >
-        {(fields, context) => (
+        {(fields) => (
           <FormWrapper.Body>
-            {props.children ? props.children(fields, context) : Object.values(fields)}
+            {props.children ? props.children(fields) : Object.values(fields)}
           </FormWrapper.Body>
         )}
       </_SchemaForm>
