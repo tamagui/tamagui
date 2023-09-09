@@ -1,6 +1,7 @@
-import { CreateScreen } from 'app/features/create/screen'
 import { Stack } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { CreateScreen } from 'app/features/create/climb-screen'
 
 export default function Screen() {
   return (

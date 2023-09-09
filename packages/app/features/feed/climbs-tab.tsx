@@ -22,6 +22,8 @@ import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useWindowDimensions } from 'react-native'
+
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
 }
@@ -71,8 +73,8 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
       >
         <Avatar
           borderColor="$backgroundPress"
-          // borderWidth={1}
-          borderStyle="dotted"
+          borderWidth={1}
+          borderStyle="solid"
           circular
           size="$7"
         >
@@ -189,6 +191,7 @@ export const SheetDemo = ({
   open: boolean
   setOpen: (state: boolean) => void
 }) => {
+  const { height } = useWindowDimensions()
   const [position, setPosition] = useState(0)
   const [modal, setModal] = useState(true)
   const joinMutation = api.climb.join.useMutation()
@@ -237,7 +240,6 @@ export const SheetDemo = ({
     options: ['Google', 'iCal'],
     timeZone: 'America/Los_Angeles',
   }
-
   return (
     <Theme name={color}>
       <Sheet
@@ -245,7 +247,7 @@ export const SheetDemo = ({
         modal={modal}
         open={open}
         onOpenChange={setOpen}
-        snapPoints={[65, 50, 25]}
+        snapPoints={[58, height - 100, height - 100]}
         dismissOnSnapToBottom
         position={position}
         onPositionChange={setPosition}
@@ -342,6 +344,7 @@ export const SheetDemo = ({
                 elevation="$1"
                 shadowRadius={6}
                 shadowOpacity={0.1}
+                onPress={() => setOpen(false)}
               >
                 Cancel
               </Button>

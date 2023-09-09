@@ -13,8 +13,8 @@ import {
 } from 'date-fns'
 import { api } from 'app/utils/api'
 import { z } from 'zod'
-import { useForm, FormProvider, useWatch, useFieldArray } from 'react-hook-form'
-import React from 'react'
+import { useForm, FormProvider, useWatch } from 'react-hook-form'
+import { useRouter } from 'solito/router'
 
 function getWeekDaySelections() {
   // TODO: Get the next 7 days
@@ -190,6 +190,7 @@ const ClimbScreenSchema = z.object({
 })
 
 export const CreateScreen = () => {
+  const router = useRouter()
   const climbMutation = api.climb.create.useMutation()
 
   const form = useForm<z.infer<typeof ClimbScreenSchema>>()
@@ -203,8 +204,8 @@ export const CreateScreen = () => {
       <SchemaForm
         form={form}
         onSubmit={(values) => {
-          alert(JSON.stringify(values, null, 2))
           climbMutation.mutate(values)
+          router.push('/')
         }}
         schema={ClimbScreenSchema}
         defaultValues={{

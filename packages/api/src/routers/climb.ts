@@ -13,6 +13,7 @@ export const climbRouter = createTRPCRouter({
       .from('climbs')
       .select(`*, climber:profiles(*)`)
       .lt('joined', 2)
+      .order('start', { ascending: true })
 
     if (climbs.error) {
       console.log(climbs.error)

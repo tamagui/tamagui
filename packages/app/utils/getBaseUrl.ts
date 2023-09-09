@@ -1,6 +1,5 @@
 import { isWeb } from '@my/ui'
 import { replaceLocalhost } from './getLocalhost.native'
-import { Config } from '@my/shared-env'
 
 export function _getBaseUrl() {
   if (isWeb && typeof window !== 'undefined') {
@@ -8,9 +7,9 @@ export function _getBaseUrl() {
     // browser should use relative path
     return ''
   }
-  if (Config.publicUrl) {
+  if (process.env.EXPO_PUBLIC_URL) {
     // overwrites the rest - set this on your native app deployment
-    return `${Config.publicUrl}`
+    return `${process.env.EXPO_PUBLIC_URL}`
   }
 
   if (process.env.VERCEL_URL) {
