@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.jsx",
   "scripts": {
-    "dev": "TAMAGUI_TARGET=native tama dev"
+    "dev": "tama dev"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.7",

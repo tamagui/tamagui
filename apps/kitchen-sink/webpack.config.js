@@ -30,6 +30,11 @@ module.exports = {
   },
   resolve: {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+    ],
     alias: {
       'react-native$': 'react-native-web',
       'react-native-svg': '@tamagui/react-native-svg',
@@ -109,10 +114,8 @@ module.exports = {
     new webpack.DefinePlugin({
       process: {
         env: {
-          IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
-          TAMAGUI_TARGET: JSON.stringify(target),
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
         },
       },

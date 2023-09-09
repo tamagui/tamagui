@@ -6140,17 +6140,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/config-default-node@1.61.3, @tamagui/config-default-node@workspace:packages/config-default-node":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/config-default-node@workspace:packages/config-default-node"
-  dependencies:
-    "@tamagui/build": 1.61.3
-    "@tamagui/core-node": 1.61.3
-    "@tamagui/shorthands": 1.61.3
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/config-default@workspace:packages/config-default":
+"@tamagui/config-default@1.61.3, @tamagui/config-default@workspace:packages/config-default":
   version: 0.0.0-use.local
   resolution: "@tamagui/config-default@workspace:packages/config-default"
   dependencies:
@@ -6185,22 +6175,6 @@ __metadata:
     react: ^18.2.0
   peerDependencies:
     react: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/core-node@1.61.3, @tamagui/core-node@workspace:packages/core-node":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/core-node@workspace:packages/core-node"
-  dependencies:
-    "@babel/runtime": ^7.21.5
-    "@tamagui/core": 1.61.3
-    "@tamagui/helpers": 1.61.3
-    chokidar: ^3.5.2
-    esbuild: ^0.19.0
-    execa: ^5.0.0
-    fast-glob: ^3.2.11
-    fs-extra: ^11.1.0
-    lodash: ^4.17.21
   languageName: unknown
   linkType: soft
 
@@ -6357,6 +6331,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.13
     "@react-navigation/routers": ^6.1.9
     "@tamagui/build": 1.61.3
+    "@tamagui/web": 1.61.3
     escape-string-regexp: ^5.0.0
     expo-constants: ^14.4.2
     expo-head: 0.0.11
@@ -7431,8 +7406,8 @@ __metadata:
     "@expo/match-media": ^0.4.0
     "@tamagui/build": 1.61.3
     "@tamagui/cli-color": 1.61.3
-    "@tamagui/config-default-node": 1.61.3
-    "@tamagui/core-node": 1.61.3
+    "@tamagui/config-default": 1.61.3
+    "@tamagui/core": 1.61.3
     "@tamagui/fake-react-native": 1.61.3
     "@tamagui/generate-themes": 1.61.3
     "@tamagui/helpers": 1.61.3
@@ -7913,7 +7888,7 @@ __metadata:
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
     "@tamagui/build": 1.61.3
-    "@tamagui/config-default-node": 1.61.3
+    "@tamagui/config-default": 1.61.3
     "@tamagui/vite-plugin": 1.61.3
     "@vitejs/plugin-react-swc": ^3.3.2
     happy-dom: ^10.11.2

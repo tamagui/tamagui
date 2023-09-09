@@ -3,20 +3,11 @@
   "version": "1.61.3",
   "private": true,
   "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "module": "dist",
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "types": "./types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./api": {
-      "types": "./types/api/index.d.ts",
-      "import": "./dist/esm/api/index.js",
-      "require": "./dist/cjs/api/index.js"
-    }
+    ".": "./dist/index.js",
+    "./api": "./dist/api/index.js"
   },
   "scripts": {
     "dev": "../../node_modules/.bin/tama studio",

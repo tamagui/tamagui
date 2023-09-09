@@ -8,15 +8,23 @@ import type { Plugin } from 'vite'
  */
 
 export function tamaguiPlugin(
-  options: TamaguiOptions & {
-    target?: 'web' | 'native'
+  options: Partial<TamaguiOptions> & {
     useReactNativeWebLite?: boolean
     disableWatchTamaguiConfig?: boolean
   }
 ): Plugin {
-  const watcher = options.disableWatchTamaguiConfig ? null : watchTamaguiConfig(options)
+  const watcher = options.disableWatchTamaguiConfig
+    ? null
+    : watchTamaguiConfig({
+        platform: 'web',
+        components: ['tamagui'],
+        config: './src/tamagui.config.ts',
+        ...options,
+      })
 
-  const components = [...new Set([...options.components, 'tamagui', '@tamagui/core'])]
+  const components = [
+    ...new Set([...(options.components || []), 'tamagui', '@tamagui/core']),
+  ]
   const noExternalSSR = new RegExp(
     `${components.join('|')}|react-native|expo-linear-gradient`,
     'ig'
@@ -45,9 +53,6 @@ export function tamaguiPlugin(
           _WORKLET: false,
           __DEV__: `${env.mode === 'development' ? true : false}`,
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || env.mode),
-          'process.env.TAMAGUI_TARGET': JSON.stringify(
-            options.target || process.env.TAMAGUI_TARGET || 'web'
-          ),
           'process.env.ENABLE_RSC': JSON.stringify(process.env.ENABLE_RSC || ''),
           'process.env.ENABLE_STEPS': JSON.stringify(process.env.ENABLE_STEPS || ''),
           'process.env.IS_STATIC': JSON.stringify(false),
@@ -62,7 +67,7 @@ export function tamaguiPlugin(
         },
         optimizeDeps: {
           // disabled: false,
-          include: options.target !== 'native' ? ['styleq'] : [],
+          include: options.platform !== 'native' ? ['styleq'] : [],
           esbuildOptions: {
             jsx: 'transform',
             // plugins: [
@@ -107,7 +112,7 @@ export function tamaguiPlugin(
             '.mjs',
           ],
           alias: {
-            ...(options.target !== 'native' && {
+            ...(options.platform !== 'native' && {
               'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
               'react-native/Libraries/Utilities/codegenNativeComponent':
                 '@tamagui/proxy-worm',

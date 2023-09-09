@@ -1,3 +1,4 @@
+// debug
 import { config } from '@tamagui/config'
 import {
   Spacer,
@@ -28,6 +29,24 @@ export const Provider = (props) => (
 )
 
 const child = <Text>hello world</Text>
+
+export function Test1() {
+  return (
+    <YStack
+      className="test1"
+      flex={1}
+      borderRadius={100}
+      backgroundColor="red"
+      shadowRadius={10}
+      shadowColor="#000"
+      hoverStyle={{
+        scale: 2,
+      }}
+    >
+      {child}
+    </YStack>
+  )
+}
 
 export const Card = (props: any) => (
   <XStack
@@ -100,24 +119,6 @@ export function TestMediaQueryInline() {
         {child}
       </YStack>
     </>
-  )
-}
-
-export function Test1() {
-  return (
-    <YStack
-      className="test1"
-      flex={1}
-      borderRadius={100}
-      backgroundColor="red"
-      shadowRadius={10}
-      shadowColor="#000"
-      hoverStyle={{
-        scale: 2,
-      }}
-    >
-      {child}
-    </YStack>
   )
 }
 

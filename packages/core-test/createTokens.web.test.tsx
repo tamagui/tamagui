@@ -1,4 +1,4 @@
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { expect, test } from 'vitest'
 
 import { createTokens } from '../core/src'

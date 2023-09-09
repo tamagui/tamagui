@@ -37,22 +37,13 @@ npx expo install react-native-reanimated
 Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`, and the necessary `transform-inline-environment-variables` and `react-native-reanimated` (if using reanimated animations) plugins:
 
 ```js
-// Don't forget to specify your TAMAGUI_TARGET here or ideally in the command to run / .env files
-process.env.TAMAGUI_TARGET = "native";
-
 module.exports = function (api) {
   api.cache(true);
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      // NOTE: this is required to pass the right environment
-      [
-        "transform-inline-environment-variables",
-        // NOTE: include is optional, you can leave this part out
-        {
-          include: ["TAMAGUI_TARGET", "EXPO_ROUTER_APP_ROOT"],
-        },
-      ],
+      // optional, only if you ever use process.env
+      "transform-inline-environment-variables",
       // NOTE: this is optional, you don't *need* the compiler
       [
         "@tamagui/babel-plugin",
@@ -226,25 +217,14 @@ Your `package.json` scripts should look something like this:
 ```json
 {
   "scripts": {
-    "start-native": "TAMAGUI_TARGET=native expo start -c",
-    "start-web": "TAMAGUI_TARGET=web expo start -c",
-    "android": "TAMAGUI_TARGET=native yarn expo run:android",
-    "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
-    "web": "TAMAGUI_TARGET=web expo start --web"
+    "start-native": "expo start -c",
+    "start-web": "expo start -c",
+    "android": "yarn expo run:android",
+    "ios": "yarn expo run:ios",
+    "web": "expo start --web"
   }
 }
 ```
-
-If you are targeting both web and mobile with Expo only (no Next.js), be sure to start two metro bundlers on different ports: one for native (8081) and another one for web (8082).
-
-<Image
-  title="Metro Bundlers"
-  src="/metro-bundler-ports.png"
-  size="hero"
-  height={210}
-  width={570}
-  resizeMode="contain"
-/>
 
 ### Other resources
 

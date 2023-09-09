@@ -7,13 +7,13 @@
     "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
     "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
-    "test:webpack": "yarn pretest && TAMAGUI_TARGET=web yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
-    "test:flatten:native": "TAMAGUI_TARGET=native yarn test:run tests/flatten.native.test.tsx",
-    "test:babel:native": "TAMAGUI_TARGET=native yarn test:run tests/babel.native.test.tsx",
-    "test:babel:web": "TAMAGUI_TARGET=web yarn test:run tests/babel.web.test.tsx",
-    "test:styled:web": "TAMAGUI_TARGET=web yarn test:run tests/styled.web.test.tsx",
-    "test:web": "TAMAGUI_TARGET=web yarn test:run tests/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native yarn test:run tests/*.native.test.tsx"
+    "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
+    "test:flatten:native": "yarn test:run tests/flatten.native.test.tsx",
+    "test:babel:native": "yarn test:run tests/babel.native.test.tsx",
+    "test:babel:web": "yarn test:run tests/babel.web.test.tsx",
+    "test:styled:web": "yarn test:run tests/styled.web.test.tsx",
+    "test:web": "yarn test:run tests/*.web.test.tsx",
+    "test:native": "yarn test:run tests/*.native.test.tsx"
   },
   "tests": {
     "parallel": true

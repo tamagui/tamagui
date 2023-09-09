@@ -34,8 +34,6 @@ export const dev = async (options: CLIResolvedOptions) => {
 
   const tamaguiVitePlugin = tamaguiPlugin({
     ...options.tamaguiOptions,
-    // useReactNativeWebLite: true,
-    target: 'web',
   })
 
   const plugins = [
@@ -321,17 +319,6 @@ export const dev = async (options: CLIResolvedOptions) => {
             if (code.includes('worklet')) {
               const out = await babelReanimated(code, id)
               return out
-            }
-          },
-        },
-
-        {
-          name: 'tamagui-env-native',
-          config() {
-            return {
-              define: {
-                'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
-              },
             }
           },
         },

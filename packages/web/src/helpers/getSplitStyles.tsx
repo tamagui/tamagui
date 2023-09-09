@@ -720,6 +720,8 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
 
+        console.log('??', IS_STATIC, key, pseudoStyleObject)
+
         if (!shouldDoClasses || IS_STATIC) {
           pseudos ||= {}
           pseudos[key] ||= {}

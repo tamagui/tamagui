@@ -1,5 +1,3 @@
-process.env.TAMAGUI_TARGET = 'web'
-
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { createTamagui } from '@tamagui/core'
 import { describe, expect, test } from 'vitest'

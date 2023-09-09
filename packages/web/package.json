@@ -10,7 +10,8 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "@tamagui/polyfill-dev"
   ],
   "scripts": {
     "build": "tamagui-build",
@@ -53,6 +54,10 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "import": "./dist/esm/index.native.js",
+      "require": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",

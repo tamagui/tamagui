@@ -3,6 +3,8 @@ import { basename, dirname, join } from 'path'
 import esbuild from 'esbuild'
 import { pathExists, stat, writeFile } from 'fs-extra'
 
+import { TamaguiPlatform } from '../types'
+import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 
 /**
@@ -17,9 +19,9 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
 
 function getESBuildConfig(
   { entryPoints, resolvePlatformSpecificEntries, ...options }: Props,
+  platform: TamaguiPlatform,
   aliases?: Record<string, string>
 ) {
-  const alias = require('@tamagui/core-node').aliasPlugin
   if (process.env.DEBUG?.startsWith('tamagui')) {
     // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log(`Building`, entryPoints)
@@ -71,7 +73,7 @@ function getESBuildConfig(
         setup(build) {
           build.onResolve({ filter: /@tamagui\/core/ }, (args) => {
             return {
-              path: '@tamagui/core-node',
+              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
               external: true,
             }
           })
@@ -83,7 +85,7 @@ function getESBuildConfig(
           })
           build.onResolve({ filter: /@tamagui\/web/ }, (args) => {
             return {
-              path: '@tamagui/core-node',
+              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
               external: true,
             }
           })
@@ -96,7 +98,7 @@ function getESBuildConfig(
           })
         },
       },
-      alias({
+      esbuildAliasPlugin({
         ...aliases,
       }),
     ],
@@ -106,14 +108,14 @@ function getESBuildConfig(
   return res
 }
 
-export async function bundle(props: Props, aliases?: Record<string, string>) {
+export async function bundle(
+  props: Props,
+  platform: TamaguiPlatform,
+  aliases?: Record<string, string>
+) {
   await asyncLock(props)
-  const config = getESBuildConfig(props, aliases)
+  const config = getESBuildConfig(props, platform, aliases)
   return esbuild.build(config)
-}
-
-export function bundleSync(props: Props, aliases?: Record<string, string>) {
-  return esbuild.buildSync(getESBuildConfig(props, aliases))
 }
 
 // until i do fancier things w plugins:

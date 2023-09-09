@@ -1,4 +1,4 @@
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { createTamagui } from '../web/src'
@@ -8,7 +8,7 @@ const conf = getDefaultTamaguiConfig()
 
 describe('ThemeManager', () => {
   beforeAll(() => {
-    createTamagui(conf)
+    createTamagui(conf as any)
   })
 
   test('Changes theme to dark', () => {

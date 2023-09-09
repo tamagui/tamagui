@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   // optimizeDeps: {
   //   esbuildOptions: {
-  //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
+  //     plugins: [esbuildCommonjs(['@tamagui/core'])],
   //   },
   // },
 

@@ -1,9 +1,7 @@
-process.env.TAMAGUI_TARGET = 'native'
-
-import { Stack, createTamagui, getSplitStyles } from '@tamagui/core-node'
+import { Stack, createTamagui, getSplitStyles } from '@tamagui/core/native'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import config from '../config-default-node'
+import config from '../config-default'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())

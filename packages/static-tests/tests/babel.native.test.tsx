@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { expect, test } from 'vitest'
 
-import { extractForNative, extractForWeb } from './lib/extract'
+import { extractForNative } from './lib/extract'
 
 process.env.TAMAGUI_TARGET = 'native'
 process.env.IS_STATIC = ''

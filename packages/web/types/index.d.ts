@@ -1,3 +1,4 @@
+import '@tamagui/polyfill-dev';
 export * from './Tamagui';
 export * from './createComponent';
 export * from './createShorthands';

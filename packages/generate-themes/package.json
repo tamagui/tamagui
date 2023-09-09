@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "build": "tamagui-build --output-mjs",
+    "build": "tamagui-build",
     "watch": "yarn build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"

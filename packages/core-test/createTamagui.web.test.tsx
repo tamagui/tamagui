@@ -2,7 +2,7 @@ process.env.TAMAGUI_TARGET = 'web'
 
 import { describe, expect, test } from 'vitest'
 
-import config from '../config-default-node'
+import config from '../config-default'
 import { createTamagui } from '../core/src'
 
 describe('createTamagui', () => {

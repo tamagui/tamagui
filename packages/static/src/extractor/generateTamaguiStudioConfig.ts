@@ -1,10 +1,10 @@
 import { join } from 'path'
 
-import { getVariableValue } from '@tamagui/core-node'
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
 import fs, { readFile } from 'fs-extra'
 
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
 const tamaguiDir = join(process.cwd(), '.tamagui')
@@ -103,6 +103,8 @@ function transformConfig(config: BundledConfig) {
   if (!config) {
     return null
   }
+
+  const { getVariableValue } = requireTamaguiCore('web')
 
   // ensure we don't mangle anything in the original
   const next = cloneDeepSafe(config, {

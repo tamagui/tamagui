@@ -2,10 +2,10 @@ import {
   createTamagui,
   expandStylesAndRemoveNullishValues,
   getStylesAtomic,
-} from '@tamagui/core-node'
+} from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import config from '../../config-default-node/dist'
+import config from '../../config-default/dist'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())

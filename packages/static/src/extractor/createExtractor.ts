@@ -3,14 +3,6 @@ import { basename, relative } from 'path'
 
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
-import {
-  expandStylesAndRemoveNullishValues,
-  getSplitStyles,
-  mediaQueryConfig,
-  propMapper,
-  proxyThemeVariables,
-  pseudoDescriptors,
-} from '@tamagui/core-node'
 import type {
   GetStyleState,
   PseudoStyles,
@@ -22,6 +14,7 @@ import type { ViewStyle } from 'react-native'
 import { createDOMProps } from 'react-native-web-internals'
 
 import { FAILED_EVAL } from '../constants'
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type {
   ExtractedAttr,
   ExtractedAttrStyle,
@@ -186,6 +179,15 @@ export function createExtractor(
       target,
       ...restProps
     } = options
+
+    const {
+      expandStylesAndRemoveNullishValues,
+      getSplitStyles,
+      mediaQueryConfig,
+      propMapper,
+      proxyThemeVariables,
+      pseudoDescriptors,
+    } = requireTamaguiCore(target === 'html' ? 'web' : 'native')
 
     let shouldPrintDebug = options.shouldPrintDebug || false
 
@@ -1646,7 +1648,7 @@ export function createExtractor(
                         t.identifier('Theme')
                       ),
                     ],
-                    t.stringLiteral('@tamagui/core')
+                    t.stringLiteral('@tamagui/web')
                   )
                 )
               }
@@ -1929,6 +1931,7 @@ export function createExtractor(
                 componentState,
                 {
                   ...styleProps,
+                  noClassNames: true,
                   fallbackProps: completeProps,
                 },
                 undefined,
@@ -1942,6 +1945,8 @@ export function createExtractor(
                 ...out.style,
                 ...out.pseudos,
               }
+
+              console.log('so...', out.pseudos)
 
               if (shouldPrintDebug) {
                 logger.info(`(${debugName})`)

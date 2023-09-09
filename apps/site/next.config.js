@@ -1,7 +1,6 @@
 Error.stackTraceLimit = Infinity
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
-process.env.TAMAGUI_TARGET = 'web'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
 /** @type {import('next').NextConfig} */

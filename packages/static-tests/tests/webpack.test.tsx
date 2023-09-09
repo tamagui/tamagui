@@ -8,8 +8,6 @@ import { describe, expect, test } from 'vitest'
  * disabled for now but we really need to bring this back
  */
 
-process.env.IS_STATIC = ''
-
 function getTest(name: string) {
   const app = require('./spec/out/out-webpack')
   const App = app[name]

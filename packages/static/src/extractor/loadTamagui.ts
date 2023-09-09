@@ -1,15 +1,15 @@
 import { basename, dirname, extname, join, relative, resolve } from 'path'
 
 import { Color, colorLog } from '@tamagui/cli-color'
-import { getDefaultTamaguiConfig } from '@tamagui/config-default-node'
-import { createTamagui } from '@tamagui/core-node'
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types'
 import type { TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { existsSync, pathExists, readJSON, writeFile } from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
-import { getNameToPaths, registerRequire } from '../require'
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { getNameToPaths, registerRequire } from '../registerRequire'
 import {
   TamaguiProjectInfo,
   getBundledConfig,
@@ -25,20 +25,21 @@ import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFro
 
 const getFilledOptions = (propsIn: Partial<TamaguiOptions>): TamaguiOptions => ({
   // defaults
+  platform: (process.env.TAMAGUI_TARGET as any) || 'web',
   config: 'tamagui.config.ts',
   components: ['tamagui'],
   ...(propsIn as Partial<TamaguiOptions>),
 })
 
 export async function loadTamagui(
-  propsIn: TamaguiOptions
+  propsIn: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> {
-  const options = getFilledOptions(propsIn)
+  const props = getFilledOptions(propsIn)
 
   // this affects the bundled config so run it first
-  await generateThemesAndLog(options)
+  await generateThemesAndLog(props)
 
-  const bundleInfo = await getBundledConfig(options)
+  const bundleInfo = await getBundledConfig(props)
   if (!bundleInfo) {
     console.warn(
       `No bundled config generated, maybe an error in bundling. Set DEBUG=tamagui and re-run to get logs.`
@@ -50,16 +51,17 @@ export async function loadTamagui(
     return bundleInfo
   }
 
-  await generateTamaguiStudioConfig(options, bundleInfo)
+  await generateTamaguiStudioConfig(props, bundleInfo)
 
   // this depends on the config so run it after
   if (bundleInfo) {
-    // init core-node
+    const { createTamagui } = requireTamaguiCore(props.platform)
+    // init config
     const config = createTamagui(bundleInfo.tamaguiConfig) as any
 
-    if (options.outputCSS) {
-      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${options.outputCSS}\n`)
-      await writeFile(options.outputCSS, config.getCSS())
+    if (props.outputCSS) {
+      colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${props.outputCSS}\n`)
+      await writeFile(props.outputCSS, config.getCSS())
     }
   }
 
@@ -93,16 +95,17 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
 }
 
 // loads in-process using esbuild-register
-export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
+export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjectInfo {
   const props = getFilledOptions(propsIn)
 
-  const unregisterRequire = registerRequire()
-  try {
-    // lets shim require and avoid importing react-native + react-native-web
-    // we just need to read the config around them
-    process.env.IS_STATIC = 'is_static'
-    process.env.TAMAGUI_IS_SERVER = 'true'
+  // lets shim require and avoid importing react-native + react-native-web
+  // we just need to read the config around them
+  process.env.IS_STATIC = 'is_static'
+  process.env.TAMAGUI_IS_SERVER = 'true'
 
+  const { createTamagui } = requireTamaguiCore(props.platform)
+  const { unregister, tamaguiRequire } = registerRequire(props.platform)
+  try {
     const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
 
@@ -111,7 +114,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       let tamaguiConfig: TamaguiInternalConfig | null = null
       if (props.config) {
         const configPath = getTamaguiConfigPathFromOptionsConfig(props.config)
-        const exp = require(configPath)
+        const exp = tamaguiRequire(configPath)
         tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
           const confPath = require.resolve(configPath)
@@ -135,7 +138,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       process.env.IS_STATIC = undefined
       globalThis['__DEV__' as any] = devValueOG
 
-      // set up core-node
+      // set up core
       if (props.config && tamaguiConfig) {
         createTamagui(tamaguiConfig as any)
       }
@@ -170,7 +173,7 @@ export function loadTamaguiSync(propsIn: TamaguiOptions): TamaguiProjectInfo {
       }
     }
   } finally {
-    unregisterRequire()
+    unregister()
   }
 }
 
@@ -198,6 +201,7 @@ export async function getOptions({
     debug,
     tsconfigPath,
     tamaguiOptions: {
+      platform: (process.env.TAMAGUI_TARGET as any) || 'web',
       components: ['tamagui'],
       ...tamaguiOptions,
       config: await getDefaultTamaguiConfigPath(root, tamaguiOptions?.config),

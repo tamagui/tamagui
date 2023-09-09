@@ -1,3 +1,3 @@
-const { createTamagui } = require('@tamagui/core-node')
+const { createTamagui } = require('@tamagui/core')
 
 module.exports = createTamagui(require('@tamagui/config').config)

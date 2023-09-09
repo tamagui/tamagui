@@ -9,7 +9,7 @@ import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
-import { registerRequire } from '../require'
+import { registerRequire } from '../registerRequire'
 import { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle } from './bundle'
@@ -38,7 +38,6 @@ export type TamaguiProjectInfo = {
 const external = [
   '@tamagui/core',
   '@tamagui/web',
-  '@tamagui/core-node',
   'react',
   'react-dom',
   'react-native-svg',
@@ -124,23 +123,29 @@ export async function bundleConfig(props: TamaguiOptions) {
 
     await Promise.all([
       props.config
-        ? bundle({
-            entryPoints: [configEntry],
-            external,
-            outfile: configOutPath,
-            target: 'node16',
-            ...esbuildExtraOptions,
-          })
+        ? bundle(
+            {
+              entryPoints: [configEntry],
+              external,
+              outfile: configOutPath,
+              target: 'node16',
+              ...esbuildExtraOptions,
+            },
+            props.platform
+          )
         : null,
       ...baseComponents.map((componentModule, i) => {
-        return bundle({
-          entryPoints: [componentModule],
-          resolvePlatformSpecificEntries: true,
-          external,
-          outfile: componentOutPaths[i],
-          target: 'node16',
-          ...esbuildExtraOptions,
-        })
+        return bundle(
+          {
+            entryPoints: [componentModule],
+            resolvePlatformSpecificEntries: true,
+            external,
+            outfile: componentOutPaths[i],
+            target: 'node16',
+            ...esbuildExtraOptions,
+          },
+          props.platform
+        )
       }),
     ])
 
@@ -160,14 +165,14 @@ export async function bundleConfig(props: TamaguiOptions) {
     )
 
     let out
-    const unregisterTamagui = registerRequire()
+    const { unregister } = registerRequire(props.platform)
     try {
       out = require(configOutPath)
     } catch (err) {
       // rome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
     } finally {
-      unregisterTamagui()
+      unregister()
     }
     const config = out.default || out
 
@@ -203,7 +208,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     // always load core so we can optimize if directly importing
     const coreComponents = loadComponents({
       ...props,
-      components: ['@tamagui/core-node'],
+      components: ['@tamagui/core'],
     })
     if (coreComponents) {
       coreComponents[0].moduleName = '@tamagui/core'
@@ -248,7 +253,7 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
     return cacheComponents[key]
   }
 
-  const unregister = registerRequire()
+  const { unregister } = registerRequire(props.platform)
 
   try {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {

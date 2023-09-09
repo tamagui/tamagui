@@ -9,8 +9,6 @@ import * as React from 'react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
 import { axe } from 'vitest-axe'
 
-process.env.TAMAGUI_TARGET = 'web'
-
 const conf = createTamagui(getDefaultTamaguiConfig())
 
 function CheckboxTest(props: React.ComponentProps<typeof Checkbox>) {

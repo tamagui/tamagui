@@ -3,8 +3,6 @@ import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-process.env.IS_STATIC = ''
-
 window['React'] = React
 
 // TODO need to test familys across media queries
