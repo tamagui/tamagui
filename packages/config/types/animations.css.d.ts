@@ -3,6 +3,7 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
     bouncy: string;
     lazy: string;
     slow: string;
+    medium: string;
     quick: string;
     tooltip: string;
 }>;
