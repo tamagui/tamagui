@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "belaytionship.rocks",
-    "slug": "belaytionship",
-    "scheme": "belaytionship",
+    "name": "belaytionship",
+    "slug": "belaytionshiprocks",
+    "scheme": "belaytionshiprocks",
     "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/Belaytionship-180.png",
@@ -14,9 +14,11 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/d01cf173-319e-41dd-bbe9-12b7b61077db"
+      "url": "https://u.expo.dev/6a9f45d5-4f31-4556-bd99-0d7d09bdebee"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.belaytionship.app"
@@ -27,7 +29,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.belaytionship.app",
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -47,7 +51,10 @@
         "origin": false
       },
       "eas": {
-        "projectId": "d01cf173-319e-41dd-bbe9-12b7b61077db"
+        "eas": {
+          "projectId": "298b9397-940d-4706-a2db-a10029e2ca25"
+        },
+        "projectId": "6a9f45d5-4f31-4556-bd99-0d7d09bdebee"
       }
     },
     "runtimeVersion": {

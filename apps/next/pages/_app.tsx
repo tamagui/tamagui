@@ -34,7 +34,7 @@ function MyApp({
       <Head>
         <title>Tamagui Universal App</title>
         <meta name="description" content="Tamagui Universal Starter" />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="/Belaytionship-80.png" />
       </Head>
       <NextThemeProvider
         onChangeTheme={(next) => {
