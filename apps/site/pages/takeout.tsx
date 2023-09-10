@@ -1231,7 +1231,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
       }}
     >
       <Dialog.Adapt when="sm">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+        <Sheet zIndex={200000} modal dismissOnSnapToBottom animation="medium">
           <Sheet.Frame padding="$4" space>
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />

@@ -20,6 +20,11 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         damping: number;
         stiffness: number;
     };
+    medium: {
+        damping: number;
+        stiffness: number;
+        mass: number;
+    };
     slow: {
         type: "spring";
         damping: number;

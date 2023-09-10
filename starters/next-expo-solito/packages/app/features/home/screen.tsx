@@ -69,6 +69,7 @@ function SheetDemo() {
       />
       <Sheet
         modal
+        animation="lazy"
         open={open}
         onOpenChange={setOpen}
         snapPoints={[80]}

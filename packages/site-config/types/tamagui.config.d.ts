@@ -1,5 +1,5 @@
 export { animations } from './animations.reanimated';
-export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+export declare const cherryBombFont: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
 export declare const munroFont: import("@tamagui/font-inter").GenericFont;
 export declare const config: {
     defaultFont: string;
@@ -11,41 +11,39 @@ export declare const config: {
             duration: number;
         };
         superBouncy: {
-            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         bouncy: {
-            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
+        medium: {
+            damping: number;
+            stiffness: number;
+            mass: number;
+        };
         lazy: {
-            type: string;
             damping: number;
             stiffness: number;
         };
         slow: {
-            type: string;
             damping: number;
             stiffness: number;
         };
         quick: {
-            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         tooltip: {
-            type: string;
             damping: number;
             mass: number;
             stiffness: number;
         };
         quicker: {
-            type: string;
             damping: number;
             mass: number;
             stiffness: number;
@@ -43338,8 +43336,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        }, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -43363,9 +43361,9 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13>;
         munro: import("@tamagui/font-inter").GenericFont;
-        cherryBomb: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 10 | 1 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
+        cherryBomb: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 5 | 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 6 | 7 | 8 | 13 | "true">;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

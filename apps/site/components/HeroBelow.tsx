@@ -49,24 +49,6 @@ export const HeroBelow = memo(() => {
       >
         <YStack fullscreen bc="$color3" zi={-1} o={0.25} btw={1} btc="$borderColor" />
 
-        <XStack pos="absolute" als="center" y={-45}>
-          <Link target="_blank" href="https://github.com/tamagui/tamagui">
-            <Theme reset>
-              <Button
-                icon={<GithubIcon width={16} />}
-                iconAfter={Star}
-                br="$10"
-                size="$3"
-                elevate
-                fontFamily="$silkscreen"
-                space="$3"
-              >
-                Star plz
-              </Button>
-            </Theme>
-          </Link>
-        </XStack>
-
         <HeroBelowContent />
       </YStack>
     </>
@@ -90,7 +72,7 @@ export const HeroBelowContent = memo(() => {
         flexWrap="nowrap"
         px="$2"
         mb={-8}
-        py="$4"
+        py="$1"
         $sm={{ flexDirection: 'column' }}
         $gtSm={{
           px: '$6',
