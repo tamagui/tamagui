@@ -112,11 +112,25 @@ export function createSheet<
       (
         {
           __scopeSheet,
+          adjustPaddingForOffscreenContent,
+          disableHideBottomOverflow,
           children,
           ...props
         }: SheetScopedProps<
           GetProps<typeof Frame> & {
+            /**
+             * By default the sheet adds a view below its bottom that extends down another 50%,
+             * this is useful if your Sheet has a spring animation that bounces "past" the top when
+             * opening, preventing it from showing the content underneath.
+             */
             disableHideBottomOverflow?: boolean
+
+            /**
+             * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+             * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+             * turned on, the inner content is always set to the max height of the sheet.
+             */
+            adjustPaddingForOffscreenContent?: boolean
           }
         >,
         forwardedRef
@@ -125,6 +139,7 @@ export function createSheet<
         const { hasFit, removeScrollEnabled, frameSize, contentRef } = context
         const composedContentRef = useComposedRefs(forwardedRef, contentRef)
         const offscreenSize = useSheetOffscreenSize(context)
+
         const sheetContents = useMemo(() => {
           return (
             // @ts-ignore
@@ -135,10 +150,13 @@ export function createSheet<
               {...props}
             >
               {children}
-              <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+
+              {adjustPaddingForOffscreenContent && (
+                <Stack data-sheet-offscreen-pad height={offscreenSize} width="100%" />
+              )}
             </Frame>
           )
-        }, [props, frameSize, offscreenSize, hasFit])
+        }, [props, frameSize, offscreenSize, adjustPaddingForOffscreenContent, hasFit])
 
         return (
           <>
@@ -154,7 +172,7 @@ export function createSheet<
             </RemoveScroll>
 
             {/* below frame hide when bouncing past 100% */}
-            {!props.disableHideBottomOverflow && (
+            {!disableHideBottomOverflow && (
               // @ts-ignore
               <Frame
                 {...props}

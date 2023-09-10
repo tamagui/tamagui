@@ -242,6 +242,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
             readonly unstyled?: boolean | undefined;
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & import("react").RefAttributes<unknown>>;
@@ -362,6 +363,7 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         readonly unstyled?: boolean | undefined;
     }>> & {
         disableHideBottomOverflow?: boolean | undefined;
+        adjustPaddingForOffscreenContent?: boolean | undefined;
     } & {
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & import("react").RefAttributes<unknown>>;

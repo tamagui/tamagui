@@ -3,6 +3,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   Theme,
+  getConfig,
   isTouchable,
   isWeb,
   themeable,
@@ -47,7 +48,8 @@ export const SheetImplementationCustom = themeable(
     const parentSheet = useContext(ParentSheetContext)
 
     const {
-      animationConfig,
+      animation,
+      animationConfig: animationConfigProp,
       modal = false,
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
@@ -78,6 +80,24 @@ export const SheetImplementationCustom = themeable(
 
     const sheetRef = useRef<View>(null)
     const ref = useComposedRefs(forwardedRef, sheetRef)
+
+    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
+    const animationConfig = (() => {
+      const [animationProp, animationPropConfig] = !animation
+        ? []
+        : Array.isArray(animation)
+        ? animation
+        : ([animation] as const)
+      return (
+        animationConfigProp ??
+        (animationProp
+          ? {
+              ...(getConfig().animations.animations[animationProp as string] as Object),
+              ...animationPropConfig,
+            }
+          : null)
+      )
+    })()
 
     /**
      * This is a hacky workaround for native:
@@ -410,8 +430,6 @@ export const SheetImplementationCustom = themeable(
             {...panResponder?.panHandlers}
             onLayout={handleAnimationViewLayout}
             pointerEvents={open && !shouldHideParentSheet ? 'auto' : 'none'}
-            //  @ts-ignore
-            animation={props.animation}
             style={[
               {
                 position: 'absolute',
