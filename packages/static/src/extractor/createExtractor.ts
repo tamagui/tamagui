@@ -1946,8 +1946,6 @@ export function createExtractor(
                 ...out.pseudos,
               }
 
-              console.log('so...', out.pseudos)
-
               if (shouldPrintDebug) {
                 logger.info(`(${debugName})`)
                 // prettier-ignore

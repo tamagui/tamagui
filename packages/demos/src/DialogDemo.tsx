@@ -36,7 +36,7 @@ function DialogInstance() {
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
+        <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
           <Sheet.Frame padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>

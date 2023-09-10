@@ -132,7 +132,7 @@ const AnimationControl = () => {
       placement="top"
       label={`Animations: ${niceNames[animationDriverToggler.driverName]}`}
     >
-      <XStack zIndex={100000000} space="$2" ai="center">
+      <XStack space="$2" ai="center">
         <Timer size={14} opacity={0.6} />
         <Switch
           size="$1"
