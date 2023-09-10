@@ -325,15 +325,7 @@ export const SheetImplementationCustom = themeable(
 
     const handleAnimationViewLayout = useCallback(
       (e: LayoutChangeEvent) => {
-        const next = (() => {
-          let _ = e.nativeEvent?.layout.height
-          if (isWeb && isTouchable && !open) {
-            // temp fix ios bug where it doesn't go below dynamic bottom...
-            _ += 100
-          }
-          return _
-        })()
-
+        const next = e.nativeEvent?.layout.height
         if (!next) return
         setFrameSize(next)
       },
