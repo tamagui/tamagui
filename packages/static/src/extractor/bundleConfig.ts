@@ -31,7 +31,7 @@ export type LoadedComponents = {
 
 export type TamaguiProjectInfo = {
   components?: LoadedComponents[]
-  tamaguiConfig?: TamaguiInternalConfig
+  tamaguiConfig?: TamaguiInternalConfig | null
   nameToPaths?: NameToPaths
 }
 

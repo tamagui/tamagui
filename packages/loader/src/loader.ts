@@ -27,7 +27,11 @@ export const loader = async function loader(
   const source = sourceIn.toString()
 
   try {
-    const options: TamaguiOptions = { ...this.getOptions() }
+    const options: TamaguiOptions = {
+      // @ts-ignore
+      platform: 'web',
+      ...this.getOptions(),
+    }
     const sourcePath = `${this.resourcePath}`
 
     const { shouldDisable, shouldPrintDebug } = getPragmaOptions({

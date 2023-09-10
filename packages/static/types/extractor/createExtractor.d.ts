@@ -12,7 +12,7 @@ export declare function createExtractor({ logger }?: ExtractorOptions): {
     cleanupBeforeExit: typeof cleanupBeforeExit;
     loadTamagui: (props: TamaguiOptions) => Promise<TamaguiProjectInfo | null>;
     loadTamaguiSync: (props: TamaguiOptions) => TamaguiProjectInfo | null;
-    getTamagui(): import("@tamagui/web").TamaguiInternalConfig | undefined;
+    getTamagui(): import("@tamagui/web").TamaguiInternalConfig | null | undefined;
     parseSync: (f: FileOrPath, props: ExtractorParseProps) => {
         styled: number;
         flattened: number;

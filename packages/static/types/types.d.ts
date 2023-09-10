@@ -59,7 +59,7 @@ export type TamaguiOptionsWithFileInfo = TamaguiOptions & {
     allLoadedComponents: LoadedComponents[];
 };
 export type ExtractorParseProps = Omit<TamaguiOptionsWithFileInfo, 'allLoadedComponents'> & {
-    target: 'native' | 'html';
+    platform: TamaguiPlatform;
     shouldPrintDebug?: boolean | 'verbose';
     onExtractTag: (props: ExtractTagProps) => void;
     getFlattenedNode?: (props: {

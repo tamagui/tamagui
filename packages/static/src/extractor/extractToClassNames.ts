@@ -105,7 +105,6 @@ export async function extractToClassNames({
     shouldPrintDebug,
     ...options,
     sourcePath,
-    target: 'html',
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {
       const css = rules.join(';')

@@ -94,8 +94,14 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
   }
 }
 
+let last: TamaguiProjectInfo | null = null
+
 // loads in-process using esbuild-register
 export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjectInfo {
+  if (last && !hasBundledConfigChanged()) {
+    return last
+  }
+
   const props = getFilledOptions(propsIn)
 
   // lets shim require and avoid importing react-native + react-native-web
@@ -147,9 +153,11 @@ export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjec
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
-      }
+      } satisfies TamaguiProjectInfo
 
       generateTamaguiStudioConfigSync(props, info)
+
+      last = info
 
       return info as any
     } catch (err) {

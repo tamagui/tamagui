@@ -176,7 +176,7 @@ export function createExtractor(
       extractStyledDefinitions = false,
       prefixLogs,
       excludeProps,
-      target,
+      platform,
       ...restProps
     } = options
 
@@ -187,7 +187,7 @@ export function createExtractor(
       propMapper,
       proxyThemeVariables,
       pseudoDescriptors,
-    } = requireTamaguiCore(target === 'html' ? 'web' : 'native')
+    } = requireTamaguiCore(platform)
 
     let shouldPrintDebug = options.shouldPrintDebug || false
 
@@ -218,7 +218,7 @@ export function createExtractor(
       if (!projectInfo) {
         throw new Error(`Tamagui extractor not loaded yet`)
       }
-      if (target === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
+      if (platform === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }
       return !!(
@@ -235,7 +235,7 @@ export function createExtractor(
      * Step 1: Determine if importing any statically extractable components
      */
 
-    const isTargetingHTML = target === 'html'
+    const isTargetingHTML = platform === 'web'
     const ogDebug = shouldPrintDebug
     const tm = timer()
     const propsWithFileInfo: TamaguiOptionsWithFileInfo = {
@@ -1048,7 +1048,7 @@ export function createExtractor(
             if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
               const shortname = name.slice(1)
               if (mediaQueryConfig[shortname]) {
-                if (target === 'native') {
+                if (platform === 'native') {
                   shouldDeopt = true
                 }
 
@@ -1566,7 +1566,7 @@ export function createExtractor(
           const themeVal = inlined.get('theme')
 
           // on native we can't flatten when theme prop is set
-          if (target !== 'native') {
+          if (platform !== 'native') {
             inlined.delete('theme')
           }
 
@@ -2192,7 +2192,7 @@ export function createExtractor(
             }
           }
 
-          const isNativeNotFlat = !shouldFlatten && target === 'native'
+          const isNativeNotFlat = !shouldFlatten && platform === 'native'
           if (isNativeNotFlat) {
             if (shouldPrintDebug) {
               logger.info(`Disabled flattening except for simple cases on native for now`)
