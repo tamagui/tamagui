@@ -12,7 +12,7 @@ import Commander from 'commander'
 import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
-import { IS_TEST } from './constants'
+import { IS_TEST } from './create-tamagui-constants'
 import { tamaguiDuckAsciiArt, tamaguiRainbowAsciiArt } from './helpers/asciiArts'
 import { cloneStarter } from './helpers/cloneStarter'
 import { getProjectName } from './helpers/getProjectName'

@@ -2,7 +2,7 @@ import { join } from 'path'
 
 import chalk from 'chalk'
 
-import { IS_TEST } from './constants'
+import { IS_TEST } from './create-tamagui-constants'
 import { makeRainbowChalk } from './helpers/rainbowChalk'
 import nextExpoSolito from './steps/next-expo-solito'
 import simpleWeb from './steps/simple-web'

@@ -909,6 +909,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
             readonly unstyled?: boolean | undefined;
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & React.RefAttributes<unknown>>;

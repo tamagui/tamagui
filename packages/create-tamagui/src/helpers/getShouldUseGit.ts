@@ -1,6 +1,6 @@
 import prompts from 'prompts'
 
-import { IS_TEST } from '../constants'
+import { IS_TEST } from '../create-tamagui-constants'
 
 export const getShouldUseGit = async () => {
   return (

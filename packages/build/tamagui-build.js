@@ -36,6 +36,7 @@ const tsProject =
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
+const pkgSource = pkg.source
 const bundleNative = pkg.tamagui?.bundleNative
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
@@ -164,9 +165,11 @@ async function buildJs() {
   if (skipJS) {
     return
   }
-  let files = (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-    (x) => !x.includes('.d.ts')
-  )
+  let files = shouldBundle
+    ? [pkgSource || './src/index.ts']
+    : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
+        (x) => !x.includes('.d.ts')
+      )
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
@@ -369,7 +372,7 @@ async function esbuildWriteIfChanged(
       tsconfigRaw: {
         compilerOptions: {
           paths: {
-            'react-native': 'react-native-web',
+            'react-native': ['react-native-web'],
           },
         },
       },
@@ -387,14 +390,29 @@ async function esbuildWriteIfChanged(
     return
   }
 
+  const nativeFilesMap = Object.fromEntries(
+    built.outputFiles.flatMap((p) => {
+      if (p.path.includes('.native.js')) {
+        return [[p.path, true]]
+      }
+      return []
+    })
+  )
+
   await Promise.all(
     built.outputFiles.map(async (file) => {
       let outPath = file.path
 
-      if (outPath.endsWith('.js')) {
-        const [_, extPlatform] = outPath.match(/(web|native|ios|android).js$/) ?? []
+      if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
+        const [_, extPlatform] =
+          outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
 
         if (platform === 'native') {
+          if (!extPlatform && nativeFilesMap[outPath.replace('.js', '.native.js')]) {
+            // if native exists, avoid outputting non-native
+            return
+          }
+
           if (extPlatform === 'web') {
             return
           }
@@ -402,9 +420,20 @@ async function esbuildWriteIfChanged(
             outPath = outPath.replace('.js', '.native.js')
           }
         }
+
+        if (platform === 'web') {
+          if (
+            extPlatform === 'native' ||
+            extPlatform === 'android' ||
+            extPlatform === 'ios'
+          ) {
+            return
+          }
+        }
       }
 
       const outDir = dirname(outPath)
+
       await fs.ensureDir(outDir)
       const outString = new TextDecoder().decode(file.contents)
 

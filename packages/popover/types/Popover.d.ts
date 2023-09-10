@@ -207,6 +207,7 @@ export declare const Popover: React.FC<PopoverProps> & {
             readonly unstyled?: boolean | undefined;
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         } & React.RefAttributes<unknown>>;

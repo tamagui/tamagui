@@ -40,6 +40,7 @@ export async function getOptions({
     debug,
     tsconfigPath,
     tamaguiOptions: {
+      platform: 'native',
       components: ['tamagui'],
       config,
       ...tamaguiOptions,

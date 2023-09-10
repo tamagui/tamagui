@@ -3700,6 +3700,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
             readonly unstyled?: boolean | undefined;
         }>> & {
             disableHideBottomOverflow?: boolean | undefined;
+            adjustPaddingForOffscreenContent?: boolean | undefined;
         } & {
             __scopeSheet?: Scope<any>;
         } & React.RefAttributes<unknown>>;

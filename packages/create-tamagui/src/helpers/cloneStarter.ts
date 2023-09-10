@@ -7,7 +7,7 @@ import { copy, ensureDir, pathExists, remove } from 'fs-extra'
 import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
-import { IS_TEST } from '../constants'
+import { IS_TEST } from '../create-tamagui-constants'
 import { templates } from '../templates'
 
 const open = require('opn')
