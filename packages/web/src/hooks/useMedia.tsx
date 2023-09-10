@@ -1,8 +1,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useMemo, useRef, useSyncExternalStore } from 'react'
 
-import { getConfig, getToken } from '../config'
-import { Variable } from '../createVariable'
+import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
 import { getTokenForKey } from '../helpers/propMapper'
@@ -15,9 +14,8 @@ import type {
   MediaQueryState,
   ResolveVariableAs,
   TamaguiInternalConfig,
-  VariableVal,
 } from '../types'
-import { ThemeGettable, UseThemeResult, useTheme } from './useTheme'
+import { useTheme } from './useTheme'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -82,19 +80,24 @@ export const getMediaKeyImportance = (key: string) => {
 
 const dispose = new Set<Function>()
 
+let mediaVersion = 0
+
 export const configureMedia = (config: TamaguiInternalConfig) => {
   const { media, mediaQueryDefaultActive } = config
   if (!media) return
+  mediaVersion++
   for (const key in media) {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...mediaState }
-  updateCurrentState()
   mediaKeysOrdered = Object.keys(media)
+
   if (config.disableSSR) {
     setupMediaListeners()
+  } else {
+    updateCurrentState()
   }
 }
 
@@ -108,12 +111,11 @@ function unlisten() {
  * Because to avoid hydration issues SSR must match the server
  * *and then* re-render with the actual media query state.
  */
-let configuredKey = ''
+let setupVersion = -1
 export function setupMediaListeners() {
   // avoid setting up more than once per config
-  const nextKey = JSON.stringify(mediaQueryConfig)
-  if (nextKey === configuredKey) return
-  configuredKey = nextKey
+  if (setupVersion === mediaVersion) return
+  setupVersion = mediaVersion
 
   // hmr, undo existing before re-binding
   unlisten()
@@ -125,6 +127,7 @@ export function setupMediaListeners() {
     if (!match) {
       throw new Error('⚠️ No match')
     }
+
     // react native needs these deprecated apis for now
     match.addListener(update)
     dispose.add(() => {
@@ -152,8 +155,13 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
 
 const listeners = new Set<any>()
 let flushing = false
+let flushVersion = -1
 function updateCurrentState() {
-  if (flushing) return
+  // only avoid flush if they haven't re-configured media queries since
+  if (flushing && flushVersion === mediaVersion) {
+    return
+  }
+  flushVersion = mediaVersion
   flushing = true
   Promise.resolve().then(() => {
     flushing = false
