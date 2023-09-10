@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { dirname, join } from 'path'
 
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
@@ -25,7 +25,25 @@ export async function generateTamaguiStudioConfig(
     if (!config) return
     const out = transformConfig(config, tamaguiOptions.platform)
 
-    fs.writeJSON(confFile, out, {
+    await fs.ensureDir(dirname(confFile))
+    await fs.writeJSON(confFile, out, {
+      spaces: 2,
+    })
+  } catch (err) {
+    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
+      console.warn('generateTamaguiStudioConfig error', err)
+    }
+    // ignore for now
+  }
+}
+
+export function generateTamaguiStudioConfigSync(
+  _tamaguiOptions: TamaguiOptions,
+  config: BundledConfig
+) {
+  try {
+    fs.ensureDirSync(dirname(confFile))
+    fs.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
       spaces: 2,
     })
   } catch (err) {
@@ -72,22 +90,6 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
 
 const resolveRelativePath = (inputPath: string) =>
   inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
-
-export function generateTamaguiStudioConfigSync(
-  _tamaguiOptions: TamaguiOptions,
-  config: BundledConfig
-) {
-  try {
-    fs.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
-      spaces: 2,
-    })
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('generateTamaguiStudioConfig error', err)
-    }
-    // ignore for now
-  }
-}
 
 function cloneDeepSafe(x: any, excludeKeys = {}) {
   if (!x) return x
