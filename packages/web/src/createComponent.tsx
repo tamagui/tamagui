@@ -393,7 +393,7 @@ export function createComponent<
       }
     }
 
-    const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
+    const isAnimatedReactNative = hasAnimationProp && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
     const shouldAvoidClasses = Boolean(
       !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
@@ -548,7 +548,7 @@ export function createComponent<
     })
 
     // animation setup
-    const isAnimatedReactNativeWeb = isAnimated && isReactNative
+    const isAnimatedReactNativeWeb = hasAnimationProp && isReactNative
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
