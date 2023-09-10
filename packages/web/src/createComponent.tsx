@@ -110,7 +110,11 @@ export function createComponent<
   Ref = TamaguiElement,
   BaseProps = never
 >(staticConfig: StaticConfig) {
+  let config: TamaguiInternalConfig | null = null
+
   onConfiguredOnce((conf) => {
+    config = conf
+
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
@@ -236,7 +240,7 @@ export function createComponent<
     }
     if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
-    const isHydrated = useDidFinishSSR()
+    const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
 
     if (process.env.NODE_ENV === 'development' && time) time`did-finish-ssr`
 
