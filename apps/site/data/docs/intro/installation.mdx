@@ -45,11 +45,15 @@ yarn add @tamagui/web
 
 That's basically it for install. You can now import and start using Tamagui once you [set up the configuration](#quick-configuration). As of version `1.62.0` Tamagui no longer requires any sort of special setup with your bundler.
 
-That said, once you start using libraries from within the React Native ecosystem, you likely need some extra setup. Many of them use the special "platform specific" file extensions, like having `index.js` alongside `index.web.js`, which they expect the `index.web.js` to be picked up by the web. They also often import `react-native` directly, so if you're targeting web you need to set an alias from `react-native` to `react-native-web`.
+That said, once you start using libraries from the React Native ecosystem, you likely need some extra setup. Many of them use the special "platform specific" file extensions pattern that React Native recommends, eg having an `index.js` alongside `index.web.js`, in which bundlers need to grab the `index.web.js` when targeting web. Many packages also import `react-native` directly, so if you're targeting web you need to set an alias from `react-native` to `react-native-web`.
 
-Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually will want to probably use one of the Tamagui bundler plugins.
+Tamagui itself doesn't need any of this, but since you're probably going to add a variety of packages, you eventually may want to use one of the Tamagui bundler plugins.
 
 If you just want to get coding, don't worry about it for now and continue to [quick configuration](#quick-configuration) or [the full configuration docs](/docs/core/configuration).
+
+### Bundler plugins
+
+The bundler plugins generally set up platform specific extension support, alias react-native to react-native-web, and can enable the optimizing compiler.
 
 #### Webpack
 
@@ -147,27 +151,6 @@ config.optimizeDeps.esbuildOptions = {
 
 For React Native or Expo you shouldn't need any plugins unless you're setting up the optimizing compiler which we highly recommend doing only once you're ready to ship your app to production. That install process is explained in the [Compiler installation docs](/docs/intro/compiler-install).
 
-#### Media Queries
-
-This is also documented in the Configuration docs on the next page, but worth noting twice.
-
-`@tamagui/core` doesn't provide media capabilities out of the box to native apps, while on the web it uses native media queries. To enable media queries for React Native, you need to provide matchMedia implementation:
-
-```sh
-yarn add @tamagui/react-native-media-driver
-```
-
-```tsx
-import { createMedia } from '@tamagui/react-native-media-driver'
-
-export default createTamagui({
-  media: createMedia({
-    xs: { maxWidth: 660 },
-    // ...
-  }),
-})
-```
-
 ### Quick configuration
 
 For an in-depth setup, check out [the full configuration docs](/docs/core/configuration). This sets you up with the default Tamagui design system which is great for getting started quick:
@@ -230,7 +213,7 @@ You're ready to use Tamagui:
 import { Button } from 'tamagui'
 
 export default function Demo() {
-  return <Button>Button</Button>
+  return <Button>Hello world</Button>
 }
 ```
 
