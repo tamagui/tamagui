@@ -5,6 +5,7 @@ import { TamaguiOptions } from '@tamagui/types'
 import fs, { readFile } from 'fs-extra'
 
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { TamaguiPlatform } from '../types'
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
 const tamaguiDir = join(process.cwd(), '.tamagui')
@@ -22,7 +23,7 @@ export async function generateTamaguiStudioConfig(
   try {
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
-    const out = transformConfig(config)
+    const out = transformConfig(config, tamaguiOptions.platform)
 
     fs.writeJSON(confFile, out, {
       spaces: 2,
@@ -77,7 +78,7 @@ export function generateTamaguiStudioConfigSync(
   config: BundledConfig
 ) {
   try {
-    fs.writeJSONSync(confFile, transformConfig(config), {
+    fs.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
       spaces: 2,
     })
   } catch (err) {
@@ -99,12 +100,12 @@ function cloneDeepSafe(x: any, excludeKeys = {}) {
   )
 }
 
-function transformConfig(config: BundledConfig) {
+function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   if (!config) {
     return null
   }
 
-  const { getVariableValue } = requireTamaguiCore('web')
+  const { getVariableValue } = requireTamaguiCore(platform)
 
   // ensure we don't mangle anything in the original
   const next = cloneDeepSafe(config, {
