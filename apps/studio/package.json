@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/studio",
-  "version": "1.62.3",
+  "version": "1.63.0",
   "private": true,
   "type": "module",
   "module": "dist",
@@ -19,13 +19,13 @@
   },
   "dependencies": {
     "@supabase/auth-helpers-shared": "^0.4.1",
-    "@tamagui/cli": "1.62.3",
-    "@tamagui/linear-gradient": "1.62.3",
-    "@tamagui/lucide-icons": "1.62.3",
-    "@tamagui/theme": "1.62.3",
-    "@tamagui/theme-builder": "1.62.3",
-    "@tamagui/themes": "1.62.3",
-    "@tamagui/use-store": "1.62.3",
+    "@tamagui/cli": "1.63.0",
+    "@tamagui/linear-gradient": "1.63.0",
+    "@tamagui/lucide-icons": "1.63.0",
+    "@tamagui/theme": "1.63.0",
+    "@tamagui/theme-builder": "1.63.0",
+    "@tamagui/themes": "1.63.0",
+    "@tamagui/use-store": "1.63.0",
     "color2k": "^2.0.2",
     "prettier": "^2.8.1",
     "react": "^18.2.0",
@@ -33,12 +33,12 @@
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.6",
     "react-router-dom": "^6.14.1",
-    "tamagui": "1.62.3",
+    "tamagui": "1.63.0",
     "tinybase": "^4.0.4",
     "victory": "^36.6.11"
   },
   "devDependencies": {
-    "@tamagui/build": "1.62.3",
+    "@tamagui/build": "1.63.0",
     "@types/react-color": "^3.0.6",
     "vite": "^4.4.9"
   }

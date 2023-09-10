@@ -1,3 +1,9 @@
+bigger up next:
+  - no separate UI package necessary for optimization
+  - headless
+  - zero runtime
+  - Menu
+
 - TODO this could definitely be done better by at the very minimum
   - this entire proxy could be removed in favor of the proxy we make on initial theme creation, and just having a way to subscribeThemeGet(theme, (key, val) => any) at the useThemeWithState callsite
 

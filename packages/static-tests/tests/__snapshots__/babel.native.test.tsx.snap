@@ -123,11 +123,11 @@ exports[`theme value extraction should work when no theme variables used 1`] = `
 const _sheet = ReactNativeStyleSheet.create({
   \\"0\\": {
     \\"display\\": \\"flex\\",
+    \\"color\\": \\"red\\",
     \\"fontFamily\\": \\"Inter\\",
     \\"letterSpacing\\": 0,
     \\"fontSize\\": 14,
-    \\"lineHeight\\": 23,
-    \\"color\\": \\"red\\"
+    \\"lineHeight\\": 23
   }
 });
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
