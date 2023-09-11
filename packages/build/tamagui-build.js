@@ -237,6 +237,12 @@ async function buildJs() {
               alias({
                 '@tamagui/web': require.resolve('@tamagui/web/native'),
                 'react-native': require.resolve('@tamagui/fake-react-native'),
+                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
+                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                  '@tamagui/fake-react-native'
+                ),
                 'react-native/Libraries/Pressability/Pressability': require.resolve(
                   '@tamagui/fake-react-native'
                 ),
