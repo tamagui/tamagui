@@ -2,7 +2,7 @@ import * as PackageManager from '@expo/package-manager'
 
 export async function installDependencies(
   projectRoot: string,
-  packageManager: 'yarn' | 'npm' | 'pnpm'
+  packageManager: 'yarn' | 'npm' | 'pnpm' | 'bun'
 ) {
   const options = { cwd: projectRoot }
   if (packageManager === 'yarn') {

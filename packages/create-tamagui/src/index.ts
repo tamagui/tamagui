@@ -10,6 +10,7 @@ import { cwd } from 'process'
 import chalk from 'chalk'
 import Commander from 'commander'
 import { $, cd } from 'zx'
+import { detect } from 'detect-package-manager'
 
 import packageJson from '../package.json'
 import { IS_TEST } from './create-tamagui-constants'
@@ -59,9 +60,8 @@ if (process.argv.includes('--version')) {
 }
 const skipCloning = !!program.skipCloning
 
-const packageManager = 'yarn'
-
 async function run() {
+  const packageManager = await detect()
   if (!skipCloning) {
     console.log() // this newline prevents the ascii art from breaking
     console.log(tamaguiRainbowAsciiArt)
@@ -139,6 +139,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     console.log()
 
     try {
+      console.log('installing with ' + packageManager)
       await installDependencies(resolvedProjectPath, packageManager)
     } catch (e: any) {
       console.error(
