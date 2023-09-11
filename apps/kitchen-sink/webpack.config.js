@@ -97,7 +97,7 @@ module.exports = {
       config: './src/tamagui.config.ts',
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
-      enableDynamicEvaluation: true,
+      // enableDynamicEvaluation: true,
       disableExtraction,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',

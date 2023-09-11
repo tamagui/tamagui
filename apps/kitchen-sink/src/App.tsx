@@ -1,10 +1,12 @@
 import '@tamagui/core/reset.css'
 
-import { lazy, useState } from 'react'
+import * as Demos from '@tamagui/demos'
+import { useState } from 'react'
 import { Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { Provider } from './provider'
 import { Sandbox } from './Sandbox'
+import * as TestCases from './usecases'
 
 // useful for debugging why things render:
 // import './wdyr'
@@ -12,12 +14,6 @@ import { Sandbox } from './Sandbox'
 if (typeof require !== 'undefined') {
   globalThis['React'] = require('react') // webpack
 }
-
-const Demos = (name: string) =>
-  lazy(() => import('@tamagui/demos').then((x) => x[name] as any))
-
-const TestCases = (name: string) =>
-  lazy(() => import('./usecases').then((x) => x[name] as any))
 
 export default function App() {
   const kitchenSink = new URLSearchParams(window.location.search).get('kitchen')
