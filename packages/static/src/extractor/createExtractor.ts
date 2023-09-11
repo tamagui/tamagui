@@ -181,6 +181,10 @@ export function createExtractor(
       ...restProps
     } = options
 
+    if (sourcePath.includes('.tamagui-dynamic-eval')) {
+      return null
+    }
+
     const {
       expandStylesAndRemoveNullishValues,
       getSplitStyles,
@@ -429,6 +433,8 @@ export function createExtractor(
       found: 0,
     }
 
+    const version = `${Math.random()}`
+
     callTraverse({
       // @ts-ignore
       Program: {
@@ -481,6 +487,7 @@ export function createExtractor(
             const out = loadTamaguiSync({
               forceExports: true,
               components: [sourcePath],
+              cacheKey: version,
             })
 
             if (!out?.components) {
@@ -497,13 +504,15 @@ export function createExtractor(
 
             Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
 
-            const foundNames = out.components
-              ?.map((x) => Object.keys(x.nameToInfo).join(', '))
-              .join(', ')
-              .trim()
+            if (!out.cached) {
+              const foundNames = out.components
+                ?.map((x) => Object.keys(x.nameToInfo).join(', '))
+                .join(', ')
+                .trim()
 
-            if (foundNames) {
-              colorLog(Color.FgYellow, `      | Found new components: ${foundNames}`)
+              if (foundNames) {
+                colorLog(Color.FgYellow, `      | Found new components: ${foundNames}`)
+              }
             }
           } catch (err: any) {
             if (shouldPrintDebug) {

@@ -1,4 +1,4 @@
-import { relative, sep } from 'path'
+import { register } from 'esbuild-register/dist/node'
 
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
 import { TamaguiPlatform } from './types'
@@ -38,7 +38,7 @@ export function registerRequire(
     }
   }
 
-  const { unregister } = require('esbuild-register/dist/node').register({
+  const { unregister } = register({
     hookIgnoreNodeModules: false,
   })
 
@@ -73,7 +73,9 @@ export function registerRequire(
       path === '@gorhom/bottom-sheet' ||
       path.startsWith('react-native-reanimated') ||
       path === 'expo-linear-gradient' ||
-      path === '@expo/vector-icons'
+      path === '@expo/vector-icons' ||
+      path === 'tamagui/linear-gradient' ||
+      path === 'react-native-svg'
     ) {
       return proxyWorm
     }
@@ -81,12 +83,7 @@ export function registerRequire(
       return packageJson
     }
 
-    if (
-      path === 'react-native-web-lite' ||
-      (path.startsWith('react-native') &&
-        // allow our rnw.tsx imports through
-        !path.startsWith('react-native-web/dist/cjs/exports'.replace(/\//g, sep)))
-    ) {
+    if (path === 'react-native-web-lite' || path.startsWith('react-native')) {
       return rnw
     }
 

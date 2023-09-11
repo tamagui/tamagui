@@ -95,20 +95,26 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
 }
 
 const last: Record<string, TamaguiProjectInfo | null> = {}
+const lastVersion: Record<string, string> = {}
 
 // loads in-process using esbuild-register
-export function loadTamaguiSync(
-  propsIn: Partial<TamaguiOptions> & {
-    forceExports?: boolean
-  }
-): TamaguiProjectInfo {
+export function loadTamaguiSync({
+  forceExports,
+  cacheKey,
+  ...propsIn
+}: Partial<TamaguiOptions> & {
+  forceExports?: boolean
+  cacheKey?: string
+}): TamaguiProjectInfo {
   const key = JSON.stringify(propsIn)
 
-  if (!propsIn.forceExports) {
-    if (last[key] && !hasBundledConfigChanged()) {
+  if (last[key] && !hasBundledConfigChanged()) {
+    if (!lastVersion[key] || lastVersion[key] === cacheKey) {
       return last[key]!
     }
   }
+
+  lastVersion[key] = cacheKey || ''
 
   const props = getFilledOptions(propsIn)
 
@@ -118,7 +124,7 @@ export function loadTamaguiSync(
   process.env.TAMAGUI_IS_SERVER = 'true'
 
   const { unregister } = registerRequire(props.platform, {
-    proxyWormImports: !!propsIn.forceExports,
+    proxyWormImports: !!forceExports,
   })
 
   try {
@@ -147,7 +153,7 @@ export function loadTamaguiSync(
       }
 
       // components
-      const components = loadComponents(props, propsIn.forceExports)
+      const components = loadComponents(props, forceExports)
       if (!components) {
         throw new Error(`No components loaded`)
       }
@@ -170,14 +176,15 @@ export function loadTamaguiSync(
         generateTamaguiStudioConfigSync(props, info)
       }
 
-      if (!propsIn.forceExports) {
-        last[key] = info
+      last[key] = {
+        ...info,
+        cached: true,
       }
 
       return info as any
     } catch (err) {
       if (err instanceof Error) {
-        if (!SHOULD_DEBUG && !propsIn.forceExports) {
+        if (!SHOULD_DEBUG && !forceExports) {
           console.warn(
             `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
           )

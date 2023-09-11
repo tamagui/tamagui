@@ -13,6 +13,7 @@ export type TamaguiProjectInfo = {
     components?: LoadedComponents[];
     tamaguiConfig?: TamaguiInternalConfig | null;
     nameToPaths?: NameToPaths;
+    cached?: boolean;
 };
 export declare const esbuildOptions: {
     define: {

@@ -28,6 +28,7 @@
     },
     "./demo/*": {
       "types": "./types/*.d.ts",
+      "node": "./dist/cjs/*.js",
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js"
     }

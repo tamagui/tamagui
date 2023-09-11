@@ -33,6 +33,7 @@ export type TamaguiProjectInfo = {
   components?: LoadedComponents[]
   tamaguiConfig?: TamaguiInternalConfig | null
   nameToPaths?: NameToPaths
+  cached?: boolean
 }
 
 const external = [
