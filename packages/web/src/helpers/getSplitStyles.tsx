@@ -726,6 +726,7 @@ export const getSplitStyles: StyleSplitter = (
 
           if (IS_STATIC) {
             Object.assign(pseudos[key], pseudoStyleObject)
+            continue
           }
         }
 
