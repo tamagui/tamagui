@@ -90,7 +90,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
     const cmd = `git clone --branch ${branch} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
-    } ${sourceGitRepo} "${targetGitDir}"`
+    }${sourceGitRepo} "${targetGitDir}"`
     console.log(`$ ${cmd}`)
     console.log()
 
