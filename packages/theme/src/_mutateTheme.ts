@@ -163,7 +163,6 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch = false) {
     const theme = themes[themeName]
 
     const rules = getThemeCSSRules({
-      // @ts-ignore this works but should be fixed types
       config,
       themeName,
       names: [themeName],
