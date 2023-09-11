@@ -38,7 +38,9 @@ export const studio = async (
 
     const { default: getPort } = await import('get-port')
     const { paths } = options
-    const root = dirname(dirname(dirname(resolve('@tamagui/studio'))))
+    const root = dirname(dirname(resolve('@tamagui/studio')))
+
+    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
