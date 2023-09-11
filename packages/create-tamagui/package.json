@@ -34,6 +34,7 @@
     "commander": "2.20.0",
     "cpy": "7.3.0",
     "cross-spawn": "6.0.5",
+    "detect-package-manager": "^3.0.1",
     "esbuild-register": "^3.4.2",
     "fs-extra": "^11.1.0",
     "got": "10.7.0",
