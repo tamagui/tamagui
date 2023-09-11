@@ -1,5 +1,6 @@
 bigger up next:
   - no separate UI package necessary for optimization
+  - if dynamic eval flattens every usage, remove the definition
   - headless
   - zero runtime
   - Menu

@@ -22,6 +22,11 @@ import { stackDefaultStyles } from './constants/constants'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import {
+  defaultComponentState,
+  defaultComponentStateMounted,
+  defaultComponentStateShouldEnter,
+} from './defaultComponentState'
+import {
   createShallowSetState,
   mergeIfNotShallowEqual,
 } from './helpers/createShallowSetState'
@@ -58,24 +63,6 @@ import { ThemeDebug } from './views/ThemeDebug'
 
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
-
-export const defaultComponentState: TamaguiComponentState = {
-  hover: false,
-  press: false,
-  pressIn: false,
-  focus: false,
-  unmounted: true,
-}
-
-const defaultComponentStateMounted: TamaguiComponentState = {
-  ...defaultComponentState,
-  unmounted: false,
-}
-
-const defaultComponentStateShouldEnter: TamaguiComponentState = {
-  ...defaultComponentState,
-  unmounted: 'should-enter',
-}
 
 /**
  * All things that need one-time setup after createTamagui is called

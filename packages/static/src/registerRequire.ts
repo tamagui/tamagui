@@ -15,7 +15,21 @@ const rnw = require('react-native-web')
 let isRegistered = false
 let og: any
 
-export function registerRequire(platform: TamaguiPlatform) {
+const whitelisted = {
+  react: true,
+}
+
+const compiled = {}
+export function setRequireResult(name: string, result: any) {
+  compiled[name] = result
+}
+
+export function registerRequire(
+  platform: TamaguiPlatform,
+  { proxyWormImports } = {
+    proxyWormImports: false,
+  }
+) {
   // already registered
   if (isRegistered) {
     return {
@@ -28,15 +42,33 @@ export function registerRequire(platform: TamaguiPlatform) {
     hookIgnoreNodeModules: false,
   })
 
-  og = Module.prototype.require // capture esbuild require
+  if (!og) {
+    og = Module.prototype.require // capture esbuild require
+  }
+
   isRegistered = true
 
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
+    if (path === 'tamagui') {
+      return og.apply(this, ['tamagui/native'])
+    }
+
+    if (path === '@tamagui/core' || path === '@tamagui/web') {
+      return requireTamaguiCore(platform, (path) => {
+        return og.apply(this, [path])
+      })
+    }
+
+    if (path in compiled) {
+      return compiled[path]
+    }
+
     if (/\.(gif|jpe?g|png|svg|ttf|otf|woff2?|bmp|webp)$/i.test(path)) {
       return {}
     }
+
     if (
       path === '@gorhom/bottom-sheet' ||
       path.startsWith('react-native-reanimated') ||
@@ -48,6 +80,7 @@ export function registerRequire(platform: TamaguiPlatform) {
     if (path === 'react-native/package.json') {
       return packageJson
     }
+
     if (
       path === 'react-native-web-lite' ||
       (path.startsWith('react-native') &&
@@ -56,14 +89,25 @@ export function registerRequire(platform: TamaguiPlatform) {
     ) {
       return rnw
     }
-    if (path === '@tamagui/core' || path === '@tamagui/web') {
-      return requireTamaguiCore(platform, (path) => {
-        return og.apply(this, [path])
-      })
-    }
 
     if (path in knownIgnorableModules) {
       return proxyWorm
+    }
+
+    if (!whitelisted[path]) {
+      if (proxyWormImports) {
+        if (path === 'tamagui') {
+          console.log('return', og.apply(this, [path]))
+          return og.apply(this, [path])
+        }
+        if (path[0] !== '.') {
+          if (path.startsWith(process.cwd()) && !path.includes('node_modules')) {
+            // allow
+          } else {
+            return proxyWorm
+          }
+        }
+      }
     }
 
     try {
@@ -93,6 +137,13 @@ export function registerRequire(platform: TamaguiPlatform) {
       // }
       return out
     } catch (err: any) {
+      if (
+        !process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD &&
+        path.includes('tamagui-dynamic-eval')
+      ) {
+        // ok, dynamic eval fails
+        return
+      }
       if (allowedIgnores[path] || IGNORES === 'true') {
         // ignore
       } else if (!process.env.TAMAGUI_SHOW_FULL_BUNDLE_ERRORS) {
@@ -112,15 +163,11 @@ export function registerRequire(platform: TamaguiPlatform) {
          */
 
         console.error(
-          `Tamagui failed loading the pre-built tamagui.config.ts
+          `Tamagui failed loading "${path}"
   
   ${err.message}
   ${err.stack}
-  
-  You can see if it loads in the node repl:
-  
-  require("./${relative(process.cwd(), path)}").default
-  
+
   `
         )
       }

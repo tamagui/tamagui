@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import { ComponentContext } from '../contexts/ComponentContext'
-import { defaultComponentState } from '../createComponent'
+import { defaultComponentState } from '../defaultComponentState'
 import { useSplitStyles } from '../helpers/getSplitStyles'
 import {
   DebugProp,

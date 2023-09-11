@@ -97,13 +97,13 @@ module.exports = {
       config: './src/tamagui.config.ts',
       components: ['tamagui', '@tamagui/sandbox-ui'],
       importsWhitelist: ['constants.js'],
+      enableDynamicEvaluation: true,
       disableExtraction,
       themeBuilder: {
         input: '../../packages/themes/src/themes-new.ts',
         output: path.join(require.resolve('@tamagui/themes/src/themes-new.ts'), '..', 'generated-new.ts'),
       }
       // disable: true,
-      // disableExtractFoundComponents: true,
     }),
     // new BundleAnalyzerPlugin(),
     new MiniCSSExtractPlugin({

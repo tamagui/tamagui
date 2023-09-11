@@ -55,6 +55,14 @@ export interface TamaguiOptions {
    * Custom prefix for the timing logs
    */
   prefixLogs?: string
+
+  /**
+   * (Advanced) Enables Tamagui to try and evaluate components outside the `components` option.
+   * When true, Tamagui will bundle and load components as its running across every file,
+   * if it loads them successfully it will perform all optimiziations inline.
+   */
+  enableDynamicEvaluation?: boolean
+
   /**
    * Completely disable tamagui for these files
    */
@@ -81,8 +89,6 @@ export interface TamaguiOptions {
    */
   disableExtractVariables?: boolean | 'theme'
 
-  // probably non user options
-  disableExtractFoundComponents?: boolean | string[]
   evaluateVars?: boolean
   cssPath?: string
   cssData?: any

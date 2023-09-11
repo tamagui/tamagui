@@ -94,12 +94,20 @@ const generateThemesAndLog = async (options: TamaguiOptions) => {
   }
 }
 
-let last: TamaguiProjectInfo | null = null
+const last: Record<string, TamaguiProjectInfo | null> = {}
 
 // loads in-process using esbuild-register
-export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjectInfo {
-  if (last && !hasBundledConfigChanged()) {
-    return last
+export function loadTamaguiSync(
+  propsIn: Partial<TamaguiOptions> & {
+    forceExports?: boolean
+  }
+): TamaguiProjectInfo {
+  const key = JSON.stringify(propsIn)
+
+  if (!propsIn.forceExports) {
+    if (last[key] && !hasBundledConfigChanged()) {
+      return last[key]!
+    }
   }
 
   const props = getFilledOptions(propsIn)
@@ -109,8 +117,10 @@ export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjec
   process.env.IS_STATIC = 'is_static'
   process.env.TAMAGUI_IS_SERVER = 'true'
 
-  const { createTamagui } = requireTamaguiCore(props.platform)
-  const { unregister, tamaguiRequire } = registerRequire(props.platform)
+  const { unregister } = registerRequire(props.platform, {
+    proxyWormImports: !!propsIn.forceExports,
+  })
+
   try {
     const devValueOG = globalThis['__DEV__' as any]
     globalThis['__DEV__' as any] = process.env.NODE_ENV === 'development'
@@ -118,9 +128,9 @@ export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjec
     try {
       // config
       let tamaguiConfig: TamaguiInternalConfig | null = null
-      if (props.config) {
-        const configPath = getTamaguiConfigPathFromOptionsConfig(props.config)
-        const exp = tamaguiRequire(configPath)
+      if (propsIn.config) {
+        const configPath = getTamaguiConfigPathFromOptionsConfig(propsIn.config)
+        const exp = require(configPath)
         tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
         if (!tamaguiConfig || !tamaguiConfig.parsed) {
           const confPath = require.resolve(configPath)
@@ -128,10 +138,16 @@ export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjec
           
   Be sure you "export default" the config.`)
         }
+
+        // set up core
+        if (tamaguiConfig) {
+          const { createTamagui } = requireTamaguiCore(props.platform)
+          createTamagui(tamaguiConfig as any)
+        }
       }
 
       // components
-      const components = loadComponents(props)
+      const components = loadComponents(props, propsIn.forceExports)
       if (!components) {
         throw new Error(`No components loaded`)
       }
@@ -144,36 +160,39 @@ export function loadTamaguiSync(propsIn: Partial<TamaguiOptions>): TamaguiProjec
       process.env.IS_STATIC = undefined
       globalThis['__DEV__' as any] = devValueOG
 
-      // set up core
-      if (props.config && tamaguiConfig) {
-        createTamagui(tamaguiConfig as any)
-      }
-
       const info = {
         components,
         tamaguiConfig,
         nameToPaths: getNameToPaths(),
       } satisfies TamaguiProjectInfo
 
-      generateTamaguiStudioConfigSync(props, info)
+      if (propsIn.config) {
+        generateTamaguiStudioConfigSync(props, info)
+      }
 
-      last = info
+      if (!propsIn.forceExports) {
+        last[key] = info
+      }
 
       return info as any
     } catch (err) {
       if (err instanceof Error) {
-        console.warn(
-          `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
-        )
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log(`\n\n    ${err.message}\n\n`)
-        if (SHOULD_DEBUG) {
-          console.error(err.stack)
+        if (!SHOULD_DEBUG && !propsIn.forceExports) {
+          console.warn(
+            `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
+          )
+          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log(`\n\n    ${err.message}\n\n`)
+        } else {
+          if (SHOULD_DEBUG) {
+            console.error(err)
+          }
         }
       } else {
         console.error(`Error loading tamagui.config.ts`, err)
       }
 
+      const { createTamagui } = requireTamaguiCore(props.platform)
       return {
         components: [],
         tamaguiConfig: createTamagui(getDefaultTamaguiConfig()),

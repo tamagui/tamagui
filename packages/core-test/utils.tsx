@@ -1,9 +1,5 @@
-import {
-  SplitStyleProps,
-  TamaguiComponent,
-  defaultComponentState,
-  getSplitStyles,
-} from '../core/src'
+import { SplitStyleProps, TamaguiComponent, getSplitStyles } from '../core/src'
+import { defaultComponentState } from '../web/src/defaultComponentState'
 
 const emptyObj = {} as any
 

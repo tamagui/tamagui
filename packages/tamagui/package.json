@@ -10,6 +10,9 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
+  "tamagui": {
+    "bundleNative": "./src/native.ts"
+  },
   "files": [
     "src",
     "types",
@@ -32,6 +35,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/native.js",
+      "require": "./dist/native.js"
     },
     "./linear-gradient": {
       "types": "./types/linear-gradient.d.ts",

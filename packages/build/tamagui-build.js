@@ -165,11 +165,13 @@ async function buildJs() {
   if (skipJS) {
     return
   }
+
   let files = shouldBundle
     ? [pkgSource || './src/index.ts']
     : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
         (x) => !x.includes('.d.ts')
       )
+
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })

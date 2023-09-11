@@ -22,7 +22,6 @@ const tamaguiOptions = {
   components: ['tamagui'],
   importsWhitelist: ['constants.js'],
   disableExtraction,
-  // disableExtractFoundComponents: true,
 }
 
 /** @type { import('webpack').Configuration } */

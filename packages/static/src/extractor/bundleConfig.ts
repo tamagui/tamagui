@@ -9,7 +9,7 @@ import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import { ensureDir, removeSync, writeFileSync } from 'fs-extra'
 
-import { registerRequire } from '../registerRequire'
+import { registerRequire, setRequireResult } from '../registerRequire'
 import { TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { bundle } from './bundle'
@@ -165,9 +165,9 @@ export async function bundleConfig(props: TamaguiOptions) {
     )
 
     let out
-    const { unregister } = registerRequire(props.platform)
+    const { unregister, tamaguiRequire } = registerRequire(props.platform)
     try {
-      out = require(configOutPath)
+      out = tamaguiRequire(configOutPath)
     } catch (err) {
       // rome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
@@ -246,25 +246,27 @@ export async function bundleConfig(props: TamaguiOptions) {
   }
 }
 
-export function loadComponents(props: TamaguiOptions): null | LoadedComponents[] {
+export function loadComponents(
+  props: TamaguiOptions,
+  forceExports = false
+): null | LoadedComponents[] {
   const componentsModules = props.components
+
   const key = componentsModules.join('')
-  if (cacheComponents[key]) {
+
+  if (!forceExports && cacheComponents[key]) {
     return cacheComponents[key]
   }
 
-  const { unregister } = registerRequire(props.platform)
+  const { unregister } = registerRequire(props.platform, {
+    proxyWormImports: forceExports,
+  })
 
   try {
     const info: LoadedComponents[] = componentsModules.flatMap((name) => {
       const extension = extname(name)
       const isLocal = Boolean(extension)
-      // during props.config pass we are passing in pre-bundled stuff
-      const isDynamic = isLocal && !props.config
-
-      if (isDynamic && !process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD) {
-        return []
-      }
+      const isDynamic = isLocal && forceExports
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       const loadModule = isDynamic
@@ -290,9 +292,15 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
+        const moduleResult = require(loadModule)
+
+        if (!forceExports) {
+          setRequireResult(name, moduleResult)
+        }
+
         const nameToInfo = getComponentStaticConfigByName(
           name,
-          interopDefaultExport(require(loadModule))
+          interopDefaultExport(moduleResult)
         )
 
         return {
@@ -329,22 +337,12 @@ export function loadComponents(props: TamaguiOptions): null | LoadedComponents[]
           forceExports: false,
         })
       } catch (err) {
-        if (!process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD) {
+        if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
           // rome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`
 
-Tamagui attempted but failed to dynamically load components in:
+Tamagui attempted but failed to dynamically optimize components in:
   ${name}
-
-This will leave some styled() tags unoptimized.
-Disable this file (or dynamic loading altogether):
-
-  disableExtractFoundComponents: ['${name}'] | true
-
-Quiet this warning with environment variable:
-      
-  TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1
-
 `)
           // rome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(err)
@@ -393,6 +391,7 @@ function getComponentStaticConfigByName(name: string, exported: any) {
     if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
       throw new Error(`Invalid export from package ${name}: ${typeof exported}`)
     }
+
     for (const key in exported) {
       const found = getTamaguiComponent(key, exported[key])
       if (found) {
@@ -402,9 +401,9 @@ function getComponentStaticConfigByName(name: string, exported: any) {
       }
     }
   } catch (err) {
-    if (process.env.TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD !== '1') {
+    if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
       console.error(
-        `Tamagui failed getting from ${name} (Disable error by setting environment variable TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1)`
+        `Tamagui failed getting components from ${name} (Disable error by setting environment variable TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD=1)`
       )
       console.error(err)
     }

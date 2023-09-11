@@ -3,6 +3,7 @@ import { basename, relative } from 'path'
 
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse'
 import * as t from '@babel/types'
+import { Color, colorLog } from '@tamagui/cli-color'
 import type {
   GetStyleState,
   PseudoStyles,
@@ -171,7 +172,7 @@ export function createExtractor(
       disableExtractInlineMedia,
       disableExtractVariables,
       disableDebugAttr,
-      disableExtractFoundComponents,
+      enableDynamicEvaluation = false,
       includeExtensions = ['.ts', '.tsx', '.jsx'],
       extractStyledDefinitions = false,
       prefixLogs,
@@ -452,6 +453,7 @@ export function createExtractor(
             : 'unknown'
 
         const parentNode = path.node.arguments[0]
+
         if (!t.isIdentifier(parentNode)) {
           return
         }
@@ -462,23 +464,17 @@ export function createExtractor(
           return
         }
 
-        let Component = getValidImportedComponent(parentName)
+        let Component = getValidImportedComponent(variableName)
 
         if (!Component) {
-          if (disableExtractFoundComponents === true) {
-            return
-          }
-          if (
-            Array.isArray(disableExtractFoundComponents) &&
-            disableExtractFoundComponents.includes(parentName)
-          ) {
+          if (enableDynamicEvaluation !== true) {
             return
           }
 
           try {
             if (shouldPrintDebug) {
               logger.info(
-                `Unknown component ${parentName}, attempting dynamic load: ${sourcePath}`
+                `Unknown component: ${variableName} = styled(${parentName}) attempting dynamic load: ${sourcePath}`
               )
             }
 
@@ -501,20 +497,18 @@ export function createExtractor(
 
             Component = out.components.flatMap((x) => x.nameToInfo[variableName] ?? [])[0]
 
-            if (shouldPrintDebug === 'verbose') {
-              logger.info(
-                [`Tamagui Loaded`, JSON.stringify(out.components), !!Component].join(' ')
-              )
+            const foundNames = out.components
+              ?.map((x) => Object.keys(x.nameToInfo).join(', '))
+              .join(', ')
+              .trim()
+
+            if (foundNames) {
+              colorLog(Color.FgYellow, `      | Found new components: ${foundNames}`)
             }
           } catch (err: any) {
             if (shouldPrintDebug) {
               logger.info(
                 `skip optimize styled(${variableName}), unable to pre-process (DEBUG=tamagui for more)`
-              )
-            }
-            if (process.env.DEBUG === 'tamagui') {
-              logger.info(
-                ` Disable this with "disableExtractFoundComponents" in your build-time configuration. \n\n ${err.message} ${err.stack}`
               )
             }
           }
@@ -680,27 +674,23 @@ export function createExtractor(
 
         // validate its a proper import from tamagui (or internally inside tamagui)
         const binding = traversePath.scope.getBinding(node.name.name)
-        let modulePath = ''
+        let moduleName = '*'
 
         if (binding) {
-          if (!t.isImportDeclaration(binding.path.parent)) {
-            if (shouldPrintDebug) {
-              logger.info(` - Binding not import declaration, skip`)
+          if (t.isImportDeclaration(binding.path.parent)) {
+            moduleName = binding.path.parent.source.value
+            if (!isValidImport(propsWithFileInfo, moduleName, binding.identifier.name)) {
+              if (shouldPrintDebug) {
+                logger.info(
+                  ` - Binding for ${componentName} not internal import or from components ${binding.identifier.name} in ${moduleName}`
+                )
+              }
+              return
             }
-            return
-          }
-          modulePath = binding.path.parent.source.value
-          if (!isValidImport(propsWithFileInfo, modulePath, binding.identifier.name)) {
-            if (shouldPrintDebug) {
-              logger.info(
-                ` - Binding for ${componentName} not internal import or from components ${binding.identifier.name} in ${modulePath}`
-              )
-            }
-            return
           }
         }
 
-        const component = getValidComponent(propsWithFileInfo, modulePath, node.name.name)
+        const component = getValidComponent(propsWithFileInfo, moduleName, node.name.name)
         if (!component || !component.staticConfig) {
           if (shouldPrintDebug) {
             logger.info(` - No Tamagui conf on this: ${node.name.name}`)
