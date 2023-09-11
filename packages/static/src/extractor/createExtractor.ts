@@ -683,7 +683,7 @@ export function createExtractor(
 
         // validate its a proper import from tamagui (or internally inside tamagui)
         const binding = traversePath.scope.getBinding(node.name.name)
-        let moduleName = '*'
+        let moduleName = ''
 
         if (binding) {
           if (t.isImportDeclaration(binding.path.parent)) {

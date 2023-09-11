@@ -166,9 +166,9 @@ export async function bundleConfig(props: TamaguiOptions) {
     )
 
     let out
-    const { unregister, tamaguiRequire } = registerRequire(props.platform)
+    const { unregister } = registerRequire(props.platform)
     try {
-      out = tamaguiRequire(configOutPath)
+      out = require(configOutPath)
     } catch (err) {
       // rome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
@@ -280,12 +280,27 @@ export function loadComponents(
         // need to write to tsx to enable reading it properly (:/ esbuild-register)
         if (isDynamic) {
           writtenContents = forceExports
-            ? esbuildit(
-                transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
-              )
-            : esbuildit(fileContents)
+            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            : fileContents
 
           writeFileSync(loadModule, writtenContents)
+
+          esbuild.buildSync({
+            ...esbuildOptions,
+            entryPoints: [loadModule],
+            outfile: loadModule,
+            bundle: true,
+            packages: 'external',
+            allowOverwrite: true,
+            // logLevel: 'silent',
+            sourcemap: false,
+            loader: {
+              '.png': 'dataurl',
+              '.jpg': 'dataurl',
+              '.jpeg': 'dataurl',
+              '.gif': 'dataurl',
+            },
+          })
         }
 
         if (process.env.DEBUG === 'tamagui') {

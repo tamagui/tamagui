@@ -61,7 +61,8 @@ export async function loadTamagui(
 
     if (props.outputCSS) {
       colorLog(Color.FgYellow, `    ➡ [tamagui] outputCSS: ${props.outputCSS}\n`)
-      await writeFile(props.outputCSS, config.getCSS())
+      const css = config.getCSS()
+      await writeFile(props.outputCSS, css)
     }
   }
 

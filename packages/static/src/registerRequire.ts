@@ -92,18 +92,11 @@ export function registerRequire(
     }
 
     if (!whitelisted[path]) {
-      if (proxyWormImports) {
+      if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
         if (path === 'tamagui') {
-          console.log('return', og.apply(this, [path]))
           return og.apply(this, [path])
         }
-        if (path[0] !== '.') {
-          if (path.startsWith(process.cwd()) && !path.includes('node_modules')) {
-            // allow
-          } else {
-            return proxyWorm
-          }
-        }
+        return proxyWorm
       }
     }
 
