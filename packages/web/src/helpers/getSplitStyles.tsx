@@ -7,6 +7,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
+  LOCALIZATION_STYLES,
   stylePropsText,
   stylePropsTransform,
   validPseudoKeys,
@@ -29,7 +30,6 @@ import {
   mediaState as globalMediaState,
   isMediaKey,
   mediaKeyMatch,
-  mediaKeyToQuery,
   mediaQueryConfig,
   mergeMediaByImportance,
 } from '../hooks/useMedia'
@@ -53,7 +53,6 @@ import type {
   ThemeParsed,
   ViewStyleWithPseudos,
 } from '../types'
-import type { LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getGroupPropParts } from './getGroupPropParts'
@@ -100,27 +99,6 @@ type StyleSplitter = (
 ) => GetStyleResult
 
 export const PROP_SPLIT = '-'
-
-// if you need and easier way to test performance, you can do something like this
-// add this early return somewhere in this file and you can see roughly where it slows down:
-
-// return {
-//   space,
-//   hasMedia,
-//   fontFamily: styleState.fontFamily,
-//   viewProps: {
-//     children: props.children,
-//   },
-//   style: {
-//     borderColor: props.borderColor,
-//     borderWidth: props.borderWidth,
-//     padding: props.padding,
-//   },
-//   pseudos,
-//   classNames,
-//   rulesToInsert,
-//   dynamicThemeAccess,
-// }
 
 export const getSplitStyles: StyleSplitter = (
   props,
@@ -239,7 +217,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   for (const keyOg in props) {
-    let keyInit = keyOg
+    let keyInit = LOCALIZATION_STYLES[keyOg] || keyOg
     let valInit = props[keyOg]
 
     // normalize shorthands up front
@@ -285,6 +263,7 @@ export const getSplitStyles: StyleSplitter = (
             delete style[keyInit]
           } else {
             style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+            // @ts-ignore
             delete className[keyInit]
           }
           continue
@@ -487,6 +466,7 @@ export const getSplitStyles: StyleSplitter = (
             delete style[keyInit]
           } else {
             style[keyInit] = reverseMapClassNameToValue(keyInit, valInit)
+            // @ts-ignore
             delete className[keyInit]
           }
           continue
@@ -1523,4 +1503,64 @@ function passDownProp(
   } else {
     viewProps[key] = val
   }
+}
+
+// TODO
+// localization / RTL support
+
+const borderTopLeftRadius = 'borderTopLeftRadius'
+const borderTopRightRadius = 'borderTopRightRadius'
+const borderBottomLeftRadius = 'borderBottomLeftRadius'
+const borderBottomRightRadius = 'borderBottomRightRadius'
+const borderLeftColor = 'borderLeftColor'
+const borderLeftStyle = 'borderLeftStyle'
+const borderLeftWidth = 'borderLeftWidth'
+const borderRightColor = 'borderRightColor'
+const borderRightStyle = 'borderRightStyle'
+const borderRightWidth = 'borderRightWidth'
+const right = 'right'
+const marginLeft = 'marginLeft'
+const marginRight = 'marginRight'
+const paddingLeft = 'paddingLeft'
+const paddingRight = 'paddingRight'
+const left = 'left'
+
+// Map of LTR property names to their BiDi equivalent.
+const PROPERTIES_FLIP: { [key: string]: string } = {
+  [borderTopLeftRadius]: borderTopRightRadius,
+  [borderTopRightRadius]: borderTopLeftRadius,
+  [borderBottomLeftRadius]: borderBottomRightRadius,
+  [borderBottomRightRadius]: borderBottomLeftRadius,
+  [borderLeftColor]: borderRightColor,
+  [borderLeftStyle]: borderRightStyle,
+  [borderLeftWidth]: borderRightWidth,
+  [borderRightColor]: borderLeftColor,
+  [borderRightStyle]: borderLeftStyle,
+  [borderRightWidth]: borderLeftWidth,
+  [left]: right,
+  [marginLeft]: marginRight,
+  [marginRight]: marginLeft,
+  [paddingLeft]: paddingRight,
+  [paddingRight]: paddingLeft,
+  [right]: left,
+}
+
+// Map of I18N property names to their LTR equivalent.
+const PROPERTIES_I18N: { [key: string]: string } = {
+  borderStartStartRadius: borderTopLeftRadius,
+  borderStartEndRadius: borderTopRightRadius,
+  borderEndStartRadius: borderBottomLeftRadius,
+  borderEndEndRadius: borderBottomRightRadius,
+  borderInlineStartColor: borderLeftColor,
+  borderInlineStartStyle: borderLeftStyle,
+  borderInlineStartWidth: borderLeftWidth,
+  borderInlineEndColor: borderRightColor,
+  borderInlineEndStyle: borderRightStyle,
+  borderInlineEndWidth: borderRightWidth,
+  insetInlineEnd: right,
+  insetInlineStart: left,
+  marginInlineStart: marginLeft,
+  marginInlineEnd: marginRight,
+  paddingInlineStart: paddingLeft,
+  paddingInlineEnd: paddingRight,
 }

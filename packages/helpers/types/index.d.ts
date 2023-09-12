@@ -2,6 +2,7 @@ export * from './clamp';
 export * from './composeEventHandlers';
 export * from './concatClassName';
 export * from './validStyleProps';
+export * from './webValidStyleProps';
 export * from './types';
 export * from '@tamagui/simple-hash';
 //# sourceMappingURL=index.d.ts.map

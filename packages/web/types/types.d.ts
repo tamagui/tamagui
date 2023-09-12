@@ -24,6 +24,16 @@ export type TamaguiComponentPropsBase = {
     debug?: DebugProp;
     disabled?: boolean;
     /**
+     * Set the RTL direction for styles that are direction-changing
+     * See: https://necolas.github.io/react-native-web/docs/localization/
+     */
+    dir?: 'ltr' | 'rtl';
+    /**
+     * Set the RTL direction for styles that are direction-changing based on language
+     * See: https://necolas.github.io/react-native-web/docs/localization/
+     */
+    lang?: string;
+    /**
      * Same as the web className property, useful for applying styles from CSS on web only
      */
     className?: string;

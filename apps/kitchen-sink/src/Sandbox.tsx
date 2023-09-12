@@ -1,15 +1,13 @@
 // import './wdyr'
 
-import { Stack, styled } from '@tamagui/web'
-
-const ChangeWeight = styled(Stack, {
-  backgroundColor: 'red',
-})
+import { Square, XStack } from 'tamagui'
 
 export const Sandbox = () => {
   return (
     <>
-      <ChangeWeight />
+      <XStack direction="ltr">
+        <Square size={200} bc="red" marginStart="$10" />
+      </XStack>
     </>
   )
 }

@@ -26,6 +26,7 @@ import {
   defaultComponentStateMounted,
   defaultComponentStateShouldEnter,
 } from './defaultComponentState'
+import { LocalProvider, getLocaleDirection, useLocaleContext } from './features/locale'
 import {
   createShallowSetState,
   mergeIfNotShallowEqual,
@@ -619,6 +620,10 @@ export function createComponent<
       onMouseEnter,
       onMouseLeave,
       separator,
+
+      dir,
+      lang,
+
       // ignore from here on out
       forceStyle: _forceStyle,
       // @ts-ignore  for next/link compat etc
@@ -987,6 +992,20 @@ export function createComponent<
         onPressIn,
         onPressOut,
       })
+    }
+
+    const { direction: contextDirection } = useLocaleContext()
+    if (dir || lang) {
+      const langDirection = lang ? getLocaleDirection(lang) : null
+      const componentDirection = dir || langDirection
+      const writingDirection = componentDirection || contextDirection
+      if (writingDirection !== contextDirection) {
+        content = (
+          <LocalProvider locale={lang} direction={dir}>
+            {content}
+          </LocalProvider>
+        )
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`

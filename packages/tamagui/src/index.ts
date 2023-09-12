@@ -182,6 +182,7 @@ export {
   useMediaPropsActive,
   useProps,
   useStyle,
+  useLocaleContext,
   useTheme,
   useThemeName,
   variableToString,

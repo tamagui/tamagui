@@ -8,7 +8,7 @@
     "dev:web:prod": "NODE_ENV=production webpack serve",
     "dev:web:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
-    "start:extract": "TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
+    "start:extract": "=1 yarn start",
     "start:prod": "DISABLE_EXTRACTION=false TAMAGUI_ENABLE_DYNAMIC_LOAD=1 expo start --dev-client --offline --no-dev --minify",
     "start:tamagui": "tama dev",
     "start:android": "yarn start --android",
@@ -23,7 +23,7 @@
     "test:web": "yarn test:web:driver-rn && yarn test:web:driver-css && yarn test:web:driver-moti",
     "test:web:driver-css": "TAMAGUI_TEST_ANIMATION_DRIVER=css node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver-rn": "TAMAGUI_TEST_ANIMATION_DRIVER=native node -r esbuild-register ../../node_modules/.bin/playwright test",
-    "test:web:driver-moti": "TAMAGUI_TEST_ANIMATION_DRIVER=moti node -r esbuild-register ../../node_modules/.bin/playwright test",
+    "test:web:driver-moti": "TAMAGUITAMAGUI_ENABLE_DYNAMIC_LOAD_TEST_ANIMATION_DRIVER=moti node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "yarn test:web --debug",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
     "test": "yarn test:web"
@@ -42,6 +42,7 @@
     "@tamagui/demos": "1.64.1",
     "@tamagui/font-inter": "1.64.1",
     "@tamagui/lucide-icons": "1.64.1",
+    "@tamagui/sandbox-ui": "1.64.1",
     "@tamagui/shorthands": "1.64.1",
     "@tamagui/themes": "1.64.1",
     "@tamagui/web": "1.64.1",
@@ -64,7 +65,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "^13.9.0",
     "react-native-web": "^0.19.6",
-    "solito": "^4.0.0-alpha.4"
+    "solito": "^4.0.0-alpha.4",
+    "tamagui": "1.64.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",

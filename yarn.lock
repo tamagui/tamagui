@@ -6659,6 +6659,7 @@ __metadata:
     "@tamagui/demos": 1.64.1
     "@tamagui/font-inter": 1.64.1
     "@tamagui/lucide-icons": 1.64.1
+    "@tamagui/sandbox-ui": 1.64.1
     "@tamagui/shorthands": 1.64.1
     "@tamagui/themes": 1.64.1
     "@tamagui/web": 1.64.1
@@ -6688,6 +6689,7 @@ __metadata:
     react-native-svg: ^13.9.0
     react-native-web: ^0.19.6
     solito: ^4.0.0-alpha.4
+    tamagui: 1.64.1
     webpack: ^5.88.2
     webpack-bundle-analyzer: ^4.9.0
     webpack-cli: ^4.9.2

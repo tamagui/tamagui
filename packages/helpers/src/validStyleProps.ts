@@ -1,5 +1,7 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 
+import { LOCALIZATION_STYLES } from './webValidStyleProps'
+
 // generally organizing this so we don't duplicate things so its a bit weird
 
 const placeHolderTextColors = {
@@ -247,4 +249,7 @@ export const validPseudoKeys = {
 export const validStyles = {
   ...validPseudoKeys,
   ...stylePropsView,
+  ...Object.fromEntries(
+    Object.entries(LOCALIZATION_STYLES).map(([ki, ko]) => [ko, true])
+  ),
 }

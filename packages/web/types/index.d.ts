@@ -59,4 +59,5 @@ export * from '@tamagui/compose-refs';
 export * from '@tamagui/helpers';
 export * from '@tamagui/constants';
 export * from './setupHooks';
+export { isLocaleRTL, getLocaleDirection, useLocaleContext } from './features/locale';
 //# sourceMappingURL=index.d.ts.map
