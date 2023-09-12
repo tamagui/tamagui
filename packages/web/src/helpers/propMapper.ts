@@ -8,7 +8,6 @@ import type {
   GetStyleState,
   PropMapper,
   ResolveVariableAs,
-  SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
   VariantSpreadFunction,

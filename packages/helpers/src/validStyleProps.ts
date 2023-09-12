@@ -1,7 +1,5 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { LOCALIZATION_STYLES } from './webValidStyleProps'
-
 // generally organizing this so we don't duplicate things so its a bit weird
 
 const placeHolderTextColors = {
@@ -244,6 +242,86 @@ export const validPseudoKeys = {
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
+}
+
+export const LOCALIZATION_STYLES = {
+  borderBottomEndRadius: 'borderEndEndRadius',
+  borderBottomStartRadius: 'borderEndStartRadius',
+  borderTopEndRadius: 'borderStartEndRadius',
+  borderTopStartRadius: 'borderStartStartRadius',
+  borderEndColor: 'borderInlineEndColor',
+  borderEndStyle: 'borderInlineEndStyle',
+  borderEndWidth: 'borderInlineEndWidth',
+  borderStartColor: 'borderInlineStartColor',
+  borderStartStyle: 'borderInlineStartStyle',
+  borderStartWidth: 'borderInlineStartWidth',
+  end: 'insetInlineEnd',
+  marginEnd: 'marginInlineEnd',
+  marginHorizontal: 'marginInline',
+  marginStart: 'marginInlineStart',
+  marginVertical: 'marginBlock',
+  paddingEnd: 'paddingInlineEnd',
+  paddingHorizontal: 'paddingInline',
+  paddingStart: 'paddingInlineStart',
+  paddingVertical: 'paddingBlock',
+  start: 'insetInlineStart',
+}
+
+const borderTopLeftRadius = 'borderTopLeftRadius'
+const borderTopRightRadius = 'borderTopRightRadius'
+const borderBottomLeftRadius = 'borderBottomLeftRadius'
+const borderBottomRightRadius = 'borderBottomRightRadius'
+const borderLeftColor = 'borderLeftColor'
+const borderLeftStyle = 'borderLeftStyle'
+const borderLeftWidth = 'borderLeftWidth'
+const borderRightColor = 'borderRightColor'
+const borderRightStyle = 'borderRightStyle'
+const borderRightWidth = 'borderRightWidth'
+const right = 'right'
+const marginLeft = 'marginLeft'
+const marginRight = 'marginRight'
+const paddingLeft = 'paddingLeft'
+const paddingRight = 'paddingRight'
+const left = 'left'
+
+// Map of I18N property names to their LTR equivalent.
+export const PROPERTIES_I18N: { [key: string]: string } = {
+  borderStartStartRadius: borderTopLeftRadius,
+  borderStartEndRadius: borderTopRightRadius,
+  borderEndStartRadius: borderBottomLeftRadius,
+  borderEndEndRadius: borderBottomRightRadius,
+  borderInlineStartColor: borderLeftColor,
+  borderInlineStartStyle: borderLeftStyle,
+  borderInlineStartWidth: borderLeftWidth,
+  borderInlineEndColor: borderRightColor,
+  borderInlineEndStyle: borderRightStyle,
+  borderInlineEndWidth: borderRightWidth,
+  insetInlineEnd: right,
+  insetInlineStart: left,
+  marginInlineStart: marginLeft,
+  marginInlineEnd: marginRight,
+  paddingInlineStart: paddingLeft,
+  paddingInlineEnd: paddingRight,
+}
+
+// Map of LTR property names to their BiDi equivalent.
+export const PROPERTIES_FLIP: { [key: string]: string } = {
+  [borderTopLeftRadius]: borderTopRightRadius,
+  [borderTopRightRadius]: borderTopLeftRadius,
+  [borderBottomLeftRadius]: borderBottomRightRadius,
+  [borderBottomRightRadius]: borderBottomLeftRadius,
+  [borderLeftColor]: borderRightColor,
+  [borderLeftStyle]: borderRightStyle,
+  [borderLeftWidth]: borderRightWidth,
+  [borderRightColor]: borderLeftColor,
+  [borderRightStyle]: borderLeftStyle,
+  [borderRightWidth]: borderLeftWidth,
+  [left]: right,
+  [marginLeft]: marginRight,
+  [marginRight]: marginLeft,
+  [paddingLeft]: paddingRight,
+  [paddingRight]: paddingLeft,
+  [right]: left,
 }
 
 export const validStyles = {

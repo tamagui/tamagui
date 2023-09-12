@@ -592,6 +592,34 @@ export declare const validPseudoKeys: {
     pressStyle: boolean;
     focusStyle: boolean;
 };
+export declare const LOCALIZATION_STYLES: {
+    borderBottomEndRadius: string;
+    borderBottomStartRadius: string;
+    borderTopEndRadius: string;
+    borderTopStartRadius: string;
+    borderEndColor: string;
+    borderEndStyle: string;
+    borderEndWidth: string;
+    borderStartColor: string;
+    borderStartStyle: string;
+    borderStartWidth: string;
+    end: string;
+    marginEnd: string;
+    marginHorizontal: string;
+    marginStart: string;
+    marginVertical: string;
+    paddingEnd: string;
+    paddingHorizontal: string;
+    paddingStart: string;
+    paddingVertical: string;
+    start: string;
+};
+export declare const PROPERTIES_I18N: {
+    [key: string]: string;
+};
+export declare const PROPERTIES_FLIP: {
+    [key: string]: string;
+};
 export declare const validStyles: {
     elevationAndroid?: boolean | undefined;
     borderBottomStyle?: boolean | undefined;
