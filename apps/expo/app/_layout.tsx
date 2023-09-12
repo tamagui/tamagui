@@ -3,13 +3,45 @@ import { Provider } from 'app/provider'
 import { supabase } from 'app/utils/supabase/client.native'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
+import React from 'react'
 import { useCallback, useEffect, useState } from 'react'
+import * as Notifications from 'expo-notifications'
+import { router } from 'expo-router'
 import { View } from 'react-native'
 // import { LogBox } from 'react-native'
 
 // LogBox.ignoreAllLogs()
 
 SplashScreen.preventAutoHideAsync()
+
+function useNotificationObserver() {
+  React.useEffect(() => {
+    let isMounted = true
+
+    function redirect(notification: Notifications.Notification) {
+      const url = notification.request.content.data?.url
+      if (url) {
+        router.push(url)
+      }
+    }
+
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (!isMounted || !response?.notification) {
+        return
+      }
+      redirect(response?.notification)
+    })
+
+    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      redirect(response.notification)
+    })
+
+    return () => {
+      isMounted = false
+      subscription.remove()
+    }
+  }, [])
+}
 
 export default function HomeLayout() {
   const [fontLoaded] = useFonts({
@@ -19,6 +51,7 @@ export default function HomeLayout() {
 
   const [sessionLoadAttempted, setSessionLoadAttempted] = useState(false)
   const [initialSession, setInitialSession] = useState<Session>()
+  useNotificationObserver()
   useEffect(() => {
     supabase.auth
       .getSession()

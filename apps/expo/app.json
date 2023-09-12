@@ -40,7 +40,17 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      "expo-router"
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#000000",
+          "androidMode": "collapse",
+          "androidCollapsedTitle": "Belaytionship",
+          "androidCollapsedBody": "You have a new message from {{sender}}"
+        }
+      ]
     ],
     "extra": {
       "router": {

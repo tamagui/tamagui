@@ -9,10 +9,9 @@ import {
   YStack,
   getTokens,
 } from '@my/ui'
-import { Box, Cog, Milestone, ShoppingCart, Users } from '@tamagui/lucide-icons'
+import { Cog } from '@tamagui/lucide-icons'
 import { useSafeAreaInsets } from 'app/utils/useSafeAreaInsets'
 import { useUser } from 'app/utils/useUser'
-import React from 'react'
 import { SolitoImage } from 'solito/image'
 import { Link, useLink } from 'solito/link'
 

@@ -22,7 +22,6 @@ import { FlatList } from 'react-native'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useCallback, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useWindowDimensions } from 'react-native'
 
 type ListClimb = Tables<'climbs'> & {
   climber: Tables<'profiles'>
@@ -34,6 +33,7 @@ const displayName = {
   boulder: 'Boulder',
 } as const
 function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListClimb) => void }) {
+  const user = api.me.profile.useQuery()
   let color: ThemeName
   switch (climb.type) {
     case 'lead_rope': {
@@ -67,7 +67,6 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
         shadowOpacity={0.2}
         jc="flex-start"
         onPress={() => {
-          console.log('hiiiiiii')
           onSelect?.(climb)
         }}
       >
@@ -115,14 +114,18 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
           <H3 textTransform="uppercase" size="$5">
             {climb.climber.first_name ?? 'unknown climber'}
           </H3>
+          <Spacer size="$2" />
+          <Paragraph size="$1" fontWeight="800" ellipse>
+            @{climb.climber.username}
+          </Paragraph>
           <Paragraph size="$1" fontWeight="400" ellipse>
-            {climb.name}
+            {climb.name} {user?.data?.id === climb?.created_by ? '(your climb)' : ''}
           </Paragraph>
           <Spacer size="$1" />
         </Card.Header>
         <Card.Footer ai="baseline">
           <Paragraph theme="alt2" size="$1" fontWeight="400">
-            {format(new Date(climb.start), 'EEEE')} @ {format(new Date(climb.start), 'h:mmaaa')}
+            {format(new Date(climb.start), 'MMM d')} @ {format(new Date(climb.start), 'h:mmaaa')}
           </Paragraph>
           <Spacer flex />
           {/* <Button fontSize="$1" size="$3" borderRadius="$3">
@@ -191,11 +194,11 @@ export const SheetDemo = ({
   open: boolean
   setOpen: (state: boolean) => void
 }) => {
-  const { height } = useWindowDimensions()
   const [position, setPosition] = useState(0)
   const [modal, setModal] = useState(true)
   const joinMutation = api.climb.join.useMutation()
   const queryClient = useQueryClient()
+  const user = api.me.profile.useQuery()
   // const [innerOpen, setInnerOpen] = useState(false)
 
   let color: ThemeName = 'orange'
@@ -213,7 +216,6 @@ export const SheetDemo = ({
       break
     }
   }
-
   const reminderConfig = {
     name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
     description: climb?.name ?? '',
@@ -228,17 +230,8 @@ export const SheetDemo = ({
       }),
       'hh:mm'
     ),
-
-    // add(new Date(climb?.start ?? 0), {
-    //   minutes: intervalToDuration({
-    //     start: new Date(climb?.start ?? 0),
-    //     end: new Date(climb?.duration ?? 0),
-    //   }),
-    //   'hh:mm'),
-    // })
-
     options: ['Google', 'iCal'],
-    timeZone: 'America/Los_Angeles',
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   }
   return (
     <Theme name={color}>
@@ -247,7 +240,7 @@ export const SheetDemo = ({
         modal={modal}
         open={open}
         onOpenChange={setOpen}
-        snapPoints={[58, height - 100, height - 100]}
+        snapPoints={[58]}
         dismissOnSnapToBottom
         position={position}
         onPositionChange={setPosition}
@@ -267,24 +260,17 @@ export const SheetDemo = ({
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}
           {/* <Input width={200} /> */}
 
-          {isWeb && (
-            <AddToCalendarButton
-              // name={climb?.name ?? ''}
-              // description="test"
-              // startTime={climb?.start}
-              // startDate={new Date(climb?.start ?? 0).getDate().toString()}
-              // options={['Google', 'iCal']}
-              // endTime={add(new Date(climb?.start ?? 0), {
-              //   minutes: Number(climb?.duration),
-              // }).toISOString()}
-              {...reminderConfig}
-            />
-          )}
+          {isWeb && <AddToCalendarButton {...reminderConfig} />}
           <YStack height={450}>
             {climb?.climber?.first_name && (
-              <H3 fontSize="$8" pt="$0.5">
-                Climb with {climb.climber.first_name}
-              </H3>
+              <>
+                <H3 fontSize="$8" pt="$0.5">
+                  Climb with {climb.climber.first_name}
+                </H3>
+                <Paragraph size="$2" fontWeight="400">
+                  @{climb.climber.username}
+                </Paragraph>
+              </>
             )}
             <Spacer size="$2" />
             {climb?.type && (
@@ -323,15 +309,14 @@ export const SheetDemo = ({
                         )
                       },
                       onError: (error) => {
+                        // TODO: create toast for error case
                         console.log(error)
                       },
                     }
                   )
-
-                  alert('Request sent!')
                 }}
               >
-                Request
+                {user.data?.id === climb?.created_by ? 'Edit' : 'Join'}
               </Button>
               <Spacer flex />
               <Button

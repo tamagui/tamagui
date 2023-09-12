@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 3.14.0"
+    "version": ">= 3.14.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -21,6 +22,7 @@
       "channel": "test"
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "TAMAGUI_TARGET": "native",
         "EXPO_PUBLIC_URL": "https://www.belaytionship.rocks",

@@ -17,13 +17,9 @@ export const meRouter = createTRPCRouter({
     return data
   }),
   climbs: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
-    // const climbs = await supabase.from('profile_climbs').select('*').eq('created_by', session.user.id)
-    // if (climbs.error) {
-    //   throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
-    // }
-    // return climbs.data
+
     const { data: profileClimbData, error } = await supabase.from('profile_climbs').select(`*, climb:climbs(*)`).eq('profile_id', session.user.id)
-    const { data: profiles, error: profileError } = await supabase.from('profiles').select('*')
+    const { data: profiles } = await supabase.from('profiles').select('*')
 
 
     if (error) {
@@ -44,6 +40,16 @@ export const meRouter = createTRPCRouter({
         climb,
         profile,
       }
+      // This should probably be done in the query
+    }).filter(c => {
+      return c.climb?.start > new Date().toISOString()
+    }).sort((a, b) => {
+      if (a.climb?.start < b.climb?.start) {
+        return -1
+      } else if (a.climb?.start > b.climb?.start) {
+        return 1
+      }
+      return 0
     })
   }),
 })

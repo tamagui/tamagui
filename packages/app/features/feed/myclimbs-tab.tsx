@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useUser, User } from 'app/utils/useUser'
-import { ShieldQuestion } from '@tamagui/lucide-icons'
+import { User as UserIcon, HelpCircle, ShieldQuestion } from '@tamagui/lucide-icons'
 
 const displayName = {
   top_rope: 'Top Rope',
@@ -16,7 +16,6 @@ const displayName = {
 
 function MyClimb({
   profileClimb,
-  user,
 }: {
   profileClimb: Tables<'profile_climbs'> & {
     climb: Tables<'climbs'>
@@ -91,7 +90,7 @@ function MyClimb({
                 {profileClimb.profile?.avatar_url && (
                   <Avatar.Image src={profileClimb.profile?.avatar_url} />
                 )} */}
-              <Avatar circular pos={'absolute'} size="$5">
+              <Avatar circular size="$5">
                 {profileClimb.profile?.avatar_url && (
                   <Avatar.Image src={profileClimb.profile.avatar_url} />
                 )}
@@ -101,7 +100,7 @@ function MyClimb({
         </Card.Header>
         <YStack f={1}>
           <H3 textTransform="uppercase" size="$5">
-            {profileClimb.profile?.first_name ?? 'unknown climber'} + You
+            {profileClimb.profile?.first_name ?? 'unknown climber'}
           </H3>
           <Paragraph size="$1" fontWeight="400" ellipse>
             {profileClimb.climb.name}
@@ -110,7 +109,7 @@ function MyClimb({
 
         <Card.Footer ai="baseline">
           <Paragraph theme="alt2" size="$1" fontWeight="400">
-            {format(new Date(profileClimb.climb.start), 'EEEE')} @{' '}
+            {format(new Date(profileClimb.climb.start), 'MMM d')} @{' '}
             {format(new Date(profileClimb.climb.start), 'h:mmaaa')}
           </Paragraph>
           <Spacer flex />

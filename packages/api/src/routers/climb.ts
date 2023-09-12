@@ -13,6 +13,7 @@ export const climbRouter = createTRPCRouter({
       .from('climbs')
       .select(`*, climber:profiles(*)`)
       .lt('joined', 2)
+      .gt('start', new Date().toISOString())
       // Need to get climbs that start after now.
       .order('start', { ascending: true })
 

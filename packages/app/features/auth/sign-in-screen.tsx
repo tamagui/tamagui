@@ -7,6 +7,7 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { createParam } from 'solito'
 import { useRouter } from 'solito/router'
 import { z } from 'zod'
+// import { Config } from '@my/shared-env'
 
 const { useParams, useUpdateParams } = createParam<{ email?: string }>()
 
@@ -33,6 +34,7 @@ export const SignInScreen = () => {
       email: email,
       password: password,
     })
+    console.log(error)
 
     if (error) {
       const errorMessage = error?.message.toLowerCase()
@@ -68,6 +70,24 @@ export const SignInScreen = () => {
           return (
             <>
               <Theme inverse>
+                <SubmitButton
+                  onPress={() => {
+                    alert(
+                      JSON.stringify(
+                        {
+                          // condig: Config,
+                        },
+                        null,
+                        2
+                      )
+                    )
+                  }}
+                  borderRadius="$10"
+                >
+                  Debugger Button
+                </SubmitButton>
+              </Theme>
+              <Theme inverse>
                 <SubmitButton onPress={() => submit()} borderRadius="$10">
                   Sign In
                 </SubmitButton>
@@ -84,10 +104,7 @@ export const SignInScreen = () => {
       >
         {(fields) => (
           <>
-            <YStack gap="$3" mb="$4">
-              <H2 $sm={{ size: '$8' }}>Welcome Back</H2>
-              <Paragraph theme="alt1">Sign in to your account</Paragraph>
-            </YStack>
+            <YStack gap="$3" mb="$4"></YStack>
             {Object.values(fields)}
           </>
         )}

@@ -8,11 +8,7 @@ export let Config = {
   enableHiddenFeatures: true,
 };
 
-if (Updates.channel === 'development') {
-  Config.publicUrl = 'localhost:3000';
-  Config.supabaseUrl = 'http://localhost:54321';
-  Config.enableHiddenFeatures = false;
-} else if (Updates.channel === 'test') {
+if (Updates.channel === 'test') {
   Config.publicUrl = 'https://www.belaytionship.rocks';
   Config.supabaseUrl = 'https://slwmxbbwegsfgxepfjlg.supabase.co';
   Config.supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsd214YmJ3ZWdzZmd4ZXBmamxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTE2ODM0MjAsImV4cCI6MjAwNzI1OTQyMH0.jr2Z4p_86ag116e_io3DiKx2K7W1BF5C0YXf5ifGWBQ';

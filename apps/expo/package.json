@@ -13,7 +13,8 @@
     "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
     "lint": "eslint ./app",
     "lint:fix": "eslint ./app --fix",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "yolo": "eas update --auto"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
@@ -27,11 +28,13 @@
     "expo": "^49.0.0",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~2.4.6",
+    "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",
     "expo-image": "~1.3.2",
     "expo-image-picker": "~14.3.1",
     "expo-linear-gradient": "~12.3.0",
     "expo-linking": "~5.0.2",
+    "expo-notifications": "~0.20.1",
     "expo-router": "2.0.0",
     "expo-secure-store": "~12.3.1",
     "expo-splash-screen": "~0.20.4",

@@ -2583,6 +2583,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/image-utils@npm:^0.3.18":
+  version: 0.3.23
+  resolution: "@expo/image-utils@npm:0.3.23"
+  dependencies:
+    "@expo/spawn-async": 1.5.0
+    chalk: ^4.0.0
+    fs-extra: 9.0.0
+    getenv: ^1.0.0
+    jimp-compact: 0.16.1
+    mime: ^2.4.4
+    node-fetch: ^2.6.0
+    parse-png: ^2.1.0
+    resolve-from: ^5.0.0
+    semver: 7.3.2
+    tempy: 0.3.0
+  checksum: 74057f8f963243a68bbc930406200cf203fe433d009dc937d0270b75bcfc77d3ac2cbbfcbf1e80d62682907bb6f371dd13b993c4930c01fcd8157dccd2aa6408
+  languageName: node
+  linkType: hard
+
 "@expo/json-file@npm:8.2.36":
   version: 8.2.36
   resolution: "@expo/json-file@npm:8.2.36"
@@ -3057,6 +3076,13 @@ __metadata:
   version: 1.2.1
   resolution: "@humanwhocodes/object-schema@npm:1.2.1"
   checksum: a824a1ec31591231e4bad5787641f59e9633827d0a2eaae131a288d33c9ef0290bd16fda8da6f7c0fcb014147865d12118df10db57f27f41e20da92369fcb3f1
+  languageName: node
+  linkType: hard
+
+"@ide/backoff@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@ide/backoff@npm:1.0.0"
+  checksum: 05860fd05952c83e7bc2f23e5f25b9301a60d99254ee4a8d63f5907da0f908af9db718c9027dd2cdaec8203fa05e9dd6afaca767e7e69cefd0a0eef33d9a17ea
   languageName: node
   linkType: hard
 
@@ -11311,6 +11337,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"badgin@npm:^1.1.5":
+  version: 1.2.3
+  resolution: "badgin@npm:1.2.3"
+  checksum: 8c53fb0c35ec0bbf25a84be42e56e1291c958138182cdf91693ade955d7f52f36fd282ed00f31b741024aec6bdb10080bbe20a73138aac14a096838aaac76d95
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -12051,9 +12084,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001517":
-  version: 1.0.30001529
-  resolution: "caniuse-lite@npm:1.0.30001529"
-  checksum: 26a7d42fff3a7e33db543af6b434aceb08c799e5e00795a54296b99b2fdddb7f31a0040600d3fc2ca4b1e6cf7e4ead46cc87ac53751ea8dab47ef355f6809511
+  version: 1.0.30001532
+  resolution: "caniuse-lite@npm:1.0.30001532"
+  checksum: 613abeb15e03dde307d543195a7860f7ba7450c9c9262d45642b2c8fbe097914fa060d68c8647f9d443947b1f62b09d891858bde7d2cac94fae8133a0b518b28
   languageName: node
   linkType: hard
 
@@ -15543,55 +15576,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-app@workspace:apps/expo":
-  version: 0.0.0-use.local
-  resolution: "expo-app@workspace:apps/expo"
-  dependencies:
-    "@babel/core": ^7.20.2
-    "@babel/runtime": ^7.18.9
-    "@expo/metro-config": ^0.3.21
-    "@my/ui": "*"
-    "@react-native-async-storage/async-storage": 1.18.2
-    "@react-native-community/netinfo": ^9.3.10
-    "@tamagui/babel-plugin": latest
-    app: "*"
-    babel-plugin-module-resolver: ^4.1.0
-    babel-plugin-transform-inline-environment-variables: ^0.4.4
-    burnt: ^0.10.0
-    eslint: ^8.46.0
-    eslint-config-universe: ^11.3.0
-    eslint-plugin-import: ^2.28.0
-    expo: ^49.0.0
-    expo-constants: ~14.4.2
-    expo-dev-client: ~2.4.6
-    expo-font: ~11.4.0
-    expo-image: ~1.3.2
-    expo-image-picker: ~14.3.1
-    expo-linear-gradient: ~12.3.0
-    expo-linking: ~5.0.2
-    expo-router: 2.0.0
-    expo-secure-store: ~12.3.1
-    expo-splash-screen: ~0.20.4
-    expo-status-bar: ~1.6.0
-    expo-updates: ~0.18.10
-    metro-minify-terser: ^0.74.1
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-native: 0.72.3
-    react-native-clean-project: ^4.0.1
-    react-native-dotenv: ^3.4.8
-    react-native-gesture-handler: ~2.12.0
-    react-native-reanimated: ~3.3.0
-    react-native-safe-area-context: 4.6.3
-    react-native-screens: ~3.22.0
-    react-native-svg: 13.9.0
-    react-native-url-polyfill: ^1.3.0
-    react-native-web: ~0.19.6
-    react-native-webview: 13.2.2
-    typescript: ^5.1.3
-  languageName: unknown
-  linkType: soft
-
 "expo-application@npm:~5.3.0":
   version: 5.3.1
   resolution: "expo-application@npm:5.3.1"
@@ -15615,6 +15599,57 @@ __metadata:
   checksum: 02607b67b8b53e47825ded6ca52eee47ae957cdc4b1501cdc0373bbd50ccfef605ba8a05a07ee88225622c7dc6054dfe1b64f03b21f09aaea7e1b4bf132d3ad7
   languageName: node
   linkType: hard
+
+"expo-belaytionship@workspace:apps/expo":
+  version: 0.0.0-use.local
+  resolution: "expo-belaytionship@workspace:apps/expo"
+  dependencies:
+    "@babel/core": ^7.20.2
+    "@babel/runtime": ^7.18.9
+    "@expo/metro-config": ^0.3.21
+    "@my/ui": "*"
+    "@react-native-async-storage/async-storage": 1.18.2
+    "@react-native-community/netinfo": ^9.3.10
+    "@tamagui/babel-plugin": latest
+    app: "*"
+    babel-plugin-module-resolver: ^4.1.0
+    babel-plugin-transform-inline-environment-variables: ^0.4.4
+    burnt: ^0.10.0
+    eslint: ^8.46.0
+    eslint-config-universe: ^11.3.0
+    eslint-plugin-import: ^2.28.0
+    expo: ^49.0.0
+    expo-constants: ~14.4.2
+    expo-dev-client: ~2.4.6
+    expo-device: ~5.4.0
+    expo-font: ~11.4.0
+    expo-image: ~1.3.2
+    expo-image-picker: ~14.3.1
+    expo-linear-gradient: ~12.3.0
+    expo-linking: ~5.0.2
+    expo-notifications: ~0.20.1
+    expo-router: 2.0.0
+    expo-secure-store: ~12.3.1
+    expo-splash-screen: ~0.20.4
+    expo-status-bar: ~1.6.0
+    expo-updates: ~0.18.10
+    metro-minify-terser: ^0.74.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-native: 0.72.3
+    react-native-clean-project: ^4.0.1
+    react-native-dotenv: ^3.4.8
+    react-native-gesture-handler: ~2.12.0
+    react-native-reanimated: ~3.3.0
+    react-native-safe-area-context: 4.6.3
+    react-native-screens: ~3.22.0
+    react-native-svg: 13.9.0
+    react-native-url-polyfill: ^1.3.0
+    react-native-web: ~0.19.6
+    react-native-webview: 13.2.2
+    typescript: ^5.1.3
+  languageName: unknown
+  linkType: soft
 
 "expo-constants@npm:~14.4.2":
   version: 14.4.2
@@ -15674,6 +15709,17 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 58674fb3ba01925239a7dcec54520be23030b8f36e7e9c0fb492fe226e1038ecad170bff88a60242fe58d771e6250fdea45d15a8f90587b5a2ef69496b3edcfa
+  languageName: node
+  linkType: hard
+
+"expo-device@npm:~5.4.0":
+  version: 5.4.0
+  resolution: "expo-device@npm:5.4.0"
+  dependencies:
+    ua-parser-js: ^0.7.33
+  peerDependencies:
+    expo: "*"
+  checksum: 47b74658925d9cacfb2b6dd298c4809d4c993414719c085594867a2ea8f5609c62a33e4dc2a629f5e0c55c9b797ced3c05ce4908690325ca4e8bae44136fae99
   languageName: node
   linkType: hard
 
@@ -15819,6 +15865,25 @@ __metadata:
     compare-versions: ^3.4.0
     invariant: ^2.2.4
   checksum: 85a48a6d1983671458a37ddece9e151ff8179814dd368d67b39dcf34fcdc6b44419d045ac8efcdd8179848d826b67678ce706f5533314ff8ab84537befcf7915
+  languageName: node
+  linkType: hard
+
+"expo-notifications@npm:~0.20.1":
+  version: 0.20.1
+  resolution: "expo-notifications@npm:0.20.1"
+  dependencies:
+    "@expo/image-utils": ^0.3.18
+    "@ide/backoff": ^1.0.0
+    abort-controller: ^3.0.0
+    assert: ^2.0.0
+    badgin: ^1.1.5
+    expo-application: ~5.3.0
+    expo-constants: ~14.4.2
+    fs-extra: ^9.1.0
+    uuid: ^3.4.0
+  peerDependencies:
+    expo: "*"
+  checksum: a935b1f06a102f8749d69f1b3f7583a156388f04deff55703789ab0258e3710a50629ea951dea7d1e5119b74ec0c142ec8fb6206f84ddb60ebe94a1b45a026bd
   languageName: node
   linkType: hard
 
@@ -27327,10 +27392,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ua-parser-js@npm:^0.7.33":
+  version: 0.7.36
+  resolution: "ua-parser-js@npm:0.7.36"
+  checksum: 04e18e7f6bf4964a10d74131ea9784c7f01d0c2d3b96f73340ac0a1f8e83d010b99fd7d425e7a2100fa40c58b72f6201408cbf4baa2df1103637f96fb59f2a30
+  languageName: node
+  linkType: hard
+
 "ua-parser-js@npm:^1.0.35":
-  version: 1.0.35
-  resolution: "ua-parser-js@npm:1.0.35"
-  checksum: 02370d38a0c8b586f2503d1c3bbba5cbc0b97d407282f9023201a99e4c03eae4357a2800fdf50cf80d73ec25c0b0cc5bfbaa03975b0add4043d6e4c86712c9c1
+  version: 1.0.36
+  resolution: "ua-parser-js@npm:1.0.36"
+  checksum: 5b2c8a5e3443dfbba7624421805de946457c26ae167cb2275781a2729d1518f7067c9d5c74c3b0acac4b9ff3278cae4eace08ca6eecb63848bc3b2f6a63cc975
   languageName: node
   linkType: hard
 
@@ -28052,8 +28124,8 @@ __metadata:
   linkType: hard
 
 "vite-tsconfig-paths@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "vite-tsconfig-paths@npm:4.2.0"
+  version: 4.2.1
+  resolution: "vite-tsconfig-paths@npm:4.2.1"
   dependencies:
     debug: ^4.1.1
     globrex: ^0.1.2
@@ -28063,7 +28135,7 @@ __metadata:
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: 73a8467de72d7ac502328454fd00c19571cd4bad2dd5982643b24718bb95e449a3f4153cfc2d58a358bfc8f37e592fb442fc10884b59ae82138c1329160cd952
+  checksum: 8cfbd314eb82a9db97e193aef826e72a112ca8b98e68ef0f9cd8f8538fd5163afe67652507bae41d4aab967ab9a8b24dcf95bd0a8900d388cd6c500c5a82d3b1
   languageName: node
   linkType: hard
 
