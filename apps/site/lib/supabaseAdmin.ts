@@ -270,7 +270,7 @@ export async function addRenewalSubscription(sessionFromEvent: Stripe.Checkout.S
       const subscriptionPrice = await stripe.prices.create({
         product: typeof price.product === 'string' ? price.product : price.product.id,
         currency: 'USD',
-        nickname: `Subscription for ${price.id} (Auto-generated)`,
+        nickname: `${price.nickname} | Subscription for ${price.id} (Auto-generated)`,
         recurring: { interval: 'year', interval_count: 1 },
         unit_amount: price.unit_amount! / 2, // 50%
         metadata: {
