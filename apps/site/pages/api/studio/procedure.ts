@@ -2,9 +2,16 @@ import { apiRoute } from '@lib/apiRoute'
 import { setupCors } from '@lib/cors'
 import { checkSponsorAccess } from '@lib/getSponsorData'
 import { protectApiRoute } from '@lib/protectApiRoute'
-import * as apis from '@tamagui/studio/api'
 
+let apis
 export default apiRoute(async (req, res) => {
+  try {
+    apis = await require('@tamagui/studio/api')
+  } catch (error) {
+    console.log('git-crypt is not unlocked. returning.', error)
+    res.status(500).json({})
+    return
+  }
   setupCors(req, res)
   const { supabase } = await protectApiRoute({ req, res })
   await checkSponsorAccess({
