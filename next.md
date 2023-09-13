@@ -1,3 +1,7 @@
+- styled(ExternalComponent) should always allow Partial props
+  - but if you do provide the props ideally it should 'know' they are pre-filled and therefore not required anymore
+  - also it should make sure to make those props required if they aren't set in styled()
+
 - v2 : col => c
 
 - web mode: 100% of css coverage or at least allow all valid web props
