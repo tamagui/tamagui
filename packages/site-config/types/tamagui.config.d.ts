@@ -42558,6 +42558,9 @@ export declare const config: {
         xl: {
             maxWidth: number;
         };
+        lg_xl: {
+            maxWidth: number;
+        };
         lg: {
             maxWidth: number;
         };

@@ -4,6 +4,9 @@ export declare const media: {
     xl: {
         maxWidth: number;
     };
+    lg_xl: {
+        maxWidth: number;
+    };
     lg: {
         maxWidth: number;
     };
