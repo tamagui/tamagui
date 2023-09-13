@@ -1,3 +1,5 @@
+- v2 : col => c
+
 - web mode: 100% of css coverage or at least allow all valid web props
   - compiler can accummulate them and emit a file?
 
