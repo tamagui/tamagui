@@ -1,3 +1,6 @@
+- web mode: 100% of css coverage or at least allow all valid web props
+  - compiler can accummulate them and emit a file?
+
 bigger up next:
   - no separate UI package necessary for optimization
   - if dynamic eval flattens every usage, remove the definition
