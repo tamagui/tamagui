@@ -7,7 +7,8 @@
     "**/dist",
     "**/types",
     "./linear-gradient",
-    "./native.d.ts"
+    "./native.d.ts",
+    "./native-test.d.ts"
   ],
   "references": [
     { "path": "../card" },

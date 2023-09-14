@@ -11,7 +11,8 @@
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "tamagui": {
-    "bundleNative": "./src/native.ts"
+    "bundle.native": "./src/index.ts",
+    "bundle.native.test": "./src/index.ts"
   },
   "files": [
     "src",
@@ -42,6 +43,11 @@
       "types": "./types/index.d.ts",
       "import": "./dist/native.js",
       "require": "./dist/native.js"
+    },
+    "./native-test": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/test.native.js",
+      "require": "./dist/test.native.js"
     },
     "./linear-gradient": {
       "types": "./types/linear-gradient.d.ts",

@@ -37,7 +37,8 @@ const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
 const pkgSource = pkg.source
-const bundleNative = pkg.tamagui?.bundleNative
+const bundleNative = pkg.tamagui?.['bundle.native']
+const bundleNativeTest = pkg.tamagui?.['bundle.native.test']
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
 const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
@@ -178,6 +179,55 @@ async function buildJs() {
 
   const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
 
+  /** @type { import('esbuild').BuildOptions } */
+  const esbuildBundleProps =
+    bundleNative || bundleNativeTest
+      ? {
+          entryPoints: [bundleNative],
+          bundle: true,
+          target: 'node16',
+          format: 'cjs',
+          jsx: 'automatic',
+          platform: 'node',
+          plugins: [
+            alias({
+              '@tamagui/web': require.resolve('@tamagui/web/native'),
+              'react-native': require.resolve('@tamagui/fake-react-native'),
+              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Pressability/Pressability': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Pressability/usePressability': require.resolve(
+                '@tamagui/fake-react-native/idFn'
+              ),
+              'react-native-safe-area-context': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+            }),
+          ],
+          external: ['react', 'react-dom'],
+          resolveExtensions: [
+            '.native.ts',
+            '.native.tsx',
+            '.native.js',
+            '.ts',
+            '.tsx',
+            '.js',
+            '.jsx',
+          ],
+          minify: process.env.MINIFY ? true : false,
+          define: {
+            'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
+          },
+        }
+      : {}
+
   const start = Date.now()
   return await Promise.all([
     // web output to cjs
@@ -226,52 +276,25 @@ async function buildJs() {
     bundleNative
       ? esbuildWriteIfChanged(
           {
-            entryPoints: [bundleNative],
-            outdir: 'dist',
-            bundle: true,
-            external,
-            target: 'node16',
-            format: 'cjs',
-            jsx: 'automatic',
-            plugins: [
-              alias({
-                '@tamagui/web': require.resolve('@tamagui/web/native'),
-                'react-native': require.resolve('@tamagui/fake-react-native'),
-                'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Pressability/Pressability': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native/Libraries/Pressability/usePressability': require.resolve(
-                  '@tamagui/fake-react-native/idFn'
-                ),
-                'react-native-safe-area-context': require.resolve(
-                  '@tamagui/fake-react-native'
-                ),
-                'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
-              }),
-            ],
-            external: ['react', 'react-dom'],
-            resolveExtensions: [
-              '.native.ts',
-              '.native.tsx',
-              '.native.js',
-              '.ts',
-              '.tsx',
-              '.js',
-              '.jsx',
-            ],
-            minify: process.env.MINIFY ? true : false,
-            define: {
-              'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
-            },
+            ...esbuildBundleProps,
+            outfile: `dist/native.js`,
           },
           {
             platform: 'native',
+          }
+        )
+      : null,
+
+    // for tests to load native-mode from node
+    bundleNativeTest
+      ? esbuildWriteIfChanged(
+          {
+            ...esbuildBundleProps,
+            outfile: `dist/test.js`,
+          },
+          {
+            platform: 'native',
+            env: 'test',
           }
         )
       : null,
@@ -352,8 +375,9 @@ async function buildJs() {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform } = {
+  { platform, env } = {
     platform: '',
+    env: '',
   }
 ) {
   if (!shouldWatch && !platform) {
@@ -367,8 +391,6 @@ async function esbuildWriteIfChanged(
     minifySyntax: true,
     // minifyIdentifiers: true,
     write: false,
-    color: true,
-    allowOverwrite: true,
     color: true,
     allowOverwrite: true,
     keepNames: false,
@@ -389,6 +411,9 @@ async function esbuildWriteIfChanged(
     define: {
       ...(platform && {
         'process.env.TAMAGUI_TARGET': `"${platform}"`,
+      }),
+      ...(env && {
+        'process.env.NODE_ENV': `"${env}"`,
       }),
       ...opts.define,
     },

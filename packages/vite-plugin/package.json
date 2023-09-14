@@ -36,7 +36,7 @@
     "@tamagui/proxy-worm": "1.64.4",
     "@tamagui/react-native-svg": "1.64.4",
     "@tamagui/static": "1.64.4",
-    "esbuild": "^0.19.0",
+    "esbuild": "^0.19.3",
     "esm-resolve": "^1.0.8",
     "fs-extra": "^11.1.0",
     "lodash": "^4.17.21",

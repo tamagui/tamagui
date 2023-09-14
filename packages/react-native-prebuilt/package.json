@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
-    "esbuild": "^0.19.0",
+    "esbuild": "^0.19.3",
     "fs-extra": "^11.1.0",
     "metro-react-native-babel-preset": "^0.77.0",
     "react-native": "^0.72.1"

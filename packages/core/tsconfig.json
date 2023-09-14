@@ -6,6 +6,7 @@
   },
   "exclude": [
     "./native.d.ts",
+    "./native-test.d.ts",
     "./types"
   ],
   "references": [
