@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn with-env next dev",
+    "dev": "yarn with-env next dev --port 3001",
     "build": "cd ../.. && yarn build && cd apps/next && yarn next:build",
     "next:build": "yarn with-env next build",
     "start": "yarn with-env next start",

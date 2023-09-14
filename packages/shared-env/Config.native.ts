@@ -2,8 +2,8 @@ import * as Updates from 'expo-updates';
 
 export type ConfigType = typeof Config;
 export let Config = {
-  publicUrl: process.env.EXPO_PUBLIC_URL ?? 'https://localhost:3000',
-  supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? 'https://localhost:54321',
+  publicUrl: process.env.EXPO_PUBLIC_URL ?? 'https://localhost:3001',
+  supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? 'https://localhost:54331',
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
   enableHiddenFeatures: true,
 };

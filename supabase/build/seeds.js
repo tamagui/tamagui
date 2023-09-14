@@ -224,35 +224,16 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
     });
 }
 function main() {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var benjamin, users, climbs, profiles;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var benjamin;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     console.log('Running seeds with faker data');
                     return [4 /*yield*/, createBenjamin(supabaseInstance)];
                 case 1:
-                    benjamin = _c.sent();
-                    return [4 /*yield*/, createUsers(supabaseInstance, 10)];
-                case 2:
-                    users = _c.sent();
-                    if (!benjamin) {
-                        console.log('no benjamin');
-                        return [2 /*return*/];
-                    }
-                    return [4 /*yield*/, createClimbs(supabaseInstance, users, benjamin.user)];
-                case 3:
-                    _c.sent();
-                    return [4 /*yield*/, supabaseInstance.from('climbs').select('*')];
-                case 4:
-                    climbs = _c.sent();
-                    return [4 /*yield*/, supabaseInstance.from('profiles').select('*')];
-                case 5:
-                    profiles = _c.sent();
-                    return [4 /*yield*/, createProfileClimbs(supabaseInstance, (_a = climbs === null || climbs === void 0 ? void 0 : climbs.data) !== null && _a !== void 0 ? _a : [], (_b = profiles.data) !== null && _b !== void 0 ? _b : [], benjamin.user)];
-                case 6:
-                    _c.sent();
+                    benjamin = _a.sent();
+                    console.log(benjamin);
                     return [2 /*return*/];
             }
         });

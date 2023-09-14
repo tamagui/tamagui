@@ -3,29 +3,29 @@
 project_id = "belaytionship"
 
 [api]
-port = 54321
+port = 54331
 schemas = ["public", "storage"]
 extra_search_path = ["public", "extensions"]
 max_rows = 1000
 
 [db]
 # Port to use for the local database URL.
-port = 54322
+port = 54332
 # The database major version to use. This has to be the same as your remote database's. Run `SHOW
 # server_version;` on the remote database to check.
 major_version = 15
 
 [studio]
 # Port to use for Supabase Studio.
-port = 54323
+port = 54333
 
 # Email testing server. Emails sent with the local dev setup are not actually sent - rather, they
 # are monitored, and you can view the emails that would have been sent from the web interface.
 [inbucket]
 # Port to use for the email testing server web interface.
-port = 54324
-smtp_port = 54325
-pop3_port = 54326
+port = 54334
+smtp_port = 54335
+pop3_port = 54336
 
 [storage]
 # The maximum file size allowed (e.g. "5MB", "500KB").
@@ -34,9 +34,9 @@ file_size_limit = "50MiB"
 [auth]
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "http://localhost:3000"
+site_url = "http://localhost:3001"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://localhost:3000"]
+additional_redirect_urls = ["https://localhost:3001"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 seconds (one
 # week).
 jwt_expiry = 3600
@@ -67,8 +67,8 @@ url = ""
 
 [analytics]
 enabled = false
-port = 54327
-vector_port = 54328
+port = 54337
+vector_port = 54338
 # Setup BigQuery project to enable log viewer on local development stack.
 # See: https://logflare.app/guides/bigquery-setup
 gcp_project_id = ""

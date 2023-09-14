@@ -10,7 +10,7 @@ type Climbs = Tables<'climbs'>
 type ProfileClimbs = Tables<'profile_climbs'>
 type Profiles = Tables<'profiles'>
 
-const supabaseInstance = createClient<Database>("http://localhost:54321", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0")
+const supabaseInstance = createClient<Database>("http://localhost:54331", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0")
 async function createClimbs(supabase: SupabaseClient<Database>, users: AuthResponse[], admin: AuthResponse['data']['user']) {
   // Create 10 climbs from faker data with the Shape of Tables['climbs'] and Enums['climb_type']
   // created at should be now to 1 week ago
@@ -118,6 +118,7 @@ async function createUsers(supabase: SupabaseClient<Database>, count: number) {
           last_name: faker.person.lastName(),
           username: faker.internet.userName(),
           avatar_url: faker.image.avatar(),
+          bio: faker.person.bio()
         }
       }
     })
