@@ -1,3 +1,5 @@
+import '@tamagui/polyfill-dev'
+
 import { setupReactNative } from '@tamagui/core'
 import * as React from 'react'
 import { Text, View } from 'react-native'

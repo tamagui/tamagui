@@ -6840,7 +6840,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/polyfill-dev@1.64.3, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+"@tamagui/polyfill-dev@1.64.3, @tamagui/polyfill-dev@^1.64.3, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
@@ -25815,6 +25815,7 @@ __metadata:
     "@tamagui/label": 1.64.3
     "@tamagui/linear-gradient": 1.64.3
     "@tamagui/list-item": 1.64.3
+    "@tamagui/polyfill-dev": ^1.64.3
     "@tamagui/popover": 1.64.3
     "@tamagui/popper": 1.64.3
     "@tamagui/portal": 1.64.3

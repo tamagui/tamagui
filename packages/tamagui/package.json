@@ -75,6 +75,7 @@
     "@tamagui/label": "1.64.3",
     "@tamagui/linear-gradient": "1.64.3",
     "@tamagui/list-item": "1.64.3",
+    "@tamagui/polyfill-dev": "^1.64.3",
     "@tamagui/popover": "1.64.3",
     "@tamagui/popper": "1.64.3",
     "@tamagui/portal": "1.64.3",

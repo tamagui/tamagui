@@ -10,8 +10,7 @@
     "name": "Nate Wienert"
   },
   "sideEffects": [
-    "*.css",
-    "@tamagui/polyfill-dev"
+    "*.css"
   ],
   "scripts": {
     "build": "tamagui-build",
