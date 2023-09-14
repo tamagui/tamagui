@@ -413,6 +413,33 @@ Things to note:
   - In the example above, `weight` is only defined at `4` and `6`.
   - At creation Tamagui fills in the missing keys with previous value, or the next one if no previous exists. So weight `1` === `300`, weight `5` === `300`, and weight `7` === `600`.
 
+#### Custom Font Family on Native
+
+You need to load your fonts for React Native to recognize them. Typically this looks something like if using Expo, (or you can [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
+
+```tsx
+import { useFonts } from 'expo-font'
+
+function App() {
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      // can hide splash screen here
+    }
+  }, [loaded])
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <MyApp />
+}
+```
+
 ---
 
 ### Non-font tokens
