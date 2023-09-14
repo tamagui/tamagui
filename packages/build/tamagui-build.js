@@ -247,7 +247,7 @@ async function buildJs() {
                   '@tamagui/fake-react-native'
                 ),
                 'react-native/Libraries/Pressability/usePressability': require.resolve(
-                  '@tamagui/fake-react-native'
+                  '@tamagui/fake-react-native/idFn'
                 ),
                 'react-native-safe-area-context': require.resolve(
                   '@tamagui/fake-react-native'
