@@ -307,9 +307,12 @@ const SubscriptionItem = ({
         },
         method: 'POST',
       })
+
       const data = await res.json()
 
-      if (data.message) {
+      if (!res.ok) {
+        alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
+      } else if (data.message) {
         alert(data.message)
       }
     } finally {
