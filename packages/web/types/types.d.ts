@@ -551,7 +551,7 @@ export type AnimationProp = AnimationKeys | {
  */
 type PercentString = `${string}%` & {};
 type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber;
-type SomewhatSpecificSpaceValue = PercentString | UnionableNumber;
+type SomewhatSpecificSpaceValue = 'auto' | PercentString | UnionableNumber;
 type VariableString = `var(${string})`;
 export type SomewhatSpecificColorValue = CSSColorNames | 'transparent' | (`rgba(${string})` & {}) | (`rgb(${string})` & {}) | (`hsl(${string})` & {}) | (`hsla(${string})` & {}) | (`#${string}` & {});
 type WebOnlySizeValue = `${number}vw` | `${number}dvw` | `${number}lvw` | `${number}svw` | `${number}vh` | `${number}dvh` | `${number}lvh` | `${number}svh` | `calc(${string})` | `min(${string})` | `max(${string})` | 'max-content' | 'min-content';
@@ -565,20 +565,24 @@ type AllowedValueSettingColor = GetThemeValueSettingForCategory<'color'>;
 type AllowedValueSettingZIndex = GetThemeValueSettingForCategory<'zIndex'>;
 type AllowedValueSettingRadius = GetThemeValueSettingForCategory<'radius'>;
 type WebStyleValueUniversal = 'unset' | 'inherit' | VariableString;
-export type ThemeValueFallbackSpace = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingSpace, never, SomewhatSpecificSpaceValue, UnionableString | UnionableNumber, 'auto' | WebStyleValueUniversal | WebOnlySizeValue>;
-export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettingSize, never, SomewhatSpecificSizeValue, UnionableString | UnionableNumber, 'auto' | WebStyleValueUniversal | WebOnlySizeValue>;
+export type ThemeValueFallbackSpace = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingSpace, never, SomewhatSpecificSpaceValue, UnionableString | UnionableNumber, WebStyleValueUniversal | WebOnlySizeValue>;
+export type ThemeValueFallbackSize = GetThemeValueFallbackFor<AllowedValueSettingSize, never, SomewhatSpecificSizeValue, UnionableString | UnionableNumber, WebStyleValueUniversal | WebOnlySizeValue>;
 export type ThemeValueFallbackColor = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingColor, never, SomewhatSpecificColorValue, UnionableString | UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackRadius = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingRadius, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 export type ThemeValueFallbackZIndex = ThemeValueFallback | GetThemeValueFallbackFor<AllowedValueSettingZIndex, never, UnionableNumber, UnionableNumber, WebStyleValueUniversal>;
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Record> = RK extends string ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}` : never;
-export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends undefined | 'except-special' ? never : SpecificTokens;
+export type SpecificTokensSpecial = TamaguiSettings extends {
+    autocompleteSpecificTokens: infer Val;
+} ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | boolean;
 export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | number;
-export type Token = (TamaguiSettings['autocompleteSpecificTokens'] extends false ? never : SpecificTokens) | GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
+export type Token = (TamaguiSettings extends {
+    autocompleteSpecificTokens: false;
+} ? never : SpecificTokens) | GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
 export type ColorStyleProp = ThemeValueFallbackColor | ColorTokens;
 type DefaultFont = TamaguiConfig['defaultFont'];
 export type Fonts = DefaultFont extends string ? TamaguiConfig['fonts'][DefaultFont] : never;
@@ -618,7 +622,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
     height: SpaceTokens;
 } : SpaceTokens | ThemeValueFallbackSpace : K extends ColorKeys ? ColorTokens | ThemeValueFallbackColor : K extends ZIndexKeys ? ZIndexTokens | ThemeValueFallbackZIndex : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings['autocompleteSpecificTokens'] extends true | undefined ? SpecificTokens : never);
+    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback | (TamaguiSettings extends {
+        autocompleteSpecificTokens: infer Val;
+    } ? Val extends true | undefined ? SpecificTokens : never : never);
 };
 type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];

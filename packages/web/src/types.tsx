@@ -829,7 +829,7 @@ export type AnimationProp =
 type PercentString = `${string}%` & {}
 
 type SomewhatSpecificSizeValue = 'auto' | PercentString | UnionableNumber
-type SomewhatSpecificSpaceValue = PercentString | UnionableNumber
+type SomewhatSpecificSpaceValue = 'auto' | PercentString | UnionableNumber
 
 type VariableString = `var(${string})`
 
@@ -908,7 +908,7 @@ export type ThemeValueFallbackSpace =
       never,
       SomewhatSpecificSpaceValue,
       UnionableString | UnionableNumber,
-      'auto' | WebStyleValueUniversal | WebOnlySizeValue
+      WebStyleValueUniversal | WebOnlySizeValue
     >
 
 export type ThemeValueFallbackSize = GetThemeValueFallbackFor<
@@ -916,7 +916,7 @@ export type ThemeValueFallbackSize = GetThemeValueFallbackFor<
   never,
   SomewhatSpecificSizeValue,
   UnionableString | UnionableNumber,
-  'auto' | WebStyleValueUniversal | WebOnlySizeValue
+  WebStyleValueUniversal | WebOnlySizeValue
 >
 
 export type ThemeValueFallbackColor =
@@ -958,10 +958,13 @@ export type SpecificTokens<
   ? `$${RK}.${keyof Record[RK] extends string | number ? keyof Record[RK] : never}`
   : never
 
-export type SpecificTokensSpecial = TamaguiSettings['autocompleteSpecificTokens'] extends  // defaults to except-special
-  | undefined
-  | 'except-special'
-  ? never
+// defaults to except-special
+export type SpecificTokensSpecial = TamaguiSettings extends {
+  autocompleteSpecificTokens: infer Val
+}
+  ? Val extends 'except-special' | undefined
+    ? never
+    : SpecificTokens
   : SpecificTokens
 
 export type SizeTokens =
@@ -993,7 +996,9 @@ export type RadiusTokens =
   | number
 
 export type Token =
-  | (TamaguiSettings['autocompleteSpecificTokens'] extends false ? never : SpecificTokens)
+  | (TamaguiSettings extends { autocompleteSpecificTokens: false }
+      ? never
+      : SpecificTokens)
   | GetTokenString<keyof Tokens['radius']>
   | GetTokenString<keyof Tokens['zIndex']>
   | GetTokenString<keyof Tokens['color']>
@@ -1122,8 +1127,10 @@ export type WithThemeValues<T extends object> = {
         | ThemeValueGet<K>
         | Exclude<T[K], string>
         | ThemeValueFallback
-        | (TamaguiSettings['autocompleteSpecificTokens'] extends true | undefined
-            ? SpecificTokens
+        | (TamaguiSettings extends { autocompleteSpecificTokens: infer Val }
+            ? Val extends true | undefined
+              ? SpecificTokens
+              : never
             : never)
 }
 

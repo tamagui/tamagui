@@ -22,7 +22,7 @@ const StyledButton = styled(Button, {
         },
       },
     },
-  },
+  } as const,
 })
 
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
@@ -38,7 +38,7 @@ const StyledButtonVariantTheme = styled(Button, {
         backgroundColor: '$background',
       },
     },
-  },
+  } as const,
 })
 
 export const StyledButtonVariantPseudoMerge = () => (

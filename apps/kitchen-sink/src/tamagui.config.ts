@@ -101,6 +101,10 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
+  settings: {
+    allowedStyleValues: 'somewhat-strict',
+    autocompleteSpecificTokens: 'except-special',
+  },
   tokens,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
