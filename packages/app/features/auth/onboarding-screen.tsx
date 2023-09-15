@@ -1,17 +1,16 @@
 import { Onboarding } from '@my/ui'
 import { useRouter } from 'solito/router'
 import { OnboardingStepInfo, StepContent } from '@my/ui'
-import { ArrowUp, Rocket, Sparkles } from '@tamagui/lucide-icons'
-import React from 'react'
+import { Search, Calendar, Mountain } from '@tamagui/lucide-icons'
 
 const steps: OnboardingStepInfo[] = [
   {
     theme: 'orange',
     Content: () => (
       <StepContent
-        title="Kickstart"
-        icon={Sparkles}
-        description="Auth, profile, settings, adaptive layouts and many more ready for you to build on top of"
+        title="Find a Climb"
+        icon={Search}
+        description="Search your local gym for different types and levels of climbs."
       />
     ),
   },
@@ -19,9 +18,9 @@ const steps: OnboardingStepInfo[] = [
     theme: 'green',
     Content: () => (
       <StepContent
-        title="Updates"
-        icon={ArrowUp}
-        description="As we make the starter better, we'll keep sending PRs with our GitHub app so your app keeps improving"
+        title="Join a Climb"
+        icon={Mountain}
+        description="Join a climber, and find a belayer to climb with"
       />
     ),
   },
@@ -29,9 +28,9 @@ const steps: OnboardingStepInfo[] = [
     theme: 'blue',
     Content: () => (
       <StepContent
-        title="Deploy"
-        icon={Rocket}
-        description="The Takeout starter is the best way to go from zero to deploy and target all platforms at the same time."
+        title="Schedule a Climb"
+        icon={Calendar}
+        description="Post climbs and invite other climbers to join you."
       />
     ),
   },

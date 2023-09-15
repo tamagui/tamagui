@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var faker_1 = require("@faker-js/faker");
 var date_fns_1 = require("date-fns");
 var supabase_js_1 = require("@supabase/supabase-js");
-var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54321", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0");
+var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54321", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU");
 function createClimbs(supabase, users, admin) {
     return __awaiter(this, void 0, void 0, function () {
         var usersClimbs, error;
@@ -124,8 +124,10 @@ function createBenjamin(supabase) {
                                 first_name: 'Benjamin',
                                 last_name: 'Schachter',
                                 username: 'benschac',
+                                email_confirm: true,
+                                bio: 'I have no friends to climb with so I made this app',
                                 avatar_url: 'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4'
-                            }
+                            },
                         }
                     })];
                 case 1:
@@ -134,6 +136,7 @@ function createBenjamin(supabase) {
                         console.log(error);
                         return [2 /*return*/];
                     }
+                    console.log(data);
                     return [2 /*return*/, data];
             }
         });
@@ -156,6 +159,7 @@ function createUsers(supabase, count) {
                                     last_name: faker_1.faker.person.lastName(),
                                     username: faker_1.faker.internet.userName(),
                                     avatar_url: faker_1.faker.image.avatar(),
+                                    bio: faker_1.faker.person.bio()
                                 }
                             }
                         });
@@ -224,16 +228,35 @@ function createProfileClimbs(supabase, climbs, profiles, admin) {
     });
 }
 function main() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var benjamin;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var benjamin, users, climbs, profiles;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     console.log('Running seeds with faker data');
                     return [4 /*yield*/, createBenjamin(supabaseInstance)];
                 case 1:
-                    benjamin = _a.sent();
-                    console.log(benjamin);
+                    benjamin = _c.sent();
+                    return [4 /*yield*/, createUsers(supabaseInstance, 10)];
+                case 2:
+                    users = _c.sent();
+                    if (!benjamin) {
+                        console.log('no benjamin');
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, createClimbs(supabaseInstance, users, benjamin.user)];
+                case 3:
+                    _c.sent();
+                    return [4 /*yield*/, supabaseInstance.from('climbs').select('*')];
+                case 4:
+                    climbs = _c.sent();
+                    return [4 /*yield*/, supabaseInstance.from('profiles').select('*')];
+                case 5:
+                    profiles = _c.sent();
+                    return [4 /*yield*/, createProfileClimbs(supabaseInstance, (_a = climbs === null || climbs === void 0 ? void 0 : climbs.data) !== null && _a !== void 0 ? _a : [], (_b = profiles.data) !== null && _b !== void 0 ? _b : [], benjamin.user)];
+                case 6:
+                    _c.sent();
                     return [2 /*return*/];
             }
         });

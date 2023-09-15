@@ -1,16 +1,27 @@
+import { Theme, YStack } from '@my/ui'
 import { SignUpScreen } from 'app/features/auth/sign-up-screen'
 import { Stack } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function Screen() {
+  const safeAreaInsets = useSafeAreaInsets()
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['bottom', 'left', 'right']}>
-      <Stack.Screen
-        options={{
-          title: 'Sign Up',
+    <Theme name="green">
+      <SafeAreaView
+        style={{
+          flex: 1,
         }}
-      />
-      <SignUpScreen />
-    </SafeAreaView>
+        edges={['left', 'right']}
+      >
+        <YStack pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} f={1} bg={'$color3'}>
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+          />
+          <SignUpScreen />
+        </YStack>
+      </SafeAreaView>
+    </Theme>
   )
 }

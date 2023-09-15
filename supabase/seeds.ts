@@ -1,4 +1,3 @@
-import { supabase } from 'app/utils/supabase/client.native';
 
 import { faker } from '@faker-js/faker'
 import { add } from 'date-fns'
@@ -92,8 +91,12 @@ async function createBenjamin(supabase: SupabaseClient<Database>) {
         first_name: 'Benjamin',
         last_name: 'Schachter',
         username: 'benschac',
-        avatar_url: 'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4'
-      }
+        email_confirm: true,
+        bio: 'I have no friends to climb with so I made this app',
+        avatar_url:
+          'https://avatars.githubusercontent.com/u/2502947?u=eb345767686e9b8692c6d76955650a41e6e80cf3&v=4'
+
+      },
     }
   })
 

@@ -58,10 +58,11 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
       <Card
         overflow="visible"
         removeClippedSubviews={true}
+        height={220}
         minWidth={320}
         position="relative"
-        height={220}
         padding="$4"
+        marginHorizontal="$3"
         elevation="$0.5"
         shadowRadius={7}
         shadowOpacity={0.2}
@@ -156,23 +157,12 @@ export function ClimbsTab() {
     setSelectedClimb(climb)
     setOpen(true)
   }, [])
-  // const config = {
-  //   name: '[Reminder] Test the Add to Calendar Button',
-  //   description:
-  //     'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
-  //   startDate: '2023-09-07',
-  //   startTime: '10:15',
-  //   endTime: '23:30',
-  //   options: ['Google|My custom label', 'iCal'],
-  //   timeZone: 'America/Los_Angeles',
-  // }
   return (
-    <YStack overflow="visible" ai="center" gap="$10" removeClippedSubviews={true}>
+    <YStack ai="center" gap="$10" removeClippedSubviews={true}>
       <FlatList
-        style={{
-          flex: 1,
-          overflow: 'visible',
-        }}
+        // style={{
+        //   overflow: 'visible',
+        // }}
         data={climbsQuery.data}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
@@ -346,3 +336,14 @@ export const SheetDemo = ({
     </Theme>
   )
 }
+
+// const config = {
+//   name: '[Reminder] Test the Add to Calendar Button',
+//   description:
+//     'Check out the maybe easiest way to include Add to Calendar Buttons to your web projects:[br]→ [url]https://add-to-calendar-button.com/',
+//   startDate: '2023-09-07',
+//   startTime: '10:15',
+//   endTime: '23:30',
+//   options: ['Google|My custom label', 'iCal'],
+//   timeZone: 'America/Los_Angeles',
+// }

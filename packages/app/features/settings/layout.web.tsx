@@ -1,6 +1,7 @@
 import { FullscreenSpinner, Separator, XStack, YStack } from '@my/ui'
 import { useUser } from 'app/utils/useUser'
 import { SettingsScreen } from './screen'
+import { useNativeNotifications } from 'app/hooks/notifications'
 
 export type SettingsLayoutProps = {
   /**
@@ -14,6 +15,7 @@ export type SettingsLayoutProps = {
 }
 
 export const SettingsLayout = ({ children, isSettingsHome = false }: SettingsLayoutProps) => {
+  const { schedulePushNotification } = useNativeNotifications()
   const { isLoading, user } = useUser()
   if (isLoading || !user) {
     return <FullscreenSpinner />
@@ -35,7 +37,7 @@ export const SettingsLayout = ({ children, isSettingsHome = false }: SettingsLay
           width: 400,
         }}
       >
-        <SettingsScreen />
+        <SettingsScreen schedulePushNotif={schedulePushNotification} />
       </YStack>
       <YStack my="$10" f={1} ai="center" $sm={{ display: isSettingsHome ? 'none' : 'block' }}>
         <YStack width="100%">{children}</YStack>

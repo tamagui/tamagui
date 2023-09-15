@@ -1,4 +1,4 @@
-import { H2, Paragraph, SubmitButton, Text, Theme, YStack } from '@my/ui'
+import { H1, H2, Paragraph, SubmitButton, Text, Theme, YStack } from '@my/ui'
 import { Link } from 'solito/link'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import { useSupabase } from 'app/utils/supabase/useSupabase'
@@ -52,25 +52,29 @@ export const SignInScreen = () => {
 
   return (
     <FormProvider {...form}>
-      <SchemaForm
-        form={form}
-        schema={SignInSchema}
-        defaultValues={{
-          email: params?.email || '',
-          password: '',
-        }}
-        onSubmit={signInWithEmail}
-        props={{
-          password: {
-            afterElement: <ForgotPasswordLink />,
-            secureTextEntry: true,
-          },
-        }}
-        renderAfter={({ submit }) => {
-          return (
-            <>
-              <Theme inverse>
-                <SubmitButton
+      <YStack f={1} bg="$color3">
+        <H1 paddingHorizontal="$4" $sm={{ size: '$8' }}>
+          Sign In
+        </H1>
+        <SchemaForm
+          form={form}
+          schema={SignInSchema}
+          defaultValues={{
+            email: params?.email || '',
+            password: '',
+          }}
+          onSubmit={signInWithEmail}
+          props={{
+            password: {
+              afterElement: <ForgotPasswordLink />,
+              secureTextEntry: true,
+            },
+          }}
+          renderAfter={({ submit }) => {
+            return (
+              <>
+                <Theme inverse>
+                  {/* <SubmitButton
                   onPress={() => {
                     alert(
                       JSON.stringify(
@@ -85,30 +89,31 @@ export const SignInScreen = () => {
                   borderRadius="$10"
                 >
                   Debugger Button
-                </SubmitButton>
-              </Theme>
-              <Theme inverse>
-                <SubmitButton onPress={() => submit()} borderRadius="$10">
-                  Sign In
-                </SubmitButton>
-              </Theme>
-              <SignUpLink />
-              {/* <YStack>
+                </SubmitButton> */}
+                </Theme>
+                <Theme inverse>
+                  <SubmitButton onPress={() => submit()} borderRadius="$10">
+                    Sign In
+                  </SubmitButton>
+                </Theme>
+                <SignUpLink />
+                {/* <YStack>
             <Button disabled={loading} onPress={() => signInWithProvider('github')}>
               GitHub Login
             </Button>
           </YStack> */}
+              </>
+            )
+          }}
+        >
+          {(fields) => (
+            <>
+              <YStack bg="red" gap="$3" mb="$4"></YStack>
+              {Object.values(fields)}
             </>
-          )
-        }}
-      >
-        {(fields) => (
-          <>
-            <YStack gap="$3" mb="$4"></YStack>
-            {Object.values(fields)}
-          </>
-        )}
-      </SchemaForm>
+          )}
+        </SchemaForm>
+      </YStack>
     </FormProvider>
   )
 }
@@ -130,7 +135,7 @@ const ForgotPasswordLink = () => {
   return (
     <Link href={`/reset-password?${new URLSearchParams(email ? { email } : undefined)}`}>
       <Paragraph mt="$1" theme="alt2" textDecorationLine="underline">
-        Forgot your password?
+        Lost password?
       </Paragraph>
     </Link>
   )

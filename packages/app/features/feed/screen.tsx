@@ -18,13 +18,7 @@ export function FeedScreen() {
 }
 const HorizontalTabs = () => {
   return (
-    <Tabs
-      defaultValue="tab1"
-      orientation="horizontal"
-      flexDirection="column"
-      overflow="hidden"
-      f={1}
-    >
+    <Tabs defaultValue="tab1" orientation="horizontal" flexDirection="column" f={1}>
       <Tabs.List
         separator={<Separator vertical />}
         disablePassBorderRadius="bottom"

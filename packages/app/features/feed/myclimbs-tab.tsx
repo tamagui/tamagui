@@ -134,7 +134,6 @@ export function MyClimbsTab() {
   // TODO: Get Climbs
   const climbsQuery = api.me.climbs.useQuery()
   const user = useUser()
-  console.log(climbsQuery.data)
   return (
     <YStack overflow="visible" gap="$5">
       <FlatList
