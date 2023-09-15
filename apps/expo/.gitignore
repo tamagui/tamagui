@@ -131,3 +131,5 @@ dist/
 
 
 credentials.json
+*.jks
+*.pem

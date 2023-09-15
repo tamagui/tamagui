@@ -4,6 +4,8 @@ Tamagui's Premium Universal Starter
 
 ## Getting Started
 
+keytool -export -rfc -alias initial_build_pem -file certificate_for_google_belaytionship.pem -keystore ./path/to/keystore.jks
+
 If you want to clone this starter, you can run `yarn create tamagui --template takeout-starter`. Otherwise, ignore this section. If you're getting authentication issues with `yarn create tamagui`, clone the template (using `gh` or just `git`), cd into the project and run `yarn install`, and then `yarn setup`.
 
 To rename the project you can search the workspace for the word `myapp` and replace with your name.
