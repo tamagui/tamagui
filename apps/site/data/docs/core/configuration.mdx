@@ -472,8 +472,20 @@ One final note: using tokens with themes. Tokens are considered a "fallback" to 
 
 You have a few options on the configuration object that control how strict your style values are allowed to be.
 
-- ``
-- ``
+If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your existing `tamagui.config.ts` like so:
+
+```tsx
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends AppConfig {}
+
+  // add this:
+  interface ThemeValueFallback {
+    value: never
+  }
+}
+```
+
+This will change all special style properties that map to token/theme values to not accept strings or numbers. If you want to make exceptions, you can then add back in any general types by overriding one of the following: `SizeTokens`, `FontTokens`, `FontSizeTokens`, `FontLineHeightTokens`, `FontWeightTokens`, `FontLetterSpacingTokens`, `FontStyleTokens`, `FontTransformTokens`, `SpaceTokens`, `ColorTokens`, and `ZIndexTokens`.
 
 ### Themes
 
