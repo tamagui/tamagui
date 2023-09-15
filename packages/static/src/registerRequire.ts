@@ -1,4 +1,4 @@
-// import { register } from 'esbuild-register/dist/node'
+import { register } from 'esbuild-register/dist/node'
 
 import { requireTamaguiCore } from './helpers/requireTamaguiCore'
 import { TamaguiPlatform } from './types'
@@ -38,9 +38,9 @@ export function registerRequire(
     }
   }
 
-  // const { unregister } = register({
-  //   hookIgnoreNodeModules: false,
-  // })
+  const { unregister } = register({
+    hookIgnoreNodeModules: false,
+  })
 
   if (!og) {
     og = Module.prototype.require // capture esbuild require
@@ -169,7 +169,7 @@ export function registerRequire(
   return {
     tamaguiRequire,
     unregister: () => {
-      // unregister()
+      unregister()
       isRegistered = false
       Module.prototype.require = og
     },
