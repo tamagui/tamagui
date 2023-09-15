@@ -511,7 +511,10 @@ export function createExtractor(
                 .trim()
 
               if (foundNames) {
-                colorLog(Color.FgYellow, `      | Found new components: ${foundNames}`)
+                colorLog(
+                  Color.FgYellow,
+                  `      | Tamagui found dynamic components: ${foundNames}`
+                )
               }
             }
           } catch (err: any) {

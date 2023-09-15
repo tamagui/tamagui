@@ -6977,7 +6977,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/react-native-prebuilt@workspace:packages/react-native-prebuilt":
+"@tamagui/react-native-prebuilt@^1.65.0, @tamagui/react-native-prebuilt@workspace:packages/react-native-prebuilt":
   version: 0.0.0-use.local
   resolution: "@tamagui/react-native-prebuilt@workspace:packages/react-native-prebuilt"
   dependencies:
@@ -7057,6 +7057,7 @@ __metadata:
     "@tamagui/build": 1.65.0
     "@tamagui/lucide-icons": 1.65.0
     "@tamagui/toast": 1.65.0
+    expo-image: ^1.5.1
     solito: ^4.0.0-alpha.4
     tamagui: 1.65.0
   languageName: unknown
@@ -7413,6 +7414,7 @@ __metadata:
     "@tamagui/helpers": 1.65.0
     "@tamagui/helpers-node": 1.65.0
     "@tamagui/proxy-worm": 1.65.0
+    "@tamagui/react-native-prebuilt": ^1.65.0
     "@tamagui/shorthands": 1.65.0
     "@tamagui/test-design-system": 1.65.0
     "@tamagui/types": 1.65.0
@@ -14610,6 +14612,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 243f961d95d40996f216f2618336dd3c3f49da798e6ccd789a0484fdab0c018a6c9ec9d8e6acd4274e50572682368406effc9409d613c652732cb312f2e34187
+  languageName: node
+  linkType: hard
+
+"expo-image@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "expo-image@npm:1.5.1"
+  peerDependencies:
+    expo: "*"
+  checksum: ddc75df657a61323ea9aa80070f32f92262f76c9b2ecbff9558444c7f9a56a090e7d4d743d5493eaa205d6022b89a3a15491ce6321a3032f52d9e393fbf98a69
   languageName: node
   linkType: hard
 

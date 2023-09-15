@@ -1,4 +1,3 @@
-// debug
 // import '../lib/wdyr'
 
 import { SwitchDemo } from '@tamagui/demos'

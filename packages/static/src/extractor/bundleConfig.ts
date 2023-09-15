@@ -289,6 +289,9 @@ export function loadComponents(
             ...esbuildOptions,
             entryPoints: [loadModule],
             outfile: loadModule,
+            alias: {
+              'react-native': require.resolve('@tamagui/react-native-prebuilt'),
+            },
             bundle: true,
             packages: 'external',
             allowOverwrite: true,

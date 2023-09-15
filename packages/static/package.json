@@ -44,6 +44,7 @@
     "@tamagui/helpers": "1.65.0",
     "@tamagui/helpers-node": "1.65.0",
     "@tamagui/proxy-worm": "1.65.0",
+    "@tamagui/react-native-prebuilt": "^1.65.0",
     "@tamagui/shorthands": "1.65.0",
     "@tamagui/types": "1.65.0",
     "babel-literal-to-ast": "^2.1.0",
