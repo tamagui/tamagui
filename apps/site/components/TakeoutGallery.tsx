@@ -233,7 +233,7 @@ const ImageGallery = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="lazy"
           opacity={0.1}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -244,15 +244,15 @@ const ImageGallery = () => {
           elevate
           key="content"
           animation={[
-            'quick',
+            'medium',
             {
               opacity: {
                 overshootClamping: true,
               },
             },
           ]}
-          enterStyle={{ x: 0, opacity: 0 }}
-          exitStyle={{ x: 0, opacity: 0 }}
+          enterStyle={{ x: 0, y: -10, opacity: 0 }}
+          exitStyle={{ x: 0, y: 10, opacity: 0 }}
           space
         >
           <ImagesCarousel />

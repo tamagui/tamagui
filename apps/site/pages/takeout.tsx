@@ -1248,7 +1248,7 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="medium"
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -1267,8 +1267,8 @@ const PurchaseModal = ({ starter, iconsPack, fontsPack, coupon }: TakeoutPagePro
             },
           ]}
           // animateOnly={['transform']}
-          enterStyle={{ opacity: 0, scale: 0.975 }}
-          exitStyle={{ opacity: 0, scale: 0.975 }}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
           p={0}
@@ -2194,7 +2194,7 @@ const FaqModal = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="medium"
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -2212,8 +2212,8 @@ const FaqModal = () => {
               },
             },
           ]}
-          enterStyle={{ opacity: 0, scale: 0.975 }}
-          exitStyle={{ opacity: 0, scale: 0.975 }}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
         >
@@ -2378,7 +2378,7 @@ const AgreementModal = () => {
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
-          animation="quick"
+          animation="medium"
           className="blur-medium"
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
@@ -2396,8 +2396,8 @@ const AgreementModal = () => {
               },
             },
           ]}
-          enterStyle={{ opacity: 0, scale: 0.975 }}
-          exitStyle={{ opacity: 0, scale: 0.975 }}
+          enterStyle={{ y: -10, opacity: 0, scale: 0.975 }}
+          exitStyle={{ y: 10, opacity: 0, scale: 0.975 }}
           w="90%"
           maw={900}
         >
