@@ -9,9 +9,10 @@ export type MutateOneThemeProps = {
     name: string;
     theme: PartialTheme;
 };
+type Batch = boolean | string;
 export declare function mutateThemes({ themes, batch, insertCSS, ...props }: Omit<MutateThemeOptions, 'mutationType'> & {
     themes: MutateOneThemeProps[];
-    batch?: boolean;
+    batch?: Batch;
 }): {
     themes: Record<string, ThemeParsed>;
     themesRaw: Record<string, ThemeParsed>;
