@@ -524,12 +524,13 @@ export const getSplitStyles: StyleSplitter = (
       (isHOC && parentStaticConfig?.variants && keyInit in parentStaticConfig.variants) ||
       inlineProps?.has(keyInit)
 
+    const parentVariant = parentStaticConfig?.variants?.[keyInit]
     const isHOCShouldPassThrough = Boolean(
       isHOC &&
         (isShorthand ||
           isValidStyleKeyInit ||
           isMediaOrPseudo ||
-          parentStaticConfig?.variants?.[keyInit] ||
+          parentVariant ||
           keyInit in skipProps)
     )
 
@@ -582,8 +583,8 @@ export const getSplitStyles: StyleSplitter = (
       // if it's a variant here, we have a two layer variant...
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
       // which now has it's own unstyled + the child unstyled...
-      // so *don't* skip applying the styles, but also pass `unstyled` to children
-      if (!isVariant) {
+      // so *don't* skip applying the styles if its different from the parent one
+      if (!variants || !(keyInit in variants) || variants[keyInit] === parentVariant) {
         continue
       }
     }
