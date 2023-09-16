@@ -102,8 +102,8 @@ if (typeof document !== 'undefined') {
 
         document.addEventListener('keydown', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
+          clearTimeout(tm) // always clear so we dont trigger on chords
           if (key === options.key) {
-            clearTimeout(tm)
             tm = setTimeout(() => {
               isShowing = true
               debugKeyListeners?.forEach((l) => l(true))
@@ -534,7 +534,7 @@ export function createComponent<
               state.hover ? 'HOVERED ' : ''
             }${state.focus ? 'FOCUSED' : ' '}`
           )
-          
+
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log({
             propsIn,
@@ -551,7 +551,7 @@ export function createComponent<
             useAnimations,
             propsInOrder: Object.keys(propsIn),
             propsOrder: Object.keys(props),
-          });
+          })
           console.groupEnd()
         }
       }
@@ -643,9 +643,16 @@ export function createComponent<
 
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
-        
+
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-        console.log("props in", propsIn, "mapped to", props, "in order", Object.keys(props));
+        console.log(
+          'props in',
+          propsIn,
+          'mapped to',
+          props,
+          'in order',
+          Object.keys(props)
+        )
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
         // biome-ignore lint/suspicious/noConsoleLog: ok
@@ -1198,7 +1205,6 @@ export function createComponent<
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('children', content)
           if (typeof window !== 'undefined') {
-            
             // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log({
               viewProps,
@@ -1213,8 +1219,8 @@ export function createComponent<
               handlesPressEvents,
               willBeAnimated,
               isStringElement,
-              classNamesIn: props.className?.split(" "),
-              classNamesOut: viewProps.className?.split(" "),
+              classNamesIn: props.className?.split(' '),
+              classNamesOut: viewProps.className?.split(' '),
               events,
               shouldAttach,
               pseudos,
@@ -1228,7 +1234,7 @@ export function createComponent<
               elementType,
               initialState,
               classNames,
-            });
+            })
           }
         } catch {
           // RN can run into PayloadTooLargeError: request entity too large

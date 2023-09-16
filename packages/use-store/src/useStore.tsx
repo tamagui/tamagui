@@ -299,7 +299,8 @@ function useStoreFromInfo(
   const getSnapshot = useCallback(() => {
     if (!info || !store) return
     const curInternal = internal.current!
-    const keys = [...(!curInternal.tracked.size ? info.stateKeys : curInternal.tracked)]
+    const isTracking = curInternal.tracked.size
+    const keys = [...(!isTracking ? info.stateKeys : curInternal.tracked)]
     const nextKeys = `${info.version}${keys.join('')}${userSelector || ''}`
     const lastKeys = curInternal.lastKeys
 
@@ -323,10 +324,11 @@ function useStoreFromInfo(
 
     // this wasn't updating in AnimationsStore
     const isUnchanged =
-      typeof last !== 'undefined' &&
-      isEqualSubsetShallow(last, snap, {
-        keyComparators: info.keyComparators,
-      })
+      (!isTracking && last) ||
+      (typeof last !== 'undefined' &&
+        isEqualSubsetShallow(last, snap, {
+          keyComparators: info.keyComparators,
+        }))
 
     if (shouldPrintDebug) {
       // biome-ignore lint/suspicious/noConsoleLog: <explanation>
@@ -377,7 +379,7 @@ function useStoreFromInfo(
       if (info.stateKeys.has(keyString) || keyString in info.getters) {
         if (shouldPrintDebug) {
           // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-          console.log('tracking', keyString)
+          console.log('👀 tracking', keyString)
         }
         curInternal.tracked.add(keyString)
       }
