@@ -37,6 +37,7 @@
     "@tamagui/adapt": "1.65.4",
     "@tamagui/animate-presence": "1.65.4",
     "@tamagui/compose-refs": "1.65.4",
+    "@tamagui/remove-scroll": "1.65.4",
     "@tamagui/core": "1.65.4",
     "@tamagui/create-context": "1.65.4",
     "@tamagui/dismissable": "1.65.4",

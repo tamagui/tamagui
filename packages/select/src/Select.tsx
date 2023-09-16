@@ -8,7 +8,6 @@ import {
   getVariableValue,
   isWeb,
   styled,
-  useEvent,
   useGet,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -437,6 +436,7 @@ export const Select = withStaticProperties(
       value: valueProp,
       defaultValue,
       onValueChange,
+      disablePreventBodyScroll,
       size: sizeProp = '$true',
       dir,
     } = props
@@ -519,6 +519,7 @@ export const Select = withStaticProperties(
         >
           <SelectProvider
             scope={__scopeSelect}
+            disablePreventBodyScroll={disablePreventBodyScroll}
             dir={dir}
             blockSelection={false}
             fallback={false}

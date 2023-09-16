@@ -36,7 +36,13 @@ export function SelectDemoItem(props: SelectProps) {
   const [val, setVal] = useState('apple')
 
   return (
-    <Select id="food" value={val} onValueChange={setVal} {...props}>
+    <Select
+      id="food"
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      {...props}
+    >
       <Select.Trigger width={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
