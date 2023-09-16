@@ -463,9 +463,8 @@ export async function extractToClassNames({
       .trim()
       .padStart(24)
 
-    const numStyled = `${res.styled}`.padStart(3)
-    const numOptimized = `${res.optimized}`.padStart(3)
-    const numFound = `${res.found}`.padStart(3)
+    const numOptimized = `${res.optimized + res.styled}`.padStart(3)
+    const numFound = `${res.found + res.styled}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = memUsed ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
@@ -474,7 +473,7 @@ export async function extractToClassNames({
     const memStr = memory ? `(${memory})` : ''
     // rome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
-      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
+      `${pre} ${path}   ·  ${numFound} found   ·  ${numOptimized} opt   ·  ${numFlattened} flat  ${timingStr} ${memStr}`
     )
   }
 
