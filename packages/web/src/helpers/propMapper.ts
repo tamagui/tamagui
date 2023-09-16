@@ -379,12 +379,13 @@ export const getTokenForKey = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const fam = fontFamily || conf.defaultFont
+          const defaultFont = conf.defaultFont || '$body'
+          const fam = fontFamily || defaultFont
           if (fam) {
             const fontsParsed = context?.language
               ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
-            const font = fontsParsed[fam]
+            const font = fontsParsed[fam] || fontsParsed[defaultFont]
             valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }

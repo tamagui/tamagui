@@ -20,7 +20,7 @@ export function getVariantExtras(styleState: GetStyleState) {
     tokens: conf.tokensParsed,
     theme,
     fontFamily,
-    font: fonts[fontFamily],
+    font: fonts[fontFamily] || fonts[styleState.conf.defaultFont!],
     // TODO do this in splitstlye
     // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
     props: createProxy(curProps, {
