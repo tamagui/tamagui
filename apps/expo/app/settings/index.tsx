@@ -7,13 +7,13 @@ export default function Screen() {
   const { schedulePushNotification } = useNativeNotifications()
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['bottom', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
       <Stack.Screen
         options={{
-          title: 'Settings',
+          title: '',
         }}
       />
-      <SettingsScreen onHandleNotif={schedulePushNotification} />
+      <SettingsScreen schedulePushNotif={schedulePushNotification} />
     </SafeAreaView>
   )
 }

@@ -1,4 +1,4 @@
-import { H2, Paragraph, SubmitButton, Theme, YStack, isWeb } from '@my/ui'
+import { H2, Paragraph, SubmitButton, Theme, YStack, isWeb, useToastController } from '@my/ui'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import {
   add,
@@ -191,9 +191,18 @@ const ClimbScreenSchema = z.object({
 
 export const CreateScreen = () => {
   const router = useRouter()
+  const toast = useToastController()
   const climbMutation = api.climb.create.useMutation()
 
-  const form = useForm<z.infer<typeof ClimbScreenSchema>>()
+  const form = useForm<z.infer<typeof ClimbScreenSchema>>({
+    defaultValues: {
+      type: 'top_rope',
+      start: getTimeSelections(new Date(), 15)[0].value,
+      duration: getDurationSelections()?.[1]?.value,
+      location: 'gowanus',
+      day: getWeekDaySelections()?.[0]?.value,
+    },
+  })
   const day = useWatch<z.infer<typeof ClimbScreenSchema>>({
     control: form.control,
     name: 'day',
@@ -204,18 +213,14 @@ export const CreateScreen = () => {
       <SchemaForm
         form={form}
         onSubmit={(values) => {
+          toast.show('Sucess!', {
+            message: `Climb created`,
+          })
           climbMutation.mutate(values)
           router.push('/')
         }}
         schema={ClimbScreenSchema}
-        defaultValues={{
-          name: '',
-          // start: getTimeSelections(new Date(), 15)[0].value,
-          duration: getDurationSelections()?.[1]?.value,
-          location: 'gowanus',
-          type: 'top_rope',
-          day: getWeekDaySelections()?.[0]?.value,
-        }}
+        defaultValues={form.formState.defaultValues}
         props={{
           day: {
             options: getWeekDaySelections(),
@@ -239,14 +244,6 @@ export const CreateScreen = () => {
               {
                 name: 'Top Rope',
                 value: 'top_rope',
-              },
-              {
-                name: 'Lead Rope',
-                value: 'lead_rope',
-              },
-              {
-                name: 'Boulder',
-                value: 'boulder',
               },
             ],
           },

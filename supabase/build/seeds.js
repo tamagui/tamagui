@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var faker_1 = require("@faker-js/faker");
 var date_fns_1 = require("date-fns");
 var supabase_js_1 = require("@supabase/supabase-js");
-var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54321", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU");
+var supabaseInstance = (0, supabase_js_1.createClient)("http://localhost:54331", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0");
 function createClimbs(supabase, users, admin) {
     return __awaiter(this, void 0, void 0, function () {
         var usersClimbs, error;
@@ -60,7 +60,7 @@ function createClimbs(supabase, users, admin) {
                     }
                     usersClimbs = users.map(function (user) {
                         var _a;
-                        var climbs = Array.from({ length: 4 }).map(function (_, i) {
+                        var climbs = Array.from({ length: 2 }).map(function (_, i) {
                             var _a, _b, _c;
                             var start = (0, date_fns_1.add)(faker_1.faker.date.between({
                                 from: new Date(),
@@ -136,7 +136,6 @@ function createBenjamin(supabase) {
                         console.log(error);
                         return [2 /*return*/];
                     }
-                    console.log(data);
                     return [2 /*return*/, data];
             }
         });

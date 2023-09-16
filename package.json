@@ -29,7 +29,7 @@
     "storybook:ios": "yarn build && cd apps/storybook-rn && yarn ios",
     "storybook:android": "yarn build && cd apps/storybook-rn && yarn android",
     "chromatic": "yarn build && cd apps/storybook && yarn chromatic",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
+    "upgrade:tamagui": "yarn up '*tamagui*'  '@tamagui/*'  react-native-web-lite",
     "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary",
     "check-deps": "check-dependency-version-consistency .",
     "supa": "yarn workspace @my/supabase",

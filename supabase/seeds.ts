@@ -26,7 +26,7 @@ async function createClimbs(supabase: SupabaseClient<Database>, users: AuthRespo
   }
 
   const usersClimbs = users.map((user) => {
-    const climbs = Array.from({ length: 4 }).map((_, i) => {
+    const climbs = Array.from({ length: 2 }).map((_, i) => {
       const start = add(faker.date.between(
         {
           from: new Date(),

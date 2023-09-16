@@ -14,6 +14,7 @@ import {
   H5,
   isWeb,
   AddToCalendarButton,
+  useToastController,
 } from '@my/ui'
 import { api } from 'app/utils/api'
 import { add, format, intervalToDuration } from 'date-fns'
@@ -158,11 +159,12 @@ export function ClimbsTab() {
     setOpen(true)
   }, [])
   return (
-    <YStack ai="center" gap="$10" removeClippedSubviews={true}>
+    <YStack ai="center" gap="$10">
       <FlatList
-        // style={{
-        //   overflow: 'visible',
-        // }}
+        style={{
+          paddingTop: 20,
+          paddingBottom: 80,
+        }}
         data={climbsQuery.data}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
@@ -206,6 +208,7 @@ export const SheetDemo = ({
       break
     }
   }
+  const toast = useToastController()
   const reminderConfig = {
     name: `Climb with ${climb?.climber?.first_name ?? 'unknown climber'}`,
     description: climb?.name ?? '',
@@ -290,7 +293,9 @@ export const SheetDemo = ({
                     { climb_id: climb?.id ?? 0 },
                     {
                       onSuccess: () => {
-                        console.log('success')
+                        toast.show('You joined the climb!', {
+                          message: `You are climbing with ${climb?.climber.first_name}`,
+                        })
                         queryClient.setQueryData(
                           [['climb', 'read'], { type: 'query' }],
                           (climbs: ListClimb[] | undefined) => {

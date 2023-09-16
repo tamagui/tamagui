@@ -8,7 +8,7 @@ export default function Screen() {
     <SafeAreaView style={{ flex: 1 }} edges={['bottom', 'left', 'right']}>
       <Stack.Screen
         options={{
-          title: 'New Project',
+          title: 'Create Climb',
         }}
       />
       <CreateScreen />
