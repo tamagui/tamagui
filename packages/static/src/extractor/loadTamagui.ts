@@ -56,6 +56,7 @@ export async function loadTamagui(
   // this depends on the config so run it after
   if (bundleInfo) {
     const { createTamagui } = requireTamaguiCore(props.platform)
+
     // init config
     const config = createTamagui(bundleInfo.tamaguiConfig) as any
 

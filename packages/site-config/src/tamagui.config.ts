@@ -5,7 +5,7 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { tokens } from '@tamagui/themes/v2'
 import { themes as themesIn } from '@tamagui/themes/v2-themes'
-import { CreateTamaguiProps } from '@tamagui/web'
+import { CreateTamaguiProps, setupDev } from '@tamagui/web'
 
 import { animations } from './animations.reanimated'
 import { createGenericFont } from './createGenericFont'
@@ -15,6 +15,10 @@ export { animations } from './animations.reanimated'
 
 export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()
+
+setupDev({
+  visualizer: true,
+})
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(

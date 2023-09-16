@@ -4,7 +4,7 @@ import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
@@ -74,6 +74,11 @@ export const studio = async (
       },
       plugins: [
         tamaguiPlugin({
+          components: ['tamagui'],
+        }),
+        tamaguiExtractPlugin({
+          config: './src/tamagui.config.ts',
+          disableExtraction: true,
           components: ['tamagui'],
         }),
         viteReactPlugin({

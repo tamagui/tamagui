@@ -12,7 +12,7 @@ export * from './styled';
 export * from './setupReactNative';
 export * from './types';
 export * from './interfaces/GetRef';
-export { getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, } from './config';
+export { setupDev, getConfig, getThemes, getTokens, updateConfig, getToken, getTokenValue, } from './config';
 export * from './constants/constants';
 export * from './contexts/ComponentContext';
 export * from './helpers/createStyledContext';

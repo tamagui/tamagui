@@ -17,7 +17,7 @@ import React, {
   useState,
 } from 'react'
 
-import { getConfig, onConfiguredOnce } from './config'
+import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
 import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
@@ -73,6 +73,9 @@ let AnimatedView: any
 let initialTheme: any
 let time: any
 
+let debugKeyListeners: Set<Function> | undefined
+let startVisualizer: Function | undefined
+
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
   const cancelTouches = () => {
@@ -82,6 +85,44 @@ if (typeof document !== 'undefined') {
   addEventListener('mouseup', cancelTouches)
   addEventListener('touchend', cancelTouches)
   addEventListener('touchcancel', cancelTouches)
+
+  // hold option to see debug visualization
+  if (process.env.NODE_ENV === 'development') {
+    startVisualizer = () => {
+      const devVisualizerConfig = devConfig?.visualizer
+      if (devVisualizerConfig) {
+        debugKeyListeners = new Set()
+        let tm
+        let isShowing = false
+        const options = {
+          key: 'Alt',
+          delay: 800,
+          ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
+        }
+
+        document.addEventListener('keydown', ({ key, defaultPrevented }) => {
+          if (defaultPrevented) return
+          if (key === options.key) {
+            clearTimeout(tm)
+            tm = setTimeout(() => {
+              isShowing = true
+              debugKeyListeners?.forEach((l) => l(true))
+            }, options.delay)
+          }
+        })
+
+        document.addEventListener('keyup', ({ key, defaultPrevented }) => {
+          if (defaultPrevented) return
+          if (key === options.key) {
+            clearTimeout(tm)
+            if (isShowing) {
+              debugKeyListeners?.forEach((l) => l(false))
+            }
+          }
+        })
+      }
+    }
+  }
 }
 
 /**
@@ -143,6 +184,13 @@ export function createComponent<
   }
 
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    if (process.env.NODE_ENV === 'development') {
+      if (startVisualizer) {
+        startVisualizer()
+        startVisualizer = undefined
+      }
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {
@@ -215,6 +263,55 @@ export function createComponent<
 
     const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
+
+    if (process.env.NODE_ENV === 'development' && isClient) {
+      useEffect(() => {
+        let overlay: HTMLSpanElement | null = null
+
+        const debugVisualizerHandler = (show = false) => {
+          const node = hostRef.current as HTMLElement
+          if (!node) return
+
+          if (show) {
+            overlay = document.createElement('span')
+            overlay.style.inset = '0px'
+            overlay.style.zIndex = '1000000'
+            overlay.style.position = 'absolute'
+            overlay.style.borderColor = 'red'
+            overlay.style.borderWidth = '1px'
+            overlay.style.borderStyle = 'dotted'
+
+            const dataAt = node.getAttribute('data-at') || ''
+            const dataIn = node.getAttribute('data-in') || ''
+
+            const tooltip = document.createElement('span')
+            tooltip.style.position = 'absolute'
+            tooltip.style.top = '0px'
+            tooltip.style.left = '0px'
+            tooltip.style.padding = '3px'
+            tooltip.style.background = 'rgba(0,0,0,0.75)'
+            tooltip.style.color = 'rgba(255,255,255,1)'
+            tooltip.style.fontSize = '12px'
+            tooltip.style.lineHeight = '12px'
+            tooltip.style.fontFamily = 'monospace'
+            tooltip.style['webkitFontSmoothing'] = 'none'
+            tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
+
+            overlay.appendChild(tooltip)
+            node.appendChild(overlay)
+          } else {
+            if (overlay) {
+              node.removeChild(overlay)
+            }
+          }
+        }
+        debugKeyListeners ||= new Set()
+        debugKeyListeners.add(debugVisualizerHandler)
+        return () => {
+          debugKeyListeners?.delete(debugVisualizerHandler)
+        }
+      }, [componentName])
+    }
 
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&

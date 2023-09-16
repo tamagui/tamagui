@@ -15,6 +15,7 @@ export * from './types'
 export * from './interfaces/GetRef'
 
 export {
+  setupDev,
   getConfig,
   getThemes,
   getTokens,

@@ -46,4 +46,13 @@ export declare const configListeners: Set<ConfigListener>;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare const updateConfig: (key: string, value: any) => void;
 export declare const getFont: (name: string) => import("./types").GenericFont<string | number | symbol>;
+type DevConfig = {
+    visualizer?: boolean | {
+        key?: string;
+        delay?: number;
+    };
+};
+export declare let devConfig: DevConfig | undefined;
+export declare function setupDev(conf: DevConfig): void;
+export {};
 //# sourceMappingURL=config.d.ts.map

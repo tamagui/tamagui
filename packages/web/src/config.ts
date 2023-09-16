@@ -108,3 +108,20 @@ export const getFont = (name: string) => {
     )?.[1]
   )
 }
+
+type DevConfig = {
+  visualizer?:
+    | boolean
+    | {
+        key?: string
+        delay?: number
+      }
+}
+
+export let devConfig: DevConfig | undefined
+
+export function setupDev(conf: DevConfig) {
+  if (process.env.NODE_ENV === 'development') {
+    devConfig = conf
+  }
+}
