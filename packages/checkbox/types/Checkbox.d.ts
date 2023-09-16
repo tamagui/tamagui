@@ -61,6 +61,10 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
+    /**
+     *
+     * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
+     */
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
@@ -354,6 +358,10 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
+        /**
+         *
+         * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
+         */
         readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;

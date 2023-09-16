@@ -584,7 +584,7 @@ export const getSplitStyles: StyleSplitter = (
       // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
       // which now has it's own unstyled + the child unstyled...
       // so *don't* skip applying the styles if its different from the parent one
-      if (!variants || !(keyInit in variants) || variants[keyInit] === parentVariant) {
+      if (!isVariant) {
         continue
       }
     }

@@ -110,10 +110,9 @@ export function styled<
             ...parentStaticConfig.defaultProps,
             ...defaultProps,
           }
-        }
-
-        if (parentStaticConfig.variants) {
-          variants = mergeVariants(parentStaticConfig.variants, variants)
+          if (parentStaticConfig.variants) {
+            variants = mergeVariants(parentStaticConfig.variants, variants)
+          }
         }
       }
 

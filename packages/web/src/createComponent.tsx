@@ -1178,6 +1178,7 @@ export function createComponent<
       ...extended,
       neverFlatten: true,
       isHOC: true,
+      isStyledHOC: false,
     }
   }
 
