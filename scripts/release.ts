@@ -61,7 +61,7 @@ const nextVersion = (() => {
 })()
 
 const sleep = (ms) => {
-  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`Sleeping ${ms}ms`)
   return new Promise((res) => setTimeout(res, ms))
 }
@@ -124,7 +124,7 @@ async function run() {
         return -1
       })
 
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`Publishing in order:\n\n${packageJsons.map((x) => x.name).join('\n')}`)
 
     async function checkDistDirs() {
@@ -158,7 +158,7 @@ async function run() {
 
     version = answer.version
 
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('install and build')
 
     if (!rePublish) {
@@ -170,7 +170,7 @@ async function run() {
       await checkDistDirs()
     }
 
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('run checks')
 
     if (!finish) {
@@ -217,7 +217,7 @@ async function run() {
     }
 
     if (!finish && dryRun) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`Dry run, exiting before publish`)
       return
     }
@@ -247,7 +247,7 @@ async function run() {
         packageJsons,
         async (pkg) => {
           const { cwd, name } = pkg
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`Publish ${name}`)
 
           // check if already published first as its way faster for re-runs
@@ -294,7 +294,7 @@ async function run() {
         }
       )
 
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(
         `✅ Published under dist-tag "prepub" (${erroredPackages.length} errors)\n`
       )
@@ -350,7 +350,7 @@ async function run() {
       )
     }
 
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`✅ Published\n`)
 
     // then git tag, commit, push
@@ -384,7 +384,7 @@ async function run() {
 
       await spawnify(`git push origin head`)
       await spawnify(`git push origin ${gitTag}`)
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`✅ Pushed and versioned\n`)
     }
 
@@ -404,10 +404,10 @@ async function run() {
     //   }
     // )
 
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`✅ Done\n`)
   } catch (err) {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('\nError:\n', err)
     process.exit(1)
   }

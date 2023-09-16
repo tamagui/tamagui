@@ -9,13 +9,13 @@ export async function copyTamaguiPackages(dir: string) {
   const tamaguiModulesDir = join(modulesDir, '@tamagui')
   await fs.remove(tamaguiModulesDir)
 
-  // rome-ignore lint/suspicious/noConsoleLog: ok
+  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.log(
     `Copying in tamagui local modules from ${PACKAGES_ROOT} to ${tamaguiModulesDir}`
   )
   await fs.copy(PACKAGES_ROOT, tamaguiModulesDir)
 
-  // rome-ignore lint/suspicious/noConsoleLog: ok
+  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Copying extra "support" packages`)
   await fs.copy(modulesDir, tamaguiModulesDir, {
     errorOnExist: false,

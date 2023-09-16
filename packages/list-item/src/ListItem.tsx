@@ -245,7 +245,7 @@ export const useListItem = (
             </>
           ) : null}
           {/* helper for common title/subtitle pttern */}
-          {/* rome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
+          {/* biome-ignore lint/complexity/noExtraBooleanCast: <explanation> */}
           {Boolean(title || subTitle) ? (
             <YStack flex={1}>
               {noTextWrap === 'all' ? title : <Title size={size}>{title}</Title>}

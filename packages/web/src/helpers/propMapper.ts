@@ -101,7 +101,7 @@ const resolveVariants: StyleResolver = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log({
       key,
       value,
@@ -134,7 +134,7 @@ const resolveVariants: StyleResolver = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('   expanded functional variant', key)
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log({ fn, variantValue, extras })
       console.groupEnd()
     }
@@ -151,7 +151,7 @@ const resolveVariants: StyleResolver = (
       styleState.fontFamily = fontFamilyResult
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`   updating font family`, fontFamilyResult)
       }
     }
@@ -220,7 +220,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   const res = {}
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`   - resolveTokensAndVariants`, key, value)
   }
 
@@ -278,7 +278,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const subObject = resolveTokensAndVariants(fKey, val, styleProps, styleState, key)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`object`, fKey, subObject)
       }
 
@@ -356,7 +356,7 @@ export const getTokenForKey = (
   let hasSet = false
   if (theme && value in theme) {
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(` - getting theme value for ${key} from ${value}`)
     }
     valOrVar = theme[value]
@@ -422,7 +422,7 @@ export const getTokenForKey = (
     styleState.debug === 'verbose'
   ) {
     console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    // rome-ignore lint/suspicious/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
     console.groupEnd()
   }

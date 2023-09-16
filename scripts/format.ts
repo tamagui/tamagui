@@ -18,7 +18,7 @@ async function format() {
     location: string
   }[]
 
-  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(` formatting: ${packagePaths.map((x) => x.name).join('\n')}`)
 
   const configPath = join(__dirname, '..', '.prettierrc')
@@ -40,7 +40,7 @@ async function format() {
       }
 
       try {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`Prettying: ${cwd}`)
         await spawnify(
           `prettier --ignore-path ${ignorePath} --config ${configPath} --write src/**/*.{ts,tsx}`,
@@ -49,7 +49,7 @@ async function format() {
           }
         )
       } catch (err) {
-        // rome-ignore lint/suspicious/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(`err`, location, err)
       }
     },

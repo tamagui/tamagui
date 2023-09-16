@@ -278,7 +278,7 @@ export function createExtractor(
         console.error(
           `⛔️ Error: Missing "themes" in your tamagui.config file, this may be due to duplicated dependency versions. Try out https://github.com/bmish/check-dependency-version-consistency to see if there are mis-matches, or search your lockfile.`
         )
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`  Got config:`, tamaguiConfig)
         process.exit(0)
       }
@@ -289,9 +289,9 @@ export function createExtractor(
 
     if (!firstTheme || typeof firstTheme !== 'object') {
       console.error(`Missing theme, an error occurred when importing your config`)
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`Got config:`, tamaguiConfig)
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`Looking for theme:`, firstThemeName)
       process.exit(0)
     }
@@ -318,7 +318,7 @@ export function createExtractor(
           `Warning: Tamagui didn't find any valid components (DEBUG=tamagui for more)`
         )
         if (process.env.DEBUG === 'tamagui') {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`components`, Object.keys(components || []), components)
         }
       }
@@ -772,7 +772,7 @@ export function createExtractor(
 
         if (shouldDisableExtraction) {
           if (shouldPrintDebug === 'verbose') {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(` Extraction disabled`)
           }
           return
@@ -800,7 +800,7 @@ export function createExtractor(
             })
 
           if (shouldPrintDebug === 'verbose') {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(` Start tag ${tagName}`)
           }
 
@@ -2037,7 +2037,7 @@ export function createExtractor(
           for (const attr of attrs) {
             try {
               if (shouldPrintDebug) {
-                // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                 console.log(`  Processing ${attr.type}:`)
               }
 

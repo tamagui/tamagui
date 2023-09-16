@@ -325,8 +325,8 @@ function useStoreFromInfo(
       })
 
     if (shouldPrintDebug) {
-      // prettier-ignore
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('🌑 getSnapshot', { storeState: selectKeys(store, Object.keys(store)), userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
     }
 
@@ -361,7 +361,7 @@ function useStoreFromInfo(
 
       if (info.stateKeys.has(keyString) || keyString in info.getters) {
         if (shouldPrintDebug) {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('tracking', keyString)
         }
         curInternal.tracked.add(keyString)
@@ -406,7 +406,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
         return Reflect.apply(actionFn, proxiedStore, args)
       }
       if (process.env.NODE_ENV === 'development' && shouldDebug) {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('(debug) startAction', key)
       }
       res = Reflect.apply(actionFn, proxiedStore, args)
@@ -486,9 +486,9 @@ function createProxiedStore(storeInfo: StoreInfo) {
                     if (head) {
                       console.groupCollapsed(...head)
                       console.groupCollapsed('...')
-                      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                       console.log('args', args)
-                      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                       console.log('response', res)
                       console.groupCollapsed('trace')
                       console.trace()
@@ -496,12 +496,12 @@ function createProxiedStore(storeInfo: StoreInfo) {
                       console.groupEnd()
                       for (const [name, ...log] of rest) {
                         console.groupCollapsed(name)
-                        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                         console.log(...log)
                         console.groupEnd()
                       }
                     } else {
-                      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                       console.log('Weird log', head, ...rest)
                     }
                   }
@@ -517,7 +517,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
                 logStack.clear()
               }
 
-              // rome-ignore lint/correctness/noUnsafeFinally: ok
+              // biome-ignore lint/correctness/noUnsafeFinally: ok
               return res
             }
           },
@@ -540,7 +540,7 @@ function createProxiedStore(storeInfo: StoreInfo) {
 
   const finishAction = (val?: any) => {
     if (process.env.NODE_ENV === 'development' && shouldDebug) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('(debug) finishAction', { didSet })
     }
     if (didSet) {
@@ -630,12 +630,12 @@ function createProxiedStore(storeInfo: StoreInfo) {
         if (shouldDebug) {
           setters.add({ key, value })
           if (getShouldDebug(storeInfo)) {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log('(debug) SET', res, key, value)
           }
         }
         if (process.env.NODE_ENV === 'development' && shouldDebug) {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('SET...', { key, value })
         }
 

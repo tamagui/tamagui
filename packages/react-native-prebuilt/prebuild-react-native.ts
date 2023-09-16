@@ -22,7 +22,7 @@ async function nativeBabelFlowTransform(input: string) {
 }
 
 async function run() {
-  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`Prebuilding React Native (one time cost...)`)
 
   const outPath = './dist/react-native.js'

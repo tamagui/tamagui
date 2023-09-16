@@ -292,7 +292,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // rome-ignore lint/suspicious/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {

@@ -9,8 +9,8 @@ import { cwd } from 'process'
 
 import chalk from 'chalk'
 import Commander from 'commander'
-import { $, cd } from 'zx'
 import { detect } from 'detect-package-manager'
+import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
 import { IS_TEST } from './create-tamagui-constants'
@@ -25,7 +25,7 @@ import { validateNpmName } from './helpers/validateNpmPackage'
 let projectPath = ''
 
 if (IS_TEST) {
-  // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 

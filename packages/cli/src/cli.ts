@@ -272,7 +272,7 @@ function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) 
 //     default: {
 //       if (!command || flags['--help']) {
 //       }
-//       // rome-ignore lint/suspicious/noConsoleLog: ok
+//       // biome-ignore lint/suspicious/noConsoleLog: ok
 //       console.warn(chalk.yellow(`No command found ${command}`))
 //       process.exit(1)
 //     }

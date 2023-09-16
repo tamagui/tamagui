@@ -17,7 +17,7 @@
     "subset": "node -r esbuild-register subset.ts",
     "watch": "tamagui-build --watch",
     "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --apply src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },

@@ -4,7 +4,7 @@ import type {
   NavigationState,
   PartialState,
 } from '@react-navigation/routers'
-import escape from 'escape-string-regexp'
+import escapeString from 'escape-string-regexp'
 import * as queryString from 'query-string'
 import URL from 'url-parse'
 
@@ -117,8 +117,9 @@ export function getMatchableRouteConfigs<ParamList extends object>(
   }
 
   // Create a normalized configs array which will be easier to use.
-  const converted = Object.keys(screens)
-    .flatMap((key) => createNormalizedConfigs(key, screens, [], initialRoutes))
+  const converted = Object.keys(screens).flatMap((key) =>
+    createNormalizedConfigs(key, screens, [], initialRoutes)
+  )
 
   const resolvedInitialPatterns = initialRoutes.map((route) =>
     joinPaths(...route.parentScreens, route.initialRouteName)
@@ -581,10 +582,10 @@ function formatRegexPattern(it: string): string {
     // Groups are optional segments
     // this enables us to match `/bar` and `/(foo)/bar` for the same route
     // NOTE(EvanBacon): Ignore this match in the regex to avoid capturing the group
-    return `(?:${escape(it)}\\/)?`
+    return `(?:${escapeString(it)}\\/)?`
   }
 
-  return escape(it) + `\\/`
+  return escapeString(it) + `\\/`
 }
 
 const createConfigItem = (

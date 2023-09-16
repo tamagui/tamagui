@@ -23,7 +23,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
 
   process.on('uncaughtException', (err) => {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err?.message || err)
   })
 
@@ -144,7 +144,7 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(`Error processing hmr update:`, err)
           }
         },
@@ -179,7 +179,7 @@ export const dev = async (options: CLIResolvedOptions) => {
       void server.transformRequest(id)
     } catch (err) {
       // ok
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('err', err)
     }
   })
@@ -197,7 +197,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  // rome-ignore lint/suspicious/noConsoleLog: ok
+  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 
@@ -212,7 +212,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     // for easier quick testing things:
     const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
     if (await pathExists(tmpBundle)) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(
         '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
         tmpBundle

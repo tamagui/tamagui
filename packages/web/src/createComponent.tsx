@@ -152,7 +152,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log('Warning: Missing theme')
           }
         }
@@ -174,7 +174,7 @@ export function createComponent<
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
@@ -534,8 +534,8 @@ export function createComponent<
               state.hover ? 'HOVERED ' : ''
             }${state.focus ? 'FOCUSED' : ' '}`
           )
-          // prettier-ignore
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log({
             propsIn,
             props,
@@ -643,22 +643,22 @@ export function createComponent<
 
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
-        // prettier-ignore
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log("props in", propsIn, "mapped to", props, "in order", Object.keys(props));
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
-        // rome-ignore lint/suspicious/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        // rome-ignore lint/suspicious/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
         if (debugProp === 'break') {
-          // rome-ignore lint/suspicious/noDebugger: ok
+          // biome-ignore lint/suspicious/noDebugger: ok
           debugger
         }
       }
@@ -1050,7 +1050,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`events`, { events, isHoverable, attachPress })
     }
 
@@ -1187,19 +1187,19 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         try {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('viewProps', viewProps)
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('viewPropsOrder', Object.keys(viewProps))
           for (const key in viewProps) {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(' - ', key, viewProps[key])
           }
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('children', content)
           if (typeof window !== 'undefined') {
-            // prettier-ignore
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log({
               viewProps,
               state,
@@ -1464,7 +1464,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`  Spaced children`, final, props)
     }
   }

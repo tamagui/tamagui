@@ -230,7 +230,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
-              // rome-ignore lint/suspicious/noConsoleLog: ok
+              // biome-ignore lint/suspicious/noConsoleLog: ok
               console.log('END no styles')
             }
             return
@@ -250,9 +250,9 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
-            // rome-ignore lint/suspicious/noConsoleLog: ok
+            // biome-ignore lint/suspicious/noConsoleLog: ok
             console.log('\n -------- output code ------- \n')
-            // rome-ignore lint/suspicious/noConsoleLog: ok
+            // biome-ignore lint/suspicious/noConsoleLog: ok
             console.log(
               generator(root.parent)
                 .code.split('\n')

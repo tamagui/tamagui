@@ -109,7 +109,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`Building config entry`, configEntry)
     }
 
@@ -170,7 +170,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     try {
       out = require(configOutPath)
     } catch (err) {
-      // rome-ignore lint/complexity/noUselessCatch: <explanation>
+      // biome-ignore lint/complexity/noUselessCatch: <explanation>
       throw err
     } finally {
       unregister()
@@ -225,7 +225,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       process.env.NODE_ENV === 'development' &&
       process.env.DEBUG?.startsWith('tamagui')
     ) {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('Loaded components', components)
     }
 
@@ -312,7 +312,7 @@ export function loadComponents(
         }
 
         if (process.env.DEBUG === 'tamagui') {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`loadModule`, loadModule, require.resolve(loadModule))
         }
 
@@ -344,12 +344,12 @@ export function loadComponents(
         didBabel = true
         return res
       } catch (err) {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('babel err', err, writtenContents)
         // ok
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`Error parsing babel likely`, err)
         }
       } finally {
@@ -362,15 +362,15 @@ export function loadComponents(
         })
       } catch (err) {
         if (process.env.TAMAGUI_ENABLE_WARN_DYNAMIC_LOAD) {
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`
 
 Tamagui attempted but failed to dynamically optimize components in:
   ${name}
 `)
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(err)
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(
             `At: ${loadModule}`,
             `\ndidBabel: ${didBabel}`,
@@ -388,7 +388,7 @@ Tamagui attempted but failed to dynamically optimize components in:
     cacheComponents[key] = info
     return info
   } catch (err: any) {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`Tamagui error bundling components`, err.message, err.stack)
     return null
   } finally {

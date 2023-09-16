@@ -28,7 +28,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --apply src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "check": "yarn check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },

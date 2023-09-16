@@ -20,7 +20,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "lint": "../../node_modules/.bin/biome check src",
-    "lint:fix": "../../node_modules/.bin/biome check --apply src"
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src"
   },
   "exports": {
     "./package.json": "./package.json",

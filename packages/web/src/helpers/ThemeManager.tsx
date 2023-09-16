@@ -237,7 +237,7 @@ function getState(
 
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log({
       props,
       parentName,
@@ -293,7 +293,7 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(' - ', { found, potentials, parentManager })
     }
 

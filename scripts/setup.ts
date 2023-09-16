@@ -2,7 +2,7 @@ import * as proc from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import { readJSON, readlink } from 'fs-extra'
+import { readlink } from 'fs-extra'
 
 import { spawnify } from './spawnify'
 
@@ -25,6 +25,11 @@ async function setup() {
 
   await Promise.all(
     packagePaths.map(async ({ location, name }) => {
+      if (name === 'tamagui-monorepo') {
+        // avoid monorepo itself
+        return
+      }
+
       const cwd = join(process.cwd(), location)
       await Promise.all([
         // // add react-native exports
@@ -60,21 +65,21 @@ async function setup() {
         //   pkgJson.exports['.'] = next
         // },
         // ensure rome.json
-        async () => {
-          const romeConfig = join(cwd, 'rome.json')
+        (async () => {
+          const biomeConfig = join(cwd, 'biome.json')
 
           try {
-            await readlink(romeConfig)
+            await readlink(biomeConfig)
           } catch (err) {
             if (`${err}`.includes(`no such file or directory`)) {
-              // rome-ignore lint/suspicious/noConsoleLog: ok
+              // biome-ignore lint/suspicious/noConsoleLog: ok
               console.log(`No rome.json found for ${name}, linking from monorepo root`)
-              await spawnify(`ln -s ../../rome.json ./rome.json`, {
+              await spawnify(`ln -s ../../biome.json ./biome.json`, {
                 cwd,
               })
             }
           }
-        },
+        })(),
       ])
     })
   )

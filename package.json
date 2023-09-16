@@ -37,7 +37,7 @@
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lint:fix": "ultra -r --no-pretty lint:fix",
-    "lint": "retry -n 4 -t 4000 -- ultra -r --no-pretty lint",
+    "lint": "ultra -r --no-pretty lint",
     "postinstall": "manypkg check && yarn git-crypt-unlock",
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
@@ -91,7 +91,7 @@
     }
   },
   "dependencies": {
-    "@biomejs/biome": "^1.0.0",
+    "@biomejs/biome": "^1.2.2",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.3.1",
     "@vercel/og": "^0.5.8",
@@ -102,7 +102,6 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "retry-cli": "^0.7.0",
     "turbo": "^1.10.13",
     "typescript": "^5.2.2",
     "ultra-runner": "^3.10.5"

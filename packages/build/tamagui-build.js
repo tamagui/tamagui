@@ -152,7 +152,7 @@ async function buildTsc() {
     console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err.message)
     if (!shouldWatch) {
       process.exit(1)
@@ -362,7 +362,7 @@ async function buildJs() {
         )
       : null,
   ]).then(() => {
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
   })
 }

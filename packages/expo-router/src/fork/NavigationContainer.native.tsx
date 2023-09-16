@@ -25,14 +25,6 @@ import * as React from 'react'
 
 import useLinking from './useLinking'
 
-declare global {
-  // eslint-disable-next-line no-var
-  var REACT_NAVIGATION_DEVTOOLS: WeakMap<
-    NavigationContainerRef<any>,
-    { readonly linking: LinkingOptions<any> }
-  >
-}
-
 global.REACT_NAVIGATION_DEVTOOLS = new WeakMap()
 
 type Props<ParamList extends object> = NavigationContainerProps & {
@@ -90,7 +82,7 @@ function NavigationContainerInner(
   // This will be used by the devtools
   React.useEffect(() => {
     if (refContainer.current) {
-      REACT_NAVIGATION_DEVTOOLS.set(refContainer.current, {
+      global.REACT_NAVIGATION_DEVTOOLS.set(refContainer.current, {
         get linking() {
           return {
             ...linking,

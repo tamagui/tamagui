@@ -31,7 +31,7 @@ function colorString(color, string) {
 }
 
 function colorLog(color, ...args) {
-  // rome-ignore lint/suspicious/noConsoleLog: ok
+  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.log(...args.map((it) => (typeof it === 'string' ? colorString(color, it) : it)))
 }
 

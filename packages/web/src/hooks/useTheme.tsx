@@ -78,7 +78,7 @@ export const useThemeWithState = (
             props.debug &&
             props.debug !== 'profile'
           ) {
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(`  🎨 useTheme() shouldUpdate?`, next, {
               shouldUpdateProp: props.shouldUpdate?.(),
               keys: [...keys.current],
@@ -109,7 +109,7 @@ export const useThemeWithState = (
 
   if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
     console.groupCollapsed('  🔹 useTheme =>', name)
-    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log('returning state', changedThemeState, 'from props', props)
     console.groupEnd()
   }
@@ -161,7 +161,7 @@ export function getThemeProxied(
                 ) {
                   keys.push(keyString)
                   if (process.env.NODE_ENV === 'development' && debug) {
-                    // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                     console.log(` 🎨 useTheme() tracking new key: ${keyString}`)
                   }
                 }
@@ -269,8 +269,8 @@ export const useChangeThemeEffect = (
         const doUpdate = force ?? Boolean(keys?.length || isNewTheme)
 
         if (process.env.NODE_ENV === 'development' && props.debug) {
-          // prettier-ignore
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(` 🔸 onChange`, themeManager.id, {
             force,
             doUpdate,
@@ -415,7 +415,7 @@ export const useChangeThemeEffect = (
       const parentState = { ...parentManager?.state }
       const parentId = parentManager?.id
       const themeManagerState = { ...themeManager.state }
-      // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log({
         props,
         parentState,

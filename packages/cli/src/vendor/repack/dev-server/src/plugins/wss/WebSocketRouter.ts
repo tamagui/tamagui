@@ -34,7 +34,7 @@ export class WebSocketRouter {
 
         if (pathname === '/inspector/device') {
           // ignore
-          // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           // socket.destroy()
           return
         }
@@ -42,7 +42,7 @@ export class WebSocketRouter {
         for (const server of this.servers) {
           if (server.shouldUpgrade(pathname)) {
             matched = true
-            // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             server.upgrade(request, socket, head)
             break
           }

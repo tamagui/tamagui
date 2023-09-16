@@ -166,7 +166,7 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
       }
 
       if (process.env.DEBUG) {
-        // rome-ignore lint/suspicious/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('config..', config)
       }
 
