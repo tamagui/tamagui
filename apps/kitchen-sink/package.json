@@ -45,7 +45,6 @@
     "@tamagui/shorthands": "1.65.4",
     "@tamagui/themes": "1.65.4",
     "@tamagui/web": "1.65.4",
-    "tamagui": "1.65.4",
     "burnt": "^0.11.0",
     "expo": "^49.0.5",
     "expo-dev-client": "~2.4.6",
@@ -65,7 +64,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "^13.9.0",
     "react-native-web": "^0.19.6",
-    "solito": "^4.0.0-alpha.4"
+    "solito": "^4.0.0-alpha.4",
+    "tamagui": "1.65.4"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
