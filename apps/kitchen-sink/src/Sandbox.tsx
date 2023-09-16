@@ -1,31 +1,28 @@
 // import './wdyr'
 
-import {
-  SpecificTokens,
-  SpecificTokensSpecial,
-  Stack,
-  StackStyleProps,
-  StackStylePropsBase,
-  TamaguiSettings,
-  Token,
-  Tokens,
-  styled,
-} from '@tamagui/web'
+import { Stack, styled } from '@tamagui/web'
+import { Anchor, SizableText } from 'tamagui'
 
-type asdasd = TamaguiSettings extends { autocompleteSpecificTokens: any } ? 'abc' : 'bce'
-type x = StackStylePropsBase['margin']
-type z = StackStyleProps['margin']
-type zzz = Tokens['space']
-
-const y = <Stack m={0} />
+const X = styled(SizableText, {
+  size: '$10',
+})
 
 const ChangeWeight = styled(Stack, {
   backgroundColor: 'red',
 })
 
+export const MyAnchor = styled(Anchor, {
+  name: 'Link',
+  cursor: 'pointer',
+  fontWeight: '700',
+  textDecorationLine: 'underline',
+})
+
 export const Sandbox = () => {
   return (
     <>
+      {/* <X size="$4">hello</X> */}
+      <MyAnchor size="$5">hi?</MyAnchor>
       <ChangeWeight />
     </>
   )

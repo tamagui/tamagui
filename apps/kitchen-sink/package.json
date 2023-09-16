@@ -45,6 +45,7 @@
     "@tamagui/shorthands": "1.65.4",
     "@tamagui/themes": "1.65.4",
     "@tamagui/web": "1.65.4",
+    "tamagui": "1.65.4",
     "burnt": "^0.11.0",
     "expo": "^49.0.5",
     "expo-dev-client": "~2.4.6",

@@ -434,11 +434,11 @@ export declare function useInputProps(props: InputProps, ref: any): {
     } | undefined;
     inputAccessoryViewID?: string | undefined;
     value?: string | undefined;
-    clearButtonMode?: "never" | "while-editing" | "unless-editing" | "always" | undefined;
+    clearButtonMode?: "always" | "never" | "while-editing" | "unless-editing" | undefined;
     clearTextOnFocus?: boolean | undefined;
     dataDetectorTypes?: import("react-native").DataDetectorTypes | import("react-native").DataDetectorTypes[] | undefined;
     enablesReturnKeyAutomatically?: boolean | undefined;
-    keyboardAppearance?: "default" | "light" | "dark" | undefined;
+    keyboardAppearance?: "default" | "dark" | "light" | undefined;
     passwordRules?: string | null | undefined;
     rejectResponderTermination?: boolean | null | undefined;
     selectionState?: import("react-native").DocumentSelectionState | undefined;
