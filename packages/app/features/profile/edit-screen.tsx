@@ -6,6 +6,7 @@ import { useUser } from 'app/utils/useUser'
 import { createParam } from 'solito'
 import { SolitoImage } from 'solito/image'
 import { useRouter } from 'solito/router'
+import { api } from '../../utils/api'
 import { z } from 'zod'
 import { UploadAvatar } from '../settings/components/upload-avatar'
 
@@ -28,29 +29,28 @@ const ProfileSchema = z.object({
 
 const EditProfileForm = ({
   initial,
-  userId,
 }: {
   initial: { name: string | null; about: string | null }
   userId: string
 }) => {
   const { params } = useParams()
-  const supabase = useSupabase()
   const toast = useToastController()
   const queryClient = useQueryClient()
   const router = useRouter()
-  const mutation = useMutation({
-    async mutationFn(data: z.infer<typeof ProfileSchema>) {
-      await supabase
-        .from('profiles')
-        .update({ first_name: data.name, bio: data.about })
-        .eq('id', userId)
-    },
-    async onSuccess() {
-      toast.show('Successfully updated!')
-      await queryClient.invalidateQueries(['profile'])
-      router.back()
-    },
-  })
+  const mutation = api.me.update.useMutation()
+  // const mutation = useMutation({
+  //   async mutationFn(data: z.infer<typeof ProfileSchema>) {
+  //     await supabase
+  //       .from('profiles')
+  //       .update({ first_name: data.name, bio: data.about })
+  //       .eq('id', userId)
+  //   },
+  //   async onSuccess() {
+  //     toast.show('Successfully updated!')
+  //     await queryClient.invalidateQueries(['profile'])
+  //     router.back()
+  //   },
+  // })
 
   return (
     <SchemaForm
@@ -67,7 +67,21 @@ const EditProfileForm = ({
         name: initial.name ?? '',
         about: initial.about ?? '',
       }}
-      onSubmit={(values) => mutation.mutate(values)}
+      onSubmit={(values) =>
+        mutation.mutate(
+          {
+            first_name: values.name,
+            bio: values.about,
+          },
+          {
+            async onSuccess() {
+              toast.show('Successfully updated!')
+              await queryClient.invalidateQueries(['profile'])
+              router.back()
+            },
+          }
+        )
+      }
       renderAfter={({ submit }) => (
         <Theme inverse>
           <SubmitButton onPress={() => submit()}>Update Profile</SubmitButton>

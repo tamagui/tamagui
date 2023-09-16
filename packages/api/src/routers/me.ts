@@ -1,6 +1,7 @@
 
 import { TRPCError } from '@trpc/server'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { z } from 'zod'
 
 
 export const meRouter = createTRPCRouter({
@@ -14,6 +15,22 @@ export const meRouter = createTRPCRouter({
       }
       throw new Error(error.message)
     }
+    return data
+  }),
+  update: protectedProcedure.input(z.object({
+    first_name: z.string().optional(),
+    bio: z.string().optional(),
+  })).mutation(async ({ ctx: { supabase, session }, input }) => {
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ ...input })
+      .eq('id', session.user.id).single()
+
+    if (error) {
+      throw new TRPCError({ code: error?.code as any, message: error.message })
+    }
+
     return data
   }),
   climbs: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
