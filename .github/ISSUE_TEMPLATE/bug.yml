@@ -1,5 +1,5 @@
 name: Reproducible Bug Report
-description: Get much faster response time by **forking this repo, reproducing the bug, and then submitting it was a PR with the title "[Issue] ..."**
+description: If you don't add a reproduction, your issue *will be closed on sight without so much as an apology*.
 labels: [Bug]
 body:
 - type: textarea
@@ -17,6 +17,12 @@ body:
 - type: textarea
   attributes:
     label: Tamagui Version
+    render: markdown
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Platform (Web, iOS, Android)
     render: markdown
   validations:
     required: true
