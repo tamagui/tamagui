@@ -1,5 +1,6 @@
 // import './wdyr'
 
+import { RadioGroupDemo } from '@tamagui/demos'
 import { Stack, styled } from '@tamagui/web'
 import { Anchor, SizableText } from 'tamagui'
 
@@ -21,8 +22,7 @@ export const MyAnchor = styled(Anchor, {
 export const Sandbox = () => {
   return (
     <>
-      {/* <X size="$4">hello</X> */}
-      <MyAnchor size="$5">hi?</MyAnchor>
+      <RadioGroupDemo />
       <ChangeWeight />
     </>
   )
