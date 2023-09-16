@@ -1,4 +1,6 @@
 import { H2, Paragraph, SubmitButton, Theme, YStack, isWeb, useToastController } from '@my/ui'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SchemaForm, formFields } from 'app/utils/SchemaForm'
 import {
   add,
@@ -15,6 +17,7 @@ import { api } from 'app/utils/api'
 import { z } from 'zod'
 import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { useRouter } from 'solito/router'
+import { Database } from '@my/supabase/types'
 
 function getWeekDaySelections() {
   // TODO: Get the next 7 days
@@ -193,6 +196,7 @@ export const CreateScreen = () => {
   const router = useRouter()
   const toast = useToastController()
   const climbMutation = api.climb.create.useMutation()
+  const me = api.me.profile.useQuery()
 
   const form = useForm<z.infer<typeof ClimbScreenSchema>>({
     defaultValues: {
@@ -207,17 +211,51 @@ export const CreateScreen = () => {
     control: form.control,
     name: 'day',
   })
+  const queryClient = useQueryClient()
 
   return (
     <FormProvider {...form}>
       <SchemaForm
         form={form}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           toast.show('Sucess!', {
             message: `Climb created`,
           })
-          climbMutation.mutate(values)
-          router.push('/')
+          climbMutation.mutate(values, {
+            onSuccess: () => {
+              queryClient.invalidateQueries([['climb', 'read'], { type: 'query' }])
+              // const oldData = queryClient.getQueryData<
+              //   Database['public']['Tables']['climbs']['Row'][]
+              // >([['climb', 'read'], { type: 'query' }])
+
+              // // Create optimistic update
+              // queryClient.setQueryData<Database['public']['Tables']['climbs']['Row'][]>(
+              //   [['climb', 'read'], { type: 'query' }],
+              //   (old) => {
+              //     if (!old) {
+              //       return []
+              //     }
+              //     const idx = old?.findIndex((c) => c.start >= values.start)
+              //     old.splice(idx, 0, {
+              //       id: 99999999,
+              //       name: values.name,
+              //       created_at: new Date().toISOString(),
+              //       created_by: me.data?.id ?? '',
+              //       start: add(new Date(values.start), {
+              //         days: Number(values.day),
+              //       }).toISOString(),
+              //       duration: add(new Date(values.start), {
+              //         minutes: Number(values.duration),
+              //       }).toISOString(),
+              //       type: 'top_rope',
+              //     })
+
+              //     return
+              //   }
+              // )
+              router.push('/')
+            },
+          })
         }}
         schema={ClimbScreenSchema}
         defaultValues={form.formState.defaultValues}
@@ -244,6 +282,14 @@ export const CreateScreen = () => {
               {
                 name: 'Top Rope',
                 value: 'top_rope',
+              },
+              {
+                name: 'Lead Rope',
+                value: 'lead_rope',
+              },
+              {
+                name: 'Boulder',
+                value: 'boulder',
               },
             ],
           },

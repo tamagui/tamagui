@@ -51,6 +51,7 @@ export const UploadAvatar = ({ children }: { children: React.ReactNode }) => {
         }
         const result = await supabase.storage
           .from('avatars')
+          // https://supabase.com/docs/reference/javascript/storage-from-upload
           .upload(`${user.id}/${Number(new Date())}.jpeg`, res, {
             contentType: 'image/jpeg',
             upsert: true,

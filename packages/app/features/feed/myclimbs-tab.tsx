@@ -177,6 +177,10 @@ export function MyClimbsTab() {
   return (
     <YStack overflow="visible" gap="$5">
       <FlatList
+        style={{
+          paddingTop: 20,
+          paddingBottom: 80,
+        }}
         showsVerticalScrollIndicator={false}
         data={climbsQuery.data}
         renderItem={({ item }) => <MyClimb profileClimb={item} user={user.profile} />}
