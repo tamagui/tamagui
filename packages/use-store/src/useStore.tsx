@@ -235,7 +235,7 @@ function getOrCreateStoreInfo(
 
   // uses more memory when on
   if (process.env.NODE_ENV === 'development') {
-    allStores[uid] = store
+    allStores[StoreKlass.name + uid] = store
   }
 
   // if has a mount function call it
@@ -255,6 +255,10 @@ function getOrCreateStoreInfo(
 }
 
 export const allStores = {}
+
+if (process.env.NODE_ENV === 'development') {
+  globalThis['Store'] ||= allStores
+}
 
 const emptyObj = {}
 const selectKeys = (obj: any, keys: string[]) => {
@@ -325,9 +329,20 @@ function useStoreFromInfo(
       })
 
     if (shouldPrintDebug) {
-      
       // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-      console.log('🌑 getSnapshot', { storeState: selectKeys(store, Object.keys(store)), userSelector, info, isUnchanged, component, keys, last, snap, curInternal, nextKeys, lastKeys })
+      console.log('🌑 getSnapshot', {
+        storeState: selectKeys(store, Object.keys(store)),
+        userSelector,
+        info,
+        isUnchanged,
+        component,
+        keys,
+        last,
+        snap,
+        curInternal,
+        nextKeys,
+        lastKeys,
+      })
     }
 
     if (isUnchanged) {
