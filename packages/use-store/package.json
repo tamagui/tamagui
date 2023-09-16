@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-store",
-  "version": "1.65.4",
+  "version": "1.66.0",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -27,10 +27,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/simple-hash": "1.65.4"
+    "@tamagui/simple-hash": "1.66.0"
   },
   "devDependencies": {
-    "@tamagui/build": "1.65.4",
+    "@tamagui/build": "1.66.0",
     "@testing-library/react": "^14.0.0",
     "react": "^18.2.0",
     "vitest": "^0.34.3"
