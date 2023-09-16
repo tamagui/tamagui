@@ -210,6 +210,9 @@ export const CheckboxFrame = styled(ThemeableStack, {
 
         focusStyle: {
           borderColor: '$borderColorFocus',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$borderColorFocus',
         },
       },
     },
