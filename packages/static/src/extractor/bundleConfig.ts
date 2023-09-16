@@ -175,7 +175,12 @@ export async function bundleConfig(props: TamaguiOptions) {
     } finally {
       unregister()
     }
-    const config = out.default || out
+
+    // try and find .config, even if on .default
+    let config = out.default || out || out.config
+    if (config && config.config && !config.tokens) {
+      config = config.config
+    }
 
     if (!config) {
       throw new Error(`No config: ${config}`)
