@@ -100,6 +100,10 @@ if (typeof document !== 'undefined') {
           ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
         }
 
+        document.addEventListener('blur', () => {
+          clearTimeout(tm)
+        })
+
         document.addEventListener('keydown', ({ key, defaultPrevented }) => {
           if (defaultPrevented) return
           clearTimeout(tm) // always clear so we dont trigger on chords
