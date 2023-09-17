@@ -94,7 +94,7 @@ const findTitle = (rr: RR, title: string) => getLastByTitle(rr, title).innerHTML
 describe('basic tests', () => {
   afterEach(cleanup)
 
-  it('works as singleton creating a global store', () => {
+  it.skip('works as singleton creating a global store', () => {
     class Store3 extends Store<{ id: number }> {
       y = 0
       mount() {

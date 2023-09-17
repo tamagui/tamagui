@@ -109,6 +109,8 @@ export declare const maskOptions: {
     };
     button: {
         override: {
+            borderColor: string;
+            borderColorHover: string;
             color: number;
             colorHover: number;
             colorFocus: number;
