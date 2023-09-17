@@ -1,5 +1,5 @@
-/// <reference types="react" />
 import { ColorStyleProp, GetProps } from '@tamagui/core';
+import { RefObject } from 'react';
 import { TextInput } from 'react-native';
 export declare const defaultStyles: {
     readonly borderColor: "$borderColor";
@@ -7,12 +7,6 @@ export declare const defaultStyles: {
     readonly minWidth: 0;
     readonly hoverStyle: {
         readonly borderColor: "$borderColorHover";
-    };
-    readonly focusStyle: {
-        readonly outlineColor: "$borderColorFocus";
-        readonly outlineWidth: 2;
-        readonly outlineStyle: "solid";
-        readonly borderColor: "$borderColorFocus";
     };
     readonly tabIndex: number;
     readonly size: "$true";
@@ -27,12 +21,6 @@ export declare const defaultStyles: {
     readonly hoverStyle: {
         readonly borderColor: "$borderColorHover";
     };
-    readonly focusStyle: {
-        readonly outlineColor: "$borderColorFocus";
-        readonly outlineWidth: 2;
-        readonly outlineStyle: "solid";
-        readonly borderColor: "$borderColorFocus";
-    };
     readonly focusable: boolean;
     readonly size: "$true";
     readonly fontFamily: "$body";
@@ -40,60 +28,2128 @@ export declare const defaultStyles: {
     readonly outlineWidth: 0;
     readonly color: "$color";
 };
-export declare const InputFrame: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+export declare const InputFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly isFocused?: boolean | undefined;
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly isFocused?: boolean | undefined;
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, TextInput, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {
+    readonly isFocused?: boolean | undefined;
+}>>, import("@tamagui/core").TamaguiElement, Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps, {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly isFocused?: boolean | undefined;
+}, {
+    displayName: string | undefined;
+    __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
+    __variantProps: {};
+}>;
+declare const InputControl: import("@tamagui/core").TamaguiComponent<(import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>) | (import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+}>>), TextInput, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, {} | {
+    [x: string]: undefined;
 }, {
     prototype: TextInput;
     State: import("react-native").TextInputState;
     contextType: import("react").Context<any> | undefined;
 }>;
-export type InputProps = Omit<GetProps<typeof InputFrame>, 'placeholderTextColor'> & {
+type InputContextValue = {
+    /**
+     * Direct ref to the input field, this will control the
+     * actions of the input field.
+     */
+    ref?: RefObject<TextInput>;
+    /**
+     * Set the focus state of the input field.
+     */
+    setIsFocused: (focused: boolean) => void;
+};
+/**
+ * Hook to access the input context.
+ */
+export declare const useInputRefContext: () => InputContextValue;
+export type InputProps = Omit<GetProps<typeof InputControl>, 'placeholderTextColor'> & {
     placeholderTextColor?: ColorStyleProp;
     rows?: number;
 };
-export declare const Input: import("@tamagui/core").ReactComponentWithRef<Omit<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-    readonly unstyled?: boolean | undefined;
-    readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, "placeholderTextColor"> & {
+export declare const Input: import("@tamagui/core").ReactComponentWithRef<Omit<(import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>) | (import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+    [x: string]: undefined;
+}>>), "placeholderTextColor"> & {
     placeholderTextColor?: ColorStyleProp | undefined;
     rows?: number | undefined;
-} & Omit<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+} & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-} & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly isFocused?: boolean | undefined;
+} & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    readonly isFocused?: boolean | undefined;
+}>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+} & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
     readonly unstyled?: boolean | undefined;
     readonly size?: import("@tamagui/core").SizeTokens | undefined;
-}>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "lineHeight" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "allowFontScaling" | "ellipsizeMode" | "id" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "maxFontSizeMultiplier" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "minimumFontScale" | "suppressHighlighting" | "lineBreakStrategyIOS" | "disabled" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "textAlignVertical" | "verticalAlign" | "includeFontPadding" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "autoCapitalize" | "autoComplete" | "autoCorrect" | "autoFocus" | "blurOnSubmit" | "caretHidden" | "contextMenuHidden" | "defaultValue" | "editable" | "keyboardType" | "inputMode" | "maxLength" | "multiline" | "onBlur" | "onChange" | "onChangeText" | "onContentSizeChange" | "onEndEditing" | "onSelectionChange" | "onSubmitEditing" | "onTextInput" | "onKeyPress" | "placeholder" | "placeholderTextColor" | "returnKeyType" | "secureTextEntry" | "selectTextOnFocus" | "selection" | "inputAccessoryViewID" | "value" | "clearButtonMode" | "clearTextOnFocus" | "dataDetectorTypes" | "enablesReturnKeyAutomatically" | "keyboardAppearance" | "passwordRules" | "rejectResponderTermination" | "selectionState" | "spellCheck" | "textContentType" | "scrollEnabled" | "cursorColor" | "importantForAutofill" | "disableFullscreenUI" | "inlineImageLeft" | "inlineImagePadding" | "returnKeyLabel" | "underlineColorAndroid" | "showSoftInputOnFocus" | "rows">, TextInput> & {
+    readonly isFocused?: boolean | undefined;
+}>>, "color" | "borderColor" | "shadowColor" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "lineHeight" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "allowFontScaling" | "ellipsizeMode" | "id" | "lineBreakMode" | "numberOfLines" | "onTextLayout" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "maxFontSizeMultiplier" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "minimumFontScale" | "suppressHighlighting" | "lineBreakStrategyIOS" | "disabled" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "textAlignVertical" | "verticalAlign" | "includeFontPadding" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "autoCapitalize" | "autoComplete" | "autoCorrect" | "autoFocus" | "blurOnSubmit" | "caretHidden" | "contextMenuHidden" | "defaultValue" | "editable" | "keyboardType" | "inputMode" | "maxLength" | "multiline" | "onBlur" | "onChange" | "onChangeText" | "onContentSizeChange" | "onEndEditing" | "onSelectionChange" | "onSubmitEditing" | "onTextInput" | "onKeyPress" | "placeholder" | "placeholderTextColor" | "returnKeyType" | "secureTextEntry" | "selectTextOnFocus" | "selection" | "inputAccessoryViewID" | "value" | "clearButtonMode" | "clearTextOnFocus" | "dataDetectorTypes" | "enablesReturnKeyAutomatically" | "keyboardAppearance" | "passwordRules" | "rejectResponderTermination" | "selectionState" | "spellCheck" | "textContentType" | "scrollEnabled" | "cursorColor" | "importantForAutofill" | "disableFullscreenUI" | "inlineImageLeft" | "inlineImagePadding" | "returnKeyLabel" | "underlineColorAndroid" | "showSoftInputOnFocus" | "rows">, import("@tamagui/core").TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
-    styleable: import("@tamagui/core").Styleable<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+    styleable: import("@tamagui/core").Styleable<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    } & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+        readonly isFocused?: boolean | undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    }>> & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
+        readonly isFocused?: boolean | undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, "size" | "unstyled" | "isFocused"> & {
         readonly unstyled?: boolean | undefined;
         readonly size?: import("@tamagui/core").SizeTokens | undefined;
-    }>>, TextInput>;
+        readonly isFocused?: boolean | undefined;
+    }>>, import("@tamagui/core").TamaguiElement>;
+} & {
+    Start: import("@tamagui/core").ReactComponentWithRef<(Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>>), import("@tamagui/core").TamaguiElement> & {
+        staticConfig: import("@tamagui/core").StaticConfig;
+        extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
+        styleable: import("@tamagui/core").Styleable<(Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>>), import("@tamagui/core").TamaguiElement>;
+    } & {
+        displayName: string | undefined;
+        __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
+        __variantProps: {} | {
+            [x: string]: undefined;
+        };
+    } & {
+        __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
+        __variantProps: ({} | {
+            [x: string]: undefined;
+        }) & ({} | {
+            [x: string]: undefined;
+        } | {
+            [x: string]: undefined;
+        });
+    } & {
+        Button: import("@tamagui/core").TamaguiComponent<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">, {
+            readonly isEnd?: boolean | undefined;
+        } | ({
+            [x: string]: undefined;
+        } & {
+            readonly isEnd?: boolean | undefined;
+        }), {
+            Text: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            }>>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextPropsBase, {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & {
+                readonly unstyled?: boolean | undefined;
+            }, {
+                displayName: string | undefined;
+                __baseProps: Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>;
+                __variantProps: {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                };
+            }>;
+            displayName: string | undefined;
+            __baseProps: import("@tamagui/text").TextContextStyles & {
+                textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                }>>> | undefined;
+                noTextWrap?: boolean | undefined;
+            } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").ThemeableProps & {
+                icon?: (JSX.Element | import("react").FunctionComponent<{
+                    color?: string | undefined;
+                    size?: number | undefined;
+                }> | null) | undefined;
+                iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                    color?: string | undefined;
+                    size?: number | undefined;
+                }> | null) | undefined;
+                scaleIcon?: number | undefined;
+                spaceFlex?: number | boolean | undefined;
+                scaleSpace?: number | undefined;
+                unstyled?: boolean | undefined;
+            } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">;
+            __variantProps: {} | {
+                [x: string]: undefined;
+            };
+            Icon: (props: {
+                children: import("react").ReactNode;
+                scaleIcon?: number | undefined;
+            }) => any;
+        }>;
+    };
+    End: import("@tamagui/core").ReactComponentWithRef<(Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+        [x: string]: undefined;
+    }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+        style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+    } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+        [x: string]: undefined;
+    }, string | number> & {
+        [x: string]: undefined;
+    }>>), import("@tamagui/core").TamaguiElement> & {
+        staticConfig: import("@tamagui/core").StaticConfig;
+        extractable: <X>(a: X, staticConfig?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
+        styleable: import("@tamagui/core").Styleable<(Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{}, string | number> & {
+            [x: string]: undefined;
+        }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>>) | (Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{} | {
+            [x: string]: undefined;
+        }, string | number> & {
+            [x: string]: undefined;
+        }>>), import("@tamagui/core").TamaguiElement>;
+    } & {
+        displayName: string | undefined;
+        __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
+        __variantProps: {} | {
+            [x: string]: undefined;
+        };
+    } & {
+        __baseProps: Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps;
+        __variantProps: ({} | {
+            [x: string]: undefined;
+        }) & ({} | {
+            [x: string]: undefined;
+        } | {
+            [x: string]: undefined;
+        });
+    } & {
+        Button: import("@tamagui/core").TamaguiComponent<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & Omit<{} | {
+            [x: string]: undefined;
+        }, "isEnd"> & {
+            readonly isEnd?: boolean | undefined;
+        }>>, import("@tamagui/core").TamaguiElement, import("@tamagui/text").TextContextStyles & {
+            textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }>>> | undefined;
+            noTextWrap?: boolean | undefined;
+        } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").ThemeableProps & {
+            icon?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                color?: string | undefined;
+                size?: number | undefined;
+            }> | null) | undefined;
+            scaleIcon?: number | undefined;
+            spaceFlex?: number | boolean | undefined;
+            scaleSpace?: number | undefined;
+            unstyled?: boolean | undefined;
+        } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+            style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+        } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+        } & {
+            readonly backgrounded?: boolean | undefined;
+            readonly radiused?: boolean | undefined;
+            readonly hoverTheme?: boolean | undefined;
+            readonly pressTheme?: boolean | undefined;
+            readonly focusTheme?: boolean | undefined;
+            readonly circular?: boolean | undefined;
+            readonly padded?: boolean | undefined;
+            readonly elevate?: boolean | undefined;
+            readonly bordered?: number | boolean | undefined;
+            readonly transparent?: boolean | undefined;
+            readonly chromeless?: boolean | "all" | undefined;
+        }, "size" | "disabled" | "unstyled" | "variant"> & {
+            readonly unstyled?: boolean | undefined;
+            readonly variant?: "outlined" | undefined;
+            readonly size?: import("@tamagui/core").SizeTokens | undefined;
+            readonly disabled?: boolean | undefined;
+        }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">, {
+            readonly isEnd?: boolean | undefined;
+        } | ({
+            [x: string]: undefined;
+        } & {
+            readonly isEnd?: boolean | undefined;
+        }), {
+            Text: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            }, "unstyled"> & {
+                readonly unstyled?: boolean | undefined;
+            }>>, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextPropsBase, {
+                readonly unstyled?: boolean | undefined;
+                readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+            } & {
+                readonly unstyled?: boolean | undefined;
+            }, {
+                displayName: string | undefined;
+                __baseProps: Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>;
+                __variantProps: {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                };
+            }>;
+            displayName: string | undefined;
+            __baseProps: import("@tamagui/text").TextContextStyles & {
+                textProps?: Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers> & import("@tamagui/core").ExtendBaseTextProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                    style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").TextStyle | (import("react").CSSProperties & import("react-native").TextStyle)>;
+                } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size" | "unstyled"> & {
+                    readonly unstyled?: boolean | undefined;
+                    readonly size?: import("@tamagui/core").FontSizeTokens | undefined;
+                }>>> | undefined;
+                noTextWrap?: boolean | undefined;
+            } & Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").ThemeableProps & {
+                icon?: (JSX.Element | import("react").FunctionComponent<{
+                    color?: string | undefined;
+                    size?: number | undefined;
+                }> | null) | undefined;
+                iconAfter?: (JSX.Element | import("react").FunctionComponent<{
+                    color?: string | undefined;
+                    size?: number | undefined;
+                }> | null) | undefined;
+                scaleIcon?: number | undefined;
+                spaceFlex?: number | boolean | undefined;
+                scaleSpace?: number | undefined;
+                unstyled?: boolean | undefined;
+            } & Omit<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "style" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "display"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
+                style?: import("@tamagui/core").StyleProp<import("react").CSSProperties | import("react-native").ViewStyle | (import("react").CSSProperties & import("react-native").ViewStyle)>;
+            } & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core/types/reactNativeTypes").RNViewProps & Omit<{
+                readonly fullscreen?: boolean | undefined;
+                readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
+            } & {
+                readonly backgrounded?: boolean | undefined;
+                readonly radiused?: boolean | undefined;
+                readonly hoverTheme?: boolean | undefined;
+                readonly pressTheme?: boolean | undefined;
+                readonly focusTheme?: boolean | undefined;
+                readonly circular?: boolean | undefined;
+                readonly padded?: boolean | undefined;
+                readonly elevate?: boolean | undefined;
+                readonly bordered?: number | boolean | undefined;
+                readonly transparent?: boolean | undefined;
+                readonly chromeless?: boolean | "all" | undefined;
+            }, "size" | "disabled" | "unstyled" | "variant"> & {
+                readonly unstyled?: boolean | undefined;
+                readonly variant?: "outlined" | undefined;
+                readonly size?: import("@tamagui/core").SizeTokens | undefined;
+                readonly disabled?: boolean | undefined;
+            }>>, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace"> & import("react").RefAttributes<import("@tamagui/core").TamaguiElement> & Omit<import("@tamagui/core").TextProps, "color" | "borderColor" | "shadowColor" | "size" | "space" | "zIndex" | "children" | "className" | "ref" | "style" | "ellipse" | "separator" | "left" | "right" | "width" | "height" | "padding" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingHorizontal" | "paddingVertical" | "margin" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginHorizontal" | "marginVertical" | "flex" | "flexDirection" | "flexWrap" | "flexGrow" | "flexShrink" | "flexBasis" | "alignItems" | "alignContent" | "justifyContent" | "alignSelf" | "backgroundColor" | "borderRadius" | "borderTopRightRadius" | "borderBottomRightRadius" | "borderBottomLeftRadius" | "borderTopLeftRadius" | "textAlign" | "fontSize" | "onLayout" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "id" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "testID" | "nativeID" | "disabled" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "aria-labelledby" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-live" | "aria-modal" | "role" | "accessibilityLiveRegion" | "accessibilityLabelledBy" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "display" | "elevation" | "gap" | "columnGap" | "rowGap" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "pointerEvents" | "spaceDirection" | "animation" | "animateOnly" | "userSelect" | "fontFamily" | "fontStyle" | "fontWeight" | "letterSpacing" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomStartRadius" | "borderCurve" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopStartRadius" | "opacity" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "end" | "marginEnd" | "marginStart" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "paddingEnd" | "paddingStart" | "position" | "start" | "top" | "direction" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "scaleX" | "scaleY" | "translateX" | "translateY" | "unstyled" | "x" | "y" | "perspective" | "scale" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "theme" | "hitSlop" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | `$${string}` | `$${number}` | `$theme-${string}` | `$theme-${number}` | "key" | "target" | "asChild" | "dangerouslySetInnerHTML" | "debug" | "themeShallow" | "tag" | "componentName" | "tabIndex" | "disableOptimization" | "forceStyle" | "disableClassName" | "onHoverIn" | "onHoverOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onFocus" | "onScroll" | "hoverStyle" | "pressStyle" | "focusStyle" | "exitStyle" | "enterStyle" | "href" | "rel" | "transparent" | "circular" | "dataSet" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "hrefAttrs" | "elevationAndroid" | "fullscreen" | "download" | "variant" | "backgrounded" | "radiused" | "hoverTheme" | "pressTheme" | "focusTheme" | "padded" | "elevate" | "bordered" | "chromeless" | "textProps" | "noTextWrap" | "themeInverse" | "themeReset" | "icon" | "iconAfter" | "scaleIcon" | "spaceFlex" | "scaleSpace">;
+            __variantProps: {} | {
+                [x: string]: undefined;
+            };
+            Icon: (props: {
+                children: import("react").ReactNode;
+                scaleIcon?: number | undefined;
+            }) => any;
+        }>;
+    };
 };
 export declare function useInputProps(props: InputProps, ref: any): {
     placeholderTextColor: any;
@@ -101,7 +2157,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     color?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     borderColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
     shadowColor?: import("react-native").OpaqueColorValue | import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     space?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | undefined;
     zIndex?: import("@tamagui/core").ZIndexTokens | import("@tamagui/core").ThemeValueFallbackZIndex | undefined;
     children?: import("react").ReactNode;
@@ -316,7 +2371,6 @@ export declare function useInputProps(props: InputProps, ref: any): {
     textAlignVertical?: "center" | "auto" | "bottom" | "top" | undefined;
     verticalAlign?: "auto" | "middle" | "bottom" | "top" | undefined;
     includeFontPadding?: boolean | undefined;
-    unstyled?: boolean | undefined;
     x?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | undefined;
     y?: number | boolean | `$${string}` | `$${number}` | `$${string}.${string}` | `$${string}.${number}` | import("@tamagui/core").Variable<any> | import("@tamagui/core").UnionableString | import("@tamagui/core").UnionableNumber | undefined;
     perspective?: number | undefined;
@@ -381,25 +2435,20 @@ export declare function useInputProps(props: InputProps, ref: any): {
     onMouseUp?: import("react").MouseEventHandler<HTMLDivElement> | undefined;
     onFocus?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputFocusEventData>) => void) | undefined;
     onScroll?: ((e: import("react-native").NativeSyntheticEvent<import("react-native").TextInputScrollEventData>) => void) | undefined;
-    hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>) | (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+        [x: string]: undefined;
     }>) | null | undefined;
-    pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>) | (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+        [x: string]: undefined;
     }>) | null | undefined;
-    focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    focusStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>) | (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+        [x: string]: undefined;
     }>) | null | undefined;
-    exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    exitStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>) | (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+        [x: string]: undefined;
     }>) | null | undefined;
-    enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, "size" | "unstyled"> & {
-        readonly unstyled?: boolean | undefined;
-        readonly size?: import("@tamagui/core").SizeTokens | undefined;
+    enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>) | (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{}, string | number> & {
+        [x: string]: undefined;
     }>) | null | undefined;
     autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
     autoComplete?: "email" | "password" | "tel" | "url" | "off" | "name" | "additional-name" | "address-line1" | "address-line2" | "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" | "cc-csc" | "cc-exp" | "cc-exp-day" | "cc-exp-month" | "cc-exp-year" | "cc-number" | "country" | "current-password" | "family-name" | "gender" | "given-name" | "honorific-prefix" | "honorific-suffix" | "name-family" | "name-given" | "name-middle" | "name-middle-initial" | "name-prefix" | "name-suffix" | "new-password" | "nickname" | "one-time-code" | "organization" | "organization-title" | "password-new" | "postal-address" | "postal-address-country" | "postal-address-extended" | "postal-address-extended-postal-code" | "postal-address-locality" | "postal-address-region" | "postal-code" | "street-address" | "sms-otp" | "tel-country-code" | "tel-national" | "tel-device" | "username" | "username-new" | undefined;
@@ -454,4 +2503,5 @@ export declare function useInputProps(props: InputProps, ref: any): {
     rows?: number | undefined;
     ref: (node: any) => void;
 };
+export {};
 //# sourceMappingURL=Input.d.ts.map

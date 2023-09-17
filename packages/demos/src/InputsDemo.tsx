@@ -2,17 +2,22 @@ import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
 
 export function InputsDemo() {
   return (
-    <YStack
-      width={200}
-      minHeight={250}
-      overflow="hidden"
-      space="$2"
-      margin="$3"
-      padding="$2"
-    >
+    <YStack space="$2" margin="$3" padding="$2">
       <InputDemo size="$2" />
       <InputDemo size="$3" />
       <InputDemo size="$4" />
+      <Input>
+        <Input.Start>Start</Input.Start>
+        <Input.Start>Start2</Input.Start>
+        <Input.End>End</Input.End>
+      </Input>
+
+      <Input>
+        <Input.Start>Start</Input.Start>
+        <Input.Start>Start2</Input.Start>
+        <Input.End.Button>End</Input.End.Button>
+        <Input.End.Button>End 2</Input.End.Button>
+      </Input>
       <TextArea placeholder="Enter your details..." />
     </YStack>
   )

@@ -91,6 +91,7 @@
     }
   },
   "dependencies": {
+    "@expo/webpack-config": "^18.1.2",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.3.1",
     "@vercel/og": "^0.5.8",
