@@ -61,10 +61,6 @@ declare const CheckboxIndicatorFrame: import("@tamagui/core").TamaguiComponent<(
     readonly pressTheme?: boolean | undefined;
     readonly focusTheme?: boolean | undefined;
     readonly circular?: boolean | undefined;
-    /**
-     *
-     * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
-     */
     readonly padded?: boolean | undefined;
     readonly elevate?: boolean | undefined;
     readonly bordered?: number | boolean | undefined;
@@ -202,8 +198,9 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "disabled" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 } & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -222,8 +219,9 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "disabled" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -242,8 +240,9 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly bordered?: number | boolean | undefined;
     readonly transparent?: boolean | undefined;
     readonly chromeless?: boolean | "all" | undefined;
-}, "size" | "unstyled"> & {
+}, "size" | "disabled" | "unstyled"> & {
     readonly unstyled?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }>>, TamaguiElement, Omit<import("react-native").ViewProps, "display" | "children" | "onLayout" | keyof import("react-native").GestureResponderHandlers | "style"> & import("@tamagui/core").ExtendBaseStackProps & import("@tamagui/core").TamaguiComponentPropsBase & {
     style?: import("@tamagui/core").StyleProp<import("react-native").ViewStyle | React.CSSProperties | (React.CSSProperties & import("react-native").ViewStyle)>;
@@ -264,6 +263,7 @@ export declare const CheckboxFrame: import("@tamagui/core").TamaguiComponent<Omi
     readonly chromeless?: boolean | "all" | undefined;
 } & {
     readonly unstyled?: boolean | undefined;
+    readonly disabled?: boolean | undefined;
     readonly size?: SizeTokens | undefined;
 }, {
     displayName: string | undefined;
@@ -358,10 +358,6 @@ export declare const Checkbox: React.ForwardRefExoticComponent<CheckboxProps & R
         readonly pressTheme?: boolean | undefined;
         readonly focusTheme?: boolean | undefined;
         readonly circular?: boolean | undefined;
-        /**
-         *
-         * @param checked Either boolean or "indeterminate" which is meant to allow for a third state that means "neither", usually indicated by a minus sign.
-         */
         readonly padded?: boolean | undefined;
         readonly elevate?: boolean | undefined;
         readonly bordered?: number | boolean | undefined;

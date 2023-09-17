@@ -217,6 +217,28 @@ export const CheckboxFrame = styled(ThemeableStack, {
       },
     },
 
+    disabled: {
+      true: {
+        pointerEvents: 'none',
+        userSelect: 'none',
+        cursor: 'not-allowed',
+
+        hoverStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$background',
+        },
+
+        pressStyle: {
+          borderColor: '$borderColor',
+          backgroundColor: '$backgroundColor',
+        },
+
+        focusStyle: {
+          outlineWidth: 0,
+        },
+      },
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         const radiusToken = getVariableValue(getSize(val)) / 8
