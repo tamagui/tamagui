@@ -1,24 +1,46 @@
-import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
+import { useState } from 'react'
+import { Button, Input, Paragraph, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
 
 export function InputsDemo() {
+  const [toggleButton, setToggleButton] = useState(false)
   return (
     <YStack space="$2" margin="$3" padding="$2">
       <InputDemo size="$2" />
       <InputDemo size="$3" />
       <InputDemo size="$4" />
-      <Input>
-        <Input.Start>Start</Input.Start>
-        <Input.Start>Start2</Input.Start>
-        <Input.End>End</Input.End>
+      <Input size="$2">
+        <Input.Start>
+          <Paragraph>Start</Paragraph>
+        </Input.Start>
+        <Input.Start>
+          <Paragraph>Start2</Paragraph>
+        </Input.Start>
+        <Input.End>
+          <Paragraph>End</Paragraph>
+        </Input.End>
       </Input>
-
-      <Input disabled placeholder="Test adornments...">
-        <Input.Start>Start</Input.Start>
-        <Input.Start>Start2</Input.Start>
-        <Input.End>Test</Input.End>
-        <Input.End.Button>End</Input.End.Button>
-        <Input.End>Test 2</Input.End>
-        <Input.End.Button>End 2</Input.End.Button>
+      <Input placeholder="Test adornments...">
+        <Input.Start>
+          <Paragraph>Start</Paragraph>
+        </Input.Start>
+        <Input.Start>
+          <Paragraph>Start2</Paragraph>
+        </Input.Start>
+        <Input.End>
+          <Paragraph>Test</Paragraph>
+        </Input.End>
+        <Input.End.Button
+          bg={toggleButton ? 'blue' : 'red'}
+          onPress={() => setToggleButton(!toggleButton)}
+        >
+          <Paragraph>End</Paragraph>
+        </Input.End.Button>
+        <Input.End>
+          <Paragraph>Test 2</Paragraph>
+        </Input.End>
+        <Input.End.Button onPress={() => setToggleButton(!toggleButton)}>
+          <Paragraph>End 2</Paragraph>
+        </Input.End.Button>
       </Input>
       <TextArea placeholder="Enter your details..." />
     </YStack>
@@ -28,7 +50,7 @@ export function InputsDemo() {
 function InputDemo(props: { size: SizeTokens }) {
   return (
     <XStack alignItems="center" space="$2">
-      <Input disabled size={props.size} placeholder={`Size ${props.size}...`} />
+      <Input flex={1} size={props.size} placeholder={`Size ${props.size}...`} />
       <Button size={props.size}>Go</Button>
     </XStack>
   )

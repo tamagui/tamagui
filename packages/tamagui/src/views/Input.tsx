@@ -132,12 +132,12 @@ export type InputProps = Omit<GetProps<typeof InputControl>, 'placeholderTextCol
   rows?: number
 }
 
+const BASE_INPUT_ADORNMENT_NAME = 'BaseInputAdornment'
+
 const BaseInputAdornment = styled(Stack, {
-  name: 'BaseInputAdornment',
+  name: BASE_INPUT_ADORNMENT_NAME,
   justifyContent: 'center',
   alignItems: 'center',
-  minWidth: '$4',
-  minHeight: '$4',
   paddingHorizontal: '$2',
   backgroundColor: '$borderColor',
   pointerEvents: 'none',
@@ -151,11 +151,11 @@ const InputEndAdornmentMain = styled(BaseInputAdornment, {
 })
 
 const BaseInputButtonAdornment = styled(Button, {
-  name: 'BaseInputAdornment',
+  name: BASE_INPUT_ADORNMENT_NAME,
   justifyContent: 'center',
   alignItems: 'center',
-  minWidth: '$4',
-  minHeight: '$4',
+  // minWidth: '$4',
+  // minHeight: '$4',
   paddingHorizontal: '$2',
   backgroundColor: '$borderColor',
   borderRadius: 0,
