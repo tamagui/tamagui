@@ -119,8 +119,6 @@ export declare const componentThemeDefinitions: {
     };
     Button: {
         override: {
-            borderColor: string;
-            borderColorHover: string;
             color: number;
             colorHover: number;
             colorFocus: number;
