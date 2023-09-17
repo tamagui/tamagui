@@ -1,8 +1,8 @@
 /// <reference types="react" />
-import { SizeTokens } from 'tamagui';
+import { CheckboxProps, SizeTokens } from 'tamagui';
 export declare function CheckboxDemo(): JSX.Element;
-export declare function CheckboxWithLabel(props: {
+export declare function CheckboxWithLabel({ size, label, ...checkboxProps }: CheckboxProps & {
     size: SizeTokens;
-    defaultChecked?: boolean;
+    label?: string;
 }): JSX.Element;
 //# sourceMappingURL=CheckboxDemo.d.ts.map

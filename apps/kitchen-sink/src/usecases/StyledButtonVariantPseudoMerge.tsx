@@ -27,8 +27,6 @@ const StyledButton = styled(Button, {
 
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
 
-console.log('wtf', DoubleStyledButtonNoVariants.staticConfig)
-
 const StyledButtonVariantTheme = styled(Button, {
   pressStyle: {
     scale: 0.5,
