@@ -106,7 +106,8 @@ export class TamaguiPlugin {
 
       if (nextJsRules === -1) {
         existing.push({
-          test: /\/jsx\/.*\.m?[jt]sx?$/,
+          // looks like its in jsx dir (could be better but windows path sep)
+          test: /jsx.*\.m?[jt]sx?$/,
           exclude: this.options.exclude,
           resolve: {
             fullySpecified: false,

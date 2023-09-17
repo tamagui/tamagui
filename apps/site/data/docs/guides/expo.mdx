@@ -76,6 +76,33 @@ module.exports = config;
 
 From here on out you can follow the [Installation](/docs/intro/installation) and [Configuration](/docs/core/configuration) docs.
 
+#### Loading fonts
+
+You need to load your fonts for React Native to recognize them. Typically this looks something like if using Expo, (or you can [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
+
+```tsx
+import { useFonts } from 'expo-font'
+
+function App() {
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      // can hide splash screen here
+    }
+  }, [loaded])
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <MyApp />
+}
+```
+
 ### First time starting Expo
 
 The first time running your project with Tamagui, be sure to clear the cache:
