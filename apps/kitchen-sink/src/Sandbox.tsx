@@ -1,6 +1,6 @@
 // import './wdyr'
 
-import { CheckboxDemo, RadioGroupDemo } from '@tamagui/demos'
+import { CheckboxDemo, InputsDemo, RadioGroupDemo } from '@tamagui/demos'
 import { Stack, styled } from '@tamagui/web'
 import { Anchor, SizableText } from 'tamagui'
 
@@ -23,6 +23,7 @@ export const Sandbox = () => {
   return (
     <>
       <CheckboxDemo />
+      <InputsDemo />
       <ChangeWeight />
     </>
   )

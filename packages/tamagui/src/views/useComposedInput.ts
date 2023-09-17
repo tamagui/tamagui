@@ -9,19 +9,8 @@ interface ComposedInputComponents {
   endAdornments?: TamaguiReactElement[]
 }
 
-export interface ComposedInputReturn {
-  formComponents: ComposedInputComponents
-  children?: ReactNode
-}
-
-const firstStartAdornmentHOC = () => {}
-
-export const useComposedInput = (
-  children: ReactNode,
-  override?: ComposedInputReturn
-): ComposedInputReturn => {
+export const useComposedInput = (children: ReactNode) => {
   return useMemo(() => {
-    if (override) return override
     const childrenArray = Children.toArray(children)
     const resultChildren: typeof childrenArray = []
 
@@ -39,7 +28,7 @@ export const useComposedInput = (
       if (isTamaguiElement(child, END_INPUT_ADORNMENT_NAME)) {
         let passedChild = child
         if (!result.endAdornments?.length) {
-          passedChild = cloneElement(child, { isEnd: true })
+          passedChild = cloneElement(child, { isEnd: true }) as TamaguiReactElement
         }
         result.endAdornments?.push(passedChild)
         return
@@ -48,6 +37,6 @@ export const useComposedInput = (
       resultChildren.push(child)
     })
 
-    return { formComponents: result, children: resultChildren }
-  }, [children, override])
+    return result
+  }, [children])
 }

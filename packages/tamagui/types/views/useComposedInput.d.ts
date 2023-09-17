@@ -6,10 +6,6 @@ interface ComposedInputComponents {
     startAdornments?: TamaguiReactElement[];
     endAdornments?: TamaguiReactElement[];
 }
-export interface ComposedInputReturn {
-    formComponents: ComposedInputComponents;
-    children?: ReactNode;
-}
-export declare const useComposedInput: (children: ReactNode, override?: ComposedInputReturn) => ComposedInputReturn;
+export declare const useComposedInput: (children: ReactNode) => ComposedInputComponents;
 export {};
 //# sourceMappingURL=useComposedInput.d.ts.map

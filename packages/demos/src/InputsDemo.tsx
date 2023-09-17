@@ -12,10 +12,12 @@ export function InputsDemo() {
         <Input.End>End</Input.End>
       </Input>
 
-      <Input>
+      <Input disabled placeholder="Test adornments...">
         <Input.Start>Start</Input.Start>
         <Input.Start>Start2</Input.Start>
+        <Input.End>Test</Input.End>
         <Input.End.Button>End</Input.End.Button>
+        <Input.End>Test 2</Input.End>
         <Input.End.Button>End 2</Input.End.Button>
       </Input>
       <TextArea placeholder="Enter your details..." />
@@ -26,7 +28,7 @@ export function InputsDemo() {
 function InputDemo(props: { size: SizeTokens }) {
   return (
     <XStack alignItems="center" space="$2">
-      <Input flex={1} size={props.size} placeholder={`Size ${props.size}...`} />
+      <Input disabled size={props.size} placeholder={`Size ${props.size}...`} />
       <Button size={props.size}>Go</Button>
     </XStack>
   )
