@@ -1,7 +1,9 @@
 import * as LucideIcons from '@tamagui/lucide-icons'
 import { useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Grid, Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
+import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'
+
+import { Grid } from './Grid'
 
 const lucideIcons = Object.keys(
   // vite tree shaking workaround

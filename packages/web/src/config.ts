@@ -27,7 +27,7 @@ export const getConfig = () => {
   if (!conf) {
     throw new Error(
       process.env.NODE_ENV !== 'production'
-        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering.`
+        ? `Missing tamagui config, you either have a duplicate config, or haven't set it up. Be sure createTamagui is called before rendering. Also, make sure all of your tamagui dependencies are on the same version (\`tamagui\`, \`@tamagui/package-name\`, etc.)`
         : 'Err0'
     )
   }
@@ -107,4 +107,21 @@ export const getFont = (name: string) => {
       ([k]) => conf.fontsParsed[k]?.family?.['val'] === name
     )?.[1]
   )
+}
+
+type DevConfig = {
+  visualizer?:
+    | boolean
+    | {
+        key?: string
+        delay?: number
+      }
+}
+
+export let devConfig: DevConfig | undefined
+
+export function setupDev(conf: DevConfig) {
+  if (process.env.NODE_ENV === 'development') {
+    devConfig = conf
+  }
 }

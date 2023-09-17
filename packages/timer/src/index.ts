@@ -22,14 +22,13 @@ export function timer() {
       `                                    total ${totalTime}ms`,
     ].join('\n')
 
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(out)
     return out
   }
 
   return {
     start(opts?: { quiet?: boolean }) {
-      let start = performance.now()
       const quiet = opts?.quiet ?? true
 
       function time(strings: TemplateStringsArray, ...vars: any[]) {
@@ -45,11 +44,12 @@ export function timer() {
           strings.forEach((str, i) => {
             result += `${str}${i === strings.length - 1 ? '' : vars[i]}`
           })
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`${`${elapsed}ms`.slice(0, 6).padStart(7)} |`, result)
         }
       }
 
+      let start = performance.now()
       time['print'] = print
 
       return time

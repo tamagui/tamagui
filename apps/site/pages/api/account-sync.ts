@@ -1,7 +1,8 @@
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { Session, createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
+import { Session } from '@supabase/auth-helpers-nextjs'
 import { checkForSponsorship } from 'protected/_utils/github'
 import { siteRootDir } from 'protected/constants'
 
@@ -18,19 +19,8 @@ async function githubTokenSync(session: Session) {
   return token
 }
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient({ req, res })
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    return res.status(401).json({
-      error: 'The user does not have an active session or is not authenticated',
-      action: `${siteRootDir}/login`,
-    })
-  }
+export default apiRoute(async (req, res) => {
+  const { session, user } = await protectApiRoute({ req, res })
 
   const [userGithubToken] = await Promise.all([githubTokenSync(session)])
 
@@ -198,6 +188,4 @@ const handler: NextApiHandler = async (req, res) => {
   //   } satisfies UserAccessStatus)
 
   res.json({ done: true })
-}
-
-export default handler
+})

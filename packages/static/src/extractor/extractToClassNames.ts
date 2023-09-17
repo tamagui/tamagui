@@ -4,10 +4,10 @@ import * as util from 'util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'
-import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import type { ViewStyle } from 'react-native'
 
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
@@ -52,6 +52,11 @@ export async function extractToClassNames({
   shouldPrintDebug,
 }: ExtractToClassNamesProps): Promise<ExtractedResponse | null> {
   const tm = timer()
+  const { getStylesAtomic } = requireTamaguiCore('web')
+
+  if (sourcePath?.includes('node_modules')) {
+    return null
+  }
 
   if (shouldPrintDebug) {
     console.warn(`--- ${sourcePath} --- \n\n`)
@@ -83,7 +88,7 @@ export async function extractToClassNames({
   let ast: t.File
 
   try {
-    ast = babelParse(source)
+    ast = babelParse(source, sourcePath)
   } catch (err) {
     console.error('babel parse error:', sourcePath?.slice(0, 100))
     throw err
@@ -100,12 +105,11 @@ export async function extractToClassNames({
     shouldPrintDebug,
     ...options,
     sourcePath,
-    target: 'html',
     extractStyledDefinitions: true,
     onStyleRule(identifier, rules) {
       const css = rules.join(';')
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(`adding styled() rule: .${identifier} ${css}`)
       }
       cssMap.set(`.${identifier}`, { css, commentTexts: [] })
@@ -132,7 +136,7 @@ export async function extractToClassNames({
       // bail out of views that don't accept className (falls back to runtime + style={})
       if (staticConfig.acceptsClassName === false) {
         if (shouldPrintDebug) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`bail, acceptsClassName is false`)
         }
         return
@@ -214,7 +218,7 @@ export async function extractToClassNames({
                 // replace existing font_ with new one
                 if (newFontFamily) {
                   if (shouldPrintDebug) {
-                    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+                    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
                     console.log(` newFontFamily: ${newFontFamily}`)
                   }
                   previous = previous.replace(/font_[a-z]+/i, '')
@@ -266,7 +270,7 @@ export async function extractToClassNames({
             )
             if (shouldPrintDebug) {
               if (mediaExtraction) {
-                // rome-ignore lint/nursery/noConsoleLog: ok
+                // biome-ignore lint/suspicious/noConsoleLog: ok
                 console.log(
                   'ternary (mediaStyles)',
                   mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '',
@@ -327,7 +331,7 @@ export async function extractToClassNames({
       }
 
       if (shouldPrintDebug) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(
           '  finalClassNames\n',
           logLines(finalClassNames.map((x) => x['value']).join(' '))
@@ -410,7 +414,7 @@ export async function extractToClassNames({
 
   if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('no res or none modified', res)
     }
     return null
@@ -436,7 +440,7 @@ export async function extractToClassNames({
   )
 
   if (shouldPrintDebug) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
       '\n -------- output code ------- \n\n',
       result.code
@@ -444,7 +448,7 @@ export async function extractToClassNames({
         .filter((x) => !x.startsWith('//'))
         .join('\n')
     )
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
@@ -459,18 +463,17 @@ export async function extractToClassNames({
       .trim()
       .padStart(24)
 
-    const numStyled = `${res.styled}`.padStart(3)
-    const numOptimized = `${res.optimized}`.padStart(3)
-    const numFound = `${res.found}`.padStart(3)
+    const numOptimized = `${res.optimized + res.styled}`.padStart(3)
+    const numFound = `${res.found + res.styled}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = memUsed ? ` ${memUsed}MB` : ''
     const timing = Date.now() - start
     const timingStr = `${timing}ms`.padStart(6)
     const pre = getPrefixLogs(options)
     const memStr = memory ? `(${memory})` : ''
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log(
-      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
+      `${pre} ${path}   ·  ${numFound} found   ·  ${numOptimized} opt   ·  ${numFlattened} flat  ${timingStr} ${memStr}`
     )
   }
 

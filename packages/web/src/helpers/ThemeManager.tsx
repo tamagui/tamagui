@@ -1,3 +1,5 @@
+import { isWeb } from '@tamagui/constants'
+
 import { getThemes } from '../config'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { ThemeParsed, ThemeProps } from '../types'
@@ -28,7 +30,7 @@ export type ThemeManagerState = {
 const emptyState: ThemeManagerState = { name: '' }
 
 export function getHasThemeUpdatingProps(props: ThemeProps) {
-  return Boolean(props.name || props.componentName || props.inverse || props.reset)
+  return props.name || props.componentName || props.inverse || props.reset
 }
 
 let uid = 0
@@ -53,15 +55,10 @@ export class ThemeManager {
     if (!parentManagerIn) {
       if (process.env.NODE_ENV !== 'production') {
         throw new Error(
-          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions.`
+          `No parent manager given, this is likely due to duplicated Tamagui dependencies. Check your lockfile for mis-matched versions. It could also be from an error somewhere else in your stack causing Tamagui to recieve undefined context, you can try putting some ErrorBoundary components around other areas of your app, or a Suspense boundary.`
         )
       }
       throw `❌ 0`
-    }
-
-    // no change no props
-    if (!getHasThemeUpdatingProps(props)) {
-      return parentManagerIn
     }
 
     this.parentManager = parentManagerIn
@@ -106,7 +103,6 @@ export class ThemeManager {
         this.notify()
       })
     }
-    return this.state
   }
 
   getStateIfChanged(
@@ -241,7 +237,7 @@ function getState(
 
   if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
     console.groupCollapsed('ThemeManager.getState()')
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log({
       props,
       parentName,
@@ -297,7 +293,7 @@ function getState(
     const found = potentials.find((t) => t in themes)
 
     if (process.env.NODE_ENV === 'development' && typeof props.debug === 'string') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(' - ', { found, potentials, parentManager })
     }
 
@@ -305,7 +301,7 @@ function getState(
       result = {
         name: found,
         theme: themes[found],
-        className: getNextThemeClassName(found),
+        className: isWeb ? getNextThemeClassName(found) : '',
         parentName,
         componentName,
         inverse: props.inverse,

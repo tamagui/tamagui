@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   // optimizeDeps: {
   //   esbuildOptions: {
-  //     plugins: [esbuildCommonjs(['@tamagui/core-node'])],
+  //     plugins: [esbuildCommonjs(['@tamagui/core'])],
   //   },
   // },
 
@@ -33,10 +33,10 @@ export default defineConfig({
     globals: true,
     setupFiles: [join(__dirname, 'test-setup.ts')],
     // happy-dom has issues with components-test
-    environment: 'jsdom',
+    environment: process.env.TEST_ENVIRONMENT || 'happy-dom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     deps: {
-      inline: ['react-native-web', /tamagui/],
+      inline: [/^(?!.*vitest).*$/],
     },
   },
 })

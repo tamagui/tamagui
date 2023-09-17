@@ -1,4 +1,4 @@
-import { stylePropsText, stylePropsTextOnly, validStyles } from '@tamagui/helpers'
+import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
 
 import { createComponent } from '../createComponent'
 import { TamaguiTextElement, TextProps, TextPropsBase } from '../types'
@@ -55,16 +55,18 @@ export const Text = createComponent<TextProps, Text, TextPropsBase>({
       '...': () => null,
     },
 
-    selectable: {
-      true: {
-        userSelect: 'text',
-        cursor: 'text',
+    ...(process.env.TAMAGUI_TARGET === 'web' && {
+      selectable: {
+        true: {
+          userSelect: 'text',
+          cursor: 'text',
+        },
+        false: {
+          userSelect: 'none',
+          cursor: 'default',
+        },
       },
-      false: {
-        userSelect: 'none',
-        cursor: 'default',
-      },
-    },
+    }),
 
     ellipse: {
       true:

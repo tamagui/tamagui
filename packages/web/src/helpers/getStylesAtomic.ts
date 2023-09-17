@@ -29,8 +29,9 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, debug?: DebugPro
     }
   }
   res = [...res, ...generateAtomicStyles(stylesIn)]
+
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(` 🪮 getStylesAtomic`, { stylesIn, res })
   }
   return res
@@ -58,7 +59,7 @@ export const generateAtomicStyles = (
 
     // transform
     if (key === 'transform' && Array.isArray(style.transform)) {
-      val = val
+      val = (val as any[])
         .map(
           // { scale: 2 } => 'scale(2)'
           // { translateX: 20 } => 'translateX(20px)'

@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from 'vitest'
 
-import config from '../config-default-node'
+import config from '../config-default'
 import { createTamagui, getStylesAtomic } from '../core/src'
 
 beforeAll(() => {

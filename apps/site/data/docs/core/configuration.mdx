@@ -162,8 +162,8 @@ const config = createTamagui({
   // For web-only, media queries work out of the box and you can avoid the
   // `createMedia` call here by passing the media object directly.
 
-  // If targeting React Native, add this driver and `createMedia` call.
-  // `tamagui` and `config` do this for you automatically.
+  // If targeting React Native, add this driver and use this `createMedia` helper.
+  // If web-only you can leave out `createMedia` and just use an object.
   media: createMedia({
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
@@ -197,6 +197,11 @@ type AppConfig = typeof config
 // note - if using your own design system, put the package name here instead of tamagui
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
+
+  // if you want types for group styling props, define them like so:
+  interface TypeOverride {
+    groupNames(): 'a' | 'b' | 'c'
+  }
 }
 
 export default config
@@ -408,6 +413,33 @@ Things to note:
   - In the example above, `weight` is only defined at `4` and `6`.
   - At creation Tamagui fills in the missing keys with previous value, or the next one if no previous exists. So weight `1` === `300`, weight `5` === `300`, and weight `7` === `600`.
 
+#### Custom Font Family on Native
+
+You need to load your fonts for React Native to recognize them. Typically this looks something like if using Expo, (or you can [follow a React Native guide here](https://stackoverflow.com/questions/35255645/how-to-set-default-font-family-in-react-native)):
+
+```tsx
+import { useFonts } from 'expo-font'
+
+function App() {
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      // can hide splash screen here
+    }
+  }, [loaded])
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <MyApp />
+}
+```
+
 ---
 
 ### Non-font tokens
@@ -438,10 +470,7 @@ One final note: using tokens with themes. Tokens are considered a "fallback" to 
 
 ### Configuring tokens
 
-You have a few options on the configuration object that control how strict your style values are allowed to be.
-
-- ``
-- ``
+There are a few settings that control how strict your style values are allowed to be, which are handled by the `settings` option of `createTamagui`. See the [type strictness settings](#settings) below.
 
 ### Themes
 
@@ -650,6 +679,8 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
     },
   ]}
 />
+
+#### Type strictness
 
 _AllowedStyleValuesSetting_:
 

@@ -1,22 +1,11 @@
+import { apiRoute } from '@lib/apiRoute'
 import { getURL } from '@lib/helpers'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
 import { createOrRetrieveCustomer } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    const params = new URLSearchParams({ redirect_to: req.url ?? '' })
-    res.redirect(303, `/login?${params.toString()}`)
-    return
-  }
+export default apiRoute(async (req, res) => {
+  const { user } = await protectApiRoute({ req, res, shouldRedirect: true })
   // let priceId: string
 
   // const quantity =
@@ -105,21 +94,14 @@ const handler: NextApiHandler = async (req, res) => {
         quantity: 1,
       }
     }),
-    // @ts-ignore
-    custom_text: {
-      submit: {
-        message:
-          'A 50% coupon will be automatically applied on your subscription for future renewals.',
-      },
-    },
     customer: stripeCustomerId,
-    mode: 'subscription',
     discounts: promoCodeId
       ? [{ promotion_code: promoCodeId }]
       : couponId
       ? [{ coupon: couponId }]
       : undefined,
-    success_url: `${getURL()}/account/subscriptions`,
+    mode: 'payment',
+    success_url: `${getURL()}/payment-finished`,
     cancel_url: `${getURL()}/takeout`,
   })
 
@@ -128,10 +110,8 @@ const handler: NextApiHandler = async (req, res) => {
   //   .upsert({ id: user.id, stripe_customer_id: stripeSession.customer })
 
   if (stripeSession.url) {
-    res.redirect(303, stripeSession.url)
+    return res.redirect(303, stripeSession.url)
   }
 
-  res.status(500)
-}
-
-export default handler
+  throw new Error(`No stripe session URL in: ${JSON.stringify(stripeSession)}`)
+})

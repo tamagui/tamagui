@@ -1,5 +1,3 @@
-process.env.TAMAGUI_COMPILE_PROCESS = '1'
-
 import { basename } from 'path'
 
 import generator from '@babel/generator'
@@ -8,13 +6,7 @@ import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import { simpleHash } from '@tamagui/simple-hash'
-import {
-  TamaguiOptions,
-  createExtractor,
-  getPragmaOptions,
-  isSimpleSpread,
-  literalToAst,
-} from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -24,7 +16,15 @@ const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
 
+// default to native before requiring static
 process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'native'
+
+const {
+  createExtractor,
+  getPragmaOptions,
+  isSimpleSpread,
+  literalToAst,
+} = require('@tamagui/static')
 
 const extractor = createExtractor()
 
@@ -91,7 +91,8 @@ export default declare(function snackBabelPlugin(
 
           try {
             extractor.parseSync(root, {
-              target: 'native',
+              // @ts-expect-error in case they leave it out
+              platform: 'native',
               shouldPrintDebug,
               importsWhitelist: ['constants.js', 'colors.js'],
               deoptProps: new Set([
@@ -205,7 +206,11 @@ export default declare(function snackBabelPlugin(
                   props.node.attributes.push(
                     t.jsxAttribute(
                       t.jsxIdentifier('style'),
-                      t.jsxExpressionContainer(stylesExpr)
+                      t.jsxExpressionContainer(
+                        stylesExpr.elements.length === 1
+                          ? (stylesExpr.elements[0] as any)
+                          : stylesExpr
+                      )
                     )
                   )
                 }
@@ -225,7 +230,7 @@ export default declare(function snackBabelPlugin(
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {
-              // rome-ignore lint/nursery/noConsoleLog: ok
+              // biome-ignore lint/suspicious/noConsoleLog: ok
               console.log('END no styles')
             }
             return
@@ -245,9 +250,9 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           if (shouldPrintDebug) {
-            // rome-ignore lint/nursery/noConsoleLog: ok
+            // biome-ignore lint/suspicious/noConsoleLog: ok
             console.log('\n -------- output code ------- \n')
-            // rome-ignore lint/nursery/noConsoleLog: ok
+            // biome-ignore lint/suspicious/noConsoleLog: ok
             console.log(
               generator(root.parent)
                 .code.split('\n')

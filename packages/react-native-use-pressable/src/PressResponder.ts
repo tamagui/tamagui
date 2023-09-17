@@ -7,7 +7,6 @@
  *
  * @format
  */
-'use strict'
 
 const DELAY = 'DELAY'
 const ERROR = 'ERROR'

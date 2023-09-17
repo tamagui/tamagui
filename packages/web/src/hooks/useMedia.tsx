@@ -4,14 +4,18 @@ import { useMemo, useRef, useSyncExternalStore } from 'react'
 import { getConfig } from '../config'
 import { createProxy } from '../helpers/createProxy'
 import { matchMedia } from '../helpers/matchMedia'
+import { getTokenForKey } from '../helpers/propMapper'
 import { pseudoDescriptors } from '../helpers/pseudoDescriptors'
 import type {
+  GetStyleState,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
   MediaQueryState,
+  ResolveVariableAs,
   TamaguiInternalConfig,
 } from '../types'
+import { useTheme } from './useTheme'
 
 export let mediaState: MediaQueryState =
   // development only safeguard
@@ -42,7 +46,10 @@ export const mediaKeys = new Set<string>() // with $ prefix
 
 export const isMediaKey = (key: string) =>
   mediaKeys.has(key) ||
-  (key[0] === '$' && (key.startsWith('$platform-') || key.startsWith('$theme-')))
+  (key[0] === '$' &&
+    (key.startsWith('$platform-') ||
+      key.startsWith('$theme-') ||
+      key.startsWith('$group-')))
 
 // for SSR capture it at time of startup
 let initState: MediaQueryState
@@ -73,19 +80,24 @@ export const getMediaKeyImportance = (key: string) => {
 
 const dispose = new Set<Function>()
 
+let mediaVersion = 0
+
 export const configureMedia = (config: TamaguiInternalConfig) => {
   const { media, mediaQueryDefaultActive } = config
   if (!media) return
+  mediaVersion++
   for (const key in media) {
     mediaState[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
   }
   Object.assign(mediaQueryConfig, media)
   initState = { ...mediaState }
-  updateCurrentState()
   mediaKeysOrdered = Object.keys(media)
+
   if (config.disableSSR) {
     setupMediaListeners()
+  } else {
+    updateCurrentState()
   }
 }
 
@@ -99,23 +111,23 @@ function unlisten() {
  * Because to avoid hydration issues SSR must match the server
  * *and then* re-render with the actual media query state.
  */
-let configuredKey = ''
+let setupVersion = -1
 export function setupMediaListeners() {
   // avoid setting up more than once per config
-  const nextKey = JSON.stringify(mediaQueryConfig)
-  if (nextKey === configuredKey) return
-  configuredKey = nextKey
+  if (setupVersion === mediaVersion) return
+  setupVersion = mediaVersion
 
   // hmr, undo existing before re-binding
   unlisten()
 
   for (const key in mediaQueryConfig) {
-    const str = mediaObjectToString(mediaQueryConfig[key])
+    const str = mediaObjectToString(mediaQueryConfig[key], key)
     const getMatch = () => matchMedia(str)
     const match = getMatch()
     if (!match) {
       throw new Error('⚠️ No match')
     }
+
     // react native needs these deprecated apis for now
     match.addListener(update)
     dispose.add(() => {
@@ -143,8 +155,13 @@ export function useMediaListeners(config: TamaguiInternalConfig) {
 
 const listeners = new Set<any>()
 let flushing = false
+let flushVersion = -1
 function updateCurrentState() {
-  if (flushing) return
+  // only avoid flush if they haven't re-configured media queries since
+  if (flushing && flushVersion === mediaVersion) {
+    return
+  }
+  flushVersion = mediaVersion
   flushing = true
   Promise.resolve().then(() => {
     flushing = false
@@ -240,12 +257,18 @@ export function useMedia(uid?: any): UseMediaState {
  * */
 export function useMediaPropsActive<A extends Object>(
   props: A,
-  opts?: { expandShorthands?: boolean }
+  opts?: {
+    expandShorthands?: boolean
+    resolveValues?: ResolveVariableAs
+  }
 ): {
   // remove all media
   [Key in keyof A extends `$${string}` ? never : keyof A]?: A[Key]
 } {
   const media = useMedia()
+  const resolveAs = opts?.resolveValues || 'none'
+  const theme = resolveAs ? useTheme() : null
+  const styleState = { theme } as Partial<GetStyleState>
   const shouldExpandShorthands = opts?.expandShorthands
 
   return useMemo(() => {
@@ -265,7 +288,7 @@ export function useMediaPropsActive<A extends Object>(
           const subKeys = Object.keys(val)
           for (let j = subKeys.length; j--; j >= 0) {
             let subKey = subKeys[j]
-            const value = val[subKey]
+            const value = getTokenForKey(subKey, val[subKey], resolveAs, styleState)
             if (shouldExpandShorthands) {
               subKey = config.shorthands[subKey] || subKey
             }
@@ -276,12 +299,19 @@ export function useMediaPropsActive<A extends Object>(
         if (shouldExpandShorthands) {
           key = config.shorthands[key] || key
         }
-        mergeMediaByImportance(next, '', key, val, importancesUsed, true)
+        mergeMediaByImportance(
+          next,
+          '',
+          key,
+          getTokenForKey(key, val, resolveAs, styleState),
+          importancesUsed,
+          true
+        )
       }
     }
 
     return next
-  }, [media, props])
+  }, [media, props, theme, resolveAs])
 }
 
 export const getMediaImportanceIfMoreImportant = (
@@ -304,14 +334,18 @@ export function mergeMediaByImportance(
   key: string,
   value: any,
   importancesUsed: Record<string, number>,
-  isSizeMedia: boolean
+  isSizeMedia: boolean,
+  importanceBump?: number
 ) {
-  const importance = getMediaImportanceIfMoreImportant(
+  let importance = getMediaImportanceIfMoreImportant(
     mediaKey,
     key,
     importancesUsed,
     isSizeMedia
   )
+  if (importanceBump) {
+    importance = (importance || 0) + importanceBump
+  }
   if (importance === null) {
     return false
   }
@@ -324,11 +358,17 @@ function camelToHyphen(str: string) {
   return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 }
 
-export function mediaObjectToString(query: string | MediaQueryObject) {
+const cache = new WeakMap<any, string>()
+const cachedMediaKeyToQuery: Record<string, string> = {}
+
+export function mediaObjectToString(query: string | MediaQueryObject, key?: string) {
   if (typeof query === 'string') {
     return query
   }
-  return Object.entries(query)
+  if (cache.has(query)) {
+    return cache.get(query)!
+  }
+  const res = Object.entries(query)
     .map(([feature, value]) => {
       feature = camelToHyphen(feature)
       if (typeof value === 'string') {
@@ -340,4 +380,29 @@ export function mediaObjectToString(query: string | MediaQueryObject) {
       return `(${feature}: ${value})`
     })
     .join(' and ')
+  if (key) {
+    cachedMediaKeyToQuery[key] = res
+  }
+  cache.set(query, res)
+  return res
+}
+
+export function mediaKeyToQuery(key: string) {
+  return cachedMediaKeyToQuery[key] || mediaObjectToString(mediaQueryConfig[key], key)
+}
+
+export function mediaKeyMatch(
+  key: string,
+  dimensions: { width: number; height: number }
+) {
+  const mediaQueries = mediaQueryConfig[key]
+  const result = Object.keys(mediaQueries).every((query) => {
+    const expectedVal = +mediaQueries[query]
+    const isMax = query.startsWith('max')
+    const isWidth = query.endsWith('Width')
+    const givenVal = dimensions[isWidth ? 'width' : 'height']
+    // if not max then min
+    return isMax ? givenVal < expectedVal : givenVal > expectedVal
+  })
+  return result
 }

@@ -3,18 +3,15 @@
 import path from 'path'
 
 import { TamaguiOptions } from '@tamagui/static'
-import * as Static from '@tamagui/static'
+import { createExtractor, extractToClassNames, getPragmaOptions } from '@tamagui/static'
 import outdent from 'outdent'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath } from 'vite'
 
-const { createExtractor, extractToClassNames, getPragmaOptions } =
-  Static['default'] || Static
-
 const styleUpdateEvent = (fileId: string) => `tamagui-style-update:${fileId}`
 const GLOBAL_CSS_VIRTUAL_PATH = '__tamagui_global_css__.css'
 
-export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
+export function tamaguiExtractPlugin(options: Partial<TamaguiOptions>): Plugin {
   const disableStatic =
     options.disable || (options.disableDebugAttr && options.disableExtraction)
 
@@ -53,7 +50,7 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
     writeBundle(this, options, bundle) {
       setTimeout(() => {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.warn('some sort of dangling process or osmethign, exit for now...')
         process.exit(0)
       }, 100)
@@ -82,7 +79,11 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
 
     async resolveId(source) {
       if (source === 'tamagui.css') {
-        await extractor!.loadTamagui(options)
+        await extractor!.loadTamagui({
+          components: ['tamagui'],
+          platform: 'web',
+          ...options,
+        })
         return GLOBAL_CSS_VIRTUAL_PATH
       }
 
@@ -182,7 +183,11 @@ export function tamaguiExtractPlugin(options: TamaguiOptions): Plugin {
         extractor: extractor!,
         source: code,
         sourcePath: validId,
-        options,
+        options: {
+          components: ['tamagui'],
+          platform: 'web',
+          ...options,
+        },
         shouldPrintDebug,
       })
 

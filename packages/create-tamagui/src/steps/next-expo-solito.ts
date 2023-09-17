@@ -16,7 +16,7 @@ cd into the project using:
   ${chalk.green('cd')} ${projectName}
 `)
   }
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`
   To start the Next.js development server, run:
     ${chalk.green(runCommand('web'))}

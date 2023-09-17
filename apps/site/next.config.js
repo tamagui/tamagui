@@ -1,7 +1,6 @@
 Error.stackTraceLimit = Infinity
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
-process.env.TAMAGUI_TARGET = 'web'
 // process.env.TAMAGUI_ENABLE_DYNAMIC_LOAD = '1'
 
 /** @type {import('next').NextConfig} */
@@ -33,6 +32,7 @@ const plugins = [
     components: ['tamagui'],
     importsWhitelist: ['constants.js', 'colors.js'],
     logTimings: true,
+    enableDynamicEvaluation: true,
     disableExtraction,
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable', 'Animated', 'FlatList', 'Modal'],
   }),
@@ -101,19 +101,19 @@ module.exports = function (name, { defaultConfig }) {
         skipDefaultConversion: true,
       },
     },
-    async headers() {
-      return [
-        {
-          source: "/api/:path*",
-          headers: [
-            { key: "Access-Control-Allow-Origin", value: "*" },
-            // { key: "Access-Control-Allow-Credentials", value: "true" },
-            // { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
-            // { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
-          ]
-        }
-      ]
-    },
+    // async headers() {
+    //   return [
+    //     {
+    //       source: "/api/:path*",
+    //       headers: [
+    // { key: "Access-Control-Allow-Origin", value: "*" },
+    // { key: "Access-Control-Allow-Credentials", value: "true" },
+    // { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
+    // { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+    //       ]
+    //     }
+    //   ]
+    // },
     images: {
       remotePatterns: [
         {

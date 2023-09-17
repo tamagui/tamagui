@@ -1,11 +1,13 @@
 import { isAndroid, isWeb } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
 
+import { getConfig } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import { Variable, getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
   PropMapper,
+  ResolveVariableAs,
   SplitStyleProps,
   StyleResolver,
   TamaguiInternalConfig,
@@ -16,8 +18,6 @@ import { expandStylesAndRemoveNullishValues } from './expandStyles'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { pseudoDescriptors } from './pseudoDescriptors'
-
-export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
 export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => {
   if (!(process.env.TAMAGUI_TARGET === 'native' && isAndroid)) {
@@ -75,9 +75,9 @@ export const propMapper: PropMapper = (key, value, styleStateIn, subPropsIn) => 
 
   if (value) {
     if (value[0] === '$') {
-      value = getToken(key, value, styleProps, styleState)
+      value = getTokenForKey(key, value, styleProps.resolveVariablesAs, styleState)
     } else if (isVariable(value)) {
-      value = resolveVariableValue(value, styleProps)
+      value = resolveVariableValue(value, styleProps.resolveVariablesAs)
     }
   }
 
@@ -101,7 +101,7 @@ const resolveVariants: StyleResolver = (
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log({
       key,
       value,
@@ -134,7 +134,7 @@ const resolveVariants: StyleResolver = (
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.groupCollapsed('   expanded functional variant', key)
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log({ fn, variantValue, extras })
       console.groupEnd()
     }
@@ -151,7 +151,7 @@ const resolveVariants: StyleResolver = (
       styleState.fontFamily = fontFamilyResult
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`   updating font family`, fontFamilyResult)
       }
     }
@@ -220,7 +220,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
   const res = {}
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`   - resolveTokensAndVariants`, key, value)
   }
 
@@ -237,7 +237,9 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       if (parentVariantKey && parentVariantKey === key) {
         res[fKey] =
           // SYNC WITH *1
-          val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
+          val[0] === '$'
+            ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+            : val
       } else {
         const variantOut = resolveVariants(fKey, val, styleProps, styleState, key)
 
@@ -258,14 +260,16 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
     }
 
     if (isVariable(val)) {
-      res[fKey] = resolveVariableValue(val, styleProps)
+      res[fKey] = resolveVariableValue(val, styleProps.resolveVariablesAs)
       continue
     }
 
     if (typeof val === 'string') {
       const fVal =
         // SYNC WITH *1
-        val[0] === '$' ? getToken(fKey, val, styleProps, styleState) : val
+        val[0] === '$'
+          ? getTokenForKey(fKey, val, styleProps.resolveVariablesAs, styleState)
+          : val
       res[fKey] = fVal
       continue
     }
@@ -274,7 +278,7 @@ const resolveTokensAndVariants: StyleResolver<Object> = (
       const subObject = resolveTokensAndVariants(fKey, val, styleProps, styleState, key)
 
       if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`object`, fKey, subObject)
       }
 
@@ -335,20 +339,24 @@ const fontShorthand = {
   fontWeight: 'weight',
 }
 
-const getToken = (
+export const getTokenForKey = (
   key: string,
   value: string,
-  styleProps: SplitStyleProps,
-  styleState: GetStyleState
+  resolveAs: ResolveVariableAs = 'none',
+  styleState: Partial<GetStyleState>
 ) => {
-  const { theme, conf, languageContext, fontFamily } = styleState
+  if (resolveAs === 'none') {
+    return value
+  }
+
+  const { theme, conf = getConfig(), context, fontFamily } = styleState
 
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
-  if (value in theme) {
+  if (theme && value in theme) {
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(` - getting theme value for ${key} from ${value}`)
     }
     valOrVar = theme[value]
@@ -360,8 +368,8 @@ const getToken = (
     } else {
       switch (key) {
         case 'fontFamily': {
-          const fontsParsed = languageContext
-            ? getFontsForLanguage(conf.fontsParsed, languageContext)
+          const fontsParsed = context?.language
+            ? getFontsForLanguage(conf.fontsParsed, context.language)
             : conf.fontsParsed
           valOrVar = fontsParsed[value]?.family || value
           hasSet = true
@@ -371,12 +379,13 @@ const getToken = (
         case 'lineHeight':
         case 'letterSpacing':
         case 'fontWeight': {
-          const fam = fontFamily || styleState.conf.defaultFont
+          const defaultFont = conf.defaultFont || '$body'
+          const fam = fontFamily || defaultFont
           if (fam) {
-            const fontsParsed = languageContext
-              ? getFontsForLanguage(conf.fontsParsed, languageContext)
+            const fontsParsed = context?.language
+              ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
-            const font = fontsParsed[fam]
+            const font = fontsParsed[fam] || fontsParsed[defaultFont]
             valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }
@@ -403,7 +412,7 @@ const getToken = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(valOrVar, styleProps)
+    const out = resolveVariableValue(valOrVar, resolveAs)
     return out
   }
 
@@ -413,8 +422,8 @@ const getToken = (
     styleState.debug === 'verbose'
   ) {
     console.groupCollapsed('  ﹒ propMap (val)', key, value)
-    // rome-ignore lint/nursery/noConsoleLog: ok
-    console.log({ valOrVar, theme, hasSet }, theme[key])
+    // biome-ignore lint/suspicious/noConsoleLog: ok
+    console.log({ valOrVar, theme, hasSet }, theme ? theme[key] : '')
     console.groupEnd()
   }
 
@@ -423,8 +432,9 @@ const getToken = (
 
 function resolveVariableValue(
   valOrVar: Variable | any,
-  { resolveVariablesAs }: SplitStyleProps
+  resolveVariablesAs?: ResolveVariableAs
 ) {
+  if (resolveVariablesAs === 'none') return valOrVar
   if (isVariable(valOrVar)) {
     if (!isWeb || resolveVariablesAs === 'value') {
       return valOrVar.val

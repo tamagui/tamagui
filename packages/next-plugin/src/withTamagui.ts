@@ -14,6 +14,7 @@ export type WithTamaguiProps = TamaguiOptions & {
   enableLegacyFontSupport?: boolean
   aliasReactPackages?: boolean
   includeCSSTest?: RegExp | ((path: string) => boolean)
+  doesMutateThemes?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
   shouldExcludeFromServer?: (props: {
     context: string
@@ -65,7 +66,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 continue
               }
               if (process.env.DEBUG?.startsWith('tamagui')) {
-                // rome-ignore lint/nursery/noConsoleLog: ok
+                // biome-ignore lint/suspicious/noConsoleLog: ok
                 console.log(prefix, `withTamagui skipping resolving ${out}`, err)
               }
             }
@@ -161,7 +162,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         if (process.env.DEBUG) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log('Tamagui alias:', alias)
         }
 
@@ -173,19 +174,20 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         webpackConfig.resolve.alias = alias
 
-        webpackConfig.plugins.push(
-          new webpack.DefinePlugin({
-            'process.env.IS_STATIC': JSON.stringify(''),
-            'process.env.TAMAGUI_TARGET': '"web"',
-            'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
-            __DEV__: JSON.stringify(dev),
-            ...((tamaguiOptions.outputCSS || process.env.TAMAGUI_DOES_SSR_CSS) && {
-              'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
-                process.env.TAMAGUI_DOES_SSR_CSS ?? true
-              ),
-            }),
-          })
-        )
+        const defines = {
+          'process.env.IS_STATIC': JSON.stringify(''),
+          'process.env.TAMAGUI_TARGET': '"web"',
+          'process.env.TAMAGUI_IS_SERVER': JSON.stringify(isServer ? 'true' : ''),
+          __DEV__: JSON.stringify(dev),
+          ...((tamaguiOptions.outputCSS || process.env.TAMAGUI_DOES_SSR_CSS) && {
+            'process.env.TAMAGUI_DOES_SSR_CSS': JSON.stringify(
+              process.env.TAMAGUI_DOES_SSR_CSS ??
+                (tamaguiOptions?.doesMutateThemes === false ? true : 'mutates-themes')
+            ),
+          }),
+        }
+
+        webpackConfig.plugins.push(new webpack.DefinePlugin(defines))
 
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
@@ -212,7 +214,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
           if (process.env.DEBUG) {
-            // rome-ignore lint/nursery/noConsoleLog: ok
+            // biome-ignore lint/suspicious/noConsoleLog: ok
             console.log(prefix, 'ignoring tsconfig paths')
           }
           if (webpackConfig.resolve.plugins[0]) {

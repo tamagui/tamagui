@@ -13,7 +13,7 @@ const StyledInput = styled(Input, {
         },
       },
     },
-  },
+  } as const,
 })
 
 export function StyledInputFocusStyle() {

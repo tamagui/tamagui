@@ -354,7 +354,7 @@ type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
 interface DialogContentProps
   extends DialogContentFrameProps,
-    Omit<DialogContentTypeProps, 'context'> {
+    Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.

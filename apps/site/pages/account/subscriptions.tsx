@@ -62,9 +62,15 @@ const Subscriptions = () => {
       <H2>Subscriptions</H2>
       <YStack gap="$8">
         {subscriptions.length === 0 && (
-          <Paragraph ta="center" theme="alt1">
-            You don't have any subscriptions.
-          </Paragraph>
+          <YStack gap="$1">
+            <Paragraph ta="center" theme="alt1">
+              You don't have any subscriptions.
+            </Paragraph>
+            <Paragraph ta="center" theme="alt2">
+              You may need to refresh your page after a few seconds to see the new
+              subscriptions.
+            </Paragraph>
+          </YStack>
         )}
         {subscriptions.map((sub) => {
           return <SubscriptionDetail key={sub.id} subscription={sub} />
@@ -153,6 +159,8 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
       setIsLoading(false)
     }
   }
+  // override "trialing" cause we use it for handling several things but may get users confused so we just show "active"
+  const status = subscription.status === 'trialing' ? 'active' : subscription.status
 
   return (
     <YStack
@@ -207,9 +215,9 @@ const SubscriptionDetail = ({ subscription }: SubscriptionDetailProps) => {
             <SizableText>Status: </SizableText>
             <SizableText
               textTransform="capitalize"
-              color={subscription.status === 'active' ? '$green9' : '$yellow9'}
+              color={status === 'active' ? '$green9' : '$yellow9'}
             >
-              {subscription.status}
+              {status}
             </SizableText>
           </SizableText>
         </XStack>
@@ -299,9 +307,12 @@ const SubscriptionItem = ({
         },
         method: 'POST',
       })
+
       const data = await res.json()
 
-      if (data.message) {
+      if (!res.ok) {
+        alert(data?.error || `Error, response ${res.status} ${res.statusText}`)
+      } else if (data.message) {
         alert(data.message)
       }
     } finally {

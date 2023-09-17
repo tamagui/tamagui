@@ -25,6 +25,9 @@ export const SliderFrame = styled(DirectionalYStack, {
 
   variants: {
     size: (val, extras) => {
+      if (!val) {
+        return
+      }
       const orientation = extras.props.orientation
       const size = Math.round(getVariableValue(getSize(val)) / 6)
       if (orientation === 'horizontal') {

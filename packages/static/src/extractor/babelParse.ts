@@ -23,10 +23,15 @@ export const parserOptions: babelParser.ParserOptions = Object.freeze({
 
 const parser = babelParser.parse.bind(babelParser)
 
-export function babelParse(code: string | Buffer): t.File {
+export function babelParse(code: string | Buffer, fileName?: string): t.File {
+  const codeString = code.toString()
   try {
-    return parser(code.toString(), parserOptions) as any
+    return parser(codeString, parserOptions) as any
   } catch (err) {
-    throw new Error(`Error parsing babel: ${err} in code`)
+    throw new Error(
+      `Error parsing babel: ${err} in ${fileName}, code:\n${codeString}\n ${
+        (err as any).stack
+      }`
+    )
   }
 }

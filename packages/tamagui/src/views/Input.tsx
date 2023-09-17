@@ -253,6 +253,7 @@ export function useInputProps(props: InputProps, ref: any) {
 
   return {
     ref: combinedRef,
+    editable: !props.disabled,
     ...props,
     placeholderTextColor,
     onChangeText,

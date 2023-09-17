@@ -22,7 +22,6 @@ const tamaguiOptions = {
   components: ['tamagui'],
   importsWhitelist: ['constants.js'],
   disableExtraction,
-  // disableExtractFoundComponents: true,
 }
 
 /** @type { import('webpack').Configuration } */
@@ -106,9 +105,7 @@ module.exports = {
       process: {
         env: {
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
-          IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
-          TAMAGUI_TARGET: JSON.stringify(target),
           DEBUG: JSON.stringify(process.env.DEBUG || '0'),
         },
       },

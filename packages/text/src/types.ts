@@ -9,6 +9,7 @@ export type TextContextStyles = {
   letterSpacing?: SizableTextProps['letterSpacing']
   textAlign?: SizableTextProps['textAlign']
   ellipse?: SizableTextProps['ellipse']
+  maxFontSizeMultiplier?: number
 }
 
 export type TextParentStyles = TextContextStyles & {

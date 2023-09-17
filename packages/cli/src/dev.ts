@@ -1,12 +1,14 @@
 import { readFile, writeFile } from 'fs/promises'
 import { dirname, join, relative } from 'path'
 
+import * as babel from '@babel/core'
 import { CLIResolvedOptions } from '@tamagui/types'
 import viteReactPlugin, {
   swcTransform,
   transformForBuild,
 } from '@tamagui/vite-native-swc'
-import { getVitePath, nativePlugin, nativePrebuild } from '@tamagui/vite-plugin'
+import { getVitePath, nativePlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import { parse } from 'es-module-lexer'
 import { pathExists } from 'fs-extra'
@@ -21,32 +23,22 @@ export const dev = async (options: CLIResolvedOptions) => {
   const { root } = options
 
   process.on('uncaughtException', (err) => {
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err?.message || err)
   })
 
   const packageRootDir = join(__dirname, '..')
 
-  // build react-native
-  await nativePrebuild()
-
   // react native port (it scans 19000 +5)
   const port = options.port || 8081
 
+  const tamaguiVitePlugin = tamaguiPlugin({
+    ...options.tamaguiOptions,
+  })
+
   const plugins = [
-    // tamaguiPlugin({
-    //   ...options.tamaguiOptions,
-    //   target: 'native',
-    // }),
-    {
-      name: 'tamagui',
-      config() {
-        return {
-          define: {
-            'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
-          },
-        }
-      },
-    },
+    //
+    tamaguiVitePlugin,
   ] satisfies InlineConfig['plugins']
 
   if (process.env.IS_TAMAGUI_DEV) {
@@ -61,22 +53,12 @@ export const dev = async (options: CLIResolvedOptions) => {
   let serverConfig = {
     root,
     mode: 'development',
-    esbuild: false,
     clearScreen: false,
-    appType: 'custom',
 
     plugins: [
       ...plugins,
 
-      viteReactPlugin({
-        tsDecorators: true,
-        mode: 'serve',
-      }),
-
-      nativePlugin({
-        port,
-        mode: 'serve',
-      }),
+      react(),
 
       {
         name: 'tamagui-client-transform',
@@ -151,11 +133,18 @@ export const dev = async (options: CLIResolvedOptions) => {
 
             const hotUpdateSource = `exports = ((exports) => {
               const require = createRequire(${JSON.stringify(importsMap, null, 2)})
-              ${source.replace(`import.meta.hot.accept(() => {})`, ``)};
+              ${source
+                .replace(`import.meta.hot.accept(() => {})`, ``)
+                // replace import.meta.glob with empty array in hot reloads
+                .replaceAll(
+                  /import.meta.glob\(.*\)/gi,
+                  `globalThis['__importMetaGlobbed'] || {}`
+                )};
               return exports })({})`
 
             hotUpdatedCJSFiles.set(id, hotUpdateSource)
           } catch (err) {
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(`Error processing hmr update:`, err)
           }
         },
@@ -171,10 +160,7 @@ export const dev = async (options: CLIResolvedOptions) => {
   // first resolve config so we can pass into client plugin, then add client plugin:
   const resolvedConfig = await resolveConfig(serverConfig, 'serve')
 
-  const viteRNClient = clientInjectionsPlugin(resolvedConfig)
-
-  // @ts-ignore
-  plugins.push(viteRNClient)
+  const viteRNClientPlugin = clientInjectionsPlugin(resolvedConfig)
 
   serverConfig = {
     ...serverConfig,
@@ -191,8 +177,9 @@ export const dev = async (options: CLIResolvedOptions) => {
     // just so it thinks its loaded
     try {
       void server.transformRequest(id)
-    } catch(err) {
+    } catch (err) {
       // ok
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log('err', err)
     }
   })
@@ -210,9 +197,7 @@ export const dev = async (options: CLIResolvedOptions) => {
     indexJson: getIndexJsonReponse({ port, root }),
   })
 
-  getBundleCode()
-
-  // rome-ignore lint/nursery/noConsoleLog: ok
+  // biome-ignore lint/suspicious/noConsoleLog: ok
   console.log(`Listening on:`, chalk.green(`http://localhost:${port}`))
   server.printUrls()
 
@@ -224,6 +209,17 @@ export const dev = async (options: CLIResolvedOptions) => {
   await new Promise((res) => server.httpServer?.on('close', res))
 
   async function getBundleCode() {
+    // for easier quick testing things:
+    const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
+    if (await pathExists(tmpBundle)) {
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+      console.log(
+        '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
+        tmpBundle
+      )
+      return await readFile(tmpBundle, 'utf-8')
+    }
+
     if (isBuilding) {
       const res = await isBuilding
       return res
@@ -234,25 +230,106 @@ export const dev = async (options: CLIResolvedOptions) => {
       done = res
     })
 
-    // for easier quick testing things:
-    const tmpBundle = join(process.cwd(), 'bundle.tmp.js')
-    if (await pathExists(tmpBundle)) {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
-      console.log(
-        '⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ returning temp bundle ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️',
-        tmpBundle
-      )
-      return await readFile(tmpBundle, 'utf-8')
+    const jsxRuntime = {
+      alias: 'virtual:react-jsx',
+      contents: await readFile(
+        require.resolve('@tamagui/react-native-prebuilt/jsx-runtime'),
+        'utf-8'
+      ),
+    } as const
+
+    const virtualModules = {
+      'react-native': {
+        alias: 'virtual:react-native',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt'),
+          'utf-8'
+        ),
+      },
+      react: {
+        alias: 'virtual:react',
+        contents: await readFile(
+          require.resolve('@tamagui/react-native-prebuilt/react'),
+          'utf-8'
+        ),
+      },
+      'react/jsx-runtime': jsxRuntime,
+      'react/jsx-dev-runtime': jsxRuntime,
+    } as const
+
+    const swapRnPlugin = {
+      name: `swap-react-native`,
+      enforce: 'pre',
+
+      resolveId(id) {
+        if (id.startsWith('react-native/Libraries')) {
+          return `virtual:rn-internals:${id}`
+        }
+
+        for (const targetId in virtualModules) {
+          if (id === targetId || id.includes(`node_modules/${targetId}/`)) {
+            const info = virtualModules[targetId]
+            return info.alias
+          }
+        }
+      },
+
+      load(id) {
+        if (id.startsWith('virtual:rn-internals')) {
+          const idOut = id.replace('virtual:rn-internals:', '')
+          return `const val = __cachedModules["${idOut}"]
+          export const PressabilityDebugView = val.PressabilityDebugView
+          export default val ? val.default || val : val`
+        }
+
+        for (const targetId in virtualModules) {
+          const info = virtualModules[targetId as keyof typeof virtualModules]
+          if (id === info.alias) {
+            return info.contents
+          }
+        }
+      },
+    } as const
+
+    async function babelReanimated(input: string, filename: string) {
+      return await new Promise<string>((res, rej) => {
+        babel.transform(
+          input,
+          {
+            plugins: ['react-native-reanimated/plugin'],
+            filename,
+          },
+          (err: any, result) => {
+            if (!result || err) rej(err || 'no res')
+            res(result!.code!)
+          }
+        )
+      })
     }
 
     // build app
-    const buildOutput = await build({
+    const buildConfig = {
       plugins: [
-        ...plugins,
+        swapRnPlugin,
+
+        {
+          name: 'reanimated',
+
+          async transform(code, id) {
+            if (code.includes('worklet')) {
+              const out = await babelReanimated(code, id)
+              return out
+            }
+          },
+        },
+
+        viteRNClientPlugin,
+
         nativePlugin({
           port,
           mode: 'build',
         }),
+
         viteReactPlugin({
           tsDecorators: true,
           mode: 'build',
@@ -264,20 +341,28 @@ export const dev = async (options: CLIResolvedOptions) => {
       build: {
         ssr: false,
         minify: false,
+        commonjsOptions: {
+          transformMixedEsModules: true,
+        },
         rollupOptions: {
           treeshake: false,
           preserveEntrySignatures: 'strict',
           output: {
+            preserveModules: true,
             format: 'cjs',
           },
         },
       },
       mode: 'development',
       define: {
-        __DEV__: 'true',
         'process.env.NODE_ENV': `"development"`,
       },
-    })
+    } satisfies InlineConfig
+
+    // this fixes my swap-react-native plugin not being called pre 😳
+    await resolveConfig(buildConfig, 'build')
+
+    const buildOutput = await build(buildConfig)
 
     if (!('output' in buildOutput)) {
       throw `❌`
@@ -295,20 +380,19 @@ export const dev = async (options: CLIResolvedOptions) => {
           }
 
           return `
-___modules___["${module.fileName}"] = ((exports, module2) => {
+___modules___["${module.fileName}"] = ((exports, module) => {
   const require = createRequire(${JSON.stringify(importsMap, null, 2)})
 
-  ${module.code
-    .replace(`'use strict';`, '')
-    .replace('module.exports = ', 'module2.exports = ')}
+  ${module.code}
 })
 
 ${
   module.isEntry
     ? `
 // run entry
-__specialRequire("node_modules/react-native/index.js")
-__specialRequire("${module.fileName}")
+const __require = createRequire({})
+__require("react-native")
+__require("${module.fileName}")
 `
     : ''
 }
@@ -323,30 +407,14 @@ __specialRequire("${module.fileName}")
 
     appCode = appCode
       // this can be done in the individual file transform
-      .replace('undefined.accept(() => {})', '')
-      .replace('undefined.accept(function() {});', '') // swc
-      .replace(
-        `var require_react_refresh_runtime_development =`,
-        `var require_react_refresh_runtime_development = globalThis['__RequireReactRefreshRuntime__'] = `
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_Pressability = `,
-        `var require_Pressability = globalThis['__ReactPressability__'] =`
-      )
-      .replace(
-        `var require_usePressability = `,
-        `var require_usePressability = globalThis['__ReactUsePressability__'] =`
-      )
+      .replaceAll('undefined.accept(() => {})', '')
+      .replaceAll('undefined.accept(function() {});', '') // swc
 
     const templateFile = join(packageRootDir, 'react-native-template.js')
 
     const out = (await readFile(templateFile, 'utf-8')) + appCode
 
-    await writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
+    void writeFile(join(process.cwd(), '.tamagui', 'bundle.js'), out, 'utf-8')
 
     done(out)
     isBuilding = null

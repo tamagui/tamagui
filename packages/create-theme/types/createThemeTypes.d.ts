@@ -28,6 +28,7 @@ export type Template = {
 };
 export type ThemeUsingMask<Masks = string> = MaskOptions & {
     mask: Masks;
+    avoidNestingWithin?: string[];
     childOptions?: MaskOptions & {
         mask?: Masks;
     };

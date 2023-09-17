@@ -343,15 +343,15 @@ export const createThemes = <ColorsList extends string, BaseColorList extends st
     [key in LightColorKeys | keyof SubTheme]: Variable<string>
   }
 
-  const lightTheme = createTheme({
+  const lightTheme = {
     ...lightColors,
     ...lightThemes.light,
-  }) as BaseTheme
+  } as BaseTheme
 
-  const darkTheme = createTheme({
+  const darkTheme = {
     ...darkColors,
     ...darkThemes.dark,
-  }) as BaseTheme
+  } as BaseTheme
 
   const baseThemes = {
     // light

@@ -144,7 +144,7 @@ export function createAnimations<A extends Record<string, MotiTransition>>(
       const moti = useMotify(motiProps)
 
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log(`Moti animation:`, {
           animate,
           transition,

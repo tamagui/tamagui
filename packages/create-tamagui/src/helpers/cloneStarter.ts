@@ -7,7 +7,7 @@ import { copy, ensureDir, pathExists, remove } from 'fs-extra'
 import { rimraf } from 'rimraf'
 import { $, cd } from 'zx'
 
-import { IS_TEST } from '../constants'
+import { IS_TEST } from '../create-tamagui-constants'
 import { templates } from '../templates'
 
 const open = require('opn')
@@ -90,7 +90,7 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
 
     const cmd = `git clone --branch ${branch} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
-    }${sourceGitRepo} ${targetGitDir}`
+    }${sourceGitRepo} "${targetGitDir}"`
     console.log(`$ ${cmd}`)
     console.log()
 

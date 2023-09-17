@@ -40,12 +40,58 @@ export default (_options?: Options): PluginOption[] => {
       : undefined,
   }
 
+  const hasTransformed = {}
+
   return [
     {
       name: 'vite:react-swc',
-      config: () => ({
-        esbuild: false,
-      }),
+
+      config: (config) => {
+        return {
+          esbuild: false,
+
+          build: {
+            // idk why i need both..
+            rollupOptions: {
+              plugins: [
+                {
+                  name: `native-transform`,
+
+                  async transform(code, id) {
+                    let out = await transform(code, {
+                      filename: id,
+                      swcrc: false,
+                      configFile: false,
+                      sourceMaps: true,
+                      jsc: {
+                        target: 'es5',
+                        parser: id.endsWith('.tsx')
+                          ? { syntax: 'typescript', tsx: true, decorators: true }
+                          : id.endsWith('.ts')
+                          ? { syntax: 'typescript', tsx: false, decorators: true }
+                          : id.endsWith('.jsx')
+                          ? { syntax: 'ecmascript', jsx: true }
+                          : { syntax: 'ecmascript' },
+                        transform: {
+                          useDefineForClassFields: true,
+                          react: {
+                            development: true,
+                            runtime: 'automatic',
+                          },
+                        },
+                      },
+                    })
+
+                    hasTransformed[id] = true
+                    return out
+                  },
+                },
+              ],
+            },
+          },
+        }
+      },
+
       configResolved(config) {
         const mdxIndex = config.plugins.findIndex((p) => p.name === '@mdx-js/rollup')
         if (
@@ -62,18 +108,14 @@ export default (_options?: Options): PluginOption[] => {
           )
         }
       },
+
       async transform(code, _id, transformOptions) {
-        if (
-          _id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
-          _id.includes(`node_modules/react/index.js`) ||
-          _id.includes(`node_modules/react/cjs/react.development.js`) ||
-          _id.includes(`node_modules/react-native/index.js`) ||
-          _id.includes(`node_modules/react/cjs/react-jsx-dev-runtime.development.js`) ||
-          _id.includes(`packages/vite-native-client/`)
-        ) {
+        if (hasTransformed[_id]) return
+        if (_id.includes(`virtual:`)) {
           return
         }
         const out = await swcTransform(_id, code, options)
+        hasTransformed[_id] = true
         return out
       },
     },
@@ -114,13 +156,14 @@ export function wrapSourceInRefreshRuntime(id: string, code: string, options: Op
   const prefixCode =
     options.mode === 'build'
       ? `
-  // ensure it loads the react native js before the hmr js
-  import * as ____rn____ from 'react-native'
+  // ensure it loads react, react native, vite client
+  import 'react-native'
+  import 'react'
   import '@tamagui/vite-native-client'
   `
       : ``
 
-  return `const RefreshRuntime = globalThis['__RequireReactRefreshRuntime__']();
+  return `const RefreshRuntime = __cachedModules["react-native/node_modules/react-refresh/cjs/react-refresh-runtime.development"];
 const prevRefreshReg = globalThis.$RefreshReg$;
 const prevRefreshSig = globalThis.$RefreshSig$;
 globalThis.$RefreshReg$ = (type, id) => RefreshRuntime.register(type, "${id}" + " " + id);
@@ -153,7 +196,7 @@ export const transformForBuild = async (id: string, code: string) => {
     configFile: false,
     sourceMaps: true,
     jsc: {
-      target: 'es5',
+      target: 'es2019',
       parser: id.endsWith('.tsx')
         ? { syntax: 'typescript', tsx: true, decorators: true }
         : id.endsWith('.ts')
@@ -200,8 +243,15 @@ export const transformWithOptions = async (
       configFile: false,
       sourceMaps: true,
       module: {
-        type: options.mode === 'serve-cjs' ? 'commonjs' : 'nodenext',
+        type: 'nodenext',
       },
+      ...(options.mode === 'serve-cjs' && {
+        module: {
+          type: 'commonjs',
+          strict: true,
+          importInterop: 'node',
+        },
+      }),
       jsc: {
         target,
         parser,

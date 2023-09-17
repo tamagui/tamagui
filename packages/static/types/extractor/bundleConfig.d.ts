@@ -11,8 +11,9 @@ export type LoadedComponents = {
 };
 export type TamaguiProjectInfo = {
     components?: LoadedComponents[];
-    tamaguiConfig?: TamaguiInternalConfig;
+    tamaguiConfig?: TamaguiInternalConfig | null;
     nameToPaths?: NameToPaths;
+    cached?: boolean;
 };
 export declare const esbuildOptions: {
     define: {
@@ -35,6 +36,6 @@ export declare function bundleConfig(props: TamaguiOptions): Promise<{
     nameToPaths: {};
     tamaguiConfig: any;
 } | undefined>;
-export declare function loadComponents(props: TamaguiOptions): null | LoadedComponents[];
+export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

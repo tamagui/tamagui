@@ -7,19 +7,15 @@ export type ChangedThemeResponse = {
     isNewTheme: boolean;
     mounted?: boolean;
 };
-type ThemeGettable<Val> = Val & {
-    get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : X : Val extends VariableVal ? string | number : unknown);
+export type ThemeGettable<Val> = Val & {
+    get: () => string | (Val extends Variable<infer X> ? X extends VariableValGeneric ? any : Exclude<X, Variable> : Val extends VariableVal ? string | number : unknown);
 };
-type UseThemeResult = {
+export type UseThemeResult = {
     [Key in keyof ThemeParsed]: ThemeGettable<ThemeParsed[Key]>;
 };
 export declare const useTheme: (props?: ThemeProps) => UseThemeResult;
 export declare const useThemeWithState: (props: ThemeProps) => [ChangedThemeResponse, ThemeParsed];
-export declare function getThemeProxied({ theme, themeManager, }: {
-    theme: ThemeParsed;
-    themeManager?: ThemeManager;
-}, keys?: string[], debug?: DebugProp): UseThemeResult;
+export declare function getThemeProxied(theme: ThemeParsed, themeManager?: ThemeManager, keys?: string[], debug?: DebugProp): UseThemeResult;
 export declare const activeThemeManagers: Set<ThemeManager>;
 export declare const useChangeThemeEffect: (props: ThemeProps, root?: boolean, keys?: string[], shouldUpdate?: () => boolean | undefined) => ChangedThemeResponse;
-export {};
 //# sourceMappingURL=useTheme.d.ts.map

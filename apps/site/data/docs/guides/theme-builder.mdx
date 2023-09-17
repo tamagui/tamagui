@@ -342,7 +342,7 @@ Masks do one thing: they take an existing template, apply transformation, and re
 ```tsx
 {
   background: 0,
-  color: 11,
+  color: 6,
 }
 ```
 
@@ -351,17 +351,17 @@ And does this:
 ```tsx
 shiftRightMask({
   background: 0,
-  color: 11,
+  color: 5,
 })
 /**
  * => {
  *   background: 1,
- *   color: 12
+ *   color: 6
  * }
  */
 ```
 
-Is is useful? Not really, but it explains what they do.
+Is it useful? Not really, but it explains what they do.
 
 To understand their utility we can revisit component themes. Let's build it up again. We start with our base theme, `dark_blue`. It uses a template with background `0` and color `11`, which gives us a nice dark background and bright color.
 
@@ -382,7 +382,7 @@ const darkPalette = ['black', '#222', '#444', '#666', '#888', '#aaa', 'white']
 
 const baseTemplate = {
   background: 0,
-  color: 11,
+  color: 6,
 }
 
 const dark = createTheme(baseTemplate, darkPalette)

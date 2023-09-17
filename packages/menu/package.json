@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.53.2",
+  "version": "1.67.0",
   "sideEffects": [
     "*.css"
   ],
@@ -17,20 +17,20 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "1.53.2",
-    "@tamagui/popover": "1.53.2"
+    "@tamagui/core": "1.67.0",
+    "@tamagui/popover": "1.67.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.53.2",
+    "@tamagui/build": "1.67.0",
     "react": "^18.2.0"
   },
   "publishConfig": {

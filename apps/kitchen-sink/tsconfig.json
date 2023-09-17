@@ -1,4 +1,14 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "paths": {
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/*": [
+        "../../packages/*"
+      ],
+    },
+    "noEmit": true
+  },
   "extends": "../../tsconfig"
 }

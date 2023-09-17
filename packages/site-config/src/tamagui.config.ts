@@ -5,7 +5,7 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
 import { tokens } from '@tamagui/themes/v2'
 import { themes as themesIn } from '@tamagui/themes/v2-themes'
-import { CreateTamaguiProps } from '@tamagui/web'
+import { CreateTamaguiProps, setupDev } from '@tamagui/web'
 
 import { animations } from './animations.reanimated'
 import { createGenericFont } from './createGenericFont'
@@ -15,6 +15,10 @@ export { animations } from './animations.reanimated'
 
 export const cherryBombFont = createCherryBombFont()
 export const munroFont = createMunroFont()
+
+setupDev({
+  visualizer: true,
+})
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont(
@@ -42,12 +46,12 @@ const headingFont = createInterFont(
       6: 1,
       7: 0,
       8: 0,
-      9: -0.5,
-      10: -0.75,
-      11: -1,
-      12: -1.25,
-      14: -1.75,
-      15: -3,
+      9: -0.1,
+      10: -0.25,
+      11: -0.5,
+      12: -0.75,
+      14: -1,
+      15: -2,
     },
     // for native
     face: {
@@ -70,8 +74,6 @@ const bodyFont = createInterFont(
     sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 8 : 4)),
   }
 )
-
-type x = (typeof bodyFont)['size']
 
 const monoFont = createGenericFont(
   `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`,

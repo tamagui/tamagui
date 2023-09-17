@@ -17,7 +17,8 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
     onOpenChange?: (((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>) | undefined;
     position?: number | undefined;
     defaultPosition?: number | undefined;
-    snapPoints?: number[] | undefined;
+    snapPoints?: (string | number)[] | undefined;
+    snapPointsMode?: import("./types").SnapPointsMode | undefined;
     onPositionChange?: import("./types").PositionChangeHandler | undefined;
     children?: import("react").ReactNode;
     dismissOnOverlayPress?: boolean | undefined;
@@ -38,7 +39,18 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
 } & RefAttributes<View>> & {
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<View>> & {
         Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
+            /**
+             * By default the sheet adds a view below its bottom that extends down another 50%,
+             * this is useful if your Sheet has a spring animation that bounces "past" the top when
+             * opening, preventing it from showing the content underneath.
+             */
             disableHideBottomOverflow?: boolean | undefined;
+            /**
+             * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+             * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+             * turned on, the inner content is always set to the max height of the sheet.
+             */
+            adjustPaddingForOffscreenContent?: boolean | undefined;
         }>> & RefAttributes<unknown>>;
         Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
         Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;
@@ -51,7 +63,18 @@ export declare function createSheet<H extends SheetStyledComponent | TamaguiComp
         }>> & RefAttributes<import("react-native").ScrollView>>;
     };
     Frame: import("react").ForwardRefExoticComponent<import("react").PropsWithoutRef<SheetScopedProps<GetProps<F> & {
+        /**
+         * By default the sheet adds a view below its bottom that extends down another 50%,
+         * this is useful if your Sheet has a spring animation that bounces "past" the top when
+         * opening, preventing it from showing the content underneath.
+         */
         disableHideBottomOverflow?: boolean | undefined;
+        /**
+         * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+         * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+         * turned on, the inner content is always set to the max height of the sheet.
+         */
+        adjustPaddingForOffscreenContent?: boolean | undefined;
     }>> & RefAttributes<unknown>>;
     Overlay: import("react").MemoExoticComponent<(propsIn: SheetScopedProps<GetProps<typeof Overlay>>) => null>;
     Handle: ({ __scopeSheet, ...props }: SheetScopedProps<GetProps<typeof Handle>>) => JSX.Element | null;

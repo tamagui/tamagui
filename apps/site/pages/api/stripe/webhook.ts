@@ -1,5 +1,6 @@
 import { stripe } from '@lib/stripe'
 import {
+  addRenewalSubscription,
   deletePriceRecord,
   deleteProductRecord,
   deleteSubscriptionRecord,
@@ -78,8 +79,15 @@ const handler: NextApiHandler = async (req, res) => {
       await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
       break
 
+    case 'checkout.session.completed':
+      await addRenewalSubscription(event.data.object as Stripe.Checkout.Session)
+      break
+
     default:
-      console.log(`Unhandled event type ${event.type}`)
+      console.log(
+        `Unhandled event type ${event.type}`
+        // JSON.stringify(event.data, null, 2)
+      )
   }
 
   res.json({

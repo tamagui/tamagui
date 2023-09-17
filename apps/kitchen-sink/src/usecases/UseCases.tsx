@@ -56,7 +56,7 @@ const CustomButtonFrame = styled(ButtonFrame, {
     backgrounded: {
       true: {
         // not intellisensing...
-        backgroundColor: '',
+        backgroundColor: '$background',
       },
     },
   } as const,

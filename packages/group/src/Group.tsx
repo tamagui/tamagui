@@ -46,7 +46,6 @@ export const GroupFrame = styled(ThemeableStack, {
       false: {
         size: '$true',
         y: 0,
-        backgroundColor: '$background',
       },
     },
 
@@ -196,10 +195,19 @@ function createGroup(verticalDefault: boolean) {
   )
 }
 
-const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
-  const { __scopeGroup, children } = props
+export type GroupItemProps = {
+  children: React.ReactNode
+  /**
+   * forces the item to be a starting, center or ending item and gets the respective styles
+   */
+  forcePlacement?: 'first' | 'center' | 'last'
+}
+
+const GroupItem = (props: ScopedProps<GroupItemProps>) => {
+  const { __scopeGroup, children, forcePlacement } = props
   const groupItemProps = useGroupItem(
     { disabled: isValidElement(children) ? children.props.disabled : undefined },
+    forcePlacement,
     __scopeGroup
   )
 
@@ -221,6 +229,7 @@ const GroupItem = (props: ScopedProps<{ children: React.ReactNode }>) => {
 
 export const useGroupItem = (
   childrenProps: { disabled: boolean },
+  forcePlacement?: GroupItemProps['forcePlacement'],
   __scopeGroup?: Scope
 ) => {
   const treeIndex = useIndex()
@@ -237,8 +246,11 @@ export const useGroupItem = (
     throw Error('<Group.Item/> should only be used within a <Group/>')
   }
 
-  const isFirst = treeIndex.index === 0
-  const isLast = treeIndex.index === treeIndex.maxIndex
+  const isFirst =
+    forcePlacement === 'first' || (forcePlacement !== 'last' && treeIndex.index === 0)
+  const isLast =
+    forcePlacement === 'last' ||
+    (forcePlacement !== 'first' && treeIndex.index === treeIndex.maxIndex)
 
   const disabled = childrenProps.disabled ?? context.disabled
 

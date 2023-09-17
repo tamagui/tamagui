@@ -1,43 +1,25 @@
-import { Database } from '@lib/supabase-types'
-import { getArray, getSingle } from '@lib/supabase-utils'
-import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import * as apis from '@tamagui/studio/api'
-import { NextApiHandler } from 'next'
+import { apiRoute } from '@lib/apiRoute'
+import { setupCors } from '@lib/cors'
+import { checkSponsorAccess } from '@lib/getSponsorData'
+import { protectApiRoute } from '@lib/protectApiRoute'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
+let apis
+export default apiRoute(async (req, res) => {
+  try {
+    apis = await require('@tamagui/studio/api')
+  } catch (error) {
+    console.log('git-crypt is not unlocked. returning.', error)
+    res.status(500).json({})
     return
   }
-  res.json(user)
-
-  const teamsResult = await supabaseAdmin
-    .from('memberships')
-    .select('id, teams(*)')
-    .eq('user_id', user.id)
-
-  const teams = getArray(teamsResult.data)
-    .filter((t) => t?.teams)
-    .map((t) => getSingle(t!.teams!))
-
-  const hasAccess = teams.some((team) => team.is_active)
-
-  if (!hasAccess) {
-    res.status(403).json({
-      error: "You don't have access to this part of studio.",
-    })
-    return
-  }
+  setupCors(req, res)
+  const { supabase } = await protectApiRoute({ req, res })
+  await checkSponsorAccess({
+    req,
+    res,
+    supabase,
+    throwIfNoAccess: true,
+  })
 
   const procedureName = req.query.procedure
 
@@ -60,6 +42,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   res.status(405).json({})
-}
-
-export default handler
+})

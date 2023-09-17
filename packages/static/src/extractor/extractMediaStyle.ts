@@ -1,13 +1,10 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import {
-  TamaguiInternalConfig,
-  getStylesAtomic,
-  mediaObjectToString,
-} from '@tamagui/core-node'
+import type { TamaguiInternalConfig } from '@tamagui/core'
 import type { ViewStyle } from 'react-native'
 
 import { MEDIA_SEP } from '../constants'
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import type { StyleObject, TamaguiOptionsWithFileInfo, Ternary } from '../types'
 import { isPresent, isValidImport } from './extractHelpers'
 
@@ -20,6 +17,7 @@ export function extractMediaStyle(
   importance = 0,
   shouldPrintDebug: boolean | 'verbose' = false
 ) {
+  const { getStylesAtomic, mediaObjectToString } = requireTamaguiCore('web')
   const mt = getMediaQueryTernary(props, ternary, jsxPath, sourcePath)
   if (!mt) {
     return null
@@ -38,7 +36,7 @@ export function extractMediaStyle(
     getStyleObj(ternary.alternate, true),
   ].filter(isPresent)
   if (shouldPrintDebug && !styleOpts.length) {
-    // rome-ignore lint/nursery/noConsoleLog: ok
+    // biome-ignore lint/suspicious/noConsoleLog: ok
     console.log('  media query, no styles?')
     return null
   }
@@ -90,8 +88,8 @@ export function extractMediaStyle(
       }
     })
     if (shouldPrintDebug === 'verbose') {
-      // prettier-ignore
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
     }
     // add to output

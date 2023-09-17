@@ -1,13 +1,9 @@
-import { Database } from '@lib/supabase-types'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+export default apiRoute(async (req, res) => {
+  const { session, supabase } = await protectApiRoute({ req, res })
   const user = session?.user
 
   if (!user) {
@@ -16,6 +12,4 @@ const handler: NextApiHandler = async (req, res) => {
 
   await supabase.auth.signOut()
   res.redirect('/login')
-}
-
-export default handler
+})

@@ -36,8 +36,8 @@ function DialogInstance() {
       </Dialog.Trigger>
 
       <Adapt when="sm" platform="touch">
-        <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame padding="$4" gap>
+        <Sheet animation="medium" zIndex={200000} modal dismissOnSnapToBottom>
+          <Sheet.Frame padding="$4" gap="$4">
             <Adapt.Contents />
           </Sheet.Frame>
           <Sheet.Overlay
@@ -72,7 +72,7 @@ function DialogInstance() {
           ]}
           enterStyle={{ x: 0, y: -20, opacity: 0, scale: 0.9 }}
           exitStyle={{ x: 0, y: 10, opacity: 0, scale: 0.95 }}
-          gap
+          gap="$4"
         >
           <Dialog.Title>Edit profile</Dialog.Title>
           <Dialog.Description>
@@ -93,7 +93,7 @@ function DialogInstance() {
             <SelectDemoItem />
           </Fieldset>
 
-          <XStack alignSelf="flex-end" gap>
+          <XStack alignSelf="flex-end" gap="$4">
             <DialogInstance />
 
             <Dialog.Close displayWhenAdapted asChild>

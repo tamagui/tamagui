@@ -101,6 +101,10 @@ const tokens = {
 
 const tamaConf = createTamagui({
   ...config,
+  settings: {
+    allowedStyleValues: 'somewhat-strict',
+    autocompleteSpecificTokens: 'except-special',
+  },
   tokens,
   animations: search.includes('animationDriver=css')
     ? animationsCSS
@@ -114,6 +118,10 @@ export type Conf = typeof tamaConf
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
+
+  interface TypeOverride {
+    groupNames(): 'testy'
+  }
 }
 
 export default tamaConf

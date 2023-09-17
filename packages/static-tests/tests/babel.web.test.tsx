@@ -3,8 +3,6 @@ import { expect, test } from 'vitest'
 
 import { extractForWeb } from './lib/extract'
 
-process.env.IS_STATIC = ''
-
 window['React'] = React
 
 test('conditional styles get full base styles merged onto + shorthand', async () => {
@@ -20,6 +18,7 @@ import { Stack } from '@tamagui/core'
   `,
     {
       options: {
+        platform: 'web',
         components: ['@tamagui/core'],
       },
     }
@@ -42,6 +41,7 @@ test('className + conditional styles get full base styles merged onto + shorthan
   `,
     {
       options: {
+        platform: 'web',
         components: ['@tamagui/core'],
       },
     }

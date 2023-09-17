@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { expect, test } from 'vitest'
 
-import { extractForNative, extractForWeb } from './lib/extract'
+import { extractForNative } from './lib/extract'
 
 process.env.TAMAGUI_TARGET = 'native'
 process.env.IS_STATIC = ''
@@ -112,6 +112,6 @@ test(`normalize ternaries flips the conditional properly`, async () => {
 `
   const output = await extractForNative(inputCode)
   const outCode = output?.code ?? ''
-  expect(outCode).toContain(`props === 123 ? _sheet["2"] : _sheet["3"]`)
+  expect(outCode).toContain(`props === 123 ? _sheet["1"] : _sheet["2"]`)
   expect(outCode).toMatchSnapshot()
 })

@@ -1,22 +1,23 @@
 import { Stack, TamaguiProvider, Text } from '@tamagui/core'
+import { LogBox } from 'react-native'
 
-import { default as config } from './tamagui.config'
+import { config } from './tamagui.config'
+
+LogBox.ignoreAllLogs()
 
 export function App() {
   return (
     <TamaguiProvider config={config}>
       <Stack
+        gap="$5"
         f={1}
-        w="100%"
-        ai="center"
+        bg="limegreen"
         jc="center"
-        als="center"
-        m="auto"
-        bg="#3FB9C2"
-        h={400}
+        p="$8"
+        height="100%"
       >
-        <Text color="#8C4D86" fow="800" fos={70} ta="center">
-          vite + rn = ❤️
+        <Text ta="center" fontSize={50} col="#9DFFC8" fow="bold">
+          👋
         </Text>
       </Stack>
     </TamaguiProvider>

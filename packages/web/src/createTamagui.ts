@@ -1,7 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 
 import { configListeners, setConfig, setTokens } from './config'
-import { Variable, createVariable, isVariable } from './createVariable'
+import { Variable } from './createVariable'
 import { createVariables } from './createVariables'
 import { getThemeCSSRules } from './helpers/getThemeCSSRules'
 import {
@@ -235,23 +235,25 @@ ${runtimeStyles}`
 
   const getNewCSS: GetCSS = (opts) => getCSS({ ...opts, sinceLastCall: true })
 
-  const defaultFontName =
+  let defaultFontName =
     configIn.defaultFont ||
     // uses font named "body" if present for compat
-    ('body' in configIn.fonts ? 'body' : 0) ||
-    // defaults to the first font to make life easier
-    Object.keys(configIn.fonts)[0]
+    ('body' in configIn.fonts ? 'body' : '')
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (defaultFontName?.[0] === '$') {
-      throw new Error(`Pass defaultFont without a $ prefix (${configIn.defaultFont})`)
-    }
+  if (!defaultFontName && configIn.fonts) {
+    // defaults to the first font to make life easier
+    defaultFontName = Object.keys(configIn.fonts)[0]
+  }
+
+  if (defaultFontName[0] === '$') {
+    defaultFontName = defaultFontName.slice(1)
   }
 
   // ensure prefixed with $
   const defaultFont = `$${defaultFontName}`
 
   const config: TamaguiInternalConfig = {
+    groupNames: [],
     settings: {},
     onlyAllowShorthands: false,
     fontLanguages: [],
@@ -290,7 +292,7 @@ ${runtimeStyles}`
 
   if (process.env.NODE_ENV === 'development') {
     if (process.env.DEBUG?.startsWith('tamagui')) {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log('Tamagui config:', config)
     }
     if (!globalThis['Tamagui']) {

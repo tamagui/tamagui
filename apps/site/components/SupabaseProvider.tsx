@@ -1,4 +1,5 @@
 import { Database } from '@lib/supabase-types'
+import { supabaseCookieOptions } from '@lib/supabase-utils'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import {
   SessionContextProvider,
@@ -21,15 +22,7 @@ export const SupabaseProvider = ({
   const [supabaseClient] = useState(() =>
     createPagesBrowserClient<Database>({
       // supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      cookieOptions: isStudio
-        ? undefined
-        : {
-            domain: process.env.NODE_ENV === 'production' ? 'tamagui.dev' : 'localhost',
-            maxAge: 1000 * 60 * 60 * 24 * 365,
-            path: '/',
-            sameSite: 'lax',
-            secure: false,
-          },
+      cookieOptions: supabaseCookieOptions,
     })
   )
   return (

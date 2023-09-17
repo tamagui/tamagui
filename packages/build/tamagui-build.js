@@ -8,6 +8,7 @@ const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { dirname } = require('path')
+const alias = require('./esbuildAliasPlugin')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -15,7 +16,6 @@ const shouldSkipTypes = !!(
   process.argv.includes('--skip-types') || process.env.SKIP_TYPES
 )
 const shouldBundle = !!process.argv.includes('--bundle')
-const shouldIncludeMjs = !!process.argv.includes('--output-mjs')
 const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
@@ -23,11 +23,22 @@ const shouldWatch = process.argv.includes('--watch')
 const declarationToRoot = !!process.argv.includes('--declaration-root')
 const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
-const baseUrl = baseUrlIndex > -1 ? process.argv[baseUrlIndex] : '.'
+const tsProjectIndex = process.argv.indexOf('--ts-project')
+const baseUrl =
+  baseUrlIndex > -1 && process.argv[baseUrlIndex + 1]
+    ? process.argv[baseUrlIndex + 1]
+    : '.'
+const tsProject =
+  tsProjectIndex > -1 && process.argv[tsProjectIndex + 1]
+    ? process.argv[tsProjectIndex + 1]
+    : null
 
 const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
+const pkgSource = pkg.source
+const bundleNative = pkg.tamagui?.['bundle.native']
+const bundleNativeTest = pkg.tamagui?.['bundle.native.test']
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
 const pkgTypes = Boolean(pkg['types'] || pkg['typings'])
@@ -74,9 +85,9 @@ if (shouldWatch) {
 
   // do one js build but not types
   build({
-    skipTypes: true
+    skipTypes: true,
   })
-  
+
   chokidar
     // prevent infinite loop but cause race condition if you just build directly
     .watch('src', {
@@ -126,7 +137,7 @@ async function buildTsc() {
     shouldSkipInitialTypes = false
     return
   }
-  
+
   const targetDir = 'types'
   try {
     // typescripts build cache messes up when doing declarationOnly
@@ -135,12 +146,13 @@ async function buildTsc() {
 
     const declarationToRootFlag = declarationToRoot ? ' --declarationDir ./' : ''
     const baseUrlFlag = ignoreBaseUrl ? '' : ` --baseUrl ${baseUrl}`
-    const cmd = `tsc${baseUrlFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
+    const tsProjectFlag = tsProject ? ` --project ${tsProject}` : ''
+    const cmd = `tsc${baseUrlFlag}${tsProjectFlag} --outDir ${targetDir} --rootDir src ${declarationToRootFlag}--emitDeclarationOnly --declarationMap`
 
-    // console.log('\x1b[2m$', `npx ${cmd}`)
+    console.log('\x1b[2m$', `npx ${cmd}`)
     await exec('npx', cmd.split(' '))
   } catch (err) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(err.message)
     if (!shouldWatch) {
       process.exit(1)
@@ -154,117 +166,203 @@ async function buildJs() {
   if (skipJS) {
     return
   }
-  let files = (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-    (x) => !x.includes('.d.ts')
-  )
+
+  let files = shouldBundle
+    ? [pkgSource || './src/index.ts']
+    : (await fg(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
+        (x) => !x.includes('.d.ts')
+      )
+
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,
   })
 
   const external = shouldBundle ? ['@swc/*', '*.node'] : undefined
-  
+
+  /** @type { import('esbuild').BuildOptions } */
+  const esbuildBundleProps =
+    bundleNative || bundleNativeTest
+      ? {
+          entryPoints: [bundleNative],
+          bundle: true,
+          target: 'node16',
+          format: 'cjs',
+          jsx: 'automatic',
+          platform: 'node',
+          plugins: [
+            alias({
+              '@tamagui/web': require.resolve('@tamagui/web/native'),
+              'react-native': require.resolve('@tamagui/fake-react-native'),
+              'react-native/Libraries/Renderer/shims/ReactFabric': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Renderer/shims/ReactNative': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Pressability/Pressability': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native/Libraries/Pressability/usePressability': require.resolve(
+                '@tamagui/fake-react-native/idFn'
+              ),
+              'react-native-safe-area-context': require.resolve(
+                '@tamagui/fake-react-native'
+              ),
+              'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
+            }),
+          ],
+          external: ['react', 'react-dom'],
+          resolveExtensions: [
+            '.native.ts',
+            '.native.tsx',
+            '.native.js',
+            '.ts',
+            '.tsx',
+            '.js',
+            '.jsx',
+          ],
+          minify: process.env.MINIFY ? true : false,
+          define: {
+            'process.env.TAMAGUI_IS_CORE_NODE': '"1"',
+          },
+        }
+      : {}
+
   const start = Date.now()
   return await Promise.all([
+    // web output to cjs
     pkgMain
-      ? esbuildWriteIfChanged({
-          entryPoints: files,
-          outdir: flatOut ? 'dist' : 'dist/cjs',
-          bundle: shouldBundle,
-          external,
-          sourcemap: true,
-          sourcesContent: false,
-          target: 'node14',
-          keepNames: false,
-          format: 'cjs',
-          color: true,
-          allowOverwrite: true,
-          jsx: 'automatic',
-          logLevel: 'error',
-          plugins: shouldBundleNodeModules ? [] : [externalPlugin],
-          minify: process.env.MINIFY ? true : false,
-          platform: 'node',
-        })
+      ? esbuildWriteIfChanged(
+          {
+            entryPoints: files,
+            outdir: flatOut ? 'dist' : 'dist/cjs',
+            bundle: shouldBundle,
+            external,
+            target: 'node16',
+            format: 'cjs',
+            jsx: 'automatic',
+            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
+            minify: process.env.MINIFY ? true : false,
+            platform: 'node',
+          },
+          {
+            platform: 'web',
+          }
+        )
       : null,
+
+    // native output to cjs
+    pkgMain
+      ? esbuildWriteIfChanged(
+          {
+            entryPoints: files,
+            outdir: flatOut ? 'dist' : 'dist/cjs',
+            bundle: shouldBundle,
+            external,
+            target: 'node16',
+            format: 'cjs',
+            jsx: 'automatic',
+            plugins: shouldBundleNodeModules ? [] : [externalPlugin],
+            minify: process.env.MINIFY ? true : false,
+            platform: 'node',
+          },
+          {
+            platform: 'native',
+          }
+        )
+      : null,
+
+    // for tests to load native-mode from node
+    bundleNative
+      ? esbuildWriteIfChanged(
+          {
+            ...esbuildBundleProps,
+            outfile: `dist/native.js`,
+          },
+          {
+            platform: 'native',
+          }
+        )
+      : null,
+
+    // for tests to load native-mode from node
+    bundleNativeTest
+      ? esbuildWriteIfChanged(
+          {
+            ...esbuildBundleProps,
+            outfile: `dist/test.js`,
+          },
+          {
+            platform: 'native',
+            env: 'test',
+          }
+        )
+      : null,
+
+    // web output to esm
     pkgModule
-      ? esbuildWriteIfChanged({
-          entryPoints: files,
-          outdir: flatOut ? 'dist' : 'dist/esm',
-          bundle: shouldBundle,
-          external,
-          sourcemap: true,
-          sourcesContent: false,
-          target: 'node16',
-          keepNames: false,
-          jsx: 'automatic',
-          allowOverwrite: true,
-          format: 'esm',
-          color: true,
-          logLevel: 'error',
-          minify: process.env.MINIFY ? true : false,
-          platform: shouldBundle ? 'node' : 'neutral',
-        })
+      ? esbuildWriteIfChanged(
+          {
+            entryPoints: files,
+            outdir: flatOut ? 'dist' : 'dist/esm',
+            bundle: shouldBundle,
+            external,
+            target: 'esnext',
+            jsx: 'automatic',
+            allowOverwrite: true,
+            format: 'esm',
+            minify: process.env.MINIFY ? true : false,
+            platform: shouldBundle ? 'node' : 'neutral',
+          },
+          {
+            platform: 'web',
+          }
+        )
       : null,
-    pkgModule && shouldIncludeMjs
-      ? esbuildWriteIfChanged({
-          entryPoints: files,
-          outExtension: { '.js': '.mjs' },
-          outdir: flatOut ? 'dist' : 'dist/esm',
-          bundle: shouldBundle,
-          external,
-          sourcemap: true,
-          sourcesContent: false,
-          target: 'node16',
-          keepNames: false,
-          jsx: 'automatic',
-          allowOverwrite: true,
-          format: 'esm',
-          color: true,
-          logLevel: 'error',
-          minify: process.env.MINIFY ? true : false,
-          platform: shouldBundle ? 'node' : 'neutral',
-        })
-      : null,
-    pkgModuleJSX && shouldIncludeMjs
-      ? esbuildWriteIfChanged({
-          // only diff is jsx preserve and outdir
-          jsx: 'preserve',
-          outdir: flatOut ? 'dist' : 'dist/jsx',
-          outExtension: { '.js': '.mjs' },
-          entryPoints: files,
-          bundle: shouldBundle,
-          external,
-          sourcemap: true,
-          sourcesContent: false,
-          allowOverwrite: true,
-          target: 'es2020',
-          keepNames: false,
-          format: 'esm',
-          color: true,
-          logLevel: 'error',
-          minify: process.env.MINIFY ? true : false,
-          platform: 'neutral',
-        })
-      : null,
+
+    // jsx web
     pkgModuleJSX
-      ? esbuildWriteIfChanged({
-          // only diff is jsx preserve and outdir
-          jsx: 'preserve',
-          outdir: flatOut ? 'dist' : 'dist/jsx',
-          entryPoints: files,
-          bundle: shouldBundle,
-          sourcemap: true,
-          sourcesContent: false,
-          allowOverwrite: true,
-          target: 'es2020',
-          keepNames: false,
-          format: 'esm',
-          color: true,
-          logLevel: 'error',
-          minify: process.env.MINIFY ? true : false,
-          platform: 'neutral',
-        })
+      ? esbuildWriteIfChanged(
+          {
+            // only diff is jsx preserve and outdir
+            jsx: 'preserve',
+            outdir: flatOut ? 'dist' : 'dist/jsx',
+            entryPoints: files,
+            bundle: shouldBundle,
+            allowOverwrite: true,
+            target: 'esnext',
+            format: 'esm',
+            minify: process.env.MINIFY ? true : false,
+            platform: 'neutral',
+          },
+          {
+            platform: 'web',
+          }
+        )
+      : null,
+
+    // jsx native
+    pkgModuleJSX
+      ? esbuildWriteIfChanged(
+          {
+            // only diff is jsx preserve and outdir
+            jsx: 'preserve',
+            outdir: flatOut ? 'dist' : 'dist/jsx',
+            entryPoints: files,
+            bundle: shouldBundle,
+            allowOverwrite: true,
+            target: 'node16',
+            format: 'esm',
+            minify: process.env.MINIFY ? true : false,
+            platform: 'neutral',
+          },
+          {
+            platform: 'native',
+          }
+        )
       : null,
   ]).then(() => {
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
   })
 }
@@ -274,27 +372,114 @@ async function buildJs() {
  * @param {esbuild.BuildOptions} opts
  * @returns {Promise<void>}
  */
-async function esbuildWriteIfChanged(opts) {
-  if (shouldWatch) {
-    const built = await esbuild.build({ ...opts, write: false })
-    if (!built.outputFiles) {
-      return
-    }
-    await Promise.all(
-      built.outputFiles.map(async (file) => {
-        const outDir = dirname(file.path)
-        await fs.ensureDir(outDir)
-        const outString = new TextDecoder().decode(file.contents)
-        if (
-          !(await fs.pathExists(file.path)) ||
-          (await fs.readFile(file.path, 'utf8')) !== outString
-        ) {
-          // console.log('write', file.path)
-          await fs.writeFile(file.path, outString)
-        }
-      })
-    )
-  } else {
-    await esbuild.build(opts)
+async function esbuildWriteIfChanged(
+  /** @type { import('esbuild').BuildOptions } */
+  opts,
+  { platform, env } = {
+    platform: '',
+    env: '',
   }
+) {
+  if (!shouldWatch && !platform) {
+    return await esbuild.build(opts)
+  }
+
+  const built = await esbuild.build({
+    ...opts,
+
+    treeShaking: true,
+    minifySyntax: true,
+    // minifyIdentifiers: true,
+    write: false,
+    color: true,
+    allowOverwrite: true,
+    keepNames: false,
+    sourcemap: true,
+    sourcesContent: false,
+    logLevel: 'error',
+
+    ...(platform === 'web' && {
+      tsconfigRaw: {
+        compilerOptions: {
+          paths: {
+            'react-native': ['react-native-web'],
+          },
+        },
+      },
+    }),
+
+    define: {
+      ...(platform && {
+        'process.env.TAMAGUI_TARGET': `"${platform}"`,
+      }),
+      ...(env && {
+        'process.env.NODE_ENV': `"${env}"`,
+      }),
+      ...opts.define,
+    },
+  })
+
+  if (!built.outputFiles) {
+    return
+  }
+
+  const nativeFilesMap = Object.fromEntries(
+    built.outputFiles.flatMap((p) => {
+      if (p.path.includes('.native.js')) {
+        return [[p.path, true]]
+      }
+      return []
+    })
+  )
+
+  await Promise.all(
+    built.outputFiles.map(async (file) => {
+      let outPath = file.path
+
+      if (outPath.endsWith('.js') || outPath.endsWith('.js.map')) {
+        const [_, extPlatform] =
+          outPath.match(/(web|native|ios|android)\.js(\.map)?$/) ?? []
+
+        if (platform === 'native') {
+          if (!extPlatform && nativeFilesMap[outPath.replace('.js', '.native.js')]) {
+            // if native exists, avoid outputting non-native
+            return
+          }
+
+          if (extPlatform === 'web') {
+            return
+          }
+          if (!extPlatform) {
+            outPath = outPath.replace('.js', '.native.js')
+          }
+        }
+
+        if (platform === 'web') {
+          if (
+            extPlatform === 'native' ||
+            extPlatform === 'android' ||
+            extPlatform === 'ios'
+          ) {
+            return
+          }
+        }
+      }
+
+      const outDir = dirname(outPath)
+
+      await fs.ensureDir(outDir)
+      const outString = new TextDecoder().decode(file.contents)
+
+      if (shouldWatch) {
+        if (
+          !(await fs.pathExists(outPath)) ||
+          (await fs.readFile(outPath, 'utf8')) !== outString
+        ) {
+          await fs.writeFile(outPath, outString)
+        }
+      } else {
+        await fs.writeFile(outPath, outString)
+      }
+    })
+  )
 }

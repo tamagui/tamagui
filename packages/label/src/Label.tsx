@@ -50,11 +50,11 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSized(val, extras)
+        const buttonHeight = buttonStyle?.height
         const fontStyle = getFontSized(val as FontSizeTokens, extras)
-
         return {
           ...fontStyle,
-          lineHeight: extras.tokens.size[buttonStyle.height],
+          lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
         }
       },
     },
@@ -109,7 +109,6 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>(
     return (
       <LabelProvider id={id} controlRef={controlRef}>
         <LabelFrame
-          role="heading"
           id={id}
           // @ts-ignore
           htmlFor={htmlFor}

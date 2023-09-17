@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { validStyles } from '@tamagui/helpers'
+import { isClient, isServer, isWeb } from '@tamagui/constants'
+import { composeEventHandlers, validStyles } from '@tamagui/helpers'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import React, {
   Children,
@@ -12,35 +12,48 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from 'react'
 
-import { getConfig, onConfiguredOnce } from './config'
+import { devConfig, getConfig, onConfiguredOnce } from './config'
 import { stackDefaultStyles } from './constants/constants'
-import { FontLanguageContext } from './contexts/FontLanguageContext'
-import { TextAncestorContext } from './contexts/TextAncestorContext'
+import { ComponentContext } from './contexts/ComponentContext'
 import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
+import {
+  defaultComponentState,
+  defaultComponentStateMounted,
+  defaultComponentStateShouldEnter,
+} from './defaultComponentState'
+import {
+  createShallowSetState,
+  mergeIfNotShallowEqual,
+} from './helpers/createShallowSetState'
 import { useSplitStyles } from './helpers/getSplitStyles'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { themeable } from './helpers/themeable'
-import { useShallowSetState } from './helpers/useShallowSetState'
-import { useAnimationDriver } from './hooks/useAnimationDriver'
-import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import { mediaKeyMatch, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import { hooks } from './setupHooks'
 import {
+  ComponentContextI,
   DebugProp,
+  DisposeFn,
+  GroupState,
+  LayoutEvent,
   SpaceDirection,
   SpaceValue,
   SpacerProps,
+  StackProps,
   StaticConfig,
   TamaguiComponent,
   TamaguiComponentEvents,
   TamaguiComponentState,
   TamaguiElement,
   TamaguiInternalConfig,
+  TextProps,
   UseAnimationHook,
   UseAnimationProps,
 } from './types'
@@ -51,24 +64,6 @@ import { ThemeDebug } from './views/ThemeDebug'
 // this appears to fix expo / babel not picking this up sometimes? really odd
 process.env.TAMAGUI_TARGET
 
-export const defaultComponentState: TamaguiComponentState = {
-  hover: false,
-  press: false,
-  pressIn: false,
-  focus: false,
-  unmounted: true,
-}
-
-const defaultComponentStateMounted: TamaguiComponentState = {
-  ...defaultComponentState,
-  unmounted: false,
-}
-
-const defaultComponentStateShouldEnter: TamaguiComponentState = {
-  ...defaultComponentState,
-  unmounted: 'should-enter',
-}
-
 /**
  * All things that need one-time setup after createTamagui is called
  */
@@ -76,6 +71,10 @@ let tamaguiConfig: TamaguiInternalConfig
 let AnimatedText: any
 let AnimatedView: any
 let initialTheme: any
+let time: any
+
+let debugKeyListeners: Set<Function> | undefined
+let startVisualizer: Function | undefined
 
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
@@ -86,6 +85,48 @@ if (typeof document !== 'undefined') {
   addEventListener('mouseup', cancelTouches)
   addEventListener('touchend', cancelTouches)
   addEventListener('touchcancel', cancelTouches)
+
+  // hold option to see debug visualization
+  if (process.env.NODE_ENV === 'development') {
+    startVisualizer = () => {
+      const devVisualizerConfig = devConfig?.visualizer
+      if (devVisualizerConfig) {
+        debugKeyListeners = new Set()
+        let tm
+        let isShowing = false
+        const options = {
+          key: 'Alt',
+          delay: 800,
+          ...(typeof devVisualizerConfig === 'object' ? devVisualizerConfig : {}),
+        }
+
+        document.addEventListener('blur', () => {
+          clearTimeout(tm)
+        })
+
+        document.addEventListener('keydown', ({ key, defaultPrevented }) => {
+          if (defaultPrevented) return
+          clearTimeout(tm) // always clear so we dont trigger on chords
+          if (key === options.key) {
+            tm = setTimeout(() => {
+              isShowing = true
+              debugKeyListeners?.forEach((l) => l(true))
+            }, options.delay)
+          }
+        })
+
+        document.addEventListener('keyup', ({ key, defaultPrevented }) => {
+          if (defaultPrevented) return
+          if (key === options.key) {
+            clearTimeout(tm)
+            if (isShowing) {
+              debugKeyListeners?.forEach((l) => l(false))
+            }
+          }
+        })
+      }
+    }
+  }
 }
 
 /**
@@ -97,11 +138,15 @@ let BaseView: any
 let hasSetupBaseViews = false
 
 export function createComponent<
-  ComponentPropTypes extends Object = {},
+  ComponentPropTypes extends StackProps | TextProps = {},
   Ref = TamaguiElement,
   BaseProps = never
 >(staticConfig: StaticConfig) {
+  let config: TamaguiInternalConfig | null = null
+
   onConfiguredOnce((conf) => {
+    config = conf
+
     // one time only setup
     if (!tamaguiConfig) {
       tamaguiConfig = conf
@@ -111,7 +156,7 @@ export function createComponent<
         initialTheme = proxyThemeVariables(next)
         if (process.env.NODE_ENV === 'development') {
           if (!initialTheme) {
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log('Warning: Missing theme')
           }
         }
@@ -133,7 +178,7 @@ export function createComponent<
 
   if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.['debug']) {
     if (process.env.IS_STATIC !== 'is_static') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
         staticConfig,
         defaultProps,
@@ -142,7 +187,14 @@ export function createComponent<
     }
   }
 
-  const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+  const component = forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+    if (process.env.NODE_ENV === 'development') {
+      if (startVisualizer) {
+        startVisualizer()
+        startVisualizer = undefined
+      }
+    }
+
     if (process.env.TAMAGUI_TARGET === 'native') {
       // todo this could be moved to a cleaner location
       if (!hasSetupBaseViews) {
@@ -162,6 +214,8 @@ export function createComponent<
         propsIn['data-test-renders']['current'] += 1
       }
     }
+
+    const componentContext = useContext(ComponentContext)
 
     // set variants through context
     // order is after default props but before props
@@ -204,7 +258,7 @@ export function createComponent<
 
     // React inserts default props after your props for some reason...
     // order important so we do loops, you can't just spread because JS does weird things
-    let props: any
+    let props: StackProps | TextProps
     if (curDefaultProps) {
       props = mergeProps(curDefaultProps, propsIn)
     } else {
@@ -214,22 +268,75 @@ export function createComponent<
     const debugProp = props['debug'] as DebugProp
     const componentName = props.componentName || staticConfig.componentName
 
-    let time: any
+    if (process.env.NODE_ENV === 'development' && isClient) {
+      useEffect(() => {
+        let overlay: HTMLSpanElement | null = null
+
+        const debugVisualizerHandler = (show = false) => {
+          const node = hostRef.current as HTMLElement
+          if (!node) return
+
+          if (show) {
+            overlay = document.createElement('span')
+            overlay.style.inset = '0px'
+            overlay.style.zIndex = '1000000'
+            overlay.style.position = 'absolute'
+            overlay.style.borderColor = 'red'
+            overlay.style.borderWidth = '1px'
+            overlay.style.borderStyle = 'dotted'
+
+            const dataAt = node.getAttribute('data-at') || ''
+            const dataIn = node.getAttribute('data-in') || ''
+
+            const tooltip = document.createElement('span')
+            tooltip.style.position = 'absolute'
+            tooltip.style.top = '0px'
+            tooltip.style.left = '0px'
+            tooltip.style.padding = '3px'
+            tooltip.style.background = 'rgba(0,0,0,0.75)'
+            tooltip.style.color = 'rgba(255,255,255,1)'
+            tooltip.style.fontSize = '12px'
+            tooltip.style.lineHeight = '12px'
+            tooltip.style.fontFamily = 'monospace'
+            tooltip.style['webkitFontSmoothing'] = 'none'
+            tooltip.innerText = `${componentName || ''} ${dataAt} ${dataIn}`.trim()
+
+            overlay.appendChild(tooltip)
+            node.appendChild(overlay)
+          } else {
+            if (overlay) {
+              node.removeChild(overlay)
+            }
+          }
+        }
+        debugKeyListeners ||= new Set()
+        debugKeyListeners.add(debugVisualizerHandler)
+        return () => {
+          debugKeyListeners?.delete(debugVisualizerHandler)
+        }
+      }, [componentName])
+    }
+
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&
       process.env.NODE_ENV === 'development' &&
-      debugProp === 'profile'
+      debugProp === 'profile' &&
+      !time
     ) {
       const timer = require('@tamagui/timer').timer()
       time = timer.start()
     }
+    if (process.env.NODE_ENV === 'development' && time) time`start (ignore)`
 
-    const isHydrated = useDidFinishSSR()
+    const isHydrated = config?.disableSSR ? true : useDidFinishSSR()
+
+    if (process.env.NODE_ENV === 'development' && time) time`did-finish-ssr`
 
     // conditional but if ever true stays true
     // [animated, inversed]
     const stateRef = useRef(
       undefined as any as {
+        hasMeasured?: boolean
         hasAnimated?: boolean
         themeShallow?: boolean
         isListeningToTheme?: boolean
@@ -244,7 +351,7 @@ export function createComponent<
     /**
      * Component state for tracking animations, pseudos
      */
-    const animationsConfig = useAnimationDriver()
+    const animationsConfig = componentContext.animationDriver
     const useAnimations = animationsConfig?.useAnimations as UseAnimationHook | undefined
 
     // after we get states mount we need to turn off isAnimated for server side
@@ -283,8 +390,28 @@ export function createComponent<
       : states[0]
     const setState = states[1]
 
-    // TODO performance optimization could avoid useCallback and just have this be setStateShallow(setState, state) at call-sites
-    const setStateShallow = useShallowSetState(setState)
+    let setStateShallow = createShallowSetState(setState)
+
+    const groupName = props.group as any as string
+    const groupClassName = groupName ? `t_group_${props.group}` : ''
+
+    if (groupName) {
+      // when we set state we also set our group state and emit an event for children listening:
+      const groupContextState = componentContext.groups.state
+      const og = setStateShallow
+      setStateShallow = (state) => {
+        og(state)
+        componentContext.groups.emit(groupName, {
+          pseudo: state,
+        })
+        // and mutate the current since its concurrent safe (children throw it in useState on mount)
+        const next = {
+          ...groupContextState[groupName],
+          ...state,
+        }
+        groupContextState[groupName] = next
+      }
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
@@ -308,8 +435,8 @@ export function createComponent<
       : props.componentName
       ? `is_${props.componentName}`
       : defaultComponentClassName
-    const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
-    const languageContext = useContext(FontLanguageContext)
+
+    const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
     const isDisabled = props.disabled ?? props.accessibilityState?.disabled
 
     if (process.env.NODE_ENV === 'development' && time) time`use-context`
@@ -354,7 +481,7 @@ export function createComponent<
       }
     }
 
-    const isAnimatedReactNative = isAnimated && animationsConfig?.isReactNative
+    const isAnimatedReactNative = hasAnimationProp && animationsConfig?.isReactNative
     const isReactNative = Boolean(staticConfig.isReactNative || isAnimatedReactNative)
     const shouldAvoidClasses = Boolean(
       !isWeb || isAnimated || !staticConfig.acceptsClassName || propsIn.disableClassName
@@ -369,11 +496,13 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme-props`
 
+    if (props.themeShallow) {
+      stateRef.current.themeShallow = true
+    }
+
     const themeStateProps = {
       name: props.theme,
       componentName,
-      reset: props.reset,
-      inverse: props.themeInverse,
       // @ts-ignore this is internal use only
       disable: disableTheme,
       shallow: stateRef.current.themeShallow,
@@ -409,8 +538,8 @@ export function createComponent<
               state.hover ? 'HOVERED ' : ''
             }${state.focus ? 'FOCUSED' : ' '}`
           )
-          // prettier-ignore
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log({
             propsIn,
             props,
@@ -426,7 +555,7 @@ export function createComponent<
             useAnimations,
             propsInOrder: Object.keys(propsIn),
             propsOrder: Object.keys(props),
-          });
+          })
           console.groupEnd()
         }
       }
@@ -464,7 +593,6 @@ export function createComponent<
     const styleProps = {
       mediaState,
       noClassNames,
-      hasTextAncestor,
       resolveVariablesAs,
       isExiting,
       isAnimated,
@@ -479,10 +607,15 @@ export function createComponent<
       state,
       styleProps,
       null,
-      languageContext || undefined,
+      componentContext,
       elementType,
       debugProp
     )
+
+    // hide strategy will set this opacity = 0 until measured
+    if (props.group && props.untilMeasured === 'hide' && !stateRef.current.hasMeasured) {
+      splitStyles.style.opacity = 0
+    }
 
     if (process.env.NODE_ENV === 'development' && time) time`split-styles`
 
@@ -503,7 +636,7 @@ export function createComponent<
     })
 
     // animation setup
-    const isAnimatedReactNativeWeb = isAnimated && isReactNative
+    const isAnimatedReactNativeWeb = hasAnimationProp && isReactNative
 
     if (process.env.NODE_ENV === 'development') {
       if (!process.env.TAMAGUI_TARGET) {
@@ -514,22 +647,29 @@ export function createComponent<
 
       if (debugProp && debugProp !== 'profile') {
         console.groupCollapsed('>>>')
-        // prettier-ignore
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
-        console.log("props in", propsIn, "mapped to", props, "in order", Object.keys(props));
-        // rome-ignore lint/nursery/noConsoleLog: <explanation>
+
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log(
+          'props in',
+          propsIn,
+          'mapped to',
+          props,
+          'in order',
+          Object.keys(props)
+        )
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('splitStyles', splitStyles)
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('media', { shouldListenForMedia, isMediaArray, mediaListeningKeys })
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log('className', Object.values(splitStyles.classNames))
         if (isClient) {
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('ref', hostRef, '(click to view)')
         }
         console.groupEnd()
         if (debugProp === 'break') {
-          // rome-ignore lint/suspicious/noDebugger: ok
+          // biome-ignore lint/suspicious/noDebugger: ok
           debugger
         }
       }
@@ -559,7 +699,6 @@ export function createComponent<
         styleProps,
         theme: themeState.state.theme!,
         pseudos: pseudos || null,
-        onDidAnimate: props.onDidAnimate,
         hostRef,
         staticConfig,
       })
@@ -599,9 +738,18 @@ export function createComponent<
       ...nonTamaguiProps
     } = viewPropsIn
 
+    if (process.env.NODE_ENV === 'development' && props.untilMeasured && !props.group) {
+      console.warn(
+        `You set the untilMeasured prop without setting group. This doesn't work, be sure to set untilMeasured on the parent that sets group, not the children that use the $group- prop.\n\nIf you meant to do this, you can disable this warning - either change untilMeasured and group at the same time, or do group={conditional ? 'name' : undefined}`
+      )
+    }
+
     if (process.env.NODE_ENV === 'development' && time) time`destructure`
 
-    const disabled = props.accessibilityState?.disabled || props.accessibilityDisabled
+    const disabled =
+      props.accessibilityState?.disabled ||
+      // @ts-expect-error (comes from core)
+      props.accessibilityDisabled
 
     // these can ultimately be for DOM, react-native-web views, or animated views
     // so the type is pretty loose
@@ -609,6 +757,24 @@ export function createComponent<
 
     if (isHOC && _themeProp) {
       viewProps.theme = _themeProp
+    }
+
+    if (groupName) {
+      nonTamaguiProps.onLayout = composeEventHandlers(
+        nonTamaguiProps.onLayout,
+        (e: LayoutEvent) => {
+          componentContext.groups.emit(groupName, {
+            layout: e.nativeEvent.layout,
+          })
+
+          // force re-render if measure strategy is hide
+          if (!stateRef.current.hasMeasured && props.untilMeasured === 'hide') {
+            setState((prev) => ({ ...prev }))
+          }
+
+          stateRef.current.hasMeasured = true
+        }
+      )
     }
 
     // if react-native-web view just pass all props down
@@ -623,7 +789,8 @@ export function createComponent<
       viewProps = nonTamaguiProps
     }
 
-    viewProps.ref = useComposedRefs(hostRef as any, forwardedRef)
+    const composedRef = useComposedRefs(hostRef as any, forwardedRef)
+    viewProps.ref = composedRef
 
     if (process.env.NODE_ENV === 'development') {
       if (!isReactNative && !isText && isWeb && !isHOC) {
@@ -640,19 +807,24 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`events-hooks`
 
-    const unPress = useCallback(() => {
+    let unPress = () =>
       setStateShallow({
         press: false,
         pressIn: false,
       })
-    }, [])
 
-    const shouldSetMounted = needsMount && state.unmounted
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      // needs to be referentially stable for web as we add to mouseUps
+      unPress = useCallback(unPress, [])
+    }
 
     // combined multiple effects into one for performance so be careful with logic
     // should not be a layout effect because otherwise it wont render the initial state
     // for example css driver needs to render once with the first styles, then again with the next
     // if its a layout effect it will just skip that first render output
+    const shouldSetMounted = needsMount && state.unmounted
+    const { pseudoGroups, mediaGroups } = splitStyles
+
     useEffect(() => {
       if (shouldSetMounted) {
         const unmounted =
@@ -664,10 +836,50 @@ export function createComponent<
         // no need for mouseUp removal effect if its not even mounted yet
       }
 
+      // parent group pseudo listening
+      let disposeGroupsListener: DisposeFn | undefined
+      if (pseudoGroups || mediaGroups) {
+        const current = {
+          pseudo: {},
+          media: {},
+        } satisfies GroupState
+        disposeGroupsListener = componentContext.groups.subscribe(
+          (name, { layout, pseudo }) => {
+            if (pseudo && pseudoGroups?.has(name)) {
+              // we emit a partial so merge it + change reference so mergeIfNotShallowEqual runs
+              Object.assign(current.pseudo, pseudo)
+              persist()
+            } else if (layout && mediaGroups) {
+              const mediaState = getMediaState(mediaGroups, layout)
+              const next = mergeIfNotShallowEqual(current.media, mediaState)
+              if (next !== current.media) {
+                Object.assign(current.media, next)
+                persist()
+              }
+            }
+            function persist() {
+              setStateShallow({
+                // force it to be referentially different so it always updates
+                group: {
+                  ...state.group,
+                  [name]: current,
+                },
+              })
+            }
+          }
+        )
+      }
+
       return () => {
+        disposeGroupsListener?.()
         mouseUps.delete(unPress)
       }
-    }, [shouldSetMounted, state.unmounted])
+    }, [
+      shouldSetMounted,
+      state.unmounted,
+      pseudoGroups ? Object.keys([...pseudoGroups]).join('') : 0,
+      mediaGroups ? Object.keys([...mediaGroups]).join('') : 0,
+    ])
 
     const avoidAnimationStyle = keepStyleSSR && state.unmounted === true
 
@@ -690,6 +902,7 @@ export function createComponent<
         componentName ? componentClassName : '',
         fontFamilyClassName,
         classNames ? Object.values(classNames).join(' ') : '',
+        groupClassName,
       ]
       className = classList.join(' ')
 
@@ -724,14 +937,29 @@ export function createComponent<
       viewProps.style = style
     }
 
+    // if its a group its gotta listen for pseudos to emit them to children
+
     const runtimePressStyle = !disabled && noClassNames && pseudos?.pressStyle
     const attachPress = Boolean(
-      runtimePressStyle || onPress || onPressOut || onPressIn || onLongPress || onClick
+      groupName ||
+        runtimePressStyle ||
+        onPress ||
+        onPressOut ||
+        onPressIn ||
+        onLongPress ||
+        onClick
     )
     const runtimeHoverStyle = !disabled && noClassNames && pseudos?.hoverStyle
     const isHoverable =
       isWeb &&
-      !!(runtimeHoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+      !!(
+        groupName ||
+        runtimeHoverStyle ||
+        onHoverIn ||
+        onHoverOut ||
+        onMouseEnter ||
+        onMouseLeave
+      )
 
     const handlesPressEvents = !(isWeb || asChild)
 
@@ -785,7 +1013,6 @@ export function createComponent<
                   setStateShallow({
                     press: true,
                     pressIn: true,
-                    hover: false,
                   })
                   onPressIn?.(e)
                   onMouseDown?.(e)
@@ -800,15 +1027,20 @@ export function createComponent<
                   // @ts-ignore
                   isWeb && onClick?.(e)
                   onPress?.(e)
-                }
-              : undefined,
-            onLongPress:
-              attachPress && onLongPress
-                ? (e) => {
-                    unPress()
+                  if (process.env.TAMAGUI_TARGET === 'web') {
                     onLongPress?.(e)
                   }
-                : undefined,
+                }
+              : undefined,
+            ...(process.env.TAMAGUI_TARGET === 'native' && {
+              onLongPress:
+                attachPress && onLongPress
+                  ? (e) => {
+                      unPress()
+                      onLongPress?.(e)
+                    }
+                  : undefined,
+            }),
           }
         : null
 
@@ -829,17 +1061,12 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`events`
 
     if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`events`, { events, isHoverable, attachPress })
     }
 
     // EVENTS native
     hooks.useEvents?.(viewProps, events, splitStyles, setStateShallow)
-
-    const shouldReset = !!(themeShallow && themeState.isNewTheme)
-    if (shouldReset) {
-      stateRef.current.themeShallow = true
-    }
 
     const direction = props.spaceDirection || 'both'
 
@@ -870,12 +1097,63 @@ export function createComponent<
       })
     }
 
-    content = createElement(elementType, viewProps, content)
+    if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
+
+    // perf - unwrap View
+    if (
+      // in test mode disable perf unwrapping so react-testing-library finds Text properly
+      process.env.NODE_ENV !== 'test' &&
+      process.env.TAMAGUI_TARGET === 'native' &&
+      (elementType === BaseText || elementType === BaseView)
+    ) {
+      // instead of rendering a whole sub component, just grab the contents directly
+      // we could further improve this performance by actually just doing this ourselves
+      viewProps.children = content
+      content = elementType.render(viewProps, viewProps.ref)
+    } else {
+      content = createElement(elementType, viewProps, content)
+    }
+
+    if (process.env.NODE_ENV === 'development' && time) time`create-element`
+
+    // must override context so siblings don't clobber initial state
+    const subGroupContext = useMemo(() => {
+      if (!groupName) return
+      // change reference so context value updates
+      return {
+        ...componentContext.groups,
+        // change reference so as we mutate it doesn't affect siblings etc
+        state: {
+          ...componentContext.groups.state,
+          [groupName]: {
+            pseudo: initialState,
+            // capture just initial width and height if they exist
+            // will have top, left, width, height (not x, y)
+            layout: {
+              width: fromPx(splitStyles.style.width as any),
+              height: fromPx(splitStyles.style.height as any),
+            } as any,
+          },
+        },
+      } satisfies ComponentContextI['groups']
+    }, [groupName])
+
+    if (groupName && subGroupContext) {
+      content = (
+        <ComponentContext.Provider groups={subGroupContext}>
+          {content}
+        </ComponentContext.Provider>
+      )
+    }
+
+    if (process.env.NODE_ENV === 'development' && time) time`group-context`
 
     // disable theme prop is deterministic so conditional hook ok here
     content = disableThemeProp
       ? content
       : useThemedChildren(themeState, content, themeStateProps)
+
+    if (process.env.NODE_ENV === 'development' && time) time`themed-children`
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'visualize') {
       content = (
@@ -889,7 +1167,7 @@ export function createComponent<
       if (events || isAnimatedReactNativeWeb) {
         content = (
           <span
-            className={`${isAnimatedReactNativeWeb ? className : ''}  _dsp_contents`}
+            className={`${isAnimatedReactNativeWeb ? className : ''} _dsp_contents`}
             {...(events && {
               onMouseEnter: events.onMouseEnter,
               onMouseLeave: events.onMouseLeave,
@@ -920,19 +1198,18 @@ export function createComponent<
         const element = typeof elementType === 'string' ? elementType : 'Component'
         console.groupCollapsed(`render <${element} /> with props`)
         try {
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('viewProps', viewProps)
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('viewPropsOrder', Object.keys(viewProps))
           for (const key in viewProps) {
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log(' - ', key, viewProps[key])
           }
-          // rome-ignore lint/nursery/noConsoleLog: <explanation>
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('children', content)
           if (typeof window !== 'undefined') {
-            // prettier-ignore
-            // rome-ignore lint/nursery/noConsoleLog: <explanation>
+            // biome-ignore lint/suspicious/noConsoleLog: <explanation>
             console.log({
               viewProps,
               state,
@@ -946,8 +1223,8 @@ export function createComponent<
               handlesPressEvents,
               willBeAnimated,
               isStringElement,
-              classNamesIn: props.className?.split(" "),
-              classNamesOut: viewProps.className?.split(" "),
+              classNamesIn: props.className?.split(' '),
+              classNamesOut: viewProps.className?.split(' '),
               events,
               shouldAttach,
               pseudos,
@@ -961,7 +1238,7 @@ export function createComponent<
               elementType,
               initialState,
               classNames,
-            });
+            })
           }
         } catch {
           // RN can run into PayloadTooLargeError: request entity too large
@@ -973,7 +1250,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) {
       time`rest`
-      time.print()
+      if (!globalThis['willPrint']) {
+        globalThis['willPrint'] = true
+        setTimeout(() => {
+          delete globalThis['willPrint']
+          time.print()
+          time = null
+        }, 50)
+      }
     }
 
     return content
@@ -1001,6 +1285,7 @@ export function createComponent<
       ...extended,
       neverFlatten: true,
       isHOC: true,
+      isStyledHOC: false,
     }
   }
 
@@ -1038,7 +1323,7 @@ Unspaced['isUnspaced'] = true
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
-
+// @ts-expect-error we override
 export const Spacer = createComponent<SpacerProps>({
   acceptsClassName: true,
   memo: true,
@@ -1189,7 +1474,7 @@ export function spacedChildren(props: SpacedChildrenProps) {
 
   if (process.env.NODE_ENV === 'development') {
     if (props.debug) {
-      // rome-ignore lint/nursery/noConsoleLog: <explanation>
+      // biome-ignore lint/suspicious/noConsoleLog: <explanation>
       console.log(`  Spaced children`, final, props)
     }
   }
@@ -1238,3 +1523,17 @@ function hasAnimatedStyleValue(style: Object) {
     return val && typeof val === 'object' && '_animation' in val
   })
 }
+
+function getMediaState(
+  mediaGroups: Set<string>,
+  layout: LayoutEvent['nativeEvent']['layout']
+) {
+  return Object.fromEntries(
+    [...mediaGroups].map((mediaKey) => {
+      return [mediaKey, mediaKeyMatch(mediaKey, layout as any)]
+    })
+  )
+}
+
+const fromPx = (val?: number | string) =>
+  typeof val !== 'string' ? val : +val.replace('px', '')

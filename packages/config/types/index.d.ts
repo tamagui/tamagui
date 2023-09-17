@@ -1,7 +1,9 @@
+import { themes } from '@tamagui/themes';
 export * from './media';
 export * from './createGenericFont';
 export * from './animations';
 export declare const config: {
+    themes: typeof themes;
     animations: import("@tamagui/web").AnimationDriver<{
         '100ms': {
             type: "timing";
@@ -15,6 +17,11 @@ export declare const config: {
         lazy: {
             damping: number;
             stiffness: number;
+        };
+        medium: {
+            damping: number;
+            stiffness: number;
+            mass: number;
         };
         slow: {
             damping: number;
@@ -34,7 +41,6 @@ export declare const config: {
     defaultFont: string;
     shouldAddPrefersColorThemes: true;
     themeClassNameOnRoot: true;
-    themes: typeof import("@tamagui/themes/types/generated-new");
     media: {
         xl: {
             maxWidth: number;
@@ -812,8 +818,8 @@ export declare const config: {
                     normal: string;
                 };
             };
-        }, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        }, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13 | "true">;
         mono: {
             weight: {
                 1: string;
@@ -837,7 +843,19 @@ export declare const config: {
                 16: number;
             };
         };
-        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 11 | 12 | 14 | 16 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
+    mediaQueryDefaultActive: {
+        xl: boolean;
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        xs: boolean;
+        xxs: boolean;
+    };
+    selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string;
+        color: string;
+    } | null;
 };
 //# sourceMappingURL=index.d.ts.map

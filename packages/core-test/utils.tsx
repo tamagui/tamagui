@@ -1,11 +1,13 @@
-import { TamaguiComponent, defaultComponentState, getSplitStyles } from '../core/src'
+import { SplitStyleProps, TamaguiComponent, getSplitStyles } from '../core/src'
+import { defaultComponentState } from '../web/src/defaultComponentState'
 
 const emptyObj = {} as any
 
 const styleProps = {
   mediaState: undefined,
   isAnimated: false,
-}
+  resolveVariablesAs: 'auto',
+} satisfies SplitStyleProps
 
 export function simplifiedGetSplitStyles(
   component: TamaguiComponent,

@@ -9,6 +9,7 @@ function matchMediaFallback(query: string): MediaQueryList {
     console.warn('warning: matchMedia implementation is not provided.')
   }
   return {
+    match: (a, b) => false,
     addListener: () => {},
     removeListener: () => {},
     matches: false,

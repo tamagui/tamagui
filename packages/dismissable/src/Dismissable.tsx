@@ -158,18 +158,14 @@ const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>(
           ...props.style,
         }}
         onFocusCapture={composeEventHandlers(
-          // @ts-ignore
           props.onFocusCapture,
           focusOutside.onFocusCapture
         )}
         onBlurCapture={composeEventHandlers(
-          // @ts-ignore
           props.onBlurCapture,
           focusOutside.onBlurCapture
         )}
-        // @ts-ignore
         onPointerDownCapture={composeEventHandlers(
-          // @ts-ignore
           props.onPointerDownCapture,
           pointerDownOutside.onPointerDownCapture
         )}

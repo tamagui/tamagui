@@ -24,6 +24,9 @@ export type MutateOneThemeProps = {
   theme: PartialTheme
 }
 
+// need to name the batch in case the theme amount changes so it removes properly
+type Batch = boolean | string
+
 // more advanced helper used only internally in studio for now
 export function mutateThemes({
   themes,
@@ -35,7 +38,7 @@ export function mutateThemes({
   // if using batch, know that if you later on do addTheme/etc it will break things
   // batch is only useful if you know youre only ever going to change these themes using batch
   // aka only in studio as a preview mode
-  batch?: boolean
+  batch?: Batch
 }) {
   const allThemesProxied: Record<string, ThemeParsed> = {}
   const allThemesRaw: Record<string, ThemeParsed> = {}
@@ -151,7 +154,7 @@ function notifyThemeManagersOfUpdate(themeName: string, theme: ThemeParsed) {
   })
 }
 
-function insertThemeCSS(themes: Record<string, PartialTheme>, batch = false) {
+function insertThemeCSS(themes: Record<string, PartialTheme>, batch: Batch = false) {
   if (process.env.TAMAGUI_TARGET !== 'web') {
     return []
   }
@@ -163,7 +166,6 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch = false) {
     const theme = themes[themeName]
 
     const rules = getThemeCSSRules({
-      // @ts-ignore this works but should be fixed types
       config,
       themeName,
       names: [themeName],
@@ -178,7 +180,7 @@ function insertThemeCSS(themes: Record<string, PartialTheme>, batch = false) {
   }
 
   if (batch) {
-    const id = simpleHash(Object.keys(themes).join(','))
+    const id = simpleHash(typeof batch == 'string' ? batch : Object.keys(themes).join(''))
     updateStyle(`t_theme_style_${id}`, cssRules)
   }
 
@@ -190,6 +192,7 @@ function updateStyle(id: string, rules: string[]) {
   const style = document.createElement('style')
   style.id = id
   style.appendChild(document.createTextNode(rules.join('\n')))
+  console.log('UPDATE', { id, rules, existing })
   document.head.appendChild(style)
   if (existing) {
     existing.parentElement?.removeChild(existing)

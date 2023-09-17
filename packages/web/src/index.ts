@@ -9,10 +9,13 @@ export * from './createVariable'
 export * from './createVariables'
 export * from './insertFont'
 export * from './styled'
-export * from './types'
 export * from './setupReactNative'
 
+export * from './types'
+export * from './interfaces/GetRef'
+
 export {
+  setupDev,
   getConfig,
   getThemes,
   getTokens,
@@ -22,6 +25,8 @@ export {
 } from './config'
 
 export * from './constants/constants'
+
+export * from './contexts/ComponentContext'
 
 export * from './helpers/createStyledContext'
 export * from './helpers/expandStyles'
@@ -42,16 +47,14 @@ export * from './helpers/proxyThemeToParents'
 export * from './helpers/pseudoDescriptors'
 export * from './helpers/themeable'
 export * from './helpers/themes'
-export * from './helpers/useShallowSetState'
+export * from './helpers/createShallowSetState'
 export * from './helpers/withStaticProperties'
-
-export * from './contexts/ButtonNestingContext'
 
 export {
   configureMedia,
-  getMedia,
   mediaState,
   useMedia,
+  getMedia,
   useMediaPropsActive,
   mediaObjectToString,
   mediaQueryConfig,
@@ -67,14 +70,12 @@ export * from './views/Slot'
 export * from './views/Stack'
 export * from './views/View'
 export * from './views/Text'
-export * from './contexts/TextAncestorContext'
 export * from './views/Theme'
 export * from './views/ThemeProvider'
 export * from './views/FontLanguage'
 export * from './views/TamaguiProvider'
 export * from './views/AnimationDriverProvider'
 
-export * from '@tamagui/use-force-update'
 export * from '@tamagui/use-did-finish-ssr'
 export * from '@tamagui/use-event'
 export * from '@tamagui/compose-refs'

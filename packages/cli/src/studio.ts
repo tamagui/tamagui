@@ -4,7 +4,7 @@ import { dirname, join } from 'path'
 
 import { watchTamaguiConfig } from '@tamagui/static'
 import { CLIResolvedOptions } from '@tamagui/types'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiExtractPlugin, tamaguiPlugin } from '@tamagui/vite-plugin'
 import viteReactPlugin from '@vitejs/plugin-react-swc'
 import chalk from 'chalk'
 import express from 'express'
@@ -23,8 +23,6 @@ export const studio = async (
   isRemote = false,
   isBuild = false
 ) => {
-  process.env.TAMAGUI_TARGET = 'web'
-
   await ensureDir(options.paths.dotDir)
   const configWatchPromise = watchTamaguiConfig(options.tamaguiOptions)
 
@@ -40,7 +38,9 @@ export const studio = async (
 
     const { default: getPort } = await import('get-port')
     const { paths } = options
-    const root = dirname(dirname(dirname(resolve('@tamagui/studio'))))
+    const root = dirname(dirname(resolve('@tamagui/studio')))
+
+    console.log('root', root)
 
     const [serverPort, vitePort] = await Promise.all([
       getPort({
@@ -67,8 +67,18 @@ export const studio = async (
       build: {
         rollupOptions: {},
       },
+      resolve: {
+        alias: {
+          '@tamagui/animations-moti': '@tamagui/animations-react-native',
+        },
+      },
       plugins: [
         tamaguiPlugin({
+          components: ['tamagui'],
+        }),
+        tamaguiExtractPlugin({
+          config: './src/tamagui.config.ts',
+          disableExtraction: true,
           components: ['tamagui'],
         }),
         viteReactPlugin({

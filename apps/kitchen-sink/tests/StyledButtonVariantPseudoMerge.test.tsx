@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 
-import { getPressStyle } from './utils'
 import { setupPage } from './test-utils'
+import { getPressStyle } from './utils'
 
 test.beforeEach(async ({ page }) => {
-  await setupPage(page, { name: "StyledButtonVariantPseudoMerge", type: "useCase" })
+  await setupPage(page, { name: 'StyledButtonVariantPseudoMerge', type: 'useCase' })
 })
 
 test(`pseudo + variant with pseudo should merge`, async ({ page }) => {

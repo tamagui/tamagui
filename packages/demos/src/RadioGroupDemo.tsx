@@ -1,8 +1,8 @@
-import { Label, RadioGroup, SizeTokens, ThemeableStack, XStack, YStack } from 'tamagui'
+import { Label, RadioGroup, SizeTokens, XStack, YStack } from 'tamagui'
 
 export function RadioGroupDemo() {
   return (
-    <RadioGroup defaultValue="3" name="form">
+    <RadioGroup aria-labelledby="Select one item" defaultValue="3" name="form">
       <YStack width={300} alignItems="center" space="$2">
         <RadioGroupItemWithLabel size="$3" value="2" label="Second value" />
         <RadioGroupItemWithLabel size="$4" value="3" label="Third value" />

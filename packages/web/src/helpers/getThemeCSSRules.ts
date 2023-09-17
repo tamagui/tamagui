@@ -13,7 +13,9 @@ export function getThemeCSSRules(props: {
 }) {
   const cssRuleSets: string[] = []
 
-  if (
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    return cssRuleSets
+  } else if (
     !process.env.TAMAGUI_DOES_SSR_CSS ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'mutates-themes' ||
     process.env.TAMAGUI_DOES_SSR_CSS === 'false'
@@ -21,7 +23,7 @@ export function getThemeCSSRules(props: {
     const { config, themeName, theme, names } = props
 
     // special case for SSR
-    const hasDarkLight = 'light' in config.themes && 'dark' in config.themes
+    const hasDarkLight = 'light' in config.themes || 'dark' in config.themes
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
     let vars = ''
 
@@ -40,17 +42,19 @@ export function getThemeCSSRules(props: {
       vars += `--${simpleHash(themeKey, 40)}:${value};`
     }
 
-    const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
+    const isDarkBase = themeName === 'dark'
+    const isLightBase = themeName === 'light'
     const baseSelectors = names.map((name) => `${CNP}${name}`)
     const selectorsSet = new Set(baseSelectors)
 
     // since we dont specify dark/light in classnames we have to do an awkward specificity war
     // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
     if (hasDarkLight) {
+      const maxDepth = config.maxDarkLightNesting ?? 3
+
       for (const subName of names) {
-        const isDark = themeName === 'dark' || subName.startsWith('dark_')
-        const isLight = themeName === 'light' || themeName.startsWith('light_')
-        const maxDepth = config.maxDarkLightNesting ?? 3
+        const isDark = isDarkBase || subName.startsWith('dark_')
+        const isLight = !isDark && (isLightBase || subName.startsWith('light_'))
 
         if (!(isDark || isLight)) {
           // neither light nor dark subtheme, just generate one selector with :root:root which
@@ -60,45 +64,38 @@ export function getThemeCSSRules(props: {
         }
 
         const childSelector = `${CNP}${subName.replace(/^(dark|light)_/, '')}`
+        const order = isDark ? ['dark', 'light'] : ['light', 'dark']
+        const [stronger, weaker] = order
+        const numSelectors = Math.round(maxDepth * 1.5)
 
-        const [altLightDark] = [isDark ? ['dark', 'light'] : ['light', 'dark']]
+        for (let depth = 0; depth < numSelectors; depth++) {
+          const isOdd = depth % 2 === 1
 
-        for (const order of [altLightDark]) {
-          if (isDarkOrLightBase) {
-            order.reverse()
+          // wtf is this continue:
+          if (isOdd && depth < 3) {
+            continue
           }
-          const [stronger, weaker] = order
-          const numSelectors = Math.round(maxDepth * 1.5)
 
-          for (let depth = 0; depth < numSelectors; depth++) {
-            const isOdd = depth % 2 === 1
+          const parents = new Array(depth + 1).fill(0).map((_, psi) => {
+            return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+          })
 
-            // wtf is this continue:
-            if (isOdd && depth < 3) {
-              continue
-            }
+          let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
 
-            const parents = new Array(depth + 1).fill(0).map((_, psi) => {
-              return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
-            })
-
-            let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
-
-            if (isOdd) {
-              const [_first, second, ...rest] = parentSelectors
-              parentSelectors = [second, ...rest, second]
-            }
-
-            const lastParentSelector = parentSelectors[parentSelectors.length - 1]
-            const nextChildSelector =
-              childSelector === lastParentSelector ? '' : childSelector
-
-            // for light/dark/light:
-            selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
-            selectorsSet.add(
-              `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
-            )
+          if (isOdd) {
+            const [_first, second, ...rest] = parentSelectors
+            parentSelectors = [second, ...rest, second]
           }
+
+          const lastParentSelector = parentSelectors[parentSelectors.length - 1]
+          const nextChildSelector =
+            childSelector === lastParentSelector ? '' : childSelector
+
+          // for light/dark/light:
+          selectorsSet.add(`${parentSelectors.join(' ')} ${nextChildSelector}`.trim())
+          selectorsSet.add(
+            `${parentSelectors.join(' ')} ${nextChildSelector}.is_inversed`.trim()
+          )
         }
       }
     }
@@ -150,7 +147,7 @@ export function getThemeCSSRules(props: {
 
     if (config.selectionStyles) {
       const selectionSelectors = baseSelectors.map((s) => `${s} ::selection`).join(', ')
-      const rules = config.selectionStyles(theme)
+      const rules = config.selectionStyles(theme as any)
       if (rules) {
         const styles = Object.entries(rules)
           .flatMap(([k, v]) =>

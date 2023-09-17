@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "1.53.2",
+  "version": "1.67.0",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -15,8 +15,8 @@
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "../../node_modules/.bin/rome check src",
-    "lint:fix": "../../node_modules/.bin/rome check --apply src",
+    "lint": "../../node_modules/.bin/biome check src",
+    "lint:fix": "../../node_modules/.bin/biome check --apply-unsafe src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -27,25 +27,24 @@
     "reset.css"
   ],
   "dependencies": {
-    "@tamagui/compose-refs": "1.53.2",
-    "@tamagui/constants": "1.53.2",
-    "@tamagui/helpers": "1.53.2",
-    "@tamagui/normalize-css-color": "1.53.2",
-    "@tamagui/timer": "1.53.2",
-    "@tamagui/use-did-finish-ssr": "1.53.2",
-    "@tamagui/use-event": "1.53.2",
-    "@tamagui/use-force-update": "1.53.2"
+    "@tamagui/compose-refs": "1.67.0",
+    "@tamagui/constants": "1.67.0",
+    "@tamagui/helpers": "1.67.0",
+    "@tamagui/normalize-css-color": "1.67.0",
+    "@tamagui/timer": "1.67.0",
+    "@tamagui/use-did-finish-ssr": "1.67.0",
+    "@tamagui/use-force-update": "1.67.0"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.53.2",
-    "@testing-library/react": "^13.4.0",
+    "@tamagui/build": "1.67.0",
+    "@testing-library/react": "^14.0.0",
     "csstype": "^3.0.10",
     "react": "^18.2.0",
-    "typescript": "^5.1.3",
-    "vitest": "^0.26.3"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.3"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -54,6 +53,10 @@
       "types": "./types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./native": {
+      "import": "./dist/esm/index.native.js",
+      "require": "./dist/cjs/index.native.js"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",

@@ -42,7 +42,11 @@ export const createVariables = <A extends DeepTokenObject>(
     name = parentPath ? `${parentPath}-${name}` : niceKey
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(tokens[key] as any, name, isFont)
+      res[key] = createVariables(
+        tokens[key] as any,
+        name,
+        false /* note: don't pass isFont down, we want to avoid it past the first level */
+      )
       continue
     }
     const finalValue = isVariable(val)

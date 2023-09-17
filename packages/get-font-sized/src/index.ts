@@ -22,13 +22,17 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   }
 
   const sizeToken = sizeTokenIn === '$true' ? getDefaultSizeToken(font) : sizeTokenIn
+
+  // size related, treat them as overrides
   const fontSize = font.size[sizeToken]
   const lineHeight = font.lineHeight?.[sizeToken]
   const fontWeight = font.weight?.[sizeToken]
   const letterSpacing = font.letterSpacing?.[sizeToken]
-  const fontStyle = font.style?.[sizeToken]
   const textTransform = font.transform?.[sizeToken]
-  const color = font.color?.[sizeToken]
+
+  // not technically size related, treat them as fallbacks
+  const fontStyle = props.fontStyle ?? font.style?.[sizeToken]
+  const color = props.color ?? font.color?.[sizeToken]
 
   const style = {
     color,
@@ -44,7 +48,7 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   if (process.env.NODE_ENV === 'development') {
     if (props['debug'] && props['debug'] === 'verbose') {
       console.groupCollapsed('  🔹 getFontSized', sizeTokenIn, sizeToken)
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.log({ style, props, font })
       console.groupEnd()
     }

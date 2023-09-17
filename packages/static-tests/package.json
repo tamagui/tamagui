@@ -1,14 +1,19 @@
 {
   "name": "@tamagui/static-tests",
-  "version": "1.53.2",
+  "version": "1.67.0",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "true",
-    "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "yarn test:native && yarn test:web",
+    "pretest": "RUN_PRETEST=1 node -r esbuild-register ./tests/lib/preTest.ts",
+    "test": "yarn test:native && yarn test:web && yarn test:webpack",
     "test:run": "INCLUDE_CSS_COLOR_NAMES=1 vitest --config ../vite-plugin-internal/src/vite.config.ts --run",
-    "test:web": "TAMAGUI_TARGET=web yarn test:run tests/*.web.test.tsx",
-    "test:native": "TAMAGUI_TARGET=native yarn test:run tests/*.native.test.tsx"
+    "test:webpack": "yarn pretest && yarn test:run tests/webpack.test.tsx --reporter=verbose --singleThread",
+    "test:flatten:native": "yarn test:run tests/flatten.native.test.tsx",
+    "test:babel:native": "yarn test:run tests/babel.native.test.tsx",
+    "test:babel:web": "yarn test:run tests/babel.web.test.tsx",
+    "test:styled:web": "yarn test:run tests/styled.web.test.tsx",
+    "test:web": "yarn test:run tests/*.web.test.tsx",
+    "test:native": "yarn test:run tests/*.native.test.tsx"
   },
   "tests": {
     "parallel": true
@@ -20,8 +25,9 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@babel/types": "^7.21.5",
-    "@tamagui/test-design-system": "1.53.2",
-    "@testing-library/react": "^13.4.0",
+    "@tamagui/sandbox-ui": "1.67.0",
+    "@tamagui/test-design-system": "1.67.0",
+    "@testing-library/react": "^14.0.0",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.18.2",
     "@types/find-root": "^1.1.2",
@@ -37,8 +43,8 @@
     "react-native-web": "^0.19.6",
     "react-test-renderer": "^18.2.0",
     "style-loader": "^3.3.3",
-    "typescript": "^5.1.3",
-    "vitest": "^0.26.3",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.3",
     "webpack": "^5.88.2"
   },
   "peerDependencies": {

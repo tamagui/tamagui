@@ -1,3 +1,4 @@
+import { apiRoute } from '@lib/apiRoute'
 import {
   DEFAULT_ROLE_ID,
   TAKEOUT_GROUP_ID,
@@ -5,11 +6,9 @@ import {
   TAMAGUI_DISCORD_GUILD_ID,
   discordClient,
 } from '@lib/discord'
-import { Database } from '@lib/supabase-types'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 
 import { getTakeoutPriceInfo } from '../../../lib/getProductInfo'
 
@@ -19,18 +18,8 @@ export type DiscordChannelStatus = {
   discordSeats: number
   currentlyOccupiedSeats: number
 }
-
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    return res.status(401).json({
-      message: 'you are not authenticated',
-    })
-  }
+export default apiRoute(async (req, res) => {
+  const { supabase, session } = await protectApiRoute({ req, res })
 
   const userPrivate = await supabaseAdmin
     .from('users_private')
@@ -182,6 +171,4 @@ const handler: NextApiHandler = async (req, res) => {
     )
   }
   res.json({ message: `Done!` })
-}
-
-export default handler
+})

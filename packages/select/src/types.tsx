@@ -31,6 +31,11 @@ export interface SelectProps {
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
   native?: NativeValue<'web'>
+
+  /**
+   * When true, avoids removing the scrollbar from the body when open
+   */
+  disablePreventBodyScroll?: boolean
 }
 
 type DisposeFn = () => void
@@ -86,6 +91,7 @@ export interface SelectContextValue {
   canScrollDown?: boolean
   floatingContext?: FloatingContext<ReferenceType>
   native?: NativeValue
+  disablePreventBodyScroll?: boolean
   /** update floating-ui to recalculate */
   update?: () => void
 }

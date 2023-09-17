@@ -1,6 +1,8 @@
 import { ComputePositionReturn } from '@floating-ui/react-native'
 import { RefObject } from 'react'
 
+export const autoUpdate = () => {}
+
 export * from '@floating-ui/react-native'
 
 export declare type UseFloatingReturn = Data & {

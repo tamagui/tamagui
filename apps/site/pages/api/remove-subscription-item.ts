@@ -1,22 +1,10 @@
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { stripe } from '@lib/stripe'
-import { Database } from '@lib/supabase-types'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
-import { NextApiHandler } from 'next'
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
+export default apiRoute(async (req, res) => {
+  const { supabase } = await protectApiRoute({ req, res })
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  const user = session?.user
-
-  if (!user) {
-    res.status(401).json({
-      error: 'The user is not authenticated',
-    })
-    return
-  }
   const subItemId = req.body['subscription_item_id']
   if (typeof subItemId === 'undefined') {
     res.status(400).json({
@@ -36,17 +24,13 @@ const handler: NextApiHandler = async (req, res) => {
     .single()
   if (error) {
     console.log(error)
-    res
-      .status(404)
-      .json({
-        message: 'no subscription item found with the provided id that belongs to you',
-      })
+    res.status(404).json({
+      message: 'no subscription item found with the provided id that belongs to you',
+    })
   }
 
   const { deleted } = await stripe.subscriptionItems.del(subItemId)
   if (deleted) {
     res.json({ message: 'deleted successfully' })
   }
-}
-
-export default handler
+})

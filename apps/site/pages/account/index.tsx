@@ -99,7 +99,7 @@ const Account = () => {
 
       <YStack mt="$4" ai="flex-start">
         <ThemeTint>
-          <ButtonLink href="/account/subscriptions" size="$2">
+          <ButtonLink href="/account/subscriptions" size="$5">
             View Subscriptions
           </ButtonLink>
         </ThemeTint>

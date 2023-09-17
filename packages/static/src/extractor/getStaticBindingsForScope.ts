@@ -134,7 +134,7 @@ export async function getStaticBindingsForScope(
             `    | Skipping partial evaluation of constant file: ${moduleName} (DEBUG=tamagui for more)`
           )
         } else if (process.env.DEBUG?.startsWith('tamagui')) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(`Error in partial evaluation`, err.message, err.stack)
         }
       }
@@ -163,7 +163,7 @@ export async function getStaticBindingsForScope(
       if (isOnWhitelist) {
         const src = importModule(moduleName)
         if (!src) {
-          // rome-ignore lint/nursery/noConsoleLog: ok
+          // biome-ignore lint/suspicious/noConsoleLog: ok
           console.log(
             `    | ⚠️ Missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
           )

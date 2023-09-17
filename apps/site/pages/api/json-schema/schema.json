@@ -30,6 +30,12 @@
           "type": "array",
           "description": "the files to ignore when sending updates",
           "examples": [["README.md"]]
+        },
+        "commitConflicts": {
+          "type": ["array", "boolean"],
+          "description": "the bot will commit any conflicts if this is set to true",
+          "default": ["*/package.json"],
+          "examples": [["*/package.json"], true, false]
         }
       }
     }

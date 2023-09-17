@@ -131,8 +131,9 @@ type Theme = {
 }
 
 function t(a) {
-  let res = {}
+  let res: Record<string, string> = {}
   for (const [ki, vi] of a) {
+    // @ts-ignore
     res[ks[ki]] = vs[vi]
   }
   return res
@@ -1489,1400 +1490,1128 @@ export const light_alt2_ProgressIndicator = n185 as Theme
 const n186 = t([[12, 3],[13, 4],[14, 5],[15, 6],[16, 2],[17, 1],[19, 7],[20, 8],[21, 7],[22, 10],[23, 5],[24, 6],[25, 4],[26, 5],[27, 6]]) as Theme
 
 export const light_active_ListItem = n186 as Theme
-const n187 = t([[12, 5],[13, 6],[14, 7],[15, 8],[16, 4],[17, 3],[19, 7],[20, 8],[21, 7],[22, 8],[23, 7],[24, 8],[25, 6],[26, 7],[27, 4]]) as Theme
-
-export const light_active_Card = n187 as Theme
-export const light_active_DrawerFrame = n187 as Theme
-export const light_active_Progress = n187 as Theme
-export const light_active_TooltipArrow = n187 as Theme
-const n188 = t([[12, 6],[13, 7],[14, 8],[15, 9],[16, 5],[17, 4],[19, 7],[20, 8],[21, 7],[22, 7],[23, 7],[24, 8],[25, 6],[26, 7],[27, 3]]) as Theme
-
-export const light_active_Button = n188 as Theme
-export const light_active_Switch = n188 as Theme
-export const light_active_TooltipContent = n188 as Theme
-export const light_active_SliderTrack = n188 as Theme
-const n189 = t([[12, 4],[13, 5],[14, 6],[15, 7],[16, 3],[17, 2],[19, 7],[20, 8],[21, 7],[22, 9],[23, 8],[24, 9],[25, 7],[26, 8],[27, 5]]) as Theme
-
-export const light_active_Checkbox = n189 as Theme
-export const light_active_RadioGroupItem = n189 as Theme
-export const light_active_Input = n189 as Theme
-export const light_active_TextArea = n189 as Theme
-const n190 = t([[12, 9],[13, 8],[14, 7],[15, 6],[16, 10],[17, 11],[19, 4],[20, 3],[21, 4],[22, 0],[23, 7],[24, 6],[25, 8],[26, 7],[27, 4]]) as Theme
-
-export const light_active_SwitchThumb = n190 as Theme
-const n191 = t([[12, 5],[13, 4],[14, 3],[15, 2],[16, 6],[17, 7],[19, 4],[20, 3],[21, 4],[22, 4],[23, 3],[24, 2],[25, 4],[26, 3],[27, 8]]) as Theme
-
-export const light_active_SliderTrackActive = n191 as Theme
-const n192 = t([[12, 7],[13, 6],[14, 5],[15, 4],[16, 8],[17, 9],[19, 4],[20, 3],[21, 4],[22, 2],[23, 5],[24, 4],[25, 6],[26, 5],[27, 6]]) as Theme
-
-export const light_active_SliderThumb = n192 as Theme
-export const light_active_Tooltip = n192 as Theme
-export const light_active_ProgressIndicator = n192 as Theme
-const n193 = t([[12, 113],[13, 114],[14, 115],[15, 116],[16, 112],[17, 111],[18, 120],[19, 119],[20, 120],[21, 119],[22, 120],[23, 116],[24, 117],[25, 115],[26, 116],[27, 116]]) as Theme
-
-export const dark_alt1_Card = n193 as Theme
-export const dark_alt1_DrawerFrame = n193 as Theme
-export const dark_alt1_Progress = n193 as Theme
-export const dark_alt1_TooltipArrow = n193 as Theme
-const n194 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[18, 120],[19, 119],[20, 120],[21, 119],[22, 119],[23, 116],[24, 117],[25, 115],[26, 116],[27, 115]]) as Theme
-
-export const dark_alt1_Button = n194 as Theme
-export const dark_alt1_Switch = n194 as Theme
-export const dark_alt1_TooltipContent = n194 as Theme
-export const dark_alt1_SliderTrack = n194 as Theme
-const n195 = t([[12, 112],[13, 113],[14, 114],[15, 115],[16, 111],[17, 110],[18, 120],[19, 119],[20, 120],[21, 119],[22, 0],[23, 117],[24, 118],[25, 116],[26, 117],[27, 117]]) as Theme
-
-export const dark_alt1_Checkbox = n195 as Theme
-export const dark_alt1_RadioGroupItem = n195 as Theme
-export const dark_alt1_Input = n195 as Theme
-export const dark_alt1_TextArea = n195 as Theme
-const n196 = t([[12, 0],[13, 120],[14, 119],[15, 118],[16, 0],[17, 0],[18, 111],[19, 112],[20, 111],[21, 112],[22, 110],[23, 118],[24, 117],[25, 119],[26, 118],[27, 112]]) as Theme
-
-export const dark_alt1_SwitchThumb = n196 as Theme
-const n197 = t([[12, 117],[13, 116],[14, 115],[15, 114],[16, 118],[17, 119],[18, 111],[19, 112],[20, 111],[21, 112],[22, 112],[23, 114],[24, 113],[25, 115],[26, 114],[27, 116]]) as Theme
-
-export const dark_alt1_SliderTrackActive = n197 as Theme
-const n198 = t([[12, 119],[13, 118],[14, 117],[15, 116],[16, 120],[17, 0],[18, 111],[19, 112],[20, 111],[21, 112],[22, 110],[23, 116],[24, 115],[25, 117],[26, 116],[27, 114]]) as Theme
-
-export const dark_alt1_SliderThumb = n198 as Theme
-export const dark_alt1_Tooltip = n198 as Theme
-export const dark_alt1_ProgressIndicator = n198 as Theme
-const n199 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[18, 119],[19, 118],[20, 119],[21, 118],[22, 119],[23, 116],[24, 117],[25, 115],[26, 116],[27, 115]]) as Theme
-
-export const dark_alt2_Card = n199 as Theme
-export const dark_alt2_DrawerFrame = n199 as Theme
-export const dark_alt2_Progress = n199 as Theme
-export const dark_alt2_TooltipArrow = n199 as Theme
-const n200 = t([[12, 115],[13, 116],[14, 117],[15, 118],[16, 114],[17, 113],[18, 119],[19, 118],[20, 119],[21, 118],[22, 118],[23, 116],[24, 117],[25, 115],[26, 116],[27, 114]]) as Theme
-
-export const dark_alt2_Button = n200 as Theme
-export const dark_alt2_Switch = n200 as Theme
-export const dark_alt2_TooltipContent = n200 as Theme
-export const dark_alt2_SliderTrack = n200 as Theme
-const n201 = t([[12, 113],[13, 114],[14, 115],[15, 116],[16, 112],[17, 111],[18, 119],[19, 118],[20, 119],[21, 118],[22, 120],[23, 117],[24, 118],[25, 116],[26, 117],[27, 116]]) as Theme
-
-export const dark_alt2_Checkbox = n201 as Theme
-export const dark_alt2_RadioGroupItem = n201 as Theme
-export const dark_alt2_Input = n201 as Theme
-export const dark_alt2_TextArea = n201 as Theme
-const n202 = t([[12, 120],[13, 119],[14, 118],[15, 117],[16, 0],[17, 0],[18, 112],[19, 113],[20, 112],[21, 113],[22, 110],[23, 118],[24, 117],[25, 119],[26, 118],[27, 113]]) as Theme
-
-export const dark_alt2_SwitchThumb = n202 as Theme
-const n203 = t([[12, 116],[13, 115],[14, 114],[15, 113],[16, 117],[17, 118],[18, 112],[19, 113],[20, 112],[21, 113],[22, 113],[23, 114],[24, 113],[25, 115],[26, 114],[27, 117]]) as Theme
-
-export const dark_alt2_SliderTrackActive = n203 as Theme
-const n204 = t([[12, 118],[13, 117],[14, 116],[15, 115],[16, 119],[17, 120],[18, 112],[19, 113],[20, 112],[21, 113],[22, 111],[23, 116],[24, 115],[25, 117],[26, 116],[27, 115]]) as Theme
-
-export const dark_alt2_SliderThumb = n204 as Theme
-export const dark_alt2_Tooltip = n204 as Theme
-export const dark_alt2_ProgressIndicator = n204 as Theme
-const n205 = t([[12, 115],[13, 116],[14, 117],[15, 118],[16, 114],[17, 113],[19, 117],[20, 118],[21, 117],[22, 118],[23, 117],[24, 118],[25, 116],[26, 117],[27, 114]]) as Theme
-
-export const dark_active_Card = n205 as Theme
-export const dark_active_DrawerFrame = n205 as Theme
-export const dark_active_Progress = n205 as Theme
-export const dark_active_TooltipArrow = n205 as Theme
-const n206 = t([[12, 116],[13, 117],[14, 118],[15, 119],[16, 115],[17, 114],[19, 117],[20, 118],[21, 117],[22, 117],[23, 117],[24, 118],[25, 116],[26, 117],[27, 113]]) as Theme
-
-export const dark_active_Button = n206 as Theme
-export const dark_active_Switch = n206 as Theme
-export const dark_active_TooltipContent = n206 as Theme
-export const dark_active_SliderTrack = n206 as Theme
-const n207 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[19, 117],[20, 118],[21, 117],[22, 119],[23, 118],[24, 119],[25, 117],[26, 118],[27, 115]]) as Theme
-
-export const dark_active_Checkbox = n207 as Theme
-export const dark_active_RadioGroupItem = n207 as Theme
-export const dark_active_Input = n207 as Theme
-export const dark_active_TextArea = n207 as Theme
-const n208 = t([[12, 119],[13, 118],[14, 117],[15, 116],[16, 120],[17, 0],[19, 114],[20, 113],[21, 114],[22, 110],[23, 117],[24, 116],[25, 118],[26, 117],[27, 114]]) as Theme
-
-export const dark_active_SwitchThumb = n208 as Theme
-const n209 = t([[12, 115],[13, 114],[14, 113],[15, 112],[16, 116],[17, 117],[19, 114],[20, 113],[21, 114],[22, 114],[23, 113],[24, 112],[25, 114],[26, 113],[27, 118]]) as Theme
-
-export const dark_active_SliderTrackActive = n209 as Theme
-const n210 = t([[12, 117],[13, 116],[14, 115],[15, 114],[16, 118],[17, 119],[19, 114],[20, 113],[21, 114],[22, 112],[23, 115],[24, 114],[25, 116],[26, 115],[27, 116]]) as Theme
-
-export const dark_active_SliderThumb = n210 as Theme
-export const dark_active_Tooltip = n210 as Theme
-export const dark_active_ProgressIndicator = n210 as Theme
-const n211 = t([[12, 49],[13, 50],[14, 51],[15, 52],[16, 48],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 57]]) as Theme
-
-export const light_orange_alt1_ListItem = n211 as Theme
-const n212 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[18, 59],[19, 58],[20, 59],[21, 58],[22, 59],[23, 53],[24, 55],[25, 53],[26, 53],[27, 55]]) as Theme
-
-export const light_orange_alt1_Card = n212 as Theme
-export const light_orange_alt1_DrawerFrame = n212 as Theme
-export const light_orange_alt1_Progress = n212 as Theme
-export const light_orange_alt1_TooltipArrow = n212 as Theme
-const n213 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[18, 59],[19, 58],[20, 59],[21, 58],[22, 58],[23, 53],[24, 55],[25, 53],[26, 53],[27, 53]]) as Theme
-
-export const light_orange_alt1_Button = n213 as Theme
-export const light_orange_alt1_Switch = n213 as Theme
-export const light_orange_alt1_TooltipContent = n213 as Theme
-export const light_orange_alt1_SliderTrack = n213 as Theme
-const n214 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 55],[24, 56],[25, 55],[26, 55],[27, 56]]) as Theme
-
-export const light_orange_alt1_Checkbox = n214 as Theme
-export const light_orange_alt1_RadioGroupItem = n214 as Theme
-export const light_orange_alt1_Input = n214 as Theme
-export const light_orange_alt1_TextArea = n214 as Theme
-const n215 = t([[12, 11],[13, 59],[14, 58],[15, 57],[16, 11],[17, 11],[18, 49],[19, 50],[20, 49],[21, 50],[22, 48],[23, 58],[24, 57],[25, 58],[26, 58],[27, 50]]) as Theme
-
-export const light_orange_alt1_SwitchThumb = n215 as Theme
-const n216 = t([[12, 56],[13, 55],[14, 53],[15, 52],[16, 57],[17, 58],[18, 49],[19, 50],[20, 49],[21, 50],[22, 50],[23, 53],[24, 52],[25, 53],[26, 53],[27, 55]]) as Theme
-
-export const light_orange_alt1_SliderTrackActive = n216 as Theme
-const n217 = t([[12, 58],[13, 57],[14, 56],[15, 55],[16, 59],[17, 11],[18, 49],[19, 50],[20, 49],[21, 50],[22, 48],[23, 56],[24, 55],[25, 56],[26, 56],[27, 52]]) as Theme
-
-export const light_orange_alt1_SliderThumb = n217 as Theme
-export const light_orange_alt1_Tooltip = n217 as Theme
-export const light_orange_alt1_ProgressIndicator = n217 as Theme
-const n218 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 58],[19, 57],[20, 58],[21, 57],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 56]]) as Theme
-
-export const light_orange_alt2_ListItem = n218 as Theme
-const n219 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[18, 58],[19, 57],[20, 58],[21, 57],[22, 58],[23, 53],[24, 55],[25, 53],[26, 53],[27, 53]]) as Theme
-
-export const light_orange_alt2_Card = n219 as Theme
-export const light_orange_alt2_DrawerFrame = n219 as Theme
-export const light_orange_alt2_Progress = n219 as Theme
-export const light_orange_alt2_TooltipArrow = n219 as Theme
-const n220 = t([[12, 53],[13, 55],[14, 56],[15, 57],[16, 52],[17, 51],[18, 58],[19, 57],[20, 58],[21, 57],[22, 57],[23, 53],[24, 55],[25, 53],[26, 53],[27, 52]]) as Theme
-
-export const light_orange_alt2_Button = n220 as Theme
-export const light_orange_alt2_Switch = n220 as Theme
-export const light_orange_alt2_TooltipContent = n220 as Theme
-export const light_orange_alt2_SliderTrack = n220 as Theme
-const n221 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[18, 58],[19, 57],[20, 58],[21, 57],[22, 59],[23, 55],[24, 56],[25, 55],[26, 55],[27, 55]]) as Theme
-
-export const light_orange_alt2_Checkbox = n221 as Theme
-export const light_orange_alt2_RadioGroupItem = n221 as Theme
-export const light_orange_alt2_Input = n221 as Theme
-export const light_orange_alt2_TextArea = n221 as Theme
-const n222 = t([[12, 59],[13, 58],[14, 57],[15, 56],[16, 11],[17, 11],[18, 50],[19, 51],[20, 50],[21, 51],[22, 48],[23, 58],[24, 57],[25, 58],[26, 58],[27, 51]]) as Theme
-
-export const light_orange_alt2_SwitchThumb = n222 as Theme
-const n223 = t([[12, 55],[13, 53],[14, 52],[15, 51],[16, 56],[17, 57],[18, 50],[19, 51],[20, 50],[21, 51],[22, 51],[23, 53],[24, 52],[25, 53],[26, 53],[27, 56]]) as Theme
-
-export const light_orange_alt2_SliderTrackActive = n223 as Theme
-const n224 = t([[12, 57],[13, 56],[14, 55],[15, 53],[16, 58],[17, 59],[18, 50],[19, 51],[20, 50],[21, 51],[22, 49],[23, 56],[24, 55],[25, 56],[26, 56],[27, 53]]) as Theme
-
-export const light_orange_alt2_SliderThumb = n224 as Theme
-export const light_orange_alt2_Tooltip = n224 as Theme
-export const light_orange_alt2_ProgressIndicator = n224 as Theme
-const n225 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[19, 56],[20, 57],[21, 56],[22, 59],[23, 52],[24, 53],[25, 52],[26, 52],[27, 55]]) as Theme
-
-export const light_orange_active_ListItem = n225 as Theme
-const n226 = t([[12, 53],[13, 55],[14, 56],[15, 57],[16, 52],[17, 51],[19, 56],[20, 57],[21, 56],[22, 57],[23, 55],[24, 56],[25, 55],[26, 55],[27, 52]]) as Theme
-
-export const light_orange_active_Card = n226 as Theme
-export const light_orange_active_DrawerFrame = n226 as Theme
-export const light_orange_active_Progress = n226 as Theme
-export const light_orange_active_TooltipArrow = n226 as Theme
-const n227 = t([[12, 55],[13, 56],[14, 57],[15, 58],[16, 53],[17, 52],[19, 56],[20, 57],[21, 56],[22, 56],[23, 55],[24, 56],[25, 55],[26, 55],[27, 51]]) as Theme
-
-export const light_orange_active_Button = n227 as Theme
-export const light_orange_active_Switch = n227 as Theme
-export const light_orange_active_TooltipContent = n227 as Theme
-export const light_orange_active_SliderTrack = n227 as Theme
-const n228 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[19, 56],[20, 57],[21, 56],[22, 58],[23, 56],[24, 57],[25, 56],[26, 56],[27, 53]]) as Theme
-
-export const light_orange_active_Checkbox = n228 as Theme
-export const light_orange_active_RadioGroupItem = n228 as Theme
-export const light_orange_active_Input = n228 as Theme
-export const light_orange_active_TextArea = n228 as Theme
-const n229 = t([[12, 58],[13, 57],[14, 56],[15, 55],[16, 59],[17, 11],[19, 52],[20, 51],[21, 52],[22, 48],[23, 57],[24, 56],[25, 57],[26, 57],[27, 52]]) as Theme
-
-export const light_orange_active_SwitchThumb = n229 as Theme
-const n230 = t([[12, 53],[13, 52],[14, 51],[15, 50],[16, 55],[17, 56],[19, 52],[20, 51],[21, 52],[22, 52],[23, 52],[24, 51],[25, 52],[26, 52],[27, 57]]) as Theme
-
-export const light_orange_active_SliderTrackActive = n230 as Theme
-const n231 = t([[12, 56],[13, 55],[14, 53],[15, 52],[16, 57],[17, 58],[19, 52],[20, 51],[21, 52],[22, 50],[23, 55],[24, 53],[25, 55],[26, 55],[27, 55]]) as Theme
-
-export const light_orange_active_SliderThumb = n231 as Theme
-export const light_orange_active_Tooltip = n231 as Theme
-export const light_orange_active_ProgressIndicator = n231 as Theme
-const n232 = t([[12, 97],[13, 98],[14, 99],[15, 100],[16, 96],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 105]]) as Theme
-
-export const light_yellow_alt1_ListItem = n232 as Theme
-const n233 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[18, 107],[19, 106],[20, 107],[21, 106],[22, 107],[23, 101],[24, 103],[25, 101],[26, 101],[27, 103]]) as Theme
-
-export const light_yellow_alt1_Card = n233 as Theme
-export const light_yellow_alt1_DrawerFrame = n233 as Theme
-export const light_yellow_alt1_Progress = n233 as Theme
-export const light_yellow_alt1_TooltipArrow = n233 as Theme
-const n234 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[18, 107],[19, 106],[20, 107],[21, 106],[22, 106],[23, 101],[24, 103],[25, 101],[26, 101],[27, 101]]) as Theme
-
-export const light_yellow_alt1_Button = n234 as Theme
-export const light_yellow_alt1_Switch = n234 as Theme
-export const light_yellow_alt1_TooltipContent = n234 as Theme
-export const light_yellow_alt1_SliderTrack = n234 as Theme
-const n235 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 103],[24, 104],[25, 103],[26, 103],[27, 104]]) as Theme
-
-export const light_yellow_alt1_Checkbox = n235 as Theme
-export const light_yellow_alt1_RadioGroupItem = n235 as Theme
-export const light_yellow_alt1_Input = n235 as Theme
-export const light_yellow_alt1_TextArea = n235 as Theme
-const n236 = t([[12, 11],[13, 107],[14, 106],[15, 105],[16, 11],[17, 11],[18, 97],[19, 98],[20, 97],[21, 98],[22, 96],[23, 106],[24, 105],[25, 106],[26, 106],[27, 98]]) as Theme
-
-export const light_yellow_alt1_SwitchThumb = n236 as Theme
-const n237 = t([[12, 104],[13, 103],[14, 101],[15, 100],[16, 105],[17, 106],[18, 97],[19, 98],[20, 97],[21, 98],[22, 98],[23, 101],[24, 100],[25, 101],[26, 101],[27, 103]]) as Theme
-
-export const light_yellow_alt1_SliderTrackActive = n237 as Theme
-const n238 = t([[12, 106],[13, 105],[14, 104],[15, 103],[16, 107],[17, 11],[18, 97],[19, 98],[20, 97],[21, 98],[22, 96],[23, 104],[24, 103],[25, 104],[26, 104],[27, 100]]) as Theme
-
-export const light_yellow_alt1_SliderThumb = n238 as Theme
-export const light_yellow_alt1_Tooltip = n238 as Theme
-export const light_yellow_alt1_ProgressIndicator = n238 as Theme
-const n239 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 106],[19, 105],[20, 106],[21, 105],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 104]]) as Theme
-
-export const light_yellow_alt2_ListItem = n239 as Theme
-const n240 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[18, 106],[19, 105],[20, 106],[21, 105],[22, 106],[23, 101],[24, 103],[25, 101],[26, 101],[27, 101]]) as Theme
-
-export const light_yellow_alt2_Card = n240 as Theme
-export const light_yellow_alt2_DrawerFrame = n240 as Theme
-export const light_yellow_alt2_Progress = n240 as Theme
-export const light_yellow_alt2_TooltipArrow = n240 as Theme
-const n241 = t([[12, 101],[13, 103],[14, 104],[15, 105],[16, 100],[17, 99],[18, 106],[19, 105],[20, 106],[21, 105],[22, 105],[23, 101],[24, 103],[25, 101],[26, 101],[27, 100]]) as Theme
-
-export const light_yellow_alt2_Button = n241 as Theme
-export const light_yellow_alt2_Switch = n241 as Theme
-export const light_yellow_alt2_TooltipContent = n241 as Theme
-export const light_yellow_alt2_SliderTrack = n241 as Theme
-const n242 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[18, 106],[19, 105],[20, 106],[21, 105],[22, 107],[23, 103],[24, 104],[25, 103],[26, 103],[27, 103]]) as Theme
-
-export const light_yellow_alt2_Checkbox = n242 as Theme
-export const light_yellow_alt2_RadioGroupItem = n242 as Theme
-export const light_yellow_alt2_Input = n242 as Theme
-export const light_yellow_alt2_TextArea = n242 as Theme
-const n243 = t([[12, 107],[13, 106],[14, 105],[15, 104],[16, 11],[17, 11],[18, 98],[19, 99],[20, 98],[21, 99],[22, 96],[23, 106],[24, 105],[25, 106],[26, 106],[27, 99]]) as Theme
-
-export const light_yellow_alt2_SwitchThumb = n243 as Theme
-const n244 = t([[12, 103],[13, 101],[14, 100],[15, 99],[16, 104],[17, 105],[18, 98],[19, 99],[20, 98],[21, 99],[22, 99],[23, 101],[24, 100],[25, 101],[26, 101],[27, 104]]) as Theme
-
-export const light_yellow_alt2_SliderTrackActive = n244 as Theme
-const n245 = t([[12, 105],[13, 104],[14, 103],[15, 101],[16, 106],[17, 107],[18, 98],[19, 99],[20, 98],[21, 99],[22, 97],[23, 104],[24, 103],[25, 104],[26, 104],[27, 101]]) as Theme
-
-export const light_yellow_alt2_SliderThumb = n245 as Theme
-export const light_yellow_alt2_Tooltip = n245 as Theme
-export const light_yellow_alt2_ProgressIndicator = n245 as Theme
-const n246 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[19, 104],[20, 105],[21, 104],[22, 107],[23, 100],[24, 101],[25, 100],[26, 100],[27, 103]]) as Theme
-
-export const light_yellow_active_ListItem = n246 as Theme
-const n247 = t([[12, 101],[13, 103],[14, 104],[15, 105],[16, 100],[17, 99],[19, 104],[20, 105],[21, 104],[22, 105],[23, 103],[24, 104],[25, 103],[26, 103],[27, 100]]) as Theme
-
-export const light_yellow_active_Card = n247 as Theme
-export const light_yellow_active_DrawerFrame = n247 as Theme
-export const light_yellow_active_Progress = n247 as Theme
-export const light_yellow_active_TooltipArrow = n247 as Theme
-const n248 = t([[12, 103],[13, 104],[14, 105],[15, 106],[16, 101],[17, 100],[19, 104],[20, 105],[21, 104],[22, 104],[23, 103],[24, 104],[25, 103],[26, 103],[27, 99]]) as Theme
-
-export const light_yellow_active_Button = n248 as Theme
-export const light_yellow_active_Switch = n248 as Theme
-export const light_yellow_active_TooltipContent = n248 as Theme
-export const light_yellow_active_SliderTrack = n248 as Theme
-const n249 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[19, 104],[20, 105],[21, 104],[22, 106],[23, 104],[24, 105],[25, 104],[26, 104],[27, 101]]) as Theme
-
-export const light_yellow_active_Checkbox = n249 as Theme
-export const light_yellow_active_RadioGroupItem = n249 as Theme
-export const light_yellow_active_Input = n249 as Theme
-export const light_yellow_active_TextArea = n249 as Theme
-const n250 = t([[12, 106],[13, 105],[14, 104],[15, 103],[16, 107],[17, 11],[19, 100],[20, 99],[21, 100],[22, 96],[23, 105],[24, 104],[25, 105],[26, 105],[27, 100]]) as Theme
-
-export const light_yellow_active_SwitchThumb = n250 as Theme
-const n251 = t([[12, 101],[13, 100],[14, 99],[15, 98],[16, 103],[17, 104],[19, 100],[20, 99],[21, 100],[22, 100],[23, 100],[24, 99],[25, 100],[26, 100],[27, 105]]) as Theme
-
-export const light_yellow_active_SliderTrackActive = n251 as Theme
-const n252 = t([[12, 104],[13, 103],[14, 101],[15, 100],[16, 105],[17, 106],[19, 100],[20, 99],[21, 100],[22, 98],[23, 103],[24, 101],[25, 103],[26, 103],[27, 103]]) as Theme
-
-export const light_yellow_active_SliderThumb = n252 as Theme
-export const light_yellow_active_Tooltip = n252 as Theme
-export const light_yellow_active_ProgressIndicator = n252 as Theme
-const n253 = t([[12, 37],[13, 38],[14, 39],[15, 40],[16, 36],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 45]]) as Theme
-
-export const light_green_alt1_ListItem = n253 as Theme
-const n254 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[18, 47],[19, 46],[20, 47],[21, 46],[22, 47],[23, 41],[24, 43],[25, 41],[26, 41],[27, 43]]) as Theme
-
-export const light_green_alt1_Card = n254 as Theme
-export const light_green_alt1_DrawerFrame = n254 as Theme
-export const light_green_alt1_Progress = n254 as Theme
-export const light_green_alt1_TooltipArrow = n254 as Theme
-const n255 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[18, 47],[19, 46],[20, 47],[21, 46],[22, 46],[23, 41],[24, 43],[25, 41],[26, 41],[27, 41]]) as Theme
-
-export const light_green_alt1_Button = n255 as Theme
-export const light_green_alt1_Switch = n255 as Theme
-export const light_green_alt1_TooltipContent = n255 as Theme
-export const light_green_alt1_SliderTrack = n255 as Theme
-const n256 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 43],[24, 44],[25, 43],[26, 43],[27, 44]]) as Theme
-
-export const light_green_alt1_Checkbox = n256 as Theme
-export const light_green_alt1_RadioGroupItem = n256 as Theme
-export const light_green_alt1_Input = n256 as Theme
-export const light_green_alt1_TextArea = n256 as Theme
-const n257 = t([[12, 11],[13, 47],[14, 46],[15, 45],[16, 11],[17, 11],[18, 37],[19, 38],[20, 37],[21, 38],[22, 36],[23, 46],[24, 45],[25, 46],[26, 46],[27, 38]]) as Theme
-
-export const light_green_alt1_SwitchThumb = n257 as Theme
-const n258 = t([[12, 44],[13, 43],[14, 41],[15, 40],[16, 45],[17, 46],[18, 37],[19, 38],[20, 37],[21, 38],[22, 38],[23, 41],[24, 40],[25, 41],[26, 41],[27, 43]]) as Theme
-
-export const light_green_alt1_SliderTrackActive = n258 as Theme
-const n259 = t([[12, 46],[13, 45],[14, 44],[15, 43],[16, 47],[17, 11],[18, 37],[19, 38],[20, 37],[21, 38],[22, 36],[23, 44],[24, 43],[25, 44],[26, 44],[27, 40]]) as Theme
-
-export const light_green_alt1_SliderThumb = n259 as Theme
-export const light_green_alt1_Tooltip = n259 as Theme
-export const light_green_alt1_ProgressIndicator = n259 as Theme
-const n260 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 46],[19, 45],[20, 46],[21, 45],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 44]]) as Theme
-
-export const light_green_alt2_ListItem = n260 as Theme
-const n261 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[18, 46],[19, 45],[20, 46],[21, 45],[22, 46],[23, 41],[24, 43],[25, 41],[26, 41],[27, 41]]) as Theme
-
-export const light_green_alt2_Card = n261 as Theme
-export const light_green_alt2_DrawerFrame = n261 as Theme
-export const light_green_alt2_Progress = n261 as Theme
-export const light_green_alt2_TooltipArrow = n261 as Theme
-const n262 = t([[12, 41],[13, 43],[14, 44],[15, 45],[16, 40],[17, 39],[18, 46],[19, 45],[20, 46],[21, 45],[22, 45],[23, 41],[24, 43],[25, 41],[26, 41],[27, 40]]) as Theme
-
-export const light_green_alt2_Button = n262 as Theme
-export const light_green_alt2_Switch = n262 as Theme
-export const light_green_alt2_TooltipContent = n262 as Theme
-export const light_green_alt2_SliderTrack = n262 as Theme
-const n263 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[18, 46],[19, 45],[20, 46],[21, 45],[22, 47],[23, 43],[24, 44],[25, 43],[26, 43],[27, 43]]) as Theme
-
-export const light_green_alt2_Checkbox = n263 as Theme
-export const light_green_alt2_RadioGroupItem = n263 as Theme
-export const light_green_alt2_Input = n263 as Theme
-export const light_green_alt2_TextArea = n263 as Theme
-const n264 = t([[12, 47],[13, 46],[14, 45],[15, 44],[16, 11],[17, 11],[18, 38],[19, 39],[20, 38],[21, 39],[22, 36],[23, 46],[24, 45],[25, 46],[26, 46],[27, 39]]) as Theme
-
-export const light_green_alt2_SwitchThumb = n264 as Theme
-const n265 = t([[12, 43],[13, 41],[14, 40],[15, 39],[16, 44],[17, 45],[18, 38],[19, 39],[20, 38],[21, 39],[22, 39],[23, 41],[24, 40],[25, 41],[26, 41],[27, 44]]) as Theme
-
-export const light_green_alt2_SliderTrackActive = n265 as Theme
-const n266 = t([[12, 45],[13, 44],[14, 43],[15, 41],[16, 46],[17, 47],[18, 38],[19, 39],[20, 38],[21, 39],[22, 37],[23, 44],[24, 43],[25, 44],[26, 44],[27, 41]]) as Theme
-
-export const light_green_alt2_SliderThumb = n266 as Theme
-export const light_green_alt2_Tooltip = n266 as Theme
-export const light_green_alt2_ProgressIndicator = n266 as Theme
-const n267 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[19, 44],[20, 45],[21, 44],[22, 47],[23, 40],[24, 41],[25, 40],[26, 40],[27, 43]]) as Theme
-
-export const light_green_active_ListItem = n267 as Theme
-const n268 = t([[12, 41],[13, 43],[14, 44],[15, 45],[16, 40],[17, 39],[19, 44],[20, 45],[21, 44],[22, 45],[23, 43],[24, 44],[25, 43],[26, 43],[27, 40]]) as Theme
-
-export const light_green_active_Card = n268 as Theme
-export const light_green_active_DrawerFrame = n268 as Theme
-export const light_green_active_Progress = n268 as Theme
-export const light_green_active_TooltipArrow = n268 as Theme
-const n269 = t([[12, 43],[13, 44],[14, 45],[15, 46],[16, 41],[17, 40],[19, 44],[20, 45],[21, 44],[22, 44],[23, 43],[24, 44],[25, 43],[26, 43],[27, 39]]) as Theme
-
-export const light_green_active_Button = n269 as Theme
-export const light_green_active_Switch = n269 as Theme
-export const light_green_active_TooltipContent = n269 as Theme
-export const light_green_active_SliderTrack = n269 as Theme
-const n270 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[19, 44],[20, 45],[21, 44],[22, 46],[23, 44],[24, 45],[25, 44],[26, 44],[27, 41]]) as Theme
-
-export const light_green_active_Checkbox = n270 as Theme
-export const light_green_active_RadioGroupItem = n270 as Theme
-export const light_green_active_Input = n270 as Theme
-export const light_green_active_TextArea = n270 as Theme
-const n271 = t([[12, 46],[13, 45],[14, 44],[15, 43],[16, 47],[17, 11],[19, 40],[20, 39],[21, 40],[22, 36],[23, 45],[24, 44],[25, 45],[26, 45],[27, 40]]) as Theme
-
-export const light_green_active_SwitchThumb = n271 as Theme
-const n272 = t([[12, 41],[13, 40],[14, 39],[15, 38],[16, 43],[17, 44],[19, 40],[20, 39],[21, 40],[22, 40],[23, 40],[24, 39],[25, 40],[26, 40],[27, 45]]) as Theme
-
-export const light_green_active_SliderTrackActive = n272 as Theme
-const n273 = t([[12, 44],[13, 43],[14, 41],[15, 40],[16, 45],[17, 46],[19, 40],[20, 39],[21, 40],[22, 38],[23, 43],[24, 41],[25, 43],[26, 43],[27, 43]]) as Theme
-
-export const light_green_active_SliderThumb = n273 as Theme
-export const light_green_active_Tooltip = n273 as Theme
-export const light_green_active_ProgressIndicator = n273 as Theme
-const n274 = t([[12, 15],[13, 16],[14, 17],[15, 18],[16, 14],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 23]]) as Theme
-
-export const light_blue_alt1_ListItem = n274 as Theme
-const n275 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[18, 25],[19, 24],[20, 25],[21, 24],[22, 25],[23, 19],[24, 21],[25, 19],[26, 19],[27, 21]]) as Theme
-
-export const light_blue_alt1_Card = n275 as Theme
-export const light_blue_alt1_DrawerFrame = n275 as Theme
-export const light_blue_alt1_Progress = n275 as Theme
-export const light_blue_alt1_TooltipArrow = n275 as Theme
-const n276 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[18, 25],[19, 24],[20, 25],[21, 24],[22, 24],[23, 19],[24, 21],[25, 19],[26, 19],[27, 19]]) as Theme
-
-export const light_blue_alt1_Button = n276 as Theme
-export const light_blue_alt1_Switch = n276 as Theme
-export const light_blue_alt1_TooltipContent = n276 as Theme
-export const light_blue_alt1_SliderTrack = n276 as Theme
-const n277 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 21],[24, 22],[25, 21],[26, 21],[27, 22]]) as Theme
-
-export const light_blue_alt1_Checkbox = n277 as Theme
-export const light_blue_alt1_RadioGroupItem = n277 as Theme
-export const light_blue_alt1_Input = n277 as Theme
-export const light_blue_alt1_TextArea = n277 as Theme
-const n278 = t([[12, 11],[13, 25],[14, 24],[15, 23],[16, 11],[17, 11],[18, 15],[19, 16],[20, 15],[21, 16],[22, 14],[23, 24],[24, 23],[25, 24],[26, 24],[27, 16]]) as Theme
-
-export const light_blue_alt1_SwitchThumb = n278 as Theme
-const n279 = t([[12, 22],[13, 21],[14, 19],[15, 18],[16, 23],[17, 24],[18, 15],[19, 16],[20, 15],[21, 16],[22, 16],[23, 19],[24, 18],[25, 19],[26, 19],[27, 21]]) as Theme
-
-export const light_blue_alt1_SliderTrackActive = n279 as Theme
-const n280 = t([[12, 24],[13, 23],[14, 22],[15, 21],[16, 25],[17, 11],[18, 15],[19, 16],[20, 15],[21, 16],[22, 14],[23, 22],[24, 21],[25, 22],[26, 22],[27, 18]]) as Theme
-
-export const light_blue_alt1_SliderThumb = n280 as Theme
-export const light_blue_alt1_Tooltip = n280 as Theme
-export const light_blue_alt1_ProgressIndicator = n280 as Theme
-const n281 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 24],[19, 23],[20, 24],[21, 23],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 22]]) as Theme
-
-export const light_blue_alt2_ListItem = n281 as Theme
-const n282 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[18, 24],[19, 23],[20, 24],[21, 23],[22, 24],[23, 19],[24, 21],[25, 19],[26, 19],[27, 19]]) as Theme
-
-export const light_blue_alt2_Card = n282 as Theme
-export const light_blue_alt2_DrawerFrame = n282 as Theme
-export const light_blue_alt2_Progress = n282 as Theme
-export const light_blue_alt2_TooltipArrow = n282 as Theme
-const n283 = t([[12, 19],[13, 21],[14, 22],[15, 23],[16, 18],[17, 17],[18, 24],[19, 23],[20, 24],[21, 23],[22, 23],[23, 19],[24, 21],[25, 19],[26, 19],[27, 18]]) as Theme
-
-export const light_blue_alt2_Button = n283 as Theme
-export const light_blue_alt2_Switch = n283 as Theme
-export const light_blue_alt2_TooltipContent = n283 as Theme
-export const light_blue_alt2_SliderTrack = n283 as Theme
-const n284 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[18, 24],[19, 23],[20, 24],[21, 23],[22, 25],[23, 21],[24, 22],[25, 21],[26, 21],[27, 21]]) as Theme
-
-export const light_blue_alt2_Checkbox = n284 as Theme
-export const light_blue_alt2_RadioGroupItem = n284 as Theme
-export const light_blue_alt2_Input = n284 as Theme
-export const light_blue_alt2_TextArea = n284 as Theme
-const n285 = t([[12, 25],[13, 24],[14, 23],[15, 22],[16, 11],[17, 11],[18, 16],[19, 17],[20, 16],[21, 17],[22, 14],[23, 24],[24, 23],[25, 24],[26, 24],[27, 17]]) as Theme
-
-export const light_blue_alt2_SwitchThumb = n285 as Theme
-const n286 = t([[12, 21],[13, 19],[14, 18],[15, 17],[16, 22],[17, 23],[18, 16],[19, 17],[20, 16],[21, 17],[22, 17],[23, 19],[24, 18],[25, 19],[26, 19],[27, 22]]) as Theme
-
-export const light_blue_alt2_SliderTrackActive = n286 as Theme
-const n287 = t([[12, 23],[13, 22],[14, 21],[15, 19],[16, 24],[17, 25],[18, 16],[19, 17],[20, 16],[21, 17],[22, 15],[23, 22],[24, 21],[25, 22],[26, 22],[27, 19]]) as Theme
-
-export const light_blue_alt2_SliderThumb = n287 as Theme
-export const light_blue_alt2_Tooltip = n287 as Theme
-export const light_blue_alt2_ProgressIndicator = n287 as Theme
-const n288 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[19, 22],[20, 23],[21, 22],[22, 25],[23, 18],[24, 19],[25, 18],[26, 18],[27, 21]]) as Theme
-
-export const light_blue_active_ListItem = n288 as Theme
-const n289 = t([[12, 19],[13, 21],[14, 22],[15, 23],[16, 18],[17, 17],[19, 22],[20, 23],[21, 22],[22, 23],[23, 21],[24, 22],[25, 21],[26, 21],[27, 18]]) as Theme
-
-export const light_blue_active_Card = n289 as Theme
-export const light_blue_active_DrawerFrame = n289 as Theme
-export const light_blue_active_Progress = n289 as Theme
-export const light_blue_active_TooltipArrow = n289 as Theme
-const n290 = t([[12, 21],[13, 22],[14, 23],[15, 24],[16, 19],[17, 18],[19, 22],[20, 23],[21, 22],[22, 22],[23, 21],[24, 22],[25, 21],[26, 21],[27, 17]]) as Theme
-
-export const light_blue_active_Button = n290 as Theme
-export const light_blue_active_Switch = n290 as Theme
-export const light_blue_active_TooltipContent = n290 as Theme
-export const light_blue_active_SliderTrack = n290 as Theme
-const n291 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[19, 22],[20, 23],[21, 22],[22, 24],[23, 22],[24, 23],[25, 22],[26, 22],[27, 19]]) as Theme
-
-export const light_blue_active_Checkbox = n291 as Theme
-export const light_blue_active_RadioGroupItem = n291 as Theme
-export const light_blue_active_Input = n291 as Theme
-export const light_blue_active_TextArea = n291 as Theme
-const n292 = t([[12, 24],[13, 23],[14, 22],[15, 21],[16, 25],[17, 11],[19, 18],[20, 17],[21, 18],[22, 14],[23, 23],[24, 22],[25, 23],[26, 23],[27, 18]]) as Theme
-
-export const light_blue_active_SwitchThumb = n292 as Theme
-const n293 = t([[12, 19],[13, 18],[14, 17],[15, 16],[16, 21],[17, 22],[19, 18],[20, 17],[21, 18],[22, 18],[23, 18],[24, 17],[25, 18],[26, 18],[27, 23]]) as Theme
-
-export const light_blue_active_SliderTrackActive = n293 as Theme
-const n294 = t([[12, 22],[13, 21],[14, 19],[15, 18],[16, 23],[17, 24],[19, 18],[20, 17],[21, 18],[22, 16],[23, 21],[24, 19],[25, 21],[26, 21],[27, 21]]) as Theme
-
-export const light_blue_active_SliderThumb = n294 as Theme
-export const light_blue_active_Tooltip = n294 as Theme
-export const light_blue_active_ProgressIndicator = n294 as Theme
-const n295 = t([[12, 73],[13, 74],[14, 75],[15, 76],[16, 72],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 81]]) as Theme
-
-export const light_purple_alt1_ListItem = n295 as Theme
-const n296 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[18, 83],[19, 82],[20, 83],[21, 82],[22, 83],[23, 77],[24, 79],[25, 77],[26, 77],[27, 79]]) as Theme
-
-export const light_purple_alt1_Card = n296 as Theme
-export const light_purple_alt1_DrawerFrame = n296 as Theme
-export const light_purple_alt1_Progress = n296 as Theme
-export const light_purple_alt1_TooltipArrow = n296 as Theme
-const n297 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[18, 83],[19, 82],[20, 83],[21, 82],[22, 82],[23, 77],[24, 79],[25, 77],[26, 77],[27, 77]]) as Theme
-
-export const light_purple_alt1_Button = n297 as Theme
-export const light_purple_alt1_Switch = n297 as Theme
-export const light_purple_alt1_TooltipContent = n297 as Theme
-export const light_purple_alt1_SliderTrack = n297 as Theme
-const n298 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 79],[24, 80],[25, 79],[26, 79],[27, 80]]) as Theme
-
-export const light_purple_alt1_Checkbox = n298 as Theme
-export const light_purple_alt1_RadioGroupItem = n298 as Theme
-export const light_purple_alt1_Input = n298 as Theme
-export const light_purple_alt1_TextArea = n298 as Theme
-const n299 = t([[12, 11],[13, 83],[14, 82],[15, 81],[16, 11],[17, 11],[18, 73],[19, 74],[20, 73],[21, 74],[22, 72],[23, 82],[24, 81],[25, 82],[26, 82],[27, 74]]) as Theme
-
-export const light_purple_alt1_SwitchThumb = n299 as Theme
-const n300 = t([[12, 80],[13, 79],[14, 77],[15, 76],[16, 81],[17, 82],[18, 73],[19, 74],[20, 73],[21, 74],[22, 74],[23, 77],[24, 76],[25, 77],[26, 77],[27, 79]]) as Theme
-
-export const light_purple_alt1_SliderTrackActive = n300 as Theme
-const n301 = t([[12, 82],[13, 81],[14, 80],[15, 79],[16, 83],[17, 11],[18, 73],[19, 74],[20, 73],[21, 74],[22, 72],[23, 80],[24, 79],[25, 80],[26, 80],[27, 76]]) as Theme
-
-export const light_purple_alt1_SliderThumb = n301 as Theme
-export const light_purple_alt1_Tooltip = n301 as Theme
-export const light_purple_alt1_ProgressIndicator = n301 as Theme
-const n302 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 82],[19, 81],[20, 82],[21, 81],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 80]]) as Theme
-
-export const light_purple_alt2_ListItem = n302 as Theme
-const n303 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[18, 82],[19, 81],[20, 82],[21, 81],[22, 82],[23, 77],[24, 79],[25, 77],[26, 77],[27, 77]]) as Theme
-
-export const light_purple_alt2_Card = n303 as Theme
-export const light_purple_alt2_DrawerFrame = n303 as Theme
-export const light_purple_alt2_Progress = n303 as Theme
-export const light_purple_alt2_TooltipArrow = n303 as Theme
-const n304 = t([[12, 77],[13, 79],[14, 80],[15, 81],[16, 76],[17, 75],[18, 82],[19, 81],[20, 82],[21, 81],[22, 81],[23, 77],[24, 79],[25, 77],[26, 77],[27, 76]]) as Theme
-
-export const light_purple_alt2_Button = n304 as Theme
-export const light_purple_alt2_Switch = n304 as Theme
-export const light_purple_alt2_TooltipContent = n304 as Theme
-export const light_purple_alt2_SliderTrack = n304 as Theme
-const n305 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[18, 82],[19, 81],[20, 82],[21, 81],[22, 83],[23, 79],[24, 80],[25, 79],[26, 79],[27, 79]]) as Theme
-
-export const light_purple_alt2_Checkbox = n305 as Theme
-export const light_purple_alt2_RadioGroupItem = n305 as Theme
-export const light_purple_alt2_Input = n305 as Theme
-export const light_purple_alt2_TextArea = n305 as Theme
-const n306 = t([[12, 83],[13, 82],[14, 81],[15, 80],[16, 11],[17, 11],[18, 74],[19, 75],[20, 74],[21, 75],[22, 72],[23, 82],[24, 81],[25, 82],[26, 82],[27, 75]]) as Theme
-
-export const light_purple_alt2_SwitchThumb = n306 as Theme
-const n307 = t([[12, 79],[13, 77],[14, 76],[15, 75],[16, 80],[17, 81],[18, 74],[19, 75],[20, 74],[21, 75],[22, 75],[23, 77],[24, 76],[25, 77],[26, 77],[27, 80]]) as Theme
-
-export const light_purple_alt2_SliderTrackActive = n307 as Theme
-const n308 = t([[12, 81],[13, 80],[14, 79],[15, 77],[16, 82],[17, 83],[18, 74],[19, 75],[20, 74],[21, 75],[22, 73],[23, 80],[24, 79],[25, 80],[26, 80],[27, 77]]) as Theme
-
-export const light_purple_alt2_SliderThumb = n308 as Theme
-export const light_purple_alt2_Tooltip = n308 as Theme
-export const light_purple_alt2_ProgressIndicator = n308 as Theme
-const n309 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[19, 80],[20, 81],[21, 80],[22, 83],[23, 76],[24, 77],[25, 76],[26, 76],[27, 79]]) as Theme
-
-export const light_purple_active_ListItem = n309 as Theme
-const n310 = t([[12, 77],[13, 79],[14, 80],[15, 81],[16, 76],[17, 75],[19, 80],[20, 81],[21, 80],[22, 81],[23, 79],[24, 80],[25, 79],[26, 79],[27, 76]]) as Theme
-
-export const light_purple_active_Card = n310 as Theme
-export const light_purple_active_DrawerFrame = n310 as Theme
-export const light_purple_active_Progress = n310 as Theme
-export const light_purple_active_TooltipArrow = n310 as Theme
-const n311 = t([[12, 79],[13, 80],[14, 81],[15, 82],[16, 77],[17, 76],[19, 80],[20, 81],[21, 80],[22, 80],[23, 79],[24, 80],[25, 79],[26, 79],[27, 75]]) as Theme
-
-export const light_purple_active_Button = n311 as Theme
-export const light_purple_active_Switch = n311 as Theme
-export const light_purple_active_TooltipContent = n311 as Theme
-export const light_purple_active_SliderTrack = n311 as Theme
-const n312 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[19, 80],[20, 81],[21, 80],[22, 82],[23, 80],[24, 81],[25, 80],[26, 80],[27, 77]]) as Theme
-
-export const light_purple_active_Checkbox = n312 as Theme
-export const light_purple_active_RadioGroupItem = n312 as Theme
-export const light_purple_active_Input = n312 as Theme
-export const light_purple_active_TextArea = n312 as Theme
-const n313 = t([[12, 82],[13, 81],[14, 80],[15, 79],[16, 83],[17, 11],[19, 76],[20, 75],[21, 76],[22, 72],[23, 81],[24, 80],[25, 81],[26, 81],[27, 76]]) as Theme
-
-export const light_purple_active_SwitchThumb = n313 as Theme
-const n314 = t([[12, 77],[13, 76],[14, 75],[15, 74],[16, 79],[17, 80],[19, 76],[20, 75],[21, 76],[22, 76],[23, 76],[24, 75],[25, 76],[26, 76],[27, 81]]) as Theme
-
-export const light_purple_active_SliderTrackActive = n314 as Theme
-const n315 = t([[12, 80],[13, 79],[14, 77],[15, 76],[16, 81],[17, 82],[19, 76],[20, 75],[21, 76],[22, 74],[23, 79],[24, 77],[25, 79],[26, 79],[27, 79]]) as Theme
-
-export const light_purple_active_SliderThumb = n315 as Theme
-export const light_purple_active_Tooltip = n315 as Theme
-export const light_purple_active_ProgressIndicator = n315 as Theme
-const n316 = t([[12, 61],[13, 62],[14, 63],[15, 64],[16, 60],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 69]]) as Theme
-
-export const light_pink_alt1_ListItem = n316 as Theme
-const n317 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[18, 71],[19, 70],[20, 71],[21, 70],[22, 71],[23, 65],[24, 67],[25, 65],[26, 65],[27, 67]]) as Theme
-
-export const light_pink_alt1_Card = n317 as Theme
-export const light_pink_alt1_DrawerFrame = n317 as Theme
-export const light_pink_alt1_Progress = n317 as Theme
-export const light_pink_alt1_TooltipArrow = n317 as Theme
-const n318 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[18, 71],[19, 70],[20, 71],[21, 70],[22, 70],[23, 65],[24, 67],[25, 65],[26, 65],[27, 65]]) as Theme
-
-export const light_pink_alt1_Button = n318 as Theme
-export const light_pink_alt1_Switch = n318 as Theme
-export const light_pink_alt1_TooltipContent = n318 as Theme
-export const light_pink_alt1_SliderTrack = n318 as Theme
-const n319 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 67],[24, 68],[25, 67],[26, 67],[27, 68]]) as Theme
-
-export const light_pink_alt1_Checkbox = n319 as Theme
-export const light_pink_alt1_RadioGroupItem = n319 as Theme
-export const light_pink_alt1_Input = n319 as Theme
-export const light_pink_alt1_TextArea = n319 as Theme
-const n320 = t([[12, 11],[13, 71],[14, 70],[15, 69],[16, 11],[17, 11],[18, 61],[19, 62],[20, 61],[21, 62],[22, 60],[23, 70],[24, 69],[25, 70],[26, 70],[27, 62]]) as Theme
-
-export const light_pink_alt1_SwitchThumb = n320 as Theme
-const n321 = t([[12, 68],[13, 67],[14, 65],[15, 64],[16, 69],[17, 70],[18, 61],[19, 62],[20, 61],[21, 62],[22, 62],[23, 65],[24, 64],[25, 65],[26, 65],[27, 67]]) as Theme
-
-export const light_pink_alt1_SliderTrackActive = n321 as Theme
-const n322 = t([[12, 70],[13, 69],[14, 68],[15, 67],[16, 71],[17, 11],[18, 61],[19, 62],[20, 61],[21, 62],[22, 60],[23, 68],[24, 67],[25, 68],[26, 68],[27, 64]]) as Theme
-
-export const light_pink_alt1_SliderThumb = n322 as Theme
-export const light_pink_alt1_Tooltip = n322 as Theme
-export const light_pink_alt1_ProgressIndicator = n322 as Theme
-const n323 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 70],[19, 69],[20, 70],[21, 69],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 68]]) as Theme
-
-export const light_pink_alt2_ListItem = n323 as Theme
-const n324 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[18, 70],[19, 69],[20, 70],[21, 69],[22, 70],[23, 65],[24, 67],[25, 65],[26, 65],[27, 65]]) as Theme
-
-export const light_pink_alt2_Card = n324 as Theme
-export const light_pink_alt2_DrawerFrame = n324 as Theme
-export const light_pink_alt2_Progress = n324 as Theme
-export const light_pink_alt2_TooltipArrow = n324 as Theme
-const n325 = t([[12, 65],[13, 67],[14, 68],[15, 69],[16, 64],[17, 63],[18, 70],[19, 69],[20, 70],[21, 69],[22, 69],[23, 65],[24, 67],[25, 65],[26, 65],[27, 64]]) as Theme
-
-export const light_pink_alt2_Button = n325 as Theme
-export const light_pink_alt2_Switch = n325 as Theme
-export const light_pink_alt2_TooltipContent = n325 as Theme
-export const light_pink_alt2_SliderTrack = n325 as Theme
-const n326 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[18, 70],[19, 69],[20, 70],[21, 69],[22, 71],[23, 67],[24, 68],[25, 67],[26, 67],[27, 67]]) as Theme
-
-export const light_pink_alt2_Checkbox = n326 as Theme
-export const light_pink_alt2_RadioGroupItem = n326 as Theme
-export const light_pink_alt2_Input = n326 as Theme
-export const light_pink_alt2_TextArea = n326 as Theme
-const n327 = t([[12, 71],[13, 70],[14, 69],[15, 68],[16, 11],[17, 11],[18, 62],[19, 63],[20, 62],[21, 63],[22, 60],[23, 70],[24, 69],[25, 70],[26, 70],[27, 63]]) as Theme
-
-export const light_pink_alt2_SwitchThumb = n327 as Theme
-const n328 = t([[12, 67],[13, 65],[14, 64],[15, 63],[16, 68],[17, 69],[18, 62],[19, 63],[20, 62],[21, 63],[22, 63],[23, 65],[24, 64],[25, 65],[26, 65],[27, 68]]) as Theme
-
-export const light_pink_alt2_SliderTrackActive = n328 as Theme
-const n329 = t([[12, 69],[13, 68],[14, 67],[15, 65],[16, 70],[17, 71],[18, 62],[19, 63],[20, 62],[21, 63],[22, 61],[23, 68],[24, 67],[25, 68],[26, 68],[27, 65]]) as Theme
-
-export const light_pink_alt2_SliderThumb = n329 as Theme
-export const light_pink_alt2_Tooltip = n329 as Theme
-export const light_pink_alt2_ProgressIndicator = n329 as Theme
-const n330 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[19, 68],[20, 69],[21, 68],[22, 71],[23, 64],[24, 65],[25, 64],[26, 64],[27, 67]]) as Theme
-
-export const light_pink_active_ListItem = n330 as Theme
-const n331 = t([[12, 65],[13, 67],[14, 68],[15, 69],[16, 64],[17, 63],[19, 68],[20, 69],[21, 68],[22, 69],[23, 67],[24, 68],[25, 67],[26, 67],[27, 64]]) as Theme
-
-export const light_pink_active_Card = n331 as Theme
-export const light_pink_active_DrawerFrame = n331 as Theme
-export const light_pink_active_Progress = n331 as Theme
-export const light_pink_active_TooltipArrow = n331 as Theme
-const n332 = t([[12, 67],[13, 68],[14, 69],[15, 70],[16, 65],[17, 64],[19, 68],[20, 69],[21, 68],[22, 68],[23, 67],[24, 68],[25, 67],[26, 67],[27, 63]]) as Theme
-
-export const light_pink_active_Button = n332 as Theme
-export const light_pink_active_Switch = n332 as Theme
-export const light_pink_active_TooltipContent = n332 as Theme
-export const light_pink_active_SliderTrack = n332 as Theme
-const n333 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[19, 68],[20, 69],[21, 68],[22, 70],[23, 68],[24, 69],[25, 68],[26, 68],[27, 65]]) as Theme
-
-export const light_pink_active_Checkbox = n333 as Theme
-export const light_pink_active_RadioGroupItem = n333 as Theme
-export const light_pink_active_Input = n333 as Theme
-export const light_pink_active_TextArea = n333 as Theme
-const n334 = t([[12, 70],[13, 69],[14, 68],[15, 67],[16, 71],[17, 11],[19, 64],[20, 63],[21, 64],[22, 60],[23, 69],[24, 68],[25, 69],[26, 69],[27, 64]]) as Theme
-
-export const light_pink_active_SwitchThumb = n334 as Theme
-const n335 = t([[12, 65],[13, 64],[14, 63],[15, 62],[16, 67],[17, 68],[19, 64],[20, 63],[21, 64],[22, 64],[23, 64],[24, 63],[25, 64],[26, 64],[27, 69]]) as Theme
-
-export const light_pink_active_SliderTrackActive = n335 as Theme
-const n336 = t([[12, 68],[13, 67],[14, 65],[15, 64],[16, 69],[17, 70],[19, 64],[20, 63],[21, 64],[22, 62],[23, 67],[24, 65],[25, 67],[26, 67],[27, 67]]) as Theme
-
-export const light_pink_active_SliderThumb = n336 as Theme
-export const light_pink_active_Tooltip = n336 as Theme
-export const light_pink_active_ProgressIndicator = n336 as Theme
-const n337 = t([[12, 85],[13, 86],[14, 87],[15, 88],[16, 84],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 93]]) as Theme
-
-export const light_red_alt1_ListItem = n337 as Theme
-const n338 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[18, 95],[19, 94],[20, 95],[21, 94],[22, 95],[23, 89],[24, 91],[25, 89],[26, 89],[27, 91]]) as Theme
-
-export const light_red_alt1_Card = n338 as Theme
-export const light_red_alt1_DrawerFrame = n338 as Theme
-export const light_red_alt1_Progress = n338 as Theme
-export const light_red_alt1_TooltipArrow = n338 as Theme
-const n339 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[18, 95],[19, 94],[20, 95],[21, 94],[22, 94],[23, 89],[24, 91],[25, 89],[26, 89],[27, 89]]) as Theme
-
-export const light_red_alt1_Button = n339 as Theme
-export const light_red_alt1_Switch = n339 as Theme
-export const light_red_alt1_TooltipContent = n339 as Theme
-export const light_red_alt1_SliderTrack = n339 as Theme
-const n340 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 91],[24, 92],[25, 91],[26, 91],[27, 92]]) as Theme
-
-export const light_red_alt1_Checkbox = n340 as Theme
-export const light_red_alt1_RadioGroupItem = n340 as Theme
-export const light_red_alt1_Input = n340 as Theme
-export const light_red_alt1_TextArea = n340 as Theme
-const n341 = t([[12, 11],[13, 95],[14, 94],[15, 93],[16, 11],[17, 11],[18, 85],[19, 86],[20, 85],[21, 86],[22, 84],[23, 94],[24, 93],[25, 94],[26, 94],[27, 86]]) as Theme
-
-export const light_red_alt1_SwitchThumb = n341 as Theme
-const n342 = t([[12, 92],[13, 91],[14, 89],[15, 88],[16, 93],[17, 94],[18, 85],[19, 86],[20, 85],[21, 86],[22, 86],[23, 89],[24, 88],[25, 89],[26, 89],[27, 91]]) as Theme
-
-export const light_red_alt1_SliderTrackActive = n342 as Theme
-const n343 = t([[12, 94],[13, 93],[14, 92],[15, 91],[16, 95],[17, 11],[18, 85],[19, 86],[20, 85],[21, 86],[22, 84],[23, 92],[24, 91],[25, 92],[26, 92],[27, 88]]) as Theme
-
-export const light_red_alt1_SliderThumb = n343 as Theme
-export const light_red_alt1_Tooltip = n343 as Theme
-export const light_red_alt1_ProgressIndicator = n343 as Theme
-const n344 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 94],[19, 93],[20, 94],[21, 93],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 92]]) as Theme
-
-export const light_red_alt2_ListItem = n344 as Theme
-const n345 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[18, 94],[19, 93],[20, 94],[21, 93],[22, 94],[23, 89],[24, 91],[25, 89],[26, 89],[27, 89]]) as Theme
-
-export const light_red_alt2_Card = n345 as Theme
-export const light_red_alt2_DrawerFrame = n345 as Theme
-export const light_red_alt2_Progress = n345 as Theme
-export const light_red_alt2_TooltipArrow = n345 as Theme
-const n346 = t([[12, 89],[13, 91],[14, 92],[15, 93],[16, 88],[17, 87],[18, 94],[19, 93],[20, 94],[21, 93],[22, 93],[23, 89],[24, 91],[25, 89],[26, 89],[27, 88]]) as Theme
-
-export const light_red_alt2_Button = n346 as Theme
-export const light_red_alt2_Switch = n346 as Theme
-export const light_red_alt2_TooltipContent = n346 as Theme
-export const light_red_alt2_SliderTrack = n346 as Theme
-const n347 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[18, 94],[19, 93],[20, 94],[21, 93],[22, 95],[23, 91],[24, 92],[25, 91],[26, 91],[27, 91]]) as Theme
-
-export const light_red_alt2_Checkbox = n347 as Theme
-export const light_red_alt2_RadioGroupItem = n347 as Theme
-export const light_red_alt2_Input = n347 as Theme
-export const light_red_alt2_TextArea = n347 as Theme
-const n348 = t([[12, 95],[13, 94],[14, 93],[15, 92],[16, 11],[17, 11],[18, 86],[19, 87],[20, 86],[21, 87],[22, 84],[23, 94],[24, 93],[25, 94],[26, 94],[27, 87]]) as Theme
-
-export const light_red_alt2_SwitchThumb = n348 as Theme
-const n349 = t([[12, 91],[13, 89],[14, 88],[15, 87],[16, 92],[17, 93],[18, 86],[19, 87],[20, 86],[21, 87],[22, 87],[23, 89],[24, 88],[25, 89],[26, 89],[27, 92]]) as Theme
-
-export const light_red_alt2_SliderTrackActive = n349 as Theme
-const n350 = t([[12, 93],[13, 92],[14, 91],[15, 89],[16, 94],[17, 95],[18, 86],[19, 87],[20, 86],[21, 87],[22, 85],[23, 92],[24, 91],[25, 92],[26, 92],[27, 89]]) as Theme
-
-export const light_red_alt2_SliderThumb = n350 as Theme
-export const light_red_alt2_Tooltip = n350 as Theme
-export const light_red_alt2_ProgressIndicator = n350 as Theme
-const n351 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[19, 92],[20, 93],[21, 92],[22, 95],[23, 88],[24, 89],[25, 88],[26, 88],[27, 91]]) as Theme
-
-export const light_red_active_ListItem = n351 as Theme
-const n352 = t([[12, 89],[13, 91],[14, 92],[15, 93],[16, 88],[17, 87],[19, 92],[20, 93],[21, 92],[22, 93],[23, 91],[24, 92],[25, 91],[26, 91],[27, 88]]) as Theme
-
-export const light_red_active_Card = n352 as Theme
-export const light_red_active_DrawerFrame = n352 as Theme
-export const light_red_active_Progress = n352 as Theme
-export const light_red_active_TooltipArrow = n352 as Theme
-const n353 = t([[12, 91],[13, 92],[14, 93],[15, 94],[16, 89],[17, 88],[19, 92],[20, 93],[21, 92],[22, 92],[23, 91],[24, 92],[25, 91],[26, 91],[27, 87]]) as Theme
-
-export const light_red_active_Button = n353 as Theme
-export const light_red_active_Switch = n353 as Theme
-export const light_red_active_TooltipContent = n353 as Theme
-export const light_red_active_SliderTrack = n353 as Theme
-const n354 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[19, 92],[20, 93],[21, 92],[22, 94],[23, 92],[24, 93],[25, 92],[26, 92],[27, 89]]) as Theme
-
-export const light_red_active_Checkbox = n354 as Theme
-export const light_red_active_RadioGroupItem = n354 as Theme
-export const light_red_active_Input = n354 as Theme
-export const light_red_active_TextArea = n354 as Theme
-const n355 = t([[12, 94],[13, 93],[14, 92],[15, 91],[16, 95],[17, 11],[19, 88],[20, 87],[21, 88],[22, 84],[23, 93],[24, 92],[25, 93],[26, 93],[27, 88]]) as Theme
-
-export const light_red_active_SwitchThumb = n355 as Theme
-const n356 = t([[12, 89],[13, 88],[14, 87],[15, 86],[16, 91],[17, 92],[19, 88],[20, 87],[21, 88],[22, 88],[23, 88],[24, 87],[25, 88],[26, 88],[27, 93]]) as Theme
-
-export const light_red_active_SliderTrackActive = n356 as Theme
-const n357 = t([[12, 92],[13, 91],[14, 89],[15, 88],[16, 93],[17, 94],[19, 88],[20, 87],[21, 88],[22, 86],[23, 91],[24, 89],[25, 91],[26, 91],[27, 91]]) as Theme
-
-export const light_red_active_SliderThumb = n357 as Theme
-export const light_red_active_Tooltip = n357 as Theme
-export const light_red_active_ProgressIndicator = n357 as Theme
-const n358 = t([[12, 157],[13, 158],[14, 159],[15, 161],[16, 156],[17, 155],[18, 164],[19, 163],[20, 164],[21, 163],[22, 164],[23, 161],[24, 56],[25, 159],[26, 161],[27, 161]]) as Theme
-
-export const dark_orange_alt1_Card = n358 as Theme
-export const dark_orange_alt1_DrawerFrame = n358 as Theme
-export const dark_orange_alt1_Progress = n358 as Theme
-export const dark_orange_alt1_TooltipArrow = n358 as Theme
-const n359 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[18, 164],[19, 163],[20, 164],[21, 163],[22, 163],[23, 161],[24, 56],[25, 159],[26, 161],[27, 159]]) as Theme
-
-export const dark_orange_alt1_Button = n359 as Theme
-export const dark_orange_alt1_Switch = n359 as Theme
-export const dark_orange_alt1_TooltipContent = n359 as Theme
-export const dark_orange_alt1_SliderTrack = n359 as Theme
-const n360 = t([[12, 156],[13, 157],[14, 158],[15, 159],[16, 155],[17, 154],[18, 164],[19, 163],[20, 164],[21, 163],[22, 0],[23, 56],[24, 162],[25, 161],[26, 56],[27, 56]]) as Theme
-
-export const dark_orange_alt1_Checkbox = n360 as Theme
-export const dark_orange_alt1_RadioGroupItem = n360 as Theme
-export const dark_orange_alt1_Input = n360 as Theme
-export const dark_orange_alt1_TextArea = n360 as Theme
-const n361 = t([[12, 0],[13, 164],[14, 163],[15, 162],[16, 0],[17, 0],[18, 155],[19, 156],[20, 155],[21, 156],[22, 154],[23, 162],[24, 56],[25, 163],[26, 162],[27, 156]]) as Theme
-
-export const dark_orange_alt1_SwitchThumb = n361 as Theme
-const n362 = t([[12, 56],[13, 161],[14, 159],[15, 158],[16, 162],[17, 163],[18, 155],[19, 156],[20, 155],[21, 156],[22, 156],[23, 158],[24, 157],[25, 159],[26, 158],[27, 161]]) as Theme
-
-export const dark_orange_alt1_SliderTrackActive = n362 as Theme
-const n363 = t([[12, 163],[13, 162],[14, 56],[15, 161],[16, 164],[17, 0],[18, 155],[19, 156],[20, 155],[21, 156],[22, 154],[23, 161],[24, 159],[25, 56],[26, 161],[27, 158]]) as Theme
-
-export const dark_orange_alt1_SliderThumb = n363 as Theme
-export const dark_orange_alt1_Tooltip = n363 as Theme
-export const dark_orange_alt1_ProgressIndicator = n363 as Theme
-const n364 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[18, 163],[19, 162],[20, 163],[21, 162],[22, 163],[23, 161],[24, 56],[25, 159],[26, 161],[27, 159]]) as Theme
-
-export const dark_orange_alt2_Card = n364 as Theme
-export const dark_orange_alt2_DrawerFrame = n364 as Theme
-export const dark_orange_alt2_Progress = n364 as Theme
-export const dark_orange_alt2_TooltipArrow = n364 as Theme
-const n365 = t([[12, 159],[13, 161],[14, 56],[15, 162],[16, 158],[17, 157],[18, 163],[19, 162],[20, 163],[21, 162],[22, 162],[23, 161],[24, 56],[25, 159],[26, 161],[27, 158]]) as Theme
-
-export const dark_orange_alt2_Button = n365 as Theme
-export const dark_orange_alt2_Switch = n365 as Theme
-export const dark_orange_alt2_TooltipContent = n365 as Theme
-export const dark_orange_alt2_SliderTrack = n365 as Theme
-const n366 = t([[12, 157],[13, 158],[14, 159],[15, 161],[16, 156],[17, 155],[18, 163],[19, 162],[20, 163],[21, 162],[22, 164],[23, 56],[24, 162],[25, 161],[26, 56],[27, 161]]) as Theme
-
-export const dark_orange_alt2_Checkbox = n366 as Theme
-export const dark_orange_alt2_RadioGroupItem = n366 as Theme
-export const dark_orange_alt2_Input = n366 as Theme
-export const dark_orange_alt2_TextArea = n366 as Theme
-const n367 = t([[12, 164],[13, 163],[14, 162],[15, 56],[16, 0],[17, 0],[18, 156],[19, 157],[20, 156],[21, 157],[22, 154],[23, 162],[24, 56],[25, 163],[26, 162],[27, 157]]) as Theme
-
-export const dark_orange_alt2_SwitchThumb = n367 as Theme
-const n368 = t([[12, 161],[13, 159],[14, 158],[15, 157],[16, 56],[17, 162],[18, 156],[19, 157],[20, 156],[21, 157],[22, 157],[23, 158],[24, 157],[25, 159],[26, 158],[27, 56]]) as Theme
-
-export const dark_orange_alt2_SliderTrackActive = n368 as Theme
-const n369 = t([[12, 162],[13, 56],[14, 161],[15, 159],[16, 163],[17, 164],[18, 156],[19, 157],[20, 156],[21, 157],[22, 155],[23, 161],[24, 159],[25, 56],[26, 161],[27, 159]]) as Theme
-
-export const dark_orange_alt2_SliderThumb = n369 as Theme
-export const dark_orange_alt2_Tooltip = n369 as Theme
-export const dark_orange_alt2_ProgressIndicator = n369 as Theme
-const n370 = t([[12, 159],[13, 161],[14, 56],[15, 162],[16, 158],[17, 157],[19, 56],[20, 162],[21, 56],[22, 162],[23, 56],[24, 162],[25, 161],[26, 56],[27, 158]]) as Theme
-
-export const dark_orange_active_Card = n370 as Theme
-export const dark_orange_active_DrawerFrame = n370 as Theme
-export const dark_orange_active_Progress = n370 as Theme
-export const dark_orange_active_TooltipArrow = n370 as Theme
-const n371 = t([[12, 161],[13, 56],[14, 162],[15, 163],[16, 159],[17, 158],[19, 56],[20, 162],[21, 56],[22, 56],[23, 56],[24, 162],[25, 161],[26, 56],[27, 157]]) as Theme
-
-export const dark_orange_active_Button = n371 as Theme
-export const dark_orange_active_Switch = n371 as Theme
-export const dark_orange_active_TooltipContent = n371 as Theme
-export const dark_orange_active_SliderTrack = n371 as Theme
-const n372 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[19, 56],[20, 162],[21, 56],[22, 163],[23, 162],[24, 163],[25, 56],[26, 162],[27, 159]]) as Theme
-
-export const dark_orange_active_Checkbox = n372 as Theme
-export const dark_orange_active_RadioGroupItem = n372 as Theme
-export const dark_orange_active_Input = n372 as Theme
-export const dark_orange_active_TextArea = n372 as Theme
-const n373 = t([[12, 163],[13, 162],[14, 56],[15, 161],[16, 164],[17, 0],[19, 158],[20, 157],[21, 158],[22, 154],[23, 56],[24, 161],[25, 162],[26, 56],[27, 158]]) as Theme
-
-export const dark_orange_active_SwitchThumb = n373 as Theme
-const n374 = t([[12, 159],[13, 158],[14, 157],[15, 156],[16, 161],[17, 56],[19, 158],[20, 157],[21, 158],[22, 158],[23, 157],[24, 156],[25, 158],[26, 157],[27, 162]]) as Theme
-
-export const dark_orange_active_SliderTrackActive = n374 as Theme
-const n375 = t([[12, 56],[13, 161],[14, 159],[15, 158],[16, 162],[17, 163],[19, 158],[20, 157],[21, 158],[22, 156],[23, 159],[24, 158],[25, 161],[26, 159],[27, 161]]) as Theme
-
-export const dark_orange_active_SliderThumb = n375 as Theme
-export const dark_orange_active_Tooltip = n375 as Theme
-export const dark_orange_active_ProgressIndicator = n375 as Theme
-const n376 = t([[12, 201],[13, 202],[14, 203],[15, 205],[16, 200],[17, 199],[18, 208],[19, 207],[20, 208],[21, 207],[22, 208],[23, 205],[24, 104],[25, 203],[26, 205],[27, 205]]) as Theme
-
-export const dark_yellow_alt1_Card = n376 as Theme
-export const dark_yellow_alt1_DrawerFrame = n376 as Theme
-export const dark_yellow_alt1_Progress = n376 as Theme
-export const dark_yellow_alt1_TooltipArrow = n376 as Theme
-const n377 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[18, 208],[19, 207],[20, 208],[21, 207],[22, 207],[23, 205],[24, 104],[25, 203],[26, 205],[27, 203]]) as Theme
-
-export const dark_yellow_alt1_Button = n377 as Theme
-export const dark_yellow_alt1_Switch = n377 as Theme
-export const dark_yellow_alt1_TooltipContent = n377 as Theme
-export const dark_yellow_alt1_SliderTrack = n377 as Theme
-const n378 = t([[12, 200],[13, 201],[14, 202],[15, 203],[16, 199],[17, 198],[18, 208],[19, 207],[20, 208],[21, 207],[22, 0],[23, 104],[24, 206],[25, 205],[26, 104],[27, 104]]) as Theme
-
-export const dark_yellow_alt1_Checkbox = n378 as Theme
-export const dark_yellow_alt1_RadioGroupItem = n378 as Theme
-export const dark_yellow_alt1_Input = n378 as Theme
-export const dark_yellow_alt1_TextArea = n378 as Theme
-const n379 = t([[12, 0],[13, 208],[14, 207],[15, 206],[16, 0],[17, 0],[18, 199],[19, 200],[20, 199],[21, 200],[22, 198],[23, 206],[24, 104],[25, 207],[26, 206],[27, 200]]) as Theme
-
-export const dark_yellow_alt1_SwitchThumb = n379 as Theme
-const n380 = t([[12, 104],[13, 205],[14, 203],[15, 202],[16, 206],[17, 207],[18, 199],[19, 200],[20, 199],[21, 200],[22, 200],[23, 202],[24, 201],[25, 203],[26, 202],[27, 205]]) as Theme
-
-export const dark_yellow_alt1_SliderTrackActive = n380 as Theme
-const n381 = t([[12, 207],[13, 206],[14, 104],[15, 205],[16, 208],[17, 0],[18, 199],[19, 200],[20, 199],[21, 200],[22, 198],[23, 205],[24, 203],[25, 104],[26, 205],[27, 202]]) as Theme
-
-export const dark_yellow_alt1_SliderThumb = n381 as Theme
-export const dark_yellow_alt1_Tooltip = n381 as Theme
-export const dark_yellow_alt1_ProgressIndicator = n381 as Theme
-const n382 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[18, 207],[19, 206],[20, 207],[21, 206],[22, 207],[23, 205],[24, 104],[25, 203],[26, 205],[27, 203]]) as Theme
-
-export const dark_yellow_alt2_Card = n382 as Theme
-export const dark_yellow_alt2_DrawerFrame = n382 as Theme
-export const dark_yellow_alt2_Progress = n382 as Theme
-export const dark_yellow_alt2_TooltipArrow = n382 as Theme
-const n383 = t([[12, 203],[13, 205],[14, 104],[15, 206],[16, 202],[17, 201],[18, 207],[19, 206],[20, 207],[21, 206],[22, 206],[23, 205],[24, 104],[25, 203],[26, 205],[27, 202]]) as Theme
-
-export const dark_yellow_alt2_Button = n383 as Theme
-export const dark_yellow_alt2_Switch = n383 as Theme
-export const dark_yellow_alt2_TooltipContent = n383 as Theme
-export const dark_yellow_alt2_SliderTrack = n383 as Theme
-const n384 = t([[12, 201],[13, 202],[14, 203],[15, 205],[16, 200],[17, 199],[18, 207],[19, 206],[20, 207],[21, 206],[22, 208],[23, 104],[24, 206],[25, 205],[26, 104],[27, 205]]) as Theme
-
-export const dark_yellow_alt2_Checkbox = n384 as Theme
-export const dark_yellow_alt2_RadioGroupItem = n384 as Theme
-export const dark_yellow_alt2_Input = n384 as Theme
-export const dark_yellow_alt2_TextArea = n384 as Theme
-const n385 = t([[12, 208],[13, 207],[14, 206],[15, 104],[16, 0],[17, 0],[18, 200],[19, 201],[20, 200],[21, 201],[22, 198],[23, 206],[24, 104],[25, 207],[26, 206],[27, 201]]) as Theme
-
-export const dark_yellow_alt2_SwitchThumb = n385 as Theme
-const n386 = t([[12, 205],[13, 203],[14, 202],[15, 201],[16, 104],[17, 206],[18, 200],[19, 201],[20, 200],[21, 201],[22, 201],[23, 202],[24, 201],[25, 203],[26, 202],[27, 104]]) as Theme
-
-export const dark_yellow_alt2_SliderTrackActive = n386 as Theme
-const n387 = t([[12, 206],[13, 104],[14, 205],[15, 203],[16, 207],[17, 208],[18, 200],[19, 201],[20, 200],[21, 201],[22, 199],[23, 205],[24, 203],[25, 104],[26, 205],[27, 203]]) as Theme
-
-export const dark_yellow_alt2_SliderThumb = n387 as Theme
-export const dark_yellow_alt2_Tooltip = n387 as Theme
-export const dark_yellow_alt2_ProgressIndicator = n387 as Theme
-const n388 = t([[12, 203],[13, 205],[14, 104],[15, 206],[16, 202],[17, 201],[19, 104],[20, 206],[21, 104],[22, 206],[23, 104],[24, 206],[25, 205],[26, 104],[27, 202]]) as Theme
-
-export const dark_yellow_active_Card = n388 as Theme
-export const dark_yellow_active_DrawerFrame = n388 as Theme
-export const dark_yellow_active_Progress = n388 as Theme
-export const dark_yellow_active_TooltipArrow = n388 as Theme
-const n389 = t([[12, 205],[13, 104],[14, 206],[15, 207],[16, 203],[17, 202],[19, 104],[20, 206],[21, 104],[22, 104],[23, 104],[24, 206],[25, 205],[26, 104],[27, 201]]) as Theme
-
-export const dark_yellow_active_Button = n389 as Theme
-export const dark_yellow_active_Switch = n389 as Theme
-export const dark_yellow_active_TooltipContent = n389 as Theme
-export const dark_yellow_active_SliderTrack = n389 as Theme
-const n390 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[19, 104],[20, 206],[21, 104],[22, 207],[23, 206],[24, 207],[25, 104],[26, 206],[27, 203]]) as Theme
-
-export const dark_yellow_active_Checkbox = n390 as Theme
-export const dark_yellow_active_RadioGroupItem = n390 as Theme
-export const dark_yellow_active_Input = n390 as Theme
-export const dark_yellow_active_TextArea = n390 as Theme
-const n391 = t([[12, 207],[13, 206],[14, 104],[15, 205],[16, 208],[17, 0],[19, 202],[20, 201],[21, 202],[22, 198],[23, 104],[24, 205],[25, 206],[26, 104],[27, 202]]) as Theme
-
-export const dark_yellow_active_SwitchThumb = n391 as Theme
-const n392 = t([[12, 203],[13, 202],[14, 201],[15, 200],[16, 205],[17, 104],[19, 202],[20, 201],[21, 202],[22, 202],[23, 201],[24, 200],[25, 202],[26, 201],[27, 206]]) as Theme
-
-export const dark_yellow_active_SliderTrackActive = n392 as Theme
-const n393 = t([[12, 104],[13, 205],[14, 203],[15, 202],[16, 206],[17, 207],[19, 202],[20, 201],[21, 202],[22, 200],[23, 203],[24, 202],[25, 205],[26, 203],[27, 205]]) as Theme
-
-export const dark_yellow_active_SliderThumb = n393 as Theme
-export const dark_yellow_active_Tooltip = n393 as Theme
-export const dark_yellow_active_ProgressIndicator = n393 as Theme
-const n394 = t([[12, 146],[13, 147],[14, 148],[15, 150],[16, 145],[17, 144],[18, 153],[19, 152],[20, 153],[21, 152],[22, 153],[23, 150],[24, 44],[25, 148],[26, 150],[27, 150]]) as Theme
-
-export const dark_green_alt1_Card = n394 as Theme
-export const dark_green_alt1_DrawerFrame = n394 as Theme
-export const dark_green_alt1_Progress = n394 as Theme
-export const dark_green_alt1_TooltipArrow = n394 as Theme
-const n395 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[18, 153],[19, 152],[20, 153],[21, 152],[22, 152],[23, 150],[24, 44],[25, 148],[26, 150],[27, 148]]) as Theme
-
-export const dark_green_alt1_Button = n395 as Theme
-export const dark_green_alt1_Switch = n395 as Theme
-export const dark_green_alt1_TooltipContent = n395 as Theme
-export const dark_green_alt1_SliderTrack = n395 as Theme
-const n396 = t([[12, 145],[13, 146],[14, 147],[15, 148],[16, 144],[17, 143],[18, 153],[19, 152],[20, 153],[21, 152],[22, 0],[23, 44],[24, 151],[25, 150],[26, 44],[27, 44]]) as Theme
-
-export const dark_green_alt1_Checkbox = n396 as Theme
-export const dark_green_alt1_RadioGroupItem = n396 as Theme
-export const dark_green_alt1_Input = n396 as Theme
-export const dark_green_alt1_TextArea = n396 as Theme
-const n397 = t([[12, 0],[13, 153],[14, 152],[15, 151],[16, 0],[17, 0],[18, 144],[19, 145],[20, 144],[21, 145],[22, 143],[23, 151],[24, 44],[25, 152],[26, 151],[27, 145]]) as Theme
-
-export const dark_green_alt1_SwitchThumb = n397 as Theme
-const n398 = t([[12, 44],[13, 150],[14, 148],[15, 147],[16, 151],[17, 152],[18, 144],[19, 145],[20, 144],[21, 145],[22, 145],[23, 147],[24, 146],[25, 148],[26, 147],[27, 150]]) as Theme
-
-export const dark_green_alt1_SliderTrackActive = n398 as Theme
-const n399 = t([[12, 152],[13, 151],[14, 44],[15, 150],[16, 153],[17, 0],[18, 144],[19, 145],[20, 144],[21, 145],[22, 143],[23, 150],[24, 148],[25, 44],[26, 150],[27, 147]]) as Theme
-
-export const dark_green_alt1_SliderThumb = n399 as Theme
-export const dark_green_alt1_Tooltip = n399 as Theme
-export const dark_green_alt1_ProgressIndicator = n399 as Theme
-const n400 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[18, 152],[19, 151],[20, 152],[21, 151],[22, 152],[23, 150],[24, 44],[25, 148],[26, 150],[27, 148]]) as Theme
-
-export const dark_green_alt2_Card = n400 as Theme
-export const dark_green_alt2_DrawerFrame = n400 as Theme
-export const dark_green_alt2_Progress = n400 as Theme
-export const dark_green_alt2_TooltipArrow = n400 as Theme
-const n401 = t([[12, 148],[13, 150],[14, 44],[15, 151],[16, 147],[17, 146],[18, 152],[19, 151],[20, 152],[21, 151],[22, 151],[23, 150],[24, 44],[25, 148],[26, 150],[27, 147]]) as Theme
-
-export const dark_green_alt2_Button = n401 as Theme
-export const dark_green_alt2_Switch = n401 as Theme
-export const dark_green_alt2_TooltipContent = n401 as Theme
-export const dark_green_alt2_SliderTrack = n401 as Theme
-const n402 = t([[12, 146],[13, 147],[14, 148],[15, 150],[16, 145],[17, 144],[18, 152],[19, 151],[20, 152],[21, 151],[22, 153],[23, 44],[24, 151],[25, 150],[26, 44],[27, 150]]) as Theme
-
-export const dark_green_alt2_Checkbox = n402 as Theme
-export const dark_green_alt2_RadioGroupItem = n402 as Theme
-export const dark_green_alt2_Input = n402 as Theme
-export const dark_green_alt2_TextArea = n402 as Theme
-const n403 = t([[12, 153],[13, 152],[14, 151],[15, 44],[16, 0],[17, 0],[18, 145],[19, 146],[20, 145],[21, 146],[22, 143],[23, 151],[24, 44],[25, 152],[26, 151],[27, 146]]) as Theme
-
-export const dark_green_alt2_SwitchThumb = n403 as Theme
-const n404 = t([[12, 150],[13, 148],[14, 147],[15, 146],[16, 44],[17, 151],[18, 145],[19, 146],[20, 145],[21, 146],[22, 146],[23, 147],[24, 146],[25, 148],[26, 147],[27, 44]]) as Theme
-
-export const dark_green_alt2_SliderTrackActive = n404 as Theme
-const n405 = t([[12, 151],[13, 44],[14, 150],[15, 148],[16, 152],[17, 153],[18, 145],[19, 146],[20, 145],[21, 146],[22, 144],[23, 150],[24, 148],[25, 44],[26, 150],[27, 148]]) as Theme
-
-export const dark_green_alt2_SliderThumb = n405 as Theme
-export const dark_green_alt2_Tooltip = n405 as Theme
-export const dark_green_alt2_ProgressIndicator = n405 as Theme
-const n406 = t([[12, 148],[13, 150],[14, 44],[15, 151],[16, 147],[17, 146],[19, 44],[20, 151],[21, 44],[22, 151],[23, 44],[24, 151],[25, 150],[26, 44],[27, 147]]) as Theme
-
-export const dark_green_active_Card = n406 as Theme
-export const dark_green_active_DrawerFrame = n406 as Theme
-export const dark_green_active_Progress = n406 as Theme
-export const dark_green_active_TooltipArrow = n406 as Theme
-const n407 = t([[12, 150],[13, 44],[14, 151],[15, 152],[16, 148],[17, 147],[19, 44],[20, 151],[21, 44],[22, 44],[23, 44],[24, 151],[25, 150],[26, 44],[27, 146]]) as Theme
-
-export const dark_green_active_Button = n407 as Theme
-export const dark_green_active_Switch = n407 as Theme
-export const dark_green_active_TooltipContent = n407 as Theme
-export const dark_green_active_SliderTrack = n407 as Theme
-const n408 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[19, 44],[20, 151],[21, 44],[22, 152],[23, 151],[24, 152],[25, 44],[26, 151],[27, 148]]) as Theme
-
-export const dark_green_active_Checkbox = n408 as Theme
-export const dark_green_active_RadioGroupItem = n408 as Theme
-export const dark_green_active_Input = n408 as Theme
-export const dark_green_active_TextArea = n408 as Theme
-const n409 = t([[12, 152],[13, 151],[14, 44],[15, 150],[16, 153],[17, 0],[19, 147],[20, 146],[21, 147],[22, 143],[23, 44],[24, 150],[25, 151],[26, 44],[27, 147]]) as Theme
-
-export const dark_green_active_SwitchThumb = n409 as Theme
-const n410 = t([[12, 148],[13, 147],[14, 146],[15, 145],[16, 150],[17, 44],[19, 147],[20, 146],[21, 147],[22, 147],[23, 146],[24, 145],[25, 147],[26, 146],[27, 151]]) as Theme
-
-export const dark_green_active_SliderTrackActive = n410 as Theme
-const n411 = t([[12, 44],[13, 150],[14, 148],[15, 147],[16, 151],[17, 152],[19, 147],[20, 146],[21, 147],[22, 145],[23, 148],[24, 147],[25, 150],[26, 148],[27, 150]]) as Theme
-
-export const dark_green_active_SliderThumb = n411 as Theme
-export const dark_green_active_Tooltip = n411 as Theme
-export const dark_green_active_ProgressIndicator = n411 as Theme
-const n412 = t([[12, 124],[13, 125],[14, 126],[15, 128],[16, 123],[17, 122],[18, 131],[19, 130],[20, 131],[21, 130],[22, 131],[23, 128],[24, 22],[25, 126],[26, 128],[27, 128]]) as Theme
-
-export const dark_blue_alt1_Card = n412 as Theme
-export const dark_blue_alt1_DrawerFrame = n412 as Theme
-export const dark_blue_alt1_Progress = n412 as Theme
-export const dark_blue_alt1_TooltipArrow = n412 as Theme
-const n413 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[18, 131],[19, 130],[20, 131],[21, 130],[22, 130],[23, 128],[24, 22],[25, 126],[26, 128],[27, 126]]) as Theme
-
-export const dark_blue_alt1_Button = n413 as Theme
-export const dark_blue_alt1_Switch = n413 as Theme
-export const dark_blue_alt1_TooltipContent = n413 as Theme
-export const dark_blue_alt1_SliderTrack = n413 as Theme
-const n414 = t([[12, 123],[13, 124],[14, 125],[15, 126],[16, 122],[17, 121],[18, 131],[19, 130],[20, 131],[21, 130],[22, 0],[23, 22],[24, 129],[25, 128],[26, 22],[27, 22]]) as Theme
-
-export const dark_blue_alt1_Checkbox = n414 as Theme
-export const dark_blue_alt1_RadioGroupItem = n414 as Theme
-export const dark_blue_alt1_Input = n414 as Theme
-export const dark_blue_alt1_TextArea = n414 as Theme
-const n415 = t([[12, 0],[13, 131],[14, 130],[15, 129],[16, 0],[17, 0],[18, 122],[19, 123],[20, 122],[21, 123],[22, 121],[23, 129],[24, 22],[25, 130],[26, 129],[27, 123]]) as Theme
-
-export const dark_blue_alt1_SwitchThumb = n415 as Theme
-const n416 = t([[12, 22],[13, 128],[14, 126],[15, 125],[16, 129],[17, 130],[18, 122],[19, 123],[20, 122],[21, 123],[22, 123],[23, 125],[24, 124],[25, 126],[26, 125],[27, 128]]) as Theme
-
-export const dark_blue_alt1_SliderTrackActive = n416 as Theme
-const n417 = t([[12, 130],[13, 129],[14, 22],[15, 128],[16, 131],[17, 0],[18, 122],[19, 123],[20, 122],[21, 123],[22, 121],[23, 128],[24, 126],[25, 22],[26, 128],[27, 125]]) as Theme
-
-export const dark_blue_alt1_SliderThumb = n417 as Theme
-export const dark_blue_alt1_Tooltip = n417 as Theme
-export const dark_blue_alt1_ProgressIndicator = n417 as Theme
-const n418 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[18, 130],[19, 129],[20, 130],[21, 129],[22, 130],[23, 128],[24, 22],[25, 126],[26, 128],[27, 126]]) as Theme
-
-export const dark_blue_alt2_Card = n418 as Theme
-export const dark_blue_alt2_DrawerFrame = n418 as Theme
-export const dark_blue_alt2_Progress = n418 as Theme
-export const dark_blue_alt2_TooltipArrow = n418 as Theme
-const n419 = t([[12, 126],[13, 128],[14, 22],[15, 129],[16, 125],[17, 124],[18, 130],[19, 129],[20, 130],[21, 129],[22, 129],[23, 128],[24, 22],[25, 126],[26, 128],[27, 125]]) as Theme
-
-export const dark_blue_alt2_Button = n419 as Theme
-export const dark_blue_alt2_Switch = n419 as Theme
-export const dark_blue_alt2_TooltipContent = n419 as Theme
-export const dark_blue_alt2_SliderTrack = n419 as Theme
-const n420 = t([[12, 124],[13, 125],[14, 126],[15, 128],[16, 123],[17, 122],[18, 130],[19, 129],[20, 130],[21, 129],[22, 131],[23, 22],[24, 129],[25, 128],[26, 22],[27, 128]]) as Theme
-
-export const dark_blue_alt2_Checkbox = n420 as Theme
-export const dark_blue_alt2_RadioGroupItem = n420 as Theme
-export const dark_blue_alt2_Input = n420 as Theme
-export const dark_blue_alt2_TextArea = n420 as Theme
-const n421 = t([[12, 131],[13, 130],[14, 129],[15, 22],[16, 0],[17, 0],[18, 123],[19, 124],[20, 123],[21, 124],[22, 121],[23, 129],[24, 22],[25, 130],[26, 129],[27, 124]]) as Theme
-
-export const dark_blue_alt2_SwitchThumb = n421 as Theme
-const n422 = t([[12, 128],[13, 126],[14, 125],[15, 124],[16, 22],[17, 129],[18, 123],[19, 124],[20, 123],[21, 124],[22, 124],[23, 125],[24, 124],[25, 126],[26, 125],[27, 22]]) as Theme
-
-export const dark_blue_alt2_SliderTrackActive = n422 as Theme
-const n423 = t([[12, 129],[13, 22],[14, 128],[15, 126],[16, 130],[17, 131],[18, 123],[19, 124],[20, 123],[21, 124],[22, 122],[23, 128],[24, 126],[25, 22],[26, 128],[27, 126]]) as Theme
-
-export const dark_blue_alt2_SliderThumb = n423 as Theme
-export const dark_blue_alt2_Tooltip = n423 as Theme
-export const dark_blue_alt2_ProgressIndicator = n423 as Theme
-const n424 = t([[12, 126],[13, 128],[14, 22],[15, 129],[16, 125],[17, 124],[19, 22],[20, 129],[21, 22],[22, 129],[23, 22],[24, 129],[25, 128],[26, 22],[27, 125]]) as Theme
-
-export const dark_blue_active_Card = n424 as Theme
-export const dark_blue_active_DrawerFrame = n424 as Theme
-export const dark_blue_active_Progress = n424 as Theme
-export const dark_blue_active_TooltipArrow = n424 as Theme
-const n425 = t([[12, 128],[13, 22],[14, 129],[15, 130],[16, 126],[17, 125],[19, 22],[20, 129],[21, 22],[22, 22],[23, 22],[24, 129],[25, 128],[26, 22],[27, 124]]) as Theme
-
-export const dark_blue_active_Button = n425 as Theme
-export const dark_blue_active_Switch = n425 as Theme
-export const dark_blue_active_TooltipContent = n425 as Theme
-export const dark_blue_active_SliderTrack = n425 as Theme
-const n426 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[19, 22],[20, 129],[21, 22],[22, 130],[23, 129],[24, 130],[25, 22],[26, 129],[27, 126]]) as Theme
-
-export const dark_blue_active_Checkbox = n426 as Theme
-export const dark_blue_active_RadioGroupItem = n426 as Theme
-export const dark_blue_active_Input = n426 as Theme
-export const dark_blue_active_TextArea = n426 as Theme
-const n427 = t([[12, 130],[13, 129],[14, 22],[15, 128],[16, 131],[17, 0],[19, 125],[20, 124],[21, 125],[22, 121],[23, 22],[24, 128],[25, 129],[26, 22],[27, 125]]) as Theme
-
-export const dark_blue_active_SwitchThumb = n427 as Theme
-const n428 = t([[12, 126],[13, 125],[14, 124],[15, 123],[16, 128],[17, 22],[19, 125],[20, 124],[21, 125],[22, 125],[23, 124],[24, 123],[25, 125],[26, 124],[27, 129]]) as Theme
-
-export const dark_blue_active_SliderTrackActive = n428 as Theme
-const n429 = t([[12, 22],[13, 128],[14, 126],[15, 125],[16, 129],[17, 130],[19, 125],[20, 124],[21, 125],[22, 123],[23, 126],[24, 125],[25, 128],[26, 126],[27, 128]]) as Theme
-
-export const dark_blue_active_SliderThumb = n429 as Theme
-export const dark_blue_active_Tooltip = n429 as Theme
-export const dark_blue_active_ProgressIndicator = n429 as Theme
-const n430 = t([[12, 179],[13, 180],[14, 181],[15, 183],[16, 178],[17, 177],[18, 186],[19, 185],[20, 186],[21, 185],[22, 186],[23, 183],[24, 80],[25, 181],[26, 183],[27, 183]]) as Theme
-
-export const dark_purple_alt1_Card = n430 as Theme
-export const dark_purple_alt1_DrawerFrame = n430 as Theme
-export const dark_purple_alt1_Progress = n430 as Theme
-export const dark_purple_alt1_TooltipArrow = n430 as Theme
-const n431 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[18, 186],[19, 185],[20, 186],[21, 185],[22, 185],[23, 183],[24, 80],[25, 181],[26, 183],[27, 181]]) as Theme
-
-export const dark_purple_alt1_Button = n431 as Theme
-export const dark_purple_alt1_Switch = n431 as Theme
-export const dark_purple_alt1_TooltipContent = n431 as Theme
-export const dark_purple_alt1_SliderTrack = n431 as Theme
-const n432 = t([[12, 178],[13, 179],[14, 180],[15, 181],[16, 177],[17, 176],[18, 186],[19, 185],[20, 186],[21, 185],[22, 0],[23, 80],[24, 184],[25, 183],[26, 80],[27, 80]]) as Theme
-
-export const dark_purple_alt1_Checkbox = n432 as Theme
-export const dark_purple_alt1_RadioGroupItem = n432 as Theme
-export const dark_purple_alt1_Input = n432 as Theme
-export const dark_purple_alt1_TextArea = n432 as Theme
-const n433 = t([[12, 0],[13, 186],[14, 185],[15, 184],[16, 0],[17, 0],[18, 177],[19, 178],[20, 177],[21, 178],[22, 176],[23, 184],[24, 80],[25, 185],[26, 184],[27, 178]]) as Theme
-
-export const dark_purple_alt1_SwitchThumb = n433 as Theme
-const n434 = t([[12, 80],[13, 183],[14, 181],[15, 180],[16, 184],[17, 185],[18, 177],[19, 178],[20, 177],[21, 178],[22, 178],[23, 180],[24, 179],[25, 181],[26, 180],[27, 183]]) as Theme
-
-export const dark_purple_alt1_SliderTrackActive = n434 as Theme
-const n435 = t([[12, 185],[13, 184],[14, 80],[15, 183],[16, 186],[17, 0],[18, 177],[19, 178],[20, 177],[21, 178],[22, 176],[23, 183],[24, 181],[25, 80],[26, 183],[27, 180]]) as Theme
-
-export const dark_purple_alt1_SliderThumb = n435 as Theme
-export const dark_purple_alt1_Tooltip = n435 as Theme
-export const dark_purple_alt1_ProgressIndicator = n435 as Theme
-const n436 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[18, 185],[19, 184],[20, 185],[21, 184],[22, 185],[23, 183],[24, 80],[25, 181],[26, 183],[27, 181]]) as Theme
-
-export const dark_purple_alt2_Card = n436 as Theme
-export const dark_purple_alt2_DrawerFrame = n436 as Theme
-export const dark_purple_alt2_Progress = n436 as Theme
-export const dark_purple_alt2_TooltipArrow = n436 as Theme
-const n437 = t([[12, 181],[13, 183],[14, 80],[15, 184],[16, 180],[17, 179],[18, 185],[19, 184],[20, 185],[21, 184],[22, 184],[23, 183],[24, 80],[25, 181],[26, 183],[27, 180]]) as Theme
-
-export const dark_purple_alt2_Button = n437 as Theme
-export const dark_purple_alt2_Switch = n437 as Theme
-export const dark_purple_alt2_TooltipContent = n437 as Theme
-export const dark_purple_alt2_SliderTrack = n437 as Theme
-const n438 = t([[12, 179],[13, 180],[14, 181],[15, 183],[16, 178],[17, 177],[18, 185],[19, 184],[20, 185],[21, 184],[22, 186],[23, 80],[24, 184],[25, 183],[26, 80],[27, 183]]) as Theme
-
-export const dark_purple_alt2_Checkbox = n438 as Theme
-export const dark_purple_alt2_RadioGroupItem = n438 as Theme
-export const dark_purple_alt2_Input = n438 as Theme
-export const dark_purple_alt2_TextArea = n438 as Theme
-const n439 = t([[12, 186],[13, 185],[14, 184],[15, 80],[16, 0],[17, 0],[18, 178],[19, 179],[20, 178],[21, 179],[22, 176],[23, 184],[24, 80],[25, 185],[26, 184],[27, 179]]) as Theme
-
-export const dark_purple_alt2_SwitchThumb = n439 as Theme
-const n440 = t([[12, 183],[13, 181],[14, 180],[15, 179],[16, 80],[17, 184],[18, 178],[19, 179],[20, 178],[21, 179],[22, 179],[23, 180],[24, 179],[25, 181],[26, 180],[27, 80]]) as Theme
-
-export const dark_purple_alt2_SliderTrackActive = n440 as Theme
-const n441 = t([[12, 184],[13, 80],[14, 183],[15, 181],[16, 185],[17, 186],[18, 178],[19, 179],[20, 178],[21, 179],[22, 177],[23, 183],[24, 181],[25, 80],[26, 183],[27, 181]]) as Theme
-
-export const dark_purple_alt2_SliderThumb = n441 as Theme
-export const dark_purple_alt2_Tooltip = n441 as Theme
-export const dark_purple_alt2_ProgressIndicator = n441 as Theme
-const n442 = t([[12, 181],[13, 183],[14, 80],[15, 184],[16, 180],[17, 179],[19, 80],[20, 184],[21, 80],[22, 184],[23, 80],[24, 184],[25, 183],[26, 80],[27, 180]]) as Theme
-
-export const dark_purple_active_Card = n442 as Theme
-export const dark_purple_active_DrawerFrame = n442 as Theme
-export const dark_purple_active_Progress = n442 as Theme
-export const dark_purple_active_TooltipArrow = n442 as Theme
-const n443 = t([[12, 183],[13, 80],[14, 184],[15, 185],[16, 181],[17, 180],[19, 80],[20, 184],[21, 80],[22, 80],[23, 80],[24, 184],[25, 183],[26, 80],[27, 179]]) as Theme
-
-export const dark_purple_active_Button = n443 as Theme
-export const dark_purple_active_Switch = n443 as Theme
-export const dark_purple_active_TooltipContent = n443 as Theme
-export const dark_purple_active_SliderTrack = n443 as Theme
-const n444 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[19, 80],[20, 184],[21, 80],[22, 185],[23, 184],[24, 185],[25, 80],[26, 184],[27, 181]]) as Theme
-
-export const dark_purple_active_Checkbox = n444 as Theme
-export const dark_purple_active_RadioGroupItem = n444 as Theme
-export const dark_purple_active_Input = n444 as Theme
-export const dark_purple_active_TextArea = n444 as Theme
-const n445 = t([[12, 185],[13, 184],[14, 80],[15, 183],[16, 186],[17, 0],[19, 180],[20, 179],[21, 180],[22, 176],[23, 80],[24, 183],[25, 184],[26, 80],[27, 180]]) as Theme
-
-export const dark_purple_active_SwitchThumb = n445 as Theme
-const n446 = t([[12, 181],[13, 180],[14, 179],[15, 178],[16, 183],[17, 80],[19, 180],[20, 179],[21, 180],[22, 180],[23, 179],[24, 178],[25, 180],[26, 179],[27, 184]]) as Theme
-
-export const dark_purple_active_SliderTrackActive = n446 as Theme
-const n447 = t([[12, 80],[13, 183],[14, 181],[15, 180],[16, 184],[17, 185],[19, 180],[20, 179],[21, 180],[22, 178],[23, 181],[24, 180],[25, 183],[26, 181],[27, 183]]) as Theme
-
-export const dark_purple_active_SliderThumb = n447 as Theme
-export const dark_purple_active_Tooltip = n447 as Theme
-export const dark_purple_active_ProgressIndicator = n447 as Theme
-const n448 = t([[12, 168],[13, 169],[14, 170],[15, 172],[16, 167],[17, 166],[18, 175],[19, 174],[20, 175],[21, 174],[22, 175],[23, 172],[24, 68],[25, 170],[26, 172],[27, 172]]) as Theme
-
-export const dark_pink_alt1_Card = n448 as Theme
-export const dark_pink_alt1_DrawerFrame = n448 as Theme
-export const dark_pink_alt1_Progress = n448 as Theme
-export const dark_pink_alt1_TooltipArrow = n448 as Theme
-const n449 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[18, 175],[19, 174],[20, 175],[21, 174],[22, 174],[23, 172],[24, 68],[25, 170],[26, 172],[27, 170]]) as Theme
-
-export const dark_pink_alt1_Button = n449 as Theme
-export const dark_pink_alt1_Switch = n449 as Theme
-export const dark_pink_alt1_TooltipContent = n449 as Theme
-export const dark_pink_alt1_SliderTrack = n449 as Theme
-const n450 = t([[12, 167],[13, 168],[14, 169],[15, 170],[16, 166],[17, 165],[18, 175],[19, 174],[20, 175],[21, 174],[22, 0],[23, 68],[24, 173],[25, 172],[26, 68],[27, 68]]) as Theme
-
-export const dark_pink_alt1_Checkbox = n450 as Theme
-export const dark_pink_alt1_RadioGroupItem = n450 as Theme
-export const dark_pink_alt1_Input = n450 as Theme
-export const dark_pink_alt1_TextArea = n450 as Theme
-const n451 = t([[12, 0],[13, 175],[14, 174],[15, 173],[16, 0],[17, 0],[18, 166],[19, 167],[20, 166],[21, 167],[22, 165],[23, 173],[24, 68],[25, 174],[26, 173],[27, 167]]) as Theme
-
-export const dark_pink_alt1_SwitchThumb = n451 as Theme
-const n452 = t([[12, 68],[13, 172],[14, 170],[15, 169],[16, 173],[17, 174],[18, 166],[19, 167],[20, 166],[21, 167],[22, 167],[23, 169],[24, 168],[25, 170],[26, 169],[27, 172]]) as Theme
-
-export const dark_pink_alt1_SliderTrackActive = n452 as Theme
-const n453 = t([[12, 174],[13, 173],[14, 68],[15, 172],[16, 175],[17, 0],[18, 166],[19, 167],[20, 166],[21, 167],[22, 165],[23, 172],[24, 170],[25, 68],[26, 172],[27, 169]]) as Theme
-
-export const dark_pink_alt1_SliderThumb = n453 as Theme
-export const dark_pink_alt1_Tooltip = n453 as Theme
-export const dark_pink_alt1_ProgressIndicator = n453 as Theme
-const n454 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[18, 174],[19, 173],[20, 174],[21, 173],[22, 174],[23, 172],[24, 68],[25, 170],[26, 172],[27, 170]]) as Theme
-
-export const dark_pink_alt2_Card = n454 as Theme
-export const dark_pink_alt2_DrawerFrame = n454 as Theme
-export const dark_pink_alt2_Progress = n454 as Theme
-export const dark_pink_alt2_TooltipArrow = n454 as Theme
-const n455 = t([[12, 170],[13, 172],[14, 68],[15, 173],[16, 169],[17, 168],[18, 174],[19, 173],[20, 174],[21, 173],[22, 173],[23, 172],[24, 68],[25, 170],[26, 172],[27, 169]]) as Theme
-
-export const dark_pink_alt2_Button = n455 as Theme
-export const dark_pink_alt2_Switch = n455 as Theme
-export const dark_pink_alt2_TooltipContent = n455 as Theme
-export const dark_pink_alt2_SliderTrack = n455 as Theme
-const n456 = t([[12, 168],[13, 169],[14, 170],[15, 172],[16, 167],[17, 166],[18, 174],[19, 173],[20, 174],[21, 173],[22, 175],[23, 68],[24, 173],[25, 172],[26, 68],[27, 172]]) as Theme
-
-export const dark_pink_alt2_Checkbox = n456 as Theme
-export const dark_pink_alt2_RadioGroupItem = n456 as Theme
-export const dark_pink_alt2_Input = n456 as Theme
-export const dark_pink_alt2_TextArea = n456 as Theme
-const n457 = t([[12, 175],[13, 174],[14, 173],[15, 68],[16, 0],[17, 0],[18, 167],[19, 168],[20, 167],[21, 168],[22, 165],[23, 173],[24, 68],[25, 174],[26, 173],[27, 168]]) as Theme
-
-export const dark_pink_alt2_SwitchThumb = n457 as Theme
-const n458 = t([[12, 172],[13, 170],[14, 169],[15, 168],[16, 68],[17, 173],[18, 167],[19, 168],[20, 167],[21, 168],[22, 168],[23, 169],[24, 168],[25, 170],[26, 169],[27, 68]]) as Theme
-
-export const dark_pink_alt2_SliderTrackActive = n458 as Theme
-const n459 = t([[12, 173],[13, 68],[14, 172],[15, 170],[16, 174],[17, 175],[18, 167],[19, 168],[20, 167],[21, 168],[22, 166],[23, 172],[24, 170],[25, 68],[26, 172],[27, 170]]) as Theme
-
-export const dark_pink_alt2_SliderThumb = n459 as Theme
-export const dark_pink_alt2_Tooltip = n459 as Theme
-export const dark_pink_alt2_ProgressIndicator = n459 as Theme
-const n460 = t([[12, 170],[13, 172],[14, 68],[15, 173],[16, 169],[17, 168],[19, 68],[20, 173],[21, 68],[22, 173],[23, 68],[24, 173],[25, 172],[26, 68],[27, 169]]) as Theme
-
-export const dark_pink_active_Card = n460 as Theme
-export const dark_pink_active_DrawerFrame = n460 as Theme
-export const dark_pink_active_Progress = n460 as Theme
-export const dark_pink_active_TooltipArrow = n460 as Theme
-const n461 = t([[12, 172],[13, 68],[14, 173],[15, 174],[16, 170],[17, 169],[19, 68],[20, 173],[21, 68],[22, 68],[23, 68],[24, 173],[25, 172],[26, 68],[27, 168]]) as Theme
-
-export const dark_pink_active_Button = n461 as Theme
-export const dark_pink_active_Switch = n461 as Theme
-export const dark_pink_active_TooltipContent = n461 as Theme
-export const dark_pink_active_SliderTrack = n461 as Theme
-const n462 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[19, 68],[20, 173],[21, 68],[22, 174],[23, 173],[24, 174],[25, 68],[26, 173],[27, 170]]) as Theme
-
-export const dark_pink_active_Checkbox = n462 as Theme
-export const dark_pink_active_RadioGroupItem = n462 as Theme
-export const dark_pink_active_Input = n462 as Theme
-export const dark_pink_active_TextArea = n462 as Theme
-const n463 = t([[12, 174],[13, 173],[14, 68],[15, 172],[16, 175],[17, 0],[19, 169],[20, 168],[21, 169],[22, 165],[23, 68],[24, 172],[25, 173],[26, 68],[27, 169]]) as Theme
-
-export const dark_pink_active_SwitchThumb = n463 as Theme
-const n464 = t([[12, 170],[13, 169],[14, 168],[15, 167],[16, 172],[17, 68],[19, 169],[20, 168],[21, 169],[22, 169],[23, 168],[24, 167],[25, 169],[26, 168],[27, 173]]) as Theme
-
-export const dark_pink_active_SliderTrackActive = n464 as Theme
-const n465 = t([[12, 68],[13, 172],[14, 170],[15, 169],[16, 173],[17, 174],[19, 169],[20, 168],[21, 169],[22, 167],[23, 170],[24, 169],[25, 172],[26, 170],[27, 172]]) as Theme
-
-export const dark_pink_active_SliderThumb = n465 as Theme
-export const dark_pink_active_Tooltip = n465 as Theme
-export const dark_pink_active_ProgressIndicator = n465 as Theme
-const n466 = t([[12, 190],[13, 191],[14, 192],[15, 194],[16, 189],[17, 188],[18, 197],[19, 196],[20, 197],[21, 196],[22, 197],[23, 194],[24, 92],[25, 192],[26, 194],[27, 194]]) as Theme
-
-export const dark_red_alt1_Card = n466 as Theme
-export const dark_red_alt1_DrawerFrame = n466 as Theme
-export const dark_red_alt1_Progress = n466 as Theme
-export const dark_red_alt1_TooltipArrow = n466 as Theme
-const n467 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[18, 197],[19, 196],[20, 197],[21, 196],[22, 196],[23, 194],[24, 92],[25, 192],[26, 194],[27, 192]]) as Theme
-
-export const dark_red_alt1_Button = n467 as Theme
-export const dark_red_alt1_Switch = n467 as Theme
-export const dark_red_alt1_TooltipContent = n467 as Theme
-export const dark_red_alt1_SliderTrack = n467 as Theme
-const n468 = t([[12, 189],[13, 190],[14, 191],[15, 192],[16, 188],[17, 187],[18, 197],[19, 196],[20, 197],[21, 196],[22, 0],[23, 92],[24, 195],[25, 194],[26, 92],[27, 92]]) as Theme
-
-export const dark_red_alt1_Checkbox = n468 as Theme
-export const dark_red_alt1_RadioGroupItem = n468 as Theme
-export const dark_red_alt1_Input = n468 as Theme
-export const dark_red_alt1_TextArea = n468 as Theme
-const n469 = t([[12, 0],[13, 197],[14, 196],[15, 195],[16, 0],[17, 0],[18, 188],[19, 189],[20, 188],[21, 189],[22, 187],[23, 195],[24, 92],[25, 196],[26, 195],[27, 189]]) as Theme
-
-export const dark_red_alt1_SwitchThumb = n469 as Theme
-const n470 = t([[12, 92],[13, 194],[14, 192],[15, 191],[16, 195],[17, 196],[18, 188],[19, 189],[20, 188],[21, 189],[22, 189],[23, 191],[24, 190],[25, 192],[26, 191],[27, 194]]) as Theme
-
-export const dark_red_alt1_SliderTrackActive = n470 as Theme
-const n471 = t([[12, 196],[13, 195],[14, 92],[15, 194],[16, 197],[17, 0],[18, 188],[19, 189],[20, 188],[21, 189],[22, 187],[23, 194],[24, 192],[25, 92],[26, 194],[27, 191]]) as Theme
-
-export const dark_red_alt1_SliderThumb = n471 as Theme
-export const dark_red_alt1_Tooltip = n471 as Theme
-export const dark_red_alt1_ProgressIndicator = n471 as Theme
-const n472 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[18, 196],[19, 195],[20, 196],[21, 195],[22, 196],[23, 194],[24, 92],[25, 192],[26, 194],[27, 192]]) as Theme
-
-export const dark_red_alt2_Card = n472 as Theme
-export const dark_red_alt2_DrawerFrame = n472 as Theme
-export const dark_red_alt2_Progress = n472 as Theme
-export const dark_red_alt2_TooltipArrow = n472 as Theme
-const n473 = t([[12, 192],[13, 194],[14, 92],[15, 195],[16, 191],[17, 190],[18, 196],[19, 195],[20, 196],[21, 195],[22, 195],[23, 194],[24, 92],[25, 192],[26, 194],[27, 191]]) as Theme
-
-export const dark_red_alt2_Button = n473 as Theme
-export const dark_red_alt2_Switch = n473 as Theme
-export const dark_red_alt2_TooltipContent = n473 as Theme
-export const dark_red_alt2_SliderTrack = n473 as Theme
-const n474 = t([[12, 190],[13, 191],[14, 192],[15, 194],[16, 189],[17, 188],[18, 196],[19, 195],[20, 196],[21, 195],[22, 197],[23, 92],[24, 195],[25, 194],[26, 92],[27, 194]]) as Theme
-
-export const dark_red_alt2_Checkbox = n474 as Theme
-export const dark_red_alt2_RadioGroupItem = n474 as Theme
-export const dark_red_alt2_Input = n474 as Theme
-export const dark_red_alt2_TextArea = n474 as Theme
-const n475 = t([[12, 197],[13, 196],[14, 195],[15, 92],[16, 0],[17, 0],[18, 189],[19, 190],[20, 189],[21, 190],[22, 187],[23, 195],[24, 92],[25, 196],[26, 195],[27, 190]]) as Theme
-
-export const dark_red_alt2_SwitchThumb = n475 as Theme
-const n476 = t([[12, 194],[13, 192],[14, 191],[15, 190],[16, 92],[17, 195],[18, 189],[19, 190],[20, 189],[21, 190],[22, 190],[23, 191],[24, 190],[25, 192],[26, 191],[27, 92]]) as Theme
-
-export const dark_red_alt2_SliderTrackActive = n476 as Theme
-const n477 = t([[12, 195],[13, 92],[14, 194],[15, 192],[16, 196],[17, 197],[18, 189],[19, 190],[20, 189],[21, 190],[22, 188],[23, 194],[24, 192],[25, 92],[26, 194],[27, 192]]) as Theme
-
-export const dark_red_alt2_SliderThumb = n477 as Theme
-export const dark_red_alt2_Tooltip = n477 as Theme
-export const dark_red_alt2_ProgressIndicator = n477 as Theme
-const n478 = t([[12, 192],[13, 194],[14, 92],[15, 195],[16, 191],[17, 190],[19, 92],[20, 195],[21, 92],[22, 195],[23, 92],[24, 195],[25, 194],[26, 92],[27, 191]]) as Theme
-
-export const dark_red_active_Card = n478 as Theme
-export const dark_red_active_DrawerFrame = n478 as Theme
-export const dark_red_active_Progress = n478 as Theme
-export const dark_red_active_TooltipArrow = n478 as Theme
-const n479 = t([[12, 194],[13, 92],[14, 195],[15, 196],[16, 192],[17, 191],[19, 92],[20, 195],[21, 92],[22, 92],[23, 92],[24, 195],[25, 194],[26, 92],[27, 190]]) as Theme
-
-export const dark_red_active_Button = n479 as Theme
-export const dark_red_active_Switch = n479 as Theme
-export const dark_red_active_TooltipContent = n479 as Theme
-export const dark_red_active_SliderTrack = n479 as Theme
-const n480 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[19, 92],[20, 195],[21, 92],[22, 196],[23, 195],[24, 196],[25, 92],[26, 195],[27, 192]]) as Theme
-
-export const dark_red_active_Checkbox = n480 as Theme
-export const dark_red_active_RadioGroupItem = n480 as Theme
-export const dark_red_active_Input = n480 as Theme
-export const dark_red_active_TextArea = n480 as Theme
-const n481 = t([[12, 196],[13, 195],[14, 92],[15, 194],[16, 197],[17, 0],[19, 191],[20, 190],[21, 191],[22, 187],[23, 92],[24, 194],[25, 195],[26, 92],[27, 191]]) as Theme
-
-export const dark_red_active_SwitchThumb = n481 as Theme
-const n482 = t([[12, 192],[13, 191],[14, 190],[15, 189],[16, 194],[17, 92],[19, 191],[20, 190],[21, 191],[22, 191],[23, 190],[24, 189],[25, 191],[26, 190],[27, 195]]) as Theme
-
-export const dark_red_active_SliderTrackActive = n482 as Theme
-const n483 = t([[12, 92],[13, 194],[14, 192],[15, 191],[16, 195],[17, 196],[19, 191],[20, 190],[21, 191],[22, 189],[23, 192],[24, 191],[25, 194],[26, 192],[27, 194]]) as Theme
-
-export const dark_red_active_SliderThumb = n483 as Theme
-export const dark_red_active_Tooltip = n483 as Theme
-export const dark_red_active_ProgressIndicator = n483 as Theme
+const n187 = t([[12, 6],[13, 7],[14, 8],[15, 9],[16, 5],[17, 4],[19, 7],[20, 8],[21, 7],[22, 7],[23, 7],[24, 8],[25, 6],[26, 7],[27, 3]]) as Theme
+
+export const light_active_Button = n187 as Theme
+export const light_active_Switch = n187 as Theme
+const n188 = t([[12, 4],[13, 5],[14, 6],[15, 7],[16, 3],[17, 2],[19, 7],[20, 8],[21, 7],[22, 9],[23, 8],[24, 9],[25, 7],[26, 8],[27, 5]]) as Theme
+
+export const light_active_Checkbox = n188 as Theme
+export const light_active_Input = n188 as Theme
+export const light_active_TextArea = n188 as Theme
+const n189 = t([[12, 5],[13, 4],[14, 3],[15, 2],[16, 6],[17, 7],[19, 4],[20, 3],[21, 4],[22, 4],[23, 3],[24, 2],[25, 4],[26, 3],[27, 8]]) as Theme
+
+export const light_active_SliderTrackActive = n189 as Theme
+const n190 = t([[12, 113],[13, 114],[14, 115],[15, 116],[16, 112],[17, 111],[18, 120],[19, 119],[20, 120],[21, 119],[22, 120],[23, 116],[24, 117],[25, 115],[26, 116],[27, 116]]) as Theme
+
+export const dark_alt1_Card = n190 as Theme
+export const dark_alt1_DrawerFrame = n190 as Theme
+export const dark_alt1_Progress = n190 as Theme
+export const dark_alt1_TooltipArrow = n190 as Theme
+const n191 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[18, 120],[19, 119],[20, 120],[21, 119],[22, 119],[23, 116],[24, 117],[25, 115],[26, 116],[27, 115]]) as Theme
+
+export const dark_alt1_Button = n191 as Theme
+export const dark_alt1_Switch = n191 as Theme
+export const dark_alt1_TooltipContent = n191 as Theme
+export const dark_alt1_SliderTrack = n191 as Theme
+const n192 = t([[12, 112],[13, 113],[14, 114],[15, 115],[16, 111],[17, 110],[18, 120],[19, 119],[20, 120],[21, 119],[22, 0],[23, 117],[24, 118],[25, 116],[26, 117],[27, 117]]) as Theme
+
+export const dark_alt1_Checkbox = n192 as Theme
+export const dark_alt1_RadioGroupItem = n192 as Theme
+export const dark_alt1_Input = n192 as Theme
+export const dark_alt1_TextArea = n192 as Theme
+const n193 = t([[12, 0],[13, 120],[14, 119],[15, 118],[16, 0],[17, 0],[18, 111],[19, 112],[20, 111],[21, 112],[22, 110],[23, 118],[24, 117],[25, 119],[26, 118],[27, 112]]) as Theme
+
+export const dark_alt1_SwitchThumb = n193 as Theme
+const n194 = t([[12, 117],[13, 116],[14, 115],[15, 114],[16, 118],[17, 119],[18, 111],[19, 112],[20, 111],[21, 112],[22, 112],[23, 114],[24, 113],[25, 115],[26, 114],[27, 116]]) as Theme
+
+export const dark_alt1_SliderTrackActive = n194 as Theme
+const n195 = t([[12, 119],[13, 118],[14, 117],[15, 116],[16, 120],[17, 0],[18, 111],[19, 112],[20, 111],[21, 112],[22, 110],[23, 116],[24, 115],[25, 117],[26, 116],[27, 114]]) as Theme
+
+export const dark_alt1_SliderThumb = n195 as Theme
+export const dark_alt1_Tooltip = n195 as Theme
+export const dark_alt1_ProgressIndicator = n195 as Theme
+const n196 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[18, 119],[19, 118],[20, 119],[21, 118],[22, 119],[23, 116],[24, 117],[25, 115],[26, 116],[27, 115]]) as Theme
+
+export const dark_alt2_Card = n196 as Theme
+export const dark_alt2_DrawerFrame = n196 as Theme
+export const dark_alt2_Progress = n196 as Theme
+export const dark_alt2_TooltipArrow = n196 as Theme
+const n197 = t([[12, 115],[13, 116],[14, 117],[15, 118],[16, 114],[17, 113],[18, 119],[19, 118],[20, 119],[21, 118],[22, 118],[23, 116],[24, 117],[25, 115],[26, 116],[27, 114]]) as Theme
+
+export const dark_alt2_Button = n197 as Theme
+export const dark_alt2_Switch = n197 as Theme
+export const dark_alt2_TooltipContent = n197 as Theme
+export const dark_alt2_SliderTrack = n197 as Theme
+const n198 = t([[12, 113],[13, 114],[14, 115],[15, 116],[16, 112],[17, 111],[18, 119],[19, 118],[20, 119],[21, 118],[22, 120],[23, 117],[24, 118],[25, 116],[26, 117],[27, 116]]) as Theme
+
+export const dark_alt2_Checkbox = n198 as Theme
+export const dark_alt2_RadioGroupItem = n198 as Theme
+export const dark_alt2_Input = n198 as Theme
+export const dark_alt2_TextArea = n198 as Theme
+const n199 = t([[12, 120],[13, 119],[14, 118],[15, 117],[16, 0],[17, 0],[18, 112],[19, 113],[20, 112],[21, 113],[22, 110],[23, 118],[24, 117],[25, 119],[26, 118],[27, 113]]) as Theme
+
+export const dark_alt2_SwitchThumb = n199 as Theme
+const n200 = t([[12, 116],[13, 115],[14, 114],[15, 113],[16, 117],[17, 118],[18, 112],[19, 113],[20, 112],[21, 113],[22, 113],[23, 114],[24, 113],[25, 115],[26, 114],[27, 117]]) as Theme
+
+export const dark_alt2_SliderTrackActive = n200 as Theme
+const n201 = t([[12, 118],[13, 117],[14, 116],[15, 115],[16, 119],[17, 120],[18, 112],[19, 113],[20, 112],[21, 113],[22, 111],[23, 116],[24, 115],[25, 117],[26, 116],[27, 115]]) as Theme
+
+export const dark_alt2_SliderThumb = n201 as Theme
+export const dark_alt2_Tooltip = n201 as Theme
+export const dark_alt2_ProgressIndicator = n201 as Theme
+const n202 = t([[12, 116],[13, 117],[14, 118],[15, 119],[16, 115],[17, 114],[19, 117],[20, 118],[21, 117],[22, 117],[23, 117],[24, 118],[25, 116],[26, 117],[27, 113]]) as Theme
+
+export const dark_active_Button = n202 as Theme
+export const dark_active_Switch = n202 as Theme
+const n203 = t([[12, 114],[13, 115],[14, 116],[15, 117],[16, 113],[17, 112],[19, 117],[20, 118],[21, 117],[22, 119],[23, 118],[24, 119],[25, 117],[26, 118],[27, 115]]) as Theme
+
+export const dark_active_Checkbox = n203 as Theme
+export const dark_active_Input = n203 as Theme
+export const dark_active_TextArea = n203 as Theme
+const n204 = t([[12, 115],[13, 114],[14, 113],[15, 112],[16, 116],[17, 117],[19, 114],[20, 113],[21, 114],[22, 114],[23, 113],[24, 112],[25, 114],[26, 113],[27, 118]]) as Theme
+
+export const dark_active_SliderTrackActive = n204 as Theme
+const n205 = t([[12, 49],[13, 50],[14, 51],[15, 52],[16, 48],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 57]]) as Theme
+
+export const light_orange_alt1_ListItem = n205 as Theme
+const n206 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[18, 59],[19, 58],[20, 59],[21, 58],[22, 59],[23, 53],[24, 55],[25, 53],[26, 53],[27, 55]]) as Theme
+
+export const light_orange_alt1_Card = n206 as Theme
+export const light_orange_alt1_DrawerFrame = n206 as Theme
+export const light_orange_alt1_Progress = n206 as Theme
+export const light_orange_alt1_TooltipArrow = n206 as Theme
+const n207 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[18, 59],[19, 58],[20, 59],[21, 58],[22, 58],[23, 53],[24, 55],[25, 53],[26, 53],[27, 53]]) as Theme
+
+export const light_orange_alt1_Button = n207 as Theme
+export const light_orange_alt1_Switch = n207 as Theme
+export const light_orange_alt1_TooltipContent = n207 as Theme
+export const light_orange_alt1_SliderTrack = n207 as Theme
+const n208 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 59],[19, 58],[20, 59],[21, 58],[22, 11],[23, 55],[24, 56],[25, 55],[26, 55],[27, 56]]) as Theme
+
+export const light_orange_alt1_Checkbox = n208 as Theme
+export const light_orange_alt1_RadioGroupItem = n208 as Theme
+export const light_orange_alt1_Input = n208 as Theme
+export const light_orange_alt1_TextArea = n208 as Theme
+const n209 = t([[12, 11],[13, 59],[14, 58],[15, 57],[16, 11],[17, 11],[18, 49],[19, 50],[20, 49],[21, 50],[22, 48],[23, 58],[24, 57],[25, 58],[26, 58],[27, 50]]) as Theme
+
+export const light_orange_alt1_SwitchThumb = n209 as Theme
+const n210 = t([[12, 56],[13, 55],[14, 53],[15, 52],[16, 57],[17, 58],[18, 49],[19, 50],[20, 49],[21, 50],[22, 50],[23, 53],[24, 52],[25, 53],[26, 53],[27, 55]]) as Theme
+
+export const light_orange_alt1_SliderTrackActive = n210 as Theme
+const n211 = t([[12, 58],[13, 57],[14, 56],[15, 55],[16, 59],[17, 11],[18, 49],[19, 50],[20, 49],[21, 50],[22, 48],[23, 56],[24, 55],[25, 56],[26, 56],[27, 52]]) as Theme
+
+export const light_orange_alt1_SliderThumb = n211 as Theme
+export const light_orange_alt1_Tooltip = n211 as Theme
+export const light_orange_alt1_ProgressIndicator = n211 as Theme
+const n212 = t([[12, 50],[13, 51],[14, 52],[15, 53],[16, 49],[17, 48],[18, 58],[19, 57],[20, 58],[21, 57],[22, 11],[23, 51],[24, 52],[25, 51],[26, 51],[27, 56]]) as Theme
+
+export const light_orange_alt2_ListItem = n212 as Theme
+const n213 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[18, 58],[19, 57],[20, 58],[21, 57],[22, 58],[23, 53],[24, 55],[25, 53],[26, 53],[27, 53]]) as Theme
+
+export const light_orange_alt2_Card = n213 as Theme
+export const light_orange_alt2_DrawerFrame = n213 as Theme
+export const light_orange_alt2_Progress = n213 as Theme
+export const light_orange_alt2_TooltipArrow = n213 as Theme
+const n214 = t([[12, 53],[13, 55],[14, 56],[15, 57],[16, 52],[17, 51],[18, 58],[19, 57],[20, 58],[21, 57],[22, 57],[23, 53],[24, 55],[25, 53],[26, 53],[27, 52]]) as Theme
+
+export const light_orange_alt2_Button = n214 as Theme
+export const light_orange_alt2_Switch = n214 as Theme
+export const light_orange_alt2_TooltipContent = n214 as Theme
+export const light_orange_alt2_SliderTrack = n214 as Theme
+const n215 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[18, 58],[19, 57],[20, 58],[21, 57],[22, 59],[23, 55],[24, 56],[25, 55],[26, 55],[27, 55]]) as Theme
+
+export const light_orange_alt2_Checkbox = n215 as Theme
+export const light_orange_alt2_RadioGroupItem = n215 as Theme
+export const light_orange_alt2_Input = n215 as Theme
+export const light_orange_alt2_TextArea = n215 as Theme
+const n216 = t([[12, 59],[13, 58],[14, 57],[15, 56],[16, 11],[17, 11],[18, 50],[19, 51],[20, 50],[21, 51],[22, 48],[23, 58],[24, 57],[25, 58],[26, 58],[27, 51]]) as Theme
+
+export const light_orange_alt2_SwitchThumb = n216 as Theme
+const n217 = t([[12, 55],[13, 53],[14, 52],[15, 51],[16, 56],[17, 57],[18, 50],[19, 51],[20, 50],[21, 51],[22, 51],[23, 53],[24, 52],[25, 53],[26, 53],[27, 56]]) as Theme
+
+export const light_orange_alt2_SliderTrackActive = n217 as Theme
+const n218 = t([[12, 57],[13, 56],[14, 55],[15, 53],[16, 58],[17, 59],[18, 50],[19, 51],[20, 50],[21, 51],[22, 49],[23, 56],[24, 55],[25, 56],[26, 56],[27, 53]]) as Theme
+
+export const light_orange_alt2_SliderThumb = n218 as Theme
+export const light_orange_alt2_Tooltip = n218 as Theme
+export const light_orange_alt2_ProgressIndicator = n218 as Theme
+const n219 = t([[12, 51],[13, 52],[14, 53],[15, 55],[16, 50],[17, 49],[19, 56],[20, 57],[21, 56],[22, 59],[23, 52],[24, 53],[25, 52],[26, 52],[27, 55]]) as Theme
+
+export const light_orange_active_ListItem = n219 as Theme
+const n220 = t([[12, 55],[13, 56],[14, 57],[15, 58],[16, 53],[17, 52],[19, 56],[20, 57],[21, 56],[22, 56],[23, 55],[24, 56],[25, 55],[26, 55],[27, 51]]) as Theme
+
+export const light_orange_active_Button = n220 as Theme
+export const light_orange_active_Switch = n220 as Theme
+const n221 = t([[12, 52],[13, 53],[14, 55],[15, 56],[16, 51],[17, 50],[19, 56],[20, 57],[21, 56],[22, 58],[23, 56],[24, 57],[25, 56],[26, 56],[27, 53]]) as Theme
+
+export const light_orange_active_Checkbox = n221 as Theme
+export const light_orange_active_Input = n221 as Theme
+export const light_orange_active_TextArea = n221 as Theme
+const n222 = t([[12, 53],[13, 52],[14, 51],[15, 50],[16, 55],[17, 56],[19, 52],[20, 51],[21, 52],[22, 52],[23, 52],[24, 51],[25, 52],[26, 52],[27, 57]]) as Theme
+
+export const light_orange_active_SliderTrackActive = n222 as Theme
+const n223 = t([[12, 97],[13, 98],[14, 99],[15, 100],[16, 96],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 105]]) as Theme
+
+export const light_yellow_alt1_ListItem = n223 as Theme
+const n224 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[18, 107],[19, 106],[20, 107],[21, 106],[22, 107],[23, 101],[24, 103],[25, 101],[26, 101],[27, 103]]) as Theme
+
+export const light_yellow_alt1_Card = n224 as Theme
+export const light_yellow_alt1_DrawerFrame = n224 as Theme
+export const light_yellow_alt1_Progress = n224 as Theme
+export const light_yellow_alt1_TooltipArrow = n224 as Theme
+const n225 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[18, 107],[19, 106],[20, 107],[21, 106],[22, 106],[23, 101],[24, 103],[25, 101],[26, 101],[27, 101]]) as Theme
+
+export const light_yellow_alt1_Button = n225 as Theme
+export const light_yellow_alt1_Switch = n225 as Theme
+export const light_yellow_alt1_TooltipContent = n225 as Theme
+export const light_yellow_alt1_SliderTrack = n225 as Theme
+const n226 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 107],[19, 106],[20, 107],[21, 106],[22, 11],[23, 103],[24, 104],[25, 103],[26, 103],[27, 104]]) as Theme
+
+export const light_yellow_alt1_Checkbox = n226 as Theme
+export const light_yellow_alt1_RadioGroupItem = n226 as Theme
+export const light_yellow_alt1_Input = n226 as Theme
+export const light_yellow_alt1_TextArea = n226 as Theme
+const n227 = t([[12, 11],[13, 107],[14, 106],[15, 105],[16, 11],[17, 11],[18, 97],[19, 98],[20, 97],[21, 98],[22, 96],[23, 106],[24, 105],[25, 106],[26, 106],[27, 98]]) as Theme
+
+export const light_yellow_alt1_SwitchThumb = n227 as Theme
+const n228 = t([[12, 104],[13, 103],[14, 101],[15, 100],[16, 105],[17, 106],[18, 97],[19, 98],[20, 97],[21, 98],[22, 98],[23, 101],[24, 100],[25, 101],[26, 101],[27, 103]]) as Theme
+
+export const light_yellow_alt1_SliderTrackActive = n228 as Theme
+const n229 = t([[12, 106],[13, 105],[14, 104],[15, 103],[16, 107],[17, 11],[18, 97],[19, 98],[20, 97],[21, 98],[22, 96],[23, 104],[24, 103],[25, 104],[26, 104],[27, 100]]) as Theme
+
+export const light_yellow_alt1_SliderThumb = n229 as Theme
+export const light_yellow_alt1_Tooltip = n229 as Theme
+export const light_yellow_alt1_ProgressIndicator = n229 as Theme
+const n230 = t([[12, 98],[13, 99],[14, 100],[15, 101],[16, 97],[17, 96],[18, 106],[19, 105],[20, 106],[21, 105],[22, 11],[23, 99],[24, 100],[25, 99],[26, 99],[27, 104]]) as Theme
+
+export const light_yellow_alt2_ListItem = n230 as Theme
+const n231 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[18, 106],[19, 105],[20, 106],[21, 105],[22, 106],[23, 101],[24, 103],[25, 101],[26, 101],[27, 101]]) as Theme
+
+export const light_yellow_alt2_Card = n231 as Theme
+export const light_yellow_alt2_DrawerFrame = n231 as Theme
+export const light_yellow_alt2_Progress = n231 as Theme
+export const light_yellow_alt2_TooltipArrow = n231 as Theme
+const n232 = t([[12, 101],[13, 103],[14, 104],[15, 105],[16, 100],[17, 99],[18, 106],[19, 105],[20, 106],[21, 105],[22, 105],[23, 101],[24, 103],[25, 101],[26, 101],[27, 100]]) as Theme
+
+export const light_yellow_alt2_Button = n232 as Theme
+export const light_yellow_alt2_Switch = n232 as Theme
+export const light_yellow_alt2_TooltipContent = n232 as Theme
+export const light_yellow_alt2_SliderTrack = n232 as Theme
+const n233 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[18, 106],[19, 105],[20, 106],[21, 105],[22, 107],[23, 103],[24, 104],[25, 103],[26, 103],[27, 103]]) as Theme
+
+export const light_yellow_alt2_Checkbox = n233 as Theme
+export const light_yellow_alt2_RadioGroupItem = n233 as Theme
+export const light_yellow_alt2_Input = n233 as Theme
+export const light_yellow_alt2_TextArea = n233 as Theme
+const n234 = t([[12, 107],[13, 106],[14, 105],[15, 104],[16, 11],[17, 11],[18, 98],[19, 99],[20, 98],[21, 99],[22, 96],[23, 106],[24, 105],[25, 106],[26, 106],[27, 99]]) as Theme
+
+export const light_yellow_alt2_SwitchThumb = n234 as Theme
+const n235 = t([[12, 103],[13, 101],[14, 100],[15, 99],[16, 104],[17, 105],[18, 98],[19, 99],[20, 98],[21, 99],[22, 99],[23, 101],[24, 100],[25, 101],[26, 101],[27, 104]]) as Theme
+
+export const light_yellow_alt2_SliderTrackActive = n235 as Theme
+const n236 = t([[12, 105],[13, 104],[14, 103],[15, 101],[16, 106],[17, 107],[18, 98],[19, 99],[20, 98],[21, 99],[22, 97],[23, 104],[24, 103],[25, 104],[26, 104],[27, 101]]) as Theme
+
+export const light_yellow_alt2_SliderThumb = n236 as Theme
+export const light_yellow_alt2_Tooltip = n236 as Theme
+export const light_yellow_alt2_ProgressIndicator = n236 as Theme
+const n237 = t([[12, 99],[13, 100],[14, 101],[15, 103],[16, 98],[17, 97],[19, 104],[20, 105],[21, 104],[22, 107],[23, 100],[24, 101],[25, 100],[26, 100],[27, 103]]) as Theme
+
+export const light_yellow_active_ListItem = n237 as Theme
+const n238 = t([[12, 103],[13, 104],[14, 105],[15, 106],[16, 101],[17, 100],[19, 104],[20, 105],[21, 104],[22, 104],[23, 103],[24, 104],[25, 103],[26, 103],[27, 99]]) as Theme
+
+export const light_yellow_active_Button = n238 as Theme
+export const light_yellow_active_Switch = n238 as Theme
+const n239 = t([[12, 100],[13, 101],[14, 103],[15, 104],[16, 99],[17, 98],[19, 104],[20, 105],[21, 104],[22, 106],[23, 104],[24, 105],[25, 104],[26, 104],[27, 101]]) as Theme
+
+export const light_yellow_active_Checkbox = n239 as Theme
+export const light_yellow_active_Input = n239 as Theme
+export const light_yellow_active_TextArea = n239 as Theme
+const n240 = t([[12, 101],[13, 100],[14, 99],[15, 98],[16, 103],[17, 104],[19, 100],[20, 99],[21, 100],[22, 100],[23, 100],[24, 99],[25, 100],[26, 100],[27, 105]]) as Theme
+
+export const light_yellow_active_SliderTrackActive = n240 as Theme
+const n241 = t([[12, 37],[13, 38],[14, 39],[15, 40],[16, 36],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 45]]) as Theme
+
+export const light_green_alt1_ListItem = n241 as Theme
+const n242 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[18, 47],[19, 46],[20, 47],[21, 46],[22, 47],[23, 41],[24, 43],[25, 41],[26, 41],[27, 43]]) as Theme
+
+export const light_green_alt1_Card = n242 as Theme
+export const light_green_alt1_DrawerFrame = n242 as Theme
+export const light_green_alt1_Progress = n242 as Theme
+export const light_green_alt1_TooltipArrow = n242 as Theme
+const n243 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[18, 47],[19, 46],[20, 47],[21, 46],[22, 46],[23, 41],[24, 43],[25, 41],[26, 41],[27, 41]]) as Theme
+
+export const light_green_alt1_Button = n243 as Theme
+export const light_green_alt1_Switch = n243 as Theme
+export const light_green_alt1_TooltipContent = n243 as Theme
+export const light_green_alt1_SliderTrack = n243 as Theme
+const n244 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 47],[19, 46],[20, 47],[21, 46],[22, 11],[23, 43],[24, 44],[25, 43],[26, 43],[27, 44]]) as Theme
+
+export const light_green_alt1_Checkbox = n244 as Theme
+export const light_green_alt1_RadioGroupItem = n244 as Theme
+export const light_green_alt1_Input = n244 as Theme
+export const light_green_alt1_TextArea = n244 as Theme
+const n245 = t([[12, 11],[13, 47],[14, 46],[15, 45],[16, 11],[17, 11],[18, 37],[19, 38],[20, 37],[21, 38],[22, 36],[23, 46],[24, 45],[25, 46],[26, 46],[27, 38]]) as Theme
+
+export const light_green_alt1_SwitchThumb = n245 as Theme
+const n246 = t([[12, 44],[13, 43],[14, 41],[15, 40],[16, 45],[17, 46],[18, 37],[19, 38],[20, 37],[21, 38],[22, 38],[23, 41],[24, 40],[25, 41],[26, 41],[27, 43]]) as Theme
+
+export const light_green_alt1_SliderTrackActive = n246 as Theme
+const n247 = t([[12, 46],[13, 45],[14, 44],[15, 43],[16, 47],[17, 11],[18, 37],[19, 38],[20, 37],[21, 38],[22, 36],[23, 44],[24, 43],[25, 44],[26, 44],[27, 40]]) as Theme
+
+export const light_green_alt1_SliderThumb = n247 as Theme
+export const light_green_alt1_Tooltip = n247 as Theme
+export const light_green_alt1_ProgressIndicator = n247 as Theme
+const n248 = t([[12, 38],[13, 39],[14, 40],[15, 41],[16, 37],[17, 36],[18, 46],[19, 45],[20, 46],[21, 45],[22, 11],[23, 39],[24, 40],[25, 39],[26, 39],[27, 44]]) as Theme
+
+export const light_green_alt2_ListItem = n248 as Theme
+const n249 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[18, 46],[19, 45],[20, 46],[21, 45],[22, 46],[23, 41],[24, 43],[25, 41],[26, 41],[27, 41]]) as Theme
+
+export const light_green_alt2_Card = n249 as Theme
+export const light_green_alt2_DrawerFrame = n249 as Theme
+export const light_green_alt2_Progress = n249 as Theme
+export const light_green_alt2_TooltipArrow = n249 as Theme
+const n250 = t([[12, 41],[13, 43],[14, 44],[15, 45],[16, 40],[17, 39],[18, 46],[19, 45],[20, 46],[21, 45],[22, 45],[23, 41],[24, 43],[25, 41],[26, 41],[27, 40]]) as Theme
+
+export const light_green_alt2_Button = n250 as Theme
+export const light_green_alt2_Switch = n250 as Theme
+export const light_green_alt2_TooltipContent = n250 as Theme
+export const light_green_alt2_SliderTrack = n250 as Theme
+const n251 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[18, 46],[19, 45],[20, 46],[21, 45],[22, 47],[23, 43],[24, 44],[25, 43],[26, 43],[27, 43]]) as Theme
+
+export const light_green_alt2_Checkbox = n251 as Theme
+export const light_green_alt2_RadioGroupItem = n251 as Theme
+export const light_green_alt2_Input = n251 as Theme
+export const light_green_alt2_TextArea = n251 as Theme
+const n252 = t([[12, 47],[13, 46],[14, 45],[15, 44],[16, 11],[17, 11],[18, 38],[19, 39],[20, 38],[21, 39],[22, 36],[23, 46],[24, 45],[25, 46],[26, 46],[27, 39]]) as Theme
+
+export const light_green_alt2_SwitchThumb = n252 as Theme
+const n253 = t([[12, 43],[13, 41],[14, 40],[15, 39],[16, 44],[17, 45],[18, 38],[19, 39],[20, 38],[21, 39],[22, 39],[23, 41],[24, 40],[25, 41],[26, 41],[27, 44]]) as Theme
+
+export const light_green_alt2_SliderTrackActive = n253 as Theme
+const n254 = t([[12, 45],[13, 44],[14, 43],[15, 41],[16, 46],[17, 47],[18, 38],[19, 39],[20, 38],[21, 39],[22, 37],[23, 44],[24, 43],[25, 44],[26, 44],[27, 41]]) as Theme
+
+export const light_green_alt2_SliderThumb = n254 as Theme
+export const light_green_alt2_Tooltip = n254 as Theme
+export const light_green_alt2_ProgressIndicator = n254 as Theme
+const n255 = t([[12, 39],[13, 40],[14, 41],[15, 43],[16, 38],[17, 37],[19, 44],[20, 45],[21, 44],[22, 47],[23, 40],[24, 41],[25, 40],[26, 40],[27, 43]]) as Theme
+
+export const light_green_active_ListItem = n255 as Theme
+const n256 = t([[12, 43],[13, 44],[14, 45],[15, 46],[16, 41],[17, 40],[19, 44],[20, 45],[21, 44],[22, 44],[23, 43],[24, 44],[25, 43],[26, 43],[27, 39]]) as Theme
+
+export const light_green_active_Button = n256 as Theme
+export const light_green_active_Switch = n256 as Theme
+const n257 = t([[12, 40],[13, 41],[14, 43],[15, 44],[16, 39],[17, 38],[19, 44],[20, 45],[21, 44],[22, 46],[23, 44],[24, 45],[25, 44],[26, 44],[27, 41]]) as Theme
+
+export const light_green_active_Checkbox = n257 as Theme
+export const light_green_active_Input = n257 as Theme
+export const light_green_active_TextArea = n257 as Theme
+const n258 = t([[12, 41],[13, 40],[14, 39],[15, 38],[16, 43],[17, 44],[19, 40],[20, 39],[21, 40],[22, 40],[23, 40],[24, 39],[25, 40],[26, 40],[27, 45]]) as Theme
+
+export const light_green_active_SliderTrackActive = n258 as Theme
+const n259 = t([[12, 15],[13, 16],[14, 17],[15, 18],[16, 14],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 23]]) as Theme
+
+export const light_blue_alt1_ListItem = n259 as Theme
+const n260 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[18, 25],[19, 24],[20, 25],[21, 24],[22, 25],[23, 19],[24, 21],[25, 19],[26, 19],[27, 21]]) as Theme
+
+export const light_blue_alt1_Card = n260 as Theme
+export const light_blue_alt1_DrawerFrame = n260 as Theme
+export const light_blue_alt1_Progress = n260 as Theme
+export const light_blue_alt1_TooltipArrow = n260 as Theme
+const n261 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[18, 25],[19, 24],[20, 25],[21, 24],[22, 24],[23, 19],[24, 21],[25, 19],[26, 19],[27, 19]]) as Theme
+
+export const light_blue_alt1_Button = n261 as Theme
+export const light_blue_alt1_Switch = n261 as Theme
+export const light_blue_alt1_TooltipContent = n261 as Theme
+export const light_blue_alt1_SliderTrack = n261 as Theme
+const n262 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 25],[19, 24],[20, 25],[21, 24],[22, 11],[23, 21],[24, 22],[25, 21],[26, 21],[27, 22]]) as Theme
+
+export const light_blue_alt1_Checkbox = n262 as Theme
+export const light_blue_alt1_RadioGroupItem = n262 as Theme
+export const light_blue_alt1_Input = n262 as Theme
+export const light_blue_alt1_TextArea = n262 as Theme
+const n263 = t([[12, 11],[13, 25],[14, 24],[15, 23],[16, 11],[17, 11],[18, 15],[19, 16],[20, 15],[21, 16],[22, 14],[23, 24],[24, 23],[25, 24],[26, 24],[27, 16]]) as Theme
+
+export const light_blue_alt1_SwitchThumb = n263 as Theme
+const n264 = t([[12, 22],[13, 21],[14, 19],[15, 18],[16, 23],[17, 24],[18, 15],[19, 16],[20, 15],[21, 16],[22, 16],[23, 19],[24, 18],[25, 19],[26, 19],[27, 21]]) as Theme
+
+export const light_blue_alt1_SliderTrackActive = n264 as Theme
+const n265 = t([[12, 24],[13, 23],[14, 22],[15, 21],[16, 25],[17, 11],[18, 15],[19, 16],[20, 15],[21, 16],[22, 14],[23, 22],[24, 21],[25, 22],[26, 22],[27, 18]]) as Theme
+
+export const light_blue_alt1_SliderThumb = n265 as Theme
+export const light_blue_alt1_Tooltip = n265 as Theme
+export const light_blue_alt1_ProgressIndicator = n265 as Theme
+const n266 = t([[12, 16],[13, 17],[14, 18],[15, 19],[16, 15],[17, 14],[18, 24],[19, 23],[20, 24],[21, 23],[22, 11],[23, 17],[24, 18],[25, 17],[26, 17],[27, 22]]) as Theme
+
+export const light_blue_alt2_ListItem = n266 as Theme
+const n267 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[18, 24],[19, 23],[20, 24],[21, 23],[22, 24],[23, 19],[24, 21],[25, 19],[26, 19],[27, 19]]) as Theme
+
+export const light_blue_alt2_Card = n267 as Theme
+export const light_blue_alt2_DrawerFrame = n267 as Theme
+export const light_blue_alt2_Progress = n267 as Theme
+export const light_blue_alt2_TooltipArrow = n267 as Theme
+const n268 = t([[12, 19],[13, 21],[14, 22],[15, 23],[16, 18],[17, 17],[18, 24],[19, 23],[20, 24],[21, 23],[22, 23],[23, 19],[24, 21],[25, 19],[26, 19],[27, 18]]) as Theme
+
+export const light_blue_alt2_Button = n268 as Theme
+export const light_blue_alt2_Switch = n268 as Theme
+export const light_blue_alt2_TooltipContent = n268 as Theme
+export const light_blue_alt2_SliderTrack = n268 as Theme
+const n269 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[18, 24],[19, 23],[20, 24],[21, 23],[22, 25],[23, 21],[24, 22],[25, 21],[26, 21],[27, 21]]) as Theme
+
+export const light_blue_alt2_Checkbox = n269 as Theme
+export const light_blue_alt2_RadioGroupItem = n269 as Theme
+export const light_blue_alt2_Input = n269 as Theme
+export const light_blue_alt2_TextArea = n269 as Theme
+const n270 = t([[12, 25],[13, 24],[14, 23],[15, 22],[16, 11],[17, 11],[18, 16],[19, 17],[20, 16],[21, 17],[22, 14],[23, 24],[24, 23],[25, 24],[26, 24],[27, 17]]) as Theme
+
+export const light_blue_alt2_SwitchThumb = n270 as Theme
+const n271 = t([[12, 21],[13, 19],[14, 18],[15, 17],[16, 22],[17, 23],[18, 16],[19, 17],[20, 16],[21, 17],[22, 17],[23, 19],[24, 18],[25, 19],[26, 19],[27, 22]]) as Theme
+
+export const light_blue_alt2_SliderTrackActive = n271 as Theme
+const n272 = t([[12, 23],[13, 22],[14, 21],[15, 19],[16, 24],[17, 25],[18, 16],[19, 17],[20, 16],[21, 17],[22, 15],[23, 22],[24, 21],[25, 22],[26, 22],[27, 19]]) as Theme
+
+export const light_blue_alt2_SliderThumb = n272 as Theme
+export const light_blue_alt2_Tooltip = n272 as Theme
+export const light_blue_alt2_ProgressIndicator = n272 as Theme
+const n273 = t([[12, 17],[13, 18],[14, 19],[15, 21],[16, 16],[17, 15],[19, 22],[20, 23],[21, 22],[22, 25],[23, 18],[24, 19],[25, 18],[26, 18],[27, 21]]) as Theme
+
+export const light_blue_active_ListItem = n273 as Theme
+const n274 = t([[12, 21],[13, 22],[14, 23],[15, 24],[16, 19],[17, 18],[19, 22],[20, 23],[21, 22],[22, 22],[23, 21],[24, 22],[25, 21],[26, 21],[27, 17]]) as Theme
+
+export const light_blue_active_Button = n274 as Theme
+export const light_blue_active_Switch = n274 as Theme
+const n275 = t([[12, 18],[13, 19],[14, 21],[15, 22],[16, 17],[17, 16],[19, 22],[20, 23],[21, 22],[22, 24],[23, 22],[24, 23],[25, 22],[26, 22],[27, 19]]) as Theme
+
+export const light_blue_active_Checkbox = n275 as Theme
+export const light_blue_active_Input = n275 as Theme
+export const light_blue_active_TextArea = n275 as Theme
+const n276 = t([[12, 19],[13, 18],[14, 17],[15, 16],[16, 21],[17, 22],[19, 18],[20, 17],[21, 18],[22, 18],[23, 18],[24, 17],[25, 18],[26, 18],[27, 23]]) as Theme
+
+export const light_blue_active_SliderTrackActive = n276 as Theme
+const n277 = t([[12, 73],[13, 74],[14, 75],[15, 76],[16, 72],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 81]]) as Theme
+
+export const light_purple_alt1_ListItem = n277 as Theme
+const n278 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[18, 83],[19, 82],[20, 83],[21, 82],[22, 83],[23, 77],[24, 79],[25, 77],[26, 77],[27, 79]]) as Theme
+
+export const light_purple_alt1_Card = n278 as Theme
+export const light_purple_alt1_DrawerFrame = n278 as Theme
+export const light_purple_alt1_Progress = n278 as Theme
+export const light_purple_alt1_TooltipArrow = n278 as Theme
+const n279 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[18, 83],[19, 82],[20, 83],[21, 82],[22, 82],[23, 77],[24, 79],[25, 77],[26, 77],[27, 77]]) as Theme
+
+export const light_purple_alt1_Button = n279 as Theme
+export const light_purple_alt1_Switch = n279 as Theme
+export const light_purple_alt1_TooltipContent = n279 as Theme
+export const light_purple_alt1_SliderTrack = n279 as Theme
+const n280 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 83],[19, 82],[20, 83],[21, 82],[22, 11],[23, 79],[24, 80],[25, 79],[26, 79],[27, 80]]) as Theme
+
+export const light_purple_alt1_Checkbox = n280 as Theme
+export const light_purple_alt1_RadioGroupItem = n280 as Theme
+export const light_purple_alt1_Input = n280 as Theme
+export const light_purple_alt1_TextArea = n280 as Theme
+const n281 = t([[12, 11],[13, 83],[14, 82],[15, 81],[16, 11],[17, 11],[18, 73],[19, 74],[20, 73],[21, 74],[22, 72],[23, 82],[24, 81],[25, 82],[26, 82],[27, 74]]) as Theme
+
+export const light_purple_alt1_SwitchThumb = n281 as Theme
+const n282 = t([[12, 80],[13, 79],[14, 77],[15, 76],[16, 81],[17, 82],[18, 73],[19, 74],[20, 73],[21, 74],[22, 74],[23, 77],[24, 76],[25, 77],[26, 77],[27, 79]]) as Theme
+
+export const light_purple_alt1_SliderTrackActive = n282 as Theme
+const n283 = t([[12, 82],[13, 81],[14, 80],[15, 79],[16, 83],[17, 11],[18, 73],[19, 74],[20, 73],[21, 74],[22, 72],[23, 80],[24, 79],[25, 80],[26, 80],[27, 76]]) as Theme
+
+export const light_purple_alt1_SliderThumb = n283 as Theme
+export const light_purple_alt1_Tooltip = n283 as Theme
+export const light_purple_alt1_ProgressIndicator = n283 as Theme
+const n284 = t([[12, 74],[13, 75],[14, 76],[15, 77],[16, 73],[17, 72],[18, 82],[19, 81],[20, 82],[21, 81],[22, 11],[23, 75],[24, 76],[25, 75],[26, 75],[27, 80]]) as Theme
+
+export const light_purple_alt2_ListItem = n284 as Theme
+const n285 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[18, 82],[19, 81],[20, 82],[21, 81],[22, 82],[23, 77],[24, 79],[25, 77],[26, 77],[27, 77]]) as Theme
+
+export const light_purple_alt2_Card = n285 as Theme
+export const light_purple_alt2_DrawerFrame = n285 as Theme
+export const light_purple_alt2_Progress = n285 as Theme
+export const light_purple_alt2_TooltipArrow = n285 as Theme
+const n286 = t([[12, 77],[13, 79],[14, 80],[15, 81],[16, 76],[17, 75],[18, 82],[19, 81],[20, 82],[21, 81],[22, 81],[23, 77],[24, 79],[25, 77],[26, 77],[27, 76]]) as Theme
+
+export const light_purple_alt2_Button = n286 as Theme
+export const light_purple_alt2_Switch = n286 as Theme
+export const light_purple_alt2_TooltipContent = n286 as Theme
+export const light_purple_alt2_SliderTrack = n286 as Theme
+const n287 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[18, 82],[19, 81],[20, 82],[21, 81],[22, 83],[23, 79],[24, 80],[25, 79],[26, 79],[27, 79]]) as Theme
+
+export const light_purple_alt2_Checkbox = n287 as Theme
+export const light_purple_alt2_RadioGroupItem = n287 as Theme
+export const light_purple_alt2_Input = n287 as Theme
+export const light_purple_alt2_TextArea = n287 as Theme
+const n288 = t([[12, 83],[13, 82],[14, 81],[15, 80],[16, 11],[17, 11],[18, 74],[19, 75],[20, 74],[21, 75],[22, 72],[23, 82],[24, 81],[25, 82],[26, 82],[27, 75]]) as Theme
+
+export const light_purple_alt2_SwitchThumb = n288 as Theme
+const n289 = t([[12, 79],[13, 77],[14, 76],[15, 75],[16, 80],[17, 81],[18, 74],[19, 75],[20, 74],[21, 75],[22, 75],[23, 77],[24, 76],[25, 77],[26, 77],[27, 80]]) as Theme
+
+export const light_purple_alt2_SliderTrackActive = n289 as Theme
+const n290 = t([[12, 81],[13, 80],[14, 79],[15, 77],[16, 82],[17, 83],[18, 74],[19, 75],[20, 74],[21, 75],[22, 73],[23, 80],[24, 79],[25, 80],[26, 80],[27, 77]]) as Theme
+
+export const light_purple_alt2_SliderThumb = n290 as Theme
+export const light_purple_alt2_Tooltip = n290 as Theme
+export const light_purple_alt2_ProgressIndicator = n290 as Theme
+const n291 = t([[12, 75],[13, 76],[14, 77],[15, 79],[16, 74],[17, 73],[19, 80],[20, 81],[21, 80],[22, 83],[23, 76],[24, 77],[25, 76],[26, 76],[27, 79]]) as Theme
+
+export const light_purple_active_ListItem = n291 as Theme
+const n292 = t([[12, 79],[13, 80],[14, 81],[15, 82],[16, 77],[17, 76],[19, 80],[20, 81],[21, 80],[22, 80],[23, 79],[24, 80],[25, 79],[26, 79],[27, 75]]) as Theme
+
+export const light_purple_active_Button = n292 as Theme
+export const light_purple_active_Switch = n292 as Theme
+const n293 = t([[12, 76],[13, 77],[14, 79],[15, 80],[16, 75],[17, 74],[19, 80],[20, 81],[21, 80],[22, 82],[23, 80],[24, 81],[25, 80],[26, 80],[27, 77]]) as Theme
+
+export const light_purple_active_Checkbox = n293 as Theme
+export const light_purple_active_Input = n293 as Theme
+export const light_purple_active_TextArea = n293 as Theme
+const n294 = t([[12, 77],[13, 76],[14, 75],[15, 74],[16, 79],[17, 80],[19, 76],[20, 75],[21, 76],[22, 76],[23, 76],[24, 75],[25, 76],[26, 76],[27, 81]]) as Theme
+
+export const light_purple_active_SliderTrackActive = n294 as Theme
+const n295 = t([[12, 61],[13, 62],[14, 63],[15, 64],[16, 60],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 69]]) as Theme
+
+export const light_pink_alt1_ListItem = n295 as Theme
+const n296 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[18, 71],[19, 70],[20, 71],[21, 70],[22, 71],[23, 65],[24, 67],[25, 65],[26, 65],[27, 67]]) as Theme
+
+export const light_pink_alt1_Card = n296 as Theme
+export const light_pink_alt1_DrawerFrame = n296 as Theme
+export const light_pink_alt1_Progress = n296 as Theme
+export const light_pink_alt1_TooltipArrow = n296 as Theme
+const n297 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[18, 71],[19, 70],[20, 71],[21, 70],[22, 70],[23, 65],[24, 67],[25, 65],[26, 65],[27, 65]]) as Theme
+
+export const light_pink_alt1_Button = n297 as Theme
+export const light_pink_alt1_Switch = n297 as Theme
+export const light_pink_alt1_TooltipContent = n297 as Theme
+export const light_pink_alt1_SliderTrack = n297 as Theme
+const n298 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 71],[19, 70],[20, 71],[21, 70],[22, 11],[23, 67],[24, 68],[25, 67],[26, 67],[27, 68]]) as Theme
+
+export const light_pink_alt1_Checkbox = n298 as Theme
+export const light_pink_alt1_RadioGroupItem = n298 as Theme
+export const light_pink_alt1_Input = n298 as Theme
+export const light_pink_alt1_TextArea = n298 as Theme
+const n299 = t([[12, 11],[13, 71],[14, 70],[15, 69],[16, 11],[17, 11],[18, 61],[19, 62],[20, 61],[21, 62],[22, 60],[23, 70],[24, 69],[25, 70],[26, 70],[27, 62]]) as Theme
+
+export const light_pink_alt1_SwitchThumb = n299 as Theme
+const n300 = t([[12, 68],[13, 67],[14, 65],[15, 64],[16, 69],[17, 70],[18, 61],[19, 62],[20, 61],[21, 62],[22, 62],[23, 65],[24, 64],[25, 65],[26, 65],[27, 67]]) as Theme
+
+export const light_pink_alt1_SliderTrackActive = n300 as Theme
+const n301 = t([[12, 70],[13, 69],[14, 68],[15, 67],[16, 71],[17, 11],[18, 61],[19, 62],[20, 61],[21, 62],[22, 60],[23, 68],[24, 67],[25, 68],[26, 68],[27, 64]]) as Theme
+
+export const light_pink_alt1_SliderThumb = n301 as Theme
+export const light_pink_alt1_Tooltip = n301 as Theme
+export const light_pink_alt1_ProgressIndicator = n301 as Theme
+const n302 = t([[12, 62],[13, 63],[14, 64],[15, 65],[16, 61],[17, 60],[18, 70],[19, 69],[20, 70],[21, 69],[22, 11],[23, 63],[24, 64],[25, 63],[26, 63],[27, 68]]) as Theme
+
+export const light_pink_alt2_ListItem = n302 as Theme
+const n303 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[18, 70],[19, 69],[20, 70],[21, 69],[22, 70],[23, 65],[24, 67],[25, 65],[26, 65],[27, 65]]) as Theme
+
+export const light_pink_alt2_Card = n303 as Theme
+export const light_pink_alt2_DrawerFrame = n303 as Theme
+export const light_pink_alt2_Progress = n303 as Theme
+export const light_pink_alt2_TooltipArrow = n303 as Theme
+const n304 = t([[12, 65],[13, 67],[14, 68],[15, 69],[16, 64],[17, 63],[18, 70],[19, 69],[20, 70],[21, 69],[22, 69],[23, 65],[24, 67],[25, 65],[26, 65],[27, 64]]) as Theme
+
+export const light_pink_alt2_Button = n304 as Theme
+export const light_pink_alt2_Switch = n304 as Theme
+export const light_pink_alt2_TooltipContent = n304 as Theme
+export const light_pink_alt2_SliderTrack = n304 as Theme
+const n305 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[18, 70],[19, 69],[20, 70],[21, 69],[22, 71],[23, 67],[24, 68],[25, 67],[26, 67],[27, 67]]) as Theme
+
+export const light_pink_alt2_Checkbox = n305 as Theme
+export const light_pink_alt2_RadioGroupItem = n305 as Theme
+export const light_pink_alt2_Input = n305 as Theme
+export const light_pink_alt2_TextArea = n305 as Theme
+const n306 = t([[12, 71],[13, 70],[14, 69],[15, 68],[16, 11],[17, 11],[18, 62],[19, 63],[20, 62],[21, 63],[22, 60],[23, 70],[24, 69],[25, 70],[26, 70],[27, 63]]) as Theme
+
+export const light_pink_alt2_SwitchThumb = n306 as Theme
+const n307 = t([[12, 67],[13, 65],[14, 64],[15, 63],[16, 68],[17, 69],[18, 62],[19, 63],[20, 62],[21, 63],[22, 63],[23, 65],[24, 64],[25, 65],[26, 65],[27, 68]]) as Theme
+
+export const light_pink_alt2_SliderTrackActive = n307 as Theme
+const n308 = t([[12, 69],[13, 68],[14, 67],[15, 65],[16, 70],[17, 71],[18, 62],[19, 63],[20, 62],[21, 63],[22, 61],[23, 68],[24, 67],[25, 68],[26, 68],[27, 65]]) as Theme
+
+export const light_pink_alt2_SliderThumb = n308 as Theme
+export const light_pink_alt2_Tooltip = n308 as Theme
+export const light_pink_alt2_ProgressIndicator = n308 as Theme
+const n309 = t([[12, 63],[13, 64],[14, 65],[15, 67],[16, 62],[17, 61],[19, 68],[20, 69],[21, 68],[22, 71],[23, 64],[24, 65],[25, 64],[26, 64],[27, 67]]) as Theme
+
+export const light_pink_active_ListItem = n309 as Theme
+const n310 = t([[12, 67],[13, 68],[14, 69],[15, 70],[16, 65],[17, 64],[19, 68],[20, 69],[21, 68],[22, 68],[23, 67],[24, 68],[25, 67],[26, 67],[27, 63]]) as Theme
+
+export const light_pink_active_Button = n310 as Theme
+export const light_pink_active_Switch = n310 as Theme
+const n311 = t([[12, 64],[13, 65],[14, 67],[15, 68],[16, 63],[17, 62],[19, 68],[20, 69],[21, 68],[22, 70],[23, 68],[24, 69],[25, 68],[26, 68],[27, 65]]) as Theme
+
+export const light_pink_active_Checkbox = n311 as Theme
+export const light_pink_active_Input = n311 as Theme
+export const light_pink_active_TextArea = n311 as Theme
+const n312 = t([[12, 65],[13, 64],[14, 63],[15, 62],[16, 67],[17, 68],[19, 64],[20, 63],[21, 64],[22, 64],[23, 64],[24, 63],[25, 64],[26, 64],[27, 69]]) as Theme
+
+export const light_pink_active_SliderTrackActive = n312 as Theme
+const n313 = t([[12, 85],[13, 86],[14, 87],[15, 88],[16, 84],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 93]]) as Theme
+
+export const light_red_alt1_ListItem = n313 as Theme
+const n314 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[18, 95],[19, 94],[20, 95],[21, 94],[22, 95],[23, 89],[24, 91],[25, 89],[26, 89],[27, 91]]) as Theme
+
+export const light_red_alt1_Card = n314 as Theme
+export const light_red_alt1_DrawerFrame = n314 as Theme
+export const light_red_alt1_Progress = n314 as Theme
+export const light_red_alt1_TooltipArrow = n314 as Theme
+const n315 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[18, 95],[19, 94],[20, 95],[21, 94],[22, 94],[23, 89],[24, 91],[25, 89],[26, 89],[27, 89]]) as Theme
+
+export const light_red_alt1_Button = n315 as Theme
+export const light_red_alt1_Switch = n315 as Theme
+export const light_red_alt1_TooltipContent = n315 as Theme
+export const light_red_alt1_SliderTrack = n315 as Theme
+const n316 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 95],[19, 94],[20, 95],[21, 94],[22, 11],[23, 91],[24, 92],[25, 91],[26, 91],[27, 92]]) as Theme
+
+export const light_red_alt1_Checkbox = n316 as Theme
+export const light_red_alt1_RadioGroupItem = n316 as Theme
+export const light_red_alt1_Input = n316 as Theme
+export const light_red_alt1_TextArea = n316 as Theme
+const n317 = t([[12, 11],[13, 95],[14, 94],[15, 93],[16, 11],[17, 11],[18, 85],[19, 86],[20, 85],[21, 86],[22, 84],[23, 94],[24, 93],[25, 94],[26, 94],[27, 86]]) as Theme
+
+export const light_red_alt1_SwitchThumb = n317 as Theme
+const n318 = t([[12, 92],[13, 91],[14, 89],[15, 88],[16, 93],[17, 94],[18, 85],[19, 86],[20, 85],[21, 86],[22, 86],[23, 89],[24, 88],[25, 89],[26, 89],[27, 91]]) as Theme
+
+export const light_red_alt1_SliderTrackActive = n318 as Theme
+const n319 = t([[12, 94],[13, 93],[14, 92],[15, 91],[16, 95],[17, 11],[18, 85],[19, 86],[20, 85],[21, 86],[22, 84],[23, 92],[24, 91],[25, 92],[26, 92],[27, 88]]) as Theme
+
+export const light_red_alt1_SliderThumb = n319 as Theme
+export const light_red_alt1_Tooltip = n319 as Theme
+export const light_red_alt1_ProgressIndicator = n319 as Theme
+const n320 = t([[12, 86],[13, 87],[14, 88],[15, 89],[16, 85],[17, 84],[18, 94],[19, 93],[20, 94],[21, 93],[22, 11],[23, 87],[24, 88],[25, 87],[26, 87],[27, 92]]) as Theme
+
+export const light_red_alt2_ListItem = n320 as Theme
+const n321 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[18, 94],[19, 93],[20, 94],[21, 93],[22, 94],[23, 89],[24, 91],[25, 89],[26, 89],[27, 89]]) as Theme
+
+export const light_red_alt2_Card = n321 as Theme
+export const light_red_alt2_DrawerFrame = n321 as Theme
+export const light_red_alt2_Progress = n321 as Theme
+export const light_red_alt2_TooltipArrow = n321 as Theme
+const n322 = t([[12, 89],[13, 91],[14, 92],[15, 93],[16, 88],[17, 87],[18, 94],[19, 93],[20, 94],[21, 93],[22, 93],[23, 89],[24, 91],[25, 89],[26, 89],[27, 88]]) as Theme
+
+export const light_red_alt2_Button = n322 as Theme
+export const light_red_alt2_Switch = n322 as Theme
+export const light_red_alt2_TooltipContent = n322 as Theme
+export const light_red_alt2_SliderTrack = n322 as Theme
+const n323 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[18, 94],[19, 93],[20, 94],[21, 93],[22, 95],[23, 91],[24, 92],[25, 91],[26, 91],[27, 91]]) as Theme
+
+export const light_red_alt2_Checkbox = n323 as Theme
+export const light_red_alt2_RadioGroupItem = n323 as Theme
+export const light_red_alt2_Input = n323 as Theme
+export const light_red_alt2_TextArea = n323 as Theme
+const n324 = t([[12, 95],[13, 94],[14, 93],[15, 92],[16, 11],[17, 11],[18, 86],[19, 87],[20, 86],[21, 87],[22, 84],[23, 94],[24, 93],[25, 94],[26, 94],[27, 87]]) as Theme
+
+export const light_red_alt2_SwitchThumb = n324 as Theme
+const n325 = t([[12, 91],[13, 89],[14, 88],[15, 87],[16, 92],[17, 93],[18, 86],[19, 87],[20, 86],[21, 87],[22, 87],[23, 89],[24, 88],[25, 89],[26, 89],[27, 92]]) as Theme
+
+export const light_red_alt2_SliderTrackActive = n325 as Theme
+const n326 = t([[12, 93],[13, 92],[14, 91],[15, 89],[16, 94],[17, 95],[18, 86],[19, 87],[20, 86],[21, 87],[22, 85],[23, 92],[24, 91],[25, 92],[26, 92],[27, 89]]) as Theme
+
+export const light_red_alt2_SliderThumb = n326 as Theme
+export const light_red_alt2_Tooltip = n326 as Theme
+export const light_red_alt2_ProgressIndicator = n326 as Theme
+const n327 = t([[12, 87],[13, 88],[14, 89],[15, 91],[16, 86],[17, 85],[19, 92],[20, 93],[21, 92],[22, 95],[23, 88],[24, 89],[25, 88],[26, 88],[27, 91]]) as Theme
+
+export const light_red_active_ListItem = n327 as Theme
+const n328 = t([[12, 91],[13, 92],[14, 93],[15, 94],[16, 89],[17, 88],[19, 92],[20, 93],[21, 92],[22, 92],[23, 91],[24, 92],[25, 91],[26, 91],[27, 87]]) as Theme
+
+export const light_red_active_Button = n328 as Theme
+export const light_red_active_Switch = n328 as Theme
+const n329 = t([[12, 88],[13, 89],[14, 91],[15, 92],[16, 87],[17, 86],[19, 92],[20, 93],[21, 92],[22, 94],[23, 92],[24, 93],[25, 92],[26, 92],[27, 89]]) as Theme
+
+export const light_red_active_Checkbox = n329 as Theme
+export const light_red_active_Input = n329 as Theme
+export const light_red_active_TextArea = n329 as Theme
+const n330 = t([[12, 89],[13, 88],[14, 87],[15, 86],[16, 91],[17, 92],[19, 88],[20, 87],[21, 88],[22, 88],[23, 88],[24, 87],[25, 88],[26, 88],[27, 93]]) as Theme
+
+export const light_red_active_SliderTrackActive = n330 as Theme
+const n331 = t([[12, 157],[13, 158],[14, 159],[15, 161],[16, 156],[17, 155],[18, 164],[19, 163],[20, 164],[21, 163],[22, 164],[23, 161],[24, 56],[25, 159],[26, 161],[27, 161]]) as Theme
+
+export const dark_orange_alt1_Card = n331 as Theme
+export const dark_orange_alt1_DrawerFrame = n331 as Theme
+export const dark_orange_alt1_Progress = n331 as Theme
+export const dark_orange_alt1_TooltipArrow = n331 as Theme
+const n332 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[18, 164],[19, 163],[20, 164],[21, 163],[22, 163],[23, 161],[24, 56],[25, 159],[26, 161],[27, 159]]) as Theme
+
+export const dark_orange_alt1_Button = n332 as Theme
+export const dark_orange_alt1_Switch = n332 as Theme
+export const dark_orange_alt1_TooltipContent = n332 as Theme
+export const dark_orange_alt1_SliderTrack = n332 as Theme
+const n333 = t([[12, 156],[13, 157],[14, 158],[15, 159],[16, 155],[17, 154],[18, 164],[19, 163],[20, 164],[21, 163],[22, 0],[23, 56],[24, 162],[25, 161],[26, 56],[27, 56]]) as Theme
+
+export const dark_orange_alt1_Checkbox = n333 as Theme
+export const dark_orange_alt1_RadioGroupItem = n333 as Theme
+export const dark_orange_alt1_Input = n333 as Theme
+export const dark_orange_alt1_TextArea = n333 as Theme
+const n334 = t([[12, 0],[13, 164],[14, 163],[15, 162],[16, 0],[17, 0],[18, 155],[19, 156],[20, 155],[21, 156],[22, 154],[23, 162],[24, 56],[25, 163],[26, 162],[27, 156]]) as Theme
+
+export const dark_orange_alt1_SwitchThumb = n334 as Theme
+const n335 = t([[12, 56],[13, 161],[14, 159],[15, 158],[16, 162],[17, 163],[18, 155],[19, 156],[20, 155],[21, 156],[22, 156],[23, 158],[24, 157],[25, 159],[26, 158],[27, 161]]) as Theme
+
+export const dark_orange_alt1_SliderTrackActive = n335 as Theme
+const n336 = t([[12, 163],[13, 162],[14, 56],[15, 161],[16, 164],[17, 0],[18, 155],[19, 156],[20, 155],[21, 156],[22, 154],[23, 161],[24, 159],[25, 56],[26, 161],[27, 158]]) as Theme
+
+export const dark_orange_alt1_SliderThumb = n336 as Theme
+export const dark_orange_alt1_Tooltip = n336 as Theme
+export const dark_orange_alt1_ProgressIndicator = n336 as Theme
+const n337 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[18, 163],[19, 162],[20, 163],[21, 162],[22, 163],[23, 161],[24, 56],[25, 159],[26, 161],[27, 159]]) as Theme
+
+export const dark_orange_alt2_Card = n337 as Theme
+export const dark_orange_alt2_DrawerFrame = n337 as Theme
+export const dark_orange_alt2_Progress = n337 as Theme
+export const dark_orange_alt2_TooltipArrow = n337 as Theme
+const n338 = t([[12, 159],[13, 161],[14, 56],[15, 162],[16, 158],[17, 157],[18, 163],[19, 162],[20, 163],[21, 162],[22, 162],[23, 161],[24, 56],[25, 159],[26, 161],[27, 158]]) as Theme
+
+export const dark_orange_alt2_Button = n338 as Theme
+export const dark_orange_alt2_Switch = n338 as Theme
+export const dark_orange_alt2_TooltipContent = n338 as Theme
+export const dark_orange_alt2_SliderTrack = n338 as Theme
+const n339 = t([[12, 157],[13, 158],[14, 159],[15, 161],[16, 156],[17, 155],[18, 163],[19, 162],[20, 163],[21, 162],[22, 164],[23, 56],[24, 162],[25, 161],[26, 56],[27, 161]]) as Theme
+
+export const dark_orange_alt2_Checkbox = n339 as Theme
+export const dark_orange_alt2_RadioGroupItem = n339 as Theme
+export const dark_orange_alt2_Input = n339 as Theme
+export const dark_orange_alt2_TextArea = n339 as Theme
+const n340 = t([[12, 164],[13, 163],[14, 162],[15, 56],[16, 0],[17, 0],[18, 156],[19, 157],[20, 156],[21, 157],[22, 154],[23, 162],[24, 56],[25, 163],[26, 162],[27, 157]]) as Theme
+
+export const dark_orange_alt2_SwitchThumb = n340 as Theme
+const n341 = t([[12, 161],[13, 159],[14, 158],[15, 157],[16, 56],[17, 162],[18, 156],[19, 157],[20, 156],[21, 157],[22, 157],[23, 158],[24, 157],[25, 159],[26, 158],[27, 56]]) as Theme
+
+export const dark_orange_alt2_SliderTrackActive = n341 as Theme
+const n342 = t([[12, 162],[13, 56],[14, 161],[15, 159],[16, 163],[17, 164],[18, 156],[19, 157],[20, 156],[21, 157],[22, 155],[23, 161],[24, 159],[25, 56],[26, 161],[27, 159]]) as Theme
+
+export const dark_orange_alt2_SliderThumb = n342 as Theme
+export const dark_orange_alt2_Tooltip = n342 as Theme
+export const dark_orange_alt2_ProgressIndicator = n342 as Theme
+const n343 = t([[12, 161],[13, 56],[14, 162],[15, 163],[16, 159],[17, 158],[19, 56],[20, 162],[21, 56],[22, 56],[23, 56],[24, 162],[25, 161],[26, 56],[27, 157]]) as Theme
+
+export const dark_orange_active_Button = n343 as Theme
+export const dark_orange_active_Switch = n343 as Theme
+const n344 = t([[12, 158],[13, 159],[14, 161],[15, 56],[16, 157],[17, 156],[19, 56],[20, 162],[21, 56],[22, 163],[23, 162],[24, 163],[25, 56],[26, 162],[27, 159]]) as Theme
+
+export const dark_orange_active_Checkbox = n344 as Theme
+export const dark_orange_active_Input = n344 as Theme
+export const dark_orange_active_TextArea = n344 as Theme
+const n345 = t([[12, 159],[13, 158],[14, 157],[15, 156],[16, 161],[17, 56],[19, 158],[20, 157],[21, 158],[22, 158],[23, 157],[24, 156],[25, 158],[26, 157],[27, 162]]) as Theme
+
+export const dark_orange_active_SliderTrackActive = n345 as Theme
+const n346 = t([[12, 201],[13, 202],[14, 203],[15, 205],[16, 200],[17, 199],[18, 208],[19, 207],[20, 208],[21, 207],[22, 208],[23, 205],[24, 104],[25, 203],[26, 205],[27, 205]]) as Theme
+
+export const dark_yellow_alt1_Card = n346 as Theme
+export const dark_yellow_alt1_DrawerFrame = n346 as Theme
+export const dark_yellow_alt1_Progress = n346 as Theme
+export const dark_yellow_alt1_TooltipArrow = n346 as Theme
+const n347 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[18, 208],[19, 207],[20, 208],[21, 207],[22, 207],[23, 205],[24, 104],[25, 203],[26, 205],[27, 203]]) as Theme
+
+export const dark_yellow_alt1_Button = n347 as Theme
+export const dark_yellow_alt1_Switch = n347 as Theme
+export const dark_yellow_alt1_TooltipContent = n347 as Theme
+export const dark_yellow_alt1_SliderTrack = n347 as Theme
+const n348 = t([[12, 200],[13, 201],[14, 202],[15, 203],[16, 199],[17, 198],[18, 208],[19, 207],[20, 208],[21, 207],[22, 0],[23, 104],[24, 206],[25, 205],[26, 104],[27, 104]]) as Theme
+
+export const dark_yellow_alt1_Checkbox = n348 as Theme
+export const dark_yellow_alt1_RadioGroupItem = n348 as Theme
+export const dark_yellow_alt1_Input = n348 as Theme
+export const dark_yellow_alt1_TextArea = n348 as Theme
+const n349 = t([[12, 0],[13, 208],[14, 207],[15, 206],[16, 0],[17, 0],[18, 199],[19, 200],[20, 199],[21, 200],[22, 198],[23, 206],[24, 104],[25, 207],[26, 206],[27, 200]]) as Theme
+
+export const dark_yellow_alt1_SwitchThumb = n349 as Theme
+const n350 = t([[12, 104],[13, 205],[14, 203],[15, 202],[16, 206],[17, 207],[18, 199],[19, 200],[20, 199],[21, 200],[22, 200],[23, 202],[24, 201],[25, 203],[26, 202],[27, 205]]) as Theme
+
+export const dark_yellow_alt1_SliderTrackActive = n350 as Theme
+const n351 = t([[12, 207],[13, 206],[14, 104],[15, 205],[16, 208],[17, 0],[18, 199],[19, 200],[20, 199],[21, 200],[22, 198],[23, 205],[24, 203],[25, 104],[26, 205],[27, 202]]) as Theme
+
+export const dark_yellow_alt1_SliderThumb = n351 as Theme
+export const dark_yellow_alt1_Tooltip = n351 as Theme
+export const dark_yellow_alt1_ProgressIndicator = n351 as Theme
+const n352 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[18, 207],[19, 206],[20, 207],[21, 206],[22, 207],[23, 205],[24, 104],[25, 203],[26, 205],[27, 203]]) as Theme
+
+export const dark_yellow_alt2_Card = n352 as Theme
+export const dark_yellow_alt2_DrawerFrame = n352 as Theme
+export const dark_yellow_alt2_Progress = n352 as Theme
+export const dark_yellow_alt2_TooltipArrow = n352 as Theme
+const n353 = t([[12, 203],[13, 205],[14, 104],[15, 206],[16, 202],[17, 201],[18, 207],[19, 206],[20, 207],[21, 206],[22, 206],[23, 205],[24, 104],[25, 203],[26, 205],[27, 202]]) as Theme
+
+export const dark_yellow_alt2_Button = n353 as Theme
+export const dark_yellow_alt2_Switch = n353 as Theme
+export const dark_yellow_alt2_TooltipContent = n353 as Theme
+export const dark_yellow_alt2_SliderTrack = n353 as Theme
+const n354 = t([[12, 201],[13, 202],[14, 203],[15, 205],[16, 200],[17, 199],[18, 207],[19, 206],[20, 207],[21, 206],[22, 208],[23, 104],[24, 206],[25, 205],[26, 104],[27, 205]]) as Theme
+
+export const dark_yellow_alt2_Checkbox = n354 as Theme
+export const dark_yellow_alt2_RadioGroupItem = n354 as Theme
+export const dark_yellow_alt2_Input = n354 as Theme
+export const dark_yellow_alt2_TextArea = n354 as Theme
+const n355 = t([[12, 208],[13, 207],[14, 206],[15, 104],[16, 0],[17, 0],[18, 200],[19, 201],[20, 200],[21, 201],[22, 198],[23, 206],[24, 104],[25, 207],[26, 206],[27, 201]]) as Theme
+
+export const dark_yellow_alt2_SwitchThumb = n355 as Theme
+const n356 = t([[12, 205],[13, 203],[14, 202],[15, 201],[16, 104],[17, 206],[18, 200],[19, 201],[20, 200],[21, 201],[22, 201],[23, 202],[24, 201],[25, 203],[26, 202],[27, 104]]) as Theme
+
+export const dark_yellow_alt2_SliderTrackActive = n356 as Theme
+const n357 = t([[12, 206],[13, 104],[14, 205],[15, 203],[16, 207],[17, 208],[18, 200],[19, 201],[20, 200],[21, 201],[22, 199],[23, 205],[24, 203],[25, 104],[26, 205],[27, 203]]) as Theme
+
+export const dark_yellow_alt2_SliderThumb = n357 as Theme
+export const dark_yellow_alt2_Tooltip = n357 as Theme
+export const dark_yellow_alt2_ProgressIndicator = n357 as Theme
+const n358 = t([[12, 205],[13, 104],[14, 206],[15, 207],[16, 203],[17, 202],[19, 104],[20, 206],[21, 104],[22, 104],[23, 104],[24, 206],[25, 205],[26, 104],[27, 201]]) as Theme
+
+export const dark_yellow_active_Button = n358 as Theme
+export const dark_yellow_active_Switch = n358 as Theme
+const n359 = t([[12, 202],[13, 203],[14, 205],[15, 104],[16, 201],[17, 200],[19, 104],[20, 206],[21, 104],[22, 207],[23, 206],[24, 207],[25, 104],[26, 206],[27, 203]]) as Theme
+
+export const dark_yellow_active_Checkbox = n359 as Theme
+export const dark_yellow_active_Input = n359 as Theme
+export const dark_yellow_active_TextArea = n359 as Theme
+const n360 = t([[12, 203],[13, 202],[14, 201],[15, 200],[16, 205],[17, 104],[19, 202],[20, 201],[21, 202],[22, 202],[23, 201],[24, 200],[25, 202],[26, 201],[27, 206]]) as Theme
+
+export const dark_yellow_active_SliderTrackActive = n360 as Theme
+const n361 = t([[12, 146],[13, 147],[14, 148],[15, 150],[16, 145],[17, 144],[18, 153],[19, 152],[20, 153],[21, 152],[22, 153],[23, 150],[24, 44],[25, 148],[26, 150],[27, 150]]) as Theme
+
+export const dark_green_alt1_Card = n361 as Theme
+export const dark_green_alt1_DrawerFrame = n361 as Theme
+export const dark_green_alt1_Progress = n361 as Theme
+export const dark_green_alt1_TooltipArrow = n361 as Theme
+const n362 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[18, 153],[19, 152],[20, 153],[21, 152],[22, 152],[23, 150],[24, 44],[25, 148],[26, 150],[27, 148]]) as Theme
+
+export const dark_green_alt1_Button = n362 as Theme
+export const dark_green_alt1_Switch = n362 as Theme
+export const dark_green_alt1_TooltipContent = n362 as Theme
+export const dark_green_alt1_SliderTrack = n362 as Theme
+const n363 = t([[12, 145],[13, 146],[14, 147],[15, 148],[16, 144],[17, 143],[18, 153],[19, 152],[20, 153],[21, 152],[22, 0],[23, 44],[24, 151],[25, 150],[26, 44],[27, 44]]) as Theme
+
+export const dark_green_alt1_Checkbox = n363 as Theme
+export const dark_green_alt1_RadioGroupItem = n363 as Theme
+export const dark_green_alt1_Input = n363 as Theme
+export const dark_green_alt1_TextArea = n363 as Theme
+const n364 = t([[12, 0],[13, 153],[14, 152],[15, 151],[16, 0],[17, 0],[18, 144],[19, 145],[20, 144],[21, 145],[22, 143],[23, 151],[24, 44],[25, 152],[26, 151],[27, 145]]) as Theme
+
+export const dark_green_alt1_SwitchThumb = n364 as Theme
+const n365 = t([[12, 44],[13, 150],[14, 148],[15, 147],[16, 151],[17, 152],[18, 144],[19, 145],[20, 144],[21, 145],[22, 145],[23, 147],[24, 146],[25, 148],[26, 147],[27, 150]]) as Theme
+
+export const dark_green_alt1_SliderTrackActive = n365 as Theme
+const n366 = t([[12, 152],[13, 151],[14, 44],[15, 150],[16, 153],[17, 0],[18, 144],[19, 145],[20, 144],[21, 145],[22, 143],[23, 150],[24, 148],[25, 44],[26, 150],[27, 147]]) as Theme
+
+export const dark_green_alt1_SliderThumb = n366 as Theme
+export const dark_green_alt1_Tooltip = n366 as Theme
+export const dark_green_alt1_ProgressIndicator = n366 as Theme
+const n367 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[18, 152],[19, 151],[20, 152],[21, 151],[22, 152],[23, 150],[24, 44],[25, 148],[26, 150],[27, 148]]) as Theme
+
+export const dark_green_alt2_Card = n367 as Theme
+export const dark_green_alt2_DrawerFrame = n367 as Theme
+export const dark_green_alt2_Progress = n367 as Theme
+export const dark_green_alt2_TooltipArrow = n367 as Theme
+const n368 = t([[12, 148],[13, 150],[14, 44],[15, 151],[16, 147],[17, 146],[18, 152],[19, 151],[20, 152],[21, 151],[22, 151],[23, 150],[24, 44],[25, 148],[26, 150],[27, 147]]) as Theme
+
+export const dark_green_alt2_Button = n368 as Theme
+export const dark_green_alt2_Switch = n368 as Theme
+export const dark_green_alt2_TooltipContent = n368 as Theme
+export const dark_green_alt2_SliderTrack = n368 as Theme
+const n369 = t([[12, 146],[13, 147],[14, 148],[15, 150],[16, 145],[17, 144],[18, 152],[19, 151],[20, 152],[21, 151],[22, 153],[23, 44],[24, 151],[25, 150],[26, 44],[27, 150]]) as Theme
+
+export const dark_green_alt2_Checkbox = n369 as Theme
+export const dark_green_alt2_RadioGroupItem = n369 as Theme
+export const dark_green_alt2_Input = n369 as Theme
+export const dark_green_alt2_TextArea = n369 as Theme
+const n370 = t([[12, 153],[13, 152],[14, 151],[15, 44],[16, 0],[17, 0],[18, 145],[19, 146],[20, 145],[21, 146],[22, 143],[23, 151],[24, 44],[25, 152],[26, 151],[27, 146]]) as Theme
+
+export const dark_green_alt2_SwitchThumb = n370 as Theme
+const n371 = t([[12, 150],[13, 148],[14, 147],[15, 146],[16, 44],[17, 151],[18, 145],[19, 146],[20, 145],[21, 146],[22, 146],[23, 147],[24, 146],[25, 148],[26, 147],[27, 44]]) as Theme
+
+export const dark_green_alt2_SliderTrackActive = n371 as Theme
+const n372 = t([[12, 151],[13, 44],[14, 150],[15, 148],[16, 152],[17, 153],[18, 145],[19, 146],[20, 145],[21, 146],[22, 144],[23, 150],[24, 148],[25, 44],[26, 150],[27, 148]]) as Theme
+
+export const dark_green_alt2_SliderThumb = n372 as Theme
+export const dark_green_alt2_Tooltip = n372 as Theme
+export const dark_green_alt2_ProgressIndicator = n372 as Theme
+const n373 = t([[12, 150],[13, 44],[14, 151],[15, 152],[16, 148],[17, 147],[19, 44],[20, 151],[21, 44],[22, 44],[23, 44],[24, 151],[25, 150],[26, 44],[27, 146]]) as Theme
+
+export const dark_green_active_Button = n373 as Theme
+export const dark_green_active_Switch = n373 as Theme
+const n374 = t([[12, 147],[13, 148],[14, 150],[15, 44],[16, 146],[17, 145],[19, 44],[20, 151],[21, 44],[22, 152],[23, 151],[24, 152],[25, 44],[26, 151],[27, 148]]) as Theme
+
+export const dark_green_active_Checkbox = n374 as Theme
+export const dark_green_active_Input = n374 as Theme
+export const dark_green_active_TextArea = n374 as Theme
+const n375 = t([[12, 148],[13, 147],[14, 146],[15, 145],[16, 150],[17, 44],[19, 147],[20, 146],[21, 147],[22, 147],[23, 146],[24, 145],[25, 147],[26, 146],[27, 151]]) as Theme
+
+export const dark_green_active_SliderTrackActive = n375 as Theme
+const n376 = t([[12, 124],[13, 125],[14, 126],[15, 128],[16, 123],[17, 122],[18, 131],[19, 130],[20, 131],[21, 130],[22, 131],[23, 128],[24, 22],[25, 126],[26, 128],[27, 128]]) as Theme
+
+export const dark_blue_alt1_Card = n376 as Theme
+export const dark_blue_alt1_DrawerFrame = n376 as Theme
+export const dark_blue_alt1_Progress = n376 as Theme
+export const dark_blue_alt1_TooltipArrow = n376 as Theme
+const n377 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[18, 131],[19, 130],[20, 131],[21, 130],[22, 130],[23, 128],[24, 22],[25, 126],[26, 128],[27, 126]]) as Theme
+
+export const dark_blue_alt1_Button = n377 as Theme
+export const dark_blue_alt1_Switch = n377 as Theme
+export const dark_blue_alt1_TooltipContent = n377 as Theme
+export const dark_blue_alt1_SliderTrack = n377 as Theme
+const n378 = t([[12, 123],[13, 124],[14, 125],[15, 126],[16, 122],[17, 121],[18, 131],[19, 130],[20, 131],[21, 130],[22, 0],[23, 22],[24, 129],[25, 128],[26, 22],[27, 22]]) as Theme
+
+export const dark_blue_alt1_Checkbox = n378 as Theme
+export const dark_blue_alt1_RadioGroupItem = n378 as Theme
+export const dark_blue_alt1_Input = n378 as Theme
+export const dark_blue_alt1_TextArea = n378 as Theme
+const n379 = t([[12, 0],[13, 131],[14, 130],[15, 129],[16, 0],[17, 0],[18, 122],[19, 123],[20, 122],[21, 123],[22, 121],[23, 129],[24, 22],[25, 130],[26, 129],[27, 123]]) as Theme
+
+export const dark_blue_alt1_SwitchThumb = n379 as Theme
+const n380 = t([[12, 22],[13, 128],[14, 126],[15, 125],[16, 129],[17, 130],[18, 122],[19, 123],[20, 122],[21, 123],[22, 123],[23, 125],[24, 124],[25, 126],[26, 125],[27, 128]]) as Theme
+
+export const dark_blue_alt1_SliderTrackActive = n380 as Theme
+const n381 = t([[12, 130],[13, 129],[14, 22],[15, 128],[16, 131],[17, 0],[18, 122],[19, 123],[20, 122],[21, 123],[22, 121],[23, 128],[24, 126],[25, 22],[26, 128],[27, 125]]) as Theme
+
+export const dark_blue_alt1_SliderThumb = n381 as Theme
+export const dark_blue_alt1_Tooltip = n381 as Theme
+export const dark_blue_alt1_ProgressIndicator = n381 as Theme
+const n382 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[18, 130],[19, 129],[20, 130],[21, 129],[22, 130],[23, 128],[24, 22],[25, 126],[26, 128],[27, 126]]) as Theme
+
+export const dark_blue_alt2_Card = n382 as Theme
+export const dark_blue_alt2_DrawerFrame = n382 as Theme
+export const dark_blue_alt2_Progress = n382 as Theme
+export const dark_blue_alt2_TooltipArrow = n382 as Theme
+const n383 = t([[12, 126],[13, 128],[14, 22],[15, 129],[16, 125],[17, 124],[18, 130],[19, 129],[20, 130],[21, 129],[22, 129],[23, 128],[24, 22],[25, 126],[26, 128],[27, 125]]) as Theme
+
+export const dark_blue_alt2_Button = n383 as Theme
+export const dark_blue_alt2_Switch = n383 as Theme
+export const dark_blue_alt2_TooltipContent = n383 as Theme
+export const dark_blue_alt2_SliderTrack = n383 as Theme
+const n384 = t([[12, 124],[13, 125],[14, 126],[15, 128],[16, 123],[17, 122],[18, 130],[19, 129],[20, 130],[21, 129],[22, 131],[23, 22],[24, 129],[25, 128],[26, 22],[27, 128]]) as Theme
+
+export const dark_blue_alt2_Checkbox = n384 as Theme
+export const dark_blue_alt2_RadioGroupItem = n384 as Theme
+export const dark_blue_alt2_Input = n384 as Theme
+export const dark_blue_alt2_TextArea = n384 as Theme
+const n385 = t([[12, 131],[13, 130],[14, 129],[15, 22],[16, 0],[17, 0],[18, 123],[19, 124],[20, 123],[21, 124],[22, 121],[23, 129],[24, 22],[25, 130],[26, 129],[27, 124]]) as Theme
+
+export const dark_blue_alt2_SwitchThumb = n385 as Theme
+const n386 = t([[12, 128],[13, 126],[14, 125],[15, 124],[16, 22],[17, 129],[18, 123],[19, 124],[20, 123],[21, 124],[22, 124],[23, 125],[24, 124],[25, 126],[26, 125],[27, 22]]) as Theme
+
+export const dark_blue_alt2_SliderTrackActive = n386 as Theme
+const n387 = t([[12, 129],[13, 22],[14, 128],[15, 126],[16, 130],[17, 131],[18, 123],[19, 124],[20, 123],[21, 124],[22, 122],[23, 128],[24, 126],[25, 22],[26, 128],[27, 126]]) as Theme
+
+export const dark_blue_alt2_SliderThumb = n387 as Theme
+export const dark_blue_alt2_Tooltip = n387 as Theme
+export const dark_blue_alt2_ProgressIndicator = n387 as Theme
+const n388 = t([[12, 128],[13, 22],[14, 129],[15, 130],[16, 126],[17, 125],[19, 22],[20, 129],[21, 22],[22, 22],[23, 22],[24, 129],[25, 128],[26, 22],[27, 124]]) as Theme
+
+export const dark_blue_active_Button = n388 as Theme
+export const dark_blue_active_Switch = n388 as Theme
+const n389 = t([[12, 125],[13, 126],[14, 128],[15, 22],[16, 124],[17, 123],[19, 22],[20, 129],[21, 22],[22, 130],[23, 129],[24, 130],[25, 22],[26, 129],[27, 126]]) as Theme
+
+export const dark_blue_active_Checkbox = n389 as Theme
+export const dark_blue_active_Input = n389 as Theme
+export const dark_blue_active_TextArea = n389 as Theme
+const n390 = t([[12, 126],[13, 125],[14, 124],[15, 123],[16, 128],[17, 22],[19, 125],[20, 124],[21, 125],[22, 125],[23, 124],[24, 123],[25, 125],[26, 124],[27, 129]]) as Theme
+
+export const dark_blue_active_SliderTrackActive = n390 as Theme
+const n391 = t([[12, 179],[13, 180],[14, 181],[15, 183],[16, 178],[17, 177],[18, 186],[19, 185],[20, 186],[21, 185],[22, 186],[23, 183],[24, 80],[25, 181],[26, 183],[27, 183]]) as Theme
+
+export const dark_purple_alt1_Card = n391 as Theme
+export const dark_purple_alt1_DrawerFrame = n391 as Theme
+export const dark_purple_alt1_Progress = n391 as Theme
+export const dark_purple_alt1_TooltipArrow = n391 as Theme
+const n392 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[18, 186],[19, 185],[20, 186],[21, 185],[22, 185],[23, 183],[24, 80],[25, 181],[26, 183],[27, 181]]) as Theme
+
+export const dark_purple_alt1_Button = n392 as Theme
+export const dark_purple_alt1_Switch = n392 as Theme
+export const dark_purple_alt1_TooltipContent = n392 as Theme
+export const dark_purple_alt1_SliderTrack = n392 as Theme
+const n393 = t([[12, 178],[13, 179],[14, 180],[15, 181],[16, 177],[17, 176],[18, 186],[19, 185],[20, 186],[21, 185],[22, 0],[23, 80],[24, 184],[25, 183],[26, 80],[27, 80]]) as Theme
+
+export const dark_purple_alt1_Checkbox = n393 as Theme
+export const dark_purple_alt1_RadioGroupItem = n393 as Theme
+export const dark_purple_alt1_Input = n393 as Theme
+export const dark_purple_alt1_TextArea = n393 as Theme
+const n394 = t([[12, 0],[13, 186],[14, 185],[15, 184],[16, 0],[17, 0],[18, 177],[19, 178],[20, 177],[21, 178],[22, 176],[23, 184],[24, 80],[25, 185],[26, 184],[27, 178]]) as Theme
+
+export const dark_purple_alt1_SwitchThumb = n394 as Theme
+const n395 = t([[12, 80],[13, 183],[14, 181],[15, 180],[16, 184],[17, 185],[18, 177],[19, 178],[20, 177],[21, 178],[22, 178],[23, 180],[24, 179],[25, 181],[26, 180],[27, 183]]) as Theme
+
+export const dark_purple_alt1_SliderTrackActive = n395 as Theme
+const n396 = t([[12, 185],[13, 184],[14, 80],[15, 183],[16, 186],[17, 0],[18, 177],[19, 178],[20, 177],[21, 178],[22, 176],[23, 183],[24, 181],[25, 80],[26, 183],[27, 180]]) as Theme
+
+export const dark_purple_alt1_SliderThumb = n396 as Theme
+export const dark_purple_alt1_Tooltip = n396 as Theme
+export const dark_purple_alt1_ProgressIndicator = n396 as Theme
+const n397 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[18, 185],[19, 184],[20, 185],[21, 184],[22, 185],[23, 183],[24, 80],[25, 181],[26, 183],[27, 181]]) as Theme
+
+export const dark_purple_alt2_Card = n397 as Theme
+export const dark_purple_alt2_DrawerFrame = n397 as Theme
+export const dark_purple_alt2_Progress = n397 as Theme
+export const dark_purple_alt2_TooltipArrow = n397 as Theme
+const n398 = t([[12, 181],[13, 183],[14, 80],[15, 184],[16, 180],[17, 179],[18, 185],[19, 184],[20, 185],[21, 184],[22, 184],[23, 183],[24, 80],[25, 181],[26, 183],[27, 180]]) as Theme
+
+export const dark_purple_alt2_Button = n398 as Theme
+export const dark_purple_alt2_Switch = n398 as Theme
+export const dark_purple_alt2_TooltipContent = n398 as Theme
+export const dark_purple_alt2_SliderTrack = n398 as Theme
+const n399 = t([[12, 179],[13, 180],[14, 181],[15, 183],[16, 178],[17, 177],[18, 185],[19, 184],[20, 185],[21, 184],[22, 186],[23, 80],[24, 184],[25, 183],[26, 80],[27, 183]]) as Theme
+
+export const dark_purple_alt2_Checkbox = n399 as Theme
+export const dark_purple_alt2_RadioGroupItem = n399 as Theme
+export const dark_purple_alt2_Input = n399 as Theme
+export const dark_purple_alt2_TextArea = n399 as Theme
+const n400 = t([[12, 186],[13, 185],[14, 184],[15, 80],[16, 0],[17, 0],[18, 178],[19, 179],[20, 178],[21, 179],[22, 176],[23, 184],[24, 80],[25, 185],[26, 184],[27, 179]]) as Theme
+
+export const dark_purple_alt2_SwitchThumb = n400 as Theme
+const n401 = t([[12, 183],[13, 181],[14, 180],[15, 179],[16, 80],[17, 184],[18, 178],[19, 179],[20, 178],[21, 179],[22, 179],[23, 180],[24, 179],[25, 181],[26, 180],[27, 80]]) as Theme
+
+export const dark_purple_alt2_SliderTrackActive = n401 as Theme
+const n402 = t([[12, 184],[13, 80],[14, 183],[15, 181],[16, 185],[17, 186],[18, 178],[19, 179],[20, 178],[21, 179],[22, 177],[23, 183],[24, 181],[25, 80],[26, 183],[27, 181]]) as Theme
+
+export const dark_purple_alt2_SliderThumb = n402 as Theme
+export const dark_purple_alt2_Tooltip = n402 as Theme
+export const dark_purple_alt2_ProgressIndicator = n402 as Theme
+const n403 = t([[12, 183],[13, 80],[14, 184],[15, 185],[16, 181],[17, 180],[19, 80],[20, 184],[21, 80],[22, 80],[23, 80],[24, 184],[25, 183],[26, 80],[27, 179]]) as Theme
+
+export const dark_purple_active_Button = n403 as Theme
+export const dark_purple_active_Switch = n403 as Theme
+const n404 = t([[12, 180],[13, 181],[14, 183],[15, 80],[16, 179],[17, 178],[19, 80],[20, 184],[21, 80],[22, 185],[23, 184],[24, 185],[25, 80],[26, 184],[27, 181]]) as Theme
+
+export const dark_purple_active_Checkbox = n404 as Theme
+export const dark_purple_active_Input = n404 as Theme
+export const dark_purple_active_TextArea = n404 as Theme
+const n405 = t([[12, 181],[13, 180],[14, 179],[15, 178],[16, 183],[17, 80],[19, 180],[20, 179],[21, 180],[22, 180],[23, 179],[24, 178],[25, 180],[26, 179],[27, 184]]) as Theme
+
+export const dark_purple_active_SliderTrackActive = n405 as Theme
+const n406 = t([[12, 168],[13, 169],[14, 170],[15, 172],[16, 167],[17, 166],[18, 175],[19, 174],[20, 175],[21, 174],[22, 175],[23, 172],[24, 68],[25, 170],[26, 172],[27, 172]]) as Theme
+
+export const dark_pink_alt1_Card = n406 as Theme
+export const dark_pink_alt1_DrawerFrame = n406 as Theme
+export const dark_pink_alt1_Progress = n406 as Theme
+export const dark_pink_alt1_TooltipArrow = n406 as Theme
+const n407 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[18, 175],[19, 174],[20, 175],[21, 174],[22, 174],[23, 172],[24, 68],[25, 170],[26, 172],[27, 170]]) as Theme
+
+export const dark_pink_alt1_Button = n407 as Theme
+export const dark_pink_alt1_Switch = n407 as Theme
+export const dark_pink_alt1_TooltipContent = n407 as Theme
+export const dark_pink_alt1_SliderTrack = n407 as Theme
+const n408 = t([[12, 167],[13, 168],[14, 169],[15, 170],[16, 166],[17, 165],[18, 175],[19, 174],[20, 175],[21, 174],[22, 0],[23, 68],[24, 173],[25, 172],[26, 68],[27, 68]]) as Theme
+
+export const dark_pink_alt1_Checkbox = n408 as Theme
+export const dark_pink_alt1_RadioGroupItem = n408 as Theme
+export const dark_pink_alt1_Input = n408 as Theme
+export const dark_pink_alt1_TextArea = n408 as Theme
+const n409 = t([[12, 0],[13, 175],[14, 174],[15, 173],[16, 0],[17, 0],[18, 166],[19, 167],[20, 166],[21, 167],[22, 165],[23, 173],[24, 68],[25, 174],[26, 173],[27, 167]]) as Theme
+
+export const dark_pink_alt1_SwitchThumb = n409 as Theme
+const n410 = t([[12, 68],[13, 172],[14, 170],[15, 169],[16, 173],[17, 174],[18, 166],[19, 167],[20, 166],[21, 167],[22, 167],[23, 169],[24, 168],[25, 170],[26, 169],[27, 172]]) as Theme
+
+export const dark_pink_alt1_SliderTrackActive = n410 as Theme
+const n411 = t([[12, 174],[13, 173],[14, 68],[15, 172],[16, 175],[17, 0],[18, 166],[19, 167],[20, 166],[21, 167],[22, 165],[23, 172],[24, 170],[25, 68],[26, 172],[27, 169]]) as Theme
+
+export const dark_pink_alt1_SliderThumb = n411 as Theme
+export const dark_pink_alt1_Tooltip = n411 as Theme
+export const dark_pink_alt1_ProgressIndicator = n411 as Theme
+const n412 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[18, 174],[19, 173],[20, 174],[21, 173],[22, 174],[23, 172],[24, 68],[25, 170],[26, 172],[27, 170]]) as Theme
+
+export const dark_pink_alt2_Card = n412 as Theme
+export const dark_pink_alt2_DrawerFrame = n412 as Theme
+export const dark_pink_alt2_Progress = n412 as Theme
+export const dark_pink_alt2_TooltipArrow = n412 as Theme
+const n413 = t([[12, 170],[13, 172],[14, 68],[15, 173],[16, 169],[17, 168],[18, 174],[19, 173],[20, 174],[21, 173],[22, 173],[23, 172],[24, 68],[25, 170],[26, 172],[27, 169]]) as Theme
+
+export const dark_pink_alt2_Button = n413 as Theme
+export const dark_pink_alt2_Switch = n413 as Theme
+export const dark_pink_alt2_TooltipContent = n413 as Theme
+export const dark_pink_alt2_SliderTrack = n413 as Theme
+const n414 = t([[12, 168],[13, 169],[14, 170],[15, 172],[16, 167],[17, 166],[18, 174],[19, 173],[20, 174],[21, 173],[22, 175],[23, 68],[24, 173],[25, 172],[26, 68],[27, 172]]) as Theme
+
+export const dark_pink_alt2_Checkbox = n414 as Theme
+export const dark_pink_alt2_RadioGroupItem = n414 as Theme
+export const dark_pink_alt2_Input = n414 as Theme
+export const dark_pink_alt2_TextArea = n414 as Theme
+const n415 = t([[12, 175],[13, 174],[14, 173],[15, 68],[16, 0],[17, 0],[18, 167],[19, 168],[20, 167],[21, 168],[22, 165],[23, 173],[24, 68],[25, 174],[26, 173],[27, 168]]) as Theme
+
+export const dark_pink_alt2_SwitchThumb = n415 as Theme
+const n416 = t([[12, 172],[13, 170],[14, 169],[15, 168],[16, 68],[17, 173],[18, 167],[19, 168],[20, 167],[21, 168],[22, 168],[23, 169],[24, 168],[25, 170],[26, 169],[27, 68]]) as Theme
+
+export const dark_pink_alt2_SliderTrackActive = n416 as Theme
+const n417 = t([[12, 173],[13, 68],[14, 172],[15, 170],[16, 174],[17, 175],[18, 167],[19, 168],[20, 167],[21, 168],[22, 166],[23, 172],[24, 170],[25, 68],[26, 172],[27, 170]]) as Theme
+
+export const dark_pink_alt2_SliderThumb = n417 as Theme
+export const dark_pink_alt2_Tooltip = n417 as Theme
+export const dark_pink_alt2_ProgressIndicator = n417 as Theme
+const n418 = t([[12, 172],[13, 68],[14, 173],[15, 174],[16, 170],[17, 169],[19, 68],[20, 173],[21, 68],[22, 68],[23, 68],[24, 173],[25, 172],[26, 68],[27, 168]]) as Theme
+
+export const dark_pink_active_Button = n418 as Theme
+export const dark_pink_active_Switch = n418 as Theme
+const n419 = t([[12, 169],[13, 170],[14, 172],[15, 68],[16, 168],[17, 167],[19, 68],[20, 173],[21, 68],[22, 174],[23, 173],[24, 174],[25, 68],[26, 173],[27, 170]]) as Theme
+
+export const dark_pink_active_Checkbox = n419 as Theme
+export const dark_pink_active_Input = n419 as Theme
+export const dark_pink_active_TextArea = n419 as Theme
+const n420 = t([[12, 170],[13, 169],[14, 168],[15, 167],[16, 172],[17, 68],[19, 169],[20, 168],[21, 169],[22, 169],[23, 168],[24, 167],[25, 169],[26, 168],[27, 173]]) as Theme
+
+export const dark_pink_active_SliderTrackActive = n420 as Theme
+const n421 = t([[12, 190],[13, 191],[14, 192],[15, 194],[16, 189],[17, 188],[18, 197],[19, 196],[20, 197],[21, 196],[22, 197],[23, 194],[24, 92],[25, 192],[26, 194],[27, 194]]) as Theme
+
+export const dark_red_alt1_Card = n421 as Theme
+export const dark_red_alt1_DrawerFrame = n421 as Theme
+export const dark_red_alt1_Progress = n421 as Theme
+export const dark_red_alt1_TooltipArrow = n421 as Theme
+const n422 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[18, 197],[19, 196],[20, 197],[21, 196],[22, 196],[23, 194],[24, 92],[25, 192],[26, 194],[27, 192]]) as Theme
+
+export const dark_red_alt1_Button = n422 as Theme
+export const dark_red_alt1_Switch = n422 as Theme
+export const dark_red_alt1_TooltipContent = n422 as Theme
+export const dark_red_alt1_SliderTrack = n422 as Theme
+const n423 = t([[12, 189],[13, 190],[14, 191],[15, 192],[16, 188],[17, 187],[18, 197],[19, 196],[20, 197],[21, 196],[22, 0],[23, 92],[24, 195],[25, 194],[26, 92],[27, 92]]) as Theme
+
+export const dark_red_alt1_Checkbox = n423 as Theme
+export const dark_red_alt1_RadioGroupItem = n423 as Theme
+export const dark_red_alt1_Input = n423 as Theme
+export const dark_red_alt1_TextArea = n423 as Theme
+const n424 = t([[12, 0],[13, 197],[14, 196],[15, 195],[16, 0],[17, 0],[18, 188],[19, 189],[20, 188],[21, 189],[22, 187],[23, 195],[24, 92],[25, 196],[26, 195],[27, 189]]) as Theme
+
+export const dark_red_alt1_SwitchThumb = n424 as Theme
+const n425 = t([[12, 92],[13, 194],[14, 192],[15, 191],[16, 195],[17, 196],[18, 188],[19, 189],[20, 188],[21, 189],[22, 189],[23, 191],[24, 190],[25, 192],[26, 191],[27, 194]]) as Theme
+
+export const dark_red_alt1_SliderTrackActive = n425 as Theme
+const n426 = t([[12, 196],[13, 195],[14, 92],[15, 194],[16, 197],[17, 0],[18, 188],[19, 189],[20, 188],[21, 189],[22, 187],[23, 194],[24, 192],[25, 92],[26, 194],[27, 191]]) as Theme
+
+export const dark_red_alt1_SliderThumb = n426 as Theme
+export const dark_red_alt1_Tooltip = n426 as Theme
+export const dark_red_alt1_ProgressIndicator = n426 as Theme
+const n427 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[18, 196],[19, 195],[20, 196],[21, 195],[22, 196],[23, 194],[24, 92],[25, 192],[26, 194],[27, 192]]) as Theme
+
+export const dark_red_alt2_Card = n427 as Theme
+export const dark_red_alt2_DrawerFrame = n427 as Theme
+export const dark_red_alt2_Progress = n427 as Theme
+export const dark_red_alt2_TooltipArrow = n427 as Theme
+const n428 = t([[12, 192],[13, 194],[14, 92],[15, 195],[16, 191],[17, 190],[18, 196],[19, 195],[20, 196],[21, 195],[22, 195],[23, 194],[24, 92],[25, 192],[26, 194],[27, 191]]) as Theme
+
+export const dark_red_alt2_Button = n428 as Theme
+export const dark_red_alt2_Switch = n428 as Theme
+export const dark_red_alt2_TooltipContent = n428 as Theme
+export const dark_red_alt2_SliderTrack = n428 as Theme
+const n429 = t([[12, 190],[13, 191],[14, 192],[15, 194],[16, 189],[17, 188],[18, 196],[19, 195],[20, 196],[21, 195],[22, 197],[23, 92],[24, 195],[25, 194],[26, 92],[27, 194]]) as Theme
+
+export const dark_red_alt2_Checkbox = n429 as Theme
+export const dark_red_alt2_RadioGroupItem = n429 as Theme
+export const dark_red_alt2_Input = n429 as Theme
+export const dark_red_alt2_TextArea = n429 as Theme
+const n430 = t([[12, 197],[13, 196],[14, 195],[15, 92],[16, 0],[17, 0],[18, 189],[19, 190],[20, 189],[21, 190],[22, 187],[23, 195],[24, 92],[25, 196],[26, 195],[27, 190]]) as Theme
+
+export const dark_red_alt2_SwitchThumb = n430 as Theme
+const n431 = t([[12, 194],[13, 192],[14, 191],[15, 190],[16, 92],[17, 195],[18, 189],[19, 190],[20, 189],[21, 190],[22, 190],[23, 191],[24, 190],[25, 192],[26, 191],[27, 92]]) as Theme
+
+export const dark_red_alt2_SliderTrackActive = n431 as Theme
+const n432 = t([[12, 195],[13, 92],[14, 194],[15, 192],[16, 196],[17, 197],[18, 189],[19, 190],[20, 189],[21, 190],[22, 188],[23, 194],[24, 192],[25, 92],[26, 194],[27, 192]]) as Theme
+
+export const dark_red_alt2_SliderThumb = n432 as Theme
+export const dark_red_alt2_Tooltip = n432 as Theme
+export const dark_red_alt2_ProgressIndicator = n432 as Theme
+const n433 = t([[12, 194],[13, 92],[14, 195],[15, 196],[16, 192],[17, 191],[19, 92],[20, 195],[21, 92],[22, 92],[23, 92],[24, 195],[25, 194],[26, 92],[27, 190]]) as Theme
+
+export const dark_red_active_Button = n433 as Theme
+export const dark_red_active_Switch = n433 as Theme
+const n434 = t([[12, 191],[13, 192],[14, 194],[15, 92],[16, 190],[17, 189],[19, 92],[20, 195],[21, 92],[22, 196],[23, 195],[24, 196],[25, 92],[26, 195],[27, 192]]) as Theme
+
+export const dark_red_active_Checkbox = n434 as Theme
+export const dark_red_active_Input = n434 as Theme
+export const dark_red_active_TextArea = n434 as Theme
+const n435 = t([[12, 192],[13, 191],[14, 190],[15, 189],[16, 194],[17, 92],[19, 191],[20, 190],[21, 191],[22, 191],[23, 190],[24, 189],[25, 191],[26, 190],[27, 195]]) as Theme
+
+export const dark_red_active_SliderTrackActive = n435 as Theme

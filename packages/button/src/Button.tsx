@@ -9,7 +9,6 @@ import {
   wrapChildrenInText,
 } from '@tamagui/text'
 import {
-  ButtonNestingContext,
   FontSizeTokens,
   GetProps,
   SizeTokens,
@@ -21,22 +20,15 @@ import {
   useProps,
   withStaticProperties,
 } from '@tamagui/web'
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent, createContext, useContext } from 'react'
 
 export const ButtonContext = createStyledContext<
-  TextContextStyles & {
-    size: SizeTokens
-  }
->({
-  size: '$true',
-  color: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  textAlign: undefined,
-})
+  Partial<
+    TextContextStyles & {
+      size: SizeTokens
+    }
+  >
+>({})
 
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
@@ -169,6 +161,7 @@ const ButtonText = styled(SizableText, {
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
   const { children, scaleIcon = 1 } = props
   const { size, color } = useContext(ButtonContext)
+
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon
@@ -205,6 +198,8 @@ const Button = withStaticProperties(ButtonComponent, {
   Icon: ButtonIcon,
 })
 
+export const ButtonNestingContext = createContext(false)
+
 /**
  * @deprecated Instead of useButton, see the Button docs for the newer and much improved Advanced customization pattern: https://tamagui.dev/docs/components/button
  */
@@ -240,7 +235,8 @@ function useButton<Props extends ButtonProps>(
 
   const isNested = useContext(ButtonNestingContext)
   const propsActive = useProps(propsIn) as any as ButtonProps
-  const size = propsActive.size || '$true'
+  const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
+
   const iconSize =
     (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
     scaleIcon

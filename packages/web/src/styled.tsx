@@ -3,10 +3,10 @@ import { stylePropsAll } from '@tamagui/helpers'
 import { createComponent } from './createComponent'
 import { StyledContext } from './helpers/createStyledContext'
 import { mergeVariants } from './helpers/mergeVariants'
+import type { GetRef } from './interfaces/GetRef'
 import { getReactNativeConfig } from './setupReactNative'
 import type {
   GetProps,
-  GetRef,
   GetVariantValues,
   MediaProps,
   PseudoProps,
@@ -110,10 +110,9 @@ export function styled<
             ...parentStaticConfig.defaultProps,
             ...defaultProps,
           }
-        }
-
-        if (parentStaticConfig.variants) {
-          variants = mergeVariants(parentStaticConfig.variants, variants)
+          if (parentStaticConfig.variants) {
+            variants = mergeVariants(parentStaticConfig.variants, variants)
+          }
         }
       }
 

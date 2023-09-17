@@ -1,10 +1,11 @@
-import { join } from 'path'
+import { dirname, join } from 'path'
 
-import { getVariableValue } from '@tamagui/core-node'
 import { generateThemes, writeGeneratedThemes } from '@tamagui/generate-themes'
 import { TamaguiOptions } from '@tamagui/types'
 import fs, { readFile } from 'fs-extra'
 
+import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
+import { TamaguiPlatform } from '../types'
 import { BundledConfig, getBundledConfig } from './bundleConfig'
 
 const tamaguiDir = join(process.cwd(), '.tamagui')
@@ -22,9 +23,27 @@ export async function generateTamaguiStudioConfig(
   try {
     const config = configIn ?? (await getBundledConfig(tamaguiOptions, rebuild))
     if (!config) return
-    const out = transformConfig(config)
+    const out = transformConfig(config, tamaguiOptions.platform)
 
-    fs.writeJSON(confFile, out, {
+    await fs.ensureDir(dirname(confFile))
+    await fs.writeJSON(confFile, out, {
+      spaces: 2,
+    })
+  } catch (err) {
+    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
+      console.warn('generateTamaguiStudioConfig error', err)
+    }
+    // ignore for now
+  }
+}
+
+export function generateTamaguiStudioConfigSync(
+  _tamaguiOptions: TamaguiOptions,
+  config: BundledConfig
+) {
+  try {
+    fs.ensureDirSync(dirname(confFile))
+    fs.writeJSONSync(confFile, transformConfig(config, _tamaguiOptions.platform), {
       spaces: 2,
     })
   } catch (err) {
@@ -72,22 +91,6 @@ export async function generateTamaguiThemes(tamaguiOptions: TamaguiOptions) {
 const resolveRelativePath = (inputPath: string) =>
   inputPath.startsWith('.') ? join(process.cwd(), inputPath) : require.resolve(inputPath)
 
-export function generateTamaguiStudioConfigSync(
-  _tamaguiOptions: TamaguiOptions,
-  config: BundledConfig
-) {
-  try {
-    fs.writeJSONSync(confFile, transformConfig(config), {
-      spaces: 2,
-    })
-  } catch (err) {
-    if (process.env.DEBUG?.includes('tamagui') || process.env.IS_TAMAGUI_DEV) {
-      console.warn('generateTamaguiStudioConfig error', err)
-    }
-    // ignore for now
-  }
-}
-
 function cloneDeepSafe(x: any, excludeKeys = {}) {
   if (!x) return x
   if (Array.isArray(x)) return x.map((_) => cloneDeepSafe(_))
@@ -99,10 +102,12 @@ function cloneDeepSafe(x: any, excludeKeys = {}) {
   )
 }
 
-function transformConfig(config: BundledConfig) {
+function transformConfig(config: BundledConfig, platform: TamaguiPlatform) {
   if (!config) {
     return null
   }
+
+  const { getVariableValue } = requireTamaguiCore(platform)
 
   // ensure we don't mangle anything in the original
   const next = cloneDeepSafe(config, {

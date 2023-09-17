@@ -9,10 +9,11 @@ import { cwd } from 'process'
 
 import chalk from 'chalk'
 import Commander from 'commander'
+import { detect } from 'detect-package-manager'
 import { $, cd } from 'zx'
 
 import packageJson from '../package.json'
-import { IS_TEST } from './constants'
+import { IS_TEST } from './create-tamagui-constants'
 import { tamaguiDuckAsciiArt, tamaguiRainbowAsciiArt } from './helpers/asciiArts'
 import { cloneStarter } from './helpers/cloneStarter'
 import { getProjectName } from './helpers/getProjectName'
@@ -24,7 +25,7 @@ import { validateNpmName } from './helpers/validateNpmPackage'
 let projectPath = ''
 
 if (IS_TEST) {
-  // rome-ignore lint/nursery/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
   console.log(`🧐 Running create-tamagui in test mode 🧐`)
 }
 
@@ -59,9 +60,8 @@ if (process.argv.includes('--version')) {
 }
 const skipCloning = !!program.skipCloning
 
-const packageManager = 'yarn'
-
 async function run() {
+  const packageManager = await detect()
   if (!skipCloning) {
     console.log() // this newline prevents the ascii art from breaking
     console.log(tamaguiRainbowAsciiArt)
@@ -139,6 +139,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     console.log()
 
     try {
+      console.log('installing with ' + packageManager)
       await installDependencies(resolvedProjectPath, packageManager)
     } catch (e: any) {
       console.error(

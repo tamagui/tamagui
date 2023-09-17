@@ -6,11 +6,8 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*",
-    "apps/starter/apps/*",
-    "apps/starter/packages/*",
-    "takeout/*"
+    "./apps/*",
+    "./packages/*"
   ],
   "packageManager": "yarn@3.5.0",
   "scripts": {
@@ -34,12 +31,13 @@
     "kitchen-sink:extract": "yarn workspace @tamagui/kitchen-sink start:extract",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink:prod": "yarn workspace @tamagui/kitchen-sink start:prod",
     "lighthouse:live": "npx lighthouse https://tamagui.dev --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:prod": "npx lighthouse http://localhost:3333 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse:vite:prod": "npx lighthouse http://localhost:8080 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lighthouse": "npx lighthouse http://localhost:3000 --view --chrome-flags='--headless' --throttling.cpuSlowdownMultiplier=16 --output-path=/tmp/report.html",
     "lint:fix": "ultra -r --no-pretty lint:fix",
-    "lint": "retry -n 4 -t 4000 -- ultra -r --no-pretty lint",
+    "lint": "ultra -r --no-pretty lint",
     "postinstall": "manypkg check && yarn git-crypt-unlock",
     "pretty": "pretty-quick",
     "release:canary": "yarn release --canary --ci",
@@ -68,8 +66,8 @@
     "upgrade:starters:next": "cd starters/next-expo-solito && yarn upgrade:tamagui",
     "upgrade:starters:simple-web": "cd starters/simple-web && yarn upgrade:tamagui",
     "upgrade:starters": "yarn upgrade:starters:next && yarn upgrade:starters:simple-web",
-    "vercel:build": "TAMAGUI_TARGET=web yarn build:js && cd apps/site && yarn ci:build",
-    "vercel:build-studio": "TAMAGUI_TARGET=web yarn build:js && cd apps/studio && yarn ci:build",
+    "vercel:build": "yarn build:js && cd apps/site && yarn ci:build",
+    "vercel:build-studio": "yarn build:js && cd apps/studio && yarn ci:build",
     "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 400 watch",
     "watch:js": "SKIP_TYPES=1 yarn watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
@@ -77,12 +75,14 @@
   },
   "resolutions": {
     "react-native-svg": "13.9.0",
+    "expo-modules-core": "1.7.0",
     "@types/node": "16.11.9",
     "react-native": "0.72.0",
     "react": "18.2.0",
     "next": "13.4.4",
     "react-dom": "18.2.0",
-    "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch"
+    "react-native-reanimated@^3.3.0": "patch:react-native-reanimated@npm%3A3.4.1#./.yarn/patches/react-native-reanimated-npm-3.4.1-bf4ac7f6b3.patch",
+    "react-native-screens@~3.22.0": "patch:react-native-screens@npm%3A3.22.0#./.yarn/patches/react-native-screens-npm-3.22.0-9ada8582d1.patch"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
@@ -91,7 +91,7 @@
     }
   },
   "dependencies": {
-    "@expo/webpack-config": "^18.1.2",
+    "@biomejs/biome": "^1.2.2",
     "@manypkg/cli": "^0.19.1",
     "@nderscore/tamagui-typescript-plugin": "^0.3.1",
     "@vercel/og": "^0.5.8",
@@ -102,10 +102,8 @@
     "prettier": "^2.8.1",
     "pretty-quick": "^3.1.2",
     "prompts": "2.1.0",
-    "retry-cli": "^0.7.0",
-    "rome": "^12.1.3",
-    "turbo": "^1.10.0",
-    "typescript": "^5.1.3",
+    "turbo": "^1.10.13",
+    "typescript": "^5.2.2",
     "ultra-runner": "^3.10.5"
   },
   "stableVersion": "0.0.0"

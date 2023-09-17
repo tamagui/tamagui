@@ -46,7 +46,7 @@ export const SelectContent = ({
     <FloatingPortal>
       <FloatingOverlay
         style={{ zIndex, pointerEvents: context.open ? 'auto' : 'none' }}
-        lockScroll={!!context.open && !touch}
+        lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
         <FocusScope loop enabled={!!context.open} trapped {...focusScopeProps}>
           {contents}

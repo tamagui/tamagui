@@ -78,12 +78,11 @@ export function useThemedChildren(
     return children
   }
 
-  // be sure to memoize shouldReset to avoid reparenting
+  let next = children
 
   // each children of these children wont get the theme
   if (shallow && themeManager) {
-    let next = Children.toArray(children)
-    next = next.map((child) => {
+    next = Children.toArray(children).map((child) => {
       return isValidElement(child)
         ? cloneElement(
             child,
@@ -98,7 +97,7 @@ export function useThemedChildren(
 
   const elementsWithContext = (
     <ThemeManagerContext.Provider value={themeManager}>
-      {children}
+      {next}
     </ThemeManagerContext.Provider>
   )
 
@@ -163,20 +162,16 @@ export function wrapThemeElements({
   )
 
   // to prevent tree structure changes always render this if inverse is true or false
-  if (inverse != null) {
+  if (inverse != null || forceClassName) {
     themedChildren = (
       <span
-        className={
-          inverse
-            ? `${
-                themeState.state.name.startsWith('light')
-                  ? 't_light'
-                  : themeState.state.name.startsWith('dark')
-                  ? 't_dark'
-                  : ''
-              } _dsp_contents is_inversed`
-            : `_dsp_contents`
-        }
+        className={`${
+          themeState.state.name.startsWith('light')
+            ? 't_light'
+            : themeState.state.name.startsWith('dark')
+            ? 't_dark'
+            : ''
+        } _dsp_contents ${inverse ? 'is_inversed' : ''}`}
       >
         {themedChildren}
       </span>

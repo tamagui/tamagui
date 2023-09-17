@@ -94,7 +94,7 @@ class ScrollView extends React.Component<any> {
     animated?: boolean
   ) {
     if (typeof y === 'number') {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.warn(
         '`scrollTo(y, x, animated)` is deprecated. Use `scrollTo({x: 5, y: 5, animated: true})` instead.'
       )
@@ -257,7 +257,7 @@ class ScrollView extends React.Component<any> {
   _handleScroll(e: Object) {
     if (process.env.NODE_ENV !== 'production') {
       if (this.props.onScroll && this.props.scrollEventThrottle == null) {
-        // rome-ignore lint/nursery/noConsoleLog: ok
+        // biome-ignore lint/suspicious/noConsoleLog: ok
         console.log(
           'You specified `onScroll` on a <ScrollView> but not ' +
             '`scrollEventThrottle`. You will only receive one event. ' +
@@ -541,7 +541,7 @@ class ScrollView extends React.Component<any> {
     animated?: boolean
   ) {
     if (typeof x === 'number') {
-      // rome-ignore lint/nursery/noConsoleLog: ok
+      // biome-ignore lint/suspicious/noConsoleLog: ok
       console.warn(
         '`scrollResponderScrollTo(x, y, animated)` is deprecated. Use `scrollResponderScrollTo({x: 5, y: 5, animated: true})` instead.'
       )

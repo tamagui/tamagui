@@ -1,9 +1,9 @@
+import { apiRoute } from '@lib/apiRoute'
+import { protectApiRoute } from '@lib/protectApiRoute'
 import { Database } from '@lib/supabase-types'
 import { getArray, getSingle } from '@lib/supabase-utils'
 import { supabaseAdmin } from '@lib/supabaseAdmin'
-import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
-import { NextApiHandler } from 'next'
 import { tiersPriority } from 'protected/constants'
 
 export type UserContextType = {
@@ -23,15 +23,10 @@ export type UserContextType = {
   }
 }
 
-const handler: NextApiHandler = async (req, res) => {
-  const supabase = createPagesServerClient<Database>({ req, res })
+export default apiRoute(async (req, res) => {
+  const { supabase, session } = await protectApiRoute({ req, res })
 
-  const [
-    {
-      data: { session },
-    },
-    userRes,
-  ] = await Promise.all([supabase.auth.getSession(), supabase.auth.getUser()])
+  const userRes = await supabase.auth.getUser()
 
   const user = userRes.data.user
   if (!user || !session) {
@@ -64,9 +59,7 @@ const handler: NextApiHandler = async (req, res) => {
       github: !!privateInfo.github_token,
     },
   } satisfies UserContextType)
-}
-
-export default handler
+})
 
 const getUserDetails = async (supabase: SupabaseClient<Database>) => {
   const result = await supabase.from('users').select('*').single()

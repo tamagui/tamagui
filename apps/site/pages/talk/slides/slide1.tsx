@@ -1,4 +1,3 @@
-import { ThemeTint } from '@tamagui/logo'
 import { useThemeSetting } from '@tamagui/next-theme'
 import { Container } from 'components/Container'
 import { DivProps, HoverGlowProps, IS_SAFARI, useHoverGlow } from 'components/HoverGlow'
@@ -18,7 +17,7 @@ import {
 
 import { Slide } from '../../../components/Slide'
 
-export default memo(() => {
+export default memo(({ subTitle }: { subTitle?: string }) => {
   const { resolvedTheme: themeName } = useThemeSetting()!
   const isLight = themeName === 'light'
 
@@ -181,7 +180,7 @@ export default memo(() => {
                     {...lettersContainerBounds}
                     minWidth={lettersContainerBounds.width}
                     minHeight={lettersContainerBounds.height}
-                    scale={0.9}
+                    mt="$10"
                   >
                     <YStack>
                       {glow.Component()}
@@ -197,23 +196,26 @@ export default memo(() => {
                   </YStack>
                 </YStack>
 
-                <Container mt={-200} ai="center">
-                  <Spacer size="$8" />
+                {subTitle !== ' ' && (
+                  <Container mt={-200} ai="center">
+                    <>
+                      <Spacer size="$8" />
+                      <XStack maw={790} space="$8" separator={<Separator vertical />}>
+                        <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
+                          {subTitle || 'Better apps with less code'}
+                        </H2>
+                      </XStack>
 
-                  <XStack maw={790} space="$8" separator={<Separator vertical />}>
-                    <H2 als="center" size="$9" fow="900" $sm={{ size: '$5' }}>
-                      Better apps with less code
-                    </H2>
-                  </XStack>
+                      <Spacer />
 
-                  <Spacer />
-
-                  <XStack space ai="center">
-                    <SizableText o={0.5} size="$3">
-                      By Nate Wienert
-                    </SizableText>
-                  </XStack>
-                </Container>
+                      <XStack space ai="center">
+                        <SizableText o={0.5} size="$3">
+                          By Nate Wienert
+                        </SizableText>
+                      </XStack>
+                    </>
+                  </Container>
+                )}
               </Theme>
             ),
           },

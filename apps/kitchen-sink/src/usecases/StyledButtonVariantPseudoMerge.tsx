@@ -22,10 +22,12 @@ const StyledButton = styled(Button, {
         },
       },
     },
-  },
+  } as const,
 })
 
 const DoubleStyledButtonNoVariants = styled(StyledButton, {})
+
+console.log('wtf', DoubleStyledButtonNoVariants.staticConfig)
 
 const StyledButtonVariantTheme = styled(Button, {
   pressStyle: {
@@ -38,7 +40,7 @@ const StyledButtonVariantTheme = styled(Button, {
         backgroundColor: '$background',
       },
     },
-  },
+  } as const,
 })
 
 export const StyledButtonVariantPseudoMerge = () => (
@@ -62,7 +64,7 @@ export const StyledButtonVariantPseudoMerge = () => (
       variant-merge-green-red
     </StyledButton>
 
-    <DoubleStyledButtonNoVariants reddish id="double-styled">
+    <DoubleStyledButtonNoVariants debug="verbose" reddish id="double-styled">
       double-styled
     </DoubleStyledButtonNoVariants>
 

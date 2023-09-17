@@ -17,6 +17,12 @@ export const pseudoDescriptorsBase = {
   },
 } as const
 
+export const pseudoPriorities = {
+  hover: 1,
+  press: 2,
+  focus: 3,
+}
+
 export const pseudoDescriptors: Record<
   'hoverStyle' | 'pressStyle' | 'focusStyle' | 'enterStyle' | 'exitStyle',
   PseudoDescriptor

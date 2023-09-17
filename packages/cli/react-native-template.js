@@ -11,85 +11,64 @@ globalThis["global"] = global;
 global["react"] = {};
 global["exports"] = {};
 global["module"] = {};
+global["__DEV__"] = true;
 global["___modules___"] = {};
 // to avoid it looking like browser...
 delete globalThis["window"];
 
-const __cachedModules = {};
+globalThis['__cachedModules'] = {};
 
 function __getRequire(absPath) {
-  const found = ___modules___[absPath];
   if (!__cachedModules[absPath]) {
-    const exported = {};
-    const defaultExported = {};
-    found(exported, defaultExported);
-    __cachedModules[absPath] = defaultExported.exports || exported
+    const runModule = ___modules___[absPath];
+    if (runModule) {
+      const mod = { exports: {} };
+      runModule(mod.exports, mod);
+      __cachedModules[absPath] = mod.exports || mod
+    }
   }
   return __cachedModules[absPath];
 }
 
 const __specialRequireMap = {
-  'react-native':  'node_modules/react-native/index.js',
-  'react':  '__React__',
-  'react-native/Libraries/Pressability/Pressability': '__ReactPressability__',
-  'react-native/Libraries/Pressability/usePressability': '__ReactUsePressability__',
-  'react/jsx-runtime': '__JSX__',
-  'react/jsx-dev-runtime': '__JSX__',
-  '../../node_modules/react/jsx-dev-runtime.js': '__JSX__'
-}
-
-function __specialRequire(_mod) {
-  try {
-    // TODO this is sketch - also isnt it running it a whole second time?
-    const cached = __cachedModules[__specialRequireMap[_mod]]
-    if (cached) return cached
-    const found = __specialRequireMap[_mod]
-    if (found) {
-      const output = globalThis[found]()  
-      __cachedModules[_mod] = output
-      if (_mod === "react/jsx-runtime" || _mod === "react/jsx-dev-runtime") {
-        output.jsxDEV = output.jsxDEV || output.jsx;
-      }
-      return output
-    }
-    if (___modules___[_mod]) {
-      return __getRequire(_mod)
-    }
-  } catch (err) {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
-    console.log(`Error... ${err}`);
-  }
+  'react-native': '_virtual/virtual_react-native.js',
+  'react': '_virtual/virtual_react.js',
+  'react/jsx-runtime': '_virtual/virtual_react-jsx.js',
+  'react/jsx-dev-runtime': '_virtual/virtual_react-jsx.js',
 }
 
 function createRequire(importsMap) {
   return function require(_mod) {
-    const special = __specialRequire(_mod);
-    if (special) return special;
-
-    // handles relative imports rollup outputs
-    const absPath = importsMap[_mod] || _mod;
     try {
-      if (!___modules___[absPath]) {
-        throw new Error(`Not found: ${_mod} => ${absPath}`);
+      const path = __specialRequireMap[_mod] || importsMap[_mod] || _mod
+      const found = __getRequire(path)
+      if (found) {
+        return found
       }
-      return __getRequire(absPath)
+      if (globalThis[path]) {
+        const output = globalThis[path]()  
+        __cachedModules[_mod] = output
+        return output
+      }
+
+      // find our import.meta.glob which don't get the nice path addition, for now hardcode but this shouldnt be hard to fix properly:
+      const foundGlob = __getRequire(
+        path
+          .replace('../app', 'apps/tamastack/app')
+          .replace('.tsx', '.js')
+          .replace('.ts', '.js')
+      )
+      if (foundGlob) {
+        return foundGlob
+      }
+      
+      console.error(`Not found: ${_mod}`);
+      return {}
     } catch (err) {
-      throw new Error(`Error running module ${_mod} "${err}"`);
+      throw new Error(`\n◆ ${_mod} "${err}"`.replace('Error: ', '').replaceAll('"', ''));
     }
   };
 }
-
-Object.defineProperty(globalThis, "____react____", {
-  get() {
-    return __specialRequire("react");
-  },
-});
-
-Object.defineProperty(globalThis, "____jsx____", {
-  get() {
-    return __specialRequire("react/jsx-runtime");
-  },
-});
 
 globalThis["setImmediate"] = (cb) => cb();
 //cb => Promise.resolve().then(() => cb())
@@ -119,7 +98,7 @@ global.performance = {
 global.ErrorUtils = {
   setGlobalHandler: () => {},
   reportFatalError: (err) => {
-    // rome-ignore lint/nursery/noConsoleLog: <explanation>
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log("err" + err["message"] + err["stack"]);
   },
 };

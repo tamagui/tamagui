@@ -4,15 +4,13 @@ import {
   TemplateDefinitions,
   ThemeDefinitions,
   ThemeUsingMask,
-  ThemeUsingTemplate,
   applyMask,
   createMask,
   createTheme,
   objectEntries,
   objectFromEntries,
-  objectKeys,
 } from '@tamagui/create-theme'
-import type { Narrow, ThemeDefinition, UnionableString } from '@tamagui/web'
+import type { Narrow } from '@tamagui/web'
 
 type ThemeBuilderState = {
   palettes?: PaletteDefinitions
@@ -25,11 +23,11 @@ type ObjectStringKeys<A extends Object | undefined> = A extends Object
   ? Exclude<keyof A, symbol | number>
   : never
 
-type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
-  ? X extends { [key: string]: any }
-    ? keyof X
-    : never
-  : never
+// type GetNonInheritedKeys<TD> = TD extends { nonInheritedValues: infer X }
+//   ? X extends { [key: string]: any }
+//     ? keyof X
+//     : never
+//   : never
 
 type GetGeneratedThemeFromTemplate<Template, TD> = {
   [key in keyof Template]: string
@@ -170,9 +168,10 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
     const incomingThemeNames = Object.keys(childThemeDefinition) as ChildNames[]
 
     const namesWithDefinitions = currentThemeNames.flatMap((prefix) => {
-      if (options?.avoidNestingWithin) {
+      const avoidNestingWithin = options?.avoidNestingWithin
+      if (avoidNestingWithin) {
         if (
-          options.avoidNestingWithin.some(
+          avoidNestingWithin.some(
             (avoidName) => prefix.startsWith(avoidName) || prefix.endsWith(avoidName)
           )
         ) {
@@ -180,11 +179,23 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         }
       }
 
-      return incomingThemeNames.map((subName) => {
-        const fullName = `${prefix}_${subName}`
-        const definition = childThemeDefinition[subName]
-        return [fullName, definition] as const
-      })
+      return incomingThemeNames
+        .map((subName) => {
+          const fullName = `${prefix}_${subName}`
+          const definition = childThemeDefinition[subName]
+
+          if ('avoidNestingWithin' in definition) {
+            const avoidNest = definition.avoidNestingWithin as string[]
+            if (
+              avoidNest.some((name) => prefix.startsWith(name) || prefix.endsWith(name))
+            ) {
+              return null as never
+            }
+          }
+
+          return [fullName, definition] as const
+        })
+        .filter(Boolean)
     })
 
     type ChildThemes = {
@@ -232,11 +243,16 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         ? (() => {
             const found = definitions.find((d) => parentName.startsWith(d.parent!))
             if (!found) {
-              throw new Error(`No parent for ${themeName}: ${parentName}`)
+              return null
             }
             return found
           })()
         : definitions
+
+      if (!themeDefinition) {
+        // `No parent for ${themeName}: ${parentName} - Continuing...`
+        continue
+      }
 
       if ('theme' in themeDefinition) {
         out[themeName] = themeDefinition.theme
@@ -256,7 +272,6 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
         }
 
         let palette = this.state.palettes[paletteName]
-
         if (!palette) {
           const fullPaletteName = `${parentName}_${paletteName}`
           palette = this.state.palettes[fullPaletteName]
@@ -280,9 +295,8 @@ export class ThemeBuilder<State extends ThemeBuilderState> {
       const parent = out[parentName]
 
       if (!parent) {
-        throw new Error(
-          `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target`
-        )
+        // `No parent theme found with name ${parentName} for theme ${themeName} to use as a mask target - Continuing...`
+        continue
       }
 
       const { mask: maskName, ...options } = mask

@@ -1,22 +1,21 @@
-import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 
+// import { esbuildCommonjs, viteCommonjs } from '@originjs/vite-plugin-commonjs'
 import { transform } from '@swc/core'
 import { parse } from 'es-module-lexer'
 import { OutputOptions } from 'rollup'
 import type { Plugin } from 'vite'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
+import commonjs from 'vite-plugin-commonjs'
 
 import { extensions } from './extensions'
 import { getVitePath } from './getVitePath'
-import { prebuiltFiles } from './nativePrebuild'
 
 export function nativePlugin(options: { port: number; mode: 'build' | 'serve' }): Plugin {
   return {
     name: 'tamagui-native',
-    enforce: 'post',
+    enforce: 'pre',
 
-    config: (config) => {
+    config: async (config) => {
       config.define ||= {}
       config.define['process.env.REACT_NATIVE_SERVER_PUBLIC_PORT'] = JSON.stringify(
         `${options.port}`
@@ -45,29 +44,10 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.optimizeDeps.disabled = true
 
-      // config.optimizeDeps.needsInterop ??= []
-      // config.optimizeDeps.needsInterop.push('react-native')
-
-      // config.esbuild = false
-
       config.optimizeDeps.esbuildOptions ??= {}
       config.optimizeDeps.esbuildOptions.resolveExtensions = extensions
 
       config.optimizeDeps.esbuildOptions.plugins ??= []
-
-      config.optimizeDeps.esbuildOptions.alias = {
-        'react-native': '@tamagui/proxy-worm'
-      }
-      
-      // config.optimizeDeps.esbuildOptions.plugins.push(
-      //   esbuildFlowPlugin(
-      //     /node_modules\/(react-native\/|@react-native\/)/,
-      //     (_) => 'jsx',
-      //     {
-      //       all: true,
-      //     }
-      //   )
-      // )
 
       config.optimizeDeps.esbuildOptions.loader ??= {}
       config.optimizeDeps.esbuildOptions.loader['.js'] = 'jsx'
@@ -97,162 +77,104 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
 
       config.build.rollupOptions.plugins ??= []
 
-      if (options.mode === 'serve') {
-        config.build.rollupOptions.external = [
-          'react-native',
-          'react',
-          'react/jsx-runtime',
-          'react/jsx-dev-runtime',
-        ]
-      }
+      // config.build.rollupOptions.external = [
+      //   'react-native',
+      //   'react',
+      //   'react/jsx-runtime',
+      //   'react/jsx-dev-runtime',
+      // ]
 
       if (!Array.isArray(config.build.rollupOptions.plugins)) {
         throw `x`
       }
 
       if (options.mode === 'build') {
-        config.build.rollupOptions.plugins.push({
-          name: `swap-react-native`,
+        config.plugins ||= []
 
-          async load(id) {
-            if (id.endsWith('/react-native/index.js')) {
-              const bundled = await readFile(prebuiltFiles.reactNative, 'utf-8')
-              const code = `
-              const run = () => {  
-                ${bundled
-                  .replace(
-                    `module.exports = require_react_native();`,
-                    `return require_react_native();`
-                  )
-                  .replace(
-                    `var require_jsx_runtime = `,
-                    `var require_jsx_runtime = global['__JSX__'] = `
-                  )
-                  .replace(
-                    `var require_react = `,
-                    `var require_react = global['__React__'] = `
-                  )}
-              }
-              const RN = run()
-              ${RNExportNames.map((n) => `export const ${n} = RN.${n}`).join('\n')}
-              `
-              return {
-                code,
-              }
-            }
-          },
-        })
-
-        config.build.rollupOptions.plugins.push(
-          viteExternalsPlugin(
-            {
-              react: '____react____',
-              'react/jsx-runtime': '____jsx____',
-              'react/jsx-dev-runtime': '____jsx____',
+        config.plugins.push(
+          commonjs({
+            filter: (id) => {
+              return id.includes('react-native-screens/lib/module')
             },
-            {
-              useWindow: false,
-            }
-          )
+          })
         )
+
+        // https://vitejs.dev/config/dep-optimization-options.html
+        // config.build.commonjsOptions ||= {}
+        // config.build.commonjsOptions.include = []
+
+        // CANT DO THIS BECAUSE TAMAGUI PLUGIN DOES THIS! they clobber each other!
+        // config.plugins.push(
+        //   viteCommonjs({
+        //     include: ['escape-string-regexp'],
+        //   })
+        // )
+
+        // config.resolve.alias = {
+        //   ...config.resolve.alias,
+        //   'react-native': virtualModuleId,
+        // }
 
         config.build.rollupOptions.plugins.push({
           name: `force-export-all`,
 
           async transform(code, id) {
-            const [imports, exports] = parse(code)
+            // if (!id.includes('/node_modules/')) {
+            //   return
+            // }
 
-            let forceExports = ''
+            try {
+              const [imports, exports] = parse(code)
 
-            // note that es-module-lexer parses export * from as an import (twice) for some reason
-            let counts = {}
-            for (const imp of imports) {
-              if (imp.n && imp.n[0] !== '.') {
-                counts[imp.n] ||= 0
-                counts[imp.n]++
-                if (counts[imp.n] == 2) {
-                  // star export
-                  const path = await getVitePath(dirname(id), imp.n)
-                  forceExports += `Object.assign(exports, require("${path}"));`
+              let forceExports = ''
+
+              // note that es-module-lexer parses export * from as an import (twice) for some reason
+              let counts = {}
+              for (const imp of imports) {
+                if (imp.n && imp.n[0] !== '.') {
+                  counts[imp.n] ||= 0
+                  counts[imp.n]++
+                  if (counts[imp.n] == 2) {
+                    // star export
+                    const path = await getVitePath(dirname(id), imp.n)
+                    forceExports += `Object.assign(exports, require("${path}"));`
+                  }
                 }
               }
+
+              forceExports += exports
+                .map((e) => {
+                  if (e.n === 'default') {
+                    return ''
+                  }
+                  let out = ''
+                  if (e.ln !== e.n) {
+                    // forces the "as x" to be referenced so it gets exported
+                    out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
+                  }
+                  out += `globalThis.____forceExport = ${e.ln}`
+                  return out
+                })
+                .join(';')
+
+              return code + '\n' + forceExports
+            } catch (err) {
+              console.warn(`Error forcing exports, probably ok`, id)
             }
-
-            forceExports += exports
-              .map((e) => {
-                if (e.n === 'default') {
-                  return ''
-                }
-                let out = ''
-                if (e.ln !== e.n) {
-                  // forces the "as x" to be referenced so it gets exported
-                  out += `__ignore = typeof ${e.n} === 'undefined' ? 0 : 0;`
-                }
-                out += `globalThis.____forceExport = ${e.ln}`
-                return out
-              })
-              .join(';')
-
-            return code + '\n' + forceExports
-          },
-        })
-
-        config.build.rollupOptions.plugins.push({
-          name: `native-transform`,
-
-          async transform(code, id) {
-            if (
-              id.includes(`node_modules/react/jsx-dev-runtime.js`) ||
-              id.includes(`node_modules/react/index.js`) ||
-              id.includes(`node_modules/react/cjs/react.development.js`) ||
-              id.includes(`node_modules/react-native/index.js`) ||
-              id.includes(
-                `node_modules/react/cjs/react-jsx-dev-runtime.development.js`
-              ) ||
-              id.includes(`packages/vite-native-client/`)
-            ) {
-              return
-            }
-
-            let out = await transform(code, {
-              filename: id,
-              swcrc: false,
-              configFile: false,
-              sourceMaps: true,
-              jsc: {
-                target: 'es5',
-                parser: id.endsWith('.tsx')
-                  ? { syntax: 'typescript', tsx: true, decorators: true }
-                  : id.endsWith('.ts')
-                  ? { syntax: 'typescript', tsx: false, decorators: true }
-                  : id.endsWith('.jsx')
-                  ? { syntax: 'ecmascript', jsx: true }
-                  : { syntax: 'ecmascript' },
-                transform: {
-                  useDefineForClassFields: true,
-                  react: {
-                    development: true,
-                    runtime: 'automatic',
-                  },
-                },
-              },
-            })
-
-            return out
           },
         })
       }
 
       if (process.env.DEBUG) {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('config..', config)
-      }
-
-      config.build.commonjsOptions = {
-        include: /node_modules\/react\//,
       }
 
       const updateOutputOptions = (out: OutputOptions) => {
         out.preserveModules = true
+
+        // this fixes some warnings but breaks import { default as config }
+        // out.exports = 'named'
 
         out.entryFileNames = (chunkInfo) => {
           // ensures we have clean names for our require paths
@@ -274,149 +196,3 @@ export function nativePlugin(options: { port: number; mode: 'build' | 'serve' })
     },
   }
 }
-
-const RNExportNames = [
-  'AccessibilityInfo',
-  'ActivityIndicator',
-  'Button',
-  'DrawerLayoutAndroid',
-  'FlatList',
-  'Image',
-  'ImageBackground',
-  'InputAccessoryView',
-  'KeyboardAvoidingView',
-  'Modal',
-  'Pressable',
-  'RefreshControl',
-  'SafeAreaView',
-  'ScrollView',
-  'SectionList',
-  'StatusBar',
-  'Switch',
-  'Text',
-  'TextInput',
-  'Touchable',
-  'TouchableHighlight',
-  'TouchableNativeFeedback',
-  'TouchableOpacity',
-  'TouchableWithoutFeedback',
-  'View',
-  'VirtualizedList',
-  'VirtualizedSectionList',
-  'ActionSheetIOS',
-  'Alert',
-  'Animated',
-  'Appearance',
-  'AppRegistry',
-  'AppState',
-  'BackHandler',
-  'DeviceInfo',
-  'DevSettings',
-  'Dimensions',
-  'Easing',
-  'findNodeHandle',
-  'I18nManager',
-  'InteractionManager',
-  'Keyboard',
-  'LayoutAnimation',
-  'Linking',
-  'LogBox',
-  'NativeDialogManagerAndroid',
-  'NativeEventEmitter',
-  'Networking',
-  'PanResponder',
-  'PermissionsAndroid',
-  'PixelRatio',
-  // 'PushNotificationIOS',
-  'Settings',
-  'Share',
-  'StyleSheet',
-  'Systrace',
-  'ToastAndroid',
-  'TurboModuleRegistry',
-  'UIManager',
-  'unstable_batchedUpdates',
-  'useColorScheme',
-  'useWindowDimensions',
-  'UTFSequence',
-  'Vibration',
-  'YellowBox',
-  'DeviceEventEmitter',
-  'DynamicColorIOS',
-  'NativeAppEventEmitter',
-  'NativeModules',
-  'Platform',
-  'PlatformColor',
-  'processColor',
-  'requireNativeComponent',
-  'RootTagContext',
-  // 'unstable_enableLogBox',
-  // 'ColorPropType',
-  // 'EdgeInsetsPropType',
-  // 'PointPropType',
-  // 'ViewPropTypes',
-]
-
-// failed attempt to get vite to bundle rn, after a bunch of hacks still trouble
-
-//         config.build.rollupOptions.plugins.push({
-//           name: 'flow-remove-types',
-//           transform: async (codeIn, id) => {
-//             if (!id.includes('node_modules')) {
-//               return
-//             }
-//             const flowRemoved = flowRemoveTypes(codeIn).toString()
-//             let jsxRemoved = await nativeBabelRemoveJSX(flowRemoved)
-
-//             if (id.includes('BackHandler')) {
-//               jsxRemoved = jsxRemoved.replace(
-//                 `module.exports = require('../Components/UnimplementedViews/UnimplementedView');`,
-//                 ''
-//               )
-//             }
-
-//             if (jsxRemoved.includes(`module.exports = `)) {
-//               jsxRemoved = jsxRemoved.replace(
-//                 /\nmodule.exports = /gi,
-//                 `\nexport default `
-//               )
-//             }
-
-//             if (id.endsWith('ReactNativeViewConfigRegistry.js')) {
-//               jsxRemoved =
-//                 jsxRemoved +
-//                 `\nconst allExports = {...exports }; export default allExports;`
-//             }
-
-//             if (id.endsWith('ExceptionsManager.js')) {
-//               console.log('huh', id)
-//               jsxRemoved = jsxRemoved
-//                 .replace(/\nfunction /g, 'export function')
-//                 .replace('class SynthenticEvent', 'export class SyntheticEvent')
-//                 .replace(
-//                   `module.exports = {
-//   decoratedExtraDataKey,
-//   handleException,
-//   installConsoleErrorReporter,
-//   SyntheticError,
-//   unstable_setExceptionDecorator,
-// };`,
-//                   ``
-//                 )
-//             }
-
-//             return {
-//               code: jsxRemoved,
-//               map: null,
-//             }
-//           },
-//         })
-
-// config.build.rollupOptions.plugins.push(
-//   commonJs({
-//     include: ['**/node_modules/react-native/**', '**/node_modules/base64-js/**'],
-//     // ignoreGlobal: true,
-//     transformMixedEsModules: true,
-//     defaultIsModuleExports: true,
-//   }) as any
-// )

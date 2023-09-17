@@ -21,8 +21,6 @@ Install on most platforms is as easy as configuring a library:
 
 ### Setup
 
-Be sure to set `TAMAGUI_TARGET` to `"native"` when targeting native platforms, and set it to `"web"` for web apps.
-
 ### Webpack
 
 ```bash
@@ -42,6 +40,9 @@ const tamaguiOptions = {
   importsWhitelist: ['constants.js', 'colors.js'],
   logTimings: true,
   disableExtraction: process.env.NODE_ENV === 'development',
+  // optional advanced optimization of styled() definitions within your app itself, not just ones in your `components` option
+  // default is false
+  enableDynamicEvaluation: false,
 }
 
 const projectRoot = __dirname
@@ -51,13 +52,6 @@ module.exports = {
     alias: {
       // Resolve react-native to react-native-web
       'react-native$': require.resolve('react-native-web'),
-
-      // Experimentally opt into react-native-web-lite which drops support for all react-native
-      // built-in List components, and removes many deprecated APIs and code-reduction, slimming
-      // bundle sizes down nearly 30-50Kb.
-      'react-native$': 'react-native-web-lite',
-      'react-native-web$': 'react-native-web-lite',
-
       // optional, for lighter svg icons on web
       'react-native-svg': require.resolve('@tamagui/react-native-svg'),
     }
@@ -86,11 +80,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.TAMAGUI_TARGET': '"web"',
-    })
-  ]
 }
 ```
 
@@ -134,7 +123,7 @@ export default withPlugins([
 
     // rest are all optional:
 
-    // Experimentally opt into react-native-web-lite which drops support for all react-native
+    // Experimentally opt into react-native-web which drops support for all react-native
     // built-in List components and removes many deprecated APIs for code-reduction, slimming
     // bundle sizes down nearly 30-50Kb.
     useReactNativeWebLite: true,
@@ -191,21 +180,17 @@ See the [Next.js Guide](/docs/guides/next-js) for more details on setting up you
 
 #### Babel / Metro
 
-Note that the `@tamagui/babel-plugin` is completely optional, and on native Tamagui doesn't optimize as much as on web, so leaving it out is actually recommended. If much later on you feel the need for a bit more speed, you can try adding it. But the `babel-plugin-transform-inline-environment-variables` is necessary so that the `TAMAGUI_TARGET` environment variable gets properly set.
+Note that the `@tamagui/babel-plugin` is completely optional, and on native Tamagui doesn't optimize as much as on web, so leaving it out is actually recommended to start. If later on you feel the need for a bit more speed, you can try adding it.
 
 ```bash
-yarn add @tamagui/babel-plugin babel-plugin-transform-inline-environment-variables
+yarn add @tamagui/babel-plugin
 ```
 
-Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+Add to your `babel.config.js`:
 
 ```js
-// only use babel-plugin for native:
-process.env.TAMAGUI_TARGET = 'native'
-
 module.exports = {
   plugins: [
-    // optional:
     [
       '@tamagui/babel-plugin',
       {
@@ -216,8 +201,6 @@ module.exports = {
         disableExtraction: process.env.NODE_ENV === 'development',
       }
     ],
-    // be sure TAMAGUI_TARGET environment variable is set
-    'transform-inline-environment-variables'
   ]
 }
 ```
