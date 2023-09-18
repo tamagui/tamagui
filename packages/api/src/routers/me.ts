@@ -5,35 +5,17 @@ import { z } from 'zod'
 
 
 export const meRouter = createTRPCRouter({
-  profile: createTRPCRouter({
-    read: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
-      if (error) {
-        // no rows - edge case of user being deleted
-        if (error.code === 'PGRST116') {
-          await supabase.auth.signOut()
-          return null
-        }
-        throw new Error(error.message)
+  profile: protectedProcedure.query(async ({ ctx: { supabase, session } }) => {
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+    if (error) {
+      // no rows - edge case of user being deleted
+      if (error.code === 'PGRST116') {
+        await supabase.auth.signOut()
+        return null
       }
-      return data
-    }),
-    update: protectedProcedure.input(z.object({
-      first_name: z.string().optional(),
-      bio: z.string().optional(),
-      expo_token: z.string().optional(),
-    })).mutation(async ({ ctx: { supabase, session }, input }) => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .update({ ...input })
-        .eq('id', session.user.id).single()
-
-      if (error) {
-        throw new TRPCError({ code: error?.code as any, message: error.message })
-      }
-
-      return data
-    }),
+      throw new Error(error.message)
+    }
+    return data
   }),
   // updateExpoToken: protectedProcedure.input(z.object({
   //   token: z.string().optional(),

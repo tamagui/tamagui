@@ -1,7 +1,45 @@
 import { ExpoConfig, ConfigContext } from 'expo/config'
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
-  ...config,
-  name: 'belaytionship',
-  slug: 'expo-belaytionship',
-})
+const test = (config: Partial<ExpoConfig>): ExpoConfig => {
+  return {
+    ...config,
+    icon: './assets/Test-180.png',
+    name: '(test) belaytionship',
+    slug: 'expo-belaytionship',
+    ios: {
+      bundleIdentifier: 'com.belay-test.app'
+    }
+  }
+}
+
+const development = (config: Partial<ExpoConfig>): ExpoConfig => {
+  return {
+    ...config,
+    icon: './assets/Dev-180.png',
+    name: '(dev) belaytionship',
+    slug: 'expo-belaytionship',
+    ios: {
+      bundleIdentifier: 'com.belay-dev.app'
+    }
+  }
+}
+
+
+export default (props: ConfigContext): ExpoConfig => {
+  const TEST = test(props.config)
+  const DEVELOPMENT = development(props.config)
+
+
+
+  if (process.env.NODE_ENV === 'test') {
+    return TEST
+  } else if (process.env.NODE_ENV === 'development') {
+    return DEVELOPMENT
+  } else {
+    return {
+      ...props.config,
+      name: 'belaytionship',
+      slug: 'expo-belaytionship',
+    }
+  }
+}

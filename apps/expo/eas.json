@@ -5,6 +5,7 @@
   },
   "build": {
     "development": {
+      "autoIncrement": true,
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleDebug"
@@ -13,17 +14,30 @@
         "buildConfiguration": "Debug"
       },
       "env": {
-        "TAMAGUI_TARGET": "native"
+        "TAMAGUI_TARGET": "native",
+        "NODE_ENV": "test",
+        "EXPO_PUBLIC_URL": "https://www.belaytionship.rocks",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://slwmxbbwegsfgxepfjlg.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsd214YmJ3ZWdzZmd4ZXBmamxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTE2ODM0MjAsImV4cCI6MjAwNzI1OTQyMH0.jr2Z4p_86ag116e_io3DiKx2K7W1BF5C0YXf5ifGWBQ"
       },
       "channel": "development"
     },
     "test": {
+      "autoIncrement": true,
       "distribution": "internal",
-      "channel": "test"
+      "channel": "test",
+      "env": {
+        "NODE_ENV": "test",
+        "TAMAGUI_TARGET": "native",
+        "EXPO_PUBLIC_URL": "https://www.belaytionship.rocks",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://slwmxbbwegsfgxepfjlg.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsd214YmJ3ZWdzZmd4ZXBmamxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTE2ODM0MjAsImV4cCI6MjAwNzI1OTQyMH0.jr2Z4p_86ag116e_io3DiKx2K7W1BF5C0YXf5ifGWBQ"
+      }
     },
     "production": {
       "autoIncrement": true,
       "env": {
+        "NODE_ENV": "production",
         "TAMAGUI_TARGET": "native",
         "EXPO_PUBLIC_URL": "https://www.belaytionship.rocks",
         "EXPO_PUBLIC_SUPABASE_URL": "https://slwmxbbwegsfgxepfjlg.supabase.co",
