@@ -91,6 +91,7 @@ export interface Database {
           avatar_url: string | null
           bio: string | null
           climb_type: Database["public"]["Enums"]["climb_type"][] | null
+          expo_token: string | null
           first_name: string
           id: string
           last_name: string
@@ -100,6 +101,7 @@ export interface Database {
           avatar_url?: string | null
           bio?: string | null
           climb_type?: Database["public"]["Enums"]["climb_type"][] | null
+          expo_token?: string | null
           first_name: string
           id: string
           last_name: string
@@ -109,6 +111,7 @@ export interface Database {
           avatar_url?: string | null
           bio?: string | null
           climb_type?: Database["public"]["Enums"]["climb_type"][] | null
+          expo_token?: string | null
           first_name?: string
           id?: string
           last_name?: string

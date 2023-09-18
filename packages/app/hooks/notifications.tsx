@@ -1,7 +1,8 @@
 import React from 'react'
 
-export function useNativeNotifications() {
+export function useWebNotifications() {
   const schedulePushNotification = React.useCallback(() => {
+    // This doesn't do anything right now
     return new Promise<void>((resolve, reject) => {
       const notificationId = setTimeout(() => {
         alert('TODO: add notifications')

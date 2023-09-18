@@ -34,7 +34,7 @@ const displayName = {
   boulder: 'Boulder',
 } as const
 function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListClimb) => void }) {
-  const user = api.me.profile.useQuery()
+  const user = api.me.profile.read.useQuery()
   let color: ThemeName
   switch (climb.type) {
     case 'lead_rope': {
@@ -46,7 +46,7 @@ function Climb({ climb, onSelect }: { climb: ListClimb; onSelect?: (climb: ListC
       break
     }
     case 'boulder': {
-      color = 'light_purple'
+      color = 'purple'
       break
     }
     default: {
@@ -190,7 +190,7 @@ export const SheetDemo = ({
   const [modal, setModal] = useState(true)
   const joinMutation = api.climb.join.useMutation()
   const queryClient = useQueryClient()
-  const user = api.me.profile.useQuery()
+  const user = api.me.profile.read.useQuery()
   // const [innerOpen, setInnerOpen] = useState(false)
 
   let color: ThemeName = 'orange'

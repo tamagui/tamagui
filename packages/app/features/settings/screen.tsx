@@ -49,9 +49,9 @@ export const SettingsScreen = (props: { schedulePushNotif: () => Promise<void> }
               <Settings.Item
                 icon={Bell}
                 isActive={pathname === '/settings/notifications'}
-                // {...useLink({ href: '/settings/notifications' })}
+                {...useLink({ href: '/settings/notifications' })}
                 accentColor="$orange9"
-                onPress={props.schedulePushNotif}
+                // onPress={props.schedulePushNotif}
               >
                 Notifications
               </Settings.Item>

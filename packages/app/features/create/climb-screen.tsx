@@ -196,7 +196,6 @@ export const CreateScreen = () => {
   const router = useRouter()
   const toast = useToastController()
   const climbMutation = api.climb.create.useMutation()
-  const me = api.me.profile.useQuery()
 
   const form = useForm<z.infer<typeof ClimbScreenSchema>>({
     defaultValues: {

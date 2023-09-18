@@ -3471,6 +3471,7 @@ __metadata:
     "@trpc/server": ^10.36.0
     app: "*"
     date-fns: ^2.30.0
+    expo-server-sdk: ^3.7.0
     superjson: ^1.13.1
     zod: ^3.21.4
   languageName: unknown
@@ -4691,7 +4692,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:~6.1.6":
+"@react-navigation/native@npm:^6.1.7, @react-navigation/native@npm:~6.1.6":
   version: 6.1.7
   resolution: "@react-navigation/native@npm:6.1.7"
   dependencies:
@@ -15646,6 +15647,7 @@ __metadata:
     "@my/ui": "*"
     "@react-native-async-storage/async-storage": 1.18.2
     "@react-native-community/netinfo": ^9.3.10
+    "@react-navigation/native": ^6.1.7
     "@tamagui/babel-plugin": latest
     app: "*"
     babel-plugin-module-resolver: ^4.1.0
@@ -15668,6 +15670,7 @@ __metadata:
     expo-secure-store: ~12.3.1
     expo-splash-screen: ~0.20.4
     expo-status-bar: ~1.6.0
+    expo-system-ui: ~2.4.0
     expo-updates: ~0.18.10
     metro-minify-terser: ^0.74.1
     react: ^18.2.0
@@ -15970,6 +15973,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-server-sdk@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "expo-server-sdk@npm:3.7.0"
+  dependencies:
+    node-fetch: ^2.6.0
+    promise-limit: ^2.7.0
+    promise-retry: ^2.0.1
+  checksum: 6350edca193b7c64169594a99710deefced854d560d3e810bac3633e443c3e0e923b35842c5445af3d61dc6cd707b3dc8ecbe0fa984cb40a0d4c15c7f36767a4
+  languageName: node
+  linkType: hard
+
 "expo-splash-screen@npm:~0.20.2, expo-splash-screen@npm:~0.20.4":
   version: 0.20.5
   resolution: "expo-splash-screen@npm:0.20.5"
@@ -15992,6 +16006,18 @@ __metadata:
   version: 3.3.0
   resolution: "expo-structured-headers@npm:3.3.0"
   checksum: f7416c20fb36039ceda93666a42a57533753db9102dc04b601ee0aff76b39d77a19cded988ef5f56ff2d1b0498330506c2cbb3699aec485dcc42c7ad505b2a69
+  languageName: node
+  linkType: hard
+
+"expo-system-ui@npm:~2.4.0":
+  version: 2.4.0
+  resolution: "expo-system-ui@npm:2.4.0"
+  dependencies:
+    "@react-native/normalize-color": ^2.0.0
+    debug: ^4.3.2
+  peerDependencies:
+    expo: "*"
+  checksum: bf95f865785e3a79e5de5770484cf510bec7838945025e6efce69476cb6d6f56d3b532b47853ffc329c5e93c5f1d68a2ed50ac0b50cc3e82f9b36c679a0a9efc
   languageName: node
   linkType: hard
 
@@ -23165,6 +23191,13 @@ __metadata:
   version: 1.0.1
   resolution: "promise-inflight@npm:1.0.1"
   checksum: 22749483091d2c594261517f4f80e05226d4d5ecc1fc917e1886929da56e22b5718b7f2a75f3807e7a7d471bc3be2907fe92e6e8f373ddf5c64bae35b5af3981
+  languageName: node
+  linkType: hard
+
+"promise-limit@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "promise-limit@npm:2.7.0"
+  checksum: 3e20a46d752ab41c921feceb668b3a6d000438573e71342d42bf63373fdbafbf4b6a3f88ef5ff902a2a37be28152dc74e618e863134fd4c08c196448f4a6d28f
   languageName: node
   linkType: hard
 

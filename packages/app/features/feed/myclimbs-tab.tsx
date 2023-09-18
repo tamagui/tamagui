@@ -204,7 +204,7 @@ const SheetDemo = ({
   const [modal, setModal] = useState(true)
   const joinMutation = api.climb.join.useMutation()
   const queryClient = useQueryClient()
-  const { data: user } = api.me.profile.useQuery()
+  const { data: user } = api.me.profile.read.useQuery()
   const { climb, profile } = profileClimb ?? {}
   // const [innerOpen, setInnerOpen] = useState(false)
 

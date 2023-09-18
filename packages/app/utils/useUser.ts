@@ -6,7 +6,7 @@ export const useUser = () => {
   const { session, isLoading: isLoadingSession } = useSessionContext()
   const user = session?.user
 
-  const { data: profile, isLoading: isLoadingProfile, refetch } = api.me.profile.useQuery()
+  const { data: profile, isLoading: isLoadingProfile, refetch } = api.me.profile.read.useQuery()
 
   const avatarUrl = (function () {
     if (profile?.avatar_url) return profile.avatar_url

@@ -2,6 +2,9 @@ import { Platform } from 'react-native'
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { useEffect, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '../utils/api'
+// import { useQuery } from '@tanstack/react-query'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -48,8 +51,12 @@ async function registerForPushNotificationsAsync() {
       alert('Failed to get push token for push notification!')
       return
     }
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: 'your-project-id' })).data
-    console.log(token)
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        // Should be an expo env var
+        projectId: 'f90e58a7-e2f9-408c-8655-8e00d2037f16',
+      })
+    ).data
   } else {
     // TODO: make this a toast
     alert('Must use physical device for Push Notifications')
@@ -57,14 +64,63 @@ async function registerForPushNotificationsAsync() {
 
   return token || ''
 }
+// Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
+async function sendPushNotification(expoPushToken: string) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'Original Title',
+    body: 'And here is the body!',
+    data: { someData: 'goes here' },
+  }
 
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  })
+}
 export function useNativeNotifications() {
   const [expoPushToken, setExpoPushToken] = useState<string>('')
+  const [token, setToken] = useState<string>('')
+  const [shouldFetchToken, setShouldFetchToken] = useState<boolean>(false)
   const [notification, setNotification] = useState<Notifications.Notification | false>(false)
+  const updateProfileMuation = api.me.profile.update.useMutation()
+
   const notificationListener =
     useRef<ReturnType<typeof Notifications.addNotificationReceivedListener>>()
   const responseListener =
     useRef<ReturnType<typeof Notifications.addNotificationResponseReceivedListener>>()
+
+  useQuery(
+    ['getExpoPushToken'],
+    async () => {
+      try {
+        const token = await Notifications.getExpoPushTokenAsync({
+          projectId: 'f90e58a7-e2f9-408c-8655-8e00d2037f16',
+        })
+        return token.data
+      } catch (error) {
+        console.log(error)
+      }
+
+      return token
+    },
+    {
+      enabled: shouldFetchToken,
+      onSuccess: (token) => {
+        setExpoPushToken(token ?? '')
+        updateProfileMuation.mutate({ expo_token: token })
+        setShouldFetchToken(false)
+        console.log(token)
+        setToken(token ?? '')
+      },
+    }
+  )
 
   useEffect(() => {
     // Should probably do something else here
@@ -90,5 +146,12 @@ export function useNativeNotifications() {
     }
   }, [])
 
-  return { expoPushToken, notification, schedulePushNotification }
+  return {
+    expoPushToken,
+    notification,
+    schedulePushNotification,
+    token,
+    shouldFetchToken,
+    setShouldFetchToken,
+  }
 }

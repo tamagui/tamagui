@@ -2,12 +2,21 @@ import { Avatar, Circle, Theme, YStack, useThemeName } from '@my/ui'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Home, Plus } from '@tamagui/lucide-icons'
+import { useNativeNotifications } from 'app/hooks/notifications.native'
 import { useUser } from 'app/utils/useUser'
 import { Stack, Tabs } from 'expo-router'
+import React from 'react'
 import { SolitoImage } from 'solito/image'
 import { useRouter } from 'solito/router'
 
 export default function Layout() {
+  const user = useUser()
+  const { setShouldFetchToken } = useNativeNotifications()
+  React.useEffect(() => {
+    if (!user.profile?.expo_token) {
+      setShouldFetchToken(true)
+    }
+  }, [])
   return (
     <>
       <Stack.Screen

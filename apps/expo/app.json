@@ -6,12 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Belaytionship-180.png",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "userInterfaceStyle": "dark",
     "updates": {
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/f90e58a7-e2f9-408c-8655-8e00d2037f16"
@@ -19,7 +14,18 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.belay.app"
+      "bundleIdentifier": "com.belay.app",
+      "splash": {
+        "image": "./assets/iphone-splash.png",
+        "contentFit": "cover",
+        // "contentFit": "contain",
+        "backgroundColor": "#fff",
+        "dark": {
+          "image": "./assets/iphone-splash-dark.png",
+          "contentFit": "cover",
+          "backgroundColor": "#000"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,7 +33,15 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.belaytionship.app",
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "splash": {
+        "image": "./assets/iphone-splash.png",
+        "contentFit": "cover",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "image": "./assets/iphone-splash-dark.png"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png",

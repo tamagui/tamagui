@@ -1,7 +1,7 @@
 import { FullscreenSpinner, Separator, XStack, YStack } from '@my/ui'
 import { useUser } from 'app/utils/useUser'
 import { SettingsScreen } from './screen'
-import { useNativeNotifications } from 'app/hooks/notifications'
+// import { useNativeNotifications } from '../../hooks/notifications.native'
 
 export type SettingsLayoutProps = {
   /**
@@ -15,7 +15,17 @@ export type SettingsLayoutProps = {
 }
 
 export const SettingsLayout = ({ children, isSettingsHome = false }: SettingsLayoutProps) => {
-  const { schedulePushNotification } = useNativeNotifications()
+  const { schedulePushNotification } = {
+    schedulePushNotification: () =>
+      new Promise<void>((res, reg) => {
+        const notificationId = setTimeout(() => {
+          alert('TODO: add notifications')
+        }, 2000)
+        return () => {
+          clearTimeout(notificationId)
+        }
+      }),
+  }
   const { isLoading, user } = useUser()
   if (isLoading || !user) {
     return <FullscreenSpinner />
