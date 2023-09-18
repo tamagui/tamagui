@@ -1,8 +1,8 @@
 // import './wdyr'
 
-import { CheckboxDemo, RadioGroupDemo } from '@tamagui/demos'
+import { CheckboxDemo, RadioGroupDemo, SwitchDemo } from '@tamagui/demos'
 import { Stack, styled } from '@tamagui/web'
-import { Anchor, SizableText } from 'tamagui'
+import { Anchor, SizableText, Switch, createSwitch } from 'tamagui'
 
 const X = styled(SizableText, {
   size: '$10',
@@ -19,11 +19,14 @@ export const MyAnchor = styled(Anchor, {
   textDecorationLine: 'underline',
 })
 
+const StyledSwitch = createSwitch({})
+
 export const Sandbox = () => {
   return (
     <>
-      <CheckboxDemo />
-      <ChangeWeight />
+      <StyledSwitch>
+        <StyledSwitch.Thumb animation="quick" />
+      </StyledSwitch>
     </>
   )
 }
