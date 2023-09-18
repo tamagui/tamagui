@@ -1,15 +1,12 @@
 // import './wdyr'
 
 import { CheckboxDemo, RadioGroupDemo, SwitchDemo } from '@tamagui/demos'
-import { Stack, styled } from '@tamagui/web'
+import { Trash2 } from '@tamagui/lucide-icons'
+import { Stack, getTokens, styled } from '@tamagui/web'
 import { Anchor, SizableText, Switch, createSwitch } from 'tamagui'
 
-const X = styled(SizableText, {
-  size: '$10',
-})
-
-const ChangeWeight = styled(Stack, {
-  backgroundColor: 'red',
+const StyledTrash = styled(Trash2, {
+  acceptsClassName: true,
 })
 
 export const MyAnchor = styled(Anchor, {
@@ -19,14 +16,22 @@ export const MyAnchor = styled(Anchor, {
   textDecorationLine: 'underline',
 })
 
-const StyledSwitch = createSwitch({})
+const tokens = getTokens()
 
 export const Sandbox = () => {
+  console.log('Test color', tokens.color['blue6Light']?.val)
   return (
     <>
-      <StyledSwitch>
-        <StyledSwitch.Thumb animation="quick" />
-      </StyledSwitch>
+      <Trash2 color={'$blue6Light'} size="$3" />
+      <StyledTrash color={'$blue6Light'} size="$3" />
+      <Trash2 color={tokens.color['$blue6Light']?.variable} size="$3" />
+      {/* This is the example I have in my codebase */}
+      <StyledTrash
+        color={tokens.color['$blue6Light']?.variable}
+        size="$3"
+        $sm={{ width: 16, height: 16 }}
+        $gtLg={{ width: 50, height: 50 }}
+      />
     </>
   )
 }
