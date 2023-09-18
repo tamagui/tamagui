@@ -4,6 +4,7 @@ import {
   SizeTokens,
   StackProps,
   TamaguiComponentExpectingVariants,
+  TamaguiElement,
   composeEventHandlers,
   getVariableValue,
   isWeb,
@@ -122,163 +123,168 @@ export function createSwitch<F extends SwitchComponent, T extends SwitchThumbCom
     )
   })
 
-  const SwitchComponent = Frame.styleable(function SwitchFrame(propsIn, forwardedRef) {
-    const styledContext = React.useContext(SwitchContext)
-    const props = useProps(propsIn)
-    const {
-      labeledBy: ariaLabelledby,
-      name,
-      checked: checkedProp,
-      defaultChecked,
-      required,
-      disabled,
-      value = 'on',
-      onCheckedChange,
-      size = styledContext.size ?? '$true',
-      unstyled = styledContext.unstyled ?? false,
-      native: nativeProp,
-      nativeProps,
-      children,
-      ...switchProps
-    } = props
+  const SwitchComponent = Frame.extractable(
+    React.forwardRef<TamaguiElement, SwitchProps>(function SwitchFrame(
+      propsIn,
+      forwardedRef
+    ) {
+      const styledContext = React.useContext(SwitchContext)
+      const props = useProps(propsIn)
+      const {
+        labeledBy: ariaLabelledby,
+        name,
+        checked: checkedProp,
+        defaultChecked,
+        required,
+        disabled,
+        value = 'on',
+        onCheckedChange,
+        size = styledContext.size ?? '$true',
+        unstyled = styledContext.unstyled ?? false,
+        native: nativeProp,
+        nativeProps,
+        children,
+        ...switchProps
+      } = props
 
-    const leftBorderWidth = (() => {
-      let _: any = undefined
-      for (const key in switchProps) {
-        if (key === 'borderWidth' || key === 'borderLeftWidth') {
-          _ = switchProps[key]
+      const leftBorderWidth = (() => {
+        let _: any = undefined
+        for (const key in switchProps) {
+          if (key === 'borderWidth' || key === 'borderLeftWidth') {
+            _ = switchProps[key]
+          }
         }
-      }
-      if (
-        Frame === SwitchFrame &&
-        acceptsUnstyled &&
-        _ == undefined &&
-        unstyled === false
-      ) {
-        _ = 2 // default we use for styled
-      }
-      if (typeof _ === 'string') {
-        _ = getVariableValue(getSize(_))
-      }
-      if (typeof _ === 'number') {
-        return _
-      }
-      return 0
-    })()
+        if (
+          Frame === SwitchFrame &&
+          acceptsUnstyled &&
+          _ == undefined &&
+          unstyled === false
+        ) {
+          _ = 2 // default we use for styled
+        }
+        if (typeof _ === 'string') {
+          _ = getVariableValue(getSize(_))
+        }
+        if (typeof _ === 'number') {
+          return _
+        }
+        return 0
+      })()
 
-    const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
+      const native = Array.isArray(nativeProp) ? nativeProp : [nativeProp]
 
-    const shouldRenderMobileNative =
-      (!isWeb && nativeProp === true) ||
-      (!isWeb && native.includes('mobile')) ||
-      (native.includes('android') && Platform.OS === 'android') ||
-      (native.includes('ios') && Platform.OS === 'ios')
+      const shouldRenderMobileNative =
+        (!isWeb && nativeProp === true) ||
+        (!isWeb && native.includes('mobile')) ||
+        (native.includes('android') && Platform.OS === 'android') ||
+        (native.includes('ios') && Platform.OS === 'ios')
 
-    const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node as any))
-    const labelId = useLabelContext(button)
-    const labelledBy = ariaLabelledby || labelId
-    const hasConsumerStoppedPropagationRef = React.useRef(false)
-    // We set this to true by default so that events bubble to forms without JS (SSR)
-    const isFormControl = isWeb
-      ? button
-        ? Boolean(button.closest('form'))
-        : true
-      : false
+      const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
+      const composedRefs = useComposedRefs(forwardedRef, (node) => setButton(node as any))
+      const labelId = useLabelContext(button)
+      const labelledBy = ariaLabelledby || labelId
+      const hasConsumerStoppedPropagationRef = React.useRef(false)
+      // We set this to true by default so that events bubble to forms without JS (SSR)
+      const isFormControl = isWeb
+        ? button
+          ? Boolean(button.closest('form'))
+          : true
+        : false
 
-    const [frameWidth, setFrameWidth] = React.useState(0)
+      const [frameWidth, setFrameWidth] = React.useState(0)
 
-    const [checked = false, setChecked] = useControllableState({
-      prop: checkedProp,
-      defaultProp: defaultChecked || false,
-      onChange: onCheckedChange,
-      transition: true,
-    })
+      const [checked = false, setChecked] = useControllableState({
+        prop: checkedProp,
+        defaultProp: defaultChecked || false,
+        onChange: onCheckedChange,
+        transition: true,
+      })
 
-    if (shouldRenderMobileNative) {
-      return (
-        <NativeSwitch
-          value={checkedProp}
-          onValueChange={onCheckedChange}
-          {...nativeProps}
-        />
-      )
-    }
-
-    if (!isWeb) {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      React.useEffect(() => {
-        if (!props.id) return
-        return registerFocusable(props.id, {
-          focus: () => {
-            setChecked((x) => !x)
-          },
-        })
-      }, [props.id, setChecked])
-    }
-
-    return (
-      <>
-        {/* @ts-ignore */}
-        <Frame
-          unstyled={unstyled}
-          size={size}
-          checked={checked}
-          disabled={disabled}
-          frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
-          theme={checked ? 'active' : null}
-          themeShallow
-          role="switch"
-          aria-checked={checked}
-          aria-labelledby={labelledBy}
-          aria-required={required}
-          data-state={getState(checked)}
-          data-disabled={disabled ? '' : undefined}
-          // @ts-ignore
-          tabIndex={disabled ? undefined : 0}
-          // @ts-ignore
-          value={value}
-          {...switchProps}
-          ref={composedRefs}
-          onPress={composeEventHandlers(props.onPress, (event) => {
-            setChecked((prevChecked) => !prevChecked)
-            if (isWeb && isFormControl) {
-              hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-              // if switch is in a form, stop propagation from the button so that we only propagate
-              // one click event (from the input). We propagate changes from an input so that native
-              // form validation works and form events reflect switch updates.
-              if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-            }
-          })}
-          onLayout={composeEventHandlers(
-            // @ts-ignore
-            props.onLayout,
-            (e) => {
-              // @ts-ignore
-              setFrameWidth(e.nativeEvent.layout.width)
-            }
-          )}
-        >
-          {typeof children === 'function' ? children(checked) : children}
-        </Frame>
-        {isWeb && isFormControl && (
-          <BubbleInput
-            control={button}
-            bubbles={!hasConsumerStoppedPropagationRef.current}
-            name={name}
-            value={value}
-            checked={checked}
-            required={required}
-            disabled={disabled}
-            // We transform because the input is absolutely positioned but we have
-            // rendered it **after** the button. This pulls it back to sit on top
-            // of the button.
-            style={{ transform: 'translateX(-100%)' }}
+      if (shouldRenderMobileNative) {
+        return (
+          <NativeSwitch
+            value={checkedProp}
+            onValueChange={onCheckedChange}
+            {...nativeProps}
           />
-        )}
-      </>
-    )
-  })
+        )
+      }
+
+      if (!isWeb) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        React.useEffect(() => {
+          if (!props.id) return
+          return registerFocusable(props.id, {
+            focus: () => {
+              setChecked((x) => !x)
+            },
+          })
+        }, [props.id, setChecked])
+      }
+
+      return (
+        <>
+          {/* @ts-ignore */}
+          <Frame
+            unstyled={unstyled}
+            size={size}
+            checked={checked}
+            disabled={disabled}
+            frameWidth={frameWidth ? frameWidth - leftBorderWidth * 2 : 0}
+            theme={checked ? 'active' : null}
+            themeShallow
+            role="switch"
+            aria-checked={checked}
+            aria-labelledby={labelledBy}
+            aria-required={required}
+            data-state={getState(checked)}
+            data-disabled={disabled ? '' : undefined}
+            // @ts-ignore
+            tabIndex={disabled ? undefined : 0}
+            // @ts-ignore
+            value={value}
+            {...switchProps}
+            ref={composedRefs}
+            onPress={composeEventHandlers(props.onPress, (event) => {
+              setChecked((prevChecked) => !prevChecked)
+              if (isWeb && isFormControl) {
+                hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                // if switch is in a form, stop propagation from the button so that we only propagate
+                // one click event (from the input). We propagate changes from an input so that native
+                // form validation works and form events reflect switch updates.
+                if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+              }
+            })}
+            onLayout={composeEventHandlers(
+              // @ts-ignore
+              props.onLayout,
+              (e) => {
+                // @ts-ignore
+                setFrameWidth(e.nativeEvent.layout.width)
+              }
+            )}
+          >
+            {typeof children === 'function' ? children(checked) : children}
+          </Frame>
+          {isWeb && isFormControl && (
+            <BubbleInput
+              control={button}
+              bubbles={!hasConsumerStoppedPropagationRef.current}
+              name={name}
+              value={value}
+              checked={checked}
+              required={required}
+              disabled={disabled}
+              // We transform because the input is absolutely positioned but we have
+              // rendered it **after** the button. This pulls it back to sit on top
+              // of the button.
+              style={{ transform: 'translateX(-100%)' }}
+            />
+          )}
+        </>
+      )
+    })
+  )
 
   /* ---------------------------------------------------------------------------------------------- */
 
