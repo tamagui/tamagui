@@ -91,11 +91,22 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
     const cmd = `git clone --branch ${branch} ${
       isInSubDir ? '--depth 1 --sparse --filter=blob:none ' : ''
     }${sourceGitRepo} "${targetGitDir}"`
-    console.log(`$ ${cmd}`)
-    console.log()
 
     try {
-      execSync(cmd)
+      try {
+        console.log(`$ ${cmd}`)
+        console.log()
+        execSync(cmd)
+      } catch (error) {
+        if (cmd.includes('https://')) {
+          console.log(`https failed - trying with ssh now...`)
+          console.log(`$ ${cmd}`)
+          console.log()
+          execSync(cmd.replace('https://', 'ssh://'))
+        } else {
+          throw error
+        }
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (template.value === 'takeout-starter') {
