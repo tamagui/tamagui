@@ -3,6 +3,19 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSpace } from '@tamagui/get-token'
 
+export const inputFrameSizeVariant: SizeVariantSpreadFunction<any> = (
+  val = '$true',
+  extras
+) => {
+  if (extras.props.multiline || extras.props.numberOfLines > 1) {
+    return textAreaSizeVariant(val, extras)
+  }
+  const buttonStyles = getButtonSized(val, extras)
+
+  if (buttonStyles) buttonStyles.paddingHorizontal = 0
+  return buttonStyles
+}
+
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
   val = '$true',
   extras

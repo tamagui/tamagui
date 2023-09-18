@@ -1,5 +1,14 @@
 import { useState } from 'react'
-import { Button, Input, Paragraph, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Group,
+  Input,
+  Paragraph,
+  SizeTokens,
+  TextArea,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 export function InputsDemo() {
   const [toggleButton, setToggleButton] = useState(false)
@@ -8,39 +17,36 @@ export function InputsDemo() {
       <InputDemo size="$2" />
       <InputDemo size="$3" />
       <InputDemo size="$4" />
-      <Input size="$2">
+      <Input size="$5">
         <Input.Start>
           <Paragraph>Start</Paragraph>
         </Input.Start>
         <Input.Start>
           <Paragraph>Start2</Paragraph>
         </Input.Start>
+        <Input.Control />
         <Input.End>
           <Paragraph>End</Paragraph>
         </Input.End>
       </Input>
-      <Input placeholder="Test adornments...">
+      <Input placeholder="Test adornments..." size="$2">
         <Input.Start>
-          <Paragraph>Start</Paragraph>
+          <Group orientation="horizontal">
+            <Group.Item>
+              <Button>First</Button>
+            </Group.Item>
+            <Group.Item>
+              <Button>Second</Button>
+            </Group.Item>
+            <Group.Item>
+              <Button>Third</Button>
+            </Group.Item>
+          </Group>
         </Input.Start>
-        <Input.Start>
-          <Paragraph>Start2</Paragraph>
-        </Input.Start>
+        <Input.Control />
         <Input.End>
-          <Paragraph>Test</Paragraph>
+          <Button>End Button</Button>
         </Input.End>
-        <Input.End.Button
-          bg={toggleButton ? 'blue' : 'red'}
-          onPress={() => setToggleButton(!toggleButton)}
-        >
-          <Paragraph>End</Paragraph>
-        </Input.End.Button>
-        <Input.End>
-          <Paragraph>Test 2</Paragraph>
-        </Input.End>
-        <Input.End.Button onPress={() => setToggleButton(!toggleButton)}>
-          <Paragraph>End 2</Paragraph>
-        </Input.End.Button>
       </Input>
       <TextArea placeholder="Enter your details..." />
     </YStack>
