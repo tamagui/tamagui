@@ -100,9 +100,10 @@ async function setupTamaguiDotDir(template: (typeof templates)[number], isRetry 
       } catch (error) {
         if (cmd.includes('https://')) {
           console.log(`https failed - trying with ssh now...`)
-          console.log(`$ ${cmd}`)
+          const sshCmd = cmd.replace('https://', 'ssh://')
+          console.log(`$ ${sshCmd}`)
           console.log()
-          execSync(cmd.replace('https://', 'ssh://'))
+          execSync(sshCmd)
         } else {
           throw error
         }
