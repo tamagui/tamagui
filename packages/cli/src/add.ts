@@ -41,9 +41,15 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
   }
   try {
     process.chdir(tamaguiDir)
-    execSync(
-      `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
-    )
+    try {
+      execSync(
+        `git clone -n --depth=1 --branch generated --filter=tree:0 https://github.com/tamagui/${repoName}`
+      )
+    } catch (error) {
+      execSync(
+        `git clone -n --depth=1 --branch generated --filter=tree:0 ssh://github.com/tamagui/${repoName}`
+      )
+    }
 
     process.chdir(tempDir)
     execSync([`git sparse-checkout set --no-cone meta`, `git checkout`].join(' && '))
@@ -116,3 +122,5 @@ export const installGeneratedPackage = async (type: string, packagesPath?: strin
     console.log(marked.parse(readFileSync(readmePath).toString()))
   }
 }
+
+function cloneGeneratedBranch(repoName: string) {}
