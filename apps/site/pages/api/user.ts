@@ -113,8 +113,11 @@ function getOrgTeams(teams: Awaited<ReturnType<typeof getUserTeams>>) {
 }
 
 function getMainTeam(teams: Awaited<ReturnType<typeof getUserTeams>>) {
-  const sortedTeams = teams?.sort(
-    (a, b) => tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
-  )
+  const sortedTeams = teams
+    ?.filter((t) => t.is_active)
+    .sort(
+      (a, b) =>
+        tiersPriority.indexOf(a.tier as any) - tiersPriority.indexOf(b.tier as any)
+    )
   return sortedTeams?.[0]
 }
