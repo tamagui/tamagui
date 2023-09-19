@@ -1,10 +1,14 @@
-import { SizeTokens } from '@tamagui/core';
-import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from '@tamagui/floating';
-import { SizableStackProps, YStackProps } from '@tamagui/stacks';
-import * as React from 'react';
-import { View } from 'react-native';
+import { SizeTokens } from "@tamagui/core";
+import type { Scope } from "@tamagui/create-context";
+import { Coords, OffsetOptions, Placement, Strategy, UseFloatingReturn, flip, shift } from "@tamagui/floating";
+import { SizableStackProps, YStackProps } from "@tamagui/stacks";
+import * as React from "react";
+import { View } from "react-native";
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
+type ScopedProps<P> = P & {
+    __scopePopper?: Scope;
+};
 export type PopperContextValue = UseFloatingReturn & {
     isMounted: boolean;
     anchorRef: any;
@@ -16,8 +20,65 @@ export type PopperContextValue = UseFloatingReturn & {
         centerOffset: number;
     };
 };
-export declare const PopperContext: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const usePopperContext: () => PopperContextValue;
+export declare const createPopperContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
+    (props: ContextValueType & {
+        scope: Scope<ContextValueType>;
+        children: React.ReactNode;
+    }): JSX.Element;
+    displayName: string;
+}, (consumerName: string, scope: Scope<ContextValueType | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<ContextValueType> | undefined;
+} | undefined) => ContextValueType], createPopperScope: import("@tamagui/create-context").CreateScope;
+export declare const PopperProvider: {
+    (props: {
+        placement: Placement;
+        strategy: Strategy;
+        middlewareData: import("@tamagui/floating").MiddlewareData;
+        x: number;
+        y: number;
+        isPositioned: boolean;
+        update: () => void;
+        floatingStyles: React.CSSProperties;
+        refs: {
+            reference: React.MutableRefObject<import("@tamagui/floating").ReferenceType | null>;
+            floating: React.MutableRefObject<HTMLElement | null>;
+            setReference: (node: import("@tamagui/floating").ReferenceType | null) => void;
+            setFloating: (node: HTMLElement | null) => void;
+        };
+        elements: {
+            reference: import("@tamagui/floating").ReferenceType | null;
+            floating: HTMLElement | null;
+        };
+    } & {
+        context?: any;
+        getFloatingProps?: ((props: {
+            [key: string]: any;
+            ref: any;
+        }) => any) | undefined;
+        getReferenceProps?: ((props: {
+            [key: string]: any;
+            ref: any;
+        }) => any) | undefined;
+    } & {
+        isMounted: boolean;
+        anchorRef: any;
+        size?: SizeTokens | undefined;
+        placement?: Placement | undefined;
+        arrowRef: any;
+        onArrowSize?: ((val: number) => void) | undefined;
+        arrowStyle?: (Partial<Coords> & {
+            centerOffset: number;
+        }) | undefined;
+    } & {
+        scope: Scope<PopperContextValue>;
+        children: React.ReactNode;
+    }): JSX.Element;
+    displayName: string;
+}, usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>, options?: {
+    warn?: boolean | undefined;
+    fallback?: Partial<PopperContextValue> | undefined;
+} | undefined) => PopperContextValue;
 export type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
@@ -27,7 +88,7 @@ export type PopperProps = {
     strategy?: Strategy;
     offset?: OffsetOptions;
 };
-export declare function Popper(props: PopperProps): JSX.Element;
+export declare function Popper(props: ScopedProps<PopperProps>): JSX.Element;
 type PopperAnchorRef = HTMLElement | View;
 export type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
