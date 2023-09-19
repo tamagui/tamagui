@@ -254,7 +254,7 @@ export const SheetDemo = ({
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}
           {/* <Input width={200} /> */}
 
-          {isWeb && <AddToCalendarButton {...reminderConfig} />}
+          {/* {isWeb && <AddToCalendarButton {...reminderConfig} />} */}
           <YStack height={450}>
             {climb?.climber?.first_name && (
               <>

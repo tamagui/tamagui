@@ -37,7 +37,7 @@ const EditProfileForm = ({
   const toast = useToastController()
   const queryClient = useQueryClient()
   const router = useRouter()
-  const mutation = api.me.update.useMutation()
+  const mutation = api.me.profile.update.useMutation()
   // const mutation = useMutation({
   //   async mutationFn(data: z.infer<typeof ProfileSchema>) {
   //     await supabase

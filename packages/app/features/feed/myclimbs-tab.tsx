@@ -224,6 +224,7 @@ const SheetDemo = ({
     }
   }
   const toast = useToastController()
+
   const reminderConfig = {
     name: `Climb with ${profile?.first_name ?? 'unknown climber'}`,
     description: climb?.name ?? '',
@@ -268,7 +269,7 @@ const SheetDemo = ({
           {/* <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} /> */}
           {/* <Input width={200} /> */}
 
-          {isWeb && <AddToCalendarButton {...reminderConfig} />}
+          {/* {isWeb && <AddToCalendarButton options={['Google', 'iCal']} {...reminderConfig} />} */}
           <YStack height={450}>
             {profile?.first_name && (
               <>
