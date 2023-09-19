@@ -1,10 +1,9 @@
-import { execSync } from 'child_process'
 /* eslint-disable no-console */
 import { platform, tmpdir } from 'os'
 import { join } from 'path'
 
 import { expect, test } from '@playwright/test'
-import { existsSync, remove } from 'fs-extra'
+import { readFile } from 'fs-extra'
 import waitPort from 'wait-port'
 import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 
@@ -21,6 +20,8 @@ const PACKAGES_ROOT = join(PACKAGE_ROOT, '..')
 
 process.env.NODE_ENV = 'test'
 $.env.NODE_ENV = 'test'
+
+const appName = 'test-app'
 
 const isLocalDev = platform() === 'darwin'
 const dir = isLocalDev ? `/tmp/test` : join(tmpdir(), `cta-test-${Date.now()}`)
@@ -44,9 +45,9 @@ test.beforeAll(async () => {
 
     cd(dir)
 
-    await $`node ${tamaguiBin} test-app --template next-expo-solito`
+    await $`node ${tamaguiBin} ${appName} --template next-expo-solito`
 
-    cd(`test-app`)
+    cd(appName)
 
     server = $`yarn web:extract`
 
@@ -114,4 +115,11 @@ test(`Navigates to user page`, async ({ page }) => {
   await page.locator('a[role="link"]:has-text("Link to user")').click()
   await expect(page.locator('text=User ID: nate')).toBeVisible()
   await expect(page).toHaveURL('http://localhost:3000/user/nate')
+})
+
+test(`Updates the root package.json name`, async () => {
+  const packageJsonData = JSON.parse(
+    (await readFile(join(dir, appName, 'package.json'))).toString()
+  )
+  expect(packageJsonData.name).toEqual(appName)
 })
